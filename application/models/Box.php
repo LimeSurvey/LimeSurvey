@@ -101,6 +101,20 @@ class Box extends CActiveRecord
     }
 
     /**
+     * Returns the box title translated to the current UI language via gT().
+     * Default box titles are stored in English (see
+     * LsDefaultDataSets::getBoxesData()) and get translated normally; a
+     * custom title without a matching translation is returned unchanged,
+     * since gT() falls back to the original string when no translation exists.
+     *
+     * @return string
+     */
+    public function getLocalizedTitle()
+    {
+        return gT($this->title, 'unescaped');
+    }
+
+    /**
      * @return string
      */
     public function getSpanIcon()
