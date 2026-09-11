@@ -18,15 +18,22 @@ class Update_709 extends DatabaseUpdateBase
     {
         addColumn("{{responses_" . $sid . "}}", "Q{$parent_qid}", "JSON");
         $alterElements = [];
+        $quotedCols = [];
         foreach ($cols as $col) {
             $quotedCol = $this->db->quoteColumnName($col);
+            $quotedCols[] = $quotedCol;
             // JSON_QUOTE() both quotes AND escapes the value (", \, control chars, ...),
             // so we never build invalid JSON from the raw cell content.
             // Emit NULL (not '') for empty values so CONCAT_WS skips them and never
             // produces a leading/trailing/double comma, which would be invalid JSON.
             $alterElements[] = "CASE WHEN LENGTH({$quotedCol}) > 0 THEN JSON_QUOTE({$quotedCol}) ELSE NULL END";
         }
-        $updateCommand = "UPDATE {{responses_" . $sid . "}} SET Q{$parent_qid} = CONCAT('[', CONCAT_WS(',', " . implode(',', $alterElements) . "), ']')";
+        $concatWs = "CONCAT_WS(',', " . implode(',', $alterElements) . ")";
+        // Only store NULL when every underlying sub-question column is genuinely NULL
+        // (never answered at all). If at least one column is a non-NULL empty string,
+        // the response was recorded as "empty" and should yield '[]', not NULL.
+        $allNullCheck = "COALESCE(" . implode(',', $quotedCols) . ") IS NULL";
+        $updateCommand = "UPDATE {{responses_" . $sid . "}} SET Q{$parent_qid} = CASE WHEN {$allNullCheck} THEN NULL ELSE CONCAT('[', {$concatWs}, ']') END";
         $this->db->createCommand($updateCommand)->execute();
         foreach ($cols as $col) {
             dropColumn("{{responses_" . $sid . "}}", $col);
@@ -44,15 +51,22 @@ class Update_709 extends DatabaseUpdateBase
     {
         addColumn("{{responses_" . $sid . "}}", "Q{$parent_qid}", "json");
         $alterElements = [];
+        $quotedCols = [];
         foreach ($cols as $col) {
             $quotedCol = $this->db->quoteColumnName($col);
+            $quotedCols[] = $quotedCol;
             // STRING_ESCAPE(..., 'json') escapes ", \, control chars, ... per JSON rules;
             // we still add the surrounding quotes ourselves since it only escapes content.
             // Emit NULL (not '') for empty values so CONCAT_WS skips them and never
             // produces a leading/trailing/double comma, which would be invalid JSON.
             $alterElements[] = "CASE WHEN LEN({$quotedCol}) > 0 THEN CONCAT('\"', STRING_ESCAPE({$quotedCol}, 'json'), '\"') ELSE NULL END";
         }
-        $updateCommand = "UPDATE {{responses_" . $sid . "}} SET Q{$parent_qid} = CONCAT('[', CONCAT_WS(',', " . implode(',', $alterElements) . "), ']')";
+        $concatWs = "CONCAT_WS(',', " . implode(',', $alterElements) . ")";
+        // Only store NULL when every underlying sub-question column is genuinely NULL
+        // (never answered at all). If at least one column is a non-NULL empty string,
+        // the response was recorded as "empty" and should yield '[]', not NULL.
+        $allNullCheck = "COALESCE(" . implode(',', $quotedCols) . ") IS NULL";
+        $updateCommand = "UPDATE {{responses_" . $sid . "}} SET Q{$parent_qid} = CASE WHEN {$allNullCheck} THEN NULL ELSE CONCAT('[', {$concatWs}, ']') END";
         $this->db->createCommand($updateCommand)->execute();
         foreach ($cols as $col) {
             dropColumn("{{responses_" . $sid . "}}", $col);
@@ -72,16 +86,22 @@ class Update_709 extends DatabaseUpdateBase
         $this->db->createCommand("alter table {{responses_" . $sid . "}} add column {$newColumn} json")->execute();
 
         $alterElements = [];
+        $quotedCols = [];
         foreach ($cols as $col) {
             $quotedCol = $this->db->quoteColumnName($col);
+            $quotedCols[] = $quotedCol;
             // to_json() both quotes AND escapes the value (", \, control chars, ...),
             // so we never build invalid JSON from the raw cell content.
             // Emit NULL (not '') for empty values so concat_ws skips them and never
             // produces a leading/trailing/double comma, which would be invalid JSON.
             $alterElements[] = "CASE WHEN LENGTH({$quotedCol}) > 0 THEN to_json({$quotedCol})::text ELSE NULL END";
         }
-
-        $updateCommand = "UPDATE {{responses_{$sid}}} SET {$newColumn} = (CONCAT('[', CONCAT_WS(',', " . implode(',', $alterElements) . "), ']')::json)";
+        $concatWs = "concat_ws(',', " . implode(',', $alterElements) . ")";
+        // Only store NULL when every underlying sub-question column is genuinely NULL
+        // (never answered at all). If at least one column is a non-NULL empty string,
+        // the response was recorded as "empty" and should yield '[]', not NULL.
+        $allNullCheck = "COALESCE(" . implode(',', $quotedCols) . ") IS NULL";
+        $updateCommand = "UPDATE {{responses_{$sid}}} SET {$newColumn} = (CASE WHEN {$allNullCheck} THEN NULL ELSE CONCAT('[', {$concatWs}, ']') END)::json";
         $this->db->createCommand($updateCommand)->execute();
         foreach ($cols as $col) {
             dropColumn("{{responses_" . $sid . "}}", $col);
