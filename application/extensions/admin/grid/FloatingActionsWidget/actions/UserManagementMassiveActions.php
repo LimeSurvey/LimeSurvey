@@ -81,7 +81,7 @@ class UserManagementMassiveActions
             $aMoreActionsItems[] =
             [
                 'type' => 'dropdown-header',
-                'text' => gT('USER ACTIONS'),
+                'text' => gT('User actions'),
             ];
             // Edit Status (in dropdown)
             $aMoreActionsItems[] = [
