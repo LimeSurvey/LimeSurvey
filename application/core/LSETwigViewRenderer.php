@@ -694,6 +694,9 @@ window.addEventListener('message', function(event) {
                 ($showxquestions == 'choose' && !isset($aData['aSurveyInfo']['showxquestions'])) ||
                 ($showxquestions == 'choose' && $aData['aSurveyInfo']['showxquestions'] == 'Y'));
 
+            // Welcome screen image and its display settings (see Survey::getWelcomeImageSettings())
+            $oSurvey = $aData['aSurveyInfo']['oSurvey'] ?? Survey::model()->findByPk($aData['aSurveyInfo']['sid']);
+            $aData["aSurveyInfo"]['welcomeimage'] = $oSurvey ? ($oSurvey->welcomeImageSettings ?: []) : [];
 
             // NB: Session is flushed at submit, so sid is not defined here.
             if (

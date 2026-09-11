@@ -140,7 +140,14 @@
 
         </article>
         {% block footer %}
-            {{ include('./subviews/footer/footer.twig') }}
+            {# When the firstpage (Group by Group/Question by Question mode) has a welcome
+               image, the footer is rendered inside the welcome image wrapper instead
+               (see firstpage.twig / welcome_image_container.twig), so it is visually
+               covered by the image too. Avoid rendering it twice here in that case. #}
+            {% set isFirstPageWithImage = aSurveyInfo.include_content == 'firstpage' and aSurveyInfo.welcomeimage['image_path'] is defined and aSurveyInfo.welcomeimage['image_path'] %}
+            {% if not isFirstPageWithImage %}
+                {{ include('./subviews/footer/footer.twig') }}
+            {% endif %}
         {% endblock %}
         {% block pjaxend %}
             <div id="bottomScripts" class="script-container">

@@ -1,29 +1,64 @@
 @mixin h1 {
-  font-weight : $font-weight-600;
-  font-size   : $font-size-lg;
-  line-height : $line-height-26;
+  font-weight: $font-weight-600;
+  font-size: $font-size-lg;
+  line-height: $line-height-26;
 }
 
 @mixin h2 {
-  font-weight : $font-weight-600;
-  font-size   : $font-size-base;
-  line-height : $line-height-20;
+  font-weight: $font-weight-600;
+  font-size: $font-size-base;
+  line-height: $line-height-20;
 }
 
 @mixin h3 {
-  font-weight : $font-weight-500;
-  font-size   : $font-size-sm;
-  line-height : $line-height-20;
+  font-weight: $font-weight-500;
+  font-size: $font-size-sm;
+  line-height: $line-height-20;
 }
 
 @mixin formheading {
-  font-weight : $font-weight-normal;
-  font-size   : $font-size-md;
-  line-height : $line-height-24;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-md;
+  line-height: $line-height-24;
 }
 
 @mixin largeheading {
   font-weight: $font-weight-600;
   font-size: $font-size-2xl;
   line-height: $line-height-52;
+}
+@mixin reg-12 {
+  color: $g-900;
+  font-family: $ibm-sans-font-family;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-16;
+  letter-spacing: -0.204px;
+}
+
+@mixin semi-14 {
+  color: $g-900;
+  font-family: $ibm-sans-font-family;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-600;
+  line-height: $line-height-20;
+  letter-spacing: -0.238px;
+}
+
+@mixin med-16_C {
+  color: $g-900;
+  font-family: $ibm-sans-font-family;
+  font-size: $font-size-base;
+  font-weight: $font-weight-500;
+  line-height: $line-height-20;
+  letter-spacing: -0.272px;
+}
+
+@mixin reg-18 {
+  color: $g-900;
+  font-family: $ibm-sans-font-family;
+  font-size: $font-size-md;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-24;
+  letter-spacing: -0.306px;
 }

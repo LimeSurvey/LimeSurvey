@@ -6,7 +6,6 @@ import {
     updateLineClass,
     updateRepeatHeading,
     manageIndex,
-    activateLanguageChanger,
     activateActionLink,
     confirmSurveyDialog,
     activateConfirmButton,

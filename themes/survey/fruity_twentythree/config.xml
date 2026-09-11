@@ -283,6 +283,10 @@
                     <file type="view" role="subview">./subviews/header/nav_bar.twig</file>
                     <file type="view" role="subview">./subviews/header/progress_bar.twig</file>
                     <file type="view" role="subview">./subviews/messages/welcome.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome_subviews/welcome_content.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome_subviews/welcome_image_container.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome_subviews/welcome_image.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome_subviews/welcome_questioncount.twig</file>
                     <file type="view" role="subview">./subviews/messages/warnings.twig</file>
                     <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>

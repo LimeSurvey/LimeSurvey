@@ -44,6 +44,28 @@ dl {
   font-weight: 600 !important;
 }
 
+.reg-12 {
+  @include reg-12;
+}
+
+.med-12 {
+  @include reg-12;
+  font-weight: $font-weight-500;
+  letter-spacing: 0.036px;
+}
+
+.semi-14 {
+  @include semi-14;
+}
+
+.med-16_C {
+  @include med-16_C;
+}
+
+.reg-18 {
+  @include reg-18;
+}
+
 // LINKS
 a {
   font-weight: inherit;

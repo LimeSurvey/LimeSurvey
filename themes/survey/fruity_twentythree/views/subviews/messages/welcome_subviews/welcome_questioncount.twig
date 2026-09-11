@@ -1,0 +1,33 @@
+{#
+LimeSurvey
+Copyright (C) 2007-2026 The LimeSurvey Project Team
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
+
+
+(¯`·._.·(¯`·._.·  Welcome page question count ·._.·´¯)·._.·´¯)
+
+Shows the "There are %s questions in this survey." text (survey setting "show x questions").
+Rendered below the privacy policy block on the welcome page, see welcome.twig and welcome_image_container.twig.
+#}
+
+<!-- Question count -->
+<div class="{{ aSurveyInfo.class.questioncount }}" {{ aSurveyInfo.attr.questioncount }}>
+    <div class='{{ aSurveyInfo.class.questioncounttext }} reg-12 mt-3' {{ aSurveyInfo.attr.questioncounttext }}>
+        {# If survey creator set "show x questions" in survey setting  #}
+        {% if aSurveyInfo.bShowxquestions == true %}
+            {% if aSurveyInfo.iTotalquestions < 1 %}
+                {{ gT("There are no questions in this survey.") }}
+            {% elseif aSurveyInfo.iTotalquestions == 1 %}
+                {{ gT("There is 1 question in this survey.") }}
+            {% else %}
+                {{ gT("There are %s questions in this survey.") | format(aSurveyInfo.iTotalquestions) }}
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

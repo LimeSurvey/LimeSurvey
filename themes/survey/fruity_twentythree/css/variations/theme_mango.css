@@ -77,6 +77,7 @@
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  --bs-root-font-size: 14px;
   --bs-body-font-family: var(--bs-font-sans-serif);
   --bs-body-font-size: 1.14rem;
   --bs-body-font-weight: 400;
@@ -91,6 +92,9 @@
   box-sizing: border-box;
 }
 
+:root {
+  font-size: var(--bs-root-font-size);
+}
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;
@@ -627,7 +631,7 @@ progress {
   color: #6c757d;
 }
 .blockquote-footer::before {
-  content: "— ";
+  content: "— ";
 }
 
 .img-fluid {
@@ -2055,8 +2059,7 @@ progress {
 .form-control::file-selector-button {
   padding: 0.375rem 0.75rem;
   margin: -0.375rem -0.75rem;
-  -webkit-margin-end: 0.75rem;
-          margin-inline-end: 0.75rem;
+  margin-inline-end: 0.75rem;
   color: #212529;
   background-color: #e9ecef;
   pointer-events: none;
@@ -2078,8 +2081,7 @@ progress {
 .form-control::-webkit-file-upload-button {
   padding: 0.375rem 0.75rem;
   margin: -0.375rem -0.75rem;
-  -webkit-margin-end: 0.75rem;
-          margin-inline-end: 0.75rem;
+  margin-inline-end: 0.75rem;
   color: #212529;
   background-color: #e9ecef;
   pointer-events: none;
@@ -2126,14 +2128,12 @@ progress {
 .form-control-sm::file-selector-button {
   padding: 0.25rem 0.5rem;
   margin: -0.25rem -0.5rem;
-  -webkit-margin-end: 0.5rem;
-          margin-inline-end: 0.5rem;
+  margin-inline-end: 0.5rem;
 }
 .form-control-sm::-webkit-file-upload-button {
   padding: 0.25rem 0.5rem;
   margin: -0.25rem -0.5rem;
-  -webkit-margin-end: 0.5rem;
-          margin-inline-end: 0.5rem;
+  margin-inline-end: 0.5rem;
 }
 
 .form-control-lg {
@@ -2150,14 +2150,12 @@ progress {
 .form-control-lg::file-selector-button {
   padding: 0.5rem 1rem;
   margin: -0.5rem -1rem;
-  -webkit-margin-end: 1rem;
-          margin-inline-end: 1rem;
+  margin-inline-end: 1rem;
 }
 .form-control-lg::-webkit-file-upload-button {
   padding: 0.5rem 1rem;
   margin: -0.5rem -1rem;
-  -webkit-margin-end: 1rem;
-          margin-inline-end: 1rem;
+  margin-inline-end: 1rem;
 }
 
 textarea.form-control {
@@ -10502,10 +10500,6 @@ textarea.form-control-lg {
   margin: 0 auto;
 }
 
-#welcome-container {
-  max-width: 750px;
-}
-
 .question-item .other-label {
   margin: 0px;
   padding: 0px;
@@ -11851,11 +11845,6 @@ body .answer-item label::after {
   box-shadow: 0 0 0 #fff;
 }
 
-.form-inline .checkbox-item {
-  display: inline-block;
-  vertical-align: middle;
-}
-
 /**
  * All of this part fix already included css (bootstrap + awesome) for this template
  */
@@ -11881,48 +11870,14 @@ li.question-item.answer-item.text-item.form-group {
   font-weight: 400;
 }
 
-/* no form-group on radio-item and checkbox-item */
-li.checkbox-item,
-li.radio-text-item,
-li.checkbox-text-item {
+/* no form-group on radio-item */
+li.radio-text-item {
   margin-bottom: 1em;
 }
 
-/* awesome-bootstrap-checkbox */
-li.checkbox-item,
-li.radio-text-item,
-li.checkbox-text-item {
+/* awesome-bootstrap-radio */
+li.radio-text-item {
   display: block;
-}
-
-/* map item : .input-group-addon.checkbox-item : put awesome padding */
-.input-group-addon.checkbox-item {
-  padding-left: 25px;
-}
-
-/* Else big label break*/
-.checkbox-item label {
-  display: block;
-}
-
-.checkbox-item {
-  position: relative;
-}
-
-.checkbox-item input[type=checkbox] {
-  /*give near same position to real button (except in td : can fix but not needed )*/
-  display: inline-block;
-  height: 17px;
-  position: absolute;
-  width: 17px;
-}
-
-.checkbox-item input[type=checkbox] {
-  left: 0;
-}
-
-.checkbox-item input[type=checkbox] {
-  opacity: 0;
 }
 
 /**
@@ -12864,6 +12819,53 @@ dl dt {
   font-weight: 600 !important;
 }
 
+.reg-12 {
+  color: #1E1E1E;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.855rem;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: -0.204px;
+}
+
+.med-12 {
+  color: #1E1E1E;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.855rem;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: -0.204px;
+  font-weight: 500;
+  letter-spacing: 0.036px;
+}
+
+.semi-14 {
+  color: #1E1E1E;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.9975rem;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.238px;
+}
+
+.med-16_C {
+  color: #1E1E1E;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1.14rem;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.272px;
+}
+
+.reg-18 {
+  color: #1E1E1E;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1.2825rem;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.306px;
+}
+
 a {
   font-weight: inherit;
   font-size: inherit;
@@ -13721,6 +13723,40 @@ table > tbody > tr > td.ddprefix {
     background-color: #f9f9f9;
   }
 }
+.form-inline .checkbox-item {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* no form-group on checkbox-item */
+li.checkbox-item,
+li.checkbox-text-item {
+  margin-bottom: 1em;
+}
+
+/* awesome-bootstrap-checkbox */
+li.checkbox-item,
+li.checkbox-text-item {
+  display: block;
+}
+
+/* map item : .input-group-addon.checkbox-item : put awesome padding */
+.input-group-addon.checkbox-item {
+  padding-left: 25px;
+}
+
+.checkbox-item {
+  position: relative;
+}
+
+.checkbox-item input[type=checkbox] {
+  /*give near same position to real button (except in td : can fix but not needed )*/
+  display: inline-block;
+  height: 17px;
+  position: absolute;
+  width: 17px;
+}
+
 .checkbox-item {
   padding-left: 20px;
 }
@@ -13732,7 +13768,7 @@ table > tbody > tr > td.ddprefix {
   display: inline-block;
   vertical-align: middle;
   position: relative;
-  padding-left: 20px;
+  padding-left: 16px;
 }
 
 .checkbox-item.othertext-label-checkox-container {
@@ -15043,20 +15079,11 @@ html, body {
 }
 
 .question-count-text {
-  font-size: 1.2825rem;
-  line-height: 24px;
-  font-weight: 600;
+  color: #6E748C;
 }
 
 .privacy {
   margin-top: 40px;
-  font-weight: 400;
-  font-size: 0.855rem;
-  line-height: 16px;
-}
-.privacy .ls-privacy-head,
-.privacy #datasecurity_notice_label {
-  font-weight: 500;
 }
 .privacy .ls-privacy-block:not(:first-child) {
   margin-top: 1rem;
@@ -15070,16 +15097,81 @@ html, body {
 
 .datasecurity-checkbox-container {
   margin-top: 14px;
-  padding-left: 16px;
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
 }
 
 .datasecurity-checkbox-label,
 .datasecurity-checkbox-label a.show-policy {
-  font-weight: 600;
+  color: #1E1E1E;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1.14rem;
+  font-weight: 500;
   line-height: 20px;
+  letter-spacing: -0.272px;
 }
 
+/*
+ * Welcome screen image layout (survey welcome_image setting).
+ *
+ * Applies to both image_align variants:
+ * - "left"/"right": image and welcome content sit side by side in two
+ *   columns (.welcome-image-layout--columns).
+ * - "center": image renders as a full-width background positioned at the
+ *   top of the element (.welcome-image-container--center is absolutely
+ *   positioned, full width, natural/auto height so the whole image is
+ *   always shown -- never cropped), while the text content
+ *   (.welcome-content-container--center) is normal-flow on top of it, so
+ *   the content's own height (not the image's height) drives the layout's
+ *   height.
+ */
+.welcome-image-container--center {
+  z-index: 0;
+}
+
+.welcome-content-container--center {
+  z-index: 1;
+}
+.welcome-content-container--center .checkbox-item label::before {
+  background-color: transparent;
+}
+
+.welcome-image-layout--columns,
+.welcome-image-layout--center {
+  padding: 24px 16px;
+}
+
+.welcome-image-layout--columns {
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .welcome-image-layout--columns,
+  .welcome-image-layout--center {
+    padding: 3% 4%;
+  }
+  .welcome-image-layout--columns {
+    gap: 2%;
+  }
+  .welcome-image-layout--columns > .welcome-image-container,
+  .welcome-image-layout--columns > .welcome-content-container {
+    flex: 0 0 49%;
+    max-width: 49%;
+  }
+}
+@media (min-width: 1200px) {
+  .welcome-image-layout--columns,
+  .welcome-image-layout--center {
+    padding: 3% 5% 4%;
+  }
+  .welcome-image-layout--columns {
+    gap: 2.5%;
+  }
+  .welcome-image-layout--columns > .welcome-image-container,
+  .welcome-image-layout--columns > .welcome-content-container {
+    flex: 0 0 48.75%;
+    max-width: 48.75%;
+  }
+}
 #datasecurity_notice,
 #datasecurity_notice_label,
 .datasecurity-checkbox-label {
@@ -15106,38 +15198,45 @@ html, body {
   width: 150px;
 }
 
-.form-change-lang {
-  padding-bottom: 10px;
-}
 .form-change-lang .control-label {
+  color: #1E1E1E;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.9975rem;
   font-weight: 600;
-  font-size: 1.14rem;
   line-height: 20px;
+  letter-spacing: -0.238px;
+  padding: 5px 0;
+  margin-bottom: 0;
 }
 .form-change-lang .language-icon {
   float: left;
   margin-right: 4px;
+  font-size: 1.14rem;
   font-weight: 400;
 }
+.form-change-lang #lang-select {
+  position: relative;
+  display: inline-block;
+}
 .form-change-lang #language-changer-select {
+  color: #1E1E1E;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.9975rem;
   font-weight: 600;
-  font-size: 1.14rem;
   line-height: 20px;
+  letter-spacing: -0.238px;
   cursor: pointer;
-  border: none;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   position: relative;
   z-index: 10;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 4px 20px 4px 4px;
 }
 .form-change-lang #language-changer-select:focus-visible {
   outline: none;
-}
-.form-change-lang #language-changer-select:focus {
-  border: 1px solid;
-  border-radius: 4px;
-  padding: 4px;
 }
 .form-change-lang .ls-language-changer-item {
   display: none;
@@ -15152,19 +15251,23 @@ html, body {
 }
 .form-change-lang #language-changer-select {
   color: #ED5046;
+  border-color: transparent;
   background-color: transparent;
 }
-.form-change-lang #lang-select {
-  background-color: #ffffff;
+.form-change-lang #language-changer-select:focus {
+  border-color: #ED5046;
 }
 .form-change-lang #lang-select::after {
   cursor: pointer;
-  position: relative;
-  right: 16px;
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
   color: #ED5046;
   font-family: "remixicon";
   content: "\ea50";
   z-index: 5;
+  pointer-events: none;
 }
 
 .video-ipad {
@@ -15458,10 +15561,8 @@ body .imageselect-listitem label::after {
 }
 .numeric-multi .ls-group-total-separator hr {
   border-top: solid 2px;
-  -webkit-margin-before: 0;
-          margin-block-start: 0;
-  -webkit-margin-after: 0;
-          margin-block-end: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 .numeric-multi .dynamic-total {
   font-weight: 600;

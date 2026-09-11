@@ -5,23 +5,11 @@
 }
 
 .question-count-text {
-    font-size   : $font-size-md;
-    line-height : $line-height-24;
-    font-weight : $font-weight-600
+    color : $g-700;
 }
 
 .privacy {
-    margin-top  : 40px;
-    font-weight : $font-weight-normal;
-    font-size   : $font-size-xs;
-    line-height : $line-height-16;
-    .ls-privacy-head,
-    #datasecurity_notice_label {
-        font-weight : $font-weight-500;
-    }
-    .ls-privacy-block{
-
-    }
+    margin-top : 40px;
     .ls-privacy-block:not(:first-child) {
         margin-top : 1rem;
     }
@@ -35,10 +23,78 @@
 
 .datasecurity-checkbox-container {
     margin-top   : 14px;
-    padding-left : 16px;
+    padding-left : calc(var(--bs-gutter-x) * 0.5);
 }
 
 .datasecurity-checkbox-label,
 .datasecurity-checkbox-label a.show-policy {
-    @include h2;
+    @include med-16_C;
+}
+
+/*
+ * Welcome screen image layout (survey welcome_image setting).
+ *
+ * Applies to both image_align variants:
+ * - "left"/"right": image and welcome content sit side by side in two
+ *   columns (.welcome-image-layout--columns).
+ * - "center": image renders as a full-width background positioned at the
+ *   top of the element (.welcome-image-container--center is absolutely
+ *   positioned, full width, natural/auto height so the whole image is
+ *   always shown -- never cropped), while the text content
+ *   (.welcome-content-container--center) is normal-flow on top of it, so
+ *   the content's own height (not the image's height) drives the layout's
+ *   height.
+ */
+.welcome-image-container--center {
+    z-index : 0;
+}
+
+.welcome-content-container--center {
+    z-index : 1;
+    .checkbox-item label::before {
+        background-color : transparent;
+    }
+}
+
+.welcome-image-layout--columns,
+.welcome-image-layout--center {
+    padding : 24px 16px;
+}
+
+.welcome-image-layout--columns {
+    gap : 16px;
+}
+
+@media (min-width: 768px) {
+    .welcome-image-layout--columns,
+    .welcome-image-layout--center {
+        padding : 3% 4%;
+    }
+
+    .welcome-image-layout--columns {
+        gap : 2%;
+    }
+
+    .welcome-image-layout--columns > .welcome-image-container,
+    .welcome-image-layout--columns > .welcome-content-container {
+        flex      : 0 0 calc(50% - 1%);
+        max-width : calc(50% - 1%);
+    }
+}
+
+@media (min-width: 1200px) {
+    .welcome-image-layout--columns,
+    .welcome-image-layout--center {
+        padding : 3% 5% 4%;
+    }
+
+    .welcome-image-layout--columns {
+        gap : 2.5%;
+    }
+
+    .welcome-image-layout--columns > .welcome-image-container,
+    .welcome-image-layout--columns > .welcome-content-container {
+        flex      : 0 0 calc(50% - 1.25%);
+        max-width : calc(50% - 1.25%);
+    }
 }

@@ -1,0 +1,48 @@
+{#
+LimeSurvey
+Copyright (C) 2007-2026 The LimeSurvey Project Team
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
+
+
+(¯`·._.·(¯`·._.·  Welcome page image container ·._.·´¯)·._.·´¯)
+
+Lays out the welcome image next to (or behind) the welcome content, depending on the
+image_align setting (left/right/center) stored in aSurveyInfo.welcomeimage.
+
+The actual content is rendered inside the "welcome_wrapped_content" block, so it can be
+overridden via {% embed %} (see firstpage.twig, which also wraps the language changer
+and the main survey form with the image for Group by Group/Question by Question mode).
+
+The optional "welcome_wrapped_footer" block (empty by default) lets callers also render
+the page footer inside this wrapper, so it is visually covered by the welcome image too
+(see firstpage.twig).
+#}
+
+{% set imageAlign = aSurveyInfo.welcomeimage['image_align'] is defined ? aSurveyInfo.welcomeimage['image_align'] : 'left' %}
+<div class="welcome-image-layout {% if imageAlign == 'center' %}welcome-image-layout--center position-relative w-100{% else %}welcome-image-layout--columns d-flex flex-wrap{% if imageAlign == 'right' %} flex-row-reverse{% endif %}{% endif %}">
+    <div class="welcome-image-container {% if imageAlign == 'center' %}welcome-image-container--center position-absolute top-0 start-0 w-100{% else %}col-12 col-md-6{% endif %}">
+        {% if imageAlign == 'center' %}<div class="w-100 text-center">{% endif %}
+            {{ include('./subviews/messages/welcome_subviews/welcome_image.twig') }}
+        {% if imageAlign == 'center' %}</div>{% endif %}
+    </div>
+    <div class="welcome-content-container {% if imageAlign == 'center' %}welcome-content-container--center position-relative w-100 d-flex align-items-start{% else %}col-12 col-md-6 pt-3{% endif %}">
+        <div class="{% if imageAlign == 'center' %}p-5 w-100{% endif %} d-flex flex-column">
+            {% block welcome_wrapped_content %}
+                {# Default content: overridden by firstpage.twig via embed to also wrap the language changer and main form #}
+                {{ include('./subviews/messages/welcome_subviews/welcome_content.twig') }}
+                {{ include('./subviews/privacy/privacy.twig') }}
+                {{ include('./subviews/messages/welcome_subviews/welcome_questioncount.twig') }}
+            {% endblock %}
+            <div class="welcome-footer-container">
+                {% block welcome_wrapped_footer %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+

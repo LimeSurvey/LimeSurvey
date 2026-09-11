@@ -198,11 +198,6 @@
     box-shadow : 0 0 0 #fff;
 }
 
-.form-inline .checkbox-item {
-    display        : inline-block;
-    vertical-align : middle;
-}
-
 /**
  * All of this part fix already included css (bootstrap + awesome) for this template
  */
@@ -228,50 +223,15 @@ li.question-item.answer-item.text-item.form-group {
     font-weight : 400
 }
 
-/* no form-group on radio-item and checkbox-item */
-li.checkbox-item,
-li.radio-text-item,
-li.checkbox-text-item {
+/* no form-group on radio-item */
+li.radio-text-item {
     margin-bottom : 1em
 }
 
-/* awesome-bootstrap-checkbox */
-li.checkbox-item,
-li.radio-text-item,
-li.checkbox-text-item {
+/* awesome-bootstrap-radio */
+li.radio-text-item {
     display : block
 }
-
-/* map item : .input-group-addon.checkbox-item : put awesome padding */
-.input-group-addon.checkbox-item {
-    padding-left : 25px;
-}
-
-/* Else big label break*/
-.checkbox-item label {
-    display : block
-}
-
-.checkbox-item {
-    position : relative;
-}
-
-.checkbox-item input[type="checkbox"] {
-    /*give near same position to real button (except in td : can fix but not needed )*/
-    display  : inline-block;
-    height   : 17px;
-    position : absolute;
-    width    : 17px;
-}
-
-.checkbox-item input[type="checkbox"] {
-    left : 0;
-}
-
-.checkbox-item input[type="checkbox"] {
-    opacity : 0;
-}
-
 
 /**
  * Table .question feature
