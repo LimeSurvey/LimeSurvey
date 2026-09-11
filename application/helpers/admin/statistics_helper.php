@@ -737,8 +737,11 @@ class statistics_helper
             //add this to the question title
             $qtitle .= " [$atext]";
 
-            //even more substrings...
-            $mfield = $rt;
+            // Use the validated fieldmap key ($key) as the actual response-table column name.
+            // $rt carries a leading question-type letter (e.g. "QQ2412_S2419" for a "Q" question),
+            // while the real column is "Q2412_S2419", so using $rt directly would reference a
+            // non-existent column (mantis #20684).
+            $mfield = $key;
 
             //Text questions either have an answer, or they don't. There's no other way of quantising the results.
             // So, instead of building an array of predefined answers like we do with lists & other types,
