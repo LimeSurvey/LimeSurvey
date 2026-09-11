@@ -95,7 +95,7 @@ class SurveyDeactivate
         $datestamp = time();
         $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
         $DBDate = date('Y-m-d H:i:s', $datestamp);
-        $userID = $this->app->user->getId();
+        $userID = $this->app->user->getId() ?? 0; // User ID is null while testing.
         $aData = array();
         $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
         $aData['surveyid'] = $iSurveyID;
