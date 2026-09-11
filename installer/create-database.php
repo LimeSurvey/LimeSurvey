@@ -1194,6 +1194,10 @@ function populateDatabase($oDB)
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name' => 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
+        // Record the bundled asset version so the very first admin page load doesn't think the published
+        // assets are stale and wipe the tmp/assets directory mid-request (see UpdateForm::checkAssets()),
+        // which would delete files that other widgets in that same request just published.
+        $oDB->createCommand()->insert("{{settings_global}}", ['stg_name' => 'AssetsVersion' , 'stg_value' => $version['assetsversionnumber']]);
     } catch (Exception $e) {
         $oTransaction->rollback();
         throw new CHttpException(500, $e->getMessage());
