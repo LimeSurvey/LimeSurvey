@@ -45,6 +45,14 @@
   letter-spacing: -0.238px;
 }
 
+@mixin med-14_C {
+  font-family: $ibm-sans-font-family;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-500;
+  line-height: $line-height-20;
+  letter-spacing: -0.21px;
+}
+
 @mixin med-16_C {
   color: $g-900;
   font-family: $ibm-sans-font-family;

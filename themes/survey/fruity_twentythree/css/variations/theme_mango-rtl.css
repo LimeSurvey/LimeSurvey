@@ -12825,6 +12825,14 @@ dl dt {
   letter-spacing: -0.238px;
 }
 
+.med-14_C {
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.9975rem;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.21px;
+}
+
 .med-16_C {
   color: #1E1E1E;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -15249,6 +15257,18 @@ html, body {
 
 .video-ipad {
   height: 50px;
+}
+
+#navigator-container {
+  margin-top: 40px;
+}
+#navigator-container .btn {
+  padding: 11px 12px;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.9975rem;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.21px;
 }
 
 .imageselect-list .imageselect-listitem .imageselect-container .imageselect-checkbox {

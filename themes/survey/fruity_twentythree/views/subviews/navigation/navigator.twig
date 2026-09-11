@@ -22,6 +22,10 @@
 {# create a shortcut for aSurveyInfo.aNavigator #}
 {% set aNavigator = aSurveyInfo.aNavigator %}
 
+{# On the welcome screen (survey is not in "All in one" mode, i.e. Question by Question or Group by Group),
+   the Next/Submit button acts as the "Start survey" button and is moved to the left side #}
+{% set isWelcomeScreen = aSurveyInfo.format != 'A' and aSurveyInfo.include_content == 'firstpage' %}
+
 <!-- PRESENT THE NAVIGATOR -->
 <div class="{{ aSurveyInfo.class.navigatorcontainer }} row navigator space-col" id="{{ aSurveyInfo.id.navigatorcontainer }}" {{ aSurveyInfo.attr.navigatorcontainer }}>
 
@@ -35,30 +39,15 @@
                 {{ gT("Previous") }}
             </button>
         {% endif %}
+
+        {% if isWelcomeScreen %}
+            {{ include('./subviews/navigation/navigator_next_submit_button.twig') }}
+        {% endif %}
     </div>
     <div class="{{ aSurveyInfo.class.navigatorbuttonr }} col-6 text-end">
 
-        {# Next button is not always shown (last page, all in one mode, etc) #}
-        {% if (not aSurveyInfo.popupPreview) and aNavigator.aMoveNext.show %}
-
-            {# On last page, Next button become submit button. #}
-            {% if (not aSurveyInfo.popupPreview) and aNavigator.aMoveNext.value == "movesubmit" %}
-                {% if not empty(aSurveyInfo.mandViolation) and not empty(aSurveyInfo.mandSoft) and empty(aSurveyInfo.mandNonSoft) and aSurveyInfo.showPopups != 1 %}
-                <span class="checkbox-item">
-                    <input class="{{ aSurveyInfo.class.mandsoftcheckbox }}" type="checkbox" name="mandSoft" id="mandSoft" value="{{ aSurveyInfo.aNavigator.aMoveNext.value }}" />
-                    <label for="mandSoft" class="control-label {{ aSurveyInfo.class.mandsoftcheckboxlabel }}">{{ gT("Continue without answering") }}</label>&nbsp;
-                </span>
-                {% endif %}
-                <!-- Button submit -->
-                <button {{ aSurveyInfo.attr.navigatorbuttonsubmit }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonsubmit }} btn btn-lg btn-primary">
-                    {{ gT("Submit") }}
-                </button>
-            {% else %}
-                <!-- Button Next -->
-                <button aria-label="{{ gT("Next page") }}" {{ aSurveyInfo.attr.navigatorbuttonnext }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-lg btn-primary " >
-                    {{ gT("Next") }}
-                </button>
-            {% endif %}
+        {% if not isWelcomeScreen %}
+            {{ include('./subviews/navigation/navigator_next_submit_button.twig') }}
         {% endif %}
     </div>
 </div>

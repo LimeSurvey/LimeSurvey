@@ -475,6 +475,7 @@
                     <file type="view" role="subview">./subviews/navigation/language_changer.twig</file>
                     <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
                     <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/navigator_next_submit_button.twig</file>
                     <file type="view" role="subview">./subviews/navigation/navigator_complement.twig</file>
                     <file type="view" role="subview">./subviews/navigation/clearall_buttons.twig</file>
                     <file type="view" role="subview">./subviews/navigation/save_buttons.twig</file>

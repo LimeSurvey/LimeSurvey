@@ -1,0 +1,43 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Navigator Next/Submit button ·._.·´¯)·._.·´¯)
+
+    Renders the Next/Submit button (#ls-button-submit).
+    Included from navigator.twig, in the left or right column depending on isWelcomeScreen.
+#}
+
+{# Next button is not always shown (last page, all in one mode, etc) #}
+{% if (not aSurveyInfo.popupPreview) and aNavigator.aMoveNext.show %}
+
+    {# On last page, Next button become submit button. #}
+    {% if (not aSurveyInfo.popupPreview) and aNavigator.aMoveNext.value == "movesubmit" %}
+        {% if not empty(aSurveyInfo.mandViolation) and not empty(aSurveyInfo.mandSoft) and empty(aSurveyInfo.mandNonSoft) and aSurveyInfo.showPopups != 1 %}
+        <span class="checkbox-item">
+            <input class="{{ aSurveyInfo.class.mandsoftcheckbox }}" type="checkbox" name="mandSoft" id="mandSoft" value="{{ aSurveyInfo.aNavigator.aMoveNext.value }}" />
+            <label for="mandSoft" class="control-label {{ aSurveyInfo.class.mandsoftcheckboxlabel }}">{{ gT("Continue without answering") }}</label>&nbsp;
+        </span>
+        {% endif %}
+        <!-- Button submit -->
+        <button {{ aSurveyInfo.attr.navigatorbuttonsubmit }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonsubmit }} btn btn-lg btn-primary">
+            {{ gT("Submit") }}
+        </button>
+    {% else %}
+        <!-- Button Next -->
+        <button aria-label="{{ gT("Next page") }}" {{ aSurveyInfo.attr.navigatorbuttonnext }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-primary " >
+            {% if isWelcomeScreen is defined and isWelcomeScreen %}
+                {{ gT("Start survey") }}
+            {% else %}
+                {{ gT("Next") }}
+            {% endif %}
+        </button>
+    {% endif %}
+{% endif %}
