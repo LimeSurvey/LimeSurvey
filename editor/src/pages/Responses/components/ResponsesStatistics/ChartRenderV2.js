@@ -291,18 +291,22 @@ export const ChartRendererV2 = ({
 }) => {
   const isNumerical = question?.type === QT_N_NUMERICAL
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
+  const isRanking = isRankingQuestion(question?.themeName)
   const isGridable =
     isNumerical ||
     [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
       question?.type
     )
   const [view, setView] = useState(
-    isNumerical ? VIEW.TABLE : isMultiNumerical ? VIEW.GRID : VIEW.BAR_CHART
+    isNumerical || isRanking
+      ? VIEW.TABLE
+      : isMultiNumerical
+        ? VIEW.GRID
+        : VIEW.BAR_CHART
   )
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
-  const isRanking = isRankingQuestion(question?.themeName)
   const hasComments = isCommentQuestionType(question?.type)
   const isChoice = CHOICE_QUESTION_TYPES.includes(question?.type)
   const isArray = (data ?? []).some((item) => Array.isArray(item?.segments))
@@ -437,6 +441,23 @@ export const ChartRendererV2 = ({
                 {t(
                   'of the subquestions (rows) in the concerning answer option (columns)'
                 )}
+              </div>
+            )}
+            {isRanking && activeView?.value === VIEW.BAR_CHART && (
+              <div className="responses-statistics-chart-subtitle">
+                <TooltipContainer
+                  tip={t(
+                    'The bar chart shows how often each answer option is on 1st place'
+                  )}
+                >
+                  <span
+                    className="responses-statistics-chart-subtitle-term"
+                    role="img"
+                    aria-label={t('About this chart')}
+                  >
+                    <i className="ri-information-line"></i>
+                  </span>
+                </TooltipContainer>
               </div>
             )}
             <div>{activeView?.render(renderContext)}</div>
