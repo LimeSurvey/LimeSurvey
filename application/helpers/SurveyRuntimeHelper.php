@@ -1847,6 +1847,7 @@ class SurveyRuntimeHelper
                     // changed in the admin interface while this preview/test session was open): bug #17107
                     $sMessage = gT('We are sorry but your survey structure has expired/changed - please restart.');
                     renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
+                    Yii::app()->end();
                 }
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];
