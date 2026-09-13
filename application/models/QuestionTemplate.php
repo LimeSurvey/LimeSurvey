@@ -411,12 +411,12 @@ class QuestionTemplate extends CFormModel
             if ($questionTheme->core_theme == true && empty($questionTheme->extends)) {
                 $aQuestionTemplates['core'] = [
                     'title' => gT('Default'),
-                    'preview' => $questionTheme->image_path
+                    'preview' => $questionTheme->getImagePath()
                 ];
             } else {
                 $aQuestionTemplates[$questionTheme->name] = [
                     'title' => $questionTheme->title,
-                    'preview' => $questionTheme->image_path
+                    'preview' => $questionTheme->getImagePath()
                 ];
             }
         }

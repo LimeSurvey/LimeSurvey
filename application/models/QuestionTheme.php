@@ -287,6 +287,11 @@ class QuestionTheme extends LSActiveRecord
         $aMetaDataArray = self::getMetaDataArray($aQuestionMetaData);
 
         $this->setAttributes($aMetaDataArray, false);
+        // Non-core themes are stored relative to their type directory, so they stay valid if it moves.
+        if (empty($this->core_theme)) {
+            $this->xml_path = $this->getRelativeXmlPath();
+            $this->image_path = $this->getRelativeImagePath();
+        }
         if ($this->save()) {
             return $aQuestionMetaData['title'];
         } else {
@@ -681,7 +686,7 @@ class QuestionTheme extends LSActiveRecord
             $baseQuestion['image_path'] = str_replace(
                 '//',
                 '/',
-                Yii::app()->baseUrl . '/' . $baseQuestion['image_path']
+                Yii::app()->baseUrl . '/' . $baseQuestion->getImagePath()
             );
             $baseQuestionsModified[] = $baseQuestion;
         }
@@ -1101,13 +1106,51 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Returns the XML path
-     * It may be absolute or relative to the Limesurvey root
+     * Returns the XML path.
+     * For non-core themes, xml_path is stored relative to its type directory and resolved to a full path here.
      * @return string
      */
     public function getXmlPath()
     {
+        if (empty($this->core_theme) && !isAbsolutePath((string) $this->xml_path)) {
+            return self::getAbsolutePathForType($this->xml_path, $this->getThemeType());
+        }
         return $this->xml_path;
+    }
+
+    /**
+     * Returns the preview image path relative to the theme's type directory.
+     * Returns image_path unchanged if it does not lie within the type directory (e.g. the default screenshot url).
+     * @return string
+     */
+    public function getRelativeImagePath()
+    {
+        $type = $this->getThemeType();
+        $typeDirectory = self::getQuestionThemeDirectoryForType($type);
+
+        $pos = strpos((string) $this->image_path, $typeDirectory);
+        if ($pos === false) {
+            return $this->image_path;
+        }
+        return ltrim(substr($this->image_path, $pos + strlen($typeDirectory)), "\\/");
+    }
+
+    /**
+     * Returns the preview image path (used as an <img> src).
+     * For non-core themes, image_path is stored relative to its type directory and resolved to a full path here.
+     * @return string
+     */
+    public function getImagePath()
+    {
+        if (
+            empty($this->core_theme)
+            && !empty($this->image_path)
+            && !isAbsolutePath((string) $this->image_path)
+            && strpos((string) $this->image_path, '://') === false
+        ) {
+            return '/' . self::getAbsolutePathForType($this->image_path, $this->getThemeType());
+        }
+        return $this->image_path;
     }
 
     /**

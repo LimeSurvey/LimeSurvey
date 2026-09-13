@@ -2531,7 +2531,7 @@ class QuestionAdministrationController extends LSBaseController
             $questionThemeData['type'] = $questionTheme->question_type;
             $questionThemeData['detailpage'] = '
                 <div class="col-12 currentImageContainer">
-                <img src="' . $questionTheme->image_path . '" />
+                <img src="' . $questionTheme->getImagePath() . '" />
                 </div>';
 
             $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionThemeData;
