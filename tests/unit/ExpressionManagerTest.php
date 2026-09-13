@@ -44,6 +44,18 @@ class ExpressionManagerTest extends TestBaseClass
         }
     }
 
+    public function testExpressionValidationDetectsUnknownFunctions(): void
+    {
+        $this->assertTrue($this->em->validateExpression('abs(1)'));
+        $this->assertFalse(
+            $this->em->validateExpression('unknown_function(1)')
+        );
+
+        $errors = $this->em->GetErrors();
+        $this->assertCount(1, $errors);
+        $this->assertSame('unknown_function', $errors[0][1][0]);
+    }
+
     public function testFunctions()
     {
         $functions = array(

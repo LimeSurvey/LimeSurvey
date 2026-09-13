@@ -7,7 +7,8 @@ use LimeSurvey\Api\Command\V1\{
     SurveyTemplate,
     SurveyArchive,
     SurveyLogic,
-    SurveyQuestionsFieldname
+    SurveyQuestionsFieldname,
+    ExpressionScriptValidate
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
@@ -17,12 +18,15 @@ use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactorySurveyTemplate,
     SchemaFactorySurveyArchive,
     SchemaFactorySurveyLogic,
-    SchemaFactorySurveyQuestionsFieldname
+    SchemaFactorySurveyQuestionsFieldname,
+    SchemaFactoryExpressionScriptValidation,
+    SchemaFactoryExpressionScriptValidationRequest
 };
 
 $errorSchema = (new SchemaFactoryError())->make();
 $surveyPatchSchema = (new SchemaFactorySurveyPatch())->make();
 $surveyTemplateSchema = (new SchemaFactorySurveyTemplate())->make();
+$expressionScriptValidationRequestSchema = (new SchemaFactoryExpressionScriptValidationRequest())->make();
 
 $rest = [];
 
@@ -189,6 +193,34 @@ $rest['v1/survey-logic/$id'] = [
                 'description' => 'Success',
                 'content' => null,
                 'schema' => (new SchemaFactorySurveyLogic())->make()
+            ],
+            'forbidden' => [
+                'code' => 403,
+                'description' => 'Forbidden',
+                'schema' => $errorSchema
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Not Found',
+                'schema' => $errorSchema
+            ]
+        ]
+    ]
+];
+
+$rest['v1/expression-script-validation/$id'] = [
+    'POST' => [
+        'tag' => 'survey',
+        'description' => 'Validate an ExpressionScript expression',
+        'commandClass' => ExpressionScriptValidate::class,
+        'auth' => true,
+        'schema' => $expressionScriptValidationRequestSchema,
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+                'content' => null,
+                'schema' => (new SchemaFactoryExpressionScriptValidation())->make()
             ],
             'forbidden' => [
                 'code' => 403,

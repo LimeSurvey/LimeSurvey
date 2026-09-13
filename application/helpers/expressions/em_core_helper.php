@@ -1926,6 +1926,22 @@ class ExpressionManager
     }
 
     /**
+     * Parse and validate an expression without executing registered functions.
+     *
+     * @param string $expr
+     * @param int $groupSeq
+     * @param int $questionSeq
+     * @return bool
+     */
+    public function validateExpression($expr, $groupSeq = -1, $questionSeq = -1)
+    {
+        $this->groupSeq = $groupSeq;
+        $this->questionSeq = $questionSeq;
+
+        return $this->RDP_Evaluate($this->ExpandThisVar($expr), true);
+    }
+
+    /**
      * Start processing a group of substitutions - will be incrementally numbered
      */
 
