@@ -29,23 +29,28 @@ echo viewHelper::getViewTestTag('usersIndex');
             'dataProvider' => $model->search(),
             'columns' => $model->getManagementColums(),
             'lsAdditionalColumns' => $model->getAdditionalColumns(),
-            'showSelectionBar' => false,
-            'caption' => gT('User management'),
+            'lsShowSelectionBar' => false,
+            'lsCaption' => gT('User management'),
             'lsAfterAjaxUpdate' => [
                 'LS.UserManagement.bindButtons();',
                 'showDeactivatedUserTooltip();'
             ],
             'filter' => $model,
-            'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSize',
-                        $pageSize,
-                        App()->params['pageSizeOptions'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                    )
-                ),
+            'lsPageSizeCurrentValue' => $pageSize,
+        ]
+    );
+    ?>
+
+    <!-- Floating Actions Widget for User Management -->
+    <?php
+    require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.UserManagementMassiveActions') . '.php';
+    $aActions = \actions\UserManagementMassiveActions::getActions();
+    $this->widget(
+        'ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget',
+        [
+            'pk'       => 'uid',
+            'gridId'   => 'usermanagement--identity-gridPanel',
+            'aActions' => $aActions,
         ]
     );
     ?>
@@ -66,12 +71,6 @@ echo viewHelper::getViewTestTag('usersIndex');
 
 <!-- To update rows per page via ajax -->
 <script type="text/javascript">
-    jQuery(function ($) {
-        jQuery(document).on("change", '#pageSize', function () {
-            $.fn.yiiGridView.update('usermanagement--identity-gridPanel', {data: {pageSize: $(this).val()}});
-        });
-    });
-    //show tooltip for gridview icons
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)

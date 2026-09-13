@@ -120,7 +120,7 @@
             'application.extensions.admin.grid.CLSGridView',
             [
                 'id'           => 'gridPanel',
-                'caption'      => gT("Survey permissions"),
+                'lsCaption'      => gT("Survey permissions"),
                 'dataProvider' => $dataProvider,
                 'columns'      => array_merge([
                     [
