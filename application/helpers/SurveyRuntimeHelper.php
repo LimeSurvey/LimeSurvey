@@ -1842,6 +1842,12 @@ class SurveyRuntimeHelper
                 if ($this->sSurveyMode != 'group') {
                     $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
                 }
+                if (empty($this->aStepInfo)) {
+                    // The ExpressionManager state no longer matches the session (eg: survey structure was
+                    // changed in the admin interface while this preview/test session was open): bug #17107
+                    $sMessage = gT('We are sorry but your survey structure has expired/changed - please restart.');
+                    renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
+                }
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];
                 $this->groupdescription = $this->aStepInfo['gtext'];
