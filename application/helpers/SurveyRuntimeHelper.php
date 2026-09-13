@@ -1831,6 +1831,14 @@ class SurveyRuntimeHelper
     }
 
 
+    /**
+     * Sets the display data for the current survey group or completion step.
+     *
+     * For non-preview group and question modes, an unavailable navigation
+     * step renders a restart error and ends the request.
+     *
+     * @return void
+     */
     private function setGroup()
     {
         if (!$this->previewgrp && !$this->previewquestion) {
