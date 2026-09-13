@@ -14,6 +14,7 @@ import { PaginationButtons } from 'components'
 import { QuestionPreview } from 'components/Survey/Questions/QuestionPreview'
 import {
   getDefaultColumns,
+  getInitialColumnVisibility,
   generateColumns,
   generateData,
   SelectColumnId,
@@ -186,7 +187,8 @@ export const ResponsesTable = ({
     if (!columns.length) {
       generatedColumns = generateColumns(
         responsesData.surveyQuestions || surveyQuestions,
-        survey
+        survey,
+        responsesData.timingFields
       )
 
       if (!hideSelect) {
@@ -198,6 +200,7 @@ export const ResponsesTable = ({
       }
 
       setColumns(generatedColumns)
+      setColumnVisibility(getInitialColumnVisibility(generatedColumns))
       // else if we have columns, then we pop the actions column and readd it to update the columns ref
     } else if (!hideActions && columns.length) {
       columns.pop()
