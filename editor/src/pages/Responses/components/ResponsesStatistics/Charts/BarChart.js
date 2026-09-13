@@ -8,6 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
   Cell,
+  LabelList,
   ResponsiveContainer,
 } from 'recharts'
 
@@ -16,6 +17,7 @@ import {
   COLORS,
   CustomTooltip,
   TruncatedTick,
+  formatMetricValue,
   getLabelInterval,
   getMetricDataKey,
   VALUE_TYPE,
@@ -38,7 +40,7 @@ export const BarChart = ({
       })}
     >
       <ResponsiveContainer width="100%" height={400}>
-        <RechartsBarChart data={data}>
+        <RechartsBarChart data={data} margin={{ top: 20 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="title"
@@ -87,6 +89,13 @@ export const BarChart = ({
                 />
               )
             })}
+            <LabelList
+              dataKey={dataKey}
+              position="top"
+              offset={8}
+              formatter={(value) => formatMetricValue(value, valueType)}
+              className="responses-statistics-chart-labels"
+            />
           </Bar>
         </RechartsBarChart>
       </ResponsiveContainer>
