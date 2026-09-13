@@ -1235,10 +1235,15 @@ class TemplateConfig extends CActiveRecord
 
 
     /**
-     * Change the mother template configuration depending on template settings
-     * @var $sType     string   the type of settings to change (css or js)
-     * @var $aSettings array    array of local setting
-     * @return array
+     * Reconciles this template's own file settings (add/replace) against its ancestor
+     * templates' packages: for each locally-existing file it removes the corresponding
+     * entry from every ancestor package up the inheritance chain (so the local file is
+     * the only one loaded), and for each file that doesn't exist locally it locates the
+     * nearest ancestor that provides it and registers it there instead.
+     *
+     * @param string $sType the type of settings to change ('css' or 'js')
+     * @param array $aSettings array of local file settings (file names) to reconcile
+     * @return array the (possibly reduced) array of local file settings
      */
     protected function changeMotherConfiguration($sType, $aSettings)
     {
@@ -1253,11 +1258,19 @@ class TemplateConfig extends CActiveRecord
                     continue;
                 }
                 if (file_exists($this->path . $sFileName)) {
-                    App()->clientScript->removeFileFromPackage(
-                        $this->oMotherTemplate->sPackageName,
-                        $sType,
-                        $sFileName
-                    );
+                    // The file being replaced/removed may have been declared by any ancestor
+                    // in the inheritance chain, not just the direct mother template (mantis #14980).
+                    // Walk the whole chain so it gets removed from whichever package actually
+                    // registered it, instead of leaving it (and thus loading it) further up.
+                    $oAncestorTemplate = $this->oMotherTemplate;
+                    while ($oAncestorTemplate instanceof TemplateConfiguration) {
+                        App()->clientScript->removeFileFromPackage(
+                            $oAncestorTemplate->sPackageName,
+                            $sType,
+                            $sFileName
+                        );
+                        $oAncestorTemplate = $oAncestorTemplate->oMotherTemplate;
+                    }
                 } else {
                     // File doesn't exist locally, so it should be removed
                     $key = array_search($sFileName, $aSettings);
