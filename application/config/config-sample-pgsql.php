@@ -24,10 +24,10 @@
 return array(
 	'components' => array(
 		'db' => array(
-			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=<databasename>;',
+			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=limesurvey;',
 			'emulatePrepare' => true,
-			'username' => '<dbusername>',
-			'password' => '<dbpassword>',
+			'username' => 'postgres',
+			'password' => 'somepassword',
 			'charset' => 'utf8',
 			'tablePrefix' => 'lime_',
 		),
