@@ -604,13 +604,12 @@ class InstallerConfigForm extends CFormModel
     private function getPgsqlDsn()
     {
         $port = $this->getDbPort();
-        if (empty($this->dbpwd)) {
-            // If there's no password, we need to write password=""; instead of password=;,
-            // or PostgreSQL's libpq will consider the DSN string part after "password="
-            // (including the ";" and the potential dbname) as part of the password definition.
-            $this->dbpwd = '""';
-        }
-        $sDSN = "pgsql:host={$this->dblocation};port={$port};user={$this->dbuser};password={$this->dbpwd};";
+        // Do not embed user/password in the DSN string: PDO_PGSQL only escapes/quotes
+        // credentials that are passed as separate constructor arguments (see dbConnect()/dbTest()).
+        // Once "user=" or "password=" is present in the DSN itself, PDO passes it to libpq
+        // as-is, so special characters such as ";" or "'" in the password break the connection
+        // (see bug #15061).
+        $sDSN = "pgsql:host={$this->dblocation};port={$port};";
         if ($this->useDbName) {
             $sDSN .= "dbname={$this->dbname};";
         }
