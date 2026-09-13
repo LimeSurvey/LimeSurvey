@@ -49,3 +49,53 @@
 .dropdown-header, .dropdown-item {
     color : $g-700;
 }
+
+.answer-container .bootstrap-select {
+    > .btn.dropdown-toggle {
+        background-color : $white;
+        border-color     : $input-border-color;
+        color            : $input-color;
+
+        &:focus, &:focus-visible {
+            border-color : $input-focus-border-color;
+            box-shadow   : $input-box-shadow;
+        }
+
+        &.bs-placeholder,
+        &.bs-placeholder:hover,
+        &.bs-placeholder:focus,
+        &.bs-placeholder:active {
+            color : $g-700;
+        }
+    }
+
+    .dropdown-menu {
+        box-shadow : 0px 2px 6px $elevation-shadow-soft;
+    }
+
+    .dropdown-item {
+        color : $g-900;
+    }
+
+    .dropdown-item:hover,
+    .dropdown-item:focus,
+    .dropdown-item.active,
+    li.active > .dropdown-item {
+        color            : $g-900 !important;
+        background-color : $g-200 !important;
+    }
+
+    li.selected > .dropdown-item {
+        &, &:hover, &:focus, &.active {
+            color            : $white !important;
+            background-color : $base-color !important;
+        }
+    }
+
+    .dropdown-item.disabled,
+    .dropdown-item:disabled,
+    li.disabled > .dropdown-item {
+        color            : $g-600 !important;
+        background-color : transparent !important;
+    }
+}
