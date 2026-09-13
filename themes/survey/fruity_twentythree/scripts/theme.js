@@ -972,6 +972,21 @@ function resetQuestionTimers(sid) {
 }
 
 /**
+ * Older browsers, Safari below 15.4 mainly, do not provide SubmitEvent.submitter.
+ * Remember the clicked button so the final submit is recognised there too.
+ */
+$(document).on('click', 'form#limesurvey button[type="submit"]', function () {
+  var $form = $(this.form);
+  $form.data('clicked-submit', this);
+  // The browser dispatches the matching submit event synchronously, as soon as
+  // the click event finished propagating: forgetting the button on the next tick
+  // is enough to never rely on an outdated one.
+  setTimeout(function () {
+    $form.removeData('clicked-submit');
+  }, 0);
+});
+
+/**
  * Disable submit button to prevent multiple submits
  * This is done on 'document' instead of the '#limesurvey' form in order to allow
  * other scripts (custom themes?) to cancel the submit before we disable the button.
@@ -981,18 +996,30 @@ $(document).on('submit', function (e) {
   if (e.target.id != 'limesurvey') {
     return;
   }
+  var $form = $(e.target);
   // We only care about the final submit, not normal forward/backward navigation.
-  var submitter = e.originalEvent ? $(e.originalEvent.submitter) : null;
+  var submitter = e.originalEvent ? $(e.originalEvent.submitter || $form.data('clicked-submit')) : null;
   if (!submitter || submitter.attr('value') != 'movesubmit') {
     return;
   }
+  if (e.isDefaultPrevented()) {
+    return;
+  }
+  // Disabling the button is not sufficient when the browser has already queued
+  // more than one submit event. Explicitly cancel every repeated final submit.
+  if ($form.data('final-submit-active')) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    return false;
+  }
+  $form.data('final-submit-active', true);
   // Still, we disable all submit buttons to make sure the "back" button is not
   // pressed while submitting.
-  $('#limesurvey button[type="submit"]').prop('disabled', true);
+  $form.find('button[type="submit"]').prop('disabled', true);
 
   // We also add a hidden input with the button's value, because it's not included
   // in the request when the button is disabled.
-  $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + submitter.attr('name') + '\' value=\'' + submitter.attr('value') + '\' type=\'hidden\' />');
+  $form.append('<input id="onsubmitbuttoninput" name=\'' + submitter.attr('name') + '\' value=\'' + submitter.attr('value') + '\' type=\'hidden\' />');
 });
 
 // register to global scope

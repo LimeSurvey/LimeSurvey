@@ -72,6 +72,12 @@ class SurveyRuntimeHelper
     private $LEMsessid = null;
 
     /**
+     * True when the final submit of an already recorded response is processed again.
+     * @var boolean
+     */
+    private $bSubmitReplayed = false;
+
+    /**
      * customizable debugging for Lime ExpressionScript Engine ; LEM_DEBUG_TIMING;
      * (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
      * @var int
@@ -194,6 +200,13 @@ class SurveyRuntimeHelper
     {
         // Survey settings
         $this->setSurveySettings($surveyid, $args);
+
+        /* The final submit can reach the server more than once: double click, browser
+         * "Try again" prompt, back navigation, reload. The response is already
+         * recorded then, so the completed page is displayed again, but everything
+         * that must happen only once is skipped. */
+        $this->bSubmitReplayed = ($this->sMove == 'movesubmit' && $this->LEMsessid
+            && !empty($_SESSION[$this->LEMsessid]['finished']));
 
         // Start rendering
         $this->makeLanguageChanger(); //  language changer can be used on any entry screen, so it must be set first
@@ -984,7 +997,13 @@ class SurveyRuntimeHelper
             }
 
             if (($this->sMove == 'movesubmit')) {
-                if ($this->sSurveyMode == 'survey') {
+                if ($this->bSubmitReplayed) {
+                    /* The response is already submitted: keep the last result instead
+                     * of processing the answers again. */
+                    $this->aMoveResult = (array)LimeExpressionManager::GetLastMoveResult(false);
+                    $this->aMoveResult['finished'] = true;
+                    $this->LEMskipReprocessing = true;
+                } elseif ($this->sSurveyMode == 'survey') {
                     $this->aMoveResult = LimeExpressionManager::NavigateForwards();
                 } else {
                     // may be submitting from the navigation bar, in which case need to process all intervening questions
@@ -1279,11 +1298,11 @@ class SurveyRuntimeHelper
             }
 
             //Update the token if needed and send a confirmation email
-            if ($surveyActive && $oSurvey->getHasTokensTable()) {
+            if ($surveyActive && $oSurvey->getHasTokensTable() && !$this->bSubmitReplayed) {
                 submittokens();
             }
             //Send notifications
-            if ($surveyActive) {
+            if ($surveyActive && !$this->bSubmitReplayed) {
                 sendSubmitNotifications($this->iSurveyid);
             }
             // Link to Print Answer Preview  **********
@@ -1316,15 +1335,17 @@ class SurveyRuntimeHelper
             $redata['completed'] = $this->completed;
             // event afterSurveyComplete
             $blocks = array();
-            $event = new PluginEvent('afterSurveyComplete');
-            if ($surveyActive && isset($_SESSION[$this->LEMsessid]['srid'])) {
-                $event->set('responseId', $_SESSION[$this->LEMsessid]['srid']);
-            }
-            $event->set('surveyId', $this->iSurveyid);
-            App()->getPluginManager()->dispatchEvent($event);
-            foreach ($event->getAllContent() as $blockData) {
-                /* @var $blockData PluginEventContent */
-                $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
+            if (!$this->bSubmitReplayed) {
+                $event = new PluginEvent('afterSurveyComplete');
+                if ($surveyActive && isset($_SESSION[$this->LEMsessid]['srid'])) {
+                    $event->set('responseId', $_SESSION[$this->LEMsessid]['srid']);
+                }
+                $event->set('surveyId', $this->iSurveyid);
+                App()->getPluginManager()->dispatchEvent($event);
+                foreach ($event->getAllContent() as $blockData) {
+                    /* @var $blockData PluginEventContent */
+                    $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
+                }
             }
 
             $validator = new LSYii_Validators();
@@ -1387,6 +1408,9 @@ class SurveyRuntimeHelper
             $oTemplate = Template::getLastInstance();
             // kill survey session after doing template : didn't work for all var, but for EM core var : it's OK.
             if ($this->aSurveyInfo['printanswers'] != 'Y') {
+                // Set aside first, so a replayed final submit can display this very
+                // page again instead of an expired session error.
+                $_SESSION['submitted_' . $this->iSurveyid] = $_SESSION[$this->LEMsessid];
                 killSurveySession($this->iSurveyid);
             }
             Yii::app()->twigRenderer->renderHtmlPage($sHtml, $oTemplate);
