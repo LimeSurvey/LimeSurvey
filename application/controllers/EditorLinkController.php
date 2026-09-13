@@ -65,12 +65,13 @@ class EditorLinkController extends LSYii_Controller
         /** @var \LSYii_Application */
         $app = \App();
 
-        $cookieDataJson = json_encode(
-            $authTokenSimple->getTokenData(
-                $session,
-                $app->user->getId()
-            )
+        $cookieData = $authTokenSimple->getTokenData(
+            $session,
+            $app->user->getId()
         );
+        $cookieData['csrfTokenName'] = $app->request->csrfTokenName;
+        $cookieData['csrfToken'] = $app->request->csrfToken;
+        $cookieDataJson = json_encode($cookieData);
 
         $cookie = new CHttpCookie($cookieName, $cookieDataJson);
         $cookie->expire = time() + 10;

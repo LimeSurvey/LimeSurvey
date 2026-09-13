@@ -2480,6 +2480,12 @@ class SurveyAdministrationController extends LSBaseController
     {
         //everybody who has permission to create surveys
         if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            if (App()->request->isAjaxRequest) {
+                return $this->renderPartial(
+                    '/admin/super/_renderJson',
+                    ['data' => ['success' => false, 'error' => gT('Access denied!')]]
+                );
+            }
             App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
@@ -2570,6 +2576,19 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         $this->aData = $aData;
+        if (App()->request->isAjaxRequest) {
+            $response = $aData['bFailed']
+                ? [
+                    'success' => false,
+                    'error' => trim(strip_tags(html_entity_decode((string) $aData['sErrorMessage']))),
+                ]
+                : [
+                    'success' => true,
+                    'summary' => $aData['aImportResults'],
+                ];
+
+            return $this->renderPartial('/admin/super/_renderJson', ['data' => $response]);
+        }
         $this->render('importSurvey_view', $this->aData);
     }
 
