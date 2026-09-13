@@ -41,6 +41,7 @@ import {
   TEXT_QUESTION_TYPES,
   getSegmentedCategories,
   VALUE_TYPE,
+  wrapTerm,
 } from './ChartsUtils.js'
 import { QuestionComments } from './QuestionComments.js'
 import { CommentsModal } from './CommentsModal.js'
@@ -425,17 +426,21 @@ export const ChartRendererV2 = ({
           <>
             {isArrayNumbers && (
               <div className="responses-statistics-chart-subtitle">
-                <TooltipContainer
-                  tip={t(
-                    'Each value is the mean of the numbers entered for a subquestion (row) and answer option (column): their sum divided by the number of responses that answered that cell. Unanswered cells are left out.'
-                  )}
-                >
-                  <span className="responses-statistics-chart-subtitle-term">
-                    {t('Mean')} <i className="ri-information-line"></i>
-                  </span>
-                </TooltipContainer>{' '}
-                {t(
-                  'of the subquestions (rows) in the concerning answer option (columns)'
+                {wrapTerm(
+                  t(
+                    '%sMean%s of the subquestions (rows) in the concerning answer option (columns)'
+                  ),
+                  (term) => (
+                    <TooltipContainer
+                      tip={t(
+                        'Each value is the mean of the numbers entered for a subquestion (row) and answer option (column): their sum divided by the number of responses that answered that cell. Unanswered cells are left out.'
+                      )}
+                    >
+                      <span className="responses-statistics-chart-subtitle-term">
+                        {term} <i className="ri-information-line"></i>
+                      </span>
+                    </TooltipContainer>
+                  )
                 )}
               </div>
             )}
