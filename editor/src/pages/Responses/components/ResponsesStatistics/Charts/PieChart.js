@@ -198,6 +198,18 @@ const renderActiveShapeNew = ({
 // Vertical label-block footprint (id + value/image + metric rows)
 const LABEL_MIN_GAP = 58
 
+// Fixed pie size, so the chart can grow taller for stacked labels without the
+// pie growing too. Recharts adds margin.top to a numeric cy.
+const CHART_BASE_HEIGHT = 400
+const CHART_MARGIN_TOP = 30
+const CHART_MARGIN_BOTTOM = 40
+const PIE_RADIUS = 130
+const PIE_CY = 150
+const PIE_CY_IN_CHART = CHART_MARGIN_TOP + PIE_CY
+
+// Space a label takes below its dot (image frame + metric row)
+const LABEL_HEIGHT_BELOW_ANCHOR = 64
+
 // Zero (or tiny) slices share the same midAngle, so their labels land on the
 // same point. Recompute every slice's label anchor with the same angle math
 // recharts uses and push down any label that would overlap the one above it
@@ -227,7 +239,29 @@ const computeLabelYOffsets = (data, cy, outerRadius) => {
         return y + LABEL_MIN_GAP
       }, -Infinity)
   })
-  return offsets
+  return { offsets, anchors }
+}
+
+// Stacked labels can end up below the pie, so make the chart tall enough for
+// the lowest one.
+const computeChartHeight = (data) => {
+  const { offsets, anchors } = computeLabelYOffsets(
+    data,
+    PIE_CY_IN_CHART,
+    PIE_RADIUS
+  )
+  const lowestLabelBottom = anchors.reduce(
+    (lowest, anchor) =>
+      Math.max(
+        lowest,
+        anchor.ey + offsets[anchor.index] + LABEL_HEIGHT_BELOW_ANCHOR
+      ),
+    0
+  )
+  return Math.max(
+    CHART_BASE_HEIGHT,
+    Math.ceil(lowestLabelBottom + CHART_MARGIN_BOTTOM)
+  )
 }
 
 export const PieChart = ({
@@ -236,7 +270,7 @@ export const PieChart = ({
   isImage = false,
 }) => {
   const renderLabel = (props) => {
-    const offsets = computeLabelYOffsets(data, props.cy, props.outerRadius)
+    const { offsets } = computeLabelYOffsets(data, props.cy, props.outerRadius)
     return renderActiveShapeNew({
       ...props,
       valueType,
@@ -247,19 +281,24 @@ export const PieChart = ({
 
   return (
     <div className="responses-statistics-pie-chart">
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width="100%" height={computeChartHeight(data)}>
         <RechartsPieChart
-          margin={{ top: 30, right: 160, bottom: 40, left: 160 }}
+          margin={{
+            top: CHART_MARGIN_TOP,
+            right: 160,
+            bottom: CHART_MARGIN_BOTTOM,
+            left: 160,
+          }}
         >
           <Pie
             data={data}
             cx="50%"
-            cy="50%"
+            cy={PIE_CY}
             dataKey="value"
             nameKey="title"
             label={renderLabel}
             labelLine={false}
-            outerRadius="80%"
+            outerRadius={PIE_RADIUS}
             animationBegin={0}
             animationDuration={600}
             fill="#8884d8"
