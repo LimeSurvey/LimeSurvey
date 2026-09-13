@@ -3434,6 +3434,9 @@ class remotecontrol_handle
      *
      * Routine supports only single response updates.
      * Response to update will be identified either by the response id, or the token if response id is missing.
+     * If the response is identified by its id, the 'token' field (when supplied) is updated like any other
+     * response field. If the response is identified by its token (no id supplied), 'token' is only used to
+     * find the response and is not changed.
      * Routine is only applicable for active surveys with alloweditaftercompletion = Y.
      *
      * @access public
@@ -3482,6 +3485,8 @@ class remotecontrol_handle
                 $aResponses = $oSurveyDynamic->findAllByPk((int) $aResponseData['id']);
             } else {
                 $aResponses = $oSurveyDynamic->findAllByAttributes(array('token' => $aResponseData['token']));
+                // Token was only used to identify the response, not to update it.
+                unset($aResponseData['token']);
             }
 
             if (empty($aResponses)) {
@@ -3499,8 +3504,6 @@ class remotecontrol_handle
             if (count($aInvalidFields) > 0) {
                 return array('status' => 'Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields)), 'error_code' => self::ERR_INVALID_COLUMNS);
             }
-
-            unset($aResponseData['token']);
 
             foreach ($aResponseData as $sAtributeName => $value) {
                 $aResponses[0]->setAttribute($sAtributeName, $value);
