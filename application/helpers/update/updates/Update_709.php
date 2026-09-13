@@ -59,7 +59,7 @@ class Update_709 extends DatabaseUpdateBase
             // we still add the surrounding quotes ourselves since it only escapes content.
             // Emit NULL (not '') for empty values so CONCAT_WS skips them and never
             // produces a leading/trailing/double comma, which would be invalid JSON.
-            $alterElements[] = "CASE WHEN LEN({$quotedCol}) > 0 THEN CONCAT('\"', STRING_ESCAPE({$quotedCol}, 'json'), '\"') ELSE NULL END";
+            $alterElements[] = "CASE WHEN DATALENGTH({$quotedCol}) > 0 THEN CONCAT('\"', STRING_ESCAPE({$quotedCol}, 'json'), '\"') ELSE NULL END";
         }
         $concatWs = "CONCAT_WS(',', " . implode(',', $alterElements) . ")";
         // Only store NULL when every underlying sub-question column is genuinely NULL
