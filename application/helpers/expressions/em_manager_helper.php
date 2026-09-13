@@ -717,7 +717,17 @@ class LimeExpressionManager
             unset($_SESSION['LEMdirtyFlag']);
         } elseif (!isset(self::$instance)) {
             if (isset($_SESSION['LEMsingleton'])) {
-                self::$instance = unserialize($_SESSION['LEMsingleton']);
+                $restored = @unserialize($_SESSION['LEMsingleton'], ['allowed_classes' => [LimeExpressionManager::class, ExpressionManager::class]]);
+                /* $_SESSION['LEMsingleton'] can be not empty but unserialize return false */
+                /* You need to check if it's OK */
+                if (!($restored instanceof self) || !($restored->em instanceof ExpressionManager)) {
+                    if (!empty($_SESSION['LEMsid'])) {
+                        killSurveySession($_SESSION['LEMsid']);
+                    }
+                    unset($_SESSION['LEMsingleton']);
+                    throw new CHttpException(400, gT("We are sorry but your session has expired.", 'unescaped'));
+                }
+                self::$instance = $restored;
                 /* Since we get it via session, need to launch core event again */
                 self::$instance->em->ExpressionManagerStartEvent();
             } else {

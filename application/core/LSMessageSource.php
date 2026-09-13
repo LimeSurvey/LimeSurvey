@@ -69,7 +69,7 @@ class LSMessageSource extends CMessageSource
         ) {
             $key = self::CACHE_KEY_PREFIX . $messageFile . $category . '.' . $language;
             if (($data = $cache->get($key)) !== false) {
-                return unserialize($data);
+                return unserialize($data, ['allowed_classes' => false]);
             }
         }
 
