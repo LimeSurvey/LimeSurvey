@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: LimeSurvey Community Forum
+    url: https://forums.limesurvey.org/
+    about: For general help requests, sharing of ideas, and to connect with other LimeSurvey users.
+  - name: LimeSurvey Security Bug Bounty
+    url: https://
+    about: Please report security vulnerabilities here.
