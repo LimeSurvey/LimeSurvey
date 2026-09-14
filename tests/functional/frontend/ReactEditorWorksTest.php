@@ -37,7 +37,7 @@ class ReactEditorWorksTest extends TestBaseClassWeb
 
         // Enable react editor for superadmin
         $affectedRows = \Yii::app()->db->createCommand(
-            "UPDATE {{settings_user}} SET stg_value = '1' WHERE stg_name = 'editorEnabled' AND uid = 1"
+            "INSERT INTO {{settings_user}} (uid,stg_name,stg_value) VALUES (1,'editorEnabled','1')"
         )->execute();
         self::assertGreaterThan(
             0,
@@ -55,19 +55,22 @@ class ReactEditorWorksTest extends TestBaseClassWeb
     public function testReactEditorWorks()
     {
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . self::$domain . '/');
+        $urlMan->setBaseUrl('http://' . self::$domain );
         $web = self::$webDriver;
         $url = $urlMan->createUrl('editor/#/survey/928171/structure');
 
         try {
             $web->get($url);
 
-            sleep(1);
-
             $web->wait()->until(
                 function ($webDriver) {
                     return $webDriver->findElement(WebDriverBy::cssSelector('.survey-header-container')) !== null;
                 }
+            );
+
+            $this->assertTrue(
+                $web->findElement(WebDriverBy::cssSelector('.survey-header-container'))->isDisplayed(),
+                'React editor rendered survey welcome container'
             );
         } catch (\Exception $ex) {
             $screenshot = $web->takeScreenshot();
@@ -84,12 +87,12 @@ class ReactEditorWorksTest extends TestBaseClassWeb
     {
         // Disable react editor for superadmin
         $affectedRows = \Yii::app()->db->createCommand(
-            "UPDATE {{settings_user}} SET stg_value = '0' WHERE stg_name = 'editorEnabled' AND uid = 1"
+            "DELETE FROM {{settings_user}} WHERE stg_name = 'editorEnabled' AND uid = 1"
         )->execute();
         self::assertGreaterThan(
             0,
             $affectedRows,
-            'Editor disable failed: no user row was updated.'
+            'Editor disable failed: no user rows were deleted.'
        );
        parent::tearDownAfterClass();
     }
