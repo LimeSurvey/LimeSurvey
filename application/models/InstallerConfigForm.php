@@ -564,7 +564,10 @@ class InstallerConfigForm extends CFormModel
                 $sDSN = $this->getPgsqlDsn();
                 break;
             case self::DB_TYPE_DBLIB:
-                $sDSN = $this->dbtype . ":host={$this->dblocation};dbname={$this->dbname}";
+                $sDSN = $this->dbtype . ":host={$this->dblocation}";
+                if ($this->useDbName) {
+                    $sDSN .= ";dbname={$this->dbname}";
+                }
                 break;
             case self::DB_TYPE_MSSQL:
             case self::DB_TYPE_SQLSRV:
