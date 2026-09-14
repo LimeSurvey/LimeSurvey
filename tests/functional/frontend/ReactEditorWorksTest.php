@@ -6,7 +6,7 @@ use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 
 /**
- * @group date
+ * @group adminviews
  */
 class ReactEditorWorksTest extends TestBaseClassWeb
 {
