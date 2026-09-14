@@ -108,8 +108,11 @@ class QuestionExplorer {
         html += '<button class="btn btn-sm btn-outline-secondary toggle-organizer-btn" title="' + UIHelpers.translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle') + '">';
         html += '<i class="' + (allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill') + '"></i>';
         html += '</button>';
+        html += '<button class="btn btn-sm btn-outline-secondary me-2 expand-all-btn" title="' + UIHelpers.translate('expandAll') + '">';
+        html += '<i class="ri-expand-up-down-line"></i>';
+        html += '</button>';
         html += '<button class="btn btn-sm btn-outline-secondary me-2 collapse-all-btn" title="' + UIHelpers.translate('collapseAll') + '">';
-        html += '<i class="ri-link-unlink"></i>';
+        html += '<i class="ri-contract-up-down-line"></i>';
         html += '</button>';
         html += '</div>';
         html += '</div>';
@@ -416,6 +419,16 @@ class QuestionExplorer {
     }
 
     /**
+     * Expand all
+     */
+    expandAll() {
+        var questiongroups = StateManager.get('questiongroups') || [];
+        this.active = questiongroups.map(function(questiongroup) { return questiongroup.gid; });
+        StateManager.commit('questionGroupOpenArray', this.active);
+        this.renderExplorer();
+    }
+
+    /**
      * Bind events
      */
     bindEvents() {
@@ -439,6 +452,12 @@ class QuestionExplorer {
         $container.on('click.qe', '.collapse-all-btn', (e) => {
             e.preventDefault();
             this.collapseAll();
+        });
+
+        // Expand all
+        $container.on('click.qe', '.expand-all-btn', (e) => {
+            e.preventDefault();
+            this.expandAll();
         });
 
         // Toggle question group

@@ -120,7 +120,7 @@ export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
                 options={selectedQuestion.subquestions}
                 value={filter.subquestion}
                 defaultValue={null}
-                placeholder={t('Please select sub-question ...')}
+                placeholder={t('Please select subquestion ...')}
                 update={(value) => onUpdate('subquestion', value)}
               />
             </div>

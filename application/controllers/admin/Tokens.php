@@ -1863,11 +1863,11 @@ class Tokens extends SurveyCommonAction
                         'message' => array(
                             'title' => gT("Warning"),
                             'message' => gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
-                                . "<br/>&nbsp;<ul class='list-unstyled'><li>" . gT("having a valid email address") . "</li>"
+                                . "<p><ul class='d-inline-block text-start mx-auto'><li>" . gT("having a valid email address") . "</li>"
                                 . "<li>" . gT("not having been sent an invitation already") . "</li>"
                                 . "<li>" . gT("not having already completed the survey") . "</li>"
                                 . "<li>" . gT("having an access code") . "</li>"
-                                . "<li>" . gT("having at least one use left") . "</li></ul>"
+                                . "<li>" . gT("having at least one use left") . "</li></ul></p>"
                                 . '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel " role="button">' . gT("Cancel") . '</a></p>'
                         )
                     ),
@@ -2404,7 +2404,7 @@ class Tokens extends SurveyCommonAction
                                     $sSeparator = ',';
                                 }
                         }
-                        $aFirstLine = str_getcsv((string) $buffer, $sSeparator, '"');
+                        $aFirstLine = str_getcsv((string) $buffer, $sSeparator, '"', "\\");
                         $aFirstLine = array_map('trim', $aFirstLine);
                         $aIgnoredColumns = array();
                         // Now check the first line for invalid fields
@@ -2446,7 +2446,7 @@ class Tokens extends SurveyCommonAction
                             }
                         }
                     } else {
-                        $line = str_getcsv($buffer, $sSeparator, '"');
+                        $line = str_getcsv($buffer, $sSeparator, '"', "\\");
 
                         if (count($aFirstLine) != count($line)) {
                             $aInvalidFormatList[] = sprintf(gT("Line %s"), $iRecordCount);
