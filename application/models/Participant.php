@@ -2650,6 +2650,11 @@ class Participant extends LSActiveRecord
      */
     protected static function findDuplicateNotCryted(array $participant, int $ownerid)
     {
+        $duplicateCriteriaAttributes = [
+            'firstname' => $participant['firstname'] ?? '',
+            'lastname' => $participant['lastname'] ?? '',
+            'email' => $participant['email'] ?? '' ,
+        ];
         if (App()->db->getDriverName() == 'pgsql') {
             return Participant::model()->findAll(
                 'LOWER(firstname) = LOWER(:firstname)
