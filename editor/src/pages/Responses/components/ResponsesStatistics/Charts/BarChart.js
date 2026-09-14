@@ -32,6 +32,10 @@ export const BarChart = ({
 }) => {
   const isPercentage = valueType === VALUE_TYPE.PERCENTAGE
   const dataKey = getMetricDataKey(valueType)
+  const formatBarValue = (value) =>
+    value == null || Number(value) === 0
+      ? ''
+      : formatMetricValue(value, valueType)
 
   return (
     <div
@@ -93,7 +97,7 @@ export const BarChart = ({
               dataKey={dataKey}
               position="top"
               offset={8}
-              formatter={(value) => formatMetricValue(value, valueType)}
+              formatter={formatBarValue}
               className="responses-statistics-chart-labels"
             />
           </Bar>
