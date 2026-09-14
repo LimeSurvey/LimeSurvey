@@ -215,6 +215,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ceb']['rtl'] = false;
     $supportedLanguages['ceb']['dateformat'] = 1;
     $supportedLanguages['ceb']['radixpoint'] = 1;
+    $supportedLanguages['ceb']['fdow'] = 1;
 
     // Chichewa
     $supportedLanguages['ny']['description'] = gT('Chichewa');
@@ -222,6 +223,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ny']['rtl'] = false;
     $supportedLanguages['ny']['dateformat'] = 5;
     $supportedLanguages['ny']['radixpoint'] = 0;
+    $supportedLanguages['ny']['fdow'] = 1;
 
     // Chinese (Simplified)
     $supportedLanguages['zh-Hans']['description'] = gT('Chinese (Simplified)');
@@ -239,6 +241,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['hat']['dateformat'] = 6;
     $supportedLanguages['hat']['radixpoint'] = 1;
     $supportedLanguages['hat']['cldr'] = 'fr_ht';
+    $supportedLanguages['hat']['fdow'] = 1;
 
     // Chinese (Traditional - Hong Kong)
     $supportedLanguages['zh-Hant-HK']['description'] = gT('Chinese (Traditional - Hong Kong)');
@@ -469,6 +472,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ha']['rtl'] = false;
     $supportedLanguages['ha']['dateformat'] = 1;
     $supportedLanguages['ha']['radixpoint'] = 1;
+    $supportedLanguages['ha']['fdow'] = 1;
 
     // Hebrew
     $supportedLanguages['he']['description'] = gT('Hebrew');
@@ -560,6 +564,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ilo']['rtl'] = false;
     $supportedLanguages['ilo']['dateformat'] = 1;
     $supportedLanguages['ilo']['radixpoint'] = 1;
+    $supportedLanguages['ilo']['fdow'] = 1;
 
     // Italian
     $supportedLanguages['it']['description'] = gT('Italian');
@@ -817,6 +822,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ory']['rtl'] = false;
     $supportedLanguages['ory']['dateformat'] = 5;
     $supportedLanguages['ory']['radixpoint'] = 1;
+    $supportedLanguages['ory']['fdow'] = 0;
 
     // Pashto
     $supportedLanguages['ps']['description'] = gT('Pashto');
