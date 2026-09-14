@@ -94,7 +94,7 @@
                         ]);
                     } else {
                         App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-                        'text' => gT("Turning this Off lets users with XSS restrictions add scripts to questions, which may allow cross-site scripting (XSS) attacks."),
+                        'text' => gT("Turning this off lets users with XSS restrictions add scripts to questions, which may allow cross-site scripting (XSS) attacks."),
                         'type' => 'warning',
                         ]);
                     }
