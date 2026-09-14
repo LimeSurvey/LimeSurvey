@@ -49,6 +49,7 @@ export const TopBarActions = ({
   const { update } = useSurvey(surveyId)
   const surveyImportService = useSurveyImportService()
   const { addToBuffer } = useBuffer()
+  const [siteSettings = {}] = useAppState(STATES.SITE_SETTINGS, {})
   const [, startEditorTutorial] = useAppState(
     STATES.START_EDITOR_TUTORIAL,
     false
@@ -280,6 +281,7 @@ export const TopBarActions = ({
         </div>
       </div>
       <ImportSurveyModal
+        maxFileSize={siteSettings.maximumFileUploadSize}
         show={showImportSurveyModal}
         onImport={surveyImportService.importSurvey}
         onHide={() => setShowImportSurveyModal(false)}

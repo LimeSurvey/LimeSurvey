@@ -4,10 +4,7 @@ import { Modal, Spinner } from 'react-bootstrap'
 import { Button } from 'components/UIComponents'
 import { ImportSurveyForm } from './ImportSurveyForm'
 import { ImportSurveySummary } from './ImportSurveySummary'
-import {
-  IMPORT_SURVEY_GROUP_STRATEGIES,
-  IMPORT_SURVEY_MAX_FILE_SIZE,
-} from './importSurveyConfig'
+import { IMPORT_SURVEY_GROUP_STRATEGIES } from './importSurveyConfig'
 import { showImportError, showImportSuccess } from './importSurveyNotifications'
 
 export const ImportSurveyModal = ({
@@ -18,7 +15,6 @@ export const ImportSurveyModal = ({
   show = false,
   summary: controlledSummary = null,
 }) => {
-  const effectiveMaxFileSize = maxFileSize || IMPORT_SURVEY_MAX_FILE_SIZE
   const [convertResourceLinks, setConvertResourceLinks] = useState(true)
   const [file, setFile] = useState(null)
   const [fileError, setFileError] = useState('')
@@ -112,7 +108,7 @@ export const ImportSurveyModal = ({
             file={file}
             fileError={fileError}
             groupStrategy={groupStrategy}
-            maxFileSize={effectiveMaxFileSize}
+            maxFileSize={maxFileSize}
             onConvertResourceLinksChange={setConvertResourceLinks}
             onFileChange={handleFileChange}
             onFileReject={handleFileReject}

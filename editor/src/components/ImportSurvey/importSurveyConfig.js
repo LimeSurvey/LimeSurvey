@@ -1,5 +1,3 @@
-export const IMPORT_SURVEY_MAX_FILE_SIZE = 40 * 1024 * 1024
-
 export const IMPORT_SURVEY_FILE_TYPES = {
   'application/octet-stream': ['.lsa', '.lss'],
   'text/plain': ['.txt', '.tsv'],

@@ -7,6 +7,8 @@ import { renderWithProviders } from 'tests/testUtils'
 import { ImportSurveyModal } from './ImportSurveyModal'
 
 describe('ImportSurveyModal', () => {
+  const maxFileSize = 10 * 1024 * 1024
+
   test('submits the selected options and displays the returned summary', async () => {
     const user = userEvent.setup()
     const onImport = jest.fn().mockResolvedValue({
@@ -15,7 +17,12 @@ describe('ImportSurveyModal', () => {
       questions: 4,
     })
 
-    await renderWithProviders(<ImportSurveyModal show onImport={onImport} />)
+    await renderWithProviders(
+      <ImportSurveyModal maxFileSize={maxFileSize} show onImport={onImport} />
+    )
+    expect(
+      await screen.findByText('Maximum file size 10.00 MB')
+    ).toBeInTheDocument()
 
     const file = new File(['survey'], 'survey.lss', { type: 'text/xml' })
     await user.upload(
@@ -40,6 +47,7 @@ describe('ImportSurveyModal', () => {
 
     await renderWithProviders(
       <ImportSurveyModal
+        maxFileSize={maxFileSize}
         show
         onGoToSurvey={onGoToSurvey}
         summary={{ newsid: 987654, surveys: 1 }}
@@ -55,6 +63,7 @@ describe('ImportSurveyModal', () => {
   test('decodes HTML entities in import warnings', async () => {
     await renderWithProviders(
       <ImportSurveyModal
+        maxFileSize={maxFileSize}
         show
         summary={{
           newsid: 987654,

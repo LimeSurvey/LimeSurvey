@@ -29,11 +29,13 @@ export const ImportSurveyForm = ({
             'Select a survey structure file (.lss, .txt, .tsv) or survey archive file (.lsa)'
           )}
         </p>
-        <p className="mb-0">
-          {t('Maximum file size {{size}} MB', {
-            size: (maxFileSize / 1024 / 1024).toFixed(2),
-          })}
-        </p>
+        {Number.isFinite(maxFileSize) && (
+          <p className="mb-0">
+            {t('Maximum file size {{size}} MB', {
+              size: (maxFileSize / 1024 / 1024).toFixed(2),
+            })}
+          </p>
+        )}
       </div>
       <FileDropZone
         accept={IMPORT_SURVEY_FILE_TYPES}

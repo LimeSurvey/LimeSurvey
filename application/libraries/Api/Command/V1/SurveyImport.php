@@ -18,7 +18,6 @@ class SurveyImport implements CommandInterface
 {
     private const ALLOWED_EXTENSIONS = ['lss', 'lsa', 'txt', 'tsv'];
     private const GROUP_STRATEGIES = ['default', 'from_survey'];
-    private const MAX_FILE_SIZE = 40 * 1024 * 1024;
 
     protected ResponseFactory $responseFactory;
 
@@ -37,7 +36,7 @@ class SurveyImport implements CommandInterface
 
         $files = $request->getData('filesGlobal', []);
         $validator = new UploadValidator($_POST, $files);
-        $uploadError = $validator->getError('file', self::MAX_FILE_SIZE);
+        $uploadError = $validator->getError('file');
         if ($uploadError !== null) {
             return $this->responseFactory->makeErrorBadRequest(
                 $this->error('SURVEY_IMPORT_UPLOAD_ERROR', $uploadError)
