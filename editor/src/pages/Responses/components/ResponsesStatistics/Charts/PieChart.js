@@ -30,6 +30,11 @@ const LABEL_NAME_HEIGHT = 32
 
 const RADIAN = Math.PI / 180
 
+// Slices start at 12 o'clock and run clockwise, so answers read in order when
+// scanned the natural way.
+const PIE_START_ANGLE = 90
+const PIE_END_ANGLE = -270
+
 // Answer-name label. Exposes the full text as a native hover tooltip only when
 // it is actually truncated (overflows the capped width), so hovering a
 // shortened label reveals the full text.
@@ -77,9 +82,9 @@ const renderActiveShapeNew = ({
   const showImage = shouldRenderImage(isImage, payload)
 
   const r = outerRadius ?? 0
-  // Image labels are a taller stack (code + image + metric), so push them
-  // further out radially; otherwise the top (code) row of a bottom slice's
-  // label reaches back into the pie.
+  // Image labels are a taller stack (image + metric), so push them further out
+  // radially; otherwise the top (image) row of a bottom slice's label reaches
+  // back into the pie.
   const elbow = r + 20 + (showImage ? 18 : 0)
   const sx = (cx ?? 0) + r * cos
   const sy = (cy ?? 0) + r * sin
@@ -88,13 +93,9 @@ const renderActiveShapeNew = ({
   const ex = mx + (isRight ? 26 : -26)
   const ey = my
 
-  // Data rows carry the answer code in `key`; synthetic rows (other, comment,
-  // NoAnswer) have no real code, so their labels get no code row
-  const key = payload?.key
-  const isOther = payload?.isOther ?? key === 'other'
-  const id =
-    payload?.id ?? (['other', 'comment', 'NoAnswer'].includes(key) ? null : key)
-  // Middle row is the answer label; `name` is recharts' nameKey value, with
+  // The "other" slice is marked by its dashed connector rather than a label row.
+  const isOther = payload?.isOther ?? payload?.key === 'other'
+  // Top row is the answer label; `name` is recharts' nameKey value, with
   // `payload.title` as the reliable fallback.
   const label = payload?.title ?? name ?? ''
   const displayMetric = getDisplayMetric(payload, valueType, percent)
@@ -102,7 +103,6 @@ const renderActiveShapeNew = ({
   // Block width is estimated from the widest row so its near edge stays clear
   // of the connector dot.
   const estimatedWidth = Math.max(
-    `${id ?? ''}`.length * 7,
     showImage ? LABEL_IMAGE_WIDTH : LABEL_MAX_WIDTH,
     displayMetric.length * 7
   )
@@ -120,7 +120,7 @@ const renderActiveShapeNew = ({
   // not reliably pass `name` to the label renderer.
   const imageUrl = payload?.title ?? name
   const imageFrameX = centerX - LABEL_IMAGE_WIDTH / 2
-  const imageFrameY = (id ? ey - 2 : ey - 8) - LABEL_IMAGE_HEIGHT / 2
+  const imageFrameY = ey - 8 - LABEL_IMAGE_HEIGHT / 2
 
   return (
     <g>
@@ -132,18 +132,6 @@ const renderActiveShapeNew = ({
         strokeDasharray={isOther ? '3 3' : undefined}
       />
       <circle cx={ex} cy={ey} r={5} fill={fill} />
-
-      {id && (
-        <text
-          x={labelX}
-          y={showImage ? imageFrameY - 6 : ey - 18}
-          textAnchor={labelAnchor}
-          className="responses-statistics-pie-label-id"
-        >
-          <tspan>{id}</tspan>
-          {isOther && <tspan fontStyle="italic"> - {t('Other')}</tspan>}
-        </text>
-      )}
 
       {showImage ? (
         <g>
@@ -172,7 +160,7 @@ const renderActiveShapeNew = ({
       ) : (
         <foreignObject
           x={centerX - LABEL_MAX_WIDTH / 2}
-          y={(id ? ey + 6 : ey) - 24}
+          y={ey - 24}
           width={LABEL_MAX_WIDTH}
           height={LABEL_NAME_HEIGHT}
         >
@@ -185,7 +173,7 @@ const renderActiveShapeNew = ({
 
       <text
         x={labelX}
-        y={(showImage ? ey + 6 : ey) + (id ? 24 : 18)}
+        y={(showImage ? ey + 6 : ey) + 18}
         textAnchor={labelAnchor}
         className="responses-statistics-pie-label-metric"
       >
@@ -195,20 +183,21 @@ const renderActiveShapeNew = ({
   )
 }
 
-// Vertical label-block footprint (id + value/image + metric rows)
-const LABEL_MIN_GAP = 58
+// Vertical label-block footprint (value/image + metric rows)
+const LABEL_MIN_GAP = 48
+const LABEL_MIN_GAP_IMAGE = 58
 
 // Zero (or tiny) slices share the same midAngle, so their labels land on the
 // same point. Recompute every slice's label anchor with the same angle math
 // recharts uses and push down any label that would overlap the one above it
 // on the same side of the pie.
-const computeLabelYOffsets = (data, cy, outerRadius) => {
+const computeLabelYOffsets = (data, cy, outerRadius, isImage) => {
   const total = data.reduce((sum, entry) => sum + (entry.value || 0), 0) || 1
-  let startAngle = 0
+  let startAngle = PIE_START_ANGLE
   const anchors = data.map((entry, index) => {
     const span = ((entry.value || 0) / total) * 360
-    const midAngle = startAngle + span / 2
-    startAngle += span
+    const midAngle = startAngle - span / 2
+    startAngle -= span
     return {
       index,
       isRight: Math.cos(-RADIAN * midAngle) >= 0,
@@ -216,6 +205,7 @@ const computeLabelYOffsets = (data, cy, outerRadius) => {
     }
   })
 
+  const minGap = isImage ? LABEL_MIN_GAP_IMAGE : LABEL_MIN_GAP
   const offsets = new Array(data.length).fill(0)
   ;[true, false].forEach((side) => {
     anchors
@@ -224,7 +214,7 @@ const computeLabelYOffsets = (data, cy, outerRadius) => {
       .reduce((minY, anchor) => {
         const y = Math.max(anchor.ey, minY)
         offsets[anchor.index] = y - anchor.ey
-        return y + LABEL_MIN_GAP
+        return y + minGap
       }, -Infinity)
   })
   return offsets
@@ -236,7 +226,12 @@ export const PieChart = ({
   isImage = false,
 }) => {
   const renderLabel = (props) => {
-    const offsets = computeLabelYOffsets(data, props.cy, props.outerRadius)
+    const offsets = computeLabelYOffsets(
+      data,
+      props.cy,
+      props.outerRadius,
+      isImage
+    )
     return renderActiveShapeNew({
       ...props,
       valueType,
@@ -260,6 +255,8 @@ export const PieChart = ({
             label={renderLabel}
             labelLine={false}
             outerRadius="80%"
+            startAngle={PIE_START_ANGLE}
+            endAngle={PIE_END_ANGLE}
             animationBegin={0}
             animationDuration={600}
             fill="#8884d8"
