@@ -401,7 +401,7 @@ class QuotasController extends LSBaseController
         $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);
         if($oSurvey === null) {
-            $this->renderJSON(['success' => false, 'message' => gT('Survey not found!')]);
+            $this->renderJSON(['success' => false, 'message' => gT('Survey not found')]);
             return;
         }
         $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);

@@ -18,14 +18,18 @@
     RewriteCond %{REQUEST_URI} !^/\.well-known
     RewriteRule ^(.*/)?\.+ - [F]
 
-    # deny access to composer.json that is used for remote fingerprinting
-    RewriteRule ^composer.json - [F]
     # issue #19865
     RewriteRule ^setdebug.php - [F]
 
     # deny access to the runtime directory (cache files, application.log, plugin.log)
     # kept here so protection survives clearing the tmp directory content
     RewriteRule ^tmp/runtime/ - [F]
+
+    # deny access to Composer dependencies: never requested directly, only used server-side
+    RewriteRule ^vendor/ - [F]
+
+    # issue #19297: deny access to development/build/fingerprinting files at the document root
+    RewriteRule ^(composer\.(json|lock)|package\.json|yarn\.lock|gulpfile\.js|open-api-gen\.php|phpunit\.xml|psalm(-\w+)?\.xml|phpci\.yml|phpcs\.ruleset\.xml|publiccode\.yml|manifest\.yml|CONTRIBUTING\.md|README\.md|SECURITY\.md)$ - [F]
 </IfModule>
 
 # deny access to hidden files and directories without mod_rewrite
@@ -33,6 +37,12 @@ RedirectMatch 403 ^/(?!\.well-known/)(.*/)?\.+
 
 # deny access to the runtime directory without mod_rewrite
 RedirectMatch 403 ^/(.*/)?tmp/runtime/
+
+# deny access to Composer dependencies without mod_rewrite
+RedirectMatch 403 ^/vendor/
+
+# issue #19297: deny access to development/build/fingerprinting files without mod_rewrite
+RedirectMatch 403 ^/(composer\.(json|lock)|package\.json|yarn\.lock|gulpfile\.js|open-api-gen\.php|phpunit\.xml|psalm(-\w+)?\.xml|phpci\.yml|phpcs\.ruleset\.xml|publiccode\.yml|manifest\.yml|CONTRIBUTING\.md|README\.md|SECURITY\.md)$
 
 # General setting to properly handle LimeSurvey paths
 # AcceptPathInfo on

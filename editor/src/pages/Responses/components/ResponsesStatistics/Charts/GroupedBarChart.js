@@ -37,7 +37,7 @@ const GroupedTooltip = ({ active, payload, categoryTitle }) => {
         {t('Median')}: {stats.median}
       </div>
       <div>
-        {t('Min/Max')}: {stats.min} - {stats.max}
+        {t('Minimum/Maximum')}: {stats.min} - {stats.max}
       </div>
     </TooltipShell>
   )
