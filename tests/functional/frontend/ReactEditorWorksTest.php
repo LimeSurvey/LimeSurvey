@@ -45,6 +45,15 @@ class ReactEditorWorksTest extends TestBaseClassWeb
             'Editor enable failed: no user row was updated.'
        );
 
+       $affectedRows = \Yii::app()->db->createCommand(
+            "UPDATE {{plugins}} SET active = '1' WHERE name = 'ReactEditor'"
+        )->execute();
+        self::assertGreaterThan(
+            0,
+            $affectedRows,
+            'Editor plugin enable failed: no plugin row was updated.'
+       );
+
        // Browser login.
        self::adminLogin($username, $password, false);
     }
@@ -94,6 +103,16 @@ class ReactEditorWorksTest extends TestBaseClassWeb
             $affectedRows,
             'Editor disable failed: no user rows were deleted.'
        );
+
+       $affectedRows = \Yii::app()->db->createCommand(
+            "UPDATE {{plugins}} SET active = '0' WHERE name = 'ReactEditor'"
+        )->execute();
+        self::assertGreaterThan(
+            0,
+            $affectedRows,
+            'Editor plugin disable failed: no plugin row was updated.'
+       );
+
        parent::tearDownAfterClass();
     }
 }
