@@ -3,7 +3,7 @@ var pickers = {};
 /**
  * Builds a Tempus Dominus configuration from normalized data-attribute options.
  *
- * @param options Options extracted from an element's data attributes; `startofweek` is a day index from 0 (Sunday) to 6 (Saturday)
+ * @param options Options extracted from an element's data attributes; `startoftheweek` is a day index from 0 (Sunday) to 6 (Saturday)
  * @param locale Locale passed to Tempus Dominus
  * @param dateFormat Date format used to determine whether to display the clock
  * @returns Tempus Dominus configuration object
@@ -19,7 +19,7 @@ function getConfig(options, locale, dateFormat) {
     let mindate = getValueFromConfigObject(options, 'mindate', undefined);
     let maxdate = getValueFromConfigObject(options, 'maxdate', undefined);
     let theme = getValueFromConfigObject(options, 'theme', 'auto');
-    let startofweek = parseInt(getValueFromConfigObject(options, 'startofweek', 0), 10);
+    let startofweek = parseInt(getValueFromConfigObject(options, 'startoftheweek', 0), 10);
 
     return {
         allowInputToggle: allowinputtoggle,
@@ -160,7 +160,7 @@ function fixAllowInputToggle(id) {
  */
 function getOptionsFromElement(element) {
     const availableOptions = [
-        'format', 'locale', 'allowinputtoggle', 'showclear', 'showtoday', 'showclose', 'sidebyside', 'stepping', 'mindate', 'maxdate', 'theme', 'startofweek',
+        'format', 'locale', 'allowinputtoggle', 'showclear', 'showtoday', 'showclose', 'sidebyside', 'stepping', 'mindate', 'maxdate', 'theme', 'startoftheweek',
         ];
     const options = {};
 
