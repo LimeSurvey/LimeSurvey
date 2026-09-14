@@ -65,13 +65,12 @@ function getDateFormatData($iDateFormat = 0, $sLanguageCode = 'en')
 }
 
 /**
- * Returns the array of languages supported by LimeSurvey, with their display/native names,
- * writing direction, default date/number format and first day of week.
+ * Returns the languages supported by LimeSurvey and their locale metadata.
  *
  * @param boolean $bOrderByNative If true, order the returned array by native language name instead of by (English) description
- * @param string $sLanguageCode Language code used to translate the 'description' entries via gT() (results are cached per code)
- * @return array Array keyed by language code, each entry having keys 'description', 'nativedescription', 'rtl',
- *               'dateformat', 'radixpoint', 'momentjs' and 'fdow' (first day of week: 0 = Sunday .. 6 = Saturday)
+ * @param string $sLanguageCode Cache key for the language active when the descriptions are translated
+ * @return array Array keyed by language code. Entries include descriptions, writing direction, and date and number formats;
+ *               optional metadata includes CLDR and Moment.js locales and 'fdow' (0 = Sunday through 6 = Saturday)
  */
 function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
 {
@@ -1506,7 +1505,7 @@ function convertLStoDateTimePickerLocale($sLocale)
  * 'locale' option (unlike the moment.js based widget it replaced).
  *
  * @param string $sLocale LimeSurvey language code (e.g. 'en', 'de')
- * @return int First day of week: 0 = Sunday, 1 = Monday, ..., 6 = Saturday (defaults to 0 if the language is unknown)
+ * @return int First day of week: 0 = Sunday, 1 = Monday, ..., 6 = Saturday (defaults to 0 when no metadata is available)
  */
 function convertLStoDateTimePickerFirstDayOfWeek($sLocale)
 {
