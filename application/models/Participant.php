@@ -2638,7 +2638,6 @@ class Participant extends LSActiveRecord
             ) {
                 $duplicates[] = $possibleDuplicate;
             }
-
         }
         return $duplicates;
     }
@@ -2672,7 +2671,6 @@ class Participant extends LSActiveRecord
             'email' => $duplicateCriteriaAttributes['email'] ,
             'owner_uid' => $ownerid
         ]);
-
     }
 
     /**
