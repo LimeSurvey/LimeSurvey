@@ -7,6 +7,11 @@ $(document).ready(function () {
         let current = 0;
         let $modal = null;
 
+        /**
+         * Render the slide at the given index, optionally fading the text content.
+         * @param {number} index - Zero-based index of the slide to display.
+         * @param {boolean} [animate=true] - Whether to fade the title/description.
+         */
         function renderSlide(index, animate = true) {
             const slide = slides[index];
             const $title = $modal.find(".editor-slider-title");
@@ -65,6 +70,9 @@ $(document).ready(function () {
             }
         }
 
+        /**
+         * Build the clickable navigation dots, one per slide.
+         */
         function buildDots() {
             if (!slides.length || slides.length === 1) {
                 return;
@@ -89,11 +97,20 @@ $(document).ready(function () {
             });
         }
 
+        /**
+         * Navigate to the slide at the given index, clamped to valid bounds.
+         * @param {number} index - Target slide index.
+         */
         function goTo(index) {
             current = Math.max(0, Math.min(index, slides.length - 1));
             renderSlide(current);
         }
 
+        /**
+         * Initialise the slider for the given modal element.
+         * Reads slides from the data-slides attribute and wires up navigation.
+         * @param {HTMLElement} modalEl - The modal DOM element.
+         */
         function init(modalEl) {
             $modal = $(modalEl);
             current = 0;

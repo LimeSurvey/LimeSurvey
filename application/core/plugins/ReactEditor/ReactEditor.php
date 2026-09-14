@@ -34,6 +34,11 @@ class ReactEditor extends \PluginBase
         $this->subscribe('beforeSurveyAdminView');
     }
 
+    /**
+     * Prevents deactivation of this core plugin.
+     *
+     * @return void
+     */
     public function beforeDeactivate()
     {
         $this->getEvent()->set('success', false);
