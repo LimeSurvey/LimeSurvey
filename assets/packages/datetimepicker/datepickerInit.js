@@ -19,11 +19,13 @@ function getConfig(options, locale, dateFormat) {
     let mindate = getValueFromConfigObject(options, 'mindate', undefined);
     let maxdate = getValueFromConfigObject(options, 'maxdate', undefined);
     let theme = getValueFromConfigObject(options, 'theme', 'auto');
+    let startofweek = parseInt(getValueFromConfigObject(options, 'startofweek', 0), 10);
 
     return {
         allowInputToggle: allowinputtoggle,
         localization: {
-            locale: locale
+            locale: locale,
+            startOfTheWeek: startofweek
         },
         stepping: stepping,
         restrictions: {
@@ -158,7 +160,7 @@ function fixAllowInputToggle(id) {
  */
 function getOptionsFromElement(element) {
     const availableOptions = [
-        'format', 'locale', 'allowinputtoggle', 'showclear', 'showtoday', 'showclose', 'sidebyside', 'stepping', 'mindate', 'maxdate', 'theme',
+        'format', 'locale', 'allowinputtoggle', 'showclear', 'showtoday', 'showclose', 'sidebyside', 'stepping', 'mindate', 'maxdate', 'theme', 'startofweek',
         ];
     const options = {};
 

@@ -278,6 +278,7 @@ class RenderDate extends QuestionBaseRenderer
                         'maxDate' => strpos($this->maxDate, '{') === false ? $this->maxDate : '2187-12-31',
                         'stepping' => intval($this->getQuestionAttribute('dropdown_dates_minute_step')),
                         'locale' => convertLStoDateTimePickerLocale(App()->getLanguage()),
+                        'startOfTheWeek' => convertLStoDateTimePickerFirstDayOfWeek(App()->getLanguage()),
                     )
                 ),
                 true
