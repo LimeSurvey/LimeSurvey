@@ -28,7 +28,6 @@
   line-height: $line-height-52;
 }
 @mixin reg-12 {
-  color: $g-900;
   font-family: $ibm-sans-font-family;
   font-size: $font-size-xs;
   font-weight: $font-weight-normal;
@@ -37,7 +36,6 @@
 }
 
 @mixin semi-14 {
-  color: $g-900;
   font-family: $ibm-sans-font-family;
   font-size: $font-size-sm;
   font-weight: $font-weight-600;
@@ -54,7 +52,6 @@
 }
 
 @mixin med-16_C {
-  color: $g-900;
   font-family: $ibm-sans-font-family;
   font-size: $font-size-base;
   font-weight: $font-weight-500;
@@ -63,7 +60,6 @@
 }
 
 @mixin reg-18 {
-  color: $g-900;
   font-family: $ibm-sans-font-family;
   font-size: $font-size-md;
   font-weight: $font-weight-normal;
