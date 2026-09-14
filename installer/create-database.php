@@ -228,6 +228,7 @@ function populateDatabase($oDB)
             'firstname' =>  "text NULL",
             'lastname' =>  "text NULL",
             'email' =>  "text",
+            'duplicatefinder' => "string(64) NOT NULL DEFAULT ''",
             'language' =>  "string(40) NULL",
             'blacklisted' =>  "string(1) NOT NULL",
             'owner_uid' =>  "integer NOT NULL",
@@ -238,7 +239,7 @@ function populateDatabase($oDB)
 
         $oDB->createCommand()->addPrimaryKey('{{participant_pk}}', '{{participants}}', 'participant_id', false);
         $oDB->createCommand()->createIndex('{{idx3_participants}}', '{{participants}}', 'language', false);
-
+        $oDB->createCommand()->createIndex('{{participants_duplicatefinder}}', '{{participants}}', 'duplicatefinder', false);
 
         // participant_attribute
         $oDB->createCommand()->createTable('{{participant_attribute}}', array(

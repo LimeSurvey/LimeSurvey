@@ -57,6 +57,20 @@ class LSSodium
     {
         if (empty(App()->getConfig('encryptionsecretboxkey')) && empty(App()->getConfig('encryptionnonce'))) {
             $this->generateEncryptionKeys();
+        } elseif (empty(App()->getConfig('encryptionduplicateindexkey'))) {
+            $result = $this->addEncryptionDuplicateIndexKey();
+            // Add a alert if current user have superadmin permission, usage of Permission::model break 
+            if (App()->getCurrentUserId() && Permission::isForcedSuperAdmin(App()->getCurrentUserId())) {
+                if ($result) {
+                    Yii::app()->setFlashMessage(sprintf(gT("The settings encryptionduplicateindexkey was added to %s."), 'application/config/security.php'), 'success');
+                } else {
+                    Yii::app()->setFlashMessage(sprintf(
+                        gT("Unable to add encryptionduplicateindexkey config. Please, see %sLimeSurvey manual%s."),
+                        '<a href="https://https://www.limesurvey.org/manual/LimeSurvey_Manual">', // TODO update link to real link after manual updated
+                        '</a>'
+                    ), 'danger');
+                }
+            }
         }
         if ($this->sEncryptionNonce === null) {
             $this->sEncryptionNonce = $this->getEncryptionNonce();
@@ -259,7 +273,7 @@ class LSSodium
         if (empty($sEncryptionNonce) || empty($sEncryptionSecretBoxKey)) {
             return;
         }
-
+        /* Add extra encryptionduplicateindexkey config for CPDB duplicatefinder */
         $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
             . "/*" . "\n"
             . " * LimeSurvey" . "\n"
@@ -290,8 +304,14 @@ class LSSodium
             $sConfig .= "\$config['encryptionsecretkey'] = '" . $sEncryptionSecretKey . "';" . "\n";
         }
         $sConfig .= "\$config['encryptionnonce'] = '" . $sEncryptionNonce . "';" . "\n"
-            . "\$config['encryptionsecretboxkey'] = '" . $sEncryptionSecretBoxKey . "';" . "\n"
-            . "return \$config;";
+            . "\$config['encryptionsecretboxkey'] = '" . $sEncryptionSecretBoxKey . "';" . "\n";
+        if (empty(App()->getConfig('encryptionduplicateindexkey'))) {
+            /* @var string the key to be added to duplicateindex */
+            $sEncryptionDuplicateIndexKey = sodium_bin2hex(random_bytes(32));
+            $sConfig .= "// Changing the duplicate index key will make existing duplicate indexes invalid." . "\n";
+            $sConfig .= "\$config['encryptionduplicateindexkey'] = '" . $sEncryptionDuplicateIndexKey . "';" . "\n";
+        }
+        $sConfig .= "return \$config;";
 
         Yii::app()->setConfig("encryptionnonce", $sEncryptionNonce);
         Yii::app()->setConfig("encryptionsecretboxkey", $sEncryptionSecretBoxKey);
@@ -302,4 +322,48 @@ class LSSodium
             throw new CHttpException(500, gT("Configuration directory is not writable"));
         }
     }
+
+    /**
+     * Add or update the encryptionduplicateindexkey configuration parameter in security.php file
+     *
+     * @return bool True on success, false on failure.
+     */
+    function addEncryptionDuplicateIndexKey()
+    {
+        /* @var string the configfile to write */
+        $configFile = \Yii::app()->getConfig('configdir')
+            . DIRECTORY_SEPARATOR
+            . 'security.php';
+        /* @var string the key to be added to duplicateindex */
+        $sEncryptionDuplicateIndexKey = bin2hex(random_bytes(32));
+        if (is_file($configFile)) {
+            $content = file_get_contents($configFile);
+            if ($content === false) {
+                return false;
+            }
+            $search = 'return $config;';
+            if (strpos($content, $search) === false) {
+                return false;
+            }
+            $replacement = "// Changing the duplicate index key will make existing duplicate indexes invalid.\n";
+            $replacement .= "\$config['encryptionduplicateindexkey'] = '{$sEncryptionDuplicateIndexKey}';\n";
+            $replacement .= $search;
+            $content = str_replace($search, $replacement, $content);
+            return @file_put_contents($configFile, $content) !== false;
+        } else {
+            // No licence needed
+            $content = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');\n"
+                . "/*" . "\n"
+                . " * This file is part of LimeSurvey" . "\n"
+                . " * Used for configuration" . "\n"
+                . " */" . "\n"
+                . "\n"
+                . "\$config = array();\n"
+                . "// Changing the duplicate index key will make existing duplicate indexes invalid.\n"
+                . "\$config['encryptionduplicateindexkey'] = '{$sEncryptionDuplicateIndexKey}';\n"
+                . "return \$config;\n";
+        }
+        return @file_put_contents($configFile, $content) !== false;
+    }
+
 }

@@ -23,6 +23,7 @@ use LimeSurvey\Exceptions\CPDBException;
  * @property string $firstname
  * @property string $lastname
  * @property string $email
+ * @property string $duplicatefinder
  * @property string $language
  * @property string $blacklisted
  * @property integer $owner_uid
@@ -82,6 +83,7 @@ class Participant extends LSActiveRecord
             array('language', 'length', 'max' => 40),
             array('firstname, lastname, language', 'LSYii_Validators'),
             array('email', 'length', 'max' => 254),
+            array('duplicatefinder', 'length', 'max' => 64),
             array('blacklisted', 'length', 'max' => 1),
             // Please remove those attributes that should not be searched.
             array('participant_id, firstname, lastname, email, language, countActiveSurveys, blacklisted, owner.full_name', 'safe', 'on' => 'search'),
@@ -2354,6 +2356,7 @@ class Participant extends LSActiveRecord
 
     /**
      * @param array $data
+     * @deprecated 7.1, unused
      * @return void
      */
     public function insertParticipantCSV($data)
@@ -2367,7 +2370,8 @@ class Participant extends LSActiveRecord
             'blacklisted' => $data['blacklisted'],
             'created_by' => $data['owner_uid'],
             'owner_uid' => $data['owner_uid'],
-            'created' => date('Y-m-d H:i:s', time())
+            'created' => date('Y-m-d H:i:s', time()),
+            'duplicatefinder' => $data['duplicatefinder']
         );
         Yii::app()->db->createCommand()->insert('{{participants}}', $insertData);
     }
@@ -2507,6 +2511,8 @@ class Participant extends LSActiveRecord
     }
 
     /**
+     * Retuen duplicate record 
+    /**
      * Checks Permissions for given $aActions and returns them as array
      *
      * @param array $aActions
@@ -2580,5 +2586,201 @@ class Participant extends LSActiveRecord
             ->select('participant_id')
             ->queryColumn();
         return $oResult;
+    }
+
+    /**
+     * Find duplicates particpant and return the array using default core system
+     * If participant_id is is set and not empty : use it
+     * Else duplicate are found using firstname, lastname, email and owner_uid
+     * @param string[]
+     * @param integer|null owner_id to use, default to current
+     * @return null|self[]
+     */
+    public static function getDuplicates(array $participant, $ownerid = null)
+    {
+        
+        $ownerid = $ownerid ?? App()->getCurrentUserId();
+        /* If participant_id is in $participant : directly use it */
+        if (!empty($participant['participant_id'])) {
+            return Participant::model()->findAllByAttributes([
+                'participant_id' => $participant['participant_id'],
+            ]);
+        }
+
+        $criteria = new CDbCriteria();
+        $criteria->compare('encrypted', 'Y');
+        $criteria->addInCondition('defaultname', ['firstname', 'lastname', 'email']);
+       
+        $duplicateCriteriaAttributes = [
+            'firstname' => $participant['firstname'] ?? '',
+            'lastname' => $participant['lastname'] ?? '',
+            'email' => $participant['email'] ?? '' ,
+        ];
+        if (ParticipantAttributeName::model()->count($criteria) == 0) {
+            return self::findDuplicateNotCryted($duplicateCriteriaAttributes, $ownerid);
+        }
+        /* One of core attribute are crypted : use duplicatefinder */
+        $duplicatefindervalue = self::getDuplicateFinderValue($participant);
+        if ($duplicatefindervalue === false || $duplicatefindervalue === '') {
+            return false;
+        }
+        $possibleDuplicates = Participant::model()->findAllByAttributes([
+            'duplicatefinder' => $duplicatefindervalue,
+            'owner_uid' => $ownerid
+        ]);
+        $duplicates = [];
+        foreach ($possibleDuplicates as $possibleDuplicate) {
+            $possibleDuplicate->decrypt();
+            if (
+                mb_strtolower($duplicateCriteriaAttributes['firstname']) == mb_strtolower($possibleDuplicate->firstname)
+                && mb_strtolower($duplicateCriteriaAttributes['lastname']) == mb_strtolower($possibleDuplicate->lastname)
+                && mb_strtolower($duplicateCriteriaAttributes['email']) == mb_strtolower($possibleDuplicate->email)
+            ) {
+                $duplicates[] = $possibleDuplicate;
+            }
+
+        }
+        return $duplicates;
+    }
+
+    /**
+     * Find duplicate with not cryoted database
+     * @param string[], must contain firstname , lastname, email
+     * @param integer ownerid 
+     * @return self[]
+     */
+    protected static function findDuplicateNotCryted(array $participant, int $ownerid)
+    {
+        if (App()->db->getDriverName() == 'pgsql') {
+            return Participant::model()->findAll(
+                'LOWER(firstname) = LOWER(:firstname)
+                 AND LOWER(lastname) = LOWER(:lastname)
+                 AND LOWER(email) ILIKE LOWER(:email)
+                 AND owner_uid = :owner_uid',
+                [
+                    ':firstname' => $duplicateCriteriaAttributes['firstname'],
+                    ':lastname' => $duplicateCriteriaAttributes['lastname'],
+                    ':email' => $duplicateCriteriaAttributes['email'],
+                    ':owner_uid' => $ownerid,
+                ]
+            );
+        }
+        /* Mysql and MSSQL no need extra part here , maybe add an index */
+        return Participant::model()->findAllByAttributes([
+            'firstname' => $duplicateCriteriaAttributes['firstname'],
+            'lastname' => $duplicateCriteriaAttributes['lastname'],
+            'email' => $duplicateCriteriaAttributes['email'] ,
+            'owner_uid' => $ownerid
+        ]);
+
+    }
+
+    /**
+    * Check if duplicatefinder columns are up to date with existing settings
+    * @return boolean
+    */
+    public static function isDuplicateFinderUpToDate()
+    {
+        return self::getDuplicateFinderInvalidCount() === 0;
+    }
+
+    /**
+     * Count the duplicatefinder columns not updated
+     * @return integer number of duplicatefinder invalid/outdated
+     */
+    public static function getDuplicateFinderInvalidCount()
+    {
+        if (App()->getConfig('DBVersion') < 714) {
+            return 0;
+        }
+        $bits = intval(App()->getConfig('CPDB_duplicatefinder_bits', 128));
+        $expectedLength = intval($bits / 4);
+        switch (App()->db->getDriverName()) {
+            case 'mysql':
+                $lengthFunction = 'CHAR_LENGTH';
+                break;
+            case 'pgsql':
+                $lengthFunction = 'LENGTH';
+                break;
+            case 'sqlsrv':
+            case 'dblib':
+            case 'mssql':
+                $lengthFunction = 'LEN';
+                break;
+            default:
+                throw new CException('SGBD non supporté : ' . $dbDriver);
+        }
+        return intval(Yii::app()->db->createCommand()
+            ->select('COUNT(*)')
+            ->from('{{participants}}')
+            ->where(
+                "{$lengthFunction}(duplicatefinder) <> :expectedLength",
+                [':expectedLength' => $expectedLength]
+            )
+            ->queryScalar());
+    }
+
+    /**
+     * Get the duplicate finder value
+     * @param string[] data, attributes of the participant
+     * @return false|string
+     */
+    public static function getDuplicateFinderValue(array $participant)
+    {
+        $encryptionduplicateindexkey = App()->getConfig('encryptionduplicateindexkey');
+        /* can not use it */
+        if (empty(App()->getConfig('encryptionduplicateindexkey'))) {
+            return false;
+        }
+        $duplicatefinderBits = (int) Yii::app()->getConfig('CPDB_duplicatefinder_bits');
+        /* Disable duplicatefinder : save empty string in database */
+        if ($duplicatefinderBits == 0) {
+            return '';
+        }
+        if ($duplicatefinderBits < 32 || $duplicatefinderBits > 256 || $duplicatefinderBits % 4 !== 0) {
+            throw new CHttpException(500, gT('CPDB_duplicatefinder_bits must be a multiple of 4 between 32 and 256.'));
+        }
+        $string = json_encode([
+            mb_strtolower($participant['firstname'] ?? ''),
+            mb_strtolower($participant['lastname'] ?? ''),
+            mb_strtolower($participant['email'] ?? ''),
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        /* @var string the complete hash before cut */
+        $hash = hash_hmac('sha256', $string, $encryptionduplicateindexkey);
+        return substr($hash, 0, $duplicatefinderBits / 4);
+    }
+
+    /**
+     * @inheritdoc
+     * Set the value of duplicatefinder before encrypt
+     * @return boolean
+     */
+    public function encryptSave($runValidation = false)
+    {
+        $this->duplicatefinder = strval($this->getDuplicateFinderValue(
+            [
+                'firstname' => $this->getAttribute('firstname'),
+                'lastname' => $this->getAttribute('lastname'),
+                'email' => $this->getAttribute('email'),
+            ]
+        ));
+        return parent::encryptSave($runValidation);
+    }
+
+    /**
+     * @inheritdoc
+     * Set the value of duplicatefinder before encrypt
+     * @return boolean
+     */
+    public function encrypt()
+    {
+        $this->duplicatefinder = strval($this->getDuplicateFinderValue(
+            [
+                'firstname' => $this->getAttribute('firstname'),
+                'lastname' => $this->getAttribute('lastname'),
+                'email' => $this->getAttribute('email'),
+            ]
+        ));
+        return parent::encrypt();
     }
 }

@@ -366,9 +366,9 @@ class ParticipantsAction extends SurveyCommonAction
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'totalrecords' => $iTotalRecords,
             'model' => $model,
-            'debug' => $request->getParam('Participant')
+            'debug' => $request->getParam('Participant'),
+            'duplicateFinderUpToDate' => Participant::isDuplicateFinderUpToDate()
         );
-
         $aData['pageSizeParticipantView'] = Yii::app()->user->getState('pageSizeParticipantView');
         $searchstring = $request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
@@ -1042,48 +1042,40 @@ class ParticipantsAction extends SurveyCommonAction
                 $thisduplicate = 0;
 
                 //Check for duplicate participants
-                if (in_array('participant_id', $firstline)) {
+                if (in_array('participant_id', $firstline) && !empty($writearray['participant_id'])) {
                     $dupreason = "participant_id";
-                    $duplicateCriteriaAttributes = ['participant_id' => $writearray['participant_id']];
                 } else {
                     $dupreason = "nameemail";
-                    $duplicateCriteriaAttributes = [
-                        'firstname' => $writearray['firstname'],
-                        'lastname'  => $writearray['lastname'],
-                        'email'     => $writearray['email'],
-                        'owner_uid' => Yii::app()->session['loginID']
-                    ];
                 }
-                $existingParticipant = Participant::model()->findByAttributes($duplicateCriteriaAttributes);
-                if (!empty($existingParticipant)) {
+                $existingParticipants = Participant::getDuplicates($writearray, Yii::app()->session['loginID']);
+                if (!empty($existingParticipants)) {
                     $thisduplicate = 1;
+                    tracevar($thisduplicate);
                     $dupcount++;
                     if ($overwrite == "true") {
-                        // We want all the non filtering internal attributes to be updated,too
-                        foreach ($writearray as $attribute => $value) {
-                            if (in_array($attribute, ['firstname', 'lastname', 'email'])) {
-                                continue;
+                        foreach($existingParticipants as $existingParticipant) {
+                            foreach ($writearray as $attribute => $value) {
+                                $existingParticipant->$attribute = $value;
                             }
-                            $existingParticipant->$attribute = $value;
-                        }
-                        $existingParticipant->save();
-                        //Although this person already exists, we want to update the mapped attribute values
-                        if (!empty($mappedarray)) {
-                            //The mapped array contains the attributes we are
-                            //saving in this import
-                            foreach ($mappedarray as $attid => $attname) {
-                                if (!empty($attname)) {
-                                    $bData = array(
-                                        'participant_id' => $existingParticipant->participant_id,
-                                        'attribute_id' => $attid,
-                                        'value' => $writearray[strtolower((string) $attname)]
-                                    );
-                                    ParticipantAttribute::model()->updateParticipantAttributeValue($bData);
-                                } else {
-                                    //If the value is empty, don't write the value
+                            $existingParticipant->save();
+                            //Although this person already exists, we want to update the mapped attribute values
+                            if (!empty($mappedarray)) {
+                                //The mapped array contains the attributes we are
+                                //saving in this import
+                                foreach ($mappedarray as $attid => $attname) {
+                                    if (!empty($attname)) {
+                                        $bData = array(
+                                            'participant_id' => $existingParticipant->participant_id,
+                                            'attribute_id' => $attid,
+                                            'value' => $writearray[strtolower((string) $attname)]
+                                        );
+                                        ParticipantAttribute::model()->updateParticipantAttributeValue($bData);
+                                    } else {
+                                        //If the value is empty, don't write the value
+                                    }
                                 }
+                                $overwritten++;
                             }
-                            $overwritten++;
                         }
                     }
                 }
@@ -2778,6 +2770,27 @@ class ParticipantsAction extends SurveyCommonAction
         );
 
         $this->renderWrappedTemplate('participants', 'attributeMapToken', $aData);
+    }
+
+    /**
+     * Display Encryption data form action 
+     * 
+     */
+    public function fixEncryptionData()
+    {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new \CHttpException(403, gT('Access denied'));
+        }
+        $title = gT("Fix encryption data");
+        $aData = array(
+            'currentParticipantEncryptionResetState' => App()->user->getState('currentParticipantEncryptionResetState', 0),
+            'currentDuplicateFinderFix' => App()->user->getState('currentParticipantEncryptionResetState', 0),
+            'duplicateFinderInvalidCount' => Participant::getDuplicateFinderInvalidCount(),
+            'participantsCount' => Participant::model()->count(),
+            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
+        );
+        $aData['topbar'] = $this->getTopBarComponents($title, true, false);
+        $this->renderWrappedTemplate('participants', array('participantsPanel', 'fixEncryptionData'), $aData);
     }
 
     /**
