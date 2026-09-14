@@ -26,12 +26,12 @@ the page footer inside this wrapper, so it is visually covered by the welcome im
 
 {% set imageAlign = aSurveyInfo.welcomeimage['image_align'] is defined ? aSurveyInfo.welcomeimage['image_align'] : 'left' %}
 <div class="welcome-image-layout {% if imageAlign == 'center' %}welcome-image-layout--center position-relative w-100{% else %}welcome-image-layout--columns d-flex flex-wrap{% if imageAlign == 'right' %} flex-row-reverse{% endif %}{% endif %}">
-    <div class="welcome-image-container {% if imageAlign == 'center' %}welcome-image-container--center position-absolute top-0 start-0 w-100{% else %}col-12 col-md-6{% endif %}">
+    <div class="welcome-image-container {% if imageAlign == 'center' %}welcome-image-container--center position-absolute top-0 start-0 w-100{% else %}col-12 col-md-6 pt-2{% endif %}">
         {% if imageAlign == 'center' %}<div class="w-100 text-center">{% endif %}
             {{ include('./subviews/messages/welcome_subviews/welcome_image.twig') }}
         {% if imageAlign == 'center' %}</div>{% endif %}
     </div>
-    <div class="welcome-content-container {% if imageAlign == 'center' %}welcome-content-container--center position-relative w-100 d-flex align-items-start{% else %}col-12 col-md-6 pt-3{% endif %}">
+    <div class="welcome-content-container {% if imageAlign == 'center' %}welcome-content-container--center position-relative w-100 d-flex align-items-start{% else %}col-12 col-md-6{% endif %}">
         <div class="{% if imageAlign == 'center' %}p-5 w-100{% endif %} d-flex flex-column">
             {% block welcome_wrapped_content %}
                 {# Default content: overridden by firstpage.twig via embed to also wrap the language changer and main form #}

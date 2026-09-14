@@ -1,3 +1,9 @@
+#outerframeContainer {
+  &:has(#welcome-container) {
+    margin-top: 90px;
+  }
+}
+
 .survey-name,
 .survey-description,
 .survey-welcome {
@@ -63,21 +69,7 @@
   }
 }
 
-.welcome-image-layout--columns,
-.welcome-image-layout--center {
-  padding: 24px 16px;
-}
-
-.welcome-image-layout--columns {
-  gap: 16px;
-}
-
 @media (min-width: 768px) {
-  .welcome-image-layout--columns,
-  .welcome-image-layout--center {
-    padding: 3% 4%;
-  }
-
   .welcome-image-layout--columns {
     gap: 2%;
   }
@@ -90,18 +82,13 @@
 }
 
 @media (min-width: 1200px) {
-  .welcome-image-layout--columns,
-  .welcome-image-layout--center {
-    padding: 3% 5% 4%;
-  }
-
   .welcome-image-layout--columns {
-    gap: 2.5%;
+    gap: 4%;
   }
 
   .welcome-image-layout--columns > .welcome-image-container,
   .welcome-image-layout--columns > .welcome-content-container {
-    flex: 0 0 calc(50% - 1.25%);
-    max-width: calc(50% - 1.25%);
+    flex: 0 0 calc(50% - 2%);
+    max-width: calc(50% - 2%);
   }
 }
