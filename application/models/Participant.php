@@ -2711,7 +2711,7 @@ class Participant extends LSActiveRecord
                 $lengthFunction = 'LEN';
                 break;
             default:
-                throw new CException('SGBD non supporté : ' . $dbDriver);
+                throw new CException('SGBD non supporté : ' . App()->db->getDriverName());
         }
         return intval(Yii::app()->db->createCommand()
             ->select('COUNT(*)')
