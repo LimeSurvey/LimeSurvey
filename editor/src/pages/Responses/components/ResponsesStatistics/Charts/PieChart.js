@@ -201,6 +201,7 @@ const LABEL_MIN_GAP = 58
 // Fixed pie size, so the chart can grow taller for stacked labels without the
 // pie growing too. Recharts adds margin.top to a numeric cy.
 const CHART_BASE_HEIGHT = 400
+const CHART_MIN_WIDTH = 700
 const CHART_MARGIN_TOP = 30
 const CHART_MARGIN_BOTTOM = 40
 const PIE_RADIUS = 130
@@ -269,6 +270,24 @@ export const PieChart = ({
   valueType = VALUE_TYPE.PERCENTAGE,
   isImage = false,
 }) => {
+  const scrollRef = useRef(null)
+
+  // On narrow cards the chart is wider than the card, so keep it centered on
+  // the pie. The user can still scroll to either side.
+  useLayoutEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+
+    const centerScroll = () => {
+      el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2
+    }
+
+    centerScroll()
+    const observer = new ResizeObserver(centerScroll)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   const renderLabel = (props) => {
     const { offsets } = computeLabelYOffsets(data, props.cy, props.outerRadius)
     return renderActiveShapeNew({
@@ -280,39 +299,41 @@ export const PieChart = ({
   }
 
   return (
-    <div className="responses-statistics-pie-chart">
-      <ResponsiveContainer width="100%" height={computeChartHeight(data)}>
-        <RechartsPieChart
-          margin={{
-            top: CHART_MARGIN_TOP,
-            right: 160,
-            bottom: CHART_MARGIN_BOTTOM,
-            left: 160,
-          }}
-        >
-          <Pie
-            data={data}
-            cx="50%"
-            cy={PIE_CY}
-            dataKey="value"
-            nameKey="title"
-            label={renderLabel}
-            labelLine={false}
-            outerRadius={PIE_RADIUS}
-            animationBegin={0}
-            animationDuration={600}
-            fill="#8884d8"
+    <div className="responses-statistics-pie-chart" ref={scrollRef}>
+      <div style={{ minWidth: CHART_MIN_WIDTH }}>
+        <ResponsiveContainer width="100%" height={computeChartHeight(data)}>
+          <RechartsPieChart
+            margin={{
+              top: CHART_MARGIN_TOP,
+              right: 160,
+              bottom: CHART_MARGIN_BOTTOM,
+              left: 160,
+            }}
           >
-            {data.map((_, index) => (
-              <Cell
-                key={`peie-cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
-          <Tooltip cursor={{ fill: '#eeeff7' }} content={CustomTooltip} />
-        </RechartsPieChart>
-      </ResponsiveContainer>
+            <Pie
+              data={data}
+              cx="50%"
+              cy={PIE_CY}
+              dataKey="value"
+              nameKey="title"
+              label={renderLabel}
+              labelLine={false}
+              outerRadius={PIE_RADIUS}
+              animationBegin={0}
+              animationDuration={600}
+              fill="#8884d8"
+            >
+              {data.map((_, index) => (
+                <Cell
+                  key={`peie-cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip cursor={{ fill: '#eeeff7' }} content={CustomTooltip} />
+          </RechartsPieChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   )
 }

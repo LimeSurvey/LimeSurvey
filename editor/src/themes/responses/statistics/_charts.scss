@@ -481,6 +481,10 @@
       display: none;
     }
 
+    .responses-statistics-pie-chart {
+      overflow-x: auto;
+    }
+
     .responses-statistics-pie-label-id,
     .responses-statistics-pie-label-metric {
       fill: $g-700;
