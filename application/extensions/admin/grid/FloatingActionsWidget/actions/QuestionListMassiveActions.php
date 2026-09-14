@@ -39,14 +39,14 @@ class QuestionListMassiveActions
         if ($hasUpdate) {
             $advancedItems = [
                 [
-                    'type' => 'dropdown-header',
-                    'text' => gT('ADVANCED OPTIONS'),
+                    'type' => 'dropdown-header', 
+                    'text' => gT('Advanced options'),
                 ],
                 [
                     'action' => 'set-mandatory',
                     'url' => App()->createUrl('questionAdministration/changeMultipleQuestionMandatoryState/'),
                     'iconClasses' => '',
-                    'text' => gT('Set') . ' "' . gT('Mandatory') . '" ' . gT("state"),
+                    'text' => gT('Set "Mandatory" state'),
                     'grid-reload' => 'yes',
                     'actionType' => 'modal',
                     'modalType' => 'cancel-apply',
@@ -97,7 +97,7 @@ class QuestionListMassiveActions
                     'action' => 'set-other',
                     'url' => App()->createUrl('questionAdministration/changeMultipleQuestionOtherState'),
                     'iconClasses' => '',
-                    'text' => gT("Set ") . ' "' . gT('Other') . '" ' . gT('state'),
+                    'text' => gT('Set "Other" state'),
                     'grid-reload' => 'yes',
                     'actionType' => 'modal',
                     'modalType' => 'cancel-apply',
