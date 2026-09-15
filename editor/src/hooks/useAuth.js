@@ -36,7 +36,7 @@ export const useAuth = () => {
 
   const getRestHeaders = (auth) => {
     return {
-      mode: 'cors',
+      'mode': 'cors',
       // Sent as a custom header instead of the standard 'Authorization'
       // header: on IIS with Windows Authentication enabled, an
       // 'Authorization' header on the request is intercepted and
@@ -46,7 +46,7 @@ export const useAuth = () => {
       // ClientApplication is a custom header to
       // indicate that we are running the
       // LimeSurvey Single Page Application
-      ClientApplication:
+      'ClientApplication':
         process.env.REACT_APP_RELEASE + '@' + process.env.REACT_APP_COMMIT_HASH,
     }
   }
