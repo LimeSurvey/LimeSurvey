@@ -133,7 +133,7 @@ class Update_700 extends DatabaseUpdateBase
      * @param int $sid
      * @param int $gid
      * @param bool $cd
-     * @return string the field's name
+     * @return string|false the field's name or false if it should not be migrated
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid, bool $cd = false): string
@@ -333,20 +333,28 @@ class Update_700 extends DatabaseUpdateBase
                             if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
                                 $sqid = $cd ? $rankingSuffix : $subQuestions[($iRankingSuffix - 1)]['qid'];
                                 $newFieldName = "Q{$rootQuestion['qid']}_{$prefix}" . $sqid;
-                            } elseif (count($subQuestions)) {
-                                $minSortOrder = $subQuestions[0]['question_order'];
-                                $diff = 0;
-                                if ($minSortOrder === 0) {
-                                    $diff = -1;
-                                } elseif ($minSortOrder > 1) {
-                                    $diff = $minSortOrder;
-                                }
-                                foreach ($subQuestions as $question) {
-                                    if (($rankingSuffix == $question['title']) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $question['question_order']))) {
-                                        return "Q{$rootQuestion['qid']}_{$prefix}{$question['qid']}";
-                                    }
-                                }
+                            } else {
+                                // Rank position no longer has a matching subquestion (e.g. a
+                                // subquestion was deleted after responses were collected).
+                                // Return the field name unchanged so the caller can detect
+                                // this "no-op mapping" and drop the column instead of
+                                // carrying an orphaned rank column into the new table.
+                                return $fieldName;
                             }
+//                            elseif (count($subQuestions)) {
+//                                $minSortOrder = $subQuestions[0]['question_order'];
+//                                $diff = 0;
+//                                if ($minSortOrder === 0) {
+//                                    $diff = -1;
+//                                } elseif ($minSortOrder > 1) {
+//                                    $diff = $minSortOrder;
+//                                }
+//                                foreach ($subQuestions as $question) {
+//                                    if (($rankingSuffix == $question['title']) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $question['question_order']))) {
+//                                        return "Q{$rootQuestion['qid']}_{$prefix}{$question['qid']}";
+//                                    }
+//                                }
+//                            }
                         } catch (\Exception $ex) {
                             // Ignore inconsistencies in archive rankings
                             if (strpos($tableName, 'old') === false) {
@@ -1942,7 +1950,10 @@ class Update_700 extends DatabaseUpdateBase
                 );
             }
             if (count($questionsToPass) || ((strpos($tableName, 'timings') !== false) && (count($split) > 1))) {
-                $fieldMap[$tableName][$fieldName] = $this->getFieldName($tableName, $fieldName, $questionsToPass, (int)$sid, (int)$gid);
+                $newFieldname = $this->getFieldName($tableName, $fieldName, $questionsToPass, (int)$sid, (int)$gid);
+                if ($newFieldname) {
+                    $fieldMap[$tableName][$fieldName] = $newFieldname;
+                }
             }
         }
         $preinsert = "";
@@ -1964,6 +1975,19 @@ class Update_700 extends DatabaseUpdateBase
             foreach ($fields as $oldField => $newField) {
                 $scripts[$TABLE_NAME]['CREATE'] = str_replace($this->dbQuoteFields($oldField), $this->dbQuoteFields($newField), $scripts[$TABLE_NAME]['CREATE']);
             }
+            // getFieldName() returns the field name unchanged when it cannot resolve
+            // it to a live question/subquestion (currently only happens for ranking
+            // rank positions beyond the survey's current number of subquestions, e.g.
+            // after a subquestion was deleted post-response-collection). Such a
+            // no-op mapping means the column still carries its raw legacy name and
+            // must not be copied into the new table - keeping it would either
+            // duplicate another column or leave an unusable raw-named column behind.
+            $orphanedColumns = [];
+            foreach ($fields as $oldField => $newField) {
+                if ($oldField === $newField) {
+                    $orphanedColumns[] = $oldField;
+                }
+            }
             $fromColumns = [];
             $toColumns = [];
             foreach ($scripts[$TABLE_NAME]['columns'] as $column) {
@@ -1971,6 +1995,9 @@ class Update_700 extends DatabaseUpdateBase
                     if (isset($column['column_name'])) {
                         $column['COLUMN_NAME'] = $column['column_name'];
                     }
+                }
+                if (in_array($column['COLUMN_NAME'], $orphanedColumns, true)) {
+                    continue;
                 }
                 $fromColumns[] = $this->dbQuoteFields($column['COLUMN_NAME']);
                 if (isset($fields[$column['COLUMN_NAME']])) {
@@ -1986,8 +2013,16 @@ class Update_700 extends DatabaseUpdateBase
                 SELECT {$from}
                 FROM {$TABLE_NAME};
             ";
+            $scripts[$TABLE_NAME]['DROP_ORPHANED_COLUMNS'] = [];
+            foreach ($orphanedColumns as $orphanedColumn) {
+                $scripts[$TABLE_NAME]['DROP_ORPHANED_COLUMNS'][] =
+                    "ALTER TABLE {$scripts[$TABLE_NAME]['new_name']} DROP COLUMN " . $this->dbQuoteFields($orphanedColumn);
+            }
             try {
                 $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
+                foreach ($scripts[$TABLE_NAME]['DROP_ORPHANED_COLUMNS'] as $dropColumnSql) {
+                    $this->db->createCommand($dropColumnSql)->execute();
+                }
                 $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
                 $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
             } catch (\Exception $ex) {
