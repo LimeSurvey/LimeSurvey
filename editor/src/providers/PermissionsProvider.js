@@ -32,9 +32,17 @@ export const PermissionsProvider = ({ children }) => {
     userService
       .getUserPermissions()
       .then(({ permissions: { global, survey } }) => {
+        console.log('[PermissionsProvider] permissions loaded', {
+          hasToken: !!auth?.token,
+        })
         setPermissions({ global, survey })
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error('[PermissionsProvider] permissions request failed', {
+          hasToken: !!auth?.token,
+          status: err?.status ?? err?.response?.status,
+          message: err?.message,
+        })
         setError(
           t('Failed to load permissions. Please try again or contact support.')
         )
