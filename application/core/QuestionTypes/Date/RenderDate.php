@@ -239,7 +239,15 @@ class RenderDate extends QuestionBaseRenderer
         );
     }
 
-
+    /**
+     * Renders a date question with its date/time picker.
+     *
+     * Registers the picker initialization script as a side effect.
+     *
+     * @param string $dateoutput Value to display in the date field
+     * @param string $coreClass CSS classes to apply to the answer container
+     * @return string Rendered question HTML
+     */
     public function renderDatepicker($dateoutput, $coreClass)
     {
         $this->addScript(
@@ -278,6 +286,7 @@ class RenderDate extends QuestionBaseRenderer
                         'maxDate' => strpos($this->maxDate, '{') === false ? $this->maxDate : '2187-12-31',
                         'stepping' => intval($this->getQuestionAttribute('dropdown_dates_minute_step')),
                         'locale' => convertLStoDateTimePickerLocale(App()->getLanguage()),
+                        'startOfTheWeek' => convertLStoDateTimePickerFirstDayOfWeek(App()->getLanguage()),
                     )
                 ),
                 true
