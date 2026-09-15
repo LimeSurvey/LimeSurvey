@@ -32,12 +32,14 @@
         </button>
     {% else %}
         <!-- Button Next -->
-        <button aria-label="{{ gT("Next page") }}" {{ aSurveyInfo.attr.navigatorbuttonnext }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-primary " >
-            {% if isWelcomeScreen is defined and isWelcomeScreen %}
-                {{ gT("Start survey") }}
-            {% else %}
-                {{ gT("Next") }}
-            {% endif %}
+        {% if isWelcomeScreen is defined and isWelcomeScreen %}
+        <button aria-label="{{ gT("Start survey") }}" {{ aSurveyInfo.attr.navigatorbuttonnext }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-primary " >
+            {{ gT("Start survey") }}
         </button>
+        {% else %}
+        <button aria-label="{{ gT("Next page") }}" {{ aSurveyInfo.attr.navigatorbuttonnext }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-primary " >
+            {{ gT("Next") }}
+        </button>
+        {% endif %}
     {% endif %}
 {% endif %}
