@@ -11,11 +11,50 @@ use TemplateConfiguration;
  */
 class TemplateConfigurationTest extends TestBaseClass
 {
-
     /**
      * @var TemplateConfiguration
      */
     private $templateConfiguration;
+
+    /**
+     * Prepared attributes must contain resolved values without relying on __get().
+     */
+    public function testResolveInheritedRenderingAttributes()
+    {
+        $installedConfiguration = \TemplateConfiguration::getInstanceFromTemplateName('default');
+
+        $globalConfiguration = clone $installedConfiguration;
+        $globalConfiguration->oParentTemplate = null;
+        $globalConfiguration->files_css = '{"add":["global.css"]}';
+        $globalConfiguration->files_js = '{"add":["global.js"]}';
+        $globalConfiguration->cssframework_name = 'bootstrap';
+        $globalConfiguration->cssframework_css = '{"add":["bootstrap.css"]}';
+        $globalConfiguration->cssframework_js = '{"add":["bootstrap.js"]}';
+        $globalConfiguration->packages_to_load = '{"add":["global-package"]}';
+
+        $groupConfiguration = clone $installedConfiguration;
+        $groupConfiguration->setToInherit();
+        $groupConfiguration->files_js = '{"add":["group.js"]}';
+        $groupConfiguration->cssframework_css = '{"add":["group-bootstrap.css"]}';
+        $groupConfiguration->oParentTemplate = $globalConfiguration;
+
+        $surveyConfiguration = clone $installedConfiguration;
+        $surveyConfiguration->setToInherit();
+        $surveyConfiguration->cssframework_name = 'survey-framework';
+        $surveyConfiguration->oParentTemplate = $groupConfiguration;
+
+        $surveyConfiguration->prepareTemplateRendering('default');
+        $surveyConfiguration->bUseMagicInherit = false;
+        $attributes = $surveyConfiguration->getAttributes();
+
+        $this->assertSame('{"add":["global.css"]}', $attributes['files_css']);
+        $this->assertSame('{"add":["group.js"]}', $attributes['files_js']);
+        $this->assertSame('survey-framework', $attributes['cssframework_name']);
+        $this->assertSame('{"add":["group-bootstrap.css"]}', $attributes['cssframework_css']);
+        $this->assertSame('{"add":["bootstrap.js"]}', $attributes['cssframework_js']);
+        $this->assertSame('{"add":["global-package"]}', $attributes['packages_to_load']);
+        $this->assertSame('inherit', $attributes['options']);
+    }
 
     /**
      * Issue #12795.
@@ -28,6 +67,27 @@ class TemplateConfigurationTest extends TestBaseClass
 
         // No PHP notices.
         $this->assertTrue(true);
+    }
+
+    /**
+     * Template::getInstance() must return a fully resolved configuration.
+     */
+    public function testGetInstanceReturnsResolvedRenderingAttributes()
+    {
+        $templateConfiguration = \Template::getInstance('default');
+
+        $inheritableAttributes = [
+            'files_css',
+            'files_js',
+            'cssframework_name',
+            'cssframework_css',
+            'cssframework_js',
+            'packages_to_load',
+        ];
+
+        foreach ($inheritableAttributes as $attribute) {
+            $this->assertNotSame('inherit', $templateConfiguration->getAttribute($attribute));
+        }
     }
 
     /**
