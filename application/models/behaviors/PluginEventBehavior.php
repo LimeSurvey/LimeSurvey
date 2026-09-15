@@ -19,9 +19,9 @@ class PluginEventBehavior extends CModelBehavior
 
     public function afterDelete(CEvent $event)
     {
-        $this->dispatchPluginModelEvent('after' . get_class($this->owner) . 'Delete');
-        $this->dispatchDynamic('after', 'Delete');
-        $this->dispatchPluginModelEvent('afterModelDelete');
+        $this->dispatchPluginModelEvent('after' . get_class($this->owner) . 'Delete', null, [], $event);
+        $this->dispatchDynamic('after', 'Delete', $event);
+        $this->dispatchPluginModelEvent('afterModelDelete', null, [], $event);
     }
 
     public function afterSave(CEvent $event)
@@ -31,17 +31,17 @@ class PluginEventBehavior extends CModelBehavior
         if ($pluginManager->shutdownObject->isEnabled()) {
             return;
         }
-        $this->dispatchPluginModelEvent('after' . get_class($this->owner) . 'Save');
-        $this->dispatchDynamic('after', 'Save');
-        $this->dispatchPluginModelEvent('afterModelSave');
+        $this->dispatchPluginModelEvent('after' . get_class($this->owner) . 'Save', null, [], $event);
+        $this->dispatchDynamic('after', 'Save', $event);
+        $this->dispatchPluginModelEvent('afterModelSave', null, [], $event);
     }
 
 
     public function beforeDelete(CModelEvent $event)
     {
-        $this->dispatchPluginModelEvent('before' . get_class($this->owner) . 'Delete');
-        $this->dispatchDynamic('before', 'Delete');
-        $this->dispatchPluginModelEvent('beforeModelDelete');
+        $this->dispatchPluginModelEvent('before' . get_class($this->owner) . 'Delete', null, [], $event);
+        $this->dispatchDynamic('before', 'Delete', $event);
+        $this->dispatchPluginModelEvent('beforeModelDelete', null, [], $event);
     }
 
 
@@ -52,9 +52,9 @@ class PluginEventBehavior extends CModelBehavior
         if ($pluginManager->shutdownObject->isEnabled()) {
             return;
         }
-        $this->dispatchPluginModelEvent('before' . get_class($this->owner) . 'Save');
-        $this->dispatchDynamic('before', 'Save');
-        $this->dispatchPluginModelEvent('beforeModelSave');
+        $this->dispatchPluginModelEvent('before' . get_class($this->owner) . 'Save', null, [], $event);
+        $this->dispatchDynamic('before', 'Save', $event);
+        $this->dispatchPluginModelEvent('beforeModelSave', null, [], $event);
     }
 
     /**
@@ -62,15 +62,16 @@ class PluginEventBehavior extends CModelBehavior
      * and related id
      * @param string $when
      * @param string $what
+     * @param CModelEvent $event
      * @return PluginEvent the dispatched event
      */
-    private function dispatchDynamic($when, $what)
+    private function dispatchDynamic($when, $what, $event = null)
     {
         if (is_subclass_of($this->owner, 'Dynamic')) {
             $params = array(
                 'dynamicId' => $this->owner->getDynamicId()
             );
-            return $this->dispatchPluginModelEvent($when . get_parent_class($this->owner) . $what, null, $params);
+            return $this->dispatchPluginModelEvent($when . get_parent_class($this->owner) . $what, null, $params, $event);
         }
     }
     /**
@@ -80,12 +81,14 @@ class PluginEventBehavior extends CModelBehavior
      * @param string $sEventName event name to dispatch
      * @param array $criteria array containing attributes, conditions and params for the filter query
      * @param array $eventParams array of params for event
+     * @param CModelEvent $event the modelEvent
      * @return PluginEvent the dispatched event
      */
-    public function dispatchPluginModelEvent($sEventName, $criteria = null, $eventParams = array())
+    public function dispatchPluginModelEvent($sEventName, $criteria = null, $eventParams = array(), $event = null)
     {
         $oPluginEvent = new PluginEvent($sEventName, $this);
         $oPluginEvent->set('model', $this->owner);
+        $oPluginEvent->set('modelEvent', $event);
         if (method_exists($this->owner, 'getSurveyId')) {
             $oPluginEvent->set('iSurveyID', $this->owner->getSurveyId());
             $oPluginEvent->set('surveyId', $this->owner->getSurveyId());
