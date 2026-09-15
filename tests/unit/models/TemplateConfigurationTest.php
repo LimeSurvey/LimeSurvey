@@ -11,11 +11,71 @@ use TemplateConfiguration;
  */
 class TemplateConfigurationTest extends TestBaseClass
 {
-
     /**
      * @var TemplateConfiguration
      */
     private $templateConfiguration;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->resetTemplateConfigurationCaches();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->resetTemplateConfigurationCaches();
+        parent::tearDown();
+    }
+
+    private function resetTemplateConfigurationCaches(): void
+    {
+        \Template::resetInstance();
+        \TemplateConfiguration::$aInstancesFromTemplateName = null;
+        \TemplateConfiguration::$aPreparedToRender = null;
+    }
+
+    /**
+     * Prepared attributes must contain resolved values without relying on __get().
+     */
+    public function testResolveInheritedRenderingAttributes()
+    {
+        $installedConfiguration = \TemplateConfiguration::getInstanceFromTemplateName('default');
+
+        $globalConfiguration = clone $installedConfiguration;
+        $globalConfiguration->oParentTemplate = null;
+        $globalConfiguration->sid = null;
+        $globalConfiguration->gsid = null;
+        $globalConfiguration->files_css = '{"add":["global.css"]}';
+        $globalConfiguration->files_js = '{"add":["global.js"]}';
+        $globalConfiguration->cssframework_name = 'bootstrap';
+        $globalConfiguration->cssframework_css = '{"add":["bootstrap.css"]}';
+        $globalConfiguration->cssframework_js = '{"add":["bootstrap.js"]}';
+        $globalConfiguration->packages_to_load = '{"add":["global-package"]}';
+
+        $groupConfiguration = clone $installedConfiguration;
+        $groupConfiguration->setToInherit();
+        $groupConfiguration->files_js = '{"add":["group.js"]}';
+        $groupConfiguration->cssframework_css = '{"add":["group-bootstrap.css"]}';
+        $groupConfiguration->oParentTemplate = $globalConfiguration;
+
+        $surveyConfiguration = clone $installedConfiguration;
+        $surveyConfiguration->setToInherit();
+        $surveyConfiguration->cssframework_name = 'survey-framework';
+        $surveyConfiguration->oParentTemplate = $groupConfiguration;
+
+        $surveyConfiguration->prepareTemplateRendering('default');
+        $surveyConfiguration->bUseMagicInherit = false;
+        $attributes = $surveyConfiguration->getAttributes();
+
+        $this->assertSame('{"add":["global.css"]}', $attributes['files_css']);
+        $this->assertSame('{"add":["group.js"]}', $attributes['files_js']);
+        $this->assertSame('survey-framework', $attributes['cssframework_name']);
+        $this->assertSame('{"add":["group-bootstrap.css"]}', $attributes['cssframework_css']);
+        $this->assertSame('{"add":["bootstrap.js"]}', $attributes['cssframework_js']);
+        $this->assertSame('{"add":["global-package"]}', $attributes['packages_to_load']);
+        $this->assertSame('inherit', $attributes['options']);
+    }
 
     /**
      * Issue #12795.
@@ -28,6 +88,50 @@ class TemplateConfigurationTest extends TestBaseClass
 
         // No PHP notices.
         $this->assertTrue(true);
+    }
+
+    /**
+     * Template::getInstance() must return a fully resolved configuration.
+     */
+    public function testGetInstanceReturnsResolvedRenderingAttributes()
+    {
+        $templateName = App()->getConfig('defaulttheme');
+        $globalConfiguration = \TemplateConfiguration::getInstanceFromTemplateName($templateName);
+
+        $surveyGroup = new \SurveysGroups();
+        $surveyGroup->name = uniqid('template_inheritance_');
+        $surveyGroup->title = 'Template inheritance test';
+        $surveyGroup->description = 'Temporary survey group for template inheritance testing.';
+        $surveyGroup->sortorder = 0;
+        $surveyGroup->owner_id = 1;
+        $surveyGroup->created_by = 1;
+        $surveyGroup->alwaysavailable = 1;
+        $this->assertTrue($surveyGroup->save(false));
+
+        $groupConfiguration = new \TemplateConfiguration();
+        $groupConfiguration->template_name = $templateName;
+        $groupConfiguration->gsid = $surveyGroup->gsid;
+        $groupConfiguration->setToInherit();
+        $this->assertTrue($groupConfiguration->save(false));
+
+        try {
+            $templateConfiguration = \Template::getInstance(
+                $templateName,
+                null,
+                $surveyGroup->gsid,
+                false
+            );
+
+            $this->assertSame('inherit', $groupConfiguration->getAttribute('files_css'));
+            $this->assertSame(
+                $globalConfiguration->getAttribute('files_css'),
+                $templateConfiguration->getAttribute('files_css')
+            );
+        } finally {
+            $this->resetTemplateConfigurationCaches();
+            $groupConfiguration->delete();
+            $surveyGroup->delete();
+        }
     }
 
     /**
