@@ -95,7 +95,8 @@ const VIEWS = [
     label: () => t('Stacked bar chart'),
     icon: (props) => <StackedBarIcon width="20" height="22" {...props} />,
     // Array numbers shows means, which don't stack — grouped only.
-    isAvailable: ({ isArray, isArrayNumbers }) => isArray && !isArrayNumbers,
+    isAvailable: ({ isArray, isArrayText, isArrayNumbers }) =>
+      isArray && !isArrayText && !isArrayNumbers,
     render: ({ data, valueType, isDualScale }) => (
       <StackedBarChart
         data={data}
@@ -108,7 +109,8 @@ const VIEWS = [
     value: VIEW.GROUPED_BAR,
     label: () => t('Grouped bar chart'),
     icon: () => <i className="ri-bar-chart-horizontal-line"></i>,
-    isAvailable: ({ isArray, isDualScale }) => isArray && !isDualScale,
+    isAvailable: ({ isArray, isArrayText, isDualScale }) =>
+      isArray && !isArrayText && !isDualScale,
     render: ({ data, valueType }) => (
       <GroupedBarChart
         data={getSegmentedCategories(data)}
@@ -280,6 +282,25 @@ const writeHiddenCharts = (hidden) => {
 const getStorageKey = (surveyId, chartId, index) =>
   `${surveyId ?? 'unknown'}:${chartId ?? `index-${index}`}`
 
+const getDefaultView = (availableViews, viewContext) => {
+  const preferredViews = [
+    viewContext.isArrayText && VIEW.TABLE,
+    viewContext.isArray && !viewContext.isArrayNumbers && VIEW.STACKED_BAR,
+    viewContext.isNumerical && VIEW.TABLE,
+    viewContext.isMultiNumerical && VIEW.GRID,
+    VIEW.BAR_CHART,
+    VIEW.TABLE,
+  ].filter(Boolean)
+
+  return (
+    preferredViews.find((view) =>
+      availableViews.some(({ value }) => value === view)
+    ) ??
+    availableViews[0]?.value ??
+    VIEW.TABLE
+  )
+}
+
 export const ChartRendererV2 = ({
   data,
   index = 0,
@@ -296,9 +317,6 @@ export const ChartRendererV2 = ({
     [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
       question?.type
     )
-  const [view, setView] = useState(
-    isNumerical ? VIEW.TABLE : isMultiNumerical ? VIEW.GRID : VIEW.BAR_CHART
-  )
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
@@ -335,6 +353,9 @@ export const ChartRendererV2 = ({
 
   const availableViews = VIEWS.filter(
     ({ isAvailable }) => isAvailable?.(viewContext) ?? true
+  )
+  const [view, setView] = useState(() =>
+    getDefaultView(availableViews, viewContext)
   )
   // `menuOnly` hides a view from the quick toggle (it stays in the meatball
   // menu); it can be a flag or a predicate of the view context.
