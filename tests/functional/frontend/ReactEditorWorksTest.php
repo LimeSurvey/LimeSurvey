@@ -72,9 +72,9 @@ class ReactEditorWorksTest extends TestBaseClassWeb
             $web->get($url);
 
             $web->wait()->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated(
-                WebDriverBy::cssSelector('.survey-header-container')
-                )
+                function ($webDriver) {
+                    return $webDriver->findElement(WebDriverBy::cssSelector('.survey-header-container')) !== null;
+                }
             );
 
             $this->assertTrue(
