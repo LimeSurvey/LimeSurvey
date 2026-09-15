@@ -5,6 +5,13 @@
     RewriteCond %{HTTP:Authorization} .+
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+    # issue #20691: determine the base path dynamically from the request URI
+    # instead of relying on Apache's implicit rewrite-base detection, which
+    # can be wrong on shared hosting (e.g. IONOS) where suexec/mod_userdir
+    # make the filesystem path diverge from the URL path
+    RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
+    RewriteRule ^(.*)$ - [E=BASE:%1]
+
     # If the request is NOT for the editor folder"
     RewriteCond %{REQUEST_URI} !/editor/ [NC]
     # if a directory or a file exists, use it directly
@@ -12,7 +19,7 @@
     # RewriteCond %{REQUEST_FILENAME} !-d
 
     # otherwise forward it to index.php
-    RewriteRule . index.php
+    RewriteRule ^ %{ENV:BASE}index.php
 
     # deny access to hidden files and directories except .well-known
     RewriteCond %{REQUEST_URI} !^/\.well-known
