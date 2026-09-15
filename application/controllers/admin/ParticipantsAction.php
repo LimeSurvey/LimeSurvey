@@ -49,6 +49,14 @@ class ParticipantsAction extends SurveyCommonAction
     /** @var AjaxHelper $ajaxHelper */
     protected $ajaxHelper;
 
+    /* @inheritdoc */
+    public function filters()
+    {
+        return array(
+            'postOnly + reencryptData, recalculateDuplicateFinder'
+        );
+    }
+
     /**********************************************BASIC SETTINGS AND METHODS***********************************************/
 
     public function runWithParams($params)
@@ -2776,21 +2784,151 @@ class ParticipantsAction extends SurveyCommonAction
      * Display Encryption data form action 
      * 
      */
-    public function fixEncryptionData()
+    public function encryptionMaintenance()
     {
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             throw new \CHttpException(403, gT('Access denied'));
         }
         $title = gT("Fix encryption data");
+        /* Global participants */
+        $stilltoProcess = $participantsCount = Participant::model()->count();
+        $lastParticipantId = strval(App()->user->getState('currentReencryptLastParticipantId', ''));
+        if ($lastParticipantId !== '') {
+            $criteria = new CDbCriteria();
+            $criteria->compare('participant_id', '>' . $lastParticipantId);
+            $stilltoProcess = Participant::model()->count($criteria);
+        }
+        /* Outdated DuplicateFinder participants */
+        $duplicateFinderInvalidStilltoProcess = $duplicateFinderInvalidCount = Participant::model()->getDuplicateFinderInvalidCount();
+        $lastDuplicateFinderInvalidParticipantId = strval(App()->user->getState('currentDuplicateFinderInvalidParticipantId', ''));
+        if ($lastDuplicateFinderInvalidParticipantId !== '') {
+            $criteria = new CDbCriteria();
+            $criteria->compare('participant_id', '>' . $lastDuplicateFinderInvalidParticipantId);
+            $duplicateFinderInvalidStilltoProcess = Participant::model()->getDuplicateFinderInvalidCount($criteria);
+        }
         $aData = array(
-            'currentParticipantEncryptionResetState' => App()->user->getState('currentParticipantEncryptionResetState', 0),
-            'currentDuplicateFinderFix' => App()->user->getState('currentParticipantEncryptionResetState', 0),
-            'duplicateFinderInvalidCount' => Participant::getDuplicateFinderInvalidCount(),
+            'currentReencryptLastParticipantId' => $lastParticipantId,
             'participantsCount' => Participant::model()->count(),
+            'currentReencryptStillToProcess' => $stilltoProcess,
+            'currentDuplicateFinderInvalidParticipantId' => $lastDuplicateFinderInvalidParticipantId,
+            'duplicateFinderInvalidCount' => $duplicateFinderInvalidCount,
+            'currentDuplicateFinderInvalidStillToProcess' => $duplicateFinderInvalidStilltoProcess,
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
         );
         $aData['topbar'] = $this->getTopBarComponents($title, true, false);
-        $this->renderWrappedTemplate('participants', array('participantsPanel', 'fixEncryptionData'), $aData);
+        $this->renderWrappedTemplate('participants', array('participantsPanel', 'encryptionMaintenance'), $aData);
+    }
+
+    /**
+     * Action to update whole Particpant DB to a new encryt method
+     * @return void
+     */
+    public function reencryptParticipantData()
+    {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new \CHttpException(403, gT('Access denied'));
+        }
+        $stateId = 'currentReencryptLastParticipantId';
+        if (App()->getRequest()->getPost('rencrypt') == 'reset') {
+            $lastParticipantId = '';
+            App()->user->setState($stateId, NULL);
+        } else {
+            $lastParticipantId = strval(App()->user->getState($stateId, ''));
+        }
+        $limit = intval(App()->getConfig('CPDB_reencrypt_limit', 0));
+        $processed = 0;
+        $stilltoProcess = $count = Participant::model()->count();
+        $criteria = new CDbCriteria();
+        $criteria->order = "participant_id";
+        if ($limit > 0 && $limit < $count) {
+            $criteria->limit = $limit;
+        }
+        if ($lastParticipantId !== '') {
+            $criteria->compare('participant_id', '>' . $lastParticipantId);
+        }
+        $oParticipants = Participant::model()->findAll($criteria);
+        foreach($oParticipants as $oParticipant) {
+            $oParticipant->decrypt();
+            if ($oParticipant->encryptSave()) {
+                $processed++;
+                $lastParticipantId = $oParticipant->participant_id;
+                App()->user->setState($stateId, $lastParticipantId);
+            } else {
+                // Log it as error, but need to find situation wnhre can happen, maybe better a 500 error.
+            }
+        }
+        if ($lastParticipantId !== '') {
+            $stilltoProcess = Participant::model()->count(
+                'participant_id > :lastParticipantId',
+                array(':lastParticipantId' => $lastParticipantId)
+            );
+        }
+        if ($stilltoProcess == 0) {
+            App()->user->setState($stateId, NULL);
+            App()->setFlashMessage(gT("All particpant data are reencrypted"));
+        } else  {
+            App()->setFlashMessage(sprintf(
+                gT("%s participants data are reencrypted, still %s to reencrypt"),
+                $processed,
+                $stilltoProcess
+            ));
+        }
+        App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
+    }
+
+    /**
+     * Action to update whole Particpant DB to a new encryot method
+     */
+    public function recalculateDuplicateFinder()
+    {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new \CHttpException(403, gT('Access denied'));
+        }
+        $stateId = 'currentDuplicateFinderInvalidParticipantId';
+        if (App()->getRequest()->getPost('rencrypt') == 'reset') {
+            $lastParticipantId = '';
+            App()->user->setState($stateId, NULL);
+        } else {
+            $lastParticipantId = strval(App()->user->getState($stateId, ''));
+        }
+        $limit = intval(App()->getConfig('CPDB_reencrypt_limit', 0));
+        $processed = 0;
+        $stilltoProcess = $count = Participant::model()->getDuplicateFinderInvalidCount();
+        $criteria = new CDbCriteria();
+        $criteria->order = "participant_id";
+        if ($limit > 0 && $limit < $count) {
+            $criteria->limit = $limit;
+        }
+        if ($lastParticipantId !== '') {
+            $criteria->compare('participant_id', '>' . $lastParticipantId);
+        }
+        $oParticipants = Participant::model()->invaliduplicatefinder()->findAll($criteria);
+        foreach($oParticipants as $oParticipant) {
+            $oParticipant->decrypt();
+            if ($oParticipant->encryptSave()) {
+                $processed++;
+                $lastParticipantId = $oParticipant->participant_id;
+                App()->user->setState($stateId, $lastParticipantId);
+            } else {
+                // Log it as error, but need to find situation wnhre can happen, maybe better a 500 error.
+            }
+        }
+        if ($lastParticipantId !== '') {
+            $criteria = new CDbCriteria();
+            $criteria->compare('participant_id', '>' . $lastParticipantId);
+            $stilltoProcess = Participant::model()->getDuplicateFinderInvalidCount($criteria);
+        }
+        if ($stilltoProcess == 0) {
+            App()->user->setState($stateId, NULL);
+            App()->setFlashMessage(gT("All participant duplicate indexes are up to date."));
+        } else  {
+            App()->setFlashMessage(sprintf(
+                gT("%s duplicate finder entries saved, %s remaining."),
+                $processed,
+                $stilltoProcess
+            ));
+        }
+        App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
     }
 
     /**

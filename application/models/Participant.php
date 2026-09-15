@@ -103,6 +103,43 @@ class Participant extends LSActiveRecord
         );
     }
 
+    /** @inheritdoc */
+    public function scopes()
+    {
+        /* array[] scopes by DBVersion */
+        $scopes = [
+            'invaliduplicatefinder' => [] // in 714
+        ];
+
+        if (App()->getConfig('DBVersion') < 714) {
+            return $scopes;
+        }
+        /* Invalid duplicate finder */
+        $bits = intval(App()->getConfig('CPDB_duplicatefinder_bits', 128));
+        $expectedLength = intval($bits / 4);
+        switch (App()->db->getDriverName()) {
+            case 'mysql':
+                $lengthFunction = 'CHAR_LENGTH';
+                break;
+            case 'pgsql':
+                $lengthFunction = 'LENGTH';
+                break;
+            case 'sqlsrv':
+            case 'dblib':
+            case 'mssql':
+                $lengthFunction = 'LEN';
+                break;
+            default:
+                throw new CException('SGBD non supporté : ' . App()->db->getDriverName());
+        }
+        $scopes['invaliduplicatefinder'] = [
+            'condition' => "{$lengthFunction}(duplicatefinder) <> :expectedLength",
+            'params' => [':expectedLength' => $expectedLength]
+        ];
+
+        return $scopes;
+    }
+
     // @todo do we need this?
     // public function getCountActiveSurveys(){
 
@@ -435,7 +472,12 @@ class Participant extends LSActiveRecord
     {
         $encryptedAttributesColums = $this->getencryptedAttributesColums();
         $sort = new CSort();
-        $sort->defaultOrder = 'lastname';
+        /* Can not sort by encryted attribute */
+        if (in_array('lastname', $encryptedAttributesColums)) {
+            $sort->defaultOrder = 'participant_id';
+        } else {
+            $sort->defaultOrder = 'lastname';
+        }
         $sortAttributes = array(
             'lastname' => array(
                 'asc' => 't.lastname',
@@ -2689,38 +2731,15 @@ class Participant extends LSActiveRecord
 
     /**
      * Count the duplicatefinder columns not updated
+     * @param \CDbCriteria $extraCriteria
      * @return integer number of duplicatefinder invalid/outdated
      */
-    public static function getDuplicateFinderInvalidCount()
+    public static function getDuplicateFinderInvalidCount($extraCriteria = null)
     {
-        if (App()->getConfig('DBVersion') < 714) {
-            return 0;
+        if ($extraCriteria) {
+            return self::model()->invaliduplicatefinder()->count($extraCriteria);
         }
-        $bits = intval(App()->getConfig('CPDB_duplicatefinder_bits', 128));
-        $expectedLength = intval($bits / 4);
-        switch (App()->db->getDriverName()) {
-            case 'mysql':
-                $lengthFunction = 'CHAR_LENGTH';
-                break;
-            case 'pgsql':
-                $lengthFunction = 'LENGTH';
-                break;
-            case 'sqlsrv':
-            case 'dblib':
-            case 'mssql':
-                $lengthFunction = 'LEN';
-                break;
-            default:
-                throw new CException('SGBD non supporté : ' . App()->db->getDriverName());
-        }
-        return intval(Yii::app()->db->createCommand()
-            ->select('COUNT(*)')
-            ->from('{{participants}}')
-            ->where(
-                "{$lengthFunction}(duplicatefinder) <> :expectedLength",
-                [':expectedLength' => $expectedLength]
-            )
-            ->queryScalar());
+        return self::model()->invaliduplicatefinder()->count();
     }
 
     /**

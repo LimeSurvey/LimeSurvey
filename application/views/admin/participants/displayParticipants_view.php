@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
 <?php if (!$duplicateFinderUpToDate) {
     $string = sprintf(
         gT("Warning: the duplicateFinder data is not up to date. You must update it %susing this link%s."),
-        "<a href='" . App()->createUrl("admin/participants/sa/fixEncryptionData") . "'>",
+        "<a href='" . App()->createUrl("admin/participants/sa/encryptionMaintenance") . "'>",
         "</a>"
     );
     if (!Permission::model()->hasGlobalPermission('superadmin')) {

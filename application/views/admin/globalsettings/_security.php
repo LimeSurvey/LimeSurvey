@@ -47,7 +47,11 @@
                         <?php eT("Number of bits used for the duplicate detection index. Fewer bits provide better privacy but may increase import processing time due to additional comparisons. More bits improve search efficiency but reveal more information through the index."); ?>
                     </p>
                     <p class="form-text mb-0">
-                        <?php eT("After changing these settings, the Central Participant Database must be updated to apply the new encryption method.") ?>
+                        <?php printf(
+                            gT("After changing these settings, the %sCentral Participant Database must be updated to apply the new encryption method%s."),
+                            "<a href='" . App()->createUrl("admin/participants/sa/encryptionMaintenance") . "'>",
+                            "</a>"
+                        ) ?>
                     </p>
                 </div>
             </div>
@@ -60,7 +64,7 @@
                         'CPDB_duplicatefinder_bits',
                         Yii::app()->getConfig('CPDB_duplicatefinder_bits', 128),
                         [
-                            "0" =>  gT("Dsiabled (no duplicate control when import)", 'unescaped'),
+                            "0" =>  gT("Disabled (no duplicate control when import)", 'unescaped'),
                             "64" =>  sprintf(gT("%s bits"), 64),
                             "96" =>  sprintf(gT("%s bits"), 96),
                             "128" =>  sprintf(gT("%s bits (recommanded)"), 128),

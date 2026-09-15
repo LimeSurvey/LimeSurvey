@@ -179,6 +179,13 @@ $config['CPDB_encryption_method'] = 'B';
 // duplicate detection issues with encrypted participant data: https://bugs.limesurvey.org/view.php?id=20678
 $config['CPDB_duplicatefinder_bits'] = '128';
 
+// CPDB_reencrypt_limit
+// When using reencryptParticipantData or recalculateParticipantDuplicateFinder,
+// number of participant to get at each batch
+// Set to 0 to get all particpant by batch.
+$config['CPDB_reencrypt_limit'] = 10000;
+
+
 // use_one_time_passwords
 // Activate One time passwords
 // The user can call the limesurvey login at /limesurvey/admin and pass username and
