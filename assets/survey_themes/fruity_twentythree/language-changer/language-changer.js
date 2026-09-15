@@ -47,7 +47,9 @@ export function activateLanguageChanger() {
         limesurveyForm.submit();
     };
     autoSizeSelect();
-    $(document).on("click", "a.ls-language-link", function () {
+    $(document)
+        .off("click.ls-language-changer", "a.ls-language-link")
+        .on("click.ls-language-changer", "a.ls-language-link", function () {
         var closestForm = $(this).closest("form");
         if (!closestForm.length) {
             /* we are not in a forum, can not submit directly */
