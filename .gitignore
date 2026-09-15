@@ -97,6 +97,7 @@ node_modules/**/src
 !/node_modules/jspdf/
 !/node_modules/jszip/
 !/node_modules/nestedSortable/
+!/node_modules/jquery/
 !/node_modules/jquery/dist/
 !/node_modules/jquery-ui-dist/
 !/node_modules/jquery.actual/
