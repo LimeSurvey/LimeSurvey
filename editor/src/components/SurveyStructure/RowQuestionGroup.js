@@ -62,7 +62,7 @@ export const RowQuestionGroup = ({
         icon={<ClipBoardIcon />}
         isQuestionGroup={true}
         menuId="group-meatball-menu"
-        menuToggleId="group-meatball-menu-toggle"
+        menuToggleId="meatball-menu-button"
         menuItems={[
           {
             type: 'header',
