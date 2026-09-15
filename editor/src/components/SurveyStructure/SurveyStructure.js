@@ -330,7 +330,7 @@ export const SurveyStructure = () => {
         description={t(
           'Are you sure you want to delete this question group? This action cannot be reverted.'
         )}
-        confirmButtonText={t('Delete')}
+        confirmButtonText={t('Delete group')}
       />
       <div className="survey-structure">
         <div id="survey-menu" className="survey-menu">
