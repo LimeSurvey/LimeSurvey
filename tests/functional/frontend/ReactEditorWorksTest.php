@@ -92,37 +92,11 @@ class ReactEditorWorksTest extends TestBaseClassWeb
             $this->fail(
                 'Url: ' . $url . PHP_EOL .
                 'Current browser URL: ' . $web->getCurrentURL() . PHP_EOL .
-                'Browser console log: ' . $this->getBrowserConsoleLog($web) . PHP_EOL .
                 'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
             );
         }
     }
 
-    /**
-     * Collect the browser console log so permission/network failures surface
-     * in the CI output.
-     *
-     * @param LimeSurveyWebDriver $web
-     * @return string
-     */
-    private function getBrowserConsoleLog($web)
-    {
-        try {
-            $entries = $web->manage()->getLog('browser');
-        } catch (\Exception $ex) {
-            return 'unavailable (' . $ex->getMessage() . ')';
-        }
-
-        if (empty($entries)) {
-            return 'empty';
-        }
-
-        $lines = [];
-        foreach ($entries as $entry) {
-            $lines[] = ($entry['level'] ?? '') . ': ' . ($entry['message'] ?? '');
-        }
-        return PHP_EOL . implode(PHP_EOL, $lines);
-    }
 
     public static function tearDownAfterClass(): void
     {

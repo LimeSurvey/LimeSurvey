@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 
 import { useAppState, useAuth, useUserService } from 'hooks'
-import { STATES } from 'helpers'
+import { STATES, getApiUrl } from 'helpers'
 
 export const PermissionsProvider = ({ children }) => {
   const auth = useAuth()
@@ -29,22 +29,53 @@ export const PermissionsProvider = ({ children }) => {
   useEffect(() => {
     setPermissions(null)
     setError(null)
+    const requestUrl = getApiUrl('user-permissions')
     userService
       .getUserPermissions()
-      .then(({ permissions: { global, survey } }) => {
+      .then((result) => {
+        // getUserPermissions resolves with a normalized error object (no
+        // `permissions` key) instead of throwing when the request fails.
+        if (!result?.permissions) {
+          console.error('[PermissionsProvider] permissions request failed', {
+            requestUrl,
+            hasToken: !!auth?.token,
+            code: result?.code,
+            httpStatus: result?.httpStatus,
+            message: result?.message,
+          })
+          setError(
+            t(
+              'Failed to load permissions. Please try again or contact support.'
+            ) +
+              ' [' +
+              requestUrl +
+              ' -> ' +
+              (result?.httpStatus ?? 'no response') +
+              ']'
+          )
+          setLoading(false)
+          return
+        }
         console.log('[PermissionsProvider] permissions loaded', {
+          requestUrl,
           hasToken: !!auth?.token,
         })
+        const { global, survey } = result.permissions
         setPermissions({ global, survey })
       })
       .catch((err) => {
-        console.error('[PermissionsProvider] permissions request failed', {
+        console.error('[PermissionsProvider] permissions request threw', {
+          requestUrl,
           hasToken: !!auth?.token,
-          status: err?.status ?? err?.response?.status,
           message: err?.message,
         })
         setError(
-          t('Failed to load permissions. Please try again or contact support.')
+          t(
+            'Failed to load permissions. Please try again or contact support.'
+          ) +
+            ' [' +
+            requestUrl +
+            ']'
         )
         setLoading(false)
       })
