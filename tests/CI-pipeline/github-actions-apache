@@ -12,5 +12,10 @@
     Require all granted
   </Directory>
 
+  RewriteEngine On
+
+  # test 2
+  RewriteRule ^/editor/?$ /editor/index.html [END]
+
   # [...]
 </VirtualHost> 
