@@ -35,6 +35,7 @@ export const RowQuestion = ({
       <SideBarRow
         titlePlaceholder={t("What's your question?")}
         provided={provided}
+        menuToggleId="meatball-menu-button"
         title={question.l10ns[language]?.question}
         isFocused={focused?.qid === question?.qid}
         menuItems={[
