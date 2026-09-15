@@ -33,6 +33,7 @@ class ExpressionWarningTest extends TestBaseClass
         $em = new \ExpressionManager();
         $res = $em->RDP_Evaluate('3 lt str_pad("A", 3)');
         $this->assertTrue($res, implode('; ', $em->GetErrors()));
+        $this->assertFalse($em->GetResult(), 'A number is never less than a non-numeric string');
         $this->assertCount(1, $em->GetWarnings());
     }
 
@@ -46,6 +47,7 @@ class ExpressionWarningTest extends TestBaseClass
         $em = new \ExpressionManager();
         $res = $em->RDP_Evaluate('3 lt str_pad(3, 5, "0")');
         $this->assertTrue($res, implode('; ', $em->GetErrors()));
+        $this->assertTrue($em->GetResult(), '3 < "30000" should compare numerically as true');
         $this->assertCount(0, $em->GetWarnings());
     }
 
@@ -59,6 +61,7 @@ class ExpressionWarningTest extends TestBaseClass
         $em = new \ExpressionManager();
         $res = $em->RDP_Evaluate('3 lt abs(-5)');
         $this->assertTrue($res, implode('; ', $em->GetErrors()));
+        $this->assertTrue($em->GetResult(), '3 < abs(-5) should be true');
         $this->assertCount(0, $em->GetWarnings());
     }
 }
