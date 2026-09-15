@@ -8,15 +8,11 @@ on:
       - master
       - develop-major
       - develop-minor
-    paths-ignore:
-      - 'editor/**'
   push:
     branches:
       - master
       - develop-major
       - develop-minor
-    paths-ignore:
-      - 'editor/**'
 
 permissions:
   contents: read
@@ -121,6 +117,8 @@ jobs:
           # Set up the Apache and PHP
           sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
+          # Enable mod_rewrite so the .htaccess rules forward pretty URLs
+          sudo a2enmod rewrite
           sudo service apache2 restart
 
           # Give permision to access files for Apache
