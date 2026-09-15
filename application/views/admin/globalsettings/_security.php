@@ -10,7 +10,6 @@
     <div class="row">
         <div class="col-6">
             <div class="mb-3">
-
                 <label class=" form-label" for='surveyPreview_require_Auth'><?php eT("Survey preview only for administration users:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -25,6 +24,68 @@
                 </div>
             </div>
 
+            <div class="mb-3">
+                <label class="form-label" id='label-CPDB_encryption_method' for='CPDB_encryption_method'>
+                    <?php eT('Encryption method for Central participant database:'); ?>
+                </label>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'CPDB_encryption_method',
+                        'htmlOptions'   =>  [
+                            'aria-labelledby' => 'label-CPDB_encryption_method',
+                            'aria-describedby' => 'CPDB_encryption_method-hint'
+                        ],
+                        'checkedOption' => Yii::app()->getConfig('CPDB_encryption_method', 'B'),
+                        'selectOptions' => [
+                            "B"      => gT("Basic", 'unescaped'),
+                            "H"      => gT("Hardened", 'unescaped')
+                        ]
+                    ]); ?>
+                </div>
+                <div class="help-block mt-1" id="CPDB_encryption_method-hint">
+                    <p class="form-text mb-0">
+                        <?php eT("Number of bits used for the duplicate detection index. Fewer bits provide better privacy but may increase import processing time due to additional comparisons. More bits improve search efficiency but reveal more information through the index."); ?>
+                    </p>
+                    <p class="form-text mb-0">
+                        <?php printf(
+                            gT("After changing these settings, the %sCentral Participant Database must be updated to apply the new encryption method%s."),
+                            "<a href='" . App()->createUrl("admin/participants/sa/encryptionMaintenance") . "'>",
+                            "</a>"
+                        ) ?>
+                    </p>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" id='label-CPDB_duplicatefinder_bits' for='CPDB_duplicatefinder_bits'>
+                    <?php eT('Encryption method for Central participant database:'); ?>
+                </label>
+                <div>
+                    <?php echo CHTML::dropDownList(
+                        'CPDB_duplicatefinder_bits',
+                        Yii::app()->getConfig('CPDB_duplicatefinder_bits', 128),
+                        [
+                            "0" =>  gT("Disabled (no duplicate control when import)", 'unescaped'),
+                            "64" =>  sprintf(gT("%s bits"), 64),
+                            "96" =>  sprintf(gT("%s bits"), 96),
+                            "128" =>  sprintf(gT("%s bits (recommanded)"), 128),
+                            "192" =>  sprintf(gT("%s bits"), 192),
+                            "256" =>  sprintf(gT("%s bits (No collision)"), 256),
+                        ],
+                        [
+                            'class' => 'form-select',
+                            'aria-describedby' => 'CPDB_duplicatefinder_bits-hint'
+                        ]
+                    ); ?>
+                </div>
+                <div class="help-block mt-1" id="CPDB_duplicatefinder_bits-hint">
+                    <p class="form-text mb-0">
+                        <?php eT("Number of bits used for the duplicate detection index. Fewer bits provide better privacy but may increase import processing time due to additional comparisons. More bits improve search efficiency but reveal more information through the index."); ?>
+                    </p>
+                    <p class="form-text mb-0">
+                        <?php eT("After changing these settings, the Central Participant Database must be updated to rebuild the duplicate detection indexes.") ?>
+                    </p>
+                </div>
+            </div>
             <div class="mb-3">
                 <label class=" form-label" for='filterxsshtml'><?php eT("Filter HTML for XSS:");
                                                                 echo ((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?></label>

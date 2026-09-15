@@ -228,6 +228,7 @@ function populateDatabase($oDB)
             'firstname' =>  "text NULL",
             'lastname' =>  "text NULL",
             'email' =>  "text",
+            'duplicatefinder' => "string(64) NOT NULL DEFAULT ''",
             'language' =>  "string(40) NULL",
             'blacklisted' =>  "string(1) NOT NULL",
             'owner_uid' =>  "integer NOT NULL",
@@ -238,7 +239,7 @@ function populateDatabase($oDB)
 
         $oDB->createCommand()->addPrimaryKey('{{participant_pk}}', '{{participants}}', 'participant_id', false);
         $oDB->createCommand()->createIndex('{{idx3_participants}}', '{{participants}}', 'language', false);
-
+        $oDB->createCommand()->createIndex('{{participants_duplicatefinder}}', '{{participants}}', 'duplicatefinder', false);
 
         // participant_attribute
         $oDB->createCommand()->createTable('{{participant_attribute}}', array(
@@ -680,6 +681,7 @@ function populateDatabase($oDB)
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
             'access_mode' => "string(1) DEFAULT 'O'",
+            'encryption_method' => "string(1) DEFAULT 'I'",
             'lastmodified' => 'datetime NOT NULL',
         ), $options);
 
@@ -758,7 +760,8 @@ function populateDatabase($oDB)
             'showprogress' => "string(1) NULL DEFAULT 'Y'",
             'questionindex' => "integer NULL DEFAULT '0'",
             'navigationdelay' => "integer NULL DEFAULT '0'",
-            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
+            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'",
+            'encryption_method' => "string(1) DEFAULT 'I'"
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_groupsettings_pk}}', '{{surveys_groupsettings}}', ['gsid']);
@@ -804,7 +807,8 @@ function populateDatabase($oDB)
             'showprogress' => 'Y',
             'questionindex' => '0',
             'navigationdelay' => '0',
-            'alloweditaftercompletion' => 'N'
+            'alloweditaftercompletion' => 'N',
+            'encryption_method' => 'B'
         );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes1);
 
