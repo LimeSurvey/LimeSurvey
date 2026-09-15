@@ -50,54 +50,58 @@ export function activateLanguageChanger() {
     $(document)
         .off("click.ls-language-changer", "a.ls-language-link")
         .on("click.ls-language-changer", "a.ls-language-link", function () {
-        var closestForm = $(this).closest("form");
-        if (!closestForm.length) {
-            /* we are not in a forum, can not submit directly */
-            if (limesurveyForm.length == 1) {
-                /* The limesurvey form exist in document, move select and button inside and click */
-                var newLang = $(this).data("limesurvey-lang");
-                applyChangeAndSubmit(newLang);
-                // TODO: Check all code below. When does it happen?
-            } else {
-                // If there are no form : we can't use it */
-                if ($(this).data("targeturl")) {
-                    /* If we have a target url : just move location to this url with lang set */
-                    /* possible usage : in clear all */
-                    var target = $(this).data("targeturl");
-                    /* adding lang in get param manually */
-                    if (target.indexOf("?") >= 0) {
-                        target += "&lang=" + $(this).val();
-                    } else {
-                        target += "?lang=" + $(this).val();
-                    }
-                    /* directly move to location */
-                    location.href = target;
-                    return false;
+            var closestForm = $(this).closest("form");
+            if (!closestForm.length) {
+                /* we are not in a forum, can not submit directly */
+                if (limesurveyForm.length == 1) {
+                    /* The limesurvey form exist in document, move select and button inside and click */
+                    var newLang = $(this).data("limesurvey-lang");
+                    applyChangeAndSubmit(newLang);
+                    // TODO: Check all code below. When does it happen?
                 } else {
-                    var lang = $(this).data("limesurvey-lang");
-                    /* No form, not targeturl : just see what happen */
-                    $("<form>", {
-                        class: "ls-js-hidden",
-                        html:
-                            '<input type="hidden" name="lang" value="' +
-                            lang +
-                            '" />',
-                        action: target,
-                        method: "get",
-                    })
-                        .appendTo(document.body)
-                        .submit();
+                    // If there are no form : we can't use it */
+                    if ($(this).data("targeturl")) {
+                        /* If we have a target url : just move location to this url with lang set */
+                        /* possible usage : in clear all */
+                        var target = $(this).data("targeturl");
+                        /* adding lang in get param manually */
+                        if (target.indexOf("?") >= 0) {
+                            target += "&lang=" + $(this).val();
+                        } else {
+                            target += "?lang=" + $(this).val();
+                        }
+                        /* directly move to location */
+                        location.href = target;
+                        return false;
+                    } else {
+                        var lang = $(this).data("limesurvey-lang");
+                        /* No form, not targeturl : just see what happen */
+                        $("<form>", {
+                            class: "ls-js-hidden",
+                            html:
+                                '<input type="hidden" name="lang" value="' +
+                                lang +
+                                '" />',
+                            action: target,
+                            method: "get",
+                        })
+                            .appendTo(document.body)
+                            .submit();
+                    }
                 }
+            } else {
+                /* we are inside a form : just submit : but remove other lang input if exist : be sure it's this one send */
+                $(this)
+                    .closest("form")
+                    .find("[name='lang']")
+                    .not($(this))
+                    .remove();
+                $(this)
+                    .closest(".ls-language-changer-item")
+                    .find(":submit")
+                    .click();
             }
-        } else {
-            /* we are inside a form : just submit : but remove other lang input if exist : be sure it's this one send */
-            $(this).closest("form").find("[name='lang']").not($(this)).remove();
-            $(this)
-                .closest(".ls-language-changer-item")
-                .find(":submit")
-                .click();
-        }
-    });
+        });
     /* Language changer dropdown */
     /* Don't activate change when using key up / key down */
     $('.form-change-lang [name="lang"]').on(
@@ -117,7 +121,7 @@ export function activateLanguageChanger() {
         autoSizeSelect();
         if (
             $(this).data("limesurvey-lastkey") == 38 ||
-            $(this).data("lastkey") == 40
+            $(this).data("limesurvey-lastkey") == 40
         ) {
             /* Last key is up or down : disable auto submit mantis #16024 */
             return;
