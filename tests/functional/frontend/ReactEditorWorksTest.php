@@ -66,7 +66,7 @@ class ReactEditorWorksTest extends TestBaseClassWeb
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain );
         $web = self::$webDriver;
-        $url = $urlMan->createUrl('editor/#/survey/928171/structure');
+        $url = $urlMan->createUrl('editorLink/index', ['route' => 'survey/928171/structure']);
 
         try {
             $web->get($url);

@@ -30,7 +30,7 @@ export const useEditorCompatibilityGuard = (surveyId) => {
   const isIncompatible = isSurveyForRoute && survey.isEditorCompatible === false
 
   useEffect(() => {
-    if (isIncompatible && false) {
+    if (isIncompatible) {
       window.location.replace(
         getSiteUrl('/surveyAdministration/view/surveyid/' + surveyId)
       )
