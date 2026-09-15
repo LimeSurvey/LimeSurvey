@@ -55,7 +55,7 @@ class ReactEditorWorksTest extends TestBaseClassWeb
     //    );
 
        // Browser login.
-       self::adminLogin($username, $password, false);
+       self::adminLogin($username, $password);
     }
 
     /**
@@ -64,7 +64,7 @@ class ReactEditorWorksTest extends TestBaseClassWeb
     public function testReactEditorWorks()
     {
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . self::$domain );
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $web = self::$webDriver;
         $url = $urlMan->createUrl('editorLink/index', ['route' => 'survey/928171/structure']);
 
