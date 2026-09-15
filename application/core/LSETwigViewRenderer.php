@@ -705,30 +705,43 @@ window.addEventListener('message', function(event) {
             }
 
             // Add the survey theme options
-            if ($oTemplate->oOptions) {
-                foreach ($oTemplate->oOptions as $key => $value) {
-                    // TODO: Same issue as commit 2972aea41c51c74db95bfe40c337ae839471152c
-                    // Options are not loaded the same way in all places.
-                    if ($value instanceof stdClass) {
-                        $value = 'N/A';
-                    }
-                    // Note that $value can also be a SimpleXMLElement
-                    // if force_xmlsettings_for_survey_rendering is activated
-                    $aData["aSurveyInfo"]["options"][$key] = (string)$value;
-                }
-            }
+            $aData["aSurveyInfo"]["options"] = $this->convertOptionsToArray($oTemplate->oOptions);
             $aData["aSurveyInfo"] = $this->setDefaultPrivacyText($aData["aSurveyInfo"]);
         } else {
-            // Add the global theme options
+            // Add the global theme options (fully inheritance-resolved, same as the survey branch above)
             $oTemplateConfigurationCurrent = Template::getInstance($oTemplate->sTemplateName);
-            $aData["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])
-                ? json_decode((string) $oTemplateConfigurationCurrent['options'], true)
-                : $oTemplateConfigurationCurrent['options'];
+            $aData["aSurveyInfo"]["options"] = $this->convertOptionsToArray($oTemplateConfigurationCurrent->oOptions);
         }
 
         $aData = $this->fixDataCoherence($aData);
 
         return $aData;
+    }
+
+    /**
+     * Convert a template's resolved options (stdClass, from TemplateConfiguration::oOptions)
+     * into a flat associative array suitable for twig, stringifying each value.
+     *
+     * TODO: Same issue as commit 2972aea41c51c74db95bfe40c337ae839471152c
+     * Options are not loaded the same way in all places.
+     *
+     * @param stdClass|null $oOptions The resolved template options (already inheritance-resolved).
+     * @return array<string, string> Associative array of option key to string value.
+     */
+    private function convertOptionsToArray($oOptions)
+    {
+        $aOptions = array();
+        if ($oOptions) {
+            foreach ($oOptions as $key => $value) {
+                if ($value instanceof stdClass) {
+                    $value = 'N/A';
+                }
+                // Note that $value can also be a SimpleXMLElement
+                // if force_xmlsettings_for_survey_rendering is activated
+                $aOptions[$key] = (string)$value;
+            }
+        }
+        return $aOptions;
     }
 
     /**
