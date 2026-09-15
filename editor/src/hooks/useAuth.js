@@ -37,7 +37,12 @@ export const useAuth = () => {
   const getRestHeaders = (auth) => {
     return {
       mode: 'cors',
-      Authorization: `Bearer ${auth?.token}`,
+      // Sent as a custom header instead of the standard 'Authorization'
+      // header: on IIS with Windows Authentication enabled, an
+      // 'Authorization' header on the request is intercepted and
+      // challenged by IIS itself before it reaches the backend, causing
+      // the browser to show a credential prompt (issue #20692).
+      'X-Auth-Token': auth?.token,
       // ClientApplication is a custom header to
       // indicate that we are running the
       // LimeSurvey Single Page Application
