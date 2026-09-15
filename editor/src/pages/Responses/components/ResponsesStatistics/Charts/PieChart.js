@@ -273,19 +273,28 @@ export const PieChart = ({
   const scrollRef = useRef(null)
 
   // On narrow cards the chart is wider than the card, so keep it centered on
-  // the pie. The user can still scroll to either side.
+  // the pie. The user can still scroll to either side. The chart still
+  // resizes a few times as it settles in, so the actual centering is done a
+  // frame later, once the size is final, instead of on every resize tick.
   useLayoutEffect(() => {
     const el = scrollRef.current
     if (!el) return
 
+    let frame
     const centerScroll = () => {
-      el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2
+      })
     }
 
     centerScroll()
     const observer = new ResizeObserver(centerScroll)
     observer.observe(el)
-    return () => observer.disconnect()
+    return () => {
+      cancelAnimationFrame(frame)
+      observer.disconnect()
+    }
   }, [])
 
   const renderLabel = (props) => {

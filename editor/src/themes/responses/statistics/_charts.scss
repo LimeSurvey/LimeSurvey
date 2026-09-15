@@ -481,10 +481,6 @@
       display: none;
     }
 
-    .responses-statistics-pie-chart {
-      overflow-x: auto;
-    }
-
     .responses-statistics-pie-label-id,
     .responses-statistics-pie-label-metric {
       fill: $g-700;
@@ -528,6 +524,11 @@
       }
     }
   }
+}
+
+// Also used by the Overview page's Completed/Incomplete chart, so keep it unscoped.
+.responses-statistics-pie-chart {
+  overflow-x: auto;
 }
 
 #statistics-value-type label {
