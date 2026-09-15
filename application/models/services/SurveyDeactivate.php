@@ -68,7 +68,7 @@ class SurveyDeactivate
     protected function getSiddate(int $iSurveyID): string
     {
         if (!isset($this->siddates[$iSurveyID])) {
-            $date = date('YmdHis', time());
+            $date = (new \DateTime())->format('YmdHisu');
             $this->siddates[$iSurveyID] = "{$iSurveyID}_{$date}";
         }
         return $this->siddates[$iSurveyID];
@@ -90,10 +90,12 @@ class SurveyDeactivate
             );
         }
         $survey = $this->survey->findByPk($iSurveyID);
+        // Unset siddate from previous call using the same deactivator instance.
+        unset($this->siddates[$iSurveyID]);
         $datestamp = time();
         $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
         $DBDate = date('Y-m-d H:i:s', $datestamp);
-        $userID = $this->app->user->getId();
+        $userID = $this->app->user->getId() ?? 0; // User ID is null while testing.
         $aData = array();
         $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
         $aData['surveyid'] = $iSurveyID;
@@ -213,17 +215,18 @@ class SurveyDeactivate
     {
         switch ($tableType) {
             case 'token':
-                $model = $this->archivedTokenSettings;
+                $modelClass = get_class($this->archivedTokenSettings);
                 break;
             case 'timings':
-                $model = $this->archivedTimingsSettings;
+                $modelClass = get_class($this->archivedTimingsSettings);
                 break;
             case 'response':
-                $model = $this->archivedResponseSettings;
+                $modelClass = get_class($this->archivedResponseSettings);
                 break;
             default:
                 throw new \InvalidArgumentException('Unknown table type: ' . $tableType);
         }
+        $model = new $modelClass();
         $model->survey_id = $iSurveyID;
         $model->user_id = $userID;
         $model->tbl_name = $tableName;
