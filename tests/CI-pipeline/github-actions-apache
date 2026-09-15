@@ -3,6 +3,9 @@
 
   DocumentRoot %CI_BUILD_DIR%
 
+  # test
+  DirectoryIndex index.html index.php
+
   <Directory "%CI_BUILD_DIR%/">
     Options FollowSymLinks MultiViews ExecCGI
     AllowOverride All

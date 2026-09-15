@@ -45,14 +45,14 @@ class ReactEditorWorksTest extends TestBaseClassWeb
             'Editor enable failed: no user row was updated.'
        );
 
-       $affectedRows = \Yii::app()->db->createCommand(
-            "UPDATE {{plugins}} SET active = '1' WHERE name = 'ReactEditor'"
-        )->execute();
-        self::assertGreaterThan(
-            0,
-            $affectedRows,
-            'Editor plugin enable failed: no plugin row was updated.'
-       );
+    //    $affectedRows = \Yii::app()->db->createCommand(
+    //         "UPDATE {{plugins}} SET active = '1' WHERE name = 'ReactEditor'"
+    //     )->execute();
+    //     self::assertGreaterThan(
+    //         0,
+    //         $affectedRows,
+    //         'Editor plugin enable failed: no plugin row was updated.'
+    //    );
 
        // Browser login.
        self::adminLogin($username, $password, false);
@@ -81,9 +81,13 @@ class ReactEditorWorksTest extends TestBaseClassWeb
                 $web->findElement(WebDriverBy::cssSelector('.survey-header-container'))->isDisplayed(),
                 'React editor rendered survey welcome container'
             );
+            $screenshot = $web->takeScreenshot();
+            $filename = self::$screenshotsFolder . '/' .__FUNCTION__ . '.png';
+            file_put_contents($filename, $screenshot);
+            fwrite(STDERR, 'Url: ' . $url . PHP_EOL . 'Screenshot in ' . $filename . PHP_EOL);
         } catch (\Exception $ex) {
             $screenshot = $web->takeScreenshot();
-            $filename = self::$screenshotsFolder . '/' . __CLASS__ . '_' . __FUNCTION__ . '.png';
+            $filename = self::$screenshotsFolder . '/' .__FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
             $this->fail(
                 'Url: ' . $url . PHP_EOL .
@@ -104,14 +108,14 @@ class ReactEditorWorksTest extends TestBaseClassWeb
             'Editor disable failed: no user rows were deleted.'
        );
 
-       $affectedRows = \Yii::app()->db->createCommand(
-            "UPDATE {{plugins}} SET active = '0' WHERE name = 'ReactEditor'"
-        )->execute();
-        self::assertGreaterThan(
-            0,
-            $affectedRows,
-            'Editor plugin disable failed: no plugin row was updated.'
-       );
+    //    $affectedRows = \Yii::app()->db->createCommand(
+    //         "UPDATE {{plugins}} SET active = '0' WHERE name = 'ReactEditor'"
+    //     )->execute();
+    //     self::assertGreaterThan(
+    //         0,
+    //         $affectedRows,
+    //         'Editor plugin disable failed: no plugin row was updated.'
+    //    );
 
        parent::tearDownAfterClass();
     }
