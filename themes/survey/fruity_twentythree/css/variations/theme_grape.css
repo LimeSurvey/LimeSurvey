@@ -12877,6 +12877,15 @@ a {
 a:hover {
   text-decoration: none;
 }
+a:focus {
+  outline: none;
+}
+a:focus-visible {
+  outline: none;
+  padding: 1px 4px;
+  border-radius: 0px;
+  border: 2px solid rgba(123, 97, 255, 0.9);
+}
 
 .has-link {
   cursor: pointer;
@@ -14491,6 +14500,10 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 .modal-header .btn-close:focus {
   box-shadow: none;
+}
+.modal-header .btn-close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 0, 255, 0.2);
 }
 
 .modal-title {

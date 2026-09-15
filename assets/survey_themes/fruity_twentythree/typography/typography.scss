@@ -78,6 +78,15 @@ a {
   &:hover {
     text-decoration: none;
   }
+  &:focus {
+    outline: none;
+  }
+  &:focus-visible {
+    outline: none;
+    padding: 1px 4px;
+    border-radius: 0px;
+    border: 2px solid $grape90;
+  }
 }
 
 .has-link {
