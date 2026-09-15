@@ -91,6 +91,7 @@ class ReactEditorWorksTest extends TestBaseClassWeb
             file_put_contents($filename, $screenshot);
             $this->fail(
                 'Url: ' . $url . PHP_EOL .
+                'Current browser URL: ' . $web->getCurrentURL() . PHP_EOL .
                 'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
             );
         }
