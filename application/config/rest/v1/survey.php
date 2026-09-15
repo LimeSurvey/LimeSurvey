@@ -6,6 +6,7 @@ use LimeSurvey\Api\Command\V1\{
     SurveyPatch,
     SurveyTemplate,
     SurveyArchive,
+    SurveyImport,
     SurveyLogic,
     SurveyQuestionsFieldname
 };
@@ -49,6 +50,39 @@ $rest['v1/survey'] = [
             ]
         ]
     ]
+];
+
+$rest['v1/survey-import'] = [
+    'POST' => [
+        'tag' => 'survey',
+        'multipart' => true,
+        'description' => 'Import a complete survey',
+        'commandClass' => SurveyImport::class,
+        'params' => [
+            'file' => ['src' => 'files'],
+            'surveysgroup' => ['type' => 'string'],
+            'translinksfields' => ['type' => 'string'],
+        ],
+        'auth' => true,
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Survey imported successfully',
+                'content' => null,
+                'schema' => null,
+            ],
+            'bad-request' => [
+                'code' => 400,
+                'description' => 'Invalid upload or import failure',
+                'schema' => $errorSchema,
+            ],
+            'forbidden' => [
+                'code' => 403,
+                'description' => 'Forbidden',
+                'schema' => $errorSchema,
+            ],
+        ],
+    ],
 ];
 
 $rest['v1/survey-detail/$id'] =

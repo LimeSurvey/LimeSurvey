@@ -33,7 +33,7 @@ export const PreviewButton = ({ survey }) => {
         className="preview-button p-0 d-flex align-items-center justify-content-center"
         variant="light"
         id="preview-button"
-        aria-label={t('Preview survey')}
+        ariaLabel={t('Preview survey')}
       >
         <EyeIcon />
       </Button>
