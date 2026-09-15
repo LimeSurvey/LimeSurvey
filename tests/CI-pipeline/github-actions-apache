@@ -3,17 +3,9 @@
 
   DocumentRoot %CI_BUILD_DIR%
 
-  # test
-  DirectoryIndex index.html index.php
-
   <Directory "%CI_BUILD_DIR%/">
     Options FollowSymLinks MultiViews ExecCGI
     AllowOverride All
-    Require all granted
-  </Directory>
-
-  <Directory "%CI_BUILD_DIR%/editor/">
-    DirectoryIndex index.html
     Require all granted
   </Directory>
 
