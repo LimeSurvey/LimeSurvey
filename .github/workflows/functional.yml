@@ -29,10 +29,22 @@ jobs:
       # doesn't hide failures in the others.
       fail-fast: false
       matrix:
-        # Temporary: only run ReactEditorWorksTest while debugging it.
-        php-versions: [ '8.1' ]
+        # Specify what versions of php you want to test
+        php-versions: [ '8.1', '8.3' ]
         testsuite:
+          - survey
+          - question-a
+          - question-b
+          - expression
+          - validation
+          - navigation
+          - import-export
+          - theme
           - admin
+          - user
+          - plugin
+          - security
+          - api
     # Env vars for this job
     env:
       DBENGINE: INNODB
@@ -197,7 +209,7 @@ jobs:
       - name: Run functional tests
         env:
           DOMAIN: localhost
-        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped tests/functional/frontend/ReactEditorWorksTest.php
+        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped --testsuite ${{ matrix.testsuite }}
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v4
