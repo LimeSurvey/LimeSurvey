@@ -140,6 +140,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isShowQnumCode Show question number and/or code
  * @property bool $isShowWelcome Show welcome screen
  * @property bool $isShowProgress how progress bar
+ * @property string $code Survey code / internal title
  * @property bool $showsurveypolicynotice Show the security notice
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property string $access_mode Whether the access mode is open (O) or closed (C), if O token-based participation may be supported, if C, it's enforced
