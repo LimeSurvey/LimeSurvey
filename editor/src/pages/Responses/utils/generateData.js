@@ -156,7 +156,6 @@ export const generateData = (responses, language, generatedColumns) => {
             aid: answer.actual_aid,
             [idName]: answer[idName],
             qid: answer[idName],
-            fsya: true,
             checked: value ? true : false,
             responseId: response.id,
             questionThemeName: question.questionThemeName,

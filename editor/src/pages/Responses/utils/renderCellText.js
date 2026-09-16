@@ -51,8 +51,8 @@ export const renderCellText = ({
       )}
       {isRankingQuestion(questionThemeName) && `${index + 1}. `}
       {isSingleChoiceQuestion(questionThemeName)
-        ? `${isOtherKey ? 'Other :' : ''} ${answerTitle}`
-        : `${isOtherKey ? 'Other: ' : ''} ${subquestionTitle}`}
+        ? `${isOtherKey ? t('Other :') : ''} ${answerTitle}`
+        : `${isOtherKey ? t('Other: ') : ''} ${subquestionTitle}`}
       {comment?.value && (
         <span>
           {answerTitle && ':'} {comment.value}
