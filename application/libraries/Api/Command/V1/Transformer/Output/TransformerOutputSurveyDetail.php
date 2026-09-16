@@ -103,6 +103,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey = $this->transformerSurvey->transform($data);
         $survey['templateInherited'] = $data->oOptions->template;
         $survey['formatInherited'] = $data->oOptions->format;
+        $survey['isEditorCompatible'] = $data->getIsEditorCompatible();
         $survey['languages'] = $data->allLanguages;
         $survey['hasTokens'] = $data->hasTokensTable;
         $survey['previewLink'] = App()->createUrl(

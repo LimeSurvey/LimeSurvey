@@ -84,6 +84,11 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                     <td><span class='ri-check-fill text-success'></span></td>
                     <td><?= $model->isPhpZipPresent ? $iconOk : $iconFail ?></td>
                 </tr>
+                <tr>
+                    <td><?php eT("PHP curl library"); ?></td>
+                    <td><span class='ri-check-fill text-success'></span></td>
+                    <td><?= $model->isPhpCurlPresent ? $iconOk : $iconFail ?></td>
+                </tr>
 
                 <tr>
                        <td><?php eT("PHP/PECL JSON library"); ?></td>
@@ -152,7 +157,7 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                <td><?= $model->isPhpImapPresent ? $iconOk : $iconFail ?></td>
         </tr>
         <tr>
-                
+
                <td><?php eT("PHP Sodium library [data encryption]"); ?></td>
                <td><span class='ri-check-fill text-success' alt="Check"></span></td>
                <td><?= $model->isSodiumPresent ? $iconOk : $iconFail ?></td>
