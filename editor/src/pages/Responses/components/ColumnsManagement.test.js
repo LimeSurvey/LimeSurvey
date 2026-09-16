@@ -1,7 +1,6 @@
 import 'tests/mocks'
 
-import { renderWithProviders } from 'tests/testUtils'
-import { screen, within } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ColumnsManagement } from './ColumnsManagement'
@@ -67,7 +66,7 @@ describe('ColumnsManagement', () => {
       createColumn({ id: 'response-actions', header: 'Actions' }),
     ]
 
-    await renderWithProviders(
+    render(
       <ColumnsManagement
         table={{ getAllLeafColumns: () => columns }}
         handleOnColumnsManagementConfirm={handleConfirm}
@@ -105,6 +104,14 @@ describe('ColumnsManagement', () => {
     expect(questionTimingCheckbox).not.toBeChecked()
 
     await user.click(timingCheckbox)
+    await user.click(screen.getByRole('button', { name: 'Clear selection' }))
+    expect(timingCheckbox).toBeChecked()
+
+    await user.click(timingCheckbox)
+    await user.click(screen.getByRole('button', { name: 'Select all' }))
+    expect(timingCheckbox).not.toBeChecked()
+
+    await user.click(timingCheckbox)
     await user.click(screen.getByRole('button', { name: 'Confirm' }))
 
     expect(handleConfirm).toHaveBeenCalledWith(
@@ -134,9 +141,7 @@ describe('ColumnsManagement', () => {
       }),
     ]
 
-    await renderWithProviders(
-      <ColumnsManagement table={{ getAllLeafColumns: () => columns }} />
-    )
+    render(<ColumnsManagement table={{ getAllLeafColumns: () => columns }} />)
 
     expect(screen.getByText('Q00')).toHaveClass('column-question-code')
     expect(screen.getByLabelText('Q00')).toBeInTheDocument()

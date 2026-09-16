@@ -19,6 +19,9 @@ import {
   generateData,
   SelectColumnId,
   ActionsColumnId,
+  applyStoredTimingColumnVisibility,
+  readTimingColumnVisibility,
+  writeTimingColumnVisibility,
 } from '../../utils'
 import { Toast } from 'helpers'
 
@@ -200,7 +203,13 @@ export const ResponsesTable = ({
       }
 
       setColumns(generatedColumns)
-      setColumnVisibility(getInitialColumnVisibility(generatedColumns))
+      setColumnVisibility(
+        applyStoredTimingColumnVisibility(
+          generatedColumns,
+          getInitialColumnVisibility(generatedColumns),
+          readTimingColumnVisibility(survey.sid)
+        )
+      )
       // else if we have columns, then we pop the actions column and readd it to update the columns ref
     } else if (!hideActions && columns.length) {
       columns.pop()
@@ -384,6 +393,7 @@ export const ResponsesTable = ({
 
     setColumnVisibility(columnVisibility)
     setColumnsOrder(columnOrder)
+    writeTimingColumnVisibility(survey.sid, columnsInfo)
   }
 
   useEffect(() => {

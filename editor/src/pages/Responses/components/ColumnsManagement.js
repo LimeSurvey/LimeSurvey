@@ -160,7 +160,7 @@ export const ColumnsManagement = ({
 
   const handleClearAll = () => {
     const currentColumns = columns.map((column) => {
-      if (column.isLocked || isSpecialColumn(column)) {
+      if (column.isTiming || column.isLocked || isSpecialColumn(column)) {
         return column
       }
 
