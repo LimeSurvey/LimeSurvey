@@ -156,4 +156,33 @@ class AccessModeChangeTest extends TestBaseClass
             SurveyAccessModeService::$TOKEN_TABLE_NO_ACTION
         );
     }
+
+    /**
+     * Regression test for issue #20457: Yii's schema getTableNames() result (used by
+     * hasTokensTable/tableExists) is cached for the whole request. If something reads
+     * hasTokensTable before the tokens table is created and Token::createTable() does not
+     * invalidate that cache, a later hasTokensTable check in the same request keeps
+     * reporting the table as missing, causing a redundant/failing second create attempt
+     * (this is what happens when SurveyActivate::activate() creates the table and
+     * SurveyAccessModeService::changeAccessMode() re-checks it right after, within the
+     * same HTTP request).
+     * @return void
+     */
+    public function testHasTokensTableReflectsTableCreatedWithinSameRequest()
+    {
+        $result = $this->importTheFile('access_modes_797496.lsa');
+        $survey = $this->getSurvey($result['newsid']);
+        $this->assertFalse($survey->hasTokensTable);
+
+        // Prime the schema's table-name cache the way an earlier hasTokensTable
+        // check within the same request would, before the tokens table exists.
+        \Yii::app()->db->schema->getTableNames();
+
+        \Token::createTable($survey->sid);
+
+        $this->assertTrue(
+            $survey->hasTokensTable,
+            'hasTokensTable must reflect a table created earlier in the same request, not a stale cached table list.'
+        );
+    }
 }

@@ -166,6 +166,11 @@ class SurveyAccessModeService
                 $this->app->db->createCommand()->dropTable("{{" . $oldTable . "}}");
                 $this->tokenTableAction = self::$TOKEN_TABLE_DROPPED;
             } //If action is Keep, do nothing
+
+            // Refresh the schema cache so that a stale getTableNames() result (used by
+            // tableExists()/hasTokensTable) does not keep reporting the renamed/dropped
+            // table as still existing later in the same request. See issue #20457.
+            $this->app->db->schema->refresh();
         }
     }
 

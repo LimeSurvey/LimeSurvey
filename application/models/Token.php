@@ -227,8 +227,11 @@ abstract class Token extends Dynamic
             //table already exists, skipping
         }
 
-        // Refresh schema cache just in case the table existed in the past, and return if table exist
-        return $db->schema->getTable($sTableName, true);
+        // Refresh the whole schema cache (not just this table) so that a stale getTableNames()
+        // result (used by tableExists()/hasTokensTable) does not cause a second, failing
+        // createTable attempt later in the same request. See issue #20457.
+        $db->schema->refresh();
+        return $db->schema->getTable($sTableName);
     }
 
     /**
