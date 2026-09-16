@@ -468,6 +468,13 @@ export const OptionQuestionViewMode = ({
                 onClick={(e) => {
                   e.stopPropagation()
                 }}
+                update={(newValue) => {
+                  const key = isSingleChoiceTheme
+                    ? values?.[1]?.key
+                    : childrenValuesInOrder[index]?.key
+
+                  onValueChange(newValue, key)
+                }}
                 placeholder={st('Enter your answer here.')}
                 rows={1}
                 maxLength={Infinity}

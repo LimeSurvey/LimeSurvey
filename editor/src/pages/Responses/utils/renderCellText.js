@@ -14,6 +14,8 @@ export const renderCellText = ({
   checked,
   index,
   key = '',
+  question = {},
+  baseLanguage,
 }) => {
   const isOtherKey = key.endsWith('_Cother')
 
@@ -44,6 +46,10 @@ export const renderCellText = ({
     )
   }
 
+  const otherReplaceText =
+    (question.attributes?.other_replace_text?.[baseLanguage] || t('Other')) +
+    ': '
+
   return (
     <span>
       {checked && !isRankingQuestion(questionThemeName) && (
@@ -51,8 +57,8 @@ export const renderCellText = ({
       )}
       {isRankingQuestion(questionThemeName) && `${index + 1}. `}
       {isSingleChoiceQuestion(questionThemeName)
-        ? `${isOtherKey ? t('Other :') : ''} ${answerTitle}`
-        : `${isOtherKey ? t('Other: ') : ''} ${subquestionTitle}`}
+        ? `${isOtherKey ? otherReplaceText : ''} ${answerTitle}`
+        : `${isOtherKey ? otherReplaceText : ''} ${subquestionTitle}`}
       {comment?.value && (
         <span>
           {answerTitle && ':'} {comment.value}
