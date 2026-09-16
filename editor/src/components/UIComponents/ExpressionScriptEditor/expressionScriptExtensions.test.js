@@ -34,10 +34,12 @@ describe('Expression Script highlighting', () => {
   })
 
   it('marks unterminated strings as errors', () => {
-    const tokens = tokenizeExpressionScript("Q01 == 'answer")
+    const tokens = tokenizeExpressionScript("Q01 == 'answer) and Q02")
 
-    expect(tokens.at(-1)).toMatchObject({
+    expect(tokens.find(({ type }) => type === 'error')).toMatchObject({
       type: 'error',
+      from: 7,
+      to: 14,
       message: 'Unterminated string',
     })
   })

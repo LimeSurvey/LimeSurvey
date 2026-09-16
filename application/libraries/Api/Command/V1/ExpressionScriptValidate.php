@@ -108,12 +108,14 @@ class ExpressionScriptValidate implements CommandInterface
             true
         );
 
-        $validationResult = LimeExpressionManager::validateExpression($expression, $questionId);
+        [$validationExpression, $byteOffset] = $this->unwrapExpression($expression);
+        $validationResult = LimeExpressionManager::validateExpression($validationExpression, $questionId);
         $diagnostics = [];
 
         foreach ($validationResult['errors'] as $error) {
             $diagnostics[] = $this->makeDiagnostic(
                 $expression,
+                $byteOffset,
                 $error[1] ?? null,
                 (string) ($error[0] ?? 'Invalid expression'),
                 'error'
@@ -123,6 +125,7 @@ class ExpressionScriptValidate implements CommandInterface
         foreach ($validationResult['warnings'] as $warning) {
             $diagnostics[] = $this->makeDiagnostic(
                 $expression,
+                $byteOffset,
                 $warning->getToken(),
                 (string) $warning->getMessage(),
                 'warning'
@@ -138,8 +141,13 @@ class ExpressionScriptValidate implements CommandInterface
      * @param array|null $token Expression Manager token [value, byte offset, type]
      * @return array{from: int, to: int, severity: string, message: string}
      */
-    private function makeDiagnostic(string $expression, ?array $token, string $message, string $severity): array
-    {
+    private function makeDiagnostic(
+        string $expression,
+        int $byteOffset,
+        ?array $token,
+        string $message,
+        string $severity
+    ): array {
         if ($token === null) {
             return [
                 'from' => 0,
@@ -149,16 +157,34 @@ class ExpressionScriptValidate implements CommandInterface
             ];
         }
 
-        $byteOffset = (int) ($token[1] ?? 0);
+        $tokenByteOffset = $byteOffset + (int) ($token[1] ?? 0);
         $tokenValue = (string) ($token[0] ?? '');
-        $from = $this->utf16Length(substr($expression, 0, $byteOffset));
+        $from = $this->utf16Length(substr($expression, 0, $tokenByteOffset));
+        $tokenLength = ($token[2] ?? null) === 'OTHER'
+            ? 1
+            : $this->utf16Length($tokenValue);
 
         return [
             'from' => $from,
-            'to' => $from + max(1, $this->utf16Length($tokenValue)),
+            'to' => $from + max(1, $tokenLength),
             'severity' => $severity,
             'message' => $message,
         ];
+    }
+
+    /**
+     * ExpressionScript fields may contain one pair of outer delimiters.
+     * Return the expression to validate and its byte offset in the original value.
+     *
+     * @return array{string, int}
+     */
+    private function unwrapExpression(string $expression): array
+    {
+        if (preg_match('/^(\s*)\{([\s\S]*)\}(\s*)$/', $expression, $matches) === 1) {
+            return [$matches[2], strlen($matches[1]) + 1];
+        }
+
+        return [$expression, 0];
     }
 
     private function utf16Length(string $value): int

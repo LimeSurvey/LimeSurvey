@@ -55,12 +55,19 @@ export const tokenizeExpressionScript = (content) => {
         }
       }
 
-      addToken(
-        from,
-        index,
-        isClosed ? 'string' : 'error',
-        isClosed ? '' : 'Unterminated string'
-      )
+      if (isClosed) {
+        addToken(from, index, 'string')
+      } else {
+        const invalidString = content.slice(from + 1).search(/[\s)\]},]/)
+        const errorTo = invalidString === -1 ? index : from + 1 + invalidString
+        addToken(
+          from,
+          Math.max(from + 1, errorTo),
+          'error',
+          'Unterminated string'
+        )
+        index = errorTo
+      }
       continue
     }
 
