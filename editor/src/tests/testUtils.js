@@ -19,7 +19,26 @@ const JestWrapWithProviders = ({ children }) => {
         client={queryClient}
         persistOptions={persistOptions}
       >
-        <I18Provider language={'en'} i18n={() => i18nInstance('en')}>
+        <I18Provider
+          language={'en'}
+          i18n={(
+            _lang,
+            _auth,
+            _setLanguages,
+            _languages,
+            _isSurveyTranslation,
+            onReady
+          ) =>
+            i18nInstance(
+              'en',
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              onReady
+            )
+          }
+        >
           <Routes>
             <Route
               path="/survey/:surveyId/:panel?/:menu?"

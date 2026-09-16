@@ -1,4 +1,4 @@
-export const getClearedQuestionImageObject = () => {
+export const getClearedImageObject = () => {
   return {
     imagePath: '',
     imageAlign: 'left',
