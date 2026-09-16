@@ -2870,6 +2870,12 @@ function isCaptchaEnabled($screen, $captchamode = '')
 /**
 * Check if a table does exist in the database
 *
+* Uses schema->getTableNames() rather than schema->getTable($sTableName) on purpose:
+* getTableNames() issues a single lightweight "SHOW TABLES" query (cached per schema),
+* while getTable() additionally runs "SHOW FULL COLUMNS" and "SHOW CREATE TABLE" per call
+* to build the full column/constraint metadata, which is unnecessary overhead when all
+* that is needed is an existence check.
+*
 * @param string $sTableName Table name to check for (without dbprefix!))
 * @return boolean True or false if table exists or not
 */

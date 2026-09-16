@@ -63,6 +63,8 @@ class InstallerConfigForm extends CFormModel
     public $dbprefix = 'lime_';
     /** @var string $dbengine Database Engine type if DB type is MySQL */
     public $dbengine;
+    /** @var bool $mssqlTrustServerCertificate Whether to trust the SQL Server certificate without validating it, needed to connect to servers using a self-signed certificate */
+    public $mssqlTrustServerCertificate = false;
 
     /** @var array $db_names */
     public $db_names = array(
@@ -134,6 +136,9 @@ class InstallerConfigForm extends CFormModel
     public $isPhpImapPresent = false;
 
     /** @var bool */
+    public $isPhpCurlPresent = false;
+
+    /** @var bool */
     public $isPhpVersionOK = false;
 
     /** @var bool */
@@ -170,6 +175,7 @@ class InstallerConfigForm extends CFormModel
             array('dbtype', 'validateDBVersion', 'on' => 'database'),
             array('dbengine', 'validateDBEngine', 'on' => 'database'),
             array('dbengine', 'in', 'range' => array_keys($this->dbEngines), 'on' => 'database'),
+            array('mssqlTrustServerCertificate', 'safe', 'on' => 'database'),
             //Optional
             array('adminLoginName, adminLoginPwd, confirmPwd, adminEmail', 'required', 'on' => 'optional', 'message' => gT('Either admin login name, password or email is empty')),
             array('adminLoginName, adminName, siteName, confirmPwd', 'safe', 'on' => 'optional'),
@@ -190,6 +196,7 @@ class InstallerConfigForm extends CFormModel
             'dbpwd' => gT('Database password'),
             'dbprefix' => gT('Table prefix'),
             'dbengine' => gT('MariaDB/MySQL database engine type'),
+            'mssqlTrustServerCertificate' => gT('Trust server certificate'),
         );
     }
 
@@ -202,6 +209,7 @@ class InstallerConfigForm extends CFormModel
             'dbuser' => gT('Your database server user name. In most cases "root" will work.'),
             'dbpwd' => gT("Your database server password."),
             'dbprefix' => gT('If your database is shared, recommended prefix is "lime_" else you can leave this setting blank.'),
+            'mssqlTrustServerCertificate' => gT('Enable this if a MSSQL connection fails due to a certificate verification error. This skips validation of the server certificate, so only enable it if you trust the network path to your database server.'),
         ];
     }
 
@@ -222,6 +230,7 @@ class InstallerConfigForm extends CFormModel
         $this->isPhpLdapPresent = extension_loaded('ldap');
         $this->isPhpImapPresent = extension_loaded('imap');
         $this->isPhpZipPresent = extension_loaded('zip');
+        $this->isPhpCurlPresent = extension_loaded('curl');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
         $this->isCollatorPresent = class_exists('Collator');
 
@@ -253,6 +262,7 @@ class InstallerConfigForm extends CFormModel
             or !$this->isPhpGdPresent
             or !$this->isPhpZipPresent
             or !$this->isPhpJsonPresent
+            or !$this->isPhpCurlPresent
         ) {
             return false;
         }
@@ -555,7 +565,10 @@ class InstallerConfigForm extends CFormModel
                 $sDSN = $this->getPgsqlDsn();
                 break;
             case self::DB_TYPE_DBLIB:
-                $sDSN = $this->dbtype . ":host={$this->dblocation};dbname={$this->dbname}";
+                $sDSN = $this->dbtype . ":host={$this->dblocation}";
+                if ($this->useDbName) {
+                    $sDSN .= ";dbname={$this->dbname}";
+                }
                 break;
             case self::DB_TYPE_MSSQL:
             case self::DB_TYPE_SQLSRV:
@@ -595,13 +608,12 @@ class InstallerConfigForm extends CFormModel
     private function getPgsqlDsn()
     {
         $port = $this->getDbPort();
-        if (empty($this->dbpwd)) {
-            // If there's no password, we need to write password=""; instead of password=;,
-            // or PostgreSQL's libpq will consider the DSN string part after "password="
-            // (including the ";" and the potential dbname) as part of the password definition.
-            $this->dbpwd = '""';
-        }
-        $sDSN = "pgsql:host={$this->dblocation};port={$port};user={$this->dbuser};password={$this->dbpwd};";
+        // Do not embed user/password in the DSN string: PDO_PGSQL only escapes/quotes
+        // credentials that are passed as separate constructor arguments (see dbConnect()/dbTest()).
+        // Once "user=" or "password=" is present in the DSN itself, PDO passes it to libpq
+        // as-is, so special characters such as ";" or "'" in the password break the connection
+        // (see bug #15061).
+        $sDSN = "pgsql:host={$this->dblocation};port={$port};";
         if ($this->useDbName) {
             $sDSN .= "dbname={$this->dbname};";
         }
@@ -620,7 +632,10 @@ class InstallerConfigForm extends CFormModel
         }
         $sDSN = $this->dbtype . ":Server={$sDatabaseLocation};";
         if ($this->useDbName) {
-            $sDSN .= "Database={$this->dbname}";
+            $sDSN .= "Database={$this->dbname};";
+        }
+        if ($this->mssqlTrustServerCertificate) {
+            $sDSN .= "TrustServerCertificate=1;";
         }
         return $sDSN;
     }
