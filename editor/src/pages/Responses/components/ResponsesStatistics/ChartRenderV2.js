@@ -284,7 +284,7 @@ const getStorageKey = (surveyId, chartId, index) =>
 
 const getDefaultView = (availableViews, viewContext) => {
   const preferredViews = [
-    // Ranking opens on the table; its bar chart only counts 1st places.
+    // Ranking opens on the table; only the table breaks down the ranked places.
     viewContext.isRanking && VIEW.TABLE,
     viewContext.isArrayText && VIEW.TABLE,
     viewContext.isArray && !viewContext.isArrayNumbers && VIEW.STACKED_BAR,
@@ -466,7 +466,7 @@ export const ChartRendererV2 = ({
               <div className="responses-statistics-chart-subtitle">
                 <TooltipContainer
                   tip={t(
-                    'The bar chart shows how often each answer option is on 1st place'
+                    'The bar chart shows how often each answer option was ranked, regardless of the place it got'
                   )}
                 >
                   <span
