@@ -4,88 +4,6 @@
   gap: 14px;
   padding: 0;
 
-  .export-upsell-banner {
-    background-color: #fff3e6;
-    border-radius: 4px;
-    padding: 20px 25px;
-    display: flex;
-    align-items: flex-end;
-    gap: 20px;
-
-    .export-upsell-banner-main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-    }
-
-    .export-upsell-banner-heading {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .export-upsell-icon {
-      flex: none;
-      width: 24px;
-      height: 24px;
-      background-color: #ffffff;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffba68;
-    }
-
-    .export-upsell-banner-title {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 18px;
-      line-height: 20px;
-      letter-spacing: -0.017em;
-      color: #1e1e1e;
-    }
-
-    .export-upsell-banner-subtitle-row {
-      padding-left: 35px;
-    }
-
-    .export-upsell-banner-subtitle {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 20px;
-      letter-spacing: -0.017em;
-      color: #333641;
-    }
-
-    .export-upsell-banner-button {
-      flex: none;
-      width: 109px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #ffba68;
-      color: #1e1e1e;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 12px;
-      gap: 8px;
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 20px;
-      letter-spacing: -0.015em;
-      cursor: default;
-      white-space: nowrap;
-    }
-  }
-
   .export-options-section {
     display: flex;
     flex-direction: column;
@@ -106,14 +24,6 @@
     display: flex;
     align-items: center;
     gap: 6px;
-  }
-
-  .export-sparkle {
-    width: 16px;
-    height: 16px;
-    border-radius: 5px;
-    flex: none;
-    color: #ffba68;
   }
 
   .export-format-options {
@@ -139,21 +49,6 @@
     align-items: center;
     width: 140px;
     height: 24px;
-
-    &.export-format-option--fenced {
-      pointer-events: none;
-
-      .form-check {
-        gap: 16px;
-      }
-
-      input[type='radio'] {
-        border-color: #fff1e0 !important;
-        opacity: 1 !important;
-        filter: none !important;
-        cursor: not-allowed !important;
-      }
-    }
 
     .form-check {
       display: flex;

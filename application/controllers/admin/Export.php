@@ -221,9 +221,6 @@ class Export extends SurveyCommonAction
                 chr(9) => gT("Tab"),
             );
 
-            // Subscription-based format fencing is not yet enforced in CE; all formats are available.
-            $data['isFreeUser'] = false;
-
             if (App()->request->getParam('modal')) {
                 $data['selectedColumns'] = $this->getResponseExportColumns($iSurveyID, array_keys($aFields));
                 $rawFilters = App()->request->getParam('SurveyDynamic', array());

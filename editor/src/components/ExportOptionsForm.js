@@ -3,17 +3,14 @@ import { Form } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { decodeHTMLEntities, STATES } from 'helpers'
 import { useAppState } from 'hooks'
-import { UpgradeSparkleIcon } from 'components/icons'
 
 /**
  * Export options form component for REST API-based export.
- * Handles format selection (with subscription gating), language, and answer format.
- * Displays upsell banner for free-tier users.
+ * Handles format selection, language, and answer format.
  */
 export const ExportOptionsForm = ({
   surveyLanguage,
   additionalLanguages = '',
-  isFreeUser = false,
   onOptionsChange,
 }) => {
   const { t } = useTranslation()
@@ -40,7 +37,7 @@ export const ExportOptionsForm = ({
     { label: t('All data'), value: 'all' },
   ]
 
-  // All available export formats, grouped into rows matching the design
+  // All available export formats, grouped into rows matching the design.
   const allExportFormats = [
     { value: 'csv', label: t('CSV') },
     { value: 'html', label: t('HTML') },
@@ -58,16 +55,6 @@ export const ExportOptionsForm = ({
     ['pdf', 'spss', 'stata', 'r_syntax'],
     ['r_data', 'json', 'excel', 'word'],
   ]
-
-  // For MVP: Free tier only gets CSV + HTML; others get all (but only CSV/HTML routed to API for now)
-  const allowedFormats = isFreeUser
-    ? ['csv', 'html']
-    : allExportFormats.map((f) => f.value)
-
-  const getFormat = (value) => {
-    const format = allExportFormats.find((f) => f.value === value)
-    return { ...format, disabled: !allowedFormats.includes(value) }
-  }
 
   const csvSeparatorOptions = [
     { label: t('Comma (,)'), value: ',' },
@@ -97,36 +84,16 @@ export const ExportOptionsForm = ({
 
   return (
     <div className="export-options-form">
-      {isFreeUser && (
-        <div className="export-upsell-banner">
-          <div className="export-upsell-banner-main">
-            <div className="export-upsell-banner-heading">
-              <span className="export-upsell-icon">
-                <UpgradeSparkleIcon width={17} height={16} />
-              </span>
-              <span className="export-upsell-banner-title">
-                {t('Take your results anywhere - unlock more formats')}
-              </span>
-            </div>
-            <div className="export-upsell-banner-subtitle-row">
-              <span className="export-upsell-banner-subtitle">
-                {t(
-                  'Switch to LimeSurvey Expert to receive the advanced export options.'
-                )}
-              </span>
-            </div>
-          </div>
-          <span className="export-upsell-banner-button">
-            {t('Show options')}
-          </span>
-        </div>
-      )}
-
       <div className="export-options-section">
         <label className="export-options-label">{t('Export data')}</label>
         <div className="export-format-options">
           {responseTypeOptions.map((option) => (
-            <div key={option.value} className="export-format-option">
+            <div
+              key={option.value}
+              className="export-format-option"
+              data-fenceable="export-data"
+              data-fence-key={option.value}
+            >
               <Form.Check
                 type="radio"
                 id={`response-type-${option.value}`}
@@ -142,19 +109,20 @@ export const ExportOptionsForm = ({
       </div>
 
       <div className="export-options-section">
-        <label className="export-options-label">
-          {t('File formats')}
-          {isFreeUser && <UpgradeSparkleIcon className="export-sparkle" />}
-        </label>
+        <label className="export-options-label">{t('File formats')}</label>
         <div className="export-format-grid">
           {formatRows.map((row, rowIndex) => (
             <div key={rowIndex} className="export-format-row">
               {row.map((value) => {
-                const format = getFormat(value)
+                const format = allExportFormats.find(
+                  (item) => item.value === value
+                )
                 return (
                   <div
                     key={format.value}
-                    className={`export-format-option ${format.disabled ? 'export-format-option--fenced' : ''}`}
+                    className="export-format-option"
+                    data-fenceable="export-format"
+                    data-fence-key={format.value}
                   >
                     <Form.Check
                       type="radio"
@@ -162,11 +130,8 @@ export const ExportOptionsForm = ({
                       name="exportFormat"
                       value={format.value}
                       label={format.label}
-                      checked={type === format.value && !format.disabled}
-                      onChange={(e) =>
-                        !format.disabled && setType(e.target.value)
-                      }
-                      disabled={format.disabled}
+                      checked={type === format.value}
+                      onChange={(e) => setType(e.target.value)}
                     />
                   </div>
                 )
@@ -183,7 +148,12 @@ export const ExportOptionsForm = ({
           </label>
           <div className="export-format-options">
             {csvSeparatorOptions.map((option) => (
-              <div key={option.value} className="export-format-option">
+              <div
+                key={option.value}
+                className="export-format-option"
+                data-fenceable="csv-separator"
+                data-fence-key={option.value}
+              >
                 <Form.Check
                   type="radio"
                   id={`csv-separator-${option.value}`}
@@ -204,7 +174,12 @@ export const ExportOptionsForm = ({
           <label className="export-options-label">{t('Export language')}</label>
           <div className="export-format-options">
             {languages.map((lang) => (
-              <div key={lang} className="export-format-option">
+              <div
+                key={lang}
+                className="export-format-option"
+                data-fenceable="export-language"
+                data-fence-key={lang}
+              >
                 <Form.Check
                   type="radio"
                   id={`language-${lang}`}

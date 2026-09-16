@@ -312,10 +312,8 @@ export const Responses = () => {
         headerClassname="export-results-modal-header"
         Component={
           <ExportResponsesModal
-            surveyId={surveyId}
             surveyLanguage={survey?.language}
             additionalLanguages={survey?.additionalLanguages}
-            isFreeUser={false}
             exportRef={exportOptionsRef}
           />
         }

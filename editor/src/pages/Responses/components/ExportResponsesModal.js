@@ -7,10 +7,8 @@ import { ExportOptionsForm } from 'components'
  * Export action is handled by parent component via ref.
  */
 export const ExportResponsesModal = ({
-  surveyId,
   surveyLanguage,
   additionalLanguages,
-  isFreeUser = false,
   exportRef,
 }) => {
   const [exportOptions, setExportOptions] = useState({
@@ -27,21 +25,19 @@ export const ExportResponsesModal = ({
     }
 
     exportRef.current = {
-      surveyId,
       options: exportOptions,
     }
 
     return () => {
       exportRef.current = null
     }
-  }, [exportOptions, exportRef, surveyId])
+  }, [exportOptions, exportRef])
 
   return (
     <div className="export-responses-modal">
       <ExportOptionsForm
         surveyLanguage={surveyLanguage}
         additionalLanguages={additionalLanguages}
-        isFreeUser={isFreeUser}
         onOptionsChange={setExportOptions}
       />
     </div>
