@@ -1831,6 +1831,14 @@ class SurveyRuntimeHelper
     }
 
 
+    /**
+     * Sets the display data for the current survey group or completion step.
+     *
+     * For non-preview group and question modes, an unavailable navigation
+     * step renders a restart error and ends the request.
+     *
+     * @return void
+     */
     private function setGroup()
     {
         if (!$this->previewgrp && !$this->previewquestion) {
@@ -1841,6 +1849,13 @@ class SurveyRuntimeHelper
             } elseif ($this->sSurveyMode != 'survey') {
                 if ($this->sSurveyMode != 'group') {
                     $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
+                }
+                if (empty($this->aStepInfo)) {
+                    // The ExpressionManager state no longer matches the session (eg: survey structure was
+                    // changed in the admin interface while this preview/test session was open): bug #17107
+                    $sMessage = gT('We are sorry but your survey structure has expired/changed - please restart.');
+                    renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
+                    Yii::app()->end();
                 }
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];

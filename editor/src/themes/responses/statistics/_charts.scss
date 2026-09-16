@@ -525,6 +525,11 @@
   }
 }
 
+// Also used by the Overview page's Completed/Incomplete chart, so keep it unscoped.
+.responses-statistics-pie-chart {
+  overflow-x: auto;
+}
+
 #statistics-value-type label {
   padding: 3px 16px;
 }
