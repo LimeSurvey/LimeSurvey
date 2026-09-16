@@ -101,12 +101,8 @@ export const TopBar = ({
   }, [survey.sid, topbarConfig?.pageName])
 
   useEffect(() => {
-    if (topbarConfig?.pageName !== PAGES.EDITOR) {
-      overviewAutoOpenedForSurvey.current = null
-      return
-    }
-
     if (
+      topbarConfig?.pageName === PAGES.EDITOR &&
       survey.active &&
       survey.sid &&
       overviewAutoOpenedForSurvey.current !== survey.sid

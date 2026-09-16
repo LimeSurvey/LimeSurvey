@@ -3,10 +3,29 @@ import 'tests/mocks'
 
 import { renderWithProviders } from 'tests/testUtils'
 import { TopBar } from './TopBar'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { URLS } from 'helpers'
+import { PAGES, STATES, URLS } from 'helpers'
+import { queryClient } from 'queryClient'
 import surveyData from 'helpers/data/survey-detail.json'
+
+jest.mock('components/PublishSettings/SurveyActivationHandler', () => {
+  const React = require('react')
+
+  return React.forwardRef(function MockSurveyActivationHandler(
+    { showOverViewModal, setShowOverViewModal },
+    ref
+  ) {
+    void ref
+    return (
+      <button
+        data-testid="overview-modal-state"
+        data-open={showOverViewModal}
+        onClick={() => setShowOverViewModal(false)}
+      />
+    )
+  })
+})
 
 describe('TopBar', () => {
   let Survey
@@ -102,5 +121,38 @@ describe('TopBar', () => {
 
     const publishSettings = screen.getByTestId('publish-settings')
     expect(publishSettings).toBeInTheDocument()
+  })
+
+  test('Overview should not reopen when returning to the editor', async () => {
+    queryClient.clear()
+    Survey.active = true
+    queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
+      pageName: PAGES.EDITOR,
+    })
+
+    await renderWithProviders(<TopBar surveyId={Survey.sid} />)
+
+    const overviewModalState = await screen.findByTestId('overview-modal-state')
+    await waitFor(() =>
+      expect(overviewModalState).toHaveAttribute('data-open', 'true')
+    )
+
+    await userEvent.click(overviewModalState)
+    expect(overviewModalState).toHaveAttribute('data-open', 'false')
+
+    act(() => {
+      queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
+        pageName: PAGES.RESPONSES,
+      })
+    })
+    act(() => {
+      queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
+        pageName: PAGES.EDITOR,
+      })
+    })
+
+    await waitFor(() =>
+      expect(overviewModalState).toHaveAttribute('data-open', 'false')
+    )
   })
 })
