@@ -559,7 +559,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('showqnumcode', 'in', 'range' => array('B', 'N', 'C', 'X', 'I'), 'allowEmpty' => true),
             array('format', 'in', 'range' => array('G', 'S', 'A', 'I'), 'allowEmpty' => true),
             array('googleanalyticsstyle', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '3', 'allowEmpty' => true),
-            array('code', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('code', 'length', 'max' => 128, 'allowEmpty' => true),
             array('autonumber_start', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('tokenlength', 'default', 'value' => 15),
