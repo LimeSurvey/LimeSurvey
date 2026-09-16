@@ -331,31 +331,26 @@ class Update_700 extends DatabaseUpdateBase
                                 ->where('parent_qid = :qid', [':qid' => $qid])
                                 ->order('question_order')
                                 ->queryAll();
+                            // Ranking columns are rank SLOTS: the old column suffix is the rank
+                            // position (1..n) and the stored VALUE is the answer code, which is
+                            // the title of the matching (newly created) ranking subquestion.
+                            // The n-th slot therefore maps to the n-th subquestion column.
                             if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
                                 $sqid = $cd ? $rankingSuffix : $subQuestions[($iRankingSuffix - 1)]['qid'];
                                 $newFieldName = "Q{$rootQuestion['qid']}_{$prefix}" . $sqid;
                             } else {
-                                // Rank position no longer has a matching subquestion (e.g. a
-                                // subquestion was deleted after responses were collected).
-                                // Return the field name unchanged so the caller can detect
-                                // this "no-op mapping" and drop the column instead of
-                                // carrying an orphaned rank column into the new table.
+                                // There are more rank slots than subquestions (e.g. an answer
+                                // option was deleted after responses were collected), so this
+                                // trailing slot has no counterpart in the new table. Return the
+                                // field name unchanged so the caller can detect this "no-op
+                                // mapping" and drop the column instead of carrying an orphaned
+                                // rank column into the new table.
+                                // No data is lost by dropping it: compactLegacyRankingValues()
+                                // has already NULLed every value that can no longer be mapped to
+                                // a subquestion title and shifted the remaining, still valid
+                                // ranks to the left, so the trailing slots are empty by then.
                                 return $fieldName;
                             }
-//                            elseif (count($subQuestions)) {
-//                                $minSortOrder = $subQuestions[0]['question_order'];
-//                                $diff = 0;
-//                                if ($minSortOrder === 0) {
-//                                    $diff = -1;
-//                                } elseif ($minSortOrder > 1) {
-//                                    $diff = $minSortOrder;
-//                                }
-//                                foreach ($subQuestions as $question) {
-//                                    if (($rankingSuffix == $question['title']) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $question['question_order']))) {
-//                                        return "Q{$rootQuestion['qid']}_{$prefix}{$question['qid']}";
-//                                    }
-//                                }
-//                            }
                         } catch (\Exception $ex) {
                             // Ignore inconsistencies in archive rankings
                             if (strpos($tableName, 'old') === false) {
@@ -1431,6 +1426,119 @@ class Update_700 extends DatabaseUpdateBase
             AND qid IN (SELECT qid FROM {{questions}} WHERE type = 'R')
         ";
     }
+
+    /**
+     * Cleans up ranking answers in a legacy response table *before* its rows are copied
+     * one-to-one into the new table.
+     *
+     * Ranking columns are rank SLOTS: the old column "{sid}X{gid}X{qid}{n}" holds the answer
+     * code that the participant put on rank n. That answer code equals the title of the
+     * ranking subquestion that has just been created from the answer options.
+     *
+     * If an answer option was deleted after responses had been collected, its code is still
+     * present in the responses but can no longer be mapped to any subquestion title. Simply
+     * dropping the now surplus trailing rank column would destroy a perfectly valid value
+     * (the one sitting in the last slot) while keeping the unmappable one.
+     *
+     * Therefore every value that cannot be mapped to a subquestion title is replaced by NULL
+     * and all following ranks of that question are moved one column to the left, so the ranks
+     * stay gapless and the surplus trailing slots end up empty and can be dropped losslessly.
+     *
+     * @param string $tableName legacy (old) response table name
+     * @param string[] $columnNames all column names of that table
+     * @return void
+     */
+    protected function compactLegacyRankingValues(string $tableName, array $columnNames): void
+    {
+        // Timing tables only hold durations, never ranking answers.
+        if ((strpos($tableName, 'survey') === false) || (strpos($tableName, 'timing') !== false)) {
+            return;
+        }
+        $parts = explode('_', $tableName);
+        $index = count($parts) - ((strpos($tableName, 'old') === false) ? 1 : 2);
+        if (!isset($parts[$index]) || !ctype_digit((string)$parts[$index])) {
+            return;
+        }
+        $sid = (int)$parts[$index];
+        $rankingQuestions = $this->db->createCommand()
+            ->select('qid, gid')
+            ->from('{{questions}}')
+            ->where("sid = :sid AND type = 'R' AND (parent_qid = 0 OR parent_qid IS NULL)", [':sid' => $sid])
+            ->queryAll();
+        if (!count($rankingQuestions)) {
+            return;
+        }
+        $availableColumns = array_flip($columnNames);
+        foreach ($rankingQuestions as $rankingQuestion) {
+            $qid = (int)$rankingQuestion['qid'];
+            $gid = (int)$rankingQuestion['gid'];
+            // Collect the rank slots of this question in rank order (1..n).
+            $rankColumns = [];
+            for ($rank = 1; isset($availableColumns["{$sid}X{$gid}X{$qid}{$rank}"]); $rank++) {
+                $rankColumns[] = "{$sid}X{$gid}X{$qid}{$rank}";
+            }
+            if (!count($rankColumns)) {
+                continue;
+            }
+            // $questionsToPass equivalent: every subquestion of this ranking question. Their
+            // "title" is what is stored in the response columns.
+            $validTitles = $this->db->createCommand()
+                ->select('title')
+                ->from('{{questions}}')
+                ->where('parent_qid = :qid', [':qid' => $qid])
+                ->queryColumn();
+            $this->compactRankingColumns($tableName, $rankColumns, array_flip(array_map('strval', $validTitles)));
+        }
+    }
+
+    /**
+     * Rewrites the given rank slot columns row by row: unmappable values are removed and the
+     * remaining ones are packed to the left, the freed trailing slots are set to NULL.
+     *
+     * @param string $tableName
+     * @param string[] $rankColumns rank slot columns, ordered by rank
+     * @param array<string,mixed> $validTitles subquestion titles, used as a lookup set
+     * @return void
+     */
+    protected function compactRankingColumns(string $tableName, array $rankColumns, array $validTitles): void
+    {
+        $chunkSize = 1000;
+        $offset = 0;
+        do {
+            $rows = $this->db->createCommand()
+                ->select(array_merge(['id'], $rankColumns))
+                ->from($tableName)
+                ->order('id')
+                ->limit($chunkSize, $offset)
+                ->queryAll();
+            foreach ($rows as $row) {
+                // Keep the still mappable ranks, in their original order.
+                $keptValues = [];
+                foreach ($rankColumns as $rankColumn) {
+                    $value = $row[$rankColumn] ?? null;
+                    if (($value === null) || ($value === '')) {
+                        continue;
+                    }
+                    if (isset($validTitles[(string)$value])) {
+                        $keptValues[] = $value;
+                    }
+                }
+                // Re-align them to the left and blank out the remaining slots.
+                $newValues = [];
+                foreach ($rankColumns as $position => $rankColumn) {
+                    $newValue = $keptValues[$position] ?? null;
+                    $oldValue = $row[$rankColumn] ?? null;
+                    if ((($oldValue === '') ? null : $oldValue) !== $newValue) {
+                        $newValues[$rankColumn] = $newValue;
+                    }
+                }
+                if (count($newValues)) {
+                    $this->db->createCommand()->update($tableName, $newValues, 'id = :id', [':id' => $row['id']]);
+                }
+            }
+            $offset += $chunkSize;
+        } while (count($rows) === $chunkSize);
+    }
     // -------------------------------------------------------------------------
     // INSERTANS conversion helpers – self-contained (no AR models)
     // -------------------------------------------------------------------------
@@ -1991,12 +2099,14 @@ class Update_700 extends DatabaseUpdateBase
             }
             $fromColumns = [];
             $toColumns = [];
+            $allColumnNames = [];
             foreach ($scripts[$TABLE_NAME]['columns'] as $column) {
                 if (!isset($column['COLUMN_NAME'])) {
                     if (isset($column['column_name'])) {
                         $column['COLUMN_NAME'] = $column['column_name'];
                     }
                 }
+                $allColumnNames[] = $column['COLUMN_NAME'];
                 if (in_array($column['COLUMN_NAME'], $orphanedColumns, true)) {
                     continue;
                 }
@@ -2020,6 +2130,12 @@ class Update_700 extends DatabaseUpdateBase
                     "ALTER TABLE {$scripts[$TABLE_NAME]['new_name']} DROP COLUMN " . $this->dbQuoteFields($orphanedColumn);
             }
             try {
+                // The INSERT below copies the legacy rows one-to-one, so ranking answers that
+                // can no longer be mapped to a subquestion title have to be removed - and the
+                // following ranks shifted one column to the left - while the legacy table is
+                // still intact. Otherwise dropping the surplus trailing rank column would
+                // silently discard a valid rank instead of the unmappable one.
+                $this->compactLegacyRankingValues($TABLE_NAME, $allColumnNames);
                 $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
                 foreach ($scripts[$TABLE_NAME]['DROP_ORPHANED_COLUMNS'] as $dropColumnSql) {
                     $this->db->createCommand($dropColumnSql)->execute();
