@@ -792,7 +792,7 @@ $config['defaultthemeteeditormode'] = 'default';
 // Side Menu behaviout
 $config['sideMenuBehaviour'] = 'adaptive';
 
-// Hide update key
+// Hide update key except for the first and last letters
 $config['hide_update_key'] = false;
 
 /**

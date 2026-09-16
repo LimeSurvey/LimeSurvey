@@ -37,6 +37,14 @@ export const renderCellText = ({
     )
   }
 
+  if (questionThemeName === getQuestionTypeInfo().MULTIPLE_SHORT_TEXTS.theme) {
+    return (
+      <>
+        {subquestionTitle}: {value}
+      </>
+    )
+  }
+
   if (isArrayQuestion(questionThemeName)) {
     return (
       <>

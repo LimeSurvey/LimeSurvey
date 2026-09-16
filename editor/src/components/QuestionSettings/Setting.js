@@ -1,5 +1,5 @@
 import React from 'react'
-import { STATES, isTrue } from 'helpers'
+import { STATES, isTempId, isTrue } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { useAppState } from 'hooks'
 import { SettingsWrapper } from 'components/UIComponents'
@@ -14,8 +14,12 @@ export const Setting = ({
   title = '',
   attributes = [],
   simpleSettings = false,
+  hasDefaultAttributeValues = false,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
   const isDependsOnSatisfied = (dependsOn, dependsOnValue) => {
     if (!dependsOn) {
       return true
@@ -171,12 +175,14 @@ export const Setting = ({
             'questionThemeName',
             'encrypted',
             'attributes.save_as_default',
+            'defaultAttributeValuesActions',
             'other',
           ].includes(attribute.attributePath) ||
             attribute.disableWhenActive) &&
           isSurveyActive
             ? true
-            : false
+            : attribute.action &&
+              (isTempId(question.qid) || !hasSurveyUpdatePermission)
 
         const options =
           typeof attribute.getOptions === 'function'
@@ -186,6 +192,11 @@ export const Setting = ({
         const attributeProps = {
           ...attribute.props,
           ...(options ? { options } : {}),
+          ...(attribute.action
+            ? {
+                hasDefaultAttributeValues,
+              }
+            : {}),
         }
 
         return (
@@ -209,7 +220,11 @@ export const Setting = ({
                       : ''
                 }
                 name={attribute.attributePath}
-                update={(value) => handleUpdateAttribute(value, attribute)}
+                update={(value) =>
+                  attribute.action
+                    ? handleUpdate(value, false)
+                    : handleUpdateAttribute(value, attribute)
+                }
                 isSimpleSettings={simpleSettings}
                 theme="light"
               />

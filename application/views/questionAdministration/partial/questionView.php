@@ -1,4 +1,9 @@
-<?php $pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']); ?>
+<?php
+
+require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.QuestionListMassiveActions') . '.php';
+
+$pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);
+?>
 
 
 
@@ -95,18 +100,19 @@
     <div class="row ls-space margin top-10">
         <div class="col-12">
             <?php
-            $massiveAction = Yii::app()->getController()->renderPartial(
-                '/admin/survey/Question/massive_actions/_selector',
-                array('model' => $questionModel, 'oSurvey' => $oSurvey),
-                true,
-                false
-            );
+            $floatingActions = \actions\QuestionListMassiveActions::getActions($questionModel, $oSurvey);
+            $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                'pk'       => 'id',
+                'gridId'   => 'question-grid',
+                'aActions' => $floatingActions,
+            ]);
+
             $this->widget('ext.admin.grid.CLSGridView', [ //done
                 'dataProvider' => $questionModel->search(),
                 'id' => 'question-grid',
                 'caption'      => gT("Questions"),
                 'emptyText' => gT('No questions found.'),
-                'massiveActionTemplate' => $massiveAction,
+                'showSelectionBar'      => false,
                 'summaryText'           => html_entity_decode(
                     gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
                     sprintf(

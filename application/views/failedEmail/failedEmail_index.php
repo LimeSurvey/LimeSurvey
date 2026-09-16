@@ -2,8 +2,11 @@
 /**
  * @var FailedEmail $failedEmailModel
  * @var int $pageSize
- * @var string $massiveAction
+ * @var int $surveyId
+ * @var array $permissions
  */
+
+require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.FailedEmailMassiveActions') . '.php';
 ?>
 <?= viewHelper::getViewTestTag('surveyFailedEmail') ?>
     <div class='side-body'>
@@ -18,12 +21,19 @@
         <div class="row">
             <div class="content-right">
                 <?php
+                // Floating action bar (cross-page selection, fixed at bottom)
+                $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                    'pk'       => 'id',
+                    'gridId'   => 'failedemail-grid',
+                    'aActions' => \actions\FailedEmailMassiveActions::getActions($surveyId, $permissions),
+                ]);
+
                 $this->widget('application.extensions.admin.grid.CLSGridView', [
                     'dataProvider' => $failedEmailModel->search(),
                     'filter' => $failedEmailModel,
                     'id' => 'failedemail-grid',
                     'emptyText' => gT('No failed email notifications found'),
-                    'massiveActionTemplate' => $massiveAction,
+                    'showSelectionBar' => false,
                     'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                         gT('%s rows per page'),
                         CHtml::dropDownList(
@@ -37,7 +47,7 @@
                     'columns' => $failedEmailModel->getColumns(),
                     'ajaxUpdate' => 'failedemail-grid',
                     'ajaxType' => 'POST',
-                    'lsAfterAjaxUpdate' => ['bindListItemclick();', 'LS.FailedEmail.bindButtons();']
+                    'lsAfterAjaxUpdate' => ['LS.FailedEmail.bindButtons();']
                 ]);
                 ?>
             </div>

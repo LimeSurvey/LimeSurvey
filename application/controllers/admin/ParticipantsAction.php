@@ -397,7 +397,7 @@ class ParticipantsAction extends SurveyCommonAction
 
             ]
         );
-        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector', array('permissions' => $aData['permissions']), true, false);
+        // displayParticipants now uses FloatingActionsWidget directly in the view.
 
         // Set page size
         if ($request->getPost('pageSizeParticipantView')) {
@@ -409,7 +409,6 @@ class ParticipantsAction extends SurveyCommonAction
         // Loads the participant panel view and display participant view
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
     }
-
 
     /**
      * Takes the delete call from the display participants and take appropriate action depending on the condition
@@ -852,7 +851,7 @@ class ParticipantsAction extends SurveyCommonAction
                 $aResult = array_keys($aCount, max($aCount));
                 $sSeparator = $aResult[0];
             }
-            $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0]);
+            $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0], '"', "\\");
 
             $selectedcsvfields = array();
             $fieldlist = array();
@@ -989,7 +988,7 @@ class ParticipantsAction extends SurveyCommonAction
                             $separator = ',';
                         }
                 }
-                $firstline = str_getcsv((string) $buffer, $separator, '"');
+                $firstline = str_getcsv((string) $buffer, $separator, '"', "\\");
                 $firstline = array_map('trim', $firstline);
                 $ignoredcolumns = array();
                 //now check the first line for invalid fields
@@ -1008,7 +1007,7 @@ class ParticipantsAction extends SurveyCommonAction
                 }
             } else {
                 // After looking at the first line, we now import the actual values
-                $line = str_getcsv($buffer, $separator, '"');
+                $line = str_getcsv($buffer, $separator, '"', "\\");
                 // Discard lines where the number of fields do not match
                 if (count($firstline) != count($line)) {
                     $invalidformatlist[] = $recordcount . ',' . count($line) . ',' . count($firstline);
@@ -1412,12 +1411,7 @@ class ParticipantsAction extends SurveyCommonAction
         $aData['searchstring'] = $searchstring;
         // loads the participant panel view and display participant view
 
-        $aData['massiveAction'] = App()->getController()->renderPartial(
-            '/admin/participants/massive_actions/_selector_attribute',
-            array(),
-            true,
-            false
-        );
+        // Floating actions widget is now used instead of massive action template
         $aData['topbar'] = $this->getTopBarComponents($title, false, true);
 
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'attributeControl'), $aData);
