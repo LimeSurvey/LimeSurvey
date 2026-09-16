@@ -15687,6 +15687,10 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 .no-tables-general table.ls-answers th.visible-xs {
   display: block !important;
 }
+/* Don't display repeating header on mobile devices'*/
+.no-tables-general table.ls-answers tr.ls-heading-repeat {
+  display: none;
+}
 
 .no-tables-mobile {
   /*

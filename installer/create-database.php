@@ -1194,6 +1194,17 @@ function populateDatabase($oDB)
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name' => 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
+        // Record the bundled asset version so the very first admin page load doesn't think the published
+        // assets are stale and wipe the tmp/assets directory mid-request (see UpdateForm::checkAssets()),
+        // which would delete files that other widgets in that same request just published.
+        $oDB->createCommand()->insert("{{settings_global}}", ['stg_name' => 'AssetsVersion' , 'stg_value' => $version['assetsversionnumber']]);
+
+        // Default the admin (uid 1) dashboard to the list widget view
+        $oDB->createCommand()->insert('{{settings_user}}', [
+            'uid' => 1,
+            'stg_name' => 'welcome_page_widget',
+            'stg_value' => 'box-widget',
+        ]);
     } catch (Exception $e) {
         $oTransaction->rollback();
         throw new CHttpException(500, $e->getMessage());

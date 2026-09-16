@@ -90,8 +90,8 @@ class LSDbCriteria extends CDbCriteria
      * @param array $aConditions conditions to limit the list, either as a
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
-     *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
-     *                  Only the IN operator allows for several values.
+     *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']
+     *                  Only the IN and NOT IN operators allow for several values.
      *              All conditions are connected by AND.
      * @throws BadRequestException
      * @return void
@@ -111,7 +111,7 @@ class LSDbCriteria extends CDbCriteria
                     throw new BadRequestException('Invalid number of element for ' . $columnName);
                 }
                 /** @var string[] List of operators allowed in query. */
-                $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN'];
+                $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN'];
                 /** @var string */
                 $operator = $valueOrTuple[0];
                 if (!is_string($operator)) {
@@ -138,6 +138,16 @@ class LSDbCriteria extends CDbCriteria
                             }
                         }
                         $this->addInCondition(App()->db->quoteColumnName($columnName), $values);
+                        break;
+                    case 'NOT IN':
+                        /** @var scalar[] */
+                        $values = array_slice($valueOrTuple, 1);
+                        foreach ($values as $v) {
+                            if (!is_scalar($v) && !is_null($v)) {
+                                throw new BadRequestException('NOT IN operator requires scalar values for column ' . $columnName);
+                            }
+                        }
+                        $this->addNotInCondition(App()->db->quoteColumnName($columnName), $values);
                         break;
                     default:
                         /** @var scalar*/
