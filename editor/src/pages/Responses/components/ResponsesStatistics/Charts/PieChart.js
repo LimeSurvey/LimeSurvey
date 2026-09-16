@@ -235,11 +235,12 @@ const computeLabelYOffsets = (data, cy, outerRadius, isImage) => {
 
 // Stacked labels can end up below the pie, so make the chart tall enough for
 // the lowest one.
-const computeChartHeight = (data) => {
+const computeChartHeight = (data, isImage) => {
   const { offsets, anchors } = computeLabelYOffsets(
     data,
     PIE_CY_IN_CHART,
-    PIE_RADIUS
+    PIE_RADIUS,
+    isImage
   )
   const lowestLabelBottom = anchors.reduce(
     (lowest, anchor) =>
@@ -288,7 +289,7 @@ export const PieChart = ({
   }, [])
 
   const renderLabel = (props) => {
-    const offsets = computeLabelYOffsets(
+    const { offsets } = computeLabelYOffsets(
       data,
       props.cy,
       props.outerRadius,
@@ -305,7 +306,10 @@ export const PieChart = ({
   return (
     <div className="responses-statistics-pie-chart" ref={scrollRef}>
       <div style={{ minWidth: CHART_MIN_WIDTH }}>
-        <ResponsiveContainer width="100%" height={computeChartHeight(data)}>
+        <ResponsiveContainer
+          width="100%"
+          height={computeChartHeight(data, isImage)}
+        >
           <RechartsPieChart
             margin={{
               top: CHART_MARGIN_TOP,
