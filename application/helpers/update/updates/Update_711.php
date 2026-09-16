@@ -2,11 +2,13 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-
+/**
+ * Compatibility update for cloud, intentionally empty
+ */
 class Update_711 extends DatabaseUpdateBase
 {
-    public function up()
-    {
-        addColumn('{{surveys}}', 'code', 'string');
-    }
+    /**
+     * @inheritDoc
+     */
+    public function up() {}
 }

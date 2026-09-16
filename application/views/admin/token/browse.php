@@ -117,3 +117,5 @@ $aLanguageNames = implode(";", $aLanguageNames);
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<?php $this->renderPartial('/admin/token/_bounceProcessingModal'); ?>

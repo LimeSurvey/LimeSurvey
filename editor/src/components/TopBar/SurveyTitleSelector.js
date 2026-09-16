@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Entities, L10ns } from 'helpers'
-import { Button, ContentEditor } from 'components'
-import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
+import { Button, ContentEditor, TooltipContainer } from 'components'
 import { SurveyListComponent } from './SurveyListComponent'
 import { SurveyCodeBadge } from './SurveyCodeBadge'
 import { SurveyCodeForm } from './SurveyCodeForm'

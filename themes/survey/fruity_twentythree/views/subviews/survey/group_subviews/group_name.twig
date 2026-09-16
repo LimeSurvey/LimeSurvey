@@ -19,14 +19,8 @@
 #}
 
 <!-- Group Name -->
-{% if aGroup.showgroupinfo == 'N' or aGroup.showgroupinfo == 'B' %}
-{% if aSurveyInfo.format != 'A' %}
-    <h1 class="{{ aSurveyInfo.class.grouptitle }}" {{ aSurveyInfo.attr.grouptitle }}>
-        {{ processString(aGroup.name) }}
-    </h1>
-    {% else %}
+{% if bShowGroupTitle is defined and bShowGroupTitle %}
     <h2 class="{{ aSurveyInfo.class.grouptitle }}" {{ aSurveyInfo.attr.grouptitle }}>
-        {{ processString(aGroup.name) }}
+        {{ sGroupName }}
     </h2>
-    {% endif %}
 {% endif %}

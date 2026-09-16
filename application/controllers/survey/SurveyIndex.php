@@ -47,6 +47,10 @@ class SurveyIndex extends CAction
         }
         /* Get client token by POST or GET value */
         $clienttoken = trim((string)$param['token']);
+        /* A token longer than the column limit can never match a real token: ignore it to avoid a DB truncation error on save (see issue #20479) */
+        if (mb_strlen($clienttoken) > Token::MAX_LENGTH) {
+            $clienttoken = '';
+        }
         /* If not set : get by SESSION to avoid multiple submit of same token in different navigator */
         if (empty($clienttoken) && !empty($_SESSION['responses_' . $surveyid]['token'])) {
             $clienttoken = $_SESSION['responses_' . $surveyid]['token'];
