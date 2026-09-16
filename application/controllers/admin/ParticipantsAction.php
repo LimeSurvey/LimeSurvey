@@ -400,8 +400,8 @@ class ParticipantsAction extends SurveyCommonAction
         // displayParticipants now uses FloatingActionsWidget directly in the view.
 
         // Set page size
-        if ($request->getPost('pageSizeParticipantView')) {
-            Yii::app()->user->setState('pageSizeParticipantView', $request->getPost('pageSizeParticipantView'));
+        if ($request->getPost('pageSize')) {
+            Yii::app()->user->setState('pageSizeParticipantView', $request->getPost('pageSize'));
         }
 
         $aData['topbar'] = $this->getTopBarComponents($title, true, false);
@@ -1402,10 +1402,8 @@ class ParticipantsAction extends SurveyCommonAction
             'debug' => Yii::app()->request->getParam('Attribute'),
         );
         // Page size
-        if (Yii::app()->request->getParam('pageSizeAttributes')) {
-            Yii::app()->user->setState('pageSizeAttributes', (int) Yii::app()->request->getParam('pageSizeAttributes'));
-        } else {
-            Yii::app()->user->setState('pageSizeAttributes', (int) Yii::app()->params['defaultPageSize']);
+        if (Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSizeAttributes', (int) Yii::app()->request->getParam('pageSize'));
         }
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
@@ -2003,12 +2001,10 @@ class ParticipantsAction extends SurveyCommonAction
             'pageTitle' => $title,
         );
         // Page size
-        if (Yii::app()->request->getParam('pageSizeShareParticipantView')) {
-            Yii::app()->user->setState('pageSizeShareParticipantView', (int) Yii::app()->request->getParam('pageSizeShareParticipantView'));
-        } else {
-            Yii::app()->user->setState('pageSizeShareParticipantView', (int) Yii::app()->params['defaultPageSize']);
+        if (Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSizeShareParticipantView', (int) Yii::app()->request->getParam('pageSize'));
         }
-        $aData['pageSizeShareParticipantView'] = Yii::app()->user->getState('pageSizeShareParticipantView');
+        $aData['pageSizeShareParticipantView'] = Yii::app()->user->getState('pageSizeShareParticipantView', Yii::app()->params['defaultPageSize']);
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
 
