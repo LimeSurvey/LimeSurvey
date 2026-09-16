@@ -71,6 +71,10 @@
                             <?php
                             if ($participant_id_exists) {
                                 eT("Duplicates will be detected using the participant_id field in this CSV file.");
+                                if (!$duplicateControlDisable) {
+                                    echo " ";
+                                    eT("If participant_id field is empty, duplicates will be detected by a combination of firstname, lastname and email addresses.");
+                                }
                             } else {
                                 eT("Duplicates will be detected by a combination of firstname, lastname and email addresses.");
                             }

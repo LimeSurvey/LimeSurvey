@@ -861,7 +861,10 @@ class ParticipantsAction extends SurveyCommonAction
                 $sSeparator = $aResult[0];
             }
             $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0]);
-
+            // Remove UTF-8 BOM from the first field
+            if (!empty($firstline)) {
+                $firstline[0] = preg_replace('/^\xEF\xBB\xBF/', '', $firstline[0]);
+            }
             $selectedcsvfields = array();
             $fieldlist = array();
             foreach ($firstline as $key => $value) {
@@ -877,17 +880,13 @@ class ParticipantsAction extends SurveyCommonAction
             $iLineCount = count(array_filter(array_filter((array) file($sFilePath), 'trim')));
 
             $attributes = ParticipantAttributeName::model()->model()->getCPDBAttributes();
-                /* Warning for duplicate control */
-                $duplicateControlDisable = false;
-                if (App()->getConfig('CPDB_encryption_method', 'B') == 'H') {
-                    $cpdbCoreAttributes = ParticipantAttributeName::model()->findAllByAttributes(['core_attribute' => 'Y']);
-                    $cpdbCoreCryptedAttributes = array_filter($cpdbCoreAttributes, function($attribute) {
-                        return $attribute->encrypted == "Y";
-                    });
-                    if (count($cpdbCoreCryptedAttributes) > 0 ) {
-                        $duplicateControlDisable = true;
-                    }
-                }
+            /* Warning for duplicate control */
+            $duplicateControlDisable = false;
+            $cpdbCoreAttributes = ParticipantAttributeName::model()->findAllByAttributes(['core_attribute' => 'Y']);
+            $cpdbCoreCryptedAttributes = array_filter($cpdbCoreAttributes, function($attribute) {
+                return $attribute->encrypted == "Y";
+            });
+            $duplicateControlDisable = count($cpdbCoreCryptedAttributes) > 0 && !Participant::canUseDuplicateFinder();
             $aData = array(
                 'attributes' => $attributes,
                 'firstline' => $selectedcsvfields,
@@ -940,6 +939,7 @@ class ParticipantsAction extends SurveyCommonAction
         $overwritten = 0;
         $dupreason = "nameemail"; //Default duplicate comparison method
         $duplicatelist = array();
+        $nopermissionlist = array();
         $invalidemaillist = array();
         $invalidformatlist = array();
         $invalidattribute = array();
@@ -1047,8 +1047,6 @@ class ParticipantsAction extends SurveyCommonAction
                     }
                 }
                 $dupfound = false;
-                $thisduplicate = 0;
-
                 //Check for duplicate participants
                 if (in_array('participant_id', $firstline) && !empty($writearray['participant_id'])) {
                     $dupreason = "participant_id";
@@ -1057,15 +1055,25 @@ class ParticipantsAction extends SurveyCommonAction
                 }
                 $existingParticipants = Participant::getDuplicates($writearray, Yii::app()->session['loginID']);
                 if (!empty($existingParticipants)) {
-                    $thisduplicate = 1;
-                    tracevar($thisduplicate);
-                    $dupcount++;
+                    $dupfound = true;
                     if ($overwrite == "true") {
                         foreach($existingParticipants as $existingParticipant) {
+                            /* Check permission */
+                            if (
+                                $existingParticipant->owner_uid != App()->getCurrentUserId()
+                                && !Permission::model()->hasGlobalPermission('participantpanel', 'update')
+                            ) {
+                                if (!empty($writearray['participant_id'])) {
+                                    $nopermissionlist[] = CHtml::encode($writearray['participant_id'] . " : " . $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                                } else {
+                                    $nopermissionlist[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                                }
+                                continue;
+                            }
                             foreach ($writearray as $attribute => $value) {
                                 $existingParticipant->$attribute = $value;
                             }
-                            $existingParticipant->save();
+                            $existingParticipant->encryptSave();
                             //Although this person already exists, we want to update the mapped attribute values
                             if (!empty($mappedarray)) {
                                 //The mapped array contains the attributes we are
@@ -1082,14 +1090,16 @@ class ParticipantsAction extends SurveyCommonAction
                                         //If the value is empty, don't write the value
                                     }
                                 }
-                                $overwritten++;
                             }
+                            $overwritten++;
+                        }
+                    } else {
+                        if (!empty($writearray['participant_id'])) {
+                            $duplicatelist[] = CHtml::encode($writearray['participant_id'] . " : " . $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                        } else {
+                            $duplicatelist[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
                         }
                     }
-                }
-                if ($thisduplicate == 1) {
-                    $dupfound = true;
-                    $duplicatelist[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
                 }
 
                 //Checking the email address is in a valid format
@@ -1174,11 +1184,11 @@ class ParticipantsAction extends SurveyCommonAction
             }
             $recordcount++;
         }
-
         unlink($sFilePath);
         $aData = array();
         $aData['recordcount'] = $recordcount - 1;
         $aData['duplicatelist'] = $duplicatelist;
+        $aData['nopermissionlist'] = $nopermissionlist;
         $aData['mincriteria'] = $mincriteria;
         $aData['imported'] = $imported;
         $aData['errorinupload'] = $errorinupload;

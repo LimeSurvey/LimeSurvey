@@ -2745,9 +2745,31 @@ class Participant extends LSActiveRecord
     /**
      * Get the duplicate finder value
      * @param string[] data, attributes of the participant
-     * @return false|string
+     * @return string (empty string if can not be used)
      */
     public static function getDuplicateFinderValue(array $participant)
+    {
+        if (!self::canUseDuplicateFinder()) {
+            return "";
+        }
+        $encryptionduplicateindexkey = App()->getConfig('encryptionduplicateindexkey');
+        $duplicatefinderBits = (int) Yii::app()->getConfig('CPDB_duplicatefinder_bits');
+        $string = json_encode([
+            mb_strtolower($participant['firstname'] ?? ''),
+            mb_strtolower($participant['lastname'] ?? ''),
+            mb_strtolower($participant['email'] ?? ''),
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        /* @var string the complete hash before cut */
+        $hash = hash_hmac('sha256', $string, $encryptionduplicateindexkey);
+        return substr($hash, 0, $duplicatefinderBits / 4);
+    }
+
+    /**
+     * Check if duplicate finder systeml can be used
+     * @throws CHttpException
+     * @return boolean
+     */
+    public static function canUseDuplicateFinder()
     {
         $encryptionduplicateindexkey = App()->getConfig('encryptionduplicateindexkey');
         /* can not use it */
@@ -2757,19 +2779,12 @@ class Participant extends LSActiveRecord
         $duplicatefinderBits = (int) Yii::app()->getConfig('CPDB_duplicatefinder_bits');
         /* Disable duplicatefinder : save empty string in database */
         if ($duplicatefinderBits == 0) {
-            return '';
+            return false;
         }
         if ($duplicatefinderBits < 32 || $duplicatefinderBits > 256 || $duplicatefinderBits % 4 !== 0) {
             throw new CHttpException(500, gT('CPDB_duplicatefinder_bits must be a multiple of 4 between 32 and 256.'));
         }
-        $string = json_encode([
-            mb_strtolower($participant['firstname'] ?? ''),
-            mb_strtolower($participant['lastname'] ?? ''),
-            mb_strtolower($participant['email'] ?? ''),
-        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        /* @var string the complete hash before cut */
-        $hash = hash_hmac('sha256', $string, $encryptionduplicateindexkey);
-        return substr($hash, 0, $duplicatefinderBits / 4);
+        return true;
     }
 
     /**
