@@ -133,7 +133,8 @@ class Update_700 extends DatabaseUpdateBase
      * @param int $sid
      * @param int $gid
      * @param bool $cd
-     * @return string|false the field's name or false if it should not be migrated
+     * @return string the field's name, new or old if it can not be mapped
+     * @throws \CException
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid, bool $cd = false): string
