@@ -113,6 +113,9 @@ class QuestionGroupsAdministrationController extends LSBaseController
             App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
+
+        SettingsUser::setUserSetting('last_question_gid', $gid, null, 'Survey', $surveyid);
+
         $aData = $this->setSurveyIdAndObject([], $surveyid);
         $aData['gid'] = $gid;
         $aData['condarray'] = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
@@ -175,6 +178,9 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['gid'] =  $gid = ($gid === null || $gid === '') ? null : (int)$gid;
         $questionGroupService = $this->getQuestionGroupServiceClass();
         $aData['oQuestionGroup'] = $oQuestionGroup = $questionGroupService->getQuestionGroupObject($surveyid, $gid);
+        if ($gid !== null) {
+            SettingsUser::setUserSetting('last_question_gid', $gid, null, 'Survey', $surveyid);
+        }
         $aData = $this->setLanguageData($aData);
         $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
         if ($gid !== null) {

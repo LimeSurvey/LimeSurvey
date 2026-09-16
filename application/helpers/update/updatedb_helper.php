@@ -274,6 +274,8 @@ function getDatabaseUpdateLock($bRelease = false, &$sError = null)
         return false;
     }
     if (flock($pLock, LOCK_EX | LOCK_NB)) {
+        // Allow other system users (e.g. web server vs. CLI/cron) to also acquire this lock.
+        @chmod($sLockFile, 0666);
         return true;
     }
     fclose($pLock);

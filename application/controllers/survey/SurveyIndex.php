@@ -157,6 +157,10 @@ class SurveyIndex extends CAction
             $tokensexist = 1;
         }
 
+        // Set the application language to the survey's base language before any
+        // early exit (e.g. maintenance mode) so those pages are translated too.
+        $this->loadLimesurveyLang($surveyid);
+
         // maintenance mode
         $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
         if ($sMaintenanceMode == 'hard') {
@@ -200,8 +204,6 @@ class SurveyIndex extends CAction
         if (empty($_SESSION['responses_' . $surveyid]['token']) && $token) {
             $_SESSION['responses_' . $surveyid]['token'] = $token;
         }
-
-        $this->loadLimesurveyLang($surveyid);
 
         // Set the language of the survey, either from POST, GET parameter of session var
         // Keep the old value, because SetSurveyLanguage update $_SESSION
