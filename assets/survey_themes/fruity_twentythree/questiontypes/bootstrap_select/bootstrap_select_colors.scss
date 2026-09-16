@@ -11,7 +11,10 @@
     .divider {
         background-color : $g-200;
     }
-    > {
+    // Excluded: bootstrap-select renders its options as `li > a.dropdown-item`
+    // inside `ul.dropdown-menu.inner`, so these rules would otherwise match the
+    // answer dropdown too — and their !important would beat the theming below.
+    &:not(.inner) > {
         li > a {
             color : $g-700;
             &:hover {
@@ -81,21 +84,21 @@
     .dropdown-item:focus,
     .dropdown-item.active,
     li.active > .dropdown-item {
-        color            : $g-900 !important;
-        background-color : $g-200 !important;
+        color            : $g-900;
+        background-color : $g-200;
     }
 
     li.selected > .dropdown-item {
         &, &:hover, &:focus, &.active {
-            color            : $white !important;
-            background-color : $base-color !important;
+            color            : $white;
+            background-color : $base-color;
         }
     }
 
     .dropdown-item.disabled,
     .dropdown-item:disabled,
     li.disabled > .dropdown-item {
-        color            : $g-600 !important;
-        background-color : transparent !important;
+        color            : $g-600;
+        background-color : transparent;
     }
 }

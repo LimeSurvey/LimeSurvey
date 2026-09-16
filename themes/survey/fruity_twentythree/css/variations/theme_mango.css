@@ -15483,36 +15483,36 @@ body .imageselect-listitem label::after {
 .dropdown-menu .divider {
   background-color: #EEEFF7;
 }
-.dropdown-menu > li > a {
+.dropdown-menu:not(.inner) > li > a {
   color: #6E748C;
 }
-.dropdown-menu > li > a:hover {
+.dropdown-menu:not(.inner) > li > a:hover {
   color: #ffffff;
   background-color: #ED5046 !important;
 }
-.dropdown-menu > li > a:focus {
+.dropdown-menu:not(.inner) > li > a:focus {
   color: #ffffff;
   background-color: #ED5046 !important;
 }
-.dropdown-menu > .active > a {
+.dropdown-menu:not(.inner) > .active > a {
   color: #ffffff;
   background-color: #ED5046 !important;
 }
-.dropdown-menu > .active > a:hover {
+.dropdown-menu:not(.inner) > .active > a:hover {
   color: #ffffff;
   background-color: #ED5046 !important;
 }
-.dropdown-menu > .active > a:focus {
+.dropdown-menu:not(.inner) > .active > a:focus {
   color: #ffffff;
   background-color: #ED5046 !important;
 }
-.dropdown-menu > li > a.disabled {
+.dropdown-menu:not(.inner) > li > a.disabled {
   color: #9094A7;
 }
-.dropdown-menu > li > a.disabled :hover {
+.dropdown-menu:not(.inner) > li > a.disabled :hover {
   color: #9094A7 !important;
 }
-.dropdown-menu > li > a.disabled :focus {
+.dropdown-menu:not(.inner) > li > a.disabled :focus {
   color: #9094A7 !important;
 }
 
@@ -15542,18 +15542,18 @@ body .imageselect-listitem label::after {
 .answer-container .bootstrap-select .dropdown-item:focus,
 .answer-container .bootstrap-select .dropdown-item.active,
 .answer-container .bootstrap-select li.active > .dropdown-item {
-  color: #1E1E1E !important;
-  background-color: #EEEFF7 !important;
+  color: #1E1E1E;
+  background-color: #EEEFF7;
 }
 .answer-container .bootstrap-select li.selected > .dropdown-item, .answer-container .bootstrap-select li.selected > .dropdown-item:hover, .answer-container .bootstrap-select li.selected > .dropdown-item:focus, .answer-container .bootstrap-select li.selected > .dropdown-item.active {
-  color: #ffffff !important;
-  background-color: #ED5046 !important;
+  color: #ffffff;
+  background-color: #ED5046;
 }
 .answer-container .bootstrap-select .dropdown-item.disabled,
 .answer-container .bootstrap-select .dropdown-item:disabled,
 .answer-container .bootstrap-select li.disabled > .dropdown-item {
-  color: #9094A7 !important;
-  background-color: transparent !important;
+  color: #9094A7;
+  background-color: transparent;
 }
 
 /*
