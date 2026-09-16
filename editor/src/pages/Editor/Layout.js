@@ -53,13 +53,14 @@ const Layout = () => {
     return (
       <I18Provider
         language={activeLanguage}
-        i18n={() =>
+        i18n={(_lang, _auth, _setLanguages, _languages, _isSurveyTranslation, onReady) =>
           i18nInstance(
             activeLanguage,
             auth,
             setAllLanguages,
             allLanguages,
-            true
+            true,
+            onReady
           )
         }
       >
