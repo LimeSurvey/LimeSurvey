@@ -95,4 +95,30 @@ class QuestionPropertiesTest extends BaseTest
         $this->assertSame('Der neue deutsche Fragen', $deQuestionData->question, 'The question text was not changed');
         $this->assertSame('Die neue deutsche Hilfstext', $deQuestionData->help, 'The help text was not changed');
     }
+
+    /**
+     * Testing that the question text can be set using only the $sLanguage
+     * method parameter, without an explicit 'language' key in $aQuestionData
+     * (see bug #19660).
+     */
+    public function testSetQuestionPropertiesUsingLanguageParameterOnly()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $question = self::$testSurvey->getAllQuestions()[0];
+
+        $questionData = array(
+            'question' => 'Updated via sLanguage parameter',
+        );
+
+        $result = $this->handler->set_question_properties($sessionKey, $question->qid, $questionData, 'en');
+
+        $this->assertArrayHasKey('questionl10ns', $result, 'The question properties in English should have been modified.');
+        $this->assertArrayHasKey('en', $result['questionl10ns'], 'The question properties in English should have been modified.');
+        $this->assertArrayHasKey('question', $result['questionl10ns']['en'], 'The question text should have been modified.');
+
+        $enQuestionData = \QuestionL10n::model()->findByAttributes(array('qid' => $question->qid, 'language' => 'en'));
+
+        $this->assertSame('Updated via sLanguage parameter', $enQuestionData->question, 'The question text was not changed');
+    }
 }

@@ -198,6 +198,19 @@ const renderActiveShapeNew = ({
 // Vertical label-block footprint (id + value/image + metric rows)
 const LABEL_MIN_GAP = 58
 
+// Fixed pie size, so the chart can grow taller for stacked labels without the
+// pie growing too. Recharts adds margin.top to a numeric cy.
+const CHART_BASE_HEIGHT = 400
+const CHART_MIN_WIDTH = 700
+const CHART_MARGIN_TOP = 30
+const CHART_MARGIN_BOTTOM = 40
+const PIE_RADIUS = 130
+const PIE_CY = 150
+const PIE_CY_IN_CHART = CHART_MARGIN_TOP + PIE_CY
+
+// Space a label takes below its dot (image frame + metric row)
+const LABEL_HEIGHT_BELOW_ANCHOR = 64
+
 // Zero (or tiny) slices share the same midAngle, so their labels land on the
 // same point. Recompute every slice's label anchor with the same angle math
 // recharts uses and push down any label that would overlap the one above it
@@ -227,7 +240,29 @@ const computeLabelYOffsets = (data, cy, outerRadius) => {
         return y + LABEL_MIN_GAP
       }, -Infinity)
   })
-  return offsets
+  return { offsets, anchors }
+}
+
+// Stacked labels can end up below the pie, so make the chart tall enough for
+// the lowest one.
+const computeChartHeight = (data) => {
+  const { offsets, anchors } = computeLabelYOffsets(
+    data,
+    PIE_CY_IN_CHART,
+    PIE_RADIUS
+  )
+  const lowestLabelBottom = anchors.reduce(
+    (lowest, anchor) =>
+      Math.max(
+        lowest,
+        anchor.ey + offsets[anchor.index] + LABEL_HEIGHT_BELOW_ANCHOR
+      ),
+    0
+  )
+  return Math.max(
+    CHART_BASE_HEIGHT,
+    Math.ceil(lowestLabelBottom + CHART_MARGIN_BOTTOM)
+  )
 }
 
 export const PieChart = ({
@@ -235,8 +270,35 @@ export const PieChart = ({
   valueType = VALUE_TYPE.PERCENTAGE,
   isImage = false,
 }) => {
+  const scrollRef = useRef(null)
+
+  // On narrow cards the chart is wider than the card, so keep it centered on
+  // the pie. The user can still scroll to either side. The chart still
+  // resizes a few times as it settles in, so the actual centering is done a
+  // frame later, once the size is final, instead of on every resize tick.
+  useLayoutEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+
+    let frame
+    const centerScroll = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2
+      })
+    }
+
+    centerScroll()
+    const observer = new ResizeObserver(centerScroll)
+    observer.observe(el)
+    return () => {
+      cancelAnimationFrame(frame)
+      observer.disconnect()
+    }
+  }, [])
+
   const renderLabel = (props) => {
-    const offsets = computeLabelYOffsets(data, props.cy, props.outerRadius)
+    const { offsets } = computeLabelYOffsets(data, props.cy, props.outerRadius)
     return renderActiveShapeNew({
       ...props,
       valueType,
@@ -246,34 +308,41 @@ export const PieChart = ({
   }
 
   return (
-    <div className="responses-statistics-pie-chart">
-      <ResponsiveContainer width="100%" height={400}>
-        <RechartsPieChart
-          margin={{ top: 30, right: 160, bottom: 40, left: 160 }}
-        >
-          <Pie
-            data={data}
-            cx="50%"
-            cy="50%"
-            dataKey="value"
-            nameKey="title"
-            label={renderLabel}
-            labelLine={false}
-            outerRadius="80%"
-            animationBegin={0}
-            animationDuration={600}
-            fill="#8884d8"
+    <div className="responses-statistics-pie-chart" ref={scrollRef}>
+      <div style={{ minWidth: CHART_MIN_WIDTH }}>
+        <ResponsiveContainer width="100%" height={computeChartHeight(data)}>
+          <RechartsPieChart
+            margin={{
+              top: CHART_MARGIN_TOP,
+              right: 160,
+              bottom: CHART_MARGIN_BOTTOM,
+              left: 160,
+            }}
           >
-            {data.map((_, index) => (
-              <Cell
-                key={`peie-cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
-          <Tooltip cursor={{ fill: '#eeeff7' }} content={CustomTooltip} />
-        </RechartsPieChart>
-      </ResponsiveContainer>
+            <Pie
+              data={data}
+              cx="50%"
+              cy={PIE_CY}
+              dataKey="value"
+              nameKey="title"
+              label={renderLabel}
+              labelLine={false}
+              outerRadius={PIE_RADIUS}
+              animationBegin={0}
+              animationDuration={600}
+              fill="#8884d8"
+            >
+              {data.map((_, index) => (
+                <Cell
+                  key={`peie-cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip cursor={{ fill: '#eeeff7' }} content={CustomTooltip} />
+          </RechartsPieChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   )
 }
