@@ -21,8 +21,22 @@ const JestWrapWithProviders = ({ children }) => {
       >
         <I18Provider
           language={'en'}
-          i18n={(_lang, _auth, _setLanguages, _languages, _isSurveyTranslation, onReady) =>
-            i18nInstance('en', undefined, undefined, undefined, undefined, onReady)
+          i18n={(
+            _lang,
+            _auth,
+            _setLanguages,
+            _languages,
+            _isSurveyTranslation,
+            onReady
+          ) =>
+            i18nInstance(
+              'en',
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              onReady
+            )
           }
         >
           <Routes>
