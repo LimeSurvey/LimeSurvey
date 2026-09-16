@@ -36,7 +36,7 @@ if (!$isExpired && count($surveyLanguages) > 1) {
 
 if ($isExpired) {
     $expiredTooltip = sprintf(
-        gT('This survey expired on %s and can no longer be run.'),
+        gT('This survey expired on %s and thus cannot be executed.'),
         convertToGlobalSettingFormat(dateShift($survey->expires, "Y-m-d H:i:s"))
     );
 }
