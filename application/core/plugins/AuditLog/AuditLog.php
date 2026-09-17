@@ -401,7 +401,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $oCurrentUser = $this->api->getCurrentUser();
 
         foreach ($aTokenIds as $tokenId) {
-            $token = Token::model($iSurveyID)->find('tid=' . $tokenId);
+            $token = Token::model($iSurveyID)->findByPk((int) $tokenId);
 
             if (!is_null($token)) {
                 $aValues = $token->getAttributes();
