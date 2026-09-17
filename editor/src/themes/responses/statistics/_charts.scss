@@ -427,8 +427,7 @@
       &--scrollable {
         overflow-x: auto;
         overflow-y: hidden;
-        // Reserve the gutter so the chart does not jump when the scrollbar
-        // appears at narrower viewport sizes.
+
         scrollbar-gutter: stable;
       }
     }
