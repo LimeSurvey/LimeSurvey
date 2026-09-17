@@ -214,7 +214,7 @@ class LSSodium
 
     /**
      * Decrypt encrypted string using Hardened method
-     * @param string $sEncryptedString Encrypted string to decrypt, if it string 'null', didn't try to decode
+     * @param string $sEncryptedString Encrypted string to decrypt
      * @return string|false Return decrypted value (string or unserialized object) if succeeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
     */
     private function decryptHardened($sEncryptedString)
@@ -241,13 +241,21 @@ class LSSodium
 
     /**
      * Decrypt encrypted string using Basic methos
-     * @param string $sEncryptedString Encrypted string to decrypt, if it string 'null', didn't try to decode
+     * @param string $sEncryptedString Encrypted string to decrypt
      * @return string|false Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
     */
     private function decryptBasic($sEncryptedString)
     {
-            $plaintext = ParagonIE_Sodium_Compat::crypto_secretbox_open(base64_decode($sEncryptedString), $this->sEncryptionNonce, $this->sEncryptionSecretBoxKey);
-            return $plaintext;
+        $decoded = base64_decode($sEncryptedString, true);
+        if ($decoded === false || strlen($decoded) < ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_MACBYTES) {
+            return false;
+        }
+        $plaintext = ParagonIE_Sodium_Compat::crypto_secretbox_open(
+            $decoded,
+            $this->sEncryptionNonce,
+            $this->sEncryptionSecretBoxKey
+        );
+        return $plaintext;
     }
 
     /**
