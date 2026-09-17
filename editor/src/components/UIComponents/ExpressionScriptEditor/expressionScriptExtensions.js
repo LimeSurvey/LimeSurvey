@@ -237,21 +237,31 @@ const normalizeDiagnostic = ({ from, to, severity, message }, docLength) => {
   return { from: safeFrom, to: safeTo, severity, message }
 }
 
-export const expressionScriptDiagnostics = (
-  diagnostics = [],
-  docLength = 0
-) => {
+export const expressionScriptDiagnostics = (diagnostics = [], content = '') => {
+  const docLength = content.length
   if (docLength === 0 || diagnostics.length === 0) return []
 
-  const decorations = diagnostics.map((diagnostic) => {
-    const { from, to, severity } = normalizeDiagnostic(diagnostic, docLength)
-    return Decoration.mark({
-      class:
-        severity === 'warning'
-          ? 'cm-expression-semantic-warning'
-          : 'cm-expression-semantic-error',
-    }).range(from, to)
-  })
+  const localErrors = tokenizeExpressionScript(content).filter(
+    ({ message }) => message
+  )
+  const decorations = diagnostics
+    .map((diagnostic) => normalizeDiagnostic(diagnostic, docLength))
+    .filter(
+      ({ from, to }) =>
+        !localErrors.some(
+          (localError) => from < localError.to && to > localError.from
+        )
+    )
+    .map(({ from, to, severity }) =>
+      Decoration.mark({
+        class:
+          severity === 'warning'
+            ? 'cm-expression-semantic-warning'
+            : 'cm-expression-semantic-error',
+      }).range(from, to)
+    )
+
+  if (decorations.length === 0) return []
 
   return [EditorView.decorations.of(Decoration.set(decorations, true))]
 }

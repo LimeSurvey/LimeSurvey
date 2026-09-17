@@ -64,10 +64,26 @@ describe('Expression Script highlighting', () => {
           message: 'Undefined function',
         },
       ],
-      28
+      'unknown_function(1)'
     )
 
     expect(extensions).toHaveLength(1)
+  })
+
+  it('does not duplicate server diagnostics over local syntax errors', () => {
+    const extensions = expressionScriptDiagnostics(
+      [
+        {
+          from: 7,
+          to: 9,
+          severity: 'error',
+          message: 'Invalid expression',
+        },
+      ],
+      'Q01 == "Y) and is_empty(Q02)'
+    )
+
+    expect(extensions).toHaveLength(0)
   })
 
   it('creates hover feedback for expression issues', () => {

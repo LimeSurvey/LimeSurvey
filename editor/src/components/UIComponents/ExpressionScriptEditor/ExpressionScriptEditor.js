@@ -88,7 +88,7 @@ export const ExpressionScriptEditor = ({
         onChange={handleChange}
         extensions={[
           ...expressionScriptExtensions,
-          ...expressionScriptDiagnostics(diagnostics, (value ?? '').length),
+          ...expressionScriptDiagnostics(diagnostics, value ?? ''),
           expressionScriptTooltips(diagnostics),
           EditorView.lineWrapping,
           EditorState.readOnly.of(isDisabled),
