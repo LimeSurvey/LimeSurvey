@@ -1,3 +1,4 @@
+import { format } from 'util'
 import React from 'react'
 
 import { Button, ToggleButtons } from 'components'
@@ -46,7 +47,7 @@ export const FilterSelectionRow = ({
 
       <div className="responses-statistics-filters-row">
         <div className="responses-statistics-filters-row-label">
-          {`${t('Filter selection')} #${index + 1}`}
+          {format(t('Filter selection #%s'), index + 1)}
         </div>
         <div className="responses-statistics-filters-row-tabs">
           <ToggleButtons
