@@ -19,9 +19,9 @@ import {
   generateData,
   SelectColumnId,
   ActionsColumnId,
-  applyStoredTimingColumnVisibility,
-  readTimingColumnVisibility,
-  writeTimingColumnVisibility,
+  applyStoredColumnVisibility,
+  readColumnVisibility,
+  writeColumnVisibility,
 } from '../../utils'
 import { Toast } from 'helpers'
 
@@ -204,10 +204,10 @@ export const ResponsesTable = ({
 
       setColumns(generatedColumns)
       setColumnVisibility(
-        applyStoredTimingColumnVisibility(
+        applyStoredColumnVisibility(
           generatedColumns,
           getInitialColumnVisibility(generatedColumns),
-          readTimingColumnVisibility(survey.sid)
+          readColumnVisibility(survey.sid)
         )
       )
       // else if we have columns, then we pop the actions column and readd it to update the columns ref
@@ -393,7 +393,7 @@ export const ResponsesTable = ({
 
     setColumnVisibility(columnVisibility)
     setColumnsOrder(columnOrder)
-    writeTimingColumnVisibility(survey.sid, columnsInfo)
+    writeColumnVisibility(survey.sid, columnsInfo)
   }
 
   useEffect(() => {
