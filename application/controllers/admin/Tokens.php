@@ -2218,8 +2218,10 @@ class Tokens extends SurveyCommonAction
                                         } else {
                                            $criteria->compare('email', $myemail);
                                         }
+                                        $dupresult = TokenDynamic::model($iSurveyId)->count($criteria);
+                                    } else {
+                                        $dupresult = 0;
                                     }
-                                    $dupresult = TokenDynamic::model($iSurveyId)->count($criteria);
                                     if ($dupresult > 0) {
                                         $dupfound = true;
                                         $duplicatelist[] = $myfirstname . " " . $mylastname . " (" . $myemail . ")";
