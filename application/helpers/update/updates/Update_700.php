@@ -1443,16 +1443,18 @@ class Update_700 extends DatabaseUpdateBase
      */
     protected function compactLegacyRankingValues(string $tableName, array $columnNames): void
     {
+        $prefix = Yii::app()->db->tablePrefix ?? '';
+        $isArchivedTable = strpos($tableName, $prefix . 'old_') === 0;
         // ignore old tables and timings since they are not relevant for this cleanup
         if (
             (strpos($tableName, 'survey') === false) ||
             (strpos($tableName, 'timing') !== false) ||
-            (strpos($tableName, 'old') !== false)
+            $isArchivedTable
         ) {
             return;
         }
         $parts = explode('_', $tableName);
-        $index = count($parts) - ((strpos($tableName, 'old') === false) ? 1 : 2);
+        $index = count($parts) - ($isArchivedTable ? 2 : 1);
         if (!isset($parts[$index]) || !ctype_digit((string)$parts[$index])) {
             return;
         }
@@ -2083,7 +2085,7 @@ class Update_700 extends DatabaseUpdateBase
             }
             // getFieldName() returns the field name unchanged when it cannot resolve
             // this will mark orphaned fields for removal, but only for non-archived tables. Archived tables are left intact.
-            $isArchivedTable = strpos($TABLE_NAME, 'old') !== false;
+            $isArchivedTable = strpos($TABLE_NAME, (Yii::app()->db->tablePrefix ?? '') . 'old_') === 0;
             $orphanedColumns = [];
             if (!$isArchivedTable) {
                 foreach ($fields as $oldField => $newField) {
