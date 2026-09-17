@@ -262,6 +262,8 @@ jobs:
 
       - name: Run PHPCBF
         run: |
+          # prevent abort
+          set +e
           ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/models
           ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/controllers
           ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller
@@ -283,14 +285,21 @@ jobs:
         with:
           commit_message: Apply PHPCBF changes
           file_pattern: |
-            application/models/**.php
-            application/controllers/**.php
-            application/libraries/ExtensionInstaller/**.php
-            application/libraries/FormExtension/**.php
-            application/libraries/Api/**.php
+            application/models/*.php
+            application/models/**/*.php
+            application/controllers/*.php
+            application/controllers/**/*.php
+            application/libraries/ExtensionInstaller/*.php
+            application/libraries/ExtensionInstaller/**/*.php
+            application/libraries/FormExtension/*.php
+            application/libraries/FormExtension/**/*.php
+            application/libraries/Api/*.php
+            application/libraries/Api/**/*.php
             application/helpers/update/updatedb_helper.php
-            application/helpers/update/updates/**.php
-            application/core/plugins/ExpressionAnswerOptions/**.php
+            application/helpers/update/updates/*.php
+            application/helpers/update/updates/**/*.php
+            application/core/plugins/ExpressionAnswerOptions/*.php
+            application/core/plugins/ExpressionAnswerOptions/**/*.php
 
       - name: Run Psalm on application/ folder with low strictness
         run: |
