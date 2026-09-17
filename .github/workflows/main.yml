@@ -284,22 +284,9 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Apply PHPCBF changes
-          file_pattern: |
-            application/models/*.php
-            application/models/**/*.php
-            application/controllers/*.php
-            application/controllers/**/*.php
-            application/libraries/ExtensionInstaller/*.php
-            application/libraries/ExtensionInstaller/**/*.php
-            application/libraries/FormExtension/*.php
-            application/libraries/FormExtension/**/*.php
-            application/libraries/Api/*.php
-            application/libraries/Api/**/*.php
-            application/helpers/update/updatedb_helper.php
-            application/helpers/update/updates/*.php
-            application/helpers/update/updates/**/*.php
-            application/core/plugins/ExpressionAnswerOptions/*.php
-            application/core/plugins/ExpressionAnswerOptions/**/*.php
+          # git-auto-commit reads file_pattern with `read -r -a` (first line only),
+          disable_globbing: true
+          file_pattern: 'application/models/*.php application/models/**/*.php application/controllers/*.php application/controllers/**/*.php application/libraries/ExtensionInstaller/*.php application/libraries/ExtensionInstaller/**/*.php application/libraries/FormExtension/*.php application/libraries/FormExtension/**/*.php application/libraries/Api/*.php application/libraries/Api/**/*.php application/helpers/update/updatedb_helper.php application/helpers/update/updates/*.php application/helpers/update/updates/**/*.php application/core/plugins/ExpressionAnswerOptions/*.php application/core/plugins/ExpressionAnswerOptions/**/*.php'
 
       - name: Run Psalm on application/ folder with low strictness
         run: |
