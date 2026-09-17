@@ -61,7 +61,7 @@ export const FileUploadParticipantView = ({
               {file.isDeleted
                 ? t('File has been deleted')
                 : format(
-                    t('Download file %s MB'),
+                    t('Download file (%s MB)'),
                     Math.max(file.approxFileSizeInMB, 0.1)
                   )}
             </Button>

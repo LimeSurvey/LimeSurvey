@@ -34,7 +34,7 @@ export const rankingTypeHandler = (
       subquestions[j],
       fieldname,
       language,
-      format(t('RANK %s'), rankingPos)
+      format(t('Rank %s'), rankingPos)
     )
 
     rankingAnswers.forEach(({ value, label }) => {
