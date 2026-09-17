@@ -454,19 +454,18 @@ class remotecontrol_handle
      * Set survey properties (RPC function)
      *
      * @see \Survey for the list of available properties
-     * Properties available are restricted
-     * * Always
+     * Some properties may not be modified depending on the survey's state
+     * * Always restricted
      *     * sid
      *     * active
      *     * language
      *     * additional_languages
-     * * If survey is active
+     * * Restricte if survey is active
      *     * anonymized
      *     * datestamp
      *     * savetimings
      *     * ipaddr
      *     * refurl
-     *     * savequotaexit
      *
      * In case of partial success : return an array with key as properties and value as boolean , true if saved with success.
      *

@@ -17,7 +17,7 @@ class Update_715 extends DatabaseUpdateBase
             ->queryColumn();
 
         foreach ($activeSurveyIds as $surveyId) {
-            $responseTableName = "{{survey_" . $surveyId . "}}";
+            $responseTableName = "{{responses_" . $surveyId . "}}";
             if (!tableExists($responseTableName)) {
                 continue;
             }

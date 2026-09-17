@@ -420,6 +420,11 @@ class Quotas
         }
         /* Check if Response is already submitted : only when "do" the quota: allow to send information about quota */
         $oResponse = Response::model($surveyid)->findByPk(App()->session['responses_' . $surveyid]['srid']);
+        if (!$return && !$oResponse) {
+            // Session points to a response row that no longer exists: bail out before it reaches updateResponseQuotaExit().
+            killSurveySession($surveyid);
+            return;
+        }
         if (!$return && $oResponse && !is_null($oResponse->submitdate)) {
             return;
         }
