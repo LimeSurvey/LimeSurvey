@@ -191,7 +191,7 @@ class SurveysGroupsettings extends LSActiveRecord
             'questionindex' => 'Questionindex',
             'navigationdelay' => 'Navigationdelay',
             'alloweditaftercompletion' => 'Alloweditaftercompletion',
-            'encryption_method' => 'Crypt method',
+            'encryption_method' => 'Encryption method',
             'showregisterpolicy' => gT("Show privacy policy on register form"),
             'showtokenpolicy' => gT("Show privacy policy on access code form"),
         );

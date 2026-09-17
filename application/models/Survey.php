@@ -79,7 +79,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $googleanalyticsstyle Google Analytics style: (0: off; 1:Default; 2:Survey-SID/Group)
  * @property string $googleanalyticsapikey Google Analytics Tracking ID
  * @property string $tokenencryptionoptions Token encryption options
- * @property string $encryption_method Crypt method: I : inherit, B : Basic (allow filter and search), H : Hardened (better crypt method; no filter, no search) see mantis issue #19645
+ * @property string $encryption_method Encryption method: I : inherit, B : Basic (allow filter and search), H : Hardened (better crypt method; no filter, no search) see mantis issue #19645
  *
  * @property Permission[] $permissions
  * @property SurveyLanguageSetting[] $languagesettings
