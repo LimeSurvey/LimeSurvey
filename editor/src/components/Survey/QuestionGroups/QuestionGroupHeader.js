@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { createBufferOperation, hasTempId, L10ns, getSiteUrl } from 'helpers'
 import { useBuffer } from 'hooks'
 import { ContentEditor } from 'components/UIComponents'
-import { MeatballMenu } from 'components/MeatballMenu/MeatballMenu'
+import { Dropdown } from 'components/UIComponents/Dropdown/Dropdown'
 import { ReactComponent as DownArrow } from 'assets/icons/down-arrow.svg'
 import { EyeIcon } from 'components/icons'
 
@@ -37,6 +37,27 @@ export const QuestionGroupHeader = ({
     deleteGroup()
   }
 
+  const menuItems = [
+    {
+      type: 'header',
+      label: t('Group actions'),
+    },
+    {
+      type: 'item',
+      label: t('Duplicate group'),
+      icon: 'ri-file-copy-line',
+      onClick: handleDuplicate,
+      testId: 'duplicate-button',
+    },
+    {
+      type: 'item',
+      label: t('Delete group'),
+      icon: 'ri-delete-bin-line',
+      onClick: handleDelete,
+      className: 'text-danger',
+      testId: 'delete-button',
+    },
+  ]
   const openQuestionGroupPreview = () => {
     const previewUrl = getSiteUrl(
       `/index.php/survey/index/action/previewgroup/sid/${surveyId}/gid/${questionGroup.gid}/lang/${language}`
@@ -110,7 +131,7 @@ export const QuestionGroupHeader = ({
           )}
         </div>
         <div
-          className={classNames('cursor-pointer me-2', {})}
+          className={classNames('cursor-pointer me-2 d-flex', {})}
           data-testid="question-footer-preview-icon"
           onClick={openQuestionGroupPreview}
         >
@@ -122,13 +143,18 @@ export const QuestionGroupHeader = ({
             height={20}
           />
         </div>
-        <MeatballMenu
-          deleteText={'Delete group'}
-          duplicateText={'Duplicate group'}
-          handleDelete={handleDelete}
-          handleDuplicate={handleDuplicate}
-          onClick={handleFocusGroup}
+        <Dropdown
+          className="question-group-actions-dropdown"
           testId="question-group-meatball-menu"
+          menuItems={menuItems}
+          align={'start'}
+          toggleSettings={{
+            iconClassName: 'ri-more-fill',
+            variant: 'light',
+            id: 'question-group-actions-menu',
+            testId: 'meatball-menu-button',
+            title: '',
+          }}
         />
       </div>
     </>

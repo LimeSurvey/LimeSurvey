@@ -39,6 +39,9 @@ export const QuestionSettings = ({ surveyId }) => {
   })
   const [scenarioToPatch, setScenarioToPatch] = useState(null)
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
+  const [, setSurveyRefreshRequired] = useAppState(
+    STATES.SURVEY_REFRESH_REQUIRED
+  )
 
   // holds the scenario ID currently has a new conditions (waiting for temp condition IDs to be replaced)
   const [pendingScenarioName, setPendingScenarioName] = useState(null)
@@ -94,6 +97,32 @@ export const QuestionSettings = ({ surveyId }) => {
     setFocused(question, groupIndex, questionIndex)
   }
 
+  /**
+   * Updates saved defaults for the given question type.
+   * @param {string} questionType Question type code.
+   * @param {boolean} hasDefaults Whether saved defaults exist.
+   * @param {Object} attributes Saved attribute values.
+   * @returns {void}
+   */
+  const updateDefaultValuesAvailability = (
+    questionType,
+    hasDefaults,
+    attributes
+  ) => {
+    const questionTypeDefaultAttributeValues = {
+      ...(survey.questionTypeDefaultAttributeValues ?? {}),
+    }
+    if (hasDefaults) {
+      questionTypeDefaultAttributeValues[questionType] = attributes
+    } else {
+      delete questionTypeDefaultAttributeValues[questionType]
+    }
+
+    update({
+      questionTypeDefaultAttributeValues,
+    })
+  }
+
   const updateAttribute = (value, isAttribute = true) => {
     const question =
       survey?.questionGroups?.[groupIndex]?.questions?.[questionIndex]
@@ -120,12 +149,24 @@ export const QuestionSettings = ({ surveyId }) => {
 
       addToBuffer(operation)
     } else {
-      handleUpdate({ ...updatedQuestion, ...value })
+      if (value.saveAsDefault || value.clearDefault) {
+        updateDefaultValuesAvailability(
+          updatedQuestion.type,
+          Boolean(value.saveAsDefault),
+          updatedQuestion.attributes
+        )
+        setSurveyRefreshRequired(true)
+      } else {
+        handleUpdate({ ...updatedQuestion, ...value })
+      }
 
       const operation = createBufferOperation(updatedQuestion.qid)
         .question()
         .update({
           ...value,
+          ...(value.saveAsDefault || value.clearDefault
+            ? { type: updatedQuestion.type }
+            : {}),
         })
 
       addToBuffer(operation)
@@ -216,6 +257,12 @@ export const QuestionSettings = ({ surveyId }) => {
                 title={setting.title}
                 attributes={setting.attributes}
                 language={activeLanguage}
+                hasDefaultAttributeValues={
+                  Object.keys(
+                    survey.questionTypeDefaultAttributeValues?.[focused.type] ??
+                      {}
+                  ).length > 0
+                }
               />
             )
           })}

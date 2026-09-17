@@ -70,15 +70,9 @@ class UserManagementController extends LSBaseController
         $model->setAttributes(Yii::app()->getRequest()->getParam('User'), false);
         $aData['model'] = $model;
        // $aData['columnDefinition'] = $model->getManagementColums();
-        $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-        $aData['formUrl'] = $this->createUrl('userManagement/index');
+         $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+         $aData['formUrl'] = $this->createUrl('userManagement/index');
 
-        $aData['massiveAction'] = $this->renderPartial(
-            'massiveAction/_selector',
-            ['userid' => $model->uid],
-            true,
-            false
-        );
 
 
         $aData['topbar']['title'] = gT('User management');
@@ -93,7 +87,6 @@ class UserManagementController extends LSBaseController
             //'columnDefinition' => $aData['columnDefinition'],
             'pageSize' => $aData['pageSize'],
             'formUrl' => $aData['formUrl'],
-            'massiveAction' => $aData['massiveAction'],
         ]);
     }
 

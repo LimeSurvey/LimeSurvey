@@ -717,7 +717,17 @@ class LimeExpressionManager
             unset($_SESSION['LEMdirtyFlag']);
         } elseif (!isset(self::$instance)) {
             if (isset($_SESSION['LEMsingleton'])) {
-                self::$instance = unserialize($_SESSION['LEMsingleton']);
+                $restored = @unserialize($_SESSION['LEMsingleton'], ['allowed_classes' => [LimeExpressionManager::class, ExpressionManager::class]]);
+                /* $_SESSION['LEMsingleton'] can be not empty but unserialize return false */
+                /* You need to check if it's OK */
+                if (!($restored instanceof self) || !($restored->em instanceof ExpressionManager)) {
+                    if (!empty($_SESSION['LEMsid'])) {
+                        killSurveySession($_SESSION['LEMsid']);
+                    }
+                    unset($_SESSION['LEMsingleton']);
+                    throw new CHttpException(400, gT("We are sorry but your session has expired.", 'unescaped'));
+                }
+                self::$instance = $restored;
                 /* Since we get it via session, need to launch core event again */
                 self::$instance->em->ExpressionManagerStartEvent();
             } else {
@@ -6114,7 +6124,10 @@ class LimeExpressionManager
             }
             foreach ($sgqas as $sgqa) {
                 // for each subq, see if it is part of an array_filter or array_filter_exclude
-                if (!isset($LEM->subQrelInfo[$qid])) {
+                if (
+                    !isset($LEM->subQrelInfo[$qid])
+                    || ($qInfo['type'] == Question::QT_R_RANKING && $sgqa === 'Q' . $qid)
+                ) {
                     $relevantSQs[] = $sgqa;
                     continue;
                 }
@@ -7430,14 +7443,16 @@ class LimeExpressionManager
                             $relParts[] = "    }\n";
                             break;
                         case Question::QT_R_RANKING:
-                            $qid = substr((string) $sq['rowdivid'], 2 + strlen((string) $sq['sgqa']));
-                            $question = \Question::model()->find("qid = :qid", [":qid" => $qid]);
-                            $listItem = $question->title;
-                            $relParts[] = " $('#questionQ{$arg['qid']} .select-list select').each(function(){ \n";
-                            $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
-                            $relParts[] = "     $(this).val('').trigger('change'); \n";
-                            $relParts[] = "   }; \n";
-                            $relParts[] = " }); \n";
+                            if (preg_match('/^Q' . $arg['qid'] . '_S(\d+)$/', (string) $sq['rowdivid'], $matches)) {
+                                $qid = (int) $matches[1];
+                                $question = \Question::model()->find("qid = :qid", [":qid" => $qid]);
+                                $listItem = $question->title;
+                                $relParts[] = " $('#questionQ{$arg['qid']} .select-list select').each(function(){ \n";
+                                $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
+                                $relParts[] = "     $(this).val('').trigger('change'); \n";
+                                $relParts[] = "   }; \n";
+                                $relParts[] = " }); \n";
+                            }
                             break;
                         default:
                             break;

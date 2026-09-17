@@ -11,7 +11,7 @@
 
     <div class="row">
         <div class="col-12 content-right">
-            <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id' => 'edittoken', 'name' => 'edittoken', 'class' => 'form30 ')); ?>
+            <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id' => 'adddummytokens', 'name' => 'adddummytokens', 'class' => 'form30 ')); ?>
             <div class="row">
                 <!-- ID  -->
                 <div class="mb-3 col-12">

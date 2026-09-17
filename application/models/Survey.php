@@ -62,6 +62,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $showxquestions Show "There are X questions in this survey": (Y/N)
  * @property string $showgroupinfo Show group name and/or group description: (Y/N)
  * @property string $shownoanswer Show "No answer": (Y/N)
+ * @property string $preselectnoanswer Preselect "No answer": (Y/N)
  * @property string $showqnumcode Show question number and/or code: (Y/N)
  * @property integer $bouncetime
  * @property string $bounceprocessing
@@ -108,6 +109,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property boolean $hasResponsesTable Whether the survey responses (data) table exists in DB
  * @property boolean $hasTimingsTable Whether the survey timings table exists in DB
  * @property boolean $hasNewEditor Whether the new React editor should be used for this survey
+ * @property boolean $isEditorCompatible Whether the survey's theme is supported by the new React editor
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
  * @property integer $countInputQuestions Count of questions that need input (skipping text-display etc.)
@@ -137,6 +139,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isShowXQuestions Show "There are X questions in this survey"
  * @property bool $isShowGroupInfo Show group name and/or group description
  * @property bool $isShowNoAnswer Show "No answer"
+ * @property bool $isPreselectNoAnswer Preselect "No answer"
  * @property bool $isShowQnumCode Show question number and/or code
  * @property bool $isShowWelcome Show welcome screen
  * @property bool $isShowProgress how progress bar
@@ -545,6 +548,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('usetokens', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
             array('showxquestions', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('shownoanswer', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
+            array('preselectnoanswer', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('showwelcome', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('showsurveypolicynotice', 'in', 'range' => array('0', '1', '2'), 'allowEmpty' => true),
             array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
@@ -934,13 +938,33 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Returns whether this survey's effective theme is supported by the new React editor.
+     *
+     * The editor is only compatible with 'fruity_twentythree' and themes extending it.
+     *
+     * getTemplateEffectiveName() throws when the survey inherits a theme from its group
+     * and that group theme is missing. In that case the theme cannot be resolved, so it
+     * is treated as incompatible rather than letting the exception escape.
+     */
+    public function getIsEditorCompatible(): bool
+    {
+        try {
+            $templateName = $this->getTemplateEffectiveName();
+        } catch (\Throwable $e) {
+            return false;
+        }
+
+        return Template::isBasedOn($templateName, 'fruity_twentythree');
+    }
+
+    /**
      * Returns whether the new React editor should be used for this survey.
      * Checks global editorEnabled config and that the survey uses a compatible theme.
      */
     public function getHasNewEditor(): bool
     {
         return App()->getConfig('editorEnabled')
-            && Template::isBasedOn($this->getTemplateEffectiveName(), 'fruity_twentythree');
+            && $this->getIsEditorCompatible();
     }
 
     /**
@@ -1035,11 +1059,17 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * @inheritdoc . But use a static var because can be used a lot of time.
+     * Named scopes (active(), open(), …) merge a condition into getDbCriteria(), which is only
+     * consumed/reset by parent::findByPk() (via applyScopes()). If a scope is pending, the static
+     * cache must be bypassed entirely: otherwise a cache hit would (a) skip the scope condition
+     * and return a value invalid for that scope, and (b) leave the scope criteria unconsumed,
+     * leaking it into the next unrelated query on this model.
      */
     public function findByPk($pk, $condition = '', $params = array())
     {
         /** @var self $model */
-        if (empty($condition) && empty($params)) {
+        $hasPendingScope = $this->getDbCriteria(false) !== null;
+        if (empty($condition) && empty($params) && !$hasPendingScope) {
             if (array_key_exists($pk, self::$findByPkCache)) {
                 return self::$findByPkCache[$pk];
             } else {
@@ -1082,11 +1112,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @param string $attribute date attribute name
      * @return string formatted date
      */
-    private function getDateFormatted($attribute)
+    private function getDateFormatted($attribute, $fromDateFormat = 'Y-m-d')
     {
         $dateformatdata = getDateFormatData(Yii::app()->session['dateformat']);
         if ($this->$attribute) {
-            return convertDateTimeFormat($this->$attribute, 'Y-m-d', $dateformatdata['phpdate']);
+            return convertDateTimeFormat($this->$attribute, $fromDateFormat, $dateformatdata['phpdate']);
         }
         return null;
     }
@@ -1408,6 +1438,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * @return bool
      */
+    public function getIsPreselectNoAnswer()
+    {
+        return ($this->oOptions->preselectnoanswer === 'Y');
+    }
+    /**
+     * @return bool
+     */
     public function getIsShowQnumCode()
     {
         return ($this->oOptions->showqnumcode === 'Y');
@@ -1452,9 +1489,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getLastModifiedDate()
     {
-        $shifted = self::shiftedDateTime($this->lastmodified);
-
-        return $shifted ? $shifted->format('d.m.Y') : null;
+        return $this->lastmodified ? $this->getDateFormatted('lastmodified', 'Y-m-d H:i:s') : null;
     }
 
     /**
@@ -2244,24 +2279,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             ->where('{{surveys.sid}} = :sid', array(':sid' => $this->sid))
             ->queryRow();
         return $result !== false;
-    }
-
-    /**
-     * Get the final label for survey ID
-     * @param string $dataSecurityNoticeLabel current label
-     * @param integer $surveyId
-     * @deprecated 6.16.1 replaced by private function in LSETwigViewRenderer
-     * @return string
-     */
-    public static function replacePolicyLink($dataSecurityNoticeLabel, $surveyId)
-    {
-        return App()->twigRenderer->renderPartial(
-            '/subviews/privacy/privacy_datasecurity_notice_label.twig',
-            [
-                'dataSecurityNoticeLabel' => $dataSecurityNoticeLabel,
-                'sid' => $surveyId,
-            ]
-        );
     }
 
     /**
