@@ -19,9 +19,15 @@ import {
 import { getYesNoOptions, isTrue } from 'helpers'
 import classNames from 'classnames'
 
+// Stable empty object reference so the `value` prop doesn't change identity
+// on every render when `welcomeImage`/`value` is undefined. Using an inline
+// default (`value = {}`) creates a brand new object on every call, which
+// breaks the useEffect dependency below and causes an infinite render loop.
+const EMPTY_IMAGE_VALUE = {}
+
 export const ImageAttributes = ({
   update,
-  value = {},
+  value = EMPTY_IMAGE_VALUE,
   isSimpleSettings = false,
   disabled = false,
   wrapperClass = '',
