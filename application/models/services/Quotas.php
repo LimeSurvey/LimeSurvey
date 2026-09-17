@@ -578,7 +578,9 @@ class Quotas
             ], true)
         ) {
             // Update the response's "quota_exit" attribute with the ID of the matched quota
-            self::updateResponseQuotaExit($oResponse, $aMatchedQuota['id']);
+            if (($aSurveyInfo['savequotaexit'] ?? 'N') === 'Y') {
+                self::updateResponseQuotaExit($oResponse, $aMatchedQuota['id']);
+            }
 
             if ($sClientToken) {
                 submittokens(true);

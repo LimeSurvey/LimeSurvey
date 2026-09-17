@@ -2101,9 +2101,13 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         }
 
         foreach ($additionalFields as $additionalField) {
-            if (isset($archivedResponse->{$additionalField}) && isset($targetSchema->columns[$additionalField])) {
-                $dataRow[$additionalField] = $archivedResponse->{$additionalField};
+            if (!isset($archivedResponse->{$additionalField}) || !isset($targetSchema->columns[$additionalField])) {
+                continue;
             }
+            if ($additionalField === 'quota_exit' && empty($archivedResponse->{$additionalField})) {
+                continue;
+            }
+            $dataRow[$additionalField] = $archivedResponse->{$additionalField};
         }
 
         $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');

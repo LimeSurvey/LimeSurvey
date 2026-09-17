@@ -1478,7 +1478,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getIsSaveQuotaExit()
     {
-        return ($this->oOptions->savequotaexit === 'Y');
+        return isset($this->oOptions->savequotaexit) && $this->oOptions->savequotaexit === 'Y';
     }
 
     /**

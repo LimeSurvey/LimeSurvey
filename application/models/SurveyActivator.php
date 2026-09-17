@@ -182,9 +182,7 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = "integer";
                     break;
                 case "quota_exit":
-                    if ($this->survey->isSaveQuotaExit) {
-                        $aTableDefinition[$aRow['fieldname']] = "integer";
-                    }
+                    $aTableDefinition[$aRow['fieldname']] = "integer";
                     break;
                 case Question::QT_N_NUMERICAL:
                 case Question::QT_K_MULTIPLE_NUMERICAL:

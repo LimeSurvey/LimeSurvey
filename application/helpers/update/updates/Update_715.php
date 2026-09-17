@@ -45,8 +45,10 @@ class Update_715 extends DatabaseUpdateBase
             $this->db->createCommand()->addColumn(
                 '{{surveys_groupsettings}}',
                 'savequotaexit',
-                "string(1) NOT NULL DEFAULT 'N'"
+                "string(1) NOT NULL DEFAULT 'I'"
             );
+            // Global survey settings row is not allowed to inherit
+            $this->db->createCommand()->update('{{surveys_groupsettings}}', ['savequotaexit' => 'N'], 'gsid=0');
         }
     }
 }

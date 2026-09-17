@@ -144,6 +144,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'savequotaexit',
                         'checkedOption' => $oSurvey->savequotaexit,
+                        'ariaLabel' => gT('Save quota exit:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->savequotaexit . " ᴵ"])
                             : $optionsOnOff,

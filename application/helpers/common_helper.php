@@ -1665,13 +1665,11 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     }
 
     // Add 'quota_exit' to fieldmap.
-    if ($prow['savequotaexit'] == "Y") {
-        $fieldmap["quota_exit"] = array("fieldname" => "quota_exit", 'type' => "quota_exit", 'sid' => $surveyid, "gid" => "", "qid" => "", "aid" => "");
-        if ($style == "full") {
-            $fieldmap["quota_exit"]['title'] = "";
-            $fieldmap["quota_exit"]['question'] = gT("Quota exit");
-            $fieldmap["quota_exit"]['group_name'] = "";
-        }
+    $fieldmap["quota_exit"] = array("fieldname" => "quota_exit", 'type' => "quota_exit", 'sid' => $surveyid, "gid" => "", "qid" => "", "aid" => "");
+    if ($style == "full") {
+        $fieldmap["quota_exit"]['title'] = "";
+        $fieldmap["quota_exit"]['question'] = gT("Quota exit");
+        $fieldmap["quota_exit"]['group_name'] = "";
     }
 
     $sOldLanguage = App()->language;
