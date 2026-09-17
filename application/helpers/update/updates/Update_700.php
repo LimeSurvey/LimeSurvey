@@ -2136,7 +2136,12 @@ class Update_700 extends DatabaseUpdateBase
                     $this->db->createCommand($dropColumnSql)->execute();
                 }
                 $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
-                $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
+                // raname old survey table if it had orphaned columns so we can provide these values if needed
+                if (count($orphanedColumns)) {
+                    $this->db->createCommand()->renameTable($TABLE_NAME, 'orphaned_' . $TABLE_NAME);
+                } else {
+                    $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
+                }
             } catch (\Exception $ex) {
                 if (strpos($TABLE_NAME, "old") !== false) {
                     continue;
