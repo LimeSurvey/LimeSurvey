@@ -989,7 +989,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => gT("A clean and simple base that can be used by developers to create their own Bootstrap based theme."),
+            'description'   => "A clean and simple base that can be used by developers to create their own Bootstrap based theme.",
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => '',
@@ -1008,7 +1008,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."),
+            'description'   => "A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.",
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => 'vanilla',
@@ -1046,7 +1046,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => gT("Our default theme for a fruity and flexible use. This theme offers single color variations"),
+            'description'   => "Our default theme for a fruity and flexible use. This theme offers single color variations",
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => '',
@@ -2782,7 +2782,11 @@ class LsDefaultDataSets
             gT("Variations"),
             gT("Colors"),
             gT("Animations"),
-            gT("Fonts")
+            gT("Fonts"),
+            // Template descriptions
+            gT("A clean and simple base that can be used by developers to create their own Bootstrap based theme."),
+            gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."),
+            gT("Our default theme for a fruity and flexible use. This theme offers single color variations")
         ];
     }
 
