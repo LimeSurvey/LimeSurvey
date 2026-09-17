@@ -32,11 +32,16 @@ class Update_715 extends DatabaseUpdateBase
         // Add to surveys table if not exists
         $surveysTable = $this->db->schema->getTable('{{surveys}}');
         if (!isset($surveysTable->columns['savequotaexit'])) {
-            $this->db->createCommand()->addColumn(
-                '{{surveys}}',
-                'savequotaexit',
-                "string(1) NOT NULL DEFAULT 'N'"
-            );
+            try {
+                setTransactionBookmark();
+                $this->db->createCommand()->addColumn(
+                    '{{surveys}}',
+                    'savequotaexit',
+                    "string(1) NOT NULL DEFAULT 'N'"
+                );
+            } catch (\Exception $e) {
+                rollBackToTransactionBookmark();
+            }
         }
 
         // Add to surveys_groupsettings table if not exists
