@@ -10,7 +10,7 @@ import { ParticipantSource, QuestionSource, SurveyDataSource } from './sources'
 
 const sourceTabs = () => [
   { name: t('Question'), value: SOURCE.QUESTION },
-  { name: t('Survey data'), value: SOURCE.SURVEY_DATA },
+  { name: t('Response data'), value: SOURCE.SURVEY_DATA },
   { name: t('Participant data'), value: SOURCE.PARTICIPANT },
 ]
 
