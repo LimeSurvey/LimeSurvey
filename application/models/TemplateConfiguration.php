@@ -230,6 +230,9 @@ class TemplateConfiguration extends TemplateConfig
                 $sTemplateName,
                 $abstractInstance
             );
+            // Clear the parent-template cache copied by clone(): it was resolved for the generic
+            // instance's own context and must be recomputed for this new survey group's context.
+            $oTemplateConfigurationModel->oParentTemplate = null;
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
@@ -279,6 +282,9 @@ class TemplateConfiguration extends TemplateConfig
                 $sTemplateName,
                 $abstractInstance
             );
+            // Clear the parent-template cache copied by clone(): it was resolved for the generic
+            // instance's own context and must be recomputed for this new survey's context.
+            $oTemplateConfigurationModel->oParentTemplate = null;
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
