@@ -15,6 +15,8 @@ use SurveyDynamic;
  *     each return an alias for the requested aggregate (deduplicated).
  *  2. execute() runs the merged SELECT (chunked only when the expression
  *     list is very large), after which value($alias) returns the count.
+ * 
+ *  @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 final class ResponseAggregateBatch
 {

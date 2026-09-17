@@ -119,7 +119,6 @@ class SurveyResponses implements CommandInterface
         $this->getSurvey($request);
         $model = $this->getSurveyDynamicModel($request);
         $language = $this->getLanguage($request);
-
         $this->transformerOutputSurveyResponses->fieldMap =
             createFieldMap($this->survey, 'full', true, false, $language);
 
@@ -149,10 +148,8 @@ class SurveyResponses implements CommandInterface
         );
 
         $surveyQuestions = $this->getQuestionFieldMap();
-
         $this->answerCache->load((int) $surveyId, $language);
         $responses = $this->mapResponsesToQuestions($responses, $surveyQuestions);
-
         $totalItems = $dataProvider->getTotalItemCount();
         $pageSize = max(1, $pagination['pageSize'] ?? 1);
 
