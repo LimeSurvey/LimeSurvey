@@ -310,7 +310,14 @@ class LSHttpRequest extends CHttpRequest
     {
         $host = parse_url($hostInfo, PHP_URL_HOST);
         if ($host && !App()->isHostAllowed($host)) {
-            throw new CHttpException(400, gT("The requested hostname is invalid.", 'unescaped'));
+            $message = gT("The requested hostname is invalid.", 'unescaped');
+            if (Yii::app()->getConfig('debug') > 0) {
+                $message .= ' ' . sprintf(
+                    gT("Host '%s' is not in the allowed hosts file (application/config/allowed_hosts.php). Add it there, or check the publicurl setting, then try again.", 'unescaped'),
+                    $host
+                );
+            }
+            throw new CHttpException(400, $message);
         }
     }
 }

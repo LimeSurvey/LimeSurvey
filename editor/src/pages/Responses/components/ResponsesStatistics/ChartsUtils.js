@@ -170,6 +170,11 @@ export const ordinal = (n) => {
   }
 }
 
+export const formatMetricValue = (value, valueType) =>
+  valueType === VALUE_TYPE.PERCENTAGE
+    ? `${Math.round(value ?? 0)}%`
+    : `${value ?? 0}`
+
 // Wraps the part of a translated sentence marked by a `%s` pair in an element:
 // wrapTerm('%sMean%s of ...', (term) => <b>{term}</b>) -> <b>Mean</b> of ...
 export const wrapTerm = (text, wrap) => {

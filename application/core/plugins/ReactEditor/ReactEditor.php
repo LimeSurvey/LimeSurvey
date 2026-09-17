@@ -2,6 +2,7 @@
 
 use LimeSurvey\Models\Services\EditorService;
 use ReactEditor\EditorMessages;
+use ReactEditor\EditorSlides;
 
 // phpcs:disable
 require_once(__DIR__ . '/autoload.php');
@@ -33,6 +34,11 @@ class ReactEditor extends \PluginBase
         $this->subscribe('beforeSurveyAdminView');
     }
 
+    /**
+     * Prevents deactivation of this core plugin.
+     *
+     * @return void
+     */
     public function beforeDeactivate()
     {
         $this->getEvent()->set('success', false);
@@ -82,7 +88,7 @@ class ReactEditor extends \PluginBase
             // during the render phase – the same code path used by all core
             // packages (jquery, bootstrap, adminsidepanel …) that work reliably
             // even right after a fresh installation.
-            \Yii::setPathOfAlias('reacteditor.js', dirname(__FILE__) . '/js');
+             \Yii::setPathOfAlias('reacteditor.js', dirname(__FILE__) . '/js');
             \Yii::setPathOfAlias('reacteditor.css', dirname(__FILE__) . '/css');
 
             App()->clientScript->addPackage('reacteditor-modal', [
@@ -100,6 +106,7 @@ class ReactEditor extends \PluginBase
                 '_modalActivateDeactivateEditor',
                 [
                     'activated' => $this->isEditorEnabled(false),
+                    'slides'    => EditorSlides::getSlides(),
                     'hasPathUrlFormat' => $this->hasPathUrlFormat(),
                     'warningHeader' => EditorMessages::getUrlFormatRequirementHeader(),
                     'warningMessage' => EditorMessages::getUrlFormatRequirementMessage(),
@@ -107,7 +114,7 @@ class ReactEditor extends \PluginBase
                 true,
             );
 
-            $shouldShowModal = false;
+            $shouldAutoShowModal = false;
 
             \Yii::app()->getClientScript()->registerScript(
                 'previewModal',
@@ -121,7 +128,7 @@ class ReactEditor extends \PluginBase
                 window.featurePreviewModalAdded = true;
                 
                 "
-                . ($shouldShowModal ? "$('#activate_editor').modal('show');" : "")
+                . ($shouldAutoShowModal ? "$('#activate_editor').attr('data-auto-open', true).modal('show');" : "")
                 . "
             }
             "
