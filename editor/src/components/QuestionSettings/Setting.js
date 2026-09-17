@@ -14,6 +14,8 @@ export const Setting = ({
   title = '',
   attributes = [],
   simpleSettings = false,
+  sectionExpanded,
+  onSectionToggle,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
   const isDependsOnSatisfied = (dependsOn, dependsOnValue) => {
@@ -131,6 +133,8 @@ export const Setting = ({
       simpleSettings={simpleSettings}
       isAdvanced={isAdvanced}
       title={title}
+      isExpanded={sectionExpanded}
+      onToggle={(isExpanded) => onSectionToggle?.(title, isExpanded)}
     >
       {attributes.map((attribute) => {
         if (
@@ -191,7 +195,7 @@ export const Setting = ({
         return (
           <div
             className="right-side-bar-settings"
-            key={`${title}-settings-${attribute.attributePath}${attribute.props.labelText}`}
+            key={`${question?.qid}-${title}-settings-${attribute.attributePath}${attribute.props.labelText}`}
           >
             <TooltipContainer
               tip={getTooltipMessages().ACTIVE_DISABLED}

@@ -4,15 +4,19 @@ We take the security of LimeSurvey seriously and welcome reports from security r
 
 ## Reporting a Vulnerability
 
-Please report (suspected) security vulnerabilities by creating a bug report on https://bugs.limesurvey.org and marking it as **private** (visible only to users who have access to it), or by sending the information to **support@limesurvey.org** directly.
+If your report concerns an issue with any of the LimeSurvey websites (https://*.limesurvey.org) or LimeSurvey Cloud, please contact support@limesurvey.org.
+
+For LimeSurvey Community Edition (CE), please report (suspected) security vulnerabilities by creating a bug report on https://bugs.limesurvey.org (you might need to register an account there first) and marking it as severity **security** and/or category **Security**. 
+This is necessary to ensure proper reaction time.
 
 Please do not disclose the issue publicly until we have had the opportunity to investigate and, where applicable, release a fix.
 
 To help us triage your report as quickly as possible, please include where you can:
 
 - A description of the vulnerability and its potential impact
+- If the vulnerability is exploited, already.
 - Steps to reproduce, or a proof-of-concept
-- The affected LimeSurvey version(s) and edition (Community, Professional, Cloud)
+- The affected LimeSurvey version(s) and edition (Community/Cloud)
 
 ## What to Expect From Us
 
@@ -32,7 +36,7 @@ Security updates are provided **free of charge** for all currently supported Lim
 
 ## Software Bill of Materials (SBOM)
 
-A Software Bill of Materials for each release is available on request, to help you assess exposure to vulnerabilities in third-party components we depend on.
+A Software Bill of Materials for each release is available as part of the ComfortUpdate Extension package (see https://community.limesurvey.org/comfort-update-extension/ ), to help you assess exposure to vulnerabilities in third-party components we depend on.
 
 ## Recognition
 

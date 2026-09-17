@@ -7,7 +7,7 @@ import { getSiteUrl } from 'helpers'
 
 export const ResponseDetailView = ({
   language,
-  survey,
+  survey = {},
   onSave,
   showResponseDetails,
   canGoNextResponse,
@@ -71,14 +71,24 @@ export const ResponseDetailView = ({
           <p className="user-response-paragraph">
             {t('Last action')}: {rowData.dateLastAction}
           </p>
-          <p className="user-response-paragraph">
-            {t('IP address')}:{' '}
-            {rowData.ipAddr ? rowData.ipAddr : t('Not enabled')}
-          </p>
-          <p className="user-response-paragraph">
-            {t('Referrer URL')}:{' '}
-            {rowData.refUrl ? rowData.refUrl : t('Not enabled')}
-          </p>
+          {survey?.ipAddr ? (
+            <p className="user-response-paragraph">
+              {t('IP address')}: {rowData.ipAddr}
+            </p>
+          ) : (
+            <p className="user-response-paragraph">
+              {t('IP address')}: {t('Not enabled')}
+            </p>
+          )}
+          {survey?.refUrl ? (
+            <p className="user-response-paragraph">
+              {t('Referrer URL')}: {rowData.refUrl}
+            </p>
+          ) : (
+            <p className="user-response-paragraph">
+              {t('Referrer URL')}: {t('Not enabled')}
+            </p>
+          )}
         </div>
         <div className="w-100 p-3 response-detail-view-action-buttons">
           <div className="d-flex justify-content-between gap-2 mb-3 pb-0 pt-0">

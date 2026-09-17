@@ -256,10 +256,14 @@ table {
             font-size : 16px;
         }
 
-        &:hover,
-        &:focus-visible {
+        &:hover {
             background : $g-200;
             outline    : none;
+        }
+        &:focus, &:focus-visible {
+            background : unset;
+            outline    : none;
+            border     : solid 1px $grape;
         }
     }
 
@@ -604,4 +608,3 @@ table {
     }
   }
 }
-

@@ -24,17 +24,28 @@ extract($viewData ?? []);
 </script>
 
 <div id="translationtabs">
-    <ul class="nav nav-tabs">
-        <?php for ($i = 0, $len = count($tab_names ?? []); $i < $len; $i++) { ?>
-            <li class="nav-item" >
-                <a class="nav-link <?php echo ($i == 0) ? 'active' : '' ?>" data-bs-toggle="tab" href="#tab-<?php echo $tab_names[$i]; ?>">
+    <ul class="nav nav-tabs" id="quick-translation-tabs" role="tablist" aria-label="<?php echo gT('Translation sections'); ?>">
+        <?php for ($i = 0, $len = count($tab_names ?? []); $i < $len; $i++) {
+            $tabName = $tab_names[$i];
+            $tabId = 'quick-translation-tab-' . $tabName;
+            $panelId = 'tab-' . $tabName;
+            $isActive = ($i === 0);
+            ?>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link <?php echo $isActive ? 'active' : ''; ?>"
+                   id="<?php echo $tabId; ?>"
+                   data-bs-toggle="tab"
+                   href="#<?php echo $panelId; ?>"
+                   role="tab"
+                   aria-controls="<?php echo $panelId; ?>"
+                   aria-selected="<?php echo $isActive ? 'true' : 'false'; ?>"
+                   tabindex="<?php echo $isActive ? '0' : '-1'; ?>">
                 <span>
                     <?php echo $amTypeOptions[$i]["description"]; ?>
                 </span>
                 </a>
             </li>
         <?php } ?>
-        <?php $i = 0; ?>
     </ul>
     <div class="tab-content">
 
@@ -44,11 +55,13 @@ extract($viewData ?? []);
 
         foreach ($singleTabs as $tabData) {
             //find the correct singleTabdata
-            $this->renderpartial('translatetabs_view', [
-                'baselangdesc' => $baselangdesc,
-                'tolangdesc' => $tolangdesc,
-                'tabData' => $tabData
-            ]);
+            $this->renderpartial('translatetabs_view', array_merge(
+                [
+                    'baselangdesc' => $baselangdesc,
+                    'tolangdesc' => $tolangdesc,
+                ],
+                $tabData
+            ));
         }
         ?>
     </div>

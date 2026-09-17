@@ -178,6 +178,7 @@ class FileUploadService
             'debug' => $debugInfoArray,
             'uploadResultMessage' => $uploadResult,
             'success' => $success,
+            'fileName' => $fileName,
         ];
     }
 

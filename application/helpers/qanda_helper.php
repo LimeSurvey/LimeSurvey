@@ -312,20 +312,24 @@ function mandatory_popup($ia, $notanswered = null)
     if (isset($notanswered) && is_array($notanswered)) {
         //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
         //POPUP WARNING
+        // This function is called for every question on the page, so only soft ('S') and hard ('Y')
+        // mandatory questions may set the message; non-mandatory questions must leave it untouched.
         // If there is no "hard" mandatory violation (both current and previous violations belong to Soft Mandatory questions),
         // we show the soft mandatory message.
         if ($ia[6] == 'S' && (!isset($mandatorypopup) || $mandatorypopup == 'S')) {
             $popup = gT("One or more mandatory questions have not been answered. If possible, please complete them before continuing to the next page.");
             $mandatorypopup = "S";
-        } elseif (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U')) {
-            // If
+        } elseif ($ia[6] == 'Y' && !isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U')) {
             $popup = gT("You cannot proceed until you enter some text for one or more questions.");
             $mandatorypopup = "Y";
-        } else {
+        } elseif ($ia[6] == 'Y') {
             $popup = gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
             $mandatorypopup = "Y";
         }
-        return array($mandatorypopup, $popup);
+        return array(
+            isset($mandatorypopup) ? $mandatorypopup : false,
+            isset($popup) ? $popup : false
+        );
     } else {
         return false;
     }

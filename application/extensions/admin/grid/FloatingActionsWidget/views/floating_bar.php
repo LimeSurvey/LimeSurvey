@@ -115,8 +115,9 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
     <button
         type="button"
         class="floating-actions-close"
-        aria-label="<?= gT('Deselect all') ?>"
+        data-bs-toggle="tooltip"
         title="<?= gT('Deselect all') ?>"
+        aria-label="<?= gT('Close') ?>"
     >
         <i class="ri-close-line"></i>
     </button>
