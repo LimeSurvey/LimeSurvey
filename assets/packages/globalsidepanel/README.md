@@ -1,29 +1,32 @@
 # globalsidepanel
 
+LimeSurvey global side panel, bundled with webpack.
+
+## Requirements
+
+Node.js 20 or later, matching the CI workflow which uses Node.js 24.
+
 ## Project setup
 ```
-yarn install
+yarn install --frozen-lockfile
 ```
 
-### Compiles and hot-reloads for development
+### Build development and production bundles
 ```
-yarn run serve
-```
-
-### Compiles and minifies for production
-```
-yarn run build
+yarn build
 ```
 
-### Run your tests
+### Build only the development bundle (writes to `build/`)
 ```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
+yarn dev
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Build only the production bundle (writes to `build.min/`)
+```
+yarn prod
+```
+
+### Rebuild on change
+```
+yarn watch
+```

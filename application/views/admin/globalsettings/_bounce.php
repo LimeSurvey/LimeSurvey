@@ -13,7 +13,7 @@
 <div class="mb-3">
     <label class=" form-label" for='siteadminbounce'><?php eT("Default site bounce email:"); ?></label>
     <div class="">
-        <input class="form-control" type='text' size='50' id='siteadminbounce' name='siteadminbounce' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('siteadminbounce')); ?>" />
+        <input class="form-control" type='email' size='50' id='siteadminbounce' name='siteadminbounce' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('siteadminbounce')); ?>" />
     </div>
 </div>
 

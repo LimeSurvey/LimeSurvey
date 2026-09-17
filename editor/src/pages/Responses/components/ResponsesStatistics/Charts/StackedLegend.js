@@ -5,7 +5,7 @@ import React from 'react'
 export const StackedLegend = ({ segments = [] }) => (
   <div className="responses-statistics-stacked-legend">
     <span className="responses-statistics-stacked-legend-title">
-      {t('Distribution by choice')}:
+      {t('Distribution')}:
     </span>
     <div className="responses-statistics-stacked-legend-items">
       {segments.map((segment) => (

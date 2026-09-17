@@ -89,6 +89,7 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         SettingsUser::setUserSetting('last_question', $qid);
+        SettingsUser::setUserSetting('last_question_gid', $question->gid, null, 'Survey', $question->sid);
 
         // Check update permission to determine view mode
         $hasUpdatePermission = Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update');
@@ -129,6 +130,8 @@ class QuestionAdministrationController extends LSBaseController
 
         $oQuestion = $this->getQuestionObject();
         $oQuestion->sid = $surveyid;
+
+        SettingsUser::setUserSetting('last_question_gid', $oQuestion->gid, null, 'Survey', $surveyid);
 
         $this->aData['showSaveAndNewGroupButton'] = true;
         $this->aData['showSaveAndNewQuestionButton'] = true;
@@ -529,6 +532,8 @@ class QuestionAdministrationController extends LSBaseController
                 $surveyId,
                 $data
             );
+
+            SettingsUser::setUserSetting('last_question_gid', $question->gid, null, 'Survey', $surveyId);
 
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             // only those two values are valid
@@ -2340,7 +2345,7 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestion = Question::model()->findByPk($iQuestionId);
 
         if (empty($oQuestion)) {
-            $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType, $questionThemeName);
+            $oQuestion = QuestionCreate::create($iSurveyId, $sQuestionType, $questionThemeName);
         }
 
         if ($sQuestionType != null) {

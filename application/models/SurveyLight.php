@@ -63,6 +63,7 @@
  * @property string $showxquestions Show "There are X questions in this survey": (Y/N)
  * @property string $showgroupinfo Show group name and/or group description: (Y/N)
  * @property string $shownoanswer Show "No answer": (Y/N)
+ * @property string $preselectnoanswer Preselect "No answer": (Y/N)
  * @property string $showqnumcode Show question number and/or code: (Y/N)
  * @property integer $bouncetime
  * @property string $bounceprocessing
@@ -137,6 +138,7 @@
  * @property bool $isShowXQuestions Show "There are X questions in this survey"
  * @property bool $isShowGroupInfo Show group name and/or group description
  * @property bool $isShowNoAnswer Show "No answer"
+ * @property bool $isPreselectNoAnswer Preselect "No answer"
  * @property bool $isShowQnumCode Show question number and/or code
  * @property bool $isShowWelcome Show welcome screen
  * @property bool $isShowProgress how progress bar
