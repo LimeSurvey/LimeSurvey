@@ -421,6 +421,18 @@
       height: 100%;
     }
 
+    .responses-statistics-bar-chart-viewport {
+      max-width: 100%;
+
+      &--scrollable {
+        overflow-x: auto;
+        overflow-y: hidden;
+        // Reserve the gutter so the chart does not jump when the scrollbar
+        // appears at narrower viewport sizes.
+        scrollbar-gutter: stable;
+      }
+    }
+
     .responses-statistics-bar-chart--clickable .recharts-bar-rectangle {
       cursor: pointer;
     }
@@ -522,6 +534,16 @@
         flex-direction: column;
         gap: 24px;
       }
+    }
+  }
+}
+
+@media print {
+  .responses-statistics-bar-chart-viewport--scrollable {
+    overflow: visible;
+
+    .responses-statistics-bar-chart {
+      min-width: 100% !important;
     }
   }
 }

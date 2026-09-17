@@ -42,6 +42,15 @@ export const COLORS = [
 
 export const BAR_MAX_SIZE = 120
 
+// Keep using the available chart width until the categories become too
+// narrow to read. Beyond this point the bar chart grows horizontally and its
+// viewport provides a scrollbar.
+export const BAR_SCROLL_THRESHOLD = 20
+export const BAR_MIN_CATEGORY_WIDTH = 48
+
+export const getBarChartMinWidth = (count) =>
+  count > BAR_SCROLL_THRESHOLD ? count * BAR_MIN_CATEGORY_WIDTH : undefined
+
 export const MAX_LABEL_LENGTH = 18
 
 export const NON_ANSWER_KEYS = ['comment', 'other']
