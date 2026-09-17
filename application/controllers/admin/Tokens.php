@@ -2036,6 +2036,12 @@ class Tokens extends SurveyCommonAction
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
         $aData['ldap_queries'] = Yii::app()->getConfig('ldap_queries');
+        $surveyEncryptionmethod = $aData['surveyEncryptionmethod'] = $survey->oOptions->encryption_method;
+        $aData['aEncryptedAttributes'] = TokenDynamic::model($iSurveyId)->getAllEncryptedAttributes($iSurveyId, 'Token');
+        /* Filter by core attributes */
+        $aCoreAttributes = ['firstname','lastname','email'];
+        $aCoreEncryptedAttributes = $aData['aCoreEncryptedAttributes'] = array_intersect($aData['aEncryptedAttributes'], $aCoreAttributes);
+        $aData['aCoreNoEncryptedAttributes'] = array_values(array_diff($aCoreAttributes, $aCoreEncryptedAttributes));
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
             [
@@ -2189,8 +2195,31 @@ class Tokens extends SurveyCommonAction
                                 $dupfound = false;
                                 $invalidemail = false;
                                 if ($filterduplicatetoken) {
-                                    $dupquery = "SELECT count(tid) from {{tokens_" . intval($iSurveyId) . "}} where email=:email and firstname=:firstname and lastname=:lastname";
-                                    $dupresult = Yii::app()->db->createCommand($dupquery)->bindParam(":email", $myemail, PDO::PARAM_STR)->bindParam(":firstname", $myfirstname, PDO::PARAM_STR)->bindParam(":lastname", $mylastname, PDO::PARAM_STR)->queryScalar();
+                                    if ($surveyEncryptionmethod != 'H' || count($aCoreEncryptedAttributes) < 3) { // No duplicate count if H and all core attribute are encryoted
+                                        $criteria = new CDbCriteria();
+                                        if (in_array('firstname', $aCoreEncryptedAttributes)) {
+                                            if($surveyEncryptionmethod == 'B') {
+                                                $criteria->compare('firstname', LSActiveRecord::encryptSingle($myfirstname, 'B'));
+                                            }
+                                        } else {
+                                           $criteria->compare('firstname', $myfirstname);
+                                        }
+                                        if (in_array('lastname', $aCoreEncryptedAttributes)) {
+                                            if($surveyEncryptionmethod == 'B') {
+                                                $criteria->compare('lastname', LSActiveRecord::encryptSingle($myemail, 'B'));
+                                            }
+                                        } else {
+                                           $criteria->compare('lastname', $mylastname);
+                                        }
+                                        if (in_array('email', $aCoreEncryptedAttributes)) {
+                                            if($surveyEncryptionmethod == 'B') {
+                                                $criteria->compare('email', LSActiveRecord::encryptSingle($myemail, 'B'));
+                                            }
+                                        } else {
+                                           $criteria->compare('email', $myemail);
+                                        }
+                                    }
+                                    $dupresult = TokenDynamic::model($iSurveyId)->count($criteria);
                                     if ($dupresult > 0) {
                                         $dupfound = true;
                                         $duplicatelist[] = $myfirstname . " " . $mylastname . " (" . $myemail . ")";
@@ -2210,32 +2239,24 @@ class Tokens extends SurveyCommonAction
                                 } elseif ($dupfound) {
                                     ++$duplicatecount;
                                 } elseif ($meetminirequirements === true) {
-                                    // No issue, let's import
-                                    $iq = "INSERT INTO {{tokens_" . intval($iSurveyId) . "}} \n"
-                                        . "(firstname, lastname, email, emailstatus, token, language";
-
+                                    $oToken = Token::create($iSurveyId);
+                                    $oToken->scenario = 'allowinvalidemail'; // Data came from LDAP, didn't control
+                                    $oToken->firstname = $myfirstname;
+                                    $oToken->lastname = $mylastname;
+                                    $oToken->email = $myemail;
+                                    $oToken->token = $mytoken;
+                                    $oToken->language = $mylanguage;
                                     foreach ($aTokenAttr as $thisattrfieldname) {
                                         $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
-                                        if (!empty($myattrArray[$attridx])) {
-                                            $iq .= ", " . Yii::app()->db->quoteColumnName($thisattrfieldname);
+                                        if (isset($myattrArray[$attridx])) {
+                                            $oToken->setAttribute($thisattrfieldname, $myattrArray[$attridx]);
                                         }
                                     }
-                                    $iq .= ") \n"
-                                        . "VALUES (" . Yii::app()->db->quoteValue($myfirstname) . ", " . Yii::app()->db->quoteValue($mylastname) . ", " . Yii::app()->db->quoteValue($myemail) . ", 'OK', " . Yii::app()->db->quoteValue($mytoken) . ", " . Yii::app()->db->quoteValue($mylanguage) . "";
-
-                                    foreach ($aTokenAttr as $thisattrfieldname) {
-                                        $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
-                                        if (!empty($myattrArray[$attridx])) {
-                                            $iq .= ", " . Yii::app()->db->quoteValue($myattrArray[$attridx]) . "";
-                                        } // dbquote_all encloses str with quotes
-                                    }
-                                    $iq .= ")";
-                                    $ir = Yii::app()->db->createCommand($iq)->execute();
-                                    if (!$ir) {
+                                    if (!$oToken->encryptSave(true)) {
+                                        /* Keep previous system , but unsure on point here */
                                         $duplicatecount++;
                                     }
                                     $xz++;
-                                    // or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
                                 }
                             } // End for each entry
                         } // End foreach responseGroup

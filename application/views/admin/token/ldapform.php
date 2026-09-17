@@ -71,13 +71,40 @@
                     </div>
 
                     <!-- Filter duplicate -->
-                    <div class="mb-3">
-                        <label for='filterduplicatetoken'  class=" form-label"><?php echo eT("Filter duplicate records:"); ?></label>
-                        <div class="">
-                            <input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked' />
-                        </div>
-                    </div>
+                    <?php if (count($aCoreNoEncryptedAttributes) > 0 || $surveyEncryptionmethod != 'H') : ?>
+                        <div class="mb-3">
+                            <?php if (count($aCoreEncryptedAttributes) > 0)  { // Construct the help string
+                                switch($surveyEncryptionmethod) {
+                                    case 'B':
+                                        $help = gT("Duplicate check uses: First Name, Last Name, Email. Encryted columns use case-sensitive comparison");
+                                        break;
+                                    case 'H';
+                                        switch(count($aCoreNoEncryptedAttributes)) {
+                                            case 1:
+                                                $help = sprintf(gT("Duplicate check uses: “%s” attribute."), $aCoreNoEncryptedAttributes[0]);
+                                                break;
+                                            case 2:
+                                                $help = sprintf(gT("Duplicate check uses: “%s” and “%s” attributes."), $aCoreNoEncryptedAttributes[0], $aCoreNoEncryptedAttributes[1]);
+                                                break;
+                                            default:
+                                                // can not happen
+                                        }
+                                        break;
+                                    default:
+                                        // can not happen currently
+                                }
+                            } ?>
+                            <label for='filterduplicatetoken'  class=" form-label"><?php echo eT("Filter duplicate records:"); ?></label>
+                            <?php if ($help) : ?>
+                                <div id="filterduplicatetoken-help" class="form-text"><?= $help ?></div>
+                            <?php endif; ?>
+                            <div class="">
+                                <input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked'
+                                    <?php if ($help) : ?> aria-descridebby='filterduplicatetoken-help' <?php endif; ?>/>
+                            </div>
 
+                        </div>
+                    <?php endif; ?>
                     <!-- Upload button -->
                     <input type='hidden' name='subaction' value='uploadldap' />
                     <p><input type='submit' class="btn btn-outline-secondary" name='submit' value='<?php eT('Upload');?>' /></p>
