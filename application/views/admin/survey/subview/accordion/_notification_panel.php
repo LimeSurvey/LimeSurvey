@@ -153,7 +153,7 @@ $googleAnalyticsStyleOptions = array(
             }
             ?>
             <div class="ex-form-group mb-3">
-                <label class="form-label" id='encryption_method-label' for='encryption_method'><?php eT("Crypt method:"); ?></label>
+                <label class="form-label" id='encryption_method-label' for='encryption_method'><?php eT("Encrypt method:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'encryption_method',
