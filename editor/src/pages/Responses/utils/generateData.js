@@ -11,6 +11,7 @@ import {
   getSubquestionByProperty,
   isRankingQuestion,
   htmlToPlainText,
+  OTHER_CODE,
 } from 'helpers'
 import { cloneDeep } from 'lodash'
 
@@ -144,6 +145,11 @@ export const generateData = (responses, language, generatedColumns) => {
             [idName]: cell[cell.length - 1][idName],
           }
         } else {
+          // this is to checkbox of the other option in response preview.
+          if (!answer.aid && answer.value === OTHER_CODE) {
+            answer.aid = OTHER_CODE
+          }
+
           cell.push({
             value: value,
             key: answer.key,
@@ -164,6 +170,7 @@ export const generateData = (responses, language, generatedColumns) => {
 
       answer.aid = actual_aid
       delete answer.question
+
       data[index].answer[qid].push(answer)
     })
   })

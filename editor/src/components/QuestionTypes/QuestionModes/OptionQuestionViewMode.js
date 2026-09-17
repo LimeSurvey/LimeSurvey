@@ -327,8 +327,13 @@ export const OptionQuestionViewMode = ({
       const child = children[i]
 
       valuesInOrder.push(
-        values?.find((value) => {
-          return value[childrenInfo.idKey] == child[childrenInfo.idKey]
+        values?.find((value = {}) => {
+          const valueIsOther = value.key?.endsWith('_Cother')
+
+          return (
+            value[childrenInfo.idKey] == child[childrenInfo.idKey] ||
+            (valueIsOther && child.isOther)
+          )
         })
       )
     }
@@ -470,12 +475,24 @@ export const OptionQuestionViewMode = ({
                 onClick={(e) => {
                   e.stopPropagation()
                 }}
+                update={(newValue) => {
+                  const key = isSingleChoiceTheme
+                    ? values?.[1]?.key
+                    : childrenValuesInOrder[index]?.key
+
+                  onValueChange(newValue, key)
+                }}
                 placeholder={st('Enter your answer here.')}
                 rows={1}
                 maxLength={Infinity}
                 className="w-100 d-block comment-input"
                 dataTestId="other-option-input"
                 type="textarea"
+                value={
+                  isSingleChoiceTheme
+                    ? values?.[1]?.value
+                    : childrenValuesInOrder[index]?.value
+                }
               />
             )}
           </div>
