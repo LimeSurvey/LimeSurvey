@@ -44,7 +44,7 @@ class ExpressionError extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{expression_errors}}';
+            return '{{expression_errors}}';
     }
 
     /** @inheritdoc */
