@@ -9,6 +9,7 @@
   height: 100vh;
   left: 0;
   position: fixed;
+  z-index: 4;
   overflow-y: auto;
   max-height: calc(100vh - $top-bar-height);
 
@@ -62,6 +63,12 @@
   align-items: center;
   padding-right: 10px;
   cursor: grab;
+  position: relative;
+
+  // Fix dropdown menu positioning within the sidebar
+  .dropdown-menu {
+    position: fixed !important;
+  }
 
   .content-editable {
     cursor: grab;
@@ -80,6 +87,22 @@
     min-height: 32px;
     display: flex;
     align-items: center;
+  }
+
+  .dropdown-toggler {
+    opacity: 0;
+
+    &:hover,
+    &:focus {
+      opacity: 1;
+    }
+  }
+
+  &.sidebar-row-focused {
+    .dropdown-toggler {
+      color: $white !important;
+      opacity: 1;
+    }
   }
 
   .sidebar-row-tag {
