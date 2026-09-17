@@ -189,7 +189,7 @@ $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->encrypti
                         'SurveyDynamic[firstname_filter]',
                         $model->firstname_filter
                     ),
-                    'sortable' => !($encryptedColumn && $hideCryptedFilter)
+                    'sortable' => !$encryptedColumn
                 ];
             }
             $filterableColumns['firstname'] = gT("First name");
