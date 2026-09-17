@@ -2362,6 +2362,7 @@ class Tokens extends SurveyCommonAction
             $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
             $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl('admin/tokens', array('sa' => 'import', 'surveyid' => $iSurveyId)));
 
+            /* Update file */
             $oFile = CUploadedFile::getInstanceByName("the_file");
             $sPath = Yii::app()->getConfig('tempdir');
             $sFileName = $sPath . '/' . randomChars(20);
@@ -2383,6 +2384,12 @@ class Tokens extends SurveyCommonAction
                     $aFilterDuplicateFields = array('firstname', 'lastname', 'email');
                 } else {
                     $aFilterDuplicateFields = Yii::app()->request->getPost('filterduplicatefields');
+                }
+                /* Encryption */
+                $surveyEncryptionmethod = $survey->oOptions->encryption_method;
+                $aEncryptedAttributes = TokenDynamic::model($iSurveyId)->getAllEncryptedAttributes($iSurveyId, 'Token');
+                if ($surveyEncryptionmethod != 'B') { // Remove hardened encrypted attributes
+                    $aFilterDuplicateFields = array_diff($aFilterDuplicateFields, $aEncryptedAttributes);
                 }
                 $sSeparator = Yii::app()->request->getPost('separator');
                 $aMissingAttrFieldName = $aInvalideAttrFieldName = array();
@@ -2488,7 +2495,7 @@ class Tokens extends SurveyCommonAction
                             continue;
                         }
 
-                        if ($bFilterDuplicateToken) {
+                        if ($bFilterDuplicateToken && count($aFilterDuplicateFields) > 0) {
                             $aParams = array();
                             $oCriteria = new CDbCriteria();
                             $oCriteria->condition = "";
@@ -2496,8 +2503,12 @@ class Tokens extends SurveyCommonAction
                             // @todo If a field is encrypted, then the condition value also needs to be encrypted before comparison
                             foreach ($aFilterDuplicateFields as $field) {
                                 if (isset($aWriteArray[$field])) {
-                                    $oCriteria->addCondition("{$field} = :{$field}");
-                                    $aParams[":{$field}"] = $aWriteArray[$field];
+                                    $oCriteria->addCondition("{$field} = :{$field}"); // Do not use compare to allow ''
+                                    if ($aWriteArray[$field] !== '' && in_array($field, $aEncryptedAttributes)) { // We use Basic encrypt method
+                                        $aParams[":{$field}"] = LSActiveRecord::encryptSingle($aWriteArray[$field], 'B');
+                                    } else {
+                                        $aParams[":{$field}"] = $aWriteArray[$field];
+                                    }
                                 }
                             }
                             if (!empty($aParams)) {
