@@ -60,6 +60,18 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
+     * Determines whether the given (already fully-qualified, i.e. including the
+     * configured table prefix) table name refers to an archived/legacy "old_" table.
+     * @param string $tableName
+     * @return bool
+     */
+    protected function isArchivedTableName(string $tableName): bool
+    {
+        $prefix = Yii::app()->db->tablePrefix ?? '';
+        return strpos($tableName, $prefix . 'old_') === 0;
+    }
+
+    /**
      * equivalent of getSubQuestions
      * Returns all subquestions for a survey+question in the given language.
      *
@@ -346,7 +358,7 @@ class Update_700 extends DatabaseUpdateBase
                             }
                         } catch (\Exception $ex) {
                             // Ignore inconsistencies in archive rankings
-                            if (strpos($tableName, 'old') === false) {
+                            if (!$this->isArchivedTableName($tableName)) {
                                 throw $ex;
                             }
                         }
@@ -1304,7 +1316,7 @@ class Update_700 extends DatabaseUpdateBase
 
     public function adjustShowCreateTable(array $script, string $tableName)
     {
-        if (strpos($tableName, 'old') === false) {
+        if (!$this->isArchivedTableName($tableName)) {
             switch (Yii::app()->db->getDriverName()) {
                 case 'pgsql':
                     $script['Create Table'] = str_replace('"id" integer NOT NULL', '"id" serial PRIMARY KEY', $script['Create Table']);
@@ -1443,8 +1455,7 @@ class Update_700 extends DatabaseUpdateBase
      */
     protected function compactLegacyRankingValues(string $tableName, array $columnNames): void
     {
-        $prefix = Yii::app()->db->tablePrefix ?? '';
-        $isArchivedTable = strpos($tableName, $prefix . 'old_') === 0;
+        $isArchivedTable = $this->isArchivedTableName($tableName);
         // ignore old tables and timings since they are not relevant for this cleanup
         if (
             (strpos($tableName, 'survey') === false) ||
@@ -2085,7 +2096,7 @@ class Update_700 extends DatabaseUpdateBase
             }
             // getFieldName() returns the field name unchanged when it cannot resolve
             // this will mark orphaned fields for removal, but only for non-archived tables. Archived tables are left intact.
-            $isArchivedTable = strpos($TABLE_NAME, (Yii::app()->db->tablePrefix ?? '') . 'old_') === 0;
+            $isArchivedTable = $this->isArchivedTableName($TABLE_NAME);
             $orphanedColumns = [];
             if (!$isArchivedTable) {
                 foreach ($fields as $oldField => $newField) {
@@ -2155,7 +2166,7 @@ class Update_700 extends DatabaseUpdateBase
                 // so it is always safe to drop here.
                 $this->db->createCommand()->dropTable($TABLE_NAME);
             } catch (\Exception $ex) {
-                if (strpos($TABLE_NAME, "old") !== false) {
+                if ($this->isArchivedTableName($TABLE_NAME)) {
                     continue;
                 } else {
                     throw $ex;
@@ -2166,7 +2177,7 @@ class Update_700 extends DatabaseUpdateBase
                 arsort($keys);
                 $names = [];
                 $parts = explode("_", $TABLE_NAME);
-                $index = count($parts) - ((strpos($TABLE_NAME, "old") === false) ? 1 : 2);
+                $index = count($parts) - ($this->isArchivedTableName($TABLE_NAME) ? 2 : 1);
                 $sid = $parts[$index];
                 $this->insertansProcessedSids[$sid] = true;
                 foreach ($keys as $oldName) {
