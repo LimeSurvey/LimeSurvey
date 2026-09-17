@@ -2758,16 +2758,9 @@ class ParticipantsAction extends SurveyCommonAction
             Yii::app()->setFlashMessage(gT("There are no unmapped attributes"), 'warning');
         }
         /* Warning for duplicate control */
-        $duplicateControlDisable = false;
-        if (App()->getConfig('CPDB_encryption_method', 'B') == 'H') {
-            $cpdbCoreAttributes = ParticipantAttributeName::model()->findAllByAttributes(['core_attribute' => 'Y']);
-            $cpdbCoreCryptedAttributes = array_filter($cpdbCoreAttributes, function($attribute) {
-                return $attribute->encrypted == "Y";
-            });
-            if (count($cpdbCoreCryptedAttributes) > 0 ) {
-                $duplicateControlDisable = true;
-            }
-        }
+        $duplicateControlDisable = App()->getConfig('CPDB_encryption_method', 'B') == 'H'
+            && Participant::countCoreAttributeCrypted() > 0
+            && !Participant::canUseDuplicateFinder();
 
         $aData = array(
             'attribute' => $selectedcentralattribute,
