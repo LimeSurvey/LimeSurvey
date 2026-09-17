@@ -2257,8 +2257,9 @@ class Tokens extends SurveyCommonAction
                                     if (!$oToken->encryptSave(true)) {
                                         /* Keep previous system , but unsure on point here */
                                         $duplicatecount++;
+                                    } else {
+                                        $xz++;
                                     }
-                                    $xz++;
                                 }
                             } // End for each entry
                         } // End foreach responseGroup
