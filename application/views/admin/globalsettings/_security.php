@@ -67,7 +67,7 @@
                             "0" =>  gT("Disabled (no duplicate control when import)", 'unescaped'),
                             "64" =>  sprintf(gT("%s bits"), 64),
                             "96" =>  sprintf(gT("%s bits"), 96),
-                            "128" =>  sprintf(gT("%s bits (recommanded)"), 128),
+                            "128" =>  sprintf(gT("%s bits (recommended)"), 128),
                             "192" =>  sprintf(gT("%s bits"), 192),
                             "256" =>  sprintf(gT("%s bits (No collision)"), 256),
                         ],
