@@ -2206,7 +2206,7 @@ class Tokens extends SurveyCommonAction
                                         }
                                         if (in_array('lastname', $aCoreEncryptedAttributes)) {
                                             if($surveyEncryptionmethod == 'B') {
-                                                $criteria->compare('lastname', LSActiveRecord::encryptSingle($myemail, 'B'));
+                                                $criteria->compare('lastname', LSActiveRecord::encryptSingle($mylastname, 'B'));
                                             }
                                         } else {
                                            $criteria->compare('lastname', $mylastname);
