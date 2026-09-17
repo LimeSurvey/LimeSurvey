@@ -3,7 +3,6 @@
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions;
 
 use CDbCriteria;
-use InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
 class ContainConditionHandler implements HandlerInterface
@@ -18,36 +17,31 @@ class ContainConditionHandler implements HandlerInterface
         return false;
     }
 
+    /**
+     * An array value lists alternatives: the row matches when any of them is
+     * contained in any of the keys.
+     */
     public function execute($key, $value): object
     {
-        if (is_array($value)) {
-            throw new InvalidArgumentException('Multiple values are not supported for contain conditions.');
-        }
-        $value = trim($value);
+        $values = array_map('trim', is_array($value) ? array_values($value) : [$value]);
+        $keys = is_array($key) ? $key : [$key];
         $criteria = new CDbCriteria();
 
-        if (is_array($key)) {
-            $conditions = [];
-            $params = [];
-
-            foreach ($key as $rawKey) {
-                $quotedKey = $this->sanitizeKey($rawKey);
+        $conditions = [];
+        $params = [];
+        foreach ($keys as $rawKey) {
+            $quotedKey = $this->sanitizeKey($rawKey);
+            foreach ($values as $item) {
                 $paramName = CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount++;
-
                 $conditions[] = "$quotedKey LIKE $paramName";
-                $params[$paramName] = "%$value%";
+                $params[$paramName] = "%$item%";
             }
-
-            $criteria->condition = '(' . implode(' OR ', $conditions) . ')';
-            $criteria->params = $params;
-
-            return $criteria;
         }
-        $quotedKey = $this->sanitizeKey($key);
-        $paramName = CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount++;
 
-        $criteria->condition = "$quotedKey LIKE $paramName";
-        $criteria->params = [$paramName => "%$value%"];
+        $criteria->condition = count($conditions) > 1
+            ? '(' . implode(' OR ', $conditions) . ')'
+            : ($conditions[0] ?? '');
+        $criteria->params = $params;
 
         return $criteria;
     }

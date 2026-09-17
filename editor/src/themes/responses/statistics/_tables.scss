@@ -96,6 +96,17 @@
     align-items: center;
     gap: 4px;
     width: 120px;
+
+    &--clickable {
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+
+      &:hover .responses-statistics-files-name {
+        text-decoration: underline;
+      }
+    }
   }
 
   &-thumb {

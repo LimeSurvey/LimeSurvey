@@ -69,15 +69,19 @@ const buildAnswerFilters = (
   return []
 }
 
-const buildSearchFilters = (search, fields) => {
+// `expandTerm` maps a term to the alternatives the backend ORs together.
+const buildSearchFilters = (search, fields, expandTerm = (term) => [term]) => {
   if (!Array.isArray(search) || !search.length || !fields?.length) {
     return []
   }
-  return search.map((term) => ({
-    key: fields,
-    filterMethod: 'contain',
-    value: term,
-  }))
+  return search.map((term) => {
+    const alternatives = [...new Set(expandTerm(term))]
+    return {
+      key: fields,
+      filterMethod: 'contain',
+      value: alternatives.length > 1 ? alternatives : alternatives[0],
+    }
+  })
 }
 
 // Flatten the per-response answers into a single list, tagging each answer with
@@ -277,7 +281,8 @@ export class StatisticsService {
     language,
     fields,
     statisticsFilters,
-    search
+    search,
+    expandTerm
   ) => {
     const { answers, pagination } = await this.fetchQuestionAnswers(
       sid,
@@ -296,7 +301,8 @@ export class StatisticsService {
               ...(search ?? []),
             ]),
           ],
-          fields
+          fields,
+          expandTerm
         ),
       ]
     )

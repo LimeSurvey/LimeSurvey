@@ -29,6 +29,16 @@ const safeDecode = (value) => {
 
 const extensionOf = (name) => name.split('.').pop()?.toLowerCase() ?? ''
 
+// File names are stored rawurlencode()d, so a term must also be matched in
+// that form; titles and comments are stored as typed.
+const searchAlternatives = (term) => [
+  term,
+  encodeURIComponent(term).replace(
+    /[!'()*]/g,
+    (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`
+  ),
+]
+
 // Sizes are stored in kilobytes by the uploader.
 const formatFileSize = (sizeKb) => {
   const kb = Number(sizeKb) || 0
@@ -124,6 +134,7 @@ export const FileUploadTable = ({
     fields: fileFields,
     filters,
     search,
+    expandTerm: searchAlternatives,
   })
 
   const answerKey = columns[0]?.key
@@ -159,8 +170,8 @@ export const FileUploadTable = ({
         header: t('File'),
         cell: ({ row }) => {
           const file = row.original
-          return (
-            <div className="responses-statistics-files-file">
+          const content = (
+            <>
               <FileThumbnail
                 file={file}
                 previewUrl={fileUrl(
@@ -174,7 +185,22 @@ export const FileUploadTable = ({
               <span className="responses-statistics-files-name">
                 <HighlightedText text={file.name} terms={highlightTerms} />
               </span>
-            </div>
+            </>
+          )
+          if (file.isImage) {
+            return (
+              <button
+                type="button"
+                className="responses-statistics-files-file responses-statistics-files-file--clickable"
+                onClick={() => setPreviewFile(file)}
+                title={t('Preview')}
+              >
+                {content}
+              </button>
+            )
+          }
+          return (
+            <div className="responses-statistics-files-file">{content}</div>
           )
         },
       },
@@ -218,7 +244,7 @@ export const FileUploadTable = ({
                 <button
                   type="button"
                   onClick={() => setPreviewFile(file)}
-                  title={t('Preview')}
+                  title={t('Preview file')}
                 >
                   <i className="ri-eye-line"></i>
                 </button>
@@ -230,7 +256,7 @@ export const FileUploadTable = ({
                   questionId,
                   file.index
                 )}
-                title={t('Download')}
+                title={t('Download file')}
               >
                 <i className="ri-download-line"></i>
               </a>
