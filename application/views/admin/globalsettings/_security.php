@@ -44,7 +44,7 @@
                 </div>
                 <div class="help-block mt-1" id="CPDB_encryption_method-hint">
                     <p class="form-text mb-0">
-                        <?php eT("Number of bits used for the duplicate detection index. Fewer bits provide better privacy but may increase import processing time due to additional comparisons. More bits improve search efficiency but reveal more information through the index."); ?>
+                        <?php eT("Basic encryption allows searching and filtering encrypted attributes using exact, full-value matches. Hardened encryption uses stronger cryptographic methods but disables all search and filtering features."); ?>
                     </p>
                     <p class="form-text mb-0">
                         <?php printf(
