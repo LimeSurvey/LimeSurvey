@@ -345,8 +345,13 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
-     * @param array $data
-     * @param array $permission
+     * Creates or updates a participant share, after verifying the current user is
+     * allowed to grant it (the participant's owner, a superadmin, a user with the
+     * participant panel update permission, or a user who already holds an editable
+     * share of this participant).
+     *
+     * @param array $data Share attributes: participant_id, share_uid, date_added, can_edit
+     * @param array $permission Caller's permission flags: hasUpdatePermission, isSuperAdmin
      *
      * @return void
      * @throws CException
@@ -363,7 +368,8 @@ class ParticipantShare extends LSActiveRecord
         $canEditShared = $this->canEditSharedParticipant($data['participant_id']);
         $isOwner = $ownerid['owner_uid'] == $userId;
 
-        if ($ownerid['owner_uid'] == $data['share_uid'] || (!$permission && !$canEditShared && !$isOwner && !$isSuperAdmin && !$hasUpdatePermission)) {
+        $isAllowedToShare = $isOwner || $isSuperAdmin || $hasUpdatePermission || $canEditShared;
+        if ($ownerid['owner_uid'] == $data['share_uid'] || !$isAllowedToShare) {
             ls\ajax\AjaxHelper::outputNoPermission();
             return;
         }

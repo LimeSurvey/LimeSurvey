@@ -2295,7 +2295,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function shareParticipants()
     {
-        $hasUpdatePermission = Permission::model()->hasGlobalPermission('update');
+        $hasUpdatePermission = Permission::model()->hasGlobalPermission('participantpanel', 'update');
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
         $permissions = [
             'hasUpdatePermission' => $hasUpdatePermission,
@@ -2339,7 +2339,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function shareParticipant()
     {
-        $hasUpdatePermission = Permission::model()->hasGlobalPermission('update');
+        $hasUpdatePermission = Permission::model()->hasGlobalPermission('participantpanel', 'update');
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
         $permissions = [
             'hasUpdatePermission' => $hasUpdatePermission,
