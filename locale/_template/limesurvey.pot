@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-09-17 18:59:53+00:00\n"
+"POT-Creation-Date: 2026-09-17 19:09:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6249,6 +6249,7 @@ msgstr ""
 #: application/helpers/update/updates/Update_700.php:867
 #: application/helpers/userstatistics_helper.php:734
 #: application/views/admin/export/statistics_subviews/_question.php:901
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/rankingTypeHandler.js:37
 #: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/buildQuestionOptions.js:218
 msgid "Rank %s"
 msgstr ""
@@ -10449,7 +10450,7 @@ msgid "Show less"
 msgstr ""
 
 #: application/extensions/admin/grid/CLSGridView.php:108
-msgid "Displaying {start}-{end} of {count} result(s). rows per page"
+msgid "Rows per page"
 msgstr ""
 
 #: application/extensions/admin/grid/CLSGridView.php:116
@@ -27887,10 +27888,6 @@ msgstr ""
 msgid "Checked (Y)"
 msgstr ""
 
-#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/rankingTypeHandler.js:37
-msgid "RANK %s"
-msgstr ""
-
 #: editor/src/components/ConditionDesigner/utils/conditionAlertHelpers.js:15
 #: editor/src/hooks/useConditionDesigner.js:242
 msgid "Condition applied successfully"
@@ -28342,7 +28339,7 @@ msgid "File has been deleted"
 msgstr ""
 
 #: editor/src/components/QuestionTypes/FileUpload/FileUploadParticipantView.js:64
-msgid "Download file %s MB"
+msgid "Download file (%s MB)"
 msgstr ""
 
 #: editor/src/components/QuestionTypes/ImageChoice.js:69
