@@ -2119,12 +2119,24 @@ class Update_700 extends DatabaseUpdateBase
                 SELECT {$from}
                 FROM {$TABLE_NAME};
             ";
-            $scripts[$TABLE_NAME]['DROP_ORPHANED_COLUMNS'] = [];
-            foreach ($orphanedColumns as $orphanedColumn) {
-                $scripts[$TABLE_NAME]['DROP_ORPHANED_COLUMNS'][] =
-                    "ALTER TABLE {$scripts[$TABLE_NAME]['new_name']} DROP COLUMN " . $this->dbQuoteFields($orphanedColumn);
+            $orphanedColumnsToDrop = $orphanedColumns;
+            // If there are orphaned columns, snapshot the legacy table as-is (full structure +
+            // data, untouched) *before* compactLegacyRankingValues() gets a chance to mutate it
+            $scripts[$TABLE_NAME]['BACKUP_ORPHANED'] = null;
+            if (count($orphanedColumns)) {
+                $orphanedTableName = 'orphaned_' . $TABLE_NAME;
+                $scripts[$TABLE_NAME]['BACKUP_ORPHANED'] = in_array(Yii::app()->db->getDriverName(), [
+                    'mssql',
+                    'sqlsrv',
+                    'dblib'
+                ])
+                    ? "SELECT * INTO {$orphanedTableName} FROM {$TABLE_NAME}"
+                    : "CREATE TABLE {$orphanedTableName} AS SELECT * FROM {$TABLE_NAME}";
             }
             try {
+                if ($scripts[$TABLE_NAME]['BACKUP_ORPHANED'] !== null) {
+                    $this->db->createCommand($scripts[$TABLE_NAME]['BACKUP_ORPHANED'])->execute();
+                }
                 // The INSERT below copies the legacy rows one-to-one, so ranking answers that
                 // can no longer be mapped to a subquestion title have to be removed - and the
                 // following ranks shifted one column to the left - while the legacy table is
@@ -2132,16 +2144,14 @@ class Update_700 extends DatabaseUpdateBase
                 // silently discard a valid rank instead of the unmappable one.
                 $this->compactLegacyRankingValues($TABLE_NAME, $allColumnNames);
                 $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
-                foreach ($scripts[$TABLE_NAME]['DROP_ORPHANED_COLUMNS'] as $dropColumnSql) {
-                    $this->db->createCommand($dropColumnSql)->execute();
+                foreach ($orphanedColumnsToDrop as $orphanedColumn) {
+                    $this->db->createCommand()->dropColumn($scripts[$TABLE_NAME]['new_name'], $orphanedColumn);
                 }
                 $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
-                // raname old survey table if it had orphaned columns so we can provide these values if needed
-                if (count($orphanedColumns)) {
-                    $this->db->createCommand()->renameTable($TABLE_NAME, 'orphaned_' . $TABLE_NAME);
-                } else {
-                    $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
-                }
+                // The legacy working copy has now been fully migrated into the new table (its
+                // untouched twin, if orphaned columns existed, was preserved separately above),
+                // so it is always safe to drop here.
+                $this->db->createCommand()->dropTable($TABLE_NAME);
             } catch (\Exception $ex) {
                 if (strpos($TABLE_NAME, "old") !== false) {
                     continue;
