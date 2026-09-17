@@ -102,7 +102,7 @@
                             <?php endif; ?>
                             <div class="">
                                 <input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked'
-                                    <?php if ($help) : ?> aria-descridebby='filterduplicatetoken-help' <?php endif; ?>/>
+                                    <?php if ($help) : ?> aria-describedby='filterduplicatetoken-help' <?php endif; ?>/>
                             </div>
 
                         </div>
