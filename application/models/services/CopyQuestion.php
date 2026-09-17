@@ -313,7 +313,10 @@ class CopyQuestion
      */
     private function copyQuestionsSettings($questionIdToCopy, $surveyId = null)
     {
-        $settingsFromQuestionToCopy = \QuestionAttribute::model()->findAllByAttributes(['qid' => $questionIdToCopy]);
+        // resetScope() is required: QuestionAttribute's defaultScope indexes results by
+        // the 'attribute' column, which collapses multilingual (i18n) attribute rows
+        // (same attribute name, different language) into a single array entry.
+        $settingsFromQuestionToCopy = \QuestionAttribute::model()->resetScope()->findAllByAttributes(['qid' => $questionIdToCopy]);
         $areSettingsCopied = false;
         if ($this->newQuestion !== null) {
             $areSettingsCopied = true;

@@ -29,9 +29,9 @@ if (!defined('BASEPATH')) {
 // Email Settings
 // These settings determine how LimeSurvey will send emails
 $config = array();
-$config['siteadminemail']     = 'your-email@example.net'; // The default email address of the site administrator
-$config['siteadminbounce']    = 'your-email@example.net'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
-$config['siteadminname']      = 'Your Name'; // The name of the site administrator
+$config['siteadminemail']     = ''; // The default email address of the site administrator
+$config['siteadminbounce']    = ''; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
+$config['siteadminname']      = 'Site admin'; // The name of the site administrator
 
 $config['emailmethod']        = 'mail'; // The following values can be used:
 $config['protocol'] = $config['emailmethod'];

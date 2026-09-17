@@ -400,8 +400,8 @@ class ParticipantsAction extends SurveyCommonAction
         // displayParticipants now uses FloatingActionsWidget directly in the view.
 
         // Set page size
-        if ($request->getPost('pageSizeParticipantView')) {
-            Yii::app()->user->setState('pageSizeParticipantView', $request->getPost('pageSizeParticipantView'));
+        if ($request->getPost('pageSize')) {
+            Yii::app()->user->setState('pageSizeParticipantView', $request->getPost('pageSize'));
         }
 
         $aData['topbar'] = $this->getTopBarComponents($title, true, false);
@@ -851,7 +851,7 @@ class ParticipantsAction extends SurveyCommonAction
                 $aResult = array_keys($aCount, max($aCount));
                 $sSeparator = $aResult[0];
             }
-            $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0]);
+            $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0], '"', "\\");
 
             $selectedcsvfields = array();
             $fieldlist = array();
@@ -988,7 +988,7 @@ class ParticipantsAction extends SurveyCommonAction
                             $separator = ',';
                         }
                 }
-                $firstline = str_getcsv((string) $buffer, $separator, '"');
+                $firstline = str_getcsv((string) $buffer, $separator, '"', "\\");
                 $firstline = array_map('trim', $firstline);
                 $ignoredcolumns = array();
                 //now check the first line for invalid fields
@@ -1007,7 +1007,7 @@ class ParticipantsAction extends SurveyCommonAction
                 }
             } else {
                 // After looking at the first line, we now import the actual values
-                $line = str_getcsv($buffer, $separator, '"');
+                $line = str_getcsv($buffer, $separator, '"', "\\");
                 // Discard lines where the number of fields do not match
                 if (count($firstline) != count($line)) {
                     $invalidformatlist[] = $recordcount . ',' . count($line) . ',' . count($firstline);
@@ -1402,10 +1402,8 @@ class ParticipantsAction extends SurveyCommonAction
             'debug' => Yii::app()->request->getParam('Attribute'),
         );
         // Page size
-        if (Yii::app()->request->getParam('pageSizeAttributes')) {
-            Yii::app()->user->setState('pageSizeAttributes', (int) Yii::app()->request->getParam('pageSizeAttributes'));
-        } else {
-            Yii::app()->user->setState('pageSizeAttributes', (int) Yii::app()->params['defaultPageSize']);
+        if (Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSizeAttributes', (int) Yii::app()->request->getParam('pageSize'));
         }
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
@@ -2003,12 +2001,10 @@ class ParticipantsAction extends SurveyCommonAction
             'pageTitle' => $title,
         );
         // Page size
-        if (Yii::app()->request->getParam('pageSizeShareParticipantView')) {
-            Yii::app()->user->setState('pageSizeShareParticipantView', (int) Yii::app()->request->getParam('pageSizeShareParticipantView'));
-        } else {
-            Yii::app()->user->setState('pageSizeShareParticipantView', (int) Yii::app()->params['defaultPageSize']);
+        if (Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSizeShareParticipantView', (int) Yii::app()->request->getParam('pageSize'));
         }
-        $aData['pageSizeShareParticipantView'] = Yii::app()->user->getState('pageSizeShareParticipantView');
+        $aData['pageSizeShareParticipantView'] = Yii::app()->user->getState('pageSizeShareParticipantView', Yii::app()->params['defaultPageSize']);
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
 

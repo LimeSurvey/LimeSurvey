@@ -9,13 +9,14 @@ module.exports = {
         '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
     },
     transformIgnorePatterns: ['<rootDir>/node_modules/'],
+    testEnvironment: 'jsdom',
     moduleNameMapper: {
         '^@/(.*)$': '<rootDir>/src/$1'
     },
     testMatch: [
         '**/tests/**/*.spec.(js|jsx|mjs|ts|tsx)|**/__tests__/*.(js|jsx|mjs|ts|tsx)'
     ],
-    testURL: 'http://localhost/',
+    testEnvironmentOptions: {url: 'http://localhost/'},
     watchPlugins: [
         'jest-watch-typeahead/filename',
         'jest-watch-typeahead/testname'
