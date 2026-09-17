@@ -331,10 +331,7 @@ class Update_700 extends DatabaseUpdateBase
                                 ->where('parent_qid = :qid', [':qid' => $qid])
                                 ->order('question_order')
                                 ->queryAll();
-                            // Ranking columns are rank SLOTS: the old column suffix is the rank
-                            // position (1..n) and the stored VALUE is the answer code, which is
-                            // the title of the matching (newly created) ranking subquestion.
-                            // The n-th slot therefore maps to the n-th subquestion column.
+                            // Ranking columns are rank SLOTS: the old column suffix is the rank position (1..n)
                             if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
                                 $sqid = $cd ? $rankingSuffix : $subQuestions[($iRankingSuffix - 1)]['qid'];
                                 $newFieldName = "Q{$rootQuestion['qid']}_{$prefix}" . $sqid;
@@ -345,10 +342,6 @@ class Update_700 extends DatabaseUpdateBase
                                 // field name unchanged so the caller can detect this "no-op
                                 // mapping" and drop the column instead of carrying an orphaned
                                 // rank column into the new table.
-                                // No data is lost by dropping it: compactLegacyRankingValues()
-                                // has already NULLed every value that can no longer be mapped to
-                                // a subquestion title and shifted the remaining, still valid
-                                // ranks to the left, so the trailing slots are empty by then.
                                 return $fieldName;
                             }
                         } catch (\Exception $ex) {
@@ -1450,8 +1443,12 @@ class Update_700 extends DatabaseUpdateBase
      */
     protected function compactLegacyRankingValues(string $tableName, array $columnNames): void
     {
-        // Timing tables only hold durations, never ranking answers.
-        if ((strpos($tableName, 'survey') === false) || (strpos($tableName, 'timing') !== false)) {
+        // ignore old tables and timings since they are not relevant for this cleanup
+        if (
+            (strpos($tableName, 'survey') === false) ||
+            (strpos($tableName, 'timing') !== false) ||
+            (strpos($tableName, 'old') !== false)
+        ) {
             return;
         }
         $parts = explode('_', $tableName);
@@ -2085,16 +2082,14 @@ class Update_700 extends DatabaseUpdateBase
                 $scripts[$TABLE_NAME]['CREATE'] = str_replace($this->dbQuoteFields($oldField), $this->dbQuoteFields($newField), $scripts[$TABLE_NAME]['CREATE']);
             }
             // getFieldName() returns the field name unchanged when it cannot resolve
-            // it to a live question/subquestion (currently only happens for ranking
-            // rank positions beyond the survey's current number of subquestions, e.g.
-            // after a subquestion was deleted post-response-collection). Such a
-            // no-op mapping means the column still carries its raw legacy name and
-            // must not be copied into the new table - keeping it would either
-            // duplicate another column or leave an unusable raw-named column behind.
+            // this will mark orphaned fields for removal, but only for non-archived tables. Archived tables are left intact.
+            $isArchivedTable = strpos($TABLE_NAME, 'old') !== false;
             $orphanedColumns = [];
-            foreach ($fields as $oldField => $newField) {
-                if ($oldField === $newField) {
-                    $orphanedColumns[] = $oldField;
+            if (!$isArchivedTable) {
+                foreach ($fields as $oldField => $newField) {
+                    if ($oldField === $newField) {
+                        $orphanedColumns[] = $oldField;
+                    }
                 }
             }
             $fromColumns = [];
