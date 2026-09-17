@@ -171,7 +171,8 @@ class Statistics extends SurveyCommonAction
         $filters = array();
         $aGroups = array();
         $keyone = 0;
-
+        /* Keep crypted row information */
+        $cryptedQuestions = array_keys(CHtml::listData($rows, 'qid', 'encrypted'), 'Y', true);
         foreach ($rows as $row) {
             if ($hardenedCryptMethod && $row['encrypted'] == 'Y') {
                 $aData['warningCryptedQuestionHidden'] = true;
@@ -277,6 +278,10 @@ class Statistics extends SurveyCommonAction
         $counter = 0;
 
         foreach ($filters as $key1 => $flt) {
+            /* If qid is crypted : co,ntinue */
+            if ($hardenedCryptMethod && in_array($flt[0], $cryptedQuestions)) {
+                continue;
+            }
             //is there a previous question type set?
 
 
