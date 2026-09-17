@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 
 import { Button, TooltipContainer } from 'components'
@@ -42,23 +42,32 @@ const ColumnManagerLabel = ({ column }) => {
   )
 }
 
-const ColumnControl = ({ column, updateSelection }) => (
-  <>
-    <input
-      className="form-check-input me-2"
-      type="checkbox"
-      id={`column-${column.id}`}
-      checked={column.checked}
-      onChange={({ target: { checked } }) =>
-        updateSelection(column.id, checked)
-      }
-      disabled={column.isLocked}
-    />
-    <label className="form-check-label" htmlFor={`column-${column.id}`}>
-      <ColumnManagerLabel column={column} />
-    </label>
-  </>
-)
+const ColumnControl = ({ column, updateSelection, indeterminate = false }) => {
+  const checkboxRef = useRef(null)
+
+  useEffect(() => {
+    checkboxRef.current.indeterminate = indeterminate
+  }, [indeterminate])
+
+  return (
+    <>
+      <input
+        ref={checkboxRef}
+        className="form-check-input me-2"
+        type="checkbox"
+        id={`column-${column.id}`}
+        checked={column.checked}
+        onChange={({ target: { checked } }) =>
+          updateSelection(column.id, checked)
+        }
+        disabled={column.isLocked}
+      />
+      <label className="form-check-label" htmlFor={`column-${column.id}`}>
+        <ColumnManagerLabel column={column} />
+      </label>
+    </>
+  )
+}
 
 const DraggableColumn = ({ column, index, updateSelection }) => (
   <Draggable
@@ -89,12 +98,26 @@ const DraggableColumn = ({ column, index, updateSelection }) => (
   </Draggable>
 )
 
-const TimingColumn = ({ column, updateSelection }) => (
-  <div className="mb-1 reg16 column-item timing-column-item">
-    <div className="column-item-spacer" aria-hidden="true" />
-    <ColumnControl column={column} updateSelection={updateSelection} />
-  </div>
-)
+const TimingCategory = ({ label, timingType, columns, updateSelection }) => {
+  const checkedColumns = columns.filter(({ checked }) => checked).length
+  const category = {
+    id: `timing-${timingType}`,
+    header: label,
+    checked: columns.length > 0 && checkedColumns === columns.length,
+    isLocked: columns.length === 0,
+  }
+
+  return (
+    <div className="mb-1 reg16 column-item timing-column-item">
+      <div className="column-item-spacer" aria-hidden="true" />
+      <ColumnControl
+        column={category}
+        updateSelection={(_, checked) => updateSelection(timingType, checked)}
+        indeterminate={checkedColumns > 0 && checkedColumns < columns.length}
+      />
+    </div>
+  )
+}
 
 export const ColumnsManagement = ({
   table = {},
@@ -111,6 +134,7 @@ export const ColumnsManagement = ({
         header: column.columnDef.header,
         isLocked: column.id === idColumnKey || column.id === completedColumnKey,
         isTiming: column.columnDef.meta?.columnCategory === 'timing',
+        timingType: column.columnDef.meta?.timingType,
         qid: column.columnDef.meta?.qid,
         questionLabel: column.columnDef.meta?.questionLabel,
       }
@@ -126,6 +150,11 @@ export const ColumnsManagement = ({
     () => columns.filter(({ isTiming }) => isTiming),
     [columns]
   )
+  const timingCategories = [
+    { timingType: 'interview_time', label: t('Total time (s)') },
+    { timingType: 'page_time', label: t('Group time (s)') },
+    { timingType: 'answer_time', label: t('Question time (s)') },
+  ]
 
   const updateColumnSelection = (id, checked) => {
     setColumns((currentColumns) => {
@@ -148,6 +177,14 @@ export const ColumnsManagement = ({
         return isRelatedQuestionTiming ? { ...column, checked: false } : column
       })
     })
+  }
+
+  const updateTimingSelection = (timingType, checked) => {
+    setColumns((currentColumns) =>
+      currentColumns.map((column) =>
+        column.timingType === timingType ? { ...column, checked } : column
+      )
+    )
   }
 
   const handleSelectAll = () => {
@@ -299,11 +336,15 @@ export const ColumnsManagement = ({
               className="columns-container timing-columns-container"
               data-testid="timing-columns-container"
             >
-              {timingColumns.map((column) => (
-                <TimingColumn
-                  key={`${column.id}-${column.index}`}
-                  column={column}
-                  updateSelection={updateColumnSelection}
+              {timingCategories.map(({ timingType, label }) => (
+                <TimingCategory
+                  key={timingType}
+                  label={label}
+                  timingType={timingType}
+                  columns={timingColumns.filter(
+                    (column) => column.timingType === timingType
+                  )}
+                  updateSelection={updateTimingSelection}
                 />
               ))}
             </div>

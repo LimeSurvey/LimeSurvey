@@ -9,6 +9,7 @@ const createColumn = ({
   id,
   header,
   isTiming = false,
+  timingType,
   qid,
   questionLabel,
   visible = true,
@@ -18,6 +19,7 @@ const createColumn = ({
     header,
     meta: {
       ...(isTiming && { columnCategory: 'timing' }),
+      ...(timingType && { timingType }),
       ...(qid != null && { qid }),
       ...(questionLabel && { questionLabel }),
     },
@@ -41,17 +43,34 @@ describe('ColumnsManagement', () => {
         id: 'interviewtime',
         header: 'Total time (in s)',
         isTiming: true,
+        timingType: 'interview_time',
+        visible: false,
+      }),
+      createColumn({
+        id: 'G1time',
+        header: 'Group time: Group 1',
+        isTiming: true,
+        timingType: 'page_time',
         visible: false,
       }),
       createColumn({
         id: 'Q42time',
         header: 'Question time: Q3',
         isTiming: true,
+        timingType: 'answer_time',
         qid: 42,
         questionLabel: {
           code: 'Q3',
           text: 'Where are you?',
         },
+      }),
+      createColumn({
+        id: 'Q43time',
+        header: 'Question time: Q4',
+        isTiming: true,
+        timingType: 'answer_time',
+        qid: 43,
+        visible: false,
       }),
       createColumn({ id: 'dateLastAction', header: 'Date of last action' }),
       createColumn({
@@ -85,23 +104,22 @@ describe('ColumnsManagement', () => {
     expect(screen.queryByTestId('timing-columns-container')).toBeNull()
 
     await user.click(screen.getByRole('button', { name: 'Select all' }))
-    await user.click(screen.getByLabelText('Q3 Where are you?'))
     await user.click(timingToggle)
 
     const timingContainer = screen.getByTestId('timing-columns-container')
     const timingCheckbox =
-      within(timingContainer).getByLabelText('Total time (in s)')
+      within(timingContainer).getByLabelText('Total time (s)')
 
     expect(timingCheckbox).not.toBeChecked()
     expect(timingContainer.querySelector('.cm-drag-icon')).toBeNull()
-    const questionTimingCheckbox = within(timingContainer).getByLabelText(
-      'Question time: Q3 Where are you?'
-    )
-    expect(within(timingContainer).getByText('Q3')).toHaveClass(
-      'column-question-code'
-    )
+    const questionTimingCheckbox =
+      within(timingContainer).getByLabelText('Question time (s)')
     expect(questionTimingCheckbox).not.toBeDisabled()
-    expect(questionTimingCheckbox).not.toBeChecked()
+    expect(questionTimingCheckbox).toBePartiallyChecked()
+    expect(
+      within(timingContainer).getByLabelText('Group time (s)')
+    ).toBeVisible()
+    expect(within(timingContainer).queryByText('Where are you?')).toBeNull()
 
     await user.click(timingCheckbox)
     await user.click(screen.getByRole('button', { name: 'Clear selection' }))
@@ -112,11 +130,14 @@ describe('ColumnsManagement', () => {
     expect(timingCheckbox).not.toBeChecked()
 
     await user.click(timingCheckbox)
+    await user.click(questionTimingCheckbox)
     await user.click(screen.getByRole('button', { name: 'Confirm' }))
 
     expect(handleConfirm).toHaveBeenCalledWith(
       expect.arrayContaining([
         expect.objectContaining({ id: 'interviewtime', checked: true }),
+        expect.objectContaining({ id: 'Q42time', checked: true }),
+        expect.objectContaining({ id: 'Q43time', checked: true }),
       ])
     )
     expect(handleConfirm.mock.calls[0][0].map(({ id }) => id)).toEqual([
@@ -126,7 +147,9 @@ describe('ColumnsManagement', () => {
       'dateLastAction',
       '42',
       'interviewtime',
+      'G1time',
       'Q42time',
+      'Q43time',
       'response-actions',
     ])
   })
