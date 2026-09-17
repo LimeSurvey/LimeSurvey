@@ -321,11 +321,12 @@ class LSSodium
         }
         $sConfig .= "return \$config;";
 
-        Yii::app()->setConfig("encryptionnonce", $sEncryptionNonce);
-        Yii::app()->setConfig("encryptionsecretboxkey", $sEncryptionSecretBoxKey);
         $configdir = \Yii::app()->getConfig('configdir');
         if (is_writable($configdir)) {
             file_put_contents($configdir . '/security.php', $sConfig);
+            Yii::app()->setConfig("encryptionnonce", $sEncryptionNonce);
+            Yii::app()->setConfig("encryptionsecretboxkey", $sEncryptionSecretBoxKey);
+            Yii::app()->setConfig("encryptionduplicateindexkey", $sEncryptionDuplicateIndexKey);
         } else {
             throw new CHttpException(500, gT("Configuration directory is not writable"));
         }
@@ -371,7 +372,11 @@ class LSSodium
                 . "\$config['encryptionduplicateindexkey'] = '{$sEncryptionDuplicateIndexKey}';\n"
                 . "return \$config;\n";
         }
-        return @file_put_contents($configFile, $content) !== false;
+        if (@file_put_contents($configFile, $content) !== false) {
+            Yii::app()->setConfig("encryptionduplicateindexkey", $sEncryptionDuplicateIndexKey);
+            return true;
+        }
+        return false;
     }
 
 }
