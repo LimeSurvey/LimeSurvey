@@ -66,7 +66,7 @@ class LSSodium
                 } else {
                     Yii::app()->setFlashMessage(sprintf(
                         gT("Unable to add encryptionduplicateindexkey config. Please, see %sLimeSurvey manual%s."),
-                        '<a href="https://https://www.limesurvey.org/manual/LimeSurvey_Manual">', // TODO update link to real link after manual updated
+                        '<a href="https://www.limesurvey.org/manual/Optional_settings#Encryption">', // Need to update manual when merged
                         '</a>'
                     ), 'danger');
                 }
