@@ -3,16 +3,13 @@
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
 use InvalidArgumentException;
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
-use LSDbCriteria;
 use Question;
-use SurveyDynamic;
 
 /**
- * Base abstract class for all question processors used in statistics that
- * provides common functionality.
- * Each concrete processor must implement the `process()` method
- * that returns one or more `StatisticsChartDTO` instances.
+ * Base abstract class for all question processors used in statistics.
+ *
+ * A chart plan is: ['title' => string, 'legend' => string[], 'data' => array[]]
+ * with each data item shaped like ['key' => ..., 'title' => ..., 'value' => callable].
  */
 abstract class AbstractQuestionProcessor
 {
@@ -26,6 +23,9 @@ abstract class AbstractQuestionProcessor
 
     /** @var array Answer list for the question (if applicable) */
     protected array $answers = [];
+
+    /** @var ResponseAggregateBatch Shared aggregate batch for the current run */
+    protected ResponseAggregateBatch $batch;
 
     /** @var array List of question types which contain no answer option */
     protected array $noAnswerTypes = [
@@ -47,18 +47,6 @@ abstract class AbstractQuestionProcessor
         Question::QT_T_LONG_FREE_TEXT,
         Question::QT_Q_MULTIPLE_SHORT_TEXT,
     ];
-
-    /** @var array<int, int> Cache of total response counts by survey ID */
-    private static array $totalCountCache = [];
-
-    /** @var bool Completed responses filter */
-    private $completed = null;
-
-    /** @var int Min ID for responses filter */
-    private $minId = null;
-
-    /** @var int Max ID for responses filter */
-    private $maxId = null;
 
     /**
      * Build the identifier for current question.
@@ -92,6 +80,14 @@ abstract class AbstractQuestionProcessor
     }
 
     /**
+     * Returns the question data as assigned to the processor (title flattened).
+     */
+    public function getQuestion(): array
+    {
+        return $this->question;
+    }
+
+    /**
      * Assign available answers to the processor (if applicable).
      *
      * @param array $answers List of answers
@@ -101,102 +97,46 @@ abstract class AbstractQuestionProcessor
         $this->answers = $answers;
     }
 
-    public function setCompleted(?bool $completed): AbstractQuestionProcessor
-    {
-        $this->completed = $completed;
-        return $this;
-    }
-
-    public function setMinId(?int $minId): AbstractQuestionProcessor
-    {
-        $this->minId = $minId;
-        return $this;
-    }
-
-    public function setMaxId(?int $maxId): AbstractQuestionProcessor
-    {
-        $this->maxId = $maxId;
-        return $this;
-    }
-
     /**
-     * Returns the total response count for a survey, with results cached per survey ID.
-     *
-     * @return int
+     * Assign the shared aggregate batch for the current statistics run.
      */
-    public function getTotalCount(): int
+    public function setBatch(ResponseAggregateBatch $batch): void
     {
-        if (!isset(self::$totalCountCache[$this->surveyId])) {
-            $db = $this->getDb();
-            ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
-            $totalCount = (int)$db->createCommand("SELECT COUNT(*) FROM $table" . $where)->queryScalar($params);
-            self::$totalCountCache[$this->surveyId] = $totalCount;
-        }
-
-        return self::$totalCountCache[$this->surveyId];
+        $this->batch = $batch;
     }
 
     /**
-     * Returns the count of non-empty responses for a column.
+     * Returns a deferred total response count for the survey.
+     *
+     * @return callable Resolves to an int once the batch has executed
+     */
+    public function getTotalCount(): callable
+    {
+        return $this->read($this->batch->countTotal());
+    }
+
+    /**
+     * Returns a deferred count of non-empty responses for a column.
      *
      * @param string $fieldName Column name in the response table
-     * @return int
+     * @return callable Resolves to an int once the batch has executed
      */
-    protected function countFieldResponses(string $fieldName): int
+    protected function countFieldResponses(string $fieldName): callable
     {
-        $db = $this->getDb();
-        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
-        $col = $db->quoteColumnName($fieldName);
-
-        $sql = "SELECT " . $this->getColSumClause($col, 'cnt') . " FROM $table" . $where;
-        return (int)$db->createCommand($sql)->queryScalar($params);
+        return $this->read($this->batch->countNonEmpty($fieldName));
     }
 
     /**
-    * Gets column aggregate response
-    * @param mixed $fields
-    * @param mixed $params
-    * @return array|bool
-    */
-    public function getAggregateResponses($fields, $params)
-    {
-        $model = SurveyDynamic::model($this->surveyId);
-        $db = $model->getDbConnection();
-        $command = $db->createCommand()
-            ->select(implode(",", $fields))
-            ->from("{{responses_" . $this->surveyId . "}}")
-        ;
-        return $command->query($params)->read();
-    }
-
-    /**
-     * Returns non-empty response counts for multiple columns.
+     * Returns deferred non-empty response counts for multiple columns.
      *
      * @param  string[] $fieldNames Column names in the response table
-     * @return array<string, int> fieldName => count
+     * @return array<string, callable> fieldName => deferred count
      */
     protected function batchGetResponseCounts(array $fieldNames): array
     {
-        if (empty($fieldNames)) {
-            return [];
-        }
-
-        $db = $this->getDb();
-        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
-        $selects = [];
-
-        foreach ($fieldNames as $i => $field) {
-            $col = $db->quoteColumnName($field);
-            $alias = $db->quoteColumnName('_ctn' . $i);
-            $selects[] = $this->getColSumClause($col, $alias);
-        }
-
-        $sql = 'SELECT ' . implode(', ', $selects) . " FROM $table" . $where;
-        $row = $db->createCommand($sql)->queryRow(true, $params) ?: [];
-
         $result = [];
-        foreach ($fieldNames as $i => $field) {
-            $result[$field] = (int)($row['_ctn' . $i] ?? 0);
+        foreach ($fieldNames as $field) {
+            $result[$field] = $this->countFieldResponses($field);
         }
 
         return $result;
@@ -216,13 +156,13 @@ abstract class AbstractQuestionProcessor
             return [[], []];
         }
 
-        $result = $this->runAggregateSelect([$fieldname], $codes, $labels);
+        $result = $this->planAggregateItems([$fieldname], $codes, $labels);
 
         return $result[$fieldname] ?? [[], []];
     }
 
     /**
-     * Process multiple subquestion fields × answer codes in a query.
+     * Plan multiple subquestion fields × answer codes.
      *
      * @param string[] $fieldNames Column names (one per subquestion)
      * @param string[] $codes Answer codes to count
@@ -235,47 +175,21 @@ abstract class AbstractQuestionProcessor
             return [];
         }
 
-        return $this->runAggregateSelect($fieldNames, $codes, $labels);
+        return $this->planAggregateItems($fieldNames, $codes, $labels);
     }
 
     /**
-     * Get aggregate response counts for fields to specific values
+     * Register value counts (and a NoAnswer/blank count for the applicable
+     * question types) for fields against specific answer codes.
      *
      * @param string[] $fieldNames
      * @param string[] $codes
      * @param string[] $labels
      * @return array<string, array{0: string[], 1: array[]}> fieldName => [legend[], items[]]
      */
-    private function runAggregateSelect(array $fieldNames, array $codes, array $labels): array
+    private function planAggregateItems(array $fieldNames, array $codes, array $labels): array
     {
         $addNoAnswer = in_array($this->question['type'], $this->noAnswerTypes);
-        $db = $this->getDb();
-        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
-
-        $selects = [];
-        $aliasMap = [];
-
-        foreach ($fieldNames as $fi => $field) {
-            $col = $db->quoteColumnName($field);
-            $fieldKey = '_f' . $fi;
-
-            foreach ($codes as $ci => $code) {
-                $paramKey = ':' . $fieldKey . '_c' . $ci;
-                $rawAlias = '_alias' . $fieldKey . '_c' . $ci;
-                $selects[] = "SUM(CASE WHEN $col = $paramKey THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($rawAlias);
-                $params[$paramKey] = (string)$code;
-                $aliasMap[$field]['codes'][$ci] = $rawAlias;
-            }
-
-            if ($addNoAnswer) {
-                $blankRaw = '_blank' . $fieldKey;
-                $selects[] = "SUM(CASE WHEN $col IS NULL OR $col = '' THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($blankRaw);
-                $aliasMap[$field]['blank'] = $blankRaw;
-            }
-        }
-
-        $sql = 'SELECT ' . implode(', ', $selects) . " FROM $table" . $where;
-        $row = $db->createCommand($sql)->queryRow(true, $params) ?: [];
 
         $output = [];
         foreach ($fieldNames as $field) {
@@ -284,9 +198,12 @@ abstract class AbstractQuestionProcessor
 
             foreach ($codes as $ci => $code) {
                 $label = $labels[$ci] ?? (string)$code;
-                $count = (int)($row[$aliasMap[$field]['codes'][$ci]] ?? 0);
                 $legend[] = $label;
-                $items[] = ['key' => (string)$code, 'title' => $label, 'value' => $count];
+                $items[] = [
+                    'key' => (string)$code,
+                    'title' => $label,
+                    'value' => $this->read($this->batch->countValue($field, (string)$code)),
+                ];
             }
 
             if ($addNoAnswer) {
@@ -294,7 +211,7 @@ abstract class AbstractQuestionProcessor
                 $items[] = [
                     'key' => 'NoAnswer',
                     'title' => 'No answer',
-                    'value' => (int)($row[$aliasMap[$field]['blank']] ?? 0),
+                    'value' => $this->read($this->batch->countBlank($field)),
                 ];
             }
 
@@ -305,68 +222,20 @@ abstract class AbstractQuestionProcessor
     }
 
     /**
-     * @param array $data
-     * @param string $key
-     * @return float|int
+     * Closure resolving a batch alias once the batch has executed.
      */
-    protected function calculateTotal($data, $key = 'value')
+    protected function read(string $alias): callable
     {
-        return array_sum(array_column($data, $key));
+        return fn(): int => $this->batch->value($alias);
     }
 
     /**
-     * Returns clause that counts non-empty values in a column.
+     * Plan a question into one or more statistics chart plans.
      *
-     * @param string $col column name
-     * @param string $alias alias
-     * @return string
-     */
-    private function getColSumClause(string $col, string $alias): string
-    {
-        return "SUM(CASE WHEN $col IS NOT NULL AND $col <> '' THEN 1 ELSE 0 END) AS " . $alias;
-    }
-
-    /**
-     * Returns the active DB connection
-     */
-    private function getDb(): \CDbConnection
-    {
-        return SurveyDynamic::model($this->surveyId)->getDbConnection();
-    }
-
-    /**
-     * Returns the response table name and (where, params) with filters applied.
+     * Must be side-effect free with respect to aggregate values: counts are
+     * not available while planning, only after the batch has executed.
      *
-     * @return array{table: string, where: string, params: array}
-     */
-    private function buildFilteredQuery(): array
-    {
-        $db = $this->getDb();
-        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
-        $criteria = new LSDbCriteria();
-
-        if ($this->completed !== null) {
-            $criteria->addCondition('submitdate IS' . ($this->completed ? ' NOT ' : ' ') . 'NULL');
-        }
-
-        if ($this->minId !== null) {
-            $criteria->compare('id', '>=' . (int)$this->minId);
-        }
-
-        if ($this->maxId !== null) {
-            $criteria->compare('id', '<=' . (int)$this->maxId);
-        }
-
-        $where = $criteria->condition ? (' WHERE ' . $criteria->condition) : '';
-        $params = $criteria->params ?? [];
-
-        return compact('table', 'where', 'params');
-    }
-
-    /**
-     * Process a question into one or more statistics charts.
-     *
-     * @return StatisticsChartDTO[]|StatisticsChartDTO
+     * @return array A chart plan or a list of chart plans
      */
     abstract public function process();
 }

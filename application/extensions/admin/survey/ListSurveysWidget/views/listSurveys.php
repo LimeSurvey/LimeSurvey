@@ -15,40 +15,39 @@
 /**
  * @var $this ListSurveysWidget
  */
+
 ?>
 
 <!-- Grid -->
 <div class="row">
     <div class="col-12">
         <?php
+        // Render the floating action bar (cross-page selection, fixed at bottom)
+        $floatingActions = \actions\SurveyListMassiveActions::getActions();
+        $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+            'pk'           => 'sid',
+            'gridId'       => 'survey-grid',
+            'aActions'     => $floatingActions,
+            'selectAllUrl' => Yii::app()->createUrl('surveyAdministration/getAllSurveyIds'),
+        ]);
+        ?>
+        <?php
 
         $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', [
             'dataProvider'          => $this->model->search(),
             // Number of row per page selection
             'id'                    => 'survey-grid',
-            'caption'               => gT('List of surveys'),
+            'lsCaption'               => gT('List of surveys'),
             'emptyText'             => gT('No surveys found.'),
-            'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'surveygrid--pageSize',
-                        $this->pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto',
-                         'aria-label' => gT('Change page size')]
-                    )
-                ),
+            'lsPageSizeCurrentValue'  => $this->pageSize,
             'ajaxUpdate'            => 'survey-grid',
             'lsAfterAjaxUpdate'     => [
                 'window.LS.doToolTip();',
-                'bindListItemclick();',
-                'switchStatusOfListActions();',
                 'LS.restoreFocusAfterSort("survey-grid");',
             ],
-            'rowLink'               =>
+            'lsRowLink'               =>
                 'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
-            // 'template'  => $this->template,
-            'massiveActionTemplate' => $this->render('massive_actions/_selector', [], true, false),
+            'lsShowSelectionBar'      => false,
             'columns'               => $this->model->getColumns(),
             'lsAdditionalColumns' => $this->model->getAdditionalColumns(),
 

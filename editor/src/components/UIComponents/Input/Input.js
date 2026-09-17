@@ -9,8 +9,8 @@ import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
 import { useQueryClient } from '@tanstack/react-query'
 
 export const Input = ({
-  value = '',
-  defaultValue,
+  value = null,
+  defaultValue = '',
   dataTestId,
   onChange = () => {},
   onBlur = () => {},
@@ -80,7 +80,7 @@ export const Input = ({
       return
     }
 
-    inputRef.current.value = defaultValue || value
+    inputRef.current.value = value ?? defaultValue
   }, [inputRef, value])
 
   const handleOnChange = (event) => {
@@ -139,7 +139,7 @@ export const Input = ({
             data-testid={dataTestId}
             placeholder={placeholder}
             onChange={handleOnChange}
-            defaultValue={defaultValue || value}
+            defaultValue={defaultValue !== '' ? defaultValue : value}
             type={type}
             role={role}
             rows={rows}

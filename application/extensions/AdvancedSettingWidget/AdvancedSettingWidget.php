@@ -50,6 +50,12 @@ class AdvancedSettingWidget extends CWidget
             }
         }
 
+        // The setting must be disabled if it is always read-only, or if it is read-only
+        // while the survey is active and the survey is currently active.
+        $surveyIsActive = !empty($this->survey) && $this->survey->active === 'Y';
+        $disabled = !empty($this->setting['readonly'])
+            || ($surveyIsActive && !empty($this->setting['readonly_when_active']));
+
         $inputBaseName = "advancedSettings[" . strtolower((string) $this->setting['category']) . "][" . $this->setting['name'] . "]";
         $content = $this->render(
             $this->setting['inputtype'],
@@ -60,7 +66,8 @@ class AdvancedSettingWidget extends CWidget
             'layout',
             [
                 'content' => $content,
-                'inputBaseName' => $inputBaseName
+                'inputBaseName' => $inputBaseName,
+                'disabled' => $disabled
             ]
         );
     }

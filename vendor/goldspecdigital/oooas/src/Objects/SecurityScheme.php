@@ -71,7 +71,7 @@ class SecurityScheme extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function oauth2(string $objectId = null): self
+    public static function oauth2(?string $objectId = null): self
     {
         return static::create($objectId)->type(static::TYPE_OAUTH2);
     }

@@ -42,7 +42,11 @@ export const TextQuestion = ({
         />
       )}
       {questionThemeName === getQuestionTypeInfo().BROWSER_DETECTION.theme && (
-        <BrowserDetectionTextAnswer attributes={attributes} />
+        <BrowserDetectionTextAnswer
+          value={value.value}
+          attributes={attributes}
+          onLocationChange={handleOnChange}
+        />
       )}
     </div>
   )

@@ -55,6 +55,12 @@ class MandatorySoftTest extends TestBaseClassWeb
             );
             /* Try to submit */
             self::$webDriver->next();
+            /* wait for the mandatory-soft modal to become clickable: after next()  */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('mandatory-soft-alert-box-modal')
+                )
+            );
             /* Check if question Q01 is here */
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G02Q02']->qid))),
@@ -165,7 +171,14 @@ class MandatorySoftTest extends TestBaseClassWeb
             // Double-click to ensure modal closes (needed)
             $modalCloseButton->click();
             $modalCloseButton->click();
-            /* Wait it was closed */
+
+            // wait for the Bootstrap backdrop overlay to fully disappear (including fade-out animation)
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::cssSelector('.modal-backdrop')
+                )
+            );
+            /* Now wait for the submit button to be interactable */
             self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('ls-button-submit')
@@ -185,6 +198,12 @@ class MandatorySoftTest extends TestBaseClassWeb
                 )
             );
             $mandatorysoftButtonG1->click();
+            /* Wait for navigation to page 2 / Group 2 before asserting */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::id('question' . $questions['G02Q02']->qid)
+                )
+            );
             /* Must be at page 2 / Group 2 */
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G02Q02']->qid))),

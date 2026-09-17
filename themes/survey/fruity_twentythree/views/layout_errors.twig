@@ -16,7 +16,7 @@
     This layout is used to render errors that block survey rendering.
     Eg: wrong survey ID, empty group in preview group, etc.
 
-    It has no obligation to be the same layout as layout_global.twig, it can be completly different.
+    It has no obligation to be the same layout as layout_global.twig, it can be completely different.
 
     NOTE: To see it: just try to preview a survey with an empty group.
 
@@ -24,6 +24,7 @@
 #}
 
 {# We register a specific css file for that layout. #}
+{{ registerTemplateCssFile('css/errors.css') }}
 {% set aError     = aSurveyInfo.aError    %}
 
 <!DOCTYPE html>
@@ -55,6 +56,11 @@
     <div class="container m-auto ">
         <div class="row align-items-center">
             <div class="col">
+                {% if( aSurveyInfo.options.brandlogo == "on") %}
+                    <div class="error-logo-container">
+                        {{ image(aSurveyInfo.options.brandlogofile, '', {"class": "logo img-fluid"}) }}
+                    </div>
+                {% endif %}
                 <h2 class="error-title">
                     {% if aError.error %}
                         {{ aError.error }}
@@ -62,6 +68,9 @@
                     {{ aError.title }}
                 </h2>
                 <div class="error-content">{{ aError.message }}</div>
+                {% if aError.URL %}
+                    <div class="error-content">{{ aError.URL }}</div>
+                {% endif %}
                 {% if aError.contact %}
                     {{ aError.contact }}
                 {% else %}

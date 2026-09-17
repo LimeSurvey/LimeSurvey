@@ -168,6 +168,7 @@ export const getLogicAttributes = () => ({
   MAXIMUM_COLUMNS_FOR_ANSWERS: {
     component: Input,
     attributePath: 'attributes.max_subquestions',
+    disableWhenActive: true,
     props: {
       labelText: t('Maximum columns for answers'),
       dataTestId: 'maximum-columns-for-answers',

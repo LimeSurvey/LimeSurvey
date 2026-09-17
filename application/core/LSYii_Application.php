@@ -495,11 +495,6 @@ class LSYii_Application extends CWebApplication
             }
         }
 
-        // Then we read each manifest and add their functions to Twig Component
-        if (\PHP_VERSION_ID < 80000) {
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        }
-
         foreach ($CustomTwigExtensionsManifestFiles as $ctemFile) {
             $sXMLConfigFile = file_get_contents(realpath($ctemFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oXMLConfig = simplexml_load_string($sXMLConfigFile);
@@ -523,10 +518,6 @@ class LSYii_Application extends CWebApplication
                     $aApplicationConfig['components']['twigRenderer']['sandboxConfig']['functions'][] = $functionNameInTwig;
                 }
             }
-        }
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
         }
 
         return $aApplicationConfig;

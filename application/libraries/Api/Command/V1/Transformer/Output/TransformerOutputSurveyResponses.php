@@ -151,7 +151,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
             ) {
                 $responseArray[$dateField] = null;
             } else {
-                $responseArray[$dateField] = getDateOfUTC($responseArray[$dateField]);
+                $responseArray[$dateField] = getDateOfUTC($responseArray[$dateField] ?? null);
             }
         }
     }

@@ -67,9 +67,10 @@ $importModal = false;
 <div class="mt-3 mb-3">
     <div class="row row-cols-auto align-items-center justify-content-end gx-2">
         <!-- Theme Select Box -->
-        <label class="col col-form-label text-nowrap" for='templatedir'><?php eT("Theme:"); ?></label>
+        <label class="col col-form-label text-nowrap" id="templatedir-label" for='templatedir'><?php eT("Theme:"); ?></label>
         <div class="col">
             <select class="col listboxtemplates form-select activate-search" id='templatedir' name='templatedir'
+                    aria-labelledby="templatedir-label"
                     onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
                     echo $this->createUrl(
@@ -85,7 +86,7 @@ $importModal = false;
         </div>
 
         <!-- Screen Select Box -->
-        <label class="col col-form-label text-nowrap" for='listboxtemplates'><?php eT("Screen:"); ?></label>
+        <label class="col col-form-label text-nowrap" id="listboxtemplates-label" for='listboxtemplates'><?php eT("Screen:"); ?></label>
         <div>
             <?php echo CHtml::dropDownList(
                 'screenname',
@@ -94,6 +95,7 @@ $importModal = false;
                 [
                     'id'       => 'listboxtemplates',
                     'class'    => "col listboxtemplates form-select activate-search",
+                    'aria-labelledby' => 'listboxtemplates-label',
                     'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl(
                         "admin/themes",
                         [

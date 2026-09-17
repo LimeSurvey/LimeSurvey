@@ -1,7 +1,8 @@
 .responses {
+  min-height: calc(100vh - $top-bar-height);
   background: $g-200;
   padding: 0;
-  height: 100%;
+  position: relative;
 
   .sidebar,
   .right-side-bar {
@@ -23,14 +24,18 @@
     height: 14px;
   }
 
+  .table-header {
+    .content-editable {
+      padding: 2px 0 0 0;
+    }
+  }
+
   .responses-body {
     display: flex;
     flex-direction: row;
     gap: 20px;
 
     .btn-group {
-      background-color: $g-900;
-
       i {
         &::before {
           font-size: $font-size-lg;

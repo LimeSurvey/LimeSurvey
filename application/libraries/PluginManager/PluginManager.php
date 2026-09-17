@@ -233,6 +233,16 @@ class PluginManager extends \CApplicationComponent
     }
 
     /**
+     * Whether at least one plugin is subscribed to the given event.
+     * @param string $eventName
+     * @return boolean
+     */
+    public function hasSubscribers($eventName)
+    {
+        return !empty($this->subscriptions[$eventName]);
+    }
+
+    /**
      * This function dispatches an event to all registered plugins.
      * @param PluginEvent $event Object holding all event properties
      * @param string|array $target Optional name of plugin to fire the event on

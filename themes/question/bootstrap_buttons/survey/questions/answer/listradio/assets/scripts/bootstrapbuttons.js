@@ -9,6 +9,7 @@ function doBootstrapRadioOther() {
             copyOtherInputToHiddenField(name);
         } else {
             $("#div" + name + "other").addClass('ls-js-hidden');
+            $("#answer" + name + "othertext").val("");
             $("#answer" + name + "othertextaux").val('');
         }
     });

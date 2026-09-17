@@ -10,12 +10,12 @@
 ?>
 <div class="col-12">
 
-    <div class="h4"><?php
+    <h2 class="h4"><?php
     if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
         eT('My user groups');
     }
     ?>
-    </div>
+    </h2>
 
     <div class="row">
         <div class="col-12">
@@ -24,34 +24,24 @@
                 'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'usergroups-grid-mine',
+                    'lsCaption' => gT('My user groups'),
                     'dataProvider' => $model->searchMine(true),
                     'columns' => $model->getManagementButtons(),
                     'emptyText' => gT('No user groups found.'),
                     'ajaxUpdate' => 'usergroups-grid-mine',
-                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            App()->params['pageSizeOptions'],
-                            [
-                                    'class' => 'changePageSize form-select',
-                                    'style' => 'display: inline; width: auto'
-                                ]
-                        )
-                    ),
+                    'lsPageSizeCurrentValue' => $pageSize,
                 ]
             );
             ?>
         </div>
-    </div>
+</div>
 
-    <div class="h4"><?php
+    <h2 class="h4"><?php
     if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
         eT('Groups to which I belong');
     }
     ?>
-    </div>
+    </h2>
 
     <div class="row">
         <div class="col-12">
@@ -62,19 +52,9 @@
                     [
                         'dataProvider' => $model->searchMine(false),
                         'id' => 'usergroups-grid-belong-to',
+                        'lsCaption' => gT('Groups to which I belong'),
                         'emptyText' => gT('No user groups found.'),
-                        'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                            gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSize',
-                                $pageSize,
-                                Yii::app()->params['pageSizeOptions'],
-                                [
-                                        'class' => 'changePageSize form-select',
-                                        'style' => 'display: inline; width: auto'
-                                    ]
-                            )
-                        ),
+                        'lsPageSizeCurrentValue' => $pageSize,
                         'columns' => $model->columns,
                         'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl('userGroup/viewGroup/ugid') . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                         'ajaxUpdate' => 'usergroups-grid-belong-to',
@@ -86,13 +66,3 @@
     </div>
 
 </div>
-
-<script type="text/javascript">
-    jQuery(function ($) {
-        // To update rows per page via ajax
-        $(document).on("change", '#pageSize', function () {
-            $.fn.yiiGridView.update('usergroups-grid-mine', {data: {pageSize: $(this).val()}});
-            $.fn.yiiGridView.update('usergroups-grid-belong-to', {data: {pageSize: $(this).val()}});
-        });
-    });
-</script>

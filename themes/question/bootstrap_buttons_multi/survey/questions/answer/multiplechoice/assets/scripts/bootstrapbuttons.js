@@ -10,32 +10,33 @@
 
 $(document).ready(function () {
     // OTHER
-    $(".bootstrap-checkbox-other-value").each(function (index, element) {
-        name = $(this).data('name');
+    $(".button-checkbox-other-value").each(function (index, element) {
+        var myfname = $(this).data('name');
+        var baseName = myfname.replace(/_Cother$/, '');
         if ($(this).val()) {
             // "other" input field
-            $("#answer" + name).val($(this).val());
-            $("#" + name + "-div").removeClass('hide');
+            $("#answer" + baseName + "other").val($(this).val());
+            $("#" + baseName + "other-div").removeClass('d-none');
         }
         // execute validation
-        checkconditions($("#answer" + name).val(), name, this.type);
+        checkconditions($("#answer" + baseName + "other").val(), myfname, this.type);
     });
 
     $(".bootstrap-checkbox-other").change(function () {
-        name = $(this).data('name');
-        // conditionaly show or hide "other" input field
+        var name = $(this).data('name');
+        // conditionally show or hide "other" input field
         if ($(this).is(':checked')) {
             $("#" + name + "-div").removeClass('d-none');
         } else {
             $("#" + name + "-div").addClass('d-none');
-            $("#answer" + name + "othertext").val('');
+            $("#answer" + name).val('');
         }
     });
 
     $(".bootstrap-other-input").on('change keyup paste', function () {
-        name = $(this).data('name');
+        var name = $(this).data('name');
         if (!$(this).val()) {
-            $("#java" + name + "other").val('');
+            $("#java" + $(this).attr('name')).val('');
         }
         checkconditions(this.value, this.name, this.type);
     });

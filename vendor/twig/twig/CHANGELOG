@@ -1,3 +1,27 @@
+# 3.28.0 (2026-07-03)
+
+ * Render backed enums using their backing value in the `html_attr` function
+ * Fix empty Markup values being treated as truthy in and, or, xor, not, ternary, and elvis expressions
+ * Fix a PHP 8.5 `chr()` deprecation when decoding an octal string escape sequence larger than `\377` (such as `"\777"`)
+ * Mark `Twig\Markup` as `@final`; it will be final in Twig 4.0
+ * Reduce memory usage and speed up the context restoration compiled at the end of `for` loops
+ * Allow calling a macro with a dynamic name via the dot operator (`macros.(name)(args)`)
+ * Report the column number in syntax errors and expose it via `Error::getTemplateColumn()`
+ * Track the source offset of each token and expose it via `Token::getOffset()`
+ * Fix nested `block()` calls to resolve against the overriding template when a block rendered through `block(name, template)` calls `parent()`
+ * Deprecate the possibility to use a `block` tag within a capture node (like `set`)
+ * Deprecate the possibility to use a `block` tag within a capture node (like `set`) in child templates
+ * Deprecate using a `macro`, `extends`, or `use` tag outside the root of a template
+ * Stop reporting a skipped test in `IntegrationTestCase` when there is no legacy test to run
+ * Fix `markdown_to_html` to strip the indentation shared by all lines instead of mangling content that starts with a blank line
+ * Make the `IntegrationTestCase` and `NodeTestCase` test helpers compatible with PHPUnit 11
+ * Cast printed expressions to string so values that cannot be converted to a string (arrays, non-`Stringable` objects, ...) report a usable stack trace at the print location
+ * Make the `include()` function return a `Markup` object so an assigned result is not re-escaped when printed
+ * Skip the sandbox `__toString` check on arguments whose PHP parameter type cannot implicitly coerce to string
+ * Document the criteria for marking a callable or tag as always allowed in a sandbox, and the list of built-in tags, filters, and functions that will be always allowed in Twig 4.0
+ * Add an `always_allowed_in_sandbox` option for filters, functions, and tests, and an `isAlwaysAllowedInSandbox()` method for token parsers, to let authors mark callables and tags that are always allowed in sandbox mode without explicit allow-listing
+ * Add an allow-list for tests to `Twig\Sandbox\SecurityPolicy`, with the safe built-in tests flagged as always allowed so they keep working without allow-listing
+
 # 3.27.1 (2026-05-30)
 
  * Fix array access with a `Stringable` key to coerce the key to string consistently instead of throwing in the optimized path

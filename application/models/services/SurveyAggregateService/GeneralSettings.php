@@ -105,6 +105,7 @@ class GeneralSettings
             );
         }
 
+        $this->modelSurvey->resetCache();
         $survey = $this->modelSurvey->findByPk(
             $surveyId
         );
@@ -264,6 +265,7 @@ class GeneralSettings
             'showgroupinfo' => [],
             'showqnumcode' => [],
             'shownoanswer' => ['type' => static::FIELD_TYPE_YN],
+            'preselectnoanswer' => ['type' => static::FIELD_TYPE_YN],
             'showwelcome' => ['type' => static::FIELD_TYPE_YN],
             'showsurveypolicynotice' => ['default' => 0],
             'showtokenpolicy' => ['type' => static::FIELD_TYPE_YN],

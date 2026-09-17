@@ -44,7 +44,7 @@ class Response extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function ok(string $objectId = null): self
+    public static function ok(?string $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(200)
@@ -55,7 +55,7 @@ class Response extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function created(string $objectId = null): self
+    public static function created(?string $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(201)
@@ -66,7 +66,7 @@ class Response extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function movedPermanently(string $objectId = null): self
+    public static function movedPermanently(?string $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(301)
@@ -77,7 +77,7 @@ class Response extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function movedTemporarily(string $objectId = null): self
+    public static function movedTemporarily(?string $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(302)
@@ -88,7 +88,7 @@ class Response extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function badRequest(string $objectId = null): self
+    public static function badRequest(?string $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(400)
@@ -99,7 +99,7 @@ class Response extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function unauthorized(string $objectId = null): self
+    public static function unauthorized(?string $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(401)
@@ -110,7 +110,7 @@ class Response extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function forbidden(string $objectId = null): self
+    public static function forbidden(?string $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(403)
@@ -121,7 +121,7 @@ class Response extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function notFound(string $objectId = null): self
+    public static function notFound(?string $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(404)
@@ -132,7 +132,7 @@ class Response extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function unprocessableEntity(string $objectId = null): self
+    public static function unprocessableEntity(?string $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(422)
@@ -143,7 +143,7 @@ class Response extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function tooManyRequests(string $objectId = null): self
+    public static function tooManyRequests(?string $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(429)
@@ -154,7 +154,7 @@ class Response extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function internalServerError(string $objectId = null): self
+    public static function internalServerError(?string $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(500)

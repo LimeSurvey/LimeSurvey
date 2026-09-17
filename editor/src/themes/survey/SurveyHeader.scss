@@ -80,18 +80,7 @@
     margin-bottom: 18px;
   }
 
-  .welcome-title {
-    margin-bottom: 18px;
-    font-size: 40px;
-    letter-spacing: -0.017em;
-    text-align: left;
-
-    * {
-      font-family: 'IBM';
-      line-height: 125%;
-    }
-  }
-
+  .welcome-title,
   .welcome-description {
     font-size: $font-size-md;
     letter-spacing: -0.017em;

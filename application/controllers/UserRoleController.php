@@ -29,11 +29,6 @@ class UserRoleController extends LSBaseController
         App()->getClientScript()->registerPackage('permissionroles');
         $request = App()->request;
 
-        $massiveAction = $this->renderPartial(
-            'massiveAction/_selector',
-            [],
-            true
-        );
 
         // Set page size
         $pageSize = $request->getParam('pageSize');
@@ -65,9 +60,8 @@ class UserRoleController extends LSBaseController
         $this->render(
             'index',
             [
-                'model'         => $model,
-                'massiveAction' => $massiveAction,
-                'pageTitle'     => gT('User roles'),
+                'model'     => $model,
+                'pageTitle' => gT('User roles'),
             ]
         );
     }
@@ -334,14 +328,7 @@ class UserRoleController extends LSBaseController
             return;
         }
 
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
-
         $oRoleDefinition = simplexml_load_file(realpath($sFilePath));
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
 
         $oNewRole = Permissiontemplates::model()->createFromXML($oRoleDefinition);
         if ($oNewRole == false) {

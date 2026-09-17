@@ -20,6 +20,72 @@ class Utils
     }
 
     /**
+     * Converts a human-readable string ('dd-mmm-yyyy', 'hh:mm:ss.ss', 'dd-mmm-yyyy hh:mm:ss.ss')
+     * to the number of seconds that the SPSS binary format expects for DATE/TIME/DATETIME.
+     * It is the inverse of formatDate().
+     *
+     * @param string $value
+     * @param int $format Variable::FORMAT_TYPE_DATE|TIME|DATETIME
+     *
+     * @return float
+     */
+    public static function parseSpssDateTime($value, $format)
+    {
+        $months = [
+            'jan' => 1, 'feb' => 2, 'mar' => 3, 'apr' => 4, 'may' => 5, 'jun' => 6,
+            'jul' => 7, 'aug' => 8, 'sep' => 9, 'oct' => 10, 'nov' => 11, 'dec' => 12,
+        ];
+
+        $parseTime = function ($str) {
+            if (!preg_match('/^(\d+):(\d{2})(?::(\d{2})(?:\.(\d+))?)?$/', trim($str), $m)) {
+                return 0.0;
+            }
+            $h = (int) $m[1];
+            $min = (int) $m[2];
+            $s = isset($m[3]) ? (int) $m[3] : 0;
+            $frac = isset($m[4]) ? (float) ('0.' . $m[4]) : 0.0;
+
+            return $h * 3600 + $min * 60 + $s + $frac;
+        };
+
+        if (\SPSS\Sav\Variable::FORMAT_TYPE_TIME === $format) {
+            // TIME is a duration (it can exceed 24 hours), not an hour of the day.
+            return $parseTime($value);
+        }
+
+        // DATE or DATETIME: separate date part and optional time part.
+        $parts = preg_split('/\s+/', trim($value), 2);
+        if (!preg_match('/^(\d{1,2})-([A-Za-z]{3})-(\d{2,4})$/', $parts[0], $m)) {
+            return 0.0;
+        }
+        $day = (int) $m[1];
+        $month = $months[strtolower($m[2])] ?? 1;
+        $year = (int) $m[3];
+        if ($year < 100) {
+            $year += ($year < 69) ? 2000 : 1900;
+        }
+
+        // Julian Day Number (Fliegel & Van Flandern), valid for proleptic-Gregorian dates
+        // even earlier than 1970/1582, avoiding the limitations of strtotime().
+        $jdn = function ($y, $m, $d) {
+            $a = intdiv(14 - $m, 12);
+            $y2 = $y + 4800 - $a;
+            $m2 = $m + 12 * $a - 3;
+
+            return $d + intdiv(153 * $m2 + 2, 5) + 365 * $y2 + intdiv($y2, 4) - intdiv($y2, 100) + intdiv($y2, 400) - 32045;
+        };
+
+        $daysSinceEpoch = $jdn($year, $month, $day) - $jdn(1582, 10, 14);
+        $seconds = $daysSinceEpoch * 86400;
+
+        if (isset($parts[1])) {
+            $seconds += $parseTime($parts[1]);
+        }
+
+        return (float) $seconds;
+    }
+
+    /**
      * Rounds X up to the next multiple of Y.
      *
      * @param int $x

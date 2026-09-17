@@ -7,7 +7,6 @@
  */
 
 $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-$massiveAction = App()->getController()->renderPartial('/admin/surveymenu/massive_action/_selector', [], true, false);
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyMenus');
@@ -36,29 +35,29 @@ echo viewHelper::getViewTestTag('surveyMenus');
                 <div class="col-12 ls-space margin top-15">
                     <div class="col-12 ls-flex-item">
                         <?php
+                        require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.SurveyMenuListMassiveActions') . '.php';
+                        $floatingActions = \actions\SurveyMenuListMassiveActions::getActions();
+                        $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                            'pk' => 'id',
+                            'gridId' => 'surveymenu-grid',
+                            'aActions' => $floatingActions,
+                        ]);
+
                         $this->widget(
                             'application.extensions.admin.grid.CLSGridView',
                             [
                                 'dataProvider' => $model->search(),
                                 'id' => 'surveymenu-grid',
-                                'caption' => gT('Survey menus'),
+                                'lsCaption' => gT('Survey menus'),
                                 'columns' => $model->getColumns(),
                                 'filter' => $model,
                                 'emptyText' => gT('No customizable entries found.'),
-                                'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                                    gT('%s rows per page'),
-                                    CHtml::dropDownList(
-                                        'pageSize',
-                                        $pageSize,
-                                        Yii::app()->params['pageSizeOptions'],
-                                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                                    )
-                                ),
+                                'lsPageSizeCurrentValue' => $pageSize,
                                 'rowHtmlOptionsExpression' => '["data-surveymenu-id" => $data->id]',
                                 'ajaxType' => 'POST',
                                 'ajaxUpdate' => 'surveymenu-grid',
-                                'massiveActionTemplate' => $massiveAction,
-                                'afterAjaxUpdate' => 'surveyMenuFunctions',
+                                'lsShowSelectionBar' => false,
+                                'lsAfterAjaxUpdate'  => ['surveyMenuFunctions();'],
                             ]
                         ); ?>
                     </div>

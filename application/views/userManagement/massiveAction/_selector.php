@@ -66,7 +66,7 @@ $aActionsArray = array(
             'action'            => 'batchStatus',
             'url'               => App()->createUrl('userManagement/batchStatus'),
             'iconClasses'       => 'ri-user-follow-fill',
-            'text'              => gT('Edit status'),
+            'text'              => gT('Set status'),
             'grid-reload'       => 'yes',
             //modal
             'actionType'        => 'modal',
@@ -75,7 +75,7 @@ $aActionsArray = array(
             'keepopen'          => 'yes',
             'showSelected'      => 'yes',
             'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),
-            'sModalTitle'       => gT('Edit status'),
+            'sModalTitle'       => gT('Set status'),
             //'htmlFooterButtons' => [],
             'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updatestatus', [], true)
         ),

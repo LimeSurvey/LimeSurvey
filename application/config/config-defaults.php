@@ -792,7 +792,7 @@ $config['defaultthemeteeditormode'] = 'default';
 // Side Menu behaviout
 $config['sideMenuBehaviour'] = 'adaptive';
 
-// Hide update key
+// Hide update key except for the first and last letters
 $config['hide_update_key'] = false;
 
 /**
@@ -892,6 +892,8 @@ $config['allow_unserialize_attachments'] = false;
 // If you want to allow 'securesetting', set this to ['securesetting']
 // @see https://bugs.limesurvey.org/view.php?id=20495
 $config['twig_getConfig_extraallowlist'] = null;
+
+$config['editorEnabled'] = true;
 
 return $config;
 //settings deleted
