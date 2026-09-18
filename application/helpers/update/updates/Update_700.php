@@ -60,6 +60,18 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
+     * Determines whether the given (already fully-qualified, i.e. including the
+     * configured table prefix) table name refers to an archived/legacy "old_" table.
+     * @param string $tableName
+     * @return bool
+     */
+    protected function isArchivedTableName(string $tableName): bool
+    {
+        $prefix = Yii::app()->db->tablePrefix ?? '';
+        return strpos($tableName, $prefix . 'old_') === 0;
+    }
+
+    /**
      * equivalent of getSubQuestions
      * Returns all subquestions for a survey+question in the given language.
      *
@@ -133,7 +145,8 @@ class Update_700 extends DatabaseUpdateBase
      * @param int $sid
      * @param int $gid
      * @param bool $cd
-     * @return string the field's name
+     * @return string the field's name, new or old if it can not be mapped
+     * @throws \CException
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid, bool $cd = false): string
@@ -332,26 +345,22 @@ class Update_700 extends DatabaseUpdateBase
                                 ->where('parent_qid = :qid', [':qid' => $qid])
                                 ->order('question_order')
                                 ->queryAll();
+                            // Ranking columns are rank SLOTS: the old column suffix is the rank position (1..n)
                             if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
                                 $sqid = $cd ? $rankingSuffix : $subQuestions[($iRankingSuffix - 1)]['qid'];
                                 $newFieldName = "Q{$rootQuestion['qid']}_{$prefix}" . $sqid;
-                            } elseif (count($subQuestions)) {
-                                $minSortOrder = $subQuestions[0]['question_order'];
-                                $diff = 0;
-                                if ($minSortOrder === 0) {
-                                    $diff = -1;
-                                } elseif ($minSortOrder > 1) {
-                                    $diff = $minSortOrder;
-                                }
-                                foreach ($subQuestions as $question) {
-                                    if (($rankingSuffix == $question['title']) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $question['question_order']))) {
-                                        return "Q{$rootQuestion['qid']}_{$prefix}{$question['qid']}";
-                                    }
-                                }
+                            } else {
+                                // There are more rank slots than subquestions (e.g. an answer
+                                // option was deleted after responses were collected), so this
+                                // trailing slot has no counterpart in the new table. Return the
+                                // field name unchanged so the caller can detect this "no-op
+                                // mapping" and drop the column instead of carrying an orphaned
+                                // rank column into the new table.
+                                return $fieldName;
                             }
                         } catch (\Exception $ex) {
                             // Ignore inconsistencies in archive rankings
-                            if (strpos($tableName, 'old') === false) {
+                            if (!$this->isArchivedTableName($tableName)) {
                                 throw $ex;
                             }
                         }
@@ -1309,7 +1318,7 @@ class Update_700 extends DatabaseUpdateBase
 
     public function adjustShowCreateTable(array $script, string $tableName)
     {
-        if (strpos($tableName, 'old') === false) {
+        if (!$this->isArchivedTableName($tableName)) {
             switch (Yii::app()->db->getDriverName()) {
                 case 'pgsql':
                     $script['Create Table'] = str_replace('"id" integer NOT NULL', '"id" serial PRIMARY KEY', $script['Create Table']);
@@ -1423,6 +1432,124 @@ class Update_700 extends DatabaseUpdateBase
             WHERE attribute = 'answer_order'
             AND qid IN (SELECT qid FROM {{questions}} WHERE type = 'R')
         ";
+    }
+
+    /**
+     * Cleans up ranking answers in a legacy response table *before* its rows are copied
+     * one-to-one into the new table.
+     *
+     * Ranking columns are rank SLOTS: the old column "{sid}X{gid}X{qid}{n}" holds the answer
+     * code that the participant put on rank n. That answer code equals the title of the
+     * ranking subquestion that has just been created from the answer options.
+     *
+     * If an answer option was deleted after responses had been collected, its code is still
+     * present in the responses but can no longer be mapped to any subquestion title. Simply
+     * dropping the now surplus trailing rank column would destroy a perfectly valid value
+     * (the one sitting in the last slot) while keeping the unmappable one.
+     *
+     * Therefore every value that cannot be mapped to a subquestion title is replaced by NULL
+     * and all following ranks of that question are moved one column to the left, so the ranks
+     * stay gapless and the surplus trailing slots end up empty and can be dropped losslessly.
+     *
+     * @param string $tableName legacy (old) response table name
+     * @param string[] $columnNames all column names of that table
+     * @return void
+     */
+    protected function compactLegacyRankingValues(string $tableName, array $columnNames): void
+    {
+        $isArchivedTable = $this->isArchivedTableName($tableName);
+        // ignore old tables and timings since they are not relevant for this cleanup
+        if (
+            (strpos($tableName, 'survey') === false) ||
+            (strpos($tableName, 'timing') !== false) ||
+            $isArchivedTable
+        ) {
+            return;
+        }
+        $parts = explode('_', $tableName);
+        $index = count($parts) - ($isArchivedTable ? 2 : 1);
+        if (!isset($parts[$index]) || !ctype_digit((string)$parts[$index])) {
+            return;
+        }
+        $sid = (int)$parts[$index];
+        $rankingQuestions = $this->db->createCommand()
+            ->select('qid, gid')
+            ->from('{{questions}}')
+            ->where("sid = :sid AND type = 'R' AND (parent_qid = 0 OR parent_qid IS NULL)", [':sid' => $sid])
+            ->queryAll();
+        if (!count($rankingQuestions)) {
+            return;
+        }
+        $availableColumns = array_flip($columnNames);
+        foreach ($rankingQuestions as $rankingQuestion) {
+            $qid = (int)$rankingQuestion['qid'];
+            $gid = (int)$rankingQuestion['gid'];
+            // Collect the rank slots of this question in rank order (1..n).
+            $rankColumns = [];
+            for ($rank = 1; isset($availableColumns["{$sid}X{$gid}X{$qid}{$rank}"]); $rank++) {
+                $rankColumns[] = "{$sid}X{$gid}X{$qid}{$rank}";
+            }
+            if (!count($rankColumns)) {
+                continue;
+            }
+            // $questionsToPass equivalent: every subquestion of this ranking question. Their
+            // "title" is what is stored in the response columns.
+            $validTitles = $this->db->createCommand()
+                ->select('title')
+                ->from('{{questions}}')
+                ->where('parent_qid = :qid', [':qid' => $qid])
+                ->queryColumn();
+            $this->compactRankingColumns($tableName, $rankColumns, array_flip(array_map('strval', $validTitles)));
+        }
+    }
+
+    /**
+     * Rewrites the given rank slot columns row by row: unmappable values are removed and the
+     * remaining ones are packed to the left, the freed trailing slots are set to NULL.
+     *
+     * @param string $tableName
+     * @param string[] $rankColumns rank slot columns, ordered by rank
+     * @param array<string,mixed> $validTitles subquestion titles, used as a lookup set
+     * @return void
+     */
+    protected function compactRankingColumns(string $tableName, array $rankColumns, array $validTitles): void
+    {
+        $chunkSize = 1000;
+        $offset = 0;
+        do {
+            $rows = $this->db->createCommand()
+                ->select(array_merge(['id'], $rankColumns))
+                ->from($tableName)
+                ->order('id')
+                ->limit($chunkSize, $offset)
+                ->queryAll();
+            foreach ($rows as $row) {
+                // Keep the still mappable ranks, in their original order.
+                $keptValues = [];
+                foreach ($rankColumns as $rankColumn) {
+                    $value = $row[$rankColumn] ?? null;
+                    if (($value === null) || ($value === '')) {
+                        continue;
+                    }
+                    if (isset($validTitles[(string)$value])) {
+                        $keptValues[] = $value;
+                    }
+                }
+                // Re-align them to the left and blank out the remaining slots.
+                $newValues = [];
+                foreach ($rankColumns as $position => $rankColumn) {
+                    $newValue = $keptValues[$position] ?? null;
+                    $oldValue = $row[$rankColumn] ?? null;
+                    if ((($oldValue === '') ? null : $oldValue) !== $newValue) {
+                        $newValues[$rankColumn] = $newValue;
+                    }
+                }
+                if (count($newValues)) {
+                    $this->db->createCommand()->update($tableName, $newValues, 'id = :id', [':id' => $row['id']]);
+                }
+            }
+            $offset += $chunkSize;
+        } while (count($rows) === $chunkSize);
     }
     // -------------------------------------------------------------------------
     // INSERTANS conversion helpers – self-contained (no AR models)
@@ -1944,7 +2071,10 @@ class Update_700 extends DatabaseUpdateBase
                 );
             }
             if (count($questionsToPass) || ((strpos($tableName, 'timings') !== false) && (count($split) > 1))) {
-                $fieldMap[$tableName][$fieldName] = $this->getFieldName($tableName, $fieldName, $questionsToPass, (int)$sid, (int)$gid);
+                $newFieldname = $this->getFieldName($tableName, $fieldName, $questionsToPass, (int)$sid, (int)$gid);
+                if ($newFieldname) {
+                    $fieldMap[$tableName][$fieldName] = $newFieldname;
+                }
             }
         }
         $preinsert = "";
@@ -1968,13 +2098,29 @@ class Update_700 extends DatabaseUpdateBase
             foreach ($fields as $oldField => $newField) {
                 $scripts[$TABLE_NAME]['CREATE'] = str_replace($this->dbQuoteFields($oldField), $this->dbQuoteFields($newField), $scripts[$TABLE_NAME]['CREATE']);
             }
+            // getFieldName() returns the field name unchanged when it cannot resolve
+            // this will mark orphaned fields for removal, but only for non-archived tables. Archived tables are left intact.
+            $isArchivedTable = $this->isArchivedTableName($TABLE_NAME);
+            $orphanedColumns = [];
+            if (!$isArchivedTable) {
+                foreach ($fields as $oldField => $newField) {
+                    if ($oldField === $newField) {
+                        $orphanedColumns[] = $oldField;
+                    }
+                }
+            }
             $fromColumns = [];
             $toColumns = [];
+            $allColumnNames = [];
             foreach ($scripts[$TABLE_NAME]['columns'] as $column) {
                 if (!isset($column['COLUMN_NAME'])) {
                     if (isset($column['column_name'])) {
                         $column['COLUMN_NAME'] = $column['column_name'];
                     }
+                }
+                $allColumnNames[] = $column['COLUMN_NAME'];
+                if (in_array($column['COLUMN_NAME'], $orphanedColumns, true)) {
+                    continue;
                 }
                 $fromColumns[] = $this->dbQuoteFields($column['COLUMN_NAME']);
                 if (isset($fields[$column['COLUMN_NAME']])) {
@@ -1990,12 +2136,41 @@ class Update_700 extends DatabaseUpdateBase
                 SELECT {$from}
                 FROM {$TABLE_NAME};
             ";
+            $orphanedColumnsToDrop = $orphanedColumns;
+            // If there are orphaned columns, snapshot the legacy table as-is (full structure +
+            // data, untouched) *before* compactLegacyRankingValues() gets a chance to mutate it
+            $scripts[$TABLE_NAME]['BACKUP_ORPHANED'] = null;
+            if (count($orphanedColumns)) {
+                $orphanedTableName = 'orphaned_' . $TABLE_NAME;
+                $scripts[$TABLE_NAME]['BACKUP_ORPHANED'] = in_array(Yii::app()->db->getDriverName(), [
+                    'mssql',
+                    'sqlsrv',
+                    'dblib'
+                ])
+                    ? "SELECT * INTO {$orphanedTableName} FROM {$TABLE_NAME}"
+                    : "CREATE TABLE {$orphanedTableName} AS SELECT * FROM {$TABLE_NAME}";
+            }
             try {
+                if ($scripts[$TABLE_NAME]['BACKUP_ORPHANED'] !== null) {
+                    $this->db->createCommand($scripts[$TABLE_NAME]['BACKUP_ORPHANED'])->execute();
+                }
+                // The INSERT below copies the legacy rows one-to-one, so ranking answers that
+                // can no longer be mapped to a subquestion title have to be removed - and the
+                // following ranks shifted one column to the left - while the legacy table is
+                // still intact. Otherwise dropping the surplus trailing rank column would
+                // silently discard a valid rank instead of the unmappable one.
+                $this->compactLegacyRankingValues($TABLE_NAME, $allColumnNames);
                 $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
+                foreach ($orphanedColumnsToDrop as $orphanedColumn) {
+                    $this->db->createCommand()->dropColumn($scripts[$TABLE_NAME]['new_name'], $orphanedColumn);
+                }
                 $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
-                $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
+                // The legacy working copy has now been fully migrated into the new table (its
+                // untouched twin, if orphaned columns existed, was preserved separately above),
+                // so it is always safe to drop here.
+                $this->db->createCommand()->dropTable($TABLE_NAME);
             } catch (\Exception $ex) {
-                if (strpos($TABLE_NAME, "old") !== false) {
+                if ($this->isArchivedTableName($TABLE_NAME)) {
                     continue;
                 } else {
                     throw $ex;
@@ -2006,7 +2181,7 @@ class Update_700 extends DatabaseUpdateBase
                 arsort($keys);
                 $names = [];
                 $parts = explode("_", $TABLE_NAME);
-                $index = count($parts) - ((strpos($TABLE_NAME, "old") === false) ? 1 : 2);
+                $index = count($parts) - ($this->isArchivedTableName($TABLE_NAME) ? 2 : 1);
                 $sid = $parts[$index];
                 $this->insertansProcessedSids[$sid] = true;
                 foreach ($keys as $oldName) {
