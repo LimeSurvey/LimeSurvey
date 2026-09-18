@@ -76,8 +76,11 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
         $surveyResponseArray = parent::transform($surveyResponse) ?? [];
         $this->applyTokenData($surveyResponseArray, $surveyResponse, $options);
         $quotaId = $surveyResponseArray['quotaExit'] ?? null;
-        $surveyResponseArray['quotaExitName'] = $options['quotaNames'][(int) $quotaId]
-            ?? null;
+        $surveyResponseArray['quotaExitName'] = \CHtml::listData(
+            $options['survey']->quotas,
+            'id',
+            'name'
+        )[(int) $quotaId] ?? null;
         $surveyResponseArray['completed'] = !empty($surveyResponseArray['submitDate']);
         $surveyResponseArray['answers'] = $this->extractAnswers($surveyResponse->attributes);
         $this->normalizeDateFields($surveyResponseArray);
