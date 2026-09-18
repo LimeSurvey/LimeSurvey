@@ -881,12 +881,9 @@ class ParticipantsAction extends SurveyCommonAction
 
             $attributes = ParticipantAttributeName::model()->model()->getCPDBAttributes();
             /* Warning for duplicate control */
-            $duplicateControlDisable = false;
-            $cpdbCoreAttributes = ParticipantAttributeName::model()->findAllByAttributes(['core_attribute' => 'Y']);
-            $cpdbCoreCryptedAttributes = array_filter($cpdbCoreAttributes, function($attribute) {
-                return $attribute->encrypted == "Y";
-            });
-            $duplicateControlDisable = count($cpdbCoreCryptedAttributes) > 0 && !Participant::canUseDuplicateFinder();
+            $duplicateControlDisable = App()->getConfig('CPDB_encryption_method', 'B') == 'H'
+                && Participant::countCoreAttributeCrypted() > 0
+                && !Participant::canUseDuplicateFinder();
             $aData = array(
                 'attributes' => $attributes,
                 'firstline' => $selectedcsvfields,

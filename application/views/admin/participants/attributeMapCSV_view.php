@@ -84,7 +84,7 @@
                     </div>
                 <?php } else {
                     App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-                        'text' => gT("Duplicate control by first name, last name, and email is disabled because the central participant database uses a hardened encryption method."),
+                        'text' => gT("Duplicate control by first name, last name, and email is disabled because the central participant database due to error in your configuration."),
                         'type' => 'warning',
                     ]);
                 } ?>
