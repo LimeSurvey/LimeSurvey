@@ -1,3 +1,4 @@
+import { format } from 'util'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 import {
   dayJsHelper,
@@ -180,6 +181,21 @@ export const formatMetricValue = (value, valueType) =>
     ? `${Math.round(value ?? 0)}%`
     : `${value ?? 0}`
 
+// Wraps the part of a translated sentence marked by a `%s` pair in an element:
+// wrapTerm('%sMean%s of ...', (term) => <b>{term}</b>) -> <b>Mean</b> of ...
+export const wrapTerm = (text, wrap) => {
+  const parts = text.split('%s')
+  if (parts.length !== 3) return text.replaceAll('%s', '')
+  const [before, term, after] = parts
+  return (
+    <>
+      {before}
+      {wrap(term)}
+      {after}
+    </>
+  )
+}
+
 export const getMetricDataKey = (valueType) =>
   valueType === VALUE_TYPE.COUNT ? 'value' : 'percentageValue'
 
@@ -317,10 +333,9 @@ export const TooltipShell = ({ children }) => (
 export const TooltipMetricLines = ({ count, percentage }) => (
   <>
     <div>
-      {count}{' '}
       {count === 1
-        ? t('participant selected this option')
-        : t('participants selected this option')}
+        ? format(t('%s participant selected this option'), count)
+        : format(t('%s participants selected this option'), count)}
     </div>
     <div>
       {t('Percentage')}: {percentage}%

@@ -195,7 +195,7 @@ export const useSurvey = (id) => {
       },
       PATCH_DEBOUNCE_TIME
     ),
-    [surveyService.surveyId, surveyService.auth?.restHeaders?.Authorization]
+    [surveyService.surveyId, surveyService.auth?.token]
   )
 
   const fetchSurveyQuestionsFieldnameMap = async (sid, signal) => {
