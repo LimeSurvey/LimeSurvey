@@ -91,7 +91,10 @@ class SurveyResponsesExport implements CommandInterface
      */
     private array $legacyFormatMeta = [
         'pdf' => ['extension' => 'pdf', 'mimeType' => 'application/pdf'],
-        'xls' => ['extension' => 'xls', 'mimeType' => 'application/vnd.ms-excel'],
+        'xls' => [
+            'extension' => 'xlsx',
+            'mimeType' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ],
         'doc' => ['extension' => 'doc', 'mimeType' => 'application/msword'],
         'json' => ['extension' => 'json', 'mimeType' => 'application/json'],
         'spsssav' => ['extension' => 'sav', 'mimeType' => 'application/octet-stream'],
@@ -293,14 +296,14 @@ class SurveyResponsesExport implements CommandInterface
 
         $condition = $criteria->condition;
         $params = $criteria->params;
-        // sort longest first so :ph1 doesn't get replaced inside :ph10
-        uksort($params, fn($a, $b) => strlen((string)$b) <=> strlen((string)$a));
-        foreach ($params as $name => $value) {
-            $placeholder = is_int($name) ? '?' : $name;
-            $condition = str_replace($placeholder, Yii::app()->db->quoteValue($value), $condition);
-        }
+        $position = 0;
 
-        return $condition;
+        return preg_replace_callback('/\?|:[A-Za-z0-9_]+/', static function ($match) use ($params, &$position) {
+            $key = $match[0] === '?' ? $position++ : $match[0];
+            return array_key_exists($key, $params)
+                ? Yii::app()->db->quoteValue($params[$key])
+                : $match[0];
+        }, $condition);
     }
 
     /**
