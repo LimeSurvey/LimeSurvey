@@ -22,11 +22,16 @@ class Update_715 extends DatabaseUpdateBase
                 continue;
             }
 
-            \Yii::app()->db->createCommand()->addColumn(
-                $responseTableName,
-                'quota_exit',
-                'integer'
-            );
+            try {
+                setTransactionBookmark();
+                \Yii::app()->db->createCommand()->addColumn(
+                    $responseTableName,
+                    'quota_exit',
+                    'integer'
+                );
+            } catch (\Exception $e) {
+                rollBackToTransactionBookmark();
+            }
         }
 
         // Add to surveys table if not exists

@@ -1704,7 +1704,7 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     /* Added in 712 update */
     unset($attributes['preselectnoanswer']);
 
-    /* Added in 709 update */
+    /* Added in 715 update */
     unset($attributes['savequotaexit']);
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);

@@ -1193,9 +1193,11 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
             break;
         case 'quota_exit':
             // Try to get quota name
-            $quota = Quota::model()->findByAttributes(['sid' => $iSurveyID, 'id' => $sValue]);
-            if ($quota) {
-                $this_answer = $quota->name;
+            if (trim((string) $sValue) !== '') {
+                $quota = Quota::model()->findByAttributes(['sid' => $iSurveyID, 'id' => $sValue]);
+                if ($quota) {
+                    $this_answer = $quota->name;
+                }
             }
             break;
     }
