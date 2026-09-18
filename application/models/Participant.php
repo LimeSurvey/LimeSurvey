@@ -2224,7 +2224,8 @@ class Participant extends LSActiveRecord
                 }
 
                 // First check if token already has a participant_id in central database
-                $existing = self::getDuplicates($oTokenDynamic->attributes);
+                // We don't check with permission, see issue #20704
+                $existing = self::getDuplicates($oTokenDynamic->attributes, false);
                 /* If there is already an existing entry, add to the duplicate count */
                 if ($existing != null) {
                     $duplicate++;
@@ -2584,13 +2585,12 @@ class Participant extends LSActiveRecord
      * If participant_id is is set and not empty : use it
      * Else duplicate are found using firstname, lastname, email and owner_uid
      * @param string[]
-     * @param integer|null owner_id to use, default to current
+     * @param false|integer owner_id to use, if false : get in alll CPDB, never used if  participant_id is set
      * @return null|self[]
      */
-    public static function getDuplicates(array $participant, $ownerid = null)
+    public static function getDuplicates(array $participant, $ownerid = false)
     {
         
-        $ownerid = $ownerid ?? App()->getCurrentUserId();
         /* If participant_id is in $participant : directly use it */
         if (!empty($participant['participant_id'])) {
             return Participant::model()->findAllByAttributes([
@@ -2611,10 +2611,16 @@ class Participant extends LSActiveRecord
         if ($duplicatefindervalue === false || $duplicatefindervalue === '') {
             return false;
         }
-        $possibleDuplicates = Participant::model()->findAllByAttributes([
-            'duplicatefinder' => $duplicatefindervalue,
-            'owner_uid' => $ownerid
-        ]);
+        if ($ownerid) {
+            $possibleDuplicates = Participant::model()->findAllByAttributes([
+                'duplicatefinder' => $duplicatefindervalue,
+                'owner_uid' => $ownerid
+            ]);
+        } else {
+            $possibleDuplicates = Participant::model()->findAllByAttributes([
+                'duplicatefinder' => $duplicatefindervalue
+            ]);
+        }
         $duplicates = [];
         foreach ($possibleDuplicates as $possibleDuplicate) {
             $possibleDuplicate->decrypt();
@@ -2632,10 +2638,10 @@ class Participant extends LSActiveRecord
     /**
      * Find duplicate with not cryoted database
      * @param string[], must contain firstname , lastname, email
-     * @param integer ownerid 
+     * @param integer|false ownerid
      * @return self[]
      */
-    protected static function findDuplicateNotCryted(array $participant, int $ownerid)
+    protected static function findDuplicateNotCryted(array $participant, $ownerid)
     {
         $duplicateCriteriaAttributes = [
             'firstname' => $participant['firstname'] ?? '',
@@ -2643,25 +2649,44 @@ class Participant extends LSActiveRecord
             'email' => $participant['email'] ?? '' ,
         ];
         if (App()->db->getDriverName() == 'pgsql') {
-            return Participant::model()->findAll(
-                'LOWER(firstname) = LOWER(:firstname)
-                 AND LOWER(lastname) = LOWER(:lastname)
-                 AND LOWER(email) ILIKE LOWER(:email)
-                 AND owner_uid = :owner_uid',
-                [
-                    ':firstname' => $duplicateCriteriaAttributes['firstname'],
-                    ':lastname' => $duplicateCriteriaAttributes['lastname'],
-                    ':email' => $duplicateCriteriaAttributes['email'],
-                    ':owner_uid' => $ownerid,
-                ]
-            );
+            if ($ownerid) {
+                return Participant::model()->findAll(
+                    'LOWER(firstname) = LOWER(:firstname)
+                     AND LOWER(lastname) = LOWER(:lastname)
+                     AND LOWER(email) ILIKE LOWER(:email)
+                     AND owner_uid = :owner_uid',
+                    [
+                        ':firstname' => $duplicateCriteriaAttributes['firstname'],
+                        ':lastname' => $duplicateCriteriaAttributes['lastname'],
+                        ':email' => $duplicateCriteriaAttributes['email'],
+                        ':owner_uid' => $ownerid,
+                    ]
+                );
+            }
+                return Participant::model()->findAll(
+                    'LOWER(firstname) = LOWER(:firstname)
+                     AND LOWER(lastname) = LOWER(:lastname)
+                     AND LOWER(email) ILIKE LOWER(:email)',
+                    [
+                        ':firstname' => $duplicateCriteriaAttributes['firstname'],
+                        ':lastname' => $duplicateCriteriaAttributes['lastname'],
+                        ':email' => $duplicateCriteriaAttributes['email']
+                    ]
+                );
         }
         /* Mysql and MSSQL no need extra part here , maybe add an index */
+        if ($ownerid) {
+            return Participant::model()->findAllByAttributes([
+                'firstname' => $duplicateCriteriaAttributes['firstname'],
+                'lastname' => $duplicateCriteriaAttributes['lastname'],
+                'email' => $duplicateCriteriaAttributes['email'] ,
+                'owner_uid' => $ownerid
+            ]);
+        }
         return Participant::model()->findAllByAttributes([
             'firstname' => $duplicateCriteriaAttributes['firstname'],
             'lastname' => $duplicateCriteriaAttributes['lastname'],
-            'email' => $duplicateCriteriaAttributes['email'] ,
-            'owner_uid' => $ownerid
+            'email' => $duplicateCriteriaAttributes['email']
         ]);
     }
 
