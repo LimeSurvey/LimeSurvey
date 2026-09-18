@@ -16,7 +16,6 @@
  * @var $this ListSurveysWidget
  */
 
-use actions\SurveyListMassiveActions;
 ?>
 
 <!-- Grid -->
@@ -24,7 +23,7 @@ use actions\SurveyListMassiveActions;
     <div class="col-12">
         <?php
         // Render the floating action bar (cross-page selection, fixed at bottom)
-        $floatingActions = SurveyListMassiveActions::getActions();
+        $floatingActions = \actions\SurveyListMassiveActions::getActions();
         $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
             'pk'           => 'sid',
             'gridId'       => 'survey-grid',
@@ -38,27 +37,17 @@ use actions\SurveyListMassiveActions;
             'dataProvider'          => $this->model->search(),
             // Number of row per page selection
             'id'                    => 'survey-grid',
-            'caption'               => gT('List of surveys'),
+            'lsCaption'               => gT('List of surveys'),
             'emptyText'             => gT('No surveys found.'),
-            'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'surveygrid--pageSize',
-                        $this->pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto',
-                         'aria-label' => gT('Change page size')]
-                    )
-                ),
+            'lsPageSizeCurrentValue'  => $this->pageSize,
             'ajaxUpdate'            => 'survey-grid',
             'lsAfterAjaxUpdate'     => [
                 'window.LS.doToolTip();',
                 'LS.restoreFocusAfterSort("survey-grid");',
             ],
-            'rowLink'               =>
+            'lsRowLink'               =>
                 'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
-            // 'template'  => $this->template,
-            'showSelectionBar'      => false,
+            'lsShowSelectionBar'      => false,
             'columns'               => $this->model->getColumns(),
             'lsAdditionalColumns' => $this->model->getAdditionalColumns(),
 

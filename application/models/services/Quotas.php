@@ -16,6 +16,12 @@ use Survey;
  */
 class Quotas
 {
+    //Quota massive actions
+    const MASSIVE_ACTION_ACTIVATE = 'activate';
+    const MASSIVE_ACTION_DEACTIVATE = 'deactivate';
+    const MASSIVE_ACTION_DELETE = 'delete';
+    const MASSIVE_ACTION_CHANGE_LANGUAGE_SETTINGS = 'changeLanguageSettings';
+
     /** @var \Survey the survey */
     private $survey;
 
@@ -333,22 +339,22 @@ class Quotas
                 $errors [] = gT("Invalid quota ID");
             }
             switch ($action) {
-                case 'activate':
-                case 'deactivate':
-                    $oQuota->active = ($action == 'activate' ? 1 : 0);
+                case self::MASSIVE_ACTION_ACTIVATE:
+                case self::MASSIVE_ACTION_DEACTIVATE:
+                    $oQuota->active = ($action == self::MASSIVE_ACTION_ACTIVATE ? 1 : 0);
                     if (!$oQuota->save()) {
                         $errors[] = $oQuota->errors;
                     }
                     break;
-                case 'delete':
+                case self::MASSIVE_ACTION_DELETE:
                     $oQuota->delete();
                     \QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $iQuotaId));
                     \QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $iQuotaId));
                     break;
-                case 'changeLanguageSettings':
+                case self::MASSIVE_ACTION_CHANGE_LANGUAGE_SETTINGS:
                     if (!empty($languageSettings)) {
                         $oQuotaLanguageSettings = $oQuota->languagesettings;
-                        foreach ($_POST['QuotaLanguageSetting'] as $language => $aQuotaLanguageSettingAttributes) {
+                        foreach ($languageSettings as $language => $aQuotaLanguageSettingAttributes) {
                             $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
                             $oQuotaLanguageSetting->attributes = $aQuotaLanguageSettingAttributes;
                             if (!$oQuotaLanguageSetting->save()) {
@@ -376,12 +382,12 @@ class Quotas
     public function checkActionPermissions($action)
     {
         switch ($action) {
-            case 'activate':
-            case 'deactivate':
-            case 'changeLanguageSettings':
+            case self::MASSIVE_ACTION_ACTIVATE:
+            case self::MASSIVE_ACTION_DEACTIVATE:
+            case self::MASSIVE_ACTION_CHANGE_LANGUAGE_SETTINGS:
                 $permissionOk = \Permission::model()->hasSurveyPermission($this->survey->sid, 'quotas', 'update');
                 break;
-            case 'delete':
+            case self::MASSIVE_ACTION_DELETE:
                 $permissionOk = \Permission::model()->hasSurveyPermission(
                     $this->survey->sid,
                     'quotas',

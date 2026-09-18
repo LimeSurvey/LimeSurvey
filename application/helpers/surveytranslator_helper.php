@@ -1374,10 +1374,14 @@ function convertLStoDateTimePickerLocale($sLocale)
 function getLanguageDataRestricted($bOrderByNative = false, $sDetail = 'full')
 {
     $aLanguageData = getLanguageData($bOrderByNative);
+    $aResult = [];
 
     if (trim((string) Yii::app()->getConfig('restrictToLanguages')) != '') {
         foreach (explode(' ', trim((string) Yii::app()->getConfig('restrictToLanguages'))) as $key) {
-            $aResult[$key] = $aLanguageData[$key];
+            // Skip stale/unknown codes (e.g. removed language packs) to avoid undefined array key warnings
+            if (isset($aLanguageData[$key])) {
+                $aResult[$key] = $aLanguageData[$key];
+            }
         }
     } else {
         $aResult = $aLanguageData;

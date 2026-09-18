@@ -54,6 +54,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('.disclose').on('click', function() {
         $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
         $(this).toggleClass('ui-icon-plusthick').toggleClass('ui-icon-minusthick');
+        updateDiscloseLabel($(this));
     });
 
     $('#btnSave').click(function(){
@@ -63,13 +64,31 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
     // Collapse all question groups
     $('#organizer-collapse-all').on('click', function() {
-        $('.organizer').find('.mjs-nestedSortable-expanded').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
+        $('.organizer').find('.mjs-nestedSortable-expanded').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded')
+            .find('> .card-header .disclose').each(function() {
+                updateDiscloseLabel($(this));
+            });
     });
 
     // Expand all question groups
     $('#organizer-expand-all').on('click', function() {
-        $('.organizer').find('.mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
+        $('.organizer').find('.mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded')
+            .find('> .card-header .disclose').each(function() {
+                updateDiscloseLabel($(this));
+            });
     });
+
+    /**
+     * Update a disclose button's aria-label to reflect the collapsed/expanded
+     * state of the group it belongs to.
+     *
+     * @param {jQuery} $discloseButton the .disclose button to update
+     * @return {void}
+     */
+    function updateDiscloseLabel($discloseButton) {
+        var isCollapsed = $discloseButton.closest('li').hasClass('mjs-nestedSortable-collapsed');
+        $discloseButton.attr('aria-label', isCollapsed ? $discloseButton.data('label-expand') : $discloseButton.data('label-collapse'));
+    }
 });
 
 /**

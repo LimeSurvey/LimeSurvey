@@ -22,6 +22,7 @@ export const ImageChoice = ({
   value,
   isNoAnswer,
   groupName,
+  checked = null,
   defaultChecked = false,
   errors,
   setErrors = () => {},
@@ -81,6 +82,7 @@ export const ImageChoice = ({
             type={inputType}
             name={'image-choice-' + idSuffix}
             data-testid={'image-choice-' + idSuffix}
+            checked={checked}
             defaultChecked={defaultChecked}
             groupName={groupName}
             update={(value) => update(value)}

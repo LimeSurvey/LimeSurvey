@@ -5,16 +5,22 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions;
 use CDbCommand;
 use Exception;
 use InvalidArgumentException;
+use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{ArrayNumbersProcessor,
+    ArrayTextProcessor,
     MultipleChoiceProcessor,
+    MultipleNumericalProcessor,
+    NumericalProcessor,
+    ResponseAggregateBatch,
     SingleOptionMultipleChartsProcessor,
     TextProcessor,
     RankingProcessor,
     SingleOptionProcessor,
     DualScaleProcessor};
 use Question;
+use QuestionType;
 use Yii;
 
 class QuestionStatistics implements StatisticsChartInterface
@@ -27,28 +33,45 @@ class QuestionStatistics implements StatisticsChartInterface
 
     private $filters = null;
 
+    /** @var int Zero-based page index, used when a page size is set */
+    private int $page = 0;
+
+    /** @var int|null Charts per page; null disables pagination */
+    private ?int $pageSize = null;
+
+    /** @var array|null Pagination details of the last run, null when unpaginated */
+    private ?array $paginationMeta = null;
+
+    /** @var array<string, string>|null Cached type code -> human-readable description map */
+    private ?array $typeDescriptions = null;
+
+    /** @var array<int, string[]> Question id -> its response-table column fieldnames */
+    private array $questionFields = [];
+
+    /** @var \Survey|null Survey model injected by the service to avoid a second fetch */
+    private ?\Survey $survey = null;
+
     public function __construct()
     {
         $this->factories = [
             Question::QT_M_MULTIPLE_CHOICE => fn() => new MultipleChoiceProcessor(),
-//            Question::QT_N_NUMERICAL => fn() => new MultipleChoiceProcessor(),
+            Question::QT_N_NUMERICAL => fn() => new NumericalProcessor(),
             Question::QT_COLON_ARRAY_NUMBERS => fn() => new ArrayNumbersProcessor(),
             Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => fn() => new MultipleChoiceProcessor(),
             Question::QT_T_LONG_FREE_TEXT => fn() => new TextProcessor(),
             Question::QT_S_SHORT_FREE_TEXT => fn() => new TextProcessor(),
+            Question::QT_U_HUGE_FREE_TEXT => fn() => new TextProcessor(),
+            Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => new MultipleChoiceProcessor(),
             Question::QT_R_RANKING => fn() => new RankingProcessor(),
             Question::QT_1_ARRAY_DUAL => fn() => new DualScaleProcessor(),
 
             // No statistics for these types of questions
-            Question::QT_K_MULTIPLE_NUMERICAL => fn() => null,
+            Question::QT_K_MULTIPLE_NUMERICAL => fn() => new MultipleNumericalProcessor(),
             Question::QT_ASTERISK_EQUATION => fn() => null,
             Question::QT_D_DATE => fn() => null,
             Question::QT_VERTICAL_FILE_UPLOAD => fn() => null,
-            Question::QT_U_HUGE_FREE_TEXT => fn() => null,
-            Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => null,
-            Question::QT_SEMICOLON_ARRAY_TEXT => fn() => null,
+            Question::QT_SEMICOLON_ARRAY_TEXT => fn() => new ArrayTextProcessor(),
             Question::QT_X_TEXT_DISPLAY => fn() => null,
-            Question::QT_O_LIST_WITH_COMMENT => fn() => null,
 
             // Single option with multiple graphs for each subquestion
             Question::QT_A_ARRAY_5_POINT => fn() => new SingleOptionMultipleChartsProcessor(),
@@ -64,6 +87,9 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_5_POINT_CHOICE => fn() => new SingleOptionProcessor(),
             Question::QT_L_LIST => fn() => new SingleOptionProcessor(),
             Question::QT_EXCLAMATION_LIST_DROPDOWN => fn() => new SingleOptionProcessor(),
+            // List with comment: chart the list answers (plus a comment count);
+            // the comment texts are shown via the comments view.
+            Question::QT_O_LIST_WITH_COMMENT => fn() => new SingleOptionProcessor(),
 
             'default' => fn() => null,
         ];
@@ -77,7 +103,14 @@ class QuestionStatistics implements StatisticsChartInterface
 
         $survey = $this->fetchSurveyMetadata();
         $surveyQuestions = $survey['questions'];
+        $this->questionFields = $this->buildQuestionFields();
 
+        $batch = new ResponseAggregateBatch($surveyId, $this->filters);
+
+        // Pair each chart-producing question with its processor; types without
+        // a processor (equations, dates, text display, ...) produce no chart
+        // and never occupy a page slot.
+        $eligible = [];
         foreach ($surveyQuestions as $question) {
             $type = $question['type'];
             if (empty($this->factories[$type])) {
@@ -89,7 +122,20 @@ class QuestionStatistics implements StatisticsChartInterface
                 continue;
             }
 
-            $this->output[] = $this->handleFactory($factory, $survey, $question);
+            $eligible[] = [$factory, $question];
+        }
+
+        $eligible = $this->paginate($eligible);
+
+        $jobs = [];
+        foreach ($eligible as [$factory, $question]) {
+            $jobs[] = $this->planFactory($factory, $batch, $survey, $question);
+        }
+
+        $batch->execute();
+
+        foreach ($jobs as [$plans, $question]) {
+            $this->output[] = $this->resolvePlans($plans, $question);
         }
 
         return $this->output;
@@ -100,32 +146,235 @@ class QuestionStatistics implements StatisticsChartInterface
         $this->filters = $filters;
     }
 
-    private function handleFactory($factory, $survey, $question)
+    public function setSurveyModel(\Survey $survey): void
     {
+        $this->survey = $survey;
+    }
+
+    /**
+     * Limit the run to one page of chart-producing questions.
+     *
+     * @param int $page Zero-based page index
+     * @param int $pageSize Charts per page
+     */
+    public function setPagination(int $page, int $pageSize): void
+    {
+        if ($page < 0 || $pageSize < 1) {
+            throw new InvalidArgumentException('Invalid pagination parameters');
+        }
+        $this->page = $page;
+        $this->pageSize = $pageSize;
+    }
+
+    /**
+     * Pagination details of the last run, null when pagination was not set.
+     */
+    public function getPaginationMeta(): ?array
+    {
+        return $this->paginationMeta;
+    }
+
+    /**
+     * Slice the eligible [factory, question] pairs to the configured page and
+     * record the pagination meta.
+     */
+    private function paginate(array $eligible): array
+    {
+        $this->paginationMeta = null;
+        if ($this->pageSize === null) {
+            return $eligible;
+        }
+
+        $total = count($eligible);
+        $offset = $this->page * $this->pageSize;
+        $pageItems = array_slice($eligible, $offset, $this->pageSize);
+        $this->paginationMeta = [
+            'page' => $this->page,
+            'pageSize' => $this->pageSize,
+            'total' => $total,
+            'hasMore' => $offset + count($pageItems) < $total,
+        ];
+
+        return $pageItems;
+    }
+
+    /**
+     * Configure the processor and let it plan its charts against the batch.
+     *
+     * @return array{0: array, 1: array} [chart plan(s), question data]
+     */
+    private function planFactory($factory, ResponseAggregateBatch $batch, $survey, $question): array
+    {
+        $factory->setBatch($batch);
         $factory->setQuestion($question);
         $answers = $survey['answers'][$question['qid']] ?? [];
         if (!empty($answers)) {
             $factory->setAnswers($answers);
         }
 
-        if (!empty($this->filters) && $this->filters->count() > 0) {
-            foreach ($this->filters->getFilters() as $key => $value) {
-                if ($value !== null) {
-                    $method = 'set' . ucfirst($key);
-                    if (method_exists($factory, $method)) {
-                        $factory->$method($value);
-                    }
-                }
-            }
-        }
-
         try {
-            $output = $factory->process($question);
+            $plans = $factory->process();
         } catch (Exception $e) {
             throw new InvalidArgumentException('There was an error processing question: ' . $question['type'] . ' ' . $question['qid']);
         }
 
-        return $output;
+        return [$plans, $factory->getQuestion()];
+    }
+
+    /**
+     * Resolve one plan or a list of plans into StatisticsChartDTO(s).
+     *
+     * @param array $plans Single chart plan (has 'title') or list of plans
+     * @param array $question Question data for the chart meta
+     * @return StatisticsChartDTO|StatisticsChartDTO[]
+     */
+    private function resolvePlans(array $plans, array $question)
+    {
+        if (isset($plans['title'])) {
+            $dto = $this->resolvePlan($plans, $question);
+            $this->trimMeta($dto);
+            return $dto;
+        }
+
+        $dtos = array_map(fn($plan) => $this->resolvePlan($plan, $question), $plans);
+        $this->trimMeta($dtos);
+        return $dtos;
+    }
+
+    /**
+     * Materialize a chart plan: resolve every deferred value against the
+     * executed batch and compute the total.
+     */
+    private function resolvePlan(array $plan, array $question): StatisticsChartDTO
+    {
+        $data = [];
+        $total = 0;
+        foreach ($plan['data'] as $item) {
+            if (isset($item['value']) && is_callable($item['value'])) {
+                $item['value'] = (int)$item['value']();
+            }
+            // Resolve an optional deferred per-row breakdown (e.g. ranking's
+            // per-position counts) the same way as the main value.
+            if (!empty($item['ranks']) && is_array($item['ranks'])) {
+                foreach ($item['ranks'] as $i => $rankRow) {
+                    if (isset($rankRow['value']) && is_callable($rankRow['value'])) {
+                        $item['ranks'][$i]['value'] = (int)$rankRow['value']();
+                    }
+                }
+            }
+            // Deferred stats block (numerical input); dropped when null.
+            if (isset($item['stats']) && is_callable($item['stats'])) {
+                $stats = $item['stats']();
+                if ($stats === null) {
+                    unset($item['stats']);
+                } else {
+                    $item['stats'] = $stats;
+                }
+            }
+            // Resolve a deferred stacked breakdown (array-type segments); when
+            // the row has no own value, its total is the sum of its segments.
+            if (!empty($item['segments']) && is_array($item['segments'])) {
+                $segmentsTotal = 0;
+                foreach ($item['segments'] as $i => $segment) {
+                    if (isset($segment['value']) && is_callable($segment['value'])) {
+                        $item['segments'][$i]['value'] = $this->toNumber($segment['value']());
+                    }
+                    // Optional deferred per-segment stats (array numbers:
+                    // mean/median/min/max for the tooltip); dropped when the
+                    // segment has no answers.
+                    if (isset($segment['stats']) && is_callable($segment['stats'])) {
+                        $stats = $segment['stats']();
+                        if ($stats === null) {
+                            unset($item['segments'][$i]['stats']);
+                        } else {
+                            $item['segments'][$i]['stats'] = $stats;
+                        }
+                    }
+                    $segmentsTotal += $this->toNumber($item['segments'][$i]['value']);
+                }
+                // Segment share of its row; the client renders these as-is and
+                // never re-derives sums or percentages.
+                foreach (array_keys($item['segments']) as $i) {
+                    $value = $this->toNumber($item['segments'][$i]['value']);
+                    $item['segments'][$i]['percentage'] = $segmentsTotal > 0
+                        ? round($value / $segmentsTotal * 100, 1)
+                        : 0;
+                }
+                if (!isset($item['value']) || !is_numeric($item['value'])) {
+                    $item['value'] = $segmentsTotal;
+                }
+            }
+            $total += is_numeric($item['value'] ?? null) ? $item['value'] : 0;
+            $data[] = $item;
+        }
+
+        if (array_key_exists('total', $plan)) {
+            $total = is_callable($plan['total']) ? (int)($plan['total'])() : (int)$plan['total'];
+        }
+
+        return new StatisticsChartDTO(
+            $plan['title'],
+            $plan['legend'],
+            $data,
+            $total,
+            ['question' => $question]
+        );
+    }
+
+    /**
+     * Normalise a (possibly numeric-string) value to an int or float,
+     * preserving fractional precision instead of truncating means to whole
+     * numbers. Non-numeric values become 0.
+     *
+     * @param mixed $value
+     * @return int|float
+     */
+    private function toNumber($value)
+    {
+        return is_numeric($value) ? $value + 0 : 0;
+    }
+
+    /**
+     * @param StatisticsChartDTO|StatisticsChartDTO[] $output
+     */
+    private function trimMeta($output): void
+    {
+        $dtos = is_array($output) ? $output : [$output];
+        foreach ($dtos as $dto) {
+            if (!$dto instanceof StatisticsChartDTO) {
+                continue;
+            }
+            $meta = $dto->getMeta();
+            $question = $meta['question'] ?? null;
+            if (!is_array($question)) {
+                continue;
+            }
+            $meta['question'] = [
+                'qid' => $question['qid'] ?? null,
+                'gid' => $question['gid'] ?? null,
+                'code' => $question['title'] ?? null,
+                'type' => $question['type'] ?? null,
+                // Human-readable question type description (e.g. "List (Radio)").
+                'typeLabel' => QuestionType::modelsAttributes($this->language)[$question['type']]['description'] ?? $question['type'] ?? null,
+                // Theme code (e.g. "image_select-listradio") used to resolve the
+                // specific theme display name and image handling on the client.
+                'themeName' => $question['question_theme_name'] ?? null,
+                'help' => $question['help'] ?? null,
+                // Response-table columns of this question; the client passes
+                // them as `fields` to survey-responses so the comments/answers
+                // views fetch only this question's columns.
+                'fields' => $this->questionFields[(int) ($question['qid'] ?? 0)] ?? [],
+            ];
+            // Dual-scale column headers by scale id, same source and defaults
+            // as the chart's per-scale titles (DualScaleProcessor).
+            if (($question['type'] ?? null) === Question::QT_1_ARRAY_DUAL) {
+                $meta['question']['scaleHeaders'] = [
+                    flattenText($question['attributes']['dualscale_headerA'] ?? 'Scale A', false, true),
+                    flattenText($question['attributes']['dualscale_headerB'] ?? 'Scale B', false, true),
+                ];
+            }
+            $dto->setMeta($meta);
+        }
     }
 
     private function buildBaseQuery(): CDbCommand
@@ -133,27 +382,31 @@ class QuestionStatistics implements StatisticsChartInterface
         $select = [
             'q.qid', 'q.sid', 'q.gid', 'q.type', 'q.title',
             'q.parent_qid', 'q.scale_id', 'q.question_order', 'q.other',
-            'ql.question as question_text',
+            'q.question_theme_name',
+            'ql.question as question_text', 'ql.help as help_text',
             'a.aid', 'a.qid as answer_qid', 'a.code', 'a.sortorder',
             'a.scale_id as answer_scale_id',
             'al.answer',
             'qa.attribute', 'qa.value'
         ];
 
+        // Charts follow the survey structure: question groups in their survey
+        // order, questions in their group order. Paginated pages therefore
+        // load group by group.
         $command = Yii::app()->db->createCommand()
             ->select($select)
             ->from('{{questions}} q')
-            ->leftJoin('{{question_l10ns}} ql', "q.qid = ql.qid AND ql.language = :language1")
+            ->leftJoin('{{groups}} g', 'q.gid = g.gid')
+            ->leftJoin('{{question_l10ns}} ql', 'q.qid = ql.qid AND ql.language = :language')
             ->leftJoin('{{answers}} a', 'q.qid = a.qid')
-            ->leftJoin('{{answer_l10ns}} al', "a.aid = al.aid AND al.language = :language2")
+            ->leftJoin('{{answer_l10ns}} al', 'a.aid = al.aid AND al.language = :language')
             ->leftJoin('{{question_attributes}} qa', 'q.qid = qa.qid')
-            ->where("q.sid = :sid")
-            ->order('q.parent_qid ASC, q.scale_id ASC, q.question_order ASC, q.title ASC, a.sortorder ASC, a.code ASC');
+            ->where('q.sid = :sid')
+            ->order('q.parent_qid ASC, g.group_order ASC, q.scale_id ASC, q.question_order ASC, q.title ASC, a.sortorder ASC, a.code ASC');
 
         $command->params = [
-            ':language1' => $this->language,
-            ':language2' => $this->language,
-            ':sid' => $this->surveyId
+            ':sid' => $this->surveyId,
+            ':language' => $this->language,
         ];
 
         return $command;
@@ -174,7 +427,9 @@ class QuestionStatistics implements StatisticsChartInterface
                     $questions[$qid] = [
                         'qid' => $qid, 'sid' => $row['sid'], 'gid' => $row['gid'],
                         'type' => $row['type'], 'title' => $row['title'],
-                        'question' => flattenText($row['question_text']), 'other' => $row['other'],
+                        'question' => flattenText($row['question_text'], false, true),
+                        'help' => flattenText($row['help_text'], false, true), 'other' => $row['other'],
+                        'question_theme_name' => $row['question_theme_name'],
                         'subQuestions' => [], 'attributes' => [],
                     ];
                 }
@@ -182,14 +437,14 @@ class QuestionStatistics implements StatisticsChartInterface
                 if (empty($questions[$row['parent_qid']]['subQuestions'][$qid])) {
                     $questions[$row['parent_qid']]['subQuestions'][$qid] = [
                         'qid' => $qid, 'gid' => $row['gid'],
-                        'title' => $row['title'], 'question' => flattenText($row['question_text']),
+                        'title' => $row['title'], 'question' => flattenText($row['question_text'], false, true),
                         'scale_id' => $row['scale_id'] ?? 0, 'question_order' => $row['question_order']
                     ];
                 }
             }
             if (!empty($row['aid'])) {
                 $answers[$row['answer_qid']][$row['code']] = [
-                    'aid' => $row['aid'], 'code' => $row['code'], 'answer' => flattenText($row['answer']),
+                    'aid' => $row['aid'], 'code' => $row['code'], 'answer' => flattenText($row['answer'], false, true),
                     'sortorder' => $row['sortorder'], 'scale_id' => $row['answer_scale_id']
                 ];
             }
@@ -199,5 +454,32 @@ class QuestionStatistics implements StatisticsChartInterface
         }
 
         return compact('questions', 'answers');
+    }
+
+    /**
+     * Map every question id to its response-table column fieldnames (e.g.
+     * Q12, Q12_S34, Q12_Ccomment). These are the columns the client passes as
+     * `fields` to the survey-responses endpoint to fetch only that question's
+     * answers. Built once per run from the authoritative survey field map.
+     *
+     * @return array<int, string[]>
+     */
+    private function buildQuestionFields(): array
+    {
+        $survey = $this->survey ?? \Survey::model()->findByPk($this->surveyId);
+        if ($survey === null) {
+            return [];
+        }
+
+        $fieldMap = createFieldMap($survey, 'full', false, false, $this->language);
+
+        $byQid = [];
+        foreach ($fieldMap as $fieldname => $item) {
+            if (!empty($item['qid'])) {
+                $byQid[(int) $item['qid']][] = $fieldname;
+            }
+        }
+
+        return $byQid;
     }
 }

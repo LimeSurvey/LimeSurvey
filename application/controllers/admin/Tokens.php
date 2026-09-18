@@ -159,8 +159,8 @@ class Tokens extends SurveyCommonAction
         }
 
         // Set number of page
-        if (isset($_POST['pageSizeTokenView'])) {
-            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSizeTokenView']);
+        if (isset($_POST['pageSize'])) {
+            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSize']);
         }
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', $aData, true, false);
@@ -367,7 +367,7 @@ class Tokens extends SurveyCommonAction
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
         if (empty($aTokenIds) && Yii::app()->getRequest()->getPost('selectAll')) {
-            $aTokenIds = $this->getFilteredTokenIds((int) $iSid);
+            $aTokenIds = $this->removeSelectAllExcludedIds($this->getFilteredTokenIds((int) $iSid));
         }
         $deletedTokenCount = 0;
         foreach (array_chunk($aTokenIds, 1000) as $chunk) {
@@ -429,6 +429,19 @@ class Tokens extends SurveyCommonAction
         return $model->getCommandBuilder()
             ->createFindCommand($model->tableSchema, $criteria)
             ->queryColumn();
+    }
+
+    private function removeSelectAllExcludedIds(array $tokenIds): array
+    {
+        $excludedIds = json_decode(Yii::app()->request->getPost('excludedItems', '[]'), true);
+        if (!is_array($excludedIds) || empty($excludedIds)) {
+            return $tokenIds;
+        }
+
+        $excludedIds = array_flip(array_map('strval', $excludedIds));
+        return array_values(array_filter($tokenIds, function ($tokenId) use ($excludedIds) {
+            return !isset($excludedIds[(string) $tokenId]);
+        }));
     }
 
     /**
@@ -538,8 +551,8 @@ class Tokens extends SurveyCommonAction
         $aData['model'] = $model;
 
         // Set number of page
-        if (isset($_POST['pageSizeTokenView'])) {
-            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSizeTokenView']);
+        if (isset($_POST['pageSize'])) {
+            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSize']);
         }
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', $aData, true, false);
@@ -561,7 +574,7 @@ class Tokens extends SurveyCommonAction
             // CHECK TO SEE IF A Survey participant list EXISTS FOR THIS SURVEY
             if (tableExists('{{tokens_' . $iSurveyId . '}}')) {
                 if (empty($aTokenIds) && Yii::app()->request->getPost('selectAll')) {
-                    $aTokenIds = $this->getFilteredTokenIds((int) $iSurveyId);
+                    $aTokenIds = $this->removeSelectAllExcludedIds($this->getFilteredTokenIds((int) $iSurveyId));
                 }
                 $diContainer = \LimeSurvey\DI::getContainer();
                 $attributeService = $diContainer->get(
@@ -1850,11 +1863,11 @@ class Tokens extends SurveyCommonAction
                         'message' => array(
                             'title' => gT("Warning"),
                             'message' => gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
-                                . "<br/>&nbsp;<ul class='list-unstyled'><li>" . gT("having a valid email address") . "</li>"
+                                . "<p><ul class='d-inline-block text-start mx-auto'><li>" . gT("having a valid email address") . "</li>"
                                 . "<li>" . gT("not having been sent an invitation already") . "</li>"
                                 . "<li>" . gT("not having already completed the survey") . "</li>"
                                 . "<li>" . gT("having an access code") . "</li>"
-                                . "<li>" . gT("having at least one use left") . "</li></ul>"
+                                . "<li>" . gT("having at least one use left") . "</li></ul></p>"
                                 . '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel " role="button">' . gT("Cancel") . '</a></p>'
                         )
                     ),
@@ -2391,7 +2404,7 @@ class Tokens extends SurveyCommonAction
                                     $sSeparator = ',';
                                 }
                         }
-                        $aFirstLine = str_getcsv((string) $buffer, $sSeparator, '"');
+                        $aFirstLine = str_getcsv((string) $buffer, $sSeparator, '"', "\\");
                         $aFirstLine = array_map('trim', $aFirstLine);
                         $aIgnoredColumns = array();
                         // Now check the first line for invalid fields
@@ -2433,7 +2446,7 @@ class Tokens extends SurveyCommonAction
                             }
                         }
                     } else {
-                        $line = str_getcsv($buffer, $sSeparator, '"');
+                        $line = str_getcsv($buffer, $sSeparator, '"', "\\");
 
                         if (count($aFirstLine) != count($line)) {
                             $aInvalidFormatList[] = sprintf(gT("Line %s"), $iRecordCount);
@@ -3279,7 +3292,9 @@ class Tokens extends SurveyCommonAction
         $aTokenIds = $aTokenIds === false ? Yii::app()->request->getQuery('tokenids', false) : $aTokenIds;
 
         if (!empty($aTokenIds)) {
-            $aTokenIds = explode('|', (string) $aTokenIds);
+            // The id list may be delimited with '|' (legacy massive-action widget and the
+            // invite/remind confirmation form) or ',' (floating actions widget), so accept both.
+            $aTokenIds = preg_split('/[|,]/', (string) $aTokenIds);
             $aTokenIds = array_filter($aTokenIds);
             $aTokenIds = array_map('sanitize_int', $aTokenIds);
         }
