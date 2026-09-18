@@ -219,7 +219,13 @@ class EndpointFactory
     /**
      * Get auth bearer token.
      *
-     * Attempts to read bearer token from authorisation header.
+     * Attempts to read bearer token from authorisation header. Falls back to
+     * $_SERVER['HTTP_AUTHORIZATION'] / $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
+     * since some hosts (e.g. IONOS shared hosting running PHP-FPM behind
+     * Apache) only expose the Authorization header there, not via
+     * getallheaders(), because PHP's native getallheaders() implementation
+     * (used whenever it exists, bypassing the userland polyfill) does not
+     * check REDIRECT_HTTP_AUTHORIZATION.
      *
      * @return string|null
      */
@@ -229,12 +235,14 @@ class EndpointFactory
         // all keys. Some servers or proxies (e.g. HTTP/2) send them lowercased.
         $headers = array_change_key_case(getAllHeaders(), CASE_LOWER);
 
+        $authorization = $headers['authorization']
+            ?? $_SERVER['HTTP_AUTHORIZATION']
+            ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
+            ?? null;
+
         $token = null;
-        if (
-            isset($headers['authorization'])
-            && strpos($headers['authorization'], 'Bearer ') === 0
-        ) {
-            $token = substr($headers['authorization'], 7);
+        if ($authorization !== null && strpos($authorization, 'Bearer ') === 0) {
+            $token = substr($authorization, 7);
         }
 
         return $token;

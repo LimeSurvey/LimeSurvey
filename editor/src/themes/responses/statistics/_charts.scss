@@ -481,7 +481,6 @@
       display: none;
     }
 
-    .responses-statistics-pie-label-id,
     .responses-statistics-pie-label-metric {
       fill: $g-700;
       font-size: $font-size-xs;
@@ -524,6 +523,11 @@
       }
     }
   }
+}
+
+// Also used by the Overview page's Completed/Incomplete chart, so keep it unscoped.
+.responses-statistics-pie-chart {
+  overflow-x: auto;
 }
 
 #statistics-value-type label {
