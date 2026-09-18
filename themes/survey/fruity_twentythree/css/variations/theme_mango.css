@@ -12817,7 +12817,7 @@ h1,
 
 h2,
 .h2 {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -12830,7 +12830,7 @@ h3,
 }
 
 label {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -12990,7 +12990,7 @@ a:hover {
 }
 
 .ls-answers label, .answer-item label, .control-label {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -13428,7 +13428,7 @@ table > tbody > tr > td.ddprefix {
 }
 
 .ls-answers .ls-heading th, .ls-answers th {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -14996,7 +14996,7 @@ html, body {
 
 .datasecurity-checkbox-label,
 .datasecurity-checkbox-label a.show-policy {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15031,7 +15031,7 @@ html, body {
   padding-bottom: 10px;
 }
 .form-change-lang .control-label {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15041,7 +15041,7 @@ html, body {
   font-weight: 400;
 }
 .form-change-lang #language-changer-select {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
   cursor: pointer;
@@ -15275,7 +15275,7 @@ body .imageselect-listitem label::after {
   border-radius: 2px;
   margin-bottom: 10px;
   padding: 6px 20px 6px 20px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15383,7 +15383,7 @@ body .imageselect-listitem label::after {
   margin-block-end: 0;
 }
 .numeric-multi .dynamic-total {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15427,7 +15427,7 @@ body .imageselect-listitem label::after {
 }
 
 .dropdown-menu .dropdown-item {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }

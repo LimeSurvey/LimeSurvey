@@ -2,10 +2,13 @@
 #sidebar {
     width : 100%;
     .questiongroup-list-group > li {
-         background: linear-gradient(90deg, $active-green 0%, $active-green 5px, $g-200 5px, $g-200 100%); 
+         background: $g-200;
          padding: 0;
-         &.activated > div a:first-of-type {
-             font-weight : $font-weight-500;
+         &.activated {
+             background: linear-gradient(90deg, $active-green 0%, $active-green 5px, $g-200 5px, $g-200 100%);
+             > div a:first-of-type {
+                 font-weight : $font-weight-500;
+             }
          }
     }
 
