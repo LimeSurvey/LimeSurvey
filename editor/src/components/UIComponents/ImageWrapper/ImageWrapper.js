@@ -68,7 +68,12 @@ export const ImageWrapper = ({
           cropped when it is taller than the image, while the image itself
           is never stretched/cropped and always keeps its own ratio.
         */}
-        <div className={classNames('image-background-stack', backgroundInnerClassName)}>
+        <div
+          className={classNames(
+            'image-background-stack',
+            backgroundInnerClassName
+          )}
+        >
           <img
             className={classNames(
               'image-background-stack-item align-self-start',
@@ -82,7 +87,10 @@ export const ImageWrapper = ({
 
           {/* Content overlay */}
           <div
-            className={classNames('image-background-stack-item', overlayClassName)}
+            className={classNames(
+              'image-background-stack-item',
+              overlayClassName
+            )}
           >
             {children}
           </div>
