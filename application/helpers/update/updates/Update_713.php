@@ -31,5 +31,20 @@ class Update_713 extends DatabaseUpdateBase
         }
         /* Set global one to B (basic) if it's not hardened (only if I), didn't update any response table */
         $this->db->createCommand()->update("{{surveys_groupsettings}}", ["encryption_method" => "B"], "gsid = 0 AND (encryption_method IS NULL OR encryption_method <> 'H')");
+
+        /* Create the duplicatefinder in participants for checking duplicate */
+        $participantsTable = $this->db->schema->getTable('{{participants}}', true);
+        if (!isset($participantsTable->columns['duplicatefinder'])) {
+            addColumn('{{participants}}', 'duplicatefinder', "string(64) NOT NULL DEFAULT ''");
+        } else {
+            alterColumn('{{participants}}', 'duplicatefinder', "string(64) NOT NULL DEFAULT ''");
+        }
+        /* Add the index , do not break if it already exist */
+        try {
+            setTransactionBookmark();
+            $this->db->createCommand()->createIndex('{{participants_duplicatefinder}}', '{{participants}}', ['duplicatefinder'], false);
+        } catch (\Exception $e) {
+            rollBackToTransactionBookmark();
+        }
     }
 }
