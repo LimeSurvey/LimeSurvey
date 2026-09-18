@@ -1068,7 +1068,9 @@ class ParticipantsAction extends SurveyCommonAction
                                 continue;
                             }
                             foreach ($writearray as $attribute => $value) {
-                                $existingParticipant->$attribute = $value;
+                                if (in_array($attribute, $allowedfieldnames) {
+                                    $existingParticipant->$attribute = $value;
+                                }
                             }
                             $existingParticipant->encryptSave();
                             //Although this person already exists, we want to update the mapped attribute values
