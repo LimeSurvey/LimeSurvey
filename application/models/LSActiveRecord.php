@@ -538,5 +538,6 @@ class LSActiveRecord extends CActiveRecord
         if (in_array($attributeName, $encryptedAttributes)) {
             return ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
         }
+        return "";
     }
 }
