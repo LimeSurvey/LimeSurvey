@@ -57,7 +57,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" id='label-CPDB_duplicatefinder_bits' for='CPDB_duplicatefinder_bits'>
-                    <?php eT('Encryption method for Central participant database:'); ?>
+                    <?php eT('Duplicate index size:'); ?>
                 </label>
                 <div>
                     <?php echo CHTML::dropDownList(
