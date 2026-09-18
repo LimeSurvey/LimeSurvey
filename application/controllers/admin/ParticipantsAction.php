@@ -1068,7 +1068,7 @@ class ParticipantsAction extends SurveyCommonAction
                                 continue;
                             }
                             foreach ($writearray as $attribute => $value) {
-                                if (in_array($attribute, $allowedfieldnames) {
+                                if (in_array($attribute, $allowedfieldnames)) {
                                     $existingParticipant->$attribute = $value;
                                 }
                             }
