@@ -13,36 +13,13 @@ echo viewHelper::getViewTestTag('pluginManager');
 
 $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']));
 
-?>
-<div class="row mb-3 mt-1">
-    <div class="float-end">
-        <?php /* Disabled for prototype 1.
-            <a
-                href=''
-                class='btn btn-outline-secondary '
-                data-bs-toggle='tooltip'
-                title='<?php eT('Install plugins from the extension shop'); ?>'
-            >
-                <i class='ri-shopping-cart-fill'></i>&nbsp;
-                <?php eT('Browse the shop'); ?>
-            </a>
-             */ ?>
-        <?php foreach ($extraMenus as $menu) : ?>
-            <a href='<?php echo $menu->getHref(); ?>' <?php if ($menu->getOnClick()) :
-                ?> onclick='<?php echo $menu->getOnClick(); ?>' <?php
-                     endif; ?> <?php if ($menu->getTooltip()) :
-    ?> data-bs-toggle='tooltip' data-title='<?php echo $menu->getTooltip(); ?>' <?php
-                     endif; ?> class='btn btn-outline-secondary'>
-                <?php if ($menu->getIconClass()) : ?>
-                    <i class='<?php echo $menu->getIconClass(); ?>'></i>&nbsp;
-                <?php endif; ?>
-                <?php echo $menu->getLabel(); ?>
-            </a>
-        <?php endforeach; ?>
-    </div>
-</div>
-
-<?php
+// Remember which grid page the admin was on, the same way pageSize is
+// remembered, so returning from a plugin's detail page (e.g. via "Close")
+// lands back on that page instead of always resetting to page 1.
+$requestedPage = Yii::app()->request->getParam('page');
+if ($requestedPage !== null) {
+    Yii::app()->user->setState('pluginListPage', intval($requestedPage));
+}
 
 $sort               = new CSort();
 $sort->attributes   = [
@@ -71,6 +48,12 @@ $providerOptions = [
     'sort' => $sort,
     'caseSensitiveSort' => false,
 ];
+// Only set an explicit currentPage when the request didn't already specify
+// one (e.g. a plain page reload); otherwise let CPagination's normal
+// GET-based page navigation behave exactly as before.
+if ($requestedPage === null) {
+    $providerOptions['pagination']['currentPage'] = max(0, intval(Yii::app()->user->getState('pluginListPage', 1)) - 1);
+}
 
 $dataProvider = new CArrayDataProvider($plugins, $providerOptions);
 
@@ -90,9 +73,11 @@ $gridColumns = [
     ],
     [
         'header' => gT('Status'),
-        'type' => 'html',
+        'type' => 'raw',
         'name' => 'status',
-        'value' => '$data->getStatus()'
+        'value' => '$data->getStatus(false, "fs-3")',
+        'headerHtmlOptions' => ['class' => 'text-center'],
+        'htmlOptions' => ['class' => 'text-center'],
     ],
     [
         'header'            => gT('Action'),
