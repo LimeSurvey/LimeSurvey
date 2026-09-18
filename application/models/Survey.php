@@ -147,6 +147,8 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
  * @property string $lastmodified date as SQL datetime (YYYY-MM-DD HH:mm:ss)
+ * @property string[] $welcome_image image path and settings for uploaded image to be isplayed on welcome screen
+ * @property-read array|null $welcomeImageSettings decoded welcome_image json (image_path, image_align, image_brightness, image_radius, image_alt_text, image_styles)
  * @method mixed active()
  */
 class Survey extends LSActiveRecord implements PermissionInterface
@@ -2277,6 +2279,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
         $criteria->addColumnCondition(['type' => $type]);
         return Question::model()->find($criteria);
+    }
+
+    /**
+     * decodes the welcome_image json to be used anywhere necessary
+     * @return array|null
+     */
+    public function getWelcomeImageSettings()
+    {
+        return json_decode_ls($this->welcome_image);
     }
 
     /**

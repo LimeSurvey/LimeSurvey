@@ -10,6 +10,7 @@ use LimeSurvey\Api\Transformer\{
     Formatter\FormatterYnToBool,
     Validator\ValidatorDate,
     Validator\ValidatorEmpty,
+    Validator\ValidatorJson,
     Validator\ValidatorLength,
     Validator\ValidatorNull,
     Validator\ValidatorNumerical,
@@ -120,6 +121,7 @@ class Registry
         $this->setValidator('numerical', new ValidatorNumerical());
         $this->setValidator('pattern', new ValidatorRegex());
         $this->setValidator('date', new ValidatorDate());
+        $this->setValidator('json', new ValidatorJson());
         // Formatters
         $this->setFormatter('dateTimeToJson', new FormatterDateTimeToJson());
         $this->setFormatter('ynToBool', new FormatterYnToBool());

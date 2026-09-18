@@ -1,4 +1,4 @@
-import { getAndGenerateImageStyles } from './getAndGenerateQuestionImageStyles'
+import { getAndGenerateImageStyles } from './getAndGenerateImageStyles.js'
 
 /**
  * Extracts and normalizes image properties from a question's image attribute
@@ -10,8 +10,8 @@ import { getAndGenerateImageStyles } from './getAndGenerateQuestionImageStyles'
  *   - An object with direct image properties
  *
  * @returns {Object} Normalized image object with properties:
- *   - hasQuestionImage {boolean} - Whether an image path exists
- *   - hasQuestionImageAsBackground {boolean} - Whether the image is set as the background for a question
+ *   - hasImage {boolean} - Whether an image path exists
+ *   - hasImageAsBackground {boolean} - Whether the image is set as the background
  *   - imageAlign {string} - Image alignment (defaults to 'left')
  *   - imageBrightness {number} - Image brightness value (defaults to 0)
  *   - imageZoom {number} - Image zoom value (defaults to 1)
@@ -24,7 +24,7 @@ import { getAndGenerateImageStyles } from './getAndGenerateQuestionImageStyles'
  *   - imagePreviewUrl {string} - URL to the image preview (defaults to '')
  *   - imageStyles {Object} - CSS styles object generated from the image properties
  */
-export const getQuestionImageObjectFromImageAttribute = (imageAttribute) => {
+export const getImageObjectFromJsonData = (imageAttribute) => {
   const jsonString = imageAttribute?.[''] || imageAttribute
   let parsedValue = jsonString
 
@@ -48,14 +48,13 @@ export const getQuestionImageObjectFromImageAttribute = (imageAttribute) => {
   const imagePreviewUrl = imagePath
     ? process.env.REACT_APP_SITE_URL + imagePath
     : null
-  const hasQuestionImage = imagePath !== ''
-  const hasQuestionImageAsBackground =
-    hasQuestionImage && imageAlign === 'center'
+  const hasImage = imagePath !== ''
+  const hasImageAsBackground = hasImage && imageAlign === 'center'
 
   // Create the image object with all properties
   const imageObject = {
-    hasQuestionImage,
-    hasQuestionImageAsBackground,
+    hasImage,
+    hasImageAsBackground,
     imageAlign,
     imageBrightness,
     imageZoom,

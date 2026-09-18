@@ -296,7 +296,8 @@ class GeneralSettings
             'bounce_email' => [],
             'gsid' => ['default' => 1],
             'format' => [],
-            'template' => []
+            'template' => [],
+            'welcome_image' => []
         ];
     }
 

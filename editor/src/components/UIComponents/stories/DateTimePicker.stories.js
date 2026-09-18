@@ -1,7 +1,7 @@
 import { DateTimePickerComponent } from '../DateTimePicker/DateTimePicker'
 
 export default {
-  title: 'UIComponents/DateTimePicker',
+  title: 'imageWrapper/DateTimePicker',
   component: DateTimePickerComponent,
 }
 
