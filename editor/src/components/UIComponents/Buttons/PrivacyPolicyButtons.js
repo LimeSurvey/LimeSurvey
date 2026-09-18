@@ -24,7 +24,7 @@ export const PrivacyPolicyButtons = ({
     },
     {
       value: 0,
-      label: t('No'),
+      label: t('Off'),
       Icon: PrivacyMandatoryNoIcon,
       testId: 'no-privacy-btn',
     },
