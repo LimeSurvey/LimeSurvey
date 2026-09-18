@@ -28,6 +28,8 @@ export const generateData = (responses, language, generatedColumns) => {
     data[index].firstName = response.firstName
     data[index].lastName = response.lastName
     data[index].email = response.email
+    data[index].quotaExit = response.quotaExit
+    data[index].quotaExitName = response.quotaExitName
 
     const formatDate = (date) =>
       date ? dayJsHelper(date).format('MM-DD-YYYY HH:mm:ss') : 'N/A'
