@@ -37,7 +37,11 @@ export const ComponentModal = ({
         } text-center ${headerClassname}`}
         closeButton={false}
       >
-        {title && <h2 id={titleId} className="modal-title h5 mb-0">{title}</h2>}
+        {title && (
+          <h2 id={titleId} className="modal-title h5 mb-0">
+            {title}
+          </h2>
+        )}
         <Button
           className="modal-close-button p-0"
           variant="link"
