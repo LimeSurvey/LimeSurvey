@@ -279,7 +279,7 @@ class LSActiveRecord extends CActiveRecord
         } elseif ($sClassName == 'Participant') {
             // participants
             $aTokenAttributes = Participant::getParticipantsEncryptionOptions();
-            if ($aTokenAttributes['enabled'] = 'Y') {
+            if ($aTokenAttributes['enabled'] == 'Y') {
                 foreach ($aTokenAttributes['columns'] as $attribute => $oColumn) {
                     if ($oColumn == 'Y') {
                         $aAttributes[] = $attribute;
