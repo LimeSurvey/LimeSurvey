@@ -221,14 +221,6 @@ class Export extends SurveyCommonAction
                 chr(9) => gT("Tab"),
             );
 
-            if (App()->request->getParam('modal')) {
-                $data['selectedColumns'] = $this->getResponseExportColumns($iSurveyID, array_keys($aFields));
-                $rawFilters = App()->request->getParam('SurveyDynamic', array());
-                $data['responseFilters'] = is_array($rawFilters) ? $rawFilters : array();
-                $this->getController()->renderPartial('/admin/export/exportresults_modal', $data);
-                Yii::app()->end();
-            }
-
             $data['sidemenu']['state'] = false;
 
             $data['topBar']['name'] = 'baseTopbar_view';
@@ -329,26 +321,6 @@ class Export extends SurveyCommonAction
         $resultsService->exportResponses($iSurveyID, $explang, $sExportType, $options, $sFilter);
 
         Yii::app()->end();
-    }
-
-    /**
-     * @param int $iSurveyID
-     * @param array $aAvailableColumns
-     * @return array
-     */
-    private function getResponseExportColumns($iSurveyID, array $aAvailableColumns)
-    {
-        $aFilteredColumns = isset($_SESSION['responses_' . $iSurveyID]['filteredColumns'])
-            ? $_SESSION['responses_' . $iSurveyID]['filteredColumns']
-            : null;
-
-        if (empty($aFilteredColumns)) {
-            return $aAvailableColumns;
-        }
-
-        $filteredColumns = array_values(array_intersect($aAvailableColumns, $aFilteredColumns));
-
-        return $filteredColumns ?: $aAvailableColumns;
     }
 
     /**

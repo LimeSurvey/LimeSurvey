@@ -705,8 +705,8 @@
 }
 
 .export-responses-modal {
+  min-height: 335px;
   padding: 0 23px;
-  min-height: 0;
   overflow-y: auto;
 }
 
@@ -719,7 +719,7 @@
   .modal-content {
     width: 100%;
     max-width: 807px;
-    min-height: min(658px, calc(100vh - 2rem));
+    min-height: min(700px, calc(100vh - 2rem));
     max-height: calc(100vh - 2rem);
     padding: 12px 0 24px;
     border-radius: 4px;
