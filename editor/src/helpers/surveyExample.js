@@ -20,6 +20,7 @@ export const surveyExample = {
   ipAddr: null,
   ipAnonymize: null,
   refUrl: null,
+  saveQuotaExit: null,
   dateCreated: '2023-10-04T10:27:05.000Z',
   publicStatistics: null,
   publicGraphs: null,
