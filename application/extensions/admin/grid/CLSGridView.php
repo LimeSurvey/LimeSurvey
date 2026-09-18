@@ -105,7 +105,7 @@ class CLSGridView extends TbGridView
                             'id'         => $this->getId() . '--pageSize',
                             'class'      => 'changePageSize form-select',
                             'style'      => 'display: inline; width: auto',
-                            'aria-label' => gT('Displaying {start}-{end} of {count} result(s). rows per page'),
+                            'aria-label' => gT('Rows per page'),
                         ]
                     )
                 );
