@@ -80,7 +80,7 @@ class countFunctions
     /**
      * Return the text of user have suretycontent permission, else empty string
      * @param integer $surveyId
-     * @param string $errorText
+     * @param string $string
      * @return string
      */
     private static function setErrorText($surveyId, $string)
