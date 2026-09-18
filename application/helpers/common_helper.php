@@ -2298,7 +2298,7 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
     //do something
     $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sLanguage);
     $fieldmap = [];
-    $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'suffix' => '', 'question' => gT('Total time'), 'title' => 'interviewtime');
+    $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'suffix' => '', 'question' => gT('Total time (in s)'), 'title' => 'interviewtime');
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
             // field for time spent on page
@@ -2869,6 +2869,12 @@ function isCaptchaEnabled($screen, $captchamode = '')
 
 /**
 * Check if a table does exist in the database
+*
+* Uses schema->getTableNames() rather than schema->getTable($sTableName) on purpose:
+* getTableNames() issues a single lightweight "SHOW TABLES" query (cached per schema),
+* while getTable() additionally runs "SHOW FULL COLUMNS" and "SHOW CREATE TABLE" per call
+* to build the full column/constraint metadata, which is unnecessary overhead when all
+* that is needed is an existence check.
 *
 * @param string $sTableName Table name to check for (without dbprefix!))
 * @return boolean True or false if table exists or not
