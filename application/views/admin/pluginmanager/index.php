@@ -16,9 +16,17 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
 // Remember which grid page the admin was on, the same way pageSize is
 // remembered, so returning from a plugin's detail page (e.g. via "Close")
 // lands back on that page instead of always resetting to page 1.
+// Yii omits the "page" param entirely for page 1 (it's the implicit
+// default), so an explicit pager click to page 1 looks identical to a
+// plain page reload unless we also check for the grid's own ajax marker,
+// which is present on every real pager interaction (including to page 1)
+// but absent on a fresh page load.
 $requestedPage = Yii::app()->request->getParam('page');
+$isPluginsGridAjaxRequest = Yii::app()->request->getParam('ajax') === 'plugins-grid';
 if ($requestedPage !== null) {
     Yii::app()->user->setState('pluginListPage', intval($requestedPage));
+} elseif ($isPluginsGridAjaxRequest) {
+    Yii::app()->user->setState('pluginListPage', 1);
 }
 
 $sort               = new CSort();
@@ -48,10 +56,11 @@ $providerOptions = [
     'sort' => $sort,
     'caseSensitiveSort' => false,
 ];
-// Only set an explicit currentPage when the request didn't already specify
-// one (e.g. a plain page reload); otherwise let CPagination's normal
-// GET-based page navigation behave exactly as before.
-if ($requestedPage === null) {
+// Only set an explicit currentPage when this is neither an explicit page
+// request nor a pager click to page 1 (recognized via the ajax marker);
+// otherwise let CPagination's normal GET-based page navigation behave
+// exactly as before.
+if ($requestedPage === null && !$isPluginsGridAjaxRequest) {
     $providerOptions['pagination']['currentPage'] = max(0, intval(Yii::app()->user->getState('pluginListPage', 1)) - 1);
 }
 
