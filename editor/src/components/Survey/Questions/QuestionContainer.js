@@ -12,7 +12,7 @@ export const QuestionContainer = ({ questionImageObject, children }) => (
       'ps-3': questionImageObject.imageAlign === 'right',
     })}
     contentContainerClassName="w-50"
-    overlayClassName="background-image-overlay position-absolute top-0 start-0 end-0 bottom-0 p-3 z-1"
+    overlayClassName="background-image-overlay p-3 z-1"
     imageTestId="question-image"
     backgroundImageTestId="question-background-image"
   >

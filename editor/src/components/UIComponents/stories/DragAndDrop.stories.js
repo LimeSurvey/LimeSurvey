@@ -5,7 +5,7 @@ import { DragIcon } from 'components/icons'
 import { DragAndDrop as DragAndDropComponent } from '../DragAndDrop/DragAndDrop'
 
 export default {
-  title: 'UIComponents/DragAndDrop',
+  title: 'imageWrapper/DragAndDrop',
   component: DragAndDropComponent,
 }
 

@@ -208,8 +208,8 @@ export const SurveyHeader = ({
                 rowClassName="survey-header-row gap-5"
                 imageContainerClassName="welcome-image-container flex-shrink-0"
                 contentContainerClassName="flex-grow-1 min-w-0"
-                overlayClassName="position-relative z-1"
-                backgroundImageClassName="position-absolute top-0 start-0 end-0 bottom-0 w-100 h-100 object-fit-cover"
+                overlayClassName="z-1"
+                backgroundImageClassName="w-100 h-auto d-block"
                 imageTestId="welcome-image"
                 backgroundImageTestId="welcome-background-image"
               >

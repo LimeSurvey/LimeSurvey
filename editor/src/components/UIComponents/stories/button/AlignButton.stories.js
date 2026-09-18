@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AlignButtons as AlignButtonsComponent } from '../../Buttons/AlignButtons'
 
 export default {
-  title: 'UIComponents/Button/AlignButtons',
+  title: 'imageWrapper/Button/AlignButtons',
   component: AlignButtonsComponent,
 }
 

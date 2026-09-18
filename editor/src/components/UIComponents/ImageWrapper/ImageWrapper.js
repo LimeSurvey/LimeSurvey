@@ -24,11 +24,12 @@ import classNames from 'classnames'
  *
  * `imageClassName` styles the <img> in "side-by-side" mode, while
  * `backgroundImageClassName` styles the <img> in "background" mode (it
- * defaults to `imageClassName` for backwards compatibility). These are kept
- * separate because the "background" mode typically needs the image to be
- * absolutely positioned/stretched to cover its container (which requires
- * explicit width/height, e.g. `w-100 h-100`, in addition to the inset
- * classes), while "side-by-side" mode needs a normal, naturally sized image.
+ * defaults to `imageClassName` for backwards compatibility). In "background"
+ * mode the image is rendered at its natural ratio (full width, auto height,
+ * never cropped/stretched) and the overlay is stacked on top of it (both
+ * share the same CSS grid cell via the `image-background-stack` class), so
+ * the container grows to fit whichever of the two is taller instead of
+ * clipping the overlay content to the image's height.
  */
 export const ImageWrapper = ({
   imageObject,
@@ -59,9 +60,20 @@ export const ImageWrapper = ({
       <div
         className={classNames('position-relative overflow-hidden', className)}
       >
-        <div className={backgroundInnerClassName}>
+        {/*
+          The image and the overlay are stacked on top of each other in the
+          same grid cell (instead of the overlay being absolutely positioned
+          over the image). This way the row/container height grows to fit
+          whichever of the two is taller, so the overlay content is never
+          cropped when it is taller than the image, while the image itself
+          is never stretched/cropped and always keeps its own ratio.
+        */}
+        <div className={classNames('image-background-stack', backgroundInnerClassName)}>
           <img
-            className={backgroundImageClassName}
+            className={classNames(
+              'image-background-stack-item align-self-start',
+              backgroundImageClassName
+            )}
             src={imageObject.imagePreviewUrl}
             alt={imageObject.imageAltText || ''}
             style={imageObject.imageStyles}
@@ -69,7 +81,11 @@ export const ImageWrapper = ({
           />
 
           {/* Content overlay */}
-          <div className={overlayClassName}>{children}</div>
+          <div
+            className={classNames('image-background-stack-item', overlayClassName)}
+          >
+            {children}
+          </div>
         </div>
       </div>
     )
