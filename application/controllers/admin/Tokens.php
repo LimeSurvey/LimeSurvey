@@ -223,13 +223,13 @@ class Tokens extends SurveyCommonAction
                 $accounttype    = strtoupper((string) Yii::app()->getConfig('bounceaccounttype'));
                 $hostname       = Yii::app()->getConfig('bounceaccounthost');
                 $username       = Yii::app()->getConfig('bounceaccountuser');
-                $pass           = LSActiveRecord::decryptSingle(Yii::app()->getConfig('bounceaccountpass'));
+                $pass           = Yii::app()->getConfig('bounceaccountpass');
                 $hostencryption = strtolower((string) Yii::app()->getConfig('bounceencryption'));
             } else {
                 $accounttype    = strtoupper((string) $thissurvey['bounceaccounttype']);
                 $hostname       = $thissurvey['bounceaccounthost'];
                 $username       = $thissurvey['bounceaccountuser'];
-                $pass           = LSActiveRecord::decryptSingle($thissurvey['bounceaccountpass']);
+                $pass           = LSActiveRecord::decryptSingle($thissurvey['bounceaccountpass'], 'H');
                 $hostencryption = strtolower((string) $thissurvey['bounceaccountencryption']);
             }
 
@@ -1545,7 +1545,7 @@ class Tokens extends SurveyCommonAction
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $oTokens = Token::model($iSurveyId)->findAll();
         $aTokenencryptionoptions['enabled'] = 'Y';
-
+        $cryptMethod = $oSurvey->oOptions->encryption_method;
         // find default attributes
         $aDefaultAttributes = $oSurvey->getTokenEncryptionOptions();
         // default attributes
@@ -1577,9 +1577,9 @@ class Tokens extends SurveyCommonAction
             $aUpdateData = [];
             foreach ($aEncryptionSettings as $column => $value) {
                 if ($aEncryptionSettingsOld[$column]['encrypted'] == 'Y' && $aEncryptionSettings[$column]['encrypted'] == 'N') {
-                    $aUpdateData[$column] = LSActiveRecord::decryptSingle($token->$column);
+                    $aUpdateData[$column] = LSActiveRecord::decryptSingle($token->$column, $cryptMethod);
                 } elseif ($aEncryptionSettingsOld[$column]['encrypted'] == 'N' && $aEncryptionSettings[$column]['encrypted'] == 'Y') {
-                    $aUpdateData[$column] = LSActiveRecord::encryptSingle($token->$column);
+                    $aUpdateData[$column] = LSActiveRecord::encryptSingle($token->$column, $cryptMethod);
                 }
             }
 
@@ -1897,6 +1897,8 @@ class Tokens extends SurveyCommonAction
         } else {
             $aData['surveyid'] = $iSurveyId;
             $aData['thissurvey'] = getSurveyInfo($iSurveyId); // For tokenbar view
+            $aData['surveyEncryptionmethod'] = $survey->oOptions->encryption_method;
+            $aData['aEncryptedAttributes'] = TokenDynamic::model($iSurveyId)->getAllEncryptedAttributes($iSurveyId, 'Token');
             $aData['sAction'] = App()->createUrl("admin/tokens", array("sa" => "exportdialog", "surveyid" => $iSurveyId));
             $aData['aButtons'] = array(
                 gT('Export participants') => array(
@@ -2034,6 +2036,12 @@ class Tokens extends SurveyCommonAction
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
         $aData['ldap_queries'] = Yii::app()->getConfig('ldap_queries');
+        $surveyEncryptionmethod = $aData['surveyEncryptionmethod'] = $survey->oOptions->encryption_method;
+        $aData['aEncryptedAttributes'] = TokenDynamic::model($iSurveyId)->getAllEncryptedAttributes($iSurveyId, 'Token');
+        /* Filter by core attributes */
+        $aCoreAttributes = ['firstname','lastname','email'];
+        $aCoreEncryptedAttributes = $aData['aCoreEncryptedAttributes'] = array_intersect($aData['aEncryptedAttributes'], $aCoreAttributes);
+        $aData['aCoreNoEncryptedAttributes'] = array_values(array_diff($aCoreAttributes, $aCoreEncryptedAttributes));
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
             [
@@ -2078,8 +2086,11 @@ class Tokens extends SurveyCommonAction
 
             // define $attrlist: list of attributes to read from users' entries
             $attrparams = array(
-                'firstname_attr', 'lastname_attr',
-                'email_attr', 'token_attr', 'language'
+                'firstname_attr',
+                'lastname_attr',
+                'email_attr',
+                'token_attr',
+                'language'
             );
 
             $aTokenAttr = getAttributeFieldNames($iSurveyId);
@@ -2184,8 +2195,33 @@ class Tokens extends SurveyCommonAction
                                 $dupfound = false;
                                 $invalidemail = false;
                                 if ($filterduplicatetoken) {
-                                    $dupquery = "SELECT count(tid) from {{tokens_" . intval($iSurveyId) . "}} where email=:email and firstname=:firstname and lastname=:lastname";
-                                    $dupresult = Yii::app()->db->createCommand($dupquery)->bindParam(":email", $myemail, PDO::PARAM_STR)->bindParam(":firstname", $myfirstname, PDO::PARAM_STR)->bindParam(":lastname", $mylastname, PDO::PARAM_STR)->queryScalar();
+                                    if ($surveyEncryptionmethod != 'H' || count($aCoreEncryptedAttributes) < 3) { // No duplicate count if H and all core attribute are encryoted
+                                        $criteria = new CDbCriteria();
+                                        if (in_array('firstname', $aCoreEncryptedAttributes)) {
+                                            if($surveyEncryptionmethod == 'B') {
+                                                $criteria->compare('firstname', LSActiveRecord::encryptSingle($myfirstname, 'B'));
+                                            }
+                                        } else {
+                                           $criteria->compare('firstname', $myfirstname);
+                                        }
+                                        if (in_array('lastname', $aCoreEncryptedAttributes)) {
+                                            if($surveyEncryptionmethod == 'B') {
+                                                $criteria->compare('lastname', LSActiveRecord::encryptSingle($mylastname, 'B'));
+                                            }
+                                        } else {
+                                           $criteria->compare('lastname', $mylastname);
+                                        }
+                                        if (in_array('email', $aCoreEncryptedAttributes)) {
+                                            if($surveyEncryptionmethod == 'B') {
+                                                $criteria->compare('email', LSActiveRecord::encryptSingle($myemail, 'B'));
+                                            }
+                                        } else {
+                                           $criteria->compare('email', $myemail);
+                                        }
+                                        $dupresult = TokenDynamic::model($iSurveyId)->count($criteria);
+                                    } else {
+                                        $dupresult = 0;
+                                    }
                                     if ($dupresult > 0) {
                                         $dupfound = true;
                                         $duplicatelist[] = $myfirstname . " " . $mylastname . " (" . $myemail . ")";
@@ -2205,32 +2241,25 @@ class Tokens extends SurveyCommonAction
                                 } elseif ($dupfound) {
                                     ++$duplicatecount;
                                 } elseif ($meetminirequirements === true) {
-                                    // No issue, let's import
-                                    $iq = "INSERT INTO {{tokens_" . intval($iSurveyId) . "}} \n"
-                                        . "(firstname, lastname, email, emailstatus, token, language";
-
+                                    $oToken = Token::create($iSurveyId);
+                                    $oToken->scenario = 'allowinvalidemail'; // Data came from LDAP, didn't control
+                                    $oToken->firstname = $myfirstname;
+                                    $oToken->lastname = $mylastname;
+                                    $oToken->email = $myemail;
+                                    $oToken->token = $mytoken;
+                                    $oToken->language = $mylanguage;
                                     foreach ($aTokenAttr as $thisattrfieldname) {
                                         $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
-                                        if (!empty($myattrArray[$attridx])) {
-                                            $iq .= ", " . Yii::app()->db->quoteColumnName($thisattrfieldname);
+                                        if (isset($myattrArray[$attridx])) {
+                                            $oToken->setAttribute($thisattrfieldname, $myattrArray[$attridx]);
                                         }
                                     }
-                                    $iq .= ") \n"
-                                        . "VALUES (" . Yii::app()->db->quoteValue($myfirstname) . ", " . Yii::app()->db->quoteValue($mylastname) . ", " . Yii::app()->db->quoteValue($myemail) . ", 'OK', " . Yii::app()->db->quoteValue($mytoken) . ", " . Yii::app()->db->quoteValue($mylanguage) . "";
-
-                                    foreach ($aTokenAttr as $thisattrfieldname) {
-                                        $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
-                                        if (!empty($myattrArray[$attridx])) {
-                                            $iq .= ", " . Yii::app()->db->quoteValue($myattrArray[$attridx]) . "";
-                                        } // dbquote_all encloses str with quotes
-                                    }
-                                    $iq .= ")";
-                                    $ir = Yii::app()->db->createCommand($iq)->execute();
-                                    if (!$ir) {
+                                    if (!$oToken->encryptSave(true)) {
+                                        /* Keep previous system , but unsure on point here */
                                         $duplicatecount++;
+                                    } else {
+                                        $xz++;
                                     }
-                                    $xz++;
-                                    // or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
                                 }
                             } // End for each entry
                         } // End foreach responseGroup
@@ -2336,6 +2365,7 @@ class Tokens extends SurveyCommonAction
             $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
             $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl('admin/tokens', array('sa' => 'import', 'surveyid' => $iSurveyId)));
 
+            /* Update file */
             $oFile = CUploadedFile::getInstanceByName("the_file");
             $sPath = Yii::app()->getConfig('tempdir');
             $sFileName = $sPath . '/' . randomChars(20);
@@ -2357,6 +2387,12 @@ class Tokens extends SurveyCommonAction
                     $aFilterDuplicateFields = array('firstname', 'lastname', 'email');
                 } else {
                     $aFilterDuplicateFields = Yii::app()->request->getPost('filterduplicatefields');
+                }
+                /* Encryption */
+                $surveyEncryptionmethod = $survey->oOptions->encryption_method;
+                $aEncryptedAttributes = TokenDynamic::model($iSurveyId)->getAllEncryptedAttributes($iSurveyId, 'Token');
+                if ($surveyEncryptionmethod != 'B') { // Remove hardened encrypted attributes
+                    $aFilterDuplicateFields = array_diff($aFilterDuplicateFields, $aEncryptedAttributes);
                 }
                 $sSeparator = Yii::app()->request->getPost('separator');
                 $aMissingAttrFieldName = $aInvalideAttrFieldName = array();
@@ -2462,7 +2498,7 @@ class Tokens extends SurveyCommonAction
                             continue;
                         }
 
-                        if ($bFilterDuplicateToken) {
+                        if ($bFilterDuplicateToken && count($aFilterDuplicateFields) > 0) {
                             $aParams = array();
                             $oCriteria = new CDbCriteria();
                             $oCriteria->condition = "";
@@ -2470,8 +2506,12 @@ class Tokens extends SurveyCommonAction
                             // @todo If a field is encrypted, then the condition value also needs to be encrypted before comparison
                             foreach ($aFilterDuplicateFields as $field) {
                                 if (isset($aWriteArray[$field])) {
-                                    $oCriteria->addCondition("{$field} = :{$field}");
-                                    $aParams[":{$field}"] = $aWriteArray[$field];
+                                    $oCriteria->addCondition("{$field} = :{$field}"); // Do not use compare to allow ''
+                                    if ($aWriteArray[$field] !== '' && in_array($field, $aEncryptedAttributes)) { // We use Basic encrypt method
+                                        $aParams[":{$field}"] = LSActiveRecord::encryptSingle($aWriteArray[$field], 'B');
+                                    } else {
+                                        $aParams[":{$field}"] = $aWriteArray[$field];
+                                    }
                                 }
                             }
                             if (!empty($aParams)) {
@@ -2598,19 +2638,25 @@ class Tokens extends SurveyCommonAction
         $aData['iSurveyId'] = $iSurveyId;
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
+        $aData['surveyEncryptionmethod'] = $survey->oOptions->encryption_method;
         $aTokenTableFields = getTokenFieldsAndNames($iSurveyId);
         unset($aTokenTableFields['sent']);
         unset($aTokenTableFields['remindersent']);
         unset($aTokenTableFields['remindercount']);
         unset($aTokenTableFields['usesleft']);
+        unset($aTokenTableFields['token']); // token are already duplicate forbidden mantis #14334, remove it
         foreach ($aTokenTableFields as $sKey => $sValue) {
             if ($sValue['description'] != $sKey) {
                 $sValue['description'] .= ' - ' . $sKey;
             }
             $aNewTokenTableFields[$sKey] = $sValue['description'];
         }
+        /* Removed crypted field for hardened survey */
+        if ($aData['surveyEncryptionmethod'] == "H") {
+            $aEncryptedAttributes = TokenDynamic::model($iSurveyId)->getAllEncryptedAttributes($iSurveyId, 'Token');
+            $aNewTokenTableFields = array_diff_key($aNewTokenTableFields, array_flip($aEncryptedAttributes));
+        }
         $aData['aTokenTableFields'] = $aNewTokenTableFields;
-
         // Get default character set from global settings
         $thischaracterset = Yii::app()->getConfig('characterset');
         // If no encoding was set yet, use the old "auto" default
@@ -2861,7 +2907,7 @@ class Tokens extends SurveyCommonAction
                 $fieldvalue['bounceaccountencryption'] = Yii::app()->request->getPost('bounceaccountencryption');
                 $fieldvalue['bounceaccountuser'] = Yii::app()->request->getPost('bounceaccountuser');
                 if (Yii::app()->request->getPost('bounceaccountpass') != 'somepassword') {
-                    $fieldvalue['bounceaccountpass'] = LSActiveRecord::encryptSingle(Yii::app()->request->getPost('bounceaccountpass'));
+                    $fieldvalue['bounceaccountpass'] = LSActiveRecord::encryptSingle(Yii::app()->request->getPost('bounceaccountpass'), 'H');
                 }
                 $fieldvalue['bounceaccounttype'] = Yii::app()->request->getPost('bounceaccounttype');
                 $fieldvalue['bounceaccounthost'] = Yii::app()->request->getPost('bounceaccounthost');

@@ -157,6 +157,34 @@ $config['defaulthtmleditormode'] = 'inline';
 // Default is true
 $config['surveyPreview_require_Auth'] = true;
 
+// CPDB_encryption_method
+// Crypt method for the Central participant database. Since LimeSurvey 7.1, you can choose a stronger crypt method.
+// The hardened crypt method disables search and duplicate controls when importing data.
+// Duplicate detection on core encrypted attributes is available using CPDB_duplicatefinder_bits
+// Can be 'B' for basic  (default) or 'H' for hardened
+$config['CPDB_encryption_method'] = 'B';
+
+// CPDB_duplicatefinder_bits
+// Cryptographic index used to detect duplicate participants while keeping the encrypted
+// participant data protected. It allows equality searches without decrypting all records.
+// Number of HMAC bits retained in the cryptographic index used for duplicate detection.
+// A shorter index provides stronger privacy by revealing less information, but increases
+// the probability of collisions and the cost of duplicate detection during large imports.
+// A longer index provides less privacy, but reduces collisions and the number of encrypted
+// values that need to be decrypted and compared.
+// The available values are restricted in the user interface. Use 0 to disable the
+// duplicate detection index, or 64, 96, 128, 192 or 256 bits.
+//
+// This setting is related to the introduction of the "H" encryption method and addresses
+// duplicate detection issues with encrypted participant data: https://bugs.limesurvey.org/view.php?id=20678
+$config['CPDB_duplicatefinder_bits'] = '128';
+
+// CPDB_reencrypt_limit
+// When using reencryptParticipantData or recalculateParticipantDuplicateFinder,
+// number of participant to get at each batch
+// Set to 0 to get all particpant by batch.
+$config['CPDB_reencrypt_limit'] = 10000;
+
 
 // use_one_time_passwords
 // Activate One time passwords
@@ -836,6 +864,10 @@ $config['encryptionpublickey'] = '';
 $config['encryptionsecretkey'] = '';
 $config['encryptionnonce'] = '';
 $config['encryptionsecretboxkey'] = '';
+// Secret key used to generate the cryptographic indexes for duplicate detection.
+// This key is stored in security.php if empty
+// Changing this key invalidates all existing duplicate detection indexes, which must then be rebuilt.
+$config['encryptionduplicateindexkey'] = null;
 
 $config['passwordValidationRules'] = array(
     'min' => 8,

@@ -33,25 +33,28 @@ if (empty($errorinupload)) {
     $infoSummary .= "<li>" . sprintf(gT("%s records met minimum requirements"), $mincriteria) . "</li>";
     $infoSummary .= "<li>" . sprintf(gT("%s new participants were created"), $imported) . "</li>";
     if ($overwritten > 0) {
-        $infoSummary .= "<li>" . sprintf(gT("%s records were duplicate but had attributes updated"), $overwritten) . "</li>";
+        $infoSummary .= "<li>" . sprintf(gT("%s records were updated"), $overwritten) . "</li>";
     }
-    if (count($duplicatelist) || count($invalidemaillist) || count($invalidattribute) || count($aInvalidFormatlist)) {
+    if (count($duplicatelist) || count($nopermissionlist) || count($invalidemaillist) || count($invalidattribute) || count($aInvalidFormatlist)) {
         $warningSummary .= "<div class='warningheader'>" . gT('Warnings') . "</div><ul>";
         if (count($duplicatelist) > 0) {
             $warningSummary .= "<li>" . sprintf(gT("%s were found to be duplicate entries and did not need a new participant to be created."), count($duplicatelist));
-            if ($dupreason == "participant_id") {
-                $warningSummary .= '<br>' . sprintf(gT("They were found to be duplicate using the participant id field"));
-            } else {
-                $warningSummary .= "<br>" . sprintf(gT("They were found to be duplicate using a combination of firstname, lastname and email fields"));
-            }
             $warningSummary .= "<div class='badtokenlist' id='duplicateslist'><ul>";
             foreach ($duplicatelist as $data) {
                 $warningSummary .= "<li>" . $data . "</li>";
             }
             $warningSummary .= "</ul></div></li>";
         }
+        if (count($nopermissionlist) > 0) {
+            $warningSummary .= "<li>" . sprintf(gT("%s valid records but without permission"), count($nopermissionlist));
+            $warningSummary .= "<div class='badtokenlist' id='invalidemaillist'><ul>";
+            foreach ($nopermissionlist as $data) {
+                $warningSummary .= "<li>" . $data . "</li>";
+            }
+            $warningSummary .= "</ul></div></li>";
+        }
         if (count($invalidemaillist) > 0) {
-            $warningSummary .= "<li style='width: 400px'>" . sprintf(gT("%s records with invalid email address removed"), count($invalidemaillist));
+            $warningSummary .= "<li>" . sprintf(gT("%s records with invalid email address removed"), count($invalidemaillist));
             $warningSummary .= "<div class='badtokenlist' id='invalidemaillist'><ul>";
             foreach ($invalidemaillist as $data) {
                 $warningSummary .= "<li>" . $data . "</li>";
@@ -59,7 +62,7 @@ if (empty($errorinupload)) {
             $warningSummary .= "</ul></div></li>";
         }
         if (count($invalidattribute) > 0) {
-            $warningSummary .= "<li style='width: 400px'>" . sprintf(gT("%s records have incomplete or wrong attribute values"), count($invalidattribute));
+            $warningSummary .= "<li>" . sprintf(gT("%s records have incomplete or wrong attribute values"), count($invalidattribute));
             $warningSummary .= "<div class='badtokenlist' id='invalidattributelist' ><ul>";
             foreach ($invalidattribute as $data) {
                 $warningSummary .= "<li>" . $data . "</li>";
@@ -67,7 +70,7 @@ if (empty($errorinupload)) {
             $warningSummary .= "</ul></div></li>";
         }
         if (count($aInvalidFormatlist) > 0) {
-            $warningSummary .= "<li style='width: 400px'>" . sprintf(gT("%s records where the number of fields does not match"), count($aInvalidFormatlist));
+            $warningSummary .= "<li>" . sprintf(gT("%s records where the number of fields does not match"), count($aInvalidFormatlist));
             $warningSummary .= "<div class='badtokenlist' id='invalidattributelist' ><ul>";
             foreach ($aInvalidFormatlist as $data) {
                 $warningSummary .= "<li>" . vsprintf(gT('Line %s: Fields found: %s Expected: %s'), explode(',', (string) $data)) . "</li>";
@@ -85,6 +88,14 @@ if (empty($errorinupload)) {
         $alerts .= $this->widget('ext.AlertWidget.AlertWidget', [
             'text' => $warningSummary,
             'type' => 'warning',
+            'htmlOptions' => ['class' => 'warningheader']
+        ], true);
+    }
+
+    if ($infoSummary !== '') {
+        $alerts .= $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => $infoSummary,
+            'type' => 'secondary',
             'htmlOptions' => ['class' => 'warningheader']
         ], true);
     }
