@@ -184,6 +184,12 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $oAutoLog->entity = 'user';
         $oAutoLog->entityid = $iUserID;
         $oAutoLog->action = 'afterSuccessfulLogin';
+
+        $identity = $this->getEvent()->get('identity');
+        if (!empty($identity->oneTimePasswordActorId)) {
+            $oAutoLog->newvalues = json_encode(['oneTimePasswordActor' => $identity->oneTimePasswordActorId]);
+        }
+
         $oAutoLog->save();
     }
 
