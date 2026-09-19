@@ -1,5 +1,6 @@
 // plugins available slots to inject custom content/logic into
 export const PLUGIN_SLOTS = {
+  APP_ROUTE_GUARD: 'app:route:guard',
   TOP_BAR_RIGHT: 'topbar:right',
   EDITOR_TOP: 'editor:top',
   EDITOR_LAYOUT_EXTRA: 'editor:layout:extra',
