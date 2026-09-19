@@ -41,7 +41,6 @@ class FilterPatcher
         $sort->defaultOrder = "id DESC";
         if (!empty($filterParams['sort'])) {
             $sortParams = array_intersect_key($filterParams['sort'], array_flip($this->sortAllowedKeys));
-
             foreach ($sortParams as $column => $order) {
                 $op = (new SortingHandler());
                 $key = $this->findMapKeyByValue($column, $dataMap);
@@ -49,53 +48,42 @@ class FilterPatcher
                     $sort = $op->execute($key, $order);
                 }
             }
-        }
-
+        }   
         /*
          * http://ls-ce/rest/v1/survey-responses/132241?
-         * filters[0][key]=132241X130X2110&
-         * filters[0][filterMethod]='contain'&
-         * filters[0][value]='Lorem'
+         * filters[0][key]=132241X130X2110& filters[0][filterMethod]='contain'& filters[0][value]='Lorem'
          */
         if (!empty($filterParams['filters'])) {
             foreach ($filterParams['filters'] as $filterParam) {
                 if (!empty(array_diff_key(array_flip($this->filtersRequiredKeys), $filterParam))) {
                     continue;
                 }
-
                 $key = is_string($filterParam['key'])
                     ? $this->findMapKeyByValue($filterParam['key'], $dataMap)
                     : $filterParam['key'];
-
                 // special case since 'completed' is returned in the responses and calculated on the fly,
                 if ($key === 'completed') {
                     $key = 'submitDate';
                 }
-
-                // Validate the resolved key(s) against the survey's real
-                // columns so nested question/subquestion columns are filtered
-                // at query level and unknown keys never reach the SQL.
+                // Validate the resolved key(s) against the survey's real columns so nested question/subquestion
+                // columns are filtered at query level and unknown keys never reach the SQL.
                 if (!$this->isAllowedKey($key, $dataMap, $validColumns)) {
                     continue;
                 }
 
                 foreach ($this->handlers as $handler) {
                     $op = (new $handler());
-
                     if (!$op instanceof HandlerInterface) {
                         throw new \InvalidArgumentException('Handler must implement HandlerInterface.');
                     }
-
                     $filterType = $filterParam['filterMethod'];
                     if ($op->canHandle($filterType)) {
                         $value = $filterParam['value'];
-
                         // check for null values
                         $new_criteria = (new NullConditionHandler())->execute($key, $value);
                         if (empty($new_criteria->condition)) {
                             $new_criteria = $op->execute($key, $value);
                         }
-
                         $criteria->mergeWith($new_criteria);
                     }
                 }
