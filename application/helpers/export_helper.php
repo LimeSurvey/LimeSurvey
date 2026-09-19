@@ -2353,6 +2353,7 @@ function tokensExport($iSurveyID)
     $iInvitationStatus = App()->request->getPost('invitationstatus');
     $iReminderStatus = App()->request->getPost('reminderstatus');
     $sTokenLanguage = App()->request->getPost('tokenlanguage');
+    $bIncludeSurveyLink = (bool) App()->request->getPost('includesurveylink', 0);
 
     $oSurvey = Survey::model()->findByPk($iSurveyID);
     $bIsNotAnonymous = ($oSurvey->anonymized == 'N' && $oSurvey->active == 'Y'); // db table exist (responses_$iSurveyID) ?
@@ -2445,6 +2446,9 @@ function tokensExport($iSurveyID)
             $tokenoutput .= " <" . str_replace(",", " ", (string) $attrfielddescr[$attr_name]['description']) . ">";
         }
     }
+    if ($bIncludeSurveyLink) {
+        $tokenoutput .= ',surveylink';
+    }
     $tokenoutput .= "\n";
     echo $tokenoutput;
     $tokenoutput = "";
@@ -2510,6 +2514,11 @@ function tokensExport($iSurveyID)
             }
             foreach ($attrfieldnames as $attr_name) {
                 $tokenoutput .= '"' . str_replace('"', '""', trim((string) $brow[$attr_name])) . '",';
+            }
+            if ($bIncludeSurveyLink) {
+                $language = !empty($brow['language']) ? $brow['language'] : $oSurvey->language;
+                $surveyLink = $oSurvey->getSurveyUrl($language, ['token' => $brow['token']]);
+                $tokenoutput .= '"' . str_replace('"', '""', $surveyLink) . '",';
             }
             $tokenoutput = substr($tokenoutput, 0, -1); // remove last comma
             $tokenoutput .= "\n";
