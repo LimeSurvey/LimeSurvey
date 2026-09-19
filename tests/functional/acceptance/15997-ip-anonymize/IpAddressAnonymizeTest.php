@@ -109,18 +109,27 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
 
             // New tab with active survey.
             $nextButton = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('ls-button-submit')
                 )
             );
             $nextButton->click();
-            sleep(2);
 
             //now check if ip was anonymized (ipv4, last digit should be 0)
             //get ipadr from table responses_573837 ...
-            $models = \Response::model(self::$surveyId)->findAll();
+            // Poll instead of a fixed sleep: submission is an async AJAX call, and a
+            // hardcoded sleep is prone to firing before the response row is persisted.
+            $response = null;
+            self::$webDriver->wait(15, 250)->until(function () use (&$response) {
+                $models = \Response::model(self::$surveyId)->findAll();
+                if (!empty($models)) {
+                    $response = $models[0];
+                    return true;
+                }
+                return false;
+            });
 
-            $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr === '127.0.0.0'));
+            $this->assertTrue(isset($response->ipaddr) && $response->ipaddr === '127.0.0.0');
         }  catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -209,17 +218,25 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
 
             // New tab with active survey.
             $nextButton = self::$webDriver->wait(20)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('ls-button-submit')
                 )
             );
             $nextButton->click();
 
-            sleep(2);
+            // Poll instead of a fixed sleep: submission is an async AJAX call, and a
+            // hardcoded sleep is prone to firing before the response row is persisted.
+            $response = null;
+            self::$webDriver->wait(15, 250)->until(function () use (&$response) {
+                $models = \Response::model(self::$surveyId)->findAll();
+                if (!empty($models)) {
+                    $response = $models[0];
+                    return true;
+                }
+                return false;
+            });
 
-            $models = \Response::model(self::$surveyId)->findAll();
-
-            $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr === '127.0.0.1'));
+            $this->assertTrue(isset($response->ipaddr) && $response->ipaddr === '127.0.0.1');
         }  catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
