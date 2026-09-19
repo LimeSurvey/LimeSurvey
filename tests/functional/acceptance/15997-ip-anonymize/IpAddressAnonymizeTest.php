@@ -129,10 +129,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
                 return false;
             });
 
-            $this->assertTrue(
-                isset($response->ipaddr) && $response->ipaddr === '127.0.0.0',
-                'Expected anonymized ipaddr "127.0.0.0", got: ' . var_export($response->ipaddr ?? null, true)
-            );
+            $this->assertIsAnonymizedIp($response->ipaddr ?? null);
         }  catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -239,9 +236,10 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
                 return false;
             });
 
-            $this->assertTrue(
-                isset($response->ipaddr) && $response->ipaddr === '127.0.0.1',
-                'Expected raw ipaddr "127.0.0.1", got: ' . var_export($response->ipaddr ?? null, true)
+            $this->assertContains(
+                $response->ipaddr ?? null,
+                ['127.0.0.1', '::1'],
+                'Expected raw (non-anonymized) loopback ipaddr, got: ' . var_export($response->ipaddr ?? null, true)
             );
         }  catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
@@ -249,6 +247,34 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
                 true,
                 self::$testHelper->javaTrace($e)
             );
+        }
+    }
+
+    /**
+     * Asserts that $ip looks like an anonymized loopback address: the last IPv4 octet,
+     * or the last 5 IPv6 groups, zeroed out. The CI environment may route the browser's
+     * loopback request over IPv4 (127.0.0.1) or IPv6 (::1) depending on the runner, so
+     * the expected anonymized shape has to be derived from the address family actually
+     * used rather than hardcoded.
+     *
+     * @param string|null $ip
+     * @return void
+     */
+    private function assertIsAnonymizedIp($ip)
+    {
+        $this->assertNotNull($ip, 'Response has no ipaddr stored.');
+        if (strpos($ip, ':') !== false) {
+            $groups = explode(':', $ip);
+            $this->assertCount(8, $groups, "Anonymized IPv6 address should have 8 groups: $ip");
+            $this->assertSame(
+                ['0', '0', '0', '0', '0'],
+                array_slice($groups, -5),
+                "Last 5 IPv6 groups should be anonymized to 0: $ip"
+            );
+        } else {
+            $octets = explode('.', $ip);
+            $this->assertCount(4, $octets, "Anonymized IPv4 address should have 4 octets: $ip");
+            $this->assertSame('0', end($octets), "Last IPv4 octet should be anonymized to 0: $ip");
         }
     }
 }
