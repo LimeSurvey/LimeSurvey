@@ -129,7 +129,10 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
                 return false;
             });
 
-            $this->assertTrue(isset($response->ipaddr) && $response->ipaddr === '127.0.0.0');
+            $this->assertTrue(
+                isset($response->ipaddr) && $response->ipaddr === '127.0.0.0',
+                'Expected anonymized ipaddr "127.0.0.0", got: ' . var_export($response->ipaddr ?? null, true)
+            );
         }  catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -236,7 +239,10 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
                 return false;
             });
 
-            $this->assertTrue(isset($response->ipaddr) && $response->ipaddr === '127.0.0.1');
+            $this->assertTrue(
+                isset($response->ipaddr) && $response->ipaddr === '127.0.0.1',
+                'Expected raw ipaddr "127.0.0.1", got: ' . var_export($response->ipaddr ?? null, true)
+            );
         }  catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
