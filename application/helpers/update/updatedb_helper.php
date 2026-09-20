@@ -274,6 +274,8 @@ function getDatabaseUpdateLock($bRelease = false, &$sError = null)
         return false;
     }
     if (flock($pLock, LOCK_EX | LOCK_NB)) {
+        // Allow other system users (e.g. web server vs. CLI/cron) to also acquire this lock.
+        @chmod($sLockFile, 0666);
         return true;
     }
     fclose($pLock);
@@ -1701,6 +1703,9 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     unset($attributes['showtokenpolicy']);
     /* Added in 712 update */
     unset($attributes['preselectnoanswer']);
+
+    /* Added in 715 update */
+    unset($attributes['savequotaexit']);
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 

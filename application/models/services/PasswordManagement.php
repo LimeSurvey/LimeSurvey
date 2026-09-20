@@ -253,6 +253,12 @@ class PasswordManagement
                 break;
         }
 
+        if (empty(\Yii::app()->getConfig("siteadminemail"))) {
+            $mailer = new \LimeMailer();
+            $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
+            return $mailer;
+        }
+
         $emailType = "addadminuser";
 
         $mailer = new \LimeMailer();

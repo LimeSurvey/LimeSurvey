@@ -1191,6 +1191,15 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
                 $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate'] . ' H:i:s');
             }
             break;
+        case 'quota_exit':
+            // Try to get quota name
+            if (trim((string) $sValue) !== '') {
+                $quota = Quota::model()->findByAttributes(['sid' => $iSurveyID, 'id' => $sValue]);
+                if ($quota) {
+                    $this_answer = $quota->name;
+                }
+            }
+            break;
     }
     if (isset($this_answer)) {
         return $this_answer . " [$sValue]";
@@ -1655,6 +1664,14 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             $fieldmap["refurl"]['question'] = gT("Referrer URL");
             $fieldmap["refurl"]['group_name'] = "";
         }
+    }
+
+    // Add 'quota_exit' to fieldmap.
+    $fieldmap["quota_exit"] = array("fieldname" => "quota_exit", 'type' => "quota_exit", 'sid' => $surveyid, "gid" => "", "qid" => "", "aid" => "");
+    if ($style == "full") {
+        $fieldmap["quota_exit"]['title'] = "";
+        $fieldmap["quota_exit"]['question'] = gT("Quota exit");
+        $fieldmap["quota_exit"]['group_name'] = "";
     }
 
     $sOldLanguage = App()->language;
@@ -2298,7 +2315,7 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
     //do something
     $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sLanguage);
     $fieldmap = [];
-    $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'suffix' => '', 'question' => gT('Total time'), 'title' => 'interviewtime');
+    $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'suffix' => '', 'question' => gT('Total time (in s)'), 'title' => 'interviewtime');
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
             // field for time spent on page
@@ -2869,6 +2886,12 @@ function isCaptchaEnabled($screen, $captchamode = '')
 
 /**
 * Check if a table does exist in the database
+*
+* Uses schema->getTableNames() rather than schema->getTable($sTableName) on purpose:
+* getTableNames() issues a single lightweight "SHOW TABLES" query (cached per schema),
+* while getTable() additionally runs "SHOW FULL COLUMNS" and "SHOW CREATE TABLE" per call
+* to build the full column/constraint metadata, which is unnecessary overhead when all
+* that is needed is an existence check.
 *
 * @param string $sTableName Table name to check for (without dbprefix!))
 * @return boolean True or false if table exists or not

@@ -159,8 +159,8 @@ class Tokens extends SurveyCommonAction
         }
 
         // Set number of page
-        if (isset($_POST['pageSizeTokenView'])) {
-            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSizeTokenView']);
+        if (isset($_POST['pageSize'])) {
+            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSize']);
         }
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', $aData, true, false);
@@ -551,8 +551,8 @@ class Tokens extends SurveyCommonAction
         $aData['model'] = $model;
 
         // Set number of page
-        if (isset($_POST['pageSizeTokenView'])) {
-            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSizeTokenView']);
+        if (isset($_POST['pageSize'])) {
+            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSize']);
         }
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', $aData, true, false);
@@ -1863,11 +1863,11 @@ class Tokens extends SurveyCommonAction
                         'message' => array(
                             'title' => gT("Warning"),
                             'message' => gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
-                                . "<br/>&nbsp;<ul class='list-unstyled'><li>" . gT("having a valid email address") . "</li>"
+                                . "<p><ul class='d-inline-block text-start mx-auto'><li>" . gT("having a valid email address") . "</li>"
                                 . "<li>" . gT("not having been sent an invitation already") . "</li>"
                                 . "<li>" . gT("not having already completed the survey") . "</li>"
                                 . "<li>" . gT("having an access code") . "</li>"
-                                . "<li>" . gT("having at least one use left") . "</li></ul>"
+                                . "<li>" . gT("having at least one use left") . "</li></ul></p>"
                                 . '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel " role="button">' . gT("Cancel") . '</a></p>'
                         )
                     ),

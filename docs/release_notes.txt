@@ -34,6 +34,79 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.1.1 (build 260914) to 7.1.2 (build 260917) September 17, 2026
+-Fixed issue: Widgets not being properly loaded in debug mode (Carsten Schmitz)
+-Fixed issue: Curl should be a required PHP library in the installer, not just an optional one (Carsten Schmitz)
+-Fixed issue: Add allowed_classes to unserialize() to prevent PHP Object Injection (#5016) (XananasX)
+-Fixed issue #TB-74: Critical and advisories in node packages (#5251) (Stefan K)
+-Fixed issue #JD-124: Stack bar chart as default for array question types (#5277) (Razvan Pandor)
+-Fixed issue #JD-119: Show chart values on top (#5286) (Razvan Pandor)
+-Fixed issue #AT-2263: Incorrect alignment of multiple and single choice buttons inside the survey (#5259) (SaraDimoska)
+-Fixed issue #20695: SQL injection in auditlog plugin (Carsten Schmitz)
+-Fixed issue #20691: New editor does not load in some hosting configurations (Carsten Schmitz)
+-Fixed issue #20672: HTTP 400 "The requested hostname is invalid" does not provide any details, even with active debug mode (Carsten Schmitz)
+-Fixed issue #20457: tableExists helper function returns outdated result due to cache. (#4771) (Richard Aljaste)
+-Fixed issue #20373: Theme descriptions are translated when installed in a different language than English (Carsten Schmitz)
+-Fixed issue #20182: No difference between strong and normal text in question text and answers text (Carsten Schmitz)
+-Fixed issue #20174: No visual information if  survey is expired (Carsten Schmitz)
+-Fixed issue #20076: Error when copying a survey and duplicate permissions exist (Carsten Schmitz)
+-Fixed issue #19761: Can't edit a question group if it's title is empty (Carsten Schmitz)
+-Fixed issue #19727: Statement regarding CKEditor 4 usage in LimeSurvey (Carsten Schmitz)
+-Fixed issue #19660: Unable to set question text/help by RemoteControl set_question_properties (Carsten Schmitz)
+-Fixed issue #19649: Lost global theme options in error page (#5309) (Carsten Schmitz)
+-Fixed issue #19583: The survey structure sidebar has no indication for the active group (Carsten Schmitz)
+-Fixed issue #19578: After upgrade with MSSQL no way to access to plugin configuration (Carsten Schmitz)
+-Fixed issue #19529: Adding a question only adds to the default group without interaction (Carsten Schmitz)
+-Fixed issue #19403: Maintenance mode screen not translated (Carsten Schmitz)
+-Fixed issue #19324: Hidden questions are still shown when printing answers after survey submission (Carsten Schmitz)
+-Fixed issue #19016: Unable to create tables in MS SQL Server during install using dblib (Carsten Schmitz)
+-Fixed issue #17107: When changing a survey, an already opened preview shows a blank page (#5294) (Carsten Schmitz)
+
+
+Changes from 7.1.0 (build 260913) to 7.1.1 (build 260914) September 14, 2026
+-Fixed issue #LE-776: Design updates for editor version switch modal (#5285) (haythem chibani)
+-Fixed issue: When updating the database from CLI the lock file would later block silent db udpates (Carsten Schmitz)
+-Fixed issue #17714: Better wording for security feature related to the script field (Carsten Schmitz)
+-Fixed issue #17474: Unable to update token value of a response using RemoteControl API (Carsten Schmitz)
+-Fixed issue #17116: Weird unformatted warning after sending invitation (Carsten Schmitz)
+-Fixed issue #16657: Error message too cryptic if email for newly added admin user fails due to empty admin email (Carsten Schmitz)
+-Fixed issue #15061: Complex Postgres password cannot be used during installation (Carsten Schmitz)
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 7.0.15 (build 260910) to 7.1.0 (build 260913) September 13, 2026
++New feature #19678: Added 'NOT IN' operator in RemoteControl list_participants function (Carsten Schmitz)
+-Fixed issue: Improved update 709 to prevent fails (#5292) (Patrick Teichmann)
+-Fixed issue: Missing icons in collapsed menu (to fix this reset the survey menu items) (Carsten Schmitz)
+-Fixed issue: Installer cannot install on MSSQL server with self-signed certificate (Carsten Schmitz)
+-Fixed issue: Hint labels for left menu bar not being translated (Carsten Schmitz)
+-Fixed issue: Curl library requirement fixed in installer (Carsten Schmitz)
+-Fixed issue: After first login some links would not work (Carsten Schmitz)
+-Fixed issue #JD-121: Highlight placeholders as badges in help text and answers (#5291) (Razvan Pandor)
+-Fixed issue #20687: New editor is referencing files that do not exist thus shows blank page (Carsten Schmitz)
+-Fixed issue #20684: Statistics returns error with "Show text responses inline" for Multiple short text questions (Carsten Schmitz)
+-Fixed issue #20681: Inconsistent survey modified date format in admin dashboard view (Carsten Schmitz)
+-Fixed issue #20670: PDF export displays file path instead of selected  image for image-select question types (#5275) (Carsten Schmitz)
+-Fixed issue #20416: PHP8.4 + debug=2 - unable to upload CSV file (#4702) (Gabriel Jenik)
+-Fixed issue #19775: The "is_string" function not correctly working when used in in-page logic (Carsten Schmitz)
+-Fixed issue #19682: Clicking back button when viewing question logic breaks sidebar (Carsten Schmitz)
+-Fixed issue #19656: export_responses shows wrong message if survey does not exist (Carsten Schmitz)
+-Fixed issue #19623: Lost password dialog shown to currently logged-in user (Carsten Schmitz)
+-Fixed issue #19620: Sort order of  list of label sets is not remembered (Carsten Schmitz)
+-Fixed issue #19306: Link to trial ComfortUpdate key not working (Carsten Schmitz)
+-Fixed issue #19297: [security] Disable access to some files on apache (Carsten Schmitz)
+-Fixed issue #19295: Intro text doesn't use the full width (Carsten Schmitz)
+-Fixed issue #19219: Repeated headers for array questions also shown unwantedly in mobile view (Carsten Schmitz)
+-Fixed issue #16062: Expansion button for question groups missing (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+
+
 Changes from 7.0.14 (build 260904) to 7.0.15 (build 260910) September 10, 2026
 +New feature #JD-133: Add underline option to text editor formatting (#5264) (Adil Moumni Abdou)
 +New feature #JD-102: Added survey option to preselect "No answer" in questions (#5253) (Adil Moumni Abdou)

@@ -2081,6 +2081,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
             'seed',
             'startdate',
             'datestamp',
+            'quota_exit',
             'version_number'
         ];
 
@@ -2094,10 +2095,19 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
             $dataRow['datestamp'] = $targetResponse->{'datestamp'};
         }
 
+        if (isset($targetSchema->columns['quota_exit']) && empty($targetResponse['quota_exit'])) {
+            $targetResponse->{'quota_exit'} = null;
+            $dataRow['quota_exit'] = $targetResponse->{'quota_exit'};
+        }
+
         foreach ($additionalFields as $additionalField) {
-            if (isset($archivedResponse->{$additionalField}) && isset($targetSchema->columns[$additionalField])) {
-                $dataRow[$additionalField] = $archivedResponse->{$additionalField};
+            if (!isset($archivedResponse->{$additionalField}) || !isset($targetSchema->columns[$additionalField])) {
+                continue;
             }
+            if ($additionalField === 'quota_exit' && empty($archivedResponse->{$additionalField})) {
+                continue;
+            }
+            $dataRow[$additionalField] = $archivedResponse->{$additionalField};
         }
 
         $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
