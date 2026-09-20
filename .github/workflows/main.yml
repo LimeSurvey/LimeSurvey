@@ -201,14 +201,13 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
 
-      - name: Check if cov.xml artefact exists
-        uses: xSAVIKx/artifact-exists-action@v0
-        id: check_coverage_artifact
-        with:
-          name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
-
       - name: Download cov.xml
-        if: steps.check_coverage_artifact.outputs.exists == 'true'
+        # actions/download-artifact fails the step (not the job) when no
+        # matching artifact was uploaded, e.g. the unit-tests job for this
+        # php-version/db-type combo didn't get that far. check_coverage.php
+        # below already treats a missing cov.xml as "skip", so there's
+        # nothing else to gate on here.
+        continue-on-error: true
         uses: actions/download-artifact@v7
         with:
           name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
