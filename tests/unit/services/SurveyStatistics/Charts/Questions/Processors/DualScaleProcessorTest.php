@@ -21,6 +21,7 @@ class DualScaleProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 4,
+            'title' => 'Q4',
             'type' => Question::QT_1_ARRAY_DUAL,
             'question' => 'Rate both scales',
             'attributes' => [

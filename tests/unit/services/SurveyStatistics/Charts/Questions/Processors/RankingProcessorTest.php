@@ -21,6 +21,7 @@ class RankingProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 12,
+            'title' => 'RQ12',
             'type' => Question::QT_R_RANKING,
             'question' => 'Rank these',
             'subQuestions' => [
@@ -61,6 +62,7 @@ class RankingProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 12,
+            'title' => 'RQ12',
             'type' => Question::QT_R_RANKING,
             'question' => 'Rank these',
             'attributes' => ['max_subquestions' => 1],

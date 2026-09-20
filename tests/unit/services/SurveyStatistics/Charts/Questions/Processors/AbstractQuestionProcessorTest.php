@@ -71,7 +71,7 @@ class AbstractQuestionProcessorTest extends TestCase
     public function testGetTotalCountAndCountFieldResponsesAreDeferred()
     {
         $processor = new ConcreteTestQuestionProcessor();
-        $processor->setQuestion(['sid' => 1, 'gid' => 1, 'qid' => 1, 'type' => Question::QT_L_LIST]);
+        $processor->setQuestion(['sid' => 1, 'gid' => 1, 'qid' => 1, 'type' => Question::QT_L_LIST, 'title' => 'Q1']);
 
         $batch = new ResponseAggregateBatch(1);
         $processor->setBatch($batch);
@@ -101,6 +101,7 @@ class AbstractQuestionProcessorTest extends TestCase
             'gid' => 1,
             'qid' => 1,
             'type' => Question::QT_G_GENDER,
+            'title' => 'Q1',
         ]);
         $batch = new ResponseAggregateBatch(1);
         $processor->setBatch($batch);
@@ -131,6 +132,7 @@ class AbstractQuestionProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 1,
+            'title' => 'Q1',
             'type' => Question::QT_N_NUMERICAL,
         ]);
         $processor->setBatch(new ResponseAggregateBatch(1));
@@ -147,7 +149,7 @@ class AbstractQuestionProcessorTest extends TestCase
     public function testBuildItemsFromCodesWithNoCodes()
     {
         $processor = new ConcreteTestQuestionProcessor();
-        $processor->setQuestion(['sid' => 1, 'gid' => 1, 'qid' => 1, 'type' => Question::QT_G_GENDER]);
+        $processor->setQuestion(['sid' => 1, 'gid' => 1, 'qid' => 1, 'type' => Question::QT_G_GENDER, 'title' => 'Q1']);
         $processor->setBatch(new ResponseAggregateBatch(1));
 
         [$legend, $items] = $processor->publicBuildItemsFromCodes('Q1', []);
@@ -162,7 +164,7 @@ class AbstractQuestionProcessorTest extends TestCase
     public function testBatchGetResponseCounts()
     {
         $processor = new ConcreteTestQuestionProcessor();
-        $processor->setQuestion(['sid' => 1, 'gid' => 1, 'qid' => 1, 'type' => Question::QT_L_LIST]);
+        $processor->setQuestion(['sid' => 1, 'gid' => 1, 'qid' => 1, 'type' => Question::QT_L_LIST, 'title' => 'Q1']);
         $batch = new ResponseAggregateBatch(1);
         $processor->setBatch($batch);
 

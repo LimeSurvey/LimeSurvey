@@ -17,6 +17,7 @@ class MultipleChoiceProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 5,
+            'title' => 'Q5',
             'type' => Question::QT_M_MULTIPLE_CHOICE,
             'question' => 'Pick some',
             'other' => $other,

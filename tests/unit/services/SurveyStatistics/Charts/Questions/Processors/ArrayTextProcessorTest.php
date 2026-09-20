@@ -18,6 +18,7 @@ class ArrayTextProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 11,
+            'title' => 'Q11',
             'type' => Question::QT_SEMICOLON_ARRAY_TEXT,
             'question' => 'Comments grid',
         ]);

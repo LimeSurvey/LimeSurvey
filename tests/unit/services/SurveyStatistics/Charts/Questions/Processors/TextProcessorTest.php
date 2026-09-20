@@ -21,6 +21,7 @@ class TextProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 7,
+            'title' => 'Q7',
             'type' => Question::QT_S_SHORT_FREE_TEXT,
             'question' => 'What do you think?',
         ]);

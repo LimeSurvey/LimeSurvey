@@ -18,6 +18,7 @@ class SingleOptionProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 2,
+            'title' => 'Q2',
             'type' => $type,
             'question' => 'A question',
             'other' => $other,

@@ -18,6 +18,7 @@ class MultipleNumericalProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 9,
+            'title' => 'Q9',
             'type' => Question::QT_K_MULTIPLE_NUMERICAL,
             'question' => 'Enter numbers',
         ]);

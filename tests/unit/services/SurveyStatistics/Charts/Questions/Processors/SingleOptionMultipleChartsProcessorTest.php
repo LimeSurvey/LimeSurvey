@@ -21,6 +21,7 @@ class SingleOptionMultipleChartsProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 8,
+            'title' => 'Q8',
             'type' => Question::QT_C_ARRAY_YES_UNCERTAIN_NO,
             'question' => 'Rate these',
             'subQuestions' => [
@@ -58,6 +59,7 @@ class SingleOptionMultipleChartsProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 8,
+            'title' => 'Q8',
             'type' => Question::QT_F_ARRAY,
             'question' => 'Rate these',
             'subQuestions' => [
@@ -89,6 +91,7 @@ class SingleOptionMultipleChartsProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 8,
+            'title' => 'Q8',
             'type' => Question::QT_L_LIST,
             'question' => 'Not an array type',
         ]);

@@ -23,6 +23,7 @@ class ArrayNumbersProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 6,
+            'title' => 'Q6',
             'type' => Question::QT_COLON_ARRAY_NUMBERS,
             'question' => 'Rate each item',
             'subQuestions' => [
@@ -82,6 +83,7 @@ class ArrayNumbersProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 6,
+            'title' => 'Q6',
             'type' => Question::QT_COLON_ARRAY_NUMBERS,
             'question' => 'Rate each item',
             'subQuestions' => [
