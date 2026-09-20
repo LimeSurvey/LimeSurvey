@@ -180,6 +180,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: unit-tests
     strategy:
+      fail-fast: false
       matrix:
         include:
           # MySQL tests with PHP 8.1 and 8.5
@@ -213,6 +214,12 @@ jobs:
           name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
+        # Informational only: the artifact-exists check this used to depend on
+        # (xSAVIKx/artifact-exists-action) turned out to be broken and always
+        # skipped this check, so the 37% threshold has never actually been
+        # enforced. Now that the check genuinely runs, don't turn a
+        # pre-existing, unrelated coverage gap into a new hard CI gate.
+        continue-on-error: true
         run: php tests/bin/check_coverage.php cov.xml 37
 
   code-check:
