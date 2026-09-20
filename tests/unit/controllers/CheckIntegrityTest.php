@@ -500,7 +500,11 @@ class CheckIntegrityTest extends TestBaseClass
      */
     private function tableExistsRaw($tableName)
     {
-        return (bool) \Yii::app()->db->createCommand('SHOW TABLES LIKE ' . \Yii::app()->db->quoteValue($tableName))->queryScalar();
+        // dbSelectTablesLike() is the cross-database (mysql/pgsql/mssql) equivalent of a
+        // literal "SHOW TABLES LIKE" - needed since this test suite also runs against
+        // pgsql/mssql in CI, unlike the rest of this file which targets the app's own
+        // configured driver only.
+        return (bool) \Yii::app()->db->createCommand(\dbSelectTablesLike($tableName))->queryScalar();
     }
 
     /**
