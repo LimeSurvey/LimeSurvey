@@ -40,6 +40,14 @@ require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
 $config = require_once(APPPATH . 'config/internal' . EXT);
 
+// Without these, CHttpRequest::getRequestUri() throws "CHttpRequest is unable
+// to determine the request URI" as soon as anything (eg an error handler
+// deciding whether this is a REST request) touches the request component in
+// this CLI context. Same workaround as tests/bootstrap.php.
+$_SERVER['SCRIPT_FILENAME'] = 'index-test.php';
+$_SERVER['SCRIPT_NAME'] = '/index-test.php';
+$_SERVER['REQUEST_URI'] = 'index-test.php';
+$_SERVER['SERVER_NAME'] = 'localhost';
 
 Yii::$enableIncludePath = false;
 $app = Yii::createApplication('LSYii_Application', $config);
