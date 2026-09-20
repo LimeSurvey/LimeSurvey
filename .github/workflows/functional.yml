@@ -30,7 +30,7 @@ jobs:
       fail-fast: false
       matrix:
         # Specify what versions of php you want to test
-        php-versions: [ '8.1', '8.3' ]
+        php-versions: [ '8.1', '8.5' ]
         testsuite:
           - survey
           - question-a
@@ -178,7 +178,7 @@ jobs:
           #sudo tail -n 500 /var/log/apache2/error.log || true
           #sudo tail -n 500 /var/log/nginx/error.log || true
           #sudo tail -n 500 /var/log/php8.1-fpm.log || true
-          #sudo tail -n 500 /var/log/php8.3-fpm.log || true
+          #sudo tail -n 500 /var/log/php8.5-fpm.log || true
           # NOTE: php --version might not be the same as setup in apache. Use fwrite(STDERR, phpversion()); in index.php to be sure.
           #which php
           #php --version
