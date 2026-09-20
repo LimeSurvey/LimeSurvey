@@ -44,7 +44,7 @@
 		"phpseclib/phpseclib": "^3.0",
 		"tiamo/spss": "dev-master",
 		"symfony/polyfill-mbstring": "^1.26",
-		"yiisoft/yii": "dev-master",
+		"yiisoft/yii": "dev-master#863cde5e223ab1ecd8f0345e23bca9dbf2936681",
 		"phpmailer/phpmailer": "6.12.0",
 		"khaled.alshamaa/ar-php": "^6.3",
 		"tecnickcom/tcpdf": "^6.5",
@@ -113,6 +113,11 @@
 		"oooas": {
 			"type": "vcs",
 			"url": "https://github.com/PrinsFrank/goldspecdigital-oooas"
+		}
+	},
+	"extra": {
+		"notes": {
+			"yiisoft/yii": "Pinned to dev-master commit 863cde5 (not a tagged release) because it contains PHP 8.5 compatibility fixes (non-canonical casts, PHP 8.5 support itself) that landed after the last tag, 1.1.32. Once yiisoft/yii cuts a release containing this commit or later, switch this back to a normal constraint like ^1.1."
 		}
 	}
 }

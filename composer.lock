@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0bf4b56605d42f7bebbb74df2a591180",
+    "content-hash": "07bfdc10a7384fc99908d291ea38a960",
     "packages": [
         {
             "name": "anper/iuliia",
