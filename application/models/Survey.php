@@ -1380,21 +1380,21 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getIsPublicGraphs()
     {
-        return ($this->oOptions->publicgraphs === 'Y');
+        return (($this->oOptions->publicgraphs ?? null) === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsListPublic()
     {
-        return ($this->oOptions->listpublic === 'Y');
+        return (($this->oOptions->listpublic ?? null) === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsHtmlEmail()
     {
-        return ($this->oOptions->htmlemail === 'Y');
+        return (($this->oOptions->htmlemail ?? null) === 'Y');
     }
     /**
      * @return bool
