@@ -39,7 +39,7 @@ class VerificationController extends LSYii_Controller
         $grey_shade = ImageColorAllocate($im, 204, 204, 204);
 
         // Create the random numberes
-        srand((double) microtime() * 1000000);
+        srand((float) microtime() * 1000000);
 
         $num1 = rand(1, 5);
         $found = false;
