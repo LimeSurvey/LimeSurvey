@@ -1072,7 +1072,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         /** @var self $model */
         $hasPendingScope = $this->getDbCriteria(false) !== null;
-        if (empty($condition) && empty($params) && !$hasPendingScope) {
+        if ($pk !== null && empty($condition) && empty($params) && !$hasPendingScope) {
             if (array_key_exists($pk, self::$findByPkCache)) {
                 return self::$findByPkCache[$pk];
             } else {
