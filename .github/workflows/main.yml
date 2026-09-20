@@ -166,7 +166,7 @@ jobs:
           XDEBUG_MODE: coverage
         run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped ${{ matrix.db-type != 'mysql' && '--exclude-group mysql' || '' }} tests/unit
       - name: Upload cov.xml
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
           path: cov.xml
@@ -209,7 +209,7 @@ jobs:
 
       - name: Download cov.xml
         if: steps.check_coverage_artifact.outputs.exists == 'true'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
 
@@ -282,7 +282,7 @@ jobs:
           git config core.fileMode false
 
       - name: Commit Changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: Apply PHPCBF changes
           file_pattern: |
