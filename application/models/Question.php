@@ -335,19 +335,32 @@ class Question extends LSActiveRecord
 
 
     /**
-     * Fix sort order for questions in a group
-     * All questions in the group will be assigned a sequential question order,
-     * starting in the specified value
+     * Fix sort order for questions in a group (or, for a given parent question and
+     * scale, its subquestions). All matching questions will be assigned a sequential
+     * question order, starting at the specified value, ordered by their current
+     * question_order and using the question code (title) as a tiebreaker for
+     * questions that currently share the same question_order.
+     *
      * @param int $gid
-     * @param int $startingOrder   the starting question order.
+     * @param int $startingOrder the starting question order.
+     * @param int $parentQid 0 for top-level questions, or a question's qid to
+     *            reorder its subquestions instead.
+     * @param int|null $scaleId restrict to this scale_id; null to not filter by it,
+     *            matching this method's original (top-level questions only) behavior.
      */
-    public function updateQuestionOrder($gid, $startingOrder = 1)
+    public function updateQuestionOrder($gid, $startingOrder = 1, $parentQid = 0, $scaleId = null)
     {
+        $criteria = array(':gid' => $gid, ':parent_qid' => $parentQid);
+        $condition = 'gid=:gid AND parent_qid=:parent_qid';
+        if ($scaleId !== null) {
+            $condition .= ' AND scale_id=:scale_id';
+            $criteria[':scale_id'] = $scaleId;
+        }
+
         $data = Yii::app()->db->createCommand()->select('qid')
-            ->where(array('and', 'gid=:gid', 'parent_qid=0'))
+            ->where($condition, $criteria)
             ->order('question_order, title ASC')
             ->from('{{questions}}')
-            ->bindParam(':gid', $gid, PDO::PARAM_INT)
             ->query();
 
         $position = intval($startingOrder);
