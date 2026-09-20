@@ -77,7 +77,10 @@ class SingleOptionProcessorTest extends TestCase
         // the explicit "other" item this test enables.
         $this->assertSame(['Answer 1', 'Answer 2', 'NoAnswer', 'other'], $plan['legend']);
         $this->assertSame(['A1', 'A2', 'NoAnswer', 'other'], array_column($plan['data'], 'key'));
-        $this->assertSame('Other', $plan['data'][3]['title']);
+        // gT('Other') rather than the literal string: the active language is
+        // shared mutable state across the whole PHPUnit process, so another
+        // test can leave it on something other than English.
+        $this->assertSame(gT('Other'), $plan['data'][3]['title']);
     }
 
     /**
