@@ -28,19 +28,19 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # MySQL tests with PHP 8.1 and 8.3
+          # MySQL tests with PHP 8.1 and 8.5
           - php-version: '8.1'
             db-type: 'mysql'
             db-version: '8.0'
-          - php-version: '8.3'
+          - php-version: '8.5'
             db-type: 'mysql'
             db-version: '8.0'
-          # PostgreSQL tests with PHP 8.3
-          - php-version: '8.3'
+          # PostgreSQL tests with PHP 8.5
+          - php-version: '8.5'
             db-type: 'pgsql'
             db-version: '14'
-          # MSSQL tests with PHP 8.3
-          - php-version: '8.3'
+          # MSSQL tests with PHP 8.5
+          - php-version: '8.5'
             db-type: 'mssql'
             db-version: '2022'
     env:
@@ -182,16 +182,16 @@ jobs:
     strategy:
       matrix:
         include:
-          # MySQL tests with PHP 8.1 and 8.3
+          # MySQL tests with PHP 8.1 and 8.5
           - php-version: '8.1'
             db-type: 'mysql'
-          - php-version: '8.3'
+          - php-version: '8.5'
             db-type: 'mysql'
-          # PostgreSQL tests with PHP 8.3
-          - php-version: '8.3'
+          # PostgreSQL tests with PHP 8.5
+          - php-version: '8.5'
             db-type: 'pgsql'
-          # MSSQL tests with PHP 8.3
-          - php-version: '8.3'
+          # MSSQL tests with PHP 8.5
+          - php-version: '8.5'
             db-type: 'mssql'
     steps:
       - uses: actions/checkout@v5
@@ -222,7 +222,7 @@ jobs:
       contents: write
     env:
       DBENGINE: INNODB
-      PHP_VERSION: '8.3'
+      PHP_VERSION: '8.5'
     steps:
       - uses: actions/checkout@v5
 
