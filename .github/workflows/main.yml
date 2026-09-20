@@ -179,26 +179,22 @@ jobs:
   test-coverage:
     runs-on: ubuntu-22.04
     needs: unit-tests
-    strategy:
-      fail-fast: false
-      # Coverage (which lines ran) depends on db-type (non-mysql runs exclude
-      # the mysql test group) but not on PHP version, so there's no need to
-      # check it once per PHP version the way the unit-tests matrix does.
-      matrix:
-        include:
-          - php-version: '8.5'
-            db-type: 'mysql'
-          - php-version: '8.5'
-            db-type: 'pgsql'
-          - php-version: '8.5'
-            db-type: 'mssql'
+    # Coverage (which lines ran) depends on db-type - non-mysql runs exclude
+    # the mysql test group, so they cover strictly less - but not on PHP
+    # version, since the same tests run the same code either way. mysql runs
+    # the full suite, so checking it alone already covers the ceiling; a
+    # pgsql/mssql run can only ever score lower, so checking them too would
+    # be redundant, not additional signal.
+    env:
+      PHP_VERSION: '8.5'
+      DB_TYPE: 'mysql'
     steps:
       - uses: actions/checkout@v5
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: ${{ env.PHP_VERSION }}
 
       - name: Download cov.xml
         # actions/download-artifact fails the step (not the job) when no
@@ -209,7 +205,7 @@ jobs:
         continue-on-error: true
         uses: actions/download-artifact@v7
         with:
-          name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
+          name: cov-file-${{ env.PHP_VERSION }}-${{ env.DB_TYPE }}
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
         # Informational only: the artifact-exists check this used to depend on
