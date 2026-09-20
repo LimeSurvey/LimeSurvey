@@ -356,12 +356,14 @@ class CheckIntegrityTest extends TestBaseClass
         $this->assertLessThan($orderByGid[$gidBravo], $orderByGid[$gidAlpha], '"Alpha group" should now sort before "Bravo group".');
         $this->assertLessThan($orderByGid[$gidCharlie], $orderByGid[$gidBravo], '"Bravo group" should now sort before "Charlie group".');
 
+        // Lowercase aliases: PostgreSQL folds unquoted mixed-case identifiers to
+        // lowercase, so a camelCase alias here would not match the same key back.
         $counts = \Yii::app()->db->createCommand()
-            ->select('COUNT(DISTINCT group_order) as distinctOrders, COUNT(gid) as totalGroups')
+            ->select('COUNT(DISTINCT group_order) as distinctorders, COUNT(gid) as totalgroups')
             ->from('{{groups}}')
             ->where('sid = :sid', array(':sid' => self::$surveyId))
             ->queryRow();
-        $this->assertSame($counts['totalGroups'], $counts['distinctOrders'], 'Groups still have duplicate group_order values after the fix.');
+        $this->assertSame($counts['totalgroups'], $counts['distinctorders'], 'Groups still have duplicate group_order values after the fix.');
     }
 
     public function testFixQuestionOrderDuplicatesUsesQuestionCodeAsTiebreaker()
@@ -386,12 +388,14 @@ class CheckIntegrityTest extends TestBaseClass
         $this->assertLessThan($orderByQid[$qidBravo], $orderByQid[$qidAlpha], 'CIQALPHA should now sort before CIQBRAVO.');
         $this->assertLessThan($orderByQid[$qidCharlie], $orderByQid[$qidBravo], 'CIQBRAVO should now sort before CIQCHARLIE.');
 
+        // Lowercase aliases: PostgreSQL folds unquoted mixed-case identifiers to
+        // lowercase, so a camelCase alias here would not match the same key back.
         $counts = \Yii::app()->db->createCommand()
-            ->select('COUNT(DISTINCT question_order) as distinctOrders, COUNT(qid) as totalQuestions')
+            ->select('COUNT(DISTINCT question_order) as distinctorders, COUNT(qid) as totalquestions')
             ->from('{{questions}}')
             ->where('gid = :gid AND parent_qid = 0 AND scale_id = 0', array(':gid' => $group->gid))
             ->queryRow();
-        $this->assertSame($counts['totalQuestions'], $counts['distinctOrders'], 'Questions still have duplicate question_order values after the fix.');
+        $this->assertSame($counts['totalquestions'], $counts['distinctorders'], 'Questions still have duplicate question_order values after the fix.');
     }
 
     /**
