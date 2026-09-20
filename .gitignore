@@ -184,9 +184,16 @@ vendor/**/gulpfile.js
 /vendor/symfony/filesystem/
 /vendor/symfony/polyfill-intl-grapheme/
 /vendor/symfony/polyfill-intl-normalizer/
+/vendor/symfony/polyfill-php84/
 /vendor/symfony/process/
 /vendor/psr/log/
 /vendor/spatie/
+/vendor/danog/
+/vendor/daverandom/
+/vendor/kelunik/
+/vendor/league/uri/
+/vendor/league/uri-interfaces/
+/vendor/revolt/
 yarn-error.log
 
 # Test stuff

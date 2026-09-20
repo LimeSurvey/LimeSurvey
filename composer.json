@@ -65,7 +65,7 @@
         "vendor-dir": "vendor",
         "bin-dir": "vendor/bin",
 		"platform": {
-			"php": "8.1.29"
+			"php": "8.1.31"
 		}
     },
     "require-dev": {
@@ -73,7 +73,7 @@
         "squizlabs/php_codesniffer": "^3.5",
         "phpmd/phpmd" : "^2.8",
         "phpunit/phpunit": "^9.6",
-        "vimeo/psalm": "^5.0",
+        "vimeo/psalm": "^6.0",
 		"misantron/dbunit": "^5.4",
 		"mockery/mockery": "^1.5"
     },
