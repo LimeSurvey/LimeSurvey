@@ -35,6 +35,16 @@ define('FCPATH', str_replace(SELF, '', __FILE__));
 define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 define('YII_DEBUG', true);
 
+// This bootstrap only exists to make Yii's classes available for Psalm to
+// resolve; it never serves a real request. Yii's own error/exception
+// handlers are process-global (set_error_handler/set_exception_handler), so
+// leaving them enabled means any later PHP notice/deprecation anywhere in
+// the rest of the process - including inside Psalm's own analyzer code,
+// unrelated to LimeSurvey - gets routed through Yii's error handling and can
+// abort the whole Psalm run.
+define('YII_ENABLE_ERROR_HANDLER', false);
+define('YII_ENABLE_EXCEPTION_HANDLER', false);
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
