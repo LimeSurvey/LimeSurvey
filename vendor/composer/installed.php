@@ -3,7 +3,7 @@
         'name' => 'limesurvey/limesurvey',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '9f0f2ea31b475366789ee769d14493eb6cb8c8c3',
+        'reference' => '05180b0e5cfa54c330614cff96baa205d2fbb0bb',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -121,7 +121,7 @@
         'limesurvey/limesurvey' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '9f0f2ea31b475366789ee769d14493eb6cb8c8c3',
+            'reference' => '05180b0e5cfa54c330614cff96baa205d2fbb0bb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -442,12 +442,14 @@
             'dev_requirement' => false,
         ),
         'yiisoft/yii' => array(
-            'pretty_version' => '1.1.32',
-            'version' => '1.1.32.0',
-            'reference' => 'e7728e20dd6901f449a6e7392037c37b029288e4',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '863cde5e223ab1ecd8f0345e23bca9dbf2936681',
             'type' => 'library',
             'install_path' => __DIR__ . '/../yiisoft/yii',
-            'aliases' => array(),
+            'aliases' => array(
+                0 => '1.1.x-dev',
+            ),
             'dev_requirement' => false,
         ),
         'zendframework/zendframework1' => array(
