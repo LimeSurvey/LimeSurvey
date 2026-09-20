@@ -181,17 +181,15 @@ jobs:
     needs: unit-tests
     strategy:
       fail-fast: false
+      # Coverage (which lines ran) depends on db-type (non-mysql runs exclude
+      # the mysql test group) but not on PHP version, so there's no need to
+      # check it once per PHP version the way the unit-tests matrix does.
       matrix:
         include:
-          # MySQL tests with PHP 8.1 and 8.5
-          - php-version: '8.1'
-            db-type: 'mysql'
           - php-version: '8.5'
             db-type: 'mysql'
-          # PostgreSQL tests with PHP 8.5
           - php-version: '8.5'
             db-type: 'pgsql'
-          # MSSQL tests with PHP 8.5
           - php-version: '8.5'
             db-type: 'mssql'
     steps:
