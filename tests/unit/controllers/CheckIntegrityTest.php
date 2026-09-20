@@ -17,6 +17,7 @@ class CheckIntegrityTest extends TestBaseClass
     /** @var \CheckIntegrity */
     private $controller;
 
+    /** Imports the survey fixture shared by the integrity tests. */
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -25,6 +26,7 @@ class CheckIntegrityTest extends TestBaseClass
         self::importSurvey($surveyFile);
     }
 
+    /** Prepares the controller and administrator session used by each test. */
     public function setUp(): void
     {
         parent::setUp();
@@ -50,6 +52,7 @@ class CheckIntegrityTest extends TestBaseClass
         return $reflection->invokeArgs($this->controller, $args);
     }
 
+    /** Verifies that deleting an orphan question also deletes its child data. */
     public function testDeleteQuestionsCascadesToSubquestionsAnswersAndAttributes()
     {
         $group = self::$testSurvey->groups[0];
@@ -108,6 +111,7 @@ class CheckIntegrityTest extends TestBaseClass
         $this->assertEmpty(\QuestionAttribute::model()->resetScope()->findAllByAttributes(array('qid' => $qid)), 'Question attribute was left behind after deleting its orphan parent question.');
     }
 
+    /** Verifies that deleting an orphan group also deletes its dependent data. */
     public function testDeleteGroupsCascadesToQuestionsAndGroupL10ns()
     {
         $group = new \QuestionGroup();

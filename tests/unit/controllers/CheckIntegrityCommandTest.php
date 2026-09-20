@@ -11,6 +11,7 @@ use ls\tests\TestBaseClass;
  */
 class CheckIntegrityCommandTest extends TestBaseClass
 {
+    /** Imports the survey fixture shared by the command tests. */
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -19,6 +20,7 @@ class CheckIntegrityCommandTest extends TestBaseClass
         self::importSurvey($surveyFile);
     }
 
+    /** Prepares the command class and its required administrator session. */
     public function setUp(): void
     {
         parent::setUp();
@@ -26,6 +28,7 @@ class CheckIntegrityCommandTest extends TestBaseClass
         \Yii::app()->session['loginID'] = 1;
     }
 
+    /** Verifies that the command fixes and reports an orphaned question. */
     public function testRunDeletesOrphanQuestionUnattendedAndReportsSuccess()
     {
         $group = self::$testSurvey->groups[0];
@@ -62,6 +65,7 @@ class CheckIntegrityCommandTest extends TestBaseClass
         $this->assertNull(\Question::model()->findByPk($qid), 'Orphan question was not deleted by the console command.');
     }
 
+    /** Verifies that a clean database produces a successful no-op result. */
     public function testRunReportsCleanStateWithoutAnyOrphans()
     {
         $command = new \CheckIntegrityCommand('checkintegrity', null);
