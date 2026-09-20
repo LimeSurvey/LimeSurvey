@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a33ab0ef5816c4172c683747e68a37fe",
+    "content-hash": "ead12b463d3f97eb62dc9200b3120109",
     "packages": [
         {
             "name": "anper/iuliia",
@@ -3069,16 +3069,16 @@
         },
         {
             "name": "yiisoft/yii",
-            "version": "1.1.32",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "e7728e20dd6901f449a6e7392037c37b029288e4"
+                "reference": "863cde5e223ab1ecd8f0345e23bca9dbf2936681"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/e7728e20dd6901f449a6e7392037c37b029288e4",
-                "reference": "e7728e20dd6901f449a6e7392037c37b029288e4",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/863cde5e223ab1ecd8f0345e23bca9dbf2936681",
+                "reference": "863cde5e223ab1ecd8f0345e23bca9dbf2936681",
                 "shasum": ""
             },
             "require": {
@@ -3096,6 +3096,7 @@
                 "ext-mcrypt": "Required by encrypt and decrypt methods of CSecurityManager",
                 "phpseclib/mcrypt_compat": "To provide mcrypt polyfill when extension is unavailable"
             },
+            "default-branch": true,
             "bin": [
                 "framework/yiic"
             ],
@@ -3208,7 +3209,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-23T09:54:33+00:00"
+            "time": "2026-09-17T07:57:34+00:00"
         }
     ],
     "packages-dev": [
@@ -7475,6 +7476,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "tiamo/spss": 20,
+        "yiisoft/yii": 20,
         "goldspecdigital/oooas": 20
     },
     "prefer-stable": false,

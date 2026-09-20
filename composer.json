@@ -44,7 +44,7 @@
 		"phpseclib/phpseclib": "^3.0",
 		"tiamo/spss": "dev-master",
 		"symfony/polyfill-mbstring": "^1.26",
-		"yiisoft/yii": "^1.1.26",
+		"yiisoft/yii": "dev-master",
 		"phpmailer/phpmailer": "6.12.0",
 		"khaled.alshamaa/ar-php": "^6.3",
 		"tecnickcom/tcpdf": "^6.5",

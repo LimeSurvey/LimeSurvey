@@ -41,7 +41,7 @@ class YiiBase
 	private static $_logger;
 	public static function getVersion()
 	{
-		return '1.1.32';
+		return '1.1.33-dev';
 	}
 	public static function createWebApplication($config=null)
 	{
@@ -2097,7 +2097,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 			$next=array_shift($args);
 			foreach($next as $k => $v)
 			{
-				if(is_integer($k))
+				if(is_int($k))
 					isset($res[$k]) ? $res[]=$v : $res[$k]=$v;
 				elseif(is_array($v) && isset($res[$k]) && is_array($res[$k]))
 					$res[$k]=self::mergeArray($res[$k],$v);
@@ -2775,11 +2775,11 @@ class CHttpRequest extends CApplicationComponent
 						if($matches[4][$i]==='q')
 						{
 							// sanity check on q value
-							$q=(double)$matches[5][$i];
+							$q=(float)$matches[5][$i];
 							if($q>1)
-								$q=(double)1;
+								$q=(float)1;
 							elseif($q<0)
-								$q=(double)0;
+								$q=(float)0;
 							$accept['params'][$matches[4][$i]]=$q;
 						}
 						else
@@ -2790,7 +2790,7 @@ class CHttpRequest extends CApplicationComponent
 				}
 				// q defaults to 1 if not explicitly given
 				if(!isset($accept['params']['q']))
-					$accept['params']['q']=(double)1;
+					$accept['params']['q']=(float)1;
 				$accepts[] = $accept;
 			}
 		}
@@ -4665,7 +4665,6 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 			// where SessionHandlerInterface doesn't exist.
 			if(version_compare(PHP_VERSION, '7.0', '>='))
 			{
-				require_once(dirname(__FILE__) . '/CHttpSessionHandler.php');
 				@session_set_save_handler(new CHttpSessionHandler($this), true);
 			}
 			else
@@ -8111,7 +8110,7 @@ abstract class CActiveRecord extends CModel
 			$values=array();
 			foreach($attributes as $name=>$value)
 			{
-				if(is_integer($name))
+				if(is_int($name))
 					$values[$value]=$this->$value;
 				else
 					$values[$name]=$this->$name=$value;
@@ -8242,7 +8241,7 @@ abstract class CActiveRecord extends CModel
 			$c=$this->getDbCriteria();
 			foreach((array)$criteria->scopes as $k=>$v)
 			{
-				if(is_integer($k))
+				if(is_int($k))
 				{
 					if(is_string($v))
 					{
@@ -10328,8 +10327,8 @@ class CDbColumnSchema extends CComponent
 		switch($this->type)
 		{
 			case 'string': return (string)$value;
-			case 'integer': return (integer)$value;
-			case 'boolean': return (boolean)$value;
+			case 'integer': return (int)$value;
+			case 'boolean': return (bool)$value;
 			case 'double':
 			default: return $value;
 		}
