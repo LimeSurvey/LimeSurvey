@@ -28,7 +28,7 @@ class ResetPasswordCommand extends CConsoleCommand
                 $oUser->setPassword($args[1]);
                 // Save the model validating only the password, because there may be issues with other attributes
                 // (like an invalid value for some setting), which the user cannot fix because he doesn't have access.
-                if ($oUser->save(true, ['password'])) {
+                if ($oUser->save(true, ['password', 'session_token'])) {
                     echo "Password for user {$args[0]} was set.\n";
                     return 0;
                 } else {

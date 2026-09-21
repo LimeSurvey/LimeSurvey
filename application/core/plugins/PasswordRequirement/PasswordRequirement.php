@@ -28,26 +28,22 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
 
     protected $settings = [
         'adminPart' => array(
-            'content' => 'Password requirements for administration login',
-            'type' => 'info',
-            'class' => "h3",
-            'controlOptions' => array(
-                'class' => "col-md-offset-4 col-md-6"
-            ),
+            'title' => 'Password requirements for administration login',
+            'type' => 'separator',
         ),
         'needsNumber' => array(
             'label' => 'Require at least one digit',
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'default' => self::DEFAULT_NEEDS_NUMBER,
         ),
         'needsUppercase' => array(
             'label' => 'Require at least one uppercase character',
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'default' => self::DEFAULT_NEEDS_UPPERCASE,
         ),
         'needsNonAlphanumeric' => array(
             'label' => 'Require at least one special character',
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'default' => self::DEFAULT_NEEDS_NON_ALPHANUMERIC,
         ),
         'minimumSize' => array(
@@ -55,12 +51,8 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             'type' => 'int',
         ),
         'surveyPart' => array(
-            'content' => 'Password requirements for “Save and return later” feature',
-            'type' => 'info',
-            'class' => "h3",
-            'controlOptions' => array(
-                'class' => "col-md-offset-4 col-md-6"
-            ),
+            'title' => 'Password requirements for “Save and return later” feature',
+            'type' => 'separator',
         ),
         'surveySaveActive' => array(
             'type' => 'boolean',
@@ -69,17 +61,17 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         ),
         'surveySaveNeedsNumber' => array(
             'label' => 'Require at least one digit',
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'default' => self::DEFAULT_SURVEY_SAVE_NEEDS_NUMBER,
         ),
         'surveySaveNeedsUppercase' => array(
             'label' => 'Require at least one uppercase character',
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'default' => self::DEFAULT_SURVEY_SAVE_NEEDS_UPPERCASE,
         ),
         'surveySaveNeedsNonAlphanumeric' => array(
             'label' => 'Require at least one special character',
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'default' => self::DEFAULT_SURVEY_SAVE_NEEDS_NON_ALPHANUMERIC,
         ),
         'surveySaveMinimumSize' => array(
@@ -204,13 +196,13 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     public function getPluginSettings($getValues = true)
     {
         $settings = parent::getPluginSettings($getValues);
-        $settings['adminPart']['content'] = $this->gT("Password requirements for administration login");
+        $settings['adminPart']['title'] = $this->gT("Password requirements for administration login");
         $settings['needsNumber']['label'] = $this->gT("Require at least one digit");
         $settings['needsUppercase']['label'] = $this->gT("Require at least one uppercase character");
         $settings['needsNonAlphanumeric']['label'] = $this->gT("Require at least one special character");
         $settings['minimumSize']['label'] = $this->gT("Minimum password length");
         $settings['minimumSize']['help'] = sprintf(gT('Default value will be %d if left blank'), self::DEFAULT_MINIMUM_SIZE);
-        $settings['surveyPart']['content'] = $this->gT("Password requirements for “Save and return later” feature");
+        $settings['surveyPart']['title'] = $this->gT("Password requirements for “Save and return later” feature");
         $settings['surveySaveActive']['label'] = $this->gT("Check password when use “Save and return later” feature");
         $settings['surveySaveNeedsNumber']['label'] = $this->gT("Require at least one digit");
         $settings['surveySaveNeedsUppercase']['label'] = $this->gT("Require at least one uppercase character");
