@@ -11,6 +11,7 @@ export const SurveyListComponent = ({
   titleRef,
   titleSelectOffset,
   handleSurveySwitch,
+  showCode = false,
 }) => {
   return (
     <Form.Select
@@ -18,7 +19,7 @@ export const SurveyListComponent = ({
       onChange={handleSurveySwitch}
       value={surveyId}
       className={classNames('form-select-top-bar', {
-        'd-none': surveyTitleIsFocused,
+        'd-none': surveyTitleIsFocused && showCode,
       })}
       style={{
         width: surveyTitleWidth + titleSelectOffset,

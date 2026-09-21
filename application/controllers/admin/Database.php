@@ -384,6 +384,7 @@ class Database extends SurveyCommonAction
             'language' => $request->getPost('language'),
             'additional_languages' => $request->getPost('additional_languages'),
             'admin' => $request->getPost('admin'),
+            'code' => $request->getPost('code'),
             'adminemail' => $request->getPost('adminemail'),
             'bounce_email' => $request->getPost('bounce_email'),
             'format' => $request->getPost('format'),

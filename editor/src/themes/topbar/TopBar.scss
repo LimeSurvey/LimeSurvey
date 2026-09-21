@@ -43,20 +43,89 @@
 
     .form-select-top-bar {
       position: absolute;
-      margin-left: 25px;
       border: none;
       outline: none;
       color: $white;
       z-index: 1;
 
-      &:active,
-      &:focus {
+      option {
         color: black;
       }
     }
   }
 
   box-shadow: 0 1px 2px -2px gray;
+
+  // internal title plus button shown when survey title is focused
+  .internal-title-plus-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 4px;
+    color: $g-700;
+    border-radius: $border-radius;
+
+    &:hover {
+      background-color: $g-200;
+      color: $black;
+    }
+
+    i::before {
+      font-size: 16px;
+    }
+  }
+
+  // internal title pill badge
+  .internal-title-badge {
+    display: inline-flex;
+    align-items: center;
+    max-width: 180px;
+    padding: 2px 8px;
+    margin-right: 4px;
+    background-color: $g-200;
+    border-radius: 37px;
+    cursor: pointer;
+    color: $g-900;
+    background: $g-200;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @include reg12;
+  }
+
+  .internal-title-form {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 12px;
+    position: absolute;
+    top: calc($top-bar-height);
+    border-radius: 4px;
+    background: $white;
+    height: 154px;
+    width: 280px;
+    box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+
+    .buttons-container {
+      button {
+        height: 32px;
+        padding: 0 16px;
+      }
+    }
+
+    .close-button {
+      height: 16px;
+      button {
+        padding: 0;
+      }
+    }
+
+    .internal-title-input {
+      margin-bottom: 20px;
+    }
+  }
 
   .top-bar-middle {
     position: absolute;
