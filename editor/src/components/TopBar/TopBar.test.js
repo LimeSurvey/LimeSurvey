@@ -130,10 +130,7 @@ describe('TopBar', () => {
       pageName: PAGES.EDITOR,
       shouldAutoOpenOverview: true,
     })
-    queryClient.setQueryData(
-      ['appState', STATES.LOADED_SURVEY_ID],
-      Survey.sid
-    )
+    queryClient.setQueryData(['appState', STATES.LOADED_SURVEY_ID], Survey.sid)
 
     await renderWithProviders(<TopBar surveyId={Survey.sid} />)
 
@@ -171,10 +168,7 @@ describe('TopBar', () => {
       pageName: PAGES.EDITOR,
       shouldAutoOpenOverview: true,
     })
-    queryClient.setQueryData(
-      ['appState', STATES.LOADED_SURVEY_ID],
-      Survey.sid
-    )
+    queryClient.setQueryData(['appState', STATES.LOADED_SURVEY_ID], Survey.sid)
 
     await renderWithProviders(<TopBar surveyId={Survey.sid} />)
 

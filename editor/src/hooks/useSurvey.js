@@ -26,11 +26,9 @@ export const useSurvey = (id) => {
   const [, setSurveyRefreshRequired] = useAppState(
     STATES.SURVEY_REFRESH_REQUIRED
   )
-  const [, setLoadedSurveyId] = useAppState(
-    STATES.LOADED_SURVEY_ID,
-    null,
-    { meta: { persist: false } }
-  )
+  const [, setLoadedSurveyId] = useAppState(STATES.LOADED_SURVEY_ID, null, {
+    meta: { persist: false },
+  })
   const [surveyHash, setSurveyHash] = useAppState(STATES.SURVEY_HASH, {
     updateHash: 0,
     refetchHash: 0,
@@ -65,10 +63,7 @@ export const useSurvey = (id) => {
 
   const fetchSurvey = async (id, signal) => {
     const requestedSurveyId = id?.toString()
-    queryClient.setQueryData(
-      [STATES.REQUESTED_SURVEY_ID],
-      requestedSurveyId
-    )
+    queryClient.setQueryData([STATES.REQUESTED_SURVEY_ID], requestedSurveyId)
 
     const currentSurveyId = data?.survey?.sid?.toString()
     const isSameSurvey = id?.toString() === currentSurveyId
