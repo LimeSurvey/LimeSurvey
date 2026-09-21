@@ -454,13 +454,13 @@ class remotecontrol_handle
      * Set survey properties (RPC function)
      *
      * @see \Survey for the list of available properties
-     * Properties available are restricted
-     * * Always
+     * Some properties may not be modified depending on the survey's state
+     * * Always restricted
      *     * sid
      *     * active
      *     * language
      *     * additional_languages
-     * * If survey is active
+     * * Restricte if survey is active
      *     * anonymized
      *     * datestamp
      *     * savetimings
@@ -508,6 +508,7 @@ class remotecontrol_handle
                     unset($aSurveyData['savetimings']);
                     unset($aSurveyData['ipaddr']);
                     unset($aSurveyData['refurl']);
+                    unset($aSurveyData['savequotaexit']);
                 }
 
                 if (empty($aSurveyData)) {
@@ -584,6 +585,7 @@ class remotecontrol_handle
             'ipanonymize',
             'refurl',
             'savetimings',
+            'savequotaexit',
         ];
         // update survey activation settings
         foreach ($activationSettingNames as $activationSettingName) {
