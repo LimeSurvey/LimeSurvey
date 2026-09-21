@@ -38,10 +38,10 @@ class ExportAnswerFormatter
     }
 
     /**
-     * Load answer data for a survey into the shared cache.
+     * Preload answer labels and set the language used by subsequent formatting.
      *
-     * @param int $surveyId
-     * @param string $language
+     * @param int $surveyId Survey ID
+     * @param string $language Language code for answer and subquestion labels
      */
     public function loadAnswers($surveyId, $language)
     {
@@ -56,7 +56,7 @@ class ExportAnswerFormatter
      * @param mixed $value Raw answer value from the database
      * @param string|null $type Question type character
      * @param string $fieldKey Full field key (e.g. "123X456X789SQ001")
-     * @param int|string|null $qid Question ID for answer label lookup
+     * @param int|string|null $qid Question ID for answer or ranking subquestion lookup
      * @return mixed Formatted display value
      */
     public function formatFullAnswer($value, $type, $fieldKey, $qid = null)
@@ -200,15 +200,11 @@ class ExportAnswerFormatter
     }
 
     /**
-     * Format ranking (R) answer values.
+     * Format a ranking answer as localized subquestion text.
      *
-     * Ranking options are stored as subquestions rather than as rows in the
-     * answers table, so they are resolved via the subquestion title lookup
-     * instead of the answer label cache.
-     *
-     * @param mixed $value
-     * @param int|string|null $qid
-     * @return mixed
+     * @param mixed $value Ranking option code
+     * @param int|string|null $qid Parent ranking question ID
+     * @return mixed Localized subquestion text, or the original value when unavailable
      */
     private function formatRankingAnswer($value, $qid)
     {
