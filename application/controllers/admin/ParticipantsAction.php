@@ -2086,8 +2086,18 @@ class ParticipantsAction extends SurveyCommonAction
         // NB: Comma-separated list.
         $shareIds = Yii::app()->request->getPost('id');
         if ($operation == 'del') {
-            // If operation is delete , it will delete, otherwise edit it
-            ParticipantShare::model()->deleteRow($shareIds);
+            // If operation is delete, it will delete, otherwise edit it.
+            // Only pass through the share ids the current user is allowed to manage.
+            $authorizedShareIds = array_filter(
+                explode(',', (string) $shareIds),
+                function ($shareId) {
+                    list($participantId) = explode('--', $shareId);
+                    return ParticipantShare::model()->isAllowedToManageShare($participantId);
+                }
+            );
+            if (!empty($authorizedShareIds)) {
+                ParticipantShare::model()->deleteRow(implode(',', $authorizedShareIds));
+            }
         } else {
             $aData = array(
                 'participant_id' => Yii::app()->request->getPost('participant_id'),
