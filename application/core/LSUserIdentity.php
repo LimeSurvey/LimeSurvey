@@ -50,6 +50,15 @@ class LSUserIdentity extends CUserIdentity
      */
     public $plugin = 'Authdb';
 
+    /**
+     * Identifier of the support/operator account that authenticated on behalf of the user
+     * via a one-time password (see Authdb::newUserSession()), for attribution in the audit log.
+     * Null for a regular login.
+     *
+     * @var string|null
+     */
+    public $oneTimePasswordActorId = null;
+
     public function authenticate()
     {
         // First initialize the result, we can later retrieve it to get the exact error code/message

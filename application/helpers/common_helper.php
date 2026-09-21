@@ -1191,6 +1191,15 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
                 $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate'] . ' H:i:s');
             }
             break;
+        case 'quota_exit':
+            // Try to get quota name
+            if (trim((string) $sValue) !== '') {
+                $quota = Quota::model()->findByAttributes(['sid' => $iSurveyID, 'id' => $sValue]);
+                if ($quota) {
+                    $this_answer = $quota->name;
+                }
+            }
+            break;
     }
     if (isset($this_answer)) {
         return $this_answer . " [$sValue]";
@@ -1655,6 +1664,14 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             $fieldmap["refurl"]['question'] = gT("Referrer URL");
             $fieldmap["refurl"]['group_name'] = "";
         }
+    }
+
+    // Add 'quota_exit' to fieldmap.
+    $fieldmap["quota_exit"] = array("fieldname" => "quota_exit", 'type' => "quota_exit", 'sid' => $surveyid, "gid" => "", "qid" => "", "aid" => "");
+    if ($style == "full") {
+        $fieldmap["quota_exit"]['title'] = "";
+        $fieldmap["quota_exit"]['question'] = gT("Quota exit");
+        $fieldmap["quota_exit"]['group_name'] = "";
     }
 
     $sOldLanguage = App()->language;
