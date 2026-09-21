@@ -202,16 +202,31 @@ class ExportAnswerFormatter
     /**
      * Format a ranking answer as localized subquestion text.
      *
-     * @param mixed $value Ranking option code
-     * @param int|string|null $qid Parent ranking question ID
-     * @return mixed Localized subquestion text, or the original value when unavailable
+     * Ranking answers are stored as a single JSON array column per question,
+     * holding the ranked list of subquestion codes ordered by rank (index 0 =
+     * rank 1). This decodes that JSON and maps each code to its subquestion
+     * text via the title lookup, since ranking options are not rows in the
+     * answers table and so are not resolved by the answer label cache.
+     *
+     * @param mixed $value The raw JSON array of ranked subquestion codes
+     * @param int|string|null $qid
+     * @return mixed
      */
     private function formatRankingAnswer($value, $qid)
     {
         if ($qid === null || $value === null || $value === '') {
             return $value;
         }
-        return Question::model()->getQuestionFromTitle((int)$qid, $value, $this->language) ?? $value;
+        $rankedCodes = json_decode($value, true);
+        if (!is_array($rankedCodes)) {
+            return $value;
+        }
+        $rankedTexts = [];
+        foreach ($rankedCodes as $index => $code) {
+            $text = Question::model()->getQuestionFromTitle((int)$qid, $code, $this->language) ?? $code;
+            $rankedTexts[] = ($index + 1) . ': ' . $text;
+        }
+        return implode(', ', $rankedTexts);
     }
 
     /**

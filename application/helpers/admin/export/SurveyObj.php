@@ -114,13 +114,7 @@ class SurveyObj
                 break;
 
             case Question::QT_R_RANKING:   // Ranking TYPE
-                // Ranking options are stored as subquestions, not as rows in the answers table,
-                // so they are not resolved by the generic $answers lookup above.
-                if ($answerCode !== "" && !is_null($answerCode)) {
-                    $fullAnswer = Question::model()->getQuestionFromTitle($questionId, $answerCode, $sLanguageCode) ?? $answerCode;
-                } else {
-                    $fullAnswer = $answerCode;
-                }
+                $fullAnswer = $this->getRankingFullAnswer($questionId, $answerCode, $sLanguageCode);
                 break;
 
             case Question::QT_1_ARRAY_DUAL:   // Array dual scale
@@ -249,6 +243,37 @@ class SurveyObj
         }
 
         return $fullAnswer;
+    }
+
+    /**
+     * Resolves the full-text answer for a ranking question.
+     *
+     * Ranking answers are stored as a single JSON array column per question
+     * (e.g. "Q123"), holding the ranked list of subquestion codes ordered by
+     * rank (index 0 = rank 1). This decodes that JSON and maps each code to
+     * its subquestion text, since ranking options are not rows in the
+     * answers table.
+     *
+     * @param int $questionId
+     * @param string|null $answerCode The raw JSON array of ranked subquestion codes
+     * @param string $sLanguageCode
+     * @return string|null
+     */
+    private function getRankingFullAnswer($questionId, $answerCode, $sLanguageCode)
+    {
+        if ($answerCode === "" || is_null($answerCode)) {
+            return $answerCode;
+        }
+        $rankedCodes = json_decode($answerCode, true);
+        if (!is_array($rankedCodes)) {
+            return $answerCode;
+        }
+        $rankedTexts = [];
+        foreach ($rankedCodes as $index => $code) {
+            $text = Question::model()->getQuestionFromTitle($questionId, $code, $sLanguageCode) ?? $code;
+            $rankedTexts[] = ($index + 1) . ': ' . $text;
+        }
+        return implode(', ', $rankedTexts);
     }
 
     /**
