@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 use TemplateConfiguration;
 
-class Update_712 extends DatabaseUpdateBase
+class Update_717 extends DatabaseUpdateBase
 {
     /**
      * Add the 'deselectsinglechoice' option (introduced in fruity_twentythree config.xml)
