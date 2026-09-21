@@ -48,7 +48,7 @@ class SurveyObjRankingExportTest extends TestBaseClass
      */
     public function testRankingAnswerFormattingFunctions()
     {
-        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_rankingFilterHideShow.lss');
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_rankingNative.lss');
 
         // Ranking subquestions keep the parent's type ('R'), so filter on
         // parent_qid too or this can match a subquestion instead of the

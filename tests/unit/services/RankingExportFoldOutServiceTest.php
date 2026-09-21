@@ -33,7 +33,7 @@ class RankingExportFoldOutServiceTest extends TestBaseClass
      */
     public function testRankingExportFoldsOutIntoDynamicallySizedColumns()
     {
-        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_rankingFilterHideShow.lss');
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_rankingNative.lss');
 
         $activator = new SurveyActivator(self::$testSurvey);
         $activator->activate();

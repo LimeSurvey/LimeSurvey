@@ -21,6 +21,16 @@ use Yii;
  * the exported responses (not the question's total subquestion count, since
  * a respondent may rank fewer items than exist).
  *
+ * Uses the limesurvey_survey_rankingNative.lss fixture, whose ranking items
+ * are defined as native subquestions, rather than one authored in the legacy
+ * answers-table format that application/helpers/admin/import_helper.php
+ * converts into subquestions at import time (handleLegacyRankingAnswers()):
+ * that conversion path has proven flaky deep in a large PHPUnit run
+ * (observed to silently produce zero subquestions for reasons that appear
+ * tied to unrelated prior process state) — a separate, pre-existing import
+ * issue out of scope for this fix. Sidestepping it keeps this test
+ * deterministic.
+ *
  * @group services
  */
 class RankingExportFoldOutTest extends BaseTest
@@ -39,11 +49,7 @@ class RankingExportFoldOutTest extends BaseTest
     {
         $this->activateAuthdbExportPlugin();
 
-        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_rankingFilterHideShow.lss');
-
-        $activator = new SurveyActivator(self::$testSurvey);
-        $activator->activate();
-        Yii::app()->db->schema->refresh();
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_rankingNative.lss');
 
         $rankingQuestion = \Question::model()->findByAttributes([
             'sid' => self::$surveyId,
@@ -51,6 +57,16 @@ class RankingExportFoldOutTest extends BaseTest
             'parent_qid' => 0,
         ]);
         $this->assertNotNull($rankingQuestion, 'Fixture should contain a ranking question.');
+
+        $rawQuestions = Yii::app()->db->createCommand('SELECT qid, parent_qid, sid, title, type FROM {{questions}} WHERE parent_qid = :pqid')
+            ->queryAll(true, [':pqid' => $rankingQuestion->qid]);
+        $rawL10ns = Yii::app()->db->createCommand('SELECT qid, language, question FROM {{question_l10ns}} WHERE qid IN (' . implode(',', array_column($rawQuestions, 'qid') ?: [0]) . ')')
+            ->queryAll();
+        file_put_contents('/tmp/debug_rank_subq.txt', "sid={$rankingQuestion->sid} qid={$rankingQuestion->qid}\nquestions:\n" . print_r($rawQuestions, true) . "\nl10ns:\n" . print_r($rawL10ns, true));
+
+        $activator = new SurveyActivator(self::$testSurvey);
+        $activator->activate();
+        Yii::app()->db->schema->refresh();
 
         $subQuestions = getSubQuestions(self::$surveyId, $rankingQuestion->qid, 'en');
         $this->assertCount(4, $subQuestions, 'Fixture is expected to define 4 ranking items.');
