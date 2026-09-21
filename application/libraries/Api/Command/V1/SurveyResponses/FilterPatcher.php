@@ -63,7 +63,7 @@ class FilterPatcher
                     : $filterParam['key'];
                 // special case since 'completed' is returned in the responses and calculated on the fly,
                 if ($key === 'completed') {
-                    $key = 'submitDate';
+                    $key = 'submitdate';
                 }
                 // Validate the resolved key(s) against the survey's real columns so nested question/subquestion
                 // columns are filtered at query level and unknown keys never reach the SQL.
