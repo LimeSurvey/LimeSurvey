@@ -50,7 +50,7 @@ class ParticipantShareTest extends TestBaseClass
         $existingShare->participant_id = $participant->participant_id;
         $existingShare->share_uid = $sharee->uid;
         $existingShare->date_added = date('Y-m-d H:i:s');
-        $existingShare->can_edit = 1;
+        $existingShare->can_edit = '1';
         $this->assertTrue($existingShare->save(), 'Saved initial editable share');
 
         try {
