@@ -59,4 +59,41 @@ class ImportTest extends TestBaseClass
         $survey->delete();
         $copySurvey->delete();
     }
+
+    /**
+     * Test that values from the imported file which are echoed back inside
+     * import warning messages are HTML-encoded, so they cannot be used to
+     * inject markup into the import summary page (see #20697).
+     */
+    public function testImportWarningValuesAreHtmlEncoded(): void
+    {
+        $file = self::$surveysFolder . '/limesurvey_survey_900697_xss_import_warning_test.lss';
+
+        \Yii::app()->session['loginID'] = 1;
+
+        try {
+            $result = importSurveyFile($file, false);
+            $survey = \Survey::model()->findByPk($result['newsid']);
+
+            $warning = null;
+            foreach ($result['importwarnings'] as $importWarning) {
+                if (strpos($importWarning, 'xss_test_marker') !== false) {
+                    $warning = $importWarning;
+                    break;
+                }
+            }
+
+            $this->assertNotNull($warning, 'Expected a warning about the unrecognized survey setting.');
+            $this->assertStringNotContainsString('<b>', $warning);
+            $this->assertStringNotContainsString('"quoted"', $warning);
+            $this->assertStringContainsString('&lt;b&gt;', $warning);
+            $this->assertStringContainsString('&quot;quoted&quot;', $warning);
+            $this->assertStringContainsString('&amp;', $warning);
+        } finally {
+            if (isset($survey) && $survey) {
+                \Yii::app()->session['loginID'] = 1;
+                $survey->delete();
+            }
+        }
+    }
 }
