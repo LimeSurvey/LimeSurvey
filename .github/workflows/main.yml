@@ -273,6 +273,7 @@ jobs:
           ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updates
           ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php
           ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php
+        continue-on-error: true
 
         # we need to do this because otherwise the auto commit step commits additional files
       - name: Ignore file mode changes
