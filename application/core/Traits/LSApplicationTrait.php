@@ -47,7 +47,7 @@ trait LSApplicationTrait
      * this session must be treated as invalid.
      *
      * The check is skipped on installations not yet upgraded to DB version
-     * 715 (column does not exist yet) and for users who have not logged in
+     * 716 (column does not exist yet) and for users who have not logged in
      * since that upgrade (no token generated yet), to avoid ever forcing an
      * unrelated logout.
      *
@@ -56,7 +56,7 @@ trait LSApplicationTrait
      */
     private function isSessionTokenStale($oUser)
     {
-        if (App()->getConfig('DBVersion') < 715 || empty($oUser->session_token)) {
+        if (App()->getConfig('DBVersion') < 716 || empty($oUser->session_token)) {
             return false;
         }
         return $oUser->session_token !== App()->session['session_token'];
