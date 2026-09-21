@@ -28,6 +28,7 @@ class TransformerOutputSurveyResponsesTest extends TestBaseClass
     public function testQuotaExitNameIsNullForUnmatchedQuotaId(): void
     {
         $transformer = new TransformerOutputSurveyResponses();
+        $transformer->hasTokenTable = false;
         $survey = $this->makeSurvey([
             (object) ['id' => 7, 'name' => 'Completed quota'],
         ]);
@@ -46,6 +47,7 @@ class TransformerOutputSurveyResponsesTest extends TestBaseClass
     public function testQuotaExitNameIsResolvedFromSurveyContext(): void
     {
         $transformer = new TransformerOutputSurveyResponses();
+        $transformer->hasTokenTable = false;
         $survey = $this->makeSurvey([
             (object) ['id' => 12, 'name' => 'Completed quota'],
         ]);
@@ -87,6 +89,7 @@ class TransformerOutputSurveyResponsesTest extends TestBaseClass
     private function makeSurvey(array $quotas): object
     {
         return (object) [
+            'sid' => 123456,
             'quotas' => $quotas,
             'anonymized' => 'Y',
         ];
