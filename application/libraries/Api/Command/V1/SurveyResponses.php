@@ -108,7 +108,7 @@ class SurveyResponses implements CommandInterface
      * @param Request $request
      * @return array
      * @throws TransformerException
-     * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function process(Request $request): array
     {
