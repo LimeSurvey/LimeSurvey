@@ -21,7 +21,7 @@ import { PluginSlot } from 'plugins/PluginSlot'
 import { PLUGIN_SLOTS } from 'plugins/slots'
 
 export const Editor = () => {
-  const { surveyId, menu } = useParams()
+  const { surveyId, panel, menu } = useParams()
   const navigate = useNavigate()
   const { survey = {} } = useSurvey(surveyId)
   const { ready } = useTranslation()
@@ -66,8 +66,9 @@ export const Editor = () => {
       surveyId,
       surveyActivationHandlerRef,
       pageName: PAGES.EDITOR,
+      shouldAutoOpenOverview: !panel && !menu,
     })
-  }, [surveyId, surveyActivationHandlerRef])
+  }, [surveyId, panel, menu])
 
   const isLoadingSurvey =
     !survey?.sid ||

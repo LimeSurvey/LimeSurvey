@@ -8,7 +8,6 @@ import {
   createBufferOperation,
   URLS,
   isSurveyExpired,
-  PAGES,
 } from 'helpers'
 import { AddQuestion } from 'components/Survey/AddQuestion'
 import SurveyActivationHandler from 'components/PublishSettings/SurveyActivationHandler'
@@ -39,7 +38,18 @@ export const TopBar = ({
   const [currentActiveLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
   const [showOverViewModal, setShowOverViewModal] = useState(false)
   const [topbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
+  const [loadedSurveyId] = useAppState(STATES.LOADED_SURVEY_ID, null, {
+    meta: { persist: false },
+  })
   const overviewAutoOpenedForSurvey = useRef(null)
+  const isCurrentSurvey =
+    survey.sid !== undefined && Number(survey.sid) === Number(surveyId)
+  const isCurrentSurveyLoaded = Number(loadedSurveyId) === Number(surveyId)
+  const canShowOverview =
+    topbarConfig?.shouldAutoOpenOverview &&
+    isCurrentSurvey &&
+    isCurrentSurveyLoaded &&
+    survey.active === true
 
   const activeLanguage = useMemo(
     () =>
@@ -101,16 +111,16 @@ export const TopBar = ({
   }, [survey.sid, topbarConfig?.pageName])
 
   useEffect(() => {
-    if (
-      topbarConfig?.pageName === PAGES.EDITOR &&
-      survey.active &&
-      survey.sid &&
-      overviewAutoOpenedForSurvey.current !== survey.sid
-    ) {
+    if (!canShowOverview) {
+      setShowOverViewModal(false)
+      return
+    }
+
+    if (survey.sid && overviewAutoOpenedForSurvey.current !== survey.sid) {
       setShowOverViewModal(true)
       overviewAutoOpenedForSurvey.current = survey.sid
     }
-  }, [survey.active, survey.sid, topbarConfig?.pageName])
+  }, [canShowOverview, survey.sid])
 
   return (
     <div id="topbar" className={`top-bar d-flex w-100 justify-content-between`}>
@@ -153,7 +163,7 @@ export const TopBar = ({
       <SurveyActivationHandler
         ref={surveyActivationHandlerRef}
         setShowOverViewModal={setShowOverViewModal}
-        showOverViewModal={showOverViewModal}
+        showOverViewModal={canShowOverview && showOverViewModal}
       />
     </div>
   )

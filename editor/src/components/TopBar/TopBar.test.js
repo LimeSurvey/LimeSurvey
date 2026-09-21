@@ -123,12 +123,17 @@ describe('TopBar', () => {
     expect(publishSettings).toBeInTheDocument()
   })
 
-  test('Overview should not reopen when returning to the editor', async () => {
+  test('Overview closes on navigation and does not reopen when returning to the editor', async () => {
     queryClient.clear()
     Survey.active = true
     queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
       pageName: PAGES.EDITOR,
+      shouldAutoOpenOverview: true,
     })
+    queryClient.setQueryData(
+      ['appState', STATES.LOADED_SURVEY_ID],
+      Survey.sid
+    )
 
     await renderWithProviders(<TopBar surveyId={Survey.sid} />)
 
@@ -137,22 +142,72 @@ describe('TopBar', () => {
       expect(overviewModalState).toHaveAttribute('data-open', 'true')
     )
 
-    await userEvent.click(overviewModalState)
-    expect(overviewModalState).toHaveAttribute('data-open', 'false')
-
     act(() => {
       queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
         pageName: PAGES.RESPONSES,
+        shouldAutoOpenOverview: false,
       })
     })
+    await waitFor(() =>
+      expect(overviewModalState).toHaveAttribute('data-open', 'false')
+    )
+
     act(() => {
       queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
         pageName: PAGES.EDITOR,
+        shouldAutoOpenOverview: true,
       })
     })
 
     await waitFor(() =>
       expect(overviewModalState).toHaveAttribute('data-open', 'false')
     )
+  })
+
+  test('Overview does not open for an inactive survey', async () => {
+    queryClient.clear()
+    Survey.active = false
+    queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
+      pageName: PAGES.EDITOR,
+      shouldAutoOpenOverview: true,
+    })
+    queryClient.setQueryData(
+      ['appState', STATES.LOADED_SURVEY_ID],
+      Survey.sid
+    )
+
+    await renderWithProviders(<TopBar surveyId={Survey.sid} />)
+
+    const overviewModalState = await screen.findByTestId('overview-modal-state')
+    expect(overviewModalState).toHaveAttribute('data-open', 'false')
+  })
+
+  test('Overview does not open from a stale active survey in the cache', async () => {
+    queryClient.clear()
+    Survey.active = true
+    queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
+      pageName: PAGES.EDITOR,
+      shouldAutoOpenOverview: true,
+    })
+
+    await renderWithProviders(<TopBar surveyId={Number(Survey.sid) + 1} />)
+
+    const overviewModalState = await screen.findByTestId('overview-modal-state')
+    expect(overviewModalState).toHaveAttribute('data-open', 'false')
+  })
+
+  test('Overview does not open before the current survey request completes', async () => {
+    queryClient.clear()
+    Survey.active = true
+    queryClient.setQueryData([STATES.SURVEY], { survey: Survey })
+    queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
+      pageName: PAGES.EDITOR,
+      shouldAutoOpenOverview: true,
+    })
+
+    await renderWithProviders(<TopBar surveyId={Survey.sid} />)
+
+    const overviewModalState = await screen.findByTestId('overview-modal-state')
+    expect(overviewModalState).toHaveAttribute('data-open', 'false')
   })
 })
