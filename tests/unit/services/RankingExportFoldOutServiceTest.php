@@ -71,6 +71,23 @@ class RankingExportFoldOutServiceTest extends TestBaseClass
             $rankFieldName => json_encode($orderB),
         ]);
 
+        // Malformed/invalid ranking column values must not reach ranking or
+        // question-title resolution, must not crash the export, and must not
+        // be counted when sizing the rank columns from the data.
+        $invalidValues = [
+            'json object'                 => '{"0":"' . $codes[0] . '","1":"' . $codes[1] . '"}',
+            'empty array'                 => '[]',
+            'array with a scalar element' => json_encode([$codes[0], 2, $codes[1]]),
+            'array with a nested array'   => json_encode([[$codes[0]], $codes[1]]),
+        ];
+        foreach ($invalidValues as $value) {
+            SurveyDynamic::model(self::$surveyId)->insertRecords([
+                'startlanguage' => 'en',
+                'submitdate' => date('Y-m-d H:i:s'),
+                $rankFieldName => $value,
+            ]);
+        }
+
         $answerCache = new SurveyAnswerCache();
         $service = new ExportSurveyResultsService(
             new Survey(),
@@ -95,12 +112,8 @@ class RankingExportFoldOutServiceTest extends TestBaseClass
         }
         $this->assertCount(3, $rankColumnIndexes, 'Ranking question should fold out into one column per rank actually used (3), not per defined item (4).');
 
-        $rowA = array_map(function ($index) use ($rows) {
-            return $rows[1][$index];
-        }, $rankColumnIndexes);
-        $rowB = array_map(function ($index) use ($rows) {
-            return $rows[2][$index];
-        }, $rankColumnIndexes);
+        $rowA = $this->extractRankColumns($rows[1], $rankColumnIndexes);
+        $rowB = $this->extractRankColumns($rows[2], $rankColumnIndexes);
 
         $this->assertSame($codeToText[$orderA[0]], $rowA[0]);
         $this->assertSame($codeToText[$orderA[1]], $rowA[1]);
@@ -110,8 +123,30 @@ class RankingExportFoldOutServiceTest extends TestBaseClass
         $this->assertSame($codeToText[$orderB[1]], $rowB[1]);
         $this->assertSame('', $rowB[2], 'Response B only ranked 2 items; the 3rd rank column should be blank for it.');
 
+        // Rows 3-6: the malformed values above, in insertion order. None of
+        // them should have resolved to any text: all 3 rank columns blank.
+        foreach (array_keys($invalidValues) as $index => $label) {
+            $invalidRow = $this->extractRankColumns($rows[3 + $index], $rankColumnIndexes);
+            $this->assertSame(['', '', ''], $invalidRow, "Response with invalid ranking value ($label) should render as blank cells, not error or resolve to text.");
+        }
+
         self::$testSurvey->delete();
         self::$testSurvey = null;
+    }
+
+    /**
+     * Picks out the ranking columns' values from a CSV row, given the column
+     * indexes located from the header.
+     *
+     * @param array<int, string> $row
+     * @param array<int, int> $columnIndexes
+     * @return array<int, string>
+     */
+    private function extractRankColumns(array $row, array $columnIndexes)
+    {
+        return array_map(function ($index) use ($row) {
+            return $row[$index];
+        }, $columnIndexes);
     }
 
     /**

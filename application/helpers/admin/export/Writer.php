@@ -264,10 +264,43 @@ abstract class Writer implements IWriter
     {
         $field = $oSurvey->fieldMap[$column] ?? null;
         if ($field !== null && $field['type'] === Question::QT_R_RANKING && $field['suffix'] !== '') {
-            $rankedCodes = json_decode($aResponse['Q' . $field['qid']] ?? '', true);
-            return (is_array($rankedCodes) && isset($rankedCodes[$field['aid'] - 1])) ? $rankedCodes[$field['aid'] - 1] : null;
+            $rankedCodes = $this->decodeRankedCodes($aResponse['Q' . $field['qid']] ?? null);
+            return ($rankedCodes !== null && isset($rankedCodes[$field['aid'] - 1])) ? $rankedCodes[$field['aid'] - 1] : null;
         }
         return $aResponse[$column] ?? null;
+    }
+
+    /**
+     * Decodes a ranking question's raw JSON-array column value into a plain
+     * list of subquestion codes, or null if it isn't one.
+     *
+     * Decodes without the "assoc" flag so a JSON object (e.g. "{...}") always
+     * comes back as a stdClass and fails the is_array() check below, rather
+     * than risking being coerced into something that looks like a sequential
+     * array. Only a non-empty array whose every element is a string is
+     * accepted; anything else (a non-string/empty raw value, invalid JSON, an
+     * object, an empty array, or an array containing a non-string element,
+     * including nested arrays/objects) returns null so it can never reach
+     * ranking or question-title resolution downstream.
+     *
+     * @param mixed $rawValue
+     * @return string[]|null
+     */
+    private function decodeRankedCodes($rawValue)
+    {
+        if (!is_string($rawValue) || $rawValue === '') {
+            return null;
+        }
+        $decoded = json_decode($rawValue);
+        if (!is_array($decoded) || $decoded === []) {
+            return null;
+        }
+        foreach ($decoded as $code) {
+            if (!is_string($code)) {
+                return null;
+            }
+        }
+        return $decoded;
     }
 
     /**

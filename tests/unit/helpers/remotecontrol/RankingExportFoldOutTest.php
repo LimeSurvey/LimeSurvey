@@ -77,6 +77,23 @@ class RankingExportFoldOutTest extends BaseTest
             $rankFieldName => json_encode($orderB),
         ]);
 
+        // Malformed/invalid ranking column values must not reach ranking or
+        // question-title resolution, must not crash the export, and must not
+        // be counted when sizing the rank columns from the data.
+        $invalidValues = [
+            'json object'                 => '{"0":"' . $codes[0] . '","1":"' . $codes[1] . '"}',
+            'empty array'                 => '[]',
+            'array with a scalar element' => json_encode([$codes[0], 2, $codes[1]]),
+            'array with a nested array'   => json_encode([[$codes[0]], $codes[1]]),
+        ];
+        foreach ($invalidValues as $value) {
+            SurveyDynamic::model(self::$surveyId)->insertRecords([
+                'startlanguage' => 'en',
+                'submitdate' => date('Y-m-d H:i:s'),
+                $rankFieldName => $value,
+            ]);
+        }
+
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
         $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
 
@@ -107,6 +124,13 @@ class RankingExportFoldOutTest extends BaseTest
         $this->assertSame($codeToText[$orderB[0]], $rowB[0]);
         $this->assertSame($codeToText[$orderB[1]], $rowB[1]);
         $this->assertSame('', $rowB[2], 'Response B only ranked 2 items; the 3rd rank column should be blank for it.');
+
+        // Rows 3-6: the malformed values above, in insertion order. None of
+        // them should have resolved to any text: all 3 rank columns blank.
+        foreach (array_keys($invalidValues) as $index => $label) {
+            $invalidRow = $rows[3 + $index];
+            $this->assertSame(['', '', ''], $invalidRow, "Response with invalid ranking value ($label) should render as blank cells, not error or resolve to text.");
+        }
 
         // "Answer codes" export: same fold-out, but raw codes instead of resolved text.
         $shortResult = $this->handler->export_responses(

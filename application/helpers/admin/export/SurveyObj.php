@@ -116,10 +116,13 @@ class SurveyObj
             case Question::QT_R_RANKING:   // Ranking TYPE
                 // Ranking options are subquestions, not rows in the answers table
                 // (hence not resolved by the generic $answers lookup above), and by
-                // this point $answerCode is a single subquestion code for one rank
-                // position: the export layer decodes the question's raw JSON-array
-                // storage into one column per rank before this is called.
-                if ($answerCode === "" || is_null($answerCode)) {
+                // this point $answerCode is expected to be a single subquestion
+                // code for one rank position: the export layer decodes the
+                // question's raw JSON-array storage into one column per rank
+                // before this is called. Non-string values (including one that
+                // slipped through as invalid/malformed JSON) are returned
+                // unchanged rather than passed to the title lookup.
+                if (!is_string($answerCode) || $answerCode === "") {
                     $fullAnswer = $answerCode;
                 } else {
                     $fullAnswer = Question::model()->getQuestionFromTitle($questionId, $answerCode, $sLanguageCode) ?? $answerCode;

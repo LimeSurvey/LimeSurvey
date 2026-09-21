@@ -204,13 +204,15 @@ class ExportAnswerFormatter
      *
      * Ranking answers are stored as a single JSON array column per question
      * (the ranked list of subquestion codes, ordered by rank), but by the time
-     * this is called $value is a single subquestion code for one rank
-     * position: ExportSurveyResultsService::expandRankingFieldMap() /
+     * this is called $value is expected to be a single subquestion code for
+     * one rank position: ExportSurveyResultsService::expandRankingFieldMap() /
      * TransformerOutputSurveyResponses::extractAnswers() decode that JSON and
      * fold it out into one answer entry per rank before formatFullAnswer() is
      * called. Ranking options are not rows in the answers table, so they are
      * not resolved by the answer label cache; the title lookup is used
-     * instead.
+     * instead. Non-string values (including one that slipped through as
+     * invalid/malformed JSON) are returned unchanged rather than passed to
+     * the title lookup.
      *
      * @param mixed $value A single ranked subquestion code
      * @param int|string|null $qid
@@ -218,7 +220,7 @@ class ExportAnswerFormatter
      */
     private function formatRankingAnswer($value, $qid)
     {
-        if ($qid === null || $value === null || $value === '') {
+        if ($qid === null || !is_string($value) || $value === '') {
             return $value;
         }
         return Question::model()->getQuestionFromTitle((int)$qid, $value, $this->language) ?? $value;
