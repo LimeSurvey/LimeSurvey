@@ -53,16 +53,15 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     public function transform($data = [], $options = []): array
     {
         $responses = [];
-        $options = $options ?? [];
-        $options['quotaNames'] = isset($options['survey'])
-            ? \CHtml::listData($options['survey']->quotas, 'id', 'name')
-            : [];
-        if ($data !== null) {
-            foreach ($data as $surveyResponse) {
-                $responses[] = $this->transformerResponseItem($surveyResponse, $options);
-            }
+        $options ??= [];
+        $options['quotaNames'] = \CHtml::listData(
+            $options['survey']->quotas ?? [],
+            'id',
+            'name'
+        );
+        foreach ($data ?? [] as $surveyResponse) {
+            $responses[] = $this->transformerResponseItem($surveyResponse, $options);
         }
-
 
         return $responses;
     }
