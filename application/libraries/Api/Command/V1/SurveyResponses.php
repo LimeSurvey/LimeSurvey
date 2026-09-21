@@ -236,7 +236,7 @@ class SurveyResponses implements CommandInterface
             return [];
         }
 
-        $model = \SurveyTimingDynamic::model((string)$this->survey->sid);
+        $model = \SurveyTimingDynamic::model($this->survey->sid);
         $fieldNames = array_values(array_intersect(
             $fieldNames,
             $model->getTableSchema()->getColumnNames()

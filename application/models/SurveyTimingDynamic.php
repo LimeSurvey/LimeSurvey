@@ -24,7 +24,7 @@ class SurveyTimingDynamic extends LSActiveRecord
 
     /**
      * @inheritdoc
-     * @param string $sid
+     * @param int $sid
      * @return SurveyTimingDynamic
      * @psalm-suppress ParamNameMismatch
      */
