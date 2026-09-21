@@ -64,7 +64,6 @@ class SurveymenuController extends SurveyCommonAction
      */
     public function update($id = 0)
     {
-        $unusedTestVariable = 'this should trigger PHPMD';
 
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied!"));

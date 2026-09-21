@@ -24,6 +24,8 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function accessRules()
     {
+        $unusedTestVariable = 'this should trigger PHPMD';
+
         return [
             [
                 'allow',
