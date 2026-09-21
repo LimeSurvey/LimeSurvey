@@ -117,7 +117,13 @@ class SurveyObj
                 break;
 
             case Question::QT_R_RANKING:   // Ranking TYPE
-                $fullAnswer = $answer;
+                // Ranking options are stored as subquestions, not as rows in the answers table,
+                // so they are not resolved by the generic $answers lookup above.
+                if ($answerCode !== "" && !is_null($answerCode)) {
+                    $fullAnswer = Question::model()->getQuestionFromTitle($questionId, $answerCode, $sLanguageCode) ?? $answerCode;
+                } else {
+                    $fullAnswer = $answerCode;
+                }
                 break;
 
             case Question::QT_1_ARRAY_DUAL:   // Array dual scale

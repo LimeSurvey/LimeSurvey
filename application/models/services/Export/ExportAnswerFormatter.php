@@ -29,6 +29,9 @@ class ExportAnswerFormatter
     /** @var SurveyAnswerCache */
     private $answerCache;
 
+    /** @var string|null Language used to resolve ranking subquestion labels. */
+    private $language;
+
     public function __construct(SurveyAnswerCache $answerCache)
     {
         $this->answerCache = $answerCache;
@@ -42,6 +45,7 @@ class ExportAnswerFormatter
      */
     public function loadAnswers($surveyId, $language)
     {
+        $this->language = $language;
         $this->answerCache->load($surveyId, $language);
     }
 
@@ -95,7 +99,7 @@ class ExportAnswerFormatter
         }
 
         if ($type === Question::QT_R_RANKING) {
-            return $this->lookupAnswerLabel($qid, 0, $value) ?? $value;
+            return $this->formatRankingAnswer($value, $qid);
         }
 
         if (
@@ -193,6 +197,25 @@ class ExportAnswerFormatter
     {
         $scaleId = (mb_substr($fieldKey, -1) === '0') ? 0 : 1;
         return $this->lookupAnswerLabel($qid, $scaleId, $value) ?? '';
+    }
+
+    /**
+     * Format ranking (R) answer values.
+     *
+     * Ranking options are stored as subquestions rather than as rows in the
+     * answers table, so they are resolved via the subquestion title lookup
+     * instead of the answer label cache.
+     *
+     * @param mixed $value
+     * @param int|string|null $qid
+     * @return mixed
+     */
+    private function formatRankingAnswer($value, $qid)
+    {
+        if ($qid === null || $value === null || $value === '') {
+            return $value;
+        }
+        return Question::model()->getQuestionFromTitle((int)$qid, $value, $this->language) ?? $value;
     }
 
     /**
