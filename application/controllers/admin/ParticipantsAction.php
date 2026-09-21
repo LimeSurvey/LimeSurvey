@@ -2353,11 +2353,7 @@ class ParticipantsAction extends SurveyCommonAction
         $iParticipantId = Yii::app()->request->getPost('participant_id');
         $bCanEdit = Yii::app()->request->getPost('can_edit');
 
-        if (
-            ParticipantShare::model()->canEditSharedParticipant($iParticipantId)
-            || $hasUpdatePermission
-            || $isSuperAdmin
-        ) {
+        if (ParticipantShare::model()->isAllowedToManageShare($iParticipantId)) {
             $time = time();
             $aData = array(
                 'participant_id' => $iParticipantId,
