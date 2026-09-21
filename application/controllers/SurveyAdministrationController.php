@@ -24,7 +24,8 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function accessRules()
     {
-        return [
+        return
+            [
             [
                 'allow',
                 'actions' => [],
