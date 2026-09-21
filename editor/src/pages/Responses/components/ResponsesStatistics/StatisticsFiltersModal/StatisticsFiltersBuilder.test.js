@@ -75,7 +75,6 @@ describe('StatisticsFiltersBuilder', () => {
     expect(onApply).not.toHaveBeenCalled()
   })
 
-
   test('"Apply filter" stays reachable after a reset empties the rows', async () => {
     const user = userEvent.setup()
     const onApply = jest.fn()
