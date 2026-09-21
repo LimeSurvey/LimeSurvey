@@ -2422,7 +2422,7 @@ class Tokens extends SurveyCommonAction
                             }
                             // Attribute not in list
                             if (strpos($aFirstLine[$index], 'attribute_') !== false and !in_array($aFirstLine[$index], $aAttrFieldNames) and Yii::app()->request->getPost('showwarningtoken')) {
-                                $aInvalideAttrFieldName[] = $aFirstLine[$index];
+                                $aInvalideAttrFieldName[] = CHtml::encode($aFirstLine[$index]);
                             }
                         }
                         //compare attributes with source csv
@@ -2496,7 +2496,7 @@ class Tokens extends SurveyCommonAction
                             $dupresult = TokenDynamic::model($iSurveyId)->count($oCriteria);
                             if ($dupresult > 0) {
                                 $bDuplicateFound = true;
-                                $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s)"), $iRecordCount, $aWriteArray['firstname'], $aWriteArray['lastname'], $aWriteArray['email']);
+                                $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s)"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']));
                             }
                         }
 
