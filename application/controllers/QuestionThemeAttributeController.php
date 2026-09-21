@@ -26,9 +26,9 @@ class QuestionThemeAttributeController extends LSBaseController
      * Returns the attributes metadata
      *
      * Example:
-     *   /questionThemeAttribute/attributes
-     *   /questionThemeAttribute/attributes?qid=123
-     *   /questionThemeAttribute/attributes?type=!&theme=list_dropdown
+     *   /rest/v1/questionThemeAttribute/attributes
+     *   /rest/v1/questionThemeAttribute/attributes?qid=123
+     *   /rest/v1/questionThemeAttribute/attributes?type=!&theme=list_dropdown
      *
      * @return void
      */

@@ -62,6 +62,7 @@ export const STATES = {
   SURVEY_REQUEST_UTC_TIMESTAMP: 'survey_request_utc_timestamp',
   SURVEY_LOGIC: 'survey_logic',
   TOPBAR_CONFIG: 'topbar_config',
+  QUESTION_THEME_ATTRIBUTES: 'question_theme_attributes',
 }
 
 export const TUTORIALS = {

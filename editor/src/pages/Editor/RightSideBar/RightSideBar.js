@@ -9,6 +9,7 @@ import { WelcomeSettings } from 'components/WelcomeSettings/WelcomeSettings'
 import { GroupSettings } from 'components/GroupSettings/GroupSettings'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 import { EndScreenSettings } from 'components/EndScreenSettings/EndScreenSettings'
+import { QuestionSettingsv2 } from 'components/QuestionSettings/QuestionSettingsV2'
 
 export const RightSideBar = ({ surveyId }) => {
   const { panel } = useParams()
@@ -16,6 +17,7 @@ export const RightSideBar = ({ surveyId }) => {
     STATES.IS_ADDING_QUESTION_OR_GROUP,
     false
   )
+
   const { focused, groupIndex, questionIndex } = useFocused()
   const shouldDisplay = focused && Object.keys(focused).length > 0
 
@@ -36,8 +38,11 @@ export const RightSideBar = ({ surveyId }) => {
       {focused && groupIndex != null && questionIndex == null && (
         <GroupSettings gid={focused.gid} />
       )}
-      {focused && questionIndex != null && (
+      {/* {focused && questionIndex != null && (
         <QuestionSettings surveyId={surveyId} />
+      )} */}
+      {focused && questionIndex != null && (
+        <QuestionSettingsv2 focused={focused} surveyId={surveyId} />
       )}
       {focused?.info?.type === getQuestionTypeInfo().WELCOME_SCREEN.type && (
         <WelcomeSettings surveyId={surveyId} />
