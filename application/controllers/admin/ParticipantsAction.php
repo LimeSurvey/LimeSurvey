@@ -2386,6 +2386,10 @@ class ParticipantsAction extends SurveyCommonAction
     public function rejectShareParticipant()
     {
         $participant_id = yii::app()->request->getPost('participant_id');
+        if (!ParticipantShare::model()->isAllowedToManageShare($participant_id)) {
+            $this->ajaxHelper::outputNoPermission();
+            return;
+        }
         ParticipantShare::model()->deleteAllByAttributes(array('participant_id' => $participant_id));
         $this->ajaxHelper::outputSuccess(gT("Participant removed from sharing"));
     }
