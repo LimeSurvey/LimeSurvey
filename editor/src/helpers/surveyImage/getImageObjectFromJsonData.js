@@ -37,6 +37,8 @@ export const getImageObjectFromJsonData = (imageAttribute) => {
   }
 
   const imageAlign = parsedValue?.image_align || 'left'
+  const imageOpacity =
+    parsedValue?.image_opacity === undefined ? 100 : parsedValue.image_opacity
   const imageBrightness = parsedValue?.image_brightness || 0
   const imageZoom = parsedValue?.image_zoom || 1
   const imageRotate = parsedValue?.image_rotate || 0
@@ -56,6 +58,7 @@ export const getImageObjectFromJsonData = (imageAttribute) => {
     hasImage,
     hasImageAsBackground,
     imageAlign,
+    imageOpacity,
     imageBrightness,
     imageZoom,
     imageRotate,
