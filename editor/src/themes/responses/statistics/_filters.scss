@@ -1,11 +1,3 @@
-// Override .responses .filter-button's fixed 52px height / 156px min-width.
-.responses .statistics-filters-button {
-  height: auto;
-  min-height: 36px;
-  min-width: 85px;
-  font-size: $font-size-sm;
-}
-
 .responses-statistics-filters-modal {
   .modal-dialog {
     align-items: flex-start;
@@ -25,6 +17,7 @@
 
     .responses-statistics-modal-title {
       font-size: 14px !important;
+      margin-bottom: 0;
     }
     .responses-statistics-modal-body {
       padding: 12px 14px;
