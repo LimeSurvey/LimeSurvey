@@ -14,7 +14,7 @@ namespace LimeSurvey\Helpers\Update;
  * matches the value stored on the user record (see
  * LSApplicationTrait::getCurrentUserId()).
  */
-class Update_715 extends DatabaseUpdateBase
+class Update_716 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
