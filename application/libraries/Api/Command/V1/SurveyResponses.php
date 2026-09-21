@@ -217,7 +217,7 @@ class SurveyResponses implements CommandInterface
     private function getTimingFields(): array
     {
         return array_values(createTimingsFieldMap(
-            (string)$this->survey->sid,
+            $this->survey->sid,
             'full',
             false,
             false,
