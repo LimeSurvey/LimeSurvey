@@ -384,6 +384,28 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
+     * Returns whether the current user is allowed to create or modify a share of the
+     * given participant: true for the participant's owner, a superadmin, a user with
+     * the participant panel update permission, or a user who already holds an editable
+     * share of this participant. Used to gate every mutation of a participant share,
+     * not just the initial creation in storeParticipantShare().
+     *
+     * @param string $participantId
+     * @return boolean
+     */
+    public function isAllowedToManageShare($participantId)
+    {
+        $userId = App()->user->getId();
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $hasUpdatePermission = Permission::model()->hasGlobalPermission('participantpanel', 'update');
+        $ownerid = App()->db->createCommand()->select('owner_uid')->from('{{participants}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $participantId, PDO::PARAM_STR)->queryRow();
+        $isOwner = $ownerid && $ownerid['owner_uid'] == $userId;
+        $canEditShared = $this->canEditSharedParticipant($participantId);
+
+        return $isOwner || $isSuperAdmin || $hasUpdatePermission || $canEditShared;
+    }
+
+    /**
      * @param array $data
      * @return void
      */

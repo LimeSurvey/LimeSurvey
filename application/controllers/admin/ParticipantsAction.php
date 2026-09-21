@@ -2094,6 +2094,10 @@ class ParticipantsAction extends SurveyCommonAction
                 'can_edit' => Yii::app()->request->getPost('can_edit'),
                 'share_uid' => Yii::app()->request->getPost('shared_uid')
             );
+            if (!ParticipantShare::model()->isAllowedToManageShare($aData['participant_id'])) {
+                $this->ajaxHelper::outputNoPermission();
+                return;
+            }
             ParticipantShare::model()->updateShare($aData);
         }
     }
@@ -2464,6 +2468,12 @@ class ParticipantsAction extends SurveyCommonAction
         $participant_id = Yii::app()->request->getPost('participant_id');
         $can_edit = Yii::app()->request->getPost('can_edit');
         $share_uid = Yii::app()->request->getPost('share_uid');
+
+        if (!ParticipantShare::model()->isAllowedToManageShare($participant_id)) {
+            echo json_encode(array("newValue" => $can_edit, "success" => false));
+            return;
+        }
+
         $shareModel = ParticipantShare::model()->findByAttributes(array('participant_id' => $participant_id, 'share_uid' => $share_uid));
 
         if ($shareModel) {
