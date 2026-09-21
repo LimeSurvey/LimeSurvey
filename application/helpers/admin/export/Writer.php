@@ -245,6 +245,32 @@ abstract class Writer implements IWriter
     }
 
     /**
+     * Extracts the raw value for a single export column from a response row.
+     *
+     * Per-rank-position ranking fields (registered dynamically by
+     * ExportSurveyResultsService::expandRankingColumns(), with their own
+     * 'qid'/'aid' but no column of their own) have no matching key in
+     * $aResponse: the response row only carries the base "Q{qid}" JSON column
+     * (the ranked list of subquestion codes, ordered by rank). For those
+     * fields, this decodes that JSON and returns the code at the field's rank
+     * position ('aid', 1-based) instead.
+     *
+     * @param SurveyObj $oSurvey
+     * @param array $aResponse
+     * @param string $column
+     * @return mixed
+     */
+    protected function extractColumnValue(SurveyObj $oSurvey, array $aResponse, $column)
+    {
+        $field = $oSurvey->fieldMap[$column] ?? null;
+        if ($field !== null && $field['type'] === Question::QT_R_RANKING && $field['suffix'] !== '') {
+            $rankedCodes = json_decode($aResponse['Q' . $field['qid']] ?? '', true);
+            return (is_array($rankedCodes) && isset($rankedCodes[$field['aid'] - 1])) ? $rankedCodes[$field['aid'] - 1] : null;
+        }
+        return $aResponse[$column] ?? null;
+    }
+
+    /**
      * This method is made final to prevent extending code from circumventing the
      * initialization process that must take place prior to any of the translation
      * infrastructure to work.
@@ -319,7 +345,7 @@ abstract class Writer implements IWriter
             $elementArray = [];
 
             foreach ($oOptions->selectedColumns as $column) {
-                $value = $aResponse[$column];
+                $value = $this->extractColumnValue($oSurvey, $aResponse, $column);
                 if (isset($oSurvey->fieldMap[$column]) && $oSurvey->fieldMap[$column]['type'] != 'answer_time' && $oSurvey->fieldMap[$column]['type'] != 'page_time' && $oSurvey->fieldMap[$column]['type'] != 'interview_time') {
                     switch ($oOptions->answerFormat) {
                         case 'long':

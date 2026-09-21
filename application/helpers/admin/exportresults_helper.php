@@ -102,6 +102,17 @@ class ExportSurveyResultsService
 
         $surveyDao = new SurveyDao();
         $survey = $surveyDao->loadSurveyById($iSurveyId, $sLanguageCode, $oOptions);
+        $oOptions->selectedColumns = $this->expandRankingColumns(
+            $surveyDao,
+            $survey,
+            $oOptions->selectedColumns,
+            $sLanguageCode,
+            $sFilter,
+            $oOptions->responseCompletionState,
+            $oOptions->responseMinRecord,
+            $oOptions->responseMaxRecord,
+            $oOptions->aResponses
+        );
         $writer->init($survey, $sLanguageCode, $oOptions);
 
         $countResponsesCommand = $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
@@ -130,6 +141,137 @@ class ExportSurveyResultsService
         } else {
             return $result;
         }
+    }
+
+    /**
+     * Replaces a ranking question's single combined column ("Q{qid}", the only
+     * ranking field the export column picker offers, storing a JSON array of
+     * ranked subquestion codes) with a dynamically sized, ordered list of
+     * per-rank-position columns ("Q{qid}_rank{n}"), one per rank actually used
+     * in the exported data, so the output has one column per rank instead of a
+     * single JSON-array column. The synthetic columns are registered into
+     * $survey->fieldMap so the rest of the export machinery (headers, value
+     * extraction, answer formatting) handles them like any other field.
+     *
+     * The number of columns is taken from the data being exported rather than
+     * from the question's subquestion count: a respondent never ranks more
+     * items than exist, but may rank fewer, and which is which isn't knowable
+     * from the survey definition alone.
+     *
+     * $selectedColumns may also still list a ranking question's old, static
+     * per-subquestion fieldmap entries (fieldname suffix "_S{sqid}") alongside
+     * its base field — e.g. the remote-control API's export_responses()
+     * defaults $aFields to every createFieldMap() key when none is given.
+     * Those entries have no DB column of their own (only the base "Q{qid}"
+     * JSON column exists) and are superseded by the dynamic expansion below,
+     * so they are dropped here rather than kept, to avoid duplicate output
+     * columns for the same ranking question.
+     *
+     * Non-ranking columns are left untouched.
+     *
+     * @param SurveyDao $surveyDao
+     * @param SurveyObj $survey
+     * @param string[] $selectedColumns
+     * @param string $sLanguageCode
+     * @param string|array $sFilter
+     * @param string $completionState
+     * @param int $minRecord
+     * @param int $maxRecord
+     * @param string|null $responsesId
+     * @return string[]
+     */
+    private function expandRankingColumns(
+        SurveyDao $surveyDao,
+        SurveyObj $survey,
+        array $selectedColumns,
+        $sLanguageCode,
+        $sFilter,
+        $completionState,
+        $minRecord,
+        $maxRecord,
+        $responsesId
+    ) {
+        $expanded = [];
+        foreach ($selectedColumns as $column) {
+            $field = $survey->fieldMap[$column] ?? null;
+            if ($field === null || $field['type'] !== Question::QT_R_RANKING) {
+                $expanded[] = $column;
+                continue;
+            }
+            if ($field['suffix'] !== '') {
+                // Superseded static per-subquestion entry; skip (see docblock).
+                continue;
+            }
+
+            $qid = $field['qid'];
+            // Upper bound: a response can never rank more items than the question defines.
+            $itemCount = count(getSubQuestions($survey->id, $qid, $sLanguageCode));
+            $usedRankCount = $this->getMaxRankedItemCount($surveyDao, $survey, $qid, $sFilter, $completionState, $minRecord, $maxRecord, $responsesId);
+            $columnCount = $usedRankCount > 0 ? min($usedRankCount, $itemCount) : $itemCount;
+
+            for ($position = 1; $position <= $columnCount; $position++) {
+                $rankFieldName = "Q{$qid}_rank{$position}";
+                $survey->fieldMap[$rankFieldName] = [
+                    'fieldname' => $rankFieldName,
+                    'type' => Question::QT_R_RANKING,
+                    'sid' => $survey->id,
+                    'gid' => $field['gid'],
+                    'qid' => $qid,
+                    'aid' => $position,
+                    'suffix' => "_rank{$position}",
+                    'title' => $field['title'] ?? '',
+                    'question' => $field['question'] ?? '',
+                    'subquestion' => sprintf(gT('Rank %s'), $position),
+                    'group_name' => $field['group_name'] ?? '',
+                    'mandatory' => $field['mandatory'] ?? 'N',
+                    'encrypted' => $field['encrypted'] ?? 'N',
+                ];
+                $expanded[] = $rankFieldName;
+            }
+        }
+        return $expanded;
+    }
+
+    /**
+     * Finds the highest number of ranked items actually present across the
+     * responses being exported, by decoding the ranking question's raw JSON
+     * column for every matching row. Used to size the exported rank-position
+     * columns to what the data actually contains.
+     *
+     * @param SurveyDao $surveyDao
+     * @param SurveyObj $survey
+     * @param int $qid
+     * @param string|array $sFilter
+     * @param string $completionState
+     * @param int $minRecord
+     * @param int $maxRecord
+     * @param string|null $responsesId
+     * @return int
+     */
+    private function getMaxRankedItemCount(
+        SurveyDao $surveyDao,
+        SurveyObj $survey,
+        $qid,
+        $sFilter,
+        $completionState,
+        $minRecord,
+        $maxRecord,
+        $responsesId
+    ) {
+        $baseField = "Q{$qid}";
+        $command = $surveyDao->loadSurveyResults($survey, $minRecord, $maxRecord, $sFilter, $completionState, [$baseField], $responsesId);
+        $command->order = false;
+        $maxCount = 0;
+        foreach ($command->queryColumn() as $rawValue) {
+            if ($rawValue === null || $rawValue === '') {
+                continue;
+            }
+            $rankedCodes = json_decode($rawValue, true);
+            if (is_array($rankedCodes)) {
+                $maxCount = max($maxCount, count($rankedCodes));
+            }
+        }
+        return $maxCount;
     }
 
     /**

@@ -202,13 +202,17 @@ class ExportAnswerFormatter
     /**
      * Format a ranking answer as localized subquestion text.
      *
-     * Ranking answers are stored as a single JSON array column per question,
-     * holding the ranked list of subquestion codes ordered by rank (index 0 =
-     * rank 1). This decodes that JSON and maps each code to its subquestion
-     * text via the title lookup, since ranking options are not rows in the
-     * answers table and so are not resolved by the answer label cache.
+     * Ranking answers are stored as a single JSON array column per question
+     * (the ranked list of subquestion codes, ordered by rank), but by the time
+     * this is called $value is a single subquestion code for one rank
+     * position: ExportSurveyResultsService::expandRankingFieldMap() /
+     * TransformerOutputSurveyResponses::extractAnswers() decode that JSON and
+     * fold it out into one answer entry per rank before formatFullAnswer() is
+     * called. Ranking options are not rows in the answers table, so they are
+     * not resolved by the answer label cache; the title lookup is used
+     * instead.
      *
-     * @param mixed $value The raw JSON array of ranked subquestion codes
+     * @param mixed $value A single ranked subquestion code
      * @param int|string|null $qid
      * @return mixed
      */
@@ -217,16 +221,7 @@ class ExportAnswerFormatter
         if ($qid === null || $value === null || $value === '') {
             return $value;
         }
-        $rankedCodes = json_decode($value, true);
-        if (!is_array($rankedCodes)) {
-            return $value;
-        }
-        $rankedTexts = [];
-        foreach ($rankedCodes as $index => $code) {
-            $text = Question::model()->getQuestionFromTitle((int)$qid, $code, $this->language) ?? $code;
-            $rankedTexts[] = ($index + 1) . ': ' . $text;
-        }
-        return implode(', ', $rankedTexts);
+        return Question::model()->getQuestionFromTitle((int)$qid, $value, $this->language) ?? $value;
     }
 
     /**

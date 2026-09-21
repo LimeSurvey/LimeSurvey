@@ -232,8 +232,8 @@ class ExportSurveyResultsService
 
         // Generate field map for questions (do this once)
         // force_refresh = true to bypass stale session-cached field maps
-        $this->transformerOutputSurveyResponses->fieldMap =
-            createFieldMap($this->loadedSurvey, 'full', true, false, $language);
+        $fieldMap = createFieldMap($this->loadedSurvey, 'full', true, false, $language);
+        $this->transformerOutputSurveyResponses->fieldMap = $this->expandRankingFieldMap($surveyId, $fieldMap, $language);
 
         // Pre-cache token table existence for the transformer
         $this->transformerOutputSurveyResponses->hasTokenTable =
@@ -289,6 +289,111 @@ class ExportSurveyResultsService
         }
 
         return $writer->finalize();
+    }
+
+    /**
+     * Replaces each ranking question's single combined fieldmap entry
+     * ("Q{qid}", storing a JSON array of ranked subquestion codes) with a
+     * dynamically sized, ordered list of fresh per-rank-position entries
+     * ("Q{qid}_rank{n}"), and registers those with the transformer so
+     * extractAnswers() emits one answer per rank instead of one JSON blob.
+     *
+     * The number of columns is taken from the data being exported rather than
+     * from the question's subquestion count: a respondent never ranks more
+     * items than exist, but may rank fewer, and which is which isn't knowable
+     * from the survey definition alone (mirrors the classic exporter's
+     * ExportSurveyResultsService::expandRankingColumns() in
+     * application/helpers/admin/exportresults_helper.php).
+     *
+     * The old, static per-subquestion fieldmap entries ("Q{qid}_S{sqid}",
+     * capped by the max_subquestions attribute) are dropped rather than kept,
+     * to avoid duplicate/blank output columns for the same ranking question.
+     *
+     * @param int $surveyId
+     * @param array $fieldMap
+     * @param string $language
+     * @return array
+     */
+    private function expandRankingFieldMap($surveyId, array $fieldMap, $language)
+    {
+        $this->transformerOutputSurveyResponses->rankingFields = [];
+        $expanded = [];
+        foreach ($fieldMap as $fieldName => $field) {
+            if (($field['type'] ?? null) !== \Question::QT_R_RANKING) {
+                $expanded[$fieldName] = $field;
+                continue;
+            }
+            if (($field['suffix'] ?? '') !== '') {
+                // Superseded static per-subquestion entry; drop (see docblock).
+                continue;
+            }
+
+            $qid = $field['qid'];
+            // Upper bound: a response can never rank more items than the question defines.
+            $itemCount = count(getSubQuestions($surveyId, $qid, $language));
+            $usedRankCount = $this->getMaxRankedItemCount($surveyId, $qid);
+            $columnCount = $usedRankCount > 0 ? min($usedRankCount, $itemCount) : $itemCount;
+
+            $this->transformerOutputSurveyResponses->rankingFields[$fieldName] = [
+                'qid' => $qid,
+                'gid' => $field['gid'],
+                'sid' => $surveyId,
+                'columnCount' => $columnCount,
+            ];
+
+            for ($position = 1; $position <= $columnCount; $position++) {
+                $rankFieldName = "Q{$qid}_rank{$position}";
+                $expanded[$rankFieldName] = [
+                    'fieldname' => $rankFieldName,
+                    'type' => \Question::QT_R_RANKING,
+                    'sid' => $surveyId,
+                    'gid' => $field['gid'],
+                    'qid' => $qid,
+                    'aid' => $position,
+                    'suffix' => "_rank{$position}",
+                    'title' => $field['title'] ?? '',
+                    'question' => $field['question'] ?? '',
+                    'subquestion' => sprintf(gT('Rank %s'), $position),
+                    'group_name' => $field['group_name'] ?? '',
+                    'mandatory' => $field['mandatory'] ?? 'N',
+                    'encrypted' => $field['encrypted'] ?? 'N',
+                ];
+            }
+        }
+        return $expanded;
+    }
+
+    /**
+     * Finds the highest number of ranked items actually present across all
+     * responses to a survey, by decoding the ranking question's raw JSON
+     * column for every row. Used to size the exported rank-position columns
+     * to what the data actually contains. This export path has no response
+     * filtering (exportResponses() takes no filter parameter), so every row
+     * in the responses table is scanned.
+     *
+     * @param int $surveyId
+     * @param int $qid
+     * @return int
+     */
+    private function getMaxRankedItemCount($surveyId, $qid)
+    {
+        $baseField = "Q{$qid}";
+        $rawValues = \Yii::app()->db->createCommand()
+            ->select($baseField)
+            ->from(SurveyDynamic::model($surveyId)->tableName())
+            ->queryColumn();
+
+        $maxCount = 0;
+        foreach ($rawValues as $rawValue) {
+            if ($rawValue === null || $rawValue === '') {
+                continue;
+            }
+            $rankedCodes = json_decode($rawValue, true);
+            if (is_array($rankedCodes)) {
+                $maxCount = max($maxCount, count($rankedCodes));
+            }
+        }
+        return $maxCount;
     }
 
     /**

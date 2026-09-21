@@ -10,9 +10,28 @@ use SurveyDao;
 use Translator;
 
 /**
- * Regression test for bug #20713: exporting responses with the "Full answer"
- * option selected showed only the raw subquestion code for ranking
- * questions instead of the subquestion text.
+ * Regression tests for bug #20713 at the answer-formatting-function level.
+ *
+ * Both checks live in one test method: running two full survey imports in
+ * the same PHPUnit process (two @test methods each calling importSurvey())
+ * leaves stale LimeExpressionManager/survey-group state behind, which makes
+ * the second import fail intermittently. A single import shared by both
+ * assertions avoids that.
+ *
+ * Ranking answers are stored as a single JSON array column per question
+ * (e.g. "Q123"), holding the ranked list of subquestion codes ordered by
+ * rank (index 0 = rank 1). Both exporters decode that JSON up front and fold
+ * it out into one column/answer entry per rank actually used in the data —
+ * the classic "Export responses" screen via
+ * application/helpers/admin/exportresults_helper.php::expandRankingColumns()
+ * (covered end-to-end by tests/unit/helpers/remotecontrol/RankingExportFoldOutTest.php),
+ * and the newer namespaced API exporter via
+ * ExportSurveyResultsService::expandRankingFieldMap() /
+ * TransformerOutputSurveyResponses::extractAnswers() (covered end-to-end by
+ * tests/unit/services/RankingExportFoldOutServiceTest.php). By the time
+ * SurveyObj::getFullAnswer() / ExportAnswerFormatter::formatFullAnswer() are
+ * called for a ranking field, $answerCode/$value is therefore always a
+ * single subquestion code, never the raw JSON.
  *
  * @group services
  */
@@ -25,22 +44,9 @@ class SurveyObjRankingExportTest extends TestBaseClass
     }
 
     /**
-     * Covers both the legacy admin export (SurveyObj::getFullAnswer, used by the
-     * CSV/Excel/PDF/Doc "Export responses" screen) and the newer namespaced
-     * exporter (ExportAnswerFormatter::formatFullAnswer, used by the API response
-     * export command), since both resolve ranking answer codes the same way.
-     *
-     * Ranking answers are stored as a single JSON array column per question
-     * (e.g. "Q123"), not one column per rank position: the column value is the
-     * ranked list of subquestion codes, ordered by rank (index 0 = rank 1).
-     * That's the only field the export column picker offers for a ranking
-     * question (application/controllers/admin/Export.php filters out the
-     * per-rank "_S" fieldmap entries), so it's the only input the fix needs
-     * to handle.
-     *
      * @return void
      */
-    public function testFullAnswerExportReturnsSubquestionTextForRanking()
+    public function testRankingAnswerFormattingFunctions()
     {
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_rankingFilterHideShow.lss');
 
@@ -55,62 +61,61 @@ class SurveyObjRankingExportTest extends TestBaseClass
         $this->assertNotNull($rankingQuestion, 'Fixture should contain a ranking question.');
 
         $subQuestions = getSubQuestions(self::$surveyId, $rankingQuestion->qid, 'en');
-        $this->assertNotEmpty($subQuestions, 'Ranking question should have subquestions after import.');
         $this->assertGreaterThanOrEqual(2, count($subQuestions), 'Need at least 2 ranking items to prove order is preserved.');
+        $firstSubQuestion = reset($subQuestions);
 
-        // Rank the items in reverse sortorder, to prove the resolved text is
-        // returned in rank order rather than e.g. subquestion sortorder.
-        $rankedSubQuestions = array_reverse(array_values($subQuestions));
-        $rankedCodes = array_column($rankedSubQuestions, 'title');
-        $expectedTexts = [];
-        foreach ($rankedSubQuestions as $index => $subQuestion) {
-            $expectedTexts[] = ($index + 1) . ': ' . $subQuestion['question'];
-        }
-        $expectedFullAnswer = implode(', ', $expectedTexts);
-
-        $rankedCodesJson = json_encode($rankedCodes);
-
-        // The export column picker only ever offers the parent "Q{qid}" field
-        // for a ranking question (see application/controllers/admin/Export.php),
-        // which is also the only fieldmap entry with an empty suffix.
-        $rankingFieldName = 'Q' . $rankingQuestion->qid;
-        $this->assertArrayHasKey($rankingFieldName, (new SurveyDao())->loadSurveyById(self::$surveyId, 'en')->fieldMap);
-
-        // Legacy exporter: SurveyObj::getFullAnswer()
+        // --- SurveyObj::getFullAnswer() (classic exporter) ---
+        //
+        // The export layer folds the base "Q{qid}" JSON column out into one
+        // "Q{qid}_rank{n}" field per rank before calling getFullAnswer(); a
+        // minimal fieldmap entry matching that shape is enough to unit-test
+        // the resolution logic in isolation.
         $survey = (new SurveyDao())->loadSurveyById(self::$surveyId, 'en');
+        $rankFieldName = 'Q' . $rankingQuestion->qid . '_rank1';
+        $survey->fieldMap[$rankFieldName] = [
+            'fieldname' => $rankFieldName,
+            'type' => Question::QT_R_RANKING,
+            'qid' => $rankingQuestion->qid,
+        ];
 
-        $legacyFullAnswer = $survey->getFullAnswer($rankingFieldName, $rankedCodesJson, new Translator(), 'en');
+        $fullAnswer = $survey->getFullAnswer($rankFieldName, $firstSubQuestion['title'], new Translator(), 'en');
 
-        // Before the fix, $legacyFullAnswer was the raw JSON array string (e.g. '["SQ04","SQ03","SQ02","SQ01"]').
-        $this->assertNotSame($rankedCodesJson, $legacyFullAnswer);
-        $this->assertSame($expectedFullAnswer, $legacyFullAnswer);
+        // Before the fix, $fullAnswer was the raw subquestion code (e.g. "SQ01").
+        $this->assertNotSame($firstSubQuestion['title'], $fullAnswer);
+        $this->assertSame($firstSubQuestion['question'], $fullAnswer);
 
-        // Edge cases: null, empty string, and invalid/unresolvable JSON should
+        // Edge cases: null, empty string, and an unresolvable code should
         // pass through unchanged rather than error.
-        $this->assertNull($survey->getFullAnswer($rankingFieldName, null, new Translator(), 'en'));
-        $this->assertSame('', $survey->getFullAnswer($rankingFieldName, '', new Translator(), 'en'));
-        $this->assertSame('NOTJSON', $survey->getFullAnswer($rankingFieldName, 'NOTJSON', new Translator(), 'en'));
+        $this->assertNull($survey->getFullAnswer($rankFieldName, null, new Translator(), 'en'));
+        $this->assertSame('', $survey->getFullAnswer($rankFieldName, '', new Translator(), 'en'));
+        $this->assertSame('NOTACODE', $survey->getFullAnswer($rankFieldName, 'NOTACODE', new Translator(), 'en'));
 
-        // Newer namespaced exporter: ExportAnswerFormatter::formatFullAnswer()
+        // --- ExportAnswerFormatter::formatFullAnswer() (newer namespaced/API exporter) ---
+        //
+        // Same shape as SurveyObj::getFullAnswer() above: the export layer
+        // folds the base "Q{qid}" JSON column out into one answer entry per
+        // rank before formatFullAnswer() is called, so $value here is always
+        // a single subquestion code.
         $answerCache = new SurveyAnswerCache();
         $formatter = new ExportAnswerFormatter($answerCache);
         $formatter->loadAnswers(self::$surveyId, 'en');
 
         $apiFullAnswer = $formatter->formatFullAnswer(
-            $rankedCodesJson,
+            $firstSubQuestion['title'],
             Question::QT_R_RANKING,
-            $rankingFieldName,
+            $rankFieldName,
             $rankingQuestion->qid
         );
 
-        $this->assertNotSame($rankedCodesJson, $apiFullAnswer);
-        $this->assertSame($expectedFullAnswer, $apiFullAnswer);
+        // Before the fix, $apiFullAnswer was the raw subquestion code (e.g. "SQ01").
+        $this->assertNotSame($firstSubQuestion['title'], $apiFullAnswer);
+        $this->assertSame($firstSubQuestion['question'], $apiFullAnswer);
 
-        $this->assertNull($formatter->formatFullAnswer(null, Question::QT_R_RANKING, $rankingFieldName, $rankingQuestion->qid));
-        $this->assertSame('', $formatter->formatFullAnswer('', Question::QT_R_RANKING, $rankingFieldName, $rankingQuestion->qid));
+        $this->assertNull($formatter->formatFullAnswer(null, Question::QT_R_RANKING, $rankFieldName, $rankingQuestion->qid));
+        $this->assertSame('', $formatter->formatFullAnswer('', Question::QT_R_RANKING, $rankFieldName, $rankingQuestion->qid));
         $this->assertSame(
-            'NOTJSON',
-            $formatter->formatFullAnswer('NOTJSON', Question::QT_R_RANKING, $rankingFieldName, $rankingQuestion->qid)
+            'NOTACODE',
+            $formatter->formatFullAnswer('NOTACODE', Question::QT_R_RANKING, $rankFieldName, $rankingQuestion->qid)
         );
 
         self::$testSurvey->delete();

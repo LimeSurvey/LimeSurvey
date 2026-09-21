@@ -114,7 +114,16 @@ class SurveyObj
                 break;
 
             case Question::QT_R_RANKING:   // Ranking TYPE
-                $fullAnswer = $this->getRankingFullAnswer($questionId, $answerCode, $sLanguageCode);
+                // Ranking options are subquestions, not rows in the answers table
+                // (hence not resolved by the generic $answers lookup above), and by
+                // this point $answerCode is a single subquestion code for one rank
+                // position: the export layer decodes the question's raw JSON-array
+                // storage into one column per rank before this is called.
+                if ($answerCode === "" || is_null($answerCode)) {
+                    $fullAnswer = $answerCode;
+                } else {
+                    $fullAnswer = Question::model()->getQuestionFromTitle($questionId, $answerCode, $sLanguageCode) ?? $answerCode;
+                }
                 break;
 
             case Question::QT_1_ARRAY_DUAL:   // Array dual scale
@@ -243,37 +252,6 @@ class SurveyObj
         }
 
         return $fullAnswer;
-    }
-
-    /**
-     * Resolves the full-text answer for a ranking question.
-     *
-     * Ranking answers are stored as a single JSON array column per question
-     * (e.g. "Q123"), holding the ranked list of subquestion codes ordered by
-     * rank (index 0 = rank 1). This decodes that JSON and maps each code to
-     * its subquestion text, since ranking options are not rows in the
-     * answers table.
-     *
-     * @param int $questionId
-     * @param string|null $answerCode The raw JSON array of ranked subquestion codes
-     * @param string $sLanguageCode
-     * @return string|null
-     */
-    private function getRankingFullAnswer($questionId, $answerCode, $sLanguageCode)
-    {
-        if ($answerCode === "" || is_null($answerCode)) {
-            return $answerCode;
-        }
-        $rankedCodes = json_decode($answerCode, true);
-        if (!is_array($rankedCodes)) {
-            return $answerCode;
-        }
-        $rankedTexts = [];
-        foreach ($rankedCodes as $index => $code) {
-            $text = Question::model()->getQuestionFromTitle($questionId, $code, $sLanguageCode) ?? $code;
-            $rankedTexts[] = ($index + 1) . ': ' . $text;
-        }
-        return implode(', ', $rankedTexts);
     }
 
     /**
