@@ -30,6 +30,8 @@ export const generateData = (responses, language, generatedColumns) => {
       firstName: response.firstName,
       lastName: response.lastName,
       email: response.email,
+      quotaExit: response.quotaExit,
+      quotaExitName: response.quotaExitName,
       dateLastAction: formatDate(response.dateLastAction),
       startDate: formatDate(response.startDate),
       submitDate: formatDate(response.submitDate),
