@@ -143,7 +143,14 @@ class SurveyResponses implements CommandInterface
 
         $responses = $this->transformerOutputSurveyResponses->transform(
             $surveyResponses,
-            ['survey' => $this->survey]
+            [
+                'survey' => $this->survey,
+                'quotaNames' => \CHtml::listData(
+                    $this->survey->quotas,
+                    'id',
+                    'name'
+                ),
+            ]
         );
         $surveyQuestions = $this->getQuestionFieldMap();
         $this->answerCache->load((int) $surveyId, $language);

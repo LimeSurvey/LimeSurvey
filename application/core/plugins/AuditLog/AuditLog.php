@@ -10,79 +10,103 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     public $allowedPublicMethods = array();
 
     protected $settings = array(
+        'settingsIntro' => array(
+            'type' => 'info',
+            'content' => '<h2 class="h4 mb-3">Log events</h2>',
+        ),
+        'separatorUsers' => array(
+            'type' => 'separator',
+            'title' => 'User accounts',
+        ),
         'AuditLog_Log_UserSave' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a user was modified or created',
-            'default' => '1',
-        ),
-        'AuditLog_Log_UserLogin' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a user has logged in successfully',
-            'default' => '1',
-        ),
-        'AuditLog_Log_UserLogout' => array(
-            'type' => 'checkbox',
-            'label' =>  'Log if user has logged out',
-            'default' => '1',
-        ),
-        'AuditLog_Log_UserFailedLoginAttempt' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a user login has failed',
+            'type' => 'boolean',
+            'label' => 'User created or modified',
             'default' => '1',
         ),
         'AuditLog_Log_UserDelete' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a user was deleted',
+            'type' => 'boolean',
+            'label' => 'User deleted',
             'default' => '1',
         ),
-        'AuditLog_Log_DataEntryCreate' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a survey admin creates a response',
+        'AuditLog_Log_UserLogin' => array(
+            'type' => 'boolean',
+            'label' => 'Successful login',
             'default' => '1',
         ),
-        'AuditLog_Log_DataEntryUpdate' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a survey admin modifies a response',
+        'AuditLog_Log_UserLogout' => array(
+            'type' => 'boolean',
+            'label' =>  'Logout',
             'default' => '1',
         ),
-        'AuditLog_Log_DataEntryDelete' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a survey admin delete a response',
-            'default' => '1',
-        ),
-        'AuditLog_Log_DataEntryImport' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a survey admin imports responses',
-            'default' => '1',
-        ),
-        'AuditLog_Log_TokenSave' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a survey participant was modified or created',
-            'default' => '1',
-        ),
-        'AuditLog_Log_TokenDelete' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a survey participant was deleted',
-            'default' => '1',
-        ),
-        'AuditLog_Log_ParticipantSave' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a central database participant was modified or created',
-            'default' => '1',
-        ),
-        'AuditLog_Log_ParticipantDelete' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a central database participant was deleted',
+        'AuditLog_Log_UserFailedLoginAttempt' => array(
+            'type' => 'boolean',
+            'label' => 'Failed login attempt',
             'default' => '1',
         ),
         'AuditLog_Log_UserPermissionsChanged' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a user permissions changes',
+            'type' => 'boolean',
+            'label' => 'Permissions changed',
             'default' => '1',
         ),
+        'separatorResponses' => array(
+            'type' => 'separator',
+            'title' => 'Survey responses',
+        ),
+        'AuditLog_Log_DataEntryCreate' => array(
+            'type' => 'boolean',
+            'label' => 'Response created',
+            'default' => '1',
+        ),
+        'AuditLog_Log_DataEntryUpdate' => array(
+            'type' => 'boolean',
+            'label' => 'Response modified',
+            'default' => '1',
+        ),
+        'AuditLog_Log_DataEntryDelete' => array(
+            'type' => 'boolean',
+            'label' => 'Response deleted',
+            'default' => '1',
+        ),
+        'AuditLog_Log_DataEntryImport' => array(
+            'type' => 'boolean',
+            'label' => 'Responses imported',
+            'default' => '1',
+        ),
+        'separatorParticipants' => array(
+            'type' => 'separator',
+            'title' => 'Survey participants',
+        ),
+        'AuditLog_Log_TokenSave' => array(
+            'type' => 'boolean',
+            'label' => 'Participant created or modified',
+            'default' => '1',
+        ),
+        'AuditLog_Log_TokenDelete' => array(
+            'type' => 'boolean',
+            'label' => 'Participant deleted',
+            'default' => '1',
+        ),
+        'separatorCentralParticipants' => array(
+            'type' => 'separator',
+            'title' => 'Central database participants',
+        ),
+        'AuditLog_Log_ParticipantSave' => array(
+            'type' => 'boolean',
+            'label' => 'Participant created or modified',
+            'default' => '1',
+        ),
+        'AuditLog_Log_ParticipantDelete' => array(
+            'type' => 'boolean',
+            'label' => 'Participant deleted',
+            'default' => '1',
+        ),
+        'separatorSurveySettings' => array(
+            'type' => 'separator',
+            'title' => 'Survey settings',
+        ),
         'AuditLog_Log_SurveySettings' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a user changes survey settings',
+            'type' => 'boolean',
+            'label' => 'Settings changed',
             'default' => '1',
         ),
     );
@@ -160,6 +184,12 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $oAutoLog->entity = 'user';
         $oAutoLog->entityid = $iUserID;
         $oAutoLog->action = 'afterSuccessfulLogin';
+
+        $identity = $this->getEvent()->get('identity');
+        if (!empty($identity->oneTimePasswordActorId)) {
+            $oAutoLog->newvalues = json_encode(['oneTimePasswordActor' => $identity->oneTimePasswordActorId]);
+        }
+
         $oAutoLog->save();
     }
 
