@@ -64,7 +64,8 @@ class GetAttrExpression extends AbstractExpression implements SupportDefinedTest
                 ->raw('(('.$var.' = ')
                 ->subcompile($this->getNode('node'))
                 ->raw(') && is_array(')
-                ->raw($var);
+                ->raw($var)
+            ;
 
             if (!$env->hasExtension(SandboxExtension::class)) {
                 $compiler
@@ -74,7 +75,7 @@ class GetAttrExpression extends AbstractExpression implements SupportDefinedTest
                     ->raw($var)
                     ->raw('[')
                 ;
-                $this->compileArrayKey($compiler);
+                $this->compileArrayKey($compiler, $var);
                 $compiler->raw('] ?? null) : null)');
 
                 return;
@@ -91,7 +92,7 @@ class GetAttrExpression extends AbstractExpression implements SupportDefinedTest
                 ->raw($var)
                 ->raw('[')
             ;
-            $this->compileArrayKey($compiler);
+            $this->compileArrayKey($compiler, $var);
             $compiler->raw('] ?? null) : ');
         }
 
@@ -167,7 +168,7 @@ class GetAttrExpression extends AbstractExpression implements SupportDefinedTest
             $names[] = 'arguments';
         }
 
-        // compileArrayKey() coerces a Stringable key; expose it so the sandbox checks __toString()
+        // compileArrayKey() may coerce a Stringable key; expose it so the sandbox checks __toString()
         if (Template::ARRAY_CALL === $this->getAttribute('type')) {
             $names[] = 'attribute';
         }
@@ -176,10 +177,11 @@ class GetAttrExpression extends AbstractExpression implements SupportDefinedTest
     }
 
     /**
-     * Coerces a Stringable array key to string so the optimized path matches
-     * CoreExtension::getAttribute(); scalars are left to PHP's native offset coercion.
+     * Normalizes a Stringable array key so optimized access matches getAttribute():
+     * arrays and known string-keyed ArrayAccess implementations receive a string,
+     * while object-key implementations receive the object unchanged.
      */
-    private function compileArrayKey(Compiler $compiler): void
+    private function compileArrayKey(Compiler $compiler, string $var): void
     {
         $attribute = $this->getNode('attribute');
 
@@ -193,7 +195,7 @@ class GetAttrExpression extends AbstractExpression implements SupportDefinedTest
         $compiler
             ->raw('(('.$key.' = ')
             ->subcompile($attribute)
-            ->raw(') instanceof \Stringable ? (string) '.$key.' : '.$key.')')
+            ->raw(') instanceof \Stringable && (is_array('.$var.') || in_array('.$var.'::class, CoreExtension::STRINGABLE_KEY_ARRAY_ACCESS_CLASSES, true)) ? (string) '.$key.' : '.$key.')')
         ;
     }
 

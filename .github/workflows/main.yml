@@ -236,6 +236,8 @@ jobs:
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
           chmod +x ./tests/bin/lint-*
+      - name: Audit Composer packages for known vulnerabilities
+        run: composer audit
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:

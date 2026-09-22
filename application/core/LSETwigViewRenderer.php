@@ -165,7 +165,7 @@ window.addEventListener('message', function(event) {
             $line .= file_get_contents($oLayoutTemplate->viewPath . $sLayout);
             $line .= '</div>';
             if ($root === true) {
-                $line = '<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>'
+                $line = '<html lang="{{ aSurveyInfo.htmllanguagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>'
                     . file_get_contents($oLayoutTemplate->viewPath . '/subviews/header/head.twig')
                     . '<body style="padding-top: 0px !important;" class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >'
                     . $line;
@@ -686,6 +686,8 @@ window.addEventListener('message', function(event) {
         }
 
         $aData["aSurveyInfo"]['languagecode']     = $languagecode;
+        /* Separate from 'languagecode' since some codes (e.g. 'nl-informal') are not valid values for the HTML lang attribute */
+        $aData["aSurveyInfo"]['htmllanguagecode'] = getHtmlLangAttributeValue($languagecode);
         $aData["aSurveyInfo"]['dir']              = (getLanguageRTL($languagecode)) ? "rtl" : "ltr";
 
         if (!empty($aData['aSurveyInfo']['sid'])) {
@@ -708,25 +710,12 @@ window.addEventListener('message', function(event) {
             }
 
             // Add the survey theme options
-            if ($oTemplate->oOptions) {
-                foreach ($oTemplate->oOptions as $key => $value) {
-                    // TODO: Same issue as commit 2972aea41c51c74db95bfe40c337ae839471152c
-                    // Options are not loaded the same way in all places.
-                    if ($value instanceof stdClass) {
-                        $value = 'N/A';
-                    }
-                    // Note that $value can also be a SimpleXMLElement
-                    // if force_xmlsettings_for_survey_rendering is activated
-                    $aData["aSurveyInfo"]["options"][$key] = (string)$value;
-                }
-            }
+            $aData["aSurveyInfo"]["options"] = $this->convertOptionsToArray($oTemplate->oOptions);
             $aData["aSurveyInfo"] = $this->setDefaultPrivacyText($aData["aSurveyInfo"]);
         } else {
-            // Add the global theme options
+            // Add the global theme options (fully inheritance-resolved, same as the survey branch above)
             $oTemplateConfigurationCurrent = Template::getInstance($oTemplate->sTemplateName);
-            $aData["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])
-                ? json_decode((string) $oTemplateConfigurationCurrent['options'], true)
-                : $oTemplateConfigurationCurrent['options'];
+            $aData["aSurveyInfo"]["options"] = $this->convertOptionsToArray($oTemplateConfigurationCurrent->oOptions);
         }
 
         $aData = $this->fixDataCoherence($aData);
@@ -735,23 +724,42 @@ window.addEventListener('message', function(event) {
     }
 
     /**
-         * Ensure privacy text strings exist and render the privacy notice label.
-         *
-         * If specific privacy strings are empty, sets sensible defaults and renders
-         * the `datasecurity_notice_label` using the privacy twig partial. This
-         * operation runs only once per request; subsequent calls return the input unchanged.
-         *
-         * @param array $aSurveyInfo Survey rendering data; must contain at least `sid` when available.
-         * @return array The updated `$aSurveyInfo` array with `datasecurity_notice_label` and `datasecurity_error` ensured and the notice label rendered as HTML.
-         */
+     * Convert a template's resolved options (stdClass, from TemplateConfiguration::oOptions)
+     * into a flat associative array suitable for twig, stringifying each value.
+     *
+     * TODO: Same issue as commit 2972aea41c51c74db95bfe40c337ae839471152c
+     * Options are not loaded the same way in all places.
+     *
+     * @param stdClass|null $oOptions The resolved template options (already inheritance-resolved).
+     * @return array<string, string> Associative array of option key to string value.
+     */
+    private function convertOptionsToArray($oOptions)
+    {
+        $aOptions = array();
+        if ($oOptions) {
+            foreach ($oOptions as $key => $value) {
+                if ($value instanceof stdClass) {
+                    $value = 'N/A';
+                }
+                // Note that $value can also be a SimpleXMLElement
+                // if force_xmlsettings_for_survey_rendering is activated
+                $aOptions[$key] = (string)$value;
+            }
+        }
+        return $aOptions;
+    }
+
+    /**
+     * Ensure privacy text strings exist.
+     *
+     * If specific privacy strings are empty, sets sensible defaults. The theme
+     * renders `datasecurity_notice_label` through its privacy subview.
+     *
+     * @param array $aSurveyInfo Survey rendering data; must contain at least `sid` when available.
+     * @return array The updated `$aSurveyInfo` array with `datasecurity_notice_label` and `datasecurity_error` ensured.
+     */
     private function setDefaultPrivacyText($aSurveyInfo)
     {
-        /* Do it one time only (and do not recall self when using renderPartial) */
-        static $DefaultPrivacyDone = false;
-        if ($DefaultPrivacyDone) {
-            return $aSurveyInfo;
-        }
-        $DefaultPrivacyDone = true;
         if (empty($aSurveyInfo['datasecurity_notice_label'])) {
             $aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
         }
@@ -762,25 +770,18 @@ window.addEventListener('message', function(event) {
         $translation = [
             "Show policy" => gT("Show policy")
         ];
-        $aSurveyInfo['datasecurity_notice_label'] =  $this->renderPartial(
-            './subviews/privacy/privacy_datasecurity_notice_label.twig',
-            [
-                'dataSecurityNoticeLabel' => $aSurveyInfo['datasecurity_notice_label'],
-                'sid' => $aSurveyInfo['sid'],
-            ]
-        );
         return $aSurveyInfo;
     }
 
     /**
-         * Ensure option flags that depend on files are coherent.
-         *
-         * If a file-related option (e.g., `brandlogofile`, `backgroundimagefile`) is empty,
-         * the corresponding boolean-like option (`brandlogo`, `backgroundimage`) is set to `"false"`.
-         *
-         * @param array $aData Rendering data (expects `aSurveyInfo['options']` when present).
-         * @return array The input `$aData` with corrected option flags where applicable.
-         */
+     * Ensure option flags that depend on files are coherent.
+     *
+     * If a file-related option (e.g., `brandlogofile`, `backgroundimagefile`) is empty,
+     * the corresponding boolean-like option (`brandlogo`, `backgroundimage`) is set to `"false"`.
+     *
+     * @param array $aData Rendering data (expects `aSurveyInfo['options']` when present).
+     * @return array The input `$aData` with corrected option flags where applicable.
+     */
     private function fixDataCoherence($aData)
     {
         // Clean option with files

@@ -5,9 +5,9 @@
 }
 
 @mixin h2 {
-  font-weight: $font-weight-600;
-  font-size: $font-size-base;
-  line-height: $line-height-20;
+  font-weight : $font-weight-500;
+  font-size   : $font-size-base;
+  line-height : $line-height-20;
 }
 
 @mixin h3 {
