@@ -15,6 +15,8 @@ export const Setting = ({
   attributes = [],
   simpleSettings = false,
   hasDefaultAttributeValues = false,
+  sectionExpanded,
+  onSectionToggle,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
   const [hasSurveyUpdatePermission] = useAppState(
@@ -135,6 +137,8 @@ export const Setting = ({
       simpleSettings={simpleSettings}
       isAdvanced={isAdvanced}
       title={title}
+      isExpanded={sectionExpanded}
+      onToggle={(isExpanded) => onSectionToggle?.(title, isExpanded)}
     >
       {attributes.map((attribute) => {
         if (
