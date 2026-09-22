@@ -30,23 +30,24 @@ class ContainConditionHandler implements HandlerInterface
             $conditions = [];
             $params = [];
 
-            foreach ($key as $index => $rawKey) {
+            foreach ($key as $rawKey) {
                 $quotedKey = $this->sanitizeKey($rawKey);
-                $paramName = ":match$index";
+                $paramName = CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount++;
 
                 $conditions[] = "$quotedKey LIKE $paramName";
                 $params[$paramName] = "%$value%";
             }
 
-            $criteria->condition = implode(' OR ', $conditions);
+            $criteria->condition = '(' . implode(' OR ', $conditions) . ')';
             $criteria->params = $params;
 
             return $criteria;
         }
         $quotedKey = $this->sanitizeKey($key);
+        $paramName = CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount++;
 
-        $criteria->condition = "$quotedKey LIKE :match";
-        $criteria->params = [':match' => "%$value%"];
+        $criteria->condition = "$quotedKey LIKE $paramName";
+        $criteria->params = [$paramName => "%$value%"];
 
         return $criteria;
     }

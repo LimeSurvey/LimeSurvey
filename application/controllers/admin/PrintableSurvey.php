@@ -120,7 +120,7 @@ class PrintableSurvey extends SurveyCommonAction
 
             /* Get the HTML tag */
             Yii::app()->loadHelper('surveytranslator');
-            $lang = App()->getLanguage();
+            $lang = getHtmlLangAttributeValue(App()->getLanguage());
             $langDir = (getLanguageRTL(App()->getLanguage())) ? "rtl" : "ltr";
             $htmlTag = " lang='$lang' class='dir-$langDir' dir='$langDir'";
 

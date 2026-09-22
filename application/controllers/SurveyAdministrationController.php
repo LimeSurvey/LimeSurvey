@@ -1052,7 +1052,7 @@ class SurveyAdministrationController extends LSBaseController
                         "gid" => $group['gid'],
                         'parent_qid' => 0
                     ),
-                    array('order' => 'question_order ASC')
+                    array('order' => 'question_order ASC, title ASC')
                 );
 
                 if ($configData['hasSurveyContentReadPermission']) {
@@ -3161,6 +3161,9 @@ class SurveyAdministrationController extends LSBaseController
         }
         if ($oSurvey->emailresponseto != '') {
             $surveysummary2[] = gT("Detailed email notification with response data is sent to:") . ' ' . htmlspecialchars((string)$aSurveyInfo['emailresponseto']);
+        }
+        if ($oSurvey->isSaveQuotaExit) {
+            $surveysummary2[] = gT("Matched quota ID will be saved.");
         }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);

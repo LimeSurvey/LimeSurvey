@@ -20,9 +20,10 @@ export const Survey = ({ id }) => {
     // we could pass all needed surveysettings down the tree from here so far only showNoAnswer is used here
     return {
       showNoAnswer: survey.showNoAnswer,
+      preselectNoAnswer: survey.preselectNoAnswer,
       languages: survey.languages,
     }
-  }, [survey.showNoAnswer])
+  }, [survey.showNoAnswer, survey.preselectNoAnswer, survey.languages])
 
   const surveyHasAdditionalLanguages = () => {
     // here we check if lang switch is even possible

@@ -113,6 +113,11 @@ class SurveysController extends LSYii_Controller
         } else {
             $oTemplate = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
         }
+        $aSurveyInfo = array();
+        if ($surveyId) {
+            // Needed so the twig renderer resolves the survey's own (not just the global) theme options.
+            $aSurveyInfo['sid'] = $surveyId;
+        }
         $this->sTemplate = $oTemplate->sTemplateName;
 
         $admin = Yii::app()->getConfig('siteadminname');

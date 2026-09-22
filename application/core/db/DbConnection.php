@@ -18,6 +18,44 @@ class DbConnection extends \CDbConnection
         ));
     }
 
+    /**
+     * Creates the PDO instance, using LimeSurveyMssqlPdoAdapter instead of Yii's stock
+     * CMssqlPdoAdapter for the 'mssql'/'dblib' drivers so that PDO::inTransaction()
+     * correctly reflects transactions opened via BEGIN TRANSACTION (see bug #19016:
+     * without this, CDbTransaction::commit()/rollback() silently skip the real
+     * COMMIT/ROLLBACK TRANSACTION because the stock adapter never updates PDO's
+     * transaction state, leaving the transaction open and later rolled back by the
+     * server when the connection closes).
+     *
+     * @return PDO
+     * @throws CDbException
+     */
+    protected function createPdoInstance()
+    {
+        $driver = $this->getDriverName();
+        if ($driver !== 'mssql' && $driver !== 'dblib') {
+            return parent::createPdoInstance();
+        }
+
+        $pdoClass = 'LimeSurveyMssqlPdoAdapter';
+        if (!class_exists($pdoClass)) {
+            throw new CDbException(
+                Yii::t(
+                    'yii',
+                    'CDbConnection is unable to find PDO class "{className}". Make sure PDO is installed correctly.',
+                    array('{className}' => $pdoClass)
+                )
+            );
+        }
+
+        @$instance = new $pdoClass($this->connectionString, $this->username, $this->password, $this->getAttributes());
+        if (!$instance) {
+            throw new CDbException(Yii::t('yii', 'CDbConnection failed to open the DB connection.'));
+        }
+
+        return $instance;
+    }
+
     protected function initConnection($pdo)
     {
         parent::initConnection($pdo);
