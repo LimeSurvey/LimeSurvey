@@ -9,6 +9,7 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\MultiSelectCo
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\NullConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\RangeConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\DateRangeConditionHandler;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\WithinBoundsConditionHandler;
 
 class FilterPatcher
 {
@@ -110,6 +111,7 @@ class FilterPatcher
         $this->addHandler(RangeConditionHandler::class);
         $this->addHandler(DateRangeConditionHandler::class);
         $this->addHandler(MultiSelectConditionHandler::class);
+        $this->addHandler(WithinBoundsConditionHandler::class);
     }
 
     public function addHandler(string $handler): void

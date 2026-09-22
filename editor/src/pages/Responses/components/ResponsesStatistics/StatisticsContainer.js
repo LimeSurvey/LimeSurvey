@@ -41,6 +41,7 @@ const StatisticsChartCard = memo(function StatisticsChartCard({
       help: item?.meta?.question?.help,
       fields: item?.meta?.question?.fields,
       scaleHeaders: item?.meta?.question?.scaleHeaders,
+      mapService: item?.meta?.question?.mapService,
       index: index,
     }),
     [item, index]

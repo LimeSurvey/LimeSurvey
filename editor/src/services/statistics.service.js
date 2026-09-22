@@ -143,6 +143,61 @@ export class StatisticsService {
     return await this.restClient.get(`statistics-glance/${sid}`)
   }
 
+  /**
+   * Response locations of a map question (short text with a mapping
+   * service), limited to the viewport `bounds` when given. Answers are
+   * stored as "lat;lng[;city;...]"; unparsable ones are left out.
+   *
+   * @param {{south: number, west: number, north: number, east: number}|null} bounds
+   * @returns {Promise<{points: {id: number, lat: number, lng: number}[], total: number}>}
+   */
+  getQuestionLocations = async (
+    sid,
+    questionCode,
+    language,
+    fields,
+    statisticsFilters,
+    bounds,
+    limit
+  ) => {
+    const field = fields?.[0]
+    const { answers, pagination } = await this.fetchQuestionAnswers(
+      sid,
+      questionCode,
+      0,
+      limit,
+      language,
+      fields,
+      { id: 'asc' },
+      [
+        ...buildResponseFilters(statisticsFilters),
+        ...buildSearchFilters(statisticsFilters?.search ?? [], fields),
+        ...(bounds && field
+          ? [{ key: field, filterMethod: 'withinBounds', value: bounds }]
+          : []),
+      ]
+    )
+
+    const points = answers
+      .filter((answer) => belongsToQuestion(answer, questionCode))
+      .map((answer) => {
+        const [lat, lng] = String(answer.value ?? '')
+          .split(';')
+          .map((part) => Number(part))
+        return { id: answer.responseId, lat, lng }
+      })
+      .filter(
+        ({ id, lat, lng }) =>
+          id != null &&
+          Number.isFinite(lat) &&
+          Number.isFinite(lng) &&
+          Math.abs(lat) <= 90 &&
+          Math.abs(lng) <= 180
+      )
+
+    return { points, total: Number(pagination?.totalItems ?? points.length) }
+  }
+
   fetchQuestionAnswers = async (
     sid,
     questionCode,

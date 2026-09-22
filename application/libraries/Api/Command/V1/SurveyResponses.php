@@ -25,8 +25,9 @@ use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurv
  * Filtering and sorting go through the generic {@see FilterPatcher}, whose
  * filter keys are validated against the survey field map so any filter method
  * (equal, contain, multi-select, …) can target nested question/subquestion
- * columns. A `fields` param additionally restricts the SELECT to a caller-chosen
- * subset of response columns; when it is omitted every column is returned.
+ * columns. A `fields` param additionally restricts the SELECT and the returned
+ * answers to a caller-chosen subset of response columns; when it is omitted
+ * every column is returned.
  */
 class SurveyResponses implements CommandInterface
 {
@@ -58,6 +59,9 @@ class SurveyResponses implements CommandInterface
     protected FilterPatcher $responseFilterPatcher;
     protected TransformerOutputSurveyResponses $transformerOutputSurveyResponses;
     protected SurveyAnswerCache $answerCache;
+
+    /** @var string[]|null Question columns kept in the output when `fields` was given */
+    private ?array $selectedFields = null;
 
     /**
      * Constructor
@@ -147,6 +151,15 @@ class SurveyResponses implements CommandInterface
             $surveyResponses,
             ['survey' => $this->survey]
         );
+        if ($this->selectedFields !== null) {
+            // The model still carries every column (unselected ones as null);
+            // only the requested answers are worth transferring.
+            $keep = array_flip($this->selectedFields);
+            foreach ($responses as &$response) {
+                $response['answers'] = array_intersect_key($response['answers'], $keep);
+            }
+            unset($response);
+        }
 
         $surveyQuestions = $this->getQuestionFieldMap();
 
@@ -227,6 +240,7 @@ class SurveyResponses implements CommandInterface
             throw new \InvalidArgumentException('No valid fields requested');
         }
 
+        $this->selectedFields = $selected;
         $fixed = array_intersect(self::FIXED_OUTPUT_COLUMNS, $validColumns);
         // Quote explicitly: Yii implodes an array select without quoting, and
         // dual-scale column names contain `#`, which starts a MySQL comment.
