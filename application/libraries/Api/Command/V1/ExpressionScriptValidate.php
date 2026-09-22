@@ -56,7 +56,7 @@ class ExpressionScriptValidate implements CommandInterface
 
         $questionId = (int) $request->getData('questionId');
         $question = $this->question->findByPk($questionId);
-        if (!$question || (int) $question->sid !== $surveyId) {
+        if (!$question || $question->sid !== $surveyId) {
             return $this->responseFactory->makeErrorNotFound(
                 (new ResponseDataError(self::ERROR_QUESTION_NOT_FOUND, 'Question not found'))->toArray()
             );
@@ -74,7 +74,7 @@ class ExpressionScriptValidate implements CommandInterface
             $expression,
             $surveyId,
             $questionId,
-            (string) $survey->language
+            $survey->language
         );
         $hasErrors = array_filter(
             $diagnostics,
