@@ -90,8 +90,6 @@ export const ResponsesHeader = ({
         modalClassname="responses-statistics-filters-modal"
       >
         <div className="responses-statistics-filters-modal-body">
-          {/* Mounted only while open so the builder's draft always starts
-              from the applied filters. */}
           {showFilterModal && (
             <StatisticsFiltersBuilder
               survey={survey}

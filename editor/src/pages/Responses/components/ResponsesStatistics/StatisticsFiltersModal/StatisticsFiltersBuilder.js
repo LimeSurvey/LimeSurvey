@@ -102,18 +102,9 @@ export const StatisticsFiltersBuilder = ({
 
   const applyFilters = () => onApply(filters)
 
-  // Footer/button state:
-  // - Apply shows once a row exists, or while filters are still applied so
-  //   that clearing them can be committed. Enabled only when every row is
-  //   complete (a question needs at least one answer option).
-  // - Reset appears once any row has its primary selection.
-  // - "+ Add filter" shows when there are no incomplete rows — true when empty
-  //   (add the first) and again once all rows are complete.
   const allComplete = filters.every(isFilterComplete)
   const showReset = filters.some(hasPrimarySelection)
-  // Keeps the footer alive after "Reset filter" (or deleting the last row)
-  // empties the draft — otherwise Apply unmounts and the applied filters can
-  // never be cleared.
+
   const hasAppliedFilters = appliedFilters.length > 0
   const canApply = allComplete && (filters.length > 0 || hasAppliedFilters)
 
