@@ -2725,7 +2725,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             // question codes in format "38612X105X3011" are collected for replacing
-            $aQuestionsMapping['Q' . $iOldQID] = 'Q' . $oQuestion->qid;
+            // Use $aQIDReplacements instead of $oQuestion->qid: for legacy files without
+            // a question_l10ns section (< DBVersion 339), each language repeats this row 
+            // and $oQuestion is a fresh, unsaved instance on every repeat, so ->qid would
+            // be empty and clobber the mapping recorded on the row that actually got saved.
+            $aQuestionsMapping['Q' . $iOldQID] = 'Q' . $aQIDReplacements[$iOldQID];
         }
     }
 
@@ -2853,12 +2857,16 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     if (strpos($aQuestionsMapping[$key], "Q" . $insertdata['parent_qid'] . "_") === 0) {
                         $parts = explode("_", $aQuestionsMapping[$key]);
                         if (count($parts) === $scaleID + 1) {
-                            $aQuestionsMapping[$key . "_S" . $iOldQID] = $aQuestionsMapping[$key] . "_S" . $oQuestion->qid;
+                            // Use $aQIDReplacements instead of $oQuestion->qid: for legacy files
+                            // without a question_l10ns section, each language repeats this row and
+                            // $oQuestion is a fresh, unsaved instance on every repeat, so ->qid would
+                            // be empty and clobber the mapping recorded on the saved row.
+                            $aQuestionsMapping[$key . "_S" . $iOldQID] = $aQuestionsMapping[$key] . "_S" . $aQIDReplacements[$iOldQID];
                         }
                     }
                 }
             } else {
-                $aQuestionsMapping['Q' . array_search($insertdata['parent_qid'], $aQIDReplacements) . '_S' . $iOldQID] = 'Q' . $oQuestion->parent_qid . '_S' . $oQuestion->qid;
+                $aQuestionsMapping['Q' . array_search($insertdata['parent_qid'], $aQIDReplacements) . '_S' . $iOldQID] = 'Q' . $insertdata['parent_qid'] . '_S' . $aQIDReplacements[$iOldQID];
             }
 
             // If translate links is disabled, check for old links.
@@ -3229,8 +3237,16 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     while ($search && strlen($idCandidate)) {
                         foreach ($aQuestionsMapping as $key => $value) {
                             if (($key === "Q{$idCandidate}") || (strpos($key, "Q{$idCandidate}_") !== false)) {
-                                $qid = substr(explode("_", $value)[0], 1);
-                                $theQ = Question::model()->findByPk($qid);
+                                $candidateQid = substr(explode("_", $value)[0], 1);
+                                $candidateQ = Question::model()->findByPk($candidateQid);
+                                // A stale or malformed mapping entry can point to a qid that
+                                // was never imported; skip it and keep shrinking the candidate
+                                // instead of crashing on a null question.
+                                if ($candidateQ === null) {
+                                    continue;
+                                }
+                                $qid = $candidateQid;
+                                $theQ = $candidateQ;
                                 $theQuestions = Question::model()->findAll(['condition' => "sid = {$theQ->sid} and gid = {$theQ->gid} and {$theQ->qid} in (qid, parent_qid)"]);
                                 $knownFieldName = "{$theQ->sid}X{$theQ->gid}X{$theQ->qid}" . substr($parts[2], strlen($idCandidate));
                                 $search = false;
