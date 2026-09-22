@@ -2289,7 +2289,7 @@ function hasFileUploadQuestion($iSurveyID)
 /**
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
-* @param string $surveyid The Survey ID
+* @param int $surveyid The Survey ID
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
 * @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int|false $questionid Limit to a certain qid only (for question preview) - default is false

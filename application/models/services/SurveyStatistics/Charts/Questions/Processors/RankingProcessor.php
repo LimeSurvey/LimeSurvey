@@ -47,7 +47,6 @@ class RankingProcessor extends AbstractQuestionProcessor
                     ),
                 ];
             }
-
             $legend[] = $subQuestion['question'];
             $dataItems[] = [
                 'key' => $subQuestion['title'],
@@ -63,7 +62,6 @@ class RankingProcessor extends AbstractQuestionProcessor
                 'ranks' => $ranks,
             ];
         }
-
         return [
             'title' => $this->question['question'],
             'legend' => $legend,
