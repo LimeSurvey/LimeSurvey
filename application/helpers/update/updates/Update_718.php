@@ -2,9 +2,7 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use TemplateConfiguration;
-
-class Update_713 extends DatabaseUpdateBase
+class Update_718 extends DatabaseUpdateBase
 {
     /**
      * Add a new column welcome_image to table surveys
