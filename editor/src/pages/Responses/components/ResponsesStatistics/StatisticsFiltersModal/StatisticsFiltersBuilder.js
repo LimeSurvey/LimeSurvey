@@ -14,19 +14,19 @@ import {
 } from './utils'
 
 // The filter builder: renders the filter rows plus the Add / Reset / Apply
-// actions. `value` is the applied filter model (owned by Responses, shared by
-// the Responses and Statistics tabs); "Apply" hands the edited list back.
-// Frontend only
+// actions. `appliedFilters` is the committed filter model (owned by Responses,
+// shared by the Responses and Statistics tabs); "Apply" hands the edited list
+// back. Frontend only
 export const StatisticsFiltersBuilder = ({
   questionOptions = [],
   survey,
-  value = [],
+  appliedFilters = [],
   onApply = () => {},
 }) => {
   // Draft state: the modal mounts this component only while it is open, so
   // every open starts from the applied filters and edits stay uncommitted
   // until "Apply filter"
-  const [filters, setFilters] = useState(value)
+  const [filters, setFilters] = useState(appliedFilters)
 
   const updateFilter = (id, key, value) => {
     setFilters((prev) =>
@@ -114,7 +114,7 @@ export const StatisticsFiltersBuilder = ({
   // Keeps the footer alive after "Reset filter" (or deleting the last row)
   // empties the draft — otherwise Apply unmounts and the applied filters can
   // never be cleared.
-  const hasAppliedFilters = value.length > 0
+  const hasAppliedFilters = appliedFilters.length > 0
   const canApply = allComplete && (filters.length > 0 || hasAppliedFilters)
 
   return (

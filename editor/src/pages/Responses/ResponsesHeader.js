@@ -96,7 +96,7 @@ export const ResponsesHeader = ({
             <StatisticsFiltersBuilder
               survey={survey}
               questionOptions={questionOptions}
-              value={appliedFilters}
+              appliedFilters={appliedFilters}
               onApply={applyFilters}
             />
           )}

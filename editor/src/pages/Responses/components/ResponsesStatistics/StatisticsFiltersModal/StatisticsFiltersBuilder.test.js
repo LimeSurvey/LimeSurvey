@@ -23,7 +23,7 @@ describe('StatisticsFiltersBuilder', () => {
     render(
       <StatisticsFiltersBuilder
         survey={survey}
-        value={[createAppliedFilter(), createAppliedFilter()]}
+        appliedFilters={[createAppliedFilter(), createAppliedFilter()]}
       />
     )
 
@@ -32,7 +32,7 @@ describe('StatisticsFiltersBuilder', () => {
   })
 
   test('shows only "Add filter" when nothing is applied', () => {
-    render(<StatisticsFiltersBuilder survey={survey} value={[]} />)
+    render(<StatisticsFiltersBuilder survey={survey} appliedFilters={[]} />)
 
     expect(screen.queryByText('Filter selection #1')).not.toBeInTheDocument()
     expect(screen.getByText('Add filter')).toBeInTheDocument()
@@ -47,7 +47,7 @@ describe('StatisticsFiltersBuilder', () => {
     render(
       <StatisticsFiltersBuilder
         survey={survey}
-        value={applied}
+        appliedFilters={applied}
         onApply={onApply}
       />
     )
@@ -64,7 +64,7 @@ describe('StatisticsFiltersBuilder', () => {
     render(
       <StatisticsFiltersBuilder
         survey={survey}
-        value={[createAppliedFilter()]}
+        appliedFilters={[createAppliedFilter()]}
         onApply={onApply}
       />
     )
@@ -82,7 +82,7 @@ describe('StatisticsFiltersBuilder', () => {
     render(
       <StatisticsFiltersBuilder
         survey={survey}
-        value={[createAppliedFilter()]}
+        appliedFilters={[createAppliedFilter()]}
         onApply={onApply}
       />
     )
