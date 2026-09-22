@@ -90,6 +90,42 @@ class CsrfHttpRequestTest extends TestBaseClass
     }
 
     /**
+     * Ensures that the MCP entry point skips CSRF validation.
+     */
+    public function testMcpRouteSkipsCsrfValidation()
+    {
+        $rule = 'mcp/index';
+
+        $this->assertContains($rule, self::$noCsrfValidationRoutes);
+
+        $this->assertSame(
+            1,
+            \LSHttpRequest::routeMatchesNoCsrfValidationRule('mcp/index', $rule),
+            'CSRF validation should be skipped for the MCP entry point.'
+        );
+    }
+
+    /**
+     * Ensures that the MCP CSRF exemption is limited to the entry point.
+     */
+    public function testMcpCsrfExemptionIsLimitedToMcpIndex()
+    {
+        $rule = 'mcp/index';
+
+        $this->assertSame(
+            0,
+            \LSHttpRequest::routeMatchesNoCsrfValidationRule('mcp/tools', $rule),
+            'CSRF validation should not be skipped for MCP sub-routes.'
+        );
+
+        $this->assertSame(
+            0,
+            \LSHttpRequest::routeMatchesNoCsrfValidationRule('admin/menus/sa/restore', $rule),
+            'CSRF validation should remain enabled for normal LimeSurvey routes.'
+        );
+    }
+
+    /**
      * Testing that similar routes don't skip CSRF validation.
      */
     public function testSimilarRoutesDoNotSkipCsrfValidation()

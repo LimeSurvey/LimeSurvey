@@ -36,6 +36,9 @@ $route['admin/labels/<_action:\w+>/<_lid:\d+>'] = "admin/labels/index/<_action>/
 //ExpressionScript Engine tests
 $route['admin/expressions'] = "admin/expressions/index";
 
+// Single MCP entry point handled by McpController.
+$route['mcp'] = array('mcp/index', 'matchValue' => true);
+
 // REST
 // - Resource index
 // - Resource index with id
