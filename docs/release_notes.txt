@@ -34,6 +34,34 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.1.2 (build 260917) to 7.2.0 (build 260921) September 21, 2026
+New feature: Display timings in response table (#5249)
+New feature #LX-8: Add Quota Exit field to responses table to record the matched quota (#5317)
+Fixed issue #20697: [security] Reflected XSS through unescaped LSS survey-import warnings (#5330)
+Fixed issue #20699: [security] Broken access control vulnerability in participant sharing. Severity: High (CVSS 7.1, AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:H/A:N). An authenticated user holding only participant-panel read permission and a read-only share of a participant could grant itself, or any other account of its choosing, edit rights on that participant, allowing it to modify and redistribute data it had no relationship to. Affects versions 3.17.4 through 7.1.2. Reported by: Ada Logics.
+Fixed issue #20706: [security] Broken access control vulnerability in central participant attribute deletion. Severity: High (CVSS 8.1, AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:H). An authenticated user holding only a read-only share of a single participant, with no participantpanel permission of any kind, could delete any central participant attribute. Affects all versions up to 7.1.2. Fixed in 7.1.3. Reported by: Google / Ada Logics. (#5329)
+Fixed issue #20700: [security] Missing permission and POST checks on Expression Manager maintenance actions. Severity: Medium (CVSS 6.5, AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N). An authenticated user with no permissions over other users' surveys could rewrite or reset the branching/skip logic of every survey in the installation. Affects all versions up to 7.1.2. Reported by: Ada Logics. (#5328)
+Fixed issue #20707: [security] No permission control for queXML exports. (#5325)
+Fixed issue #19095: [security] Session does not expire on password change (#5326)
+Fixed issue #20712:  HTML tags shown in survey page title
+Fixed issue #20711: [security] Reflected XSS vulnerability in participant CSV import result. Severity: High (CVSS 8.0, AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N). An attacker with no LimeSurvey account could, via social engineering, get a user with tokens:import permission to import a crafted CSV, executing JavaScript in that user's administrative session. Affects versions 5.3.0 through 7.0.14+. Reported by: Fluid Attacks. (#5331)
+Fixed issue #20710: Error adding question when using Postgres
+Fixed issue #20692: Authwebserver issue with new editor and IIS (#5306)
+Fixed issue #20674: Invalid html lang attribute set for some translation languages (#5281)
+Fixed issue #JD-120: Pie chart adjustments (#5310)
+Fixed issue #AT-2282: Orphaned or duplicate ranking columns in migration (#5311)
+Fixed issue: Message type header keeps piling up when sending email batches
+Fixed issue: IP anonymization produced invalid output for compressed IPv6 addresses (e.g. ::1)
+Updated translation: German by c_schmitz
+Updated translation: French (France) by AnneSophieB, arnaud21, arnaudj, Aura97, b00z00, boheean, c_schmitz, DenisChenu, eddylackmann, fgervais, GuillaumeZ6, jayce, mapage, pasglop, Rodrigue_Galani, titoun31, twilllig
+Updated translation: Dutch by Han
+Updated translation: German (Informal) by c_schmitz, richterd, twilllig
+Updated translation: Dutch (Informal) by Han
+Updated translation: Japanese by d_inoue, nomoto
+Updated translation: Portuguese (Portugal) by xastrefernando
+Updated translation: Turkish by kayazeren
+
+
 Changes from 7.1.1 (build 260914) to 7.1.2 (build 260917) September 17, 2026
 -Fixed issue: Widgets not being properly loaded in debug mode (Carsten Schmitz)
 -Fixed issue: Curl should be a required PHP library in the installer, not just an optional one (Carsten Schmitz)
