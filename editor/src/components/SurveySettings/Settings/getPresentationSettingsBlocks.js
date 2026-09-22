@@ -1,3 +1,4 @@
+import { format } from 'util'
 import {
   ToggleButtons,
   Input,
@@ -32,6 +33,21 @@ export const getPresentationSettingsBlocks = () => ({
         props: {
           id: 'show-no-answer',
           mainText: t('No answer'),
+          childComponent: ToggleButtons,
+          toggleOptions: getOnOffOptions(ONOFF_BOOLEAN),
+          noPermissionDisabled: true,
+        },
+      },
+      PRESELECT_NO_ANSWER: {
+        keyPath: 'preselectNoAnswer',
+        disableCondition: {
+          check: (globalStates) =>
+            globalStates[STATES.SURVEY]?.survey?.showNoAnswer === false,
+          message: t('Enable “No answer” to configure this setting.'),
+        },
+        props: {
+          id: 'preselect-no-answer',
+          mainText: t('“No answer” preselected'),
           childComponent: ToggleButtons,
           toggleOptions: getOnOffOptions(ONOFF_BOOLEAN),
           noPermissionDisabled: true,
@@ -111,13 +127,17 @@ export const getPresentationSettingsBlocks = () => ({
           )
 
           return surveyLanguages.map((option) => {
-            let addOn =
-              option === survey.language ? ' (' + t('Base language') + ')' : ''
+            const isBaseLanguage = option === survey.language
             let languageOption = {
               value: option,
               label: languages
-                ? languages[option]?.description + addOn
-                : 'No data available',
+                ? isBaseLanguage
+                  ? format(
+                      t('%s (Base language)'),
+                      languages[option]?.description
+                    )
+                  : languages[option]?.description
+                : t('No data available'),
             }
 
             return languageOption

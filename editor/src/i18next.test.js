@@ -70,6 +70,7 @@ function checkForHardcodedText(filePath) {
   const unallowedAttributesInFile = {
     'RowQuestion.js': 'title',
     'RowQuestionGroup.js': 'title',
+    'SearchInput.js': 'text',
   }
 
   // Extract the filename from the filePath
