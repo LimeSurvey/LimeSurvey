@@ -541,7 +541,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
     $fieldnames = array_keys($fieldmap);
     $num_results = safecount($fieldnames);
     $diff = 0;
-    $noQID = array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage', 'seed');
+    $noQID = array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage', 'seed', 'quota_exit');
     # Build array that has to be returned
     for ($i = 0; $i < $num_results; $i++) {
         #Condition for SPSS fields:
@@ -592,6 +592,10 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
                 $fieldtype = 'A';
                 $val_size = 31;
                 break;
+            case 'quota_exit';
+                $fieldtype = 'F';
+                $val_size = 7;
+                break;
             default:
                 // Not set for default
         }
@@ -618,7 +622,14 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
                 $ftype = $fielddata['type'];
                 $fsid = $fielddata['sid'];
                 $fgid = $fielddata['gid'];
-                $code = mb_substr((string) $fielddata['fieldname'], strlen("Q" . $qid));
+                $code = '';
+                if (isset($fielddata['aid']) && $fielddata['aid'] !== '') {
+                    $code = (string) $fielddata['aid'];
+                    // Dual scale arrays share the same aid for both scales, distinguish them by scale number.
+                    if (!empty($fielddata['scale']) && isset($fielddata['scale_id'])) {
+                        $code .= '_' . ((int) $fielddata['scale_id'] + 1);
+                    }
+                }
                 $varlabel = $fielddata['question'];
                 if (isset($fielddata['scale'])) {
                     $varlabel = "[{$fielddata['scale']}] " . $varlabel;

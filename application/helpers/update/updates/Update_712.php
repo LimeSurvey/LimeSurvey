@@ -2,21 +2,24 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use TemplateConfiguration;
-
 class Update_712 extends DatabaseUpdateBase
 {
     /**
-     * Add the 'deselectsinglechoice' option (introduced in fruity_twentythree config.xml)
-     * to all existing fruity_twentythree TemplateConfiguration DB records that are missing it.
+     * Keep the historic preselected "No answer" behaviour for upgraded installations.
+     * Fresh installations use N in installer/create-database.php.
+     *
+     * @inheritDoc
      */
     public function up()
     {
-        $themes = TemplateConfiguration::model()->findAllByAttributes([
-            'template_name' => 'fruity_twentythree',
-        ]);
-        foreach ($themes as $theme) {
-            $theme->addOptionFromXMLToLiveTheme();
-        }
+        addColumn('{{surveys}}', 'preselectnoanswer', "string(1) NULL DEFAULT 'I'");
+        addColumn('{{surveys_groupsettings}}', 'preselectnoanswer', "string(1) NULL DEFAULT 'I'");
+
+        $this->db->createCommand()->update(
+            '{{surveys_groupsettings}}',
+            ['preselectnoanswer' => 'Y'],
+            'gsid = :gsid',
+            [':gsid' => 0]
+        );
     }
 }

@@ -16,6 +16,12 @@ use Survey;
  */
 class Quotas
 {
+    //Quota massive actions
+    const MASSIVE_ACTION_ACTIVATE = 'activate';
+    const MASSIVE_ACTION_DEACTIVATE = 'deactivate';
+    const MASSIVE_ACTION_DELETE = 'delete';
+    const MASSIVE_ACTION_CHANGE_LANGUAGE_SETTINGS = 'changeLanguageSettings';
+
     /** @var \Survey the survey */
     private $survey;
 
@@ -333,22 +339,22 @@ class Quotas
                 $errors [] = gT("Invalid quota ID");
             }
             switch ($action) {
-                case 'activate':
-                case 'deactivate':
-                    $oQuota->active = ($action == 'activate' ? 1 : 0);
+                case self::MASSIVE_ACTION_ACTIVATE:
+                case self::MASSIVE_ACTION_DEACTIVATE:
+                    $oQuota->active = ($action == self::MASSIVE_ACTION_ACTIVATE ? 1 : 0);
                     if (!$oQuota->save()) {
                         $errors[] = $oQuota->errors;
                     }
                     break;
-                case 'delete':
+                case self::MASSIVE_ACTION_DELETE:
                     $oQuota->delete();
                     \QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $iQuotaId));
                     \QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $iQuotaId));
                     break;
-                case 'changeLanguageSettings':
+                case self::MASSIVE_ACTION_CHANGE_LANGUAGE_SETTINGS:
                     if (!empty($languageSettings)) {
                         $oQuotaLanguageSettings = $oQuota->languagesettings;
-                        foreach ($_POST['QuotaLanguageSetting'] as $language => $aQuotaLanguageSettingAttributes) {
+                        foreach ($languageSettings as $language => $aQuotaLanguageSettingAttributes) {
                             $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
                             $oQuotaLanguageSetting->attributes = $aQuotaLanguageSettingAttributes;
                             if (!$oQuotaLanguageSetting->save()) {
@@ -376,12 +382,12 @@ class Quotas
     public function checkActionPermissions($action)
     {
         switch ($action) {
-            case 'activate':
-            case 'deactivate':
-            case 'changeLanguageSettings':
+            case self::MASSIVE_ACTION_ACTIVATE:
+            case self::MASSIVE_ACTION_DEACTIVATE:
+            case self::MASSIVE_ACTION_CHANGE_LANGUAGE_SETTINGS:
                 $permissionOk = \Permission::model()->hasSurveyPermission($this->survey->sid, 'quotas', 'update');
                 break;
-            case 'delete':
+            case self::MASSIVE_ACTION_DELETE:
                 $permissionOk = \Permission::model()->hasSurveyPermission(
                     $this->survey->sid,
                     'quotas',
@@ -414,6 +420,11 @@ class Quotas
         }
         /* Check if Response is already submitted : only when "do" the quota: allow to send information about quota */
         $oResponse = Response::model($surveyid)->findByPk(App()->session['responses_' . $surveyid]['srid']);
+        if (!$return && !$oResponse) {
+            // Session points to a response row that no longer exists: bail out before it reaches updateResponseQuotaExit().
+            killSurveySession($surveyid);
+            return;
+        }
         if (!$return && $oResponse && !is_null($oResponse->submitdate)) {
             return;
         }
@@ -557,18 +568,28 @@ class Quotas
         $sUrlDescription = $event->get('urldescrip', $aMatchedQuota['quotals_urldescrip']);
         $sAction = (int) $event->get('action', $aMatchedQuota['action']);
         // close the survey only when the action is a terminate type or when confirmquota is called as move action
+        /**
+         * @todo: 2026-01-05: Is confirmquota action still used?
+         *        The "confirmquota" button was commented out on commit 9e678fb (Ticket #14652)
+         */
         $closeSurvey = ($sAction !== Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS || App()->getRequest()->getPost('move') === 'confirmquota');
         $sAutoloadUrl = $event->get('autoloadurl', $aMatchedQuota['autoload_url']);
-        // Doing the action and show the page
+        // If action is Terminate, stamp the quota id in the response and marks tokens as completed
         if (
-            $sClientToken
-            && in_array($sAction, [
+            in_array($sAction, [
                 Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS,
                 Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS,
                 Quota::TERMINATE_ALL_PAGES
             ], true)
         ) {
-            submittokens(true);
+            // Update the response's "quota_exit" attribute with the ID of the matched quota
+            if (($aSurveyInfo['savequotaexit'] ?? 'N') === 'Y') {
+                self::updateResponseQuotaExit($oResponse, $aMatchedQuota['id']);
+            }
+
+            if ($sClientToken) {
+                submittokens(true);
+            }
         }
         // Construct the default message
         $sMessage = templatereplace(
@@ -623,6 +644,7 @@ class Quotas
                 $thissurvey['aQuotas']['hiddeninputs'] .= '<input type="hidden" name="' . $field . '"   value="' . $post . '" />';
             }
         }
+
         //field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
         if ($closeSurvey) {
             killSurveySession($surveyid);
@@ -639,5 +661,13 @@ class Quotas
             ['oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey],
             false
         );
+    }
+
+    public static function updateResponseQuotaExit(Response $response, ?int $quotaId): void
+    {
+        if ($response->hasAttribute('quota_exit')) {
+            $response->quota_exit = $quotaId;
+            $response->save(false, ['quota_exit']);
+        }
     }
 }
