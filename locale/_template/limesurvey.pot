@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-09-22 12:12:44+00:00\n"
+"POT-Creation-Date: 2026-09-22 12:23:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28205,7 +28205,7 @@ msgid "Maximum file size (kB)"
 msgstr ""
 
 #: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:129
-msgid "Numbers only for 'Other' text"
+msgid "Numbers only in 'Other' input field"
 msgstr ""
 
 #: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:62
