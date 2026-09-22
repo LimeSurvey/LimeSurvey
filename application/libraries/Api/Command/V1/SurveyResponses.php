@@ -108,6 +108,7 @@ class SurveyResponses implements CommandInterface
      * @param Request $request
      * @return array
      * @throws TransformerException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function process(Request $request): array
     {
@@ -119,12 +120,10 @@ class SurveyResponses implements CommandInterface
         $this->getSurvey($request);
         $model = $this->getSurveyDynamicModel($request);
         $language = $this->getLanguage($request);
-
         $this->transformerOutputSurveyResponses->fieldMap =
             createFieldMap($this->survey, 'full', true, false, $language);
 
         [$criteria, $sort] = $this->buildCriteria($request);
-
         $pagination = $this->buildPagination($request);
         $dataProvider = new \LSCActiveDataProvider(
             $model,
@@ -145,20 +144,26 @@ class SurveyResponses implements CommandInterface
 
         $responses = $this->transformerOutputSurveyResponses->transform(
             $surveyResponses,
-            ['survey' => $this->survey]
+            [
+                'survey' => $this->survey,
+                'quotaNames' => \CHtml::listData(
+                    $this->survey->quotas,
+                    'id',
+                    'name'
+                ),
+            ]
         );
-
         $surveyQuestions = $this->getQuestionFieldMap();
-
         $this->answerCache->load((int) $surveyId, $language);
         $responses = $this->mapResponsesToQuestions($responses, $surveyQuestions);
-
+        $timingFields = $this->appendTimingData($responses);
         $totalItems = $dataProvider->getTotalItemCount();
         $pageSize = max(1, $pagination['pageSize'] ?? 1);
 
         return [
             'responses' => $responses,
             'surveyQuestions' => $surveyQuestions,
+            'timingFields' => $timingFields,
             '_meta' => [
                 'pagination' => [
                     'pageSize' => $pageSize,
@@ -170,6 +175,90 @@ class SurveyResponses implements CommandInterface
                 'sort' => $request->getData('sort', []),
             ],
         ];
+    }
+
+    /**
+     * Adds timing values to the responses and returns the metadata needed to
+     * build timing columns in API clients.
+     *
+     * Timings are stored in a separate table, so fetching them after response
+     * pagination keeps the response count and pagination unchanged.
+     *
+     * @param array $responses
+     * @return array
+     */
+    protected function appendTimingData(array &$responses): array
+    {
+        if (!$this->survey->hasTimingsTable) {
+            return [];
+        }
+
+        $timingFields = $this->getTimingFields();
+        $timingsByResponse = $this->getTimingsByResponse(
+            array_column($responses, 'id'),
+            array_column($timingFields, 'fieldname')
+        );
+
+        $responses = array_map(
+            static function (array $response) use ($timingsByResponse): array {
+                $responseId = (int)($response['id'] ?? 0);
+                $response['timings'] = $timingsByResponse[$responseId] ?? [];
+                return $response;
+            },
+            $responses
+        );
+
+        return $timingFields;
+    }
+
+    /**
+     * @return array
+     */
+    private function getTimingFields(): array
+    {
+        return array_values(createTimingsFieldMap(
+            $this->survey->sid,
+            'full',
+            false,
+            false,
+            $this->survey->language
+        ));
+    }
+
+    /**
+     * @param array $responseIds
+     * @param array $fieldNames
+     * @return array
+     */
+    private function getTimingsByResponse(array $responseIds, array $fieldNames): array
+    {
+        if ($responseIds === []) {
+            return [];
+        }
+
+        $model = \SurveyTimingDynamic::model($this->survey->sid);
+        $fieldNames = array_values(array_intersect(
+            $fieldNames,
+            $model->getTableSchema()->getColumnNames()
+        ));
+
+        if ($fieldNames === []) {
+            return [];
+        }
+
+        $criteria = new \CDbCriteria();
+        $criteria->addInCondition('id', $responseIds);
+        $records = $model->findAll($criteria);
+        $timings = [];
+
+        foreach ($records as $record) {
+            $timings[(int)$record->getAttribute('id')] = array_map(
+                static fn($value) => is_numeric($value) ? (float)$value : null,
+                $record->getAttributes($fieldNames)
+            );
+        }
+
+        return $timings;
     }
 
     /**

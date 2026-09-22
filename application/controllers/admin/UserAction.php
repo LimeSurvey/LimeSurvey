@@ -104,6 +104,11 @@ class UserAction extends SurveyCommonAction
             $oUserModel->full_name            = Yii::app()->request->getPost('fullname');
             $uresult = $uresult && $oUserModel->save();
             if ($uresult) {
+                // Keep this session valid: it just rotated its own session
+                // token (see User::setPassword()), so the cached value used
+                // by LSApplicationTrait::getCurrentUserId() must be refreshed
+                // or this same session would be logged out on its next request.
+                Yii::app()->session['session_token'] = $oUserModel->session_token;
                 if (Yii::app()->request->getPost('lang') == 'auto') {
                     $sLanguage = getBrowserLanguage();
                 } else {

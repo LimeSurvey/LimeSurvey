@@ -1,4 +1,5 @@
 <?php
+
 namespace LimeSurvey\Helpers\Update;
 
 /**
