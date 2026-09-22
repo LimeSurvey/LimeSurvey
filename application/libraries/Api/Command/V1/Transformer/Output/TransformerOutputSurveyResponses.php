@@ -36,6 +36,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
             'firstname'     => ['key' => 'firstName'],
             'lastname'      => ['key' => 'lastName'],
             'email'         => ['key' => 'email'],
+            'quota_exit'    => ['key' => 'quotaExit', 'type' => 'int'],
         ]);
     }
 
@@ -74,6 +75,9 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     {
         $surveyResponseArray = parent::transform($surveyResponse) ?? [];
         $this->applyTokenData($surveyResponseArray, $surveyResponse, $options);
+        $quotaId = $surveyResponseArray['quotaExit'] ?? null;
+        $surveyResponseArray['quotaExitName'] = $options['quotaNames'][(int) $quotaId]
+            ?? null;
         $surveyResponseArray['completed'] = !empty($surveyResponseArray['submitDate']);
         $surveyResponseArray['answers'] = $this->extractAnswers($surveyResponse->attributes);
         $this->normalizeDateFields($surveyResponseArray);
@@ -150,7 +154,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
             ) {
                 $responseArray[$dateField] = null;
             } else {
-                $responseArray[$dateField] = getDateOfUTC($responseArray[$dateField] ?? null);
+                $responseArray[$dateField] = isset($responseArray[$dateField]) ? getDateOfUTC($responseArray[$dateField]) : null;
             }
         }
     }

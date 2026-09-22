@@ -10,7 +10,7 @@
   }
 
   .overview-section {
-    padding: 42px 20px;
+    padding: 40px 20px;
 
     .survey-overview-content-editor {
       .content-editable {
@@ -65,11 +65,48 @@
       }
     }
 
+    .p-fixed {
+      padding: 0 10px;
+      margin-top: 20px;
+    }
+
+    .overview-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+
+      .overview-stat-card {
+        width: calc(33.33% - 14px);
+      }
+
+      &.is-wide .overview-stat-card {
+        width: calc(50% - 10px);
+      }
+
+      @media (max-width: 767px) {
+        .overview-stat-card,
+        &.is-wide .overview-stat-card {
+          width: 100%;
+        }
+      }
+    }
+
     .card {
-      padding: 10px 20px;
+      padding: 16px 20px;
+
+      .gap-8px {
+        gap: 8px;
+      }
 
       .card-body {
         padding: 0;
+
+        .reg14-container {
+          width: 100%;
+          height: 36px;
+          display: flex;
+          align-items: center;
+        }
       }
     }
   }
@@ -79,5 +116,9 @@
     .swal2-html-container {
       padding: 0;
     }
+  }
+
+  .h-68 {
+    height: 68px;
   }
 }

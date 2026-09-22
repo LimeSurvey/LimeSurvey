@@ -16,6 +16,8 @@ export const Setting = ({
   attributes = [],
   simpleSettings = false,
   hasDefaultAttributeValues = false,
+  sectionExpanded,
+  onSectionToggle,
 }) => {
   const { surveyId } = useParams()
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
@@ -141,6 +143,8 @@ export const Setting = ({
       simpleSettings={simpleSettings}
       isAdvanced={isAdvanced}
       title={title}
+      isExpanded={sectionExpanded}
+      onToggle={(isExpanded) => onSectionToggle?.(title, isExpanded)}
     >
       {attributes.map((attribute) => {
         if (
