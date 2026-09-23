@@ -49,6 +49,12 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v5
+      - name: Build editor for admin functional tests
+        if: matrix.testsuite == 'admin'
+        working-directory: editor
+        run: |
+          npm ci
+          npm run build
       - name: Install specified PHP and libapache2-mod-php
         run: |
           sudo apt update
