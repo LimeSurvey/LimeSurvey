@@ -19426,7 +19426,7 @@ input[type=number] {
 #sidebar .resize-handle {
   position: absolute;
   margin: auto;
-  left: 15px;
+  left: -20px;
   top: 0;
   bottom: 0;
   height: 100%;
@@ -19434,13 +19434,13 @@ input[type=number] {
   cursor: col-resize;
 }
 #sidebar .resize-handle button {
-  background-color: #fff;
+  background-color: transparent;
   outline: 0;
   border: none;
 }
 #sidebar .resize-handle button:focus, #sidebar .resize-handle button:active, #sidebar .resize-handle button:hover {
   outline: 0 !important;
-  background-color: #fff !important;
+  background-color: transparent !important;
   color: #1E1E1E;
 }
 #sidebar .resize-handle button {
