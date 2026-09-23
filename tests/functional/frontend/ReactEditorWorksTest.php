@@ -10,6 +10,10 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
  */
 class ReactEditorWorksTest extends TestBaseClassWeb
 {
+    /**
+     * @var int UID of the admin account used for this test, resolved from ADMINUSERNAME.
+     */
+    private static $adminUid;
 
     /**
      * Setup before class.
@@ -28,17 +32,24 @@ class ReactEditorWorksTest extends TestBaseClassWeb
             $password = 'password';
         }
 
+        // Resolve the uid for the account we are going to log in as.
+        $uid = \Yii::app()->db->createCommand(
+            "SELECT uid FROM {{users}} WHERE users_name = :username"
+        )->queryScalar([':username' => $username]);
+        self::assertNotFalse($uid, 'Could not resolve uid for ADMINUSERNAME: ' . $username);
+        self::$adminUid = (int) $uid;
+
         // Permission to everything.
-        \Yii::app()->session['loginID'] = 1;
+        \Yii::app()->session['loginID'] = self::$adminUid;
 
         // Import survey.
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_928171.lss';
         self::importSurvey($surveyFile);
 
-        // Enable react editor for superadmin
+        // Enable react editor for the logged-in admin
         $affectedRows = \Yii::app()->db->createCommand(
-            "INSERT INTO {{settings_user}} (uid,stg_name,stg_value) VALUES (1,'editorEnabled','1')"
-        )->execute();
+            "INSERT INTO {{settings_user}} (uid,stg_name,stg_value) VALUES (:uid,'editorEnabled','1')"
+        )->execute([':uid' => self::$adminUid]);
         self::assertGreaterThan(
             0,
             $affectedRows,
@@ -87,10 +98,10 @@ class ReactEditorWorksTest extends TestBaseClassWeb
 
     public static function tearDownAfterClass(): void
     {
-        // Disable react editor for superadmin
+        // Disable react editor for the logged-in admin
         $affectedRows = \Yii::app()->db->createCommand(
-            "DELETE FROM {{settings_user}} WHERE stg_name = 'editorEnabled' AND uid = 1"
-        )->execute();
+            "DELETE FROM {{settings_user}} WHERE stg_name = 'editorEnabled' AND uid = :uid"
+        )->execute([':uid' => self::$adminUid]);
         self::assertGreaterThan(
             0,
             $affectedRows,
