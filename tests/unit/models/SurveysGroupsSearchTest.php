@@ -201,7 +201,10 @@ class SurveysGroupsSearchTest extends TestBaseClass
      * Regression test for the secondary issue reported in Mantis #19077: the group
      * dropdown used to assign a survey to a group is built from
      * SurveysGroups::getSurveyGroupsList(), which must only list groups the current,
-     * non-superadmin user actually has access to.
+     * non-superadmin user actually has access to. Also renders the actual mass-action
+     * partial that was fixed, so a regression in the view (e.g. reverting it back to
+     * an unfiltered SurveysGroups::model()->findAll()) is caught even if the
+     * underlying helper stays correct.
      */
     public function testSurveyGroupsListOnlyIncludesPermittedGroups()
     {
@@ -213,6 +216,24 @@ class SurveysGroupsSearchTest extends TestBaseClass
 
             $this->assertArrayHasKey(self::$ownGroupGsid, $list);
             $this->assertArrayNotHasKey(self::$otherGroupGsid, $list);
+
+            $controller = new \CController('test');
+            $html = $controller->renderFile(
+                APPPATH . 'extensions/admin/survey/ListSurveysWidget/views/massive_actions/_change_survey_group.php',
+                [],
+                true
+            );
+
+            $this->assertStringContainsString(
+                "value='" . self::$ownGroupGsid . "'",
+                $html,
+                'The rendered group dropdown should include the group the restricted user owns.'
+            );
+            $this->assertStringNotContainsString(
+                "value='" . self::$otherGroupGsid . "'",
+                $html,
+                'The rendered group dropdown must not include a group owned by another user.'
+            );
         } finally {
             \Yii::app()->session['loginID'] = $originalLoginId;
         }
