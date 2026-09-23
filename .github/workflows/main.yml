@@ -285,11 +285,18 @@ jobs:
           git config core.fileMode false
 
       - name: Commit Changes
+        id: auto_commit
         uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7
         with:
           commit_message: Apply PHPCBF and Psalm auto-fix changes
           # git-auto-commit reads file_pattern with `read -r -a` (first line only),
           file_pattern: 'application/models application/controllers application/libraries/ExtensionInstaller application/libraries/FormExtension application/libraries/Api application/helpers/update/updatedb_helper.php application/helpers/update/updates application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php application/commands application/datavalueobjects application/libraries/PluginManager/LimesurveyApi.php'
+
+      - name: Fail if PHPCBF/Psalm auto-fix committed changes
+        if: steps.auto_commit.outputs.changes_detected == 'true'
+        run: |
+          echo "::error::PHPCBF/Psalm auto-fix modified code and pushed a new commit (${{ steps.auto_commit.outputs.commit_hash }}). Please pull the branch and review that commit before merging."
+          exit 1
 
       - name: Run Psalm on application/ folder with low strictness
         run: |
