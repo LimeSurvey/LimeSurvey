@@ -17,6 +17,7 @@ class RESTVersionFetcher extends VersionFetcher
     /**
      * @return string
      */
+    #[\Override]
     public function getLatestVersion()
     {
         if (empty($this->curlResult)) {
@@ -33,6 +34,7 @@ class RESTVersionFetcher extends VersionFetcher
     /**
      * @return string
      */
+    #[\Override]
     public function getLatestSecurityVersion()
     {
         if (empty($this->curlResult)) {

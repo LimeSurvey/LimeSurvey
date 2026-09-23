@@ -18,6 +18,7 @@ class FlushAssetsCommand extends CConsoleCommand
      * @param array $args
      * @return void
      */
+    #[\Override]
     public function run($args)
     {
         $sCurrentDir = dirname(__FILE__);

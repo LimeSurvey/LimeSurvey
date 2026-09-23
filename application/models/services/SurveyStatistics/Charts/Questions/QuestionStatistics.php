@@ -95,6 +95,7 @@ class QuestionStatistics implements StatisticsChartInterface
         ];
     }
 
+    #[\Override]
     public function run(int $surveyId, string $language = 'en'): array
     {
         $this->surveyId = $surveyId;
@@ -141,6 +142,7 @@ class QuestionStatistics implements StatisticsChartInterface
         return $this->output;
     }
 
+    #[\Override]
     public function setFilters(StatisticsResponseFilters $filters): void
     {
         $this->filters = $filters;

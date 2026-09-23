@@ -170,7 +170,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if (!$bMaintenanceModeRestored) {
             try {
                 SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
-                $bMaintenanceModeRestored = true;
             } catch (\Throwable $t) {
                 Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
             }
@@ -229,7 +228,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     if (!$bMaintenanceModeRestored) {
         try {
             SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
-            $bMaintenanceModeRestored = true;
         } catch (\Throwable $t) {
             Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
         }
@@ -1283,7 +1281,6 @@ function upgradeSurveyTables402($sMySQLCollation)
  */
 function upgradeTokenTables402($sMySQLCollation)
 {
-    $oDB = Yii::app()->db;
     if (Yii::app()->db->driverName != 'pgsql') {
         $aTables = dbGetTablesLike("tokens%");
         if (!empty($aTables)) {
@@ -2698,7 +2695,7 @@ function upgradeSurveys145()
         $aDefaultTexts = templateDefaultTexts($sLanguage, 'unescaped');
         unset($sLanguage);
         $aDefaultTexts['admin_detailed_notification'] = $aDefaultTexts['admin_detailed_notification'] . $aDefaultTexts['admin_detailed_notification_css'];
-        $sSurveyUpdateQuery = "update {{surveys_languagesettings}} set
+        "update {{surveys_languagesettings}} set
         email_admin_responses_subj=" . $aDefaultTexts['admin_detailed_notification_subject'] . ",
         email_admin_responses=" . $aDefaultTexts['admin_detailed_notification'] . ",
         email_admin_notification_subj=" . $aDefaultTexts['admin_notification_subject'] . ",
@@ -2722,7 +2719,7 @@ function upgradeSurveyPermissions145()
     } else {
         $sTableName = '{{survey_permissions}}';
         foreach ($oPermissionResult as $aPermissionRow) {
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'assessments',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'assessments',
                 'create_p' => $aPermissionRow['define_questions'],
                 'read_p' => $aPermissionRow['define_questions'],
                 'update_p' => $aPermissionRow['define_questions'],
@@ -2730,7 +2727,7 @@ function upgradeSurveyPermissions145()
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'quotas',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'quotas',
                 'create_p' => $aPermissionRow['define_questions'],
                 'read_p' => $aPermissionRow['define_questions'],
                 'update_p' => $aPermissionRow['define_questions'],
@@ -2738,7 +2735,7 @@ function upgradeSurveyPermissions145()
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'responses',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'responses',
                 'create_p' => $aPermissionRow['browse_response'],
                 'read_p' => $aPermissionRow['browse_response'],
                 'update_p' => $aPermissionRow['browse_response'],
@@ -2748,23 +2745,23 @@ function upgradeSurveyPermissions145()
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'statistics',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'statistics',
                 'read_p' => $aPermissionRow['browse_response'],
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'survey',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'survey',
                 'read_p' => 1,
                 'delete_p' => $aPermissionRow['delete_survey'],
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveyactivation',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveyactivation',
                 'update_p' => $aPermissionRow['activate_survey'],
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveycontent',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveycontent',
                 'create_p' => $aPermissionRow['define_questions'],
                 'read_p' => $aPermissionRow['define_questions'],
                 'update_p' => $aPermissionRow['define_questions'],
@@ -2774,19 +2771,19 @@ function upgradeSurveyPermissions145()
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveylocale',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveylocale',
                 'read_p' => $aPermissionRow['edit_survey_property'],
                 'update_p' => $aPermissionRow['edit_survey_property'],
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveysettings',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveysettings',
                 'read_p' => $aPermissionRow['edit_survey_property'],
                 'update_p' => $aPermissionRow['edit_survey_property'],
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'tokens',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'tokens',
                 'create_p' => $aPermissionRow['activate_survey'],
                 'read_p' => $aPermissionRow['activate_survey'],
                 'update_p' => $aPermissionRow['activate_survey'],
@@ -3337,7 +3334,7 @@ function runAddPrimaryKeyonAnswersTable400(&$oDB)
         $oDB->createCommand()->renameTable('{{answers}}', 'answertemp');
         $oDB->createCommand()->createIndex('answer_idx_10', 'answertemp', ['qid', 'code', 'scale_id']);
 
-        $dataReader = $oDB->createCommand("SELECT qid, code, scale_id FROM answertemp group by qid, code, scale_id")->query();
+        $oDB->createCommand("SELECT qid, code, scale_id FROM answertemp group by qid, code, scale_id")->query();
 
         $oDB->createCommand()->createTable('{{answers}}', [
             'aid' =>  "pk",
@@ -3351,7 +3348,6 @@ function runAddPrimaryKeyonAnswersTable400(&$oDB)
         ]);
 
         $dataReader = $oDB->createCommand("SELECT qid, code, scale_id FROM answertemp group by qid, code, scale_id")->query();
-        $iCounter = 1;
         while (($row = $dataReader->read()) !== false) {
             $dataBlock = $oDB->createCommand("SELECT * FROM answertemp WHERE qid={$row['qid']} AND code='{$row['code']}' AND scale_id={$row['scale_id']}")->queryRow();
             $oDB->createCommand()->insert('{{answers}}', $dataBlock);

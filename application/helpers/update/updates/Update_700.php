@@ -1995,6 +1995,7 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
+    #[\Override]
     public function up()
     {
         $this->db->createCommand($this->deleteRankingSubquestions())->execute();
@@ -2010,7 +2011,7 @@ class Update_700 extends DatabaseUpdateBase
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
         foreach ($responsesTables as $responsesTable) {
             if (((strpos($responsesTable['old_name'], 'old_') === false) && (strpos($responsesTable['old_name'], 'timing') === false))) {
-                $parts = explode('_', $responsesTable['old_name']);
+                explode('_', $responsesTable['old_name']);
             }
             $scripts[$responsesTable['old_name']] = [
                 'new_name' => $responsesTable['new_name'],

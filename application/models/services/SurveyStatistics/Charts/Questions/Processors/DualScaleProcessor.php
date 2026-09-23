@@ -4,11 +4,13 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processor
 
 class DualScaleProcessor extends AbstractQuestionProcessor
 {
+    #[\Override]
     public function rt(): void
     {
         $this->rt = 'Q' . $this->question['qid'];
     }
 
+    #[\Override]
     public function process()
     {
         $this->rt();
