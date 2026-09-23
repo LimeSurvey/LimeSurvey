@@ -859,7 +859,7 @@ class UpdateForm extends CFormModel
             // 2. We're root (UID 0) - root can modify any file, OR
             // 3. File is writable (permissions allow modification)
             if ($currentUid !== false && $fileUid !== false) {
-                return ($currentUid === $fileUid) || ($currentUid === 0);
+                return ($currentUid === $fileUid) || ($currentUid === 0) || is_writable($path);
             }
         }
 

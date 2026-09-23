@@ -132,14 +132,40 @@
         <attribute>
             <name>other_replace_text</name>
             <category>Display</category>
-            <sortorder>100</sortorder>
+            <sortorder>135</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>Replaces the label of the &#039;Other:&#039; answer option with a custom text</help>
+            <help>Replaces the label of the &#039;Other:&#039; answer option with a custom text. To also show a suffix label after the text input, separate prefix and suffix with a pipe (|), e.g. &#039;From|to 100&#039;. To show only a suffix with no prefix label, use a leading pipe: &#039;|°C&#039;. To show no label at all, use a single pipe: &#039;|&#039;.</help>
             <caption>Label for &#039;Other:&#039; option</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>other_input_size</name>
+            <category>Display</category>
+            <sortorder>140</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Set the size of the &#039;Other:&#039; input. The input will be displayed approximately this size in width.</help>
+            <caption>&#039;Other:&#039; text input box size</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>other_maximum_chars</name>
+            <category>Display</category>
+            <sortorder>145</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Maximum characters allowed for &#039;Other:&#039; option</help>
+            <caption>&#039;Other:&#039; option maximum characters</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
         </attribute>
         <attribute>
             <name>other_position</name>
@@ -436,29 +462,6 @@
             <expression></expression>
         </attribute>
         <attribute>
-            <name>other_numbers_only</name>
-            <category>Logic</category>
-            <sortorder>100</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Allow only numerical input for &#039;Other&#039; text</help>
-            <caption>Numbers only for &#039;Other&#039;</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
             <name>commented_checkbox_auto</name>
             <category>Logic</category>
             <sortorder>111</sortorder>
@@ -619,6 +622,29 @@
         <!-- Logic Attributes END -->
         <!-- Other Attributes START -->
         <attribute>
+            <name>other_numbers_only</name>
+            <category>Other</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Allow only numerical input for &#039;Other&#039; text</help>
+            <caption>Numbers only for &#039;Other&#039;</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
             <name>page_break</name>
             <category>Other</category>
             <sortorder>100</sortorder>
@@ -723,8 +749,6 @@
         <!-- Statistics Attributes END -->
         <!-- Timer Attributes START -->
         <!-- Timer Attributes END -->
-        <!-- Input Attributes START -->
-        <!-- Input Attributes END -->
         <!-- Location Attributes START -->
         <!-- Location Attributes END -->
         <!-- File metadata Attributes START -->

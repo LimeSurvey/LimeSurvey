@@ -29,3 +29,37 @@ $sidebar-row-padding: 0 0.5rem 0 1.5rem;
   border: 1px solid $g-300;
   width: 33%;
 }
+
+.privacy-settings-link-border-top {
+  border-top: 1px solid $g-400;
+}
+
+.privacy-settings-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: $grape;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: $font-weight-500;
+  font-size: $font-size-sm;
+  line-height: $line-height-20;
+  letter-spacing: -0.21px;
+  background: transparent;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: $grape;
+    text-decoration: none;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+  svg path {
+    fill: currentColor;
+  }
+}

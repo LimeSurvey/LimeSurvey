@@ -155,6 +155,11 @@ class LSUserIdentity extends CUserIdentity
         }
 
         // Do session setup
+        if (empty($user->session_token)) {
+            $user->session_token = User::generateSessionToken();
+            $user->saveAttributes(['session_token' => $user->session_token]);
+        }
+        Yii::app()->session['session_token'] = $user->session_token;
         Yii::app()->session['loginID'] = (int) $user->uid;
         Yii::app()->session['user'] = $user->users_name;
         Yii::app()->session['full_name'] = $user->full_name;

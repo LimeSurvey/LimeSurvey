@@ -320,7 +320,7 @@ div[class*=" col-"].nofloat {
 
 .resize-handle {
   position: absolute;
-  left: 0;
+  left: -20px;
   top: 0;
   width: 20px;
   display: flex;

@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { EditorView } from '@codemirror/view'
 import { foldGutter, foldService } from '@codemirror/language'
 import { autocompletion } from '@codemirror/autocomplete'
 
-import { CodeEditor } from 'components/UIComponents/ContentEditor/CodeEditor/CodeEditor'
+import { ExpressionScriptEditor } from 'components/UIComponents'
 import { QUESTION_RELEVANCE_DEFAULT_VALUE, SwalAlert } from 'helpers'
 import { Button } from 'components'
 
@@ -14,7 +13,11 @@ import {
   showConditionOverwriteConfirmationOverlay,
 } from '../utils'
 
-export const ExpressionScriptEditorOverlay = ({ question, onApply }) => {
+export const ExpressionScriptEditorOverlay = ({
+  question,
+  onApply,
+  validateExpression,
+}) => {
   const expressionScript =
     question?.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
       ? ''
@@ -53,15 +56,15 @@ export const ExpressionScriptEditorOverlay = ({ question, onApply }) => {
         {t('Edit or copy large conditions')}
       </p>
       <div className="text-start condition-designer-overlay-textarea-container">
-        <CodeEditor
+        <ExpressionScriptEditor
           id="expression-script-editor"
           value={content}
           height="50vh"
           width="100%"
           className="text-start expression-script-codemirror"
           onChange={handleChange}
+          validateExpression={validateExpression}
           extensions={[
-            EditorView.lineWrapping,
             foldService.of(() => null),
             autocompletion({ override: [] }),
             foldGutter({ openText: '', closedText: '' }),
