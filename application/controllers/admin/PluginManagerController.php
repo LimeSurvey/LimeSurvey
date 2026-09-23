@@ -39,6 +39,7 @@ class PluginManagerController extends SurveyCommonAction
         App()->getClientScript()->registerScriptFile($jsFile);
 
         $aoPlugins = Plugin::model()->findAll(array('order' => 'name'));
+        $aoPlugins = $this->dispatchBeforePluginManagerIndex($aoPlugins);
         $data      = [];
         foreach ($aoPlugins as $oPlugin) {
             $data[] = [
@@ -84,6 +85,21 @@ class PluginManagerController extends SurveyCommonAction
         );
 
         $this->renderWrappedTemplate('pluginmanager', 'index', $aData);
+    }
+
+    /**
+     * Give plugins a chance to change which plugins are shown in Plugin Manager index.
+     *
+     * @param Plugin[] $plugins
+     * @return Plugin[]
+     */
+    protected function dispatchBeforePluginManagerIndex(array $plugins): array
+    {
+        $event = new PluginEvent('beforePluginManagerIndex', $this);
+        $event->set('plugins', $plugins);
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        $resultPlugins = $result->get('plugins', $plugins);
+        return is_array($resultPlugins) ? $resultPlugins : $plugins;
     }
 
     /**
