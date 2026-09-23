@@ -173,7 +173,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 // @psalm-suppress UnusedVariable Read by the by-reference shutdown-function
                 // closure registered above; Psalm doesn't trace writes observed by a
                 // by-ref closure captured before this point.
-                $bMaintenanceModeRestored = true;
             } catch (\Throwable $t) {
                 Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
             }
@@ -235,7 +234,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // @psalm-suppress UnusedVariable Read by the by-reference shutdown-function
             // closure registered above; Psalm doesn't trace writes observed by a
             // by-ref closure captured before this point.
-            $bMaintenanceModeRestored = true;
         } catch (\Throwable $t) {
             Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
         }
