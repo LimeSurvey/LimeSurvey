@@ -3677,7 +3677,7 @@ function convertToGlobalSettingFormat($sDate, $withTime = false)
  */
 function convertFromGlobalSettingFormat(?string $sDate, bool $withTime = false): ?string
 {
-    if (empty($sDate)) {
+    if ($sDate === null || trim($sDate) === '') {
         return null;
     }
     $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat'] ?? 1);
@@ -3704,6 +3704,14 @@ function convertFromGlobalSettingFormat(?string $sDate, bool $withTime = false):
     } else {
         // The value did not match the user's locale format at all
         // (e.g. it is already an ISO 'Y-m-d H:i:s' string) - let PHP try to parse it.
+        // Reject anything strtotime() itself can't make sense of before constructing
+        // DateTime: PHP 8.3 throws DateMalformedStringException for unparsable input,
+        // and constructing that exception is fatal under xdebug (dynamic property
+        // deprecation on the exception object), so a caught Exception is not a safe
+        // enough guard here.
+        if (@strtotime($sDate) === false) {
+            return null;
+        }
         try {
             $oDate = new DateTime($sDate);
         } catch (Exception $e) {
