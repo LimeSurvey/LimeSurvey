@@ -12,6 +12,7 @@ class Update_718 extends DatabaseUpdateBase
      * as "the user deselected these" and hide them. Merge them into every existing
      * preference once.
      */
+    #[\Override]
     public function up()
     {
         $legacyColumns = ['email', 'full_name', 'created', 'search_parentUserName'];
