@@ -474,6 +474,21 @@
 
             });
 
+            // Keyboard (Enter/Space) and assistive technology activate the button
+            // itself instead of the hovering file input, so open the file dialog here.
+            // Mouse clicks land on the overlay input, which is not a child of the button.
+            addEvent(self._button, 'click', function(){
+                if (self._disabled){
+                    return;
+                }
+
+                if ( ! self._input){
+                    self._createInput();
+                }
+
+                self._input.click();
+            });
+
 
             // commented because we now hide input on mouseleave
             /**
