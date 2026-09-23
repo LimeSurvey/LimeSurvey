@@ -61,4 +61,40 @@ function dummy_twig_translation_helper()
     gT("Indicates where the 'Other' option should be placed"); // From application/views/survey/questions/answer/multiplechoice/config.xml
     gT("After specific answer option"); // From application\views\survey\questions\answer\list_dropdown\config.xml
     gT("Before 'No Answer'"); // From application\views\survey\questions\answer\list_dropdown\config.xml
+    gT("Change button size");
+    gT("Choose maximum number of buttons in a row");
+    gT("The participant cannot upload a single file larger than this size"); // From application\views\survey\questions\answer\file_upload\config.xml
+    gT("Show an horizontal scroll for the images instead of a vertical list. Needs JavaScript enabled."); //  From application\views\survey\questions\answer\listradio\config.xml
+    gT("Keep images aspect ratio. Can be achieved by not setting both width and height. Needs JavaScript enabled."); //  From application\views\survey\questions\answer\listradio\config.xml
+    gT("Crop images to fit into size. Needs JavaScript enabled."); //  From application\views\survey\questions\answer\listradio\config.xml
+    gT("Fix width of the images to this value. Leave empty to not change them."); // question/image_select-listradio/survey/questions/answer/listradio/config.xml
+    gT("Fix height of the images to this value. Leave empty to not change them."); // question/image_select-listradio/survey/questions/answer/listradio/config.xml
+    gT("The answer options will be distributed across the number of columns set here. Any number up to 1 can be entered, but we only support systems up to 16."); // From application/views/survey/questions/answer/listradio/config.xml, application/views/survey/questions/answer/multiplechoice/config.xml
+    gT("Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized"); // From application/views/survey/questions/answer/multiplechoice/config.xml
+    gT("Default coordinates of the map when the page first loads. Format: latitude [space] longitude"); // From application/views/survey/questions/answer/shortfreetext/config.xml
+    gT("Max number of files"); // From application/views/survey/questions/answer/file_upload/config.xml
+    gT("Min number of files"); // From application/views/survey/questions/answer/file_upload/config.xml
+    gT("Minimum date, valid date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page."); // From application/views/survey/questions/answer/date/config.xml
+    gT("Maximum date, valid date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page."); // From application/views/survey/questions/answer/date/config.xml
+    gT("You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used."); // From application/views/survey/questions/answer/multiplenumeric/config.xml
+    gT("You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used."); // From application/views/survey/questions/answer/multiplenumeric/config.xml
+    gT("You can use Expression manager, but this must be a number before showing the page else set to 1."); // From application/views/survey/questions/answer/multiplenumeric/config.xml
+    gT("Slider start as this value. You can use Expression manager, but this must be a number before showing the page."); // From application/views/survey/questions/answer/multiplenumeric/config.xml
+    gT("Limit the number of possible answers fixed by number of columns in database"); // From application/views/survey/questions/answer/ranking/config.xml
+    gT("Replace choice header (default: \"Available items\")"); // From application/views/survey/questions/answer/ranking/config.xml
+    gT("Replace rank header (default: \"Your ranking\")"); // From application/views/survey/questions/answer/ranking/config.xml
+    gT("Horizontal scroll: "); // From themes/question/image_select-listradio/survey/questions/answer/listradio/config.xml
+    gT("Keep aspect-ratio"); // From themes/question/image_select-listradio/survey/questions/answer/listradio/config.xml
+    gT("Crop or Resize"); // From themes/question/image_select-listradio/survey/questions/answer/listradio/config.xml
+    gT("Auto-add new line:"); // From themes/question/inputondemand/survey/questions/answer/multipleshorttext/config.xml
+    gT("Automatically add a new line when something is inserted"); // From themes/question/inputondemand/survey/questions/answer/multipleshorttext/config.xml
+    gT("Add row icon:"); // From themes/question/inputondemand/survey/questions/answer/multipleshorttext/config.xml
+    gT("The icon used on the \"add row\"-button"); // From themes/question/inputondemand/survey/questions/answer/multipleshorttext/config.xml
+    gT("Plus"); // From themes/question/inputondemand/survey/questions/answer/multipleshorttext/config.xml
+    gT("Plus in circle"); // From themes/question/inputondemand/survey/questions/answer/multipleshorttext/config.xml
+    gT("Chevron down"); // From themes/question/inputondemand/survey/questions/answer/multipleshorttext/config.xml
+    gT("Arrow down"); // From themes/question/inputondemand/survey/questions/answer/multipleshorttext/config.xml
+    gT("Show Platform information: "); // From themes/question/browserdetect/survey/questions/answer/shortfreetext/config.xml
+    gT("Show also the platform information of the participant"); // From themes/question/browserdetect/survey/questions/answer/shortfreetext/config.xml
+    gT("Semicolon-separated list of answer codes that keep their original database position when answers are randomized"); // From application/views/survey/questions/answer/list_with_comment/config.xml
 }
