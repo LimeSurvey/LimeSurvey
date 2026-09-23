@@ -166,7 +166,7 @@ jobs:
           XDEBUG_MODE: coverage
         run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped ${{ matrix.db-type != 'mysql' && '--exclude-group mysql' || '' }} tests/unit
       - name: Upload cov.xml
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
           path: cov.xml
@@ -277,7 +277,7 @@ jobs:
           git config core.fileMode false
 
       - name: Commit Changes
-        uses: stefanzweifel/git-auto-commit-action@v7
+        uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7
         with:
           commit_message: Apply PHPCBF changes
           # git-auto-commit reads file_pattern with `read -r -a` (first line only),
