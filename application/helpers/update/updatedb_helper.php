@@ -170,6 +170,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if (!$bMaintenanceModeRestored) {
             try {
                 SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+                // @psalm-suppress UnusedVariable Read by the by-reference shutdown-function
+                // closure registered above; Psalm doesn't trace writes observed by a
+                // by-ref closure captured before this point.
+                $bMaintenanceModeRestored = true;
             } catch (\Throwable $t) {
                 Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
             }
@@ -228,6 +232,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     if (!$bMaintenanceModeRestored) {
         try {
             SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+            // @psalm-suppress UnusedVariable Read by the by-reference shutdown-function
+            // closure registered above; Psalm doesn't trace writes observed by a
+            // by-ref closure captured before this point.
+            $bMaintenanceModeRestored = true;
         } catch (\Throwable $t) {
             Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
         }
@@ -2695,12 +2703,6 @@ function upgradeSurveys145()
         $aDefaultTexts = templateDefaultTexts($sLanguage, 'unescaped');
         unset($sLanguage);
         $aDefaultTexts['admin_detailed_notification'] = $aDefaultTexts['admin_detailed_notification'] . $aDefaultTexts['admin_detailed_notification_css'];
-        "update {{surveys_languagesettings}} set
-        email_admin_responses_subj=" . $aDefaultTexts['admin_detailed_notification_subject'] . ",
-        email_admin_responses=" . $aDefaultTexts['admin_detailed_notification'] . ",
-        email_admin_notification_subj=" . $aDefaultTexts['admin_notification_subject'] . ",
-        email_admin_notification=" . $aDefaultTexts['admin_notification'] . "
-        where surveyls_survey_id=" . $aSurveyRow['surveyls_survey_id'];
         Yii::app()->getDb()->createCommand()->update('{{surveys_languagesettings}}', array('email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
             'email_admin_responses' => $aDefaultTexts['admin_detailed_notification'],
             'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
@@ -3333,8 +3335,6 @@ function runAddPrimaryKeyonAnswersTable400(&$oDB)
     } else {
         $oDB->createCommand()->renameTable('{{answers}}', 'answertemp');
         $oDB->createCommand()->createIndex('answer_idx_10', 'answertemp', ['qid', 'code', 'scale_id']);
-
-        $oDB->createCommand("SELECT qid, code, scale_id FROM answertemp group by qid, code, scale_id")->query();
 
         $oDB->createCommand()->createTable('{{answers}}', [
             'aid' =>  "pk",
