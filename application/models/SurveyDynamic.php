@@ -987,34 +987,28 @@ class SurveyDynamic extends LSActiveRecord
 
         if ($aQuestionAttributes['questionclass'] === 'ranking') {
             $aQuestionAttributes['answervalues'] = array();
-            // Ranking now uses subquestions instead of answers
-            $subQuestions = Question::model()->with('questionl10ns')->findAllByAttributes(
-                array('parent_qid' => $oQuestion->qid),
-                array('order' => 'question_order')
-            );
-            foreach ($subQuestions as $oSubQuestion) {
-                $subFieldname = $fieldname . '_S' . $oSubQuestion->qid;
-                if (!isset($oResponses[$subFieldname]) || $oResponses[$subFieldname] === '') {
-                    continue;
+            // Ranking is stored as a JSON list of subquestion codes in the Q{qid} column, ordered by rank
+            $rankedCodes = json_decode((string) $aQuestionAttributes['answervalue'], true);
+            if (is_array($rankedCodes)) {
+                $subQuestions = Question::model()->with('questionl10ns')->findAllByAttributes(
+                    array('parent_qid' => $oQuestion->qid),
+                    array('order' => 'question_order')
+                );
+                $subQuestionTexts = [];
+                foreach ($subQuestions as $oSubQuestion) {
+                    $subQuestionTexts[$oSubQuestion->title] = $oSubQuestion->questionl10ns[$sLanguage]->question ?? $oSubQuestion->title;
                 }
-                $currentResponse = $oResponses[$subFieldname];
-
-                // Get the answer text for the selected rank value
-                $answerText = '';
-                if (isset($oQuestion->subquestions)) {
-                    $oSelectedAnswer = array_reduce($subQuestions, function ($carry, $oAns) use ($currentResponse) {
-                        return $currentResponse == $oAns->title ? $oAns : $carry;
-                    });
-                    if ($oSelectedAnswer !== null) {
-                        $answerText = $oSelectedAnswer->questionl10ns[$sLanguage]->question ?? '';
+                foreach ($rankedCodes as $rankedCode) {
+                    if ($rankedCode === null || $rankedCode === '') {
+                        continue;
                     }
+                    $answerText = $subQuestionTexts[$rankedCode] ?? '';
+                    $aQuestionAttributes['answervalues'][] = [
+                        'value' => $rankedCode,
+                        'subquestion' => $answerText,
+                        'answertext' => $answerText
+                    ];
                 }
-
-                $aQuestionAttributes['answervalues'][] = [
-                    'value' => $currentResponse,
-                    'subquestion' => $oSubQuestion->questionl10ns[$sLanguage]->question ?? $oSubQuestion->title,
-                    'answertext' => $answerText
-                ];
             }
         }
 
