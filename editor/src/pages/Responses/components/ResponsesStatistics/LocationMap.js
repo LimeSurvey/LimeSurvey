@@ -26,6 +26,11 @@ const DEFAULT_CENTER = [53.55, 9.99]
 const DEFAULT_ZOOM = 5
 const FIT_MAX_ZOOM = 12
 const POINT_LIMIT = 500
+// Web Mercator's latitude limit, so fitting doesn't zoom out past the tiles.
+const WORLD_BBOX = [
+  [-85, -180],
+  [85, 180],
+]
 // Quiet time after a pan/zoom before the viewport is fetched, so a run of
 // zoom steps or drags costs one request.
 const VIEWPORT_DEBOUNCE_MS = 400
@@ -203,10 +208,13 @@ const ConsentedLocationMap = ({ surveyId, questionCode, fields, filters }) => {
     })
 
   // The whole-world result (capped at POINT_LIMIT) decides the initial view.
-  const bbox = useMemo(
-    () => (bounds === null && !isPlaceholderData ? bboxOf(points) : null),
-    [bounds, isPlaceholderData, points]
-  )
+  // A capped sample may miss responses, so fall back to the whole world.
+  const bbox = useMemo(() => {
+    if (bounds !== null || isPlaceholderData) {
+      return null
+    }
+    return total > points.length ? WORLD_BBOX : bboxOf(points)
+  }, [bounds, isPlaceholderData, points, total])
 
   // New filters can move the responses elsewhere; fit again on the next
   // whole-world result. Keyed on the serialized filters since the object

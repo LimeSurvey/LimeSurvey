@@ -101,6 +101,8 @@ const flattenAnswers = (responses) =>
     }))
   })
 
+const WORLD_BOUNDS = { south: -90, west: -180, north: 90, east: 180 }
+
 export class StatisticsService {
   constructor(auth, surveyId, baseUrl) {
     this.auth = auth
@@ -172,8 +174,15 @@ export class StatisticsService {
       [
         ...buildResponseFilters(statisticsFilters),
         ...buildSearchFilters(statisticsFilters?.search ?? [], fields),
-        ...(bounds && field
-          ? [{ key: field, filterMethod: 'withinBounds', value: bounds }]
+        // Always filtered, so rows without a location don't count or fill the page.
+        ...(field
+          ? [
+              {
+                key: field,
+                filterMethod: 'withinBounds',
+                value: bounds ?? WORLD_BOUNDS,
+              },
+            ]
           : []),
       ]
     )
