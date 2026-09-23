@@ -189,14 +189,32 @@ var UserManagement = function () {
             }
         };
 
+        var updateSelectAllState = function () {
+            var selectAllCheckbox = rootObject.find('.selector--select-all-permissions');
+            if (!selectAllCheckbox.length) {
+                return;
+            }
+            var enabledInputs = tableObject.find('.specific-settings-block input:checkbox:not(:disabled)');
+            var checkedCount = enabledInputs.filter(':checked').length;
+            if (checkedCount === 0) {
+                selectAllCheckbox.prop('checked', false).prop('indeterminate', false);
+            } else if (checkedCount === enabledInputs.length) {
+                selectAllCheckbox.prop('checked', true).prop('indeterminate', false);
+            } else {
+                selectAllCheckbox.prop('checked', false).prop('indeterminate', true);
+            }
+        };
+
         tableObject.on('click', '.general-row-selector', function () {
             var bChecked = this.checked;
             $(this).prop('indeterminate', false).removeClass('incomplete-selection');
             $(this).closest('tr').find('input').prop('checked', bChecked);
+            updateSelectAllState();
         });
 
         tableObject.on('change', '.specific-settings-block input:checkbox', function () {
             updateRowGeneralState($(this).closest('tr'));
+            updateSelectAllState();
         });
 
         rootObject.find('#perm_superadmin_read').on(' click', function () {
@@ -207,11 +225,13 @@ var UserManagement = function () {
             var bChecked = this.checked;
             tableObject.find('input:checkbox:not(:disabled)').prop('checked', bChecked).prop('indeterminate', false);
             tableObject.find('.general-row-selector').removeClass('incomplete-selection');
+            updateSelectAllState();
         });
 
         tableObject.find('tbody tr').each(function () {
             updateRowGeneralState($(this));
         });
+        updateSelectAllState();
 
         rootObject.find('#permission-modal-exitForm').on('click', function(e){
             e.preventDefault();
