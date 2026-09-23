@@ -1,36 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RobThree\Auth\Providers\Qr;
 
-// http://goqr.me/api/doc/create-qr-code/
+/**
+ * Use http://goqr.me/api/doc/create-qr-code/ to get QR code
+ */
 class QRServerProvider extends BaseHTTPQRCodeProvider
 {
-    public $errorcorrectionlevel;
-    public $margin;
-    public $qzone;
-    public $bgcolor;
-    public $color;
-    public $format;
-
-    function __construct($verifyssl = false, $errorcorrectionlevel = 'L', $margin = 4, $qzone = 1, $bgcolor = 'ffffff', $color = '000000', $format = 'png')
+    public function __construct(protected bool $verifyssl = false, public string $errorcorrectionlevel = 'L', public int $margin = 4, public int $qzone = 1, public string $bgcolor = 'ffffff', public string $color = '000000', public string $format = 'png')
     {
-        if (!is_bool($verifyssl)) {
-            throw new QRException('VerifySSL must be bool');
-        }
-
-        $this->verifyssl = $verifyssl;
-
-        $this->errorcorrectionlevel = $errorcorrectionlevel;
-        $this->margin = $margin;
-        $this->qzone = $qzone;
-        $this->bgcolor = $bgcolor;
-        $this->color = $color;
-        $this->format = $format;
     }
 
-    public function getMimeType()
+    public function getMimeType(): string
     {
-        switch (strtolower((string) $this->format)) {
+        switch (strtolower($this->format)) {
             case 'png':
                 return 'image/png';
             case 'gif':
@@ -43,29 +28,32 @@ class QRServerProvider extends BaseHTTPQRCodeProvider
             case 'eps':
                 return 'application/postscript';
         }
-        throw new \QRException(sprintf('Unknown MIME-type: %s', $this->format));
+        throw new QRException(sprintf('Unknown MIME-type: %s', $this->format));
     }
 
-    public function getQRCodeImage($qrtext, $size)
+    public function getQRCodeImage(string $qrText, int $size): string
     {
-        return $this->getContent($this->getUrl($qrtext, $size));
+        return $this->getContent($this->getUrl($qrText, $size));
     }
 
-    private function decodeColor($value)
+    public function getUrl(string $qrText, int $size): string
     {
-        return vsprintf('%d-%d-%d', sscanf($value, "%02x%02x%02x"));
+        $queryParameters = array(
+            'size' => $size . 'x' . $size,
+            'ecc' => strtoupper($this->errorcorrectionlevel),
+            'margin' => $this->margin,
+            'qzone' => $this->qzone,
+            'bgcolor' => $this->decodeColor($this->bgcolor),
+            'color' => $this->decodeColor($this->color),
+            'format' => strtolower($this->format),
+            'data' => $qrText,
+        );
+
+        return 'https://api.qrserver.com/v1/create-qr-code/?' . http_build_query($queryParameters);
     }
 
-    public function getUrl($qrtext, $size)
+    private function decodeColor(string $value): string
     {
-        return 'https://api.qrserver.com/v1/create-qr-code/'
-            . '?size=' . $size . 'x' . $size
-            . '&ecc=' . strtoupper((string) $this->errorcorrectionlevel)
-            . '&margin=' . $this->margin
-            . '&qzone=' . $this->qzone
-            . '&bgcolor=' . $this->decodeColor($this->bgcolor)
-            . '&color=' . $this->decodeColor($this->color)
-            . '&format=' . strtolower((string) $this->format)
-            . '&data=' . rawurlencode((string) $qrtext);
+        return vsprintf('%d-%d-%d', sscanf($value, '%02x%02x%02x'));
     }
 }
