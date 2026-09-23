@@ -36,19 +36,18 @@ class RangeConditionHandler implements HandlerInterface
 
         $criteria = new \CDbCriteria();
 
-        // Do another more strict strip, to allow only letters and numbers
-        // so that we don't have :`id`Max in parameter
-        $keyStripped = $this->stripKey($key);
+        $minParam = $this->nextParamName();
+        $maxParam = $this->nextParamName();
 
         if ($min === null) {
-            $criteria->condition = "CAST($key AS UNSIGNED) <= :{$keyStripped}Max";
-            $criteria->params = [":{$keyStripped}Max" => $max];
+            $criteria->condition = "CAST($key AS UNSIGNED) <= $maxParam";
+            $criteria->params = [$maxParam => $max];
         } elseif ($max === null) {
-            $criteria->condition = "CAST($key AS UNSIGNED) >= :{$keyStripped}Min";
-            $criteria->params = [":{$keyStripped}Min" => $min];
+            $criteria->condition = "CAST($key AS UNSIGNED) >= $minParam";
+            $criteria->params = [$minParam => $min];
         } else {
-            $criteria->condition = "CAST($key AS UNSIGNED) BETWEEN :{$keyStripped}Min AND :{$keyStripped}Max";
-            $criteria->params = [":{$keyStripped}Min" => $min, ":{$keyStripped}Max" => $max];
+            $criteria->condition = "CAST($key AS UNSIGNED) BETWEEN $minParam AND $maxParam";
+            $criteria->params = [$minParam => $min, $maxParam => $max];
         }
         return $criteria;
     }

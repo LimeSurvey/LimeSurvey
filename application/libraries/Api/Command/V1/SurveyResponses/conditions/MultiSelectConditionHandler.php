@@ -35,8 +35,8 @@ class MultiSelectConditionHandler implements HandlerInterface
             $placeholders = [];
             $params = [];
 
-            foreach (array_values($value) as $index => $val) {
-                $paramName = ":value{$index}";
+            foreach (array_values($value) as $val) {
+                $paramName = $this->nextParamName();
                 $placeholders[] = $paramName;
                 $params[$paramName] = $val;
             }

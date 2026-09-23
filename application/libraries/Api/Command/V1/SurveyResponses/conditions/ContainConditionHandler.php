@@ -32,7 +32,7 @@ class ContainConditionHandler implements HandlerInterface
 
             foreach ($key as $rawKey) {
                 $quotedKey = $this->sanitizeKey($rawKey);
-                $paramName = CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount++;
+                $paramName = $this->nextParamName();
 
                 $conditions[] = "$quotedKey LIKE $paramName";
                 $params[$paramName] = "%$value%";
@@ -44,7 +44,7 @@ class ContainConditionHandler implements HandlerInterface
             return $criteria;
         }
         $quotedKey = $this->sanitizeKey($key);
-        $paramName = CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount++;
+        $paramName = $this->nextParamName();
 
         $criteria->condition = "$quotedKey LIKE $paramName";
         $criteria->params = [$paramName => "%$value%"];

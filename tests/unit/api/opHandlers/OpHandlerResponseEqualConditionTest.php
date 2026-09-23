@@ -28,8 +28,9 @@ class OpHandlerResponseEqualConditionTest extends TestCondition
         $handler = new EqualConditionHandler();
 
         $criteria = $handler->execute('status', 'active');
-        $this->assertFieldConditions($criteria->condition, '[0] = :statusValue', ['status']);
-        $this->assertSame('active', $criteria->params[':statusValue']);
+        $paramName = array_key_first($criteria->params);
+        $this->assertFieldConditions($criteria->condition, "[0] = $paramName", ['status']);
+        $this->assertSame('active', $criteria->params[$paramName]);
     }
 
     public function testExecuteArrayKeysBuildsOrConditionAndSharedParam(): void
@@ -37,13 +38,13 @@ class OpHandlerResponseEqualConditionTest extends TestCondition
         $handler = new EqualConditionHandler();
         $criteria = $handler->execute(['first_name', 'last_name'], 'Name');
 
+        [$firstParam, $secondParam] = array_keys($criteria->params);
         $this->assertFieldConditions(
             $criteria->condition,
-            '[0] = :first_nameValue OR [1] = :last_nameValue',
+            "[0] = $firstParam OR [1] = $secondParam",
             ['first_name', 'last_name']
         );
-        // Single shared placeholder per the handler’s implementation
-        $this->assertSame([':first_nameValue' => 'Name', ':last_nameValue' => 'Name'], $criteria->params);
+        $this->assertSame([$firstParam => 'Name', $secondParam => 'Name'], $criteria->params);
     }
 
     /**
@@ -59,31 +60,53 @@ class OpHandlerResponseEqualConditionTest extends TestCondition
         $this->assertStringNotContainsString(';', $criteria->condition);
 
         // Expect the sanitized, quoted column name
+        $paramName = array_key_first($criteria->params);
         $this->assertFieldConditions(
             $criteria->condition,
-            '[0] = :nameDROPTABLEresponsesValue',
+            "[0] = $paramName",
             ['nameDROPTABLEresponses--']
         );
-        $this->assertSame([':nameDROPTABLEresponsesValue' => 'ok'], $criteria->params);
+        $this->assertSame([$paramName => 'ok'], $criteria->params);
     }
 
     /**
-     * Regression: when array keys are provided, confirm only one param placeholder is used,
-     * matching the handler’s current behavior (`:value` used for all OR’d columns).
+     * Regression: array keys produce one placeholder per column, every one
+     * bound to the same value, OR'd together.
      */
-    public function testArrayKeysSinglePlaceholderRegression(): void
+    public function testArrayKeysBindSameValueToEveryColumn(): void
     {
         $handler = new EqualConditionHandler();
 
         $criteria = $handler->execute(['fieldA', 'filedB', 'fieldC'], 'sharedValue');
 
-        $this->assertTrue(
-            (bool)preg_match('/(?:`fieldA`|\[fieldA\]|"fieldA") = :fieldAValue/', $criteria->condition) ||
-            (bool)preg_match('/(?:`fieldB`|\[fieldB\]|"fieldB") = :fieldBValue/', $criteria->condition) ||
-            (bool)preg_match('/(?:`fieldC`|\[fieldC\]|"fieldC") = :fieldCValue/', $criteria->condition)
-        );
+        $paramNames = array_keys($criteria->params);
+        $this->assertCount(3, $paramNames);
         $this->assertStringContainsString('OR', $criteria->condition);
+        foreach ($paramNames as $paramName) {
+            $this->assertStringContainsString("= $paramName", $criteria->condition);
+        }
 
-        $this->assertSame([':fieldAValue' => 'sharedValue', ':filedBValue' => 'sharedValue', ':fieldCValue' => 'sharedValue'], $criteria->params);
+        $this->assertSame(
+            array_fill_keys($paramNames, 'sharedValue'),
+            $criteria->params
+        );
+    }
+
+    /**
+     * Regression: two filters on the same column merged into one criteria must
+     * keep both bound values. Placeholder names used to be derived from the
+     * column, so mergeWith()'s array_merge silently dropped the first value.
+     */
+    public function testTwoMergedFiltersOnSameColumnKeepBothValues(): void
+    {
+        $handler = new EqualConditionHandler();
+
+        $merged = new \CDbCriteria();
+        $merged->mergeWith($handler->execute('status', 'active'));
+        $merged->mergeWith($handler->execute('status', 'closed'));
+
+        $this->assertCount(2, $merged->params);
+        $this->assertContains('active', $merged->params);
+        $this->assertContains('closed', $merged->params);
     }
 }

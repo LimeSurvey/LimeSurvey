@@ -31,10 +31,15 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
 
+        [$minParam, $maxParam] = array_keys($criteria->params);
         // Condition should cast and use both Min and Max placeholders
-        $this->assertFieldConditions($criteria->condition, 'CAST([0] AS UNSIGNED) BETWEEN :idMin AND :idMax', ['id']);
+        $this->assertFieldConditions(
+            $criteria->condition,
+            "CAST([0] AS UNSIGNED) BETWEEN $minParam AND $maxParam",
+            ['id']
+        );
         $this->assertSame(
-            [':idMin' => 10.0, ':idMax' => 25.0],
+            [$minParam => 10.0, $maxParam => 25.0],
             $criteria->params
         );
     }
@@ -46,8 +51,9 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
         $criteria = $handler->execute('score', ['7', '']);
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-        $this->assertFieldConditions($criteria->condition, 'CAST([0] AS UNSIGNED) >= :scoreMin', ['score']);
-        $this->assertSame([':scoreMin' => 7.0], $criteria->params);
+        $minParam = array_key_first($criteria->params);
+        $this->assertFieldConditions($criteria->condition, "CAST([0] AS UNSIGNED) >= $minParam", ['score']);
+        $this->assertSame([$minParam => 7.0], $criteria->params);
     }
 
     public function testExecuteWithOnlyMaxBuildsUpperBound(): void
@@ -57,16 +63,16 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
         $criteria = $handler->execute('score', ['', '42']);
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-        $this->assertFieldConditions($criteria->condition, 'CAST([0] AS UNSIGNED) <= :scoreMax', ['score']);
-        $this->assertSame([':scoreMax' => 42.0], $criteria->params);
+        $maxParam = array_key_first($criteria->params);
+        $this->assertFieldConditions($criteria->condition, "CAST([0] AS UNSIGNED) <= $maxParam", ['score']);
+        $this->assertSame([$maxParam => 42.0], $criteria->params);
     }
 
     /**
      * Regression: ensure dangerous characters in key are stripped BEFORE quoting,
      * and that param names don't carry quoting/backticks or punctuation.
      *
-     * Input like "id`; DROP TABLE" should sanitize to `idDROPTABLE`
-     * and param names :idDROPTABLEMin / :idDROPTABLEMax.
+     * Input like "id`; DROP TABLE" should sanitize to `idDROPTABLE`.
      */
     public function testKeySanitizationForParamsAndQuoting(): void
     {
@@ -75,16 +81,33 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
         $criteria = $handler->execute('id`; DROP TABLE  responses--', ['1', '2']);
 
         $this->assertStringNotContainsString(';', $criteria->condition);
+
+        [$minParam, $maxParam] = array_keys($criteria->params);
         $this->assertFieldConditions(
             $criteria->condition,
-            'CAST([0] AS UNSIGNED) BETWEEN :idDROPTABLEresponsesMin AND :idDROPTABLEresponsesMax',
+            "CAST([0] AS UNSIGNED) BETWEEN $minParam AND $maxParam",
             ['idDROPTABLEresponses--']
         );
 
-        $this->assertArrayHasKey(':idDROPTABLEresponsesMin', $criteria->params);
-        $this->assertArrayHasKey(':idDROPTABLEresponsesMax', $criteria->params);
-        $this->assertSame(1.0, $criteria->params[':idDROPTABLEresponsesMin']);
-        $this->assertSame(2.0, $criteria->params[':idDROPTABLEresponsesMax']);
+        $this->assertSame(1.0, $criteria->params[$minParam]);
+        $this->assertSame(2.0, $criteria->params[$maxParam]);
+    }
+
+    /**
+     * Regression: two range filters on the same column merged into one criteria
+     * must keep all four bounds. Placeholder names used to be derived from the
+     * column, so mergeWith()'s array_merge silently dropped the first pair.
+     */
+    public function testTwoMergedRangesOnSameColumnKeepAllBounds(): void
+    {
+        $handler = new RangeConditionHandler();
+
+        $merged = new \CDbCriteria();
+        $merged->mergeWith($handler->execute('id', ['1', '5']));
+        $merged->mergeWith($handler->execute('id', ['10', '20']));
+
+        $this->assertCount(4, $merged->params);
+        $this->assertSame([1.0, 5.0, 10.0, 20.0], array_values($merged->params));
     }
 
     /**
@@ -130,9 +153,10 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
         $handler = new RangeConditionHandler();
 
         $criteria = $handler->execute('numeric_field', ['5', '15']);
+        [$minParam, $maxParam] = array_keys($criteria->params);
         $this->assertFieldConditions(
             $criteria->condition,
-            'CAST([0] AS UNSIGNED) BETWEEN :numeric_fieldMin AND :numeric_fieldMax',
+            "CAST([0] AS UNSIGNED) BETWEEN $minParam AND $maxParam",
             ['numeric_field']
         );
     }
