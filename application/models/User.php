@@ -1079,13 +1079,13 @@ class User extends LSActiveRecord
         // to share one narrow filter cell; narrow it down for just these range filters.
         // Embedded inline (like the pickers' own init scripts) so it survives the grid's
         // ajax filter updates instead of being dropped like a registerCss() call would be.
-        $dateFilter  = "<style>.ls-date-range-filter .input-group.date{flex-wrap:nowrap;max-width:10.5em;}"
+        $dateFilter  = "<style>.ls-date-range-filter .input-group.date{flex-wrap:nowrap;max-width:8em;}"
             . ".ls-date-range-filter .datepicker-icon{padding:0.375rem 0.4rem;}"
             . ".ls-date-range-filter .datepicker-icon .ri-calendar-2-fill{font-size:0.85rem;}</style>";
         $dateFilter .= "<div class='ls-date-range-filter d-flex align-items-center gap-1'>";
-        $dateFilter .= "<div class='flex-fill' style='min-width:0;'>" . $this->renderDateRangeBound($column, $jsDateFormat) . "</div>";
+        $dateFilter .= $this->renderDateRangeBound($column, $jsDateFormat);
         $dateFilter .= "<span style='font-size:1rem;line-height:16px;'>-</span>";
-        $dateFilter .= "<div class='flex-fill' style='min-width:0;'>" . $this->renderDateRangeBound($column . '_to', $jsDateFormat) . "</div>";
+        $dateFilter .= $this->renderDateRangeBound($column . '_to', $jsDateFormat);
         $dateFilter .= "</div>";
         return $dateFilter;
     }
