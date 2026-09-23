@@ -1172,7 +1172,9 @@ class User extends LSActiveRecord
             if ($this->getAttribute($dateAttribute)) {
                 $dateCompare = convertFromGlobalSettingFormat($this->getAttribute($dateAttribute));
                 if ($dateCompare !== null) {
-                    $criteria->compare('t.' . $dateAttribute, ">=" . $dateCompare, true);
+                    // $dateCompare is the local start-of-day in the admin's own display
+                    // timezone; t.$dateAttribute is stored in UTC, so convert before comparing.
+                    $criteria->compare('t.' . $dateAttribute, ">=" . getDateOfUTC($dateCompare), true);
                 } else {
                     $this->setAttribute($dateAttribute, null);
                 }
@@ -1180,9 +1182,10 @@ class User extends LSActiveRecord
             if ($this->getAttribute($toAttribute)) {
                 $dateCompareTo = convertFromGlobalSettingFormat($this->getAttribute($toAttribute));
                 if ($dateCompareTo !== null) {
-                    // Make the upper bound inclusive of the whole day, not just midnight.
+                    // Make the upper bound inclusive of the whole (local) day, not just midnight,
+                    // then convert that local end-of-day moment to UTC before comparing.
                     $endOfDay = substr($dateCompareTo, 0, 10) . ' 23:59:59';
-                    $criteria->compare('t.' . $dateAttribute, "<=" . $endOfDay, true);
+                    $criteria->compare('t.' . $dateAttribute, "<=" . getDateOfUTC($endOfDay), true);
                 } else {
                     $this->setAttribute($toAttribute, null);
                 }
