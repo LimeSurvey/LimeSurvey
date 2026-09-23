@@ -70,4 +70,30 @@ class RankingResponseTableTest extends TestBaseClass
             $questionArray['answervalues']
         );
     }
+
+    /**
+     * Malformed or stale ranking JSON must not break print answers: non-scalar and
+     * empty entries are skipped, unknown codes fall back to the code itself.
+     *
+     * @return void
+     */
+    public function testQuestionArrayWithMalformedRankingValue(): void
+    {
+        $question = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'parent_qid' => 0, 'type' => \Question::QT_R_RANKING]);
+        $responseId = \SurveyDynamic::model(self::$surveyId)->insertRecords([
+            'startlanguage' => 'fr',
+            'Q' . $question->qid => json_encode(['SQ001', ['nested'], '', null, 'SQ999']),
+        ]);
+        $response = \SurveyDynamic::model(self::$surveyId)->findByPk($responseId);
+
+        $questionArray = \SurveyDynamic::model(self::$surveyId)->getQuestionArray($question, $response, true, false, false, 'fr');
+
+        $this->assertSame(
+            [
+                ['value' => 'SQ001', 'subquestion' => 'Option A', 'answertext' => 'Option A'],
+                ['value' => 'SQ999', 'subquestion' => 'SQ999', 'answertext' => 'SQ999'],
+            ],
+            $questionArray['answervalues']
+        );
+    }
 }

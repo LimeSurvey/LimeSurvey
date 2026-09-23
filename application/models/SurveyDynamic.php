@@ -999,10 +999,11 @@ class SurveyDynamic extends LSActiveRecord
                     $subQuestionTexts[$oSubQuestion->title] = $oSubQuestion->questionl10ns[$sLanguage]->question ?? $oSubQuestion->title;
                 }
                 foreach ($rankedCodes as $rankedCode) {
-                    if ($rankedCode === null || $rankedCode === '') {
+                    if (!is_scalar($rankedCode) || (string) $rankedCode === '') {
                         continue;
                     }
-                    $answerText = $subQuestionTexts[$rankedCode] ?? '';
+                    $rankedCode = (string) $rankedCode;
+                    $answerText = $subQuestionTexts[$rankedCode] ?? $rankedCode;
                     $aQuestionAttributes['answervalues'][] = [
                         'value' => $rankedCode,
                         'subquestion' => $answerText,
