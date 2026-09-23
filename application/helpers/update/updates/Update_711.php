@@ -10,6 +10,7 @@ class Update_711 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
     }

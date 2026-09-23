@@ -8,6 +8,7 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processor
  */
 class MultipleNumericalProcessor extends AbstractQuestionProcessor
 {
+    #[\Override]
     public function process()
     {
         return [

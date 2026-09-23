@@ -19,6 +19,7 @@ class PluginCommand extends CConsoleCommand
     /**
     * register some needed or a lot used part
     */
+    #[\Override]
     public function init()
     {
         parent::init();

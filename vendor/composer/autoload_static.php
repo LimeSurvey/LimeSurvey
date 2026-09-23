@@ -245,8 +245,8 @@ class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
         ),
         'League\\OAuth2\\Client\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/oauth2-client/src',
-            1 => __DIR__ . '/..' . '/league/oauth2-google/src',
+            0 => __DIR__ . '/..' . '/league/oauth2-google/src',
+            1 => __DIR__ . '/..' . '/league/oauth2-client/src',
         ),
         'Laravel\\SerializableClosure\\' => 
         array (

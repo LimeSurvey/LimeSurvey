@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_175 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         switch (\Yii::app()->db->driverName) {
