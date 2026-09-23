@@ -1,5 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react'
 import { format } from 'util'
+import { Button, Form } from 'react-bootstrap'
 import {
   MapContainer,
   Marker,
@@ -29,6 +37,71 @@ const PIN_ICON = L.divIcon({
   iconAnchor: [11, 11],
   popupAnchor: [0, -12],
 })
+
+// GDPR: the tiles come from a third party that sees the viewer's IP, so
+// nothing (tiles or location API) loads until the user opts in.
+const CONSENT_STORAGE_KEY = 'responses-statistics-map-consent'
+const consentListeners = new Set()
+let hasSessionConsent = false
+
+const readStoredConsent = () => {
+  try {
+    return localStorage.getItem(CONSENT_STORAGE_KEY) === '1'
+  } catch {
+    return false
+  }
+}
+
+const grantConsent = (remember) => {
+  hasSessionConsent = true
+  if (remember) {
+    try {
+      localStorage.setItem(CONSENT_STORAGE_KEY, '1')
+    } catch {
+      // ignore quota / disabled storage
+    }
+  }
+  consentListeners.forEach((listener) => listener())
+}
+
+const subscribeConsent = (listener) => {
+  consentListeners.add(listener)
+  return () => consentListeners.delete(listener)
+}
+
+const getConsent = () => hasSessionConsent || readStoredConsent()
+
+const useMapConsent = () => useSyncExternalStore(subscribeConsent, getConsent)
+
+const MapConsent = () => {
+  const rememberId = useId()
+  const [remember, setRemember] = useState(false)
+  return (
+    <div className="responses-statistics-map-consent">
+      <i className="ri-map-pin-line responses-statistics-map-consent-icon"></i>
+      <strong>{t('Load map')}</strong>
+      <p className="mb-0">
+        {t(
+          'This map is provided by a third-party service. By loading the map, you agree that data may be transmitted to the map provider.'
+        )}
+      </p>
+      <Form.Check
+        type="checkbox"
+        id={rememberId}
+        label={t('Always load maps')}
+        checked={remember}
+        onChange={(event) => setRemember(event.target.checked)}
+      />
+      <Button
+        variant="primary"
+        size="sm"
+        onClick={() => grantConsent(remember)}
+      >
+        {t('Load map')}
+      </Button>
+    </div>
+  )
+}
 
 // Rounded so a sub-metre nudge doesn't produce a new query key.
 const roundCoordinate = (value) => Math.round(value * 10000) / 10000
@@ -102,7 +175,10 @@ const InitialFit = ({ bbox, onDone }) => {
  * Response locations of a map question (short text with a mapping service)
  * as pins; the visible area is refetched whenever the map is moved or zoomed.
  */
-export const LocationMap = ({ surveyId, questionCode, fields, filters }) => {
+export const LocationMap = (props) =>
+  useMapConsent() ? <ConsentedLocationMap {...props} /> : <MapConsent />
+
+const ConsentedLocationMap = ({ surveyId, questionCode, fields, filters }) => {
   const [containerRef, isInView] = useIsInViewport(null, {
     initialInView: false,
   })

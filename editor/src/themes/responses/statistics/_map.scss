@@ -12,6 +12,25 @@
     z-index: 0;
   }
 
+  &-consent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 400px;
+    padding: 24px;
+    border-radius: $border-radius-xs;
+    background: $g-200;
+    color: $g-700;
+    font-size: $font-size-sm;
+    text-align: center;
+
+    &-icon {
+      font-size: 32px;
+    }
+  }
+
   &-status {
     display: flex;
     align-items: center;
