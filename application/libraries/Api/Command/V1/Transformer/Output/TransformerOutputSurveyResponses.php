@@ -53,12 +53,15 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     public function transform($data = [], $options = []): array
     {
         $responses = [];
-        if ($data !== null) {
-            foreach ($data as $surveyResponse) {
-                $responses[] = $this->transformerResponseItem($surveyResponse, $options ?? []);
-            }
+        $options ??= [];
+        $options['quotaNames'] = \CHtml::listData(
+            $options['survey']->quotas ?? [],
+            'id',
+            'name'
+        );
+        foreach ($data ?? [] as $surveyResponse) {
+            $responses[] = $this->transformerResponseItem($surveyResponse, $options);
         }
-
 
         return $responses;
     }
@@ -76,8 +79,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
         $surveyResponseArray = parent::transform($surveyResponse) ?? [];
         $this->applyTokenData($surveyResponseArray, $surveyResponse, $options);
         $quotaId = $surveyResponseArray['quotaExit'] ?? null;
-        $surveyResponseArray['quotaExitName'] = $options['quotaNames'][(int) $quotaId]
-            ?? null;
+        $surveyResponseArray['quotaExitName'] = $options['quotaNames'][(int) $quotaId] ?? null;
         $surveyResponseArray['completed'] = !empty($surveyResponseArray['submitDate']);
         $surveyResponseArray['answers'] = $this->extractAnswers($surveyResponse->attributes);
         $this->normalizeDateFields($surveyResponseArray);
@@ -154,7 +156,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
             ) {
                 $responseArray[$dateField] = null;
             } else {
-                $responseArray[$dateField] = getDateOfUTC($responseArray[$dateField] ?? null);
+                $responseArray[$dateField] = isset($responseArray[$dateField]) ? getDateOfUTC($responseArray[$dateField]) : null;
             }
         }
     }

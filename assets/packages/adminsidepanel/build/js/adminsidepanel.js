@@ -934,7 +934,7 @@ class QuestionExplorer {
     html += '</div>';
 
     // Question group name
-    var groupNameText = (typeof questiongroup.group_name === 'string' && questiongroup.group_name.trim().length > 0) ? questiongroup.group_name : _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].translate('groupNumber').replace('%d', questiongroup.group_order);
+    var groupNameText = typeof questiongroup.group_name === 'string' && questiongroup.group_name.trim().length > 0 ? questiongroup.group_name : _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].translate('groupNumber').replace('%d', questiongroup.group_order);
     html += '<div class="w-100 position-relative">';
     html += '<div class="cursor-pointer">';
     html += '<a class="d-flex pjax questiongroup-link" href="' + questiongroup.link + '" data-gid="' + questiongroup.gid + '">';

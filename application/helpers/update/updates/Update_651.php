@@ -12,6 +12,7 @@ class Update_651 extends DatabaseUpdateBase
      *
      * @throws CException If a database update operation fails.
      */
+    #[\Override]
     public function up()
     {
         if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {

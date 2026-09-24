@@ -6,6 +6,7 @@ use Exception;
 
 class Update_133 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         addColumn('{{users}}', 'one_time_pw', 'binary');

@@ -321,6 +321,7 @@ class SurveysGroupsettings extends LSActiveRecord
      */
     public static function getInstance($iSurveyGroupId = 0, $oSurvey = null, $instance = null, $iStep = 1, $bRealValues = false)
     {
+        $iSurveyGroupId = (int) $iSurveyGroupId;
         if (!array_key_exists($iSurveyGroupId, self::$aSurveysGroupSettings)) {
             if ($iSurveyGroupId > 0) {
                 self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);

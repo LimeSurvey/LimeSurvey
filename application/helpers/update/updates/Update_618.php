@@ -9,6 +9,7 @@ class Update_618 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->dropIndex('{{answers_idx}}', '{{answers}}');

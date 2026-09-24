@@ -6,6 +6,7 @@ use TemplateConfiguration;
 
 class Update_352 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         dropColumn('{{sessions}}', 'data');

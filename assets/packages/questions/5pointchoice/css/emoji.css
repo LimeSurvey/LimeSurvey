@@ -1,20 +1,18 @@
-@font-face {
-    font-family: notoColorEmojiFont;
-    src: url(../fonts/noto_emoji_color.ttf);
-}
-@font-face {
-    font-family: notoEmojiFont;
-    src: url(../fonts/noto_emoji_regular.ttf);
-}
+/* Emoticons are bundled SVG images so they look the same in every browser.
+   Graphics from Twemoji (https://github.com/jdecked/twemoji), (c) Twitter, Inc and other contributors, licensed under CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/) */
 .emoji{
-    font-family: notoEmojiFont;
-    font-weight: 400 !important;
-    font-style: normal !important;
+    display: inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: middle;
+    background: no-repeat center / contain;
+    filter: grayscale(100%);
+    opacity: 0.45;
+    transition: filter 0.2s, opacity 0.2s;
 }
 .emoji.emoji-color{
-    font-family: notoColorEmojiFont;
-    font-weight: 400 !important;
-    font-style: normal !important;
+    filter: none;
+    opacity: 1;
 }
 
 /**************emoji sizes**************/
@@ -40,63 +38,25 @@
     font-size: 25%;
 }
 
-/**************Normal emojis**************/
-.emoji-grin:after {
-    content: "\1F600  ";
+/**************emojis**************/
+.emoji-sad {
+    background-image: url(../images/1f622.svg);
 }
-.emoji-grin-eyes:after {
-    content: "\1F601  ";
+.emoji-mildlyunamused {
+    background-image: url(../images/1f623.svg);
 }
-.emoji-tearsofjoy:after {
-    content: "\1F602  ";
+.emoji-whatever {
+    background-image: url(../images/1f610.svg);
 }
-.emoji-smile:after {
-    content: "\1F603  ";
+.emoji-smile {
+    background-image: url(../images/1f603.svg);
 }
-.emoji-bigsmile:after {
-    content: "\1F604  ";
+.emoji-grin-eyes {
+    background-image: url(../images/1f601.svg);
 }
-.emoji-whatever:after {
-    content: "\1F610  ";
-}
-.emoji-sad:after {
-    content: "\1F622  ";
-}
-.emoji-unamused:after {
-    content: "\1F612  ";
-}
-.emoji-disappointed:after {
-    content: "\1F61E  ";
-}
-.emoji-angry:after {
-    content: "\1F620  ";
-}
-.emoji-mildlyunamused:after {
-    content: "\1F623  ";
-}
-
-/**************Cat emojis**************/ 
-.emoji-cat-grin:after {
-    content: "\1F638  ";
-}
-.emoji-cat-tearsofjoy:after {
-    content: "\1F639  ";
-}
-.emoji-cat-smile:after {
-    content: "\1F63A  ";
-}
-.emoji-cat-bigsmile:after {
-    content: "\1F63B  ";
-}
-.emoji-cat-unamused:after {
-    content: "\1F63E  ";
-}
-.emoji-cat-disappointed:after {
-    content: "\1F640  ";
-}
-.emoji-cat-angry:after {
-    content: "\1F63F  ";
-}
-.emoji-cat-mildlyunamused:after {
-    content: "\1F63C  ";
+.emoji-noanswer {
+    background-image: url(../images/274c.svg);
+    background-size: 55%;
+    /* the slider stop for "no answer" sits left of the label centre */
+    background-position: calc(50% - 0.25em) center;
 }
