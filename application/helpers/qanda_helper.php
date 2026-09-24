@@ -618,58 +618,6 @@ function getLatLongFromIp($sIPAddress)
 }
 
 /**
- * Renders Yes/No Question Type.
- *
- * @param array $ia
- * @return array
- */
-function do_yesno($ia)
-{
-    $yChecked = $nChecked = $naChecked = '';
-    if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'Y') {
-        $yChecked = CHECKED;
-    }
-
-    if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'N') {
-        $nChecked = CHECKED;
-    }
-
-    $noAnswer = false;
-    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
-        $noAnswer = true;
-        if (
-            PRESELECT_NO_ANSWER
-            && empty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]])
-        ) {
-            $naChecked = CHECKED;
-        }
-    }
-
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $displayType = (int) $aQuestionAttributes['display_type'];
-    $noAnswer = $noAnswer ?? false;
-    $itemDatas = array(
-        'name' => $ia[1],
-        'basename' => $ia[1],
-        'yChecked' => $yChecked,
-        'nChecked' => $nChecked,
-        'naChecked' => $naChecked,
-        'noAnswer' => $noAnswer,
-        'value' => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
-        'displayType' => $displayType,
-    );
-    if ($displayType === 0) {
-        $answer = doRender('/survey/questions/answer/yesno/buttons/item', $itemDatas, true);
-    } else {
-        $answer = doRender('/survey/questions/answer/yesno/radio/item', $itemDatas, true);
-    }
-
-    $inputnames = [];
-    $inputnames[] = $ia[1];
-    return array($answer, $inputnames);
-}
-
-/**
  * Renders Gender Question Types.
  *
  * @param array $ia
