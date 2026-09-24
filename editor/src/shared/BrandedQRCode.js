@@ -31,6 +31,7 @@ export const BrandedQRCode = ({
   fgColor = '#000000',
   bgColor = '#ffffff',
   showDownloadButton = true,
+  showBranding = true,
 }) => {
   const qrDownloadRef = useRef(null)
 
@@ -52,7 +53,7 @@ export const BrandedQRCode = ({
 
   const sharedProps = {
     value,
-    logoImage: lsIcon,
+    ...(showBranding ? { logoImage: lsIcon } : {}),
     ecLevel,
     logoOpacity,
     logoPadding,
