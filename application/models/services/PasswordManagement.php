@@ -31,15 +31,15 @@ class PasswordManagement
     }
 
     /**
-     * This function prepare the email template to send to the new created user
+     * Get the placeholder replacements available in the admin creation email template
      *
+     * {LOGINURL} is replaced by the plain URL (not a HTML link) to keep existing
+     * templates using href="{LOGINURL}" working.
      *
-     * @return mixed $aAdminEmail array with subject and email body
+     * @return array<string, string>|false Placeholder name (without braces) => value, false if the login URL can not be created
      */
-    public function generateAdminCreationEmail()
+    public function getAdminCreationEmailReplacements()
     {
-        $adminEmail = [];
-        $siteName = \Yii::app()->getConfig("sitename");
         $loginUrl = \Yii::app()->createValidatedAbsoluteUrl(
             'admin/authentication/sa/newPassword',
             ['param' => $this->user->validation_key]
@@ -47,27 +47,53 @@ class PasswordManagement
         if ($loginUrl === false) {
             return false;
         }
-        $siteAdminEmail = \Yii::app()->getConfig("siteadminemail");
-        $emailSubject = \Yii::app()->getConfig("admincreationemailsubject");
-        $emailTemplate = \Yii::app()->getConfig("admincreationemailtemplate");
-
-        //Replace placeholder in Email subject
-        $emailSubject = str_replace("{SITENAME}", $siteName, (string) $emailSubject);
-        $emailSubject = str_replace("{SITEADMINEMAIL}", $siteAdminEmail, $emailSubject);
-
-        //Replace placeholder in Email body
-        $emailTemplate = str_replace("{SITENAME}", $siteName, (string) $emailTemplate);
-        $emailTemplate = str_replace("{SITEADMINEMAIL}", $siteAdminEmail, $emailTemplate);
-        $emailTemplate = str_replace("{FULLNAME}", $this->user->full_name, $emailTemplate);
-        $emailTemplate = str_replace("{USERNAME}", $this->user->users_name, $emailTemplate);
-        $emailTemplate = str_replace("{LOGINURL}", $loginUrl, $emailTemplate);
-
-        $adminEmail['subject'] = $emailSubject;
-        $adminEmail['body'] = $emailTemplate;
-
-        return $adminEmail;
+        return [
+            'SITENAME' => (string) \Yii::app()->getConfig("sitename"),
+            'SITEADMINEMAIL' => (string) \Yii::app()->getConfig("siteadminemail"),
+            'FULLNAME' => (string) $this->user->full_name,
+            'USERNAME' => (string) $this->user->users_name,
+            'LOGINURL' => $loginUrl,
+        ];
     }
 
+    /**
+     * Get the raw admin creation email subject and body from global settings
+     *
+     * The barebone URL @@LOGINURL@@ is converted to {LOGINURL}, which is replaced by the plain URL.
+     *
+     * @return array{subject: string, body: string} Raw subject and body, placeholders not replaced
+     */
+    public function getRawAdminCreationEmail(): array
+    {
+        return [
+            'subject' => str_replace('@@LOGINURL@@', '{LOGINURL}', (string) \Yii::app()->getConfig("admincreationemailsubject")),
+            'body' => str_replace('@@LOGINURL@@', '{LOGINURL}', (string) \Yii::app()->getConfig("admincreationemailtemplate")),
+        ];
+    }
+
+    /**
+     * Prepare the email template to send to the new created user, with placeholders replaced
+     *
+     * Only simple placeholders are replaced here, the email itself is sent with
+     * LimeMailer replacements (Expression Manager and plugins), see sendAdminMail().
+     *
+     * @return array{subject: string, body: string}|false Subject and email body, false if the login URL can not be created
+     */
+    public function generateAdminCreationEmail()
+    {
+        $replacements = $this->getAdminCreationEmailReplacements();
+        if ($replacements === false) {
+            return false;
+        }
+        $rawEmail = $this->getRawAdminCreationEmail();
+        $search = array_map(function ($key) {
+            return '{' . $key . '}';
+        }, array_keys($replacements));
+        return [
+            'subject' => str_replace($search, array_values($replacements), $rawEmail['subject']),
+            'body' => str_replace($search, array_values($replacements), $rawEmail['body']),
+        ];
+    }
 
     /**
      * Sets the validationKey and the validationKey expiration and
@@ -222,6 +248,9 @@ class PasswordManagement
      */
     private function sendAdminMail($type = self::EMAIL_TYPE_REGISTRATION): \LimeMailer
     {
+        $rawSubject = '';
+        $rawBody = '';
+        $replacements = [];
         switch ($type) {
             case self::EMAIL_TYPE_RESET_PW:
                 $renderArray = $this->getRenderArray();
@@ -241,15 +270,18 @@ class PasswordManagement
                 break;
             case self::EMAIL_TYPE_REGISTRATION:
             default:
-                //Get email template from globalSettings
-                $aAdminEmail = $this->generateAdminCreationEmail();
-                if ($aAdminEmail === false) {
+                //Get email template from globalSettings, replacements are done by LimeMailer
+                $replacements = $this->getAdminCreationEmailReplacements();
+                if ($replacements === false) {
                     $mailer = new \LimeMailer();
                     $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
                     return $mailer;
                 }
-                $subject = $aAdminEmail["subject"];
-                $body = $aAdminEmail["body"];
+                $rawEmail = $this->getRawAdminCreationEmail();
+                $rawSubject = $rawEmail['subject'];
+                $rawBody = $rawEmail['body'];
+                $subject = '';
+                $body = '';
                 break;
         }
 
@@ -266,6 +298,9 @@ class PasswordManagement
         $mailer->Subject = $subject;
         $mailer->setFrom(\Yii::app()->getConfig("siteadminemail"), \Yii::app()->getConfig("siteadminname"));
         $mailer->Body = $body;
+        $mailer->rawSubject = $rawSubject;
+        $mailer->rawBody = $rawBody;
+        $mailer->addAndReplaceReplacement($replacements);
         $mailer->isHtml(true);
         $mailer->emailType = $emailType;
         $mailer->sendMessage();
