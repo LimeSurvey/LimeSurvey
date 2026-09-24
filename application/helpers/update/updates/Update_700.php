@@ -238,17 +238,19 @@ class Update_700 extends DatabaseUpdateBase
                         foreach ($questions as $question) {
                             if ($question['title'] === $code) {
                                 $currentQuestion = $question;
-                            } elseif (in_array(
-                                $code,
-                                [
+                            } elseif (
+                                in_array(
+                                    $code,
+                                    [
                                     'other',
                                     'comment',
                                     'othercomment',
                                     $question['title'] . 'other',
                                     $question['title'] . 'comment',
                                     $question['title'] . 'othercomment'
-                                ]
-                            )) {
+                                    ]
+                                )
+                            ) {
                                 $currentQuestion = $question;
                                 $commentText = $code;
                                 if (strpos($code, $question['title']) === 0) {
@@ -1993,6 +1995,7 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
+    #[\Override]
     public function up()
     {
         $this->db->createCommand($this->deleteRankingSubquestions())->execute();
@@ -2007,9 +2010,6 @@ class Update_700 extends DatabaseUpdateBase
         $scripts = [];
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
         foreach ($responsesTables as $responsesTable) {
-            if (((strpos($responsesTable['old_name'], 'old_') === false) && (strpos($responsesTable['old_name'], 'timing') === false))) {
-                $parts = explode('_', $responsesTable['old_name']);
-            }
             $scripts[$responsesTable['old_name']] = [
                 'new_name' => $responsesTable['new_name'],
                 'old_name' => $responsesTable['old_name'],
@@ -2078,11 +2078,13 @@ class Update_700 extends DatabaseUpdateBase
         $preinsert = "";
         $postinsert = "";
         foreach ($fieldMap as $TABLE_NAME => $fields) {
-            if (in_array(Yii::app()->db->getDriverName(), [
+            if (
+                in_array(Yii::app()->db->getDriverName(), [
                 'mssql',
                 'sqlsrv',
                 'dblib'
-            ])) {
+                ])
+            ) {
                 $preinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} ON;";
                 $postinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} OFF;";
             }
@@ -2245,7 +2247,6 @@ class Update_700 extends DatabaseUpdateBase
                             }
                         }
                     }
-
                 }
             }
             $this->convertSurveyInsertans($sid, $questions, $newFields, $additionalNames);

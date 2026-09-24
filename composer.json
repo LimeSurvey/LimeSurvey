@@ -44,7 +44,7 @@
 		"phpseclib/phpseclib": "^3.0",
 		"tiamo/spss": "dev-master",
 		"symfony/polyfill-mbstring": "^1.26",
-		"yiisoft/yii": "^1.1.26",
+		"yiisoft/yii": "dev-master#863cde5e223ab1ecd8f0345e23bca9dbf2936681",
 		"phpmailer/phpmailer": "6.12.0",
 		"khaled.alshamaa/ar-php": "^6.3",
 		"tecnickcom/tcpdf": "^6.5",
@@ -65,7 +65,7 @@
         "vendor-dir": "vendor",
         "bin-dir": "vendor/bin",
 		"platform": {
-			"php": "8.1.29"
+			"php": "8.1.31"
 		}
     },
     "require-dev": {
@@ -73,7 +73,7 @@
         "squizlabs/php_codesniffer": "^3.5",
         "phpmd/phpmd" : "^2.8",
         "phpunit/phpunit": "^9.6",
-        "vimeo/psalm": "^5.0",
+        "vimeo/psalm": "^6.0",
 		"misantron/dbunit": "^5.4",
 		"mockery/mockery": "^1.5"
     },
@@ -113,6 +113,11 @@
 		"oooas": {
 			"type": "vcs",
 			"url": "https://github.com/PrinsFrank/goldspecdigital-oooas"
+		}
+	},
+	"extra": {
+		"notes": {
+			"yiisoft/yii": "Pinned to dev-master commit 863cde5 (not a tagged release) because it contains PHP 8.5 compatibility fixes (non-canonical casts, PHP 8.5 support itself) that landed after the last tag, 1.1.32. Once yiisoft/yii cuts a release containing this commit or later, switch this back to a normal constraint like ^1.1."
 		}
 	}
 }
