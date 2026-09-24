@@ -184,20 +184,30 @@ export const ResponsesTable = ({
       onDeleteResponseFilesClick: () => handleOnActionFilesDeleteClick(),
     })
 
-    const timingFieldIds = (responsesData.timingFields ?? [])
-      .map(({ fieldname }) => fieldname)
-      .filter(Boolean)
-    const currentTimingFieldIds = columns
-      .filter((column) => column.meta?.columnCategory === 'timing')
-      .map(({ id }) => id)
-    const haveTimingFieldsChanged =
-      timingFieldIds.length !== currentTimingFieldIds.length ||
-      timingFieldIds.some((id) => !currentTimingFieldIds.includes(id))
+    const timingColumnDefinition = ({ id, header, meta = {} }) => ({
+      id,
+      header,
+      qid: meta.qid,
+      timingType: meta.timingType,
+      questionLabel: meta.questionLabel,
+      title: meta.title,
+    })
+    const generatedTimingColumns = generateColumns(
+      responsesData.surveyQuestions || surveyQuestions,
+      survey,
+      responsesData.timingFields
+    ).filter((column) => column.meta?.columnCategory === 'timing')
+    const currentTimingColumns = columns.filter(
+      (column) => column.meta?.columnCategory === 'timing'
+    )
+    const timingFieldsChanged =
+      JSON.stringify(generatedTimingColumns.map(timingColumnDefinition)) !==
+      JSON.stringify(currentTimingColumns.map(timingColumnDefinition))
 
     let generatedColumns = columns
 
     // Regenerate columns when timing fields change.
-    if (!columns.length || haveTimingFieldsChanged) {
+    if (!columns.length || timingFieldsChanged) {
       generatedColumns = generateColumns(
         responsesData.surveyQuestions || surveyQuestions,
         survey,
@@ -233,7 +243,7 @@ export const ResponsesTable = ({
 
         const generatedColumnIds = generatedColumns.map(({ id }) => id)
         return [
-          ...currentOrder.filter((id) => generatedColumnIds.includes(id)),
+          ...currentOrder,
           ...generatedColumnIds.filter((id) => !currentOrder.includes(id)),
         ]
       })
@@ -247,7 +257,7 @@ export const ResponsesTable = ({
     setData(
       generateData(responsesData.responses, survey.language, generatedColumns)
     )
-  }, [responsesData, survey.sid])
+  }, [responsesData, survey])
 
   useEffect(() => {
     // set the columns order only once after the columns are generated and then control it with the columns manager.
