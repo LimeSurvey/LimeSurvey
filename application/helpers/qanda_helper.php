@@ -617,21 +617,6 @@ function getLatLongFromIp($sIPAddress)
     }
 }
 
-// ---------------------------------------------------------------
-/**
- * Construct answer part array_10point
- * @param array $ia
- * @return array
- */
-// TMSW TODO - Can remove DB query by passing in answer list from EM
-
-// ---------------------------------------------------------------
-// TMSW TODO - Can remove DB query by passing in answer list from EM
-// Used by array numbers, array_numbers (for searching)
-
-// ---------------------------------------------------------------
-// TMSW TODO - Can remove DB query by passing in answer list from EM
-
 /**
  * Find the label / input width
  * @param string|int $labelAttributeWidth label width from attribute
