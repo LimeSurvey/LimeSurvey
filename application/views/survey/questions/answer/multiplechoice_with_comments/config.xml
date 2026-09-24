@@ -564,7 +564,7 @@
                 </option>
             </options>
             <default>0</default>
-            <help>If the participant marks all options, uncheck all and check the option set in the &amp;quot;Exclusive option&amp;quot; setting</help>
+            <help>If the participant marks all options, uncheck all and check the option set in the "Exclusive option" setting</help>
             <caption>Auto-check exclusive option if all others are checked</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -600,8 +600,8 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Make the &#039;Other:&#039; comment field mandatory when the &#039;Other:&#039; option is active</help>
-            <caption>&#039;Other:&#039; comment mandatory</caption>
+            <help>Make the 'Other:' comment field mandatory when the 'Other:' option is active</help>
+            <caption>'Other:' comment mandatory</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -637,8 +637,8 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Allow only numerical input for &#039;Other&#039; text</help>
-            <caption>Numbers only for &#039;Other&#039;</caption>
+            <help>Allow only numerical input for 'Other' text</help>
+            <caption>Numbers only for 'Other'</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

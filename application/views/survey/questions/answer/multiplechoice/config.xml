@@ -260,7 +260,7 @@
             <sortorder>100</sortorder>
             <inputtype>columns</inputtype>
             <default></default>
-            <help>The answer options will be distributed across the number of columns set here.  Any number up to 1 can be entered, but we only support systems up to 16.</help>
+            <help>The answer options will be distributed across the number of columns set here. Any number up from 1 can be entered, but we only support systems up to 16.</help>
             <caption>Display columns</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -394,7 +394,7 @@
                 </option>
             </options>
             <default>0</default>
-            <help>If the participant marks all options, uncheck all and check the option set in the &amp;quot;Exclusive option&amp;quot; setting</help>
+            <help>If the participant marks all options, uncheck all and check the option set in the "Exclusive option" setting</help>
             <caption>Auto-check exclusive option if all others are checked</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -444,8 +444,8 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Allow only numerical input for &#039;Other&#039; text</help>
-            <caption>Numbers only for &#039;Other&#039;</caption>
+            <help>Allow only numerical input for 'Other' text</help>
+            <caption>Numbers only for 'Other'</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
