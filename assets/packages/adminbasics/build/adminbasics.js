@@ -17916,13 +17916,15 @@
 	      }
 
 	      // Load sea_green css again after iframe is fully loaded
+	      // Prefix with the base URL so this also works when LimeSurvey is installed in a subdirectory
+	      const baseUrl = (LS.data.baseUrl || "").replace(/\/$/, "");
 	      handleAppendCssLink({
 	        header: fileManagerIframe.contentWindow.document.head,
-	        linkUrl: "/themes/admin/Sea_Green/css/sea_green.css"
+	        linkUrl: baseUrl + "/themes/admin/Sea_Green/css/sea_green.css"
 	      });
 	      handleAppendCssLink({
 	        header: fileManagerIframe.contentWindow.document.head,
-	        linkUrl: "/assets/fonts/font-src/remix/remixicon.css"
+	        linkUrl: baseUrl + "/assets/fonts/font-src/remix/remixicon.css"
 	      });
 	    });
 	  }
