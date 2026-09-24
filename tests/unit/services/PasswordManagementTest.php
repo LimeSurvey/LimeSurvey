@@ -106,13 +106,13 @@ class PasswordManagementTest extends TestBaseClass
      */
     public function testBareboneLoginUrlIsReplaced(): void
     {
-        Yii::app()->setConfig('admincreationemailtemplate', '<p>Copy this link: @@LOGINURL@@</p>');
+        Yii::app()->setConfig('admincreationemailtemplate', '<p><a href="@@LOGINURL@@">Set password</a> Copy this link: @@LOGINURL@@</p>');
         $passwordManagement = new PasswordManagement($this->getUser());
         $rawEmail = $passwordManagement->getRawAdminCreationEmail();
         $body = $this->getRegistrationMailer($passwordManagement)->doReplacements($rawEmail['body']);
 
         $this->assertStringNotContainsString('@@LOGINURL@@', $body);
-        $this->assertMatchesRegularExpression('#Copy this link: http://example\.org/\S*abcdef123456#', $body);
+        $this->assertMatchesRegularExpression('#<a href="http://example\.org/[^"]*abcdef123456[^"]*">Set password</a> Copy this link: http://example\.org/\S*abcdef123456#', $body);
     }
 
     /**
@@ -128,20 +128,5 @@ class PasswordManagementTest extends TestBaseClass
         $body = $this->getRegistrationMailer($passwordManagement)->doReplacements($rawEmail['body']);
 
         $this->assertStringContainsString('Hello boss', $body);
-    }
-
-    /**
-     * generateAdminCreationEmail() keeps returning the replaced subject and body.
-     *
-     * @return void
-     */
-    public function testGenerateAdminCreationEmail(): void
-    {
-        Yii::app()->setConfig('admincreationemailsubject', 'Welcome to {SITENAME}');
-        Yii::app()->setConfig('admincreationemailtemplate', '{USERNAME} @@LOGINURL@@');
-        $email = (new PasswordManagement($this->getUser()))->generateAdminCreationEmail();
-
-        $this->assertSame('Welcome to Test site', $email['subject']);
-        $this->assertMatchesRegularExpression('#^newadmin http://example\.org/\S*abcdef123456$#', $email['body']);
     }
 }

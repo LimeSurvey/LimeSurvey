@@ -33,8 +33,8 @@ class PasswordManagement
     /**
      * Get the placeholder replacements available in the admin creation email template
      *
-     * {LOGINURL} is replaced by the plain URL (not a HTML link) to keep existing
-     * templates using href="{LOGINURL}" working.
+     * {LOGINURL} is replaced by the plain URL (not a HTML link like LimeMailer URL placeholders) to keep
+     * existing templates using href="{LOGINURL}" working.
      *
      * @return array<string, string>|false Placeholder name (without braces) => value, false if the login URL can not be created
      */
@@ -60,6 +60,7 @@ class PasswordManagement
      * Get the raw admin creation email subject and body from global settings
      *
      * The barebone URL @@LOGINURL@@ is converted to {LOGINURL}, which is replaced by the plain URL.
+     * All other replacements are done by LimeMailer (Expression Manager and plugins).
      *
      * @return array{subject: string, body: string} Raw subject and body, placeholders not replaced
      */
@@ -68,30 +69,6 @@ class PasswordManagement
         return [
             'subject' => str_replace('@@LOGINURL@@', '{LOGINURL}', (string) \Yii::app()->getConfig("admincreationemailsubject")),
             'body' => str_replace('@@LOGINURL@@', '{LOGINURL}', (string) \Yii::app()->getConfig("admincreationemailtemplate")),
-        ];
-    }
-
-    /**
-     * Prepare the email template to send to the new created user, with placeholders replaced
-     *
-     * Only simple placeholders are replaced here, the email itself is sent with
-     * LimeMailer replacements (Expression Manager and plugins), see sendAdminMail().
-     *
-     * @return array{subject: string, body: string}|false Subject and email body, false if the login URL can not be created
-     */
-    public function generateAdminCreationEmail()
-    {
-        $replacements = $this->getAdminCreationEmailReplacements();
-        if ($replacements === false) {
-            return false;
-        }
-        $rawEmail = $this->getRawAdminCreationEmail();
-        $search = array_map(function ($key) {
-            return '{' . $key . '}';
-        }, array_keys($replacements));
-        return [
-            'subject' => str_replace($search, array_values($replacements), $rawEmail['subject']),
-            'body' => str_replace($search, array_values($replacements), $rawEmail['body']),
         ];
     }
 
