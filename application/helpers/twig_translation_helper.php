@@ -97,4 +97,5 @@ function dummy_twig_translation_helper()
     gT("Show Platform information: "); // From themes/question/browserdetect/survey/questions/answer/shortfreetext/config.xml
     gT("Show also the platform information of the participant"); // From themes/question/browserdetect/survey/questions/answer/shortfreetext/config.xml
     gT("Semicolon-separated list of answer codes that keep their original database position when answers are randomized"); // From application/views/survey/questions/answer/list_with_comment/config.xml
+    gT("Semicolon-separated list of row subquestion codes that keep their original database position when subquestions (rows) are randomized"); // From application/views/survey/questions/answer/arrays/multiflexi/config.xml
 }
