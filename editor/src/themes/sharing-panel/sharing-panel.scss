@@ -85,3 +85,21 @@
 .customize-button-container.disable-settings {
   color: $g-400;
 }
+
+
+.social-cards-wrapper {
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  gap: 1rem;
+  margin: auto;
+  & > * {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
