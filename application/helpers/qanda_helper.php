@@ -617,53 +617,6 @@ function getLatLongFromIp($sIPAddress)
     }
 }
 
-/**
- * Renders Gender Question Types.
- *
- * @param array $ia
- * @return array
- */
-function do_gender($ia)
-{
-    $fChecked               = ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'F') ? 'CHECKED' : '';
-    $mChecked               = ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'M') ? 'CHECKED' : '';
-    $naChecked              = '';
-    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $displayType            = (int) $aQuestionAttributes['display_type'];
-    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
-        $noAnswer = true;
-        if (
-            PRESELECT_NO_ANSWER
-            && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == ''
-        ) {
-            $naChecked = CHECKED;
-        }
-    }
-
-    $noAnswer = $noAnswer ?? false;
-
-    $itemDatas = array(
-        'name'                   => $ia[1],
-        'basename'               => $ia[1],
-        'fChecked'               => $fChecked,
-        'mChecked'               => $mChecked,
-        'naChecked'              => $naChecked,
-        'noAnswer'               => $noAnswer,
-        'value'                  => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
-    );
-
-    if ($displayType === 0) {
-        $answer = doRender('/survey/questions/answer/gender/buttons/answer', $itemDatas, true);
-    } else {
-        $answer = doRender('/survey/questions/answer/gender/radio/answer', $itemDatas, true);
-    }
-
-    $inputnames   = [];
-    $inputnames[] = $ia[1];
-
-    return array($answer, $inputnames);
-}
-
 // ---------------------------------------------------------------
 /**
  * Construct answer part array_5point
