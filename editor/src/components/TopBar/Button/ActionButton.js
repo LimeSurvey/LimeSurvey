@@ -11,6 +11,7 @@ export const ActionButton = ({
   showShareActionButton,
   showExportResponsesButton,
   showExportStatisticsButton,
+  onExportResponsesClick,
   showPublishSettings = true,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
@@ -39,11 +40,7 @@ export const ActionButton = ({
       <Button
         variant="success"
         className="text-white me-2"
-        href={getSiteUrl(
-          '/admin/export/sa/exportresults/surveyid/' + survey.sid
-        )}
-        target="_blank"
-        rel="noreferrer"
+        onClick={onExportResponsesClick}
       >
         {t('Export results')}
       </Button>

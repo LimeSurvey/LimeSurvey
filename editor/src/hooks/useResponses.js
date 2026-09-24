@@ -53,10 +53,16 @@ export function useResponses(surveyId, pagination, filters, sorting) {
     patchMutation.mutate(operations)
   }
 
+  const exportMutation = useMutation({
+    mutationFn: (options) => responseService.exportResponses(options),
+  })
+
   return {
     responses,
     isFetching,
     refetch,
     mutateOperations,
+    exportResponses: exportMutation.mutateAsync,
+    isExporting: exportMutation.isPending,
   }
 }
