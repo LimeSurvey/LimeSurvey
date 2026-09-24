@@ -157,7 +157,7 @@ class SurveyActivate
             if (
                 isset($archives["timings"])
                 && $survey !== null
-                && $survey->isSaveTimings
+                && $survey->savetimings === 'Y'
                 && $survey->hasTimingsTable
             ) {
                 $timingsTable = $this->app->db->tablePrefix . "timings_" . $surveyId;
