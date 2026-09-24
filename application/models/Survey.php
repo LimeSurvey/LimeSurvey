@@ -45,6 +45,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $ipaddr Whether Participants IP address will be saved: (Y/N)
  * @property string $ipanonymize Whether id addresses should be anonymized (Y/N)
  * @property string $refurl Save referrer URL: (Y/N)
+ * @property string $savequotaexit Whether to save matched quota ID: (Y/N)
  * @property string $datecreated Date survey was created  as SQL datetime (YYYY-MM-DD hh:mm:ss)
  * @property string $publicstatistics Public statistics: (Y/N)
  * @property string $publicgraphs Show graphs in public statistics: (Y/N)
@@ -129,6 +130,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isIpAddr Whether Participants IP address will be saved
  * @property bool $isIpAnonymize Whether Participants IP address will be saved
  * @property bool $isRefUrl Save referrer URL
+ * @property bool $isSaveQuotaExit Whether to save matched quota ID
  * @property bool $isPublicStatistics Public statistics
  * @property bool $isPublicGraphs Show graphs in public statistics
  * @property bool $isListPublic List survey publicly
@@ -538,6 +540,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('ipaddr', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('ipanonymize', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('refurl', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
+            array('savequotaexit', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('publicstatistics', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('publicgraphs', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('listpublic', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
@@ -1069,7 +1072,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         /** @var self $model */
         $hasPendingScope = $this->getDbCriteria(false) !== null;
-        if (empty($condition) && empty($params) && !$hasPendingScope) {
+        if ($pk !== null && empty($condition) && empty($params) && !$hasPendingScope) {
             if (array_key_exists($pk, self::$findByPkCache)) {
                 return self::$findByPkCache[$pk];
             } else {
@@ -1469,6 +1472,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getIsAllowEditAfterCompletion()
     {
         return ($this->oOptions->alloweditaftercompletion === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsSaveQuotaExit()
+    {
+        return isset($this->oOptions->savequotaexit) && $this->oOptions->savequotaexit === 'Y';
     }
 
     /**

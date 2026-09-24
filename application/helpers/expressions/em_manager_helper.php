@@ -3095,7 +3095,12 @@ class LimeExpressionManager
                 } else {
                     $othertext = $this->gT('Other:');
                 }
-                $qtips['other_comment_mandatory'] = sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."), $othertext);
+                $otherDisplayLabel = $this->getOtherDisplayLabel($othertext);
+                if ($otherDisplayLabel !== '') {
+                    $qtips['other_comment_mandatory'] = sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."), $otherDisplayLabel);
+                } else {
+                    $qtips['other_comment_mandatory'] = $this->gT("Please also specify your choice in the accompanying text field.");
+                }
             }
 
             // other comment mandatory
@@ -3105,7 +3110,12 @@ class LimeExpressionManager
                 } else {
                     $othertext = $this->gT('Other:');
                 }
-                $qtips['other_numbers_only'] = sprintf($this->gT("Only numbers may be entered in '%s' accompanying text field."), $othertext);
+                $otherDisplayLabel = $this->getOtherDisplayLabel($othertext);
+                if ($otherDisplayLabel !== '') {
+                    $qtips['other_numbers_only'] = sprintf($this->gT("Only numbers may be entered in '%s' accompanying text field."), $otherDisplayLabel);
+                } else {
+                    $qtips['other_numbers_only'] = $this->gT("Only numbers may be entered in the accompanying text field.");
+                }
             }
 
             // regular expression validation
@@ -4307,6 +4317,38 @@ class LimeExpressionManager
     }
 
     /**
+     * Validate one ExpressionScript expression in the context of a question.
+     *
+     * @param string $expression
+     * @param int|null $questionId
+     * @return array{errors: array, warnings: array}
+     */
+    public static function validateExpression($expression, $questionId = null)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        $questionSeq = $questionId !== null && isset($LEM->questionId2questionSeq[$questionId])
+            ? $LEM->questionId2questionSeq[$questionId]
+            : -1;
+        $groupSeq = $questionId !== null && isset($LEM->questionId2groupSeq[$questionId])
+            ? $LEM->questionId2groupSeq[$questionId]
+            : -1;
+
+        $LEM->em->validateExpression(
+            htmlspecialchars_decode((string) $expression, ENT_QUOTES),
+            $groupSeq,
+            $questionSeq
+        );
+
+        $result = [
+            'errors' => $LEM->em->GetErrors(),
+            'warnings' => $LEM->em->GetWarnings(),
+        ];
+        $LEM->em->ResetErrorsAndWarnings();
+
+        return $result;
+    }
+
+    /**
      * Compute Relevance, processing $eqn to get a boolean value.  If there are syntax errors, return false.
      * @param string $eqn - the relevance equation
      * @param string $questionNum - needed to align question-level relevance and tailoring
@@ -4677,6 +4719,7 @@ class LimeExpressionManager
         $LEM->surveyOptions['displayTimezone'] = Yii::app()->getConfig('displayTimezone') ?: date_default_timezone_get();
         $LEM->surveyOptions['tempdir'] = (isset($aSurveyOptions['tempdir']) ? $aSurveyOptions['tempdir'] : '/temp/');
         $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : null);
+        $LEM->surveyOptions['savequotaexit'] = (isset($aSurveyOptions['savequotaexit']) ? $aSurveyOptions['savequotaexit'] : false);
         $LEM->debugLevel = $debugLevel;
         $_SESSION[$LEM->sessid]['LEMdebugLevel'] = $debugLevel; // need acces to SESSSION to decide whether to cache serialized instance of $LEM
         switch ($surveyMode) {
@@ -6365,11 +6408,33 @@ class LimeExpressionManager
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                 case Question::QT_L_LIST: //LIST drop-down/radio-button list
-                    // If at least one checkbox is checked, we're OK
-                    if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs))) {
+                    $bOtherCheckedWithoutValue = false;
+                    if ($qInfo['type'] == Question::QT_M_MULTIPLE_CHOICE && $qInfo['other'] == 'Y') {
+                        foreach ($sgqas as $s) {
+                            if (
+                                str_ends_with($s, '_Cother')
+                                && in_array($s, $relevantSQs)
+                                && in_array($s, $unansweredSQs)
+                                && self::isOtherCheckedWithoutValue($s)
+                            ) {
+                                $bOtherCheckedWithoutValue = true;
+                                $qmandViolation = true;
+                            }
+                        }
+                    }
+
+                    $bNoneChecked = !$bOtherCheckedWithoutValue
+                        && count($relevantSQs) > 0
+                        && (count($relevantSQs) == count($unansweredSQs));
+                    if ($bNoneChecked) {
                         $qmandViolation = true;
                     }
-                    if (!($qInfo['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qInfo['type'] == Question::QT_L_LIST)) {
+
+                    $bShowCheckAnItem = $qInfo['type'] != Question::QT_M_MULTIPLE_CHOICE || $bNoneChecked;
+                    if (
+                        !($qInfo['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qInfo['type'] == Question::QT_L_LIST)
+                        && $bShowCheckAnItem
+                    ) {
                         $sMandatoryText = $LEM->gT('Please check at least one item.');
                         $mandatoryTip .= App()->twigRenderer->renderPartial(
                             '/survey/questions/question_help/mandatory_tip.twig',
@@ -8434,6 +8499,26 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         return gT($string, $escapemode);
     }
 
+    /**
+     * Extracts a display label from an "other" text string that may contain a pipe separator.
+     * When other_replace_text uses "|" as separator (e.g. "hot|cold"), the left part is the
+     * label shown next to the checkbox and the right part is a suffix shown after the input.
+     * Returns the left part if non-empty, then the right part, or empty string if neither exists.
+     *
+     * @param string $othertext
+     * @return string
+     */
+    private function getOtherDisplayLabel(string $othertext): string
+    {
+        if (strpos($othertext, '|') !== false) {
+            [$left, $right] = explode('|', $othertext, 2);
+            $left = trim($left);
+            $right = trim($right);
+            return $left !== '' ? $left : $right;
+        }
+        return trim($othertext);
+    }
+
 
     /**
      * @param string $sTextToTranslate
@@ -8851,6 +8936,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $_SESSION[$LEM->sessid][$_POST['timerquestion']] = sanitize_float($_POST[$_POST['timerquestion']]);
         }
         return $updatedValues;
+    }
+
+    /**
+     * @param string $sq
+     * @return boolean
+     */
+    public static function isOtherCheckedWithoutValue($sq)
+    {
+        if (empty($_POST[$sq . 'cbox'])) {
+            return false;
+        }
+        return trim((string) ($_POST[$sq] ?? '')) === '';
     }
 
     public static function isValidVariable($varName)

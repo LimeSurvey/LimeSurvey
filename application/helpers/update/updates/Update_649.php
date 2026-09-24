@@ -9,6 +9,7 @@ class Update_649 extends DatabaseUpdateBase
     /**
      * @throws CException If a database update operation fails.
      */
+    #[\Override]
     public function up()
     {
         $surveysTable = \Yii::app()->db->schema->getTable('{{surveys}}');

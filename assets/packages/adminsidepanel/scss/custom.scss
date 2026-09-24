@@ -336,7 +336,7 @@ div[class*=" col-"] {
 // Resize handle styles
 .resize-handle {
     position: absolute;
-    right: 0;
+    right: -20px;
     top: 0;
     width: 20px;
     display: flex;
