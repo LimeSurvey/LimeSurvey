@@ -637,8 +637,8 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Allow only numerical input for &#039;Other&#039; text</help>
-            <caption>Numbers only for &#039;Other&#039;</caption>
+            <help>Allow only numerical input for "Other" text</help>
+            <caption>Numbers only for "Other"</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
