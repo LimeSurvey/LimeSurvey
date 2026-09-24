@@ -18,7 +18,10 @@
 class UploaderController extends SurveyController
 {
     /**
-     * @param int $actionID
+     * Handles file upload question requests: file download, delete and upload (mode=upload),
+     * otherwise renders the upload modal content (a fragment for AJAX requests, a full page otherwise).
+     *
+     * @param string $actionID
      * @return void
      */
     public function run($actionID)
@@ -426,10 +429,6 @@ class UploaderController extends SurveyController
         App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
 
-        $header = getHeader($meta);
-
-        echo $header;
-
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
         $oQuestion = self::getQuestion($surveyid, $qid);
@@ -474,6 +473,12 @@ class UploaderController extends SurveyController
             });
         </script>";
         $container = $this->renderPartial('/survey/questions/answer/file_upload/modal-container', $aData, true);
+        if (App()->request->getIsAjaxRequest()) {
+            /* Loaded into the survey page modal, which already has all assets: no page header or external scripts */
+            echo "<script>\n" . $sNeededScriptVar . $sLangScriptVar . "\n</script>\n" . $container . $scripts;
+            return;
+        }
+        echo getHeader($meta);
         $body .= $container . $scripts;
         $body .= '</body>
         </html>';
