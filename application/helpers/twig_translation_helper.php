@@ -69,7 +69,7 @@ function dummy_twig_translation_helper()
     gT("Crop images to fit into size. Needs JavaScript enabled."); //  From application\views\survey\questions\answer\listradio\config.xml
     gT("Fix width of the images to this value. Leave empty to not change them."); // question/image_select-listradio/survey/questions/answer/listradio/config.xml
     gT("Fix height of the images to this value. Leave empty to not change them."); // question/image_select-listradio/survey/questions/answer/listradio/config.xml
-    gT("The answer options will be distributed across the number of columns set here. Any number up to 1 can be entered, but we only support systems up to 16."); // From application/views/survey/questions/answer/listradio/config.xml, application/views/survey/questions/answer/multiplechoice/config.xml
+    gT("The answer options will be distributed across the number of columns set here. Any number up from 1 can be entered, but we only support systems up to 16."); // From application/views/survey/questions/answer/listradio/config.xml, application/views/survey/questions/answer/multiplechoice/config.xml
     gT("Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized"); // From application/views/survey/questions/answer/multiplechoice/config.xml
     gT("Default coordinates of the map when the page first loads. Format: latitude [space] longitude"); // From application/views/survey/questions/answer/shortfreetext/config.xml
     gT("Max number of files"); // From application/views/survey/questions/answer/file_upload/config.xml
