@@ -182,7 +182,7 @@ class SurveyResponses implements CommandInterface
      */
     protected function appendTimingData(array &$responses): array
     {
-        if (!$this->survey->hasTimingsTable) {
+        if (!$this->survey->isSaveTimings || !$this->survey->hasTimingsTable) {
             return [];
         }
 

@@ -184,10 +184,20 @@ export const ResponsesTable = ({
       onDeleteResponseFilesClick: () => handleOnActionFilesDeleteClick(),
     })
 
+    const timingFieldIds = (responsesData.timingFields ?? [])
+      .map(({ fieldname }) => fieldname)
+      .filter(Boolean)
+    const currentTimingFieldIds = columns
+      .filter((column) => column.meta?.columnCategory === 'timing')
+      .map(({ id }) => id)
+    const haveTimingFieldsChanged =
+      timingFieldIds.length !== currentTimingFieldIds.length ||
+      timingFieldIds.some((id) => !currentTimingFieldIds.includes(id))
+
     let generatedColumns = columns
 
-    // if the columns are not generated yet, generate them
-    if (!columns.length) {
+    // Regenerate columns when timing fields change.
+    if (!columns.length || haveTimingFieldsChanged) {
       generatedColumns = generateColumns(
         responsesData.surveyQuestions || surveyQuestions,
         survey,
@@ -203,13 +213,30 @@ export const ResponsesTable = ({
       }
 
       setColumns(generatedColumns)
-      setColumnVisibility(
-        applyStoredColumnVisibility(
+      setColumnVisibility((currentVisibility) => {
+        const initialVisibility = applyStoredColumnVisibility(
           generatedColumns,
           getInitialColumnVisibility(generatedColumns),
           readColumnVisibility(survey.sid)
         )
-      )
+        return Object.fromEntries(
+          generatedColumns.map(({ id }) => [
+            id,
+            currentVisibility[id] ?? initialVisibility[id],
+          ])
+        )
+      })
+      setColumnsOrder((currentOrder) => {
+        if (!currentOrder.length) {
+          return currentOrder
+        }
+
+        const generatedColumnIds = generatedColumns.map(({ id }) => id)
+        return [
+          ...currentOrder.filter((id) => generatedColumnIds.includes(id)),
+          ...generatedColumnIds.filter((id) => !currentOrder.includes(id)),
+        ]
+      })
       // else if we have columns, then we pop the actions column and readd it to update the columns ref
     } else if (!hideActions && columns.length) {
       columns.pop()

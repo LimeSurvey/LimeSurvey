@@ -4708,12 +4708,13 @@ class LimeExpressionManager
         $LEM->surveyOptions['ipAnonymize'] = $survey->isIpAnonymize;
         $LEM->surveyOptions['radix'] = (isset($aSurveyOptions['radix']) ? $aSurveyOptions['radix'] : '.');
         $LEM->surveyOptions['refurl'] = (isset($aSurveyOptions['refurl']) ? $aSurveyOptions['refurl'] : null);
-        $LEM->surveyOptions['savetimings'] = $survey->isSaveTimings;
+        $canSaveTimings = $survey->isSaveTimings && $survey->hasTimingsTable;
+        $LEM->surveyOptions['savetimings'] = $canSaveTimings;
         $LEM->sgqaNaming = (isset($aSurveyOptions['sgqaNaming']) ? ($aSurveyOptions['sgqaNaming'] == "Y") : true); // TODO default should eventually be false
         $LEM->surveyOptions['startlanguage'] = (isset($aSurveyOptions['startlanguage']) ? $aSurveyOptions['startlanguage'] : 'en');
         $LEM->surveyOptions['surveyls_dateformat'] = (isset($aSurveyOptions['surveyls_dateformat']) ? $aSurveyOptions['surveyls_dateformat'] : 1);
         $LEM->surveyOptions['tablename'] = (isset($aSurveyOptions['tablename']) ? $aSurveyOptions['tablename'] : $survey->responsesTableName);
-        $LEM->surveyOptions['tablename_timings'] = ($survey->isSaveTimings ? $survey->timingsTableName : '');
+        $LEM->surveyOptions['tablename_timings'] = ($canSaveTimings ? $survey->timingsTableName : '');
         $LEM->surveyOptions['target'] = (isset($aSurveyOptions['target']) ? $aSurveyOptions['target'] : '/temp/files/');
         $LEM->surveyOptions['timeadjust'] = (isset($aSurveyOptions['timeadjust']) ? $aSurveyOptions['timeadjust'] : 0);
         $LEM->surveyOptions['displayTimezone'] = Yii::app()->getConfig('displayTimezone') ?: date_default_timezone_get();

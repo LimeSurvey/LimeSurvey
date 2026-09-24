@@ -252,6 +252,10 @@ class Save
         global $thissurvey;
         $survey = Survey::model()->findByPk($thissurvey['sid']);
 
+        if (!$survey || !$survey->isSaveTimings || !$survey->hasTimingsTable) {
+            return;
+        }
+
         if (!isset($_POST['start_time'])) {
             return; // means haven't passed welcome page yet.
         }
