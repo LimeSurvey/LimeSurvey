@@ -27,6 +27,15 @@ class ResolvedCondition
      */
     public const OPERATOR_NULL = 'null';
 
+    /**
+     * "The respondent put something here." Needed for the free-text column
+     * behind a multiple-choice "Other" option, which is the only record that
+     * the box was ticked — there is no 'Y' column for it. Distinct from
+     * OPERATOR_NULL because an untouched column can be stored as '' rather
+     * than NULL, and IS NOT NULL would count that as an answer.
+     */
+    public const OPERATOR_NOT_EMPTY = 'not-empty';
+
     /** @var array<int,string> One column, or several to be OR'd (multiple choice). */
     private array $keys;
 
