@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { LSTable, RowActions } from '../LSTable'
 
 export default {
-  title: 'UIComponents/LSTable',
+  title: 'imageWrapper/LSTable',
   component: LSTable,
 }
 
