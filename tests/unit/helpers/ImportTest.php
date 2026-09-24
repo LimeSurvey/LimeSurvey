@@ -118,13 +118,16 @@ class ImportTest extends TestBaseClass
     /**
      * Data provider for testImportRespectsTranslateLinksOption.
      *
-     * @return array<string,array{bool}>
+     * Each data set uses its own target survey id: createFieldMap() caches per survey id,
+     * so reusing an id within the same process would pick up the previous import's field map.
+     *
+     * @return array<string,array{bool,int}>
      */
     public function translateLinksProvider(): array
     {
         return [
-            'links translated' => [true],
-            'links not translated' => [false],
+            'links translated' => [true, 918701],
+            'links not translated' => [false, 918702],
         ];
     }
 
@@ -134,9 +137,10 @@ class ImportTest extends TestBaseClass
      *
      * @dataProvider translateLinksProvider
      * @param bool $translateLinks Value of the "convert resource links" import option
+     * @param int $desiredSurveyId Survey id to import to, must differ from the id in the file
      * @return void
      */
-    public function testImportRespectsTranslateLinksOption(bool $translateLinks): void
+    public function testImportRespectsTranslateLinksOption(bool $translateLinks, int $desiredSurveyId): void
     {
         $oldLink = '/upload/surveys/373616/images/test.png';
         $xml = file_get_contents(self::$surveysFolder . '/limesurvey_survey_373616_copySurvey.lss');
@@ -150,7 +154,7 @@ class ImportTest extends TestBaseClass
 
         try {
             // Import under a different survey id, otherwise link translation would be a no-op.
-            $result = XMLImportSurvey('', $xml, null, 918700, $translateLinks);
+            $result = XMLImportSurvey('', $xml, null, $desiredSurveyId, $translateLinks);
             $survey = \Survey::model()->findByPk($result['newsid']);
             $this->assertNotNull($survey);
             $this->assertNotEquals(373616, $survey->sid);
