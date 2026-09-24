@@ -83,7 +83,7 @@ class CopyQuestion
 
             //copy answer options
             if (isset($this->copyOptions['copyAnswerOptions']) && $this->copyOptions['copyAnswerOptions']) {
-                $this->copyQuestionsAnswerOptions($this->copyQuestionValues->getQuestiontoCopy()->qid);
+                $this->copyQuestionsAnswerOptions($this->copyQuestionValues->getQuestiontoCopy()->qid, $surveyId);
             }
 
             //copy default answers
@@ -211,6 +211,7 @@ class CopyQuestion
             $this->mappedSubquestionIds[$subquestion->qid] = $copiedSubquestion->qid; // map old subquestion id to new subquestion id
             foreach ($subquestion->questionl10ns as $subquestLanguage) {
                 $substituteSurveyInQuestionText = $subquestLanguage->question;
+                $substituteSurveyInHelpText = $subquestLanguage->help;
                 if ($surveyId !== null && isset($this->copyOptions['adjustLinks']) && $this->copyOptions['adjustLinks']) {
                     $substituteSurveyInQuestionText = translateLinks(
                         'survey',
@@ -218,10 +219,16 @@ class CopyQuestion
                         $surveyId, //newId
                         $subquestLanguage->question, //the original question text
                     );
+                    $substituteSurveyInHelpText = translateLinks(
+                        'survey',
+                        $this->copyQuestionValues->getSourceSurveyId(), //oldID
+                        $surveyId, //newId
+                        $subquestLanguage->help, //the original help text
+                    );
                 }
                 $newSubquestLanguage = new \QuestionL10n();
                 $newSubquestLanguage->attributes = $subquestLanguage->attributes; //if new attributes are added in future
-                $newSubquestLanguage->help = $subquestLanguage->help;
+                $newSubquestLanguage->help = $substituteSurveyInHelpText;
                 $newSubquestLanguage->question = $substituteSurveyInQuestionText;
                 $newSubquestLanguage->script = $subquestLanguage->script;
                 $newSubquestLanguage->qid = $copiedSubquestion->qid;
@@ -248,9 +255,13 @@ class CopyQuestion
      *
      * * @before $this->newQuestion must exist and should not be null
      *
-     * @param int $questionIdToCopy
+     * @param int $questionIdToCopy id of the question whose answer options are copied
+     * @param int|null $surveyId The id of the survey the answer options are copied to.
+     *                           If null, they stay in the survey of the original question and links are not adjusted.
+     *
+     * @return void
      */
-    private function copyQuestionsAnswerOptions($questionIdToCopy)
+    private function copyQuestionsAnswerOptions($questionIdToCopy, $surveyId = null)
     {
         $answerOptions = \Answer::model()->findAllByAttributes(['qid' => $questionIdToCopy]);
         foreach ($answerOptions as $answerOption) {
@@ -265,6 +276,14 @@ class CopyQuestion
                     $copiedAnswerOptionLanguage->attributes = $answerLanguage->attributes;
                     $copiedAnswerOptionLanguage->id = null;
                     $copiedAnswerOptionLanguage->aid = $copiedAnswerOption->aid;
+                    if ($surveyId !== null && isset($this->copyOptions['adjustLinks']) && $this->copyOptions['adjustLinks']) {
+                        $copiedAnswerOptionLanguage->answer = translateLinks(
+                            'survey',
+                            $this->copyQuestionValues->getSourceSurveyId(),
+                            $surveyId,
+                            $answerLanguage->answer
+                        );
+                    }
                     $copiedAnswerOptionLanguage->save();
                 }
             }
