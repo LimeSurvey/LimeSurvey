@@ -7,6 +7,11 @@ $(document).ready(function () {
         let current = 0;
         let $modal = null;
 
+        /**
+         * Render the slide at the given index, optionally fading the text content.
+         * @param {number} index - Zero-based index of the slide to display.
+         * @param {boolean} [animate=true] - Whether to fade the title/description.
+         */
         function renderSlide(index, animate = true) {
             const slide = slides[index];
             const $title = $modal.find(".editor-slider-title");
@@ -19,7 +24,7 @@ $(document).ready(function () {
 
             const updateContent = () => {
                 $title.html(slide.title);
-                $image.attr("src", slide.image).attr("alt", "slider image " + (index + 1));
+                $image.attr("src", slide.image).attr("alt", slide.title);
                 $desc.html(slide.description);
 
                 // Swap the info panel if custom info is provided for this slide
@@ -65,6 +70,9 @@ $(document).ready(function () {
             }
         }
 
+        /**
+         * Build the clickable navigation dots, one per slide.
+         */
         function buildDots() {
             if (!slides.length || slides.length === 1) {
                 return;
@@ -89,11 +97,20 @@ $(document).ready(function () {
             });
         }
 
+        /**
+         * Navigate to the slide at the given index, clamped to valid bounds.
+         * @param {number} index - Target slide index.
+         */
         function goTo(index) {
             current = Math.max(0, Math.min(index, slides.length - 1));
             renderSlide(current);
         }
 
+        /**
+         * Initialise the slider for the given modal element.
+         * Reads slides from the data-slides attribute and wires up navigation.
+         * @param {HTMLElement} modalEl - The modal DOM element.
+         */
         function init(modalEl) {
             $modal = $(modalEl);
             current = 0;
@@ -146,10 +163,10 @@ $(document).ready(function () {
 
         let url = $("#saveUrl").val();
         let data = { optin: newValue };
-        savedViaSwitch = true;
 
         $.post(url, data)
             .done(function () {
+                savedViaSwitch = true;
                 let successMessage =
                     newValue === "1"
                         ? $("#successMsgFeatureOptin").val()
@@ -174,9 +191,9 @@ $(document).ready(function () {
      * "Switch to new editor" button in auto-open mode — saves optin=1
      */
     $(document).on("click", "#switch-new-editor-btn", function () {
-        savedViaSwitch = true;
         $.post($("#saveUrl").val(), { optin: 1 })
             .done(function () {
+                savedViaSwitch = true;
                 $("#activate_editor").modal("hide");
                 LS.ajaxAlerts($("#successMsgFeatureOptin").val(), "alert-success", {
                     showCloseButton: true,

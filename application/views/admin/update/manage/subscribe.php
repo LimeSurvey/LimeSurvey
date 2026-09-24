@@ -19,7 +19,7 @@
             <?php eT('The LimeSurvey ComfortUpdate is a great feature to easily update to the latest version of LimeSurvey. To use it you will need an update key.'); ?></p>
         <p>
             <?php
-            $aopen = '<a class="ls-link" href="https://account.limesurvey.org/get-your-free-comfortupdate-trial-key" target="_blank">';
+            $aopen = '<a class="ls-link" href="https://account.limesurvey.org/component/limeservice/?task=trialkey.createfreekey" target="_blank">';
             $aclose = '</a>';
             ?>
             <?php echo sprintf(gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."), $aopen, $aclose); ?>

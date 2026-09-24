@@ -74,6 +74,12 @@ trait ResponseMappingTrait
                         $answer['scale_id'] ?? $answer['scaleid'] ?? 0,
                         $answer['value'],
                     );
+
+                    $answer['answerLabel'] = $this->answerCache->getLabel(
+                        $answer['qid'],
+                        $answer['scale_id'] ?? $answer['scaleid'] ?? 0,
+                        $answer['value']
+                    );
                 }
             }
         }

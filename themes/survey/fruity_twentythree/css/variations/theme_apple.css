@@ -12779,7 +12779,7 @@ h1,
 
 h2,
 .h2 {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -12792,7 +12792,7 @@ h3,
 }
 
 label {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -13011,7 +13011,7 @@ a:hover {
 }
 
 .ls-answers label, .answer-item label, .control-label, .ls-answers .othertext-suffix-label, .answer-item .othertext-suffix-label {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -13521,7 +13521,7 @@ table > tbody > tr > td.ddprefix {
 }
 
 .ls-answers .ls-heading th, .ls-answers th {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15470,7 +15470,7 @@ body .imageselect-listitem label::after {
   border-radius: 2px;
   margin-bottom: 10px;
   padding: 6px 20px 6px 20px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15578,7 +15578,7 @@ body .imageselect-listitem label::after {
   margin-block-end: 0;
 }
 .numeric-multi .dynamic-total {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15622,7 +15622,7 @@ body .imageselect-listitem label::after {
 }
 
 .dropdown-menu .dropdown-item {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15793,6 +15793,7 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   /* We don't need it for accessibility : we already have the label */
   /* Show the label */
   /* bs fix */
+  /* Don't display repeating header on mobile devices'*/
 }
 .no-tables-general .slider-list .slider-left {
   text-align: left;
@@ -15881,6 +15882,9 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 .no-tables-general table.ls-answers td.visible-xs,
 .no-tables-general table.ls-answers th.visible-xs {
   display: block !important;
+}
+.no-tables-general table.ls-answers tr.ls-heading-repeat {
+  display: none;
 }
 
 .no-tables-mobile {

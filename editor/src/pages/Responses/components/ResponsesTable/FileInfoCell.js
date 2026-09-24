@@ -1,3 +1,4 @@
+import { format } from 'util'
 import { Badge } from 'react-bootstrap'
 
 export const FileInfoCell = ({ filesInfo, surveyId, rowId, questionId }) => {
@@ -26,8 +27,7 @@ export const FileInfoCell = ({ filesInfo, surveyId, rowId, questionId }) => {
               target="_blank"
               rel="noreferrer"
             >
-              {fileSize}
-              {t('MB')}
+              {format(t('%s MB'), fileSize)}
             </a>
           </div>
         </Badge>

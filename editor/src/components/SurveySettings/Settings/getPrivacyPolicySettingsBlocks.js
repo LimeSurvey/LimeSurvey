@@ -1,3 +1,4 @@
+import { format } from 'util'
 import { Entities, getSettingValueFromSurvey, STATES } from 'helpers'
 import { getOnOffOptions, ONOFF_BOOLEAN } from 'helpers/options'
 
@@ -93,12 +94,16 @@ export const getPrivacyPolicySettingsBlocks = () => ({
           )
 
           return surveyLanguages.map((option) => {
-            let addOn =
-              option === survey.language ? ' (' + t('Base language') + ')' : ''
+            const isBaseLanguage = option === survey.language
             let languageOption = {
               value: option,
               label: languages
-                ? languages[option]?.description + addOn
+                ? isBaseLanguage
+                  ? format(
+                      t('%s (Base language)'),
+                      languages[option]?.description
+                    )
+                  : languages[option]?.description
                 : t('No data available'),
             }
 

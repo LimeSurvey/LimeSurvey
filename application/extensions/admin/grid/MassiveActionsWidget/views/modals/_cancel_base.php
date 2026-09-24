@@ -24,6 +24,7 @@
      aria-modal="true"
      aria-labelledby="<?php echo CHtml::encode($massiveModalTitleId . ' ' . $massiveModalDialogSrId); ?>"
      data-keepopen="<?php echo $aAction['keepopen']; ?>"
+     data-grid-reload="<?php echo $aAction['grid-reload'] ?? 'no'; ?>"
      data-show-selected="<?php echo $showSelected; ?>"
      data-selected-url="<?php echo $selectedUrl; ?>"
 >

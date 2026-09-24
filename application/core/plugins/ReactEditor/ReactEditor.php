@@ -34,6 +34,11 @@ class ReactEditor extends \PluginBase
         $this->subscribe('beforeSurveyAdminView');
     }
 
+    /**
+     * Prevents deactivation of this core plugin.
+     *
+     * @return void
+     */
     public function beforeDeactivate()
     {
         $this->getEvent()->set('success', false);
@@ -83,7 +88,7 @@ class ReactEditor extends \PluginBase
             // during the render phase – the same code path used by all core
             // packages (jquery, bootstrap, adminsidepanel …) that work reliably
             // even right after a fresh installation.
-            \Yii::setPathOfAlias('reacteditor.js', dirname(__FILE__) . '/js');
+             \Yii::setPathOfAlias('reacteditor.js', dirname(__FILE__) . '/js');
             \Yii::setPathOfAlias('reacteditor.css', dirname(__FILE__) . '/css');
 
             App()->clientScript->addPackage('reacteditor-modal', [
@@ -109,7 +114,7 @@ class ReactEditor extends \PluginBase
                 true,
             );
 
-            $shouldAutoShowModal = !$this->hasEditorSettingInDatabase();
+            $shouldAutoShowModal = false;
 
             \Yii::app()->getClientScript()->registerScript(
                 'previewModal',
@@ -283,9 +288,9 @@ class ReactEditor extends \PluginBase
      * Shows a warning flash message if the survey's effective theme is not
      * compatible with the React editor.
      *
-     * If Survey::getTemplateEffectiveName() throws (e.g. when the survey
-     * inherits a missing group template), the exception is caught
-     * and the theme is treated as incompatible so the warning is still shown.
+     * Survey::getIsEditorCompatible() treats an unresolvable theme (e.g. when the
+     * survey inherits a missing group template) as incompatible, so the warning is
+     * still shown in that case.
      *
      * @param Survey|null $survey
      * @return void
@@ -296,16 +301,7 @@ class ReactEditor extends \PluginBase
             return;
         }
 
-        try {
-            $isCompatible = Template::isBasedOn(
-                $survey->getTemplateEffectiveName(),
-                'fruity_twentythree'
-            );
-        } catch (\Throwable $e) {
-            $isCompatible = false;
-        }
-
-        if (!$isCompatible) {
+        if (!$survey->getIsEditorCompatible()) {
             App()->setFlashMessage(
                 "<span style='font-weight: bold;'>" . gT("The new editor cannot be used for this survey.") . '</span><br>' . gT("It is currently only compatible with the 'Fruity TwentyThree' theme and themes based on it."),
                 'error'
