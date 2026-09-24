@@ -14235,7 +14235,7 @@
 	    this.log(args);
 	  }
 	}
-	const adminCoreLSConsole = new ConsoleShim('AdminCore', window.debugState ? window.debugState.backend : false); //!window.debugState.backend);
+	const adminCoreLSConsole = new ConsoleShim('AdminCore', !(window.debugState && window.debugState.backend));
 
 	/**
 	 * Neccessary methods for the confirmation modal

@@ -388,7 +388,9 @@
   }();
 
   function log () {
-    console.log("PJAX options", this.options);
+    if (this.options.debug) {
+      console.log("PJAX options", this.options);
+    }
     this.options.logObject = new ConsoleShim('PJAX ->', !this.options.debug);
     return this.options.logObject;
   }
