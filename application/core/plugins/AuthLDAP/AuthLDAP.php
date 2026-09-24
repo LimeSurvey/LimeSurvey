@@ -33,7 +33,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             'type' => 'select',
             'label' => 'LDAP version',
             'options' => array('2' => 'LDAPv2', '3'  => 'LDAPv3'),
-            'default' => '2',
+            'default' => '3',
+            'help' => 'LDAPv2 is obsolete and does not reliably support passwords with non-ASCII characters (e.g. §, ä, é) - use LDAPv3 unless your server does not support it.',
             'submitonchange' => true
         ),
         'ldapoptreferrals' => array(
@@ -360,8 +361,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // using LDAP version
         if (empty($ldapver)) {
-            // If the version hasn't been set, default = 2
-            $ldapver = 2;
+            // If the version hasn't been set, default = 3 (LDAPv2 does not use UTF-8 for passwords)
+            $ldapver = 3;
         }
 
         $connectionSuccessful = ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, $ldapver);
