@@ -668,14 +668,16 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
  *
  * @param string $sFullFilePath The full filepath of the uploaded file
  * @param integer $iNewSID The new survey ID
- * @param $iNewGID
- * @param bool[] $options
+ * @param integer $iNewGID The id of the question group the question is added to
+ * @param bool[] $options Import options: 'autorename' to rename conflicting question codes,
+ *                        'translinkfields' to translate links to the old survey (defaults to true if missing)
  * @param bool $supportArchivedFields whether we are looking for old fieldnames
  * @return array
  * @throws CException
  */
 function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array('autorename' => false, 'translinkfields' => true), $supportArchivedFields = true)
 {
+    $options['translinkfields'] = $options['translinkfields'] ?? true;
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
