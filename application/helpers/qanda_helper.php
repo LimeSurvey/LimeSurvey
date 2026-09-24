@@ -601,6 +601,12 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
 // QUESTION METHODS =================================================
 
 // ---------------------------------------------------------------
+/**
+ * Renders the file upload question (answer area and upload modal trigger).
+ *
+ * @param array $ia Question info array: [0] qid, [1] fieldname, ...
+ * @return array{0: string, 1: string[]} Rendered answer HTML and the list of input names
+ */
 function do_file_upload($ia)
 {
     global $thissurvey;
@@ -619,7 +625,7 @@ function do_file_upload($ia)
         $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['preview'] = 0;
         $questgrppreview = 0;
     }
-    $scriptloc = Yii::app()->getController()->createUrl(
+    $uploadurl = Yii::app()->getController()->createUrl(
         'uploader/index',
         [
             "sid" => Yii::app()->getConfig('surveyID'),
@@ -628,8 +634,8 @@ function do_file_upload($ia)
             "preview" => $questgrppreview,
             "show_title" => $aQuestionAttributes['show_title'],
             "show_comment" => $aQuestionAttributes['show_comment'],
-            "minfiles" => $aQuestionAttributes['min_num_of_files'],
-            "maxfiles" => $aQuestionAttributes['max_num_of_files'],
+            "minfiles" => $aQuestionAttributes['min_num_of_files'], // TODO: Regression here? Should use LEMval(minfiles)
+            "maxfiles" => $aQuestionAttributes['max_num_of_files'], // Same here.
         ]
     );
 
@@ -642,11 +648,6 @@ function do_file_upload($ia)
             $filecountvalue = $tempval;
         }
     }
-    $uploadurl  = $scriptloc . "?sid=" . Yii::app()->getConfig('surveyID') . "&fieldname=" . $ia[1] . "&qid=" . $ia[0];
-    $uploadurl .= "&preview=" . $questgrppreview . "&show_title=" . $aQuestionAttributes['show_title'];
-    $uploadurl .= "&show_comment=" . $aQuestionAttributes['show_comment'];
-    $uploadurl .= "&minfiles=" . $aQuestionAttributes['min_num_of_files']; // TODO: Regression here? Should use LEMval(minfiles) like above
-    $uploadurl .= "&maxfiles=" . $aQuestionAttributes['max_num_of_files']; // Same here.
 
     $fileuploadData = array(
         'fileid' => $ia[1],
