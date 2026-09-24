@@ -1075,7 +1075,9 @@
         script.addEventListener('load', function () {
           resolve(src);
         });
-        script.async = true; // force asynchronous loading of peripheral js
+        // Dynamically inserted scripts are async by default and would run in download order;
+        // keep document order so dependent scripts (e.g. CKEditor's config.js) run after their base script
+        script.async = false;
       }
 
       if (code != "") {
