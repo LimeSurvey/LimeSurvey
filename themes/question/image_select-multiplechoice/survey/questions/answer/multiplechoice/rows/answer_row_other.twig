@@ -58,9 +58,9 @@
             </div>
 
             {% if othertextRight is defined and othertextRight|length > 0 %}
-                <div class="othertext-suffix-label col-auto" id="suffix-{{ myfname }}-other">
+                <label class="othertext-suffix-label col-auto" for="answer{{ myfname }}cbox" id="suffix-{{ myfname }}-other">
                     {{ processString(othertextRight) }}
-                </div>
+                </label>
             {% endif %}
 
             <!-- hidden input -->
@@ -106,6 +106,30 @@
             LEMflagMandOther("{{ myfname }}",false);
         }
     });
+    (function () {
+        var cb        = document.getElementById('answer{{ myfname }}cbox');
+        var inputText = document.getElementById('answer{{ myfname }}');
+        var item      = document.getElementById('javatbd{{ myfname }}');
+
+        function handleToggleClick(event) {
+            event.stopPropagation();
+            if (event.target.tagName === 'INPUT') { return; }
+            if (cb.checked) {
+                cb.checked = false;
+                inputText.value = '';
+                document.getElementById('java{{ myfname }}').value = '';
+                LEMflagMandOther('{{ myfname }}', false);
+                {{ checkconditionFunction }}('', '{{ myfname }}', 'text');
+            } else {
+                inputText.focus();
+                cb.checked = true;
+                LEMflagMandOther('{{ myfname }}', true);
+            }
+        }
+
+        var el = item.querySelector('.other-text-item');
+        if (el) { el.addEventListener('click', handleToggleClick); }
+    }());
 </script>
 </li> <!-- Form group ; item row -->
 <!-- end of answer_row_other -->

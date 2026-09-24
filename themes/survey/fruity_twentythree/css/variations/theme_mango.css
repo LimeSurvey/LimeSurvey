@@ -13499,6 +13499,10 @@ input[type=radio] .styled:checked + label::after {
   color: #E32416;
 }
 
+li.radio-text-item:has(input[type=radio][value=-oth-]:checked) .othertext-suffix-label {
+  color: #ED5046;
+}
+
 .list-group.list-group-horizontal .radio-item {
   margin-right: 3rem;
 }
@@ -13951,6 +13955,10 @@ table.ls-answers input[type=radio] {
 
 .checkbox-item input[type=checkbox]:checked + label {
   color: #E32416;
+}
+
+li.checkbox-text-item:has(input.other-checkbox:checked) .othertext-suffix-label {
+  color: #ED5046;
 }
 
 .checkbox-item label::before {
