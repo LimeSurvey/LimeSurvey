@@ -75,7 +75,7 @@
                 <arrow-down>Arrow down</arrow-down>
             </options>
             <default>plus</default>
-            <help>The icon used on the "add row"-button </help>
+            <help>The icon used on the "add row"-button</help>
             <caption>Add row icon:</caption>
         </attribute>
     </attributes>
