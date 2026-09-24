@@ -20,6 +20,15 @@ export const getAndGenerateImageStyles = (imageProps, asString = false) => {
 
   styles.filter = `brightness(${brightnessValue})`
 
+  // Custom opacity value expected between 0 and 100, defaults to 100 (fully visible)
+  const imageOpacity =
+    imageProps.imageOpacity === undefined ? 100 : imageProps.imageOpacity
+
+  // Map 0 to 100 -> 0 to 1 (CSS opacity range)
+  const opacityValue = imageOpacity / 100
+
+  styles.opacity = `${opacityValue}`
+
   // If asString is true, convert the styles object to a CSS string with proper kebab-case
   if (asString) {
     return Object.entries(styles)

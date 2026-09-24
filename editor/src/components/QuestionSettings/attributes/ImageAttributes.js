@@ -76,7 +76,8 @@ export const ImageAttributes = ({
     // Generate styles if needed
     if (
       changes.imageBrightness !== undefined ||
-      changes.imageRadius !== undefined
+      changes.imageRadius !== undefined ||
+      changes.imageOpacity !== undefined
     ) {
       newImageState.imageStyles = getAndGenerateImageStyles(newImageState)
     }
@@ -87,6 +88,10 @@ export const ImageAttributes = ({
     const saveObject = {
       image_path: newImageState.imagePath || '',
       image_align: newImageState.imageAlign || 'left',
+      image_opacity:
+        newImageState.imageOpacity === undefined
+          ? 100
+          : newImageState.imageOpacity,
       image_brightness: newImageState.imageBrightness || 0,
       image_radius: newImageState.imageRadius || 0,
       image_alt_text: newImageState.imageAltText || '',
@@ -104,6 +109,10 @@ export const ImageAttributes = ({
 
   const handleAlignChange = (alignValue) => {
     updateImageState({ imageAlign: alignValue })
+  }
+
+  const handleOpacityChange = (opacityValue) => {
+    updateImageState({ imageOpacity: opacityValue[0] })
   }
 
   const handleBrightnessChange = (brightnessValue) => {
@@ -196,6 +205,20 @@ export const ImageAttributes = ({
                 update={handleAlignChange}
                 labelText={t('Alignment')}
                 value={imageState.imageAlign}
+              />
+            </div>
+            <div
+              className={'qe-input-group image-attributes-range multi-settings'}
+            >
+              <InputRange
+                key="opacity"
+                onChange={handleOpacityChange}
+                labelText={t('Opacity')}
+                min={0}
+                max={100}
+                value={imageState.imageOpacity}
+                step={1}
+                direction={Direction.Right}
               />
             </div>
             <div
