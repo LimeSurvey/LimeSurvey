@@ -18,11 +18,17 @@ jest.mock('components/PublishSettings/SurveyActivationHandler', () => {
   ) {
     void ref
     return (
-      <button
-        data-testid="overview-modal-state"
-        data-open={showOverViewModal}
-        onClick={() => setShowOverViewModal(false)}
-      />
+      <>
+        <button
+          data-testid="overview-modal-state"
+          data-open={showOverViewModal}
+          onClick={() => setShowOverViewModal(false)}
+        />
+        <button
+          data-testid="open-overview-modal"
+          onClick={() => setShowOverViewModal(true)}
+        />
+      </>
     )
   })
 })

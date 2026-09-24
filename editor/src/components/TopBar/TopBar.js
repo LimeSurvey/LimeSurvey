@@ -163,7 +163,7 @@ export const TopBar = ({
       <SurveyActivationHandler
         ref={surveyActivationHandlerRef}
         setShowOverViewModal={setShowOverViewModal}
-        showOverViewModal={canShowOverview && showOverViewModal}
+        showOverViewModal={showOverViewModal}
       />
     </div>
   )
