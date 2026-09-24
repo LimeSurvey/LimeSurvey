@@ -627,7 +627,7 @@ progress {
   color: #6c757d;
 }
 .blockquote-footer::before {
-  content: "— ";
+  content: "— ";
 }
 
 .img-fluid {
@@ -10496,9 +10496,6 @@ textarea.form-control-lg {
   margin: 0 auto;
 }
 
-#welcome-container {
-}
-
 .question-item .other-label {
   margin: 0px;
   padding: 0px;
@@ -12817,7 +12814,7 @@ h1,
 
 h2,
 .h2 {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -12830,7 +12827,7 @@ h3,
 }
 
 label {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -12989,13 +12986,85 @@ a:hover {
   border-bottom-right-radius: 0;
 }
 
-.ls-answers label, .answer-item label, .control-label {
-  font-weight: 600;
+.ls-answers label, .answer-item label, .control-label, .ls-answers .othertext-suffix-label, .answer-item .othertext-suffix-label {
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
-.ls-answers label .radio-label, .answer-item label .radio-label, .control-label .radio-label {
+.ls-answers label .radio-label, .answer-item label .radio-label, .control-label .radio-label, .ls-answers .othertext-suffix-label .radio-label, .answer-item .othertext-suffix-label .radio-label {
   padding-left: 12px;
+}
+
+.ls-answers.answers-list .answer-item .othertext-suffix-label, .answer-item .othertext-suffix-label {
+  align-self: center;
+  color: #6E748C;
+}
+
+.no-prefix-othertext .othertext-label-checkox-container {
+  margin-right: 0;
+  padding-right: 8px;
+}
+.no-prefix-othertext .control-label {
+  padding: 0;
+  min-height: 19px;
+}
+.no-prefix-othertext .other-text-item {
+  padding-left: 0;
+}
+.no-prefix-othertext.checkbox-text-item .col-auto.d-flex {
+  padding-right: 0;
+}
+.no-prefix-othertext.checkbox-text-item .col-auto:not(.d-flex) {
+  padding-left: 12px;
+}
+
+.ls-input-sized .other-text-item.col {
+  flex-grow: 0;
+}
+
+.other-text-item input.multipleco-other-topic {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.multipleco-other-row > .multipleco-other-label-col {
+  flex: 1 0 auto;
+  width: -moz-fit-content;
+  width: fit-content;
+  min-width: 33.33%;
+  max-width: 100%;
+}
+
+.multipleco-other-row > .multipleco-other-comment-col {
+  margin-left: auto;
+}
+
+.multipleco-other-inner {
+  gap: 0.25rem 0.5rem;
+}
+
+.multipleco-other-inner .label-text.control-label {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow-wrap: break-word;
+  margin-bottom: 0;
+}
+
+.multipleco-other-inner .multipleco-other-topic {
+  flex: 1 1 6rem;
+  min-width: 6rem;
+  max-width: 100%;
+}
+
+.ls-input-sized .multipleco-other-inner .multipleco-other-topic {
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+
+.multipleco-other-inner .othertext-suffix-label {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 textarea {
@@ -13428,7 +13497,7 @@ table > tbody > tr > td.ddprefix {
 }
 
 .ls-answers .ls-heading th, .ls-answers th {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -14996,7 +15065,7 @@ html, body {
 
 .datasecurity-checkbox-label,
 .datasecurity-checkbox-label a.show-policy {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15031,7 +15100,7 @@ html, body {
   padding-bottom: 10px;
 }
 .form-change-lang .control-label {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15041,7 +15110,7 @@ html, body {
   font-weight: 400;
 }
 .form-change-lang #language-changer-select {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
   cursor: pointer;
@@ -15275,7 +15344,7 @@ body .imageselect-listitem label::after {
   border-radius: 2px;
   margin-bottom: 10px;
   padding: 6px 20px 6px 20px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15383,7 +15452,7 @@ body .imageselect-listitem label::after {
   margin-block-end: 0;
 }
 .numeric-multi .dynamic-total {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15427,7 +15496,7 @@ body .imageselect-listitem label::after {
 }
 
 .dropdown-menu .dropdown-item {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.14rem;
   line-height: 20px;
 }
@@ -15598,6 +15667,7 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   /* We don't need it for accessibility : we already have the label */
   /* Show the label */
   /* bs fix */
+  /* Don't display repeating header on mobile devices'*/
 }
 .no-tables-general .slider-list .slider-left {
   text-align: left;
@@ -15687,7 +15757,6 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 .no-tables-general table.ls-answers th.visible-xs {
   display: block !important;
 }
-/* Don't display repeating header on mobile devices'*/
 .no-tables-general table.ls-answers tr.ls-heading-repeat {
   display: none;
 }

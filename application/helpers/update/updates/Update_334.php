@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_334 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             $this->db->createCommand()->addColumn('{{tutorials}}', 'title', 'string(192)');

@@ -29,6 +29,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function run(int $surveyId, string $language = 'en'): StatisticsChartDTO
     {
         $this->surveyId = $surveyId;
@@ -109,6 +110,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
      * @param StatisticsResponseFilters $filters
      * @return void
      */
+    #[\Override]
     public function setFilters(StatisticsResponseFilters $filters): void
     {
     }

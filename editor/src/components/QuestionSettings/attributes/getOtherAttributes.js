@@ -122,4 +122,14 @@ export const getOtherAttributes = () => ({
       ],
     },
   },
+  OTHER_NUMBERS_ONLY: {
+    component: ToggleButtons,
+    attributePath: 'attributes.other_numbers_only',
+    props: {
+      labelText: t("Numbers only in 'Other' input field"),
+      dataTestId: 'other-numbers-only',
+      toggleOptions: getOnOffOptions(),
+      defaultValue: '0',
+    },
+  },
 })

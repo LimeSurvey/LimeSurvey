@@ -11,6 +11,11 @@
         <InvalidArgument errorLevel="suppress" />
         <InvalidPropertyFetch errorLevel="suppress" />
         <InvalidArrayOffset errorLevel="suppress" />
+        <!-- Too many false positives: methods/params called dynamically via
+             plugin hooks, Twig templates or RPC dispatch aren't visible to
+             Psalm's static analysis. -->
+        <PossiblyUnusedMethod errorLevel="suppress" />
+        <PossiblyUnusedParam errorLevel="suppress" />
     </issueHandlers>
     <projectFiles>
         <directory name="application/datavalueobjects" />

@@ -9,10 +9,10 @@
     <div class="mb-3">
         <select id='surveygroupid' class="form-select custom-data"  name='surveygroupid' >
             <?php
-                $aSurveyGroupList = SurveysGroups::model()->findAll();
-            foreach ($aSurveyGroupList as $oSurveyGroup) { ?>
-                    <option value='<?=$oSurveyGroup->gsid?>'>
-                        <?php echo $oSurveyGroup->name; ?>
+                $aSurveyGroupList = SurveysGroups::getSurveyGroupsList();
+            foreach ($aSurveyGroupList as $iGsid => $sGroupTitle) { ?>
+                    <option value='<?=$iGsid?>'>
+                        <?php echo CHtml::encode($sGroupTitle); ?>
                     </option>
             <?php } ?>
         </select>

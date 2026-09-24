@@ -163,14 +163,30 @@ class MandatorySoftTest extends TestBaseClassWeb
                 'Soft mandatory G01Q01 question are not in 1st page after try submit'
             );
             /* wait for mandatory soft dialog box, close it with close button*/
-            $modalCloseButton = self::$webDriver->wait(10)->until(
+            self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('.modal.show .btn-close')
                 )
             );
-            // Double-click to ensure modal closes (needed)
-            $modalCloseButton->click();
-            $modalCloseButton->click();
+            /*
+             * Bootstrap ignores hide() while the modal is still transitioning in,
+             * and .show is already set during that fade-in: retry the click until
+             * the modal is really closing.
+             */
+            self::$webDriver->wait(10, 250)->until(
+                function ($driver) {
+                    $closeButtons = $driver->findElements(WebDriverBy::cssSelector('.modal.show .btn-close'));
+                    if (empty($closeButtons)) {
+                        return true;
+                    }
+                    try {
+                        $closeButtons[0]->click();
+                    } catch (\Facebook\WebDriver\Exception\WebDriverException $ex) {
+                        // Element went stale or not interactable while closing: check again on next poll
+                    }
+                    return false;
+                }
+            );
 
             // wait for the Bootstrap backdrop overlay to fully disappear (including fade-out animation)
             self::$webDriver->wait(10)->until(

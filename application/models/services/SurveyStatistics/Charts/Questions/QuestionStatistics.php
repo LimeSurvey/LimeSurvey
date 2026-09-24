@@ -24,6 +24,9 @@ use Question;
 use QuestionType;
 use Yii;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class QuestionStatistics implements StatisticsChartInterface
 {
     private array $factories;
@@ -42,9 +45,6 @@ class QuestionStatistics implements StatisticsChartInterface
 
     /** @var array|null Pagination details of the last run, null when unpaginated */
     private ?array $paginationMeta = null;
-
-    /** @var array<string, string>|null Cached type code -> human-readable description map */
-    private ?array $typeDescriptions = null;
 
     /** @var array<int, string[]> Question id -> its response-table column fieldnames */
     private array $questionFields = [];
@@ -96,6 +96,7 @@ class QuestionStatistics implements StatisticsChartInterface
         ];
     }
 
+    #[\Override]
     public function run(int $surveyId, string $language = 'en'): array
     {
         $this->surveyId = $surveyId;
@@ -142,6 +143,7 @@ class QuestionStatistics implements StatisticsChartInterface
         return $this->output;
     }
 
+    #[\Override]
     public function setFilters(StatisticsResponseFilters $filters): void
     {
         $this->filters = $filters;
@@ -245,6 +247,8 @@ class QuestionStatistics implements StatisticsChartInterface
     /**
      * Materialize a chart plan: resolve every deferred value against the
      * executed batch and compute the total.
+     * 
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function resolvePlan(array $plan, array $question): StatisticsChartDTO
     {

@@ -137,6 +137,10 @@ node_modules/**/src
 !/node_modules/chart.js/dist/
 !/node_modules/chart.js/LICENSE.md
 
+# build dependencies of the asset sub-packages
+assets/packages/**/node_modules/
+assets/packages/**/coverage/
+
 vendor/**/docs/
 vendor/**/scripts/
 vendor/**/tests/
@@ -180,9 +184,16 @@ vendor/**/gulpfile.js
 /vendor/symfony/filesystem/
 /vendor/symfony/polyfill-intl-grapheme/
 /vendor/symfony/polyfill-intl-normalizer/
+/vendor/symfony/polyfill-php84/
 /vendor/symfony/process/
 /vendor/psr/log/
 /vendor/spatie/
+/vendor/danog/
+/vendor/daverandom/
+/vendor/kelunik/
+/vendor/league/uri/
+/vendor/league/uri-interfaces/
+/vendor/revolt/
 yarn-error.log
 
 # Test stuff

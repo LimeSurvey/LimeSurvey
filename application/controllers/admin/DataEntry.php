@@ -1889,7 +1889,7 @@ class DataEntry extends SurveyCommonAction
 
                     if ($errormsg) {
                         foreach ($_POST as $key => $val) {
-                            if (substr($key, 0, 4) != "save" && $key != "action" && $key != "sid" && $key != "datestamp" && $key != "ipaddr") {
+                            if (substr($key, 0, 4) != "save" && $key != "action" && $key != "sid" && $key != "datestamp" && $key != "ipaddr" && $key != "quota_exit") {
                                 $hiddenfields .= CHtml::hiddenField($key, $val);
                             }
                         }
@@ -1957,6 +1957,11 @@ class DataEntry extends SurveyCommonAction
                         if ($_POST[$fieldname] == "" && ($irow['type'] == Question::QT_D_DATE || $irow['type'] == Question::QT_N_NUMERICAL || $irow['type'] == Question::QT_K_MULTIPLE_NUMERICAL)) {
                             // can't add '' in Date column
                             // Do nothing
+                        } elseif ($irow['type'] == 'quota_exit' || $irow['type'] == 'ipaddress') {
+                            // Neither field has a "seen but left blank" state like a real question does:
+                            // an empty value here means "not captured" and must be stored as NULL, not as
+                            // an empty string or the literal string "NULL".
+                            $insert_data[$fieldname] = ($_POST[$fieldname] === '') ? null : $_POST[$fieldname];
                         } elseif ($irow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
                             if (!strpos((string) $irow['fieldname'], "_Cfilecount")) {
                                 $json = $_POST[$fieldname];
