@@ -18,6 +18,7 @@ export const RowQuestion = ({
   questionIndex,
   snapshot,
   focused,
+  isSurveyActive,
 }) => {
   const { setFocused } = useFocused()
   const { surveyId } = useParams()
@@ -49,6 +50,7 @@ export const RowQuestion = ({
             icon: 'ri-file-copy-line',
             onClick: duplicateQuestion,
             testId: 'duplicate-button',
+            disabled: { state: isSurveyActive },
           },
           {
             type: 'item',
@@ -57,6 +59,7 @@ export const RowQuestion = ({
             onClick: deleteQuestion,
             className: 'text-danger',
             testId: 'delete-button',
+            disabled: { state: isSurveyActive },
           },
           {
             type: 'item',

@@ -412,6 +412,7 @@ export const SurveyStructure = () => {
                               setFocused({ ...questionGroup }, index)
                             }}
                             groupIndex={index}
+                            isSurveyActive={isSurveyActive}
                           />
                         </div>
                       )}

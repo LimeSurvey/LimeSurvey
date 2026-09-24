@@ -19,6 +19,7 @@ export const RowQuestionGroup = ({
   deleteGroup,
   groupIndex,
   onTitleClick = () => {},
+  isSurveyActive,
 }) => {
   const { setFocused, focused } = useFocused()
   const { surveyId } = useParams()
@@ -74,6 +75,7 @@ export const RowQuestionGroup = ({
             icon: 'ri-file-copy-line',
             onClick: handleDuplicate,
             testId: 'duplicate-button',
+            disabled: { state: isSurveyActive },
           },
           {
             type: 'item',
@@ -82,6 +84,7 @@ export const RowQuestionGroup = ({
             onClick: handleDelete,
             className: 'text-danger',
             testId: 'delete-button',
+            disabled: { state: isSurveyActive },
           },
           {
             type: 'item',
