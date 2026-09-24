@@ -127,9 +127,10 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             }
             unset($insertdata['id']);
             // now translate any links
-            // TODO: Should this depend on $bTranslateLinksFields?
-            $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
-            $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+            if ($bTranslateLinksFields) {
+                $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
+                $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+            }
             if (isset($aGIDReplacements[$insertdata['gid']])) {
                 $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
             } else {
@@ -417,9 +418,10 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             }
             unset($insertdata['id']);
             // now translate any links
-            // TODO: Should this depend on $bTranslateLinksFields?
-            $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-            $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            if ($bTranslateLinksFields) {
+                $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
+                $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            }
 
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
@@ -742,9 +744,10 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
         // now translate any links
         if (!isset($xml->question_l10ns->rows->row)) {
-            // TODO: Should this depend on $options['translinkfields']?
-            $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-            $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            if ($options['translinkfields']) {
+                $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
+                $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            }
             // @todo Should only be executed based on dbversion of the file, otherwise this and possible in new format could be imported at the same time
             $oQuestionL10n = new QuestionL10n();
             $oQuestionL10n->question = $insertdata['question'];
@@ -978,9 +981,10 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             }
             unset($insertdata['id']);
             // now translate any links
-            // TODO: Should this depend on $options['translinkfields']?
-            $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-            $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            if ($options['translinkfields']) {
+                $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
+                $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+            }
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
             } else {
@@ -2570,10 +2574,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 continue; //Skip invalid group ID
             }
             // now translate any links
-            // TODO: Should this depend on $bTranslateLinksFields?
-            $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
-            if (isset($insertdata['description'])) {
-                $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+            if ($bTranslateInsertansTags) {
+                $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
+                if (isset($insertdata['description'])) {
+                    $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+                }
             }
             // #14646: fix utf8 encoding issue
             if (!mb_detect_encoding($insertdata['group_name'], 'UTF-8', true)) {
@@ -3311,14 +3316,13 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['sid'] = $iNewSID; // remap the survey ID
             // now translate any links
+            $insertdata['message'] = $insertdata['message'] ?? "";
+            if ($bTranslateInsertansTags) {
+                $insertdata['message'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['message']);
+            }
             $insertdata['message'] = fixText(
                 convertLegacyInsertans(
-                    translateLinks(
-                        'survey',
-                        $iOldSID,
-                        $iNewSID,
-                        $insertdata['message'] ?? ""
-                    ),
+                    $insertdata['message'],
                     $allImportedQuestions,
                     $newOldQidMapping
                 ),
@@ -3420,14 +3424,13 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $quotaLanguagesSetting->setAttributes($insertdata, false);
 
             foreach (['quotals_urldescrip', 'quotals_url'] as $field) {
+                $fieldValue = $insertdata[$field] ?? "";
+                if ($bTranslateInsertansTags) {
+                    $fieldValue = translateLinks('survey', $iOldSID, $iNewSID, $fieldValue);
+                }
                 $quotaLanguagesSetting[$field] = fixText(
                     convertLegacyInsertans(
-                        translateLinks(
-                            'survey',
-                            $iOldSID,
-                            $iNewSID,
-                            $insertdata[$field] ?? ""
-                        ),
+                        $fieldValue,
                         $allImportedQuestions,
                         $newOldQidMapping
                     ),

@@ -114,4 +114,63 @@ class ImportTest extends TestBaseClass
             }
         }
     }
+
+    /**
+     * Data provider for testImportRespectsTranslateLinksOption.
+     *
+     * @return array<string,array{bool}>
+     */
+    public function translateLinksProvider(): array
+    {
+        return [
+            'links translated' => [true],
+            'links not translated' => [false],
+        ];
+    }
+
+    /**
+     * Test that links to the old survey upload folder in group descriptions are only
+     * translated on import when the "convert resource links" option is set (see #18700).
+     *
+     * @dataProvider translateLinksProvider
+     * @param bool $translateLinks Value of the "convert resource links" import option
+     * @return void
+     */
+    public function testImportRespectsTranslateLinksOption(bool $translateLinks): void
+    {
+        $oldLink = '/upload/surveys/373616/images/test.png';
+        $xml = file_get_contents(self::$surveysFolder . '/limesurvey_survey_373616_copySurvey.lss');
+        $xml = str_replace(
+            '<description/>',
+            '<description><![CDATA[<img src="' . $oldLink . '" />]]></description>',
+            $xml
+        );
+
+        \Yii::app()->session['loginID'] = 1;
+
+        try {
+            // Import under a different survey id, otherwise link translation would be a no-op.
+            $result = XMLImportSurvey('', $xml, null, 918700, $translateLinks);
+            $survey = \Survey::model()->findByPk($result['newsid']);
+            $this->assertNotNull($survey);
+            $this->assertNotEquals(373616, $survey->sid);
+
+            $groupL10n = \QuestionGroupL10n::model()->find(
+                'gid IN (SELECT gid FROM {{groups}} WHERE sid = :sid)',
+                [':sid' => $survey->sid]
+            );
+            $this->assertNotNull($groupL10n);
+
+            if ($translateLinks) {
+                $this->assertStringContainsString('/upload/surveys/' . $survey->sid . '/', $groupL10n->description);
+            } else {
+                $this->assertStringContainsString($oldLink, $groupL10n->description);
+            }
+        } finally {
+            if (isset($survey) && $survey) {
+                \Yii::app()->session['loginID'] = 1;
+                $survey->delete();
+            }
+        }
+    }
 }
