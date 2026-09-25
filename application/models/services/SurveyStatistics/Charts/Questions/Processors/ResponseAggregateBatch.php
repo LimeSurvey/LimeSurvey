@@ -4,6 +4,7 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processor
 
 use CDbConnection;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
+use Response;
 use SurveyDynamic;
 
 /**
@@ -15,7 +16,7 @@ use SurveyDynamic;
  *     each return an alias for the requested aggregate (deduplicated).
  *  2. execute() runs the merged SELECT (chunked only when the expression
  *     list is very large), after which value($alias) returns the count.
- * 
+ *
  *  @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 final class ResponseAggregateBatch
@@ -66,6 +67,9 @@ final class ResponseAggregateBatch
     private array $results = [];
 
     private bool $executed = false;
+
+    /** @var array<string, true>|null Response columns whose values are encrypted at rest */
+    private ?array $encryptedFields = null;
 
     public function __construct(int $surveyId, ?StatisticsResponseFilters $filters = null)
     {
@@ -208,7 +212,17 @@ final class ResponseAggregateBatch
         $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
         $where = $this->buildWhere();
 
-        foreach (array_chunk($this->requests, self::MAX_EXPRESSIONS_PER_QUERY, true) as $chunk) {
+        $plainRequests = [];
+        $encryptedRequests = [];
+        foreach ($this->requests as $alias => $request) {
+            if ($this->requestUsesEncryptedField($request)) {
+                $encryptedRequests[$alias] = $request;
+            } else {
+                $plainRequests[$alias] = $request;
+            }
+        }
+
+        foreach (array_chunk($plainRequests, self::MAX_EXPRESSIONS_PER_QUERY, true) as $chunk) {
             $selects = [];
             foreach ($chunk as $alias => $request) {
                 $selects[] = $this->buildExpression($db, $request)
@@ -224,6 +238,10 @@ final class ResponseAggregateBatch
                 // "+ 0" yields an int or float, preserving decimal precision.
                 $this->results[$alias] = is_numeric($value) ? $value + 0 : 0;
             }
+        }
+
+        if ($encryptedRequests !== []) {
+            $this->executeEncrypted($db, $table, $where, $encryptedRequests);
         }
 
         $this->executeMedians($db, $table);
@@ -242,6 +260,10 @@ final class ResponseAggregateBatch
     {
         $selects = [];
         foreach ($this->medianRequests as $alias => $request) {
+            if ($this->isEncryptedField($request['field'])) {
+                // Encrypted medians are calculated during executeEncrypted().
+                continue;
+            }
             $count = (int)($this->results[$request['countAlias']] ?? 0);
             if ($count > 0) {
                 $selects[] = $this->buildMedianSelect($db, $table, $request, $count, $alias);
@@ -257,6 +279,138 @@ final class ResponseAggregateBatch
                 $this->results[$row['alias']] = is_numeric($value) ? $value + 0 : 0;
             }
         }
+    }
+
+    /**
+     * Aggregate encrypted response columns in PHP after decrypting them. SQL
+     * cannot inspect ciphertext as answer codes, JSON elements, or numbers.
+     *
+     * @param array<string, array{kind: string, field: string, value: string, numeric?: bool}> $requests
+     */
+    private function executeEncrypted(
+        CDbConnection $db,
+        string $table,
+        string $where,
+        array $requests
+    ): void {
+        $fields = [];
+        foreach ($requests as $request) {
+            foreach (explode(self::FIELD_SEPARATOR, $request['field']) as $field) {
+                // JSON-element requests append their numeric position.
+                if ($field !== '' && !ctype_digit($field)) {
+                    $fields[$field] = true;
+                }
+            }
+        }
+
+        $select = implode(', ', array_map([$db, 'quoteColumnName'], array_keys($fields)));
+        $rows = $db->createCommand("SELECT $select FROM $table$where")->queryAll();
+        foreach ($rows as &$row) {
+            foreach ($row as $field => $value) {
+                if ($this->isEncryptedField($field) && $value !== null && $value !== '') {
+                    $row[$field] = Response::decryptSingle($value);
+                }
+            }
+        }
+        unset($row);
+
+        foreach ($requests as $alias => $request) {
+            $values = [];
+            foreach ($rows as $row) {
+                $values[] = $this->valueForRequest($row, $request);
+            }
+            $this->results[$alias] = $this->aggregateValues($values, $request);
+        }
+
+        foreach ($this->medianRequests as $alias => $request) {
+            if (!$this->isEncryptedField($request['field'])) {
+                continue;
+            }
+            $values = [];
+            foreach ($rows as $row) {
+                $value = $row[$request['field']] ?? null;
+                if ($this->isNumericValue($value)) {
+                    $values[] = (float)$value;
+                }
+            }
+            sort($values, SORT_NUMERIC);
+            $count = count($values);
+            $this->results[$alias] = $count === 0
+                ? 0
+                : ($values[intdiv($count - 1, 2)] + $values[intdiv($count, 2)]) / 2;
+        }
+    }
+
+    private function valueForRequest(array $row, array $request)
+    {
+        if ($request['kind'] === self::KIND_ANY_NON_EMPTY) {
+            foreach (explode(self::FIELD_SEPARATOR, $request['field']) as $field) {
+                if (($row[$field] ?? null) !== null && ($row[$field] ?? '') !== '') {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        if ($request['kind'] === self::KIND_JSON_ELEMENT) {
+            [$field, $position] = explode(self::FIELD_SEPARATOR, $request['field']);
+            $decoded = json_decode((string)($row[$field] ?? ''), true);
+            return is_array($decoded) ? ($decoded[(int)$position] ?? null) : null;
+        }
+
+        return $row[$request['field']] ?? null;
+    }
+
+    /** @return int|float */
+    private function aggregateValues(array $values, array $request)
+    {
+        switch ($request['kind']) {
+            case self::KIND_VALUE:
+            case self::KIND_JSON_ELEMENT:
+                return count(array_filter($values, fn($value) => (string)$value === $request['value']));
+            case self::KIND_BLANK:
+                return count(array_filter($values, fn($value) => $value === null || (!$request['numeric'] && $value === '')));
+            case self::KIND_NON_EMPTY:
+            case self::KIND_ANY_NON_EMPTY:
+                return count(array_filter($values, fn($value) => $request['kind'] === self::KIND_ANY_NON_EMPTY
+                    ? $value === true
+                    : $value !== null && ($request['numeric'] || $value !== '')));
+            case self::KIND_NUMERIC:
+                return count(array_filter($values, fn($value) => $this->isNumericValue($value)));
+            case self::KIND_SUM:
+                return array_sum(array_map(fn($value) => $this->isNumericValue($value) ? (float)$value : 0, $values));
+            case self::KIND_SUM_SQUARES:
+                return array_sum(array_map(fn($value) => $this->isNumericValue($value) ? (float)$value ** 2 : 0, $values));
+            case self::KIND_MIN:
+            case self::KIND_MAX:
+                $numeric = array_values(array_filter($values, fn($value) => $this->isNumericValue($value)));
+                return $numeric === [] ? 0 : ($request['kind'] === self::KIND_MIN ? min($numeric) : max($numeric));
+            default:
+                return count($values);
+        }
+    }
+
+    private function isNumericValue($value): bool
+    {
+        return $value !== null && $value !== '' && is_numeric($value);
+    }
+
+    private function requestUsesEncryptedField(array $request): bool
+    {
+        foreach (explode(self::FIELD_SEPARATOR, $request['field']) as $field) {
+            if ($this->isEncryptedField($field)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function isEncryptedField(string $field): bool
+    {
+        if ($this->encryptedFields === null) {
+            $this->encryptedFields = array_fill_keys(Response::getEncryptedAttributes($this->surveyId), true);
+        }
+        return isset($this->encryptedFields[$field]);
     }
 
     private function buildMedianSelect(CDbConnection $db, string $table, array $request, int $count, string $alias): string
