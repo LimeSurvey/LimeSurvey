@@ -5,7 +5,7 @@
 
 import ConsoleShim from '../../meta/lib/ConsoleShim.js';
 
-const LOG = new ConsoleShim('globalsidepanel');
+const LOG = new ConsoleShim('globalsidepanel', !(window.debugState && window.debugState.backend));
 
 class Actions {
     constructor(StateManager) {

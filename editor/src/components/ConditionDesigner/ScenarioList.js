@@ -1,3 +1,4 @@
+import { format } from 'util'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
@@ -109,7 +110,7 @@ export const ScenarioList = ({
                 })
               }
             >
-              {t('Scenario')} {scenario.scid}
+              {format(t('Scenario %s'), scenario.scid)}
             </span>
             <div className="d-flex gap-2">
               <Button

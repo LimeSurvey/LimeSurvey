@@ -67,8 +67,10 @@
                         </label>
                         <div class="default controls">
                             <select id="tokenlanguage" name="tokenlanguage" class="form-select">
-                                <option value="" selected="selected"><?php eT('All'); ?>
-                                <option value="de"><?php eT('German'); ?></option>
+                                <option value="" selected="selected"><?php eT('All'); ?></option>
+                                <?php foreach ($aSettings['tokenlanguage']['options'] as $code => $name): ?>
+                                    <option value="<?php echo CHtml::encode($code); ?>"><?php echo CHtml::encode($name); ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>

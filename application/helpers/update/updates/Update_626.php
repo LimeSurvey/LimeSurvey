@@ -10,6 +10,7 @@ class Update_626 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up(): void
     {
         $boxes = $this->db->createCommand()

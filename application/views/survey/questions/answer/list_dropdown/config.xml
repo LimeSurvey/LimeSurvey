@@ -323,9 +323,7 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Make the &#039;Other:&#039; comment field mandatory when the &#039;Other:&#039;
-                option is active
-            </help>
+            <help>Make the &#039;Other:&#039; comment field mandatory when the &#039;Other:&#039; option is active</help>
             <caption>&#039;Other:&#039; comment mandatory</caption>
             <i18n></i18n>
             <readonly></readonly>

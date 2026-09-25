@@ -13,6 +13,7 @@ import {
 import {
   COLORS,
   CustomTooltip,
+  formatMetricValue,
   getMetricDataKey,
   TooltipShell,
   VALUE_TYPE,
@@ -37,7 +38,7 @@ const GroupedTooltip = ({ active, payload, categoryTitle }) => {
         {t('Median')}: {stats.median}
       </div>
       <div>
-        {t('Min/Max')}: {stats.min} - {stats.max}
+        {t('Minimum/Maximum')}: {stats.min} - {stats.max}
       </div>
     </TooltipShell>
   )
@@ -49,9 +50,6 @@ const ROW_HEIGHT = 46
 const CHART_PADDING = 16
 // Secondary text colour ($g-700) for the per-bar labels and values.
 const LABEL_COLOR = '#6e748c'
-
-const formatMetric = (value, isPercentage) =>
-  isPercentage ? `${Math.round(value)}%` : `${value}`
 
 // Column/option name rendered just above its bar (recharts passes the bar's
 // top-left x/y), matching the responses chart layout.
@@ -67,7 +65,7 @@ const renderTopLabel = ({ x, y, value }) => {
 // One subquestion: its name on the left, then a slim horizontal bar per option
 // (or column), each labelled above with its name and to the right with its
 // value, and coloured per option.
-const CategoryBarChart = ({ category, isPercentage, dataKey, domainMax }) => {
+const CategoryBarChart = ({ category, valueType, dataKey, domainMax }) => {
   const { title, options } = category
   const height = options.length * ROW_HEIGHT + CHART_PADDING
 
@@ -104,7 +102,7 @@ const CategoryBarChart = ({ category, isPercentage, dataKey, domainMax }) => {
               <LabelList
                 dataKey={dataKey}
                 position="right"
-                formatter={(value) => formatMetric(value, isPercentage)}
+                formatter={(value) => formatMetricValue(value, valueType)}
                 style={{ fontSize: 12, fill: LABEL_COLOR }}
               />
             </Bar>
@@ -140,7 +138,7 @@ export const GroupedBarChart = ({
         <CategoryBarChart
           key={category.key ?? category.title}
           category={category}
-          isPercentage={isPercentage}
+          valueType={valueType}
           dataKey={dataKey}
           domainMax={domainMax}
         />

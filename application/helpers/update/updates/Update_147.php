@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_147 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             addColumn('{{users}}', 'templateeditormode', "string(7) NOT NULL DEFAULT 'default'");

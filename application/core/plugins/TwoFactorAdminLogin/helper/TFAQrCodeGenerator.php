@@ -4,12 +4,12 @@ require_once(__DIR__ . '/phpqrcode.php');
 
 class TFAQrCodeGenerator implements RobThree\Auth\Providers\Qr\IQRCodeProvider
 {
-    public function getMimeType()
+    public function getMimeType(): string
     {
         return 'image/png';                             // This provider only returns PNG's
     }
 
-    public function getQRCodeImage($qrtext, $size)
+    public function getQRCodeImage(string $qrtext, int $size): string
     {
         ob_start();                                     // 'Catch' QRCode's output
         QRCode::png($qrtext, null, QR_ECLEVEL_L, 3, 4); // We ignore $size and set it to 3

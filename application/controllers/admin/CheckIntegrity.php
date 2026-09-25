@@ -862,7 +862,10 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         /*     Check question attributes                                      */
         /**********************************************************************/
-        $question_attributes = QuestionAttribute::model()->findAllBySql('select qid from {{question_attributes}} where qid not in (select qid from {{questions}})');
+        // resetScope() is required: QuestionAttribute's defaultScope indexes results by
+        // the 'attribute' column, which is not selected here, so every row would collapse
+        // into a single array entry (attribute === null for all) without this reset.
+        $question_attributes = QuestionAttribute::model()->resetScope()->findAllBySql('select qid from {{question_attributes}} where qid not in (select qid from {{questions}})');
         foreach ($question_attributes as $question_attribute) {
             $aDelete['questionattributes'][] = array('qid' => $question_attribute['qid']);
         }
@@ -1274,9 +1277,14 @@ class CheckIntegrity extends SurveyCommonAction
         }
 
         // delete archivedTableSettings without archived table
+        // Use getTableNames() (a plain list of table name strings) instead of getTable() per row:
+        // getTable() loads and permanently caches a full CDbTableSchema (all columns, indexes, FKs)
+        // for the rest of the request, so calling it once per archived table setting could retain
+        // thousands of heavy schema objects in memory on installations with many archived tables.
         $archivedTableSettings = ArchivedTableSettings::model()->findAll();
+        $aExistingTables = array_flip(Yii::app()->db->schema->getTableNames());
         foreach ($archivedTableSettings as $archivedTableSetting) {
-            if (Yii::app()->db->schema->getTable("{{{$archivedTableSetting->tbl_name}}}") === null) {
+            if (!isset($aExistingTables[$sDBPrefix . $archivedTableSetting->tbl_name])) {
                 $archivedTableSetting->delete();
             }
         }

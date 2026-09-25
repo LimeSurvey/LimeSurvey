@@ -232,6 +232,9 @@ var onClickListAction =  function (e) {
         if (LS.gridSelection.isSelectAll($grididvalue)) {
             $postDatas['selectAll'] = 1;
             $postDatas['filterQuery'] = LS.gridSelection.getFilterQuery($grididvalue);
+            if (typeof LS.gridSelection.getExcluded === 'function') {
+                $postDatas['excludedItems'] = JSON.stringify(LS.gridSelection.getExcluded($grididvalue));
+            }
         }
         $modal.find('.custom-data').each(function(i, el)
         {
@@ -335,42 +338,6 @@ var onClickListAction =  function (e) {
     bsModal.show();
 };
 
-function prepareBsDateTimePicker($gridid){
-    var dateTimeSettings = getDefaultDateTimePickerSettings();
-    if (dateTimeSettings) {
-        var dateTimeFormat = dateTimeSettings.dateformatsettings.jsdate+ ' HH:mm';
-        $('.date input').each(function(){
-            $(this).datetimepicker({
-                format: dateTimeFormat,
-                showClear: dateTimeSettings.showClear,
-                allowInputToggle: dateTimeSettings.allowInputToggle,
-            });
-    });
-    }
-}
-
-// get user session datetimesettings
-function getDefaultDateTimePickerSettings() {
-    // TODO: Code below can't handle if installation is in a subfolder (not web root).
-    // The correct solution is to fetch datetime format from an <input> element.
-    return null;
-
-    //Switch between path and get based routing
-    if(/\/index\.php(\/)?\?r=admin/.test(window.location.href)){
-        var url = "/index.php?r=surveyAdministration/datetimesettings";
-    } else {
-        var url = "/index.php/surveyAdministration/datetimesettings";
-    }
-    var mydata = [];
-    $.ajaxSetup({
-        async: false
-    });
-    $.getJSON( url, function( data ) {
-        mydata = data;
-    });
-    return mydata;
-}
-
 function bindListItemclick() {
     let listActions = $('.listActions a');
     let listActionsDisabled = $('.listActions .disabled a');
@@ -384,7 +351,6 @@ function bindListItemclick() {
 $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listActions, ready ', function() {
     // Grid refresh: see point 3
     $(document).on('actions-updated', function(){
-        prepareBsDateTimePicker(gridId);
         bindListItemclick();
     });
     bindListItemclick();

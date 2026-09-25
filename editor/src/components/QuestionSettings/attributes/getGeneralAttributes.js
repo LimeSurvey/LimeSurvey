@@ -1,4 +1,5 @@
 import { Input, ToggleButtons } from 'components/UIComponents'
+import { DefaultValuesActions } from '../DefaultValuesActions'
 
 import { QuestionTypeAttribute } from './QuestionTypeAttribute'
 import { QuestionCodeAttribute } from './QuestionCodeAttribute'
@@ -7,9 +8,7 @@ import {
   getOnOffOptions,
   getYesNoOptions,
   ONOFF_BOOLEAN,
-  ONOFF_SHORTSTRING,
   YESNO_BOOLEAN,
-  YESNO_SHORTSTRING,
 } from 'helpers/options'
 
 export const getGeneralAttributes = () => ({
@@ -73,23 +72,10 @@ export const getGeneralAttributes = () => ({
     returnValues: ['encrypted'],
   },
   SAVE_AS_DEFAULT: {
-    component: ToggleButtons,
-    attributePath: 'attributes.save_as_default',
-    props: {
-      labelText: t('Save as default values'),
-      id: 'save-as-default-values',
-      toggleOptions: getYesNoOptions(YESNO_SHORTSTRING),
-      defaultValue: 'N',
-    },
-  },
-  CLEAR_DEFAULT_VALUES: {
-    component: ToggleButtons,
-    attributePath: 'attributes.clear_default',
-    props: {
-      labelText: t('Clear default values'),
-      id: 'clear-default-values',
-      toggleOptions: getOnOffOptions(ONOFF_SHORTSTRING),
-    },
+    component: DefaultValuesActions,
+    attributePath: 'defaultAttributeValuesActions',
+    action: true,
+    props: {},
   },
   OTHER: {
     component: ToggleButtons,

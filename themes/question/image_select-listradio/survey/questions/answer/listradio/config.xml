@@ -59,7 +59,7 @@
             </options>
             <default>no</default>
             <help>Show an horizontal scroll for the images instead of a vertical list. Needs JavaScript enabled.</help>
-            <caption>Horizontal scroll: </caption>
+            <caption>Horizontal scroll:</caption>
         </attribute>
 
 

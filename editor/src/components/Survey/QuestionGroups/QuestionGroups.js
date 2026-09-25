@@ -126,7 +126,8 @@ export const QuestionGroups = ({
         description={t(
           'Are you sure you want to delete this question group? This action cannot be reverted.'
         )}
-        confirmButtonText={t('Delete')}
+        confirmButtonText={t('Delete group')}
+        id="delete-question-group-modal"
       />
       {questionGroups.map((questionGroup, index) => {
         previousQuestionsTotal += questionGroup.questions.length

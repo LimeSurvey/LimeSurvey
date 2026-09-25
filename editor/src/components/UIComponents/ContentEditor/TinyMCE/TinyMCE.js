@@ -1,6 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
-import { htmlPopup, RandomNumber } from 'helpers'
+import {
+  htmlPopup,
+  RandomNumber,
+  removePlaceholderBadges,
+  wrapPlaceholdersInBadges,
+} from 'helpers'
 import beautify from 'js-beautify'
 
 import { CodeEditor } from '../CodeEditor/CodeEditor'
@@ -32,7 +37,7 @@ export const TinyMCE = ({
   const [firstLoad, setFirstLoad] = useState(true)
   const [isDisabled, setIsDisabled] = useState(disabled)
   const [editorValue, setEditorValue] = useState(
-    value.replace(/(\{[^{}]+\})/g, '<badge>$1</badge>')
+    wrapPlaceholdersInBadges(value)
   )
   const [isFocused, setIsFocused] = useState(false)
   const codeToQuestionRef = useRef(codeToQuestion)
@@ -104,10 +109,7 @@ export const TinyMCE = ({
       return
     }
 
-    const normalizedContent = editorValueRef.current.replace(
-      /<badge>(\{[^{}]+\})<\/badge>/g,
-      '$1'
-    )
+    const normalizedContent = removePlaceholderBadges(editorValueRef.current)
 
     setEditorValue(normalizedContent)
   }
@@ -117,10 +119,7 @@ export const TinyMCE = ({
       return
     }
 
-    const transformedContent = editorValueRef.current.replace(
-      /(\{[^{}]+\})/g,
-      '<badge>$1</badge>'
-    )
+    const transformedContent = wrapPlaceholdersInBadges(editorValueRef.current)
 
     setEditorValue(transformedContent)
   }
