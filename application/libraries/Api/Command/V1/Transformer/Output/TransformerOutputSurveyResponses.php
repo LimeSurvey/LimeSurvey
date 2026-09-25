@@ -15,6 +15,17 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     public ?bool $hasTokenTable = null;
 
     /**
+     * Ranking questions to fold out into one answer entry per rank position.
+     * Keyed by the raw response attribute ("Q{qid}", the JSON-array column
+     * actually stored in the database), each entry: ['qid', 'gid', 'sid',
+     * 'columnCount']. Populated by
+     * ExportSurveyResultsService::expandRankingFieldMap().
+     *
+     * @var array<string, array{qid: int, gid: int, sid: int, columnCount: int}>
+     */
+    public array $rankingFields = [];
+
+    /**
      * Construct
      */
     public function __construct()
@@ -88,6 +99,14 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 
     /**
      * Parses SGQA-keyed response attributes into structured answer entries.
+     *
+     * Ranking questions (listed in $this->rankingFields) are stored as a
+     * single JSON array column (the ranked list of subquestion codes,
+     * ordered by rank); those are decoded and folded out into one answer
+     * entry per rank position instead of a single entry holding the raw
+     * JSON, matching the columns registered by
+     * ExportSurveyResultsService::expandRankingFieldMap().
+     *
      * @param array $attributes
      * @return array
      */
@@ -104,6 +123,31 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
                     "sid"   => $survey,
                     "value" => $value
                 ];
+            } elseif (isset($this->rankingFields[$key])) {
+                $ranking = $this->rankingFields[$key];
+                $rankedCodes = $this->decodeRankedCodes($value);
+                if ($rankedCodes === null) {
+                    // Not decodable into a valid ranked-codes list: keep the raw
+                    // value as a single answer entry instead of folding it out.
+                    $answers[$key] = [
+                        "key"   => $key,
+                        "id"    => $ranking['qid'],
+                        "gid"   => $ranking['gid'],
+                        "sid"   => $ranking['sid'],
+                        "value" => $value,
+                    ];
+                } else {
+                    for ($position = 1; $position <= $ranking['columnCount']; $position++) {
+                        $rankFieldKey = "{$key}_rank{$position}";
+                        $answers[$rankFieldKey] = [
+                            "key"   => $rankFieldKey,
+                            "id"    => $ranking['qid'],
+                            "gid"   => $ranking['gid'],
+                            "sid"   => $ranking['sid'],
+                            "value" => $rankedCodes[$position - 1] ?? null,
+                        ];
+                    }
+                }
             } elseif (!empty($this->fieldMap[$key]) && str_starts_with($key, "Q")) {
                 $answers[$key] = [
                     "key"   => $key,
@@ -115,6 +159,39 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
             }
         }
         return $answers;
+    }
+
+    /**
+     * Decodes a ranking question's raw JSON-array column value into a plain
+     * list of subquestion codes, or null if it isn't one.
+     *
+     * Decodes without the "assoc" flag so a JSON object (e.g. "{...}") always
+     * comes back as a stdClass and fails the is_array() check below, rather
+     * than risking being coerced into something that looks like a sequential
+     * array. Only a non-empty array whose every element is a string is
+     * accepted; anything else (a non-string/empty raw value, invalid JSON, an
+     * object, an empty array, or an array containing a non-string element,
+     * including nested arrays/objects) returns null so it can never reach
+     * ranking or question-title resolution downstream.
+     *
+     * @param mixed $rawValue
+     * @return string[]|null
+     */
+    private function decodeRankedCodes($rawValue)
+    {
+        if (!is_string($rawValue) || $rawValue === '') {
+            return null;
+        }
+        $decoded = json_decode($rawValue);
+        if (!is_array($decoded) || $decoded === []) {
+            return null;
+        }
+        foreach ($decoded as $code) {
+            if (!is_string($code)) {
+                return null;
+            }
+        }
+        return $decoded;
     }
 
     /**
