@@ -30,7 +30,7 @@ class PluginInstaller extends ExtensionInstaller
             throw new InvalidArgumentException('fileFetcher is not set');
         }
 
-        if (!$this->isWhitelisted()) {
+        if (!$this->isAllowlisted()) {
             throw new Exception('The plugin is not in the plugin allowlist.');
         }
 
@@ -63,7 +63,7 @@ class PluginInstaller extends ExtensionInstaller
             throw new InvalidArgumentException('fileFetcher is not set');
         }
 
-        if (!$this->isWhitelisted()) {
+        if (!$this->isAllowlisted()) {
             throw new Exception('The plugin is not in the plugin allowlist.');
         }
 
@@ -106,7 +106,7 @@ class PluginInstaller extends ExtensionInstaller
      * Returns true if the plugin name is allowlisted or the allowlist is disabled.
      * @return boolean
      */
-    public function isWhitelisted()
+    public function isAllowlisted()
     {
         if (empty($this->fileFetcher)) {
             throw new InvalidArgumentException('fileFetcher is not set');
@@ -116,6 +116,6 @@ class PluginInstaller extends ExtensionInstaller
         $pluginName = $config->getName();
         $pluginManager = App()->getPluginManager();
 
-        return $pluginManager->isWhitelisted($pluginName);
+        return $pluginManager->isAllowlisted($pluginName);
     }
 }

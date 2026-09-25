@@ -1,16 +1,16 @@
 <?php
 /**
  * @var AdminController $this
- * @var string $blacklistallsurveys
- * @var string $blacklistnewsurveys
+ * @var string $blocklistallsurveys
+ * @var string $blocklistnewsurveys
  * @var string $blockaddingtosurveys
- * @var string $hideblacklisted
- * @var string $deleteblacklisted
- * @var string $allowunblacklist
+ * @var string $hideblocklisted
+ * @var string $deleteblocklisted
+ * @var string $allowunblocklist
  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
-echo viewHelper::getViewTestTag('participantsBlacklistControl');
+echo viewHelper::getViewTestTag('participantsBlocklistControl');
 
 ?>
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "userControl.js" ?>" type="text/javascript"></script>
@@ -21,7 +21,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                 <?php
                 if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                     $attribute = ['class' => 'col-lg-6 offset-lg-1 '];
-                    echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeBlacklistValues'), 'post', $attribute);
+                    echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeBlocklistValues'), 'post', $attribute);
                     $options = ['Y' => gT('Yes', 'unescaped'), 'N' => gT('No', 'unescaped')];
                     ?>
                     <div class="row ls-space margin top-10 bottom-10">
@@ -31,9 +31,9 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                    'name'          => 'blacklistallsurveys',
+                                    'name'          => 'blocklistallsurveys',
                                     'ariaLabel'     => gT('Blocklist all current surveys for participant once the global field is set'),
-                                    'checkedOption' => $blacklistallsurveys === 'Y' ? '1' : 0,
+                                    'checkedOption' => $blocklistallsurveys === 'Y' ? '1' : 0,
                                     'selectOptions' => [
                                         '1' => gT('Yes'),
                                         '0' => gT('No'),
@@ -49,9 +49,9 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                    'name'          => 'blacklistnewsurveys',
+                                    'name'          => 'blocklistnewsurveys',
                                     'ariaLabel'     => gT('Blocklist all newly created surveys for participant once the global field is set'),
-                                    'checkedOption' => $blacklistnewsurveys === 'Y' ? '1' : 0,
+                                    'checkedOption' => $blocklistnewsurveys === 'Y' ? '1' : 0,
                                     'selectOptions' => [
                                         '1' => gT('Yes'),
                                         '0' => gT('No'),
@@ -85,9 +85,9 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                    'name'          => 'hideblacklisted',
+                                    'name'          => 'hideblocklisted',
                                     'ariaLabel'     => gT('Hide blocklisted participants'),
-                                    'checkedOption' => $hideblacklisted === 'Y' ? '1' : 0,
+                                    'checkedOption' => $hideblocklisted === 'Y' ? '1' : 0,
                                     'selectOptions' => [
                                         '1' => gT('Yes'),
                                         '0' => gT('No'),
@@ -103,9 +103,9 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                    'name'          => 'deleteblacklisted',
+                                    'name'          => 'deleteblocklisted',
                                     'ariaLabel'     => gT('Delete globally blocklisted participant from the database'),
-                                    'checkedOption' => $deleteblacklisted === 'Y' ? '1' : 0,
+                                    'checkedOption' => $deleteblocklisted === 'Y' ? '1' : 0,
                                     'selectOptions' => [
                                         '1' => gT('Yes'),
                                         '0' => gT('No'),
@@ -121,9 +121,9 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </label>
                             <div class='col-md-3'>
                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                    'name'          => 'allowunblacklist',
+                                    'name'          => 'allowunblocklist',
                                     'ariaLabel'     => gT('Allow participant to remove himself/herself from blocklist'),
-                                    'checkedOption' => $allowunblacklist === 'Y' ? '1' : 0,
+                                    'checkedOption' => $allowunblocklist === 'Y' ? '1' : 0,
                                     'selectOptions' => [
                                         '1' => gT('Yes'),
                                         '0' => gT('No'),
@@ -150,7 +150,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
             </div>
         </div>
     </div>
-    <span id="locator" data-location="blacklist">&nbsp;</span>
+    <span id="locator" data-location="blocklist">&nbsp;</span>
 </div>
 
 

@@ -293,12 +293,12 @@ LS.CPDB = (function() {
             $('.selector_participantShareCheckbox').prop('checked', $('#action_toggleAllParticipantShare').prop('checked'));
         });
 
-        let changeBlacklistButtons = document.querySelectorAll('.action_changeBlacklistStatus input');
-        for (let changeBlacklistButton of changeBlacklistButtons) {
-            changeBlacklistButton.addEventListener("change", (event) => {
-                let params = "actionTarget=changeBlacklistStatus"
+        let changeBlocklistButtons = document.querySelectorAll('.action_changeBlocklistStatus input');
+        for (let changeBlocklistButton of changeBlocklistButtons) {
+            changeBlocklistButton.addEventListener("change", (event) => {
+                let params = "actionTarget=changeBlocklistStatus"
                     + "&participant_id=" + event.target.closest("tr").dataset.participant_id
-                    + "&blacklist=" + event.target.value
+                    + "&blocklist=" + event.target.value
                     + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
                 let xhttp = new XMLHttpRequest();
                 xhttp.open("POST", editValueParticipantPanel, true);
@@ -420,7 +420,7 @@ LS.CPDB = (function() {
             $('#export').addClass('d-none');
         }
     },
-    blacklistPanel = function(){
+    blocklistPanel = function(){
         if(!$('#export').hasClass('d-none')){
             $('#export').addClass('d-none');
         }
@@ -495,7 +495,7 @@ LS.CPDB = (function() {
             case 'attributes'   : attributePanel(); break;
             case 'sharepanel'   : sharePanel(); break;
             case 'import'       : importPanel(); break;
-            case 'blacklist'    : blacklistPanel(); break;
+            case 'blocklist'    : blocklistPanel(); break;
         }
         /**
          * @TODO rewrite export
@@ -512,7 +512,7 @@ LS.CPDB = (function() {
         attributePanel: attributePanel,
         sharePanel: sharePanel,
         importPanel : importPanel,
-        blacklistPanel : blacklistPanel,
+        blocklistPanel : blocklistPanel,
         onClickExport: onClickExport,
         bindButtons: bindButtons,
         shareMassiveAction: shareMassiveAction,

@@ -2303,6 +2303,8 @@ class Tokens extends SurveyCommonAction
                         $aReplacedFields = array(
                             'invited' => 'sent',
                             'reminded' => 'remindersent',
+                            // Legacy column name used in exports before DB version 800
+                            'blacklisted' => 'blocklisted',
                         );
                         switch ($sSeparator) {
                             case 'comma':
@@ -2811,7 +2813,7 @@ class Tokens extends SurveyCommonAction
             'emailstatus' => '',
             'token' => null,
             'language' => null,
-            'blacklisted' => null,
+            'blocklisted' => null,
             'sent' => 'N',
             'remindersent' => 'N',
             'remindercount' => null,

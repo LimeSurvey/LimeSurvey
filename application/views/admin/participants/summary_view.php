@@ -4,7 +4,7 @@
  * @var string $totalrecords
  * @var string $owned
  * @var string $shared
- * @var string $blacklisted
+ * @var string $blocklisted
  * @var string $attributecount
  */
 
@@ -57,7 +57,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
                             <?php eT("Blocklisted participants"); ?>
                         </th>
                         <td>
-                            <?php echo $blacklisted; ?>
+                            <?php echo $blocklisted; ?>
                         </td>
                     </tr>
                     <tr>

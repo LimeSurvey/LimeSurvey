@@ -33,7 +33,7 @@
                             ); ?>
                         </div>
                     </div>
-                <?php if (Yii::app()->getConfig('hideblacklisted') != 'N') : ?>
+                <?php if (Yii::app()->getConfig('hideblocklisted') != 'N') : ?>
                     <?php
                     $this->widget('ext.AlertWidget.AlertWidget', [
                         'text' => gT('If you want to export blocklisted participants, set "Hide blocklisted participants" to "No" in CPDB settings.'),

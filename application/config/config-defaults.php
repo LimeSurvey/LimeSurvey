@@ -83,12 +83,12 @@ $config['maxDatabaseSizeForDump']    = 256; // Maximum database size in megabyte
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numerical order for comparison operators in conditions. If you need string comparison operators, set this parameter to 1
 $config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
-$config['blacklistallsurveys']       = 'N'; // Blocklist all current surveys for participant once the global field is set
-$config['blacklistnewsurveys']       = 'N'; // Blocklist participant for any new added survey once the global field is set
+$config['blocklistallsurveys']       = 'N'; // Blocklist all current surveys for participant once the global field is set
+$config['blocklistnewsurveys']       = 'N'; // Blocklist participant for any new added survey once the global field is set
 $config['blockaddingtosurveys']      = 'Y'; // Don't allow blocklisted participants to be added to new survey
-$config['hideblacklisted']           = 'N'; // Don't show blocklisted participants
-$config['deleteblacklisted']         = 'N'; // Delete globally blocklisted participant from the database
-$config['allowunblacklist']          = 'N'; // Allow participant to unblocklist himself/herself
+$config['hideblocklisted']           = 'N'; // Don't show blocklisted participants
+$config['deleteblocklisted']         = 'N'; // Delete globally blocklisted participant from the database
+$config['allowunblocklist']          = 'N'; // Allow participant to unblocklist himself/herself
 $config['userideditable']            = 'N'; // Allow editing of user IDs
 
 $config['defaulttheme']              = 'fruity_twentythree'; // This setting specifys the default theme used for the 'public list' of surveys
@@ -815,17 +815,17 @@ $config['max_execution_time'] = 1200;
 $config['force_xmlsettings_for_survey_rendering'] = false;
 
 /**
- * When this setting is true, plugins that are not in the allowlist (see 'pluginWhitelist') cannot be installed nor loaded. This may disable
+ * When this setting is true, plugins that are not in the allowlist (see 'pluginAllowlist') cannot be installed nor loaded. This may disable
  * already installed plugins.
  * Core plugins are implicitly allowlisted, but can be excluded using the blocklist.
  */
-$config['usePluginWhitelist'] = false;
+$config['usePluginAllowlist'] = false;
 
-// List of plugin names allowed to be installed and loaded when 'usePluginWhitelist' is true. Core plugins are implicitly allowlisted.
-$config['pluginWhitelist'] = [];
+// List of plugin names allowed to be installed and loaded when 'usePluginAllowlist' is true. Core plugins are implicitly allowlisted.
+$config['pluginAllowlist'] = [];
 
-// List of core plugin names forbidden when 'usePluginWhitelist' is true.
-$config['corePluginBlacklist'] = [];
+// List of core plugin names forbidden when 'usePluginAllowlist' is true.
+$config['corePluginBlocklist'] = [];
 
 // When this setting is true, the "Plugin Upload" feature is disabled.
 $config['disablePluginUpload'] = false;

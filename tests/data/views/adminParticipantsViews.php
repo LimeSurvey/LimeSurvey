@@ -11,7 +11,7 @@ return [
     ['displayParticipants', ['route'=>'participants/sa/displayParticipants']],
     ['participantsSummary', ['route'=>'participants/sa/index']],
     ['importParticipants', ['route'=>'participants/sa/importCSV']],
-    ['participantsBlacklistControl', ['route'=>'participants/sa/blacklistControl']],
+    ['participantsBlocklistControl', ['route'=>'participants/sa/blocklistControl']],
     ['participantsAttributeControl', ['route'=>'participants/sa/attributeControl']],
     ['participantsSharePanel', ['route'=>'participants/sa/sharePanel']],
 

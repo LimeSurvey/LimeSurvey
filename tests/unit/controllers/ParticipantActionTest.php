@@ -40,7 +40,7 @@ class ParticipantActionTest extends TestBaseClass
 
         $part = new \Participant();
         $part->participant_id = $part->genUuid();
-        $part->blacklisted = 'N';
+        $part->blocklisted = 'N';
         $part->owner_uid   = 1;
         $part->created_by  = 1;
         $this->assertTrue($part->save(), 'Saved participant');
@@ -52,7 +52,7 @@ class ParticipantActionTest extends TestBaseClass
             'lastname' => '',
             'email' => '',
             'language' => '',
-            'blacklisted' => 'N',
+            'blocklisted' => 'N',
             'owner_uid' => '1'
         ];
 

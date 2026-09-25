@@ -179,10 +179,10 @@
                 <h3><?= gT('Brute-force protection for administration'); ?></h3>
 
                 <div class="mb-3">
-                    <label class="form-label" for='loginIpWhitelist'>
+                    <label class="form-label" for='loginIpAllowlist'>
                         <?php eT("IP allowlist:"); ?>
                     </label>
-                    <textarea class="form-control" id='loginIpWhitelist' name='loginIpWhitelist'><?php echo htmlspecialchars((string) Yii::app()->getConfig('loginIpWhitelist')); ?></textarea>
+                    <textarea class="form-control" id='loginIpAllowlist' name='loginIpAllowlist'><?php echo htmlspecialchars((string) Yii::app()->getConfig('loginIpAllowlist')); ?></textarea>
                     <div class='form-text'><?php eT("List of IP addresses to exclude from the maximum login attempts check. Separate each IP address with a comma or a new line."); ?></div>
                 </div>
 
@@ -216,10 +216,10 @@
             <h3><?= gT('Brute-force protection for survey participation') ?></h3>
 
             <div class="mb-3">
-                <label class="form-label" for='tokenIpWhitelist'>
+                <label class="form-label" for='tokenIpAllowlist'>
                     <?php eT("IP allowlist:"); ?>
                 </label>
-                <textarea class="form-control" id='tokenIpWhitelist' name='tokenIpWhitelist'><?php echo htmlspecialchars((string) Yii::app()->getConfig('tokenIpWhitelist')); ?></textarea>
+                <textarea class="form-control" id='tokenIpAllowlist' name='tokenIpAllowlist'><?php echo htmlspecialchars((string) Yii::app()->getConfig('tokenIpAllowlist')); ?></textarea>
                 <span class='form-text'>
                     <?php eT("List of IP addresses to exclude from the maximum token validation attempts check. Separate each IP address with a comma or a new line."); ?>
                 </span>
@@ -249,7 +249,7 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for='tokenIpWhitelist'>
+                <label class="form-label" for='tokenIpAllowlist'>
                     <?php eT("Reset failed login attempts of participants to make survey accessible again:"); ?>
                 </label>
                 <div class="">

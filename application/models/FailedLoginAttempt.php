@@ -85,7 +85,7 @@ class FailedLoginAttempt extends LSActiveRecord
         $ip = substr(getRealIPAddress(), 0, 40);
 
         // Return false if IP is allowlisted
-        if ($this->isWhitelisted($ip, $attemptType)) {
+        if ($this->isAllowlisted($ip, $attemptType)) {
             return false;
         }
 
@@ -184,7 +184,7 @@ class FailedLoginAttempt extends LSActiveRecord
      * @throws InvalidArgumentException if an invalid attempt type is specified
      * @return boolean
      */
-    private function isWhitelisted(string $ip, string $attemptType): bool
+    private function isAllowlisted(string $ip, string $attemptType): bool
     {
         // Init
         if ($attemptType != self::TYPE_LOGIN && $attemptType != self::TYPE_TOKEN) {
@@ -195,25 +195,25 @@ class FailedLoginAttempt extends LSActiveRecord
         }
         $binaryIP = inet_pton($ip);
 
-        $whiteList = Yii::app()->getConfig($attemptType . 'IpWhitelist');
-        if (empty($whiteList)) {
+        $allowList = Yii::app()->getConfig($attemptType . 'IpAllowlist');
+        if (empty($allowList)) {
             return false;
         }
 
         // Validating
-        $whiteListEntries = preg_split('/\n|,/', $whiteList);
-        foreach ($whiteListEntries as $whiteListEntry) {
-            if (empty($whiteListEntry)) {
+        $allowListEntries = preg_split('/\n|,/', $allowList);
+        foreach ($allowListEntries as $allowListEntry) {
+            if (empty($allowListEntry)) {
                 continue;
             }
             // Compare directly
-            if ($whiteListEntry == $ip) {
+            if ($allowListEntry == $ip) {
                 // The IP is allowlisted
                 return true;
             }
             // Compare binary representations
-            $binaryWhiteListEntry = inet_pton($whiteListEntry);
-            if ($binaryWhiteListEntry !== false && $binaryWhiteListEntry == $binaryIP) {
+            $binaryAllowListEntry = inet_pton($allowListEntry);
+            if ($binaryAllowListEntry !== false && $binaryAllowListEntry == $binaryIP) {
                 // The IP is allowlisted
                 return true;
             }

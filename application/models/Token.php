@@ -11,7 +11,7 @@
  * @property string   $emailstatus
  * @property string   $token
  * @property string   $language
- * @property string   $blacklisted
+ * @property string   $blocklisted
  * @property string   $sent
  * @property string   $remindersent
  * @property int      $remindercount
@@ -42,7 +42,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $emailstatus Participant's e-mail address status: OK/bounced/OptOut
  * @property string $token Participant's token
  * @property string $language Participant's language eg: en
- * @property string $blacklisted Whether participant is blocklisted: (Y/N)
+ * @property string $blocklisted Whether participant is blocklisted: (Y/N)
  * @property string $sent
  * @property string $remindersent
  * @property integer $remindercount
@@ -95,7 +95,7 @@ abstract class Token extends Dynamic
             'emailstatus' => gT('Email status'),
             'token' => gT('Access code'),
             'language' => gT('Language code'),
-            'blacklisted' => gT('Blocklisted'),
+            'blocklisted' => gT('Blocklisted'),
             'sent' => gT('Invitation sent date'),
             'remindersent' => gT('Last reminder sent date'),
             'remindercount' => gT('Total numbers of sent reminders'),
@@ -178,7 +178,7 @@ abstract class Token extends Dynamic
             'emailstatus' => 'text',
             'token' => "string(" . self::MAX_LENGTH . ") {$sCollation}",
             'language' => 'string(25)',
-            'blacklisted' => 'string(17)',
+            'blocklisted' => 'string(17)',
             'sent' => "string(17) DEFAULT 'N'",
             'remindersent' => "string(17) DEFAULT 'N'",
             'remindercount' => 'integer DEFAULT 0',
@@ -435,7 +435,7 @@ abstract class Token extends Dynamic
             array('emailstatus', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('usesleft', 'numerical', 'integerOnly' => true, 'allowEmpty' => true, 'min' => -2147483647, 'max' => 2147483647),
             array('mpid', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
-            array('blacklisted', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
+            array('blocklisted', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
             array('validfrom', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m','yyyy-M-d'],'allowEmpty' => true),
             array('validuntil','date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m','yyyy-M-d'],'allowEmpty' => true),
         );
@@ -522,10 +522,10 @@ abstract class Token extends Dynamic
 
     public function onBeforeSave($event)
     {
-        // Mark token as "OptOut" if globally blocklisted and 'blacklistnewsurveys' is enabled
-        if (Yii::app()->getConfig('blacklistnewsurveys') == "Y" && $this->getIsNewRecord()) {
-            $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
-            if ($blacklistHandler->isTokenBlacklisted($this)) {
+        // Mark token as "OptOut" if globally blocklisted and 'blocklistnewsurveys' is enabled
+        if (Yii::app()->getConfig('blocklistnewsurveys') == "Y" && $this->getIsNewRecord()) {
+            $blocklistHandler = new LimeSurvey\Models\Services\ParticipantBlocklistHandler();
+            if ($blocklistHandler->isTokenBlocklisted($this)) {
                 $this->emailstatus = "OptOut";
             }
         }

@@ -229,7 +229,7 @@ function populateDatabase($oDB)
             'lastname' =>  "text NULL",
             'email' =>  "text",
             'language' =>  "string(40) NULL",
-            'blacklisted' =>  "string(1) NOT NULL",
+            'blocklisted' =>  "string(1) NOT NULL",
             'owner_uid' =>  "integer NOT NULL",
             'created_by' =>  "integer NOT NULL",
             'created' =>  "datetime",

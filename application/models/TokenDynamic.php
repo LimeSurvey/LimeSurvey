@@ -24,7 +24,7 @@
  * @property string $emailstatus
  * @property string $token
  * @property string $language
- * @property string $blacklisted
+ * @property string $blocklisted
  * @property string $sent
  * @property string $remindersent
  * @property integer $remindercount
@@ -129,7 +129,7 @@ class TokenDynamic extends LSActiveRecord
     {
         $sid = self::$sid;
         $sTableName = '{{tokens_' . $sid . '}}';
-        $columncheck = array("tid", "participant_id", "firstname", "lastname", "email", "emailstatus", "token", "language", "blacklisted", "sent", "remindersent", "completed", "usesleft", "validfrom", "validuntil");
+        $columncheck = array("tid", "participant_id", "firstname", "lastname", "email", "emailstatus", "token", "language", "blocklisted", "sent", "remindersent", "completed", "usesleft", "validfrom", "validuntil");
         $tableSchema = Yii::app()->db->schema->getTable($sTableName);
         $columns = $tableSchema->getColumnNames();
         $missingcolumns = array_diff($columncheck, $columns);
@@ -139,7 +139,7 @@ class TokenDynamic extends LSActiveRecord
             $columninfo = array(
                     'validfrom' => 'datetime',
                     'validuntil' => 'datetime',
-                    'blacklisted' => 'string(17)',
+                    'blocklisted' => 'string(17)',
                     'participant_id' => 'string(50)',
                     'remindercount' => "integer DEFAULT '0'",
                     'usesleft' => 'integer NOT NULL default 1'
@@ -150,7 +150,7 @@ class TokenDynamic extends LSActiveRecord
             Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         } else {
             // On some installs we have created not null for participant_id and blocklisted fix this
-            $columns = array('blacklisted', 'participant_id');
+            $columns = array('blocklisted', 'participant_id');
 
             foreach ($columns as $columnname) {
                 $definition = $tableSchema->getColumn($columnname);
@@ -213,9 +213,9 @@ class TokenDynamic extends LSActiveRecord
             $oResult[$key] = $result->decrypt();
         }
 
-        $cpdbBlacklisted = Participant::model()->getBlacklistedParticipantIds();
-        $oResult = array_filter($oResult, function ($item) use ($cpdbBlacklisted) {
-            return empty($item->participant_id) || !in_array($item->participant_id, $cpdbBlacklisted);
+        $cpdbBlocklisted = Participant::model()->getBlocklistedParticipantIds();
+        $oResult = array_filter($oResult, function ($item) use ($cpdbBlocklisted) {
+            return empty($item->participant_id) || !in_array($item->participant_id, $cpdbBlocklisted);
         });
 
         return $oResult;
@@ -279,7 +279,7 @@ class TokenDynamic extends LSActiveRecord
         $results = $command->queryAll();
 
         // Filter out blocklisted participants (same approach as findUninvited)
-        $cpdbBlocklisted = Participant::model()->getBlacklistedParticipantIds();
+        $cpdbBlocklisted = Participant::model()->getBlocklistedParticipantIds();
         $results = array_filter($results, function ($item) use ($cpdbBlocklisted) {
             return empty($item['participant_id']) || !in_array($item['participant_id'], $cpdbBlocklisted);
         });
@@ -542,7 +542,7 @@ class TokenDynamic extends LSActiveRecord
             "emailstatus",
             "token",
             "language",
-            "blacklisted",
+            "blocklisted",
             "sent",
             "remindersent",
             "remindercount",
@@ -1026,9 +1026,9 @@ class TokenDynamic extends LSActiveRecord
             'desc' => 'language desc',
             ),
 
-            'blacklisted' => array(
-            'asc' => 'blacklisted',
-            'desc' => 'blacklisted desc',
+            'blocklisted' => array(
+            'asc' => 'blocklisted',
+            'desc' => 'blocklisted desc',
             ),
 
             'sent' => array(

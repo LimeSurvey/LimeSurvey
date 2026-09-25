@@ -68,7 +68,7 @@ if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             'name' => '',
             'text' => gT("Blocklist settings"),
             'icon' => 'ri-list-settings-line',
-            'link' => $this->createUrl("admin/participants/sa/blacklistControl"),
+            'link' => $this->createUrl("admin/participants/sa/blocklistControl"),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
             ],

@@ -24,7 +24,7 @@ use LimeSurvey\Exceptions\CPDBException;
  * @property string $lastname
  * @property string $email
  * @property string $language
- * @property string $blacklisted
+ * @property string $blocklisted
  * @property integer $owner_uid
  * @property integer $created_by
  * @property string $created Date-time of creation
@@ -39,7 +39,7 @@ use LimeSurvey\Exceptions\CPDBException;
  * @property string $checkbox
  * @property array $allExtraAttributes
  * @property integer|string $countActiveSurveys
- * @property string $blacklistSwitchButton
+ * @property string $blocklistSwitchButton
  * @property array $columns
  * @property string $ownersList
  */
@@ -75,16 +75,16 @@ class Participant extends LSActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('participant_id, blacklisted, owner_uid', 'required'),
+            array('participant_id, blocklisted, owner_uid', 'required'),
             array('owner_uid', 'numerical', 'integerOnly' => true),
             array('participant_id', 'length', 'max' => 50),
             array('firstname, lastname', 'length', 'max' => 150),
             array('language', 'length', 'max' => 40),
             array('firstname, lastname, language', 'LSYii_Validators'),
             array('email', 'length', 'max' => 254),
-            array('blacklisted', 'length', 'max' => 1),
+            array('blocklisted', 'length', 'max' => 1),
             // Please remove those attributes that should not be searched.
-            array('participant_id, firstname, lastname, email, language, countActiveSurveys, blacklisted, owner.full_name', 'safe', 'on' => 'search'),
+            array('participant_id, firstname, lastname, email, language, countActiveSurveys, blocklisted, owner.full_name', 'safe', 'on' => 'search'),
         );
     }
 
@@ -196,7 +196,7 @@ class Participant extends LSActiveRecord
             'lastname' => gT('Last name') . $this->setEncryptedAttributeLabel(0, 'Participant', 'lastname'),
             'email' => gT('Email address') . $this->setEncryptedAttributeLabel(0, 'Participant', 'email'),
             'language' => gT('Language') . $this->setEncryptedAttributeLabel(0, 'Participant', 'language'),
-            'blacklisted' => gT('Blocklisted') . $this->setEncryptedAttributeLabel(0, 'Participant', 'blacklisted'),
+            'blocklisted' => gT('Blocklisted') . $this->setEncryptedAttributeLabel(0, 'Participant', 'blocklisted'),
             'owner_uid' => gT('Owner ID') . $this->setEncryptedAttributeLabel(0, 'Participant', 'owner_uid'),
             'surveyid' => gT('Active survey ID') . $this->setEncryptedAttributeLabel(0, 'Participant', 'surveyid'),
             'created' => gT('Created on') . $this->setEncryptedAttributeLabel(0, 'Participant', 'created')
@@ -294,25 +294,25 @@ class Participant extends LSActiveRecord
     /**
      * @return string HTML
      */
-    public function getBlacklistSwitchbutton()
+    public function getBlocklistSwitchbutton()
     {
         if ($this->userHasPermissionToEdit()) {
             $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                'name'          => 'blacklisted_' . $this->participant_id,
+                'name'          => 'blocklisted_' . $this->participant_id,
                 'ariaLabel'    => gT('Blocklisted'),
-                'checkedOption' => $this->blacklisted === "Y" ? "1" : "0",
+                'checkedOption' => $this->blocklisted === "Y" ? "1" : "0",
                 'selectOptions' => [
                     '1' => gT('Yes'),
                     '0' => gT('No'),
                 ],
                 'htmlOptions'   => [
-                    'class' => 'action_changeBlacklistStatus'
+                    'class' => 'action_changeBlocklistStatus'
                 ]
             ], true);
             return $inputHtml;
         }
 
-        if ($this->blacklisted === 'Y') {
+        if ($this->blocklisted === 'Y') {
             return gT('Yes');
         }
 
@@ -361,8 +361,8 @@ class Participant extends LSActiveRecord
                 "filter" => $this->getOwnersList($this->owner_uid)
             ],
             [
-                "name"   => 'blacklisted',
-                "value"  => '$data->getBlacklistSwitchbutton()',
+                "name"   => 'blocklisted',
+                "value"  => '$data->getBlocklistSwitchbutton()',
                 "type"   => "raw",
                 "filter" => ['N' => gT("No"), 'Y' => gT('Yes')]
             ],
@@ -457,9 +457,9 @@ class Participant extends LSActiveRecord
                 'asc' => 'owner.full_name',
                 'desc' => 'owner.full_name desc',
             ),
-            'blacklisted' => array(
-                'asc' => 't.blacklisted',
-                'desc' => 't.blacklisted desc',
+            'blocklisted' => array(
+                'asc' => 't.blocklisted',
+                'desc' => 't.blocklisted desc',
             ),
             'countActiveSurveys' => array(
                 'asc' => 'countActiveSurveys',
@@ -488,7 +488,7 @@ class Participant extends LSActiveRecord
         $criteria->compare('t.lastname', $this->lastname, true, 'AND', true);
         $criteria->compare('t.email', $this->email, true, 'AND', true);
         $criteria->compare('t.language', $this->language, true);
-        $criteria->compare('t.blacklisted', $this->blacklisted, true);
+        $criteria->compare('t.blocklisted', $this->blocklisted, true);
         $criteria->compare('t.owner_uid', $this->owner_uid);
 
 
@@ -861,8 +861,8 @@ class Participant extends LSActiveRecord
             $aConditions[] = $aSearch['condition'];
             $aParams = $aSearch['params'];
         }
-        if (Yii::app()->getConfig('hideblacklisted') == 'Y') {
-            $aConditions[] = "blacklisted<>'Y'";
+        if (Yii::app()->getConfig('hideblocklisted') == 'Y') {
+            $aConditions[] = "blocklisted<>'Y'";
         }
         $condition = ''; // This will be the final condition
         foreach ($aConditions as $idx => $newCondition) {
@@ -1799,7 +1799,7 @@ class Participant extends LSActiveRecord
      * @param array $addedAttributes ?? Result from createColumnsInTokenTable
      * @param array $addedAttributeIds ?? Result from createColumnsInTokenTable
      * @param array $options As in calling function
-     * @return integer[] (success, duplicate, blacklistSkipped)
+     * @return integer[] (success, duplicate, blocklistSkipped)
      * @throws Exception
      */
     private function writeParticipantsToTokenTable(
@@ -1813,7 +1813,7 @@ class Participant extends LSActiveRecord
     ) {
         $duplicate = 0;
         $successful = 0;
-        $blacklistSkipped = 0;
+        $blocklistSkipped = 0;
 
         $oParticipants = Participant::model()->findAllByPk($participantIds);
         $oTokens = TokenDynamic::model($surveyId)->findAll();
@@ -1821,9 +1821,9 @@ class Participant extends LSActiveRecord
         foreach ($oParticipants as $oParticipant) {
             if (
                 Yii::app()->getConfig('blockaddingtosurveys') == 'Y'
-                && $oParticipant->blacklisted == 'Y'
+                && $oParticipant->blocklisted == 'Y'
             ) {
-                $blacklistSkipped++;
+                $blocklistSkipped++;
                 continue;
             }
             $oParticipant->decrypt();
@@ -1921,7 +1921,7 @@ class Participant extends LSActiveRecord
             }
         }
 
-        return array($successful, $duplicate, $blacklistSkipped);
+        return array($successful, $duplicate, $blocklistSkipped);
     }
 
     /**
@@ -1963,7 +1963,7 @@ class Participant extends LSActiveRecord
         [$addedAttributes, $addedAttributeIds] = $this->handleNewTokenAttributes($surveyId, $newAttributes);
 
         //Write each participant to the survey survey participant list
-        [$successful, $duplicate, $blacklistSkipped] = $this->writeParticipantsToTokenTable(
+        [$successful, $duplicate, $blocklistSkipped] = $this->writeParticipantsToTokenTable(
             $surveyId,
             $participantIds,
             $mappedAttributes,
@@ -1976,7 +1976,7 @@ class Participant extends LSActiveRecord
         $returndata = [
             'success'          => $successful,
             'duplicate'        => $duplicate,
-            'blacklistskipped' => $blacklistSkipped,
+            'blocklistskipped' => $blocklistSkipped,
             'overwriteauto'    => $options['overwriteauto'],
             'overwriteman'     => $options['overwriteman']
         ];
@@ -2187,7 +2187,7 @@ class Participant extends LSActiveRecord
                     }
                 } /* If there isn't an existing entry, create one! */ else {
                     /* Create entry in participant list */
-                    $black = !empty($oTokenDynamic->blacklisted) ? $oTokenDynamic->blacklisted : 'N';
+                    $blocklisted = !empty($oTokenDynamic->blocklisted) ? $oTokenDynamic->blocklisted : 'N';
                     $pid = !empty($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->genUuid();
 
                     $writearray = [
@@ -2196,7 +2196,7 @@ class Participant extends LSActiveRecord
                         'lastname'       => $oTokenDynamic->lastname,
                         'email'          => $oTokenDynamic->email,
                         'language'       => $oTokenDynamic->language,
-                        'blacklisted'    => $black,
+                        'blocklisted'    => $blocklisted,
                         'owner_uid'      => Yii::app()->session['loginID'],
                         'created_by'     => Yii::app()->session['loginID'],
                         'created'        => date('Y-m-d H:i:s', time())
@@ -2304,7 +2304,7 @@ class Participant extends LSActiveRecord
             'lastname' => $data['lastname'],
             'email' => $data['email'],
             'language' => $data['language'],
-            'blacklisted' => $data['blacklisted'],
+            'blocklisted' => $data['blocklisted'],
             'created_by' => $data['owner_uid'],
             'owner_uid' => $data['owner_uid'],
             'created' => date('Y-m-d H:i:s', time())
@@ -2509,11 +2509,11 @@ class Participant extends LSActiveRecord
      * Returns the list of blocklisted participant IDs
      * @return string[]
      */
-    public function getBlacklistedParticipantIds()
+    public function getBlocklistedParticipantIds()
     {
         $command = new CDbCriteria();
         $command->condition = '';
-        $command->addCondition("blacklisted = 'Y'");
+        $command->addCondition("blocklisted = 'Y'");
 
         $oResult = $this->getCommandBuilder()
             ->createFindCommand($this->getTableSchema(), $command)

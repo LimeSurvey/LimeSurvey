@@ -117,7 +117,7 @@ class PluginManager extends \CApplicationComponent
         if (!$this->validatePluginName($newName)) {
             return [false, gT('Invalid plugin name in config.xml.')];
         }
-        if (!$this->isWhitelisted($newName)) {
+        if (!$this->isAllowlisted($newName)) {
             return [false, gT('The plugin is not in the plugin allowlist.')];
         }
 
@@ -288,7 +288,7 @@ class PluginManager extends \CApplicationComponent
                             empty($plugin)
                             || ($includeInstalledPlugins && !$plugin->getLoadError())
                         ) {
-                            if (file_exists($file) && $this->isWhitelisted($pluginName)) {
+                            if (file_exists($file) && $this->isAllowlisted($pluginName)) {
                                 try {
                                     $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
                                     // getPluginInfo returns false instead of an array when config is not found.
@@ -448,7 +448,7 @@ class PluginManager extends \CApplicationComponent
                 }
             } else {
                 if (!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName) {
-                    if ($this->isWhitelisted($pluginName) && $this->getPluginInfo($pluginName) !== false) {
+                    if ($this->isAllowlisted($pluginName) && $this->getPluginInfo($pluginName) !== false) {
                         if (class_exists($pluginName)) {
                             $this->plugins[$id] = new $pluginName($this, $id);
                             if ($init && method_exists($this->plugins[$id], 'init')) {
@@ -653,14 +653,14 @@ class PluginManager extends \CApplicationComponent
      * @param string $pluginName
      * @return boolean
      */
-    public function isWhitelisted($pluginName)
+    public function isAllowlisted($pluginName)
     {
-        if (App()->getConfig('usePluginWhitelist')) {
+        if (App()->getConfig('usePluginAllowlist')) {
             // Get the user plugins allowlist
-            $whiteList = App()->getConfig('pluginWhitelist');
+            $allowList = App()->getConfig('pluginAllowlist');
             // Get the list of allowed core plugins
             $coreList = $this->getAllowedCorePluginList();
-            $allowedPlugins = array_merge($coreList, $whiteList);
+            $allowedPlugins = array_merge($coreList, $allowList);
             return array_search($pluginName, $allowedPlugins) !== false;
         }
         return true;
@@ -706,8 +706,8 @@ class PluginManager extends \CApplicationComponent
     private function getAllowedCorePluginList()
     {
         $corePlugins = self::getCorePluginList();
-        $blackList = Yii::app()->getConfig('corePluginBlacklist');
-        $allowedCorePlugins = array_diff($corePlugins, $blackList);
+        $blockList = Yii::app()->getConfig('corePluginBlocklist');
+        $allowedCorePlugins = array_diff($corePlugins, $blockList);
         return $allowedCorePlugins;
     }
 }

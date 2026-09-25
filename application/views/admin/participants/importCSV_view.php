@@ -108,7 +108,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                                 ); ?>
                             </p>
                             <span style="font-weight:bold;"><?php eT("Mandatory field:") ?></span> email <br/>
-                            <span style="font-weight:bold;"><?php eT("Optional fields:") ?></span> firstname, lastname,blacklisted,language
+                            <span style="font-weight:bold;"><?php eT("Optional fields:") ?></span> firstname, lastname,blocklisted,language
                         </div>
                     </div>
                 </div>

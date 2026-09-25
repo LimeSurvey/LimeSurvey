@@ -144,8 +144,8 @@ class ParticipantsAction extends SurveyCommonAction
     {
         $target = Yii::app()->request->getPost('actionTarget');
         switch ($target) {
-            case "changeBlacklistStatus":
-                $this->changeblackliststatus();
+            case "changeBlocklistStatus":
+                $this->changeBlocklistStatus();
                 break;
             case "changeAttributeVisibility":
                 $this->changeAttributeVisibility();
@@ -206,7 +206,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
 
         // Field names in the first row
-        $fields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
+        $fields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blocklisted', 'owner_uid');
         $outputarray = array(); // The array to be passed to the export helper to be written to a csv file
 
         $outputarray[0] = $fields; //fields written to output array
@@ -289,7 +289,7 @@ class ParticipantsAction extends SurveyCommonAction
             'shared' => Participant::model()->getParticipantsSharedCount($iUserID),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'attributecount' => ParticipantAttributeName::model()->count(),
-            'blacklisted' => Participant::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\''),
+            'blocklisted' => Participant::model()->count('owner_uid = ' . $iUserID . ' AND blocklisted = \'Y\''),
         );
 
         $searchstring = Yii::app()->request->getPost('searchstring');
@@ -336,8 +336,8 @@ class ParticipantsAction extends SurveyCommonAction
             $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserId);
         }
         $model = new Participant();
-        if (Yii::app()->getConfig('hideblacklisted') == "Y") {
-            $model->blacklisted = "Y";
+        if (Yii::app()->getConfig('hideblocklisted') == "Y") {
+            $model->blocklisted = "Y";
         }
         $request = Yii::app()->request;
         $participantParam = $request->getParam('Participant');
@@ -594,10 +594,10 @@ class ParticipantsAction extends SurveyCommonAction
         $operation = Yii::app()->request->getPost('oper');
         $aData = Yii::app()->request->getPost('Participant');
 
-        if (isset($aData['blacklisted']) && ($aData['blacklisted'] == 'on' || $aData['blacklisted'] == '1' || $aData['blacklisted'] == 'Y')) {
-            $aData['blacklisted'] = 'Y';
+        if (isset($aData['blocklisted']) && ($aData['blocklisted'] == 'on' || $aData['blocklisted'] == '1' || $aData['blocklisted'] == 'Y')) {
+            $aData['blocklisted'] = 'Y';
         } else {
-            $aData['blacklisted'] = 'N';
+            $aData['blocklisted'] = 'N';
         }
 
         $extraAttributes = Yii::app()->request->getPost('Attributes', array());
@@ -640,7 +640,7 @@ class ParticipantsAction extends SurveyCommonAction
         $aResults['global']['result'] = true;
 
         // Core Fields
-        $aCoreTokenFields = array('language', 'owner_uid', 'blacklisted');
+        $aCoreTokenFields = array('language', 'owner_uid', 'blocklisted');
         foreach ($aCoreTokenFields as $sCoreTokenField) {
             if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
                 $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
@@ -835,7 +835,8 @@ class ParticipantsAction extends SurveyCommonAction
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
             Yii::app()->end();
         } else {
-            $regularfields = array('firstname', 'participant_id', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
+            // 'blacklisted' is the legacy column name used in exports before DB version 800
+            $regularfields = array('firstname', 'participant_id', 'lastname', 'email', 'language', 'blocklisted', 'blacklisted', 'owner_uid');
             $oCSVFile = fopen($sFilePath, 'r');
             if ($oCSVFile === false) {
                 safeDie('File not found.');
@@ -956,7 +957,7 @@ class ParticipantsAction extends SurveyCommonAction
         if (!isset($uploadcharset)) {
             $uploadcharset = 'auto';
         }
-        $allowedfieldnames = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
+        $allowedfieldnames = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blocklisted');
         $aFilterDuplicateFields = array('firstname', 'lastname', 'email');
         if (!empty($mappedarray)) {
             foreach ($mappedarray as $key => $value) {
@@ -995,6 +996,10 @@ class ParticipantsAction extends SurveyCommonAction
                 //now check the first line for invalid fields
                 foreach ($firstline as $index => $fieldname) {
                     $firstline[$index] = preg_replace("/(.*) <[^,]*>$/", "$1", $fieldname);
+                    // Legacy column name used in exports before DB version 800
+                    if (strtolower((string) $firstline[$index]) === 'blacklisted') {
+                        $firstline[$index] = 'blocklisted';
+                    }
                     $fieldname = $firstline[$index];
                     if (!in_array(strtolower($fieldname), $allowedfieldnames) && !in_array($fieldname, $mappedarray)) {
                         $ignoredcolumns[] = $fieldname;
@@ -1106,8 +1111,8 @@ class ParticipantsAction extends SurveyCommonAction
                     if (!isset($writearray['language']) || $writearray['language'] == "") {
                         $writearray['language'] = "en";
                     }
-                    if (!isset($writearray['blacklisted']) || $writearray['blacklisted'] == "") {
-                        $writearray['blacklisted'] = "N";
+                    if (!isset($writearray['blocklisted']) || $writearray['blocklisted'] == "") {
+                        $writearray['blocklisted'] = "N";
                     }
                     $writearray['owner_uid'] = Yii::app()->session['loginID'];
                     if (isset($writearray['validfrom']) && trim((string) $writearray['validfrom']) == '') {
@@ -1299,43 +1304,43 @@ class ParticipantsAction extends SurveyCommonAction
         $this->csvExport($search);
     }
 
-    //Display BlacklistSetting
-    /**********************************************UN-/BLACKLIST PARTICIPANTS***********************************************/
+    //Display BlocklistSetting
+    /**********************************************UN-/BLOCKLIST PARTICIPANTS***********************************************/
     /**
-     * Loads the view 'blacklistControl'
+     * Loads the view 'blocklistControl'
      * @return void
      */
-    public function blacklistControl()
+    public function blocklistControl()
     {
         $title = gT("Blocklist settings");
         $aData = array(
-            'blacklistallsurveys' => Yii::app()->getConfig('blacklistallsurveys'),
-            'blacklistnewsurveys' => Yii::app()->getConfig('blacklistnewsurveys'),
+            'blocklistallsurveys' => Yii::app()->getConfig('blocklistallsurveys'),
+            'blocklistnewsurveys' => Yii::app()->getConfig('blocklistnewsurveys'),
             'blockaddingtosurveys' => Yii::app()->getConfig('blockaddingtosurveys'),
-            'hideblacklisted' => Yii::app()->getConfig('hideblacklisted'),
-            'deleteblacklisted' => Yii::app()->getConfig('deleteblacklisted'),
-            'allowunblacklist' => Yii::app()->getConfig('allowunblacklist'),
+            'hideblocklisted' => Yii::app()->getConfig('hideblocklisted'),
+            'deleteblocklisted' => Yii::app()->getConfig('deleteblocklisted'),
+            'allowunblocklist' => Yii::app()->getConfig('allowunblocklist'),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
         );
         $aData['topbar'] = $this->getTopBarComponents($title, false, false);
 
-        $this->renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'), $aData);
+        $this->renderWrappedTemplate('participants', array('participantsPanel', 'blocklist'), $aData);
     }
 
     /**
      * Stores the blocklist setting to the database
      * @return void
      */
-    public function storeBlacklistValues()
+    public function storeBlocklistValues()
     {
         $this->requirePostRequest();
 
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             Yii::app()->setFlashMessage(gT('Access denied!'), 'error');
-            Yii::app()->getController()->redirect(array('admin/participants/sa/blacklistControl'));
+            Yii::app()->getController()->redirect(array('admin/participants/sa/blocklistControl'));
         }
 
-        $values = array('blacklistallsurveys', 'blacklistnewsurveys', 'blockaddingtosurveys', 'hideblacklisted', 'deleteblacklisted', 'allowunblacklist');
+        $values = array('blocklistallsurveys', 'blocklistnewsurveys', 'blockaddingtosurveys', 'hideblocklisted', 'deleteblocklisted', 'allowunblocklist');
         foreach ($values as $value) {
             if (SettingGlobal::model()->findByPk($value)) {
                 SettingGlobal::model()->updateByPk(
@@ -1352,28 +1357,28 @@ class ParticipantsAction extends SurveyCommonAction
             }
         }
         Yii::app()->setFlashMessage(gT('Blocklist settings were saved.'), 'success');
-        Yii::app()->getController()->redirect(array('admin/participants/sa/blacklistControl'));
+        Yii::app()->getController()->redirect(array('admin/participants/sa/blocklistControl'));
     }
 
     /**
      * AJAX Method to change the blocklist status of a participant
-     * Requires POST with 'participant_id' (varchar) and 'blacklist' (boolean)
+     * Requires POST with 'participant_id' (varchar) and 'blocklist' (boolean)
      * Echos JSON-encoded array with 'success' (boolean) and 'newValue' ('Y' || 'N')
      * @return void
      */
-    public function changeblackliststatus()
+    public function changeBlocklistStatus()
     {
         $participantId = Yii::app()->request->getPost('participant_id');
-        $blacklistStatus = Yii::app()->request->getPost('blacklist');
-        $blacklistValue = $blacklistStatus == true ? "Y" : "N";
+        $blocklistStatus = Yii::app()->request->getPost('blocklist');
+        $blocklistValue = $blocklistStatus == true ? "Y" : "N";
         $participant = Participant::model()->findByPk($participantId);
         if ($participant) {
-            $participant->blacklisted = $blacklistValue;
-            $participant->update(['blacklisted']);
+            $participant->blocklisted = $blocklistValue;
+            $participant->update(['blocklisted']);
         }
         echo json_encode(array(
             "success" => true,
-            "newValue" => $blacklistValue
+            "newValue" => $blocklistValue
         ));
     }
 
@@ -2220,7 +2225,7 @@ class ParticipantsAction extends SurveyCommonAction
         $limit = empty($limit) ? 50 : $limit; //Stop division by zero errors
 
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
-        $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
+        $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blocklisted', 'survey', 'language', 'owner_uid');
         foreach ($attid as $key => $value) {
             array_push($participantfields, 'a' . $value['attribute_id']);
         }
@@ -2262,7 +2267,7 @@ class ParticipantsAction extends SurveyCommonAction
             if (trim((string) $row['ownername']) == '') {
                 $row['ownername'] = $row['username'];
             }
-            $aRowToAdd['cell'] = array($row['participant_id'], $sCanEdit, htmlspecialchars((string) $row['firstname']), htmlspecialchars((string) $row['lastname']), htmlspecialchars((string) $row['email']), $row['blacklisted'], $row['survey'], $row['language'], $row['ownername']);
+            $aRowToAdd['cell'] = array($row['participant_id'], $sCanEdit, htmlspecialchars((string) $row['firstname']), htmlspecialchars((string) $row['lastname']), htmlspecialchars((string) $row['email']), $row['blocklisted'], $row['survey'], $row['language'], $row['ownername']);
             $aRowToAdd['id'] = $row['participant_id'];
             // add attribute values
             foreach ($row as $key => $attvalue) {
@@ -2571,9 +2576,9 @@ class ParticipantsAction extends SurveyCommonAction
             printf(gT("%s entries were not copied because they already existed"), "<span class='badge rounded-pill bg-warning'>" . $response['duplicate'] . "</span>");
             echo "</p>";
         }
-        if ($response['blacklistskipped'] > 0) {
+        if ($response['blocklistskipped'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were skipped because they are blocklisted"), "<span class='badge rounded-pill bg-danger'>" . $response['blacklistskipped'] . "</span>");
+            printf(gT("%s entries were skipped because they are blocklisted"), "<span class='badge rounded-pill bg-danger'>" . $response['blocklistskipped'] . "</span>");
             echo "</p>";
         }
         if ($response['overwriteauto'] == "true" || $response['overwriteman'] == "true") {

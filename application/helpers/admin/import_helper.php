@@ -3620,6 +3620,11 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
         foreach ($row as $key => $value) {
             $insertdata[(string) $key] = (string) $value;
         }
+        // Legacy column name used in exports before DB version 800
+        if (array_key_exists('blacklisted', $insertdata)) {
+            $insertdata['blocklisted'] = $insertdata['blacklisted'];
+            unset($insertdata['blacklisted']);
+        }
 
         $token = Token::create($iSurveyID, 'allowinvalidemail');
         $token->setAttributes($insertdata, false);
