@@ -2289,7 +2289,11 @@ class ExpressionManager
                 $this->RDP_AddError($e->getMessage(), $funcNameToken);
                 return false;
             }
-            $token = array($result, $funcNameToken[1], 'NUMBER');
+            // Tag non-numeric string results as 'STRING' so relational operators can warn about
+            // comparing them with a number (see bug #15803). Numeric-looking strings (e.g. from
+            // number_format()) stay tagged 'NUMBER' to preserve existing numeric comparison behavior.
+            $resultType = (is_string($result) && !is_numeric($result)) ? 'STRING' : 'NUMBER';
+            $token = array($result, $funcNameToken[1], $resultType);
             $this->RDP_StackPush($token);
             return true;
         }
