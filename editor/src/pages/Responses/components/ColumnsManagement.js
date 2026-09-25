@@ -98,17 +98,27 @@ const DraggableColumn = ({ column, index, updateSelection }) => (
   </Draggable>
 )
 
-const TimingCategory = ({ label, timingType, columns, updateSelection }) => {
+const TimingCategory = ({
+  label,
+  timingType,
+  columns,
+  updateSelection,
+  isEnabled,
+}) => {
   const checkedColumns = columns.filter(({ checked }) => checked).length
   const category = {
     id: `timing-${timingType}`,
     header: label,
     checked: columns.length > 0 && checkedColumns === columns.length,
-    isLocked: columns.length === 0,
+    isLocked: !isEnabled || columns.length === 0,
   }
 
   return (
-    <div className="mb-1 reg16 column-item timing-column-item">
+    <div
+      className={classNames('mb-1 reg16 column-item timing-column-item', {
+        disabled: category.isLocked,
+      })}
+    >
       <div className="column-item-spacer" aria-hidden="true" />
       <ColumnControl
         column={category}
@@ -121,6 +131,7 @@ const TimingCategory = ({ label, timingType, columns, updateSelection }) => {
 
 export const ColumnsManagement = ({
   table = {},
+  saveTimings = false,
   onHide = () => {},
   handleOnColumnsManagementConfirm = () => {},
 }) => {
@@ -290,67 +301,66 @@ export const ColumnsManagement = ({
           )}
         </Droppable>
       </DragDropContext>
-      {!!timingColumns.length && (
-        <div className="timing-columns-section mb-3">
-          <div className="timing-columns-header">
-            <div className="timing-columns-title">
-              <button
-                type="button"
-                className="med14-c timing-columns-toggle"
-                aria-expanded={showTimings}
-                onClick={() => setShowTimings((isVisible) => !isVisible)}
-              >
-                {t('Timings')}
-              </button>
-              <TooltipContainer
-                placement="right"
-                tooltipClassName="timing-columns-info-tooltip"
-                tip={t(
-                  'For timings to be enabled, activate them first in Survey settings > Notifications & data.'
-                )}
-              >
-                <button
-                  type="button"
-                  className="timing-columns-info-icon"
-                  data-testid="timings-info-icon"
-                  aria-label={t('About survey timings')}
-                >
-                  <i className="ri-information-line" aria-hidden="true" />
-                </button>
-              </TooltipContainer>
-            </div>
+      <div className="timing-columns-section mb-3">
+        <div className="timing-columns-header">
+          <div className="timing-columns-title">
             <button
               type="button"
-              className="timing-columns-toggle timing-columns-chevron"
+              className="med14-c timing-columns-toggle"
               aria-expanded={showTimings}
-              aria-label={
-                showTimings ? t('Collapse timings') : t('Expand timings')
-              }
               onClick={() => setShowTimings((isVisible) => !isVisible)}
             >
-              {showTimings ? <ArrowUpIcon /> : <ArrowDownIcon />}
+              {t('Timings')}
             </button>
-          </div>
-          {showTimings && (
-            <div
-              className="columns-container timing-columns-container"
-              data-testid="timing-columns-container"
+            <TooltipContainer
+              placement="right"
+              tooltipClassName="timing-columns-info-tooltip"
+              tip={t(
+                'For timings to be enabled, activate them first in Survey settings > Notifications & data.'
+              )}
             >
-              {timingCategories.map(({ timingType, label }) => (
-                <TimingCategory
-                  key={timingType}
-                  label={label}
-                  timingType={timingType}
-                  columns={timingColumns.filter(
-                    (column) => column.timingType === timingType
-                  )}
-                  updateSelection={updateTimingSelection}
-                />
-              ))}
-            </div>
-          )}
+              <button
+                type="button"
+                className="timing-columns-info-icon"
+                data-testid="timings-info-icon"
+                aria-label={t('About survey timings')}
+              >
+                <i className="ri-information-line" aria-hidden="true" />
+              </button>
+            </TooltipContainer>
+          </div>
+          <button
+            type="button"
+            className="timing-columns-toggle timing-columns-chevron"
+            aria-expanded={showTimings}
+            aria-label={
+              showTimings ? t('Collapse timings') : t('Expand timings')
+            }
+            onClick={() => setShowTimings((isVisible) => !isVisible)}
+          >
+            {showTimings ? <ArrowUpIcon /> : <ArrowDownIcon />}
+          </button>
         </div>
-      )}
+        {showTimings && (
+          <div
+            className="columns-container timing-columns-container"
+            data-testid="timing-columns-container"
+          >
+            {timingCategories.map(({ timingType, label }) => (
+              <TimingCategory
+                key={timingType}
+                label={label}
+                timingType={timingType}
+                columns={timingColumns.filter(
+                  (column) => column.timingType === timingType
+                )}
+                updateSelection={updateTimingSelection}
+                isEnabled={saveTimings}
+              />
+            ))}
+          </div>
+        )}
+      </div>
       <div className="border-none d-flex align-items-center justify-content-end gap-2">
         <Button
           size="lg"

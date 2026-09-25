@@ -18,6 +18,7 @@ export const ResponseModals = ({
   QuestionComponent,
   SurveyDetailsComponent,
   table,
+  saveTimings = false,
   handleOnHide,
   isBulkAction,
   selectedRowsIds = [],
@@ -85,6 +86,7 @@ export const ResponseModals = ({
         Component={
           <ColumnsManagement
             table={table}
+            saveTimings={saveTimings}
             onHide={() => {
               setShowColumnManagementModal(false)
               handleOnHide()

@@ -575,6 +575,10 @@
 
     .timing-column-item {
       cursor: default;
+
+      &.disabled {
+        opacity: 0.6;
+      }
     }
 
     .column-item-spacer {
