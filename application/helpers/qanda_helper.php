@@ -600,23 +600,6 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
 // ==================================================================
 // QUESTION METHODS =================================================
 
-function getLatLongFromIp($sIPAddress)
-{
-    $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
-    if ($ipInfoDbAPIKey) {
-        // ipinfodb.com needs a key
-        $oXML = simplexml_load_file("http://api.ipinfodb.com/v3/ip-city/?key=$ipInfoDbAPIKey&ip=$sIPAddress&format=xml");
-        if ($oXML->{'statusCode'} == "OK") {
-            $lat = (float) $oXML->{'latitude'};
-            $lng = (float) $oXML->{'longitude'};
-
-            return(array($lat, $lng));
-        } else {
-            return false;
-        }
-    }
-}
-
 /**
  * Find the label / input width
  * @param string|int $labelAttributeWidth label width from attribute

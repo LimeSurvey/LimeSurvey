@@ -205,7 +205,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
         } else {
             if ((int) ($this->getQuestionAttribute('location_nodefaultfromip')) == 0) {
                 // Keep the legacy @: the IP lookup warns when the remote API is unreachable
-                $currentLatLong = @getLatLongFromIp(getIPAddress());
+                $currentLatLong = @$this->getLatLongFromIp(getIPAddress());
             }
 
             if (empty($currentLatLong)) {
@@ -296,7 +296,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
             $currentCenter  = $currentLatLong = array($currentLatLong[0], $currentLatLong[1]);
         } elseif ((int) ($this->getQuestionAttribute('location_nodefaultfromip')) == 0) {
             // Keep the legacy @: the IP lookup warns when the remote API is unreachable
-            $currentCenter = $currentLatLong = @getLatLongFromIp(getIPAddress());
+            $currentCenter = $currentLatLong = @$this->getLatLongFromIp(getIPAddress());
         }
 
         // If it's not set : set the center to the default position, but don't set the marker
@@ -411,5 +411,28 @@ class RenderShortFreeText extends QuestionBaseRenderer
     private function getLegacySessionValue($sIndex)
     {
         return $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$sIndex] ?? null;
+    }
+
+    /**
+     * Looks up the geographic position of an IP address via ipinfodb.com (only if an API key is configured).
+     *
+     * @param string $sIPAddress IP address to look up
+     * @return array{0: float, 1: float}|false|null [latitude, longitude], false if the lookup failed, null if no API key is set
+     */
+    private function getLatLongFromIp($sIPAddress)
+    {
+        $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
+        if ($ipInfoDbAPIKey) {
+            // ipinfodb.com needs a key
+            $oXML = simplexml_load_file("http://api.ipinfodb.com/v3/ip-city/?key=$ipInfoDbAPIKey&ip=$sIPAddress&format=xml");
+            if ($oXML->{'statusCode'} == "OK") {
+                $lat = (float) $oXML->{'latitude'};
+                $lng = (float) $oXML->{'longitude'};
+
+                return(array($lat, $lng));
+            } else {
+                return false;
+            }
+        }
     }
 }
