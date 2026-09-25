@@ -185,17 +185,14 @@ function retrieveAnswers($ia)
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
-    if (($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['prevstep'])) {
-        $file_validation_msg = file_validation_message($ia);
-    } else {
-        $file_validation_msg = '';
+    if (!(($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['prevstep']))) {
         $isValid = true; // don't want to show any validation messages.
     }
 
-    $qtitle .= $ia[4] == "|" ? $file_validation_msg : "";
-    $question_text['file_valid_message'] = $ia[4] == "|" ? $file_validation_msg : "";
+    /* File upload errors are shown in the file_validation_popup, kept for templates using it */
+    $question_text['file_valid_message'] = '';
 
-    if (!empty($question_text['man_message']) || !$isValid || !empty($question_text['file_valid_message'])) {
+    if (!empty($question_text['man_message']) || !$isValid) {
         $question_text['input_error_class'] = ' input-error'; // provides a class to style question wrapper differently if there is some kind of user input error;
     }
 
@@ -285,22 +282,6 @@ function validation_message($ia, $show)
 
     $isValid = $qinfo['valid'];
     return array($tip, $isValid);
-}
-
-// TMSW Validation -> EM
-function file_validation_message($ia)
-{
-    global $filenotvalidated;
-    $qtitle = "";
-    if (isset($filenotvalidated) && is_array($filenotvalidated) && $ia[4] == "|") {
-        foreach ($filenotvalidated as $k => $v) {
-            if ($ia[1] == $k || strpos($k, "_") && $ia[1] == substr(0, strpos($k, "_") - 1)) {
-                $message = gT($filenotvalidated[$k]);
-                $qtitle .= doRender('/survey/questions/question_help/error', array('message' => $message, 'classes' => ''), true);
-            }
-        }
-    }
-    return $qtitle;
 }
 
 // TMSW Validation -> EM
@@ -510,146 +491,8 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     return $output;
 }
 
-/**
- * Return class of a specific row (hidden by relevance)
- * @param int $surveyId actual survey ID
- * @param string $baseName the base name of the question
- * @param string $name The name of the question/row to test
- * @param array $aQuestionAttributes the question attributes
- * @return string
- */
-
-function currentRelevecanceClass($surveyId, $baseName, $name, $aQuestionAttributes)
-{
-    $relevanceStatus = !isset($_SESSION["responses_{$surveyId}"]['relevanceStatus'][$name]) || $_SESSION["responses_{$surveyId}"]['relevanceStatus'][$name];
-    if ($relevanceStatus) {
-        return "";
-    }
-    $sExcludeAllOther = isset($aQuestionAttributes['exclude_all_others']) ? trim((string) $aQuestionAttributes['exclude_all_others']) : '';
-    /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
-    if ($sExcludeAllOther) {
-        foreach (explode(';', $sExcludeAllOther) as $sExclude) {
-            $sExclude = $baseName . $sExclude;
-            if (
-                (!isset($_SESSION["responses_{$surveyId}"]['relevanceStatus'][$sExclude]) || $_SESSION["responses_{$surveyId}"]['relevanceStatus'][$sExclude])
-                && (isset($_SESSION["responses_{$surveyId}"][$sExclude]) && $_SESSION["responses_{$surveyId}"][$sExclude] == "Y")
-            ) {
-                return "ls-irrelevant ls-disabled";
-            }
-        }
-    }
-
-    $filterStyle = !empty($aQuestionAttributes['array_filter_style']); // Currently null/0/false=> hidden , 1 : disabled
-    if ($filterStyle) {
-        return "ls-irrelevant ls-disabled";
-    }
-    return "ls-irrelevant ls-hidden";
-}
-/**
- * @param string $rowname
- */
-function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
-{
-    /* Disabled actually : no inline style */
-    return "";
-}
-
-/**
- * @param string $rowname
- * @param string $valuename
- */
-function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc, $valuename, $method = "tbody", $class = null)
-{
-    $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
-    $htmltbody2 .= ($class !== null) ? " class='$class'" : "";
-    $surveyid = $thissurvey['sid'];
-    if (isset($_SESSION["responses_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["responses_{$surveyid}"]['relevanceStatus'][$rowname]) {
-        // If using exclude_all_others, then need to know whether irrelevant rows should be hidden or disabled
-        if (isset($aQuestionAttributes['exclude_all_others'])) {
-            $disableit = false;
-            foreach (explode(';', trim((string) $aQuestionAttributes['exclude_all_others'])) as $eo) {
-                $eorow = $ia[1] . $eo;
-                if (
-                    (!isset($_SESSION["responses_{$surveyid}"]['relevanceStatus'][$eorow]) || $_SESSION["responses_{$surveyid}"]['relevanceStatus'][$eorow])
-                    && (isset($_SESSION[$eorow]) && $_SESSION[$eorow] == "Y")
-                ) {
-                    $disableit = true;
-                }
-            }
-            if ($disableit) {
-                $htmltbody2 .= " disabled='disabled'";
-            } else {
-                if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0') {
-                    $htmltbody2 .= " style='display: none'";
-                } else {
-                    $htmltbody2 .= " disabled='disabled'";
-                }
-            }
-        } else {
-            if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0') {
-                $htmltbody2 .= " style='display: none'";
-            } else {
-                $htmltbody2 .= " disabled='disabled'";
-            }
-        }
-    }
-    $htmltbody2 .= ">\n";
-    return array($htmltbody2, "");
-}
-
 // ==================================================================
 // QUESTION METHODS =================================================
-
-/**
- * Find the label / input width
- * @param string|int $labelAttributeWidth label width from attribute
- * @param string|int $inputAttributeWidth input width from attribute
- * @return array labelWidth as integer,inputWidth as integer,defaultWidth as boolean
- */
-function getLabelInputWidth($labelAttributeWidth, $inputAttributeWidth)
-{
-    $attributeInputContainerWidth = intval(trim($inputAttributeWidth));
-    if ($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12) {
-        $attributeInputContainerWidth = null;
-    }
-
-    $attributeLabelWidth = trim($labelAttributeWidth);
-    if ($attributeLabelWidth === 'hidden') {
-        $attributeLabelWidth = 0;
-    } else {
-        $attributeLabelWidth = intval($attributeLabelWidth);
-        if ($attributeLabelWidth < 1 || $attributeLabelWidth > 12) {
-            /* old system or imported or '' */
-            $attributeLabelWidth = null;
-        }
-    }
-    if ($attributeInputContainerWidth === null && $attributeLabelWidth === null) {
-        $sInputContainerWidth = 8;
-        $sLabelWidth = 4;
-        $defaultWidth = true;
-    } else {
-        if ($attributeInputContainerWidth !== null) {
-            $sInputContainerWidth = $attributeInputContainerWidth;
-        } elseif ($attributeLabelWidth == 12) {
-            $sInputContainerWidth = 12;
-        } else {
-            $sInputContainerWidth = 12 - $attributeLabelWidth;
-        }
-        if (!is_null($attributeLabelWidth)) {
-            $sLabelWidth = $attributeLabelWidth;
-        } elseif ($attributeInputContainerWidth == 12) {
-            $sLabelWidth = 12;
-        } else {
-            $sLabelWidth = 12 - $attributeInputContainerWidth;
-        }
-        $defaultWidth = false;
-    }
-    return array(
-        $sLabelWidth,
-        $sInputContainerWidth,
-        $defaultWidth,
-    );
-}
 
 /**
  * Render the question view.
