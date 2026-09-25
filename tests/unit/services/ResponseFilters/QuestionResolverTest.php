@@ -31,6 +31,9 @@ class QuestionResolverTest extends TestCase
             'Q50_S502' => $this->column(['qid' => 50, 'type' => 'M', 'aid' => 'SQ002', 'sqid' => 502]),
             'Q50_Cother' => $this->column(['qid' => 50, 'type' => 'M', 'aid' => 'other']),
             'Q60_S601' => $this->column(['qid' => 60, 'type' => 'M', 'aid' => 'SQ001', 'sqid' => 601]),
+            'Q90_S901' => $this->column(['qid' => 90, 'type' => 'Q', 'aid' => 'SQ001', 'sqid' => 901]),
+            'Q90_S902' => $this->column(['qid' => 90, 'type' => 'Q', 'aid' => 'SQ002', 'sqid' => 902]),
+            'Q95_S951' => $this->column(['qid' => 95, 'type' => 'K', 'aid' => 'SQ001', 'sqid' => 951]),
             '111X1X70' => $this->column(['qid' => 70, 'type' => 'F']),
             '111X1X80' => $this->column(['qid' => 80, 'type' => 'X']),
         ]));
@@ -150,6 +153,54 @@ class QuestionResolverTest extends TestCase
         $this->assertSame(ResolvedCondition::OPERATOR_NOT_EMPTY, $conditions[1]->getOperator());
     }
 
+    /**
+     * Multiple short text: the value lands on the chosen box's column, not on
+     * the question as a whole.
+     */
+    public function testASubTextQuestionResolvesToItsChosenBox(): void
+    {
+        $condition = $this->singleCondition([
+            'qid' => 90,
+            'subquestion' => 902,
+            'text' => 'delivery',
+        ]);
+
+        $this->assertSame(['Q90_S902'], $condition->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_CONTAIN, $condition->getOperator());
+        $this->assertSame('delivery', $condition->getValue());
+    }
+
+    public function testASubNumberQuestionResolvesToARangeOnItsChosenBox(): void
+    {
+        $condition = $this->singleCondition([
+            'qid' => 95,
+            'subquestion' => 951,
+            'numberMin' => 3,
+        ]);
+
+        $this->assertSame(['Q95_S951'], $condition->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_RANGE, $condition->getOperator());
+        $this->assertSame([3, ''], $condition->getValue());
+    }
+
+    /**
+     * A value with nowhere to apply it is a bad request, not a no-op: dropping
+     * it would return the rows the user was trying to exclude.
+     */
+    public function testAValueWithoutASubquestionThrows(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Question 90 needs a subquestion to filter on.');
+        $this->resolveOne(['qid' => 90, 'text' => 'delivery']);
+    }
+
+    public function testASubquestionFromAnotherQuestionThrows(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Question 90 has no subquestion 951.');
+        $this->resolveOne(['qid' => 90, 'subquestion' => 951, 'text' => 'delivery']);
+    }
+
     public function testOtherOnAMultipleChoiceThatHasNoneThrows(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -207,6 +258,9 @@ class QuestionResolverTest extends TestCase
             'no text' => [['qid' => 30]],
             'whitespace only text' => [['qid' => 30, 'text' => '   ']],
             'no answer codes' => [['qid' => 40, 'answerCodes' => []]],
+            // The box alone asks for nothing, so there is nothing to reject.
+            'no sub text' => [['qid' => 90, 'subquestion' => 901]],
+            'no sub number bounds' => [['qid' => 95, 'subquestion' => 951]],
         ];
     }
 

@@ -71,6 +71,12 @@ class QuestionResolver
             case QuestionKind::DATE:
                 $conditions = $this->resolveDate($qid, $filter);
                 break;
+            case QuestionKind::SUB_TEXT:
+                $conditions = $this->resolveSubText($qid, $filter);
+                break;
+            case QuestionKind::SUB_NUMBER:
+                $conditions = $this->resolveSubNumber($qid, $filter);
+                break;
             default:
                 throw new InvalidArgumentException("No resolver for question kind: $kind.");
         }
@@ -141,18 +147,23 @@ class QuestionResolver
      */
     private function resolveText(int $qid, ResponseFilter $filter): array
     {
-        $text = $filter->getText();
-        if ($text === null || trim($text) === '') {
-            return [];
-        }
+        $text = $this->readText($filter);
 
-        return [
-            new ResolvedCondition(
-                [$this->requireMainColumn($qid)],
-                ResolvedCondition::OPERATOR_CONTAIN,
-                $text
-            ),
-        ];
+        return $text === null ? [] : $this->contains($this->requireMainColumn($qid), $text);
+    }
+
+    /**
+     * Multiple short text: the user picks one of the question's boxes, then
+     * types what it should contain. Same comparison as a plain text question,
+     * against the box's own column.
+     *
+     * @return ResolvedCondition[]
+     */
+    private function resolveSubText(int $qid, ResponseFilter $filter): array
+    {
+        $text = $this->readText($filter);
+
+        return $text === null ? [] : $this->contains($this->requireSubquestion($qid, $filter), $text);
     }
 
     /**
@@ -160,20 +171,21 @@ class QuestionResolver
      */
     private function resolveNumber(int $qid, ResponseFilter $filter): array
     {
-        $min = $filter->getNumberMin();
-        $max = $filter->getNumberMax();
+        $bounds = $this->readNumberBounds($filter);
 
-        if ($min === null && $max === null) {
-            return [];
-        }
+        return $bounds === null ? [] : $this->range($this->requireMainColumn($qid), $bounds);
+    }
 
-        return [
-            new ResolvedCondition(
-                [$this->requireMainColumn($qid)],
-                ResolvedCondition::OPERATOR_RANGE,
-                [$min ?? '', $max ?? '']
-            ),
-        ];
+    /**
+     * Multiple numerical input: as above, with a min/max instead of text.
+     *
+     * @return ResolvedCondition[]
+     */
+    private function resolveSubNumber(int $qid, ResponseFilter $filter): array
+    {
+        $bounds = $this->readNumberBounds($filter);
+
+        return $bounds === null ? [] : $this->range($this->requireSubquestion($qid, $filter), $bounds);
     }
 
     /**
@@ -197,11 +209,76 @@ class QuestionResolver
         ];
     }
 
+    /** The typed-in text, or null when the row carries none. */
+    private function readText(ResponseFilter $filter): ?string
+    {
+        $text = $filter->getText();
+
+        return ($text === null || trim($text) === '') ? null : $text;
+    }
+
+    /**
+     * The min/max pair in the shape the range handler reads — position 0 is the
+     * min, 1 the max, '' meaning no bound. Null when neither end was given.
+     *
+     * @return array{0:int|float|string,1:int|float|string}|null
+     */
+    private function readNumberBounds(ResponseFilter $filter): ?array
+    {
+        $min = $filter->getNumberMin();
+        $max = $filter->getNumberMax();
+
+        if ($min === null && $max === null) {
+            return null;
+        }
+
+        return [$min ?? '', $max ?? ''];
+    }
+
+    /**
+     * @return ResolvedCondition[]
+     */
+    private function contains(string $column, string $text): array
+    {
+        return [new ResolvedCondition([$column], ResolvedCondition::OPERATOR_CONTAIN, $text)];
+    }
+
+    /**
+     * @param array{0:int|float|string,1:int|float|string} $bounds
+     * @return ResolvedCondition[]
+     */
+    private function range(string $column, array $bounds): array
+    {
+        return [new ResolvedCondition([$column], ResolvedCondition::OPERATOR_RANGE, $bounds)];
+    }
+
     private function requireMainColumn(int $qid): string
     {
         $column = $this->map->getMainColumn($qid);
         if ($column === null) {
             throw new InvalidArgumentException("Question $qid has no answer column to filter on.");
+        }
+
+        return $column;
+    }
+
+    /**
+     * The column of the subquestion this row targets.
+     *
+     * A row with a value but no subquestion is rejected rather than dropped: we
+     * know what the user wants to match but not where, and quietly ignoring it
+     * would return rows they asked to exclude.
+     */
+    private function requireSubquestion(int $qid, ResponseFilter $filter): string
+    {
+        $sqid = $filter->getSubquestion();
+        if ($sqid === null) {
+            throw new InvalidArgumentException("Question $qid needs a subquestion to filter on.");
+        }
+
+        $column = $this->map->getColumnBySqid($qid, $sqid);
+        if ($column === null) {
+            throw new InvalidArgumentException("Question $qid has no subquestion $sqid.");
         }
 
         return $column;
