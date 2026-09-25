@@ -9,7 +9,7 @@ import {
   ContentEditor,
   getQuestionTypeInfo,
 } from 'components'
-import { hasTempId, STATES } from 'helpers'
+import { STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { ArraySubQuestionRadioAnswers } from './ArraySubQuestionRadioAnswers'
 import { ArraySubQuestionTextAnswers } from './ArraySubQuestionTextAnswers'
