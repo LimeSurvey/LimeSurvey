@@ -58,7 +58,16 @@
     display : none !important;
 }
 
+// Toolbars are floated by default, so groups of differing heights snag wrapping groups
+// and leave big gaps - lay them out as wrapping flex items instead
 .cke_toolbox {
+    display     : flex !important;
+    flex-wrap   : wrap;
+    align-items : center;
+    .cke_toolbar_break {
+        flex-basis : 100%;
+        height     : 0;
+    }
     .cke_button {
         margin-left : 3px;
         &:hover, &:focus {

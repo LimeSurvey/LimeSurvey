@@ -62,7 +62,7 @@
             </options>
             <default>no</default>
             <help>Show also the platform information of the participant</help>
-            <caption>Show Platform information: </caption>
+            <caption>Show Platform information:</caption>
         </attribute>
     </attributes>
 

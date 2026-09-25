@@ -3,7 +3,7 @@
         'name' => 'limesurvey/limesurvey',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '7e9a0c642ae8835c13719ae4cd281bc169b91c8d',
+        'reference' => '2b37ffc79e972d69dbbee0fd1dac0268904fac0d',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -128,9 +128,9 @@
             'dev_requirement' => false,
         ),
         'composer/semver' => array(
-            'pretty_version' => '3.4.4',
-            'version' => '3.4.4.0',
-            'reference' => '198166618906cb2de69b95d7d47e5fa8aa1b2b95',
+            'pretty_version' => '3.5.0',
+            'version' => '3.5.0.0',
+            'reference' => 'f7a296f4c4cf8cb8bb83e35d6951a406bb11afa5',
             'type' => 'library',
             'install_path' => __DIR__ . '/./semver',
             'aliases' => array(),
@@ -320,9 +320,9 @@
             ),
         ),
         'laravel/serializable-closure' => array(
-            'pretty_version' => 'v2.0.16',
-            'version' => '2.0.16.0',
-            'reference' => '7cfc24e4fa2cca045fb8dd2a797a2b2b13b655ed',
+            'pretty_version' => 'v2.1.0',
+            'version' => '2.1.0.0',
+            'reference' => '2d5869a838bbcf37e0d8b0568fc41914e81374b5',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laravel/serializable-closure',
             'aliases' => array(),
@@ -367,7 +367,7 @@
         'limesurvey/limesurvey' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '7e9a0c642ae8835c13719ae4cd281bc169b91c8d',
+            'reference' => '2b37ffc79e972d69dbbee0fd1dac0268904fac0d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -662,9 +662,9 @@
             'dev_requirement' => true,
         ),
         'phpunit/phpunit' => array(
-            'pretty_version' => '9.6.36',
-            'version' => '9.6.36.0',
-            'reference' => 'abab27ed286d3e1246fbbfe6b56bfd732d945ec9',
+            'pretty_version' => '9.6.37',
+            'version' => '9.6.37.0',
+            'reference' => 'aceaa623912caf8e80bffea22fc4103a0a01565f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpunit/phpunit',
             'aliases' => array(),
@@ -673,7 +673,7 @@
         'psalm/psalm' => array(
             'dev_requirement' => true,
             'provided' => array(
-                0 => '6.17.2',
+                0 => '6.18.0',
             ),
         ),
         'psr/container' => array(
@@ -1166,9 +1166,9 @@
             'dev_requirement' => false,
         ),
         'vimeo/psalm' => array(
-            'pretty_version' => '6.17.2',
-            'version' => '6.17.2.0',
-            'reference' => 'dd625545733d24633e5d386a26c13004dae80e19',
+            'pretty_version' => '6.18.0',
+            'version' => '6.18.0.0',
+            'reference' => '536dd6236b39a5115385b0307b42d6d1ad431a02',
             'type' => 'project',
             'install_path' => __DIR__ . '/../vimeo/psalm',
             'aliases' => array(),
