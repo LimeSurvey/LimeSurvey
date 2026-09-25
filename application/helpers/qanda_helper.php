@@ -652,51 +652,6 @@ function getLabelInputWidth($labelAttributeWidth, $inputAttributeWidth)
 }
 
 /**
- * Take a date string and fill out missing parts, like day, hour, minutes
- * (not seconds).
- * If string is NOT in standard date format (Y-m-d H:i), this methods makes no
- * sense.
- * Used when fetching answer for do_date, where answer can come from a default
- * answer expression like date('Y').
- * Will also truncate date('c') to format Y-m-d H:i.
- * @param string $dateString
- * @return string
- */
-function fillDate($dateString)
-{
-    switch (strlen($dateString)) {
-        // Only year
-        case 4:
-            return $dateString . '-01-01 00:00';
-        // Year and month
-        case 7:
-            return $dateString . '-01 00:00';
-        // Year, month and day
-        case 10:
-            return $dateString . ' 00:00';
-        // Year, month day and hour
-        case 13:
-            return $dateString . ':00';
-        // Complete, return as is.
-        case 16:
-            return $dateString;
-        case 19:
-        case 21: // Y-m-d H:i.s.n (n==1)
-        case 22: // Y-m-d H:i.s.n (n==2)
-        case 23: // mssql Y-m-d H:i.s.n (n==3)
-        case 24: // Y-m-d H:i.s.n (n==4)
-        case 25: // Assume date('c')
-            $date = new DateTime($dateString);
-            if ($date) {
-                return $date->format('Y-m-d H:i');
-            }
-        // no break
-        default:
-            return '';
-    }
-}
-
-/**
  * Render the question view.
  *
  * By default, it just renders the required core view from application/views/survey/...
