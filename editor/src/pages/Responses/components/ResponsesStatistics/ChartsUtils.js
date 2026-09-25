@@ -43,6 +43,12 @@ export const COLORS = [
 
 export const BAR_MAX_SIZE = 120
 
+export const BAR_SCROLL_THRESHOLD = 20
+export const BAR_MIN_CATEGORY_WIDTH = 48
+
+export const getBarChartMinWidth = (count) =>
+  count > BAR_SCROLL_THRESHOLD ? count * BAR_MIN_CATEGORY_WIDTH : undefined
+
 export const MAX_LABEL_LENGTH = 18
 
 export const NON_ANSWER_KEYS = ['comment', 'other']
