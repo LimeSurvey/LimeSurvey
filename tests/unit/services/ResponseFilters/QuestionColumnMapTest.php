@@ -100,6 +100,62 @@ class QuestionColumnMapTest extends TestCase
         $this->assertNull($this->map()->getColumnBySqid(10, 555));
     }
 
+    /**
+     * Dual-scale columns share a subquestion and differ only by scale — and,
+     * in their names, by the '#' suffix.
+     */
+    public function testFindsADualScaleColumnByItsScale(): void
+    {
+        $map = QuestionColumnMap::fromQuestionFieldMap([
+            'Q40_S401#0' => $this->column(['qid' => 40, 'type' => '1', 'sqid' => 401, 'scaleid' => 0]),
+            'Q40_S401#1' => $this->column(['qid' => 40, 'type' => '1', 'sqid' => 401, 'scaleid' => 1]),
+        ]);
+
+        $this->assertSame('Q40_S401#0', $map->getColumnBySqidAndScale(40, 401, 0));
+        $this->assertSame('Q40_S401#1', $map->getColumnBySqidAndScale(40, 401, 1));
+        $this->assertNull($map->getColumnBySqidAndScale(40, 401, 2));
+        $this->assertNull($map->getColumnBySqidAndScale(40, 999, 0));
+    }
+
+    /**
+     * createFieldMap() writes scale_id; the responses transformer renames it to
+     * scaleid. Both have to work, so the statistics side can reuse this map
+     * without an adapter of its own.
+     */
+    public function testAcceptsEitherSpellingOfTheScaleId(): void
+    {
+        $map = QuestionColumnMap::fromQuestionFieldMap([
+            'Q40_S401#1' => [
+                'fieldname' => 'Q40_S401#1',
+                'qid' => 40,
+                'type' => '1',
+                'sqid' => 401,
+                'scale_id' => 1,
+            ],
+        ]);
+
+        $this->assertSame('Q40_S401#1', $map->getColumnBySqidAndScale(40, 401, 1));
+    }
+
+    /**
+     * Grid cells store only their row's subquestion; the column's is in the
+     * name. Matching it as an exact suffix keeps '_S5' off '_S15'.
+     */
+    public function testFindsAGridCellByRowAndColumn(): void
+    {
+        $map = QuestionColumnMap::fromQuestionFieldMap([
+            'Q50_S501_S5' => $this->column(['qid' => 50, 'type' => ':', 'sqid' => 501]),
+            'Q50_S501_S15' => $this->column(['qid' => 50, 'type' => ':', 'sqid' => 501]),
+            'Q50_S502_S5' => $this->column(['qid' => 50, 'type' => ':', 'sqid' => 502]),
+        ]);
+
+        $this->assertSame('Q50_S501_S5', $map->getGridColumn(50, 501, 5));
+        $this->assertSame('Q50_S501_S15', $map->getGridColumn(50, 501, 15));
+        $this->assertSame('Q50_S502_S5', $map->getGridColumn(50, 502, 5));
+        $this->assertNull($map->getGridColumn(50, 501, 999));
+        $this->assertNull($map->getGridColumn(50, 999, 5));
+    }
+
     /** System columns (id, submitdate, ...) carry no qid and are not questions. */
     public function testEntriesWithoutAQuestionAreIgnored(): void
     {

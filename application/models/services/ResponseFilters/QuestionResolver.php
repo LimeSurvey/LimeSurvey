@@ -31,6 +31,9 @@ class QuestionResolver
     /** The `aid` marking a question's free-text "Other" column. */
     private const OTHER_AID = 'other';
 
+    /** Array (Numbers); its sibling ';' is Array (Texts). */
+    private const ARRAY_NUMBERS_TYPE = ':';
+
     private QuestionColumnMap $map;
 
     public function __construct(QuestionColumnMap $map)
@@ -76,6 +79,15 @@ class QuestionResolver
                 break;
             case QuestionKind::SUB_NUMBER:
                 $conditions = $this->resolveSubNumber($qid, $filter);
+                break;
+            case QuestionKind::ARRAY_SCALE:
+                $conditions = $this->resolveArrayScale($qid, $filter);
+                break;
+            case QuestionKind::ARRAY_DUAL:
+                $conditions = $this->resolveArrayDual($qid, $filter);
+                break;
+            case QuestionKind::ARRAY_GRID:
+                $conditions = $this->resolveArrayGrid($qid, $type, $filter);
                 break;
             default:
                 throw new InvalidArgumentException("No resolver for question kind: $kind.");
@@ -207,6 +219,117 @@ class QuestionResolver
                 [$from ?? '', $to ?? '']
             ),
         ];
+    }
+
+    /**
+     * Array questions: each row is a column holding the answer picked on the
+     * scale. The user names a row and a scale answer, so this is one equality
+     * on the row's column.
+     *
+     * @return ResolvedCondition[]
+     */
+    private function resolveArrayScale(int $qid, ResponseFilter $filter): array
+    {
+        $answerCode = $filter->getColumn();
+        if ($answerCode === null || $answerCode === '') {
+            return [];
+        }
+
+        $column = $this->map->getColumnBySqid($qid, $this->requireRow($qid, $filter));
+        if ($column === null) {
+            throw new InvalidArgumentException("Question $qid has no row {$filter->getRow()}.");
+        }
+
+        return [new ResolvedCondition([$column], ResolvedCondition::OPERATOR_EQUAL, $answerCode)];
+    }
+
+    /**
+     * Dual-scale arrays: one row, answered twice, stored in two columns.
+     *
+     * The modal lets either scale be left blank, so a row can produce one
+     * condition or two. Two mean the respondent must have given both answers on
+     * that row, which is why the row's conditions AND.
+     *
+     * @return ResolvedCondition[]
+     */
+    private function resolveArrayDual(int $qid, ResponseFilter $filter): array
+    {
+        $scales = [0 => $filter->getColumn(), 1 => $filter->getColumn2()];
+        $scales = array_filter($scales, static function ($code): bool {
+            return $code !== null && $code !== '';
+        });
+
+        if ($scales === []) {
+            return [];
+        }
+
+        $rowSqid = $this->requireRow($qid, $filter);
+        $conditions = [];
+
+        foreach ($scales as $scale => $answerCode) {
+            $column = $this->map->getColumnBySqidAndScale($qid, $rowSqid, $scale);
+            if ($column === null) {
+                throw new InvalidArgumentException(
+                    "Question $qid has no row $rowSqid on scale $scale."
+                );
+            }
+
+            $conditions[] = new ResolvedCondition(
+                [$column],
+                ResolvedCondition::OPERATOR_EQUAL,
+                $answerCode
+            );
+        }
+
+        return $conditions;
+    }
+
+    /**
+     * Array grids: rows and columns are both subquestions, and every cell has a
+     * column of its own holding what was typed into it. The type decides what
+     * that is — numbers for ':' and text for ';' — so the same cell is filtered
+     * by range or by contains.
+     *
+     * @return ResolvedCondition[]
+     */
+    private function resolveArrayGrid(int $qid, string $type, ResponseFilter $filter): array
+    {
+        $isNumeric = $type === self::ARRAY_NUMBERS_TYPE;
+
+        $text = $isNumeric ? null : $this->readText($filter);
+        $bounds = $isNumeric ? $this->readNumberBounds($filter) : null;
+
+        if ($text === null && $bounds === null) {
+            return [];
+        }
+
+        $columnSqid = $filter->getColumn();
+        if ($columnSqid === null || !ctype_digit($columnSqid)) {
+            throw new InvalidArgumentException("Question $qid needs a column to filter on.");
+        }
+
+        $rowSqid = $this->requireRow($qid, $filter);
+        $column = $this->map->getGridColumn($qid, $rowSqid, (int) $columnSqid);
+        if ($column === null) {
+            throw new InvalidArgumentException("Question $qid has no cell $rowSqid/$columnSqid.");
+        }
+
+        return $isNumeric ? $this->range($column, $bounds) : $this->contains($column, $text);
+    }
+
+    /**
+     * The row an array filter applies to. Rejected rather than dropped when
+     * missing, for the same reason as a missing subquestion: the value has
+     * nowhere to go.
+     */
+    private function requireRow(int $qid, ResponseFilter $filter): int
+    {
+        $row = $filter->getRow();
+        if ($row === null) {
+            throw new InvalidArgumentException("Question $qid needs a row to filter on.");
+        }
+
+        return $row;
     }
 
     /** The typed-in text, or null when the row carries none. */

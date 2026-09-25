@@ -47,6 +47,13 @@ class QuestionColumnMap
             // fall back to the key so a trimmed-down map still works.
             $column['fieldname'] = $column['fieldname'] ?? $fieldname;
 
+            // createFieldMap() writes scale_id; the responses transformer
+            // renames it to scaleid on the way out. Accept either, so the
+            // statistics side can pass the raw map straight in.
+            if (!isset($column['scaleid']) && isset($column['scale_id'])) {
+                $column['scaleid'] = $column['scale_id'];
+            }
+
             if (!isset($questions[$qid])) {
                 $questions[$qid] = [
                     'type' => (string) ($column['type'] ?? ''),
@@ -115,6 +122,49 @@ class QuestionColumnMap
         foreach ($this->getColumns($qid) as $column) {
             if (isset($column['sqid']) && (int) $column['sqid'] === $sqid) {
                 return (string) $column['fieldname'];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * The column for one row of a dual-scale question.
+     *
+     * Both scales of a row share a subquestion and are told apart by their
+     * scale id, which is also why their column names differ only by a '#0' or
+     * '#1' suffix.
+     */
+    public function getColumnBySqidAndScale(int $qid, int $sqid, int $scale): ?string
+    {
+        foreach ($this->getColumns($qid) as $column) {
+            if (
+                isset($column['sqid'], $column['scaleid'])
+                && (int) $column['sqid'] === $sqid
+                && (int) $column['scaleid'] === $scale
+            ) {
+                return (string) $column['fieldname'];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * The column for one cell of an array grid — the questions built from two
+     * sets of subquestions, where every row/column pair gets a column of its
+     * own.
+     */
+    public function getGridColumn(int $qid, int $rowSqid, int $columnSqid): ?string
+    {
+        foreach ($this->getColumns($qid) as $column) {
+            if (!isset($column['sqid']) || (int) $column['sqid'] !== $rowSqid) {
+                continue;
+            }
+
+            $fieldname = (string) $column['fieldname'];
+            if (str_ends_with($fieldname, '_S' . $columnSqid)) {
+                return $fieldname;
             }
         }
 

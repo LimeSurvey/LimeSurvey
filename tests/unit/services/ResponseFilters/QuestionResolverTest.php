@@ -34,7 +34,21 @@ class QuestionResolverTest extends TestCase
             'Q90_S901' => $this->column(['qid' => 90, 'type' => 'Q', 'aid' => 'SQ001', 'sqid' => 901]),
             'Q90_S902' => $this->column(['qid' => 90, 'type' => 'Q', 'aid' => 'SQ002', 'sqid' => 902]),
             'Q95_S951' => $this->column(['qid' => 95, 'type' => 'K', 'aid' => 'SQ001', 'sqid' => 951]),
-            '111X1X70' => $this->column(['qid' => 70, 'type' => 'F']),
+            // Array: one column per row, holding the answer picked on the scale.
+            'Q100_S1001' => $this->column(['qid' => 100, 'type' => 'F', 'sqid' => 1001]),
+            'Q100_S1002' => $this->column(['qid' => 100, 'type' => 'F', 'sqid' => 1002]),
+            // Dual scale: the same row answered twice, split by scale id.
+            'Q110_S1101#0' => $this->column(['qid' => 110, 'type' => '1', 'sqid' => 1101, 'scaleid' => 0]),
+            'Q110_S1101#1' => $this->column(['qid' => 110, 'type' => '1', 'sqid' => 1101, 'scaleid' => 1]),
+            // Array (Numbers): a column per row/column pair, holding a number.
+            // Column ids 5 and 15 are deliberate: '_S5' must not match '_S15'.
+            'Q120_S1201_S5' => $this->column(['qid' => 120, 'type' => ':', 'sqid' => 1201]),
+            'Q120_S1201_S15' => $this->column(['qid' => 120, 'type' => ':', 'sqid' => 1201]),
+            'Q120_S1202_S5' => $this->column(['qid' => 120, 'type' => ':', 'sqid' => 1202]),
+            // Array (Texts): same shape, holding text.
+            'Q130_S1301_S1351' => $this->column(['qid' => 130, 'type' => ';', 'sqid' => 1301]),
+            // Still unresolved kinds, and a display-only type.
+            'Q140_S1401' => $this->column(['qid' => 140, 'type' => 'R', 'sqid' => 1401]),
             '111X1X80' => $this->column(['qid' => 80, 'type' => 'X']),
         ]));
     }
@@ -237,8 +251,160 @@ class QuestionResolverTest extends TestCase
     public function testAKindWithoutAResolverThrows(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('No resolver for question kind: arrayScale.');
-        $this->resolveOne(['qid' => 70, 'row' => 1, 'column' => 2]);
+        $this->expectExceptionMessage('No resolver for question kind: ranking.');
+        $this->resolveOne(['qid' => 140, 'row' => 1, 'column' => '1401']);
+    }
+
+    /** One row of an array holds the answer picked on the scale. */
+    public function testAnArrayQuestionResolvesToTheRowColumn(): void
+    {
+        $condition = $this->singleCondition([
+            'qid' => 100,
+            'row' => 1002,
+            'column' => 'A2',
+        ]);
+
+        $this->assertSame(['Q100_S1002'], $condition->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_EQUAL, $condition->getOperator());
+        $this->assertSame('A2', $condition->getValue());
+    }
+
+    /**
+     * Answer codes are not numbers, so they must survive the trip intact —
+     * casting them to int would turn every code into 0.
+     */
+    public function testAnswerCodesAreNotTreatedAsNumbers(): void
+    {
+        $condition = $this->singleCondition(['qid' => 100, 'row' => 1001, 'column' => 'AAA']);
+
+        $this->assertSame('AAA', $condition->getValue());
+    }
+
+    /** Each scale of a dual-scale row is its own column, split by '#'. */
+    public function testADualScaleRowResolvesToTheScaleTheUserPicked(): void
+    {
+        $first = $this->singleCondition(['qid' => 110, 'row' => 1101, 'column' => 'A1']);
+        $this->assertSame(['Q110_S1101#0'], $first->getKeys());
+
+        $second = $this->singleCondition(['qid' => 110, 'row' => 1101, 'column2' => 'B1']);
+        $this->assertSame(['Q110_S1101#1'], $second->getKeys());
+    }
+
+    /**
+     * Answering on both scales means both must match, so the two conditions
+     * AND — unlike a set of options picked from one list.
+     */
+    public function testBothDualScalesGiveTwoConditionsThatAnd(): void
+    {
+        $resolved = $this->resolveOne([
+            'qid' => 110,
+            'row' => 1101,
+            'column' => 'A1',
+            'column2' => 'B1',
+        ]);
+
+        $conditions = $resolved->getConditions();
+        $this->assertCount(2, $conditions);
+        $this->assertFalse($resolved->isInnerOr());
+
+        $this->assertSame(['Q110_S1101#0'], $conditions[0]->getKeys());
+        $this->assertSame('A1', $conditions[0]->getValue());
+        $this->assertSame(['Q110_S1101#1'], $conditions[1]->getKeys());
+        $this->assertSame('B1', $conditions[1]->getValue());
+    }
+
+    /** Array (Numbers): the cell holds a number, so it is a range. */
+    public function testAnArrayNumbersCellResolvesToARange(): void
+    {
+        $condition = $this->singleCondition([
+            'qid' => 120,
+            'row' => 1201,
+            'column' => '15',
+            'numberMin' => 2,
+            'numberMax' => 8,
+        ]);
+
+        $this->assertSame(['Q120_S1201_S15'], $condition->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_RANGE, $condition->getOperator());
+        $this->assertSame([2, 8], $condition->getValue());
+    }
+
+    /**
+     * The column id is matched as an exact name suffix, so column 5 can never
+     * resolve to column 15's cell.
+     */
+    public function testAGridColumnIsNotMatchedByAPrefixOfAnother(): void
+    {
+        $condition = $this->singleCondition([
+            'qid' => 120,
+            'row' => 1201,
+            'column' => '5',
+            'numberMin' => 1,
+        ]);
+
+        $this->assertSame(['Q120_S1201_S5'], $condition->getKeys());
+    }
+
+    public function testAGridCellIsPickedByRowAsWellAsColumn(): void
+    {
+        $condition = $this->singleCondition([
+            'qid' => 120,
+            'row' => 1202,
+            'column' => '5',
+            'numberMin' => 1,
+        ]);
+
+        $this->assertSame(['Q120_S1202_S5'], $condition->getKeys());
+    }
+
+    /** Array (Texts): the same cell shape, filtered by what was typed in it. */
+    public function testAnArrayTextsCellResolvesToAContains(): void
+    {
+        $condition = $this->singleCondition([
+            'qid' => 130,
+            'row' => 1301,
+            'column' => '1351',
+            'text' => 'late',
+        ]);
+
+        $this->assertSame(['Q130_S1301_S1351'], $condition->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_CONTAIN, $condition->getOperator());
+        $this->assertSame('late', $condition->getValue());
+    }
+
+    public function testAnArrayValueWithoutARowThrows(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Question 100 needs a row to filter on.');
+        $this->resolveOne(['qid' => 100, 'column' => 'A1']);
+    }
+
+    public function testARowThatIsNotPartOfTheArrayThrows(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Question 100 has no row 9999.');
+        $this->resolveOne(['qid' => 100, 'row' => 9999, 'column' => 'A1']);
+    }
+
+    public function testADualScaleRowThatIsNotPartOfTheQuestionThrows(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Question 110 has no row 9999 on scale 0.');
+        $this->resolveOne(['qid' => 110, 'row' => 9999, 'column' => 'A1']);
+    }
+
+    public function testAGridValueWithoutAColumnThrows(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Question 120 needs a column to filter on.');
+        $this->resolveOne(['qid' => 120, 'row' => 1201, 'numberMin' => 1]);
+    }
+
+    public function testAGridCellThatDoesNotExistThrows(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Question 120 has no cell 1201/999.');
+        $this->resolveOne(['qid' => 120, 'row' => 1201, 'column' => '999', 'numberMin' => 1]);
     }
 
     /**

@@ -285,14 +285,21 @@ class ResponseFilter
         return isset($this->payload['row']) ? (int) $this->payload['row'] : null;
     }
 
-    public function getColumn(): ?int
+    /**
+     * What "column" holds depends on the question: an answer code for the
+     * array kinds that pick from a scale, a subquestion id for the grid kinds
+     * whose columns are subquestions. It stays a raw string here, and the
+     * resolver — which knows the kind — reads it as whichever it is.
+     */
+    public function getColumn(): ?string
     {
-        return isset($this->payload['column']) ? (int) $this->payload['column'] : null;
+        return isset($this->payload['column']) ? (string) $this->payload['column'] : null;
     }
 
-    public function getColumn2(): ?int
+    /** The second scale of a dual-scale question; an answer code. */
+    public function getColumn2(): ?string
     {
-        return isset($this->payload['column2']) ? (int) $this->payload['column2'] : null;
+        return isset($this->payload['column2']) ? (string) $this->payload['column2'] : null;
     }
 
     public function getFileUploaded(): ?string
