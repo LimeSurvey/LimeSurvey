@@ -184,10 +184,30 @@ export const ResponsesTable = ({
       onDeleteResponseFilesClick: () => handleOnActionFilesDeleteClick(),
     })
 
+    const timingColumnDefinition = ({ id, header, meta = {} }) => ({
+      id,
+      header,
+      qid: meta.qid,
+      timingType: meta.timingType,
+      questionLabel: meta.questionLabel,
+      title: meta.title,
+    })
+    const generatedTimingColumns = generateColumns(
+      responsesData.surveyQuestions || surveyQuestions,
+      survey,
+      responsesData.timingFields
+    ).filter((column) => column.meta?.columnCategory === 'timing')
+    const currentTimingColumns = columns.filter(
+      (column) => column.meta?.columnCategory === 'timing'
+    )
+    const timingFieldsChanged =
+      JSON.stringify(generatedTimingColumns.map(timingColumnDefinition)) !==
+      JSON.stringify(currentTimingColumns.map(timingColumnDefinition))
+
     let generatedColumns = columns
 
-    // if the columns are not generated yet, generate them
-    if (!columns.length) {
+    // Regenerate columns when timing fields change.
+    if (!columns.length || timingFieldsChanged) {
       generatedColumns = generateColumns(
         responsesData.surveyQuestions || surveyQuestions,
         survey,
@@ -203,13 +223,30 @@ export const ResponsesTable = ({
       }
 
       setColumns(generatedColumns)
-      setColumnVisibility(
-        applyStoredColumnVisibility(
+      setColumnVisibility((currentVisibility) => {
+        const initialVisibility = applyStoredColumnVisibility(
           generatedColumns,
           getInitialColumnVisibility(generatedColumns),
           readColumnVisibility(survey.sid)
         )
-      )
+        return Object.fromEntries(
+          generatedColumns.map(({ id }) => [
+            id,
+            currentVisibility[id] ?? initialVisibility[id],
+          ])
+        )
+      })
+      setColumnsOrder((currentOrder) => {
+        if (!currentOrder.length) {
+          return currentOrder
+        }
+
+        const generatedColumnIds = generatedColumns.map(({ id }) => id)
+        return [
+          ...currentOrder,
+          ...generatedColumnIds.filter((id) => !currentOrder.includes(id)),
+        ]
+      })
       // else if we have columns, then we pop the actions column and readd it to update the columns ref
     } else if (!hideActions && columns.length) {
       columns.pop()
@@ -220,7 +257,7 @@ export const ResponsesTable = ({
     setData(
       generateData(responsesData.responses, survey.language, generatedColumns)
     )
-  }, [responsesData, survey.sid])
+  }, [responsesData, survey])
 
   useEffect(() => {
     // set the columns order only once after the columns are generated and then control it with the columns manager.

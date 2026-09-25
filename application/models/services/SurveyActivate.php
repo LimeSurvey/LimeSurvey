@@ -153,7 +153,13 @@ class SurveyActivate
                 }
                 copyFromOneTableToTheOther($archives["tokens"], $tokenTable, $preserveIDs);
             }
-            if (isset($archives["timings"])) {
+            $survey = $this->survey->findByPk($surveyId);
+            if (
+                isset($archives["timings"])
+                && $survey !== null
+                && $survey->savetimings === 'Y'
+                && $survey->hasTimingsTable
+            ) {
                 $timingsTable = $this->app->db->tablePrefix . "timings_" . $surveyId;
                 copyFromOneTableToTheOther($archives["timings"], $timingsTable, $preserveIDs);
             }

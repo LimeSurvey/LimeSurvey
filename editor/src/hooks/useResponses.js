@@ -33,6 +33,7 @@ export function useResponses(surveyId, pagination, filters, sorting) {
         filters,
         sorting,
       }),
+    refetchOnMount: 'always',
     select: (data) => data,
     placeholderData: keepPreviousData,
   })

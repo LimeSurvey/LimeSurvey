@@ -178,6 +178,11 @@ export const SurveyLogicProvider = ({ children }) => {
       )
       setErrorsFromPatchResponse([...validationErrors, ...exceptionErrors])
 
+      // Refresh responses after survey metadata changes.
+      queryClient.invalidateQueries({
+        queryKey: [STATES.SURVEY_RESPONSES, surveyId],
+      })
+
       if (!result.operationsApplied) {
         errorToast(
           'Sorry, we encountered an issue while saving the changes. Please try refreshing the page!'
