@@ -67,6 +67,15 @@ class User extends LSActiveRecord
     /** @var null|string To be in search */
     public $search_parentUserName;
 
+    /** @var null|string Upper bound ("to") of the "created" date-range filter; not a DB column */
+    public $created_to;
+
+    /** @var null|string Upper bound ("to") of the "expires" date-range filter; not a DB column */
+    public $expires_to;
+
+    /** @var null|string Upper bound ("to") of the "last_login" date-range filter; not a DB column */
+    public $last_login_to;
+
     /**
      * @inheritdoc
      * @return User
@@ -865,27 +874,6 @@ class User extends LSActiveRecord
                 "name"   => 'users_name',
                 "header" => gT("Username")
             ],
-            [
-                "name"   => 'email',
-                "header" => gT("Email")
-            ],
-            [
-                "name"   => 'full_name',
-                "header" => gT("Full name")
-            ],
-            [
-                "name"   => "created",
-                "header" => gT("Created on"),
-                "value"  => function ($data) {
-                    return $this->getFormattedDate($data, "created");
-                },
-                "filter" => $this->getDateFilter("created"),
-            ],
-            [
-                "name"   => "search_parentUserName",
-                "value"  => '$data->parentUserName',
-                "header" => gT("Created by"),
-            ],
             /**
              * CLSGridView include extra columns before the 2 last columns,
              * Survey have Action column here, User din't have Action column
@@ -911,6 +899,31 @@ class User extends LSActiveRecord
         $permission_read_usergroups = Permission::model()->hasGlobalPermission('usergroups', 'read');
         $permission_read_surveys    = Permission::model()->hasGlobalPermission('surveys', 'read');
         $cols = [
+            "email" => [
+                "name"   => 'email',
+                "header" => gT("Email"),
+                "default" => true,
+            ],
+            "full_name" => [
+                "name"   => 'full_name',
+                "header" => gT("Full name"),
+                "default" => true,
+            ],
+            "created" => [
+                "name"   => "created",
+                "header" => gT("Created on"),
+                "value"  => function ($data) {
+                    return $this->getFormattedDate($data, "created");
+                },
+                "filter" => $this->getDateFilter("created"),
+                "default" => true,
+            ],
+            "search_parentUserName" => [
+                "name"   => "search_parentUserName",
+                "value"  => '$data->parentUserName',
+                "header" => gT("Created by"),
+                "default" => true,
+            ],
             "expires" => [
                 "name"   => 'expires',
                 "header" => gT('Expires'),
@@ -918,6 +931,12 @@ class User extends LSActiveRecord
                     return $this->getFormattedDate($data, "expires");
                 },
                 "filter" => $this->getDateFilter("expires"),
+            ],
+            "last_login" => [
+                "name"   => 'last_login',
+                "header" => gT('Last login'),
+                "value"  => '$data->lastloginFormatted',
+                "filter" => $this->getDateFilter("last_login"),
             ],
             "user_status" => [
                 "name"   => 'user_status',
@@ -1046,25 +1065,74 @@ class User extends LSActiveRecord
     }
 
     /**
-     * get specific filter for date
-     * @param string $column
+     * Get a date-range filter for a grid column, respecting the current user's configured
+     * date format. The "from" and "to" bounds are independent and either (or both) may be
+     * left empty.
+     * @param string $column base attribute name, e.g. "created"; its "to" counterpart is
+     *                        read from/written to the "{$column}_to" property
      * @return string the HTML filter for date
      */
     public function getDateFilter($column)
     {
-        $dateFilter = "<div class='input-group'>";
-        $dateFilter .= "<span class='input-group-text' style='font-size:1rem;line-height:16px;'>&gt;=</span>";
-        $dateFilter .= CHtml::dateField(
-            get_class($this) . "[" . $column . "]",
-            $this->getAttribute($column),
-            [
-                'class' => "form-control",
-                // Native date inputs keep a larger min-height for the picker; pin height to match the other form-control filters.
-                'style' => 'font-size:1rem;height:37.6px;min-height:0;'
-            ]
-        );
+        $jsDateFormat = getDateFormatData(Yii::app()->session['dateformat'])['jsdate'];
+        // Bootstrap's default .input-group-text padding is too wide once two pickers have
+        // to share one narrow filter cell; narrow it down for just these range filters.
+        // Embedded inline (like the pickers' own init scripts) so it survives the grid's
+        // ajax filter updates instead of being dropped like a registerCss() call would be.
+        $dateFilter  = "<style>.ls-date-range-filter .input-group.date{flex-wrap:nowrap;max-width:8em;}"
+            . ".ls-date-range-filter .datepicker-icon{padding:0.375rem 0.4rem;}"
+            . ".ls-date-range-filter .datepicker-icon .ri-calendar-2-fill{font-size:0.85rem;}</style>";
+        $dateFilter .= "<div class='ls-date-range-filter d-flex align-items-center gap-1'>";
+        $dateFilter .= $this->renderDateRangeBound($column, $jsDateFormat);
+        $dateFilter .= "<span style='font-size:1rem;line-height:16px;'>-</span>";
+        $dateFilter .= $this->renderDateRangeBound($column . '_to', $jsDateFormat);
         $dateFilter .= "</div>";
         return $dateFilter;
+    }
+
+    /**
+     * Renders one bound (either the base attribute or its "_to" counterpart) of a
+     * date-range filter, including its own inline picker-init script.
+     * @param string $attribute the model attribute backing this bound
+     * @param string $jsDateFormat the Tempus Dominus date format string for the current user
+     * @return string
+     */
+    private function renderDateRangeBound($attribute, $jsDateFormat)
+    {
+        /** @var DateTimePicker $picker */
+        $picker = Yii::app()->getController()->createWidget(
+            'ext.DateTimePickerWidget.DateTimePicker',
+            [
+                'name' => get_class($this) . "[" . $attribute . "]",
+                'value' => $this->getAttribute($attribute),
+                'htmlOptions' => [
+                    'class' => 'form-control',
+                    'data-format' => $jsDateFormat,
+                ],
+                'pluginOptions' => [
+                    'format' => $jsDateFormat,
+                    'showClear' => true,
+                    'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
+                ],
+            ]
+        );
+        ob_start();
+        $picker->renderField();
+        $fieldHtml = ob_get_clean();
+
+        // Registers the tempus-dominus CSS/JS assets once for the page (idempotent).
+        Yii::app()->getClientScript()->registerPackage('tempus-dominus');
+
+        // The init script is embedded inline (rather than via the widget's own
+        // registerScript, which places it at POS_END) because this filter lives inside
+        // a CGridView whose ajax update only re-inserts the grid's own subtree from the
+        // response: a script Yii places elsewhere on the page never reaches the live DOM
+        // on that swap, so the picker would stop responding after the first filter
+        // submit. Embedding it inside this cell means it travels with the swapped markup
+        // and jQuery executes it as part of the replaceWith().
+        $initScript = $picker->getConfigScript($picker->getId());
+
+        return $fieldHtml . "<script>$initScript</script>";
     }
 
     /** @inheritdoc */
@@ -1084,24 +1152,44 @@ class User extends LSActiveRecord
         if ($this->user_status === "N") {
             $criteria->addCondition('t.user_status = 0');
         }
-        //filter for date comparison
-        foreach (['created','expires'] as $dateAttribute) {
-            if ($this->getAttribute($dateAttribute)) {
-                $datetime = DateTime::createFromFormat("Y-m-d", $this->getAttribute($dateAttribute)); // Fix date
-                if ($datetime) {
-                    $dateCompare = $this->getAttribute($dateAttribute) . ' 00:00:00';
-                    $criteria->compare('t.' . $dateAttribute, ">=" . $dateCompare, true);
-                } else {
-                    $this->setAttribute($dateAttribute, null);
-                }
-            }
-        }
-        /* $this->search_parentUserName is not set like default Yii grid, set it manually */
+        /* $this->search_parentUserName and the date-range "to" bounds are not real DB
+           columns, so unlike "created"/"expires"/"last_login" they are not auto-populated
+           by the controller's mass-assignment call and must be read from the request manually */
         $searchValues = App()->getRequest()->getParam("User");
         if (!empty($searchValues['search_parentUserName'])) {
             $getParentName = $this->search_parentUserName = strval($searchValues['search_parentUserName']);
             $criteria->join = "LEFT JOIN {{users}} u ON t.parent_id = u.uid";
             $criteria->compare('u.users_name', $getParentName, true);
+        }
+
+        //filter for date-range comparison, submitted in the current user's configured date format
+        foreach (['created','expires','last_login'] as $dateAttribute) {
+            $toAttribute = $dateAttribute . '_to';
+            if (!empty($searchValues[$toAttribute])) {
+                $this->$toAttribute = strval($searchValues[$toAttribute]);
+            }
+
+            if ($this->getAttribute($dateAttribute)) {
+                $dateCompare = convertFromGlobalSettingFormat($this->getAttribute($dateAttribute));
+                if ($dateCompare !== null) {
+                    // $dateCompare is the local start-of-day in the admin's own display
+                    // timezone; t.$dateAttribute is stored in UTC, so convert before comparing.
+                    $criteria->compare('t.' . $dateAttribute, ">=" . getUTCOfDate($dateCompare), true);
+                } else {
+                    $this->setAttribute($dateAttribute, null);
+                }
+            }
+            if ($this->getAttribute($toAttribute)) {
+                $dateCompareTo = convertFromGlobalSettingFormat($this->getAttribute($toAttribute));
+                if ($dateCompareTo !== null) {
+                    // Make the upper bound inclusive of the whole (local) day, not just midnight,
+                    // then convert that local end-of-day moment to UTC before comparing.
+                    $endOfDay = substr($dateCompareTo, 0, 10) . ' 23:59:59';
+                    $criteria->compare('t.' . $dateAttribute, "<=" . getUTCOfDate($endOfDay), true);
+                } else {
+                    $this->setAttribute($toAttribute, null);
+                }
+            }
         }
 
 

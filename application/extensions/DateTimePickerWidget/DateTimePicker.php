@@ -152,12 +152,15 @@ class DateTimePicker extends CInputWidget
                         input_$id.onfocus = function () {
                         picker_$id.show();
                     };
-                } 
-            }    
+                }
+            }
             ";
         }
 
-        return $script;
+        // The markup for this widget may be built (e.g. for an optional/togglable grid
+        // column) without ever being inserted into the DOM, so guard against that instead
+        // of letting the picker construction throw "TD: No element was provided.".
+        return "if (document.getElementById('$this->mainId')) {\n$script\n}";
     }
 
 
