@@ -36,6 +36,25 @@ class ResolvedCondition
      */
     public const OPERATOR_NOT_EMPTY = 'not-empty';
 
+    /**
+     * "The respondent left this alone." The mirror of OPERATOR_NOT_EMPTY, and
+     * needed for the same reason: a column nobody filled can hold NULL or '',
+     * so neither test alone finds every such response.
+     */
+    public const OPERATOR_EMPTY = 'empty';
+
+    /**
+     * One element of a JSON array column equals a value. Rankings store the
+     * whole answer as a single array of item codes, ordered by rank, so this is
+     * the only way to ask "which responses put this item in this place".
+     *
+     * Value: ['position' => int, 'value' => string], the position being the
+     * zero-based index into the array. The SQL differs per database driver, so
+     * the handler branches — see ResponseAggregateBatch::jsonElement(), which
+     * already does this for the statistics counts.
+     */
+    public const OPERATOR_JSON_ELEMENT = 'json-element';
+
     /** @var array<int,string> One column, or several to be OR'd (multiple choice). */
     private array $keys;
 

@@ -47,8 +47,15 @@ class QuestionResolverTest extends TestCase
             'Q120_S1202_S5' => $this->column(['qid' => 120, 'type' => ':', 'sqid' => 1202]),
             // Array (Texts): same shape, holding text.
             'Q130_S1301_S1351' => $this->column(['qid' => 130, 'type' => ';', 'sqid' => 1301]),
-            // Still unresolved kinds, and a display-only type.
-            'Q140_S1401' => $this->column(['qid' => 140, 'type' => 'R', 'sqid' => 1401]),
+            // Ranking: one JSON column holding the item codes in rank order.
+            // The per-slot entries the field map also emits are not the storage
+            // any more, and must not be mistaken for it.
+            'Q140' => $this->column(['qid' => 140, 'type' => 'R']),
+            'Q140_S1401' => $this->column(['qid' => 140, 'type' => 'R', 'sqid' => 1401, 'aid' => 1]),
+            'Q140_S1402' => $this->column(['qid' => 140, 'type' => 'R', 'sqid' => 1402, 'aid' => 2]),
+            // File upload: the files, plus the count that says whether any came.
+            'Q150' => $this->column(['qid' => 150, 'type' => '|', 'aid' => '']),
+            'Q150_Cfilecount' => $this->column(['qid' => 150, 'type' => '|', 'aid' => 'filecount']),
             '111X1X80' => $this->column(['qid' => 80, 'type' => 'X']),
         ]));
     }
@@ -245,14 +252,83 @@ class QuestionResolverTest extends TestCase
     }
 
     /**
-     * Kinds still to be built must say so rather than resolve to nothing: a
-     * filter that quietly matches every row shows data the user excluded.
+     * A ranking is one JSON array of item codes in rank order, so "this item
+     * in this place" tests one element of it.
      */
-    public function testAKindWithoutAResolverThrows(): void
+    public function testARankingResolvesToAJsonElementTest(): void
+    {
+        $condition = $this->singleCondition([
+            'qid' => 140,
+            'row' => 2,
+            'column' => 'SQ006',
+        ]);
+
+        $this->assertSame(['Q140'], $condition->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_JSON_ELEMENT, $condition->getOperator());
+        $this->assertSame(['position' => 1, 'value' => 'SQ006'], $condition->getValue());
+    }
+
+    /** Rank 1 is the user's first place and the array's element zero. */
+    public function testRanksAreOneBasedAndArrayPositionsAreNot(): void
+    {
+        $condition = $this->singleCondition(['qid' => 140, 'row' => 1, 'column' => 'SQ006']);
+
+        $this->assertSame(['position' => 0, 'value' => 'SQ006'], $condition->getValue());
+    }
+
+    public function testARankBelowFirstPlaceThrows(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('No resolver for question kind: ranking.');
-        $this->resolveOne(['qid' => 140, 'row' => 1, 'column' => '1401']);
+        $this->expectExceptionMessage('Question 140 has no rank 0.');
+        $this->resolveOne(['qid' => 140, 'row' => 0, 'column' => 'SQ006']);
+    }
+
+    /** Uploaded means the question's file count reached one. */
+    public function testFileUploadedResolvesToAFileCountOfAtLeastOne(): void
+    {
+        $condition = $this->singleCondition(['qid' => 150, 'fileUploaded' => 'Y']);
+
+        $this->assertSame(['Q150_Cfilecount'], $condition->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_RANGE, $condition->getOperator());
+        $this->assertSame([1, ''], $condition->getValue());
+    }
+
+    /** A title narrows the upload further, so both must hold. */
+    public function testAFileTitleAddsAConditionOnTheFilesThemselves(): void
+    {
+        $resolved = $this->resolveOne([
+            'qid' => 150,
+            'fileUploaded' => 'Y',
+            'text' => 'invoice',
+        ]);
+
+        $conditions = $resolved->getConditions();
+        $this->assertCount(2, $conditions);
+        $this->assertFalse($resolved->isInnerOr());
+
+        $this->assertSame(['Q150_Cfilecount'], $conditions[0]->getKeys());
+        $this->assertSame(['Q150'], $conditions[1]->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_CONTAIN, $conditions[1]->getOperator());
+        $this->assertSame('invoice', $conditions[1]->getValue());
+    }
+
+    /**
+     * Skipping the question stores a count of zero; never reaching it stores
+     * nothing. Both are "did not upload", so they OR.
+     */
+    public function testNotUploadedCoversBothWaysTheAbsenceIsStored(): void
+    {
+        $resolved = $this->resolveOne(['qid' => 150, 'fileUploaded' => 'N']);
+        $conditions = $resolved->getConditions();
+
+        $this->assertCount(2, $conditions);
+        $this->assertTrue($resolved->isInnerOr());
+
+        $this->assertSame(ResolvedCondition::OPERATOR_EMPTY, $conditions[0]->getOperator());
+        $this->assertSame(['Q150_Cfilecount'], $conditions[0]->getKeys());
+
+        $this->assertSame(ResolvedCondition::OPERATOR_RANGE, $conditions[1]->getOperator());
+        $this->assertSame(['', 0], $conditions[1]->getValue());
     }
 
     /** One row of an array holds the answer picked on the scale. */
@@ -427,6 +503,7 @@ class QuestionResolverTest extends TestCase
             // The box alone asks for nothing, so there is nothing to reject.
             'no sub text' => [['qid' => 90, 'subquestion' => 901]],
             'no sub number bounds' => [['qid' => 95, 'subquestion' => 951]],
+            'no ranked item' => [['qid' => 140, 'row' => 1]],
         ];
     }
 

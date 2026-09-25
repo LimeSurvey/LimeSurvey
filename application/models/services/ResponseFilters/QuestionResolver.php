@@ -34,6 +34,9 @@ class QuestionResolver
     /** Array (Numbers); its sibling ';' is Array (Texts). */
     private const ARRAY_NUMBERS_TYPE = ':';
 
+    /** The `aid` marking a file upload question's count column. */
+    private const FILE_COUNT_AID = 'filecount';
+
     private QuestionColumnMap $map;
 
     public function __construct(QuestionColumnMap $map)
@@ -88,6 +91,16 @@ class QuestionResolver
                 break;
             case QuestionKind::ARRAY_GRID:
                 $conditions = $this->resolveArrayGrid($qid, $type, $filter);
+                break;
+            case QuestionKind::RANKING:
+                $conditions = $this->resolveRanking($qid, $filter);
+                break;
+            case QuestionKind::FILE_UPLOAD:
+                $conditions = $this->resolveFileUpload($qid, $filter);
+                // "Did not upload" is two ways of storing the same absence.
+                if ($filter->getFileUploaded() === ResponseFilter::FILE_UPLOADED_NO) {
+                    $innerJoin = ResponseFilter::JOIN_OR;
+                }
                 break;
             default:
                 throw new InvalidArgumentException("No resolver for question kind: $kind.");
@@ -318,6 +331,75 @@ class QuestionResolver
     }
 
     /**
+     * Ranking: the whole answer is one JSON array of item codes ordered by
+     * rank, held in a single column. "This item in this place" is therefore a
+     * test on one element of that array, not a comparison of a column.
+     *
+     * @return ResolvedCondition[]
+     */
+    private function resolveRanking(int $qid, ResponseFilter $filter): array
+    {
+        $itemCode = $filter->getColumn();
+        if ($itemCode === null || $itemCode === '') {
+            return [];
+        }
+
+        $rank = $this->requireRow($qid, $filter);
+        if ($rank < 1) {
+            throw new InvalidArgumentException("Question $qid has no rank $rank.");
+        }
+
+        return [
+            new ResolvedCondition(
+                [$this->requireMainColumn($qid)],
+                ResolvedCondition::OPERATOR_JSON_ELEMENT,
+                ['position' => $rank - 1, 'value' => $itemCode]
+            ),
+        ];
+    }
+
+    /**
+     * File upload: the question keeps a count of what was uploaded beside the
+     * files themselves, and the count is what says whether anything arrived.
+     *
+     * Uploaded means a count of at least one, and can be narrowed further by
+     * the file's title, which is held with the files. Not uploaded is the
+     * absence, which is stored two ways — a count of zero if the respondent saw
+     * the question and skipped it, nothing at all if they never reached it — so
+     * it takes two conditions, OR'd. The modal only offers the title alongside
+     * "uploaded", so the two never mix.
+     *
+     * @return ResolvedCondition[]
+     */
+    private function resolveFileUpload(int $qid, ResponseFilter $filter): array
+    {
+        $countColumn = $this->map->getColumnByAid($qid, self::FILE_COUNT_AID);
+        if ($countColumn === null) {
+            throw new InvalidArgumentException("Question $qid has no file count to filter on.");
+        }
+
+        if ($filter->getFileUploaded() === ResponseFilter::FILE_UPLOADED_NO) {
+            return [
+                new ResolvedCondition([$countColumn], ResolvedCondition::OPERATOR_EMPTY, null),
+                ...$this->range($countColumn, ['', 0]),
+            ];
+        }
+
+        $conditions = $this->range($countColumn, [1, '']);
+
+        $title = $this->readText($filter);
+        if ($title !== null) {
+            $conditions[] = new ResolvedCondition(
+                [$this->requireMainColumn($qid)],
+                ResolvedCondition::OPERATOR_CONTAIN,
+                $title
+            );
+        }
+
+        return $conditions;
+    }
+
+    /**
      * The row an array filter applies to. Rejected rather than dropped when
      * missing, for the same reason as a missing subquestion: the value has
      * nowhere to go.
@@ -424,12 +506,11 @@ class QuestionResolver
 
     private function requireOtherColumn(int $qid): string
     {
-        foreach ($this->map->getColumns($qid) as $column) {
-            if (($column['aid'] ?? null) === self::OTHER_AID) {
-                return (string) $column['fieldname'];
-            }
+        $column = $this->map->getColumnByAid($qid, self::OTHER_AID);
+        if ($column === null) {
+            throw new InvalidArgumentException("Question $qid has no 'Other' option.");
         }
 
-        throw new InvalidArgumentException("Question $qid has no 'Other' option.");
+        return $column;
     }
 }

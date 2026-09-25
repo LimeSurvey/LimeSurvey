@@ -129,6 +129,22 @@ class QuestionColumnMap
     }
 
     /**
+     * A column identified by its `aid` — the marker the field map puts on the
+     * extras a question carries beside its answer: the free-text "other", a
+     * file upload's count, or a ranking's rank position.
+     */
+    public function getColumnByAid(int $qid, string $aid): ?string
+    {
+        foreach ($this->getColumns($qid) as $column) {
+            if (isset($column['aid']) && (string) $column['aid'] === $aid) {
+                return (string) $column['fieldname'];
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * The column for one row of a dual-scale question.
      *
      * Both scales of a row share a subquestion and are told apart by their
