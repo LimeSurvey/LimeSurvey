@@ -28,7 +28,7 @@ export const getQuestionTypeInfo = () => {
     BROWSER_DETECTION: {
       type: 'S',
       theme: 'browserdetect',
-      title: t('Map/browser detection'),
+      title: t('Browser detection'),
     },
     DATE_TIME: {
       type: 'D',
