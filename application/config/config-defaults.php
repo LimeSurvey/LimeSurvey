@@ -163,6 +163,15 @@ $config['surveyPreview_require_Auth'] = true;
 // The user can call the limesurvey login at /limesurvey/admin and pass username and
 // a one time password which was previously written into the users table (column one_time_pw) by
 // an external application.
+// The column value is a PHP password_hash() hash of the one time password (same algorithm as
+// the normal password field), optionally followed by a colon and an identifier of the actor
+// the password was issued to (e.g. a support agent id), as "<passwordHash>:<actorId>". When
+// present, the actor identifier is recorded in the audit log (plugin AuditLog) against the
+// resulting login, so third-party access can be told apart from a regular login. A value
+// without a colon is treated as a hash with no actor identifier.
+// For backward compatibility, a plain SHA-256 hex digest is still accepted instead of a
+// password_hash() hash, but this is OBSOLETE and will be removed in version 8.x; it
+// should not be used for new integrations.
 // This setting has to be turned on to enable the usage of one time passwords (default = off).
 $config['use_one_time_passwords'] = false;
 
@@ -792,7 +801,7 @@ $config['defaultthemeteeditormode'] = 'default';
 // Side Menu behaviout
 $config['sideMenuBehaviour'] = 'adaptive';
 
-// Hide update key
+// Hide update key except for the first and last letters
 $config['hide_update_key'] = false;
 
 /**

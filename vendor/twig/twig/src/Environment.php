@@ -43,10 +43,10 @@ use Twig\TokenParser\TokenParserInterface;
  */
 class Environment
 {
-    public const VERSION = '3.28.0';
-    public const VERSION_ID = 32800;
+    public const VERSION = '3.29.0';
+    public const VERSION_ID = 32900;
     public const MAJOR_VERSION = 3;
-    public const MINOR_VERSION = 28;
+    public const MINOR_VERSION = 29;
     public const RELEASE_VERSION = 0;
     public const EXTRA_VERSION = '';
 
@@ -359,6 +359,8 @@ class Environment
     public function load($name): TemplateWrapper
     {
         if ($name instanceof TemplateWrapper) {
+            $name->unwrap($this);
+
             return $name;
         }
         if ($name instanceof Template) {
@@ -503,7 +505,7 @@ class Environment
                 return new TemplateWrapper($this, $name);
             }
             if ($name instanceof TemplateWrapper) {
-                return $name;
+                return $this->load($name);
             }
 
             if (1 !== $count && !$this->getLoader()->exists($name)) {

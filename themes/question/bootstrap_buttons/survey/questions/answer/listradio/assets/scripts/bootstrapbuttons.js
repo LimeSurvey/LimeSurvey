@@ -1,3 +1,6 @@
+/**
+ * Registers change behavior for Bootstrap radio groups with an “other” option.
+ */
 function doBootstrapRadioOther() {
     $("input:radio.button-item.btn-check").on('change', function () {
         var name = $(this).attr('name');

@@ -41,26 +41,27 @@ $aLanguageNames = implode(";", $aLanguageNames);
     <div class="row">
         <div class="content-right">
             <?php
+            require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.TokenListMassiveActions') . '.php';
+            $floatingActions = \actions\TokenListMassiveActions::getActions((int)$_GET['surveyid']);
+            $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                'pk'       => 'tid',
+                'gridId'   => 'token-grid',
+                'aActions' => $floatingActions,
+            ]);
+            ?>
+            <?php
             $this->widget('application.extensions.admin.grid.CLSGridView', [
                 'dataProvider'          => $model->search(),
                 'filter'                => $model,
                 'id'                    => 'token-grid',
                 'emptyText'             => gT('No survey participants found.'),
-                'massiveActionTemplate' => $massiveAction,
-                'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSizeTokenView',
-                        $pageSizeTokenView,
-                        Yii::app()->params['pageSizeOptionsTokens'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                    )
-                ),
+                'lsShowSelectionBar'    => false,
+                'lsPageSizeCurrentValue'=> $pageSizeTokenView,
+                'lsPageSizeOptions'     => Yii::app()->params['pageSizeOptionsTokens'],
                 'columns'               => $model->getAttributesForGrid(),
                 'ajaxUpdate'            => 'token-grid',
                 'ajaxType'              => 'POST',
-                'lsSelectAllEnabled'    => true,
-                'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();']
+                'lsAfterAjaxUpdate'     => ['onUpdateTokenGrid();', 'LS.restoreFocusAfterSort("token-grid");']
             ]);
             ?>
         </div>

@@ -38,7 +38,7 @@ class BoxesWidget extends CWidget
     public function registerClientScript(): void
     {
         App()->getClientScript()->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/BoxesWidget/assets/boxes-widget.js',
+            App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/boxes-widget.js'),
             CClientScript::POS_END
         );
     }
