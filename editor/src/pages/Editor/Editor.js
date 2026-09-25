@@ -21,15 +21,14 @@ import { PluginSlot } from 'plugins/PluginSlot'
 import { PLUGIN_SLOTS } from 'plugins/slots'
 
 export const Editor = () => {
-  const { surveyId, menu } = useParams()
+  const { surveyId, panel, menu } = useParams()
   const navigate = useNavigate()
   const { survey = {} } = useSurvey(surveyId)
   const { ready } = useTranslation()
   const [, setTopbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
 
   const surveyActivationHandlerRef = useRef(null)
-  const setShowOverviewModalRef = useRef(null)
-  const hasOverviewAutoRan = useRef(false)
+  const expiryToastRanForSurvey = useRef(null)
 
   const [activeLanguage = undefined] = useAppState(
     STATES.ACTIVE_LANGUAGE,
@@ -41,12 +40,6 @@ export const Editor = () => {
   const [allLanguages] = useAppState(STATES.ALL_AVAILABLE_LANGUAGES)
 
   // Automatic Toast Triggers
-  const tryToOpenOverview = () => {
-    if (survey.active && setShowOverviewModalRef.current) {
-      setShowOverviewModalRef.current(true)
-    }
-  }
-
   const tryToOpenExpiryToast = useCallback(() => {
     const surveyExpired = isSurveyExpired(survey.expires)
 
@@ -57,34 +50,25 @@ export const Editor = () => {
   }, [survey.expires, survey.sid])
 
   useEffect(() => {
-    // make sure auto opening occurs only once
-    if (hasOverviewAutoRan.current) return
+    if (expiryToastRanForSurvey.current === survey.sid) return
 
     // make sure survey sid is matching new params value ( when switching between surveys )
     if (!survey.sid || surveyId != survey.sid) {
       return
     }
 
-    // make sure automatic opening occurs only when survey is clicked in dashboard view
-    const referrer = document.referrer
-    const isDashboardReferrer = referrer.includes('/dashboard/view')
-    if (!isDashboardReferrer) {
-      return
-    }
-
-    tryToOpenOverview()
     tryToOpenExpiryToast()
-    hasOverviewAutoRan.current = true
-  }, [surveyId, setShowOverviewModalRef.current])
+    expiryToastRanForSurvey.current = survey.sid
+  }, [survey.sid, surveyId, tryToOpenExpiryToast])
 
   useEffect(() => {
     setTopbarConfig({
       surveyId,
       surveyActivationHandlerRef,
-      setShowOverviewModalRef,
       pageName: PAGES.EDITOR,
+      shouldAutoOpenOverview: !panel && !menu,
     })
-  }, [surveyId, surveyActivationHandlerRef, setShowOverviewModalRef])
+  }, [surveyId, panel, menu])
 
   const isLoadingSurvey =
     !survey?.sid ||

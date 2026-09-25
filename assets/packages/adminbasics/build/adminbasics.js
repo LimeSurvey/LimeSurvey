@@ -14235,7 +14235,7 @@
 	    this.log(args);
 	  }
 	}
-	const adminCoreLSConsole = new ConsoleShim('AdminCore', window.debugState ? window.debugState.backend : false); //!window.debugState.backend);
+	const adminCoreLSConsole = new ConsoleShim('AdminCore', !(window.debugState && window.debugState.backend));
 
 	/**
 	 * Neccessary methods for the confirmation modal
@@ -14387,23 +14387,35 @@
 	    return true;
 	  },
 	  doToolTip: () => {
-	    // Dispose existing Bootstrap Tooltip instances on trigger elements
+	    // A trigger whose tooltip is currently shown (or fading in/out) points to it via aria-describedby
+	    const getVisibleTip = el => {
+	      const tipId = el.getAttribute('aria-describedby');
+	      const tip = tipId ? document.getElementById(tipId) : null;
+	      return tip && tip.classList.contains('tooltip') ? tip : null;
+	    };
+	    const liveTips = new Set();
 	    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
-	      var instance = bootstrap.Tooltip.getInstance(el);
+	      const instance = bootstrap.Tooltip.getInstance(el);
 	      if (instance) {
+	        // Bootstrap 5.1 does not cancel a running fade transition on dispose, its callback
+	        // then crashes on the disposed instance (this._config is null) - so keep visible ones
+	        const visibleTip = getVisibleTip(el);
+	        if (visibleTip) {
+	          liveTips.add(visibleTip);
+	          return;
+	        }
 	        try {
 	          instance.dispose();
 	        } catch (e) {}
 	      }
-	    });
-	    // Remove any orphaned tooltip popups left in the DOM
-	    document.querySelectorAll('.tooltip.bs-tooltip-auto, .tooltip.bs-tooltip-top, .tooltip.bs-tooltip-bottom, .tooltip.bs-tooltip-start, .tooltip.bs-tooltip-end, .tooltip.show').forEach(function (el) {
-	      el.remove();
+	      new bootstrap.Tooltip(el);
 	    });
 
-	    // Reinit all tooltips
-	    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (tooltipTriggerEl) {
-	      new bootstrap.Tooltip(tooltipTriggerEl);
+	    // Remove any orphaned tooltip popups left in the DOM
+	    document.querySelectorAll('.tooltip.bs-tooltip-auto, .tooltip.bs-tooltip-top, .tooltip.bs-tooltip-bottom, .tooltip.bs-tooltip-start, .tooltip.bs-tooltip-end, .tooltip.show').forEach(function (el) {
+	      if (!liveTips.has(el)) {
+	        el.remove();
+	      }
 	    });
 	  },
 	  doSelect2: () => {
@@ -17904,13 +17916,15 @@
 	      }
 
 	      // Load sea_green css again after iframe is fully loaded
+	      // Prefix with the base URL so this also works when LimeSurvey is installed in a subdirectory
+	      const baseUrl = (LS.data.baseUrl || "").replace(/\/$/, "");
 	      handleAppendCssLink({
 	        header: fileManagerIframe.contentWindow.document.head,
-	        linkUrl: "/themes/admin/Sea_Green/css/sea_green.css"
+	        linkUrl: baseUrl + "/themes/admin/Sea_Green/css/sea_green.css"
 	      });
 	      handleAppendCssLink({
 	        header: fileManagerIframe.contentWindow.document.head,
-	        linkUrl: "/assets/fonts/font-src/remix/remixicon.css"
+	        linkUrl: baseUrl + "/assets/fonts/font-src/remix/remixicon.css"
 	      });
 	    });
 	  }
