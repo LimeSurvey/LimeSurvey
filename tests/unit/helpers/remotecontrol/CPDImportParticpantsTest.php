@@ -23,7 +23,7 @@ class CPDImportParticpantsTest extends BaseTest
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
                 'language' => 'de',
-                'blacklisted' => 'Y'
+                'blocklisted' => 'Y'
             )
         );
 
@@ -41,14 +41,14 @@ class CPDImportParticpantsTest extends BaseTest
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
                 'language' => 'de',
-                'blacklisted' => 'Y'
+                'blocklisted' => 'Y'
             ),
             array(
                 'firstname' => 'Max',
                 'lastname' => 'Mustermann2',
                 'email' => 'max.mustermann2@example.com',
                 'language' => 'de',
-                'blacklisted' => 'N'
+                'blocklisted' => 'N'
             )
         );
 
@@ -67,7 +67,7 @@ class CPDImportParticpantsTest extends BaseTest
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
                 'language' => 'de',
-                'blacklisted' => 'Y'
+                'blocklisted' => 'Y'
             )
         );
 
@@ -88,14 +88,14 @@ class CPDImportParticpantsTest extends BaseTest
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
                 'language' => 'de',
-                'blacklisted' => 'Y'
+                'blocklisted' => 'Y'
             ),
             array(
                 'firstname' => 'Max',
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
                 'language' => 'en',
-                'blacklisted' => 'N'
+                'blocklisted' => 'N'
             )
         );
 
@@ -128,7 +128,7 @@ class CPDImportParticpantsTest extends BaseTest
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
                 'language' => 'de',
-                'blacklisted' => 'Y',
+                'blocklisted' => 'Y',
                 'website' => 'http://www.example.com'
             )
         );
@@ -166,7 +166,7 @@ class CPDImportParticpantsTest extends BaseTest
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
                 'language' => 'de',
-                'blacklisted' => 'Y',
+                'blocklisted' => 'Y',
                 'website' => 'http://www.example.com'
             ),
             array(
@@ -175,7 +175,7 @@ class CPDImportParticpantsTest extends BaseTest
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
                 'language' => 'de',
-                'blacklisted' => 'N',
+                'blocklisted' => 'N',
                 'website' => 'http://www.example.org'
             )
         );
@@ -228,7 +228,7 @@ class CPDImportParticpantsTest extends BaseTest
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
                 'language' => 'de',
-                'blacklisted' => 'Y'
+                'blocklisted' => 'Y'
             )
         );
 
@@ -266,7 +266,7 @@ class CPDImportParticpantsTest extends BaseTest
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
                 'language' => 'de',
-                'blacklisted' => 'Y',
+                'blocklisted' => 'Y',
                 'passport' => '123456789',
             )
         );

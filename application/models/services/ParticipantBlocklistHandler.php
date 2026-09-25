@@ -3,32 +3,32 @@
 namespace LimeSurvey\Models\Services;
 
 use InvalidArgumentException;
-use LimeSurvey\Datavalueobjects\BlacklistResult;
+use LimeSurvey\Datavalueobjects\BlocklistResult;
 
-class ParticipantBlacklistHandler
+class ParticipantBlocklistHandler
 {
     /**
      * @param \Token $token
-     * @return \LimeSurvey\Datavalueobjects\BlacklistResult
+     * @return \LimeSurvey\Datavalueobjects\BlocklistResult
      */
-    public function addToBlacklist($token)
+    public function addToBlocklist($token)
     {
         $participant = $this->getCentralParticipantFromToken($token);
         if (empty($participant)) {
-            return new BlacklistResult(false, gT("No CPDB participant found."));
+            return new BlocklistResult(false, gT("No CPDB participant found."));
         }
 
         // Add participant to the blocklist if it's not already blocklisted
-        if ($participant->blacklisted != "Y") {
-            $participant->blacklisted = 'Y';
+        if ($participant->blocklisted != "Y") {
+            $participant->blocklisted = 'Y';
             $participant->save();
 
-            $result = new BlacklistResult(true, gT("You have been removed from the central participant list for this site."));
+            $result = new BlocklistResult(true, gT("You have been removed from the central participant list for this site."));
 
             // Remove or blocklist participant in current surveys if needed
-            if (\Yii::app()->getConfig('deleteblacklisted') == "Y") {
+            if (\Yii::app()->getConfig('deleteblocklisted') == "Y") {
                 $surveyIds = $this->removeParticipantFromAllSurveys($participant);
-            } elseif (\Yii::app()->getConfig('blacklistallsurveys') == "Y") {
+            } elseif (\Yii::app()->getConfig('blocklistallsurveys') == "Y") {
                 $surveyIds = $this->optoutParticipantFromAllSurveys($participant);
             }
             if (!empty($surveyIds)) {
@@ -38,28 +38,28 @@ class ParticipantBlacklistHandler
             return $result;
         } else {
             // Already blocklisted
-            return new BlacklistResult(true, gT("You have already been removed from the central participant list for this site."));
+            return new BlocklistResult(true, gT("You have already been removed from the central participant list for this site."));
         }
     }
 
     /**
      * @param \Token $token
-     * @return \LimeSurvey\Datavalueobjects\BlacklistResult
+     * @return \LimeSurvey\Datavalueobjects\BlocklistResult
      */
-    public function removeFromBlacklist($token)
+    public function removeFromBlocklist($token)
     {
         $participant = $this->getCentralParticipantFromToken($token);
-        if (empty($participant) || $participant->blacklisted != "Y") {
-            return new BlacklistResult(false, gT("You are not globally blocklisted on this site."));
+        if (empty($participant) || $participant->blocklisted != "Y") {
+            return new BlocklistResult(false, gT("You are not globally blocklisted on this site."));
         }
 
         // Remove participant from the blocklist
-        $participant->blacklisted = 'N';
+        $participant->blocklisted = 'N';
         $participant->save();
 
-        $result = new BlacklistResult(false, gT("You have been added back to the central participant list for this site."));
+        $result = new BlocklistResult(false, gT("You have been added back to the central participant list for this site."));
 
-        // TODO: Remove 'OptOut' status from all surveys if 'blacklistallsurveys' setting is true?
+        // TODO: Remove 'OptOut' status from all surveys if 'blocklistallsurveys' setting is true?
 
         return $result;
     }
@@ -135,9 +135,9 @@ class ParticipantBlacklistHandler
      * @param \Token $token
      * @return bool
      */
-    public function isTokenBlacklisted($token)
+    public function isTokenBlocklisted($token)
     {
         $participant = $this->getCentralParticipantFromToken($token);
-        return !empty($participant) && $participant->blacklisted == "Y";
+        return !empty($participant) && $participant->blocklisted == "Y";
     }
 }

@@ -5,23 +5,23 @@ namespace ls\tests\unit\helpers;
 use ls\tests\TestBaseClass;
 
 use Participant;
-use LimeSurvey\Models\Services\ParticipantBlacklistHandler;
+use LimeSurvey\Models\Services\ParticipantBlocklistHandler;
 use Survey;
 
 /**
- * Tests for the ParticipantBlacklistHandler service class.
+ * Tests for the ParticipantBlocklistHandler service class.
  */
-class ParticipantBlacklistHandlerTest extends TestBaseClass
+class ParticipantBlocklistHandlerTest extends TestBaseClass
 {
     /**
      * Test adding participant to blocklist
      *
      * @return void
      */
-    public function testAddToBlacklist()
+    public function testAddToBlocklist()
     {
         // Import survey
-        $filename = self::$surveysFolder . '/survey_archive_993688_participantBlacklist.lsa';
+        $filename = self::$surveysFolder . '/survey_archive_993688_participantBlocklist.lsa';
         self::importSurvey($filename);
 
         // Create participant in CPDB
@@ -34,10 +34,10 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         $token = \Token::model(self::$surveyId)->findByPk(1);
 
         // Add participant to blocklist
-        $blacklistHandler = new ParticipantBlacklistHandler();
-        $blacklistResult = $blacklistHandler->addToBlacklist($token);
+        $blocklistHandler = new ParticipantBlocklistHandler();
+        $blocklistResult = $blocklistHandler->addToBlocklist($token);
 
-        $this->assertTrue($blacklistResult->isBlacklisted());
+        $this->assertTrue($blocklistResult->isBlocklisted());
 
         // Cleanup: Delete the participant from CPDB so it can be re-added in other tests
         $token->decrypt();
@@ -55,10 +55,10 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
      *
      * @return void
      */
-    public function testRemoveFromBlacklist()
+    public function testRemoveFromBlocklist()
     {
         // Import survey
-        $filename = self::$surveysFolder . '/survey_archive_993688_participantBlacklist.lsa';
+        $filename = self::$surveysFolder . '/survey_archive_993688_participantBlocklist.lsa';
         self::importSurvey($filename);
 
         // Create participant in CPDB
@@ -71,13 +71,13 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         $token = \Token::model(self::$surveyId)->findByPk(1);
 
         // Add participant to blocklist
-        $blacklistHandler = new ParticipantBlacklistHandler();
-        $blacklistResult = $blacklistHandler->addToBlacklist($token);
+        $blocklistHandler = new ParticipantBlocklistHandler();
+        $blocklistResult = $blocklistHandler->addToBlocklist($token);
 
         // Remove from blocklist
-        $blacklistResult = $blacklistHandler->removeFromBlacklist($token);
+        $blocklistResult = $blocklistHandler->removeFromBlocklist($token);
 
-        $this->assertFalse($blacklistResult->isBlacklisted());
+        $this->assertFalse($blocklistResult->isBlocklisted());
 
         // Cleanup: Delete the participant from CPDB so it can be re-added in other tests
         $token->decrypt();

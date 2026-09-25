@@ -67,13 +67,13 @@
 
             <div class="ex-form-group mb-3">
                 <div class="col-md-1">
-                    <input type="checkbox" id="massedit_blacklisted_modify" class="action_check_to_keep_old_value"
-                           aria-labelledby="massedit-modify-group-label massedit_blacklisted_fieldlabel"/>
+                    <input type="checkbox" id="massedit_blocklisted_modify" class="action_check_to_keep_old_value"
+                           aria-labelledby="massedit-modify-group-label massedit_blocklisted_fieldlabel"/>
                 </div>
-                <label id="massedit_blacklisted_fieldlabel" class="col-md-3 form-label" for="blacklisted"><?php eT("Blocklisted?"); ?></label>
+                <label id="massedit_blocklisted_fieldlabel" class="col-md-3 form-label" for="blocklisted"><?php eT("Blocklisted?"); ?></label>
                 <div class="col-md-8">
                     <?php echo TbHtml::dropDownList(
-                        'blacklisted',
+                        'blocklisted',
                         'lskeep',
                         ['lskeep' => gT('Keep old value'), 'Y' => gT('Yes'), 'N' => gT('No')],
                         ['disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']

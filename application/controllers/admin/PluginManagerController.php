@@ -558,7 +558,7 @@ class PluginManagerController extends SurveyCommonAction
                 $this->errorAndRedirect(gT('Could not read plugin configuration file.'));
             }
 
-            if (!$installer->isWhitelisted()) {
+            if (!$installer->isAllowlisted()) {
                 $installer->abort();
                 $this->errorAndRedirect(gT('The plugin is not in the plugin allowlist.'));
             }

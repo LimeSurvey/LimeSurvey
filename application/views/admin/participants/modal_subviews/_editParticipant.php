@@ -79,8 +79,8 @@ $form = $this->beginWidget(
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'model'         => $model,
                     'ariaLabel'     => gT("Participant is on blocklist:"),
-                    'attribute'     => 'blacklisted',
-                    'checkedOption' => $model->blacklisted ?? 'N',
+                    'attribute'     => 'blocklisted',
+                    'checkedOption' => $model->blocklisted ?? 'N',
                     'selectOptions' => [
                         'Y' => gT('Yes'),
                         'N' => gT('No'),

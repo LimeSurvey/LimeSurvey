@@ -349,14 +349,14 @@ class GlobalSettings extends SurveyCommonAction
         }
 
         $warning = '';
-        $validatedLoginIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('loginIpWhitelist'));
-        SettingGlobal::setSetting('loginIpWhitelist', $validatedLoginIpWhitelistInput['valid']);
-        if (!empty($validatedLoginIpWhitelistInput['invalid'])) {
+        $validatedLoginIpAllowlistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('loginIpAllowlist'));
+        SettingGlobal::setSetting('loginIpAllowlist', $validatedLoginIpAllowlistInput['valid']);
+        if (!empty($validatedLoginIpAllowlistInput['invalid'])) {
             $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP allowlist for administration login")) . '<br/>';
         }
-        $validatedTokenIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('tokenIpWhitelist'));
-        SettingGlobal::setSetting('tokenIpWhitelist', $validatedTokenIpWhitelistInput['valid']);
-        if (!empty($validatedTokenIpWhitelistInput['invalid'])) {
+        $validatedTokenIpAllowlistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('tokenIpAllowlist'));
+        SettingGlobal::setSetting('tokenIpAllowlist', $validatedTokenIpAllowlistInput['valid']);
+        if (!empty($validatedTokenIpAllowlistInput['invalid'])) {
             $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP allowlist for participants with access code")) . '<br/>';
         }
 

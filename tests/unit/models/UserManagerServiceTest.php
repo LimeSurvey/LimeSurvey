@@ -827,7 +827,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
             'participant_id' => 'participant_' . $participantName,
             'firstname' => $participantName,
             'email' => $participantName . '@example.com',
-            'blacklisted' => 'N',
+            'blocklisted' => 'N',
             'owner_uid' => $userId,
             'created_by' => $userId,
         );

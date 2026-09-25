@@ -121,10 +121,10 @@ class OptoutController extends LSYii_Controller
         } else {
             $optedOutFromSurvey = substr((string) $token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
 
-            $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
-            $participant = $blacklistHandler->getCentralParticipantFromToken($token);
+            $blocklistHandler = new LimeSurvey\Models\Services\ParticipantBlocklistHandler();
+            $participant = $blocklistHandler->getCentralParticipantFromToken($token);
 
-            if (!empty($participant) && $participant->blacklisted != 'Y') {
+            if (!empty($participant) && $participant->blocklisted != 'Y') {
                 $message = gT('Please confirm that you want to be removed from the central participant list for this site.');
                 $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true));
                 $postLink = Yii::app()->createUrl('optout/removetoken', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true));
@@ -173,7 +173,7 @@ class OptoutController extends LSYii_Controller
     /**
      * Common opt-out logic shared by actionremovetokens() and actionremovetoken().
      * Validates the survey, resolves the language, loads the token, sets emailstatus
-     * to 'OptOut', and optionally blacklists the participant globally.
+     * to 'OptOut', and optionally blocklists the participant globally.
      *
      * @return array{message: string, survey: Survey, tokenAttributes: array<string,mixed>, participantAttributes: array<string,mixed>}
      * @throws CHttpException
@@ -222,14 +222,14 @@ class OptoutController extends LSYii_Controller
                 $message = gT('You have already been removed from this survey.');
             }
             if ($global) {
-                $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
-                $blacklistResult = $blacklistHandler->addToBlacklist($token);
-                if ($blacklistResult->isBlacklisted()) {
-                    foreach ($blacklistResult->getMessages() as $blacklistMessage) {
-                        $message .= "<br>" . $blacklistMessage;
+                $blocklistHandler = new LimeSurvey\Models\Services\ParticipantBlocklistHandler();
+                $blocklistResult = $blocklistHandler->addToBlocklist($token);
+                if ($blocklistResult->isBlocklisted()) {
+                    foreach ($blocklistResult->getMessages() as $blocklistMessage) {
+                        $message .= "<br>" . $blocklistMessage;
                     }
                 }
-                $participant = $blacklistHandler->getCentralParticipantFromToken($token);
+                $participant = $blocklistHandler->getCentralParticipantFromToken($token);
                 if (!empty($participant)) {
                     $participantAttributes = $participant->getAttributes();
                 }

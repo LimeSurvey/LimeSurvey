@@ -3,27 +3,27 @@
 namespace LimeSurvey\Datavalueobjects;
 
 /**
- * Class BlacklistResult
+ * Class BlocklistResult
  *
  * This class represents the result of a blocklist operation
  *
  * @package LimeSurvey\Datavalueobjects
  */
-class BlacklistResult
+class BlocklistResult
 {
     /** @var bool the basic result of the operation */
-    private $blacklisted;
+    private $blocklisted;
 
     /** @var string[] an array of messages providing extra details */
     private $messages;
 
     /**
-     * @param bool $blacklisted
+     * @param bool $blocklisted
      * @param string[]|string $messages
      */
-    public function __construct($blacklisted = false, $messages = [''])
+    public function __construct($blocklisted = false, $messages = [''])
     {
-        $this->blacklisted = $blacklisted;
+        $this->blocklisted = $blocklisted;
         if (!is_array($messages)) {
             $messages = [$messages];
         }
@@ -33,17 +33,17 @@ class BlacklistResult
     /**
      * @return bool
      */
-    public function isBlacklisted(): bool
+    public function isBlocklisted(): bool
     {
-        return $this->blacklisted;
+        return $this->blocklisted;
     }
 
     /**
-     * @param bool $blacklisted
+     * @param bool $blocklisted
      */
-    public function setBlacklisted(bool $blacklisted): void
+    public function setBlocklisted(bool $blocklisted): void
     {
-        $this->blacklisted = $blacklisted;
+        $this->blocklisted = $blocklisted;
     }
 
     /**

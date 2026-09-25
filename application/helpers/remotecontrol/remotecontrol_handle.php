@@ -4050,7 +4050,7 @@ class remotecontrol_handle
             return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
 
-        $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
+        $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blocklisted');
         $aResponse = array(
             'ImportCount' => 0,
             'UpdateCount' => 0
@@ -4105,7 +4105,7 @@ class remotecontrol_handle
             $model->email = $participant['email'];
             $model->language = $participant['language'] ?? 'en';
             $model->owner_uid = Yii::app()->session['loginID'];
-            $model->blacklisted = (isset($participant['blacklisted']) && $participant['blacklisted'] === 'Y') ? 'Y' : 'N';
+            $model->blocklisted = (isset($participant['blocklisted']) && $participant['blocklisted'] === 'Y') ? 'Y' : 'N';
 
             if ($scenario == 'insert') {
                 $model->created = date('Y-m-d H:i:s');
