@@ -63,21 +63,41 @@ class ResolvedCondition
     /** @var mixed */
     private $value;
 
+    private ?string $relation;
+
     /**
      * @param array<int,string> $keys
      * @param mixed $value
+     * @param string|null $relation Table the keys belong to, when not the
+     *     response table itself. See getRelation().
      */
-    public function __construct(array $keys, string $operator, $value)
+    public function __construct(array $keys, string $operator, $value, ?string $relation = null)
     {
         $this->keys = array_values($keys);
         $this->operator = $operator;
         $this->value = $value;
+        $this->relation = $relation;
     }
 
     /** @return array<int,string> */
     public function getKeys(): array
     {
         return $this->keys;
+    }
+
+    /**
+     * The related table holding these columns, or null for the response table.
+     *
+     * Participant attributes are kept beside the responses rather than in them,
+     * so filtering on one means joining. The name is the relation declared on
+     * SurveyDynamic, which is also the alias the joined table gets — so the
+     * query builder needs it twice: once to add the join, once to qualify the
+     * column as `<relation>`.`<key>` rather than quoting the pair as a single
+     * strange identifier.
+     */
+    public function getRelation(): ?string
+    {
+        return $this->relation;
     }
 
     public function getOperator(): string
