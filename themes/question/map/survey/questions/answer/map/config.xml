@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Default configuration for the Map question type.
+-->
+
+<config>
+    <metadata>
+        <name>map</name>
+        <type>question_theme</type>
+        <title>Map</title>
+        <creationDate>25/09/2026</creationDate>
+        <author>LimeSurvey GmbH</author>
+        <authorEmail>info@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2026 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <apiVersion>1</apiVersion>
+        <description>Map question type configuration</description>
+        <questionType>J</questionType>
+        <group>Mask questions</group>
+        <subquestions>0</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>1</hasdefaultvalues>
+        <assessable>0</assessable>
+        <class>map</class>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+        <version>5.0</version>
+        <version>6.0</version>
+        <version>7.0</version>
+    </compatibility>
+
+    <files>
+        <css>
+            <filename></filename>
+        </css>
+        <js>
+            <filename></filename>
+        </js>
+        <preview>
+            <filename></filename>
+        </preview>
+    </files>
+
+    <generalattributes>
+        <attribute>question_template</attribute>
+        <attribute>gid</attribute>
+        <attribute>mandatory</attribute>
+        <attribute>relevance</attribute>
+        <attribute>encrypted</attribute>
+        <attribute>save_as_default</attribute>
+        <attribute>clear_default</attribute>
+        <attribute>preg</attribute>
+    </generalattributes>
+
+    <attributes>
+        <attribute>
+            <name>hide_tip</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Hide the tip that is normally shown with a question</help>
+            <caption>Hide tip</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>hidden</name>
+            <category>Display</category>
+            <sortorder>101</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Hide this question at any time. This is useful for including data using answer prefilling.</help>
+            <caption>Always hide this question</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>statistics_showmap</name>
+            <category>Statistics</category>
+            <inputtype>switch</inputtype>
+            <sortorder>100</sortorder>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <help>Show a map in the statistics?</help>
+            <caption>Display map</caption>
+            <default>1</default>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_mapservice</name>
+            <category>Location</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Off</text>
+                </option>
+                <option>
+                    <value>100</value>
+                    <text>OpenStreetMap via MapQuest</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Google Maps</text>
+                </option>
+            </options>
+            <default>100</default>
+            <help>Activate this to show a map above the input field where the user can select a location</help>
+            <caption>Use mapping service</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_nodefaultfromip</name>
+            <category>Location</category>
+            <sortorder>91</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Get the default location using the user&#039;s IP address?</help>
+            <caption>IP as default location</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_postal</name>
+            <readonly_when_active>1</readonly_when_active>
+            <category>Location</category>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
+            <default>0</default>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <help>Store the postal code?</help>
+            <caption>Save postal code</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_city</name>
+            <readonly_when_active>1</readonly_when_active>
+            <category>Location</category>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
+            <default>0</default>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <help>Store the city?</help>
+            <caption>Save city</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_state</name>
+            <readonly_when_active>1</readonly_when_active>
+            <category>Location</category>
+            <sortorder>100</sortorder>
+            <default>0</default>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <help>Store the state?</help>
+            <caption>Save state</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_country</name>
+            <readonly_when_active>1</readonly_when_active>
+            <category>Location</category>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
+            <default>0</default>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <help>Store the country?</help>
+            <caption>Save country</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_mapzoom</name>
+            <category>Location</category>
+            <sortorder>101</sortorder>
+            <inputtype>text</inputtype>
+            <default>11</default>
+            <help>Map zoom level</help>
+            <caption>Zoom level</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_defaultcoordinates</name>
+            <category>Location</category>
+            <sortorder>101</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <help>Default coordinates of the map when the page first loads. Format: latitude [space] longitude</help>
+            <caption>Default position</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>location_mapwidth</name>
+            <category>Location</category>
+            <sortorder>102</sortorder>
+            <inputtype>text</inputtype>
+            <default>500</default>
+            <help>Map width in pixel</help>
+            <caption>Map width</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_mapheight</name>
+            <category>Location</category>
+            <sortorder>103</sortorder>
+            <inputtype>text</inputtype>
+            <default>300</default>
+            <help>Map height in pixel</help>
+            <caption>Map height</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+    </attributes>
+
+    <engine>
+        <load_core_css>true</load_core_css>
+        <load_core_js>true</load_core_js>
+        <show_as_template>true</show_as_template>
+        <show_as_question_type>true</show_as_question_type>
+    </engine>
+</config>

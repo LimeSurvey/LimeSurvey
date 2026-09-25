@@ -1034,6 +1034,158 @@ function do_shortfreetext($ia)
     return array($answer, $inputnames);
 }
 
+function do_map($ia)
+{
+    $coreClass = "ls-answers map-item geoloc-item";
+    $extraclass = "";
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $inputsize = null;
+    $placeholder = '';
+    $withColumn = false;
+    $sQuestionHelpText = '';
+    $answer = "";
+    $iMapService = isset($aQuestionAttributes['location_mapservice']) ? (int) $aQuestionAttributes['location_mapservice'] : 100;
+    $currentLocation = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]];
+
+    if ($iMapService == 1) {
+        $currentLatLong = null;
+        if (strlen((string) $currentLocation) > 2 && strpos((string) $currentLocation, ";")) {
+            $currentLatLong = explode(';', (string) $currentLocation);
+            $currentLatLong = array($currentLatLong[0], $currentLatLong[1]);
+        } else {
+            if ((int) ($aQuestionAttributes['location_nodefaultfromip'] ?? 0) == 0) {
+                $currentLatLong = getLatLongFromIp(getIPAddress());
+            }
+
+            if (empty($currentLatLong)) {
+                $floatLat = "";
+                $floatLng = "";
+                $sDefaultcoordinates = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['location_defaultcoordinates'] ?? '', $ia[0], array(), 3, 1, false, false, true));
+                if (strlen($sDefaultcoordinates) > 2 && strpos($sDefaultcoordinates, " ")) {
+                    $LatLong = explode(" ", $sDefaultcoordinates);
+                    if (isset($LatLong[0]) && isset($LatLong[1])) {
+                        $floatLat = $LatLong[0];
+                        $floatLng = $LatLong[1];
+                    }
+                }
+                $currentLatLong = array($floatLat, $floatLng);
+            }
+        }
+        $strBuild = "";
+        if (!empty($aQuestionAttributes['location_city'])) {
+            $strBuild .= "2";
+        }
+        if (!empty($aQuestionAttributes['location_state'])) {
+            $strBuild .= "3";
+        }
+        if (!empty($aQuestionAttributes['location_country'])) {
+            $strBuild .= "4";
+        }
+        if (!empty($aQuestionAttributes['location_postal'])) {
+            $strBuild .= "5";
+        }
+
+        $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
+
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "map.js", LSYii_ClientScript::POS_END);
+        $sGoogleMapsAPIKey = sanitize_googleapikey(App()->getConfig("googleMapsAPIKey"));
+        if ($iMapService == 1 && !empty($sGoogleMapsAPIKey)) {
+            Yii::app()->getClientScript()->registerScriptFile("//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}", LSYii_ClientScript::POS_BEGIN);
+        }
+
+        $questionHelp = false;
+        if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip'] == 0) {
+            $questionHelp = true;
+            $sQuestionHelpText = gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
+        }
+        $answer = doRender('/survey/questions/answer/map/location_mapservice/item', array(
+            'extraclass'             => $extraclass,
+            'coreClass'              => $coreClass,
+            'freeTextId'             => 'answer' . $ia[1],
+            'name'                   => $ia[1],
+            'qid'                    => $ia[0],
+            'basename'               => $ia[1],
+            'value'                  => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+            'kpclass'                => '',
+            'currentLocation'        => $currentLocation,
+            'strBuild'               => $strBuild,
+            'location_mapservice'    => $iMapService,
+            'location_mapzoom'       => $aQuestionAttributes['location_mapzoom'] ?? 11,
+            'location_mapheight'     => $aQuestionAttributes['location_mapheight'] ?? 300,
+            'questionHelp'           => $questionHelp,
+            'question_text_help'     => $sQuestionHelpText,
+            'inputsize'              => $inputsize,
+            'placeholder'            => $placeholder,
+            'withColumn'             => $withColumn
+        ), true);
+    } else {
+        $currentCenter = $currentLatLong = null;
+        if (strlen((string) $currentLocation) > 2 && strpos((string) $currentLocation, ";")) {
+            $currentLatLong = explode(';', (string) $currentLocation);
+            $currentCenter  = $currentLatLong = array($currentLatLong[0], $currentLatLong[1]);
+        } elseif ((int) ($aQuestionAttributes['location_nodefaultfromip'] ?? 0) == 0) {
+            $currentCenter = $currentLatLong = getLatLongFromIp(getIPAddress());
+        }
+
+        if (!$currentLatLong) {
+            $currentLatLong = array("", "");
+            $sDefaultcoordinates = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['location_defaultcoordinates'] ?? '', $ia[0], array(), 3, 1, false, false, true));
+            $currentCenter = explode(" ", $sDefaultcoordinates);
+            if (count($currentCenter) != 2) {
+                $currentCenter = array("", "");
+            }
+        }
+        $strBuild = "";
+
+        $aGlobalMapScriptVar = array(
+            'geonameUser' => Yii::app()->getConfig('GeoNamesUsername'),
+            'geonameLang' => Yii::app()->language,
+        );
+        $aThisMapScriptVar = array(
+            'zoomLevel' => $aQuestionAttributes['location_mapzoom'] ?? 11,
+            'latitude' => $currentCenter[0],
+            'longitude' => $currentCenter[1],
+        );
+        App()->getClientScript()->registerPackage('leaflet');
+        App()->getClientScript()->registerPackage('devbridge-autocomplete');
+        Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar', "LSmap=" . ls_json_encode($aGlobalMapScriptVar) . ";\nLSmaps=[];", CClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerScript('sThisMapScriptVar' . $ia[1], "LSmaps['{$ia[1]}']=" . ls_json_encode($aThisMapScriptVar) . ";", CClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "map.js", CClientScript::POS_END);
+        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
+
+        if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip'] == 0) {
+            $questionHelp = true;
+            $sQuestionHelpText = gT('Click to set the location or drag and drop the pin. You may may also enter coordinates');
+        }
+
+        $itemDatas = array(
+            'extraclass' => $extraclass,
+            'coreClass' => $coreClass,
+            'name' => $ia[1],
+            'qid' => $ia[0],
+            'basename'               => $ia[1],
+            'value' => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+            'strBuild' => $strBuild,
+            'location_mapservice' => $iMapService,
+            'location_mapzoom' => $aQuestionAttributes['location_mapzoom'] ?? 11,
+            'location_mapheight' => $aQuestionAttributes['location_mapheight'] ?? 300,
+            'questionHelp' => $questionHelp ?? '',
+            'question_text_help' => $sQuestionHelpText,
+            'location_value' => $currentLatLong[0] . ' ' . $currentLatLong[1],
+            'currentLat' => $currentLatLong[0],
+            'currentLong' => $currentLatLong[1],
+            'inputsize'              => $inputsize,
+            'placeholder'            => $placeholder,
+            'withColumn'             => $withColumn
+        );
+        $answer = doRender('/survey/questions/answer/map/location_mapservice/item_100', $itemDatas, true);
+    }
+
+    $inputnames = [];
+    $inputnames[] = $ia[1];
+    return array($answer, $inputnames);
+}
+
 function getLatLongFromIp($sIPAddress)
 {
     $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
