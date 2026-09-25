@@ -121,7 +121,7 @@ export const MultiNumericalGrid = ({
                     </span>
                     <span className="responses-statistics-multi-numerical-value">
                       <HighlightedText
-                        text={String(item.value)}
+                        text={Number(item.value).toFixed(2)}
                         terms={highlightTerms}
                       />
                     </span>
