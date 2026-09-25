@@ -1129,6 +1129,7 @@ class DataEntry extends SurveyCommonAction
                         $questionInputs[$fname['fieldname']] = CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
                         break;
                     case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                    case Question::QT_J_MAP:
                         $questionInputs[$fname['fieldname']] = CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
                         break;
                     case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
