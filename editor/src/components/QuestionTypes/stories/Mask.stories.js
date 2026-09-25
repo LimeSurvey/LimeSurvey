@@ -87,3 +87,11 @@ const browserDetectionQuestion = mockQuestionType(
 export const BrowserDetection = () => {
   return <QuestionPreview question={browserDetectionQuestion} />
 }
+
+/** Map **/
+
+const mapQuestion = mockQuestionType(getQuestionTypeInfo().MAP)
+
+export const Map = () => {
+  return <QuestionPreview question={mapQuestion} />
+}

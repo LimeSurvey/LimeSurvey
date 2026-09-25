@@ -6,6 +6,7 @@ import {
   QT_EXCLAMATION_LIST_DROPDOWN,
   QT_G_GENDER,
   QT_I_LANGUAGE,
+  QT_J_MAP,
   QT_L_LIST,
   QT_M_MULTIPLE_CHOICE,
   QT_O_LIST_WITH_COMMENT,
@@ -64,6 +65,7 @@ export const TEXT_QUESTION_TYPES = [
   QT_T_LONG_FREE_TEXT,
   QT_U_HUGE_FREE_TEXT,
   QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_J_MAP,
 ]
 
 // Whether charts display raw response counts or percentages.

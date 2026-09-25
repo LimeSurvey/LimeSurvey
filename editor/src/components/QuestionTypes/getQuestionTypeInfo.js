@@ -53,6 +53,11 @@ export const getQuestionTypeInfo = () => {
       theme: 'longfreetext',
       title: t('Long text'),
     },
+    MAP: {
+      type: 'J',
+      theme: 'map',
+      title: t('Map'),
+    },
     MULTIPLE_CHOICE: {
       type: 'M',
       theme: 'multiplechoice',
