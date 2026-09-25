@@ -118,6 +118,11 @@ export const getQuestionItemsList = () => [
     icon: <QuestionInserterDataIcon />,
     items: [
       {
+        value: getQuestionTypeInfo().MAP.type,
+        label: getQuestionTypeInfo().MAP.title,
+        theme: getQuestionTypeInfo().MAP.theme,
+      },
+      {
         value: getQuestionTypeInfo().BROWSER_DETECTION.type,
         label: getQuestionTypeInfo().BROWSER_DETECTION.title,
         theme: getQuestionTypeInfo().BROWSER_DETECTION.theme,

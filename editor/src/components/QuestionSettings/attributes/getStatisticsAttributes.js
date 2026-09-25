@@ -48,4 +48,14 @@ export const getStatisticsAttributes = () => ({
       defaultValue: '0',
     },
   },
+  DISPLAY_MAP: {
+    component: ToggleButtons,
+    attributePath: 'attributes.statistics_showmap',
+    props: {
+      labelText: t('Display map'),
+      id: 'display-map',
+      toggleOptions: getOnOffOptions(),
+      defaultValue: '1',
+    },
+  },
 })

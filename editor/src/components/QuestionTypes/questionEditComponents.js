@@ -3,6 +3,7 @@ import { FivePointChoiceQuestion } from './FivePointChoiceQuestion/FivePointChoi
 import { TextQuestion } from './TextQuestion/TextQuestion'
 import { RatingQuestion } from './RatingQuestion/RatingQuestion'
 import { FileUpload } from './FileUpload/FileUpload'
+import { MapQuestion } from './MapQuestion/MapQuestion'
 import { RankingQuestion } from './RankingQuestion/RankingQuestion'
 import { RankingAdvancedQuestion } from './RankingAdvancedQuestion/RankingAdvancedQuestion'
 import { Equation } from './Equation/Equation'
@@ -48,6 +49,7 @@ export const questionEditComponents = {
   [getQuestionTypeInfo().ARRAY_DUAL_SCALE.theme]: ArrayQuestion,
   [getQuestionTypeInfo().RATING.theme]: RatingQuestion,
   [getQuestionTypeInfo().FILE_UPLOAD.theme]: FileUpload,
+  [getQuestionTypeInfo().MAP.theme]: MapQuestion,
   [getQuestionTypeInfo().RANKING.theme]: RankingQuestion,
   [getQuestionTypeInfo().RANKING_ADVANCED.theme]: RankingAdvancedQuestion,
   [getQuestionTypeInfo().EQUATION.theme]: Equation,

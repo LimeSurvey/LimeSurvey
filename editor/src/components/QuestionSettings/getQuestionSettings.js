@@ -11,6 +11,7 @@ import {
   getBrowserDetectionSettings,
   getDateTimeSettings,
   getFileUploadSettings,
+  getMapSettings,
 } from './datesAndData'
 import {
   getEquationSettings,
@@ -71,6 +72,7 @@ export const getQuestionSettings = () => {
     [getQuestionTypeInfo().NUMERIC.theme]: getNumericSettings(),
     [getQuestionTypeInfo().SHORT_TEXT.theme]: getShortTextSettings(),
     [getQuestionTypeInfo().LONG_TEXT.theme]: getLongTextSettings(),
+    [getQuestionTypeInfo().MAP.theme]: getMapSettings(),
     [getQuestionTypeInfo().MULTIPLE_SHORT_TEXTS.theme]:
       getMultipleShortTextSettings(),
     [getQuestionTypeInfo().MULTIPLE_CHOICE.theme]: getMultipleChoiceSettings(),

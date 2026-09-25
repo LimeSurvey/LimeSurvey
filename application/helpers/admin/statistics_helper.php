@@ -391,7 +391,7 @@ function buildSelects($allfields, $surveyid, $language)
             try {
             if (
                 $pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
-                    $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
+                    $firstletter != "Q" && $firstletter != "J" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
                     $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp" && substr($pv, 0, 10) != "quota_exit"
             ) {
                 //pull out just the fieldnames
@@ -472,7 +472,7 @@ function buildSelects($allfields, $surveyid, $language)
 
                 //T - Long free text
                 //Q - Multiple short text
-            elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
+            elseif (($firstletter == "T" || $firstletter == "Q" || $firstletter == "J") && $_POST[$pv] != "") {
                 $selectSubs = array();
                 $postValue = is_array($_POST[$pv]) ? implode(' OR ', $_POST[$pv]) : (string) $_POST[$pv];
                 //We interpret and * and % as wildcard matches, and use ' OR ' and , as the separators
@@ -681,7 +681,7 @@ class statistics_helper
                 $mfield = substr($rt, 1) . "_C" . "other";
                 $alist[] = array(gT("Other"), gT("Other"), $mfield);
             }
-        } elseif ($sQuestionType == Question::QT_T_LONG_FREE_TEXT || $sQuestionType == Question::QT_S_SHORT_FREE_TEXT) {
+        } elseif ($sQuestionType == Question::QT_T_LONG_FREE_TEXT || $sQuestionType == Question::QT_S_SHORT_FREE_TEXT || $sQuestionType == Question::QT_J_MAP) {
             //Short and long text
             //search for key
             $fld = substr($rt, 1, strlen($rt));
@@ -1649,8 +1649,11 @@ class statistics_helper
                 * T = long free text
                 * S = Short free text
                 * Q = Multiple short text
+
+                * And also mask questions:
+                * J = Map
                 */
-                elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
+                elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
                     if ($noncompleted > 1 && $al[0] === 'NoAnswer') {
                         continue;
                     }
@@ -1762,7 +1765,7 @@ class statistics_helper
             * S = Short free text
             * Q = Multiple short text
             */
-            elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
+            elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
                 $headPDF = array();
                 $headPDF[] = array(gT("Answer"), gT("Count"), gT("Percentage"));
 
@@ -2399,7 +2402,7 @@ class statistics_helper
                 * S = Short free text
                 * Q = Multiple short text
                 */
-                elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
+                elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
                     if ($noncompleted > 1 && $al[0] === 'NoAnswer') {
                         continue;
                     }
@@ -2545,7 +2548,7 @@ class statistics_helper
             * S = Short free text
             * Q = Multiple short text
             */
-            elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
+            elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
                 $headPDF = array();
                 $headPDF[] = array(gT("Answer"), gT("Count"), gT("Percentage"));
 
@@ -3727,7 +3730,7 @@ class statistics_helper
                     $myField = "Q" . $myField;
                 }
                 // textfields get special treatment
-                if ($field['type'] == Question::QT_S_SHORT_FREE_TEXT || $field['type'] == Question::QT_T_LONG_FREE_TEXT || $field['type'] == Question::QT_U_HUGE_FREE_TEXT) {
+                if ($field['type'] == Question::QT_S_SHORT_FREE_TEXT || $field['type'] == Question::QT_J_MAP || $field['type'] == Question::QT_T_LONG_FREE_TEXT || $field['type'] == Question::QT_U_HUGE_FREE_TEXT) {
                     $myField = "T" . $myField;
                 }
                 //statistics for Date questions are not implemented yet.
@@ -3950,7 +3953,7 @@ class statistics_helper
                 // textfields get special treatment
                 //statistics for Date questions are not implemented yet.
                 // See buildOutputList for special treatment
-                $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS, Question::QT_T_LONG_FREE_TEXT, Question::QT_S_SHORT_FREE_TEXT, Question::QT_Q_MULTIPLE_SHORT_TEXT, Question::QT_R_RANKING, Question::QT_VERTICAL_FILE_UPLOAD, "", Question::QT_N_NUMERICAL, Question::QT_K_MULTIPLE_NUMERICAL, Question::QT_D_DATE);
+                $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS, Question::QT_T_LONG_FREE_TEXT, Question::QT_S_SHORT_FREE_TEXT, Question::QT_J_MAP, Question::QT_Q_MULTIPLE_SHORT_TEXT, Question::QT_R_RANKING, Question::QT_VERTICAL_FILE_UPLOAD, "", Question::QT_N_NUMERICAL, Question::QT_K_MULTIPLE_NUMERICAL, Question::QT_D_DATE);
                 if (in_array($field['type'], $specialQuestionTypes)) {
                     $myField = $field['type'] . $myField;
                 }

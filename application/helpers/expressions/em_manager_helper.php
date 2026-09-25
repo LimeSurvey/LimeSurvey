@@ -2479,6 +2479,7 @@ class LimeExpressionManager
                 $numbers_only = 1;
                 switch ($type) {
                     case Question::QT_S_SHORT_FREE_TEXT: // Short text
+                    case Question::QT_J_MAP:
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_equs = [];
@@ -2662,6 +2663,7 @@ class LimeExpressionManager
                             case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
                             case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
                             case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                            case Question::QT_J_MAP:
                             case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                             case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                                 if ($this->sgqaNaming) {
@@ -2749,6 +2751,7 @@ class LimeExpressionManager
                             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                             case Question::QT_R_RANKING: // Ranking STYLE
                             case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                            case Question::QT_J_MAP:
                             case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                             case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                             case Question::QT_D_DATE: //DATE
@@ -2826,6 +2829,7 @@ class LimeExpressionManager
                             case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
                             case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                             case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                            case Question::QT_J_MAP:
                             case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                             case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                                 if ($this->sgqaNaming) {
@@ -2844,6 +2848,7 @@ class LimeExpressionManager
                             case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
                             case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                             case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                            case Question::QT_J_MAP:
                             case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                             case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                                 if ($this->sgqaNaming) {
@@ -3506,6 +3511,7 @@ class LimeExpressionManager
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
                 case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
                 case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                case Question::QT_J_MAP:
                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                 case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
@@ -3558,6 +3564,7 @@ class LimeExpressionManager
                 case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                 case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                case Question::QT_J_MAP:
                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                 case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                 case Question::QT_X_TEXT_DISPLAY: //BOILERPLATE QUESTION
@@ -3668,6 +3675,7 @@ class LimeExpressionManager
                 case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
                 case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                case Question::QT_J_MAP:
                     if (isset($qattr[$questionNum]['numbers_only']) && $qattr[$questionNum]['numbers_only'] == '1') {
                         $onlynum = true;
                     }
@@ -3695,6 +3703,7 @@ class LimeExpressionManager
                 case Question::QT_D_DATE: //DATE
                 case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                 case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                case Question::QT_J_MAP:
                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                 case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
@@ -3765,6 +3774,7 @@ class LimeExpressionManager
                 || $type == Question::QT_O_LIST_WITH_COMMENT
                 || (!is_null($preg) && $type != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
                 || $type == Question::QT_S_SHORT_FREE_TEXT
+                || $type == Question::QT_J_MAP
                 || $type == Question::QT_D_DATE
                 || $type == Question::QT_T_LONG_FREE_TEXT
                 || $type == Question::QT_U_HUGE_FREE_TEXT
@@ -3835,6 +3845,7 @@ class LimeExpressionManager
                         break;
                     case Question::QT_N_NUMERICAL:
                     case Question::QT_S_SHORT_FREE_TEXT:
+                    case Question::QT_J_MAP:
                     case Question::QT_D_DATE:
                     case Question::QT_T_LONG_FREE_TEXT:
                     case Question::QT_U_HUGE_FREE_TEXT:
@@ -7612,6 +7623,7 @@ class LimeExpressionManager
                     switch ($arg['type']) {
                         case Question::QT_N_NUMERICAL:
                         case Question::QT_S_SHORT_FREE_TEXT:
+                        case Question::QT_J_MAP:
                         case Question::QT_D_DATE:
                         case Question::QT_T_LONG_FREE_TEXT:
                         case Question::QT_U_HUGE_FREE_TEXT:
@@ -7673,7 +7685,7 @@ class LimeExpressionManager
                     if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0))) {
                         // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity
                         $relParts[] = "  $('#question" . $arg['qid'] . "').trigger('relevance:on');\n";
-                        if ($arg['type'] == Question::QT_S_SHORT_FREE_TEXT) {
+                        if ($arg['type'] == Question::QT_S_SHORT_FREE_TEXT || $arg['type'] == Question::QT_J_MAP) {
                             $relParts[] = "  if($('#question" . $arg['qid'] . " div[id^=\"gmap_canvas\"]').length > 0)\n";
                             $relParts[] = "  {\n";
                             $relParts[] = "      resetMap(" . $arg['qid'] . ");\n";
@@ -9041,6 +9053,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
                             case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
                             case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                            case Question::QT_J_MAP:
                             case Question::QT_D_DATE: //DATE
                             case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                             case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
@@ -9183,6 +9196,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
                         case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
                         case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                        case Question::QT_J_MAP:
                         case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                         case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                         case Question::QT_ASTERISK_EQUATION: //Equation

@@ -27,6 +27,7 @@ class QuestionType extends StaticModel
     const QT_G_GENDER = 'G';
     const QT_H_ARRAY_COLUMN = 'H';
     const QT_I_LANGUAGE = 'I';
+    const QT_J_MAP = 'J';
     const QT_K_MULTIPLE_NUMERICAL = 'K';
     const QT_L_LIST = 'L';
     const QT_M_MULTIPLE_CHOICE = 'M';
@@ -250,6 +251,17 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'language'
             ],
+            self::QT_J_MAP => [
+                'code' => self::QT_J_MAP,
+                'description' => gT("Map", "html", $language),
+                'group' => gT("Mask questions"),
+                'subquestions' => 0,
+                'other' => false,
+                'hasdefaultvalues' => 1,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'map'
+            ],
             self::QT_K_MULTIPLE_NUMERICAL => [
                 'code' => self::QT_K_MULTIPLE_NUMERICAL,
                 'description' => gT("Multiple numerical input", "html", $language),
@@ -459,7 +471,7 @@ class QuestionType extends StaticModel
     public static function textCodes()
     {
         return [
-            self::QT_I_LANGUAGE, self::QT_S_SHORT_FREE_TEXT, self::QT_U_HUGE_FREE_TEXT,
+            self::QT_I_LANGUAGE, self::QT_J_MAP, self::QT_S_SHORT_FREE_TEXT, self::QT_U_HUGE_FREE_TEXT,
             self::QT_Q_MULTIPLE_SHORT_TEXT, self::QT_T_LONG_FREE_TEXT, self::QT_SEMICOLON_ARRAY_TEXT,
             self::QT_COLON_ARRAY_NUMBERS,
         ];

@@ -61,6 +61,7 @@ class Question extends LSActiveRecord
     const QT_G_GENDER = 'G';
     const QT_H_ARRAY_COLUMN = 'H';
     const QT_I_LANGUAGE = 'I';
+    const QT_J_MAP = 'J';
     const QT_K_MULTIPLE_NUMERICAL = 'K';
     const QT_L_LIST = 'L';
     const QT_M_MULTIPLE_CHOICE = 'M';
@@ -608,6 +609,8 @@ class Question extends LSActiveRecord
                 return 'array-flexible-column';
             case Question::QT_I_LANGUAGE:
                 return 'language';
+            case Question::QT_J_MAP:
+                return 'map';
             case Question::QT_K_MULTIPLE_NUMERICAL:
                 return 'numeric-multi';
             case Question::QT_L_LIST:
@@ -1184,6 +1187,9 @@ class Question extends LSActiveRecord
             case Question::QT_S_SHORT_FREE_TEXT:
                 $oRenderer = new RenderShortFreeText($aFieldArray);
                 break;
+            case Question::QT_J_MAP:
+                $oRenderer = new RenderMap($aFieldArray);
+                break;
             case Question::QT_Y_YES_NO_RADIO:
                 $oRenderer = new RenderYesNoRadio($aFieldArray);
                 break;
@@ -1260,6 +1266,8 @@ class Question extends LSActiveRecord
                 return new DataSetNumerical($this->qid);
             case Question::QT_S_SHORT_FREE_TEXT:
                 return new DataSetShortFreeText($this->qid);
+            case Question::QT_J_MAP:
+                return new DataSetMap($this->qid);
             case Question::QT_Y_YES_NO_RADIO:
                 return new DataSetYesNoRadio($this->qid);
             case Question::QT_COLON_ARRAY_NUMBERS:

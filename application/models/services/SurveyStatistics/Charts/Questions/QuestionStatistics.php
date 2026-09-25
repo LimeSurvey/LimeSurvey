@@ -60,6 +60,7 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => fn() => new MultipleChoiceProcessor(),
             Question::QT_T_LONG_FREE_TEXT => fn() => new TextProcessor(),
             Question::QT_S_SHORT_FREE_TEXT => fn() => new TextProcessor(),
+            Question::QT_J_MAP => fn() => new TextProcessor(),
             Question::QT_U_HUGE_FREE_TEXT => fn() => new TextProcessor(),
             Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => new MultipleChoiceProcessor(),
             Question::QT_R_RANKING => fn() => new RankingProcessor(),

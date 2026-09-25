@@ -28,7 +28,7 @@ export const getQuestionTypeInfo = () => {
     BROWSER_DETECTION: {
       type: 'S',
       theme: 'browserdetect',
-      title: t('Map/browser detection'),
+      title: t('Browser detection'),
     },
     DATE_TIME: {
       type: 'D',
@@ -52,6 +52,11 @@ export const getQuestionTypeInfo = () => {
       type: 'T',
       theme: 'longfreetext',
       title: t('Long text'),
+    },
+    MAP: {
+      type: 'J',
+      theme: 'map',
+      title: t('Map'),
     },
     MULTIPLE_CHOICE: {
       type: 'M',

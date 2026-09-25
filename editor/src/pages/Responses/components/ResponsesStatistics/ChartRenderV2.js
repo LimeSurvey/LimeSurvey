@@ -9,6 +9,7 @@ import {
   QT_COLON_ARRAY_NUMBERS,
   QT_K_MULTIPLE_NUMERICAL,
   QT_N_NUMERICAL,
+  QT_J_MAP,
   QT_S_SHORT_FREE_TEXT,
   QT_SEMICOLON_ARRAY_TEXT,
   QT_T_LONG_FREE_TEXT,
@@ -315,9 +316,12 @@ export const ChartRendererV2 = ({
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
   const isGridable =
     isNumerical ||
-    [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
-      question?.type
-    )
+    [
+      QT_J_MAP,
+      QT_S_SHORT_FREE_TEXT,
+      QT_T_LONG_FREE_TEXT,
+      QT_U_HUGE_FREE_TEXT,
+    ].includes(question?.type)
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)

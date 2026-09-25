@@ -391,7 +391,7 @@ function buildSelects($allfields, $surveyid, $language)
             try {
             if (
                 $pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
-                    $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
+                    $firstletter != "Q" && $firstletter != "J" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
                     $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp"
             ) {
                 //pull out just the fieldnames
@@ -471,7 +471,7 @@ function buildSelects($allfields, $surveyid, $language)
 
                 //T - Long free text
                 //Q - Multiple short text
-            elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
+            elseif (($firstletter == "T" || $firstletter == "Q" || $firstletter == "J") && $_POST[$pv] != "") {
                 $selectSubs = array();
                 $postValue = is_array($_POST[$pv]) ? implode(' OR ', $_POST[$pv]) : (string) $_POST[$pv];
                 //We intepret and * and % as wildcard matches, and use ' OR ' and , as the separators
@@ -653,7 +653,7 @@ class userstatistics_helper
                 $alist[] = array(gT("Other"), gT("Other"), $mfield);
             }
         } //S - Short free text and T - Long free text
-        elseif ($firstletter == "T" || $firstletter == "S") {
+        elseif ($firstletter == "T" || $firstletter == "S" || $firstletter == "J") {
             //Short and long text
             //search for key
             $fld = $rt;
@@ -1559,7 +1559,7 @@ class userstatistics_helper
                 * S = Short free text
                 * Q = Multiple short text
                 */
-                elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
+                elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
                     $sDatabaseType = Yii::app()->db->getDriverName();
                     $digitIndex = strcspn($al[2] ?? '', '0123456789');
 
@@ -1706,7 +1706,7 @@ class userstatistics_helper
             * S = Short free text
             * Q = Multiple short text
             */
-            elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
+            elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
                 $headPDF = array();
                 $headPDF[] = array(gT("Answer"), gT("Count"), gT("Percentage"));
 
@@ -2070,7 +2070,7 @@ class userstatistics_helper
                         //check if we have to adjust ouput due to Yii::app()->getConfig('showaggregateddata') setting
                         if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) {
                             $statisticsoutput .= "\t\t</td>";
-                        } elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
+                        } elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
                             $statisticsoutput .= "</td>\n\t";
                         }
                         $statisticsoutput .= "</tr>\n"; //Close the row
@@ -2588,7 +2588,7 @@ class userstatistics_helper
                     $myField = "Q" . $myField;
                 }
                 // textfields get special treatment
-                if ($field['type'] == Question::QT_S_SHORT_FREE_TEXT || $field['type'] == Question::QT_T_LONG_FREE_TEXT || $field['type'] == Question::QT_U_HUGE_FREE_TEXT) {
+                if ($field['type'] == Question::QT_S_SHORT_FREE_TEXT || $field['type'] == Question::QT_J_MAP || $field['type'] == Question::QT_T_LONG_FREE_TEXT || $field['type'] == Question::QT_U_HUGE_FREE_TEXT) {
                     $myField = "T" . $myField;
                 }
                 //statistics for Date questions are not implemented yet.
