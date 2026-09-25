@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
@@ -17,6 +17,7 @@ import { TAB_KEYS } from './utils'
 import { ResponsesOverview } from './components/Overview/ResponsesOverview'
 import { panelItemsKeys } from './Sidebars'
 import { RightSideBar } from './Sidebars/RightSideBar'
+import { buildQuestionOptions } from './components/ResponsesStatistics/StatisticsFiltersModal/utils'
 
 export const Responses = () => {
   const { surveyId, menu } = useParams()
@@ -34,6 +35,9 @@ export const Responses = () => {
   const [columnsFilters, setColumnsFilters] = useState([])
   const [tabKey, setTabKey] = useState(TAB_KEYS.RESPONSES)
   const [statisticsFilters, setStatisticsFilters] = useState({})
+
+  const [appliedFilters, setAppliedFilters] = useState([])
+  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
   const [hasResponsesUpdatePermission] = useAppState(
     STATES.HAS_RESPONSES_UPDATE_PERMISSION
   )
@@ -48,6 +52,11 @@ export const Responses = () => {
     pagination,
     filters,
     sorting
+  )
+
+  const questionOptions = useMemo(
+    () => buildQuestionOptions(survey, activeLanguage),
+    [survey?.questionGroups, activeLanguage]
   )
 
   useEffect(() => {
@@ -197,6 +206,10 @@ export const Responses = () => {
             showFilters={showStatisticsFilters}
             setShowFilters={setShowStatisticsFilters}
             setFilters={setStatisticsFilters}
+            survey={survey}
+            questionOptions={questionOptions}
+            appliedFilters={appliedFilters}
+            setAppliedFilters={setAppliedFilters}
           />
         )
       case panelItemsKeys.list:
@@ -282,6 +295,10 @@ export const Responses = () => {
                 showFilters={showTableFilters}
                 setFilters={setColumnsFilters}
                 tabKey={tabKey}
+                survey={survey}
+                questionOptions={questionOptions}
+                appliedFilters={appliedFilters}
+                setAppliedFilters={setAppliedFilters}
               />
             </div>
           )}
