@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { Input as InputComponent } from '../Input/Input'
 
 export default {
-  title: 'UIComponents/Input',
+  title: 'imageWrapper/Input',
   component: InputComponent,
 }
 

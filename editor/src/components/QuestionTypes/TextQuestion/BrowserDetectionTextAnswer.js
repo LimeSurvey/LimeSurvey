@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Form } from 'react-bootstrap'
 import Bowser from 'bowser'
 import {
@@ -6,6 +6,8 @@ import {
   TileLayer,
   Popup,
   Marker as LeafLetMarker,
+  useMap,
+  useMapEvents,
 } from 'react-leaflet'
 import L from 'leaflet'
 
@@ -14,7 +16,9 @@ import { getAttributeValue } from 'helpers'
 
 import './TextQuestion.scss'
 
-const LeafletMapComponent = () => {
+const DEFAULT_CENTER = [53.61422133647984, 9.972816890552014]
+
+const LeafletMapComponent = ({ value, onChange }) => {
   const customIcon = new L.Icon({
     iconUrl: 'https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png',
     iconSize: [25, 41],
@@ -22,24 +26,85 @@ const LeafletMapComponent = () => {
     popupAnchor: [0, -41],
   })
 
+  const initialPosition = useMemo(() => {
+    const coords = value?.split(';').map(Number)
+    return coords?.length === 2 && coords.every((n) => !Number.isNaN(n))
+      ? coords
+      : DEFAULT_CENTER
+  }, [value])
+
+  const [position, setPosition] = useState(initialPosition)
+  const markerRef = useRef(null)
+
+  useEffect(() => {
+    setPosition(initialPosition)
+  }, [initialPosition])
+
+  const updatePosition = useCallback(
+    ({ lat, lng }) => {
+      const newPosition = [lat, lng]
+      setPosition(newPosition)
+      onChange?.(`${lat};${lng}`)
+    },
+    [onChange]
+  )
+
+  const MapClickHandler = () => {
+    useMapEvents({
+      click: (event) => updatePosition(event.latlng),
+    })
+    return null
+  }
+
+  const MapViewSyncer = () => {
+    const map = useMap()
+    useEffect(() => {
+      map.setView(position)
+    }, [map, position])
+    return null
+  }
+
+  const markerEventHandlers = useMemo(
+    () => ({
+      dragend: () => {
+        const marker = markerRef.current
+        if (marker) {
+          updatePosition(marker.getLatLng())
+        }
+      },
+    }),
+    [updatePosition]
+  )
+
   return (
     <MapContainer
-      center={[53.61422133647984, 9.972816890552014]}
+      center={position}
       zoom={8}
       style={{ height: '350px', width: '100%' }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <MapClickHandler />
+      <MapViewSyncer />
       <LeafLetMarker
         icon={customIcon}
-        position={[53.61422133647984, 9.972816890552014]}
+        position={position}
+        draggable={true}
+        eventHandlers={markerEventHandlers}
+        ref={markerRef}
       >
-        <Popup>{t('You are here!')}</Popup>
+        <Popup>
+          {t('Drag the marker or click the map to set the location')}
+        </Popup>
       </LeafLetMarker>
     </MapContainer>
   )
 }
 
-export const BrowserDetectionTextAnswer = ({ attributes = {} }) => {
+export const BrowserDetectionTextAnswer = ({
+  attributes = {},
+  value,
+  onLocationChange,
+}) => {
   const [browserInfo, setBrowserInfo] = useState(false)
   const locationMapService = getAttributeValue(attributes.location_mapservice)
 
@@ -84,7 +149,9 @@ export const BrowserDetectionTextAnswer = ({ attributes = {} }) => {
           loading="lazy"
         ></iframe>
       )}
-      {locationMapService === '100' && <LeafletMapComponent />}
+      {locationMapService === '100' && (
+        <LeafletMapComponent value={value} onChange={onLocationChange} />
+      )}
     </div>
   )
 }

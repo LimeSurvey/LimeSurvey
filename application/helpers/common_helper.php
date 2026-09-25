@@ -1001,20 +1001,18 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
         return '';
     }
     $survey = Survey::model()->findByPk($iSurveyID);
-    $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $iSurveyID]);
-    $found = false;
-    foreach ($rawQuestions as $rawQuestion) {
-        $found = $found || (strpos($sFieldCode, "Q{$rawQuestion->qid}") === 0);
-    }
-    //Fieldcode used to determine question, $sValue used to match against answer code
-    //Returns NULL if question type does not suit
-    if ($found) {
+    /* @var boolean : it's look like question */
+    /* Just do a quickest test, happen multiple time in browse real createFieldMap after */
+    $looksLikeQuestion = isset($sFieldCode[1]) && $sFieldCode[0] === 'Q' && ctype_digit($sFieldCode[1]);
+    //Returns $sValue if question type does not suit
+    if ($looksLikeQuestion) {
         //Only check if it looks like a real fieldcode
         $fieldmap = createFieldMap($survey, 'short', false, false, $sLanguage);
         if (isset($fieldmap[$sFieldCode])) {
             $fields = $fieldmap[$sFieldCode];
         } else {
-            return '';
+            /* Not in fieldmap : return the raw value */
+            return $sValue;
         }
 
         // If it is a comment field there is nothing to convert here
@@ -1049,8 +1047,34 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:
             case Question::QT_O_LIST_WITH_COMMENT:
             case Question::QT_I_LANGUAGE:
+                $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
+                if ($sValue == "-oth-") {
+                    $this_answer = gT("Other", null, $sLanguage);
+                }
+                break;
             case Question::QT_R_RANKING:
-                $this_answer = Question::model()->getQuestionFromTitle($fields['qid'], $sValue, $sLanguage);
+                $items = json_decode($sValue, true);
+                if (is_array($items)) {
+                    $subquestions = Question::model()->findAll([
+                        'condition' => 'parent_qid = :qid',
+                        'order' => 'question_order',
+                        'params' => [':qid' => $fields['qid']]
+                    ]);
+                    $titleToText = [];
+                    foreach ($subquestions as $subquestion) {
+                        if (isset($subquestion->questionl10ns[$sLanguage])) {
+                            $titleToText[$subquestion->title] = $subquestion->questionl10ns[$sLanguage]->question;
+                        }
+                    }
+                    $indexedQuestions = [];
+                    foreach ($items as $index => $item) {
+                        if (isset($titleToText[$item])) {
+                            $rank = $index + 1;
+                            $indexedQuestions[] = gT('Rank', null, $sLanguage) . " {$rank}: {$titleToText[$item]}";
+                        }
+                    }
+                    $sValue = implode(' | ', $indexedQuestions);
+                }
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
                 }
@@ -1155,7 +1179,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
                 }
                 break;
             default:
-                ;
+                break;
         } // switch
     }
     switch ($sFieldCode) {
@@ -1165,6 +1189,15 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
             if (trim($sValue) != '') {
                 $dateformatdetails = getDateFormatDataForQID(null, $iSurveyID);
                 $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate'] . ' H:i:s');
+            }
+            break;
+        case 'quota_exit':
+            // Try to get quota name
+            if (trim((string) $sValue) !== '') {
+                $quota = Quota::model()->findByAttributes(['sid' => $iSurveyID, 'id' => $sValue]);
+                if ($quota) {
+                    $this_answer = $quota->name;
+                }
             }
             break;
     }
@@ -1294,7 +1327,6 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
  * @param array $rawQuestions a collection of questions containing a question and its subquestions
  * @param int $sid
  * @param int $gid
- * @param bool $cd is it the condition designer
  *
  * @return string the field's name
  */
@@ -1634,6 +1666,14 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         }
     }
 
+    // Add 'quota_exit' to fieldmap.
+    $fieldmap["quota_exit"] = array("fieldname" => "quota_exit", 'type' => "quota_exit", 'sid' => $surveyid, "gid" => "", "qid" => "", "aid" => "");
+    if ($style == "full") {
+        $fieldmap["quota_exit"]['title'] = "";
+        $fieldmap["quota_exit"]['question'] = gT("Quota exit");
+        $fieldmap["quota_exit"]['group_name'] = "";
+    }
+
     $sOldLanguage = App()->language;
     App()->setLanguage($sLanguage);
     // Collect all default values once so don't need separate query for each question with defaults
@@ -1773,7 +1813,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         'sid' => $surveyid,
                         "gid" => $arow['gid'],
                         "qid" => $arow['qid'],
-                        "aid" => "other");
+                        "aid" => "other",
+                        "suffix" => "_Cother");
                         if (isset($answerColumnDefinition)) {
                             $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                         }
@@ -1807,7 +1848,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     'sid' => $surveyid,
                     "gid" => $arow['gid'],
                     "qid" => $arow['qid'],
-                    "aid" => "comment");
+                    "aid" => "comment",
+                    "suffix" => "_Ccomment");
                     if (isset($answerColumnDefinition)) {
                         $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                     }
@@ -1962,10 +2004,30 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             // If max_subquestions is set and lower than the number of ranking items,
             // cap the number of response columns (rank slots) to that value.
             $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qs[$arow['qid']] ?? $arow['qid']);
-            if (isset($qidattributes['max_subquestions']) && intval($qidattributes['max_subquestions']) > 0 && intval($qidattributes['max_subquestions']) < count($abrows)) {
+            if (!$includeAllAnswerOptions && isset($qidattributes['max_subquestions']) && intval($qidattributes['max_subquestions']) > 0 && intval($qidattributes['max_subquestions']) < count($abrows)) {
                 $abrows = array_slice($abrows, 0, intval($qidattributes['max_subquestions']));
             }
             $i = 0;
+            $fieldmap[$fieldname] = [
+                'fieldname' => $fieldname,
+                'type' => $arow['type'],
+                'sid' => $surveyid,
+                'gid' => $arow['gid'],
+                'qid' => $arow['qid'],
+                'suffix' => ''
+            ];
+            if ($style == "full") {
+                $fieldmap[$fieldname]['title'] = $arow['title'];
+                $fieldmap[$fieldname]['question'] = $arow['question'];
+                $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
+                $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
+                $fieldmap[$fieldname]['hasconditions'] = $conditions;
+                $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
+                $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
+                $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
+                $fieldmap[$fieldname]['SQrelevance'] = $arow['relevance'];
+            }
             foreach ($abrows as $abrow) {
                 $i++;
                 $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}";
@@ -2227,7 +2289,7 @@ function hasFileUploadQuestion($iSurveyID)
 /**
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
-* @param string $surveyid The Survey ID
+* @param int $surveyid The Survey ID
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
 * @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int|false $questionid Limit to a certain qid only (for question preview) - default is false
@@ -2253,7 +2315,7 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
     //do something
     $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sLanguage);
     $fieldmap = [];
-    $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'suffix' => '', 'question' => gT('Total time'), 'title' => 'interviewtime');
+    $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'suffix' => '', 'question' => gT('Total time (in s)'), 'title' => 'interviewtime');
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
             // field for time spent on page
@@ -2824,6 +2886,12 @@ function isCaptchaEnabled($screen, $captchamode = '')
 
 /**
 * Check if a table does exist in the database
+*
+* Uses schema->getTableNames() rather than schema->getTable($sTableName) on purpose:
+* getTableNames() issues a single lightweight "SHOW TABLES" query (cached per schema),
+* while getTable() additionally runs "SHOW FULL COLUMNS" and "SHOW CREATE TABLE" per call
+* to build the full column/constraint metadata, which is unnecessary overhead when all
+* that is needed is an existence check.
 *
 * @param string $sTableName Table name to check for (without dbprefix!))
 * @return boolean True or false if table exists or not
@@ -3775,12 +3843,14 @@ function enforceSSLMode()
 /**
  * Creates an array with details on a particular response for display purposes
  * Used in Print answers, Detailed response view and Detailed admin notification email
+ * Ranking questions are rendered as a single row from their JSON column.
  *
- * @param mixed $iSurveyID
- * @param mixed $iResponseID
- * @param mixed $sLanguageCode
+ * @param int $iSurveyID Survey ID
+ * @param int $iResponseID Response ID
+ * @param string $sLanguageCode Language used for question and answer texts
  * @param boolean $bHonorConditions Apply conditions
- * @return array
+ * @return array<string, array> Rows keyed by 'gid_…', 'qid_…' or field name
+ * @throws CHttpException If the response does not exist
  */
 function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions = true)
 {
@@ -3799,6 +3869,10 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     $aRelevantFields = array();
 
     foreach ($aFieldMap as $sKey => $fname) {
+        // Ranking answers are stored as JSON in the base Q{qid} column; the per-rank _S fields are virtual
+        if (($fname['type'] ?? '') === Question::QT_R_RANKING && !empty($fname['suffix'])) {
+            continue;
+        }
         if (LimeExpressionManager::QuestionIsRelevant($fname['qid']) || $bHonorConditions === false) {
             $aRelevantFields[$sKey] = $fname;
         }
@@ -4102,17 +4176,24 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
 *
 * @param integer $iSurveyID The survey ID
 * @param mixed $aCodeMap The codemap array (old_code=>new_code)
+* @param int[]|null $aRestrictToGids When set, only questions/groups in these group IDs are updated (e.g. when importing a single group). The survey end text is left untouched in that case.
 */
-function replaceExpressionCodes($iSurveyID, $aCodeMap)
+function replaceExpressionCodes($iSurveyID, $aCodeMap, $aRestrictToGids = null)
 {
-    $arQuestions = Question::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
+    $bRestrictToGroups = is_array($aRestrictToGids);
+    $questionCriteria = new CDbCriteria();
+    $questionCriteria->addColumnCondition(['sid' => $iSurveyID]);
+    if ($bRestrictToGroups) {
+        $questionCriteria->addInCondition('gid', $aRestrictToGids);
+    }
+    $arQuestions = Question::model()->findAll($questionCriteria);
     foreach ($arQuestions as $arQuestion) {
         $bModified = false;
         foreach ($aCodeMap as $sOldCode => $sNewCode) {
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
             if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
                 $sOldCode = preg_quote((string) $sOldCode, '~');
-                $arQuestion->relevance = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arQuestion->relevance, -1, $iCount);
+                $arQuestion->relevance = preg_replace("~\b{$sOldCode}(?![a-zA-Z0-9])~", (string) $sNewCode, (string) $arQuestion->relevance, -1, $iCount);
                 $bModified = $bModified || $iCount;
             }
         }
@@ -4127,10 +4208,10 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
                     $sOldCode = preg_quote((string) $sOldCode, '~');
                     // The following regex only matches the last occurrence of the old code within each pair of brackets, so we apply the replace recursively
                     // to catch all occurrences.
-                    $arQuestionLS->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
+                    $arQuestionLS->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?![a-zA-Z0-9])(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
                     $bModified = $bModified || $iCount;
                     // Apply the replacement on question help text
-                    $arQuestionLS->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->help, -1, $iCount);
+                    $arQuestionLS->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?![a-zA-Z0-9])(?=[^}]*?})~", $sNewCode, $arQuestionLS->help, -1, $iCount);
                     $bModified = $bModified || $iCount;
                 }
             }
@@ -4151,7 +4232,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
                         continue;
                     }
                     $sOldCode = preg_quote((string) $sOldCode, '~');
-                    $defaultValueL10n->defaultvalue = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $defaultValueL10n->defaultvalue, -1, $iCount);
+                    $defaultValueL10n->defaultvalue = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?![a-zA-Z0-9])(?=[^}]*?})~", $sNewCode, $defaultValueL10n->defaultvalue, -1, $iCount);
                     $bModified = $bModified || $iCount;
                 }
                 if ($bModified > 0) {
@@ -4160,12 +4241,17 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             }
         }
     }
-    $arGroups = QuestionGroup::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
+    $groupCriteria = new CDbCriteria();
+    $groupCriteria->addColumnCondition(['sid' => $iSurveyID]);
+    if ($bRestrictToGroups) {
+        $groupCriteria->addInCondition('gid', $aRestrictToGids);
+    }
+    $arGroups = QuestionGroup::model()->findAll($groupCriteria);
     foreach ($arGroups as $arGroup) {
         $bModified = false;
         foreach ($aCodeMap as $sOldCode => $sNewCode) {
             $sOldCode = preg_quote((string) $sOldCode, '~');
-            $arGroup->grelevance = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arGroup->grelevance, -1, $iCount);
+            $arGroup->grelevance = preg_replace("~\b{$sOldCode}(?![a-zA-Z0-9])~", (string) $sNewCode, (string) $arGroup->grelevance, -1, $iCount);
             $bModified = $bModified || $iCount;
         }
         if ($bModified) {
@@ -4174,7 +4260,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         foreach ($arGroup->questiongroupl10ns as $arQuestionGroupLS) {
             foreach ($aCodeMap as $sOldCode => $sNewCode) {
                 $sOldCode = preg_quote((string) $sOldCode, '~');
-                $arQuestionGroupLS->description = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionGroupLS->description, -1, $iCount);
+                $arQuestionGroupLS->description = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?![a-zA-Z0-9])(?=[^}]*?})~", $sNewCode, $arQuestionGroupLS->description, -1, $iCount);
                 $bModified = $bModified || $iCount;
             }
             if ($bModified) {
@@ -4182,24 +4268,135 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             }
         }
     }
-    // Apply the replacement on survey's end message
-    $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
-    foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
-        $bModified = false;
-        foreach ($aCodeMap as $sOldCode => $sNewCode) {
-            if (strlen((string) $sOldCode) <= 1 || is_numeric($sOldCode)) {
-                continue;
+    // Apply the replacement on survey's end message (survey-wide, so skip it when restricting to specific groups)
+    if (!$bRestrictToGroups) {
+        $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+        foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+            $bModified = false;
+            foreach ($aCodeMap as $sOldCode => $sNewCode) {
+                if (strlen((string) $sOldCode) <= 1 || is_numeric($sOldCode)) {
+                    continue;
+                }
+                $sOldCode = preg_quote((string) $sOldCode, '~');
+                $surveyLanguageSetting->surveyls_endtext = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?![a-zA-Z0-9])(?=[^}]*?})~", $sNewCode, $surveyLanguageSetting->surveyls_endtext, -1, $iCount);
+                $bModified = $bModified || $iCount;
             }
-            $sOldCode = preg_quote((string) $sOldCode, '~');
-            $surveyLanguageSetting->surveyls_endtext = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $surveyLanguageSetting->surveyls_endtext, -1, $iCount);
-            $bModified = $bModified || $iCount;
-        }
-        if ($bModified) {
-            $surveyLanguageSetting->save();
+            if ($bModified) {
+                $surveyLanguageSetting->save();
+            }
         }
     }
 }
 
+/**
+ * Replaces fieldnames in string with their counterparts
+ * @param string|null $haystack the string where the replace is to occur
+ * @param string|int $rawNeedle the qid of the value to be replaced
+ * @param string|int $rawReplace the qid of the value to replace the needle
+ * 
+ * @return string the changed string
+ */
+function replaceFieldnameMatches(string|null $haystack, string|int $rawNeedle, string|int $rawReplace)
+{
+    if (!$haystack) {
+        return false;
+    }
+    return preg_replace("/Q{$rawNeedle}(?!\d)/i", "Q{$rawReplace}", preg_replace("/S{$rawNeedle}(?!\d)/i", "S{$rawReplace}", $haystack));
+}
+
+/**
+* Replaces EM variable codes in a current survey with a new one
+*
+* @param integer $iSurveyID The group ID
+* @param mixed $aQIDReplacements The fieldmap array (old_field=>new_field)
+*/
+function replaceExpressionFieldnames($iSurveyID, $aQIDReplacements)
+{
+    $arQuestions = Question::model()->findAll("gid=:gid", array(':gid' => $iSurveyID));
+    foreach ($arQuestions as $arQuestion) {
+        $relevance = $arQuestion->relevance;
+        foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+            $relevance = replaceFieldnameMatches($relevance, $sOldFieldname, $sNewFieldname);
+        }
+        if ($relevance !== $arQuestion->relevance) {
+            $arQuestion->relevance = $relevance;
+            $arQuestion->save();
+        }
+        foreach ($arQuestion->conditions as $condition) {
+            $cfieldname = $condition->cfieldname;
+            foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+                $cfieldname = replaceFieldnameMatches($cfieldname, $sOldFieldname, $sNewFieldname);
+            }
+            if ($condition->cfieldname !== $cfieldname) {
+                $condition->cfieldname = $cfieldname;
+                $condition->save();
+            }
+        }
+        foreach ($arQuestion->questionl10ns as $arQuestionLS) {
+            $q = $arQuestionLS->question;
+            $h = $arQuestionLS->help;
+            foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+                $q = replaceFieldnameMatches($q, $sOldFieldname, $sNewFieldname);
+                $h = replaceFieldnameMatches($h, $sOldFieldname, $sNewFieldname);
+            }
+            if (($arQuestionLS->question !== $q) || ($arQuestionLS->help !== $h)) {
+                $arQuestionLS->question = $q;
+                $arQuestionLS->help = $h;
+                $arQuestionLS->save();
+            }
+        }
+        // Also apply on question's default values
+        $defaultValues = DefaultValue::model()->with('defaultvaluel10ns')->findAllByAttributes(['qid' => $arQuestion->qid]);
+        foreach ($defaultValues as $defaultValue) {
+            if (empty($defaultValue->defaultvaluel10ns)) {
+                continue;
+            }
+            foreach ($defaultValue->defaultvaluel10ns as $defaultValueL10n) {
+                $d = $defaultValueL10n->defaultvalue;
+                foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+                    $d = replaceFieldnameMatches($d, $sOldFieldname, $sNewFieldname);
+                }
+                if ($defaultValueL10n->defaultvalue !== $d) {
+                    $defaultValueL10n->defaultvalue = $d;
+                    $defaultValueL10n->save();
+                }
+            }
+        }
+    }
+    $arGroups = QuestionGroup::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
+    foreach ($arGroups as $arGroup) {
+        $g = $arGroup->grelevance;
+        foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+            $g = replaceFieldnameMatches($g, $sOldFieldname, $sNewFieldname);
+        }
+        if ($arGroup->grelevance !== $g) {
+            $arGroup->grelevance = $g;
+            $arGroup->save();
+        }
+        foreach ($arGroup->questiongroupl10ns as $arQuestionGroupLS) {
+            $d = $arQuestionGroupLS->description;
+            foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+                $d = replaceFieldnameMatches($d, $sOldFieldname, $sNewFieldname);
+            }
+            if ($arQuestionGroupLS->description !== $d) {
+                $arQuestionGroupLS->description = $d;
+                $arQuestionGroupLS->save();
+            }
+        }
+    }
+    // Apply the replacement on survey's end message
+    $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+    foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+        $se = $surveyLanguageSetting->surveyls_endtext;
+        foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+            $se = replaceFieldnameMatches($se, $sOldFieldname, $sNewFieldname);
+        }
+        if ($surveyLanguageSetting->surveyls_endtext !== $se) {
+            $surveyLanguageSetting->surveyls_endtext = $se;
+            $surveyLanguageSetting->save();
+        }
+    }
+}
 
 /**
 * cleanLanguagesFromSurvey() removes any languages from survey tables that are not in the passed list
@@ -5814,4 +6011,13 @@ function sortByKeyLengthDescending($input)
         $output[$key] = $input[$key];
     }
     return $output;
+}
+
+/**
+ * Check if a question is a ranking question parent
+ * @param int|null $aid The answer ID (null for parent questions)
+ * @return bool
+ */
+function isRankingQuestionParent($aid) {
+    return !isset($aid);
 }

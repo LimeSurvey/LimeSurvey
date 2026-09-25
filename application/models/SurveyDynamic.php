@@ -111,7 +111,7 @@ class SurveyDynamic extends LSActiveRecord
      *
      * @access public
      * @param array $data
-     * @return boolean
+     * @return int|boolean
      * @deprecated Use setAttributes() and encryptSave()
      */
     public function insertRecords($data)
@@ -799,16 +799,20 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     /**
-     * Get an array to find question data responsively
+     * Builds the display/print data for a single question (and its subquestions), used to
+     * render the print-answers page. Returns false when the question must not be shown,
+     * i.e. it is not relevant while conditions are honored, or it carries the "hidden"
+     * question attribute ("Always hide this question").
      * This should be part of the question object.
      * And in future development this should be part of the specific question type object
      *
-     * @param Question $oQuestion
-     * @param SurveyDynamic $oResponses
-     * @param boolean $bHonorConditions
-     * @param boolean $subquestion
+     * @param Question $oQuestion The question (or subquestion) to build data for
+     * @param SurveyDynamic $oResponses The response row the answers are read from
+     * @param boolean $bHonorConditions Whether relevance/conditions should be honored; if false, relevance is not checked
+     * @param boolean $subquestion Whether $oQuestion is a subquestion of another question
      * @param boolean $getCommentOnly If should only returns the "comments" or "other" response.
-     * @return array | boolean
+     * @param string|null $sLanguage Language to use; defaults to the survey's language when null
+     * @return array|false Question display data, or false if the question must be hidden
      */
     public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion = false, $getCommentOnly = false, $sLanguage = null)
     {
@@ -817,7 +821,7 @@ class SurveyDynamic extends LSActiveRecord
 
         if (
             !(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) && $bHonorConditions == true)
-            || (is_array($attributes) && $attributes['hidden'] === 1)
+            || (is_array($attributes) && $attributes['hidden'] == 1)
         ) {
             return false;
         }
@@ -983,34 +987,29 @@ class SurveyDynamic extends LSActiveRecord
 
         if ($aQuestionAttributes['questionclass'] === 'ranking') {
             $aQuestionAttributes['answervalues'] = array();
-            // Ranking now uses subquestions instead of answers
-            $subQuestions = Question::model()->with('questionl10ns')->findAllByAttributes(
-                array('parent_qid' => $oQuestion->qid),
-                array('order' => 'question_order')
-            );
-            foreach ($subQuestions as $oSubQuestion) {
-                $subFieldname = $fieldname . '_S' . $oSubQuestion->qid;
-                if (!isset($oResponses[$subFieldname]) || $oResponses[$subFieldname] === '') {
-                    continue;
+            // Ranking is stored as a JSON list of subquestion codes in the Q{qid} column, ordered by rank
+            $rankedCodes = json_decode((string) $aQuestionAttributes['answervalue'], true);
+            if (is_array($rankedCodes)) {
+                $subQuestions = Question::model()->with('questionl10ns')->findAllByAttributes(
+                    array('parent_qid' => $oQuestion->qid),
+                    array('order' => 'question_order')
+                );
+                $subQuestionTexts = [];
+                foreach ($subQuestions as $oSubQuestion) {
+                    $subQuestionTexts[$oSubQuestion->title] = $oSubQuestion->questionl10ns[$sLanguage]->question ?? $oSubQuestion->title;
                 }
-                $currentResponse = $oResponses[$subFieldname];
-
-                // Get the answer text for the selected rank value
-                $answerText = '';
-                if (isset($oQuestion->subquestions)) {
-                    $oSelectedAnswer = array_reduce($subQuestions, function ($carry, $oAns) use ($currentResponse) {
-                        return $currentResponse == $oAns->title ? $oAns : $carry;
-                    });
-                    if ($oSelectedAnswer !== null) {
-                        $answerText = $oSelectedAnswer->questionl10ns[$sLanguage]->question ?? '';
+                foreach ($rankedCodes as $rankedCode) {
+                    if (!is_scalar($rankedCode) || (string) $rankedCode === '') {
+                        continue;
                     }
+                    $rankedCode = (string) $rankedCode;
+                    $answerText = $subQuestionTexts[$rankedCode] ?? $rankedCode;
+                    $aQuestionAttributes['answervalues'][] = [
+                        'value' => $rankedCode,
+                        'subquestion' => $answerText,
+                        'answertext' => $answerText
+                    ];
                 }
-
-                $aQuestionAttributes['answervalues'][] = [
-                    'value' => $currentResponse,
-                    'subquestion' => $oSubQuestion->questionl10ns[$sLanguage]->question ?? $oSubQuestion->title,
-                    'answertext' => $answerText
-                ];
             }
         }
 

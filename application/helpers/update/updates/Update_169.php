@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_169 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             // Add new column for question index options.

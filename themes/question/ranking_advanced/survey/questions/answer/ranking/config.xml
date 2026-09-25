@@ -20,8 +20,8 @@
         <description>New implementation of the ranking question</description>
         <questionType>R</questionType>
         <group>Mask questions</group>
-        <subquestions>0</subquestions>
-        <answerscales>1</answerscales>
+        <subquestions>1</subquestions>
+        <answerscales>0</answerscales>
         <hasdefaultvalues>0</hasdefaultvalues>
         <assessable>1</assessable>
         <class>ranking</class>
@@ -59,7 +59,7 @@
             </options>
             <default>no</default>
             <help>Show a handle for drag and drop</help>
-            <caption>Show handle: </caption>
+            <caption>Show handle:</caption>
         </attribute>
         <attribute>
             <name>show_number</name>
@@ -72,7 +72,7 @@
             </options>
             <default>no</default>
             <help>Show the actual list numbers</help>
-            <caption>Show number: </caption>
+            <caption>Show number:</caption>
         </attribute>
         <attribute>
             <name>only_pull</name>
@@ -85,7 +85,7 @@
             </options>
             <default>no</default>
             <help>Allow only moving the answers</help>
-            <caption>Without reorder: </caption>
+            <caption>Without reorder:</caption>
         </attribute>
         <attribute>
             <name>visualize</name>
@@ -99,7 +99,7 @@
             </options>
             <default>list</default>
             <help>Change visualization of the ranking question</help>
-            <caption>Visualisation: </caption>
+            <caption>Visualisation:</caption>
         </attribute>
     </attributes>
 

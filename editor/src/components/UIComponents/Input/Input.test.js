@@ -105,3 +105,19 @@ describe('NumericInputWithMinAndMaxValues', () => {
     expect(input.value).toBe('4')
   })
 })
+
+describe('Input with defaultValue', () => {
+  test('Should display defaultValue when value is omitted', async () => {
+    await renderWithProviders(
+      <Input
+        dataTestId={'default-value-input'}
+        defaultValue="foo"
+        onChange={() => {}}
+      />
+    )
+
+    const input = screen.getByTestId('default-value-input')
+    expect(input.value).toBe('foo')
+    input.remove()
+  })
+})

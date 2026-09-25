@@ -321,6 +321,29 @@ function buildSelects($allfields, $surveyid, $language)
         }
     }
 
+    // Security (bug #20648): the response table columns are the only identifiers
+    // that may be used in the filter query. Every POST key is validated against
+    // this list before being passed to quoteColumnName(), which does not escape
+    // identifier quoting characters and is not injection-safe on its own.
+    $validColumns = array();
+    $responseSchema = SurveyDynamic::model($surveyid)->getTableSchema();
+    if ($responseSchema !== null) {
+        foreach ($responseSchema->getColumnNames() as $columnName) {
+            $validColumns[strtolower($columnName)] = $columnName;
+        }
+    }
+
+    // Quotes a response-table column for a filter condition and rejects any
+    // identifier that is not a real column, so quoteColumnName() (which does not
+    // escape identifier quotes) cannot be abused for SQL injection (bug #20648).
+    $quoteColumn = function ($column) use ($validColumns) {
+        $key = strtolower((string) $column);
+        if (!isset($validColumns[$key])) {
+            throw new InvalidArgumentException('Statistics filter references an unknown column.');
+        }
+        return Yii::app()->db->quoteColumnName($validColumns[$key]);
+    };
+
     // creates array of post variable names
     for (reset($_POST); $key = key($_POST); next($_POST)) {
         $postvars[] = $key;
@@ -340,6 +363,8 @@ function buildSelects($allfields, $surveyid, $language)
     */
     if (isset($postvars)) {
         foreach ($postvars as $pv) {
+            // Reset per iteration so a value from a previous key cannot leak in.
+            $firstletter = '';
             //Only do this if there is actually a value for the $pv
 
             if (
@@ -363,6 +388,7 @@ function buildSelects($allfields, $surveyid, $language)
                 * | - File Upload
                 * K - Multiple numerical input
                 */
+            try {
             if (
                 $pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
                     $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
@@ -370,7 +396,7 @@ function buildSelects($allfields, $surveyid, $language)
             ) {
                 //pull out just the fieldnames
                 //put together some SQL here
-                $thisquestion = Yii::app()->db->quoteColumnName($pv) . " IN (";
+                $thisquestion = $quoteColumn($pv) . " IN (";
 
                 $db = Yii::app()->db;
                 foreach ($_POST[$pv] as $condition) {
@@ -389,13 +415,13 @@ function buildSelects($allfields, $surveyid, $language)
             elseif ($firstletter == "M" || $firstletter == "P") {
                 $mselects = array();
                 //create a list out of the $pv array
-                $qid = substr(explode("_", $pv)[0], 1);
+                $qid = ($pv[1] === 'Q') ? substr($pv, 2) : $pv;
 
                 $aresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(":parent_qid" => $qid)));
                 foreach ($aresult as $arow) {
                     // only add condition if answer has been chosen
                     if (in_array($arow['title'], $_POST[$pv])) {
-                        $mselects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)) . $arow['title']) . " = 'Y'";
+                        $mselects[] = $quoteColumn(substr($pv, 1, strlen($pv)) . "_S" . $arow['qid']) . " = 'Y'";
                     }
                 }
                 /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
@@ -411,12 +437,12 @@ function buildSelects($allfields, $surveyid, $language)
             elseif ($firstletter == "N" || $firstletter == "K") {
                 //value greater than
                 if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1)) . " > " . sanitize_int($_POST[$pv]);
+                    $selects[] = $quoteColumn(substr($pv, 1, -1)) . " > " . sanitize_int($_POST[$pv]);
                 }
 
                 //value less than
                 if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1)) . " < " . sanitize_int($_POST[$pv]);
+                    $selects[] = $quoteColumn(substr($pv, 1, -1)) . " < " . sanitize_int($_POST[$pv]);
                 }
             }
 
@@ -424,22 +450,22 @@ function buildSelects($allfields, $surveyid, $language)
             elseif ($firstletter == "|") {
                 // no. of files greater than
                 if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1) . "_Cfilecount") . " > " . sanitize_int($_POST[$pv]);
+                                            $selects[] = $quoteColumn(substr($pv, 1, -1) . "_Cfilecount") . " > " . sanitize_int($_POST[$pv]);
                 }
 
                 // no. of files less than
                 if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1) . "_Cfilecount") . " < " . sanitize_int($_POST[$pv]);
+                                            $selects[] = $quoteColumn(substr($pv, 1, -1) . "_Cfilecount") . " < " . sanitize_int($_POST[$pv]);
                 }
             }
 
                 //"id" is a built in field, the unique database id key of each response row
             elseif (substr($pv, 0, 2) == "id") {
                 if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 0, -1)) . " > " . sanitize_int($_POST[$pv]);
+                    $selects[] = $quoteColumn(substr($pv, 0, -1)) . " > " . sanitize_int($_POST[$pv]);
                 }
                 if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 0, -1)) . " < " . sanitize_int($_POST[$pv]);
+                    $selects[] = $quoteColumn(substr($pv, 0, -1)) . " < " . sanitize_int($_POST[$pv]);
                 }
             }
 
@@ -447,11 +473,13 @@ function buildSelects($allfields, $surveyid, $language)
                 //Q - Multiple short text
             elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
                 $selectSubs = array();
+                $postValue = is_array($_POST[$pv]) ? implode(' OR ', $_POST[$pv]) : (string) $_POST[$pv];
                 //We intepret and * and % as wildcard matches, and use ' OR ' and , as the separators
-                $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', (string) $_POST[$pv])));
+                $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $postValue)));
+                $columnName = ($pv[1] === 'Q') ? substr($pv, 1) : $pv;
                 if (is_array($pvParts) and count($pvParts)) {
                     foreach ($pvParts as $pvPart) {
-                        $selectSubs[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv))) . " LIKE " . App()->db->quoteValue($pvPart);
+                        $selectSubs[] = $quoteColumn($columnName) . " LIKE " . App()->db->quoteValue($pvPart);
                     }
                     if (count($selectSubs)) {
                         $selects[] = ' (' . implode(' OR ', $selectSubs) . ') ';
@@ -463,16 +491,16 @@ function buildSelects($allfields, $surveyid, $language)
             elseif ($firstletter == "D" && $_POST[$pv] != "") {
                 //Date equals
                 if (substr($pv, -2) == "eq") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 3)) . " = " . App()->db->quoteValue($_POST[$pv]);
+                    $selects[] = $quoteColumn(substr($pv, 1, strlen($pv) - 3)) . " = " . App()->db->quoteValue($_POST[$pv]);
                 } else {
                     //date less than
                     if (substr($pv, -4) == "less") {
-                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " >= " . App()->db->quoteValue($_POST[$pv]);
+                        $selects[] = $quoteColumn(substr($pv, 1, strlen($pv) - 5)) . " >= " . App()->db->quoteValue($_POST[$pv]);
                     }
 
                     //date greater than
                     if (substr($pv, -4) == "more") {
-                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " <= " . App()->db->quoteValue($_POST[$pv]);
+                        $selects[] = $quoteColumn(substr($pv, 1, strlen($pv) - 5)) . " <= " . App()->db->quoteValue($_POST[$pv]);
                     }
                 }
             }
@@ -501,6 +529,9 @@ function buildSelects($allfields, $surveyid, $language)
                         $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " > " . App()->db->quoteValue($sDateValue);
                     }
                 }
+            }
+            } catch (InvalidArgumentException $e) {
+                // bug #20648: ignore filters that reference a column outside the response table.
             }
         }
     }    //end foreach -> loop through filter options to create SQL
@@ -533,7 +564,7 @@ class userstatistics_helper
     /**
      * The Excel worksheet we are working on
      *
-     * @var Spreadsheet_Excel_Writer_Worksheet
+     * @var \LimeSurvey\Libraries\Spreadsheet\ExcelWorksheetWriter
      */
     protected $sheet;
 
@@ -543,7 +574,7 @@ class userstatistics_helper
     /**
      * The current Excel workbook we are working on
      *
-     * @var Writer
+     * @var \LimeSurvey\Libraries\Spreadsheet\ExcelWorkbookWriter
      */
     protected $workbook;
 
@@ -684,35 +715,32 @@ class userstatistics_helper
         } // Ranking OPTION
         elseif ($firstletter == "R") {
             $fieldmapKey = substr($rt, 1);
-            $qqid        = (int) ltrim(explode('_', $fieldmapKey)[0], 'Q');  // numeric qid
-            $rankLabel   = substr($fieldmapKey, strpos($fieldmapKey, '_S') + 2);  // the qid part
-
-            //get question data
-            $nresult = Question::model()->with('questionl10ns')->find(array(
-                'condition' => 'language=:language AND parent_qid=0 AND t.qid=:qid',
-                'params'    => array(':language' => $language, ':qid' => $qqid)
-            ));
-
-            if ($nresult) {
-                $qtitle    = flattenText($nresult->title) . " [" . gT("Ranking") . " " . $rankLabel . "]";
-                $qtype     = $nresult->type;
-                $qquestion = flattenText($nresult->questionl10ns[$language]->question)
-                             . " [" . gT("Ranking") . " " . $rankLabel . "]";
-                $qqid      = $nresult->qid;
+            if (!isset($fieldmap[$fieldmapKey])) {
+                return array("alist" => $alist, "qtitle" => $qtitle, "qquestion" => $qquestion, "qtype" => $qtype, "statisticsoutput" => $statisticsoutput, "parentqid" => $qqid);
             }
+            $fielddata    = $fieldmap[$fieldmapKey];
+            $qqid         = $fielddata['qid'];
+            $rankPosition = (int) $fielddata['aid'];
+            $qtype        = $fielddata['type'];
 
-            //get answers – each answer is a possible choice the respondent could rank
-            $result = Answer::model()->with('answerl10ns')->findAll([
-                'condition' => 'language=:language AND qid=:qid',
-                'params'    => [':language' => $language, ':qid' => $qqid],
-                'order'     => 'sortorder'
-            ]);
-
-            foreach ($result as $row) {
-                $alist[] = array($row->code, flattenText($row->answerl10ns[$language]->answer), $fieldmapKey);
+            $rankingColumn = "Q{$qqid}";
+            $rankSubquestions = array();
+            foreach ($survey->baseQuestions as $baseQuestion) {
+                if ((int) $baseQuestion->qid === (int) $qqid) {
+                    $rankSubquestions = $baseQuestion->subquestions;
+                    break;
+                }
             }
-            // "No answer": $al[2] = $fieldmapKey so the correct column is used for counting
-            $alist[] = array("", gT("No answer"), $fieldmapKey);
+            $qtitle    = flattenText($fielddata['title']) . " [" . sprintf(gT('Rank %s'), $rankPosition) . "]";
+            $qquestion = flattenText($fielddata['question']) . " [" . gT("Ranking") . "]";
+            foreach ($rankSubquestions as $rankSubquestion) {
+                $alist[] = array(
+                    $rankSubquestion->title,
+                    flattenText($rankSubquestion->questionl10ns[$language]->question ?? ''),
+                    $rankingColumn,
+                    $rankPosition
+                );
+            }
         } else {
             if ($firstletter == "|") {
                 // File Upload
@@ -1566,14 +1594,17 @@ class userstatistics_helper
                     foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                         if (substr((string) $rt, 0, 1) == "R") {
+                            $rank = (int) ($al[3] ?? 0);
+                            $raw = $oResponse->$sResponseColumn;
                             if ($al[0] === "") {
                                 // Ranking No answer: column is NULL or empty
-                                if ($oResponse->$sResponseColumn === null || $oResponse->$sResponseColumn === '') {
+                                if ($raw === null || $raw === '') {
                                     $row += 1;
                                 }
                             } else {
-                                $sSubquestionCode = $al[0];
-                                if ($oResponse->$sResponseColumn == $sSubquestionCode) {
+                                $rankingArray = json_decode((string) $raw, true);
+                                if (is_array($rankingArray) && isset($rankingArray[$rank - 1])
+                                    && (string) $rankingArray[$rank - 1] === (string) $al[0]) {
                                     $row += 1;
                                 }
                             }
@@ -2657,35 +2688,24 @@ class userstatistics_helper
         }
         if ($outputType == 'xls') {
             /**
-             * Initiate the Spreadsheet_Excel_Writer
+             * Initiate the Excel workbook writer
              */
             if ($pdfOutput == 'F') {
-                $sFileName = $sTempDir . '/statistic-survey' . $surveyid . '.xls';
-                $this->workbook = new Spreadsheet_Excel_Writer($sFileName);
+                $sFileName = $sTempDir . '/statistic-survey' . $surveyid . '.xlsx';
+                $this->workbook = new \LimeSurvey\Libraries\Spreadsheet\ExcelWorkbookWriter($sFileName);
             } else {
-                $this->workbook = new Spreadsheet_Excel_Writer();
+                $this->workbook = new \LimeSurvey\Libraries\Spreadsheet\ExcelWorkbookWriter();
             }
 
-            $this->workbook->setVersion(8);
-            // Inform the module that our data will arrive as UTF-8.
-            // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
-            $this->workbook->setTempDir($sTempDir);
-
-            // Inform the module that our data will arrive as UTF-8.
-            // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
-            if (!empty($sTempDir)) {
-                $this->workbook->setTempDir($sTempDir);
-            }
             if ($pdfOutput != 'F') {
-                $this->workbook->send('statistic-survey' . $surveyid . '.xls');
+                $this->workbook->send('statistic-survey' . $surveyid . '.xlsx');
             }
 
             // Creating the first worksheet
             $this->sheet = $this->workbook->addWorksheet(mb_convert_encoding('results-survey' . $surveyid, 'ISO-8859-1', 'UTF-8'));
-            $this->xlsPercents = &$this->workbook->addFormat();
+            $this->xlsPercents = $this->workbook->addFormat();
             $this->xlsPercents->setNumFormat('0.00%');
-            $this->formatBold = &$this->workbook->addFormat(array('Bold' => 1));
-            $this->sheet->setInputEncoding('utf-8');
+            $this->formatBold = $this->workbook->addFormat(array('Bold' => 1));
             $this->sheet->setColumn(0, 20, 20);
             /**XXX*/
         }

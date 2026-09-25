@@ -2,16 +2,17 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use Question;
 
 class MultipleChoiceProcessor extends AbstractQuestionProcessor
 {
+    #[\Override]
     public function rt(): void
     {
         $this->rt = 'Q' . $this->question['qid'];
     }
 
+    #[\Override]
     public function process()
     {
         $legend = [];
@@ -30,27 +31,25 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
 
         foreach ($this->question['subQuestions'] ?? [] as $subQuestion) {
             $field = $this->rt . "_S" . $subQuestion['qid'];
-            $count = $counts[$field] ?? 0;
             $legend[] = $subQuestion['question'];
             $dataItems[] = [
                 'key' => $subQuestion['title'],
                 'title' => $subQuestion['question'],
-                'value' => $count,
+                'value' => $counts[$field],
+                'field' => $field,
             ];
         }
 
         if ($hasOther) {
             $field = $this->rt . '_Cother';
             $legend[] = 'other';
-            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $counts[$field] ?? 0];
+            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $counts[$field], 'field' => $field];
         }
 
-        return new StatisticsChartDTO(
-            $this->question['question'],
-            $legend,
-            $dataItems,
-            $this->calculateTotal($dataItems),
-            ['question' => $this->question]
-        );
+        return [
+            'title' => $this->question['question'],
+            'legend' => $legend,
+            'data' => $dataItems,
+        ];
     }
 }

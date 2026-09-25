@@ -6,6 +6,7 @@ use QuestionTheme;
 
 class Update_442 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $questionTheme = new QuestionTheme();

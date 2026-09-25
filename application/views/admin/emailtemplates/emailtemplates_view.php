@@ -27,6 +27,20 @@ var LS = LS || {};  // namespace
 ?>
 <div class="side-body">
     <h1 class="h3"  ><?php eT("Edit email templates"); ?></h1>
+    <?php if (!empty($missingAttachments)): ?>
+        <div class="alert alert-warning" role="alert">
+            <p><?= gT("The following email attachments refer to files that do not exist anymore. They will not be sent and will be removed when you save, unless you replace them:") ?></p>
+            <ul class="mb-0">
+                <?php foreach ($missingAttachments as $missingAttachment): ?>
+                    <li>
+                        <?= CHtml::encode(getLanguageNameFromCode($missingAttachment['language'], false)) ?> /
+                        <?= CHtml::encode($missingAttachment['template']) ?>:
+                        <?= CHtml::encode($missingAttachment['file']) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(['admin/emailtemplates/sa/update/surveyid/' . $surveyid], 'post', ['name' => 'emailtemplates', 'class' => '', 'id' => 'emailtemplates']); ?>
@@ -37,6 +51,10 @@ var LS = LS || {};  // namespace
                         <a class="nav-link <?= ($count == 0) ? 'active' : '' ?>" id="<?= $langTabId ?>" role="tab" aria-selected="<?= ($count == 0) ? 'true' : 'false' ?>" aria-controls="tab-<?= $grouplang ?>" data-bs-toggle="tab" href="#tab-<?= $grouplang ?>">
                             <?php $count++ ?>
                             <?= getLanguageNameFromCode($grouplang, false) . " " . (($grouplang == $oSurvey->language) ? "(" . gT("Base language") . ")" : "") ?>
+                            <?php if (in_array($grouplang, array_column($missingAttachments ?? [], 'language'))): ?>
+                                <i class="ri-error-warning-fill text-danger" aria-hidden="true"></i>
+                                <span class="visually-hidden"><?= gT("Missing attachment files") ?></span>
+                            <?php endif; ?>
                         </a>
                     </li>
                 <?php endforeach; ?>

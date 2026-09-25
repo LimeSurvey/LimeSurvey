@@ -133,8 +133,9 @@ var getBindActionForSurveymenuEntries = function (targetCreateModal, targetGrid,
         $(this).find('.modal-content').html('');
     });
 
-    $('#surveymenu-entries-grid').on('click', 'tr', function () {
-        $(this).find('.action_selectthisentry').prop('checked', !$(this).find('.action_selectthisentry').prop('checked'));
+    $('#surveymenu-entries-grid').off('click.rowSelect').on('click.rowSelect', 'tr', function () {
+        var $cb = $(this).find('.action_selectthisentry');
+        $cb.prop('checked', !$cb.prop('checked')).trigger('change');
     });
     $('.action_selectthisentry').on('click', function (e) {
         e.stopPropagation();
@@ -195,8 +196,9 @@ var getBindActionForSurveymenus = function (targetCreateModal, targetGrid, urls)
         $(this).find('.modal-content').html('');
     });
 
-    $('#surveymenu-grid').on('click', 'tr', function () {
-        $(this).find('.action_selectthismenu').prop('checked', !$(this).find('.action_selectthismenu').prop('checked'));
+    $('#surveymenu-grid').off('click.rowSelect').on('click.rowSelect', 'tr', function () {
+        var $cb = $(this).find('.action_selectthismenu');
+        $cb.prop('checked', !$cb.prop('checked')).trigger('change');
     });
 
     $('.action_selectthismenu').on('click', function (e) {

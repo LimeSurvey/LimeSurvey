@@ -104,7 +104,7 @@ abstract class CallExpression extends AbstractExpression
             if (!$first) {
                 $compiler->raw(', ');
             }
-            $compiler->raw('$this->env->hasExtension(\Twig\Extension\SandboxExtension::class) && $this->env->getExtension(\Twig\Extension\SandboxExtension::class)->isSandboxed($this->source)');
+            $compiler->raw('$this->env->hasExtension(\Twig\Extension\SandboxExtension::class) && $this->env->getExtension(\Twig\Extension\SandboxExtension::class)->getChecker()->isSandboxed($this->source)');
             $first = false;
         }
 
@@ -282,28 +282,9 @@ abstract class CallExpression extends AbstractExpression
     {
         $twigCallable = $this->getAttribute('twig_callable');
         $rc = $this->reflectCallable($twigCallable);
-        $r = $rc->getReflector();
         $callableName = $rc->getName();
 
-        $parameters = $r->getParameters();
-        if ($this->hasNode('node')) {
-            array_shift($parameters);
-        }
-        if ($twigCallable->needsCharset()) {
-            array_shift($parameters);
-        }
-        if ($twigCallable->needsEnvironment()) {
-            array_shift($parameters);
-        }
-        if ($twigCallable->needsContext()) {
-            array_shift($parameters);
-        }
-        if (self::needsIsSandboxed($twigCallable)) {
-            array_shift($parameters);
-        }
-        foreach ($twigCallable->getArguments() as $argument) {
-            array_shift($parameters);
-        }
+        $parameters = $rc->getTwigParameters($this->hasNode('node'));
 
         $isPhpVariadic = false;
         if ($isVariadic) {

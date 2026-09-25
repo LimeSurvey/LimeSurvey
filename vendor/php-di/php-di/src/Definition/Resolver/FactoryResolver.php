@@ -20,34 +20,23 @@ use Psr\Container\ContainerInterface;
 /**
  * Resolves a factory definition to a value.
  *
+ * @template-implements DefinitionResolver<FactoryDefinition>
+ *
  * @since 4.0
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
 class FactoryResolver implements DefinitionResolver
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var Invoker|null
-     */
-    private $invoker;
-
-    /**
-     * @var DefinitionResolver
-     */
-    private $resolver;
+    private ?Invoker $invoker = null;
 
     /**
      * The resolver needs a container. This container will be passed to the factory as a parameter
      * so that the factory can access other entries of the container.
      */
-    public function __construct(ContainerInterface $container, DefinitionResolver $resolver)
-    {
-        $this->container = $container;
-        $this->resolver = $resolver;
+    public function __construct(
+        private ContainerInterface $container,
+        private DefinitionResolver $resolver,
+    ) {
     }
 
     /**
@@ -57,7 +46,7 @@ class FactoryResolver implements DefinitionResolver
      *
      * @param FactoryDefinition $definition
      */
-    public function resolve(Definition $definition, array $parameters = [])
+    public function resolve(Definition $definition, array $parameters = []) : mixed
     {
         if (! $this->invoker) {
             $parameterResolver = new ResolverChain([

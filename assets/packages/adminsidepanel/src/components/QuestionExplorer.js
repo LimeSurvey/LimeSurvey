@@ -21,6 +21,7 @@ class QuestionExplorer {
         this.orderChanged = false; // Track if order actually changed during drag
         this.lastDragenterGid = null; // Prevent duplicate dragenter processing
         this.lastDragenterQid = null; // Prevent duplicate dragenter processing
+        this.dragStartGroupOrder = null; // Group gids in display order at dragstart
     }
 
     /**
@@ -107,8 +108,11 @@ class QuestionExplorer {
         html += '<button class="btn btn-sm btn-outline-secondary toggle-organizer-btn" title="' + UIHelpers.translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle') + '">';
         html += '<i class="' + (allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill') + '"></i>';
         html += '</button>';
+        html += '<button class="btn btn-sm btn-outline-secondary me-2 expand-all-btn" title="' + UIHelpers.translate('expandAll') + '">';
+        html += '<i class="ri-expand-up-down-line"></i>';
+        html += '</button>';
         html += '<button class="btn btn-sm btn-outline-secondary me-2 collapse-all-btn" title="' + UIHelpers.translate('collapseAll') + '">';
-        html += '<i class="ri-link-unlink"></i>';
+        html += '<i class="ri-contract-up-down-line"></i>';
         html += '</button>';
         html += '</div>';
         html += '</div>';
@@ -212,10 +216,13 @@ class QuestionExplorer {
         html += '</div>';
 
         // Question group name
+        var groupNameText = (typeof questiongroup.group_name === 'string' && questiongroup.group_name.trim().length > 0)
+            ? questiongroup.group_name
+            : UIHelpers.translate('groupNumber').replace('%d', questiongroup.group_order);
         html += '<div class="w-100 position-relative">';
         html += '<div class="cursor-pointer">';
         html += '<a class="d-flex pjax questiongroup-link" href="' + questiongroup.link + '" data-gid="' + questiongroup.gid + '">';
-        html += '<span class="question_text_ellipsize">' + UIHelpers.escapeHtml(questiongroup.group_name) + '</span>';
+        html += '<span class="question_text_ellipsize">' + UIHelpers.escapeHtml(groupNameText) + '</span>';
         html += '</a>';
         html += '</div>';
 
@@ -415,6 +422,16 @@ class QuestionExplorer {
     }
 
     /**
+     * Expand all
+     */
+    expandAll() {
+        var questiongroups = StateManager.get('questiongroups') || [];
+        this.active = questiongroups.map(function(questiongroup) { return questiongroup.gid; });
+        StateManager.commit('questionGroupOpenArray', this.active);
+        this.renderExplorer();
+    }
+
+    /**
      * Bind events
      */
     bindEvents() {
@@ -438,6 +455,12 @@ class QuestionExplorer {
         $container.on('click.qe', '.collapse-all-btn', (e) => {
             e.preventDefault();
             this.collapseAll();
+        });
+
+        // Expand all
+        $container.on('click.qe', '.expand-all-btn', (e) => {
+            e.preventDefault();
+            this.expandAll();
         });
 
         // Toggle question group
@@ -512,6 +535,11 @@ class QuestionExplorer {
             this.questiongroupDragging = true;
             this.orderChanged = false; // Reset flag at start of drag
             this.lastDragenterGid = null; // Reset dragenter tracking
+            this.dragStartGroupOrder = LS.ld.orderBy(
+                questiongroups,
+                function(g) { return UIHelpers.parseIntOr(g.group_order, 999999); },
+                ['asc']
+            ).map(function(g) { return g.gid; });
             e.originalEvent.dataTransfer.setData('text/plain', 'node');
             // Add dragged class directly without re-rendering
             $(e.currentTarget).closest('.list-group-item').addClass('dragged');
@@ -522,6 +550,7 @@ class QuestionExplorer {
             if (this.draggedQuestionGroup !== null) {
                 this.draggedQuestionGroup = null;
                 this.questiongroupDragging = false;
+                this.dragStartGroupOrder = null;
                 // Only trigger order update if order actually changed
                 if (this.orderChanged && this.onOrderChange) {
                     this.onOrderChange();
@@ -544,16 +573,23 @@ class QuestionExplorer {
             var questiongroupObject = questiongroups.find(function(g) { return g.gid === gid; });
 
             if (this.questiongroupDragging && this.draggedQuestionGroup && questiongroupObject) {
-                // Highlight the drop destination
                 $container.find('.list-group-item').removeClass('dragged');
-                $(e.currentTarget).addClass('dragged');
-                var targetPosition = parseInt(questiongroupObject.group_order);
-                var currentPosition = parseInt(this.draggedQuestionGroup.group_order);
-                if (Math.abs(targetPosition - currentPosition) === 1) {
-                    questiongroupObject.group_order = currentPosition;
-                    this.draggedQuestionGroup.group_order = targetPosition;
+                $(e.currentTarget).closest('.questiongroup-list-group > .list-group-item').addClass('dragged');
+
+                var startOrder = this.dragStartGroupOrder || [];
+                var draggedGid = this.draggedQuestionGroup.gid;
+                var targetIndex = startOrder.indexOf(gid);
+                if (targetIndex !== -1 && startOrder.indexOf(draggedGid) !== -1) {
+                    var newOrder = startOrder.filter(function(g) { return g !== draggedGid; });
+                    newOrder.splice(targetIndex, 0, draggedGid);
+                    LS.ld.each(newOrder, function(orderedGid, idx) {
+                        var group = questiongroups.find(function(g) { return g.gid === orderedGid; });
+                        if (group) {
+                            group.group_order = idx + 1;
+                        }
+                    });
                     StateManager.commit('updateQuestiongroups', questiongroups);
-                    this.orderChanged = true; // Mark that order has changed
+                    this.orderChanged = newOrder.some(function(g, idx) { return g !== startOrder[idx]; });
                     // Don't re-render during drag - wait for dragend
                 }
             } else if (this.questionDragging && this.draggedQuestion && questiongroupObject) {

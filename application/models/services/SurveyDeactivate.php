@@ -18,11 +18,11 @@ class SurveyDeactivate
     private Permission $permission;
     private SurveyDeactivator $surveyDeactivator;
     private LSYii_Application $app;
-    /** @Inject("archivedTokenSettings") */
+    #[\DI\Attribute\Inject('archivedTokenSettings')]
     private ArchivedTableSettings $archivedTokenSettings;
-    /** @Inject("archivedTimingsSettings") */
+    #[\DI\Attribute\Inject('archivedTimingsSettings')]
     private ArchivedTableSettings $archivedTimingsSettings;
-    /** @Inject("archivedResponseSettings") */
+    #[\DI\Attribute\Inject('archivedResponseSettings')]
     private ArchivedTableSettings $archivedResponseSettings;
     private SurveyLink $surveyLink;
     private SavedControl $savedControl;

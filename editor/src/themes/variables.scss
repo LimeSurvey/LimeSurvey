@@ -66,20 +66,25 @@ $theme-colors: (
 );
 
 $border-radius: 4px;
+$border-radius-xs: 2px;
 
 // Typography START
 $ibm-font-family: 'IBM Plex Sans';
+$ibm-font-serif: 'IBM Plex Serif';
 
 $font-size-root: 14px;
 $font-size-base: 1.14rem; // 16px, Browser default usually is 14px
+$font-size-xxs: $font-size-base * 0.65; // 10px
 $font-size-xs: $font-size-base * 0.75; // 12px
 $font-size-sm: $font-size-base * 0.875; // 14px
 $font-size-md: $font-size-base * 1.125; // 18px
 $font-size-lg: $font-size-base * 1.25; // 20px
 $font-size-xl: $font-size-base * 1.5; // 24px
 $font-size-xxl: $font-size-base * 1.75; // 28px
+$font-size-xxxl: $font-size-base * 2.5; // 40px
 
 $font-style-base: normal;
+$font-style-placeholder: italic;
 
 $font-weight-300: 300;
 $font-weight-normal: 400;
@@ -94,6 +99,7 @@ $line-height-28: 28px;
 $line-height-32: 32px;
 $line-height-36: 36px;
 $line-height-38: 38px;
+$line-height-52: 52px;
 // Typography End
 
 // Buttons START

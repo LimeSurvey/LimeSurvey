@@ -36,7 +36,7 @@ function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r
 // register to global scope
 window.bootstrap = Bootstrap;
 
-},{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":12}],2:[function(require,module,exports){
+},{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":15}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -243,7 +243,7 @@ var ThemeScripts = exports.ThemeScripts = function ThemeScripts() {
       });
 
       // Bind language changer onclick event.
-      // This function is defined in assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js
+      // This function is defined in assets/survey_themes/fruity_twentythree/language-changer/language-changer.js
       // eslint-disable-next-line no-undef
       activateLanguageChanger();
 
@@ -375,7 +375,7 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
     /* confirmSurveyDialog @see application/core/package/limesurvey */
     confirmSurveyDialog: function confirmSurveyDialog(text, title, submits) {
       $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title);
-      $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" + "<div class='btn-group btn-group-justified' role='group'><a class='btn btn-warning btn-confirm' data-bs-dismiss='modal'>" + LSvar.lang.yes + "</a><a class='btn btn-cancel' data-bs-dismiss='modal'>" + LSvar.lang.no + "</a></div>");
+      $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" + "<div class='btn-group btn-group-justified' role='group'><button type='button' class='btn btn-warning btn-confirm' data-bs-dismiss='modal'>" + LSvar.lang.yes + "</button><button type='button' class='btn btn-cancel' data-bs-dismiss='modal'>" + LSvar.lang.no + "</button></div>");
       var modal = new bootstrap.Modal(document.getElementById('bootstrap-alert-box-modal'), {});
       modal.show();
       $("#bootstrap-alert-box-modal .btn-confirm").on('click', function () {
@@ -471,7 +471,7 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
      * Must be before ready (event happen before ready)
      */
     hideMultipleColumn: function hideMultipleColumn() {
-      $("[id^='question']").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
+      $("[id^='question'].question-container").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
         if (event.target != this) return;
         data = $.extend({
           style: 'hidden'
@@ -480,7 +480,7 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
           $(this).closest(".list-unstyled").removeClass("ls-hidden");
         }
       });
-      $("[id^='question']").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
+      $("[id^='question'].question-container").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
         if (event.target != this) return;
         data = $.extend({
           style: 'hidden'
@@ -515,7 +515,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.activateActionLink = activateActionLink;
 exports.activateConfirmButton = activateConfirmButton;
-exports.activateLanguageChanger = activateLanguageChanger;
 exports.activateSoftMandatory = activateSoftMandatory;
 exports.confirmSurveyDialog = confirmSurveyDialog;
 exports.manageIndex = manageIndex;
@@ -551,22 +550,22 @@ function triggerEmRelevance() {
 /* On question */
 function triggerEmRelevanceQuestion() {
   /* Action on this question */
-  $("[id^='question']").on('relevance:on', function (event, data) {
+  $("[id^='question'].question-container").on('relevance:on', function (event, data) {
     /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. 
     Don't want to stop propagation. */
     if (event.target != this) return;
     $(this).removeClass("ls-irrelevant ls-hidden");
   });
-  $("[id^='question']").on('relevance:off', function (event, data) {
+  $("[id^='question'].question-container").on('relevance:off', function (event, data) {
     if (event.target != this) return;
     $(this).addClass("ls-irrelevant ls-hidden");
   });
   /* In all in one mode : need updating group too */
-  $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:on', function (event, data) {
+  $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question'].question-container").on('relevance:on', function (event, data) {
     if (event.target != this) return;
     $(this).closest("[id^='group-']").removeClass("ls-hidden");
   });
-  $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:off', function (event, data) {
+  $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question'].question-container").on('relevance:off', function (event, data) {
     if (event.target != this) return;
     if ($(this).closest("[id^='group-']").find("[id^='question'].question-container").length == $(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length) {
       $(this).closest("[id^='group-']").addClass("ls-hidden");
@@ -592,8 +591,6 @@ function triggerEmRelevanceSubQuestion() {
       style: 'hidden'
     }, data);
     $(this).removeClass("ls-irrelevant ls-" + data.style);
-    /* In all in one mode : need updating group too */
-    $(this).closest("[id^='group-']").removeClass("ls-hidden");
     if (data.style == 'disabled') {
       if ($(event.target).hasClass("answer-item")) {
         $(event.target).find('input').each(function (itrt, item) {
@@ -606,6 +603,8 @@ function triggerEmRelevanceSubQuestion() {
       }
     }
     if (data.style == 'hidden') {
+      /* In all in one mode : need updating group too */
+      $(this).closest("[id^='group-']").removeClass("ls-hidden");
       updateLineClass($(this));
       updateRepeatHeading($(this).closest(".ls-answers"));
     }
@@ -625,17 +624,15 @@ function triggerEmRelevanceSubQuestion() {
       });
     }
     if (data.style == 'hidden') {
+      /* In all in one mode : need updating group too */
+      if ($(this).closest("[id^='group-']").find("[id^='question'].question-container").length == $(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length) {
+        $(this).closest("[id^='group-']").addClass("ls-hidden");
+      }
       updateLineClass($(this));
       updateRepeatHeading($(this).closest(".ls-answers"));
     }
-    /* In all in one mode : need updating group too */
-    if ($(this).closest("[id^='group-']").find("[id^='question'].question-container").length == $(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length) {
-      $(this).closest("[id^='group-']").addClass("ls-hidden");
-    }
     console.ls.log($(this).find('input[disabled]'));
   });
-
-  
 }
 
 /**
@@ -684,141 +681,6 @@ function manageIndex() {
   $(".ls-index-buttons").on('click', '[name="move"]', function (e) {
     if (!$(this).closest('form').length && $('form#limesurvey').length == 1) {
       $(this).clone().addClass("d-none").appendTo('form#limesurvey').click();
-    }
-  });
-}
-
-/**
- * Reload page when participant selects a new language.
- * Sets input[name=lang] to new language and submits limesurvey form.
- */
-function activateLanguageChanger() {
-  var limesurveyForm = $('form#limesurvey');
-  if (limesurveyForm.length == 0 && $('form[name="limesurvey"]').length == 1) {
-    /* #form-token for example */
-    limesurveyForm = $('form[name="limesurvey"]');
-  }
-  //autosizing for width of select (space between caret and selected option text)
-  var autoSizeSelect = function autoSizeSelect() {
-    var text = $('#language-changer-select').find('option:selected').text();
-    var $aux = $('<span/>').text(text);
-    $aux.addClass('h2');
-    $('#language-changer-select').after($aux);
-    var width = $aux.width() + 8;
-    $('#language-changer-select').width(width);
-    $aux.remove();
-  };
-  /**
-   * @param {string} lang Language to change to.
-   */
-  var applyChangeAndSubmit = function applyChangeAndSubmit(lang) {
-    // Remove existing onsubmitbuttoninput, no need to remove lang : last one is the submitted
-    $("#onsubmitbuttoninput").remove();
-    // Append new input.
-    $('<input type="hidden">').attr('name', 'lang').val(lang).appendTo(limesurveyForm);
-    // Append move type.
-    /* onsubmitbuttoninput is related to template (and ajax) : MUST move to template with ajax … */
-    $('<input type="hidden" id="onsubmitbuttoninput" name="move" value="changelang" />').appendTo(limesurveyForm);
-    limesurveyForm.submit();
-  };
-  autoSizeSelect();
-  $(document).on('click', 'a.ls-language-link', function () {
-    var closestForm = $(this).closest('form');
-    if (!closestForm.length) {
-      /* we are not in a forum, can not submit directly */
-      if (limesurveyForm.length == 1) {
-        /* The limesurvey form exist in document, move select and button inside and click */
-        var newLang = $(this).data('limesurvey-lang');
-        applyChangeAndSubmit(newLang);
-        // TODO: Check all code below. When does it happen?
-      } else {
-        // If there are no form : we can't use it */
-        if ($(this).data('targeturl')) {
-          /* If we have a target url : just move location to this url with lang set */
-          /* possible usage : in clear all */
-          var target = $(this).data('targeturl');
-          /* adding lang in get param manually */
-          if (target.indexOf("?") >= 0) {
-            target += "&lang=" + $(this).val();
-          } else {
-            target += "?lang=" + $(this).val();
-          }
-          /* directly move to location */
-          location.href = target;
-          return false;
-        } else {
-          var lang = $(this).data('limesurvey-lang');
-          /* No form, not targeturl : just see what happen */
-          $("<form>", {
-            "class": 'ls-js-hidden',
-            "html": '<input type="hidden" name="lang" value="' + lang + '" />',
-            "action": target,
-            "method": 'get'
-          }).appendTo(document.body).submit();
-        }
-      }
-    } else {
-      /* we are inside a form : just submit : but remove other lang input if exist : be sure it's this one send */
-      $(this).closest('form').find("[name='lang']").not($(this)).remove();
-      $(this).closest('.ls-language-changer-item').find(":submit").click();
-    }
-  });
-  /* Language changer dropdown */
-  /* Don't activate change when using key up / key down */
-  $('.form-change-lang [name="lang"]').on('keypress keydown keyup', function (event) {
-    var code = event.keyCode || event.which;
-    /* packaje name : limesurvey */
-    $(this).data("limesurvey-lastkey", code);
-  });
-  $('.form-change-lang [name="lang"]').on('click', function (event) {
-    /* didn't work with chrome , chrom bug : onclick are an intrinsic event see https://www.w3.org/TR/html401/interact/forms.html#h-17.6 */
-    /* Happen rarely (keyboard + mouse + still have the button */
-    $(this).data("limesurvey-lastkey", null);
-  });
-  $('.form-change-lang [name="lang"]').on('change', function (event) {
-    autoSizeSelect();
-    if ($(this).data("limesurvey-lastkey") == 38 || $(this).data("lastkey") == 40) {
-      /* Last key is up or down : disable auto submit mantis #16024 */
-      return;
-    }
-    var closestForm = $(this).closest('form');
-    var newLang = $(this).val();
-    if (!closestForm.length) {
-      /* we are not in a form, can not submit directly */
-      // Remind user can put language changer everywhere, not only in home page, but for example in clear all page etc … in form or not etc ...
-      if (limesurveyForm.length == 1) {
-        /* The limesurvey form exist in document, move select and button inside and click */
-        applyChangeAndSubmit(newLang);
-      } else {
-        // If there are no form : we can't use it */
-        if ($(this).parent().data('targeturl')) {
-          /* If we have a target url : just move location to this url with lang set */
-          /* targeturl was used for preview gropup and question in 2.6lts : check if still used/usable */
-          var target = $(this).parent().data('targeturl');
-          /* adding lang in get param manually */
-          if (target.indexOf("?") >= 0) {
-            target += "&lang=" + $(this).val();
-          } else {
-            target += "?lang=" + $(this).val();
-          }
-          /* directly move to location */
-          location.href = target;
-          return false;
-        } else {
-          /* No form, not targeturl : just see what happen */
-          /* This must not happen : issue in theme */
-          $("<form>", {
-            "class": 'ls-js-hidden',
-            "html": '<input type="hidden" name="lang" value="' + newLang + '" />',
-            "action": target,
-            "method": 'get'
-          }).appendTo(document.body).submit();
-        }
-      }
-    } else {
-      /* we are inside a form : just submit : but remove other lang input if exist : be sure it's this one send */
-      $(this).closest('form').find("[name='lang']").not(this).remove();
-      $(this).closest('.form-change-lang').find(':submit').click();
     }
   });
 }
@@ -1005,7 +867,6 @@ window.triggerEmRelevanceSubQuestion = triggerEmRelevanceSubQuestion;
 window.updateLineClass = updateLineClass;
 window.updateRepeatHeading = updateRepeatHeading;
 window.manageIndex = manageIndex;
-window.activateLanguageChanger = activateLanguageChanger;
 window.activateActionLink = activateActionLink;
 window.confirmSurveyDialog = confirmSurveyDialog;
 window.activateConfirmButton = activateConfirmButton;
@@ -1015,6 +876,158 @@ window.activateSoftMandatory = activateSoftMandatory;
 window.resetQuestionTimers = resetQuestionTimers;
 
 },{}],6:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.activateLanguageChanger = activateLanguageChanger;
+/**
+ * @file Language changer functionality for public survey
+ * @copyright LimeSurvey <http://www.limesurvey.org/>
+ * @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-v3-or-Later
+ */
+
+/**
+ * Reload page when participant selects a new language.
+ * Sets input[name=lang] to new language and submits limesurvey form.
+ */
+function activateLanguageChanger() {
+  var limesurveyForm = $("form#limesurvey");
+  if (limesurveyForm.length == 0 && $('form[name="limesurvey"]').length == 1) {
+    /* #form-token for example */
+    limesurveyForm = $('form[name="limesurvey"]');
+  }
+  //autosizing for width of select so it hugs the selected option text
+  //(the caret icon is placed in the select's reserved right padding, see language-changer.scss)
+  var autoSizeSelect = function autoSizeSelect() {
+    var text = $("#language-changer-select").find("option:selected").text();
+    var $aux = $("<span/>").text(text);
+    $aux.addClass("semi-14");
+    $("#language-changer-select").after($aux);
+    var width = $aux.width() + 2;
+    $("#language-changer-select").width(width);
+    $aux.remove();
+  };
+  /**
+   * @param {string} lang Language to change to.
+   */
+  var applyChangeAndSubmit = function applyChangeAndSubmit(lang) {
+    // Remove existing onsubmitbuttoninput, no need to remove lang : last one is the submitted
+    $("#onsubmitbuttoninput").remove();
+    // Append new input.
+    $('<input type="hidden">').attr("name", "lang").val(lang).appendTo(limesurveyForm);
+    // Append move type.
+    /* onsubmitbuttoninput is related to template (and ajax) : MUST move to template with ajax … */
+    $('<input type="hidden" id="onsubmitbuttoninput" name="move" value="changelang" />').appendTo(limesurveyForm);
+    limesurveyForm.submit();
+  };
+  autoSizeSelect();
+  $(document).off("click.ls-language-changer", "a.ls-language-link").on("click.ls-language-changer", "a.ls-language-link", function () {
+    var closestForm = $(this).closest("form");
+    if (!closestForm.length) {
+      /* we are not in a forum, can not submit directly */
+      if (limesurveyForm.length == 1) {
+        /* The limesurvey form exist in document, move select and button inside and click */
+        var newLang = $(this).data("limesurvey-lang");
+        applyChangeAndSubmit(newLang);
+        // TODO: Check all code below. When does it happen?
+      } else {
+        // If there are no form : we can't use it */
+        if ($(this).data("targeturl")) {
+          /* If we have a target url : just move location to this url with lang set */
+          /* possible usage : in clear all */
+          var target = $(this).data("targeturl");
+          /* adding lang in get param manually */
+          if (target.indexOf("?") >= 0) {
+            target += "&lang=" + $(this).val();
+          } else {
+            target += "?lang=" + $(this).val();
+          }
+          /* directly move to location */
+          location.href = target;
+          return false;
+        } else {
+          var lang = $(this).data("limesurvey-lang");
+          /* No form, not targeturl : just see what happen */
+          $("<form>", {
+            "class": "ls-js-hidden",
+            html: '<input type="hidden" name="lang" value="' + lang + '" />',
+            action: target,
+            method: "get"
+          }).appendTo(document.body).submit();
+        }
+      }
+    } else {
+      /* we are inside a form : just submit : but remove other lang input if exist : be sure it's this one send */
+      $(this).closest("form").find("[name='lang']").not($(this)).remove();
+      $(this).closest(".ls-language-changer-item").find(":submit").click();
+    }
+  });
+  /* Language changer dropdown */
+  /* Don't activate change when using key up / key down */
+  $('.form-change-lang [name="lang"]').on("keypress keydown keyup", function (event) {
+    var code = event.keyCode || event.which;
+    /* packaje name : limesurvey */
+    $(this).data("limesurvey-lastkey", code);
+  });
+  $('.form-change-lang [name="lang"]').on("click", function (event) {
+    /* didn't work with chrome , chrom bug : onclick are an intrinsic event see https://www.w3.org/TR/html401/interact/forms.html#h-17.6 */
+    /* Happen rarely (keyboard + mouse + still have the button */
+    $(this).data("limesurvey-lastkey", null);
+  });
+  $('.form-change-lang [name="lang"]').on("change", function (event) {
+    autoSizeSelect();
+    if ($(this).data("limesurvey-lastkey") == 38 || $(this).data("limesurvey-lastkey") == 40) {
+      /* Last key is up or down : disable auto submit mantis #16024 */
+      return;
+    }
+    var closestForm = $(this).closest("form");
+    var newLang = $(this).val();
+    if (!closestForm.length) {
+      /* we are not in a form, can not submit directly */
+      // Remind user can put language changer everywhere, not only in home page, but for example in clear all page etc … in form or not etc ...
+      if (limesurveyForm.length == 1) {
+        /* The limesurvey form exist in document, move select and button inside and click */
+        applyChangeAndSubmit(newLang);
+      } else {
+        // If there are no form : we can't use it */
+        if ($(this).parent().data("targeturl")) {
+          /* If we have a target url : just move location to this url with lang set */
+          /* targeturl was used for preview gropup and question in 2.6lts : check if still used/usable */
+          var target = $(this).parent().data("targeturl");
+          /* adding lang in get param manually */
+          if (target.indexOf("?") >= 0) {
+            target += "&lang=" + $(this).val();
+          } else {
+            target += "?lang=" + $(this).val();
+          }
+          /* directly move to location */
+          location.href = target;
+          return false;
+        } else {
+          /* No form, not targeturl : just see what happen */
+          /* This must not happen : issue in theme */
+          $("<form>", {
+            "class": "ls-js-hidden",
+            html: '<input type="hidden" name="lang" value="' + newLang + '" />',
+            action: target,
+            method: "get"
+          }).appendTo(document.body).submit();
+        }
+      }
+    } else {
+      /* we are inside a form : just submit : but remove other lang input if exist : be sure it's this one send */
+      $(this).closest("form").find("[name='lang']").not(this).remove();
+      $(this).closest(".form-change-lang").find(":submit").click();
+    }
+  });
+}
+
+// register to global scope
+window.activateLanguageChanger = activateLanguageChanger;
+
+},{}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1049,7 +1062,7 @@ var NavbarScripts = exports.NavbarScripts = function NavbarScripts() {
 // register to global scope
 window.NavbarScripts = NavbarScripts;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1080,7 +1093,231 @@ var ArrayScripts = exports.ArrayScripts = function ArrayScripts() {
 // register to global scope
 window.ArrayScripts = ArrayScripts;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+/**
+ * LimeSurvey
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ *
+ * Deselect single-choice radio buttons
+ *
+ * Enables deselection of an already-selected radio button by clicking it again
+ * (pointer) or pressing Space while it is focused (keyboard / AT).
+ * Applies to single-choice question containers that also carry the CSS class
+ * "deselect-singlechoice", added by the fruity_twentythree theme when the
+ * "deselectsinglechoice" theme option is enabled.
+ *
+ * Supported question types (matched by their container CSS class):
+ *   - list-radio        (type L)
+ *   - list-with-comment (type O)
+ *
+ * When a radio is deselected, a custom "ls:singlechoiceDeselected" event is
+ * dispatched on the question container with detail { name, value }, allowing
+ * other modules to react (e.g. clearing the "other" text field).
+ *
+ * Pointer path: uses mousedown to capture pre-click checked state, then a
+ * native capture click listener (so stopPropagation in inline onclick handlers
+ * such as cancelBubbleThis cannot block it). The actual deselect is deferred
+ * via setTimeout so our checkconditions('') wins over any inline checkconditions
+ * call with the previous value.
+ *
+ * Keyboard path: handled entirely in keydown. preventDefault suppresses the
+ * synthetic click so the capture listener does not also fire, and checkconditions
+ * can be called directly without deferral.
+ */
+
+var DeselectSinglechoiceScripts = function () {
+  var initialized = false;
+  var previouslyCheckedRadio = null;
+  var CONTAINER_SELECTOR = '.deselect-singlechoice.list-radio, .deselect-singlechoice.list-with-comment';
+  var RADIO_SELECTOR = '.deselect-singlechoice.list-radio input[type="radio"], .deselect-singlechoice.list-with-comment input[type="radio"]';
+  var LABEL_SELECTOR = '.deselect-singlechoice.list-radio label, .deselect-singlechoice.list-with-comment label';
+  var recordCheckedState = function recordCheckedState(radio) {
+    previouslyCheckedRadio = radio && radio.checked ? radio : null;
+  };
+  var deselect = function deselect(radio) {
+    var name = radio.name;
+    var value = radio.value;
+    var container = radio.closest('.deselect-singlechoice');
+    radio.checked = false;
+    var javaField = document.getElementById('java' + name);
+    if (javaField) {
+      javaField.value = '';
+    }
+    if (container) {
+      container.dispatchEvent(new CustomEvent('ls:singlechoiceDeselected', {
+        bubbles: true,
+        detail: {
+          name: name,
+          value: value
+        }
+      }));
+    }
+    if (typeof checkconditions === 'function') {
+      checkconditions('', name, 'radio');
+    }
+  };
+  var init = function init() {
+    if (initialized) {
+      return;
+    }
+    initialized = true;
+
+    // Pointer: direct click on the radio input circle
+    $(document).on('mousedown', RADIO_SELECTOR, function () {
+      recordCheckedState(this);
+    });
+
+    // Pointer: click via an associated label (label may be a sibling, not a parent).
+    // mousedown fires on the label; the browser then synthesises a click on the input.
+    $(document).on('mousedown', LABEL_SELECTOR, function () {
+      var forId = this.getAttribute('for');
+      recordCheckedState(forId ? document.getElementById(forId) : null);
+    });
+
+    // Keyboard / AT: Space on an already-checked radio.
+    // Handled entirely in keydown; preventDefault suppresses the synthetic click
+    // so the capture listener below does not also fire.
+    $(document).on('keydown', RADIO_SELECTOR, function (e) {
+      if (e.key !== ' ' || !this.checked) {
+        return;
+      }
+      e.preventDefault();
+      deselect(this);
+    });
+
+    // Wrapper divs adjacent to the "other" radio (.other-text-item, .othertext-suffix-label).
+    // Use capture phase so stopPropagation() in the inline twig bubble-phase listener
+    // cannot block this handler from firing.
+    document.addEventListener('click', function (e) {
+      if (e.target.tagName === 'INPUT') {
+        return;
+      }
+      var wrapper = e.target.closest('.other-text-item, .othertext-suffix-label');
+      if (!wrapper) {
+        return;
+      }
+      if (!wrapper.closest(CONTAINER_SELECTOR)) {
+        return;
+      }
+      var item = wrapper.closest('li');
+      if (!item) {
+        return;
+      }
+      var radio = item.querySelector('input[type="radio"]');
+      if (radio && radio.checked) {
+        deselect(radio);
+      }
+    }, true); // capture phase
+
+    // Pointer: native capture listener fires top-down before stopPropagation()
+    // in inline onclick handlers (e.g. cancelBubbleThis in image-select questions).
+    document.addEventListener('click', function (e) {
+      var radio = e.target;
+      if (radio.tagName !== 'INPUT' || radio.type !== 'radio') {
+        return;
+      }
+      if (!radio.closest(CONTAINER_SELECTOR)) {
+        return;
+      }
+      if (radio !== previouslyCheckedRadio) {
+        previouslyCheckedRadio = null;
+        return;
+      }
+      previouslyCheckedRadio = null;
+
+      // Defer so our checkconditions('') runs after any inline onclick
+      // handler that calls checkconditions with the previous value.
+      setTimeout(function () {
+        return deselect(radio);
+      }, 0);
+    }, true); // capture phase
+  };
+  return {
+    init: init
+  };
+}();
+$(document).on('ready pjax:scriptcomplete', function () {
+  DeselectSinglechoiceScripts.init();
+});
+var _default = exports["default"] = DeselectSinglechoiceScripts;
+
+},{}],10:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+/**
+ * LimeSurvey
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ *
+ * ListRadio - Clear "other" text field on deselect
+ *
+ * Listens for the "ls:singlechoiceDeselected" custom event dispatched by
+ * deselect-singlechoice.js. When the deselected radio was the "other" option ("-oth-"),
+ * performs all cleanup needed across question types:
+ *
+ * - Standard list-radio: clears the other text input (#answer{name}othertext)
+ * - Bootstrap buttons:   hides #div{name}other (adds ls-js-hidden) and clears
+ *                        the auxiliary hidden field (#answer{name}othertextaux)
+ *
+ * Without this, LimeSurvey core would immediately re-select the "other" radio
+ * because its keyup handler fires whenever the text field is non-empty.
+ */
+
+var DeselectSinglechoiceOtherScripts = function () {
+  var initialized = false;
+  var init = function init() {
+    if (initialized) {
+      return;
+    }
+    initialized = true;
+    $(document).on('ls:singlechoiceDeselected', '.deselect-singlechoice.list-radio, .deselect-singlechoice.list-with-comment', function (e) {
+      var _e$originalEvent$deta = e.originalEvent.detail,
+        name = _e$originalEvent$deta.name,
+        value = _e$originalEvent$deta.value;
+      if (value !== '-oth-') {
+        return;
+      }
+
+      // Standard list-radio: clear the visible other text input
+      var otherTextField = document.getElementById('answer' + name + 'othertext');
+      if (otherTextField) {
+        otherTextField.value = '';
+      }
+
+      // Bootstrap buttons: hide the other text container and clear the aux field
+      var otherContainer = document.getElementById('div' + name + 'other');
+      if (otherContainer) {
+        otherContainer.classList.add('ls-js-hidden');
+        var otherTextAux = document.getElementById('answer' + name + 'othertextaux');
+        if (otherTextAux) {
+          otherTextAux.value = '';
+        }
+      }
+    });
+  };
+  return {
+    init: init
+  };
+}();
+$(document).on('ready pjax:scriptcomplete', function () {
+  DeselectSinglechoiceOtherScripts.init();
+});
+var _default = exports["default"] = DeselectSinglechoiceOtherScripts;
+
+},{}],11:[function(require,module,exports){
 /*
     LimeSurvey
     Copyright (C) 2007-2023
@@ -1112,7 +1349,7 @@ window.ArrayScripts = ArrayScripts;
 */
 "use strict";
 
-},{}],9:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -1123,10 +1360,13 @@ var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
 var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));
 var _video = _interopRequireDefault(require("./video/video.js"));
 var _a11yHandles = require("./a11y-handles/a11y-handles.js");
+var _languageChanger = require("./language-changer/language-changer.js");
+var _deselectSinglechoice = _interopRequireDefault(require("./questiontypes/deselect-singlechoice/deselect-singlechoice.js"));
+var _deselectSinglechoice_other = _interopRequireDefault(require("./questiontypes/deselect-singlechoice/deselect-singlechoice_other.js"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r = new WeakMap(), n = new WeakMap(); return (_interopRequireWildcard = function _interopRequireWildcard(e, t) { if (!t && e && e.__esModule) return e; var o, i, f = { __proto__: null, "default": e }; if (null === e || "object" != _typeof(e) && "function" != typeof e) return f; if (o = t ? n : r) { if (o.has(e)) return o.get(e); o.set(e, f); } for (var _t in e) "default" !== _t && {}.hasOwnProperty.call(e, _t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, _t)) && (i.get || i.set) ? o(f, _t, i) : f[_t] = e[_t]); return f; })(e, t); }
 
-},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./a11y-handles/a11y-handles.js":2,"./core/old_core_theme.js":3,"./navbar/navbar.js":6,"./questiontypes/array/array.js":7,"./theme_js_disclaimer.js":8,"./video/video.js":10}],10:[function(require,module,exports){
+},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./a11y-handles/a11y-handles.js":2,"./core/old_core_theme.js":3,"./language-changer/language-changer.js":6,"./navbar/navbar.js":7,"./questiontypes/array/array.js":8,"./questiontypes/deselect-singlechoice/deselect-singlechoice.js":9,"./questiontypes/deselect-singlechoice/deselect-singlechoice_other.js":10,"./theme_js_disclaimer.js":11,"./video/video.js":13}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1163,7 +1403,7 @@ var Video = exports.Video = function Video() {
 window.video = new Video();
 video.fixVideoHeight();
 
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * @popperjs/core v2.11.8 - MIT License
  */
@@ -2761,7 +3001,7 @@ exports.popperGenerator = popperGenerator;
 exports.popperOffsets = popperOffsets$1;
 exports.preventOverflow = preventOverflow$1;
 
-},{}],12:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7466,4 +7706,4 @@ enableDismissTrigger(Toast);
 
 defineJQueryPlugin(Toast);
 
-},{"@popperjs/core":11}]},{},[9]);
+},{"@popperjs/core":14}]},{},[12]);

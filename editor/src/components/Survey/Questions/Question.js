@@ -12,7 +12,7 @@ import {
   STATES,
 } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
-import { getQuestionImageObjectFromImageAttribute } from 'helpers/questionImage'
+import { getImageObjectFromJsonData } from 'helpers/surveyImage'
 import { ArrowDownIcon, ArrowUpIcon } from 'components/icons'
 import { QuestionSkeleton, TooltipContainer } from 'components'
 import { useIsInViewport } from 'hooks/useInViewport'
@@ -53,7 +53,7 @@ export const Question = ({
   const { getError } = useErrors()
   const [isTitleFocused, setIsTitleFocused] = useState(false)
   const questionImageObject = useMemo(
-    () => getQuestionImageObjectFromImageAttribute(attributes?.image),
+    () => getImageObjectFromJsonData(attributes?.image),
     [attributes?.image]
   )
 
@@ -142,24 +142,13 @@ export const Question = ({
             'hover-element': !isFocused,
             'opacity-25': isTrue(getAttributeValue(attributes.hide_question)),
             'cursor-not-allowed': !hasSurveyUpdatePermission,
-            'p-0': questionImageObject.hasQuestionImageAsBackground,
+            'p-0': questionImageObject.hasImageAsBackground,
           }
         )}
         ref={questionRef}
       >
         {isInView || isInTestMode ? (
-          <QuestionContainer
-            questionImageObject={questionImageObject}
-            update={(image) => {
-              // Update the image attribute in the question
-              const updatedAttributes = {
-                ...question.attributes,
-                ...image,
-              }
-              handleUpdate({ attributes: updatedAttributes })
-            }}
-            qid={question.qid}
-          >
+          <QuestionContainer questionImageObject={questionImageObject}>
             <div
               className="w-100"
               data-testid="question-container"

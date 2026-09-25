@@ -16,6 +16,7 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_706 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $this->convertEmptyEmailsToNull();
@@ -113,10 +114,12 @@ class Update_706 extends DatabaseUpdateBase
      */
     private function dropOldEmailIndex()
     {
+        setTransactionBookmark();
         try {
             $this->db->createCommand()->dropIndex('{{idx2_users}}', '{{users}}');
         } catch (\Exception $e) {
             // Index may not exist in all installations.
+            rollBackToTransactionBookmark();
         }
     }
 
@@ -125,6 +128,7 @@ class Update_706 extends DatabaseUpdateBase
      */
     private function createUniqueEmailIndex()
     {
+        alterColumn('{{users}}', 'email', "string(192)");
         switch ($this->db->driverName) {
             case 'sqlsrv':
             case 'dblib':

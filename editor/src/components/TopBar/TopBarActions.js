@@ -11,7 +11,7 @@ import {
   SURVEY_MENU_TITLES,
 } from 'helpers'
 import { Dropdown } from 'components/UIComponents/Dropdown/Dropdown'
-import { EyeIcon } from 'components/icons'
+import { PreviewButton } from './PreviewButton'
 import { getSharingPanels } from 'shared/getSharingPanels'
 import { PLUGIN_SLOTS } from 'plugins/slots'
 import { PluginSlot } from 'plugins/PluginSlot'
@@ -22,7 +22,6 @@ import { TopBarQuestionInserter } from './TopBarQuestionInserter'
 export const TopBarActions = ({
   surveyId,
   showPreviewButton,
-  showShareButton,
   isSurveyActive,
   survey,
   operationsLength,
@@ -34,7 +33,6 @@ export const TopBarActions = ({
   showPublishSettings,
   triggerPublish,
   isAddingQuestionOrGroup,
-  setShowOverviewModalRef,
 }) => {
   const location = useLocation()
   const { update } = useSurvey(surveyId)
@@ -245,25 +243,7 @@ export const TopBarActions = ({
         menuItems={dropdownMenuItems}
         toggleSettings={dropdownToggleSettings}
       />
-      {showPreviewButton && (
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href={survey.previewLink}
-          className="preview-button me-2 p-0 d-flex align-items-center justify-content-center btn btn-light"
-          id="preview-button"
-        >
-          <EyeIcon className="" />
-        </a>
-      )}
-      {isSurveyActive && showShareButton && (
-        <div
-          onClick={() => setShowOverviewModalRef.current(true)}
-          className="preview-button me-2 d-flex align-items-center justify-content-center btn btn-light"
-        >
-          <i className="ri-share-forward-line"></i>
-        </div>
-      )}
+      {showPreviewButton && survey.sid && <PreviewButton survey={survey} />}
       <ActionButton
         className="me-2"
         survey={survey}

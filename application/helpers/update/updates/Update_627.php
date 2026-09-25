@@ -134,6 +134,7 @@ class Update_627 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up(): void
     {
         foreach ($this->iconMappings as $iconMapping) {

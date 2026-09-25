@@ -6,7 +6,6 @@ import {
     updateLineClass,
     updateRepeatHeading,
     manageIndex,
-    activateLanguageChanger,
     activateActionLink,
     confirmSurveyDialog,
     activateConfirmButton,
@@ -58,7 +57,7 @@ export var TemplateCoreClass = function () {
         /* confirmSurveyDialog @see application/core/package/limesurvey */
         confirmSurveyDialog: function (text, title, submits) {
             $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title);
-            $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" + "<div class='btn-group btn-group-justified' role='group'><a class='btn btn-warning btn-confirm' data-bs-dismiss='modal'>" + LSvar.lang.yes + "</a><a class='btn btn-cancel' data-bs-dismiss='modal'>" + LSvar.lang.no + "</a></div>");
+            $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" + "<div class='btn-group btn-group-justified' role='group'><button type='button' class='btn btn-warning btn-confirm' data-bs-dismiss='modal'>" + LSvar.lang.yes + "</button><button type='button' class='btn btn-cancel' data-bs-dismiss='modal'>" + LSvar.lang.no + "</button></div>");
             const modal = new bootstrap.Modal(document.getElementById('bootstrap-alert-box-modal'), {})
             modal.show();
             $("#bootstrap-alert-box-modal .btn-confirm").on('click', function () {
@@ -159,7 +158,7 @@ export var TemplateCoreClass = function () {
          * Must be before ready (event happen before ready)
          */
         hideMultipleColumn: function () {
-            $("[id^='question']").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
+            $("[id^='question'].question-container").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
                 if (event.target != this) return;
                 data = $.extend({
                     style: 'hidden'
@@ -168,7 +167,7 @@ export var TemplateCoreClass = function () {
                     $(this).closest(".list-unstyled").removeClass("ls-hidden")
                 }
             });
-            $("[id^='question']").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
+            $("[id^='question'].question-container").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
                 if (event.target != this) return;
                 data = $.extend({
                     style: 'hidden'

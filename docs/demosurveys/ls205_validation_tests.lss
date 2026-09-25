@@ -522,8 +522,8 @@
     <gid><![CDATA[9]]></gid>
     <type><![CDATA[U]]></type>
     <title><![CDATA[vU]]></title>
-    <question><![CDATA[Write an essay about a pet. Must contain the word cat, dog, or hampster]]></question>
-    <preg><![CDATA[/\s(cat|dog|hampster)s?[.!,? ]/]]></preg>
+    <question><![CDATA[Write an essay about a pet. Must contain the word cat, dog, or hamster]]></question>
+    <preg><![CDATA[/\s(cat|dog|hamster)s?[.!,? ]/]]></preg>
     <help/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>

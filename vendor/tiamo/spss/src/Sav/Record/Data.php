@@ -32,11 +32,6 @@ class Data extends Record
     public $matrix = [];
 
     /**
-     * @var array [var_index]
-     */
-    public $row = [];
-
-    /**
      * @var array Latest opcodes data
      */
     protected $opcodes = [];
@@ -45,11 +40,6 @@ class Data extends Record
      * @var int Current opcode index
      */
     protected $opcodeIndex = 0;
-
-    /**
-     * @var int Position where the data start
-     */
-    protected $startData = -1;
 
     /**
      * @var Buffer Temporary buffer
@@ -65,11 +55,11 @@ class Data extends Record
     public function readCase(Buffer $buffer, $case)
     {
         /* check if this is the first time */
-        if ($this->startData === -1) {
+        if ($this->startPos === -1) {
             $this->opcodeIndex = 8;
             $this->opcodes     = [];
 
-            $this->startData = $buffer->position();
+            $this->startPos = $buffer->position();
             if (0 !== $buffer->readInt()) {
                 throw new \InvalidArgumentException('Error reading data record. Non-zero value found.');
             }
@@ -106,7 +96,8 @@ class Data extends Record
         }
 
         if (($case >= 0) && ($case < $casesCount)) {
-            $this->row = $this->readCaseData(
+            $this->matrix = [];
+            $this->matrix[0] = $this->readCaseData(
                 $buffer,
                 $compressed,
                 $bias,
@@ -119,8 +110,8 @@ class Data extends Record
 
     public function read(Buffer $buffer)
     {
-        if ($this->startData === -1) {
-            $this->startData = $buffer->position();
+        if ($this->startPos === -1) {
+            $this->startPos = $buffer->position();
         }
 
         if ($buffer->readInt() !== 0) {
@@ -212,7 +203,7 @@ class Data extends Record
         if (!isset($this->dataBuffer)) {
             $this->dataBuffer = Buffer::factory('', ['memory' => true]);
             $buffer->writeInt(self::TYPE);
-            $this->startData = $buffer->position();
+            $this->startPos = $buffer->position();
             $buffer->writeInt(0);
         }
 
@@ -256,7 +247,7 @@ class Data extends Record
         }
 
         $buffer->writeInt(self::TYPE);
-        $this->startData = $buffer->position();
+        $this->startPos = $buffer->position();
         $buffer->writeInt(0);
         $this->dataBuffer = Buffer::factory('', ['memory' => true]);
 
@@ -291,7 +282,7 @@ class Data extends Record
      */
     public function getRow()
     {
-        return $this->row;
+        return (\count($this->matrix) > 0) ? $this->matrix[0] : [];
     }
 
     /**
@@ -460,11 +451,18 @@ class Data extends Record
             $width = (isset($var->write) && isset($var->write[2]) && ($var->write[2] !== 0)) ? $var->write[2] : $var->width;
 
             if ($isNumeric) {
+                if (is_string($value) && \in_array($var->write[1], [
+                     \SPSS\Sav\Variable::FORMAT_TYPE_DATE,
+                     \SPSS\Sav\Variable::FORMAT_TYPE_TIME,
+                     \SPSS\Sav\Variable::FORMAT_TYPE_DATETIME,
+                     ], true)) {
+                    $value = Utils::parseSpssDateTime($value, $var->write[1]);
+                }
                 if (!$compressed) {
                     $buffer->writeDouble($value);
                 } elseif ($value === $sysmis || '' === $value) {
                     $this->writeOpcode($buffer, self::OPCODE_SYSMISS);
-                } elseif ($value >= 1 - $bias && $value <= 251 - $bias && $value === (int) $value) {
+                } elseif ($value >= 1 - $bias && $value <= 251 - $bias && (float) $value === (float) (int) $value) {
                     $this->writeOpcode($buffer, $value + $bias);
                 } else {
                     $this->writeOpcode($buffer, self::OPCODE_RAW_DATA);
@@ -493,7 +491,7 @@ class Data extends Record
                                 $this->dataBuffer->writeString($val, 8);
                             }
                         } else {
-                            $this->dataBuffer->writeString($val, 8);
+                            $buffer->writeString($val, 8);
                         }
                         $offset += $chunkSize;
                     }

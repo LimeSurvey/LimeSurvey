@@ -1,3 +1,10 @@
+VERSION 3.13.0-limesurvey
+-------------------------
+* LimeSurvey-maintained fork continuing past upstream 3.12 (2014).
+* Security-maintained by the LimeSurvey Project Team; not the abandoned upstream
+  KCFinder 3.12. Reported version bumped so version-range vulnerability scanners
+  no longer match the unmaintained upstream release.
+
 VERSION 3.12 - 2014-07-09
 -------------------------
 * XSS security fix

@@ -285,9 +285,9 @@ class User extends LSActiveRecord
     private function getFormattedBoolean($data, $attribute)
     {
         if ($data->$attribute) {
-            return '<span class="text-success ri-check-fill"></span><span class="sr-only">' . gT("Yes") . '</span>';
+            return '<span class="text-success ri-check-fill fw-bold"></span><span class="sr-only">' . gT("Yes") . '</span>';
         }
-        return '<span class="sr-only">' . gT("No") . '</span>';
+        return '<span class="text-danger ri-close-fill fw-bold"></span><span class="sr-only">' . gT("No") . '</span>';
     }
 
     /**
@@ -346,11 +346,22 @@ class User extends LSActiveRecord
      */
     public static function updatePassword($iUserID, $sPassword)
     {
-        return User::model()->updateByPk($iUserID, array('password' => password_hash($sPassword, PASSWORD_DEFAULT)));
+        return User::model()->updateByPk($iUserID, array(
+            'password' => password_hash($sPassword, PASSWORD_DEFAULT),
+            'session_token' => self::generateSessionToken(),
+        ));
     }
 
     /**
      * Set user password with hash
+     *
+     * Also rotates the user's session token, so any other already
+     * authenticated web session for this user (which still caches the
+     * previous token) gets logged out on its next request. See
+     * LSApplicationTrait::getCurrentUserId(). Additionally revokes any
+     * outstanding RemoteControl (JSON-RPC/REST) session tokens for this
+     * user, since those are a separate auth mechanism unaffected by the
+     * session_token rotation above.
      *
      * @param string $sPassword The clear text password
      * @return \User
@@ -358,10 +369,25 @@ class User extends LSActiveRecord
     public function setPassword($sPassword, $save = false)
     {
         $this->password = password_hash($sPassword, PASSWORD_DEFAULT);
+        $this->session_token = self::generateSessionToken();
+        if (!empty($this->users_name)) {
+            Session::model()->deleteAllByAttributes(['data' => $this->users_name]);
+        }
         if ($save) {
             $this->save();
         }
         return $this; // Return current object
+    }
+
+    /**
+     * Generates a new random per-user session token, used to invalidate
+     * other sessions when the password changes.
+     *
+     * @return string
+     */
+    public static function generateSessionToken()
+    {
+        return bin2hex(random_bytes(32));
     }
 
     /**
@@ -901,7 +927,7 @@ class User extends LSActiveRecord
                 },
                 "type" => 'raw',
                 "htmlOptions" => ['class' => 'text-center'],
-                "filter" => ['Y' => gT('Yes'), 'N' => gT('No')], // Y/N, default is set to 1
+                "filter" => ['Y' => gT('Active'), 'N' => gT('Inactive')], // Y/N, default is set to 1
             ],
         ];
 
@@ -1027,12 +1053,14 @@ class User extends LSActiveRecord
     public function getDateFilter($column)
     {
         $dateFilter = "<div class='input-group'>";
-        $dateFilter .= "<span class='input-group-text'>&gt;=</span>";
+        $dateFilter .= "<span class='input-group-text' style='font-size:1rem;line-height:16px;'>&gt;=</span>";
         $dateFilter .= CHtml::dateField(
             get_class($this) . "[" . $column . "]",
             $this->getAttribute($column),
             [
-                'class' => "form-control"
+                'class' => "form-control",
+                // Native date inputs keep a larger min-height for the picker; pin height to match the other form-control filters.
+                'style' => 'font-size:1rem;height:37.6px;min-height:0;'
             ]
         );
         $dateFilter .= "</div>";

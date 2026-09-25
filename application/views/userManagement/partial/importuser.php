@@ -31,9 +31,7 @@ Yii::app()->getController()->renderPartial(
         'type' => 'info',
     ]);
     ?>
-    <div class="md-3" id="UserManagement--errors">
-    </div>
-    <div class="mb-3 ">
+    <div class="mb-3">
         <input type="checkbox" name="overwrite" value="overwrite" id="overwrite">
         <label class="form-check-label" for="overwrite">
             <?= eT("Overwrite existing users"); ?>

@@ -30,19 +30,19 @@
   margin-bottom: 16px;
 }
 
-.hint-text-box {
+#activate_editor .hint-text-box {
   background-color: #f9f9fb; /* $g-100 */
   border-radius: 3px;
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.hint-text-box .hint-text {
+#activate_editor .hint-text-box .hint-text {
   color: #6e748c; /* $g-700 */
 }
 
 /* same size for both buttons within the toggle switch */
-.lime-toggle-btn-group .btn-group .btn {
+#activate_editor .lime-toggle-btn-group .btn-group .btn {
   flex: 1;
 }
 

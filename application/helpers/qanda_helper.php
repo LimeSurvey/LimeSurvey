@@ -70,6 +70,10 @@ function setNoAnswerMode($thissurvey)
     } else {
         define('SHOW_NO_ANSWER', 1);
     }
+
+    // Default to the historic behaviour when rendering legacy/imported data
+    // that does not contain the setting yet.
+    define('PRESELECT_NO_ANSWER', ($thissurvey['preselectnoanswer'] ?? 'Y') === 'Y' ? 1 : 0);
 }
 
 /**
@@ -312,20 +316,24 @@ function mandatory_popup($ia, $notanswered = null)
     if (isset($notanswered) && is_array($notanswered)) {
         //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
         //POPUP WARNING
+        // This function is called for every question on the page, so only soft ('S') and hard ('Y')
+        // mandatory questions may set the message; non-mandatory questions must leave it untouched.
         // If there is no "hard" mandatory violation (both current and previous violations belong to Soft Mandatory questions),
         // we show the soft mandatory message.
         if ($ia[6] == 'S' && (!isset($mandatorypopup) || $mandatorypopup == 'S')) {
             $popup = gT("One or more mandatory questions have not been answered. If possible, please complete them before continuing to the next page.");
             $mandatorypopup = "S";
-        } elseif (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U')) {
-            // If
+        } elseif ($ia[6] == 'Y' && !isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U')) {
             $popup = gT("You cannot proceed until you enter some text for one or more questions.");
             $mandatorypopup = "Y";
-        } else {
+        } elseif ($ia[6] == 'Y') {
             $popup = gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
             $mandatorypopup = "Y";
         }
-        return array($mandatorypopup, $popup);
+        return array(
+            isset($mandatorypopup) ? $mandatorypopup : false,
+            isset($popup) ? $popup : false
+        );
     } else {
         return false;
     }
@@ -593,6 +601,12 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
 // QUESTION METHODS =================================================
 
 // ---------------------------------------------------------------
+/**
+ * Renders the file upload question (answer area and upload modal trigger).
+ *
+ * @param array $ia Question info array: [0] qid, [1] fieldname, ...
+ * @return array{0: string, 1: string[]} Rendered answer HTML and the list of input names
+ */
 function do_file_upload($ia)
 {
     global $thissurvey;
@@ -611,7 +625,7 @@ function do_file_upload($ia)
         $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['preview'] = 0;
         $questgrppreview = 0;
     }
-    $scriptloc = Yii::app()->getController()->createUrl(
+    $uploadurl = Yii::app()->getController()->createUrl(
         'uploader/index',
         [
             "sid" => Yii::app()->getConfig('surveyID'),
@@ -620,8 +634,8 @@ function do_file_upload($ia)
             "preview" => $questgrppreview,
             "show_title" => $aQuestionAttributes['show_title'],
             "show_comment" => $aQuestionAttributes['show_comment'],
-            "minfiles" => $aQuestionAttributes['min_num_of_files'],
-            "maxfiles" => $aQuestionAttributes['max_num_of_files'],
+            "minfiles" => $aQuestionAttributes['min_num_of_files'], // TODO: Regression here? Should use LEMval(minfiles)
+            "maxfiles" => $aQuestionAttributes['max_num_of_files'], // Same here.
         ]
     );
 
@@ -634,11 +648,6 @@ function do_file_upload($ia)
             $filecountvalue = $tempval;
         }
     }
-    $uploadurl  = $scriptloc . "?sid=" . Yii::app()->getConfig('surveyID') . "&fieldname=" . $ia[1] . "&qid=" . $ia[0];
-    $uploadurl .= "&preview=" . $questgrppreview . "&show_title=" . $aQuestionAttributes['show_title'];
-    $uploadurl .= "&show_comment=" . $aQuestionAttributes['show_comment'];
-    $uploadurl .= "&minfiles=" . $aQuestionAttributes['min_num_of_files']; // TODO: Regression here? Should use LEMval(minfiles) like above
-    $uploadurl .= "&maxfiles=" . $aQuestionAttributes['max_num_of_files']; // Same here.
 
     $fileuploadData = array(
         'fileid' => $ia[1],
@@ -1063,7 +1072,10 @@ function do_yesno($ia)
     $noAnswer = false;
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
-        if (empty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]])) {
+        if (
+            PRESELECT_NO_ANSWER
+            && empty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]])
+        ) {
             $naChecked = CHECKED;
         }
     }
@@ -1107,7 +1119,10 @@ function do_gender($ia)
     $displayType            = (int) $aQuestionAttributes['display_type'];
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
-        if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '') {
+        if (
+            PRESELECT_NO_ANSWER
+            && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == ''
+        ) {
             $naChecked = CHECKED;
         }
     }
@@ -1301,7 +1316,13 @@ function do_array_5point($ia)
 
         // ==>tds
         if (($isNotYes && $isNotS) && $showNoAnswer) {
-            $CHECKED = (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+            $CHECKED = (
+                PRESELECT_NO_ANSWER
+                && (
+                    !isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname])
+                    || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == ''
+                )
+            ) ? 'CHECKED' : '';
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_input', array(
                 'i' => "",
                 'labelText' => gT('No answer'),
@@ -1470,7 +1491,13 @@ function do_array_10point($ia)
         }
 
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {
-            $CHECKED = (!isset($_SESSION['responses_' . $iSurveyId][$myfname]) || $_SESSION['responses_' . $iSurveyId][$myfname] == '') ? 'CHECKED' : '';
+            $CHECKED = (
+                PRESELECT_NO_ANSWER
+                && (
+                    !isset($_SESSION['responses_' . $iSurveyId][$myfname])
+                    || $_SESSION['responses_' . $iSurveyId][$myfname] == ''
+                )
+            ) ? 'CHECKED' : '';
             $answer_tds .= doRender(
                 '/survey/questions/answer/arrays/10point/rows/cells/answer_td_input',
                 array(
@@ -1589,7 +1616,13 @@ function do_array_yesnouncertain($ia)
             $Ychecked  = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'Y') ? 'CHECKED' : '';
             $Uchecked  = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'U') ? 'CHECKED' : '';
             $Nchecked  = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'N') ? 'CHECKED' : '';
-            $NAchecked = (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+            $NAchecked = (
+                PRESELECT_NO_ANSWER
+                && (
+                    !isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname])
+                    || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == ''
+                )
+            ) ? 'CHECKED' : '';
 
             $sRows .= doRender('/survey/questions/answer/arrays/yesnouncertain/rows/answer_row', array(
                 'basename'               => $ia[1],
@@ -1690,7 +1723,13 @@ function do_array_increasesamedecrease($ia)
         $Ichecked       = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'I') ? 'CHECKED' : '';
         $Schecked       = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'S') ? 'CHECKED' : '';
         $Dchecked       = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'D') ? 'CHECKED' : '';
-        $NAchecked      = (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+        $NAchecked      = (
+            PRESELECT_NO_ANSWER
+            && (
+                !isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname])
+                || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == ''
+            )
+        ) ? 'CHECKED' : '';
         $no_answer      = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ? true : false;
 
         $sRows .= doRender('/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row', array(
@@ -2576,12 +2615,14 @@ function do_arraycolumns($ia)
                     $aData['aQuestions'][$j]['myfname'] = $myfname;
                     if (
                         isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) &&
-                        $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] === $ansrow['code']
+                        $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] === $ansrow['code'] &&
+                        ($ansrow['code'] !== '' || PRESELECT_NO_ANSWER)
                     ) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                     } elseif (
                         !isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) &&
-                        $ansrow['code'] == ''
+                        $ansrow['code'] == '' &&
+                        PRESELECT_NO_ANSWER
                     ) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                         // Humm.. (by lemeur), not sure this section can be reached

@@ -6,6 +6,7 @@ use TemplateConfiguration;
 
 class Update_353 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $themes = TemplateConfiguration::model()->findAll();

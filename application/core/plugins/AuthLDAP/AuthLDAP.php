@@ -33,7 +33,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             'type' => 'select',
             'label' => 'LDAP version',
             'options' => array('2' => 'LDAPv2', '3'  => 'LDAPv3'),
-            'default' => '2',
+            'default' => '3',
+            'help' => 'LDAPv2 is obsolete and does not reliably support passwords with non-ASCII characters (e.g. §, ä, é) - use LDAPv3 unless your server does not support it.',
             'submitonchange' => true
         ),
         'ldapoptreferrals' => array(
@@ -93,16 +94,19 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             'label' => 'LDAP attribute of full name'
         ),
         'is_default' => array(
-            'type' => 'checkbox',
-            'label' => 'Check to make default authentication method'
+            'type' => 'boolean',
+            'label' => 'Check to make default authentication method',
+            'default' => '0',
         ),
         'autocreate' => array(
-            'type' => 'checkbox',
-            'label' => 'Automatically create user if it exists in LDAP server'
+            'type' => 'boolean',
+            'label' => 'Automatically create user if it exists in LDAP server',
+            'default' => '0',
         ),
         'automaticsurveycreation' => array(
-            'type' => 'checkbox',
-            'label' => 'Grant survey creation permission to automatically created users'
+            'type' => 'boolean',
+            'label' => 'Grant survey creation permission to automatically created users',
+            'default' => '0',
         ),
         'groupsearchbase' => array(
             'type' => 'string',
@@ -115,8 +119,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             'help' => 'Required if group search base set. E.g. (&(cn=limesurvey)(memberUid=$username)) or (&(cn=limesurvey)(member=$userdn))'
         ),
         'allowInitialUser' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Allow initial user to login via LDAP',
+            'default' => '0',
         )
     );
 
@@ -356,8 +361,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // using LDAP version
         if (empty($ldapver)) {
-            // If the version hasn't been set, default = 2
-            $ldapver = 2;
+            // If the version hasn't been set, default = 3 (LDAPv2 does not use UTF-8 for passwords)
+            $ldapver = 3;
         }
 
         $connectionSuccessful = ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, $ldapver);

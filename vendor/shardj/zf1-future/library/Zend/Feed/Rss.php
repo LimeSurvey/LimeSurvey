@@ -487,7 +487,7 @@ class Zend_Feed_Rss extends Zend_Feed_Abstract
     {
         // Return a complete document including XML prologue.
         $doc = new DOMDocument($this->_element->ownerDocument->version,
-                               $this->_element->ownerDocument->actualEncoding);
+                               $this->_element->ownerDocument->encoding);
         $root = $doc->createElement('rss');
 
         // Use rss version 2.0
@@ -522,7 +522,7 @@ class Zend_Feed_Rss extends Zend_Feed_Abstract
             throw new Zend_Feed_Exception('Cannot send RSS because headers have already been sent.');
         }
 
-        header('Content-Type: application/rss+xml; charset=' . $this->_element->ownerDocument->actualEncoding);
+        header('Content-Type: application/rss+xml; charset=' . $this->_element->ownerDocument->encoding);
 
         echo $this->saveXml();
     }

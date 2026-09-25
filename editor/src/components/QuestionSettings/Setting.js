@@ -1,7 +1,8 @@
 import React from 'react'
-import { STATES, isTrue } from 'helpers'
+import { useParams } from 'react-router-dom'
+import { STATES, isTempId, isTrue } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
-import { useAppState } from 'hooks'
+import { useAppState, useExpressionScriptValidation } from 'hooks'
 import { SettingsWrapper } from 'components/UIComponents'
 
 import { TooltipContainer } from '../TooltipContainer/TooltipContainer'
@@ -14,8 +15,37 @@ export const Setting = ({
   title = '',
   attributes = [],
   simpleSettings = false,
+  hasDefaultAttributeValues = false,
+  sectionExpanded,
+  onSectionToggle,
 }) => {
+  const { surveyId } = useParams()
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
+  const validateExpression = useExpressionScriptValidation(
+    surveyId,
+    question?.qid
+  )
+  const isDependsOnSatisfied = (dependsOn, dependsOnValue) => {
+    if (!dependsOn) {
+      return true
+    }
+
+    if (Object.prototype.hasOwnProperty.call(dependsOn, 'value')) {
+      return String(dependsOnValue) === String(dependsOn.value)
+    }
+
+    if (Array.isArray(dependsOn.values)) {
+      return dependsOn.values
+        .map((value) => String(value))
+        .includes(String(dependsOnValue))
+    }
+
+    return isTrue(dependsOnValue)
+  }
+
   const getAttributeValueFromPath = (attributePath, languageBased) => {
     const path = attributePath.split('.')
     const attribute = path.reduce((acc, key) => acc[key], question)
@@ -94,7 +124,7 @@ export const Setting = ({
         dependsOnAttribute.dependsOn &&
         dependsOnAttribute.dependsOn.attributePath === attribute.attributePath
       ) {
-        if (typeof value !== 'object' && !isTrue(value)) {
+        if (!isDependsOnSatisfied(dependsOnAttribute.dependsOn, value)) {
           const isAdvancedAttribute =
             dependsOnAttribute.attributePath.includes('attributes.')
 
@@ -113,6 +143,8 @@ export const Setting = ({
       simpleSettings={simpleSettings}
       isAdvanced={isAdvanced}
       title={title}
+      isExpanded={sectionExpanded}
+      onToggle={(isExpanded) => onSectionToggle?.(title, isExpanded)}
     >
       {attributes.map((attribute) => {
         if (
@@ -135,7 +167,7 @@ export const Setting = ({
             dependsOn.languageBased
           )
 
-          if (!isTrue(dependsOnValue)) {
+          if (!isDependsOnSatisfied(dependsOn, dependsOnValue)) {
             return (
               <React.Fragment
                 key={`${title}-settings-${attribute.attributePath}`}
@@ -148,39 +180,65 @@ export const Setting = ({
           attribute.attributePath,
           attribute.languageBased
         )
-
         const isDisabled =
           ([
             'questionThemeName',
             'encrypted',
             'attributes.save_as_default',
+            'defaultAttributeValuesActions',
             'other',
           ].includes(attribute.attributePath) ||
             attribute.disableWhenActive) &&
           isSurveyActive
+            ? true
+            : attribute.action &&
+              (isTempId(question.qid) || !hasSurveyUpdatePermission)
+
+        const options =
+          typeof attribute.getOptions === 'function'
+            ? attribute.getOptions({ question, language })
+            : undefined
+
+        const attributeProps = {
+          ...attribute.props,
+          ...(options ? { options } : {}),
+          ...(attribute.attributePath === 'attributes.equation'
+            ? { validateExpression }
+            : {}),
+          ...(attribute.action
+            ? {
+                hasDefaultAttributeValues,
+              }
+            : {}),
+        }
 
         return (
           <div
             className="right-side-bar-settings"
-            key={`${title}-settings-${attribute.attributePath}${attribute.props.labelText}`}
+            key={`${question?.qid}-${title}-settings-${attribute.attributePath}${attribute.props.labelText}`}
           >
             <TooltipContainer
               tip={getTooltipMessages().ACTIVE_DISABLED}
               showTip={isDisabled}
             >
               <attribute.component
-                {...attribute.props}
+                {...attributeProps}
                 activeDisabled={isDisabled}
                 noPermissionDisabled={true}
+                hasSurveyUpdatePermission={hasSurveyUpdatePermission}
                 value={
                   value
                     ? value
-                    : attribute.props.value
-                      ? attribute.props.value
+                    : attributeProps.value
+                      ? attributeProps.value
                       : ''
                 }
                 name={attribute.attributePath}
-                update={(value) => handleUpdateAttribute(value, attribute)}
+                update={(value) =>
+                  attribute.action
+                    ? handleUpdate(value, false)
+                    : handleUpdateAttribute(value, attribute)
+                }
                 isSimpleSettings={simpleSettings}
                 theme="light"
               />

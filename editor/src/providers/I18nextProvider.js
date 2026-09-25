@@ -12,35 +12,76 @@ export const I18Provider = ({ i18n, children, language }) => {
   const [isTranslationLoaded, setIsTranslationLoaded] = useState(false)
 
   useEffect(() => {
+    // Only flip isTranslationLoaded once the translations for the target
+    // language have actually finished loading (see onReady callback below).
+    // Setting it eagerly caused components that read translations via the
+    // global st()/t() helpers to render before the async backend fetch
+    // resolved, leaving them stuck with stale/untranslated text until an
+    // unrelated re-render happened to occur later.
+    setIsTranslationLoaded(false)
+    let isCancelled = false
+    const onReady = () => {
+      if (!isCancelled) {
+        setIsTranslationLoaded(true)
+      }
+    }
+
     if (!auth.isLoggedIn || auth.userId == 0 || process.env.STORYBOOK_DEV) {
       setUserDetail({ lang: 'en' })
-      setI18nInstance(i18n('en', auth, setLanguages, languages))
-      setIsTranslationLoaded(true)
-      return
+      setI18nInstance(
+        i18n('en', auth, setLanguages, languages, undefined, onReady)
+      )
+      return () => {
+        isCancelled = true
+      }
     }
 
     if (!language) {
-      userService.getUserDetail(auth.userId).then((result) => {
-        if (!result) {
-          return
-        }
-        setUserDetail(result)
-        let lang = result.lang
-        if (lang === 'auto') {
-          // Use browser's language
-          const browserLanguage = navigator.language || navigator.userLanguage
-          lang = browserLanguage.substring(0, 2)
-          if (!lang) {
-            lang = 'en' // Default to English if browser's language is not supported'
+      userService
+        .getUserDetail(auth.userId)
+        .then((result) => {
+          if (isCancelled) {
+            return
           }
-        }
-        setI18nInstance(i18n(lang, auth, setLanguages, languages))
-      })
+          if (!result) {
+            setUserDetail({ lang: 'en' })
+            setI18nInstance(
+              i18n('en', auth, setLanguages, languages, undefined, onReady)
+            )
+            return
+          }
+          setUserDetail(result)
+          let lang = result.lang
+          if (lang === 'auto') {
+            // Use browser's language
+            const browserLanguage = navigator.language || navigator.userLanguage
+            lang = browserLanguage.substring(0, 2)
+            if (!lang) {
+              lang = 'en' // Default to English if browser's language is not supported'
+            }
+          }
+          setI18nInstance(
+            i18n(lang, auth, setLanguages, languages, undefined, onReady)
+          )
+        })
+        .catch(() => {
+          if (isCancelled) {
+            return
+          }
+          setUserDetail({ lang: 'en' })
+          setI18nInstance(
+            i18n('en', auth, setLanguages, languages, undefined, onReady)
+          )
+        })
     } else {
-      setI18nInstance(i18n(language, auth, setLanguages, languages))
+      setI18nInstance(
+        i18n(language, auth, setLanguages, languages, undefined, onReady)
+      )
     }
 
-    setIsTranslationLoaded(true)
+    return () => {
+      isCancelled = true
+    }
   }, [auth.token, language])
 
   if (!isTranslationLoaded) {

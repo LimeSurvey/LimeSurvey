@@ -20,37 +20,16 @@ To see what's inside aSurveyInfo, turn debug mode on and copy the following line
 {{ dump(aSurveyInfo) }}
 #}
 
+{% set hasImage = aSurveyInfo.welcomeimage['image_path'] is defined and aSurveyInfo.welcomeimage['image_path'] %}
+
 <!-- Welcome Message -->
 <div id="{{ aSurveyInfo.id.welcomecontainer }}" class="{{ aSurveyInfo.class.welcomecontainer }}" {{ aSurveyInfo.attr.welcomecontainer }}>
-
-    <!-- Survey Name -->
-    <h1 class="{{ aSurveyInfo.class.surveyname }} large-heading mt-0" {{ aSurveyInfo.attr.surveyname }} >
-        {{ processString(aSurveyInfo.name,1) }}
-    </h1>
-
-    <!-- Survey description -->
-    <div class="{{ aSurveyInfo.class.description }} form-heading" {{ aSurveyInfo.attr.description }}>
-        {{ processString(aSurveyInfo.description,1) }}
-    </div>
-
-    <!-- Welcome text -->
-    <div class="{{ aSurveyInfo.class.welcome }} form-heading" {{ aSurveyInfo.attr.welcome }}>
-        {{ processString(aSurveyInfo.welcome,1) }}
-    </div>
-
-    <!-- Question count -->
-    <div class="{{ aSurveyInfo.class.questioncount }}" {{ aSurveyInfo.attr.questioncount }}>
-        <div class='{{ aSurveyInfo.class.questioncounttext }}' {{ aSurveyInfo.attr.questioncounttext }}>
-            {# If survey creator set "show x questions" in survey setting  #}
-            {% if aSurveyInfo.bShowxquestions == true %}
-                {% if aSurveyInfo.iTotalquestions < 1 %}
-                    {{ gT("There are no questions in this survey.") }}
-                {% elseif aSurveyInfo.iTotalquestions == 1 %}
-                    {{ gT("There is 1 question in this survey.") }}
-                {% else %}
-                    {{ gT("There are %s questions in this survey.") | format(aSurveyInfo.iTotalquestions) }}
-                {% endif %}
-            {% endif %}
-        </div>
-    </div>
+    {% if hasImage %}
+        {{ include('./subviews/messages/welcome_subviews/welcome_image_container.twig') }}
+    {% else %}
+        {{ include('./subviews/messages/welcome_subviews/welcome_content.twig') }}
+        {# Privacy policy checkbox/message is part of the welcome page, so it's also wrapped by the welcome image when present #}
+        {{ include('./subviews/privacy/privacy.twig') }}
+        {{ include('./subviews/messages/welcome_subviews/welcome_questioncount.twig') }}
+    {% endif %}
 </div>

@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use Question;
 use RuntimeException;
 use Survey;
@@ -20,6 +19,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function rt(): void
     {
         $this->rt = 'Q' . $this->question['qid'];
@@ -27,9 +27,10 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
 
     /**
      * @inheritDoc
-     * @return StatisticsChartDTO
+     * @return array Single chart plan
      */
-    public function process(): StatisticsChartDTO
+    #[\Override]
+    public function process(): array
     {
         $this->rt();
 
@@ -41,15 +42,11 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
 
         $this->addSpecialOptions($legend, $dataItems);
 
-        $totalResponses = array_sum(array_column($dataItems, 'value'));
-
-        return new StatisticsChartDTO(
-            $title,
-            $legend,
-            $dataItems,
-            $totalResponses,
-            ['question' => $this->question]
-        );
+        return [
+            'title' => $title,
+            'legend' => $legend,
+            'data' => $dataItems,
+        ];
     }
 
     /**
@@ -65,10 +62,8 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
         ) {
             $this->addOtherOption($legend, $dataItems);
         }
-
-        if ($this->question['type'] === Question::QT_O_LIST_WITH_COMMENT) {
-            $this->addCommentOption($legend, $dataItems);
-        }
+        // List-with-comment (O): the comment texts are surfaced via the
+        // comments view, so they are intentionally not charted here.
     }
 
     /**
@@ -79,27 +74,10 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     {
         $mfield = $this->rt . '_Cother';
         $legend[] = 'other';
-        $count = $this->countFieldResponses($mfield);
         $dataItems[] = [
             'key' => 'other',
-            'value' => $count,
+            'value' => $this->countFieldResponses($mfield),
             'title' => gT('Other')
-        ];
-    }
-
-    /**
-     * @param array $legend
-     * @param array $dataItems
-     */
-    private function addCommentOption(array &$legend, array &$dataItems): void
-    {
-        $mfield = $this->rt . '_Ccomment';
-        $legend[] = 'comment';
-        $count = $this->countFieldResponses($mfield);
-        $dataItems[] = [
-            'key' => 'comment',
-            'value' => $count,
-            'title' => gT('Comments')
         ];
     }
 

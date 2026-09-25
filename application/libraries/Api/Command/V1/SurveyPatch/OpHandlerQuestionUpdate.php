@@ -89,7 +89,8 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
         $this->questionAggregateService->save(
             $surveyId,
             [
-                'question' => $transformedProps
+                'question' => $transformedProps,
+                'loadCurrentAdvancedSettings' => true
             ]
         );
     }
