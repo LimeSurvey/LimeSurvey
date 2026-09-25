@@ -21,12 +21,23 @@ trait ConditionHandlerHelperTrait
     }
 
     /**
+     * Strip anything that can not appear in a response column name, then quote
+     * what is left.
+     *
+     * '#' is allowed because dual-scale questions store one column per scale
+     * and separate them with it: Q42_S101#0 and Q42_S101#1
+     * (common_helper.php:1930). Dropping it produced Q42_S1010 — a column that
+     * does not exist — so those questions could not be filtered at all, even
+     * though the key had already been validated against the field map. The
+     * character is harmless here: the name is quoted, and inside an identifier
+     * quote '#' is literal rather than a comment marker.
+     *
      * @param string $key
      * @return string
      */
     public function sanitizeKey(string $key): string
     {
-        $sanitizedKey = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
+        $sanitizedKey = preg_replace('/[^a-zA-Z0-9_#-]/', '', $key);
         return App()->db->quoteColumnName($sanitizedKey);
     }
 }

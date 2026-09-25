@@ -93,6 +93,34 @@ class OpHandlerResponseEqualConditionTest extends TestCondition
     }
 
     /**
+     * Regression: dual-scale questions store one column per scale, separated by
+     * '#'. Stripping it turned Q42_S101#0 into Q42_S1010 — a column that does
+     * not exist — so the query failed and the filter was reported back as an
+     * invalid key. Those questions could not be filtered at all.
+     */
+    public function testDualScaleColumnKeepsItsScaleSeparator(): void
+    {
+        $handler = new EqualConditionHandler();
+
+        $criteria = $handler->execute('Q42_S101#1', 'A2');
+
+        $paramName = array_key_first($criteria->params);
+        $this->assertFieldConditions($criteria->condition, "[0] = $paramName", ['Q42_S101#1']);
+        $this->assertSame([$paramName => 'A2'], $criteria->params);
+    }
+
+    /** The two scales of one row must stay distinct columns. */
+    public function testTheTwoScalesOfARowResolveToDifferentColumns(): void
+    {
+        $handler = new EqualConditionHandler();
+
+        $first = $handler->execute('Q42_S101#0', 'A1');
+        $second = $handler->execute('Q42_S101#1', 'A2');
+
+        $this->assertNotSame($first->condition, $second->condition);
+    }
+
+    /**
      * Regression: two filters on the same column merged into one criteria must
      * keep both bound values. Placeholder names used to be derived from the
      * column, so mergeWith()'s array_merge silently dropped the first value.
