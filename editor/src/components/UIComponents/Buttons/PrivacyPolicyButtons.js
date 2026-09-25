@@ -18,7 +18,7 @@ export const PrivacyPolicyButtons = ({
     },
     {
       value: 2,
-      label: t('Pop-Up'),
+      label: t('Popup/Collapsible'),
       Icon: PrivacyMandatoryPopUpIcon,
       testId: 'popup-privacy-btn',
     },

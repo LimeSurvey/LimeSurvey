@@ -331,7 +331,6 @@ return array(
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jspdf.umd.min.js',
-            'jspdf.es.min.js'
         ),
         'depends' => array(
             'dom2image',

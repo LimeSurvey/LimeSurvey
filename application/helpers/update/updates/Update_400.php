@@ -7,6 +7,7 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_400 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         if ($this->db->driverName == 'mysql') {

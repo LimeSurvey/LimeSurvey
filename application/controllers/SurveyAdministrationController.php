@@ -2401,23 +2401,6 @@ class SurveyAdministrationController extends LSBaseController
         if ($copiedSurvey !== null) {
             $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $copiedSurvey->sid]);
             $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $copiedSurvey->sid;
-            $questionGroupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
-
-            // Make the link point to the first group/question if available
-            if (!empty($questionGroupList)) {
-                $oFirstGroup = $questionGroupList[0];
-                $oFirstQuestion = Question::model()->primary()->findByAttributes(
-                    ['gid' => $oFirstGroup->gid],
-                    ['order' => 'question_order ASC']
-                );
-
-                $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
-                    $copiedSurvey->sid,
-                    $oFirstGroup->gid,
-                    !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
-                    'structure'
-                );
-            }
         }
 
         $this->aData = $aData;
@@ -2540,7 +2523,7 @@ class SurveyAdministrationController extends LSBaseController
         if (!$aData['bFailed'] && isset($aImportResults)) {
             $aData['aImportResults'] = $aImportResults;
             if (isset($aImportResults['newsid'])) {
-                // Set link pointing to survey administration overview. This link will be updated if the survey has groups
+                // Set link pointing to survey administration overview
                 $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $aImportResults['newsid']]);
                 $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $aImportResults['newsid'];
             }
@@ -2551,22 +2534,6 @@ class SurveyAdministrationController extends LSBaseController
             $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $aImportResults['newsid']]);
 
             $this->resetExpressionManager($oSurvey, $aGrouplist);
-
-            // Make the link point to the first group/question if available
-            if (!empty($aGrouplist)) {
-                $oFirstGroup = $aGrouplist[0];
-                $oFirstQuestion = Question::model()->primary()->findByAttributes(
-                    ['gid' => $oFirstGroup->gid],
-                    ['order' => 'question_order ASC']
-                );
-
-                $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
-                    $aImportResults['newsid'],
-                    $oFirstGroup->gid,
-                    !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
-                    'structure'
-                );
-            }
         }
 
         $this->aData = $aData;

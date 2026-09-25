@@ -2289,7 +2289,7 @@ function hasFileUploadQuestion($iSurveyID)
 /**
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
-* @param string $surveyid The Survey ID
+* @param int $surveyid The Survey ID
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
 * @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int|false $questionid Limit to a certain qid only (for question preview) - default is false
@@ -3843,12 +3843,14 @@ function enforceSSLMode()
 /**
  * Creates an array with details on a particular response for display purposes
  * Used in Print answers, Detailed response view and Detailed admin notification email
+ * Ranking questions are rendered as a single row from their JSON column.
  *
- * @param mixed $iSurveyID
- * @param mixed $iResponseID
- * @param mixed $sLanguageCode
+ * @param int $iSurveyID Survey ID
+ * @param int $iResponseID Response ID
+ * @param string $sLanguageCode Language used for question and answer texts
  * @param boolean $bHonorConditions Apply conditions
- * @return array
+ * @return array<string, array> Rows keyed by 'gid_…', 'qid_…' or field name
+ * @throws CHttpException If the response does not exist
  */
 function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions = true)
 {
@@ -3867,6 +3869,10 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     $aRelevantFields = array();
 
     foreach ($aFieldMap as $sKey => $fname) {
+        // Ranking answers are stored as JSON in the base Q{qid} column; the per-rank _S fields are virtual
+        if (($fname['type'] ?? '') === Question::QT_R_RANKING && !empty($fname['suffix'])) {
+            continue;
+        }
         if (LimeExpressionManager::QuestionIsRelevant($fname['qid']) || $bHonorConditions === false) {
             $aRelevantFields[$sKey] = $fname;
         }

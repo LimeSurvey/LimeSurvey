@@ -18870,6 +18870,15 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   display: none !important;
 }
 
+.cke_toolbox {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.cke_toolbox .cke_toolbar_break {
+  flex-basis: 100%;
+  height: 0;
+}
 .cke_toolbox .cke_button {
   margin-left: 3px;
 }
@@ -19449,7 +19458,7 @@ input[type=number] {
 #sidebar .resize-handle {
   position: absolute;
   margin: auto;
-  right: 15px;
+  right: -20px;
   top: 0;
   bottom: 0;
   height: 100%;
@@ -19457,13 +19466,13 @@ input[type=number] {
   cursor: col-resize;
 }
 #sidebar .resize-handle button {
-  background-color: #fff;
+  background-color: transparent;
   outline: 0;
   border: none;
 }
 #sidebar .resize-handle button:focus, #sidebar .resize-handle button:active, #sidebar .resize-handle button:hover {
   outline: 0 !important;
-  background-color: #fff !important;
+  background-color: transparent !important;
   color: #1E1E1E;
 }
 #sidebar .resize-handle button {
