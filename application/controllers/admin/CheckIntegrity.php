@@ -44,6 +44,11 @@ class CheckIntegrity extends SurveyCommonAction
     /**
      * Index
      *
+     * The data consistency check itself only runs when the "Run data consistency
+     * check" button is submitted (see fixintegrity()), not on every page load, so
+     * this GET request never deletes anything for that section - it only fetches
+     * the (separate) data redundancy check's current state.
+     *
      * @throws Exception
      */
     public function index()
@@ -51,6 +56,7 @@ class CheckIntegrity extends SurveyCommonAction
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'checkintegrity.js');
 
         $aData = $this->checkintegrity();
+        $aData['consistencyCheckRan'] = false;
 
         $aData['topbar']['title'] = gT('Check data integrity');
         $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
@@ -92,6 +98,10 @@ class CheckIntegrity extends SurveyCommonAction
     /**
      * Fix integrity
      *
+     * Runs the data consistency check (the only place it ever runs) and re-renders
+     * the same page index() does, with the results of this run added on top, so the
+     * admin sees the redundancy check's state alongside the consistency check's
+     * feedback rather than a separate results page.
      */
     public function fixintegrity()
     {
@@ -101,12 +111,48 @@ class CheckIntegrity extends SurveyCommonAction
         if (Yii::app()->request->getPost('ok') != 'Y') {
             throw new CHttpException(403);
         }
+        $aFixResult = $this->applyAutomaticFixes();
+
+        $aData = $this->checkintegrity();
+        $aData['consistencyCheckRan'] = true;
+        $aData['consistencyCheckMessages'] = $aFixResult['messages'];
+        $aData['consistencyCheckWarnings'] = $aFixResult['warnings'];
+
+        $aData['topbar']['title'] = gT('Check data integrity');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
+
+        $this->renderWrappedTemplate('checkintegrity', 'check_view', $aData);
+    }
+
+    /**
+     * Runs the same detection-and-cleanup pass as the "Yes - Delete Them!" button
+     * (the data consistency check, plus any empty/fully orphaned old survey and
+     * participant list tables), with no permission/confirmation step of its own.
+     *
+     * Does NOT touch the data redundancy check's old survey/participant list tables
+     * that still contain response data: deleting those is a deliberate, irreversible
+     * choice that stays opt-in via fixredundancy().
+     *
+     * Used by both fixintegrity() (the web action) and the checkintegrity console
+     * command, so the same cleanup logic stays runnable unattended.
+     *
+     * @return array{
+     *     messages: string[],
+     *     warnings: string[],
+     *     integrityok: bool,
+     *     redundantsurveytables: array[],
+     *     redundanttokentables: array[],
+     *     groupOrderDuplicates: array[],
+     *     questionOrderDuplicates: array[]
+     * }
+     */
+    public function applyAutomaticFixes()
+    {
         $aDelete = $this->checkintegrity();
-        $aData = array([
-            'messsages' => array(),
-            'warnings'  => array(),
-            'errors'    => array(),
-        ]);
+        $aData = array(
+            'messages' => array(),
+            'warnings' => array(),
+        );
         // TMSW Condition->Relevance:  Update this to process relevance instead
         if (isset($aDelete['conditions'])) {
             $aData = $this->deleteConditions($aDelete['conditions'], $aData);
@@ -124,11 +170,15 @@ class CheckIntegrity extends SurveyCommonAction
             $aData = $this->deleteQuotas($aData);
         }
 
-        if ($aDelete['quotals']) {
+        // Also run when only 'quotas' is set: deleting an orphaned quota above can itself
+        // orphan its language settings/members, which the upfront check (before that
+        // deletion ran) could not have counted yet. Both methods re-query live state,
+        // so calling them here catches those newly-orphaned rows in the same pass.
+        if ($aDelete['quotals'] || $aDelete['quotas']) {
             $aData = $this->deleteQuotaLanguageSettings($aData);
         }
 
-        if ($aDelete['quotamembers']) {
+        if ($aDelete['quotamembers'] || $aDelete['quotas']) {
             $aData = $this->deleteQuotaMembers($aData);
         }
 
@@ -180,7 +230,21 @@ class CheckIntegrity extends SurveyCommonAction
             $aData = $this->deleteOrphanTokenTables($aDelete['orphantokentables'], $aData);
         }
 
-        $this->renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
+        if (!empty($aDelete['groupOrderDuplicates'])) {
+            $aData = $this->fixGroupOrderDuplicates($aDelete['groupOrderDuplicates'], $aData);
+        }
+
+        if (!empty($aDelete['questionOrderDuplicates'])) {
+            $aData = $this->fixQuestionOrderDuplicates($aDelete['questionOrderDuplicates'], $aData);
+        }
+
+        $aData['integrityok'] = $aDelete['integrityok'];
+        $aData['redundantsurveytables'] = $aDelete['redundantsurveytables'] ?? array();
+        $aData['redundanttokentables'] = $aDelete['redundanttokentables'] ?? array();
+        $aData['groupOrderDuplicates'] = $aDelete['groupOrderDuplicates'] ?? array();
+        $aData['questionOrderDuplicates'] = $aDelete['questionOrderDuplicates'] ?? array();
+
+        return $aData;
     }
 
     /**
@@ -193,8 +257,9 @@ class CheckIntegrity extends SurveyCommonAction
     private function deleteOrphanTokenTables(array $tokenTables, array $aData)
     {
         foreach ($tokenTables as $aTokenTable) {
-            Yii::app()->db->createCommand()->dropTable($aTokenTable);
-            $aData['messages'][] = sprintf(gT('Deleting orphan survey participant list: %s'), $aTokenTable);
+            if ($this->dropTableIfExists($aTokenTable)) {
+                $aData['messages'][] = sprintf(gT('Deleting orphan survey participant list: %s'), $aTokenTable);
+            }
         }
         return $aData;
     }
@@ -209,8 +274,9 @@ class CheckIntegrity extends SurveyCommonAction
     private function dropOrphanSurveyTables(array $surveyTables, array $aData)
     {
         foreach ($surveyTables as $aSurveyTable) {
-            Yii::app()->db->createCommand()->dropTable($aSurveyTable);
-            $aData['messages'][] = sprintf(gT('Deleting orphan survey table: %s'), $aSurveyTable);
+            if ($this->dropTableIfExists($aSurveyTable)) {
+                $aData['messages'][] = sprintf(gT('Deleting orphan survey table: %s'), $aSurveyTable);
+            }
             $aData = $this->dropRelatedArchivedQuestionsTable($aSurveyTable, $aData);
         }
         return $aData;
@@ -241,16 +307,40 @@ class CheckIntegrity extends SurveyCommonAction
             $sDBPrefix . 'old_questions_',
             (string) $sSurveyTableName
         );
-        $sQuestionsTableNameNoPrefix = substr($sQuestionsTableName, strlen((string) $sDBPrefix));
-        if (tableExists($sQuestionsTableNameNoPrefix)) {
-            Yii::app()->db->createCommand()->dropTable($sQuestionsTableName);
+        if ($this->dropTableIfExists($sQuestionsTableName)) {
             $aData['messages'][] = sprintf(gT('Deleting related archived questions table: %s'), $sQuestionsTableName);
         }
         return $aData;
     }
 
     /**
-     * This function deletes groups
+     * Drops a table, tolerating it already being gone. This tool can now run
+     * unattended and repeatedly (see the checkintegrity console command), so a table
+     * this pass detected can legitimately disappear before the drop runs - e.g. an
+     * admin deleting the survey through the web UI concurrently - and that race
+     * should not abort the whole automatic-fix pass.
+     *
+     * @param string $tableName
+     * @return bool true if the table was dropped, false if it no longer existed
+     */
+    private function dropTableIfExists($tableName)
+    {
+        try {
+            Yii::app()->db->createCommand()->dropTable($tableName);
+            return true;
+        } catch (CDbException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * This function deletes groups, cascading to their questions (and, through
+     * Question::delete(), those questions' own child data) and group localizations.
+     *
+     * QuestionGroup::deleteWithDependency() cannot be reused here: it looks up the
+     * group's survey and reads its 'active' status, which fatals when the survey is
+     * missing - precisely the case for the orphan groups this method handles.
+     *
      * @param array[] $groups to be deleted
      * @param array $aData for view generation
      * @return array
@@ -258,16 +348,27 @@ class CheckIntegrity extends SurveyCommonAction
     private function deleteGroups(array $groups, array $aData)
     {
         $gids = array_unique(array_column($groups, 'gid'));
-        $count = 0;
+        $reasonByGid = array_column($groups, 'reason', 'gid');
         foreach ($gids as $gid) {
+            $qids = Yii::app()->db->createCommand()
+                ->select('qid')
+                ->from('{{questions}}')
+                ->where('gid = :gid AND parent_qid = 0', array(':gid' => $gid))
+                ->queryColumn();
+            foreach ($qids as $qid) {
+                $question = Question::model()->findByPk($qid);
+                if ($question !== null) {
+                    $question->delete();
+                }
+            }
+            QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' => $gid));
             $deleted = QuestionGroup::model()->deleteAll("gid = :gid", array(":gid" => $gid));
             if ($deleted) {
-                $count += $deleted;
+                $aData['messages'][] = sprintf(gT('Deleted question group %s (%s)'), $gid, $reasonByGid[$gid]);
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete question group %s'), $gid);
             }
         }
-        $aData['messages'][] = sprintf(gT('Deleting groups: %u groups deleted'), $count);
         return $aData;
     }
 
@@ -279,18 +380,14 @@ class CheckIntegrity extends SurveyCommonAction
      */
     private function deleteGroupL10ns(array $groupLocalizations, array $aData)
     {
-        $groupsDeleted = array();// Keep for multilingual survey (alt : make an array_unique_mutilplekeys function)
-        $count = 0;
         foreach ($groupLocalizations as $group) {
             $deleted = QuestionGroupL10n::model()->deleteAll('gid=:gid AND id=:id', array(':gid' => $group['gid'], ':id' => $group['id']));
             if ($deleted) {
-                $count += $deleted;
-                $groupL10nsDeleted[] = array($group['gid'],$group['id']);
+                $aData['messages'][] = sprintf(gT('Deleted group text %s, code %s (%s)'), $group['gid'], $group['id'], $group['reason']);
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete groups text %s, code %s'), $group['gid'], $group['id']);
             }
         }
-        $aData['messages'][] = sprintf(gT('Deleting group texts: %u entries deleted'), $count);
         return $aData;
     }
 
@@ -303,22 +400,32 @@ class CheckIntegrity extends SurveyCommonAction
      */
     private function deleteUserInGroups(array $userInGroups, array $aData)
     {
-        $ugids = array();
-        foreach ($userInGroups as $group) {
-            $ugids[] = $group['ugid'];
-        }
-
-        $criteria = new CDbCriteria();
-        $criteria->addInCondition('ugid', $ugids);
-        $deletedRows = UserInGroup::model()->deleteAll($criteria);
-        if ($deletedRows === count($userInGroups)) {
-            $aData['messages'][] = sprintf(gT('Deleting orphaned user group assignments: %u assignments deleted'), count($userInGroups));
+        foreach ($userInGroups as $userInGroup) {
+            $deleted = UserInGroup::model()->deleteAll(
+                'ugid=:ugid AND uid=:uid',
+                array(':ugid' => $userInGroup['ugid'], ':uid' => $userInGroup['uid'])
+            );
+            if ($deleted) {
+                $aData['messages'][] = sprintf(
+                    gT('Deleted user group assignment for user %s, group %s (%s)'),
+                    $userInGroup['uid'],
+                    $userInGroup['ugid'],
+                    $userInGroup['reason']
+                );
+            } else {
+                $aData['warnings'][] = sprintf(
+                    gT('Unable to delete user group assignment for user %s, group %s'),
+                    $userInGroup['uid'],
+                    $userInGroup['ugid']
+                );
+            }
         }
         return $aData;
     }
 
     /**
-     * This function deletes questions
+     * This function deletes questions, cascading to their subquestions,
+     * answer options and other child data (see Question::delete()).
      * @param array[] $questions to be deleted
      * @param array $aData for view generation
      * @return array
@@ -326,16 +433,19 @@ class CheckIntegrity extends SurveyCommonAction
     private function deleteQuestions(array $questions, array $aData)
     {
         $qids = array_unique(array_column($questions, 'qid'));
-        $count = 0;
+        $reasonByQid = array_column($questions, 'reason', 'qid');
         foreach ($qids as $qid) {
-            $deleted = Question::model()->deleteAll("qid = :qid", array(":qid" => $qid));
-            if ($deleted) {
-                $count += $deleted;
+            $question = Question::model()->findByPk($qid);
+            if ($question === null) {
+                // Already removed by a previous cascading delete of its parent question in this batch
+                continue;
+            }
+            if ($question->delete()) {
+                $aData['messages'][] = sprintf(gT('Deleted question %s (%s)'), $qid, $reasonByQid[$qid]);
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete question %s'), $qid);
             }
         }
-        $aData['messages'][] = sprintf(gT('Deleting questions: %u questions deleted'), $count);
         return $aData;
     }
 
@@ -347,18 +457,14 @@ class CheckIntegrity extends SurveyCommonAction
      */
     private function deleteQuestionL10ns(array $questionLocalizations, array $aData)
     {
-        $questionL10nsDeleted = array();
-        $count = 0;
         foreach ($questionLocalizations as $question) {
             $deleted = QuestionL10n::model()->deleteAll('qid=:qid AND id=:id', array(':qid' => $question['qid'], ':id' => $question['id']));
             if ($deleted) {
-                $count += $deleted;
-                $questionL10nsDeleted[] = array($question['qid'],$question['id']);
+                $aData['messages'][] = sprintf(gT('Deleted question text %s, code %s (%s)'), $question['qid'], $question['id'], $question['reason']);
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete question text %s, code %s'), $question['qid'], $question['id']);
             }
         }
-        $aData['messages'][] = sprintf(gT('Deleting question texts: %u entries deleted'), $count);
         return $aData;
     }
 
@@ -371,16 +477,20 @@ class CheckIntegrity extends SurveyCommonAction
     private function deleteSurveyLanguageSettings(array $surveyLanguageSettings, array $aData)
     {
         $slids = array_unique(array_column($surveyLanguageSettings, 'slid'));
-        $count = 0;
+        $reasonBySlid = array_column($surveyLanguageSettings, 'reason', 'slid');
         foreach ($slids as $slid) {
             $deleted = SurveyLanguageSetting::model()->deleteAll("surveyls_survey_id = :slid", array(":slid" => $slid));
             if ($deleted) {
-                $count += $deleted;
+                $aData['messages'][] = sprintf(
+                    gT('Deleted %u survey languagesetting(s) for survey %s (%s)'),
+                    $deleted,
+                    $slid,
+                    $reasonBySlid[$slid]
+                );
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete survey languagesettings %s'), $slid);
             }
         }
-        $aData['messages'][] = sprintf(gT('Deleting survey languagesettings: %u survey languagesettings deleted'), $count);
         return $aData;
     }
 
@@ -414,19 +524,17 @@ class CheckIntegrity extends SurveyCommonAction
     private function deleteAnswers(array $answers, array $aData)
     {
         $answersDeleted = array();// Keep for multilingual survey (alt : make an array_unique_mutilplekeys function)
-        $count = 0;
         foreach ($answers as $answer) {
             if (!in_array(array($answer['qid'],$answer['code']), $answersDeleted)) {
                 $deleted = Answer::model()->deleteAll('qid=:qid AND code=:code', array(':qid' => $answer['qid'], ':code' => $answer['code']));
                 if ($deleted) {
-                    $count += $deleted;
                     $answersDeleted[] = array($answer['qid'],$answer['code']);
+                    $aData['messages'][] = sprintf(gT('Deleted answer %s, code %s (%s)'), $answer['qid'], $answer['code'], $answer['reason']);
                 } else {
                     $aData['warnings'][] = sprintf(gT('Unable to delete answer %s, code %s'), $answer['qid'], $answer['code']);
                 }
             }
         }
-        $aData['messages'][] = sprintf(gT('Deleting answers: %u answers deleted'), $count);
         return $aData;
     }
 
@@ -438,18 +546,14 @@ class CheckIntegrity extends SurveyCommonAction
      */
     private function deleteAnswerL10ns(array $answers, array $aData)
     {
-        $answersDeleted = array();// Keep for multilingual survey (alt : make an array_unique_mutilplekeys function)
-        $count = 0;
         foreach ($answers as $answer) {
             $deleted = AnswerL10n::model()->deleteAll('aid=:aid AND id=:id', array(':aid' => $answer['aid'], ':id' => $answer['id']));
             if ($deleted) {
-                $count += $deleted;
-                $answerL10nsDeleted[] = array($answer['aid'],$answer['id']);
+                $aData['messages'][] = sprintf(gT('Deleted answer localization %s, id %s (%s)'), $answer['aid'], $answer['id'], $answer['reason']);
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete answer %s, code %s'), $answer['aid'], $answer['id']);
             }
         }
-        $aData['messages'][] = sprintf(gT('Deleting answer localizations: %u entries deleted'), $count);
         return $aData;
     }
 
@@ -462,16 +566,21 @@ class CheckIntegrity extends SurveyCommonAction
     private function deleteAssessments(array $assessments, array $aData)
     {
         $assessmentids = array_unique(array_column($assessments, 'id'));
-        $count = 0;
+        $reasonById = array_column($assessments, 'reason', 'id');
+        $nameById = array_column($assessments, 'assessment', 'id');
         foreach ($assessmentids as $assessmentid) {
             $deleted = Assessment::model()->deleteAll("id = :id", array(":id" => $assessmentid));
             if ($deleted) {
-                $count += $deleted;
+                $aData['messages'][] = sprintf(
+                    gT('Deleted assessment %s "%s" (%s)'),
+                    $assessmentid,
+                    $nameById[$assessmentid],
+                    $reasonById[$assessmentid]
+                );
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete assessment %s'), $assessmentid);
             }
         }
-        $aData['messages'][] = sprintf(gT('Deleting assessments: %u assessment entries deleted'), $count);
         return $aData;
     }
 
@@ -491,7 +600,9 @@ class CheckIntegrity extends SurveyCommonAction
             $deleted = QuotaMember::model()->deleteAllByAttributes($aRecord);
             $count += $deleted;
         }
-        $aData['messages'][] = sprintf(gT('Deleting orphaned quota rules: %u quota rules deleted'), $count);
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u orphaned quota rule(s)'), $count);
+        }
         return $aData;
     }
 
@@ -513,7 +624,9 @@ class CheckIntegrity extends SurveyCommonAction
             $oCriteria->condition = '(q.id IS NULL)';
         }
         $count = QuotaLanguageSetting::model()->deleteAll($oCriteria);
-        $aData['messages'][] = sprintf(gT('Deleting orphaned quota languages: %u quota languages deleted'), $count);
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u orphaned quota language setting(s)'), $count);
+        }
         return $aData;
     }
 
@@ -535,7 +648,9 @@ class CheckIntegrity extends SurveyCommonAction
             $oCriteria->condition = '(q.sid IS NULL)';
         }
         $count = Quota::model()->deleteAll($oCriteria);
-        $aData['messages'][] = sprintf(gT('Deleting orphaned quotas: %u quotas deleted'), $count);
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u orphaned quota(s)'), $count);
+        }
         return $aData;
     }
 
@@ -557,7 +672,9 @@ class CheckIntegrity extends SurveyCommonAction
             $deleted = DefaultValue::model()->deleteAllByAttributes(array('dvid' => $aRecord->dvid));
             $count += $deleted ;
         }
-        $aData['messages'][] = sprintf(gT('Deleting orphaned default values: %u default values deleted.'), $count);
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u orphaned default value(s)'), $count);
+        }
         return $aData;
     }
 
@@ -570,16 +687,18 @@ class CheckIntegrity extends SurveyCommonAction
     private function deleteQuestionAttributes(array $questionAttributes, array $aData)
     {
         $qids = array_unique(array_column($questionAttributes, 'qid'));
-        $count = 0;
         foreach ($qids as $qid) {
             $deleted = QuestionAttribute::model()->deleteAll("qid = :qid", array(":qid" => $qid));
             if ($deleted) {
-                $count += $deleted;
+                $aData['messages'][] = sprintf(
+                    gT('Deleted %u question attribute(s) for question %s (No matching question)'),
+                    $deleted,
+                    $qid
+                );
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete question attributes for question %s'), $qid);
             }
         }
-        $aData['messages'][] = sprintf(gT('Deleting question attributes: %u attributes deleted'), $count);
         return $aData;
     }
 
@@ -592,16 +711,61 @@ class CheckIntegrity extends SurveyCommonAction
     private function deleteConditions(array $conditions, array $aData)
     {
         $cids = array_unique(array_column($conditions, 'cid'));
-        $count = 0;
+        $reasonByCid = array_column($conditions, 'reason', 'cid');
         foreach ($cids as $cid) {
             $deleted = Condition::model()->deleteByPk($cid);
             if ($deleted) {
-                $count += $deleted;
+                $aData['messages'][] = sprintf(gT('Deleted condition %s (%s)'), $cid, $reasonByCid[$cid]);
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete condition %s'), $cid);
             }
         }
-        $aData['messages'][] = sprintf(gT('Deleting conditions: %u conditions deleted'), $count);
+        return $aData;
+    }
+
+    /**
+     * Renumbers question groups with a duplicate group_order within their survey,
+     * via QuestionGroup::updateGroupOrder(), which re-sorts by (group_order,
+     * group_name) - group_name in the survey's base language as a stable tiebreaker
+     * for groups that currently share the same group_order - then assigns
+     * sequential, unique group_order values in that resulting order.
+     *
+     * @param array[] $groupOrderDuplicates rows of ['sid' => ..., 'organizerLink' => ...]
+     *                as returned by checkGroupOrderDuplicates()
+     * @param array $aData for view generation
+     * @return array
+     */
+    private function fixGroupOrderDuplicates(array $groupOrderDuplicates, array $aData)
+    {
+        $sids = array_unique(array_column($groupOrderDuplicates, 'sid'));
+        foreach ($sids as $sid) {
+            QuestionGroup::model()->updateGroupOrder($sid);
+        }
+        $aData['messages'][] = sprintf(gT('Fixed duplicate group sort order for %u survey(s)'), count($sids));
+        return $aData;
+    }
+
+    /**
+     * Renumbers questions with a duplicate question_order within the same survey,
+     * group, parent question and scale, via Question::updateQuestionOrder(), which
+     * re-sorts by (question_order, title) - title being the question code, used as a
+     * stable tiebreaker for questions that currently share the same question_order -
+     * then assigns sequential, unique question_order values in that resulting order.
+     *
+     * @param array[] $questionOrderDuplicates rows of ['sid'=>, 'gid'=>, 'parent_qid'=>,
+     *                'scale_id'=>, ...] as returned by checkQuestionOrderDuplicates()
+     * @param array $aData for view generation
+     * @return array
+     */
+    private function fixQuestionOrderDuplicates(array $questionOrderDuplicates, array $aData)
+    {
+        foreach ($questionOrderDuplicates as $duplicate) {
+            Question::model()->updateQuestionOrder($duplicate['gid'], 1, $duplicate['parent_qid'], $duplicate['scale_id']);
+        }
+        $aData['messages'][] = sprintf(
+            gT('Fixed duplicate question sort order for %u question group(s)/subquestion set(s)'),
+            count($questionOrderDuplicates)
+        );
         return $aData;
     }
 
@@ -614,8 +778,6 @@ class CheckIntegrity extends SurveyCommonAction
      */
     protected function checkintegrity()
     {
-        /* Find is some fix is done */
-        $bDirectlyFixed = false;
         $aFullOldSIDs = array();
         // Delete survey and global permissions if the user does not exist
         $oCriteria = new CDbCriteria();
@@ -626,9 +788,7 @@ class CheckIntegrity extends SurveyCommonAction
             $oCriteria->join = 'USING {{users}} u';
             $oCriteria->addCondition('{{permissions}}.uid=u.uid');
         }
-        if (Permission::model()->deleteAll($oCriteria)) {
-            $bDirectlyFixed = true;
-        }
+        Permission::model()->deleteAll($oCriteria);
 
         // Delete survey permissions if the survey does not exist
         $oCriteria = new CDbCriteria();
@@ -638,9 +798,7 @@ class CheckIntegrity extends SurveyCommonAction
             $oCriteria->join = 'USING {{surveys}} s';
             $oCriteria->condition = "{{permissions}}.entity_id=s.sid AND (s.sid IS NULL AND entity='survey')";
         }
-        if (Permission::model()->deleteAll($oCriteria)) {
-            $bDirectlyFixed = true;
-        }
+        Permission::model()->deleteAll($oCriteria);
 
         // Deactivate surveys that have a missing response table
         $survey = new SurveyLight();
@@ -652,7 +810,6 @@ class CheckIntegrity extends SurveyCommonAction
         foreach ($oSurveys as $oSurvey) {
             if ($oSurvey->isActive && !$oSurvey->hasResponsesTable) {
                 Survey::model()->updateByPk($oSurvey->sid, array('active' => 'N'));
-                $bDirectlyFixed = true;
             }
         }
 
@@ -780,7 +937,6 @@ class CheckIntegrity extends SurveyCommonAction
                         $archivedTokenSettings->created = $DBDate;
                         $archivedTokenSettings->properties = json_encode(Response::getEncryptedAttributes($iSurveyID));
                         $archivedTokenSettings->save();
-                        $bDirectlyFixed = true;
                     }
                     if (!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
                         $sOldTable = "timings_{$iSurveyID}";
@@ -794,7 +950,6 @@ class CheckIntegrity extends SurveyCommonAction
                         $archivedTokenSettings->created = $DBDate;
                         $archivedTokenSettings->properties = '';
                         $archivedTokenSettings->save();
-                        $bDirectlyFixed = true;
                     }
                 }
             }
@@ -813,7 +968,6 @@ class CheckIntegrity extends SurveyCommonAction
                     $sOldTable = "tokens_{$iSurveyID}";
                     $sNewTable = "old_tokens_{$iSurveyID}_{$sDate}";
                     Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
-                    $bDirectlyFixed = true;
                 }
             }
         }
@@ -975,7 +1129,6 @@ class CheckIntegrity extends SurveyCommonAction
                         $oLanguageSettings->$k = $v;
                     }
                     $oLanguageSettings->save();
-                    $bDirectlyFixed = true;
                 }
             }
         }
@@ -1132,49 +1285,52 @@ class CheckIntegrity extends SurveyCommonAction
         }
         $aOldSIDs = array_unique($aOldSIDs);
 
-        $aSIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
+        // Auto-delete purely on record count: whether the parent survey still exists or
+        // not, a table that still holds response data is never auto-deleted, only ever
+        // offered for manual confirmation via the data redundancy check below.
         foreach ($aOldSIDs as $iOldSID) {
-            if (!in_array($iOldSID, $aSIDs)) {
-                foreach ($aFullOldSIDs[$iOldSID] as $sTableName) {
-                    $aDelete['orphansurveytables'][] = $sTableName;
+            foreach ($aFullOldSIDs[$iOldSID] as $sTableName) {
+                $aTableParts = explode('_', substr($sTableName, strlen((string) $sDBPrefix)));
+                $sDateTime = $sType = '';
+                $iSurveyID = $aTableParts[2];
+
+                if (count($aTableParts) == 4) {
+                    $sDateTime = $aTableParts[3];
+                    $sType = gT('responses');
+                } elseif (count($aTableParts) == 5) {
+                    //This is a timings table (
+
+                    $sDateTime = $aTableParts[4];
+                    $sType = gT('timings');
                 }
-            } else {
-                foreach ($aFullOldSIDs[$iOldSID] as $sTableName) {
-                    $aTableParts = explode('_', substr($sTableName, strlen((string) $sDBPrefix)));
-                    $sDateTime = $sType = '';
-                    $iSurveyID = $aTableParts[2];
 
-                    if (count($aTableParts) == 4) {
-                        $sDateTime = $aTableParts[3];
-                        $sType = gT('responses');
-                    } elseif (count($aTableParts) == 5) {
-                        //This is a timings table (
-
-                        $sDateTime = $aTableParts[4];
-                        $sType = gT('timings');
-                    }
-
-                    $iYear = (int) substr($sDateTime, 0, 4);
-                    $iMonth = (int) substr($sDateTime, 4, 2);
-                    $iDay = (int) substr($sDateTime, 6, 2);
-                    $iHour = (int) substr($sDateTime, 8, 2);
-                    $iMinute = (int) substr($sDateTime, 10, 2);
-                    $sDate = (string) date('Y-m-d H:i:s', (int) mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
-
-                    $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-                    Yii::app()->loadLibrary('Date_Time_Converter');
-                    $datetimeobj = new Date_Time_Converter(dateShift($sDate, 'Y-m-d H:i:s'), 'Y-m-d H:i:s');
-                    $sDate = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i");
-
-                    $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
-                    $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
-                    if ($aFirstRow['recordcount'] == 0) {
+                $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
+                $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
+                if ($aFirstRow['recordcount'] == 0) {
                     // empty table - so add it to immediate deletion
-                        $aDelete['orphansurveytables'][] = $sTableName;
-                    } else {
-                        $aOldSurveyTableAsk[] = array('table' => $sTableName, 'details' => sprintf(gT('Survey ID %d saved at %s containing %d record(s) (%s)'), $iSurveyID, $sDate, $aFirstRow['recordcount'], $sType));
-                    }
+                    $aDelete['orphansurveytables'][] = $sTableName;
+                    continue;
                 }
+
+                $iYear = (int) substr($sDateTime, 0, 4);
+                $iMonth = (int) substr($sDateTime, 4, 2);
+                $iDay = (int) substr($sDateTime, 6, 2);
+                $iHour = (int) substr($sDateTime, 8, 2);
+                $iMinute = (int) substr($sDateTime, 10, 2);
+                $sDate = (string) date('Y-m-d H:i:s', (int) mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
+
+                // No 'dateformat' is set in Yii::app()->session outside of a logged-in admin
+                // session (e.g. when running from the checkintegrity console command); fall
+                // back to dateformat 1 rather than passing null through to getDateFormatData(),
+                // which would return its full lookup array instead of a single format's details.
+                $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat'] ?? 1);
+                // Yii::app()->loadLibrary() is only defined on the web application class;
+                // this runs from the checkintegrity console command too, so import directly.
+                Yii::import('application.libraries.Date_Time_Converter', true);
+                $datetimeobj = new Date_Time_Converter(dateShift($sDate, 'Y-m-d H:i:s'), 'Y-m-d H:i:s');
+                $sDate = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i");
+
+                $aOldSurveyTableAsk[] = array('table' => $sTableName, 'details' => sprintf(gT('Survey ID %d saved at %s containing %d record(s) (%s)'), $iSurveyID, $sDate, $aFirstRow['recordcount'], $sType));
             }
         }
 
@@ -1196,31 +1352,30 @@ class CheckIntegrity extends SurveyCommonAction
             $aFullOldTokenSIDs[$iSurveyID][] = $sTable;
         }
         $aOldTokenSIDs = array_unique($aTokenSIDs);
-        $aSIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
-        foreach ($aOldTokenSIDs as $iOldTokenSID) {
-            if (!in_array($iOldTokenSID, $aOldTokenSIDs)) {
-                foreach ($aFullOldTokenSIDs[$iOldTokenSID] as $sTableName) {
-                    $aDelete['orphantokentables'][] = $sTableName;
-                }
-            } else {
-                foreach ($aFullOldTokenSIDs[$iOldTokenSID] as $sTableName) {
-                    list($sOldText, $sTokensText, $iSurveyID, $sDateTime) = explode('_', substr($sTableName, strlen((string) $sDBPrefix)));
-                    $iYear = (int) substr($sDateTime, 0, 4);
-                    $iMonth = (int) substr($sDateTime, 4, 2);
-                    $iDay = (int) substr($sDateTime, 6, 2);
-                    $iHour = (int) substr($sDateTime, 8, 2);
-                    $iMinute = (int) substr($sDateTime, 10, 2);
-                    $sDate = (string) date('Y-m-d H:i:s', (int) mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
-                    $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
 
-                    $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
-                    if ($aFirstRow['recordcount'] == 0) {
-                        // empty table - so add it to immediate deletion
-                        $aDelete['orphantokentables'][] = $sTableName;
-                    } else {
-                        $aOldTokenTableAsk[] = array('table' => $sTableName, 'details' => sprintf(gT('Survey ID %d saved at %s containing %d record(s)'), $iSurveyID, $sDate, $aFirstRow['recordcount']));
-                    }
+        // Auto-delete purely on record count: whether the parent survey still exists or
+        // not, a table that still holds participant data is never auto-deleted, only
+        // ever offered for manual confirmation via the data redundancy check below.
+        foreach ($aOldTokenSIDs as $iOldTokenSID) {
+            foreach ($aFullOldTokenSIDs[$iOldTokenSID] as $sTableName) {
+                list($sOldText, $sTokensText, $iSurveyID, $sDateTime) = explode('_', substr($sTableName, strlen((string) $sDBPrefix)));
+                $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
+
+                $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
+                if ($aFirstRow['recordcount'] == 0) {
+                    // empty table - so add it to immediate deletion
+                    $aDelete['orphantokentables'][] = $sTableName;
+                    continue;
                 }
+
+                $iYear = (int) substr($sDateTime, 0, 4);
+                $iMonth = (int) substr($sDateTime, 4, 2);
+                $iDay = (int) substr($sDateTime, 6, 2);
+                $iHour = (int) substr($sDateTime, 8, 2);
+                $iMinute = (int) substr($sDateTime, 10, 2);
+                $sDate = (string) date('Y-m-d H:i:s', (int) mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
+
+                $aOldTokenTableAsk[] = array('table' => $sTableName, 'details' => sprintf(gT('Survey ID %d saved at %s containing %d record(s)'), $iSurveyID, $sDate, $aFirstRow['recordcount']));
             }
         }
 
@@ -1299,26 +1454,20 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         $aDelete['questionOrderDuplicates'] = $this->checkQuestionOrderDuplicates();
 
+
+
+        /* TODOs */
         /**********************************************************************/
         /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDANT Survey participant lists       */
         /*********************************************************************/
         //1: Get distinct list of survey_link survey IDs, check if tokens
         //   table still exists for each one, and remove if not
 
-
-        /* TODO */
-
         /**********************************************************************/
         /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDANT TOKEN ENTRIES      */
         /**********************************************************************/
         //1: For each survey_link, see if the matching entry still exists in
         //   the survey participant list and remove if it doesn't.
-
-
-        /* Show a alert message is some fix is done */
-        if ($bDirectlyFixed) {
-            Yii::app()->setFlashMessage(gT("Some automatic fixes were already applied."), 'info');
-        }
 
         return $aDelete;
     }

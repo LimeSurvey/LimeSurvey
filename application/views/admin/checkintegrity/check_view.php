@@ -10,291 +10,55 @@ echo viewHelper::getViewTestTag('checkIntegrity');
     <div class="col-12">
         <div class="jumbotron message-box">
             <h2><?php eT("Data consistency check"); ?></h2>
-            <p class="lead"><?php eT("If errors are showing up you might have to execute this script repeatedly."); ?></p>
-            <p>
-            <ul class='data-consistency-list list-unstyled'>
-                <?php
-                // TMSW Conditions->Relevance:  Update this to use relevance processing results
-                if (isset($conditions)) { ?>
-                    <li><?php eT("The following conditions should be deleted:"); ?>
-                    <ul class="list-unstyled">
+            <p class="lead"><?php eT("Checks for orphaned or inconsistent data (questions, groups, conditions, quotas, sort orders, old survey/participant list tables with no records, ...) and fixes it automatically."); ?>
+             <br><?php eT("Run it again if new errors keep appearing."); ?></p>
+
+            <?php if (!empty($consistencyCheckRan)) { ?>
+                <?php if (empty($consistencyCheckMessages) && empty($consistencyCheckWarnings)) { ?>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("No errors were found."),
+                        'type' => 'success',
+                    ]);
+                    ?>
+                <?php } else { ?>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("Errors were found and fixed automatically. See the log of fixes below for details."),
+                        'type' => 'info',
+                    ]);
+                    ?>
+                    <?php if (!empty($consistencyCheckWarnings)) { ?>
                         <?php
-                        foreach ($conditions as $condition) { ?>
-                            <li><?php printf(gT("Condition ID: %s"), $condition['cid']); ?> <?php printf(gT("Reason: %s"), $condition['reason']); ?></li><?php
-                        } ?>
-                    </ul>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All conditions meet consistency standards."); ?></li><?php
-                } ?>
-
-                <?php
-                if (isset($questionattributes)) { ?>
-                    <li><?php printf(gT("There are %s orphaned question attributes."), count($questionattributes)); ?> </li>
-                <?php } else { ?>
-                    <li><?php eT("All question attributes meet consistency standards."); ?> </li> <?php
-                } ?>
-
-                <?php
-                if ($defaultvalues) { ?>
-                    <li><?php printf(gT("There are %s orphaned default value entries which can be deleted."), $defaultvalues); ?> </li>
-                <?php } else { ?>
-                    <li><?php eT("All default values meet consistency standards."); ?> </li> <?php
-                } ?>
-
-                <?php
-                if ($quotas) { ?>
-                    <li><?php printf(gT("There are %s orphaned quota entries which can be deleted."), $quotas); ?> </li>
-                <?php } else { ?>
-                    <li><?php eT("All quotas meet consistency standards."); ?> </li> <?php
-                } ?>
-
-                <?php
-                if ($quotals) { ?>
-                    <li><?php printf(gT("There are %s orphaned quota language settings which can be deleted."), $quotals); ?> </li>
-                <?php } else { ?>
-                    <li><?php eT("All quota language settings meet consistency standards."); ?> </li> <?php
-                } ?>
-
-                <?php
-                if ($quotamembers) { ?>
-                    <li><?php printf(gT("There are %s orphaned quota rules which can be deleted."), $quotamembers); ?> </li>
-                <?php } else { ?>
-                    <li><?php eT("All quota rules meet consistency standards."); ?> </li> <?php
-                } ?>
-
-                <?php
-                if (isset($assessments)) { ?>
-                    <li><?php eT("The following assessments should be deleted:"); ?>
-                        <ul class="list-unstyled">
-                            <?php
-                            foreach ($assessments as $assessment) { ?>
-                                <li>AID:<?php echo $assessment['id']; ?> <?php printf(gT("Assessment: %s"), $assessment['assessment']); ?> <?php printf(gT("Reason: %s"), $assessment['reason']); ?></li><?php
-                            } ?>
+                        $warningList = '<ul>';
+                        foreach ($consistencyCheckWarnings as $warning) {
+                            $warningList .= '<li>' . $warning . '</li>';
+                        }
+                        $warningList .= '</ul>';
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'header' => gT('Warning'),
+                            'text' => $warningList,
+                            'type' => 'warning',
+                        ]);
+                        ?>
+                    <?php } ?>
+                    <details class="log-of-fixes mb-3 text-start d-inline-block">
+                        <summary><?php eT("Log of fixes"); ?></summary>
+                        <ul class="mt-2">
+                            <?php foreach ($consistencyCheckMessages as $consistencyCheckMessage) { ?>
+                                <li><?php echo $consistencyCheckMessage; ?></li>
+                            <?php } ?>
                         </ul>
-                    </li>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All assessments meet consistency standards."); ?></li><?php
-                } ?>
+                    </details>
+                <?php } ?>
+            <?php } ?>
 
-                <?php
-                if (isset($answers)) { ?>
-                    <li><?php eT("The following answers should be deleted:"); ?>
-                        <ul class="list-unstyled">
-                            <?php
-                            foreach ($answers as $answer) { ?>
-                                <li>QID:<?php echo $answer['qid']; ?> <?php printf(gT("Code: %s"), $answer['code']); ?> <?php printf(gT("Reason: %s"), $answer['reason']); ?></li><?php
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All answers meet consistency standards."); ?></li><?php
-                } ?>
-
-                <?php
-                if (isset($answer_l10ns)) { ?>
-                    <li><?php eT("The following answer texts should be deleted:"); ?>
-                        <ul class="list-unstyled">
-                            <?php
-                            foreach ($answer_l10ns as $answer) { ?>
-                                <li>AID:<?php echo $answer['aid']; ?> <?php printf(gT("ID: %s"), $answer['id']); ?> <?php printf(gT("Reason: %s"), $answer['reason']); ?></li><?php
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All answers texts meet consistency standards."); ?></li><?php
-                } ?>
-
-                <?php
-                if (isset($surveys)) { ?>
-                    <li><?php eT("The following surveys should be deleted:"); ?>
-                        <ul class="list-unstyled">
-                            <?php
-                            foreach ($surveys as $survey) { ?>
-                                <li>SID:<?php echo $survey['sid']; ?> <?php printf(gT("Reason: %s"), $survey['reason']); ?></li><?php
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All surveys meet consistency standards."); ?></li><?php
-                } ?>
-
-                <?php
-                if (isset($surveylanguagesettings)) { ?>
-                    <li><?php eT("The following survey language settings should be deleted:"); ?>
-                        <ul class="list-unstyled">
-                            <?php
-                            foreach ($surveylanguagesettings as $surveylanguagesetting) { ?>
-                                <li><?php printf(gT("Survey language setting ID: %s"), $surveylanguagesetting['slid']); ?> <?php printf(gT("Reason: %s"), $surveylanguagesetting['reason']); ?></li><?php
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All survey language settings meet consistency standards."); ?></li><?php
-                } ?>
-
-                <?php
-                if (isset($questions)) { ?>
-                    <li><?php eT("The following questions should be deleted:"); ?>
-                        <ul class="list-unstyled">
-                            <?php
-                            foreach ($questions as $question) { ?>
-                                <li><?php printf(gT("Question ID: %s"), $question['qid']); ?> <?php printf(gT("Reason: %s"), $question['reason']); ?></li><?php
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All questions meet consistency standards."); ?></li><?php
-                } ?>
-
-                <?php
-                if (isset($question_l10ns)) { ?>
-                    <li><?php eT("The following question texts should be deleted:"); ?>
-                        <ul class="list-unstyled">
-                            <?php
-                            foreach ($question_l10ns as $question) { ?>
-                                <li><?php printf(gT("Question ID: %s"), $question['id']); ?> <?php printf(gT("Reason: %s"), $question['reason']); ?></li><?php
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All question texts meet consistency standards."); ?></li><?php
-                } ?>
-
-
-                <?php if (isset($questionOrderDuplicates) && !empty($questionOrderDuplicates)) : ?>
-                    <li><?php eT("The following surveys have an erroneous question order. That could lead to errors during the design and/or processing of the survey.") ?><br><?php eT("Please go to each question and group respectively, check the question order and save it."); ?></li>
-                    <ul>
-                        <?php foreach ($questionOrderDuplicates as $info) : ?>
-                            <li>
-                                <?php printf(gT("Survey ID: %s"), '<a href="' . $info['viewSurveyLink'] . '">' . $info['sid'] . '</a>'); ?>
-                                <?php printf(gT("Group ID: %s"), '<a href="' . $info['viewGroupLink'] . '">' . $info['gid'] . '</a>'); ?>
-                                <?php if ($info['parent_qid'] != 0) : ?>
-                                    <?php printf(gT("Parent question ID: %s"), '<a href="' . $info['questionSummaryLink'] . '">' . $info['parent_qid'] . '</a>'); ?>
-                                <?php endif; ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php else : ?>
-                    <li><?php eT("No issues with question order found."); ?></li>
-                <?php endif; ?>
-
-                <?php
-                if (isset($groups)) { ?>
-                    <li><?php eT("The following question groups should be deleted:"); ?>
-                        <ul class="list-unstyled">
-                            <?php
-                            foreach ($groups as $group) { ?>
-                                <li><?php printf(gT("ID: %s"), $group['gid']); ?> <?php printf(gT("Reason: %s"), $group['reason']); ?></li><?php
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All question groups meet consistency standards."); ?></li><?php
-                } ?>
-
-                <?php
-                if (isset($group_l10ns)) { ?>
-                    <li><?php eT("The following question group texts should be deleted:"); ?>
-                        <ul class="list-unstyled">
-                            <?php
-                            foreach ($group_l10ns as $group) { ?>
-                                <li><?php printf(gT("ID: %s"), $group['id']); ?> <?php printf(gT("Reason: %s"), $group['reason']); ?></li><?php
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All question group texts meet consistency standards."); ?></li><?php
-                } ?>
-
-                <?php
-                if (isset($user_in_groups)) { ?>
-                    <li><?php eT("The following user group assignments should be deleted:"); ?>
-                        <ul class="list-unstyled">
-                            <?php
-                            foreach ($user_in_groups as $user_in_group) { ?>
-                                <li><?php printf(gT("User ID: %s"), $user_in_group['uid']); ?> <?php printf(gT("User group ID: %s"), $user_in_group['ugid']); ?> <?php printf(gT("Reason: %s"), $user_in_group['reason']); ?></li><?php
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All groups meet consistency standards."); ?></li><?php
-                } ?>
-
-                <?php if (isset($groupOrderDuplicates) && !empty($groupOrderDuplicates)) : ?>
-                    <li><?php eT("The following surveys have an errorneous question group order. Please go to each survey respectively, check the group order and save it."); ?>
-                    <ul>
-                        <?php foreach ($groupOrderDuplicates as $info) : ?>
-                            <li>
-                                <?php printf(gT("Survey ID: %s"), '<a href="' . $info['organizerLink'] . '">' . $info['sid'] . '</a>'); ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php else : ?>
-                    <li><?php eT("No issues with question group order found."); ?></li>
-                <?php endif; ?>
-
-                <?php
-                if (isset($orphansurveytables)) { ?>
-                    <li><?php eT("The following old survey tables should be deleted because they contain no records or their parent survey no longer exists:"); ?>
-                        <ul class="list-unstyled">
-                            <?php
-                            foreach ($orphansurveytables as $surveytable) { ?>
-                                <li><?php echo $surveytable; ?></li><?php
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All old survey tables meet consistency standards."); ?></li><?php
-                } ?>
-
-                <?php
-                if (isset($orphantokentables)) { ?>
-                    <li><?php eT("The following old survey participant lists should be deleted because they contain no records or their parent survey no longer exists:"); ?>
-                        <ul class="list-unstyled">
-                            <?php
-                            foreach ($orphantokentables as $tokentable) { ?>
-                                <li><?php echo $tokentable; ?></li><?php
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } else { ?>
-                    <li><?php eT("All old survey participant lists meet consistency standards."); ?></li><?php
-                } ?>
-            </ul>
-
-            <?php if ($integrityok) { ?>
-                <?php
-                $this->widget('ext.AlertWidget.AlertWidget', [
-                    'text' => gT("No database action required!"),
-                    'type' => 'success',
-                ]);
-                ?>
-            <?php } else { ?>
-                <br/><?php eT("Should we proceed with the delete?"); ?> <br/>
-                <?php echo CHtml::form(["admin/checkintegrity", "sa" => 'fixintegrity'], 'post'); ?>
-                <button
-                    type='submit'
-                    value='Y'
-                    name='ok'
-                    class="btn btn-danger">
-                    <?php eT("Yes - Delete Them!"); ?>
-                </button>
-                </form>
-                <?php
-            } ?>
+            <?php echo CHtml::form(["admin/checkintegrity", "sa" => 'fixintegrity'], 'post'); ?>
+            <input type="hidden" name="ok" value="Y" />
+            <button type="submit" class="btn btn-primary">
+                <?php eT("Run data consistency check"); ?>
+            </button>
+            </form>
         </div>
 
         <!-- Data redundancy check -->
@@ -374,11 +138,13 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <?php
                     } ?>
             </ul>
-             <input type='hidden' name='ok' value='Y' />
-            <button id='delete-checked-items-button' type='submit' name='ok' value='Y'
-                    class="btn btn-danger mb-2"><?php
-                    eT("Delete checked items!"); ?>
-            </button>
+            <div>
+                <input type='hidden' name='ok' value='Y' />
+                <button id='delete-checked-items-button' type='submit' name='ok' value='Y'
+                        class="btn btn-danger mb-2"><?php
+                        eT("Delete checked items!"); ?>
+                </button>
+            </div>
                     <?php
                     $this->widget('ext.AlertWidget.AlertWidget', [
                     'text' => gT("Note that you cannot undo a delete if you proceed. The data will be gone."),
