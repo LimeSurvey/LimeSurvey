@@ -403,6 +403,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <div class="col-12">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => $globalGeneralSetting['name'],
+                        'ariaLabel'     => strip_tags((string) $globalGeneralSetting['label']),
                         'checkedOption' => $globalGeneralSetting['checkedOption'],
                         'selectOptions' => $globalGeneralSetting['selectOptions'],
                         'htmlOptions'   => $globalGeneralSetting['htmlOptions'] ?? [],
