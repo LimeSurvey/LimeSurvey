@@ -31,7 +31,11 @@ class Statistics extends SurveyCommonAction
     }
 
     /**
-     * Constructor
+     * Show the statistics page of a survey
+     *
+     * @param int $surveyid The survey ID, taken from the request if empty
+     * @param string|null $subaction The sub action
+     * @return void
      */
     public function run($surveyid = 0, $subaction = null)
     {
@@ -49,7 +53,6 @@ class Statistics extends SurveyCommonAction
          *  D - Date
          *  E - Array (Increase, Same, Decrease)
          *  F - Array
-         *  G - Gender
          *  H - Array by Column
          *  I - Language Switch
          *  K - Multiple numerical input
@@ -293,7 +296,6 @@ class Statistics extends SurveyCommonAction
             /*
              * Check question type: This question types will be used (all others are separated in the if clause)
              *  5 - 5 Point Choice
-             G - Gender
              I - Language Switch
              L - List (Radio)
              M - Multiple choice

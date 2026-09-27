@@ -25,7 +25,11 @@ class PrintableSurvey extends SurveyCommonAction
 {
     /**
      * Show printable survey
-     * @param string $lang
+     *
+     * @param int $surveyid The survey ID
+     * @param string|null $lang The language to print the survey in, defaults to the survey base language
+     * @param bool $bReturn Whether to return the rendered page instead of outputting it
+     * @return mixed|string The rendered page if $bReturn is true
      */
     public function index($surveyid, $lang = null, $bReturn = false)
     {
@@ -288,16 +292,6 @@ class PrintableSurvey extends SurveyCommonAction
                                                 $conditions[] = gT("No");
                                                 break;
                                         }
-                                        break;
-                                    case Question::QT_G_GENDER:
-                                        switch ($conrow['value']) {
-                                            case "M":
-                                                $conditions[] = gT("Male");
-                                                break;
-                                            case "F":
-                                                $conditions[] = gT("Female");
-                                                break;
-                                        } // switch
                                         break;
                                     case Question::QT_A_ARRAY_5_POINT:
                                     case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
@@ -594,16 +588,6 @@ class PrintableSurvey extends SurveyCommonAction
                         case Question::QT_D_DATE:  //DATE
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT('Please enter a date:'));
                             $question['answer'] .= "\t" . self::inputTypeImage('text', $question['type_help'], 30, 1);
-                            break;
-
-                            // ==================================================================
-                        case Question::QT_G_GENDER:  //GENDER
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose only one of the following options:"));
-
-                            $question['answer'] .= "\n\t<ul class='list-print-answers list-unstyled'>\n";
-                            $question['answer'] .= "\t\t<li>\n\t\t\t" . self::inputTypeImage('radio', gT("Female")) . "\n\t\t\t" . gT("Female") . " " . self::addsgqacode("(F)") . "\n\t\t</li>\n";
-                            $question['answer'] .= "\t\t<li>\n\t\t\t" . self::inputTypeImage('radio', gT("Male")) . "\n\t\t\t" . gT("Male") . " " . self::addsgqacode("(M)") . "\n\t\t</li>\n";
-                            $question['answer'] .= "\t</ul>\n";
                             break;
 
                             // ==================================================================

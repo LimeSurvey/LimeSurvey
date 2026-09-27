@@ -13,7 +13,6 @@ class ExportAnswerFormatter
      */
     private const ANSWER_CODE_MAPS = [
         Question::QT_Y_YES_NO_RADIO => ['Y' => 'Yes', 'N' => 'No'],
-        Question::QT_G_GENDER => ['M' => 'Male', 'F' => 'Female'],
         Question::QT_C_ARRAY_YES_UNCERTAIN_NO => ['Y' => 'Yes', 'N' => 'No', 'U' => 'Uncertain'],
         Question::QT_E_ARRAY_INC_SAME_DEC => ['I' => 'Increase', 'S' => 'Same', 'D' => 'Decrease'],
     ];

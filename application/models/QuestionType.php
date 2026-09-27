@@ -24,7 +24,6 @@ class QuestionType extends StaticModel
     const QT_D_DATE = 'D';
     const QT_E_ARRAY_INC_SAME_DEC = 'E';
     const QT_F_ARRAY = 'F';
-    const QT_G_GENDER = 'G';
     const QT_H_ARRAY_COLUMN = 'H';
     const QT_I_LANGUAGE = 'I';
     const QT_K_MULTIPLE_NUMERICAL = 'K';
@@ -216,17 +215,6 @@ class QuestionType extends StaticModel
                 'assessable' => 1,
                 'answerscales' => 1,
                 'class' => 'array-flexible-row'
-            ],
-            self::QT_G_GENDER => [
-                'code' => self::QT_G_GENDER,
-                'description' => gT("Gender", "html", $language),
-                'group' => gT("Mask questions"),
-                'subquestions' => 0,
-                'other' => false,
-                'hasdefaultvalues' => 1,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'gender'
             ],
             self::QT_H_ARRAY_COLUMN => [
                 'code' => self::QT_H_ARRAY_COLUMN,
@@ -473,7 +461,7 @@ class QuestionType extends StaticModel
     public static function charCodes()
     {
         return [
-            self::QT_5_POINT_CHOICE, self::QT_G_GENDER, self::QT_Y_YES_NO_RADIO,
+            self::QT_5_POINT_CHOICE, self::QT_Y_YES_NO_RADIO,
             self::QT_X_TEXT_DISPLAY
         ];
     }

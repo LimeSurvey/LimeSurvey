@@ -3365,10 +3365,6 @@ class LimeExpressionManager
 
         // Since building array of allowable answers, need to know preset values for certain question types
         $presets = [];
-        $presets['G'] = [  //GENDER drop-down list
-            'M' => $this->gT("Male"),
-            'F' => $this->gT("Female"),
-        ];
         $presets['Y'] = [  //YES/NO radio-buttons
             'Y' => $this->gT("Yes"),
             'N' => $this->gT("No"),
@@ -3517,7 +3513,6 @@ class LimeExpressionManager
                 case Question::QT_X_TEXT_DISPLAY: //BOILERPLATE QUESTION
                     $ansArray = null;
                     break;
-                case Question::QT_G_GENDER: //GENDER drop-down list
                 case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
                 case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
                 case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
@@ -3553,7 +3548,6 @@ class LimeExpressionManager
                 case Question::QT_L_LIST: //LIST drop-down/radio-button list
                 case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
                 case Question::QT_D_DATE: //DATE
-                case Question::QT_G_GENDER: //GENDER drop-down list
                 case Question::QT_I_LANGUAGE: //Language Question
                 case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
@@ -3709,7 +3703,6 @@ class LimeExpressionManager
                     $jsVarName_on = $this->resolveOtherJsVarNameOn((string) $sgqa, $type);
                     break;
                 case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
-                case Question::QT_G_GENDER: //GENDER drop-down list
                 case Question::QT_I_LANGUAGE: //Language Question
                 case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
                 case Question::QT_ASTERISK_EQUATION: //Equation
@@ -3862,7 +3855,7 @@ class LimeExpressionManager
             if (!isset($q2subqInfo[$questionNum])) {
                 /* Single question without subquestion */
                 /* Do same than single text question type : subqs is array with only THIS question */
-                /* Case with Question::QT_5_POINT_CHOICE.Question::QT_G_GENDER.Question::QT_I_LANGUAGE.Question::QT_X_TEXT_DISPLAY.Question::QT_Y_YES_NO_RADIO.Question::QT_ASTERISK_EQUATION */
+                /* Case with Question::QT_5_POINT_CHOICE.Question::QT_I_LANGUAGE.Question::QT_X_TEXT_DISPLAY.Question::QT_Y_YES_NO_RADIO.Question::QT_ASTERISK_EQUATION */
                 $q2subqInfo[$questionNum] = [
                     'qid'         => $questionNum,
                     'qseq'        => $questionSeq,
@@ -8987,8 +8980,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
-     * @param integer $gseq
-     * @param integer $qseq
+     * Get the value of an attribute of a variable, e.g. its code, shown value or relevance.
+     *
+     * @param string $name The variable name, optionally followed by '.' and the attribute
+     * @param string|null $attr The attribute to get, taken from $name if null
+     * @param mixed $default The value to return if the variable or attribute is unknown
+     * @param integer $gseq The group sequence
+     * @param integer $qseq The question sequence
+     * @return mixed
      */
     private function _GetVarAttribute($name, $attr, $default, $gseq, $qseq)
     {
@@ -9199,7 +9198,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 $shown = $code; // This one return sgqa.code
                             }
                             break;
-                        case Question::QT_G_GENDER: //GENDER drop-down list
                         case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
                         case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
                         case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
@@ -10264,12 +10262,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case '|': // File upload
                 /* @todo ? seems to be in old function ? */
                 break;
-            case 'G': // Gender
-                if (!in_array($value, ["M", "F"])) {
-                    $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
-                    return false;
-                }
-                break;
             case 'I': // Language switch
                 if (!in_array($value, Survey::model()->findByPk($LEM->sid)->getAllLanguages())) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
@@ -10292,7 +10284,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case 'X': // Text display
                 /* No validity control ; but always reset the value to null ? */
                 return false; // Can not be set : set it to null
-            case 'Y': // Gender
+            case 'Y': // Yes/No
                 if (!in_array($value, ["Y", "N"])) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
                     return false;

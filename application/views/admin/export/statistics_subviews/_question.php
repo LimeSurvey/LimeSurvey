@@ -30,8 +30,8 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
 
     <div class="question-filter-container grow-3 nofloat ls-space padding all-10">
     <?php echo "<!-- Question type :  $flt[2] -->"; ?>
-        <?php if ($flt[2] == Question::QT_M_MULTIPLE_CHOICE || $flt[2] == Question::QT_VERTICAL_FILE_UPLOAD || $flt[2] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS || $flt[2] == Question::QT_L_LIST || $flt[2] == Question::QT_5_POINT_CHOICE || $flt[2] == Question::QT_G_GENDER || $flt[2] == Question::QT_I_LANGUAGE || $flt[2] == Question::QT_O_LIST_WITH_COMMENT || $flt[2] == Question::QT_Y_YES_NO_RADIO || $flt[2] == Question::QT_EXCLAMATION_LIST_DROPDOWN) : ?>
-            <!--  TYPE =='M' || 'P' || 'N' || 'L' || '5' || 'G' || 'I' || 'O' || 'Y' || '!' -->
+        <?php if ($flt[2] == Question::QT_M_MULTIPLE_CHOICE || $flt[2] == Question::QT_VERTICAL_FILE_UPLOAD || $flt[2] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS || $flt[2] == Question::QT_L_LIST || $flt[2] == Question::QT_5_POINT_CHOICE || $flt[2] == Question::QT_I_LANGUAGE || $flt[2] == Question::QT_O_LIST_WITH_COMMENT || $flt[2] == Question::QT_Y_YES_NO_RADIO || $flt[2] == Question::QT_EXCLAMATION_LIST_DROPDOWN) : ?>
+            <!--  TYPE =='M' || 'P' || 'N' || 'L' || '5' || 'I' || 'O' || 'Y' || '!' -->
             <div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">
                 <input type='checkbox'
                     id='filter<?php echo $myfield; ?>'
@@ -361,24 +361,6 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
 
 
 
-            case Question::QT_G_GENDER: // Gender
-                echo "\t<option value='F'";
-
-                //pre-select values which were marked before
-                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("F", $_POST[$myfield])) {
-                    echo " selected='selected' ";
-                }
-
-                echo ">" . gT("Female") . "</option>\n";
-                echo "\t<option value='M'";
-
-                //pre-select values which were marked before
-                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {
-                    echo " selected='selected' ";
-                }
-
-                echo ">" . gT("Male") . "</option>\n\t</select>\n";
-                break;
 
 
 

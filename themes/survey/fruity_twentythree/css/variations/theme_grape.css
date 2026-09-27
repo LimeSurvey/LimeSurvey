@@ -10561,7 +10561,7 @@ textarea.form-control-lg {
   z-index: 2001;
 }
 
-/* Wrap text in e.g. gender button "No answer */
+/* Wrap text in e.g. yes/no button "No answer */
 .wrap-normal {
   white-space: normal;
 }
@@ -12727,23 +12727,19 @@ Responsive navbar-brand image CSS
   box-shadow: none;
 }
 
-.yesno-button.btn-group > .btn,
-.gender-button.btn-group > .btn {
+.yesno-button.btn-group > .btn {
   border-radius: 4px;
   margin-right: 0;
 }
-.yesno-button.btn-group > .btn:not(:last-child),
-.gender-button.btn-group > .btn:not(:last-child) {
+.yesno-button.btn-group > .btn:not(:last-child) {
   border-radius: 4px;
   margin-right: 20px;
 }
-.yesno-button .ls-button-label,
-.gender-button .ls-button-label {
+.yesno-button .ls-button-label {
   min-width: 80px;
   font-size: 0.9975rem;
 }
-.yesno-button .ls-button-label .ls-icon,
-.gender-button .ls-button-label .ls-icon {
+.yesno-button .ls-button-label .ls-icon {
   font-size: 32px;
   display: block;
   line-height: 1;

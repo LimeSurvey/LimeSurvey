@@ -592,6 +592,8 @@ class userstatistics_helper
      * @param mixed $language The language to present output in
      * @param mixed $surveyid The survey ID
      * @param string $outputType
+     * @param string $sql The SQL filter of the selected responses
+     * @param string $oLanguage The language code (unused)
      * @param boolean $browse
      * @psalm-suppress UndefinedVariable
      *
@@ -601,6 +603,7 @@ class userstatistics_helper
      *                       "qtitle"=>The title of the question,
      *                       "qquestion"=>The description of the question,
      *                       "qtype"=>The question type code
+     * @return array
      */
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage, $browse = true)
     {
@@ -1302,10 +1305,6 @@ class userstatistics_helper
                         //output
                         $qquestion .= $linefeed;
                         $qtitle .= "($qanswer)" . "[" . $atext . "]";
-                        break;
-                    case Question::QT_G_GENDER: //Gender
-                        $alist[] = array("F", gT("Female"));
-                        $alist[] = array("M", gT("Male"));
                         break;
                     case Question::QT_Y_YES_NO_RADIO: //Yes\No
                         $alist[] = array("Y", gT("Yes"));

@@ -1042,7 +1042,6 @@ function LEMval(alias)
             var shown="";
             switch(attr.type)
             {
-                case 'G': //GENDER drop-down list
                 case 'Y': //YES/NO radio-buttons
                 case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                 case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons

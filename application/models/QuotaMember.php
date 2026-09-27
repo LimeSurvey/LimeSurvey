@@ -94,7 +94,6 @@ class QuotaMember extends LSActiveRecord
                 case "O":
                 case "!":
                 case "I":
-                case "G":
                 case "Y":
                 case "*":
                     $sFieldName = 'Q' . $this->qid;

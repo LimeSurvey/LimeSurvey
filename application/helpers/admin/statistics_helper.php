@@ -608,6 +608,8 @@ class statistics_helper
      * @param mixed $language The language to present output in
      * @param mixed $surveyid The survey ID
      * @param string $outputType
+     * @param string $sql The SQL filter of the selected responses
+     * @param string $oLanguage The language code (unused)
      * @param boolean $browse
      *
      * @output array $output An array containing "alist"=>A list of answers to the question in the form of an array ($alist array
@@ -1396,10 +1398,6 @@ class statistics_helper
 
 
 
-                case Question::QT_G_GENDER: //Gender
-                    $alist[] = array("F", gT("Female"));
-                    $alist[] = array("M", gT("Male"));
-                    break;
 
 
 
