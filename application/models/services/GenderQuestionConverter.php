@@ -99,7 +99,8 @@ class GenderQuestionConverter
                     'assessment_value' => 0,
                     'scale_id' => 0,
                 ]);
-                $aid = (int) $this->db->getLastInsertID();
+                // The table name is needed to resolve the sequence on Postgres and MSSQL
+                $aid = (int) $this->db->getCommandBuilder()->getLastInsertID('{{answers}}');
                 foreach ($languages as $language) {
                     $this->db->createCommand()->insert('{{answer_l10ns}}', [
                         'aid' => $aid,
