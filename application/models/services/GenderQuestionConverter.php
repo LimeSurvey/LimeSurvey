@@ -99,8 +99,7 @@ class GenderQuestionConverter
                     'assessment_value' => 0,
                     'scale_id' => 0,
                 ]);
-                // The table name is needed to resolve the sequence on Postgres and MSSQL
-                $aid = (int) $this->db->getCommandBuilder()->getLastInsertID('{{answers}}');
+                $aid = (int) $this->getLastInsertID('{{answers}}');
                 foreach ($languages as $language) {
                     $this->db->createCommand()->insert('{{answer_l10ns}}', [
                         'aid' => $aid,
@@ -126,6 +125,21 @@ class GenderQuestionConverter
             'qid = :qid AND attribute = :attribute',
             [':qid' => $qid, ':attribute' => 'display_type']
         );
+    }
+
+    /**
+     * Get the ID of the last inserted row, reliable across database drivers.
+     *
+     * @param string $tableName The table the row was inserted into, needed for Postgres and MSSQL
+     * @return string
+     */
+    private function getLastInsertID(string $tableName): string
+    {
+        $driver = $this->db->getDriverName();
+        if ($driver == 'mysql' || $driver == 'mysqli') {
+            return (string) $this->db->getLastInsertID();
+        }
+        return (string) $this->db->getCommandBuilder()->getLastInsertID($tableName);
     }
 
     /**
