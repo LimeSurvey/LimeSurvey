@@ -1024,58 +1024,6 @@ function populateDatabase($oDB)
             $oDB->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);
         }
 
-        //tutorials
-        $oDB->createCommand()->createTable(
-            '{{tutorials}}',
-            [
-                'tid' =>  'pk',
-                'name' =>  'string(128)',
-                'title' =>  'string(192)',
-                'icon' =>  'string(64)',
-                'description' =>  'text',
-                'active' =>  'integer DEFAULT 0',
-                'settings' => 'mediumtext',
-                'permission' =>  'string(128) NOT NULL',
-                'permission_grade' =>  'string(128) NOT NULL'
-            ],
-            $options
-        );
-        $oDB->createCommand()->createIndex('{{idx1_tutorials}}', '{{tutorials}}', 'name', true);
-
-        //tutorial user mapping
-        $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
-            'tid' => 'integer NOT NULL',
-            'uid' => 'integer NOT NULL',
-            'taken' => 'integer DEFAULT 1',
-        ), $options);
-
-        $oDB->createCommand()->addPrimaryKey('{{map_tutorial_users_pk}}', '{{map_tutorial_users}}', ['uid','tid']);
-
-        //tutorial entry groups
-        $oDB->createCommand()->createTable('{{tutorial_entry_relation}}', array(
-            'teid' => 'integer NOT NULL',
-            'tid' => 'integer NOT NULL',
-            'uid' => 'integer NULL',
-            'sid' => 'integer NULL',
-        ), $options);
-
-        $oDB->createCommand()->addPrimaryKey('{{tutorial_entry_relation_pk}}', '{{tutorial_entry_relation}}', ['teid','tid']);
-        $oDB->createCommand()->createIndex('{{idx1_tutorial_entry_relation}}', '{{tutorial_entry_relation}}', 'uid', false);
-        $oDB->createCommand()->createIndex('{{idx2_tutorial_entry_relation}}', '{{tutorial_entry_relation}}', 'sid', false);
-
-        //tutorial entries
-        $oDB->createCommand()->createTable(
-            '{{tutorial_entries}}',
-            [
-                'teid' =>  'pk',
-                'ordering' =>  'integer',
-                'title' =>  'text',
-                'content' =>  'mediumtext',
-                'settings' => 'mediumtext'
-            ],
-            $options
-        );
-
         //user_in_groups
         $oDB->createCommand()->createTable('{{user_in_groups}}', array(
             'ugid' => "integer NOT NULL",
