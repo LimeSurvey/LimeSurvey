@@ -184,7 +184,7 @@ class CopySurveyTest extends TestBaseClass
         $originalAttributes = $survey->getAttributes(['gsid', 'anonymized', 'adminemail']);
 
         $restrictedGroup = new \SurveysGroups();
-        $restrictedGroup->name = 'copytest' . \Yii::app()->securityManager->generateRandomString(6);
+        $restrictedGroup->name = 'copytest' . bin2hex(random_bytes(4));
         $restrictedGroup->title = 'Restricted copy test group';
         $restrictedGroup->alwaysavailable = 0;
         $restrictedGroup->sortorder = $restrictedGroup->getNextOrderPosition();
