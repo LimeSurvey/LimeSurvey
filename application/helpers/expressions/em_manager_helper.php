@@ -4138,6 +4138,26 @@ class LimeExpressionManager
     }
 
     /**
+     * Return whether a subquestion is relevant, using its own array_filter/relevance
+     * status when the ExpressionManager tracks it individually (i.e. $sgqa is a known
+     * variable), and falling back to the parent question's relevance otherwise (e.g.
+     * pseudo subquestions such as the "other" field, which are not tracked under their
+     * own SGQA/fieldname).
+     *
+     * @param string $sgqa The subquestion's SGQA/fieldname
+     * @param int $qid The (parent) question id to fall back to
+     * @return boolean
+     */
+    public static function SubQuestionOrQuestionIsRelevant($sgqa, $qid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if (!isset($LEM->knownVars[$sgqa])) {
+            return self::QuestionIsRelevant($qid);
+        }
+        return self::SubQuestionIsRelevant($sgqa);
+    }
+
+    /**
      * Return whether question $qid is relevanct
      * @param int $qid
      * @return boolean
