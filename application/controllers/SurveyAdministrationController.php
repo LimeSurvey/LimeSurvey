@@ -3082,7 +3082,7 @@ class SurveyAdministrationController extends LSBaseController
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 $alertstring = sprintf(
                     gT("A problem has been detected with the survey database. Please %sperform data integrity%s."),
-                    '<a href=' . App()->createUrl("admin/checkintegrity") .'>',
+                    '<a href=' . App()->createUrl("admin/checkintegrity") . '>',
                     '</a>'
                 );
             }
