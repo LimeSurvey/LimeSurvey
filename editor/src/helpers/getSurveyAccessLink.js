@@ -1,6 +1,10 @@
 import getSiteUrl from 'helpers/getSiteUrl'
 
-export const getSurveyAccessLink = ({ survey, language, isPreviewLink = false }) => {
+export const getSurveyAccessLink = ({
+  survey,
+  language,
+  isPreviewLink = false,
+}) => {
   const alias = survey.languageSettings[language]?.alias?.trim() || ''
   const link = alias || survey.sid
   const lang =
