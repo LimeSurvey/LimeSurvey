@@ -40,6 +40,16 @@ class ResponseAggregateBatchTest extends TestCase
         $this->assertSame(1, $this->invoke($batch, 'aggregateValues', [$values, $request]));
     }
 
+    public function testEmptyValueDoesNotCountNullCells(): void
+    {
+        $batch = new ResponseAggregateBatch(1);
+        $valueRequest = $this->getRequest($batch, $batch->countValue('Q12', ''));
+        $jsonRequest = $this->getRequest($batch, $batch->countJsonArrayValue('Q13', 0, ''));
+
+        $this->assertSame(1, $this->invoke($batch, 'aggregateValues', [[null, ''], $valueRequest]));
+        $this->assertSame(1, $this->invoke($batch, 'aggregateValues', [[null, ''], $jsonRequest]));
+    }
+
     public function testNumericEncryptedColumnIsNotTreatedAsJsonPosition(): void
     {
         $batch = new ResponseAggregateBatch(1);
@@ -60,6 +70,22 @@ class ResponseAggregateBatchTest extends TestCase
 
         $this->assertSame(2, $this->invoke($batch, 'aggregateValues', [$values, $textRequest]));
         $this->assertSame(3, $this->invoke($batch, 'aggregateValues', [$values, $numericRequest]));
+    }
+
+    public function testEncryptedNumericAggregatesUseFourDecimalPrecision(): void
+    {
+        $batch = new ResponseAggregateBatch(1);
+        $values = ['1.23456', '2.00004'];
+
+        $sumRequest = $this->getRequest($batch, $batch->sumValues('Q12'));
+        $squaresRequest = $this->getRequest($batch, $batch->sumSquares('Q12'));
+        $minRequest = $this->getRequest($batch, $batch->minValue('Q12'));
+        $maxRequest = $this->getRequest($batch, $batch->maxValue('Q12'));
+
+        $this->assertEqualsWithDelta(3.2346, $this->invoke($batch, 'aggregateValues', [$values, $sumRequest]), 0.00001);
+        $this->assertEqualsWithDelta(1.2346 ** 2 + 2 ** 2, $this->invoke($batch, 'aggregateValues', [$values, $squaresRequest]), 0.00001);
+        $this->assertEqualsWithDelta(1.2346, $this->invoke($batch, 'aggregateValues', [$values, $minRequest]), 0.00001);
+        $this->assertEqualsWithDelta(2, $this->invoke($batch, 'aggregateValues', [$values, $maxRequest]), 0.00001);
     }
 
     private function setEncryptedFields(ResponseAggregateBatch $batch, array $fields): void

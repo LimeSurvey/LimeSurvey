@@ -331,8 +331,9 @@ final class ResponseAggregateBatch
             }
             foreach ($medianRequests as $alias => $request) {
                 $value = $row[$request['field']] ?? null;
-                if ($this->isNumericValue($value, !empty($request['numeric']))) {
-                    $medianValues[$alias][] = (float)$value;
+                $numericValue = $this->normalizedNumericValue($value, !empty($request['numeric']));
+                if ($numericValue !== null) {
+                    $medianValues[$alias][] = $numericValue;
                 }
             }
         }
@@ -392,7 +393,7 @@ final class ResponseAggregateBatch
         switch ($request['kind']) {
             case self::KIND_VALUE:
             case self::KIND_JSON_ELEMENT:
-                return $result + ((string)$value === $request['value'] ? 1 : 0);
+                return $result + ($value !== null && (string)$value === $request['value'] ? 1 : 0);
             case self::KIND_BLANK:
                 return $result + ($value === null || (!$request['numeric'] && $value === '') ? 1 : 0);
             case self::KIND_NON_EMPTY:
@@ -404,17 +405,20 @@ final class ResponseAggregateBatch
             case self::KIND_NUMERIC:
                 return $result + ($this->isNumericValue($value, !empty($request['numeric'])) ? 1 : 0);
             case self::KIND_SUM:
-                return $result + ($this->isNumericValue($value, !empty($request['numeric'])) ? (float)$value : 0);
+                $numericValue = $this->normalizedNumericValue($value, !empty($request['numeric']));
+                return $result + ($numericValue ?? 0);
             case self::KIND_SUM_SQUARES:
-                return $result + ($this->isNumericValue($value, !empty($request['numeric'])) ? (float)$value ** 2 : 0);
+                $numericValue = $this->normalizedNumericValue($value, !empty($request['numeric']));
+                return $result + ($numericValue === null ? 0 : $numericValue ** 2);
             case self::KIND_MIN:
             case self::KIND_MAX:
-                if (!$this->isNumericValue($value, !empty($request['numeric']))) {
+                $numericValue = $this->normalizedNumericValue($value, !empty($request['numeric']));
+                if ($numericValue === null) {
                     return $result;
                 }
                 return $result === null
-                    ? (float)$value
-                    : ($request['kind'] === self::KIND_MIN ? min($result, (float)$value) : max($result, (float)$value));
+                    ? $numericValue
+                    : ($request['kind'] === self::KIND_MIN ? min($result, $numericValue) : max($result, $numericValue));
             default:
                 return $result + 1;
         }
@@ -435,6 +439,13 @@ final class ResponseAggregateBatch
         return $numericColumn
             ? is_numeric($value)
             : preg_match('/' . self::NUMERIC_PATTERN . '/', (string)$value) === 1;
+    }
+
+    private function normalizedNumericValue($value, bool $numericColumn = false): ?float
+    {
+        return $this->isNumericValue($value, $numericColumn)
+            ? round((float)$value, 4)
+            : null;
     }
 
     private function requestUsesEncryptedField(array $request): bool
