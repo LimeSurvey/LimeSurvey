@@ -3078,7 +3078,7 @@ class SurveyAdministrationController extends LSBaseController
 
         /** Send a alert if Survey seems to be active but don't have response table */
         if ($oSurvey->isActive && !$oSurvey->isActiveAndHaveReponseTable) {
-            $alertstring = gT("A problem has been detected with the survey database. Please contact the an admintrator to perform database integrity.");
+            $alertstring = gT("A problem has been detected with the survey database. Please contact an administrator to perform a database integrity check.");
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 $alertstring = sprintf(
                     gT("A problem has been detected with the survey database. Please %sperform data integrity%s."),
