@@ -2479,7 +2479,6 @@ class LimeExpressionManager
                 $numbers_only = 1;
                 switch ($type) {
                     case Question::QT_S_SHORT_FREE_TEXT: // Short text
-                    case Question::QT_J_MAP:
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_equs = [];
@@ -3675,7 +3674,6 @@ class LimeExpressionManager
                 case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
                 case Question::QT_S_SHORT_FREE_TEXT: //Short free text
-                case Question::QT_J_MAP:
                     if (isset($qattr[$questionNum]['numbers_only']) && $qattr[$questionNum]['numbers_only'] == '1') {
                         $onlynum = true;
                     }

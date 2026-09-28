@@ -19,7 +19,7 @@
 
 {{ registerScript('MAP_VARS_'~basename,  
     " var zoom = zoom || [];
-    zoom['"~name~"'] = "~location_mapzoom~";"
+    zoom['"~name~"'] = "~intval(location_mapzoom)~";"
     , "POS_END") }}
 
 

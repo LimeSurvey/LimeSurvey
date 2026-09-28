@@ -11,10 +11,40 @@ class Update_719 extends DatabaseUpdateBase
      */
     public function up()
     {
+        // Keep custom themes and their questions together while reserving "map" for type J.
+        $conflicts = $this->db->createCommand()
+            ->select('id, question_type')
+            ->from('{{question_themes}}')
+            ->where('name = :name AND question_type <> :type', [':name' => 'map', ':type' => 'J'])
+            ->queryAll();
+        foreach ($conflicts as $conflict) {
+            $themeName = 'map_legacy_' . $conflict['id'];
+            while ($this->db->createCommand()
+                ->select('id')
+                ->from('{{question_themes}}')
+                ->where('name = :name', [':name' => $themeName])
+                ->queryScalar()
+            ) {
+                $themeName .= '_';
+            }
+            $this->db->createCommand()->update(
+                '{{question_themes}}',
+                ['name' => $themeName],
+                'id = :id',
+                [':id' => $conflict['id']]
+            );
+            $this->db->createCommand()->update(
+                '{{questions}}',
+                ['question_theme_name' => $themeName],
+                'question_theme_name = :name AND type = :type',
+                [':name' => 'map', ':type' => $conflict['question_type']]
+            );
+        }
+
         $existing = $this->db->createCommand()
             ->select('id')
             ->from('{{question_themes}}')
-            ->where('name = :name', [':name' => 'map'])
+            ->where('name = :name AND question_type = :type', [':name' => 'map', ':type' => 'J'])
             ->queryScalar();
 
         if (empty($existing)) {
@@ -33,8 +63,8 @@ class Update_719 extends DatabaseUpdateBase
         $this->db->createCommand()->update(
             '{{question_themes}}',
             ['group' => 'Mask questions'],
-            'name = :name',
-            [':name' => 'map']
+            'name = :name AND question_type = :type',
+            [':name' => 'map', ':type' => 'J']
         );
 
         $mapQuestionIds = $this->db->createCommand()

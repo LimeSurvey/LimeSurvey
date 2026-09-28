@@ -830,8 +830,8 @@ function do_shortfreetext($ia)
 
         $dispVal = "";
 
-        if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]) {
-            $dispVal = str_replace("\\", "", (string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]]);
+        if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] ?? null) {
+            $dispVal = str_replace("\\", "", (string) ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] ?? null));
 
             if ($aQuestionAttributes['numbers_only'] == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
@@ -858,7 +858,7 @@ function do_shortfreetext($ia)
         ), true);
     } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 1) {
         $coreClass       = "ls-answers map-item geoloc-item";
-        $currentLocation = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]];
+        $currentLocation = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] ?? null;
         $currentLatLong  = null;
         // Get the latitude/longitude for the point that needs to be displayed by default
         if (strlen((string) $currentLocation) > 2 && strpos((string) $currentLocation, ";")) { // Quick check if current location is OK
@@ -921,7 +921,7 @@ function do_shortfreetext($ia)
             'name'                   => $ia[1],
             'qid'                    => $ia[0],
             'basename'               => $ia[1],
-            'value'                  => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+            'value'                  => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] ?? null,
             'kpclass'                => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
             'currentLocation'        => $currentLocation,
             'strBuild'               => $strBuild,
@@ -936,7 +936,7 @@ function do_shortfreetext($ia)
         ), true);
     } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 100) {
         $coreClass       = "ls-answers map-item geoloc-item";
-        $currentLocation = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]];
+        $currentLocation = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] ?? null;
         $currentCenter   = $currentLatLong = null;
         // Get the latitude/longitude for the point that needs to be displayed by default
         if (strlen((string) $currentLocation) > 2 && strpos((string) $currentLocation, ";")) {
@@ -985,7 +985,7 @@ function do_shortfreetext($ia)
             'name' => $ia[1],
             'qid' => $ia[0],
             'basename'               => $ia[1],
-            'value' => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+            'value' => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] ?? null,
             'strBuild' => $strBuild,
             'location_mapservice' => $aQuestionAttributes['location_mapservice'],
             'location_mapzoom' => $aQuestionAttributes['location_mapzoom'],
@@ -1002,7 +1002,7 @@ function do_shortfreetext($ia)
         $answer = doRender('/survey/questions/answer/shortfreetext/location_mapservice/item_100', $itemDatas, true);
     } else {
         //no question attribute set, use common input text field
-        $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]];
+        $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] ?? null;
         if ($aQuestionAttributes['numbers_only'] == 1) {
             $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
         }
@@ -1045,7 +1045,7 @@ function do_map($ia)
     $sQuestionHelpText = '';
     $answer = "";
     $iMapService = isset($aQuestionAttributes['location_mapservice']) ? (int) $aQuestionAttributes['location_mapservice'] : 100;
-    $currentLocation = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]];
+    $currentLocation = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] ?? null;
 
     if ($iMapService == 1) {
         $currentLatLong = null;
@@ -1105,7 +1105,7 @@ function do_map($ia)
             'name'                   => $ia[1],
             'qid'                    => $ia[0],
             'basename'               => $ia[1],
-            'value'                  => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+            'value'                  => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] ?? null,
             'kpclass'                => '',
             'currentLocation'        => $currentLocation,
             'strBuild'               => $strBuild,
@@ -1118,7 +1118,7 @@ function do_map($ia)
             'placeholder'            => $placeholder,
             'withColumn'             => $withColumn
         ), true);
-    } else {
+    } elseif ($iMapService != 0) {
         $currentCenter = $currentLatLong = null;
         if (strlen((string) $currentLocation) > 2 && strpos((string) $currentLocation, ";")) {
             $currentLatLong = explode(';', (string) $currentLocation);
@@ -1164,7 +1164,7 @@ function do_map($ia)
             'name' => $ia[1],
             'qid' => $ia[0],
             'basename'               => $ia[1],
-            'value' => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]],
+            'value' => $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] ?? null,
             'strBuild' => $strBuild,
             'location_mapservice' => $iMapService,
             'location_mapzoom' => $aQuestionAttributes['location_mapzoom'] ?? 11,
@@ -1179,6 +1179,21 @@ function do_map($ia)
             'withColumn'             => $withColumn
         );
         $answer = doRender('/survey/questions/answer/map/location_mapservice/item_100', $itemDatas, true);
+    } else {
+        $answer = doRender('/survey/questions/answer/shortfreetext/text/item', array(
+            'extraclass' => $extraclass,
+            'coreClass' => 'ls-answers answer-item text-item',
+            'name' => $ia[1],
+            'basename' => $ia[1],
+            'dispVal' => htmlspecialchars((string) $currentLocation, ENT_QUOTES, 'UTF-8'),
+            'prefix' => '',
+            'suffix' => '',
+            'maxlength' => null,
+            'numberonly' => false,
+            'inputsize' => $inputsize,
+            'placeholder' => $placeholder,
+            'withColumn' => $withColumn,
+        ), true);
     }
 
     $inputnames = [];

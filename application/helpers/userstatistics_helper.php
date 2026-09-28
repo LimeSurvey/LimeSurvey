@@ -656,7 +656,7 @@ class userstatistics_helper
         elseif ($firstletter == "T" || $firstletter == "S" || $firstletter == "J") {
             //Short and long text
             //search for key
-            $fld = $rt;
+            $fld = substr($rt, 1);
             if (array_key_exists($fld, $fieldmap)) {
                 $fielddata = $fieldmap[$fld];
 
@@ -665,7 +665,7 @@ class userstatistics_helper
                 $qtitle = $nresult->title;
                 $qtype = $nresult->type;
                 $qquestion = flattenText($nresult->questionl10ns[$language]->question);
-                $mfield = $rt;
+                $mfield = $fld;
 
                 //Text questions either have an answer, or they don't. There's no other way of quantising the results.
                 // So, instead of building an array of predefined answers like we do with lists & other types,
