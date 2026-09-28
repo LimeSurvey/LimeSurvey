@@ -37,6 +37,16 @@ class UserAction extends SurveyCommonAction
     }
 
     /**
+     * Default subaction: there is no user overview page, so redirect to the personal settings
+     *
+     * @return void
+     */
+    public function index()
+    {
+        $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+    }
+
+    /**
      * Manage user personal settings
      */
     public function personalsettings()
