@@ -93,6 +93,10 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     {
         $answers = [];
         foreach ($attributes as $key => $value) {
+            // N/K answers are stored as decimal, drop the zero padding
+            if (in_array($this->fieldMap[$key]['type'] ?? null, ['N', 'K'], true) && str_contains((string) $value, '.')) {
+                $value = rtrim(rtrim((string) $value, '0'), '.');
+            }
             if (str_contains($key, 'X')) {
                 [$survey, $group, $question] = explode("X", $key);
                 $answers[$key] = [
