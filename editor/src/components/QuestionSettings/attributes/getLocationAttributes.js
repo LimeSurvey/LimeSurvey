@@ -33,11 +33,8 @@ export const getLocationAttributes = () => ({
     props: {
       id: 'ip-as-default-location',
       labelText: t('IP as default location'),
-      toggleOptions: [
-        { name: t('Yes'), value: '0' },
-        { name: t('No'), value: '1' },
-      ],
-      defaultValue: '0',
+      toggleOptions: getYesNoOptions(),
+      defaultValue: '1',
     },
   },
   SAVE_COUNTRY: {

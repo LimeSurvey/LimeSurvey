@@ -149,15 +149,14 @@ export const MapQuestion = ({
 
   return (
     <div className="question-body-content" data-testid="map-question">
-      {locationMapService === GOOGLE_MAPS_SERVICE || locationMapService === '0' ? (
-        <input
-          className="form-control"
-          type="text"
-          aria-label={t('Location (latitude;longitude)')}
-          placeholder={t('latitude;longitude')}
-          value={value.value ?? ''}
-          onChange={(event) => handleOnChange(event.target.value)}
-        />
+      {locationMapService === GOOGLE_MAPS_SERVICE ? (
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2366.8538614773024!2d9.968793577861623!3d53.61390947236818!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b1892bf70bdec9%3A0xee50470c12b1ae5e!2sLimeSurvey%20GmbH!5e0!3m2!1sen!2sde!4v1751636509270!5m2!1sen!2sde"
+          width="100%"
+          height={height}
+          loading="lazy"
+          title={t('Map')}
+        ></iframe>
       ) : (
         <LeafletMapComponent
           value={value.value}
