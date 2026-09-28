@@ -183,7 +183,6 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
-        curl_close(($ch));
         return $result;
     }
 }

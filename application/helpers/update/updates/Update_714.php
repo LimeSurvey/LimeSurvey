@@ -36,6 +36,7 @@ class Update_714 extends DatabaseUpdateBase
      * @inheritDoc
      * @return void
      */
+    #[\Override]
     public function up()
     {
         $this->mergeDuplicatePermissions();

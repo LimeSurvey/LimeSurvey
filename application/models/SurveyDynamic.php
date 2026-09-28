@@ -108,11 +108,12 @@ class SurveyDynamic extends LSActiveRecord
 
     /**
      * Insert records from $data array
+     * Still used in em_manager_helper when create response in _UpdateValuesInDatabase function (2026-04-20)
      *
      * @access public
-     * @param array $data
-     * @return int|boolean
      * @deprecated Use setAttributes() and encryptSave()
+     * @param array $data
+     * @return integer|false
      */
     public function insertRecords($data)
     {
@@ -123,9 +124,11 @@ class SurveyDynamic extends LSActiveRecord
             $v = $v == null ? null : str_replace($search, '', (string) $v);
             $record->$k = $v;
         }
-
-        $res = $record->encryptSave();
-        return $res ? $record->id : $res;
+        if ($record->encryptSave()) {
+            return $record->id;
+        }
+        /* If error : return false */
+        return false;
     }
 
     /**
@@ -987,34 +990,29 @@ class SurveyDynamic extends LSActiveRecord
 
         if ($aQuestionAttributes['questionclass'] === 'ranking') {
             $aQuestionAttributes['answervalues'] = array();
-            // Ranking now uses subquestions instead of answers
-            $subQuestions = Question::model()->with('questionl10ns')->findAllByAttributes(
-                array('parent_qid' => $oQuestion->qid),
-                array('order' => 'question_order')
-            );
-            foreach ($subQuestions as $oSubQuestion) {
-                $subFieldname = $fieldname . '_S' . $oSubQuestion->qid;
-                if (!isset($oResponses[$subFieldname]) || $oResponses[$subFieldname] === '') {
-                    continue;
+            // Ranking is stored as a JSON list of subquestion codes in the Q{qid} column, ordered by rank
+            $rankedCodes = json_decode((string) $aQuestionAttributes['answervalue'], true);
+            if (is_array($rankedCodes)) {
+                $subQuestions = Question::model()->with('questionl10ns')->findAllByAttributes(
+                    array('parent_qid' => $oQuestion->qid),
+                    array('order' => 'question_order')
+                );
+                $subQuestionTexts = [];
+                foreach ($subQuestions as $oSubQuestion) {
+                    $subQuestionTexts[$oSubQuestion->title] = $oSubQuestion->questionl10ns[$sLanguage]->question ?? $oSubQuestion->title;
                 }
-                $currentResponse = $oResponses[$subFieldname];
-
-                // Get the answer text for the selected rank value
-                $answerText = '';
-                if (isset($oQuestion->subquestions)) {
-                    $oSelectedAnswer = array_reduce($subQuestions, function ($carry, $oAns) use ($currentResponse) {
-                        return $currentResponse == $oAns->title ? $oAns : $carry;
-                    });
-                    if ($oSelectedAnswer !== null) {
-                        $answerText = $oSelectedAnswer->questionl10ns[$sLanguage]->question ?? '';
+                foreach ($rankedCodes as $rankedCode) {
+                    if (!is_scalar($rankedCode) || (string) $rankedCode === '') {
+                        continue;
                     }
+                    $rankedCode = (string) $rankedCode;
+                    $answerText = $subQuestionTexts[$rankedCode] ?? $rankedCode;
+                    $aQuestionAttributes['answervalues'][] = [
+                        'value' => $rankedCode,
+                        'subquestion' => $answerText,
+                        'answertext' => $answerText
+                    ];
                 }
-
-                $aQuestionAttributes['answervalues'][] = [
-                    'value' => $currentResponse,
-                    'subquestion' => $oSubQuestion->questionl10ns[$sLanguage]->question ?? $oSubQuestion->title,
-                    'answertext' => $answerText
-                ];
             }
         }
 

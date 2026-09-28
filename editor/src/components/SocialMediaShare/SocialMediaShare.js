@@ -14,7 +14,7 @@ export const SocialMediaShare = ({ shareUrl = '', surveyTitle = '' }) => {
   return (
     <>
       <h5 className="med16-c">{t('Share on social media')}</h5>
-      <div className="d-flex flex-grow-1 flex-wrap justify-content-start align-content-center gap-3 m-auto">
+      <div className="social-cards-wrapper">
         <FacebookShareButton url={shareUrl} title={surveyTitle}>
           <img src={facebookIcon} alt="bold icon" />
         </FacebookShareButton>

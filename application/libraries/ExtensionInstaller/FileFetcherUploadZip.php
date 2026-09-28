@@ -27,6 +27,7 @@ class FileFetcherUploadZip extends FileFetcher
      * @param string $source
      * @return void
      */
+    #[\Override]
     public function setSource($source)
     {
         // Not used.
@@ -38,6 +39,7 @@ class FileFetcherUploadZip extends FileFetcher
      *
      * @return void
      */
+    #[\Override]
     public function fetch()
     {
         $this->checkFileSizeError();
@@ -51,6 +53,7 @@ class FileFetcherUploadZip extends FileFetcher
      * @param string $destdir
      * @return boolean
      */
+    #[\Override]
     public function move($destdir)
     {
         if (empty($destdir)) {
@@ -88,6 +91,7 @@ class FileFetcherUploadZip extends FileFetcher
      * @return ExtensionConfig
      * @throws Exception
      */
+    #[\Override]
     public function getConfig()
     {
         $tempdir = $this->getTempdir();
@@ -143,6 +147,7 @@ class FileFetcherUploadZip extends FileFetcher
      * Abort unzip, clear files and session.
      * @return void
      */
+    #[\Override]
     public function abort()
     {
         // Remove any files.

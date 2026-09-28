@@ -148,7 +148,6 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('font-icomoon');
             App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style
             App()->getClientScript()->registerPackage('adminsidepanel'); // The new admin panel
-            App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
             // CKEditor (and the modaleditor, which depends on it) is only registered on pages
             // that actually use an editor, via PrepareEditorScript(). See bug #19391.
         }

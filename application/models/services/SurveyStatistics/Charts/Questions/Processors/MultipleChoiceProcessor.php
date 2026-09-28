@@ -6,11 +6,13 @@ use Question;
 
 class MultipleChoiceProcessor extends AbstractQuestionProcessor
 {
+    #[\Override]
     public function rt(): void
     {
         $this->rt = 'Q' . $this->question['qid'];
     }
 
+    #[\Override]
     public function process()
     {
         $legend = [];
