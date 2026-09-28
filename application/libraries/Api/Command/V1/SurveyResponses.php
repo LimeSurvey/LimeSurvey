@@ -5,9 +5,14 @@ namespace LimeSurvey\Libraries\Api\Command\V1;
 use CDbException;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseFilterCriteriaBuilder;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyRequestTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Models\Services\ResponseFilters\ParticipantResolver;
+use LimeSurvey\Models\Services\ResponseFilters\QuestionColumnMap;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterResolver;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSet;
 use LimeSurvey\Models\Services\SurveyAnswerCache;
 use Permission;
 use Survey;
@@ -289,9 +294,72 @@ class SurveyResponses implements CommandInterface
             $dataMap,
             $validColumns
         );
+        $this->applyFilterSet($criteria, $request);
         $this->applyFieldSelection($criteria, $request);
 
         return [$criteria, $sort];
+    }
+
+    /**
+     * Apply the `filterSet` param: the filter as the user built it, rather than
+     * the columns it resolves to.
+     *
+     * Both filter params can be sent together; `filters` keeps its meaning and
+     * the two combine with AND, since each is already a self-contained
+     * condition.
+     *
+     * @param \LSDbCriteria $criteria
+     * @param Request $request
+     * @throws \InvalidArgumentException on a malformed or unresolvable filter,
+     *     which the command turns into a bad request rather than a 500.
+     */
+    protected function applyFilterSet(\LSDbCriteria &$criteria, Request $request): void
+    {
+        $filterSet = ResponseFilterSet::fromRequestValue($request->getData('filterSet', null));
+        if ($filterSet->isEmpty()) {
+            return;
+        }
+
+        $resolver = new ResponseFilterResolver(
+            QuestionColumnMap::fromQuestionFieldMap($this->getQuestionFieldMap()),
+            new ParticipantResolver($this->getParticipantAttributes())
+        );
+
+        $builder = new ResponseFilterCriteriaBuilder();
+        $criteria->mergeWith($builder->build($resolver->resolve($filterSet)));
+
+        // Participant filters read a table joined to the responses, so the
+        // relation has to be loaded for the condition to resolve. `together`
+        // forces one query: filtering on a related table cannot work if Yii
+        // loads it separately afterwards.
+        $relations = $builder->getRelations();
+        if ($relations !== []) {
+            $criteria->with = array_merge(
+                is_array($criteria->with) ? $criteria->with : [],
+                array_fill_keys($relations, [])
+            );
+            $criteria->together = true;
+        }
+    }
+
+    /**
+     * The participant columns of this survey, or none when it has no
+     * participant table — in which case a participant filter cannot be
+     * honoured and is refused rather than ignored.
+     *
+     * Read from the table itself so custom attributes need no separate lookup.
+     *
+     * @return array<int,string>
+     */
+    protected function getParticipantAttributes(): array
+    {
+        if (empty($this->survey) || !$this->survey->hasTokensTable) {
+            return [];
+        }
+
+        $table = App()->db->schema->getTable($this->survey->tokensTableName);
+
+        return $table === null ? [] : array_keys($table->columns);
     }
 
     /**

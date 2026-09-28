@@ -25,6 +25,11 @@ $rest['v1/survey-responses/$id'] = [
         'auth' => true,
         'params' => [
             'filters' => ['type' => 'array'],
+            // The condition-designer filter, as the user built it: a list of
+            // {source, ...} rows joined by and/or. Separate from `filters`,
+            // which keeps its {key, filterMethod, value} shape; when both are
+            // sent they combine with AND.
+            'filterSet' => ['type' => 'array'],
             'sort' => ['type' => 'array'],
             'page' => ['type' => 'array'],
             'language' => ['type' => 'string'],
