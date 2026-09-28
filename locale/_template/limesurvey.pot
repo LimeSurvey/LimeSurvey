@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-09-28 13:36:54+00:00\n"
+"POT-Creation-Date: 2026-09-28 15:13:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14657,6 +14657,7 @@ msgid "Maximum number of files that the participant can upload for this question
 msgstr ""
 
 #: application/helpers/questionHelper.php:1555
+#: application/views/survey/questions/answer/file_upload/translations.php:17
 #: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:40
 msgid "Maximum number of files"
 msgstr ""
@@ -14666,6 +14667,7 @@ msgid "Minimum number of files that the participant must upload for this questio
 msgstr ""
 
 #: application/helpers/questionHelper.php:1566
+#: application/views/survey/questions/answer/file_upload/translations.php:15
 #: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:9
 msgid "Minimum number of files"
 msgstr ""
@@ -26700,16 +26702,8 @@ msgstr ""
 msgid "You can upload %s under %s KB each."
 msgstr ""
 
-#: application/views/survey/questions/answer/file_upload/translations.php:15
-msgid "Min number of files"
-msgstr ""
-
 #: application/views/survey/questions/answer/file_upload/translations.php:16
 msgid "The participant cannot upload a single file larger than this size"
-msgstr ""
-
-#: application/views/survey/questions/answer/file_upload/translations.php:17
-msgid "Max number of files"
 msgstr ""
 
 #: application/views/survey/questions/answer/list_dropdown/translations.php:15
@@ -26763,7 +26757,7 @@ msgid "Semicolon-separated list of subquestion codes that keep their original da
 msgstr ""
 
 #: application/views/survey/questions/answer/multiplechoice_with_comments/translations.php:20
-msgid "Use javascript function to remove text and uncheck checkbox (or use ExpressionScript Engine only)."
+msgid "Use JavaScript function to remove text and uncheck checkbox (or use ExpressionScript Engine only)."
 msgstr ""
 
 #: application/views/survey/questions/answer/multiplenumeric/rows/dynamic.twig:46
@@ -28256,6 +28250,7 @@ msgid "Fix height"
 msgstr ""
 
 #: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:307
+#: themes/question/image_select-listradio/survey/questions/answer/listradio/translations.php:22
 #: themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice/translations.php:22
 msgid "Crop or resize"
 msgstr ""
@@ -30267,10 +30262,6 @@ msgstr ""
 #: themes/question/image_select-listradio/survey/questions/answer/listradio/translations.php:21
 #: themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice/translations.php:21
 msgid "Crop images to fit into size. Needs JavaScript enabled."
-msgstr ""
-
-#: themes/question/image_select-listradio/survey/questions/answer/listradio/translations.php:22
-msgid "Crop or Resize"
 msgstr ""
 
 #: themes/question/image_select-listradio/survey/questions/answer/listradio/translations.php:25
