@@ -377,6 +377,8 @@ class Sidebar {
 
     /**
      * Handle question group order change
+     *
+     * @returns {Promise} settles once the order is saved and the questions are reloaded
      */
     handleQuestionGroupOrderChange() {
         this.showLoader = true;
@@ -385,7 +387,7 @@ class Sidebar {
         const questiongroups = StateManager.get('questiongroups');
         const surveyid = StateManager.get('surveyid');
 
-        Actions.updateQuestionGroupOrder(questiongroups, surveyid)
+        return Actions.updateQuestionGroupOrder(questiongroups, surveyid)
             .then(() => {
                 return Actions.getQuestions();
             })
@@ -395,7 +397,7 @@ class Sidebar {
             })
             .catch((error) => {
                 console.ls.error('questiongroups updating error!', error);
-                Actions.getQuestions()
+                return Actions.getQuestions()
                     .catch((retryError) => {
                         console.ls.error('questiongroups retry error!', retryError);
                     })
@@ -513,7 +515,6 @@ class Sidebar {
         const isCollapsed = StateManager.getComputed('isCollapsed');
         const currentTab = StateManager.get('currentTab');
         const isRTL = StateManager.getComputed('isRTL');
-        const inSurveyViewHeight = StateManager.get('inSurveyViewHeight');
         const currentSidebarWidth = this.getSideBarWidth();
 
         let classes = 'd-flex col-lg-4 ls-ba position-relative transition-animate-width';
@@ -525,7 +526,7 @@ class Sidebar {
         const showPlaceholder = UIHelpers.useMobileView() && this.smallScreenHidden;
         const showResizeOverlay = this.isMouseDown;
 
-        let html = '<div id="sidebar" class="' + classes + '" style="width: ' + currentSidebarWidth + 'px; max-height: ' + inSurveyViewHeight + 'px; display: flex;">';
+        let html = '<div id="sidebar" class="' + classes + '" style="width: ' + currentSidebarWidth + 'px; display: flex;">';
 
         if (showMainContent) {
             // Loader overlay
