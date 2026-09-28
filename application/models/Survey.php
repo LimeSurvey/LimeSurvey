@@ -1278,6 +1278,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         return ($this->active === 'Y');
     }
+
+    /**
+     * Check if a survey is active and have a response table
+     * @return bool
+     */
+    public function getIsActiveAndHaveReponseTable()
+    {
+        return $this->isActive && $this->hasResponsesTable;
+    }
+
     /**
      * @return bool
      */
@@ -1499,39 +1509,51 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * @return int|string
+     * Count the submitted answers
+     * @return string|int
      */
     public function getCountFullAnswers()
     {
-        $sResponseTable = $this->responsesTableName;
-        if ($this->active != 'Y') {
-            return 0;
-        } else {
-            $answers = Yii::app()->db->createCommand()
-                ->select('count(*)')
-                ->from($sResponseTable)
-                ->where('submitdate IS NOT NULL')
-                ->queryScalar();
-            return $answers;
+        if (!$this->isActiveAndHaveReponseTable) {
+            return "";
         }
+        return Yii::app()->db->createCommand()
+            ->select('count(*)')
+            ->from($this->responsesTableName)
+            ->where('submitdate IS NOT NULL')
+            ->queryScalar();
     }
 
     /**
-     * @return int
+     * Count the not submitted answers
+     * @return string|int
      */
     public function getCountIncompleteAnswers()
     {
-        $table = $this->responsesTableName;
-        if ($this->active != 'Y') {
-            return 0;
-        } else {
-            $answers = Yii::app()->db->createCommand()
-                ->select('count(*)')
-                ->from($table)
-                ->where('submitdate IS NULL')
-                ->queryScalar();
-            return $answers;
+        if (!$this->isActiveAndHaveReponseTable) {
+            return "";
         }
+        return Yii::app()->db->createCommand()
+            ->select('count(*)')
+            ->from($this->responsesTableName)
+            ->where('submitdate IS NULL')
+            ->queryScalar();
+    }
+
+    /**
+     * Count the total answers, submitted ot not.
+     * @return string|integer
+     */
+    public function getCountTotalAnswers()
+    {
+        
+        if (!$this->isActiveAndHaveReponseTable) {
+            return "";
+        }
+        return Yii::app()->db->createCommand()
+            ->select('count(*)')
+            ->from($this->responsesTableName)
+            ->queryScalar();
     }
 
     /**
@@ -1541,23 +1563,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getDecodedAttributedescriptions()
     {
         return decodeTokenAttributes($this->attributedescriptions ?? '');
-    }
-
-    /**
-     * @return int
-     */
-    public function getCountTotalAnswers()
-    {
-        $table = $this->responsesTableName;
-        if ($this->active != 'Y') {
-            return 0;
-        } else {
-            $answers = Yii::app()->db->createCommand()
-                ->select('count(*)')
-                ->from($table)
-                ->queryScalar();
-            return $answers;
-        }
     }
 
     /**
