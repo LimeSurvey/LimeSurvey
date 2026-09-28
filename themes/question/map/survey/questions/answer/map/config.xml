@@ -133,10 +133,6 @@
             <inputtype>buttongroup</inputtype>
             <options>
                 <option>
-                    <value>0</value>
-                    <text>Off</text>
-                </option>
-                <option>
                     <value>100</value>
                     <text>OpenStreetMap via MapQuest</text>
                 </option>
@@ -146,7 +142,7 @@
                 </option>
             </options>
             <default>100</default>
-            <help>Activate this to show a map above the input field where the user can select a location</help>
+            <help>Which map provider to show for this question</help>
             <caption>Use mapping service</caption>
             <i18n></i18n>
             <readonly></readonly>
