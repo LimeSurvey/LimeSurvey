@@ -4,7 +4,7 @@ namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
 
-class SurveyURLParameterTest extends TestCase
+class SurveyURLParameterNameValidationTest extends TestCase
 {
     /**
      * Provide parameter names that must be accepted.
