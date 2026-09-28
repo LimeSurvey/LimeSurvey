@@ -12,13 +12,13 @@ import { SOURCE, isFilterComplete } from './filterModel'
 // so a rename missed here fails loudly instead of quietly returning more rows
 // than were asked for.
 
-// Contract key -> model key, per source. Only the active source's fields are
+// Model key -> contract key, per source. Only the active source's fields are
 // sent; the rest are defaults the user never touched.
 const FIELDS = {
   [SOURCE.QUESTION]: {
-    qid: 'questionQid',
+    questionQid: 'qid',
     answerCodes: 'answerCodes',
-    text: 'textValue',
+    textValue: 'text',
     numberMin: 'numberMin',
     numberMax: 'numberMax',
     dateFrom: 'dateFrom',
@@ -30,7 +30,7 @@ const FIELDS = {
     fileUploaded: 'fileUploaded',
   },
   [SOURCE.SURVEY_DATA]: {
-    field: 'surveyField',
+    surveyField: 'field',
     included: 'included',
     languages: 'languages',
     numberMin: 'numberMin',
@@ -40,7 +40,7 @@ const FIELDS = {
   },
   [SOURCE.PARTICIPANT]: {
     attribute: 'attribute',
-    value: 'attributeValue',
+    attributeValue: 'value',
   },
 }
 
@@ -54,7 +54,7 @@ const isEmpty = (value) =>
 const toEntry = (filter) => {
   const entry = { join: filter.join, source: filter.source }
 
-  Object.entries(FIELDS[filter.source] ?? {}).forEach(([key, modelKey]) => {
+  Object.entries(FIELDS[filter.source] ?? {}).forEach(([modelKey, key]) => {
     const value = filter[modelKey]
     if (!isEmpty(value)) {
       entry[key] = value
