@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-09-28 13:30:26+00:00\n"
+"POT-Creation-Date: 2026-09-28 13:36:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28256,6 +28256,7 @@ msgid "Fix height"
 msgstr ""
 
 #: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:307
+#: themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice/translations.php:22
 msgid "Crop or resize"
 msgstr ""
 
@@ -30236,7 +30237,7 @@ msgid "Show also the platform information of the participant"
 msgstr ""
 
 #: themes/question/browserdetect/survey/questions/answer/shortfreetext/translations.php:18
-msgid "Show Platform information:"
+msgid "Show platform information:"
 msgstr ""
 
 #: themes/question/image_select-listradio/survey/questions/answer/listradio/translations.php:16
@@ -30269,7 +30270,6 @@ msgid "Crop images to fit into size. Needs JavaScript enabled."
 msgstr ""
 
 #: themes/question/image_select-listradio/survey/questions/answer/listradio/translations.php:22
-#: themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice/translations.php:22
 msgid "Crop or Resize"
 msgstr ""
 
@@ -30296,11 +30296,11 @@ msgid "Auto-add new line:"
 msgstr ""
 
 #: themes/question/inputondemand/survey/questions/answer/multipleshorttext/translations.php:19
-msgid "The icon used on the \"add row\"-button"
+msgid "The icon used on the \"Add row\"-button"
 msgstr ""
 
 #: themes/question/inputondemand/survey/questions/answer/multipleshorttext/translations.php:20
-msgid "Add row icon:"
+msgid "'Add row' icon:"
 msgstr ""
 
 #: themes/question/inputondemand/survey/questions/answer/multipleshorttext/translations.php:21
@@ -30348,7 +30348,7 @@ msgid "Change visualization of the ranking question"
 msgstr ""
 
 #: themes/question/ranking_advanced/survey/questions/answer/ranking/translations.php:24
-msgid "Visualisation:"
+msgid "Visualization:"
 msgstr ""
 
 #: themes/question/ranking_advanced/survey/questions/answer/ranking/translations.php:25
