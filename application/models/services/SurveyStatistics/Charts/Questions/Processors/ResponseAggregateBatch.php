@@ -295,44 +295,52 @@ final class ResponseAggregateBatch
     ): void {
         $fields = [];
         foreach ($requests as $request) {
-            foreach (explode(self::FIELD_SEPARATOR, $request['field']) as $field) {
-                // JSON-element requests append their numeric position.
-                if ($field !== '' && !ctype_digit($field)) {
-                    $fields[$field] = true;
-                }
+            foreach ($this->requestFields($request) as $field) {
+                $fields[$field] = true;
             }
         }
 
+        $medianRequests = [];
+        foreach ($this->medianRequests as $alias => $request) {
+            if ($this->isEncryptedField($request['field'])) {
+                $medianRequests[$alias] = $request;
+            }
+        }
+
+        $results = [];
+        foreach ($requests as $alias => $request) {
+            $results[$alias] = $this->initialAggregateValue($request);
+        }
+
+        $medianValues = array_fill_keys(array_keys($medianRequests), []);
         $select = implode(', ', array_map([$db, 'quoteColumnName'], array_keys($fields)));
-        $rows = $db->createCommand("SELECT $select FROM $table$where")->queryAll();
-        foreach ($rows as &$row) {
+        $reader = $db->createCommand("SELECT $select FROM $table$where")->query();
+        while (($row = $reader->read()) !== false) {
             foreach ($row as $field => $value) {
                 if ($this->isEncryptedField($field) && $value !== null && $value !== '') {
                     $row[$field] = Response::decryptSingle($value);
                 }
             }
-        }
-        unset($row);
 
-        foreach ($requests as $alias => $request) {
-            $values = [];
-            foreach ($rows as $row) {
-                $values[] = $this->valueForRequest($row, $request);
+            foreach ($requests as $alias => $request) {
+                $results[$alias] = $this->accumulateValue(
+                    $results[$alias],
+                    $this->valueForRequest($row, $request),
+                    $request
+                );
             }
-            $this->results[$alias] = $this->aggregateValues($values, $request);
-        }
-
-        foreach ($this->medianRequests as $alias => $request) {
-            if (!$this->isEncryptedField($request['field'])) {
-                continue;
-            }
-            $values = [];
-            foreach ($rows as $row) {
+            foreach ($medianRequests as $alias => $request) {
                 $value = $row[$request['field']] ?? null;
-                if ($this->isNumericValue($value)) {
-                    $values[] = (float)$value;
+                if ($this->isNumericValue($value, !empty($request['numeric']))) {
+                    $medianValues[$alias][] = (float)$value;
                 }
             }
+        }
+
+        foreach ($results as $alias => $result) {
+            $this->results[$alias] = $this->finalizeAggregateValue($result);
+        }
+        foreach ($medianValues as $alias => $values) {
             sort($values, SORT_NUMERIC);
             $count = count($values);
             $this->results[$alias] = $count === 0
@@ -344,7 +352,7 @@ final class ResponseAggregateBatch
     private function valueForRequest(array $row, array $request)
     {
         if ($request['kind'] === self::KIND_ANY_NON_EMPTY) {
-            foreach (explode(self::FIELD_SEPARATOR, $request['field']) as $field) {
+            foreach ($this->requestFields($request) as $field) {
                 if (($row[$field] ?? null) !== null && ($row[$field] ?? '') !== '') {
                     return true;
                 }
@@ -364,45 +372,91 @@ final class ResponseAggregateBatch
     /** @return int|float */
     private function aggregateValues(array $values, array $request)
     {
+        $result = $this->initialAggregateValue($request);
+        foreach ($values as $value) {
+            $result = $this->accumulateValue($result, $value, $request);
+        }
+
+        return $this->finalizeAggregateValue($result);
+    }
+
+    /** @return int|float|null */
+    private function initialAggregateValue(array $request)
+    {
+        return in_array($request['kind'], [self::KIND_MIN, self::KIND_MAX], true) ? null : 0;
+    }
+
+    /** @param int|float|null $result @return int|float|null */
+    private function accumulateValue($result, $value, array $request)
+    {
         switch ($request['kind']) {
             case self::KIND_VALUE:
             case self::KIND_JSON_ELEMENT:
-                return count(array_filter($values, fn($value) => (string)$value === $request['value']));
+                return $result + ((string)$value === $request['value'] ? 1 : 0);
             case self::KIND_BLANK:
-                return count(array_filter($values, fn($value) => $value === null || (!$request['numeric'] && $value === '')));
+                return $result + ($value === null || (!$request['numeric'] && $value === '') ? 1 : 0);
             case self::KIND_NON_EMPTY:
             case self::KIND_ANY_NON_EMPTY:
-                return count(array_filter($values, fn($value) => $request['kind'] === self::KIND_ANY_NON_EMPTY
+                $answered = $request['kind'] === self::KIND_ANY_NON_EMPTY
                     ? $value === true
-                    : $value !== null && ($request['numeric'] || $value !== '')));
+                    : $value !== null && ($request['numeric'] || $value !== '');
+                return $result + ($answered ? 1 : 0);
             case self::KIND_NUMERIC:
-                return count(array_filter($values, fn($value) => $this->isNumericValue($value)));
+                return $result + ($this->isNumericValue($value, !empty($request['numeric'])) ? 1 : 0);
             case self::KIND_SUM:
-                return array_sum(array_map(fn($value) => $this->isNumericValue($value) ? (float)$value : 0, $values));
+                return $result + ($this->isNumericValue($value, !empty($request['numeric'])) ? (float)$value : 0);
             case self::KIND_SUM_SQUARES:
-                return array_sum(array_map(fn($value) => $this->isNumericValue($value) ? (float)$value ** 2 : 0, $values));
+                return $result + ($this->isNumericValue($value, !empty($request['numeric'])) ? (float)$value ** 2 : 0);
             case self::KIND_MIN:
             case self::KIND_MAX:
-                $numeric = array_values(array_filter($values, fn($value) => $this->isNumericValue($value)));
-                return $numeric === [] ? 0 : ($request['kind'] === self::KIND_MIN ? min($numeric) : max($numeric));
+                if (!$this->isNumericValue($value, !empty($request['numeric']))) {
+                    return $result;
+                }
+                return $result === null
+                    ? (float)$value
+                    : ($request['kind'] === self::KIND_MIN ? min($result, (float)$value) : max($result, (float)$value));
             default:
-                return count($values);
+                return $result + 1;
         }
     }
 
-    private function isNumericValue($value): bool
+    /** @param int|float|null $result @return int|float */
+    private function finalizeAggregateValue($result)
     {
-        return $value !== null && $value !== '' && is_numeric($value);
+        return $result === null ? 0 : $result;
+    }
+
+    private function isNumericValue($value, bool $numericColumn = false): bool
+    {
+        if ($value === null || $value === '') {
+            return false;
+        }
+
+        return $numericColumn
+            ? is_numeric($value)
+            : preg_match('/' . self::NUMERIC_PATTERN . '/', (string)$value) === 1;
     }
 
     private function requestUsesEncryptedField(array $request): bool
     {
-        foreach (explode(self::FIELD_SEPARATOR, $request['field']) as $field) {
+        foreach ($this->requestFields($request) as $field) {
             if ($this->isEncryptedField($field)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /** @return string[] */
+    private function requestFields(array $request): array
+    {
+        if ($request['kind'] === self::KIND_JSON_ELEMENT) {
+            return [explode(self::FIELD_SEPARATOR, $request['field'], 2)[0]];
+        }
+
+        return $request['kind'] === self::KIND_ANY_NON_EMPTY
+            ? explode(self::FIELD_SEPARATOR, $request['field'])
+            : [$request['field']];
     }
 
     private function isEncryptedField(string $field): bool

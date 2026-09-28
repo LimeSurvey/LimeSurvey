@@ -40,6 +40,28 @@ class ResponseAggregateBatchTest extends TestCase
         $this->assertSame(1, $this->invoke($batch, 'aggregateValues', [$values, $request]));
     }
 
+    public function testNumericEncryptedColumnIsNotTreatedAsJsonPosition(): void
+    {
+        $batch = new ResponseAggregateBatch(1);
+        $this->setEncryptedFields($batch, ['123']);
+        $alias = $batch->countValue('123', 'Y');
+        $request = $this->getRequest($batch, $alias);
+
+        $this->assertSame(['123'], $this->invoke($batch, 'requestFields', [$request]));
+        $this->assertTrue($this->invoke($batch, 'requestUsesEncryptedField', [$request]));
+    }
+
+    public function testTextNumericAggregatesUseTheDatabaseNumericPattern(): void
+    {
+        $batch = new ResponseAggregateBatch(1);
+        $textRequest = $this->getRequest($batch, $batch->countNumeric('Q12'));
+        $numericRequest = $this->getRequest($batch, $batch->countNumeric('Q13', true));
+        $values = ['1', '1e2', '-2.5', 'not a number'];
+
+        $this->assertSame(2, $this->invoke($batch, 'aggregateValues', [$values, $textRequest]));
+        $this->assertSame(3, $this->invoke($batch, 'aggregateValues', [$values, $numericRequest]));
+    }
+
     private function setEncryptedFields(ResponseAggregateBatch $batch, array $fields): void
     {
         $property = new ReflectionProperty(ResponseAggregateBatch::class, 'encryptedFields');
