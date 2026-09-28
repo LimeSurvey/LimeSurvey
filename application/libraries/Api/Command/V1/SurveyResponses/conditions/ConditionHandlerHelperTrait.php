@@ -32,12 +32,18 @@ trait ConditionHandlerHelperTrait
      * character is harmless here: the name is quoted, and inside an identifier
      * quote '#' is literal rather than a comment marker.
      *
+     * '.' is allowed so a column can name the table it belongs to, which
+     * participant filters need: their values live in the participant table
+     * joined to the responses, not in the responses themselves.
+     * CDbSchema::quoteColumnName splits on it and quotes each half, giving
+     * `tokens`.`email` rather than one odd identifier named `tokens.email`.
+     *
      * @param string $key
      * @return string
      */
     public function sanitizeKey(string $key): string
     {
-        $sanitizedKey = preg_replace('/[^a-zA-Z0-9_#-]/', '', $key);
+        $sanitizedKey = preg_replace('/[^a-zA-Z0-9_#.-]/', '', $key);
         return App()->db->quoteColumnName($sanitizedKey);
     }
 }
