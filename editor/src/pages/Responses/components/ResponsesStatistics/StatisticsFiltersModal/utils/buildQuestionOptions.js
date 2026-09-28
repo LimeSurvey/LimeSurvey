@@ -95,7 +95,10 @@ const getQuestionKind = (type) => {
 }
 
 // Sub-question options for a given axis: scaleId 0 = rows (default), 1 = grid columns.
-const buildSubquestions = (question, language, scaleId = 0) =>
+// `byCode` picks the sub-question's code rather than its id as the value, for
+// the one place the backend matches on the code: a ranking's answer is stored
+// as the codes of the items, in rank order.
+const buildSubquestions = (question, language, scaleId = 0, byCode = false) =>
   (question.subquestions || [])
     .filter((sq) => sq.scaleId === scaleId)
     .map((sq) => {
@@ -103,7 +106,7 @@ const buildSubquestions = (question, language, scaleId = 0) =>
         localized(sq.l10ns, language, 'question')
       )
       return {
-        value: sq.qid,
+        value: byCode ? sq.title : sq.qid,
         label: sqText || sq.title,
       }
     })
@@ -197,7 +200,10 @@ const buildArray = (question, language, kind) => {
 // fallback to answers for the legacy shape); the number of rank positions is
 // capped by the `max_answers` attribute when set.
 const buildRanking = (question, language) => {
-  const subItems = buildSubquestions(question, language)
+  // Items are identified by their code: a ranking stores the codes of the
+  // ranked items, so that is what a filter has to compare. The answer-based
+  // fallback below already uses codes.
+  const subItems = buildSubquestions(question, language, 0, true)
   const options = subItems.length
     ? subItems
     : mapAnswers(question.answers, language)

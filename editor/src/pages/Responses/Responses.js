@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast'
 
 import { Container } from 'react-bootstrap'
 import { useAppState, useResponses, useSurvey } from 'hooks'
-import { createBufferOperation, htmlPopup, PAGES, STATES } from 'helpers'
+import { createBufferOperation, htmlPopup, PAGES, STATES, Toast } from 'helpers'
 
 import { LeftSideBar } from './Sidebars/LeftSideBar'
 import {
@@ -17,7 +17,10 @@ import { TAB_KEYS } from './utils'
 import { ResponsesOverview } from './components/Overview/ResponsesOverview'
 import { panelItemsKeys } from './Sidebars'
 import { RightSideBar } from './Sidebars/RightSideBar'
-import { buildQuestionOptions } from './components/ResponsesStatistics/StatisticsFiltersModal/utils'
+import {
+  buildQuestionOptions,
+  toFilterSet,
+} from './components/ResponsesStatistics/StatisticsFiltersModal/utils'
 
 export const Responses = () => {
   const { surveyId, menu } = useParams()
@@ -47,12 +50,37 @@ export const Responses = () => {
     fetchSurvey,
     refetchQuestionsFieldNamesMap,
   } = useSurvey(surveyId)
-  const { responses, isFetching, mutateOperations } = useResponses(
-    surveyId,
-    pagination,
-    filters,
-    sorting
-  )
+  // The applied filter in the shape the backend accepts. Memoised so the
+  // query key only changes when the filter itself does.
+  const filterSet = useMemo(() => toFilterSet(appliedFilters), [appliedFilters])
+
+  const {
+    responses,
+    isFetching,
+    mutateOperations,
+    error: responsesError,
+  } = useResponses(surveyId, pagination, filters, sorting, filterSet)
+
+  // A filter the server cannot honour — an attribute this survey does not
+  // have, a question from another survey — comes back as a bad request with
+  // the reason. Show it, and leave the table on the rows it already had.
+  useEffect(() => {
+    if (responsesError) {
+      Toast({
+        message: responsesError.message,
+        className: 'generic-toast error-left-mark',
+        id: 'responses-filter-error',
+      })
+    }
+  }, [responsesError])
+
+  // A narrower filter can leave the current page past the end of the results,
+  // which would show an empty table on a page that no longer exists.
+  useEffect(() => {
+    setPagination((current) =>
+      current.pageIndex === 0 ? current : { ...current, pageIndex: 0 }
+    )
+  }, [filterSet])
 
   const questionOptions = useMemo(
     () => buildQuestionOptions(survey, activeLanguage),
