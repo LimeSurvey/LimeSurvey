@@ -7,7 +7,8 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\DI;
 use LimeSurvey\Models\Services\{
     QuestionAggregateService,
-    QuestionAggregateService\L10nService
+    QuestionAggregateService\L10nService,
+    QuestionAggregateService\QuestionService
 };
 use LimeSurvey\ObjectPatch\{
     ObjectPatchException,
@@ -133,10 +134,15 @@ class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
         $mockQuestionAggregateService = \Mockery::mock(
             QuestionAggregateService::class
         );
+        /** @var QuestionService */
+        $mockQuestionService = \Mockery::mock(
+            QuestionService::class
+        );
         return new OpHandlerQuestionL10nUpdate(
             $mockQuestionL10nService,
             DI::getContainer()->get(TransformerInputQuestionL10ns::class),
-            $mockQuestionAggregateService
+            $mockQuestionAggregateService,
+            $mockQuestionService
         );
     }
 }
