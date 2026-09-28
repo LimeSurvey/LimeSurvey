@@ -88,7 +88,7 @@
             </options>
             <default>resize</default>
             <help>Crop images to fit into size. Needs JavaScript enabled.</help>
-            <caption>Crop or Resize</caption>
+            <caption>Crop or resize</caption>
         </attribute>
 
         <attribute>

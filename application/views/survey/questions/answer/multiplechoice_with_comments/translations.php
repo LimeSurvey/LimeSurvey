@@ -17,4 +17,4 @@ gT("'Other:' text input box size");
 gT("Maximum characters allowed for 'Other:' option");
 gT("'Other:' option maximum characters");
 gT('Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized');
-gT('Use javascript function to remove text and uncheck checkbox (or use ExpressionScript Engine only).');
+gT('Use JavaScript function to remove text and uncheck checkbox (or use ExpressionScript Engine only).');
