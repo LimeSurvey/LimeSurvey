@@ -18,3 +18,8 @@ gT("Maximum characters allowed for 'Other:' option");
 gT("'Other:' option maximum characters");
 gT('Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized');
 gT('The answer options will be distributed across the number of columns set here. Any number up from 1 can be entered, but we only support systems up to 16.');
+gT("Position for 'Other:' option");
+gT("Indicates where the 'Other' option should be placed");
+gT('After specific subquestion');
+gT("Subquestion title for 'After specific subquestion'");
+gT("The title of the subquestion after which the 'Other:' option will be placed if the position is set to 'After specific subquestion'");
