@@ -202,19 +202,35 @@ class Participant extends LSActiveRecord
             'created' => gT('Created on') . $this->setEncryptedAttributeLabel(0, 'Participant', 'created')
         );
         foreach ($this->allExtraAttributes as $name => $attribute) {
-            $returnArray[$name] = $attribute['defaultname'];
+            $returnArray[$name] = $attribute['localizedname'];
         }
         return $returnArray;
     }
 
     /**
-     * @return array
+     * Get all non-core CPDB attributes, keyed by their column name (ea_<attribute_id>).
+     *
+     * Each attribute additionally gets a 'localizedname' entry holding the attribute name
+     * in the current admin language, falling back to the default name if no translation exists.
+     *
+     * @return array<string, array<string, mixed>>
      */
     public function getAllExtraAttributes()
     {
         $allAttributes = ParticipantAttributeName::model()->getAllAttributes();
+        $localizedNames = CHtml::listData(
+            ParticipantAttributeNameLang::model()->findAll(
+                'lang = :lang',
+                [':lang' => Yii::app()->session['adminlang']]
+            ),
+            'attribute_id',
+            'attribute_name'
+        );
         $extraAttributes = array();
         foreach ($allAttributes as $attribute) {
+            $attribute['localizedname'] = !empty($localizedNames[$attribute['attribute_id']])
+                ? $localizedNames[$attribute['attribute_id']]
+                : $attribute['defaultname'];
             $extraAttributes["ea_" . $attribute['attribute_id']] = $attribute;
         }
         return $extraAttributes;
@@ -384,7 +400,7 @@ class Participant extends LSActiveRecord
             $col_array = [
                 "value"  => '$data->getParticipantAttribute($this->id)',
                 "id"     => $name,
-                "header" => $attribute['defaultname'] . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
+                "header" => CHtml::encode($attribute['localizedname']) . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
                 "type"   => "html",
             ];
             //textbox
@@ -2258,11 +2274,12 @@ class Participant extends LSActiveRecord
                     ];
                     $oParticipant = new Participant();
                     $oParticipant->setAttributes($writearray, false);
-                    $oParticipant->encryptSave();
+                    $oParticipant->encryptSave(false);
 
                     //Update survey participant list and insert the new UUID
                     $oTokenDynamic->participant_id = $pid;
-                    $oTokenDynamic->encryptSave();
+                    /* No rules for participant_id, no need to validate */
+                    $oTokenDynamic->encryptSave(false, ['participant_id']);
 
                     /* Now add any new attribute values */
                     if (!empty($aAttributesToBeCreated)) {

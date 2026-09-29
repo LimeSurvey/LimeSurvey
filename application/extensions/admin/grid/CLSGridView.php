@@ -324,8 +324,10 @@ class CLSGridView extends TbGridView
     }
 
     /**
-     * Registers necessary client scripts.
-     * customization for CLSGridview
+     * Registers the client scripts needed by the grid: yiiGridView initialisation
+     * and the screen reader announcement of an empty result.
+     *
+     * @return void
      * @throws CException
      */
     public function registerClientScript()
@@ -387,9 +389,17 @@ class CLSGridView extends TbGridView
             "jQuery('#$id').yiiGridView($options);",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
+        // Under PJAX this inline script runs before afterAjaxUpdate.js is loaded, so defer until it is available
         $cs->registerScript(
             __CLASS__ . '-emptyAnnounce#' . $id,
-            'jQuery(function(){ LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . '); });',
+            'jQuery(function(){
+                var announceEmpty = function() { LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . '); };
+                if (window.LS && LS.gridView && LS.gridView.announceEmptyMessage) {
+                    announceEmpty();
+                } else {
+                    jQuery(document).one("pjax:scriptcomplete", announceEmpty);
+                }
+            });',
             LSYii_ClientScript::POS_READY
         );
     }

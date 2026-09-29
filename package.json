@@ -48,7 +48,8 @@
     "tablesorter": "^2.31.3"
   },
   "resolutions": {
-    "bootstrap": "~5.1.3"
+    "bootstrap": "~5.1.3",
+    "crypto-browserify": "npm:empty-npm-package@1.0.0"
   },
   "babel": {
     "presets": [

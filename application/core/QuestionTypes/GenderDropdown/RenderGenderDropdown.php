@@ -1,7 +1,7 @@
 <?php
 
 /**
- * RenderClass for Boilerplate Question
+ * RenderClass for Gender Question
  *  * The ia Array contains the following
  *  0 => string qid
  *  1 => string sgqa
@@ -18,38 +18,68 @@
  */
 class RenderGenderDropdown extends QuestionBaseRenderer
 {
+    /**
+     * Returns the twig view used to render the answer part of the question,
+     * depending on the display_type attribute (0 = button group, otherwise radio list).
+     *
+     * @return string
+     */
     public function getMainView()
     {
-        return '/survey/questions/answer/dummy/answer';
+        if ((int) $this->getQuestionAttribute('display_type') === 0) {
+            return '/survey/questions/answer/gender/buttons/answer';
+        }
+        return '/survey/questions/answer/gender/radio/answer';
     }
 
+    /**
+     * Gender questions have no rows.
+     *
+     * @return void
+     */
     public function getRows()
     {
         return;
     }
 
+    /**
+     * Renders the gender question.
+     *
+     * @param string $sCoreClasses Unused, kept for signature compatibility
+     * @return array{0: string, 1: string[]} Rendered answer HTML and the list of input names
+     */
     public function render($sCoreClasses = '')
     {
         $this->registerAssets();
-        return do_gender($this->aFieldArray);
 
-        $answer = '';
-        $inputnames = [];
+        // Null when not set: the hidden "java" field then gets no value attribute at all
+        $sValue = $this->getFromSurveySession($this->sSGQA, null);
 
-        if (!empty($this->getQuestionAttribute('time_limit'))) {
-            $answer .= $this->getTimeSettingRender();
+        // Female/male use the plain 'CHECKED' string while "no answer" uses the CHECKED constant,
+        // as in the legacy renderer
+        $fChecked  = ($sValue == 'F') ? 'CHECKED' : '';
+        $mChecked  = ($sValue == 'M') ? 'CHECKED' : '';
+        $naChecked = '';
+
+        $noAnswer = false;
+        if (($this->aFieldArray[6] != 'Y' && $this->aFieldArray[6] != 'S') && SHOW_NO_ANSWER == 1) {
+            $noAnswer = true;
+            if (PRESELECT_NO_ANSWER && $sValue == '') {
+                $naChecked = CHECKED;
+            }
         }
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
-            'ia' => $this->aFieldArray,
-            'name' => $this->sSGQA,
-            'basename' => $this->sSGQA,
-            'content' => $this->oQuestion,
-            'coreClass' => 'ls-answers ' . $sCoreClasses,
-            ), true);
+        $answer = Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
+            'name'      => $this->sSGQA,
+            'basename'  => $this->sSGQA,
+            'fChecked'  => $fChecked,
+            'mChecked'  => $mChecked,
+            'naChecked' => $naChecked,
+            'noAnswer'  => $noAnswer,
+            'value'     => $sValue,
+        ));
 
-
-        $inputnames[] = [];
+        $inputnames = [$this->sSGQA];
         return array($answer, $inputnames);
     }
 }
