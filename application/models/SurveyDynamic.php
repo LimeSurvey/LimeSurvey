@@ -812,7 +812,7 @@ class SurveyDynamic extends LSActiveRecord
      * @param Question $oQuestion The question (or subquestion) to build data for
      * @param SurveyDynamic $oResponses The response row the answers are read from
      * @param boolean $bHonorConditions Whether relevance/conditions should be honored; if false, relevance is not checked
-     * @param boolean $subquestion Whether $oQuestion is a subquestion of another question
+     * @param boolean $subquestion Whether $oQuestion is a subquestion of another question; when true, its own (array_filter) relevance is checked instead of only its parent's
      * @param boolean $getCommentOnly If should only returns the "comments" or "other" response.
      * @param string|null $sLanguage Language to use; defaults to the survey's language when null
      * @return array|false Question display data, or false if the question must be hidden
@@ -822,8 +822,21 @@ class SurveyDynamic extends LSActiveRecord
 
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
 
+        $fieldname = $oQuestion->basicFieldName;
+        //If question is of any Array-Type  or a subquestion
         if (
-            !(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) && $bHonorConditions == true)
+            in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"])
+            || ($oQuestion->type == 'T' && $oQuestion->parent_qid != 0)
+        ) {
+            $fieldname .= "_S{$oQuestion->qid}";
+        }
+
+        $isRelevant = $subquestion
+            ? LimeExpressionManager::SubQuestionOrQuestionIsRelevant($fieldname, $oQuestion->qid)
+            : LimeExpressionManager::QuestionIsRelevant($oQuestion->qid);
+
+        if (
+            !($isRelevant && $bHonorConditions == true)
             || (is_array($attributes) && $attributes['hidden'] == 1)
         ) {
             return false;
@@ -863,6 +876,9 @@ class SurveyDynamic extends LSActiveRecord
                 }
 
                 $subQuestionArray = $this->getQuestionArray($oSubquestion, $oResponses, $bHonorConditions, true, false, $sLanguage);
+                if ($subQuestionArray === false) {
+                    continue;
+                }
                 if ($oQuestion->type == "P") {
                     $subQuestionArray['comment'] = $this->getQuestionArray($oSubquestion, $oResponses, $bHonorConditions, true, true, $sLanguage);
                 }
@@ -893,16 +909,6 @@ class SurveyDynamic extends LSActiveRecord
                 }
             }
         }
-
-        $fieldname = $oQuestion->basicFieldName;
-        //If question is of any Array-Type  or a subquestion
-        if (
-            in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"])
-            || ($oQuestion->type == 'T' && $oQuestion->parent_qid != 0)
-        ) {
-            $fieldname .= "_S{$oQuestion->qid}";
-        }
-
 
         if ($getCommentOnly) {
             $fieldname .= '_Ccomment';

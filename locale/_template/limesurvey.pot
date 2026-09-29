@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-09-28 13:36:54+00:00\n"
+"POT-Creation-Date: 2026-09-29 06:01:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1953,7 +1953,7 @@ msgstr ""
 #: application/extensions/GeneralOptionWidget/settings/SaveAsDefaultGeneralOption.php:27
 #: application/extensions/GeneralOptionWidget/views/switch.php:19
 #: application/extensions/GeneralOptionWidget/views/switch.php:48
-#: application/extensions/SettingsWidget/SettingsWidget.php:373
+#: application/extensions/SettingsWidget/SettingsWidget.php:395
 #: application/models/SurveysGroupsettings.php:431
 #: application/models/SurveysGroupsettings.php:432
 #: application/models/SurveysGroupsettings.php:433
@@ -2041,7 +2041,7 @@ msgstr ""
 #: application/extensions/GeneralOptionWidget/settings/SaveAsDefaultGeneralOption.php:26
 #: application/extensions/GeneralOptionWidget/views/switch.php:33
 #: application/extensions/GeneralOptionWidget/views/switch.php:63
-#: application/extensions/SettingsWidget/SettingsWidget.php:374
+#: application/extensions/SettingsWidget/SettingsWidget.php:396
 #: application/helpers/questionHelper.php:450
 #: application/helpers/questionHelper.php:706
 #: application/helpers/questionHelper.php:1070
@@ -4018,7 +4018,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1342
 #: application/controllers/UserManagementController.php:1405
 #: application/controllers/UserManagementController.php:1452
-#: application/core/LsDefaultDataSets.php:2798
+#: application/core/LsDefaultDataSets.php:2788
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:397
 #: application/core/plugins/Authdb/Authdb.php:148
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:110
@@ -4965,8 +4965,8 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1393
 #: application/helpers/userstatistics_helper.php:1531
 #: application/helpers/userstatistics_helper.php:1661
-#: application/models/Question.php:884 application/models/SurveyDynamic.php:877
-#: application/models/SurveyDynamic.php:947
+#: application/models/Question.php:884 application/models/SurveyDynamic.php:893
+#: application/models/SurveyDynamic.php:953
 #: application/models/services/Export/ExportAnswerFormatter.php:162
 #: application/models/services/SurveyCondition.php:940
 #: application/models/services/SurveyCondition.php:1015
@@ -6338,7 +6338,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3492
 #: application/helpers/expressions/em_manager_helper.php:3604
 #: application/helpers/expressions/em_manager_helper.php:3627
-#: application/helpers/expressions/em_manager_helper.php:6454
+#: application/helpers/expressions/em_manager_helper.php:6585
 msgid "Other:"
 msgstr ""
 
@@ -8669,263 +8669,210 @@ msgstr ""
 msgid "Strongly agree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2725
+#: application/core/LsDefaultDataSets.php:2727
 msgid "Survey container"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2726
-#: application/core/LsDefaultDataSets.php:2742
+#: application/core/LsDefaultDataSets.php:2728
 msgid "Hide privacy info"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2727
+#: application/core/LsDefaultDataSets.php:2729
 msgid "Show popups"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2728
+#: application/core/LsDefaultDataSets.php:2730
 msgid "Popup"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2729
+#: application/core/LsDefaultDataSets.php:2731
 msgid "On page"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2730
+#: application/core/LsDefaultDataSets.php:2732
 msgid "Fix automatically numeric value"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2731
+#: application/core/LsDefaultDataSets.php:2733
 msgid "For expression"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2732
-msgid "Brandlogo"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2733
-msgid "Brandlogo file"
-msgstr ""
-
 #: application/core/LsDefaultDataSets.php:2734
-#: application/views/themeOptions/options_core.php:359
-msgid "Preview image"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2735
-msgid "Bootstrap theme"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2736
-msgid "Bootswatch theme"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2737
 msgid "Question borders"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2738
+#: application/core/LsDefaultDataSets.php:2735
 msgid "Question shadow"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2739
+#: application/core/LsDefaultDataSets.php:2736
 msgid "Zebra-striped questions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2740
+#: application/core/LsDefaultDataSets.php:2737
 msgid "Sticky array headers"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2741
+#: application/core/LsDefaultDataSets.php:2738
 msgid "Dim answered array rows"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2743
+#: application/core/LsDefaultDataSets.php:2739
 msgid "Cross-hover in matrix questions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2744
+#: application/core/LsDefaultDataSets.php:2740
 msgid "Background color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2745
+#: application/core/LsDefaultDataSets.php:2741
 msgid "Font color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2746
+#: application/core/LsDefaultDataSets.php:2742
 msgid "Question background color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2747
+#: application/core/LsDefaultDataSets.php:2743
 msgid "Check icon"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2748
+#: application/core/LsDefaultDataSets.php:2744
 #: editor/src/components/QuestionSettings/attributes/ImageAttributes.js:155
 msgid "Background image"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2749
+#: application/core/LsDefaultDataSets.php:2745
 msgid "Background image file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2750
+#: application/core/LsDefaultDataSets.php:2746
 #: editor/src/components/TopBar/TopBar.js:129
 msgid "Logo"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2751
+#: application/core/LsDefaultDataSets.php:2747
 msgid "Logo file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2752
+#: application/core/LsDefaultDataSets.php:2748
 msgid "Animate body"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2753
+#: application/core/LsDefaultDataSets.php:2749
 msgid "Body animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2754
+#: application/core/LsDefaultDataSets.php:2750
 msgid "Duration"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2755
+#: application/core/LsDefaultDataSets.php:2751
 msgid "Animate question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2756
+#: application/core/LsDefaultDataSets.php:2752
 msgid "Question animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2757
+#: application/core/LsDefaultDataSets.php:2753
 msgid "Animate alert"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2758
-#: application/core/LsDefaultDataSets.php:2760
+#: application/core/LsDefaultDataSets.php:2754
 msgid "Alert animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2759
+#: application/core/LsDefaultDataSets.php:2755
 msgid "Animate checkbox"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2761
+#: application/core/LsDefaultDataSets.php:2756
 msgid "Animate radio buttons"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2762
+#: application/core/LsDefaultDataSets.php:2757
 msgid "Radio button animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2763
-msgid "Select font:"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2764
-msgid "Select variation:"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2765
-msgid "Fruity fonts"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2766
-msgid "Fruity variations"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2767
-#: themes/survey/fruity_twentythree/views/subviews/content/optin.twig:3
-#: themes/survey/fruity_twentythree/views/subviews/content/optout.twig:14
-#: themes/survey/fruity_twentythree/views/subviews/content/optout.twig:17
-#: themes/survey/vanilla/views/subviews/content/optin.twig:3
-#: themes/survey/vanilla/views/subviews/content/optout.twig:14
-#: themes/survey/vanilla/views/subviews/content/optout.twig:17
-msgid "I confirm"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2768
-msgid "Show link to legal notice in survey:"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2769
-msgid "Show link to data policy in survey:"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2770
-msgid "Survey legal notice:"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2771
-#: application/views/admin/super/help_button_dropup.php:22
-msgid "Legal notice"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2772
+#: application/core/LsDefaultDataSets.php:2758
 msgid "Show 'Clear all' button"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2773
-#: application/helpers/twig_translation_helper.php:49
+#: application/core/LsDefaultDataSets.php:2759
 msgid "Wrap tables"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2774
+#: application/core/LsDefaultDataSets.php:2760
+msgid "Always on"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2761
+msgid "Small screens"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2762
+msgid "Question help text position"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2763
+msgid "Top"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2764
+msgid "Bottom"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2765
+msgid "Deselect single-choice option by click"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2766
+msgid "Corner radius"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2767
+msgid "Theme color"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2768
 msgid "Variations"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2775
+#: application/core/LsDefaultDataSets.php:2769
 msgid "Colors"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2776
+#: application/core/LsDefaultDataSets.php:2770
 msgid "Animations"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2777
+#: application/core/LsDefaultDataSets.php:2771
 msgid "Fonts"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2779
-#: application/helpers/update/updates/Update_609.php:29
-#: themes/survey/vanilla/config.xml:23
-msgid "A clean and simple base that can be used by developers to create their own Bootstrap based theme."
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2780
-#: application/helpers/update/updates/Update_609.php:38
-#: themes/survey/fruity/config.xml:24
-msgid "A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2781
-#: application/helpers/update/updates/Update_609.php:118
-#: themes/survey/fruity_twentythree/config.xml:24
-msgid "Our default theme for a fruity and flexible use. This theme offers single color variations"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:2795
+#: application/core/LsDefaultDataSets.php:2785
 msgid "Hello"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2796
+#: application/core/LsDefaultDataSets.php:2786
 msgid "This is an automated email notification that a user has been created for you on the website %s."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2797
+#: application/core/LsDefaultDataSets.php:2787
 msgid "You can use now the following credentials to log in:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2801
+#: application/core/LsDefaultDataSets.php:2791
 msgid "Click here to set your password"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2802
+#: application/core/LsDefaultDataSets.php:2792
 #: application/views/userManagement/partial/usernotificationemail.php:396
 msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2804
+#: application/core/LsDefaultDataSets.php:2794
 msgid "User registration at '%s'"
 msgstr ""
 
@@ -12749,7 +12696,7 @@ msgid "Only integer values may be entered in these fields."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3100
-#: application/helpers/expressions/em_manager_helper.php:6457
+#: application/helpers/expressions/em_manager_helper.php:6588
 msgid "If you choose '%s' please also specify your choice in the accompanying text field."
 msgstr ""
 
@@ -12769,77 +12716,77 @@ msgstr ""
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5286
+#: application/helpers/expressions/em_manager_helper.php:5306
 msgid "Unable to insert record into survey table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5398
+#: application/helpers/expressions/em_manager_helper.php:5418
 msgid "The data could not be saved because the response does not exist in the database."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5439
+#: application/helpers/expressions/em_manager_helper.php:5460
 msgid "Error on response update"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5451
+#: application/helpers/expressions/em_manager_helper.php:5472
 msgid "This response was already submitted."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5480
+#: application/helpers/expressions/em_manager_helper.php:5501
 msgid "An error occurred when trying to submit your response."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6393
+#: application/helpers/expressions/em_manager_helper.php:6524
 msgid "Please notice you haven't answered this question. Still, you can continue without answering."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6393
+#: application/helpers/expressions/em_manager_helper.php:6524
 msgid "This question is mandatory"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6402
+#: application/helpers/expressions/em_manager_helper.php:6533
 #: application/views/survey/questions/question_help/softmandatory_input.twig:8
 msgid "Continue without answering to this question."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6439
+#: application/helpers/expressions/em_manager_helper.php:6570
 msgid "Please check at least one item."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6485
-#: application/helpers/expressions/em_manager_helper.php:6529
+#: application/helpers/expressions/em_manager_helper.php:6616
+#: application/helpers/expressions/em_manager_helper.php:6660
 msgid "Please complete all parts."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6516
+#: application/helpers/expressions/em_manager_helper.php:6647
 msgid "Please check at least one box per row."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6546
+#: application/helpers/expressions/em_manager_helper.php:6677
 msgid "Please rank the items."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6549
+#: application/helpers/expressions/em_manager_helper.php:6680
 msgid "Please rank all items."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6930
+#: application/helpers/expressions/em_manager_helper.php:7061
 msgid "Error in default value: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8875
+#: application/helpers/expressions/em_manager_helper.php:9006
 msgid "Date %s is invalid, please review your answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9426
+#: application/helpers/expressions/em_manager_helper.php:9557
 msgid "Invalid question - probably missing subquestions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9434
+#: application/helpers/expressions/em_manager_helper.php:9565
 msgid "Logic check for survey ID %s: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9447
+#: application/helpers/expressions/em_manager_helper.php:9578
 #: application/models/Box.php:62
 #: application/models/services/QuickTranslation.php:499
 #: application/views/admin/pluginmanager/overview.php:18
@@ -12857,13 +12804,13 @@ msgstr ""
 msgid "Description:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9458
+#: application/helpers/expressions/em_manager_helper.php:9589
 #: application/views/admin/survey/editLocalSettings_view.php:136
 #: application/views/admin/survey/subview/surveydashboard/002-surveytextpanel.twig:29
 msgid "Welcome:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9469
+#: application/helpers/expressions/em_manager_helper.php:9600
 #: application/models/services/QuickTranslation.php:501
 #: application/views/admin/survey/editLocalSettings_view.php:148
 #: application/views/admin/survey/editLocalSettings_view.php:157
@@ -12871,157 +12818,157 @@ msgstr ""
 msgid "End message:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9480
+#: application/helpers/expressions/em_manager_helper.php:9611
 #: application/views/admin/survey/editLocalSettings_view.php:167
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:239
 #: application/views/admin/survey/subview/surveydashboard/001-sharingpanel.twig:43
 msgid "End URL:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9491
+#: application/helpers/expressions/em_manager_helper.php:9622
 msgid "Privacy policy notice:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9502
+#: application/helpers/expressions/em_manager_helper.php:9633
 msgid "Privacy policy error:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9506
+#: application/helpers/expressions/em_manager_helper.php:9637
 #: application/views/admin/survey/subview/surveydashboard/002-surveytextpanel.twig:87
 msgid "Start of the link that opens the privacy policy popup"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9506
+#: application/helpers/expressions/em_manager_helper.php:9637
 #: application/views/admin/survey/subview/surveydashboard/002-surveytextpanel.twig:87
 msgid "End of the link that opens the privacy policy popup"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9514
+#: application/helpers/expressions/em_manager_helper.php:9645
 msgid "Privacy policy label:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9520
+#: application/helpers/expressions/em_manager_helper.php:9651
 msgid "Name [ID]"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9521
+#: application/helpers/expressions/em_manager_helper.php:9652
 msgid "Condition [Validation] (Default value)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9522
+#: application/helpers/expressions/em_manager_helper.php:9653
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9569
+#: application/helpers/expressions/em_manager_helper.php:9700
 msgid "This group has at least 1 error."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9606
-#: application/helpers/expressions/em_manager_helper.php:9840
+#: application/helpers/expressions/em_manager_helper.php:9737
+#: application/helpers/expressions/em_manager_helper.php:9971
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9628
+#: application/helpers/expressions/em_manager_helper.php:9759
 #: application/views/questionAdministration/summary.php:63
 #: application/views/questionAdministration/textElements.php:85
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9630
+#: application/helpers/expressions/em_manager_helper.php:9761
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9645
+#: application/helpers/expressions/em_manager_helper.php:9776
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9645
+#: application/helpers/expressions/em_manager_helper.php:9776
 #: editor/src/components/ConditionDesigner/ConditionFormFields/ConstantInput.js:27
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9744
+#: application/helpers/expressions/em_manager_helper.php:9875
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9753
+#: application/helpers/expressions/em_manager_helper.php:9884
 msgid "Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9908
+#: application/helpers/expressions/em_manager_helper.php:10039
 msgid "This question has at least {n} error.|This question has at least {n} errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9937
+#: application/helpers/expressions/em_manager_helper.php:10068
 msgid "Question ID %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9967
+#: application/helpers/expressions/em_manager_helper.php:10098
 msgid "{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9975
+#: application/helpers/expressions/em_manager_helper.php:10106
 msgid "{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9981
+#: application/helpers/expressions/em_manager_helper.php:10112
 msgid "There are expressions with syntax errors in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9984
+#: application/helpers/expressions/em_manager_helper.php:10115
 msgid "There are expressions with syntax errors in this group."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9987
+#: application/helpers/expressions/em_manager_helper.php:10118
 msgid "There are expressions with syntax errors in this question."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9990
+#: application/helpers/expressions/em_manager_helper.php:10121
 msgid "There are expressions with syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10002
+#: application/helpers/expressions/em_manager_helper.php:10133
 msgid "No syntax errors detected in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10005
+#: application/helpers/expressions/em_manager_helper.php:10136
 msgid "This group, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10008
+#: application/helpers/expressions/em_manager_helper.php:10139
 msgid "This question, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10182
-#: application/helpers/expressions/em_manager_helper.php:10191
-#: application/helpers/expressions/em_manager_helper.php:10196
-#: application/helpers/expressions/em_manager_helper.php:10205
-#: application/helpers/expressions/em_manager_helper.php:10212
-#: application/helpers/expressions/em_manager_helper.php:10218
-#: application/helpers/expressions/em_manager_helper.php:10224
-#: application/helpers/expressions/em_manager_helper.php:10230
-#: application/helpers/expressions/em_manager_helper.php:10242
-#: application/helpers/expressions/em_manager_helper.php:10248
-#: application/helpers/expressions/em_manager_helper.php:10255
-#: application/helpers/expressions/em_manager_helper.php:10270
-#: application/helpers/expressions/em_manager_helper.php:10276
-#: application/helpers/expressions/em_manager_helper.php:10289
-#: application/helpers/expressions/em_manager_helper.php:10298
 #: application/helpers/expressions/em_manager_helper.php:10313
-#: application/helpers/expressions/em_manager_helper.php:10323
+#: application/helpers/expressions/em_manager_helper.php:10322
+#: application/helpers/expressions/em_manager_helper.php:10327
+#: application/helpers/expressions/em_manager_helper.php:10336
+#: application/helpers/expressions/em_manager_helper.php:10343
+#: application/helpers/expressions/em_manager_helper.php:10349
+#: application/helpers/expressions/em_manager_helper.php:10355
+#: application/helpers/expressions/em_manager_helper.php:10361
+#: application/helpers/expressions/em_manager_helper.php:10373
+#: application/helpers/expressions/em_manager_helper.php:10379
+#: application/helpers/expressions/em_manager_helper.php:10386
+#: application/helpers/expressions/em_manager_helper.php:10401
+#: application/helpers/expressions/em_manager_helper.php:10407
+#: application/helpers/expressions/em_manager_helper.php:10420
+#: application/helpers/expressions/em_manager_helper.php:10429
+#: application/helpers/expressions/em_manager_helper.php:10444
+#: application/helpers/expressions/em_manager_helper.php:10454
 msgid "%s is an invalid value for this question"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10283
+#: application/helpers/expressions/em_manager_helper.php:10414
 msgid "This question only accepts 30 digits including 10 decimals."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10428
-#: application/helpers/expressions/em_manager_helper.php:10434
+#: application/helpers/expressions/em_manager_helper.php:10559
+#: application/helpers/expressions/em_manager_helper.php:10565
 msgid "Due to a technical problem, your response could not be saved. Please contact the survey administrator %s (%s) about this problem. You will not be able to proceed with this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10439
+#: application/helpers/expressions/em_manager_helper.php:10570
 msgid "Due to a technical problem, your response could not be saved. You will not be able to proceed with this survey."
 msgstr ""
 
@@ -14657,6 +14604,7 @@ msgid "Maximum number of files that the participant can upload for this question
 msgstr ""
 
 #: application/helpers/questionHelper.php:1555
+#: application/views/survey/questions/answer/file_upload/translations.php:17
 #: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:40
 msgid "Maximum number of files"
 msgstr ""
@@ -14666,6 +14614,7 @@ msgid "Minimum number of files that the participant must upload for this questio
 msgstr ""
 
 #: application/helpers/questionHelper.php:1566
+#: application/views/survey/questions/answer/file_upload/translations.php:15
 #: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:9
 msgid "Minimum number of files"
 msgstr ""
@@ -15323,167 +15272,6 @@ msgstr ""
 msgid "Comma (,)"
 msgstr ""
 
-#: application/helpers/twig_translation_helper.php:28
-#: themes/survey/fruity_twentythree/views/subviews/content/submit_preview.twig:23
-#: themes/survey/vanilla/views/subviews/content/submit_preview.twig:23
-msgid "Your survey responses have not been recorded. This survey is not yet active."
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:29
-#: application/views/survey/questions/answer/shortfreetext/location_mapservice/item_100.twig:29
-msgid "Search (3 characters minimum)"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:30
-#: application/views/survey/questions/answer/shortfreetext/location_mapservice/item_100.twig:37
-msgid "Restrict search to map extent"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:31
-#: application/views/survey/questions/answer/shortfreetext/location_mapservice/item_100.twig:63
-msgid "Latitude:"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:32
-#: application/views/survey/questions/answer/shortfreetext/location_mapservice/item_100.twig:77
-msgid "Longitude:"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:33
-#: application/views/questionAdministration/answerOptionRow.twig:117
-msgid "Some example answer option"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:34
-#: application/views/questionAdministration/answerOptionRow.twig:33
-#: application/views/questionAdministration/subquestionRow.twig:56
-msgid "Drag to sort"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:35
-#: application/views/questionAdministration/answerOptionRow.twig:145
-msgid "Insert a new answer option after this one"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:36
-msgid "Predefined label sets..."
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:37
-#: application/views/questionAdministration/modals.twig:100
-msgid "Save as label set"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:38
-#: application/models/QuestionType.php:343
-msgid "Short free text"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:39
-msgid "Set the size to the input or textarea, the input will be displayed with approximately this size in width."
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:40
-#: application/views/questionAdministration/subquestions.twig:51
-#: editor/src/components/QuestionTypes/ArrayQuestion/ArrayColumnsTitles/ArrayColumnsTitles.js:102
-#: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoiceSubquestion.js:144
-#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:196
-msgid "Subquestion"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:41
-#: application/views/questionAdministration/subquestions.twig:57
-msgid "Relevance equation"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:42
-#: application/views/questionAdministration/answerOptions.twig:103
-#: application/views/questionAdministration/subquestions.twig:102
-msgid "Load label set"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:43
-#: application/views/questionAdministration/answerOptions.twig:114
-#: application/views/questionAdministration/subquestions.twig:113
-msgid "Save label set"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:44
-#: application/views/questionAdministration/answerOptions.twig:119
-#: application/views/questionAdministration/subquestions.twig:118
-msgid "Quick add"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:45
-msgid "Show link/button to delete response & exit survey"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:46
-msgid "Question help text position"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:47
-msgid "Top"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:48
-msgid "Bottom"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:50
-msgid "Always on"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:51
-msgid "Small screens"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:52
-msgid "After specific subquestion"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:53
-msgid "Relevance help for printable survey"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:54
-msgid "Specify how array-filtered sub-questions should be displayed"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:55
-#: application/helpers/twig_translation_helper.php:61
-msgid "Indicates where the 'Other' option should be placed"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:56
-msgid "Answer code for 'After specific answer option'"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:57
-msgid "The code of the answer option after which the 'Other:' option will be placed if the position is set to 'After specific answer option'"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:58
-#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:402
-msgid "Position for 'Other:' option"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:59
-msgid "Subquestion title for 'After specific subquestion'"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:60
-msgid "The title of the subquestion after which the 'Other:' option will be placed if the position is set to 'After specific subquestion'"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:62
-msgid "After specific answer option"
-msgstr ""
-
-#: application/helpers/twig_translation_helper.php:63
-msgid "Before 'No Answer'"
-msgstr ""
-
 #: application/helpers/update/update_helper.php:39
 msgid "Database has been successfully upgraded to version %s"
 msgstr ""
@@ -15536,6 +15324,16 @@ msgstr ""
 msgid "List question groups"
 msgstr ""
 
+#: application/helpers/update/updates/Update_609.php:29
+#: themes/survey/vanilla/config.xml:23
+msgid "A clean and simple base that can be used by developers to create their own Bootstrap based theme."
+msgstr ""
+
+#: application/helpers/update/updates/Update_609.php:38
+#: themes/survey/fruity/config.xml:24
+msgid "A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."
+msgstr ""
+
 #: application/helpers/update/updates/Update_609.php:47
 #: themes/survey/bootswatch/config.xml:24
 msgid "Based on BootsWatch Themes:"
@@ -15544,6 +15342,11 @@ msgstr ""
 #: application/helpers/update/updates/Update_609.php:47
 #: themes/survey/bootswatch/config.xml:24
 msgid "Visit Bootswatch page"
+msgstr ""
+
+#: application/helpers/update/updates/Update_609.php:118
+#: themes/survey/fruity_twentythree/config.xml:24
+msgid "Our default theme for a fruity and flexible use. This theme offers single color variations"
 msgstr ""
 
 #: application/helpers/userstatistics_helper.php:2499
@@ -16071,7 +15874,7 @@ msgstr ""
 msgid "Try again! Connection with database failed."
 msgstr ""
 
-#: application/models/LSActiveRecord.php:494
+#: application/models/LSActiveRecord.php:489
 #: application/views/responses/partial/responseListTable.php:218
 msgid "This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for."
 msgstr ""
@@ -16776,6 +16579,10 @@ msgstr ""
 #: application/models/QuestionType.php:355
 #: application/models/QuestionType.php:366
 msgid "Text questions"
+msgstr ""
+
+#: application/models/QuestionType.php:343
+msgid "Short free text"
 msgstr ""
 
 #: application/models/QuestionType.php:354
@@ -21994,6 +21801,10 @@ msgstr ""
 msgid "Release notes"
 msgstr ""
 
+#: application/views/admin/super/help_button_dropup.php:22
+msgid "Legal notice"
+msgstr ""
+
 #: application/views/admin/super/help_button_dropup.php:25
 msgid "Contact"
 msgstr ""
@@ -25936,8 +25747,21 @@ msgstr ""
 msgid "Group by Group"
 msgstr ""
 
+#: application/views/questionAdministration/answerOptionRow.twig:33
+#: application/views/questionAdministration/subquestionRow.twig:56
+msgid "Drag to sort"
+msgstr ""
+
+#: application/views/questionAdministration/answerOptionRow.twig:117
+msgid "Some example answer option"
+msgstr ""
+
 #: application/views/questionAdministration/answerOptionRow.twig:124
 msgid "Answer option:"
+msgstr ""
+
+#: application/views/questionAdministration/answerOptionRow.twig:145
+msgid "Insert a new answer option after this one"
 msgstr ""
 
 #: application/views/questionAdministration/answerOptionRow.twig:149
@@ -25955,6 +25779,21 @@ msgstr ""
 
 #: application/views/questionAdministration/answerOptions.twig:44
 msgid "A positive or negative integer number as assement value if this option is selected"
+msgstr ""
+
+#: application/views/questionAdministration/answerOptions.twig:103
+#: application/views/questionAdministration/subquestions.twig:102
+msgid "Load label set"
+msgstr ""
+
+#: application/views/questionAdministration/answerOptions.twig:114
+#: application/views/questionAdministration/subquestions.twig:113
+msgid "Save label set"
+msgstr ""
+
+#: application/views/questionAdministration/answerOptions.twig:119
+#: application/views/questionAdministration/subquestions.twig:118
+msgid "Quick add"
 msgstr ""
 
 #: application/views/questionAdministration/copyQuestionForm.php:18
@@ -26077,6 +25916,10 @@ msgstr ""
 msgid "Manage label sets"
 msgstr ""
 
+#: application/views/questionAdministration/modals.twig:100
+msgid "Save as label set"
+msgstr ""
+
 #: application/views/questionAdministration/modals.twig:128
 msgid "Replace label set?"
 msgstr ""
@@ -26140,6 +25983,17 @@ msgstr ""
 
 #: application/views/questionAdministration/subquestions.twig:47
 msgid "A mandatory unique alpha-numeric code for each subquestion (1-20 characters)"
+msgstr ""
+
+#: application/views/questionAdministration/subquestions.twig:51
+#: editor/src/components/QuestionTypes/ArrayQuestion/ArrayColumnsTitles/ArrayColumnsTitles.js:102
+#: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoiceSubquestion.js:144
+#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:196
+msgid "Subquestion"
+msgstr ""
+
+#: application/views/questionAdministration/subquestions.twig:57
+msgid "Relevance equation"
 msgstr ""
 
 #: application/views/questionAdministration/summary.php:10
@@ -26655,6 +26509,10 @@ msgstr ""
 msgid "..."
 msgstr ""
 
+#: application/views/survey/questions/answer/arrays/multiflexi/translations.php:15
+msgid "Semicolon-separated list of row subquestion codes that keep their original database position when subquestions (rows) are randomized"
+msgstr ""
+
 #: application/views/survey/questions/answer/date/dropdown/answer.twig:27
 msgid "Date in the format: %s"
 msgstr ""
@@ -26700,16 +26558,8 @@ msgstr ""
 msgid "You can upload %s under %s KB each."
 msgstr ""
 
-#: application/views/survey/questions/answer/file_upload/translations.php:15
-msgid "Min number of files"
-msgstr ""
-
 #: application/views/survey/questions/answer/file_upload/translations.php:16
 msgid "The participant cannot upload a single file larger than this size"
-msgstr ""
-
-#: application/views/survey/questions/answer/file_upload/translations.php:17
-msgid "Max number of files"
 msgstr ""
 
 #: application/views/survey/questions/answer/list_dropdown/translations.php:15
@@ -26722,6 +26572,41 @@ msgstr ""
 #: application/views/survey/questions/answer/list_dropdown/translations.php:16
 #: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:353
 msgid "Order - like 3)"
+msgstr ""
+
+#: application/views/survey/questions/answer/list_dropdown/translations.php:17
+#: application/views/survey/questions/answer/listradio/translations.php:21
+#: application/views/survey/questions/answer/multiplechoice/translations.php:21
+#: application/views/survey/questions/answer/multiplechoice_with_comments/translations.php:21
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:402
+msgid "Position for 'Other:' option"
+msgstr ""
+
+#: application/views/survey/questions/answer/list_dropdown/translations.php:18
+#: application/views/survey/questions/answer/listradio/translations.php:22
+#: application/views/survey/questions/answer/multiplechoice/translations.php:22
+#: application/views/survey/questions/answer/multiplechoice_with_comments/translations.php:22
+msgid "Indicates where the 'Other' option should be placed"
+msgstr ""
+
+#: application/views/survey/questions/answer/list_dropdown/translations.php:19
+#: application/views/survey/questions/answer/listradio/translations.php:23
+msgid "After specific answer option"
+msgstr ""
+
+#: application/views/survey/questions/answer/list_dropdown/translations.php:20
+#: application/views/survey/questions/answer/listradio/translations.php:24
+msgid "Before 'No Answer'"
+msgstr ""
+
+#: application/views/survey/questions/answer/list_dropdown/translations.php:21
+#: application/views/survey/questions/answer/listradio/translations.php:25
+msgid "Answer code for 'After specific answer option'"
+msgstr ""
+
+#: application/views/survey/questions/answer/list_dropdown/translations.php:22
+#: application/views/survey/questions/answer/listradio/translations.php:26
+msgid "The code of the answer option after which the 'Other:' option will be placed if the position is set to 'After specific answer option'"
 msgstr ""
 
 #: application/views/survey/questions/answer/listradio/translations.php:16
@@ -26752,7 +26637,7 @@ msgstr ""
 
 #: application/views/survey/questions/answer/listradio/translations.php:20
 #: application/views/survey/questions/answer/multiplechoice/translations.php:20
-msgid "The answer options will be distributed across the number of columns set here. Any number up to 1 can be entered, but we only support systems up to 16."
+msgid "The answer options will be distributed across the number of columns set here. Any number up from 1 can be entered, but we only support systems up to 16."
 msgstr ""
 
 #: application/views/survey/questions/answer/multiplechoice/translations.php:19
@@ -26762,8 +26647,23 @@ msgstr ""
 msgid "Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized"
 msgstr ""
 
+#: application/views/survey/questions/answer/multiplechoice/translations.php:23
+#: application/views/survey/questions/answer/multiplechoice_with_comments/translations.php:23
+msgid "After specific subquestion"
+msgstr ""
+
+#: application/views/survey/questions/answer/multiplechoice/translations.php:24
+#: application/views/survey/questions/answer/multiplechoice_with_comments/translations.php:24
+msgid "Subquestion title for 'After specific subquestion'"
+msgstr ""
+
+#: application/views/survey/questions/answer/multiplechoice/translations.php:25
+#: application/views/survey/questions/answer/multiplechoice_with_comments/translations.php:25
+msgid "The title of the subquestion after which the 'Other:' option will be placed if the position is set to 'After specific subquestion'"
+msgstr ""
+
 #: application/views/survey/questions/answer/multiplechoice_with_comments/translations.php:20
-msgid "Use javascript function to remove text and uncheck checkbox (or use ExpressionScript Engine only)."
+msgid "Use JavaScript function to remove text and uncheck checkbox (or use ExpressionScript Engine only)."
 msgstr ""
 
 #: application/views/survey/questions/answer/multiplenumeric/rows/dynamic.twig:46
@@ -26813,8 +26713,28 @@ msgstr ""
 msgid "Replace rank header (default: \"Your ranking\")"
 msgstr ""
 
+#: application/views/survey/questions/answer/shortfreetext/location_mapservice/item_100.twig:29
+msgid "Search (3 characters minimum)"
+msgstr ""
+
+#: application/views/survey/questions/answer/shortfreetext/location_mapservice/item_100.twig:37
+msgid "Restrict search to map extent"
+msgstr ""
+
+#: application/views/survey/questions/answer/shortfreetext/location_mapservice/item_100.twig:63
+msgid "Latitude:"
+msgstr ""
+
+#: application/views/survey/questions/answer/shortfreetext/location_mapservice/item_100.twig:77
+msgid "Longitude:"
+msgstr ""
+
 #: application/views/survey/questions/answer/shortfreetext/translations.php:15
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longitude"
+msgstr ""
+
+#: application/views/survey/questions/answer/shortfreetext/translations.php:16
+msgid "Set the size to the input or textarea, the input will be displayed with approximately this size in width."
 msgstr ""
 
 #: application/views/survey/questions/question_help/asterisk.twig:9
@@ -27643,6 +27563,10 @@ msgstr ""
 msgid "Customize theme"
 msgstr ""
 
+#: application/views/themeOptions/options_core.php:359
+msgid "Preview image"
+msgstr ""
+
 #: application/views/themeOptions/update.php:70
 msgid "There are no simple options in this survey theme."
 msgstr ""
@@ -28256,6 +28180,7 @@ msgid "Fix height"
 msgstr ""
 
 #: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:307
+#: themes/question/image_select-listradio/survey/questions/answer/listradio/translations.php:22
 #: themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice/translations.php:22
 msgid "Crop or resize"
 msgstr ""
@@ -30269,10 +30194,6 @@ msgstr ""
 msgid "Crop images to fit into size. Needs JavaScript enabled."
 msgstr ""
 
-#: themes/question/image_select-listradio/survey/questions/answer/listradio/translations.php:22
-msgid "Crop or Resize"
-msgstr ""
-
 #: themes/question/image_select-listradio/survey/questions/answer/listradio/translations.php:25
 #: themes/question/image_select-multiplechoice/survey/questions/answer/multiplechoice/translations.php:25
 msgid "Fix width of the images to this value. Leave empty to not change them."
@@ -30526,6 +30447,15 @@ msgstr ""
 msgid "Load now"
 msgstr ""
 
+#: themes/survey/fruity_twentythree/views/subviews/content/optin.twig:3
+#: themes/survey/fruity_twentythree/views/subviews/content/optout.twig:14
+#: themes/survey/fruity_twentythree/views/subviews/content/optout.twig:17
+#: themes/survey/vanilla/views/subviews/content/optin.twig:3
+#: themes/survey/vanilla/views/subviews/content/optout.twig:14
+#: themes/survey/vanilla/views/subviews/content/optout.twig:17
+msgid "I confirm"
+msgstr ""
+
 #: themes/survey/fruity_twentythree/views/subviews/content/save.twig:44
 #: themes/survey/vanilla/views/subviews/content/save.twig:44
 msgid "Save your unfinished survey"
@@ -30567,6 +30497,11 @@ msgstr ""
 #: themes/survey/fruity_twentythree/views/subviews/content/save.twig:192
 #: themes/survey/fruity_twentythree/views/subviews/registration/register_form.twig:49
 msgid "Enter e-mail address"
+msgstr ""
+
+#: themes/survey/fruity_twentythree/views/subviews/content/submit_preview.twig:23
+#: themes/survey/vanilla/views/subviews/content/submit_preview.twig:23
+msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr ""
 
 #: themes/survey/fruity_twentythree/views/subviews/header/nav_bar.twig:46

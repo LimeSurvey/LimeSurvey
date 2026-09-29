@@ -73,6 +73,8 @@ final class ModuleNode extends Node implements CoercesChildrenToStringInterface
         parent::__construct($nodes, [
             'index' => null,
             'embedded_templates' => $embeddedTemplates,
+            'strategy' => false,
+            'escaper' => false,
         ], 1);
 
         // populate the template name of all node children
@@ -120,6 +122,8 @@ final class ModuleNode extends Node implements CoercesChildrenToStringInterface
         $this->compileGetTemplateName($compiler);
 
         $this->compileIsTraitable($compiler);
+
+        $this->compileGetDefaultEscapeStrategy($compiler);
 
         $this->compileDebugInfo($compiler);
 
@@ -198,8 +202,14 @@ final class ModuleNode extends Node implements CoercesChildrenToStringInterface
             ->write("/**\n")
             ->write(" * @var array<string, MacroNamespace>\n")
             ->write(" */\n")
-            ->write("private array \$macros = [];\n\n")
+            ->write("private array \$macros = [];\n")
         ;
+
+        if ($this->getAttribute('escaper')) {
+            $compiler->write("private \\Twig\\Runtime\\EscaperRuntime \$escaper;\n");
+        }
+
+        $compiler->raw("\n");
     }
 
     protected function compileConstructor(Compiler $compiler): void
@@ -211,6 +221,10 @@ final class ModuleNode extends Node implements CoercesChildrenToStringInterface
             ->write("parent::__construct(\$env);\n\n")
             ->write("\$this->source = \$this->getSourceContext();\n\n")
         ;
+
+        if ($this->getAttribute('escaper')) {
+            $compiler->write("\$this->escaper = \$env->getRuntime('Twig\\Runtime\\EscaperRuntime');\n\n");
+        }
 
         // parent
         if (!$this->hasNode('parent')) {
@@ -376,7 +390,7 @@ final class ModuleNode extends Node implements CoercesChildrenToStringInterface
         $compiler->subcompile($this->getNode('display_end'));
 
         if (!$this->hasNode('parent')) {
-            $compiler->write("yield from [];\n");
+            $compiler->write("return; yield;\n");
         }
 
         $compiler
@@ -457,6 +471,26 @@ final class ModuleNode extends Node implements CoercesChildrenToStringInterface
             ->write("public function isTraitable(): bool\n", "{\n")
             ->indent()
             ->write("return false;\n")
+            ->outdent()
+            ->write("}\n\n")
+        ;
+    }
+
+    protected function compileGetDefaultEscapeStrategy(Compiler $compiler): void
+    {
+        if (false === $strategy = $this->getAttribute('strategy')) {
+            return;
+        }
+
+        $compiler
+            ->write("/**\n")
+            ->write(" * @codeCoverageIgnore\n")
+            ->write(" */\n")
+            ->write("public function getDefaultEscapeStrategy(): string|false\n", "{\n")
+            ->indent()
+            ->write('return ')
+            ->repr($strategy)
+            ->raw(";\n")
             ->outdent()
             ->write("}\n\n")
         ;

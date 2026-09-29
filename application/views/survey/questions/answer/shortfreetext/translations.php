@@ -13,3 +13,4 @@ if (!defined('BASEPATH')) {
  * When adding or changing such a text in config.xml, update the matching entry here.
  */
 gT('Default coordinates of the map when the page first loads. Format: latitude [space] longitude');
+gT('Set the size to the input or textarea, the input will be displayed with approximately this size in width.');
