@@ -592,7 +592,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
                 $fieldtype = 'A';
                 $val_size = 31;
                 break;
-            case 'quota_exit';
+            case 'quota_exit':
                 $fieldtype = 'F';
                 $val_size = 7;
                 break;

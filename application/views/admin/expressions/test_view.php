@@ -30,7 +30,7 @@ echo viewHelper::getViewTestTag('expressionsTest');
         <td>Shows Relevance equations for all conditions in the database, grouped by question id (and not pretty-printed)</td>
     </tr>
     <tr>
-        <td><a class="ls-link" href="<?php echo $this->createUrl('admin/expressions/sa/upgrade_conditions2relevance'); ?>">Bulk Convert Conditions to Relevance</a></td>
+        <td><?php echo CHtml::form(array('admin/expressions/sa/upgrade_conditions2relevance'), 'post'); ?><button type="submit" class="ls-link btn btn-link">Bulk Convert Conditions to Relevance</button><?php echo CHtml::endForm(); ?></td>
         <td>Convert conditions to relevance for entire database</td>
     </tr>
     <tr>
@@ -74,7 +74,7 @@ echo viewHelper::getViewTestTag('expressionsTest');
             <td>Shows Relevance equations for all conditions in the database, grouped by question id (and not pretty-printed)</td>
         </tr>
         <tr>
-            <td><a class="ls-link" href="<?php echo $this->createUrl('admin/expressions/sa/upgrade_conditions2relevance'); ?>">Bulk Convert Conditions to Relevance</a></td>
+            <td><?php echo CHtml::form(array('admin/expressions/sa/upgrade_conditions2relevance'), 'post'); ?><button type="submit" class="ls-link btn btn-link">Bulk Convert Conditions to Relevance</button><?php echo CHtml::endForm(); ?></td>
             <td>Convert conditions to relevance for entire database</td>
         </tr>
         <tr>

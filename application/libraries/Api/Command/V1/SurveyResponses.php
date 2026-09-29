@@ -108,6 +108,7 @@ class SurveyResponses implements CommandInterface
      * @param Request $request
      * @return array
      * @throws TransformerException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function process(Request $request): array
     {
@@ -119,12 +120,10 @@ class SurveyResponses implements CommandInterface
         $this->getSurvey($request);
         $model = $this->getSurveyDynamicModel($request);
         $language = $this->getLanguage($request);
-
         $this->transformerOutputSurveyResponses->fieldMap =
             createFieldMap($this->survey, 'full', true, false, $language);
 
         [$criteria, $sort] = $this->buildCriteria($request);
-
         $pagination = $this->buildPagination($request);
         $dataProvider = new \LSCActiveDataProvider(
             $model,
@@ -145,22 +144,12 @@ class SurveyResponses implements CommandInterface
 
         $responses = $this->transformerOutputSurveyResponses->transform(
             $surveyResponses,
-            [
-                'survey' => $this->survey,
-                'quotaNames' => \CHtml::listData(
-                    $this->survey->quotas,
-                    'id',
-                    'name'
-                ),
-            ]
+            ['survey' => $this->survey]
         );
-
         $surveyQuestions = $this->getQuestionFieldMap();
-
         $this->answerCache->load((int) $surveyId, $language);
         $responses = $this->mapResponsesToQuestions($responses, $surveyQuestions);
         $timingFields = $this->appendTimingData($responses);
-
         $totalItems = $dataProvider->getTotalItemCount();
         $pageSize = max(1, $pagination['pageSize'] ?? 1);
 
@@ -256,7 +245,7 @@ class SurveyResponses implements CommandInterface
         $timings = [];
 
         foreach ($records as $record) {
-            $timings[(int)$record->id] = array_map(
+            $timings[(int)$record->getAttribute('id')] = array_map(
                 static fn($value) => is_numeric($value) ? (float)$value : null,
                 $record->getAttributes($fieldNames)
             );
