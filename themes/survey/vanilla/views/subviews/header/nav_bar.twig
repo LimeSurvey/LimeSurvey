@@ -28,7 +28,7 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
         or (aSurveyInfo.aQuestionIndex.bShow == true and aSurveyInfo.format != 'A')
         or (aSurveyInfo.alanguageChanger.show)
     %}
-    <div id="survey-nav" class="navbar {{ navClass }} navbar-expand-md fixed-top border-bottom pt-0 pb-0">
+    <header id="survey-nav" role="banner" id="survey-nav" class="navbar {{ navClass }} navbar-expand-md fixed-top border-bottom pt-0 pb-0">
         <div class="container-fluid">
             {% if ShowMenu %}
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
@@ -58,5 +58,5 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
                 </div>
             {% endif %}
         </div>
-    </div>
+    </header>
 {% endif %}
