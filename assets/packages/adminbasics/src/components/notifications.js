@@ -54,9 +54,10 @@ const NotifcationSystem  = function (){
      * Fetch notification as JSON and show modal
      * @param {object} that The notification link
      * @param {url} URL to fetch notification as JSON
+     * @param {boolean} alreadyRead If the notification was already marked as read before showing
      * @return
      */
-    __showNotificationModal = (that, url) => {
+    __showNotificationModal = (that, url, alreadyRead = false) => {
         LOG.log('showNotificationModal');
         $.ajax({
             url: url,
@@ -102,7 +103,8 @@ const NotifcationSystem  = function (){
                 // Restore focus after __updateNotificationWidget() has completed (or failed).
                 // Use .always() so focus is restored even if the read-url or widget-refresh
                 // requests reject.
-                __notificationIsRead(that).always(() => {
+                const readRequest = alreadyRead ? $.Deferred().resolve().promise() : __notificationIsRead(that);
+                readRequest.always(() => {
                     if (pendingHref) {
                         window.location.href = pendingHref;
                     } else {
@@ -133,10 +135,12 @@ const NotifcationSystem  = function (){
             const status = $(that).data('status');
 
             // Important 2 = nag only once (used e.g. for redirect).
+            // Mark as read before showing: the message may redirect on its own
+            // (e.g. survey template import), so the modal is never closed.
             if (importance == 2 && status == 'new') {
-                __showNotificationModal(that, url);
-                // __notificationIsRead is called by the hidden.bs.modal handler
-                // registered inside __showNotificationModal; no second call needed.
+                __notificationIsRead(that).always(() => {
+                    __showNotificationModal(that, url, true);
+                });
                 LOG.log('stoploop');
                 return false;  // Stop loop
             }
