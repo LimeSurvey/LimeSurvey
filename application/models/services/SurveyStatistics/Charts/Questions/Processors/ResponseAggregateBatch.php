@@ -441,12 +441,12 @@ final class ResponseAggregateBatch
             case self::KIND_JSON_ELEMENT:
                 return $result + ($value !== null && (string)$value === $request['value'] ? $weight : 0);
             case self::KIND_BLANK:
-                return $result + ($value === null || (!$request['numeric'] && $value === '') ? $weight : 0);
+                return $result + ($value === null || $value === '' ? $weight : 0);
             case self::KIND_NON_EMPTY:
             case self::KIND_ANY_NON_EMPTY:
                 $answered = $request['kind'] === self::KIND_ANY_NON_EMPTY
                     ? $value === true
-                    : $value !== null && ($request['numeric'] || $value !== '');
+                    : $value !== null && $value !== '';
                 return $result + ($answered ? $weight : 0);
             case self::KIND_NUMERIC:
                 return $result + ($this->isNumericValue($value, !empty($request['numeric'])) ? $weight : 0);

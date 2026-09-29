@@ -99,6 +99,17 @@ class ResponseAggregateBatchTest extends TestCase
         $this->assertEqualsWithDelta(2, $this->invoke($batch, 'aggregateValues', [$values, $maxRequest]), 0.00001);
     }
 
+    public function testEncryptedNumericAggregatesTreatEmptyStringAsBlank(): void
+    {
+        $batch = new ResponseAggregateBatch(1);
+        $blankRequest = $this->getRequest($batch, $batch->countBlank('Q12', true));
+        $answeredRequest = $this->getRequest($batch, $batch->countNonEmpty('Q12', true));
+        $values = ['', '5'];
+
+        $this->assertSame(1, $this->invoke($batch, 'aggregateValues', [$values, $blankRequest]));
+        $this->assertSame(1, $this->invoke($batch, 'aggregateValues', [$values, $answeredRequest]));
+    }
+
     public function testEncryptedAggregatesApplyGroupedValueWeight(): void
     {
         $batch = new ResponseAggregateBatch(1);
