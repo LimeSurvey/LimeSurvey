@@ -111,6 +111,12 @@ class CheckIntegrity extends SurveyCommonAction
         if (Yii::app()->request->getPost('ok') != 'Y') {
             throw new CHttpException(403);
         }
+        // This renders the same check_view.php as index(), including the redundancy
+        // check's checkbox UI, so it needs the same script registered here too - the
+        // admin theme's pjax layer only re-executes (and fires pjax:scriptcomplete for)
+        // scripts present in the response it just swapped in.
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'checkintegrity.js');
+
         $aFixResult = $this->applyAutomaticFixes();
 
         $aData = $this->checkintegrity();
