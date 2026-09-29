@@ -99,6 +99,39 @@ class ResponseAggregateBatchTest extends TestCase
         $this->assertEqualsWithDelta(2, $this->invoke($batch, 'aggregateValues', [$values, $maxRequest]), 0.00001);
     }
 
+    public function testEncryptedAggregatesApplyGroupedValueWeight(): void
+    {
+        $batch = new ResponseAggregateBatch(1);
+        $request = $this->getRequest($batch, $batch->sumValues('Q12'));
+
+        $this->assertEqualsWithDelta(
+            7.5,
+            $this->invoke($batch, 'accumulateValue', [0, '2.5', $request, 3]),
+            0.00001
+        );
+    }
+
+    public function testWeightedMedianUsesCumulativeGroupCounts(): void
+    {
+        $batch = new ResponseAggregateBatch(1);
+        $values = [
+            ['value' => 10.0, 'weight' => 2],
+            ['value' => 2.0, 'weight' => 3],
+            ['value' => 20.0, 'weight' => 1],
+        ];
+
+        $this->assertSame(6.0, $this->invoke($batch, 'weightedMedian', [$values]));
+    }
+
+    public function testAnyNonEmptyRemainsAPlainSqlAggregateForEncryptedFields(): void
+    {
+        $batch = new ResponseAggregateBatch(1);
+        $this->setEncryptedFields($batch, ['Q12']);
+        $request = $this->getRequest($batch, $batch->countAnyNonEmpty(['Q12', 'Q13']));
+
+        $this->assertFalse($this->invoke($batch, 'requestUsesEncryptedField', [$request]));
+    }
+
     private function setEncryptedFields(ResponseAggregateBatch $batch, array $fields): void
     {
         $property = new ReflectionProperty(ResponseAggregateBatch::class, 'encryptedFields');

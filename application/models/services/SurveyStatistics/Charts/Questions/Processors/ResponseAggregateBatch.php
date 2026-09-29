@@ -283,8 +283,10 @@ final class ResponseAggregateBatch
     }
 
     /**
-     * Aggregate encrypted response columns in PHP after decrypting them. SQL
-     * cannot inspect ciphertext as answer codes, JSON elements, or numbers.
+     * Aggregate encrypted response columns in PHP after decrypting each
+     * distinct ciphertext. Encryption is deterministic, so grouping in SQL
+     * avoids one decrypt per response row while preserving row counts through
+     * the group's weight.
      *
      * @param array<string, array{kind: string, field: string, value: string, numeric?: bool}> $requests
      */
@@ -314,27 +316,46 @@ final class ResponseAggregateBatch
         }
 
         $medianValues = array_fill_keys(array_keys($medianRequests), []);
-        $select = implode(', ', array_map([$db, 'quoteColumnName'], array_keys($fields)));
-        $reader = $db->createCommand("SELECT $select FROM $table$where")->query();
-        while (($row = $reader->read()) !== false) {
-            foreach ($row as $field => $value) {
-                if ($this->isEncryptedField($field) && $value !== null && $value !== '') {
-                    $row[$field] = Response::decryptSingle($value);
-                }
-            }
+        foreach (array_keys($fields) as $field) {
+            $column = $db->quoteColumnName($field);
+            $valueAlias = $db->quoteColumnName('encrypted_value');
+            $countAlias = $db->quoteColumnName('value_count');
+            $sql = "SELECT $column AS $valueAlias, COUNT(*) AS $countAlias"
+                . " FROM $table$where GROUP BY $column";
+            $reader = $db->createCommand($sql)->query();
 
-            foreach ($requests as $alias => $request) {
-                $results[$alias] = $this->accumulateValue(
-                    $results[$alias],
-                    $this->valueForRequest($row, $request),
-                    $request
-                );
-            }
-            foreach ($medianRequests as $alias => $request) {
-                $value = $row[$request['field']] ?? null;
-                $numericValue = $this->normalizedNumericValue($value, !empty($request['numeric']));
-                if ($numericValue !== null) {
-                    $medianValues[$alias][] = $numericValue;
+            while (($group = $reader->read()) !== false) {
+                $value = $group['encrypted_value'] ?? null;
+                $weight = (int)($group['value_count'] ?? 0);
+                if ($value !== null && $value !== '') {
+                    try {
+                        $value = Response::decryptSingle($value);
+                    } catch (\Throwable) {
+                        // A corrupt value must not abort statistics for the survey.
+                        continue;
+                    }
+                }
+
+                $row = [$field => $value];
+                foreach ($requests as $alias => $request) {
+                    if ($this->requestFields($request)[0] !== $field) {
+                        continue;
+                    }
+                    $results[$alias] = $this->accumulateValue(
+                        $results[$alias],
+                        $this->valueForRequest($row, $request),
+                        $request,
+                        $weight
+                    );
+                }
+                foreach ($medianRequests as $alias => $request) {
+                    if ($request['field'] !== $field) {
+                        continue;
+                    }
+                    $numericValue = $this->normalizedNumericValue($value, !empty($request['numeric']));
+                    if ($numericValue !== null) {
+                        $medianValues[$alias][] = ['value' => $numericValue, 'weight' => $weight];
+                    }
                 }
             }
         }
@@ -343,12 +364,37 @@ final class ResponseAggregateBatch
             $this->results[$alias] = $this->finalizeAggregateValue($result);
         }
         foreach ($medianValues as $alias => $values) {
-            sort($values, SORT_NUMERIC);
-            $count = count($values);
-            $this->results[$alias] = $count === 0
-                ? 0
-                : ($values[intdiv($count - 1, 2)] + $values[intdiv($count, 2)]) / 2;
+            $this->results[$alias] = $this->weightedMedian($values);
         }
+    }
+
+    /**
+     * @param array<int, array{value: float, weight: int}> $values
+     * @return int|float
+     */
+    private function weightedMedian(array $values)
+    {
+        if ($values === []) {
+            return 0;
+        }
+
+        usort($values, static fn(array $left, array $right): int => $left['value'] <=> $right['value']);
+        $count = array_sum(array_column($values, 'weight'));
+        $lowerPosition = intdiv($count - 1, 2);
+        $upperPosition = intdiv($count, 2);
+        $lower = null;
+        $cumulative = 0;
+        foreach ($values as $entry) {
+            $cumulative += $entry['weight'];
+            if ($lower === null && $cumulative > $lowerPosition) {
+                $lower = $entry['value'];
+            }
+            if ($cumulative > $upperPosition) {
+                return ($lower + $entry['value']) / 2;
+            }
+        }
+
+        return 0;
     }
 
     private function valueForRequest(array $row, array $request)
@@ -389,28 +435,28 @@ final class ResponseAggregateBatch
     }
 
     /** @param int|float|null $result @return int|float|null */
-    private function accumulateValue($result, $value, array $request)
+    private function accumulateValue($result, $value, array $request, int $weight = 1)
     {
         switch ($request['kind']) {
             case self::KIND_VALUE:
             case self::KIND_JSON_ELEMENT:
-                return $result + ($value !== null && (string)$value === $request['value'] ? 1 : 0);
+                return $result + ($value !== null && (string)$value === $request['value'] ? $weight : 0);
             case self::KIND_BLANK:
-                return $result + ($value === null || (!$request['numeric'] && $value === '') ? 1 : 0);
+                return $result + ($value === null || (!$request['numeric'] && $value === '') ? $weight : 0);
             case self::KIND_NON_EMPTY:
             case self::KIND_ANY_NON_EMPTY:
                 $answered = $request['kind'] === self::KIND_ANY_NON_EMPTY
                     ? $value === true
                     : $value !== null && ($request['numeric'] || $value !== '');
-                return $result + ($answered ? 1 : 0);
+                return $result + ($answered ? $weight : 0);
             case self::KIND_NUMERIC:
-                return $result + ($this->isNumericValue($value, !empty($request['numeric'])) ? 1 : 0);
+                return $result + ($this->isNumericValue($value, !empty($request['numeric'])) ? $weight : 0);
             case self::KIND_SUM:
                 $numericValue = $this->normalizedNumericValue($value, !empty($request['numeric']));
-                return $result + ($numericValue ?? 0);
+                return $result + ($numericValue ?? 0) * $weight;
             case self::KIND_SUM_SQUARES:
                 $numericValue = $this->normalizedNumericValue($value, !empty($request['numeric']));
-                return $result + ($numericValue === null ? 0 : $numericValue ** 2);
+                return $result + ($numericValue === null ? 0 : $numericValue ** 2 * $weight);
             case self::KIND_MIN:
             case self::KIND_MAX:
                 $numericValue = $this->normalizedNumericValue($value, !empty($request['numeric']));
@@ -468,6 +514,10 @@ final class ResponseAggregateBatch
 
     private function requestUsesEncryptedField(array $request): bool
     {
+        if ($request['kind'] === self::KIND_ANY_NON_EMPTY) {
+            return false;
+        }
+
         foreach ($this->requestFields($request) as $field) {
             if ($this->isEncryptedField($field)) {
                 return true;
