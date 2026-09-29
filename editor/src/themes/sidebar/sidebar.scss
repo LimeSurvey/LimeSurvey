@@ -65,11 +65,6 @@
   cursor: grab;
   position: relative;
 
-  // Fix dropdown menu positioning within the sidebar
-  .dropdown-menu {
-    position: fixed !important;
-  }
-
   .content-editable {
     cursor: grab;
 

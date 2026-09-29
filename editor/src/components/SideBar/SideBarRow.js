@@ -183,6 +183,7 @@ export const SideBarRow = ({
               className="meatball-dropdown"
               testId={menuId}
               align="start"
+              portalMenu
               menuItems={menuItems}
               toggleSettings={{
                 iconClassName: 'ri-more-fill',
