@@ -52,7 +52,8 @@ if (!window.accessModes) {
 
         // Show loading state
         const originalText = button.innerHTML;
-        button.innerHTML = '<i class="ri-loader-4-line ri-spin"></i> ' + button.dataset.updating;
+        button.innerHTML = '<i class="ri-loader-4-line ri-spin me-1"></i>';
+        button.append(button.dataset.updating);
         button.disabled = true;
 
         // Build URL using LS.createUrl helper
@@ -71,9 +72,11 @@ if (!window.accessModes) {
                 if (data.success) {
                     // Update button display
                     if (newAccessMode === 'O') {
-                        button.innerHTML = '<i class="ri-global-line"></i> ' + this.textContent.trim();
+                        button.innerHTML = '<i class="ri-global-line me-1"></i>';
+                        button.append(this.textContent.trim());
                     } else {
-                        button.innerHTML = '<i class="ri-lock-2-line"></i> ' + this.textContent.trim();
+                        button.innerHTML = '<i class="ri-lock-2-line me-1"></i>';
+                        button.append(this.textContent.trim());
                     }
 
                     // Close dropdown
@@ -98,4 +101,3 @@ if (!window.accessModes) {
             });
     });
 }
-
