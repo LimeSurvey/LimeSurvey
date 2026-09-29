@@ -75,7 +75,6 @@ class Update_719 extends DatabaseUpdateBase
             ->join('{{question_attributes}} qa', 'qa.qid = q.qid')
             ->where("q.parent_qid = 0")
             ->andWhere("q.type = :type", [':type' => 'S'])
-            ->andWhere("(q.question_theme_name IS NULL OR q.question_theme_name = '' OR q.question_theme_name = 'core' OR q.question_theme_name = 'shortfreetext')")
             ->andWhere("qa.attribute = :attribute", [':attribute' => 'location_mapservice'])
             ->andWhere("qa.value IN ('1', '100')")
             ->group('q.qid')
