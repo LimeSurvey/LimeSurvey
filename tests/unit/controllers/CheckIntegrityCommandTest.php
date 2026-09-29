@@ -7,7 +7,7 @@ use ls\tests\TestBaseClass;
 /**
  * The checkintegrity console command is the CLI, no-confirmation-needed equivalent of
  * the "Check data integrity" admin page: it must apply the same automatic fixes
- * (CheckIntegrity::applyAutomaticFixes()) unattended, and report what it did.
+ * (DataIntegrityChecker::applyAutomaticFixes()) unattended, and report what it did.
  */
 class CheckIntegrityCommandTest extends TestBaseClass
 {

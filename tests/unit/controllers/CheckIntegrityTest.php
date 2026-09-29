@@ -5,7 +5,8 @@ namespace ls\tests\controllers;
 use ls\tests\TestBaseClass;
 
 /**
- * Regression tests for CheckIntegrity::deleteQuestions() and deleteGroups().
+ * Regression tests for the "Check data integrity" tool: the DataIntegrityChecker
+ * detection/fix logic and the CheckIntegrity admin action that exposes it.
  *
  * Deleting an orphaned question (no parent survey/group) or an orphaned
  * question group (no parent survey) must cascade to the child data that
@@ -14,8 +15,8 @@ use ls\tests\TestBaseClass;
  */
 class CheckIntegrityTest extends TestBaseClass
 {
-    /** @var \CheckIntegrity */
-    private $controller;
+    /** @var \DataIntegrityChecker */
+    private $integrityChecker;
 
     /** Imports the survey fixture shared by the integrity tests. */
     public static function setUpBeforeClass(): void
@@ -26,7 +27,7 @@ class CheckIntegrityTest extends TestBaseClass
         self::importSurvey($surveyFile);
     }
 
-    /** Prepares the controller and administrator session used by each test. */
+    /** Prepares the integrity checker and administrator session used by each test. */
     public function setUp(): void
     {
         parent::setUp();
@@ -35,21 +36,21 @@ class CheckIntegrityTest extends TestBaseClass
         // Normally set by the admin session; checkintegrity()'s old-survey-table check
         // reads this directly and isn't otherwise initialized outside a real request.
         \Yii::app()->session['dateformat'] = 1;
-        $this->controller = new \CheckIntegrity('dummy', 'checkintegrity');
+        $this->integrityChecker = new \DataIntegrityChecker();
     }
 
     /**
-     * Invokes a non-public method on the CheckIntegrity controller under test.
+     * Invokes a non-public method on the DataIntegrityChecker under test.
      *
-     * @param string $method
-     * @param array $args
-     * @return mixed
+     * @param string $method Name of the method to invoke.
+     * @param array $args Arguments to pass to it.
+     * @return mixed The method's return value.
      */
     private function callMethod($method, array $args)
     {
-        $reflection = new \ReflectionMethod(\CheckIntegrity::class, $method);
+        $reflection = new \ReflectionMethod(\DataIntegrityChecker::class, $method);
         $reflection->setAccessible(true);
-        return $reflection->invokeArgs($this->controller, $args);
+        return $reflection->invokeArgs($this->integrityChecker, $args);
     }
 
     /** Verifies that deleting an orphan question also deletes its child data. */
@@ -453,7 +454,7 @@ class CheckIntegrityTest extends TestBaseClass
         \Yii::app()->db->createCommand()->createTable($tokensTable, array('tid' => 'pk'));
 
         try {
-            $this->controller->applyAutomaticFixes();
+            $this->integrityChecker->applyAutomaticFixes();
 
             $this->assertFalse($this->tableExistsRaw($responsesTable), 'Empty old survey responses table was not auto-deleted.');
             $this->assertFalse($this->tableExistsRaw($tokensTable), 'Empty old participant list table was not auto-deleted.');
@@ -483,7 +484,7 @@ class CheckIntegrityTest extends TestBaseClass
         \Yii::app()->db->createCommand()->insert($tokensTable, array('token' => 'abc123'));
 
         try {
-            $aData = $this->controller->applyAutomaticFixes();
+            $aData = $this->integrityChecker->applyAutomaticFixes();
 
             $this->assertTrue(
                 $this->tableExistsRaw($tokensTable),

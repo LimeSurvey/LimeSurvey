@@ -36,23 +36,24 @@ class CheckIntegrityCommand extends CConsoleCommand
     const MAX_PASSES = 5;
 
     /**
-     * @param string[] $args
+     * Runs automatic integrity fix passes until nothing is left to fix or MAX_PASSES
+     * is reached, printing each fix and any remaining redundant tables.
+     *
+     * @param string[] $args Command line arguments (unused).
      * @return int 0 on a clean pass, 1 if a fix could not be applied, 2 if the check
      *             did not converge within MAX_PASSES.
      */
     #[\Override]
     public function run($args)
     {
-        Yii::import('application.controllers.admin.CheckIntegrity', true);
-
-        $checkIntegrity = new CheckIntegrity($this, 'checkintegrity');
+        $integrityChecker = new DataIntegrityChecker();
 
         $hasWarnings = false;
         $pass = 0;
         $aData = array('integrityok' => false);
         while (!$aData['integrityok'] && $pass < self::MAX_PASSES) {
             $pass++;
-            $aData = $checkIntegrity->applyAutomaticFixes();
+            $aData = $integrityChecker->applyAutomaticFixes();
 
             foreach ($aData['messages'] as $message) {
                 echo "[pass {$pass}] " . strip_tags($message) . PHP_EOL;
@@ -65,7 +66,7 @@ class CheckIntegrityCommand extends CConsoleCommand
 
         // Duplicate group/question sort orders are fixed automatically by
         // applyAutomaticFixes() (see fixGroupOrderDuplicates()/fixQuestionOrderDuplicates()
-        // in CheckIntegrity); the corresponding "Fixed duplicate ... sort order" messages
+        // in DataIntegrityChecker); the corresponding "Fixed duplicate ... sort order" messages
         // were already printed above, per pass, alongside the other fixes.
 
         $redundantTables = array_merge($aData['redundantsurveytables'] ?? array(), $aData['redundanttokentables'] ?? array());
@@ -91,6 +92,8 @@ class CheckIntegrityCommand extends CConsoleCommand
     }
 
     /**
+     * Returns the usage, description and exit codes shown by `console.php help checkintegrity`.
+     *
      * @return string
      */
     #[\Override]
