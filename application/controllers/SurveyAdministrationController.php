@@ -3077,12 +3077,12 @@ class SurveyAdministrationController extends LSBaseController
         $activated = $aSurveyInfo['active'];
 
         /** Send a alert if Survey seems to be active but don't have response table */
-        if ($oSurvey->isActive && !$oSurvey->isActiveAndHaveReponseTable) {
+        if ($oSurvey->isActive && !$oSurvey->hasResponsesTable) {
             $alertstring = gT("A problem has been detected with the survey database. Please contact the an admintrator to perform database integrity.");
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 $alertstring = sprintf(
                     gT("A problem has been detected with the survey database. Please %sperform data integrity%s."),
-                    '<a href=' . App()->createUrl("admin/checkintegrity") .'>',
+                    '<a href=' . CHtml::encode(App()->createUrl("admin/checkintegrity")) .'>',
                     '</a>'
                 );
             }

@@ -1280,15 +1280,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Check if a survey is active and have a response table
-     * @return bool
-     */
-    public function getIsActiveAndHaveReponseTable()
-    {
-        return $this->isActive && $this->hasResponsesTable;
-    }
-
-    /**
      * @return bool
      */
     public function getIsAnonymized()
@@ -1510,12 +1501,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Count the submitted answers
-     * @return string|int
+     * @return int
      */
     public function getCountFullAnswers()
     {
-        if (!$this->isActiveAndHaveReponseTable) {
-            return "";
+        if (!$this->isActive || !$this->hasResponsesTable ) {
+            return 0;
         }
         return Yii::app()->db->createCommand()
             ->select('count(*)')
@@ -1526,12 +1517,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Count the not submitted answers
-     * @return string|int
+     * @return int
      */
     public function getCountIncompleteAnswers()
     {
-        if (!$this->isActiveAndHaveReponseTable) {
-            return "";
+        if (!$this->isActive || !$this->hasResponsesTable ) {
+            return 0;
         }
         return Yii::app()->db->createCommand()
             ->select('count(*)')
@@ -1542,13 +1533,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Count the total answers, submitted ot not.
-     * @return string|integer
+     * @return int
      */
     public function getCountTotalAnswers()
     {
-        
-        if (!$this->isActiveAndHaveReponseTable) {
-            return "";
+        if (!$this->isActive || !$this->hasResponsesTable ) {
+            return 0;
         }
         return Yii::app()->db->createCommand()
             ->select('count(*)')
