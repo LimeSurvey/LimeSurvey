@@ -72,6 +72,20 @@ class DefaultValuesServiceTest extends TestBaseClass
     }
 
     /**
+     * @testdox save() stores an "Other" default even when no ordinary default is posted
+     * @return void
+     */
+    public function testSaveStoresOtherDefaultWithoutOrdinaryDefault()
+    {
+        $question = $this->getListQuestion();
+        $service = DI::getContainer()->get(DefaultValuesService::class);
+
+        $service->save($question, ['other' => ['en' => ['Only other']]]);
+
+        $this->assertSame('Only other', $this->getStoredDefault($question->qid, 'other'));
+    }
+
+    /**
      * @testdox save() does nothing when no default answers are posted
      * @return void
      */

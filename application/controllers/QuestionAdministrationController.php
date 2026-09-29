@@ -329,11 +329,13 @@ class QuestionAdministrationController extends LSBaseController
         App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
+        $defaultValues = self::getDefaultValues($question->sid, $question->gid, $question->qid);
         $this->renderPartial(
             'extraOptions',
             [
                 'question' => $question,
                 'survey' => $question->survey,
+                'defaultValues' => $defaultValues,
             ]
         );
     }

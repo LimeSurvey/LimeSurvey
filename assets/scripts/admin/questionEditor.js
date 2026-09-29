@@ -2264,10 +2264,12 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const languageTab = tabpane.find(`.lang-${curLanguage}`);
         const template = languageTab.find('.defaultvalues-template');
         const defaultAnswerRowsContainer = languageTab.find('.default-answer-rows');
-        // Get the currently selected default options before clearing the rows
+        // Get the currently selected default options before clearing the rows.
+        // They are keyed by the subquestion's stable id (data-common-id), so a changed subquestion code keeps its default.
         var currentDefaults = {};
         defaultAnswerRowsContainer.find(`[id^="defaultvalues\\[${curLanguage}\\]"]`).each(function () {
-          currentDefaults[$(this).attr('id')] = $(this).val();
+          const commonId = $(this).closest('[data-common-id]').data('common-id');
+          currentDefaults[commonId ? `common:${commonId}` : $(this).attr('id')] = $(this).val();
         });
         // Clear current default answer rows
         defaultAnswerRowsContainer.html("");
@@ -2281,25 +2283,34 @@ $(document).on('ready pjax:scriptcomplete', function () {
             code = $(this).find('.code-title').text().trim();
           }
           const text = $(this).find('.subquestion-text input.answer').val();
+          const commonId = $(this).data('common-id');
           const newRowId = `defaultvalues[${curLanguage}][${code}][0]`;
+          const currentDefault = (commonId && currentDefaults[`common:${commonId}`] !== undefined)
+            ? currentDefaults[`common:${commonId}`]
+            : currentDefaults[newRowId];
           const templateId = `defaultvalues\\[${curLanguage}\\]\\[\\{\\{title_placeholder\\}\\}\\]\\[0\\]`;
           const newDefaultAnswerRow = template.clone();
-          newDefaultAnswerRow.find('#' + templateId).removeAttr('disabled').attr('id', newRowId).attr('name', newRowId).val(currentDefaults[newRowId] ?? '');
+          newDefaultAnswerRow.find('#' + templateId).removeAttr('disabled').attr('id', newRowId).attr('name', newRowId).val(currentDefault ?? '');
           const label = newDefaultAnswerRow.find(`label[for="${templateId}"]`);
           label.attr('for', newRowId);
           // Subquestion text may contain HTML from the editor: show it as plain text, like flattenText() does server side
           const plainText = new DOMParser().parseFromString(text || '', 'text/html').body.textContent;
           label.text(`${code}: ${plainText}`);
+          newDefaultAnswerRow.attr('data-common-id', commonId ?? '');
           newDefaultAnswerRow.removeClass('defaultvalues-template').show().appendTo(defaultAnswerRowsContainer);
         });
       });
     }
   }
 
+  /**
+   * Refresh the "Default answers" tab whenever it is shown.
+   * Delegated from document, so it survives #extra-options-container being replaced.
+   */
   function bindExtraOptionsEvents() {
-    $('[data-bs-toggle="tab"][href="#defaultanswers"]').off('show.bs.tab').on('show.bs.tab', function(e) {
-      synchronizeDefaultAnswers();
-    });
+    $(document)
+      .off('show.bs.tab.defaultanswers')
+      .on('show.bs.tab.defaultanswers', '[data-bs-toggle="tab"][href="#defaultanswers"]', synchronizeDefaultAnswers);
   }
 
   /**

@@ -56,12 +56,12 @@ class DefaultValuesService
      */
     public function save(Question $question, array $data)
     {
-        $defaultAnswers = $data['defaultvalues'] ?? null;
+        $defaultAnswers = $data['defaultvalues'] ?? [];
+        $other = $data['other'] ?? [];
         // No need to do anything if there are no default answers passed
-        if (empty($defaultAnswers) || !$question->questionType->hasdefaultvalues) {
+        if ((empty($defaultAnswers) && empty($other)) || !$question->questionType->hasdefaultvalues) {
             return;
         }
-        $other = $data['other'] ?? [];
         $expressions = $data['defaultvalues_em'] ?? [];
 
         // "Use same default value across languages"

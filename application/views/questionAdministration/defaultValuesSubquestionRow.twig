@@ -1,4 +1,4 @@
-<div class="mb-3 {{ is_template ? 'defaultvalues-template' : '' }}" {{ is_template ? 'style="display: none;"' : '' }}>
+<div class="mb-3 {{ is_template ? 'defaultvalues-template' : '' }}" {{ is_template ? 'style="display: none;"' : '' }} data-common-id="{{ subquestion_id is defined ? subquestion_id ~ '_' ~ scale_id : '' }}">
     <label class="form-label" for='defaultvalues[{{ lang }}][{{ subquestion_title }}][{{ scale_id }}]'>
         {{ subquestion_title }}: {{ flattenText(subquestion_text) }}
     </label>

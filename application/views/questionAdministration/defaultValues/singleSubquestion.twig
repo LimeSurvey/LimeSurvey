@@ -28,6 +28,7 @@
             {% include 'defaultValuesSubquestionRow.twig' with {
                 'lang': lang,
                 'scale_id': 0,
+                'subquestion_id': subquestion['qid'],
                 'subquestion_title': subquestion['title'],
                 'subquestion_text': subquestion['question'],
                 'options': subquestion['options'],
