@@ -2173,10 +2173,10 @@ class QuestionAdministrationController extends LSBaseController
         $aAnswers = [];
         $aSubquestions = [];
         if ($aTypeMetadata['answerscales'] > 0) {
+            // Ordered by Answer::defaultScope(). NB: Another order by sortorder fails on MSSQL (duplicate order column).
             $aAnswers = Answer::model()->with('answerl10ns')->findAll([
                 'condition' => 't.qid = :qid',
                 'params'    => [':qid' => $qid],
-                'order'     => 't.sortorder ASC',
             ]);
         } elseif ($aTypeMetadata['subquestions'] > 0) {
             $aSubquestions = Question::model()->with('questionl10ns')->findAll([
