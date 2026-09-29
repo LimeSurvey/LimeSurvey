@@ -9,6 +9,7 @@ class Update_719 extends DatabaseUpdateBase
     /**
      * Register the standalone Map question type and migrate map-enabled Short Text questions onto it.
      */
+    #[\Override]
     public function up()
     {
         // Keep custom themes and their questions together while reserving "map" for type J.
@@ -19,7 +20,8 @@ class Update_719 extends DatabaseUpdateBase
             ->queryAll();
         foreach ($conflicts as $conflict) {
             $themeName = 'map_legacy_' . $conflict['id'];
-            while ($this->db->createCommand()
+            while (
+                $this->db->createCommand()
                 ->select('id')
                 ->from('{{question_themes}}')
                 ->where('name = :name', [':name' => $themeName])
