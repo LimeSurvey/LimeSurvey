@@ -38,17 +38,26 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
         <!-- Default Template -->
         <div class="mb-3">
             <label class="col-12 form-label" for="defaulttheme">
-                <?php eT("Default theme:");
+                <?php eT("Theme for public survey list and error pages:");
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
-                <select class="form-select" name="defaulttheme" id="defaulttheme">
+                <select class="form-select" name="defaulttheme" id="defaulttheme" aria-describedby="defaulttheme-hint">
                     <?php foreach ($templatenames as $templatename) : ?>
                         <option value='<?php echo CHtml::encode($templatename); ?>' <?php echo ($thisdefaulttheme == $templatename) ? "selected='selected'" : "" ?> >
                             <?php echo CHtml::encode($templatename); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+            <div class="col-12 form-label ">
+                <span class="hint" id="defaulttheme-hint">
+                <?php printf(
+                    gT("Also used as a fallback if a survey theme is missing. To set the theme for new surveys, use %sGlobal survey settings > General > Theme%s."),
+                    '<a href="' . CHtml::encode(App()->createUrl('admin/globalsettings/sa/surveysettings', ['partial' => '_generaloptions_panel'])) . '">',
+                    '</a>'
+                ); ?>
+                </span>
             </div>
         </div>
 
