@@ -330,8 +330,7 @@ final class ResponseAggregateBatch
                 if ($value !== null && $value !== '') {
                     try {
                         $value = Response::decryptSingle($value);
-                    } catch (\Throwable) {
-                        // A corrupt value must not abort statistics for the survey.
+                    } catch (\SodiumException) {
                         continue;
                     }
                 }
