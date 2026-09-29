@@ -14,3 +14,9 @@ if (!defined('BASEPATH')) {
  */
 gT('Semicolon-separated list of answer codes that keep their original database position when answers are randomized');
 gT('Order - like 3)');
+gT("Position for 'Other:' option");
+gT("Indicates where the 'Other' option should be placed");
+gT('After specific answer option');
+gT("Before 'No Answer'");
+gT("Answer code for 'After specific answer option'");
+gT("The code of the answer option after which the 'Other:' option will be placed if the position is set to 'After specific answer option'");
