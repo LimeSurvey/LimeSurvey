@@ -1,4 +1,9 @@
-$(function () {
+// This page's "Run data consistency check" button submits via pjax, which swaps in a
+// freshly-rendered #redundancy-check-form without a full page reload; binding only to
+// 'ready' would leave $form pointing at the old, now-detached form after that swap, so
+// the group-toggle checkboxes would stop responding. Re-run on every pjax load too,
+// matching how every other admin page script in this codebase handles pjax navigation.
+$(document).on('ready pjax:scriptcomplete', function () {
     var $form = $('#redundancy-check-form');
 
     if ($form.length === 0) {
