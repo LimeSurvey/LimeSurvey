@@ -158,6 +158,7 @@ class SurveyActivate
                 copyFromOneTableToTheOther($archives["tokens"], $tokenTable, $preserveIDs);
             }
             $survey = $this->survey->findByPk($surveyId);
+            $this->app->db->schema->refresh();
             if (
                 isset($archives["timings"])
                 && $survey !== null
