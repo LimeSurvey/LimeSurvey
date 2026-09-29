@@ -17,6 +17,7 @@ class Update_412 extends DatabaseUpdateBase
      *
      * @return void
      */
+    #[\Override]
     public function up()
     {
         $sSurveyGroupQuery = "SELECT gsid  from {{surveys_groups}} order by gsid";

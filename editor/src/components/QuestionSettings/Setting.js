@@ -1,7 +1,8 @@
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import { STATES, isTempId, isTrue } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
-import { useAppState } from 'hooks'
+import { useAppState, useExpressionScriptValidation } from 'hooks'
 import { SettingsWrapper } from 'components/UIComponents'
 
 import { TooltipContainer } from '../TooltipContainer/TooltipContainer'
@@ -15,10 +16,17 @@ export const Setting = ({
   attributes = [],
   simpleSettings = false,
   hasDefaultAttributeValues = false,
+  sectionExpanded,
+  onSectionToggle,
 }) => {
+  const { surveyId } = useParams()
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
   const [hasSurveyUpdatePermission] = useAppState(
     STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
+  const validateExpression = useExpressionScriptValidation(
+    surveyId,
+    question?.qid
   )
   const isDependsOnSatisfied = (dependsOn, dependsOnValue) => {
     if (!dependsOn) {
@@ -135,6 +143,8 @@ export const Setting = ({
       simpleSettings={simpleSettings}
       isAdvanced={isAdvanced}
       title={title}
+      isExpanded={sectionExpanded}
+      onToggle={(isExpanded) => onSectionToggle?.(title, isExpanded)}
     >
       {attributes.map((attribute) => {
         if (
@@ -192,6 +202,9 @@ export const Setting = ({
         const attributeProps = {
           ...attribute.props,
           ...(options ? { options } : {}),
+          ...(attribute.attributePath === 'attributes.equation'
+            ? { validateExpression }
+            : {}),
           ...(attribute.action
             ? {
                 hasDefaultAttributeValues,
@@ -212,6 +225,7 @@ export const Setting = ({
                 {...attributeProps}
                 activeDisabled={isDisabled}
                 noPermissionDisabled={true}
+                hasSurveyUpdatePermission={hasSurveyUpdatePermission}
                 value={
                   value
                     ? value

@@ -16,6 +16,7 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_706 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $this->convertEmptyEmailsToNull();

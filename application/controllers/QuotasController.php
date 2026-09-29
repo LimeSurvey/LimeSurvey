@@ -400,7 +400,7 @@ class QuotasController extends LSBaseController
 
         $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);
-        if($oSurvey === null) {
+        if ($oSurvey === null) {
             $this->renderJSON(['success' => false, 'message' => gT('Survey not found')]);
             return;
         }
@@ -415,7 +415,7 @@ class QuotasController extends LSBaseController
         $aQuotaIds = json_decode($sItems, true);
         $aQuotaIds = is_array($aQuotaIds) ? $aQuotaIds : [];
 
-        if(empty($aQuotaIds)) {
+        if (empty($aQuotaIds)) {
             $this->renderJSON(['success' => false, 'message' => gT('No quotas selected!')]);
             return;
         }

@@ -7,6 +7,7 @@ class Update_715 extends DatabaseUpdateBase
     /**
      * Add savequotaexit column to surveys and surveys_groupsettings tables
      */
+    #[\Override]
     public function up()
     {
         // Get all active survey IDs (includes expired surveys)

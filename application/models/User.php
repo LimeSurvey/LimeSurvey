@@ -346,11 +346,22 @@ class User extends LSActiveRecord
      */
     public static function updatePassword($iUserID, $sPassword)
     {
-        return User::model()->updateByPk($iUserID, array('password' => password_hash($sPassword, PASSWORD_DEFAULT)));
+        return User::model()->updateByPk($iUserID, array(
+            'password' => password_hash($sPassword, PASSWORD_DEFAULT),
+            'session_token' => self::generateSessionToken(),
+        ));
     }
 
     /**
      * Set user password with hash
+     *
+     * Also rotates the user's session token, so any other already
+     * authenticated web session for this user (which still caches the
+     * previous token) gets logged out on its next request. See
+     * LSApplicationTrait::getCurrentUserId(). Additionally revokes any
+     * outstanding RemoteControl (JSON-RPC/REST) session tokens for this
+     * user, since those are a separate auth mechanism unaffected by the
+     * session_token rotation above.
      *
      * @param string $sPassword The clear text password
      * @return \User
@@ -358,10 +369,25 @@ class User extends LSActiveRecord
     public function setPassword($sPassword, $save = false)
     {
         $this->password = password_hash($sPassword, PASSWORD_DEFAULT);
+        $this->session_token = self::generateSessionToken();
+        if (!empty($this->users_name)) {
+            Session::model()->deleteAllByAttributes(['data' => $this->users_name]);
+        }
         if ($save) {
             $this->save();
         }
         return $this; // Return current object
+    }
+
+    /**
+     * Generates a new random per-user session token, used to invalidate
+     * other sessions when the password changes.
+     *
+     * @return string
+     */
+    public static function generateSessionToken()
+    {
+        return bin2hex(random_bytes(32));
     }
 
     /**

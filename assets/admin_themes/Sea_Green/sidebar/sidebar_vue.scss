@@ -100,19 +100,19 @@
     .resize-handle {
         position   : absolute;
         margin     : auto;
-        right      : 15px;
+        right      : -20px;
         top        : 0;
         bottom     : 0;
         height     : 100%;
         max-height : 35px;
         cursor     : col-resize;
         button {
-            background-color : $white;
+            background-color : transparent;
             outline          : 0;
             border           : none;
             &:focus, &:active, &:hover {
                 outline          : 0 !important;
-                background-color : $white !important;
+                background-color : transparent !important;
                 color            : $g-900;
             }
             cursor           : col-resize;

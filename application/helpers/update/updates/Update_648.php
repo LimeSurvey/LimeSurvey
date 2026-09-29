@@ -15,6 +15,7 @@ class Update_648 extends DatabaseUpdateBase
      *
      * @throws CException If a database update operation fails.
      */
+    #[\Override]
     public function up()
     {
         /* @var string the new description */

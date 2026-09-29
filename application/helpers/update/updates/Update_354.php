@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_354 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             $surveymenuTable = \Yii::app()->db->schema->getTable('{{surveymenu}}');
