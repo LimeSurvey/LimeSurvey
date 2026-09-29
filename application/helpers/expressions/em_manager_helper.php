@@ -4676,13 +4676,17 @@ class LimeExpressionManager
     }
 
     /**
-     * Initialize a survey so can use EM to manage navigation
+     * Initialize a survey so can use EM to manage navigation.
+     * Timing storage is enabled only when Save timings is enabled and its table exists.
+     * Applies valid session starting values and attempts to persist them to the response table.
+     *
      * @param int $surveyid
-     * @param string $surveyMode
-     * @param array $aSurveyOptions
-     * @param bool $forceRefresh
+     * @param string $surveyMode 'survey', 'question', or 'group'; unrecognized values use 'group'.
+     * @param array|null $aSurveyOptions Runtime options; null uses the defaults.
+     * @param bool $forceRefresh Whether to rebuild cached variable and token mappings.
      * @param int $debugLevel
-     * @return array
+     * @return array Initial navigation state: hasNext is true and hasPrevious is false.
+     * @throws CDbException If an uncaught database operation fails.
      */
     public static function StartSurvey($surveyid, $surveyMode = 'group', $aSurveyOptions = null, $forceRefresh = false, $debugLevel = 0)
     {

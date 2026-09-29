@@ -286,15 +286,17 @@ class SurveyDeactivate
     }
 
     /**
-     * Handles survey table
+     * Rename an existing timings table and save its archive settings, even when
+     * Save timings is disabled. Does nothing when the table is missing.
      *
      * @param int $iSurveyID
      * @param string $surveyDate Archive suffix of the form <sid>_<timestamp>
-     * @param array &$aData
-     * @param int $userID
-     * @param string $DBDate
+     * @param array &$aData Receives sNewTimingsTableName with the prefixed archive table name.
+     * @param int $userID User recorded as the archive owner.
+     * @param string $DBDate Archive creation time in Y-m-d H:i:s format.
      *
      * @return void
+     * @throws \CDbException If a database lookup, table rename, or archive settings write fails.
      */
     protected function handleTimingTable($iSurveyID, $surveyDate, &$aData, $userID, $DBDate)
     {

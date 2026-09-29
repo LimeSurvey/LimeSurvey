@@ -30,6 +30,11 @@ import { ResponseModals } from '../'
 import { ResponsesTableHeader } from './ResponsesTableHeader'
 import { ResponsesTableBody } from './ResponsesTableBody'
 
+/**
+ * Render survey responses with column management, selection, and detail actions.
+ * Rebuild columns when timing definitions change, retaining visibility for
+ * surviving columns and appending new column IDs to an existing column order.
+ */
 export const ResponsesTable = ({
   survey,
   showFilters,
@@ -184,6 +189,9 @@ export const ResponsesTable = ({
       onDeleteResponseFilesClick: () => handleOnActionFilesDeleteClick(),
     })
 
+    /**
+     * Extract the timing column identity and labels used to detect definition changes.
+     */
     const timingColumnDefinition = ({ id, header, meta = {} }) => ({
       id,
       header,

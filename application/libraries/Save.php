@@ -242,10 +242,17 @@ class Save
     }
 
     /**
-     * This functions saves the answer time for question/group and whole survey.
-     * [ It compares current time with the time in $_POST['start_time'] ]
-     * The times are saved in table: {prefix}_timings
+     * Add elapsed seconds since the posted start_time, rounded to two decimals,
+     * to the current session response in the survey's timings table.
+     * Updates interviewtime and, when supplied, the lastanswer or lastgroup timing
+     * column (lastanswer takes precedence).
+     *
+     * Does nothing if the survey is missing, Save timings is disabled, the timings
+     * table is missing, or start_time is absent. Terminates the request if the
+     * supplied question/group timing column does not exist.
+     *
      * @return void
+     * @throws CDbException If a database query or timing update fails.
      */
     function set_answer_time()
     {

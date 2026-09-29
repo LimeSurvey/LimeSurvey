@@ -177,8 +177,13 @@ class SurveyResponses implements CommandInterface
      * Timings are stored in a separate table, so fetching them after response
      * pagination keeps the response count and pagination unchanged.
      *
-     * @param array $responses
-     * @return array
+     * Returns an empty array without changing responses when Save timings is
+     * disabled or the timings table is missing. Otherwise, each response gains
+     * a timings entry, which is empty when no matching timing data is found.
+     *
+     * @param array $responses Response rows updated in place.
+     * @return array Timing field metadata, or an empty array when timings are unavailable.
+     * @throws CDbException If a database query fails.
      */
     protected function appendTimingData(array &$responses): array
     {

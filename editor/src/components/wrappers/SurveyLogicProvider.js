@@ -16,6 +16,11 @@ import {
   RandomNumber,
 } from 'helpers'
 
+/**
+ * Render children while loading the route's survey and saving buffered edits.
+ * Reconcile patch results with local survey state, surface errors, and invalidate
+ * response queries after receiving a patch result.
+ */
 export const SurveyLogicProvider = ({ children }) => {
   const { surveyId } = useParams()
   const { setFocused, groupIndex, questionIndex } = useFocused()
@@ -83,6 +88,10 @@ export const SurveyLogicProvider = ({ children }) => {
     }
 
     // currentBuffer
+    /**
+     * Apply a patch result's ID mappings and errors to the survey and buffer,
+     * update save status, and invalidate responses even if no operations applied.
+     */
     const thenCallback = (result) => {
       const survey = queryClient.getQueryData([STATES.SURVEY]).survey
       const focused = queryClient.getQueryData([STATES.FOCUSED_ENTITY]).focused
