@@ -26,7 +26,6 @@ class SurveyDeactivate
     private ArchivedTableSettings $archivedResponseSettings;
     private SurveyLink $surveyLink;
     private SavedControl $savedControl;
-    protected array $siddates;
 
     public function setArchivedResponseSettings(ArchivedTableSettings $archivedResponseSettings)
     {
@@ -57,7 +56,6 @@ class SurveyDeactivate
         $this->app = $app;
         $this->surveyLink = $surveyLink;
         $this->savedControl = $savedControl;
-        $this->siddates = [];
     }
 
     /**
@@ -67,11 +65,13 @@ class SurveyDeactivate
      */
     protected function getSiddate(int $iSurveyID): string
     {
-        if (!isset($this->siddates[$iSurveyID])) {
-            $date = date('YmdHis', time());
-            $this->siddates[$iSurveyID] = "{$iSurveyID}_{$date}";
-        }
-        return $this->siddates[$iSurveyID];
+        $timestamp = time();
+        do {
+            $siddate = "{$iSurveyID}_" . date('YmdHis', $timestamp++);
+            $tableName = $this->app->db->tablePrefix . "old_responses_{$siddate}";
+        } while ($this->app->db->schema->getTable($tableName, true) !== null);
+
+        return $siddate;
     }
 
     /**
