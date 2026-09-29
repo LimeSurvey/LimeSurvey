@@ -33,7 +33,7 @@ import { ResponsesTableBody } from './ResponsesTableBody'
 /**
  * Render survey responses with column management, selection, and detail actions.
  * Rebuild columns when timing definitions change, retaining visibility for
- * surviving columns and appending new column IDs to an existing column order.
+ * surviving columns and placing new timing columns before question columns.
  */
 export const ResponsesTable = ({
   survey,
@@ -249,10 +249,24 @@ export const ResponsesTable = ({
           return currentOrder
         }
 
-        const generatedColumnIds = generatedColumns.map(({ id }) => id)
+        const newTimingColumnIds = generatedColumns
+          .filter(
+            ({ id, meta }) =>
+              meta?.columnCategory === 'timing' && !currentOrder.includes(id)
+          )
+          .map(({ id }) => id)
+        const firstQuestionIndex = currentOrder.findIndex((id) =>
+          generatedColumns.some(
+            ({ id: columnId, meta }) =>
+              columnId === id && meta && 'questionNumber' in meta
+          )
+        )
+        const timingInsertIndex =
+          firstQuestionIndex === -1 ? currentOrder.length : firstQuestionIndex
         return [
-          ...currentOrder,
-          ...generatedColumnIds.filter((id) => !currentOrder.includes(id)),
+          ...currentOrder.slice(0, timingInsertIndex),
+          ...newTimingColumnIds,
+          ...currentOrder.slice(timingInsertIndex),
         ]
       })
       // else if we have columns, then we pop the actions column and readd it to update the columns ref
