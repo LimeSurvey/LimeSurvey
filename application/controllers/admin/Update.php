@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -28,7 +28,7 @@
 *
 *
 * Public methods are written in a chronological way:
-*   - First, when the user click on the 'check for updates' button, the plugin buildComfortButtons.js call for getstablebutton() or getbothbuttons() method and inject the HTML inside the li#udapteButtonsContainer in the _checkButtons view
+*   - First, when the user click on the 'check for updates' button, the plugin buildComfortButtons.js call for getstablebutton() or getbothbuttons() method and inject the HTML inside the li#updateButtonsContainer in the _checkButtons view
 *   - Then, when the user click on one of those buttons, the comfortUpdateNextStep.js plugin will call for the getWelcome() method and inject the HTML inside div#updaterContainer in the _right_container view (all steps will be then injected here)
 *   - Then, when the user click on the continue button, the comfortUpdateNextStep.js plugin will call for the step1() method and inject the  the HTML inside div#updaterContainer in the _right_container view
 *   - etc. etc.
@@ -37,7 +37,7 @@
 *
 *  Some steps must be shown out of the chronological process: getNewKey and submitKey. They are at the end of the controller's interface.
 *  Some steps must be 'checked again' after the user fixed some errors (such as file permissions).
-*  Those steps are/can be diplayed by the plugin displayComfortStep.js. They are called from buttons like :
+*  Those steps are/can be displayed by the plugin displayComfortStep.js. They are called from buttons like :
 *
 *  <a class='button' href='<?php App()->createUrl('admin/globalsettings', array('update'=>'methodToCall', 'neededVariable'=>$value));?>'>
 *    <span class='ui-button-text'>button text</span>
@@ -48,14 +48,14 @@
 * The comfortupdate.js check the value of the hidden field update, and if the update's one contain a step, it call displayComfortStep.js which will display the right step instead of the 'check update' buttons.
 *
 * Most steps are retrieving datas from the comfort update server thanks to the model UpdateForm's methods.
-* The server return an answer object, with a property 'result' to tell if the process was succesfull or if it failed. This object contains in general all the necessary datas for the views.
+* The server return an answer object, with a property 'result' to tell if the process was successful or if it failed. This object contains in general all the necessary datas for the views.
 *
 *
 * Handling errors :
 * They are different types of possible errors :
 * - Warning message (like : modified files, etc.) : they don't stop the process, they are parsed to the step view, and the view manage how to display them. They can be generated from the ComfortUpdate server ($answer_from_server->result == TRUE ; and something like $answer_from_server->error == message or anything else that the step view manage ), or in the LimeSurvey update controller/model
 * - Error while processing a request on the server part : should never happen, but if something goes wrong in the server side (like generating an object from model), the server returns an error object ($answer_from_server->result == FALSE ; $answer_from_server->error == message )
-*   Those errors stop the process, and are display in _error view. Very usefull to debug. They are parsed directly to $this->renderError
+*   Those errors stop the process, and are display in _error view. Very useful to debug. They are parsed directly to $this->renderError
 * - Error while checking needed datas in the LimeSurvey update controller : the controller always check if it has the needed datas (such as destintion_build, or zip_file), or the state of the key (outdated, etc). For the code to be dryer, the method parse an error string to $this->renderErrorString($error), which generate the error object, and then render the error view
 *
 * @package       LimeSurvey
@@ -71,6 +71,7 @@ if (class_exists('SurveyCommonAction')) {
     }
 } else {
     // try to include the old one
+    /** @psalm-suppress UndefinedClass */ 
     class DynamicSurveyCommonAction extends Survey_Common_Action
     {
     }
@@ -104,7 +105,7 @@ class Update extends DynamicSurveyCommonAction
             $this->getController()->redirect(App()->getController()->createUrl("/admin"));
         }
 
-        if (App()->getConfig('demoMode')) {
+        if (Yii::app()->getConfig('demoMode')) {
             App()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'), 'error');
             $this->getController()->redirect(App()->getController()->createUrl("/admin"));
         }
@@ -113,13 +114,16 @@ class Update extends DynamicSurveyCommonAction
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
 
-        // Green Bar (SurveyManagerBar Heading)
-        $aData['pageTitle'] = gT('ComfortUpdate');
-        $aData['fullpagebar']['update'] = true;
+        $aData['topbar']['title'] = gT('ComfortUpdate');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/update/partials/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/displayComfortStep.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'comfortupdate/displayComfortStep.js');
 
         $this->renderWrappedTemplate('update', '_updateContainer', $aData);
     }
@@ -131,12 +135,24 @@ class Update extends DynamicSurveyCommonAction
             $updateModel = new UpdateForm();
             $serverAnswer = $updateModel->getUpdateInfo($buttons);
             $aData['serverAnswer'] = $serverAnswer;
-            $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
-            $updateKey = $aData['updateKey'] = getGlobalSetting('update_key');
+            $updateKey = $aData['updateKey'] = Yii::app()->getConfig('update_key');
 
-            //$this->controller->renderPartial('//admin/update/updater/welcome/_subscribe', array('serverAnswer' => $serverAnswer),  false, false);
             if (!$updateKey) {
-                $aData['fullpagebar']['saveandclosebutton']['form'] = true;
+                $pageTitle = gT('Subscribe to ComfortUpdate');
+            } else {
+                $pageTitle = gT('ComfortUpdate');
+            }
+
+            $aData['topbar']['title'] = $pageTitle;
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/update/partials/topbarBtns_subscribe/rightSideButtons',
+                [
+                    'saveAndClose' => !$updateKey
+                ],
+                true
+            );
+
+            if (!$updateKey) {
                 $this->renderWrappedTemplate('update/manage/', 'subscribe', $aData);
             } else {
                 $aData['updateKeyInfos'] = $updateModel->checkUpdateKeyonServer($updateKey);
@@ -148,15 +164,12 @@ class Update extends DynamicSurveyCommonAction
     public function manageSubmitkey()
     {
         $updateModel = new UpdateForm();
-        $serverAnswer = $updateModel->getUpdateInfo($buttons);
-        $aData['serverAnswer'] = $serverAnswer;
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
         $aData['updateKey'] = $updateKey = SettingGlobal::model()->findByPk('update_key');
 
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('keyid')) {
                 // We trim it, just in case user added a space...
-                $submittedUpdateKey = trim(App()->request->getPost('keyid'));
+                $submittedUpdateKey = trim(App()->request->getPost('keyid', ''));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);
@@ -186,6 +199,11 @@ class Update extends DynamicSurveyCommonAction
                         case 'key_null':
                             $title = gT("Key can't be empty!");
                             $message = "";
+                            break;
+
+                        case 'no_server_answer':
+                            $title = gT('No server answer!');
+                            $message = gT("It seems that the ComfortUpdate server is not responding. Please try again in few minutes or contact the LimeSurvey team.");
                             break;
                     }
 
@@ -236,7 +254,7 @@ class Update extends DynamicSurveyCommonAction
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             // We get the update key in the database. If it's empty, getWelcomeMessage will return subscription
-            $updateKey = getGlobalSetting("update_key");
+            $updateKey = Yii::app()->getConfig("update_key");
             $updateModel = new UpdateForm();
             $destinationBuild = $_REQUEST['destinationBuild'];
                 $welcome = (array) $updateModel->getWelcomeMessage($updateKey, $destinationBuild);
@@ -304,26 +322,27 @@ class Update extends DynamicSurveyCommonAction
     }
 
     /**
-     * diaplay the result of the changed files check
+     * display the result of the changed files check
      *
      * @return string  HTML
      */
     public function fileSystem()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
+            App()->session['update_changed_files'] = null;
             if (isset($_REQUEST['destinationBuild'])) {
                 $tobuild = $_REQUEST['destinationBuild'];
                 $access_token = $_REQUEST['access_token'];
-                $frombuild = App()->getConfig("buildnumber");
+                $frombuild = Yii::app()->getConfig("buildnumber");
 
                 $updateModel = new UpdateForm();
                 $changedFiles = $updateModel->getChangedFiles($tobuild);
 
                 if ($changedFiles->result) {
                     $aData = $updateModel->getFileStatus($changedFiles->files);
+                    App()->session['update_changed_files'] = json_decode(json_encode($changedFiles->files), true);
 
                     $aData['html_from_server'] = $changedFiles->html ?? '';
-                    $aData['datasupdateinfo'] = $this->parseToView($changedFiles->files);
                     $aData['destinationBuild'] = $tobuild;
                     $aData['updateinfo'] = $changedFiles->files;
                     $aData['access_token'] = $access_token;
@@ -346,12 +365,10 @@ class Update extends DynamicSurveyCommonAction
             if (App()->request->getPost('destinationBuild')) {
                 $destinationBuild = App()->request->getPost('destinationBuild');
                 $access_token     = $_REQUEST['access_token'];
-
-                if (App()->request->getPost('datasupdateinfo')) {
-                    $updateinfos = (array) json_decode(base64_decode(App()->request->getPost('datasupdateinfo')), true);
-
-                    $updateModel = new UpdateForm();
-                    $backupInfos = $updateModel->backupFiles($updateinfos);
+                $updateModel = new UpdateForm();
+                $changedFiles = App()->session['update_changed_files'];
+                if ($changedFiles) {
+                    $backupInfos = $updateModel->backupFiles($changedFiles);
 
                     if ($backupInfos->result) {
                         $dbBackupInfos = $updateModel->backupDb($destinationBuild);
@@ -360,12 +377,11 @@ class Update extends DynamicSurveyCommonAction
                         $aData['dbBackupInfos'] = $dbBackupInfos;
                         $aData['basefilename'] = $backupInfos->basefilename;
                         $aData['tempdir'] = $backupInfos->tempdir;
-                        $aData['datasupdateinfo'] = $this->parseToView($updateinfos);
                         $aData['destinationBuild'] = $destinationBuild;
                         $aData['access_token'] = $access_token;
                         return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
                     } else {
-                        $error = $backup->error;
+                        $error = $backupInfos->error;
                     }
                 } else {
                     $error = "no_updates_infos";
@@ -383,21 +399,20 @@ class Update extends DynamicSurveyCommonAction
      */
     public function step4()
     {
+        $event = new CExceptionEvent($this, new Exception());  // Dummy line to preload CExceptionEvent class.
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('destinationBuild')) {
                 $destinationBuild = App()->request->getPost('destinationBuild');
                 $access_token     = $_REQUEST['access_token'];
 
-                if (App()->request->getPost('datasupdateinfo')) {
-                    $updateinfos = json_decode(base64_decode(App()->request->getPost('datasupdateinfo')), true);
-
+                $changedFiles = App()->session['update_changed_files'];
+                if ($changedFiles) {
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
 
                     $updateModel = new UpdateForm();
-
-                    $remove = $updateModel->removeDeletedFiles($updateinfos);
+                    $remove = $updateModel->removeDeletedFiles((array)$changedFiles);
                     if (!$remove->result) {
-                        return $this->renderErrorString($remove->error);
+                        return $this->renderErrorString($remove->error, $remove->message);
                     };
                     $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
                     if ($file->result) {
@@ -405,12 +420,13 @@ class Update extends DynamicSurveyCommonAction
                         if ($unzip->result) {
                             // Should never bug (version.php is checked before))
                             $updateModel->updateVersion($destinationBuild);
-                            $updateModel->destroyGlobalSettings();
                             $updateModel->removeTmpFile('update.zip');
                             $updateModel->removeTmpFile('comfort_updater_cookie.txt');
 
                             App()->session['update_result'] = null;
                             App()->session['security_update'] = null;
+                            App()->session['update_changed_files'] = null;
+
                             $today = new DateTime("now");
                             App()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
 
@@ -500,7 +516,7 @@ class Update extends DynamicSurveyCommonAction
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('keyid')) {
                 // We trim it, just in case user added a space...
-                $submittedUpdateKey = trim(App()->request->getPost('keyid'));
+                $submittedUpdateKey = trim(App()->request->getPost('keyid', ''));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);
@@ -526,7 +542,7 @@ class Update extends DynamicSurveyCommonAction
      */
     public function db($continue = null)
     {
-        App()->loadHelper("update/update");
+        App()->loadHelper("update.update");
         if (isset($continue) && $continue == "yes") {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);
             $aData['display']['header'] = false;
@@ -624,11 +640,12 @@ class Update extends DynamicSurveyCommonAction
      * @param string $error the error message
      * @return string
      */
-    private function renderErrorString($error)
+    private function renderErrorString($error, $message = null)
     {
             $errorObject = new stdClass();
             $errorObject->result = false;
             $errorObject->error = $error;
+            $errorObject->message = $message;
             return $this->renderError($errorObject);
     }
 
@@ -636,7 +653,7 @@ class Update extends DynamicSurveyCommonAction
      * This function convert the huge updateinfos array to a base64 string, so it can be parsed to the view to be inserted in an hidden input element.
      *
      * @param array $updateinfos the udpadte infos array returned by the update server
-     * @return $string
+     * @return string
      */
     private function parseToView($updateinfos)
     {

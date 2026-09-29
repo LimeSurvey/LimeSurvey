@@ -12,6 +12,7 @@
 
 namespace Twig\Node;
 
+use Twig\Attribute\YieldReady;
 use Twig\Compiler;
 
 /**
@@ -19,22 +20,38 @@ use Twig\Compiler;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
+#[YieldReady]
 class TextNode extends Node implements NodeOutputInterface
 {
-    public function __construct($data, $lineno)
+    public function __construct(string $data, int $lineno)
     {
         parent::__construct([], ['data' => $data], $lineno);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
+        $compiler->addDebugInfo($this);
+
         $compiler
-            ->addDebugInfo($this)
-            ->write('echo ')
+            ->write('yield ')
             ->string($this->getAttribute('data'))
             ->raw(";\n")
         ;
     }
-}
 
-class_alias('Twig\Node\TextNode', 'Twig_Node_Text');
+    public function isBlank(): bool
+    {
+        if (ctype_space($this->getAttribute('data'))) {
+            return true;
+        }
+
+        if (str_contains((string) $this, \chr(0xEF).\chr(0xBB).\chr(0xBF))) {
+            $t = substr($this->getAttribute('data'), 3);
+            if ('' === $t || ctype_space($t)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}

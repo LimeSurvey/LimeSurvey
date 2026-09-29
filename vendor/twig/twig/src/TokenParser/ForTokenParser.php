@@ -12,14 +12,11 @@
 
 namespace Twig\TokenParser;
 
-use Twig\Error\SyntaxError;
-use Twig\Node\Expression\AssignNameExpression;
-use Twig\Node\Expression\ConstantExpression;
-use Twig\Node\Expression\GetAttrExpression;
-use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\Variable\AssignContextVariable;
+use Twig\Node\ForElseNode;
 use Twig\Node\ForNode;
+use Twig\Node\Node;
 use Twig\Token;
-use Twig\TokenStream;
 
 /**
  * Loops over each item of a sequence.
@@ -30,107 +27,52 @@ use Twig\TokenStream;
  *    {% endfor %}
  *   </ul>
  *
- * @final
+ * @internal
  */
-class ForTokenParser extends AbstractTokenParser
+final class ForTokenParser extends AbstractTokenParser
 {
-    public function parse(Token $token)
+    public function parse(Token $token): Node
     {
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
-        $targets = $this->parser->getExpressionParser()->parseAssignmentExpression();
+        $targets = $this->parseAssignmentExpression();
         $stream->expect(Token::OPERATOR_TYPE, 'in');
-        $seq = $this->parser->getExpressionParser()->parseExpression();
-
-        $ifexpr = null;
-        if ($stream->nextIf(Token::NAME_TYPE, 'if')) {
-            $ifexpr = $this->parser->getExpressionParser()->parseExpression();
-        }
+        $seq = $this->parser->parseExpression();
 
         $stream->expect(Token::BLOCK_END_TYPE);
         $body = $this->parser->subparse([$this, 'decideForFork']);
         if ('else' == $stream->next()->getValue()) {
+            $elseLineno = $stream->getCurrent()->getLine();
             $stream->expect(Token::BLOCK_END_TYPE);
-            $else = $this->parser->subparse([$this, 'decideForEnd'], true);
+            $else = new ForElseNode($this->parser->subparse([$this, 'decideForEnd'], true), $elseLineno);
         } else {
             $else = null;
         }
         $stream->expect(Token::BLOCK_END_TYPE);
 
         if (\count($targets) > 1) {
-            $keyTarget = $targets->getNode(0);
-            $keyTarget = new AssignNameExpression($keyTarget->getAttribute('name'), $keyTarget->getTemplateLine());
-            $valueTarget = $targets->getNode(1);
-            $valueTarget = new AssignNameExpression($valueTarget->getAttribute('name'), $valueTarget->getTemplateLine());
+            $keyTarget = $targets->getNode('0');
+            $valueTarget = $targets->getNode('1');
         } else {
-            $keyTarget = new AssignNameExpression('_key', $lineno);
-            $valueTarget = $targets->getNode(0);
-            $valueTarget = new AssignNameExpression($valueTarget->getAttribute('name'), $valueTarget->getTemplateLine());
+            $keyTarget = new AssignContextVariable('_key', $lineno);
+            $valueTarget = $targets->getNode('0');
         }
 
-        if ($ifexpr) {
-            $this->checkLoopUsageCondition($stream, $ifexpr);
-            $this->checkLoopUsageBody($stream, $body);
-        }
-
-        return new ForNode($keyTarget, $valueTarget, $seq, $ifexpr, $body, $else, $lineno, $this->getTag());
+        return new ForNode($keyTarget, $valueTarget, $seq, null, $body, $else, $lineno);
     }
 
-    public function decideForFork(Token $token)
+    public function decideForFork(Token $token): bool
     {
         return $token->test(['else', 'endfor']);
     }
 
-    public function decideForEnd(Token $token)
+    public function decideForEnd(Token $token): bool
     {
         return $token->test('endfor');
     }
 
-    // the loop variable cannot be used in the condition
-    protected function checkLoopUsageCondition(TokenStream $stream, \Twig_NodeInterface $node)
-    {
-        if ($node instanceof GetAttrExpression && $node->getNode('node') instanceof NameExpression && 'loop' == $node->getNode('node')->getAttribute('name')) {
-            throw new SyntaxError('The "loop" variable cannot be used in a looping condition.', $node->getTemplateLine(), $stream->getSourceContext());
-        }
-
-        foreach ($node as $n) {
-            if (!$n) {
-                continue;
-            }
-
-            $this->checkLoopUsageCondition($stream, $n);
-        }
-    }
-
-    // check usage of non-defined loop-items
-    // it does not catch all problems (for instance when a for is included into another or when the variable is used in an include)
-    protected function checkLoopUsageBody(TokenStream $stream, \Twig_NodeInterface $node)
-    {
-        if ($node instanceof GetAttrExpression && $node->getNode('node') instanceof NameExpression && 'loop' == $node->getNode('node')->getAttribute('name')) {
-            $attribute = $node->getNode('attribute');
-            if ($attribute instanceof ConstantExpression && \in_array($attribute->getAttribute('value'), ['length', 'revindex0', 'revindex', 'last'])) {
-                throw new SyntaxError(sprintf('The "loop.%s" variable is not defined when looping with a condition.', $attribute->getAttribute('value')), $node->getTemplateLine(), $stream->getSourceContext());
-            }
-        }
-
-        // should check for parent.loop.XXX usage
-        if ($node instanceof ForNode) {
-            return;
-        }
-
-        foreach ($node as $n) {
-            if (!$n) {
-                continue;
-            }
-
-            $this->checkLoopUsageBody($stream, $n);
-        }
-    }
-
-    public function getTag()
+    public function getTag(): string
     {
         return 'for';
     }
 }
-
-class_alias('Twig\TokenParser\ForTokenParser', 'Twig_TokenParser_For');

@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey (tm)
-* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2011-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -47,7 +47,11 @@ class InstallerController extends CController
     {
         $this->checkInstallation();
         $this->sessioncontrol();
-        Yii::import('application.helpers.common_helper', true);
+        App()->loadHelper('common');
+        App()->loadHelper('surveytranslator');
+        AdminTheme::getInstance();
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/fonts.css');
 
         switch ($action) {
             case 'welcome':
@@ -60,6 +64,10 @@ class InstallerController extends CController
 
             case 'viewlicense':
                 $this->stepViewLicense();
+                break;
+
+            case 'precheckprepare':
+                $this->stepPreInstallationCheckPrepare();
                 break;
 
             case 'precheck':
@@ -92,7 +100,7 @@ class InstallerController extends CController
     /**
      * Installer::checkInstallation()
      *
-     * Based on existance of 'sample_installer_file.txt' file, check if
+     * Based on existence of 'sample_installer_file.txt' file, check if
      * installation should proceed further or not.
      * @return void
      */
@@ -141,7 +149,7 @@ class InstallerController extends CController
         }
         $aLanguages = [];
         foreach (getLanguageData(true, $sCurrentLanguage) as $sKey => $aLanguageInfo) {
-            $aLanguages[htmlspecialchars($sKey)] = sprintf('%s - %s', $aLanguageInfo['nativedescription'], $aLanguageInfo['description']);
+            $aLanguages[htmlspecialchars((string) $sKey)] = sprintf('%s - %s', $aLanguageInfo['nativedescription'], $aLanguageInfo['description']);
         }
         $aData['languages'] = $aLanguages;
         $this->render('/installer/welcome_view', $aData);
@@ -159,8 +167,8 @@ class InstallerController extends CController
         $aData['classesForStep'] = array('off', 'on', 'off', 'off', 'off', 'off');
         $aData['progressValue'] = 15;
 
-        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
-            $this->redirect(array('installer/precheck'));
+        if (strtolower((string) $_SERVER['REQUEST_METHOD']) == 'post') {
+            $this->redirect(array('installer/precheckprepare'));
         }
         Yii::app()->session['saveCheck'] = 'save'; // Checked in next step
 
@@ -179,10 +187,39 @@ class InstallerController extends CController
     }
 
     /**
+     * Prepare pre-installation check
+     * This step is used to set the session variables that is used in the next step.
+     */
+    private function stepPreInstallationCheckPrepare()
+    {
+        // Unset the LS_PRECHECK_SHOWN cookie if present
+        // It is used in the next step to check if the request comes from this step or not.
+        setcookie("LS_PRECHECK_SHOWN", "", time() - 3600, "/");
+
+        // Set the LS_COOKIES_ALLOWED cookie
+        // It is used for checking if cookies are enabled
+        setcookie("LS_COOKIES_ALLOWED", "1", time() + 3600, "/");
+
+        // Set the value to check in the next step
+        Yii::app()->session['saveCheck'] = 'save';
+
+        // Redirect to the next step
+        $this->redirect(array('installer/precheck'));
+    }
+
+    /**
      * check a few writing permissions and optional settings
      */
     private function stepPreInstallationCheck()
     {
+        // If the LS_PRECHECK_SHOWN cookie is set, we don't come from the precheckprepare step,
+        // so we redirect to the precheckprepare step in order to set the session variables.
+        if (isset($_COOKIE['LS_PRECHECK_SHOWN'])) {
+            $this->redirect(array('installer/precheckprepare'));
+        }
+        // Set the LS_PRECHECK_SHOWN cookie so we can detect refreshes
+        setcookie("LS_PRECHECK_SHOWN", "1", 0, "/");
+
         $oModel = new InstallerConfigForm();
         //usual data required by view
         $aData = [];
@@ -202,10 +239,10 @@ class InstallerController extends CController
         $sessionWritable = (Yii::app()->session->get('saveCheck', null) === 'save');
         $aData['sessionWritable'] = $sessionWritable;
         if (!$sessionWritable) {
-            // For recheck, try to set the value again
-            $session['saveCheck'] = 'save';
             $bProceed = false;
         }
+
+        $aData['cookiesAllowed'] = !empty($_COOKIE['LS_COOKIES_ALLOWED']);
 
         // after all check, if flag value is true, show next button and sabe step2 status.
         if ($bProceed) {
@@ -248,7 +285,7 @@ class InstallerController extends CController
             //run validation, if it fails, load the view again else proceed to next step.
             if ($oModel->validate()) {
                 //saving the form data to session
-                foreach (array('dblocation', 'dbport', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
+                foreach (array('dblocation', 'dbport', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix', 'mssqlTrustServerCertificate') as $sStatusKey) {
                     Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
                 }
 
@@ -375,10 +412,11 @@ class InstallerController extends CController
             Yii::app()->session['populatedatabase'] = true;
             Yii::app()->session['databaseexist'] = true;
             unset(Yii::app()->session['databaseDontExist']);
-
-            $aData['adminoutputText'] = "<tr bgcolor='#efefef'><td colspan='2' align='center'>"
-            . "<div class='alert alert-success''><strong>\n"
-            . gT("Database has been created.") . "</strong></div>\n"
+            $successAlert = $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => '<strong>' . gT("Database has been created") . '.</strong>',
+                'type' => 'success',
+            ], true);
+            $aData['adminoutputText'] =  $successAlert . "\n"
             . gT("Please continue with populating the database.") . "<br /><br />\n";
             $aData['next'] = array(
                 'action' => 'installer/populatedb',
@@ -592,9 +630,9 @@ class InstallerController extends CController
     public function chekHtmlImage($result)
     {
         if ($result) {
-            return "<span class='fa fa-check text-success' alt='right'></span>";
+            return "<span class='ri-check-fill text-success' alt='right'></span>";
         } else {
-            return "<span class='fa fa-exclamation-triangle text-danger' alt='wrong'></span>";
+            return "<span class='ri-error-warning-fill text-danger' alt='wrong'></span>";
         }
     }
 
@@ -644,7 +682,7 @@ class InstallerController extends CController
      * @param string $base key for data manipulation
      * @param string $keyError key for error data
      * @param string $aData
-     * @return bool result of check (that it is writeable which implies existance)
+     * @return bool result of check (that it is writeable which implies existence)
      */
     public function checkPathWriteable($path, $type, &$aData, $base, $keyError, $bRecursive = false)
     {
@@ -682,7 +720,7 @@ class InstallerController extends CController
      * @param string $data to manipulate
      * @param string $base key for data manipulation
      * @param string $keyError key for error data
-     * @return bool result of check (that it is writeable which implies existance)
+     * @return bool result of check (that it is writeable which implies existence)
      */
     public function checkFileWriteable($file, &$data, $base, $keyError)
     {
@@ -696,7 +734,7 @@ class InstallerController extends CController
      * @param string $data to manipulate
      * @param string $base key for data manipulation
      * @param string $keyError key for error data
-     * @return bool result of check (that it is writeable which implies existance)
+     * @return bool result of check (that it is writeable which implies existence)
      */
     public function checkDirectoryWriteable($directory, &$data, $base, $keyError, $bRecursive = false)
     {
@@ -738,6 +776,11 @@ class InstallerController extends CController
         if (!$this->checkPHPFunctionOrClass('json_encode', $aData['bJSONPresent'])) {
                     $bProceed = false;
         }
+
+        if (!$this->checkPHPFunctionOrClass('gd_info', $aData['gdPresent'])) {
+            $bProceed = false;
+        }
+
 
         // ** file and directory permissions checking **
 
@@ -813,7 +856,7 @@ class InstallerController extends CController
             $aLines = file($sFileName);
         }
         foreach ($aLines as $sLine) {
-            $sLine = rtrim($sLine);
+            $sLine = rtrim((string) $sLine);
             $iLineLength = strlen($sLine);
 
             if ($iLineLength && $sLine[0] != '#' && substr($sLine, 0, 2) != '--') {
@@ -859,12 +902,10 @@ class InstallerController extends CController
             //{
             $sShowScriptName = 'true';
             //}
-            if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions') != '')) {
-                $sURLFormat = 'path';
-            } else {
-                // Apache
-                $sURLFormat = 'get'; // Fall back to get if an Apache server cannot be determined reliably
-            }
+
+            //we set it only to 'path' from now on for new installations for the new react editor
+            $sURLFormat = 'path';
+
             $sCharset = 'utf8';
             if ($model->isMysql) {
                 $sCharset = 'utf8mb4';
@@ -917,8 +958,8 @@ class InstallerController extends CController
             if ($model->dbtype != InstallerConfigForm::DB_TYPE_SQLSRV && $model->dbtype != InstallerConfigForm::DB_TYPE_DBLIB) {
                 $sConfig .= "\t\t\t" . "'emulatePrepare' => true," . "\n";
             }
-            $sConfig .= "\t\t\t" . "'username' => '" . addcslashes($model->dbuser, "'") . "'," . "\n"
-            . "\t\t\t" . "'password' => '" . addcslashes($model->dbpwd, "'") . "'," . "\n"
+            $sConfig .= "\t\t\t" . "'username' => '" . addcslashes((string) $model->dbuser, "'") . "'," . "\n"
+            . "\t\t\t" . "'password' => '" . addcslashes((string) $model->dbpwd, "'") . "'," . "\n"
             . "\t\t\t" . "'charset' => '{$sCharset}'," . "\n"
             . "\t\t\t" . "'tablePrefix' => '{$model->dbprefix}'," . "\n";
 
@@ -946,8 +987,9 @@ class InstallerController extends CController
             ."\t\t"   . "),"                                        . "\n"
             ."\t\t"   . ""                                          . "\n"
             */
-
             . "\t\t" . "'urlManager' => array(" . "\n"
+            . "\t\t\t\t" . "// This is required for proper REST API and React Editor functionality." . "\n"
+            . "\t\t\t\t" . "// If you change it back to 'get', the new editor won't work " . "\n"
             . "\t\t\t" . "'urlFormat' => '{$sURLFormat}'," . "\n"
             . "\t\t\t" . "'rules' => array(" . "\n"
             . "\t\t\t\t" . "// You can add your own rules here" . "\n"
@@ -955,6 +997,11 @@ class InstallerController extends CController
             . "\t\t\t" . "'showScriptName' => {$sShowScriptName}," . "\n"
             . "\t\t" . ")," . "\n"
             . "\t" . "" . "\n"
+
+            . "\t\t" . "// If URLs generated while running on CLI are wrong, you need to set the baseUrl in the request component. For example:" . "\n"
+            . "\t\t" . "//'request' => array(" . "\n"
+            . "\t\t" . "//\t'baseUrl' => '/limesurvey'," . "\n"
+            . "\t\t" . "//)," . "\n"
 
             . "\t" . ")," . "\n"
             . "\t" . "// For security issue : it's better to set runtimePath out of web access" . "\n"
@@ -967,7 +1014,12 @@ class InstallerController extends CController
             . "\t" . "// on your webspace." . "\n"
             . "\t" . "// LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates" . "\n"
             . "\t\t" . "'debug'=>0," . "\n"
-            . "\t\t" . "'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n";
+            . "\t\t" . "'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n"
+            . "\n"
+            . "\t\t" . "// If URLs generated while running on CLI are wrong, you need to uncomment the following line and set your" . "\n"
+            . "\t\t" . "// public URL (the URL facing survey participants). You will also need to set the request->baseUrl in the section above." . "\n"
+            . "\t\t" . "//'publicurl' => 'https://www.example.org/limesurvey'," . "\n"
+            . "\n";
 
             if ($model->isMysql) {
                 $sConfig .= "\t\t" . "// Mysql database engine (INNODB|MYISAM):" . "\n"
@@ -1003,7 +1055,7 @@ class InstallerController extends CController
     {
         $sResult = '';
         for ($i = 0; $i < $iTotalChar; $i++) {
-            // Range 65-90 means A-Z, uppercase. Lowercase is betweeen 97-122.
+            // Range 65-90 means A-Z, uppercase. Lowercase is between 97-122.
             // @see http://www.asciitable.com/
             $sResult .= chr(rand(65, 90));
         }
@@ -1025,6 +1077,7 @@ class InstallerController extends CController
         isset(Yii::app()->session['dblocation']) ? $model->dblocation = Yii::app()->session['dblocation'] : null;
         isset(Yii::app()->session['dbport']) ? $model->dbport = Yii::app()->session['dbport'] : null;
         isset(Yii::app()->session['dbprefix']) ? $model->dbprefix = Yii::app()->session['dbprefix'] : null;
+        isset(Yii::app()->session['mssqlTrustServerCertificate']) ? $model->mssqlTrustServerCertificate = Yii::app()->session['mssqlTrustServerCertificate'] : null;
         isset(Yii::app()->session['dbExists']) ? $model->dbExists = Yii::app()->session['databaseexist'] : null;
         return $model;
     }
@@ -1042,6 +1095,7 @@ class InstallerController extends CController
         unset(Yii::app()->session['dblocation']);
         unset(Yii::app()->session['dbport']);
         unset(Yii::app()->session['dbprefix']);
+        unset(Yii::app()->session['mssqlTrustServerCertificate']);
         unset(Yii::app()->session['dbExists']);
     }
 
@@ -1093,7 +1147,7 @@ class InstallerController extends CController
             'ctype',
             'session',
             'hash',
-            'pdo'
+            'pdo',
         );
 
         foreach ($extensions as $extension) {

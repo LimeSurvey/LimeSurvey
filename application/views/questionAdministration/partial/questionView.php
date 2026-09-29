@@ -1,0 +1,138 @@
+<?php
+
+require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.QuestionListMassiveActions') . '.php';
+
+$pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);
+?>
+
+
+
+<div class="col-12 content-right">
+    <?php echo $this->renderPartial(
+        'partial/topbarBtns/listquestionsTopbarLeft_view',
+        [
+                    'oSurvey' => $oSurvey,
+                    'hasSurveyContentCreatePermission' => $hasSurveyContentCreatePermission
+                ],
+        true
+    );
+?>
+
+    <!-- Search Box -->
+    <div class="row mt-4">
+        <div class="col-12 ls-flex ls-flex-row">
+            <div class="ls-flex-item text-start">
+                <?php App()->getController()->renderPartial(
+                    '/admin/survey/surveybar_addgroupquestion',
+                    [
+                        'surveybar' => $surveybar,
+                        'oSurvey' => $oSurvey,
+                        'surveyHasGroup' => isset($surveyHasGroup) ? $surveyHasGroup : false
+                    ]
+                ); ?>
+            </div>
+
+            <!-- Begin Form -->
+            <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'action' => App()->createUrl(
+                    'questionAdministration/listquestions',
+                    ['surveyid' => $oSurvey->primaryKey]
+                ),
+                'method' => 'get',
+                'htmlOptions' => array(
+                    'class' => '',
+                ),
+            )); ?>
+            <div class="row row-cols-lg-auto g-1 align-items-center mb-3 float-end">
+                <!-- Search input -->
+                <div class="col-12">
+                    <?php
+                    echo $form->label(
+                        $questionModel,
+                        'title',
+                        array('label' => gT('Search:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm')
+                    ); ?>
+                </div>
+                <div class="col-12">
+                    <?php
+                    echo $form->textField($questionModel, 'title', array('class' => 'form-control')); ?>
+                </div>
+
+                <!-- Select group -->
+                <div class="col-12">
+                    <?php
+                    echo $form->label(
+                        $questionModel,
+                        'group',
+                        array('label' => gT('Group:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm')
+                    ); ?>
+                </div>
+                <div class="col-12">
+                    <select name="gid" id="<?php echo CHtml::getIdByName(CHtml::activeName($questionModel, 'group')); ?>" class="form-select">
+                        <option value=""><?php eT('(Any group)'); ?></option>
+                        <?php foreach ($oSurvey->groups as $group) : ?>
+                            <option value="<?php echo $group->gid; ?>" <?php if ($group->gid == $questionModel->gid) {
+                                                                            echo 'selected';
+                                           } ?>>
+                                <?php echo flattenText($group->questiongroupl10ns[$oSurvey->language]->group_name); ?>
+                            </option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <?= CHtml::submitButton(gT('Search', 'unescaped'), ['class' => 'btn btn-primary']) ?>
+                    <a href="<?= App()->createUrl('questionAdministration/listquestions', ['surveyid' => $oSurvey->primaryKey]) ?>"
+                       class="btn btn-warning" role="button" aria-label="<?= gT('Reset') ?>">
+                        <span class="ri-refresh-line"></span>
+                        <?= gT('Reset') ?>
+                    </a>
+                </div>
+            </div>
+            <?php
+            $this->endWidget(); ?>
+            <!-- form -->
+        </div>
+    </div>
+    <hr />
+    <!-- Grid -->
+    <div class="row ls-space margin top-10">
+        <div class="col-12">
+            <?php
+            $floatingActions = \actions\QuestionListMassiveActions::getActions($questionModel, $oSurvey);
+            $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                'pk'       => 'id',
+                'gridId'   => 'question-grid',
+                'aActions' => $floatingActions,
+            ]);
+
+            $this->widget('ext.admin.grid.CLSGridView', [ //done
+                'dataProvider' => $questionModel->search(),
+                'id' => 'question-grid',
+                'lsCaption'      => gT("Questions"),
+                'emptyText' => gT('No questions found.'),
+                'lsShowSelectionBar'      => false,
+                'lsPageSizeCurrentValue' => $pageSize,
+                'columns'               => $questionModel->questionListColumns,
+                'ajaxUpdate'            => 'question-grid',
+                'afterAjaxUpdate'       => "bindPageSizeChange"
+            ]);
+            ?>
+        </div>
+    </div>
+</div>
+
+
+<!-- To update rows per page via ajax -->
+<?php App()->getClientScript()->registerScript(
+    "ListQuestions-pagination",
+    "
+        var bindPageSizeChange = function(){
+            $(document).trigger('actions-updated');
+        };
+    ",
+    LSYii_ClientScript::POS_BEGIN
+); ?>
+
+<?php App()->getClientScript()->registerScript("ListQuestions-run-pagination", "bindPageSizeChange(); ", LSYii_ClientScript::POS_POSTSCRIPT); ?>

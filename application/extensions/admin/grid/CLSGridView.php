@@ -1,0 +1,467 @@
+<?php
+
+Yii::import('zii.widgets.grid.CGridView');
+
+class CLSGridView extends TbGridView
+{
+    /**
+     * @var string
+     */
+    public $massiveActionTemplate = '';
+
+    /**
+     * An array of Javascript functions that will be passed to afterAjaxUpdate
+     * @var array
+     */
+    public array $lsAfterAjaxUpdate;
+
+    /**
+     * An array of columns that should be selectable for display
+     * @var array
+     */
+    public array $lsAdditionalColumns = [];
+
+    /**
+     * An array of columns that is selected for display
+     * @var array
+     */
+    public array $lsAdditionalColumnsSelected = [];
+
+    /**
+     * When true, the selection bar offers a "Select all" button that selects the
+     * whole result set; massive actions then post a selectAll flag plus the grid filters.
+     * @var bool
+     */
+    public bool $lsSelectAllEnabled = false;
+
+    /**
+     * Maximum number of selected rows that still allows individual deselection
+     * after using the cross-page "Select all" action.
+     * @var int
+     */
+    public int $lsSelectAllDisableThreshold = 1000;
+
+    /**
+     * string for a link that is on every row
+     * @var string
+     */
+    public string $lsRowLink;
+
+    /**
+     * Optional table caption. When set, a <caption> element is rendered inside the grid table.
+     * @var string|null
+     */
+    public $lsCaption;
+
+    /**
+     * Whether to render the cross-pagination selection bar below the grid.
+     * Set to false for grids that use the FloatingActionsWidget to show the count in the floating bar.
+     * @var bool
+     */
+    public $lsShowSelectionBar = true;
+
+    /**
+     * The currently selected page size. When set, CLSGridView automatically generates a rows-per-page
+     * <select> and appends it to summaryText (only when summaryText is not set explicitly).
+     * @var int|null
+     */
+    public $lsPageSizeCurrentValue = null;
+
+    /**
+     * Options array for the rows-per-page <select>. When null, falls back to
+     * Yii::app()->params['pageSizeOptions']. Pass Yii::app()->params['pageSizeOptionsTokens']
+     * for token/participant grids that need a wider range.
+     * @var array|null
+     */
+    public $lsPageSizeOptions = null;
+
+    /**
+     * The name attribute of the rows-per-page <select> element. Defaults to 'pageSize'.
+     * Override when multiple grids share the same page so each grid's page-size
+     * change posts a distinct request parameter.
+     * @var string
+     */
+    public $lsPageSizeSelectorName = 'pageSize';
+
+    /**
+     *
+     * Initializes the widget.
+     * @throws CException
+     */
+    public function init()
+    {
+        parent::init();
+
+        if ($this->lsPageSizeCurrentValue !== null && $this->summaryText === null) {
+            $options = $this->lsPageSizeOptions ?? Yii::app()->params['pageSizeOptions'];
+            $this->summaryText = gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                . sprintf(
+                    gT('%s rows per page'),
+                    CHtml::dropDownList(
+                        $this->lsPageSizeSelectorName,
+                        $this->lsPageSizeCurrentValue,
+                        $options,
+                        [
+                            'id'         => $this->getId() . '--pageSize',
+                            'class'      => 'changePageSize form-select',
+                            'style'      => 'display: inline; width: auto',
+                            'aria-label' => gT('Rows per page'),
+                        ]
+                    )
+                );
+        }
+
+        $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
+        $this->htmlOptions['class'] = 'grid-view-ls';
+        $this->htmlOptions['data-select-all-label'] = gT('Select all');
+        $classes = ['table', 'table-hover'];
+        $this->template = $this->render('template', [
+            'massiveActionTemplate' => $this->massiveActionTemplate,
+            'showSelectionBar'      => $this->lsShowSelectionBar,
+        ], true);
+        $this->rowLink();
+        $this->lsAfterAjaxUpdate();
+        if (!empty($classes)) {
+            $classes = implode(' ', $classes);
+            if (isset($this->itemsCssClass)) {
+                $this->itemsCssClass .= ' ' . $classes;
+            } else {
+                $this->itemsCssClass = $classes;
+            }
+        }
+        $this->registerGridviewScripts();
+    }
+
+    /**
+     * Renders the data items for the grid view.
+     * Overrides parent to output an optional table caption after the opening <table> tag.
+     */
+    public function renderItems()
+    {
+        if ($this->dataProvider->getItemCount() > 0 || $this->showTableOnEmpty) {
+            echo "<table class=\"{$this->itemsCssClass}\">\n";
+            if (!empty($this->lsCaption)) {
+                echo CHtml::tag('caption', ['class' => 'visually-hidden'], CHtml::encode($this->lsCaption)) . "\n";
+            }
+            $this->renderTableHeader();
+            ob_start();
+            $this->renderTableBody();
+            $body = ob_get_clean();
+            $this->renderTableFooter();
+            echo $body; // TFOOT must appear before TBODY according to the standard.
+            echo "</table>";
+        } else {
+            $this->renderEmptyText();
+        }
+    }
+
+    /**
+     * Renders the empty message as a focusable live region for screen reader announcement.
+     */
+    public function renderEmptyText()
+    {
+        $emptyText = $this->emptyText === null ? Yii::t('zii', 'No results found.') : $this->emptyText;
+        echo CHtml::tag(
+            $this->emptyTagName,
+            [
+                'class' => trim($this->emptyCssClass . ' grid-empty-message'),
+                'id' => $this->getId() . '-empty-message',
+                'role' => 'status',
+                'aria-live' => 'polite',
+                'aria-atomic' => 'true',
+                'tabindex' => '-1',
+            ],
+            $emptyText
+        );
+    }
+
+    /**
+     * Creates column objects and initializes them.
+     */
+    protected function initColumns()
+    {
+        $this->appendAdditionalColumns();
+        foreach ($this->columns as $i => $column) {
+            if (is_array($column) && !isset($column['class'])) {
+                $this->columns[$i]['class'] = '\TbDataColumn';
+            }
+        }
+        parent::initColumns();
+
+        // Add massiveActionsCheckbox class to the first column if it is a CCheckBoxColumn
+        $firstColumn = reset($this->columns);
+        if ($firstColumn instanceof CCheckBoxColumn) {
+            $existing = isset($firstColumn->checkBoxHtmlOptions['class']) ? $firstColumn->checkBoxHtmlOptions['class'] . ' ' : '';
+            $firstColumn->checkBoxHtmlOptions['class'] = $existing . 'massiveActionsCheckbox';
+        }
+    }
+
+    /**
+     * parse javascript snippets to TbGridView's afterAjaxUpdate and insert global javascript snippets for griviews
+     * @return void
+     */
+    protected function lsAfterAjaxUpdate(): void
+    {
+        $gridId = CJavaScript::encode($this->id);
+
+        // Always restore persisted checkbox selection after an AJAX page update.
+        // LS.gridSelection is registered for every CLSGridView via registerGridviewScripts().
+
+        // Non-AJAX grids have no afterAjaxUpdate callback to build
+        if ($this->ajaxUpdate === false) {
+            return;
+        }
+
+        $parts = [];
+
+        // 1. Restore persisted checkbox selection FIRST (reads the store into DOM).
+        $parts[] = 'LS.gridSelection.restoreCheckboxes(' . $gridId . ');';
+
+        // 2. Freeze the store so that programmatic change events fired by
+        //    lsAfterAjaxUpdate callbacks (e.g. datepicker re-init) cannot
+        //    clear the cross-page selections before the floating bar is updated.
+        $parts[] = 'if(window.LS&&LS.gridSelection&&LS.gridSelection.freeze){LS.gridSelection.freeze(' . $gridId . ');}';
+
+        $parts[] = 'try{';
+        // 3. Preserve any existing afterAjaxUpdate set by the caller
+        if ($this->afterAjaxUpdate !== null) {
+            $definedFunction = ($this->afterAjaxUpdate instanceof CJavaScriptExpression)
+                ? (string) $this->afterAjaxUpdate // has a __toString magic function which returns the code
+                : $this->afterAjaxUpdate;
+            // execute the defined function preserving `this` context from the grid settings object
+            $parts[] = '(' . $definedFunction . ').call(this, id, data);';
+        }
+
+        // 4. Per-grid custom snippets from lsAfterAjaxUpdate
+        if (isset($this->lsAfterAjaxUpdate)) {
+            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
+                $parts[] = $jsCode;
+            }
+        }
+
+        // 5. Standard post-update handler (actionDropdown, rowlink, column filter).
+        //    Store is still frozen here.
+        $parts[] = 'LS.gridView.afterAjaxUpdate(id, data);';
+
+        // 6. Explicitly re-inject and refresh the floating actions bar (if any).
+        //    This is a direct call that does not rely on the LS.gridView.afterAjaxUpdate
+        //    hook being intact, making it robust against PJAX script re-evaluation.
+        $parts[] = 'if(window.LS&&LS.floatingActions&&LS.floatingActions.refresh){LS.floatingActions.refresh(id);}';
+
+        // 7. Unfreeze so that real user-triggered filter changes clear the store normally.
+        $parts[] = '}finally{';
+        $parts[] = 'if(window.LS&&LS.gridSelection&&LS.gridSelection.unfreeze){LS.gridSelection.unfreeze(' . $gridId . ');}';
+        $parts[] = '}';
+
+        if (!empty($this->lsAdditionalColumns)) {
+            $parts[] = 'initColumnFilter();';
+        }
+
+        $this->afterAjaxUpdate = 'function(id, data){' . implode('', $parts) . '}';
+    }
+
+    /**
+     * Adds the data-rowlink attribute to $this->rowHtmlOptionsExpression to be used by the rowLink.js
+     * The JS adds a link to every td element of the row
+     * @return void
+     */
+    protected function rowLink(): void
+    {
+        if (!empty($this->lsRowLink) && empty($this->rowHtmlOptionsExpression)) {
+            $this->rowHtmlOptionsExpression = function ($row, $data, $grid) {
+                $options = [];
+                $options['data-rowlink'] = eval('return ' . $this->lsRowLink . ';');
+                return $options;
+            };
+        }
+    }
+
+    private function registerGridviewScripts()
+    {
+        $extensionsUrl = App()->getConfig("extensionsurl") . 'admin/grid/assets/';
+
+        // Grid selection // Cross-page checkbox selection persistence (generic, works for every CLSGridView)
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'gridSelection.js',
+            CClientScript::POS_BEGIN
+        );
+
+        // Scrollbar
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'gridScrollbar.js',
+            CClientScript::POS_BEGIN
+        );
+        // Accessibility: restore focus to sort column after AJAX grid update
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'restoreFocusAfterSort.js',
+            CClientScript::POS_BEGIN
+        );
+        // Row link: make entire table rows clickable via data-rowlink attribute
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'rowLink.js',
+            CClientScript::POS_END
+        );
+        // Page size selector
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'changePageSize.js',
+            CClientScript::POS_END
+        );
+        // Accessibility: aria-label for "Select all" checkboxes
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'ariaSelectAll.js',
+            CClientScript::POS_END
+        );
+        // Accessibility: keyboard navigation and focus management for sort links
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'sortAccessibility.js',
+            CClientScript::POS_END
+        );
+        // Standard afterAjaxUpdate handler (actionDropdown, rowlink, columnFilter, restoreFocus)
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'afterAjaxUpdate.js',
+            CClientScript::POS_END
+        );
+    }
+
+    /**
+     * Registers the client scripts needed by the grid: yiiGridView initialisation
+     * and the screen reader announcement of an empty result.
+     *
+     * @return void
+     * @throws CException
+     */
+    public function registerClientScript()
+    {
+        // ========== this is added for pagination size working by referencing from old limegridview  ==============
+        $id = $this->getId();
+
+        if ($this->ajaxUpdate === false) {
+            $ajaxUpdate = false;
+        } else {
+            $ajaxUpdate = array_unique(preg_split('/\s*,\s*/', $this->ajaxUpdate . ',' . $id, -1, PREG_SPLIT_NO_EMPTY));
+        }
+        $options = array(
+            'ajaxUpdate' => $ajaxUpdate,
+            'ajaxVar' => $this->ajaxVar,
+            'pagerClass' => $this->pagerCssClass,
+            'loadingClass' => $this->loadingCssClass,
+            'filterClass' => $this->filterCssClass,
+            'tableClass' => $this->itemsCssClass,
+            'selectableRows' => $this->selectableRows,
+            'enableHistory' => $this->enableHistory,
+            'updateSelector' => $this->updateSelector,
+            'filterSelector' => $this->filterSelector
+        );
+        if ($this->ajaxUrl !== null) {
+            $options['url'] = CHtml::normalizeUrl($this->ajaxUrl);
+        }
+        if ($this->ajaxType !== null) {
+            $options['ajaxType'] = strtoupper($this->ajaxType);
+            $request = Yii::app()->getRequest();
+            if ($options['ajaxType'] == 'POST' && $request->enableCsrfValidation) {
+                $options['csrfTokenName'] = $request->csrfTokenName;
+                $options['csrfToken'] = $request->getCsrfToken();
+            }
+        }
+        if ($this->enablePagination) {
+            $options['pageVar'] = $this->dataProvider->getPagination()->pageVar;
+        }
+        foreach (array('beforeAjaxUpdate', 'afterAjaxUpdate', 'ajaxUpdateError', 'selectionChanged') as $event) {
+            if ($this->$event !== null) {
+                if ($this->$event instanceof CJavaScriptExpression) {
+                    $options[$event] = $this->$event;
+                } else {
+                    $options[$event] = new CJavaScriptExpression($this->$event);
+                }
+            }
+        }
+
+        $options = CJavaScript::encode($options);
+        $cs = Yii::app()->getClientScript();
+        $cs->registerCoreScript('jquery');
+        $cs->registerCoreScript('bbq');
+        if ($this->enableHistory) {
+            $cs->registerCoreScript('history');
+        }
+        $cs->registerScriptFile($this->baseScriptUrl . '/jquery.yiigridview.js', CClientScript::POS_END);
+        $cs->registerScript(
+            __CLASS__ . '#' . $id,
+            "jQuery('#$id').yiiGridView($options);",
+            LSYii_ClientScript::POS_POSTSCRIPT
+        );
+        // Under PJAX this inline script runs before afterAjaxUpdate.js is loaded, so defer until it is available
+        $cs->registerScript(
+            __CLASS__ . '-emptyAnnounce#' . $id,
+            'jQuery(function(){
+                var announceEmpty = function() { LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . '); };
+                if (window.LS && LS.gridView && LS.gridView.announceEmptyMessage) {
+                    announceEmpty();
+                } else {
+                    jQuery(document).one("pjax:scriptcomplete", announceEmpty);
+                }
+            });',
+            LSYii_ClientScript::POS_READY
+        );
+    }
+
+    /**
+     * Appends columns to the gridview based on the selected columns of the columnFilter param.
+     * If available loads saved column filter from user settings.
+     * @return void
+     */
+    protected function appendAdditionalColumns(): void
+    {
+        if (empty($this->lsAdditionalColumns)) {
+            return;
+        }
+        $ajaxUpdate = (string) App()->request->getQuery('ajax');
+        if (!$this->dataProvider instanceof CActiveDataProvider) {
+            return;
+        }
+        $columns_filter_button = '<button role="button" type="button" aria-label="' . gT('Select columns') . '" class="btn b-0" data-bs-toggle="modal" data-bs-target="#column-filter-modal">
+                <i class="ri-layout-column-fill"></i>
+            </button>';
+        $this->columns[]  = [
+            'header'            => $columns_filter_button,
+            'name'              => 'dropdown_actions',
+            'value'             => '$data->buttons',
+            'type'              => 'raw',
+            'headerHtmlOptions' => ['class' => 'text-center ls-sticky-column', 'style' => 'font-size: 1.5em; font-weight: 400;'],
+            'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
+            'filter'            => false
+        ];
+        /* Updating the columns to be added */
+        if (App()->request->getParam('selectColumns') && $this->ajaxUpdate === $ajaxUpdate) {
+            $columnsSelected = (array) App()->request->getQuery('columnsSelected');
+            // If there are no columns selected, we delete the user setting.
+            if (empty($columnsSelected)) {
+                SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
+            } else {
+                SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
+            }
+        }
+        /* get the columns to be added */
+        $userColumns = SettingsUser::getUserSettingValue('gridview_columns_' . $this->ajaxUpdate);
+        if (!empty($userColumns)) {
+            $columnsSelected = json_decode($userColumns, false);
+            if ($columnsSelected !== null) {
+                $this->addColumns($columnsSelected);
+            }
+        }
+    }
+
+    protected function addColumns(array $selectedColumns): void
+    {
+        $additionalColumns = $this->lsAdditionalColumns;
+        foreach ($selectedColumns as $selectedColumn) {
+            $column_data = null;
+            if (isset($additionalColumns[$selectedColumn])) {
+                $column_data = $additionalColumns[$selectedColumn];
+            }
+            if (is_array($column_data)) {
+                $this->lsAdditionalColumnsSelected[] = $selectedColumn;
+                array_splice($this->columns, count($this->columns) - 2, 0, [$column_data]);
+            }
+        }
+    }
+}

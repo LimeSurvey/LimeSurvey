@@ -1,22 +1,38 @@
 <?php
+
 /**
  * Render the selector for surveys massive actions.
  *
  */
+
 ?>
 
 
 <!-- Rendering massive action widget -->
 <?php
-    $buttons = [];
-if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 'delete')) {
+$buttons = [];
+$surveyId = intval(App()->getRequest()->getQuery('surveyId'));
+$selectAllCapNote = '';
+if (!empty($selectAllMaxCount) && $numTotalAnswers > $selectAllMaxCount) {
+    $selectAllCapNote = '<div class="select-all-cap-note mt-2" style="display:none;">'
+        . $this->widget('ext.AlertWidget.AlertWidget', [
+            'tag'  => 'p',
+            'text' => sprintf(
+                gT('"Select all" is limited to the first %s responses in one action.'),
+                (int) $selectAllMaxCount
+            ),
+            'type' => 'info',
+        ], true)
+        . '</div>';
+}
+if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
     // Delete
     $buttons[] = [
         // li element
         'type'        => 'action',
         'action'      => 'delete',
-        'url'         =>  App()->createUrl("responses/delete/", ['surveyId' => $_GET['surveyId']]),
-        'iconClasses' => 'fa fa-trash text-danger',
+        'url'         =>  App()->createUrl("responses/delete/", ['surveyId' => $surveyId]),
+        'iconClasses' => 'ri-delete-bin-fill text-danger',
         'text'        =>  gT('Delete'),
         'grid-reload' => 'yes',
 
@@ -27,9 +43,10 @@ if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 'de
         'sModalTitle'   => gT('Delete responses'),
         'htmlModalBody' => gT('Are you sure you want to delete the selected responses?')
             . '<br/>'
-            . gT('Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.'),
+            . gT('Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.')
+            . $selectAllCapNote,
         'aCustomDatas'  => [
-            ['name' =>'sid', 'value' => $_GET['surveyId']],
+            ['name' => 'sid', 'value' => $surveyId],
         ],
     ];
 
@@ -37,8 +54,8 @@ if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 'de
         'type'        => 'action',
         'action'      => 'deleteAttachments',
         //'url'         =>  App()->createUrl("admin/responses", array("sa"=>"actionDeleteAttachments")),
-        'url'         =>  App()->createUrl("responses/deleteAttachments/", ["surveyId" => $_GET['surveyId']]),
-        'iconClasses' => 'text-danger fa fa-paperclip',
+        'url'         =>  App()->createUrl("responses/deleteAttachments/", ["surveyId" => $surveyId]),
+        'iconClasses' => 'text-danger ri-attachment-2',
         'text'        =>  gT('Delete attachments'),
         'grid-reload' => 'yes',
 
@@ -49,18 +66,18 @@ if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 'de
         'sModalTitle'   => gT('Delete attachments'),
         'htmlModalBody' => gT('Are you sure you want to delete all uploaded files from the selected responses?'),
         'aCustomDatas'  => [
-            ['name' =>'sid', 'value' => $_GET['surveyId']],
+            ['name' => 'sid', 'value' => $surveyId],
         ],
     ];
 }
 
-if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 'read')) {
+if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
     // Download ZIP archive of file upload question types
     $buttons[] = [
         'type' => 'action',
         'action' => 'downloadZip',
-        'url' => App()->createUrl('responses/downloadfiles/', ['surveyId' => $_GET['surveyId'], 'responseIds' => '']),
-        'iconClasses' => 'fa fa-download test',
+        'url' => App()->createUrl('responses/downloadfiles/', ['surveyId' => $surveyId, 'responseIds' => '']),
+        'iconClasses' => 'ri-download-fill test',
         'text' => gT('Download files'),
         'grid-reload' => 'no',
 
@@ -73,16 +90,15 @@ if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 're
         // li element
         'type'            => 'action',
         'action'          => 'export',
-        'url'             =>  App()->createUrl('admin/export/sa/exportresults/surveyId/'.$_GET['surveyId']),
-        'iconClasses'     => 'fa fa-upload',
+        'url'             =>  App()->createUrl('admin/export/sa/exportresults/', ['surveyId' => $surveyId]),
+        'iconClasses'     => 'ri-upload-fill',
         'text'            =>  gT('Export'),
-
         'aLinkSpecificDatas'  => [
-            'input-name'     => 'tokenids',
+            'input-name' => 'responseIds',
+            'input-separator' => ',',
+            'target' => '_self',
         ],
-
-        // modal
-        'actionType'    => 'fill-session-and-redirect',
+        'actionType'    => 'redirect',
     ];
 }
 

@@ -1,0 +1,8 @@
+body {
+    background-image: url("../files/background.png");
+    background-attachment: fixed;
+}
+
+body .top-container {
+    background-color: rgba(236, 240, 241, 0.2);
+}

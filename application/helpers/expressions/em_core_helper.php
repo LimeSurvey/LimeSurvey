@@ -2,7 +2,7 @@
 
 /**
  * LimeSurvey
- * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -39,20 +39,23 @@ class ExpressionManager
         'valueNAOK',
         'value',
     );
-    // These are the allowable static suffixes for variables - each represents an attribute of a variable that can not be updated on same page
+    /* var string[] allowable static suffixes for variables - each represents an attribute of a variable that can not be updated on same page
+     * @see LimeExpressionManager->knownVars definition
+     */
     private $aRDP_regexpStaticAttribute = array(
         'qid',
-        'grelevance',
-        'gseq',
-        'jsName',
-        'mandatory',
-        'qid',
-        'qseq',
+        'gid',
         'question',
-        'relevance',
-        'rowdivid',
         'sgqa',
         'type',
+        'relevance',
+        'grelevance',
+        'qseq',
+        'gseq',
+        'jsName',
+        'jsName_on',
+        'mandatory',
+        'rowdivid',
     );
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
@@ -61,7 +64,7 @@ class ExpressionManager
     private $RDP_CategorizeTokensRegex;
     private $RDP_ValidFunctions; // names and # params of valid functions
 
-    // Thes variables are used while  processing the equation
+    // These variables are used while  processing the equation
     private $RDP_expr; // the source expression
     private $RDP_tokens; // the list of generated tokens
     private $RDP_count; // total number of $RDP_tokens
@@ -80,7 +83,7 @@ class ExpressionManager
     // These  variables are only used by sProcessStringContainingExpressions
     private $allVarsUsed; // full list of variables used within the string, even if contains multiple expressions
     private $prettyPrintSource; // HTML formatted output of running sProcessStringContainingExpressions
-    private $substitutionNum; // Keeps track of number of substitions performed XXX
+    private $substitutionNum; // Keeps track of number of substitutions performed XXX
 
     /**
      * @var array
@@ -188,22 +191,22 @@ class ExpressionManager
         $this->RDP_CategorizeTokensRegex[] = '/.+/';
         $this->RDP_TokenType[] = 'OTHER';
         // Each allowed function is a mapping from local name to external name + number of arguments
-        // Functions can have a list of serveral allowable #s of arguments.
+        // Functions can have a list of several allowable #s of arguments.
         // If the value is -1, the function must have a least one argument but can have an unlimited number of them
         // -2 means that at least one argument is required.  -3 means at least two arguments are required, etc.
         $this->RDP_ValidFunctions = array(
-            'abs' => array('abs', 'Decimal.asNum.abs', gT('Absolute value'), 'number abs(number)', 'http://php.net/abs', 1),
+            'abs' => array('exprmgr_abs', 'Decimal.asNum.abs', gT('Absolute value'), 'number abs(number)', 'http://php.net/abs', 1),
             'acos' => array('acos', 'Decimal.asNum.acos', gT('Arc cosine'), 'number acos(number)', 'http://php.net/acos', 1),
             'addslashes' => array('addslashes', gT('addslashes'), 'Quote string with slashes', 'string addslashes(string)', 'http://php.net/addslashes', 1),
             'asin' => array('asin', 'Decimal.asNum.asin', gT('Arc sine'), 'number asin(number)', 'http://php.net/asin', 1),
             'atan' => array('atan', 'Decimal.asNum.atan', gT('Arc tangent'), 'number atan(number)', 'http://php.net/atan', 1),
             'atan2' => array('atan2', 'Decimal.asNum.atan2', gT('Arc tangent of two variables'), 'number atan2(number, number)', 'http://php.net/atan2', 2),
             'ceil' => array('ceil', 'Decimal.asNum.ceil', gT('Round fractions up'), 'number ceil(number)', 'http://php.net/ceil', 1),
-            'checkdate' => array('checkdate', 'checkdate', gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://php.net/checkdate', 3),
+            'checkdate' => array('exprmgr_checkdate', 'checkdate', gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://php.net/checkdate', 3),
             'cos' => array('cos', 'Decimal.asNum.cos', gT('Cosine'), 'number cos(number)', 'http://php.net/cos', 1),
             'count' => array('exprmgr_count', 'LEMcount', gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
             'countif' => array('exprmgr_countif', 'LEMcountif', gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
-            'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the critiera (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
+            'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the criteria (argument - operator - value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
             'date' => array('exprmgr_date', 'date', gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://php.net/date', 1, 2),
             'exp' => array('exp', 'Decimal.asNum.exp', gT('Calculates the exponent of e'), 'number exp(number)', 'http://php.net/exp', 1),
             'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
@@ -261,12 +264,12 @@ class ExpressionManager
             'strpos' => array('exprmgr_strpos', 'LEMstrpos', gT('Find position of first occurrence of a string'), 'int strpos(haystack, needle [ offset=0])', 'http://php.net/strpos', 2, 3),
             'strrev' => array('strrev', 'strrev', gT('Reverse a string'), 'string strrev(string)', 'http://php.net/strrev', 1),
             'strstr' => array('exprmgr_strstr', 'strstr', gT('Find first occurrence of a string'), 'string strstr(haystack, needle [, before_needle=false])', 'http://php.net/strstr', 2, 3),
-            'strtolower' => array('exprmgr_strtolower', 'LEMstrtolower', gT('Make a string lowercase'), 'string strtolower(string)', 'http://php.net/strtolower', 1),
+            'strtolower' => array('exprmgr_strtolower', 'LEMstrtolower', gT('Convert a string to lowercase'), 'string strtolower(string)', 'http://php.net/strtolower', 1),
             'strtotime' => array('strtotime', 'strtotime', gT('Convert a date/time string to unix timestamp'), 'int strtotime(string)', 'http://php.net/manual/de/function.strtotime', 1),
-            'strtoupper' => array('exprmgr_strtoupper', 'LEMstrtoupper', gT('Make a string uppercase'), 'string strtoupper(string)', 'http://php.net/strtoupper', 1),
+            'strtoupper' => array('exprmgr_strtoupper', 'LEMstrtoupper', gT('Convert a string to uppercase'), 'string strtoupper(string)', 'http://php.net/strtoupper', 1),
             'substr' => array('exprmgr_substr', 'substr', gT('Return part of a string'), 'string substr(string, start [, length])', 'http://php.net/substr', 2, 3),
-            'sum' => array('array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
-            'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
+            'sum' => array('exprmgr_array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
+            'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the criteria (argument - operator - value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
             'tan' => array('tan', 'Decimal.asNum.tan', gT('Tangent'), 'number tan(arg)', 'http://php.net/tan', 1),
             'convert_value' => array('exprmgr_convert_value', 'LEMconvert_value', gT('Convert a numerical value using a inputTable and outputTable of numerical values'), 'number convert_value(fValue, iStrict, sTranslateFromList, sTranslateToList)', '', 4),
             'time' => array('time', 'time', gT('Return current UNIX timestamp'), 'number time()', 'http://php.net/time', 0),
@@ -346,7 +349,7 @@ class ExpressionManager
     }
 
     /**
-     * Get informatin about type mismatch between arguments.
+     * Get information about type mismatch between arguments.
      * @param Token $arg1
      * @param Token $arg2
      * @return boolean[] Like (boolean $bMismatchType, boolean $bBothNumeric, boolean $bBothString)
@@ -355,8 +358,8 @@ class ExpressionManager
     {
         /* When value come from DB : it's set to 1.000000 (DECIMAL) : must be fixed see #11163. Response::model() must fix this . or not ? */
         /* Don't return true always : user can entre non numeric value in a numeric value : we must compare as string then */
-        $arg1[0] = ($arg1[2] == "NUMBER" && strpos($arg1[0], ".")) ? rtrim(rtrim($arg1[0], "0"), ".") : $arg1[0];
-        $arg2[0] = ($arg2[2] == "NUMBER" && strpos($arg2[0], ".")) ? rtrim(rtrim($arg2[0], "0"), ".") : $arg2[0];
+        $arg1[0] = ($arg1[2] == "NUMBER" && strpos((string) $arg1[0], ".")) ? rtrim(rtrim((string) $arg1[0], "0"), ".") : $arg1[0];
+        $arg2[0] = ($arg2[2] == "NUMBER" && strpos((string) $arg2[0], ".")) ? rtrim(rtrim((string) $arg2[0], "0"), ".") : $arg2[0];
 
         $bNumericArg1 = $arg1[0] !== "" && (!$arg1[0] || strval(floatval($arg1[0])) == strval($arg1[0]));
         $bNumericArg2 = $arg2[0] !== "" && (!$arg2[0] || strval(floatval($arg2[0])) == strval($arg2[0]));
@@ -407,7 +410,7 @@ class ExpressionManager
             }
         }
 
-        switch (strtolower($token[0])) {
+        switch (strtolower((string) $token[0])) {
             case 'or':
             case '||':
                 $result = array(($arg1[0] or $arg2[0]), $token[1], 'NUMBER');
@@ -435,12 +438,12 @@ class ExpressionManager
                     if ($isForcedString) {
                         $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     }
-                    $result = array(strcmp($arg1[0], $arg2[0]) < 0, $token[1], 'NUMBER');
+                    $result = array(strcmp((string) $arg1[0], (string) $arg2[0]) < 0, $token[1], 'NUMBER');
                 } else {
                     $result = array(($arg1[0] < $arg2[0]), $token[1], 'NUMBER');
                 }
                 break;
-            case '<=';
+            case '<=':
             case 'le':
                 if ($bMismatchType) {
                     if ($isForcedString) {
@@ -455,7 +458,7 @@ class ExpressionManager
                         if ($isForcedString) {
                             $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                         }
-                        $result = array(strcmp($arg1[0], $arg2[0]) <= 0, $token[1], 'NUMBER');
+                        $result = array(strcmp((string) $arg1[0], (string) $arg2[0]) <= 0, $token[1], 'NUMBER');
                     } else {
                         $result = array(($arg1[0] <= $arg2[0]), $token[1], 'NUMBER');
                     }
@@ -476,13 +479,13 @@ class ExpressionManager
                         if ($isForcedString) {
                             $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                         }
-                        $result = array(strcmp($arg1[0], $arg2[0]) > 0, $token[1], 'NUMBER');
+                        $result = array(strcmp((string) $arg1[0], (string) $arg2[0]) > 0, $token[1], 'NUMBER');
                     } else {
                         $result = array(($arg1[0] > $arg2[0]), $token[1], 'NUMBER');
                     }
                 }
                 break;
-            case '>=';
+            case '>=':
             case 'ge':
                 if ($bMismatchType) {
                     if ($isForcedString) {
@@ -493,7 +496,7 @@ class ExpressionManager
                     if ($isForcedString) {
                         $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     }
-                    $result = array(strcmp($arg1[0], $arg2[0]) >= 0, $token[1], 'NUMBER');
+                    $result = array(strcmp((string) $arg1[0], (string) $arg2[0]) >= 0, $token[1], 'NUMBER');
                 } else {
                     $result = array(($arg1[0] >= $arg2[0]), $token[1], 'NUMBER');
                 }
@@ -521,7 +524,7 @@ class ExpressionManager
                     $result = array(NAN, $token[1], 'NUMBER');
                 }
                 break;
-            case '/';
+            case '/':
                 if ($bBothNumeric) {
                     if ($arg2[0] == 0) {
                         $result = array(NAN, $token[1], 'NUMBER');
@@ -555,7 +558,7 @@ class ExpressionManager
             $this->RDP_AddError(self::gT("Invalid value(s) on the stack"), $token);
             return false;
         }
-        // If argmument is empty, then assume it is 0
+        // If argument is empty, then assume it is 0
         if ($arg1[0] == '') {
              $arg1[0] = 0;
         };
@@ -567,7 +570,7 @@ class ExpressionManager
             case '-':
                 $result = array((-$arg1[0]), $token[1], 'NUMBER');
                 break;
-            case '!';
+            case '!':
                 $result = array((!$arg1[0]), $token[1], 'NUMBER');
                 break;
         }
@@ -639,7 +642,7 @@ class ExpressionManager
             if ($token[2] == 'BINARYOP') {
                 switch ($token[0]) {
                     case '+':
-                    case '-';
+                    case '-':
                         if ($this->RDP_EvaluateMultiplicativeExpression()) {
                             if (!$this->RDP_EvaluateBinary($token)) {
                                 return false;
@@ -687,7 +690,7 @@ class ExpressionManager
                 } else {
                     if ($this->RDP_isValidVariable($token[0])) {
                         $this->varsUsed[] = $token[0]; // add this variable to list of those used in this equation
-                        if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $token[0])) {
+                        if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", (string) $token[0])) {
                             $relStatus = 1; // static, so always relevant
                         } else {
                             $relStatus = $this->GetVarAttribute($token[0], 'relevanceStatus', 1);
@@ -728,7 +731,7 @@ class ExpressionManager
         }
         while (($this->RDP_pos + 1) < $this->RDP_count) {
             $token = $this->RDP_tokens[++$this->RDP_pos];
-            switch (strtolower($token[0])) {
+            switch (strtolower((string) $token[0])) {
                 case '==':
                 case 'eq':
                 case '!=':
@@ -903,7 +906,7 @@ class ExpressionManager
         }
         while (($this->RDP_pos + 1) < $this->RDP_count) {
             $token = $this->RDP_tokens[++$this->RDP_pos];
-            switch (strtolower($token[0])) {
+            switch (strtolower((string) $token[0])) {
                 case '&&':
                 case 'and':
                     if ($this->RDP_EvaluateEqualityExpression()) {
@@ -934,7 +937,7 @@ class ExpressionManager
         }
         while (($this->RDP_pos + 1) < $this->RDP_count) {
             $token = $this->RDP_tokens[++$this->RDP_pos];
-            switch (strtolower($token[0])) {
+            switch (strtolower((string) $token[0])) {
                 case '||':
                 case 'or':
                     if ($this->RDP_EvaluateLogicalAndExpression()) {
@@ -972,7 +975,7 @@ class ExpressionManager
             if ($token[2] == 'BINARYOP') {
                 switch ($token[0]) {
                     case '*':
-                    case '/';
+                    case '/':
                         if ($this->RDP_EvaluateUnaryExpression()) {
                             if (!$this->RDP_EvaluateBinary($token)) {
                                 return false;
@@ -1035,14 +1038,14 @@ class ExpressionManager
         }
         while (($this->RDP_pos + 1) < $this->RDP_count) {
             $token = $this->RDP_tokens[++$this->RDP_pos];
-            switch (strtolower($token[0])) {
+            switch (strtolower((string) $token[0])) {
                 case '<':
                 case 'lt':
-                case '<=';
+                case '<=':
                 case 'le':
                 case '>':
                 case 'gt':
-                case '>=';
+                case '>=':
                 case 'ge':
                     if ($this->RDP_EvaluateAdditiveExpression()) {
                         if (!$this->RDP_EvaluateBinary($token)) {
@@ -1109,7 +1112,7 @@ class ExpressionManager
         }
         $jsNames = array();
         foreach ($names as $name) {
-            if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $name)) {
+            if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", (string) $name)) {
                 continue;
             }
             $val = $this->GetVarAttribute($name, 'jsName', '');
@@ -1139,7 +1142,7 @@ class ExpressionManager
         }
         $jsNames = array();
         foreach ($names as $name) {
-            if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $name)) {
+            if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", (string) $name)) {
                 continue;
             }
             $val = $this->GetVarAttribute($name, 'jsName', '');
@@ -1178,7 +1181,7 @@ class ExpressionManager
         }
         $jsNames = array();
         foreach ($names as $name) {
-            if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $name)) {
+            if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", (string) $name)) {
                 continue;
             }
             $val = $this->GetVarAttribute($name, 'jsName', '');
@@ -1236,7 +1239,7 @@ class ExpressionManager
 
     /**
      * Converts the most recent expression into a valid JavaScript expression, mapping function and variable names and operators as needed.
-     * @return string the JavaScript expresssion
+     * @return string the JavaScript expression
      */
     public function GetJavaScriptEquivalentOfExpression()
     {
@@ -1248,11 +1251,15 @@ class ExpressionManager
             return '';
         }
         $tokens = $this->RDP_tokens;
+        /* @var string|null used for ASSIGN expression */
+        $idToSet = null;
+        /* @var string[] the final expression line by line (to be join at end) */
         $stringParts = array();
         $numTokens = count($tokens);
 
-        /* Static function management */
+        /* @var integer bracket count for static function management */
         $bracket = 0;
+        /* @var string static string to be parsed bedfore send to JS */
         $staticStringToParse = "";
         for ($i = 0; $i < $numTokens; ++$i) {
             $token = $tokens[$i]; // When do these need to be quoted?
@@ -1287,10 +1294,10 @@ class ExpressionManager
             } else {
                 switch ($token[2]) {
                     case 'DQ_STRING':
-                        $stringParts[] = '"' . addcslashes($token[0], '\"') . '"'; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
+                        $stringParts[] = '"' . addcslashes((string) $token[0], '\"') . '"'; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
                         break;
                     case 'SQ_STRING':
-                        $stringParts[] = "'" . addcslashes($token[0], "\'") . "'"; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
+                        $stringParts[] = "'" . addcslashes((string) $token[0], "\'") . "'"; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
                         break;
                     case 'SGQA':
                     case 'WORD':
@@ -1306,15 +1313,18 @@ class ExpressionManager
                             }
                         } elseif ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'ASSIGN') {
                             $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
-                            $stringParts[] = "document.getElementById('" . $jsName . "').value";
-                            if ($tokens[$i + 1][0] == '+=') {
-                                // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
-                                $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
-                                $stringParts[] = " = LEMval('" . $varName . "') + ";
-                                ++$i;
+                            /* Value is in the page : can not set */
+                            if (!empty($jsName)) {
+                                $idToSet = $jsName;
+                                if ($tokens[$i + 1][0] == '+=') {
+                                    // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
+                                    $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
+                                    $stringParts[] = " = LEMval('" . $varName . "') + ";
+                                    ++$i;
+                                }
                             }
                         } else {
-                            if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $token[0])) {
+                            if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", (string) $token[0])) {
                                 /* This is a static variables : set as static */
                                 $static = $this->sProcessStringContainingExpressions("{" . $token[0] . "}", 0, 1, 1, -1, -1, true);
                                 $stringParts[] = "'" . addcslashes($static, "'") . "'";
@@ -1342,7 +1352,7 @@ class ExpressionManager
                         break;
                     default:
                         // don't need to check type of $token[2] here since already handling SQ_STRING and DQ_STRING above
-                        switch (strtolower($token[0])) {
+                        switch (strtolower((string) $token[0])) {
                             case 'and':
                                 $stringParts[] = ' && ';
                                 break;
@@ -1369,6 +1379,9 @@ class ExpressionManager
                             case '!=':
                                 $stringParts[] = ' != ';
                                 break;
+                            case '=':
+                                /* ASSIGN : usage jquery: don't add anything (disable default) */;
+                                break;
                             default:
                                 $stringParts[] = ' ' . $token[0] . ' ';
                                 break;
@@ -1385,13 +1398,17 @@ class ExpressionManager
              * see https://bugs.limesurvey.org/view.php?id=18008 for issue about sgqa and question
              * See https://bugs.limesurvey.org/view.php?id=14818 for feature
              */
-            if (!preg_match("/^.*\.(NAOK|valueNAOK|shown|relevanceStatus)$/", $var) &&  !preg_match("/^.*\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $var)) {
+            if (!preg_match("/^.*\.(NAOK|valueNAOK|shown|relevanceStatus)$/", (string) $var) &&  !preg_match("/^.*\.(" . $this->getRegexpStaticValidAttributes() . ")$/", (string) $var)) {
                 if ($this->GetVarAttribute($var, 'jsName', '') != '') {
                     $nonNAvarsUsed[] = $var;
                 }
             }
         }
         $mainClause = implode('', $stringParts);
+        if ($idToSet) {
+            /* If there are an id to set (assign) : set it via jquery */
+            $mainClause = "$('#{$idToSet}').val({$mainClause})";
+        }
         $varsUsed = implode("', '", $nonNAvarsUsed);
         if ($varsUsed != '') {
             $this->jsExpression = "LEMif(LEManyNA('" . $varsUsed . "'),'',(" . $mainClause . "))";
@@ -1567,11 +1584,11 @@ class ExpressionManager
                             }
                             // Show variable name instead of SGQA code, if available
                             if ($qcode != '') {
-                                if (preg_match('/^INSERTANS:/', $token[0])) {
+                                if (preg_match('/^INSERTANS:/', (string) $token[0])) {
                                     $displayName = $qcode . '.shown';
                                     $descriptor = '[' . $token[0] . ']';
                                 } else {
-                                    $args = explode('.', $token[0]);
+                                    $args = explode('.', (string) $token[0]);
                                     if (count($args) == 2) {
                                         $displayName = $qcode . '.' . $args[1];
                                     } else {
@@ -1596,7 +1613,7 @@ class ExpressionManager
                                 $messages[] = $ansList;
                             }
                             if ($code != '') {
-                                if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/', $token[0])) {
+                                if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/', (string) $token[0])) {
                                     $shown = $this->GetVarAttribute($token[0], 'shown', '');
                                     $messages[] = 'value=[' . $code . '] '
                                             . $shown;
@@ -1617,7 +1634,7 @@ class ExpressionManager
                                 $class = 'em-var-after em-var-inpage';
                             }
                         }
-                        // prevent EM prcessing of messages within span
+                        // prevent EM processing of messages within span
                         $message = implode('; ', $messages);
                         $message = str_replace(array('{', '}'), array('{ ', ' }'), $message);
 
@@ -1628,8 +1645,8 @@ class ExpressionManager
                             $stringParts[] = "<span title='" . CHtml::encode($message) . "' class='em-var {$class}' >";
                         }
                         if ($this->sgqaNaming) {
-                            $sgqa = substr($jsName, 4);
-                            $nameParts = explode('.', $displayName);
+                            $sgqa = substr((string) $jsName, 4);
+                            $nameParts = explode('.', (string) $displayName);
                             if (count($nameParts) == 2) {
                                 $sgqa .= '.' . $nameParts[1];
                             }
@@ -1729,7 +1746,7 @@ class ExpressionManager
 
     /**
      * Reset current warnings
-     * @see Related issue #15547: Invalid error count on Survey Logic file for subquestion relevance
+     * @see Related issue #15547: Invalid error count on Survey Logic overview for subquestion relevance
      * @link https://bugs.limesurvey.org/view.php?id=15547
      * ProcessBooleanExpression didn't reset RDP_errors anb RDP_warnings, need a way to reset for Survey logic checking
      * @return void
@@ -1899,7 +1916,7 @@ class ExpressionManager
             /* this function wants to see the NAOK suffix : NAOK|valueNAOK|shown|relevanceStatus
              * Static suffix are always OK (no need NAOK)
              */
-            if (!preg_match("/^.*\.(NAOK|valueNAOK|shown|relevanceStatus)$/", $var) && ! preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $var)) {
+            if (!preg_match("/^.*\.(NAOK|valueNAOK|shown|relevanceStatus)$/", (string) $var) && ! preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", (string) $var)) {
                 if (!LimeExpressionManager::GetVarAttribute($var, 'relevanceStatus', false, $groupSeq, $questionSeq)) {
                     return false;
                 }
@@ -1909,7 +1926,23 @@ class ExpressionManager
     }
 
     /**
-     * Start processing a group of substitions - will be incrementally numbered
+     * Parse and validate an expression without executing registered functions.
+     *
+     * @param string $expr
+     * @param int $groupSeq
+     * @param int $questionSeq
+     * @return bool
+     */
+    public function validateExpression($expr, $groupSeq = -1, $questionSeq = -1)
+    {
+        $this->groupSeq = $groupSeq;
+        $this->questionSeq = $questionSeq;
+
+        return $this->RDP_Evaluate($this->ExpandThisVar($expr), true);
+    }
+
+    /**
+     * Start processing a group of substitutions - will be incrementally numbered
      */
 
     public function StartProcessingGroup($sid = null, $rooturl = '', $hyperlinkSyntaxHighlighting = true)
@@ -1968,7 +2001,7 @@ class ExpressionManager
                 $prettyPrintIterationDone = true;
             }
         }
-        $this->prettyPrintSource = $prettyPrint; // ensure that if doing recursive substition, can get original source to pretty print
+        $this->prettyPrintSource = $prettyPrint; // ensure that if doing recursive substitution, can get original source to pretty print
         $result = str_replace(array('\{', '\}',), array('{', '}'), $result);
         return $result;
     }
@@ -1993,7 +2026,7 @@ class ExpressionManager
                 $prettyPrintParts[] = $stringPart[0];
             } else {
                 ++$this->substitutionNum;
-                $expr = $this->ExpandThisVar(substr($stringPart[0], 1, -1));
+                $expr = $this->ExpandThisVar(substr((string) $stringPart[0], 1, -1));
                 if ($this->RDP_Evaluate($expr, false, $this->resetErrorsAndWarningsOnEachPart)) {
                     $resolvedPart = $this->GetResult();
                 } else {
@@ -2012,7 +2045,6 @@ class ExpressionManager
                 if (count($onpageJsVarsUsed) > 0 && !$staticReplacement) {
                     $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
                     $resolvedParts[] = "<span id='" . $idName . "'>" . $resolvedPart . "</span>";
-                    $this->substitutionVars[$idName] = 1;
                     $this->substitutionInfo[] = array(
                         'questionNum' => $questionNum,
                         'num' => $this->substitutionNum,
@@ -2054,18 +2086,18 @@ class ExpressionManager
             switch ($token[2]) {
                 case 'SGQA':
                 case 'WORD':
-                    $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*'; // self or that, optionaly followed by dot and alnum
-                    if (preg_match("/" . $splitter . "/", $token[0])) {
+                    $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*'; // self or that, optionally followed by dot and alnum
+                    if (preg_match("/" . $splitter . "/", (string) $token[0])) {
                         $setInCache = false;
                         $expandedVar .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $token[0]);
                     } else {
                         $expandedVar .= $token[0];
                     }
                     break;
-                case 'DQ_STRING';
+                case 'DQ_STRING':
                     $expandedVar .= "\"{$token[0]}\"";
                     break;
-                case 'SQ_STRING';
+                case 'SQ_STRING':
                     $expandedVar .= "'{$token[0]}'";
                     break;
                 case 'SPACE':
@@ -2178,6 +2210,9 @@ class ExpressionManager
                                     case 'sin':
                                     case 'sqrt':
                                     case 'tan':
+                                    case 'ceil':
+                                    case 'floor':
+                                    case 'round':
                                         if (is_numeric($params[0])) {
                                             $result = $funcName(floatval($params[0]));
                                         } else {
@@ -2194,6 +2229,7 @@ class ExpressionManager
                             if (!$this->RDP_onlyparse) {
                                 switch ($funcName) {
                                     case 'atan2':
+                                    case 'pow':
                                         if (is_numeric($params[0]) && is_numeric($params[1])) {
                                             $result = $funcName(floatval($params[0]), floatval($params[1]));
                                         } else {
@@ -2201,14 +2237,30 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = call_user_func($funcName, $params[0], $params[1]);
+                                        try {
+                                            $result = call_user_func($funcName, $params[0], $params[1]);
+                                        } catch (\Throwable $e) {
+                                            $this->RDP_AddError($e->getMessage(), $funcNameToken);
+                                            return false;
+                                        }
                                         break;
                                 }
                             }
                             break;
                         case 3:
                             if (!$this->RDP_onlyparse) {
-                                $result = call_user_func($funcName, $params[0], $params[1], $params[2]);
+                                switch ($funcName) {
+                                    case 'substr':
+                                        // check if params1 and 2 are integer representations
+                                        if (filter_var($params[1], FILTER_VALIDATE_INT) && filter_var($params[2], FILTER_VALIDATE_INT)) {
+                                            $result = $funcName(floatval($params[0]), floatval($params[1]));
+                                        } else {
+                                            $result = false; // Not same than other
+                                        }
+                                        break;
+                                    default:
+                                        $result = call_user_func($funcName, $params[0], $params[1], $params[2]);
+                                }
                             }
                             break;
                         case 4:
@@ -2536,7 +2588,7 @@ class ExpressionManager
 
         // 508 fix, don't output empty anchor tags
             if ($func[4]) {
-                $output .= "<a href='" . $func[4] . "'>" . $func[4] . "</a>";
+                $output .= "<a class='ls-link' href='" . $func[4] . "'>" . $func[4] . "</a>";
             }
 
             $output .= "&nbsp;</td></tr>\n";
@@ -2657,7 +2709,7 @@ function exprmgr_countif($args)
 }
 
 /**
- * Count the number of answered questions (non-empty) which meet the criteria (arg op value)
+ * Count the number of answered questions (non-empty) which meet the criteria (argument - operator - value)
  * @param array $args
  * @return int
  */
@@ -2706,7 +2758,7 @@ function exprmgr_countifop($args)
                 break;
             case 'RX':
                 try {
-                    if (@preg_match($value, $arg)) {
+                    if (@preg_match($value, (string) $arg)) {
                         ++$j;
                     }
                 } catch (Exception $e) {
@@ -2726,10 +2778,11 @@ function exprmgr_countifop($args)
  */
 function exprmgr_stripos($haystack, $needle, $offset = 0)
 {
+    $haystack = ($haystack ?? '');
     if ($offset > mb_strlen($haystack)) {
-            return false;
+        return false;
     }
-    return mb_stripos($haystack, $needle, $offset, 'UTF-8');
+    return mb_stripos($haystack, ($needle ?? ''), $offset, 'UTF-8');
 }
 /**
  * Finds first occurrence of a unicode string within another, case-insensitive
@@ -2740,7 +2793,7 @@ function exprmgr_stripos($haystack, $needle, $offset = 0)
  */
 function exprmgr_stristr($haystack, $needle, $before_needle = false)
 {
-    return mb_stristr($haystack, $needle, $before_needle, 'UTF-8');
+    return mb_stristr((string) ($haystack ?? ''), (string) ($needle ?? ''), $before_needle, 'UTF-8');
 }
 /**
  * Get unicode string length
@@ -2749,7 +2802,7 @@ function exprmgr_stristr($haystack, $needle, $before_needle = false)
  */
 function exprmgr_strlen($string)
 {
-    return mb_strlen($string, 'UTF-8');
+    return mb_strlen(($string ?? ''), 'UTF-8');
 }
 /**
  * Find position of first occurrence of unicode string in a unicode string
@@ -2760,10 +2813,11 @@ function exprmgr_strlen($string)
  */
 function exprmgr_strpos($haystack, $needle, $offset = 0)
 {
+    $haystack = ($haystack ?? '');
     if ($offset > mb_strlen($haystack)) {
-            return false;
+        return false;
     }
-    return mb_strpos($haystack, $needle, $offset, 'UTF-8');
+    return mb_strpos($haystack, ($needle ?? ''), $offset, 'UTF-8');
 }
 /**
  * Finds first occurrence of a unicode string within another
@@ -2774,7 +2828,7 @@ function exprmgr_strpos($haystack, $needle, $offset = 0)
  */
 function exprmgr_strstr($haystack, $needle, $before_needle = false)
 {
-    return mb_strstr($haystack, $needle, $before_needle, 'UTF-8');
+    return mb_strstr(($haystack ?? ''), ($needle ?? ''), $before_needle, 'UTF-8');
 }
 /**
  * Make an unicode string lowercase
@@ -2783,7 +2837,7 @@ function exprmgr_strstr($haystack, $needle, $before_needle = false)
  */
 function exprmgr_strtolower($string)
 {
-    return mb_strtolower($string, 'UTF-8');
+    return mb_strtolower(($string ?? ''), 'UTF-8');
 }
 /**
  * Make an unicode string uppercase
@@ -2792,7 +2846,7 @@ function exprmgr_strtolower($string)
  */
 function exprmgr_strtoupper($string)
 {
-    return mb_strtoupper($string, 'UTF-8');
+    return mb_strtoupper(($string ?? ''), 'UTF-8');
 }
 /**
  * Get part of unicode string
@@ -2803,12 +2857,18 @@ function exprmgr_strtoupper($string)
  */
 function exprmgr_substr($string, $start, $end = null)
 {
-    return mb_substr($string, $start, $end, 'UTF-8');
+    return mb_substr(($string ?? ''), $start, $end, 'UTF-8');
 }
 /**
- * Sum of values of answered questions which meet the criteria (arg op value)
- * @param array $args
- * @return int
+ * Sum values from a list that satisfy a comparison against a reference value.
+ *
+ * $args must contain: the comparison operator (e.g. '==','!=','>','<','>=','<=','eq','ne','gt','lt','ge','le','RX'),
+ * then the comparison value (or regex when operator is 'RX'), followed by one or more values to test and include in the sum.
+ *
+ * For operator 'RX', values are tested with preg_match against the provided pattern; invalid regex patterns are ignored.
+ *
+ * @param array $args [operator, comparisonValue, value1, value2, ...]
+ * @return int The sum of values that match the comparison criteria.
  */
 function exprmgr_sumifop($args)
 {
@@ -2855,7 +2915,7 @@ function exprmgr_sumifop($args)
                 break;
             case 'RX':
                 try {
-                    if (@preg_match($value, $arg)) {
+                    if (@preg_match($value, (string) $arg)) {
                         $result += $arg;
                     }
                 } catch (Exception $e) {
@@ -2868,6 +2928,28 @@ function exprmgr_sumifop($args)
 }
 
 /**
+ * Determine whether the given month, day, and year form a valid Gregorian calendar date.
+ *
+ * Accepts integers or numeric strings for each component; non-numeric inputs cause the function to return `false`.
+ *
+ * @param mixed $month Month value (1-12) as an integer or numeric string.
+ * @param mixed $day Day value as an integer or numeric string.
+ * @param mixed $year Year value as an integer or numeric string.
+ * @return bool `true` if the three values form a valid Gregorian date, `false` otherwise.
+ */
+function exprmgr_checkdate($month, $day, $year)
+{
+    if (
+        (!ctype_digit((string) $month) && !is_int($month))
+        || (!ctype_digit((string) $day) && !is_int($day))
+        || (!ctype_digit((string) $year) && !is_int($year))
+    ) {
+        return false;
+    }
+    return checkdate(intval($month), intval($day), intval($year));
+}
+
+/**
  * Find the closest matching Numerical input values in a list an replace it by the
  * corresponding value within another list
  *
@@ -2876,8 +2958,8 @@ function exprmgr_sumifop($args)
  * @param double $fValueToReplace
  * @param integer $iStrict - 1 for exact matches only otherwise interpolation the
  *          closest value should be returned
- * @param string $sTranslateFromList - comma seperated list of numeric values to translate from
- * @param string $sTranslateToList - comma seperated list of numeric values to translate to
+ * @param string $sTranslateFromList - comma separated list of numeric values to translate from
+ * @param string $sTranslateToList - comma separated list of numeric values to translate to
  * @return integer|null
  */
 function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, $sTranslateToList)
@@ -2928,6 +3010,42 @@ function exprmgr_date($format, $timestamp = null)
     return date($format, $timestamp);
 }
 
+function exprmgr_abs($num)
+{
+    if (!is_numeric($num)) {
+        return false;
+    }
+
+    // Trying to cast either to int or float, depending on the value.
+    $num = $num + 0;
+    return abs($num);
+}
+
+/**
+ * Calculate the sum of values in an array
+ * @see https://bugs.limesurvey.org/view.php?id=19897
+ * @see https://www.php.net/manual/en/function.array-sum.php
+ * Like php 8.1 and before : Ignore array or object, cast to float string and cast to int other.
+ * @param array $args
+ * @return float
+ */
+function exprmgr_array_sum($args)
+{
+    $args = array_map(function ($arg) {
+        if (is_int($arg) || is_float($arg)) {
+            return $arg;
+        }
+        if (is_string($arg)) {
+            return floatval($arg);
+        }
+        if (is_array($arg) || is_object($arg)) {
+            return 0;
+        }
+        return intval($arg);
+    }, $args);
+    return array_sum($args);
+}
+
 /**
  * If $test is true, return $iftrue, else return $iffalse
  * @param mixed $testDone
@@ -2945,7 +3063,8 @@ function exprmgr_if($testDone, $iftrue, $iffalse = '')
 
 /**
  * Return true if the variable is an integer for LimeSurvey
- * Can not really use is_int due to SQL DECIMAL system. This function can surely be improved
+ * Allow usage of numeric answercode as int
+ * Can not use is_int due to SQL DECIMAL system.
  * @param string $arg
  * @return integer
  * @link http://php.net/is_int#82857
@@ -2953,10 +3072,14 @@ function exprmgr_if($testDone, $iftrue, $iffalse = '')
 function exprmgr_int($arg)
 {
     if (strpos($arg, ".")) {
-        $arg = preg_replace("/\.$/", "", rtrim(strval($arg), "0")); // DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+        // DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+        $arg = preg_replace("/\.$/", "", rtrim(strval($arg), "0"));
     }
-    return (preg_match("/^-?[0-9]*$/", $arg)); // Allow 000 for value, @link https://bugs.limesurvey.org/view.php?id=9550 DECIMAL sql type.
+    // Allow 000 for value
+    // Disallow '' (and false) @link https://bugs.limesurvey.org/view.php?id=17950
+    return (preg_match("/^-?\d+$/", $arg));
 }
+
 /**
  * Join together $args[0-N] with ', '
  * @param array $args
@@ -2981,7 +3104,7 @@ function exprmgr_list($args)
 
 /**
  * Implementation of listifop( $cmpAttr, $op, $value, $retAttr, $glue, $sgqa1, ..., sgqaN )
- * Return a list of retAttr from sgqa1...sgqaN which pass the critiera (cmpAttr op value)
+ * Return a list of retAttr from sgqa1...sgqaN which pass the criteria (cmpAttr op value)
  * @param array $args
  * @return string
  */
@@ -2995,10 +3118,10 @@ function exprmgr_listifop($args)
     $glue = array_shift($args);
 
     $validAttributes = "/" . LimeExpressionManager::getRegexpValidAttributes() . "/";
-    if (! preg_match($validAttributes, $cmpAttr)) {
+    if (! preg_match($validAttributes, (string) $cmpAttr)) {
         return $cmpAttr . " not recognized ?!";
     }
-    if (! preg_match($validAttributes, $retAttr)) {
+    if (! preg_match($validAttributes, (string) $retAttr)) {
         return $retAttr . " not recognized ?!";
     }
 
@@ -3033,7 +3156,7 @@ function exprmgr_listifop($args)
                 break;
             case 'RX':
                 try {
-                    $match = preg_match($value, $cmpVal);
+                    $match = preg_match($value, (string) $cmpVal);
                 } catch (Exception $ex) {
                     return "Invalid RegEx";
                 }
@@ -3201,8 +3324,8 @@ function expr_mgr_htmlspecialchars_decode($string)
  */
 function exprmgr_regexMatch($pattern, $input)
 {
-    // Test the regexp pattern agains null : must always return 0, false if error happen
-    if (@preg_match($pattern . 'u', null) === false) {
+    // Test the regexp pattern against null : must always return 0, false if error happen
+    if (@preg_match($pattern . 'u', '') === false) {
         return false; // invalid : true or false ?
     }
     // 'u' is the regexp modifier for unicode so that non-ASCII string will be validated properly
@@ -3217,7 +3340,7 @@ function exprmgr_regexMatch($pattern, $input)
 function geterrors_exprmgr_regexMatch($pattern, $input)
 {
     // @todo : use set_error_handler to get the preg_last_error
-    if (@preg_match($pattern . 'u', null) === false) {
+    if (@preg_match($pattern . 'u', '') === false) {
         return sprintf(ExpressionManager::gT('Invalid PERL Regular Expression: %s'), htmlspecialchars($pattern));
     }
 }
@@ -3244,7 +3367,7 @@ function exprmgr_unique($args)
 {
     $uniqs = array();
     foreach ($args as $arg) {
-        if (trim($arg) == '') {
+        if (trim((string) $arg) == '') {
             continue; // ignore blank answers
         }
         if (isset($uniqs[$arg])) {

@@ -6,11 +6,12 @@ use Exception;
 
 class Update_171 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         try {
             dropColumn('{{sessions}}', 'data');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
         switch ($this->db->driverName) {
             case 'mysql':

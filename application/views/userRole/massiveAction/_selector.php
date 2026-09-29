@@ -13,7 +13,7 @@ $aActionsArray = array(
             'type'        => 'action',
             'action'      => 'delete',
             'url'         =>  App()->createUrl('userRole/batchDelete'),
-            'iconClasses' => 'fa fa-trash text-danger',
+            'iconClasses' => 'ri-delete-bin-fill text-danger',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',
             'actionType'    => 'modal',
@@ -26,13 +26,13 @@ $aActionsArray = array(
         array(
             'type' => 'action',
             'action' => 'batchExport',
-            'url' => App()->createUrl('userRole/batchExport/sItems').'/',
-            'iconClasses' => 'fa fa-download',
+            'url' => App()->createUrl('userRole/batchExport/sItems') . '/',
+            'iconClasses' => 'ri-upload-2-fill',
             'text' => gT('Bulk export roles'),
             'grid-reload' => 'no',
             'actionType'    => 'window-location-href',
         ),
-        
+
     )
 );
 

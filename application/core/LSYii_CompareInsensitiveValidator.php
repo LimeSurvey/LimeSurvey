@@ -3,7 +3,7 @@
 /*
  * LSYii_CompareInsensitiveValidator class file.
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -48,7 +48,7 @@ class LSYii_CompareInsensitiveValidator extends CValidator
      */
     protected function validateAttribute($object, $attribute)
     {
-        $value = strtolower($object->$attribute);
+        $value = strtolower((string) $object->$attribute);
         if ($this->allowEmpty && $this->isEmpty($value)) {
                     return;
         }

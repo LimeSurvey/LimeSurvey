@@ -2,9 +2,9 @@
 /application/config/config.php
 /application/config/config.*.php
 /application/config/security.php
+/application/config/allowed_hosts.php
 
 # Don't include LS4 security.php
-/application/config/security.php
 
 ## Ignore any hidden folder/files (except explicitly defined)
 ## such as various IDE folders .idea .netbeans .vscode
@@ -22,6 +22,8 @@
 !.eslintrc
 !.env-cmdrc
 !.eslintignore
+!.npmrc
+!/.github
 
 # upload directory : whole except the index.html and readme.txt
 /upload/*.*
@@ -45,9 +47,8 @@
 /upload/themes/survey/generalfiles/*.*
 !/upload/themes/survey/generalfiles/index.html
 !/upload/themes/survey/index.html
-!/upload/themes/survey/generalfiles/index.html
-/upload/themes/question/*.*
-/upload/themes/question/**/*.*
+/upload/themes/question/*
+/upload/themes/question/**/*
 !/upload/themes/question/readme.txt
 /upload/plugins/*
 !/upload/plugins/index.html
@@ -57,25 +58,89 @@
 !/upload/global/readme.txt
 
 # tmp directory : whole except the index.html for directory create
+# Add .htaccess where needed and index.html to disable directory listing (without mod_rewrite)
 /tmp/*
-/tmp/assets/*
-/tmp/runtime/*
-/tmp/upload/*
 !/tmp/index.html
+!/tmp/assets/
+/tmp/assets/*
 !/tmp/assets/index.html
+!/tmp/runtime/
+/tmp/runtime/*
 !/tmp/runtime/index.html
+!/tmp/runtime/.htaccess
+!/tmp/upload/
+/tmp/upload/*
 !/tmp/upload/index.html
+!/tmp/upload/.htaccess
 
 # ignore plugins directory by default except LS plugin
-# if you want to add a new distributed plugin : add the directory here
+# if you want to add a new distributed plugin : use /application/core/plugins
 /plugins/*
 !/plugins/index.html
+!/plugins/Demo/
 
 #ignore old styles
 /styles/
 
 #ignore most of the js-build stuff
-node_modules/
+node_modules/*
+node_modules/**/docs
+node_modules/**/demo
+node_modules/**/meteor
+node_modules/**/src
+!/node_modules/devbridge-autocomplete/
+!/node_modules/ace-builds/
+!/node_modules/datatables.net/
+!/node_modules/datatables.net-bs5/
+!/node_modules/decimal.js/
+!/node_modules/dom-to-image/
+!/node_modules/jspdf/
+!/node_modules/jszip/
+!/node_modules/nestedSortable/
+!/node_modules/jquery/dist/
+!/node_modules/jquery-ui-dist/
+!/node_modules/jquery.actual/
+!/node_modules/jsuri/
+!/node_modules/jquery-ui-touch-punch/
+
+
+!/node_modules/select2
+/node_modules/select2/*
+!/node_modules/select2/dist/
+
+!/node_modules/select2-bootstrap-5-theme
+/node_modules/select2-bootstrap-5-theme/*
+!/node_modules/select2-bootstrap-5-theme/dist/
+
+!/node_modules/jquery-migrate
+/node_modules/jquery-migrate/*
+!/node_modules/jquery-migrate/dist/
+
+!/node_modules/tablesorter
+/node_modules/tablesorter/*
+!/node_modules/tablesorter/dist/
+
+!/node_modules/js-cookie
+/node_modules/js-cookie/*
+!/node_modules/js-cookie/dist/
+
+!/node_modules/moment
+/node_modules/moment/*
+!/node_modules/moment/min/
+
+!/node_modules/leaflet
+/node_modules/leaflet/*
+!/node_modules/leaflet/dist/
+
+!/node_modules/chart.js/
+/node_modules/chart.js/*
+!/node_modules/chart.js/dist/
+!/node_modules/chart.js/LICENSE.md
+
+# build dependencies of the asset sub-packages
+assets/packages/**/node_modules/
+assets/packages/**/coverage/
+
 vendor/**/docs/
 vendor/**/scripts/
 vendor/**/tests/
@@ -84,10 +149,56 @@ vendor/**/less/
 vendor/**/*.sh
 vendor/**/*.md
 vendor/**/gulpfile.js
+
+# Dev-only composer packages (require-dev)
+/vendor/php-webdriver/
+/vendor/squizlabs/
+/vendor/phpmd/
+/vendor/phpunit/
+/vendor/vimeo/
+/vendor/misantron/
+/vendor/tebazil/
+/vendor/mockery/
+/vendor/hamcrest/
+/vendor/phpstan/
+/vendor/sebastian/
+/vendor/phar-io/
+/vendor/nikic/
+/vendor/theseer/
+/vendor/doctrine/instantiator
+/vendor/myclabs/
+/vendor/pdepend/
+/vendor/composer/xdebug-handler
+/vendor/fidry/
+/vendor/felixfbecker/
+/vendor/amphp/
+/vendor/dnoegel/
+/vendor/fzaninotto/
+/vendor/symfony/yaml
+/vendor/symfony/var-exporter/
+/vendor/symfony/string/
+/vendor/symfony/service-contracts
+/vendor/symfony/config/
+/vendor/symfony/console/
+/vendor/symfony/dependency-injection/
+/vendor/symfony/filesystem/
+/vendor/symfony/polyfill-intl-grapheme/
+/vendor/symfony/polyfill-intl-normalizer/
+/vendor/symfony/polyfill-php84/
+/vendor/symfony/process/
+/vendor/psr/log/
+/vendor/spatie/
+/vendor/danog/
+/vendor/daverandom/
+/vendor/kelunik/
+/vendor/league/uri/
+/vendor/league/uri-interfaces/
+/vendor/revolt/
 yarn-error.log
 
 # Test stuff
 chromedriver
+cov.xml
 
 # RFC and commons directory and files
 /.well-known/
@@ -113,41 +224,22 @@ enabletests
 /tests/data/tmp/**
 
 ## Ignore files and dependencies for testing
-composer.lock
 vendor/bin/phpcbf
 vendor/bin/phpcs
-vendor/squizlabs/
-vendor/amphp/
 vendor/bin/
 vendor/composer/autoload_files.php
 vendor/composer/installed\.json
 vendor/composer/package-versions-deprecated/
 vendor/composer/semver/
-vendor/composer/xdebug-handler/
-vendor/doctrine/
-vendor/dnoegel/
-vendor/felixfbecker/
-vendor/myclabs/
+vendor/doctrine/deprecations/
 vendor/netresearch/
-vendor/nikic/
 vendor/ocramius/
 vendor/openlss/
-vendor/pdepend/
-vendor/phar-io/
-vendor/php-webdriver/
 vendor/phpdocumentor/
-vendor/phpmd/
 vendor/phpspec/
-vendor/phpunit/
-vendor/psr/
-vendor/sebastian/
-vendor/theseer/
-vendor/vimeo/
 vendor/webmozart/
-vendor/misantron/
 upload/templates/
 assets/packages/ckeditor/samples
-
 
 ## ignore Vagrantfile and Adminer
 adminer.php
@@ -165,10 +257,10 @@ themes/survey/no_bootstrap/files/*
 !themes/survey/*/files/logo_w_s.png
 !themes/survey/*/files/pattern.png
 !themes/survey/*/files/print_img_radio.png
-adminer.php
 
 # Used by tests.
 geckodriver
+geckodriver.exe
 selenium-server-standalone-3.7.1.jar
 
 # Used by Vim and Emacs
@@ -183,3 +275,7 @@ package-lock.json
 docker-compose.yml
 docker/
 /geckodriver-v0.23.0-linux64.tar.gz
+/geckodriver.exe
+/vendor/khaled.alshamaa/ar-php/composer.lock
+/vendor/mk-j/php_xlsxwriter/composer.lock
+/vendor/mockery/mockery/composer.lock

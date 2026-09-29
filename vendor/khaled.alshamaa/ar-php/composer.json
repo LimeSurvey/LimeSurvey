@@ -5,6 +5,10 @@
 	"license": "LGPL-3.0",
 	"homepage": "https://github.com/khaled-alshamaa/ar-php",
 
+	"support": {
+		"issues": "https://github.com/khaled-alshamaa/ar-php/issues"
+	},
+    
 	"keywords": [
 		"Arabic", "arabic-sentiment", "arabic-numbers", "arabic-glyphs", "arabic-calendar", "arabic-sql-query", "arabic-segments-identifier"
 	],
@@ -13,12 +17,14 @@
 		{
 			"name": "Khaled Al-Sham'aa",
 			"email": "khaled@ar-php.org",
-			"homepage":"http://www.ar-php.org"
+			"homepage":"http://www.ar-php.org",
+            "role": "Developer"
 		}
 	],
 
 	"require": {
 		"php": ">=5.6.0",
+		"ext-calendar": "*",
 		"ext-mbstring": "*"
 	},
 

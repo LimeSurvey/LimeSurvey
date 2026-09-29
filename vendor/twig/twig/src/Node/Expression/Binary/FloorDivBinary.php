@@ -12,20 +12,19 @@
 namespace Twig\Node\Expression\Binary;
 
 use Twig\Compiler;
+use Twig\Node\Expression\ReturnNumberInterface;
 
-class FloorDivBinary extends AbstractBinary
+class FloorDivBinary extends AbstractBinary implements ReturnNumberInterface
 {
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler->raw('(int) floor(');
         parent::compile($compiler);
         $compiler->raw(')');
     }
 
-    public function operator(Compiler $compiler)
+    public function operator(Compiler $compiler): Compiler
     {
         return $compiler->raw('/');
     }
 }
-
-class_alias('Twig\Node\Expression\Binary\FloorDivBinary', 'Twig_Node_Expression_Binary_FloorDiv');

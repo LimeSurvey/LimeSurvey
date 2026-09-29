@@ -72,7 +72,7 @@ class RDataWriter extends CsvWriter
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 if (!empty($column) && isset($this->fieldmap[$column])) {
                     $aid = $this->fieldmap[$column]['aid'];
-                    if (substr($aid, -7) == 'comment' || substr($aid, -5) == 'other') {
+                    if (substr((string) $aid, -7) == 'comment' || substr((string) $aid, -5) == 'other') {
                         // Do not process comment or other fields
                         return $value;
                     }

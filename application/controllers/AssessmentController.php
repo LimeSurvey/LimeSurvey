@@ -48,7 +48,7 @@ class AssessmentController extends LSBaseController
      * Renders th view for: show the list of assessments(if assessment is activated)
      *                      or the button to activate assessment mode
      *
-     * @param int $surveyid the survey id
+     * @param int $surveyid the survey ID
      *
      */
     public function actionIndex($surveyid)
@@ -74,6 +74,13 @@ class AssessmentController extends LSBaseController
         //this part is from _renderWrapptemplate in old controller
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+
         $aData['gid'] = null; //important for rendering the sidebar ...(why?)
         Yii::app()->getClientScript()->registerScript(
             "AssessmentsVariables",
@@ -142,12 +149,18 @@ class AssessmentController extends LSBaseController
     public function actionDelete($surveyid)
     {
         $iSurveyID = sanitize_int($surveyid);
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'delete')) {
-            //must be deleteAll because of languages...
-            $assessmentId = (int) App()->request->getPost('id');
-            Assessment::model()->deleteAllByAttributes(array('id' => $assessmentId, 'sid' => $iSurveyID));
+        Yii::import('application.helpers.admin.ajax_helper', true);
+
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'delete')) {
+            \ls\ajax\AjaxHelper::outputError(gT("You have no permission to delete assessments"));
+        }
+        $assessmentId = (int) App()->request->getPost('id');
+        // Must be deleteAll because there is one record for each language.
+        $deletedAssessments = Assessment::model()->deleteAllByAttributes(array('id' => $assessmentId, 'sid' => $iSurveyID));
+        if ($deletedAssessments > 0) {
+            \ls\ajax\AjaxHelper::outputSuccess(gT('Assessment rule deleted.'));
         } else {
-            Yii::app()->setFlashMessage(gT("You have no permission to delete assessments"), 'error');
+            \ls\ajax\AjaxHelper::outputError(gT('Could not delete assessment rule.'));
         }
     }
 
@@ -166,18 +179,42 @@ class AssessmentController extends LSBaseController
             $languages = $oSurvey->additionalLanguages;
             $surveyLanguage = $oSurvey->language;
             array_unshift($languages, $surveyLanguage);
-            foreach ($languages as $sLanguage) {
-                $aData = $this->getAssessmentPostData($iSurveyID, $sLanguage);
-                if ($bFirst === false) {
-                    $aData['id'] = $iAssessmentID;
-                }
-                $assessment = Assessment::model()->insertRecords($aData);
+            // There is one record for each language, so we either insert them all or none, to avoid inconsistencies.
+            $transaction = Yii::app()->db->beginTransaction();
+            $error = false;
+            try {
+                foreach ($languages as $sLanguage) {
+                    $aData = $this->getAssessmentPostData($iSurveyID, $sLanguage);
+                    // If not processing the first language, use the ID from the first one.
+                    if ($bFirst === false) {
+                        $aData['id'] = $iAssessmentID;
+                    }
+                    $assessment = Assessment::model()->insertRecords($aData);
 
-                if ($bFirst === true) {
-                    $bFirst = false;
-                    $iAssessmentID = $assessment->id;
+                    if ($assessment->hasErrors()) {
+                        $error = true;
+                        break;
+                    }
+
+                    // If it's the first language, keep the ID for the next ones.
+                    if ($bFirst === true) {
+                        $bFirst = false;
+                        $iAssessmentID = $assessment->id;
+                    }
                 }
+            } catch (Exception $ex) {
+                $error = true;
             }
+            if (empty($error)) {
+                $transaction->commit();
+                Yii::app()->setFlashMessage(gT("Assessment rule successfully added."));
+            } else {
+                $transaction->rollback();
+                Yii::app()->setFlashMessage(gT("Could not add the assessment rule."), 'error');
+                // TODO: Show error details to the user?
+            }
+        } else {
+            Yii::app()->setFlashMessage(gT("You have no permission to create assessments"), 'error');
         }
         $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $surveyid]));
     }
@@ -197,12 +234,33 @@ class AssessmentController extends LSBaseController
             $languages = $oSurvey->additionalLanguages;
             $surveyLanguage = $oSurvey->language;
             array_unshift($languages, $surveyLanguage);
-            foreach ($languages as $language) {
-                $aData = $this->getAssessmentPostData($iSurveyID, $language);
-                Assessment::model()->updateAssessment($aid, $iSurveyID, $language, $aData);
+            // There is one record for each language, so we either update them all or none, to avoid inconsistencies.
+            $transaction = Yii::app()->db->beginTransaction();
+            $error = false;
+            try {
+                foreach ($languages as $language) {
+                    $aData = $this->getAssessmentPostData($iSurveyID, $language);
+                    $updated = Assessment::model()->updateAssessment($aid, $iSurveyID, $language, $aData);
+                    if (!$updated) {
+                        $error = true;
+                        break;
+                    }
+                }
+            } catch (Exception $ex) {
+                $error = true;
             }
-            $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $iSurveyID]));
+            if (empty($error)) {
+                $transaction->commit();
+                Yii::app()->setFlashMessage(gT("Assessment rule successfully updated."));
+            } else {
+                $transaction->rollback();
+                Yii::app()->setFlashMessage(gT("Could not update the assessment rule."), 'error');
+                // TODO: Show error details to the user?
+            }
+        } else {
+            Yii::app()->setFlashMessage(gT("You have no permission to update assessments"), 'error');
         }
+        $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $iSurveyID]));
     }
 
     /**

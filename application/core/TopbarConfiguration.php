@@ -62,12 +62,14 @@ class TopbarConfiguration
         }
         if (isset($config['rightSideView'])) {
             $this->rightSideView = $config['rightSideView'];
-        } elseif (!empty($config['showSaveButton'])   ||
+        } elseif (
+            !empty($config['showSaveButton'])   ||
                   !empty($config['showCloseButton'])  ||
                   !empty($config['showImportButton']) ||
                   !empty($config['showExportButton']) ||
                   !empty($config['showBackButton'])   ||
-                  !empty($config['showWhiteCloseButton'])) {
+                  !empty($config['showWhiteCloseButton'])
+        ) {
             // If no right side view has been specified, and one of the default buttons must be shown, use the default right side view.
             $this->rightSideView = "surveyTopbarRight_view";
         }
@@ -93,7 +95,7 @@ class TopbarConfiguration
         if (!empty($sid)) {
             $config['sid'] = $sid;
         }
-     
+
         return new self($config);
     }
 
@@ -138,7 +140,7 @@ class TopbarConfiguration
      * @throws CException
      *
      */
-    protected static function getSurveyTopbarData($sid)
+    public static function getSurveyTopbarData($sid)
     {
         if (empty($sid)) {
             return [];
@@ -165,16 +167,8 @@ class TopbarConfiguration
         $sumcount = Question::model()->countByAttributes($condition);
         $hasAdditionalLanguages = (count($oSurvey->additionalLanguages) > 0);
         $canactivate = $sumcount > 0 && $hasSurveyActivationPermission;
-        $expired = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(
-            date("Y-m-d H:i:s"),
-            "Y-m-d H:i",
-            Yii::app()->getConfig('timeadjust')
-        ));
-        $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(
-            date("Y-m-d H:i:s"),
-            "Y-m-d H:i",
-            Yii::app()->getConfig('timeadjust')
-        ));
+        $expired = $oSurvey->expires != '' && ($oSurvey->expires < gmdate("Y-m-d H:i:s"));
+        $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > gmdate("Y-m-d H:i:s"));
 
         if (!$isActive) {
             $context = gT("Preview survey");
@@ -204,10 +198,16 @@ class TopbarConfiguration
             || $hasSurveyContentPermission
             || !is_null($extraToolsMenuItems);
 
+        App()->getClientScript()->registerScriptFile(
+            App()->getConfig('adminscripts') . 'newQuestionEditor.js',
+            CClientScript::POS_END
+        );
+
         return array(
             'sid' => $sid,
             'oSurvey' => $oSurvey,
             'canactivate' => $canactivate,
+            'candeactivate' => $hasSurveyActivationPermission,
             'expired' => $expired,
             'notstarted' => $notstarted,
             'context' => $context,
@@ -232,6 +232,8 @@ class TopbarConfiguration
             'extraToolsMenuItems' => $extraToolsMenuItems ?? [],
             'beforeSurveyBarRender' => $beforeSurveyBarRender ?? [],
             'showToolsMenu' => $showToolsMenu,
+            'surveyLanguages' => self::getSurveyLanguagesArray($oSurvey),
+            'editorEnabled' => App()->getConfig('editorEnabled') ?? false,
         );
     }
 
@@ -285,10 +287,15 @@ class TopbarConfiguration
             return [];
         }
 
-        $closeUrl = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("responses/browse/", ['surveyId' => $sid]));
+        $closeUrl = Yii::app()->request->getUrlReferrer(
+            Yii::app()->createUrl(
+                "responses/browse/",
+                ['surveyId' => $sid]
+            )
+        );
 
         return array(
-            'closeUrl' => $closeUrl,
+            'closeUrl' => $closeUrl
         );
     }
 
@@ -324,6 +331,7 @@ class TopbarConfiguration
             'hasTokensUpdatePermission' => $hasTokensUpdatePermission,
             'hasTokensDeletePermission' => $hasTokensDeletePermission,
             'hasSurveySettingsUpdatePermission' => $hasSurveySettingsUpdatePermission,
+            'tokenexists' => $survey->hasTokensTable
         );
     }
 
@@ -348,11 +356,6 @@ class TopbarConfiguration
         $hasSurveyContentCreatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create');
         $hasSurveyContentDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
 
-        $languages = [];
-        foreach ($survey->allLanguages as $language) {
-            $languages[$language] = getLanguageNameFromCode($language, false);
-        }
-
         return array(
             'oSurvey' => $survey,
             'hasSurveyContentUpdatePermission' => $hasSurveyContentUpdatePermission,
@@ -360,7 +363,7 @@ class TopbarConfiguration
             'hasSurveyContentExportPermission' => $hasSurveyContentExportPermission,
             'hasSurveyContentCreatePermission' => $hasSurveyContentCreatePermission,
             'hasSurveyContentDeletePermission' => $hasSurveyContentDeletePermission,
-            'surveyLanguages' => $languages,
+            'surveyLanguages' => self::getSurveyLanguagesArray($survey),
         );
     }
 
@@ -425,5 +428,20 @@ class TopbarConfiguration
     public function shouldHide()
     {
         return $this->hide;
+    }
+
+    /**
+     * returns array of language codes by language name for all languages of the given survey
+     * @param Survey $survey
+     * @return array
+     */
+    private static function getSurveyLanguagesArray(Survey $survey)
+    {
+        $languages = [];
+        foreach ($survey->allLanguages as $language) {
+            $languages[$language] = getLanguageNameFromCode($language, false);
+        }
+
+        return $languages;
     }
 }

@@ -1,55 +1,64 @@
 <?php
-/* @var $this AdminController  */
+/* @var $this AdminController */
+
 /* @var $dataProvider CActiveDataProvider */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('configurePlugin');
+
+/** @var string $activeTab Which tab should be active on render: 'overview' (default) or 'settings' */
+$activeTab = $activeTab ?? 'overview';
+$isOverviewActive = $activeTab !== 'settings';
 ?>
 
-<div class="col-lg-12">
-    <ul class="nav nav-tabs" id="settingTabs">
-        <li role="presentation" class="active">
-            <a role="tab" data-toggle="tab" href='#overview'><?php eT("Overview"); ?></a>
-        </li>
-        <li role="presentation">
-            <a role="tab" data-toggle="tab" href='#settings'><?php eT("Settings"); ?></a>
-        </li>
-    </ul>
-
-    <div class="tab-content">
-
-        <div id="overview" class="tab-pane active">
-            <?php $this->renderPartial(
-                './pluginmanager/overview',
-                [
-                    'plugin'       => $plugin,
-                    'pluginObject' => $pluginObject,
-                    'config'       => $pluginObject->config,
-                    'metadata'     => $pluginObject->config->metadata,
-                    'showactive'   => true
-                ]
-            ); ?>
-        </div>
-
-        <div id="settings" class="tab-pane">
-            <?php if ($settings):
-                    $this->widget(
-                        'ext.SettingsWidget.SettingsWidget',
+<div class="plugin--configure">
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs" id="settingTabs" role="tablist" aria-label="<?php eT('Plugin configuration tabs'); ?>">
+                <li role="presentation" class="nav-item">
+                    <a id="overview-tab" class="nav-link<?= $isOverviewActive ? ' active' : '' ?>" role="tab" data-bs-toggle="tab" href='#overview' aria-selected="<?= $isOverviewActive ? 'true' : 'false' ?>" aria-controls="overview" tabindex="<?= $isOverviewActive ? '0' : '-1' ?>"><?php eT("Overview"); ?></a>
+                </li>
+                <li role="presentation" class="nav-item">
+                    <a id="settings-tab" class="nav-link<?= $isOverviewActive ? '' : ' active' ?>" role="tab" data-bs-toggle="tab" href='#settings' aria-selected="<?= $isOverviewActive ? 'false' : 'true' ?>" aria-controls="settings" tabindex="<?= $isOverviewActive ? '-1' : '0' ?>"><?php eT("Settings"); ?></a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="overview" class="tab-pane<?= $isOverviewActive ? ' show active' : '' ?>" role="tabpanel" aria-labelledby="overview-tab">
+                    <?php $this->renderPartial(
+                        './pluginmanager/overview',
                         [
-                            'settings'        => $settings,
-                            'formHtmlOptions' => [
-                                'id' => "pluginsettings-{$plugin['name']}",
-                            ],
-                            'labelWidth'      =>4,
-                            'controlWidth'    =>6,
-                            'method'          => 'post',
-                            'buttons'         => $buttons,
+                            'plugin' => $plugin,
+                            'pluginObject' => $pluginObject,
+                            'config' => $pluginObject->config,
+                            'metadata' => $pluginObject->config->metadata,
+                            'showactive' => true
                         ]
-                    );
-                ?>
-                <?php else: ?>
-                    <i><?php eT('This plugin has no settings.'); ?></i>
-                <?php endif; ?>
+                    ); ?>
+                </div>
+
+                <div id="settings" class="tab-pane<?= $isOverviewActive ? '' : ' show active' ?>" role="tabpanel" aria-labelledby="settings-tab">
+                    <?php if ($settings) :
+                        $this->widget(
+                            'ext.SettingsWidget.SettingsWidget',
+                            [
+                                'settings' => $settings,
+                                'formHtmlOptions' => [
+                                    'id' => "pluginsettings-{$plugin['name']}",
+                                ],
+                                'labelWidth' => 4,
+                                'controlWidth' => 6,
+                                'method' => 'post',
+                                'buttons' => $buttons,
+                                'buttonsPosition' => 'top',
+                            ]
+                        );
+                        ?>
+                    <?php else : ?>
+                        <i><?php eT('This plugin has no settings.'); ?></i>
+                    <?php endif; ?>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+

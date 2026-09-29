@@ -1,0 +1,26 @@
+ {% extends "./subviews/printanswers/printanswers_question.twig" %}
+ {% block question_answer %}
+ <div class="col-lg-8">
+    {% for subquestionId, subquestion in question.subquestions %}
+        <div class="row">
+            <div class="col-lg-4 text-end">
+                {% if subquestion.answervalue is same as("Y") %}
+                    <i class="ri-checkbox-line"></i>
+                {% else %}
+                    {{subquestion.answervalue|escape}}
+                {% endif %}
+            </div>
+            <div class="col-lg-8 text-start">
+                <b>
+                    {% if question.question_theme_name == 'image_select-multiplechoice' and subquestion.question|isImageUrl %}
+                        <img src="{{ subquestion.question|escape('html') }}" style="max-width:150px;max-height:150px;" />
+                    {% else %}
+                        {{subquestion.question}}
+                    {% endif %}
+                    {% if subquestion.qid != 'other' %} ({{subquestion.qid}}){% endif %}
+                </b>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

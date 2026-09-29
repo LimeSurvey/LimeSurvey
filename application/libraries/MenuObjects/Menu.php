@@ -2,13 +2,29 @@
 
 namespace LimeSurvey\Menu;
 
-class Menu implements MenuInterface
+class Menu implements ExtendedMenuInterface
 {
+    /**
+     * @var string
+     */
+    protected $id = "";
+
     /**
      * If true, render this menu as a dropdown.
      * @var bool
      */
     protected $isDropDown = false;
+
+    /**
+     * If true, render this menu as a dropdown button.
+     * @var bool
+     */
+    protected $isDropDownButton = false;
+
+    /**
+     * @var string
+     */
+    protected $dropDownButtonClass = "btn btn-primary";
 
     /**
      * @var string
@@ -42,6 +58,13 @@ class Menu implements MenuInterface
     protected $tooltip = "";
 
     /**
+     * Added option because we split the menu into two sections for LS6
+     * If true, render this menu in the middle section. False would render it in the right section
+     * @var bool
+     */
+    protected $isInMiddleSection = true;
+
+    /**
      * If true, render this menu before the main menu.
      * @var bool
      */
@@ -53,8 +76,20 @@ class Menu implements MenuInterface
      */
     public function __construct($options)
     {
+        if (isset($options['id'])) {
+            $this->id = $options['id'];
+        }
+
         if (isset($options['isDropDown'])) {
             $this->isDropDown = $options['isDropDown'];
+        }
+
+        if (isset($options['isDropDownButton'])) {
+            $this->isDropDownButton = $options['isDropDownButton'];
+        }
+
+        if (isset($options['dropDownButtonClass'])) {
+            $this->dropDownButtonClass = $options['dropDownButtonClass'];
         }
 
         if (isset($options['label'])) {
@@ -81,9 +116,21 @@ class Menu implements MenuInterface
             $this->tooltip = $options['tooltip'];
         }
 
+        if (isset($options['isInMiddleSection'])) {
+            $this->isInMiddleSection = $options['isInMiddleSection'];
+        }
+
         if (isset($options['isPrepended'])) {
             $this->isPrepended = $options['isPrepended'];
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -92,6 +139,22 @@ class Menu implements MenuInterface
     public function isDropDown()
     {
         return $this->isDropDown;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDropDownButton()
+    {
+        return $this->isDropDownButton;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDropDownButtonClass()
+    {
+        return $this->dropDownButtonClass;
     }
 
     /**
@@ -140,6 +203,14 @@ class Menu implements MenuInterface
     public function getTooltip()
     {
         return $this->tooltip;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInMiddleSection()
+    {
+        return $this->isInMiddleSection;
     }
 
     /**

@@ -1,14 +1,16 @@
 <?php
+
 /**
  * Web Installer Sidebar (Progressbar and Step-Listing) Viewscript
  */
+
 ?>
 <h2 class="maintitle"><?php eT("Progress"); ?></h2>
-<p><?php printf(gT("%s%% completed"),$progressValue); ?></p>
+<p><?php printf(gT("%s%% completed"), $progressValue); ?></p>
 <?php
     echo TbHtml::animatedProgressBar($progressValue);
 ?>
-<ol>
+<ol class="mt-3">
     <li class="<?php echo $classesForStep[0]; ?>">
         <?php eT("Welcome"); ?>
     </li>

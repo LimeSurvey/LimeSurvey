@@ -12,6 +12,7 @@
 namespace Twig\TokenParser;
 
 use Twig\Error\SyntaxError;
+use Twig\Node\Node;
 use Twig\Parser;
 use Twig\Token;
 
@@ -19,18 +20,20 @@ use Twig\Token;
  * Interface implemented by token parsers.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @method bool isAlwaysAllowedInSandbox() Whether the tag is always allowed in sandbox mode, even when not explicitly allow-listed. Not implementing this method is deprecated since Twig 3.28, it will be required in 4.0.
  */
 interface TokenParserInterface
 {
     /**
      * Sets the parser associated with this token parser.
      */
-    public function setParser(Parser $parser);
+    public function setParser(Parser $parser): void;
 
     /**
      * Parses a token and returns a node.
      *
-     * @return \Twig_NodeInterface
+     * @return Node
      *
      * @throws SyntaxError
      */
@@ -39,13 +42,7 @@ interface TokenParserInterface
     /**
      * Gets the tag name associated with this token parser.
      *
-     * @return string The tag name
+     * @return string
      */
     public function getTag();
 }
-
-class_alias('Twig\TokenParser\TokenParserInterface', 'Twig_TokenParserInterface');
-
-// Ensure that the aliased name is loaded to keep BC for classes implementing the typehint with the old aliased name.
-class_exists('Twig\Token');
-class_exists('Twig\Parser');

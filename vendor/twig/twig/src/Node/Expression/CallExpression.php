@@ -15,58 +15,84 @@ use Twig\Compiler;
 use Twig\Error\SyntaxError;
 use Twig\Extension\ExtensionInterface;
 use Twig\Node\Node;
+use Twig\TwigCallableInterface;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+use Twig\TwigTest;
+use Twig\Util\CallableArgumentsExtractor;
+use Twig\Util\ReflectionCallable;
 
 abstract class CallExpression extends AbstractExpression
 {
     private $reflector;
 
+    /**
+     * @return void
+     */
     protected function compileCallable(Compiler $compiler)
     {
-        $closingParenthesis = false;
-        $isArray = false;
-        if ($this->hasAttribute('callable') && $callable = $this->getAttribute('callable')) {
-            if (\is_string($callable) && false === strpos($callable, '::')) {
-                $compiler->raw($callable);
-            } else {
-                list($r, $callable) = $this->reflectCallable($callable);
-                if ($r instanceof \ReflectionMethod && \is_string($callable[0])) {
-                    if ($r->isStatic()) {
-                        $compiler->raw(sprintf('%s::%s', $callable[0], $callable[1]));
-                    } else {
-                        $compiler->raw(sprintf('$this->env->getRuntime(\'%s\')->%s', $callable[0], $callable[1]));
-                    }
-                } elseif ($r instanceof \ReflectionMethod && $callable[0] instanceof ExtensionInterface) {
-                    $compiler->raw(sprintf('$this->env->getExtension(\'%s\')->%s', \get_class($callable[0]), $callable[1]));
-                } else {
-                    $type = ucfirst($this->getAttribute('type'));
-                    $compiler->raw(sprintf('call_user_func_array($this->env->get%s(\'%s\')->getCallable(), ', $type, $this->getAttribute('name')));
-                    $closingParenthesis = true;
-                    $isArray = true;
-                }
-            }
+        $twigCallable = $this->getTwigCallable();
+        $callable = $twigCallable->getCallable();
+
+        if (\is_string($callable) && !str_contains($callable, '::')) {
+            $compiler->raw($callable);
         } else {
-            $compiler->raw($this->getAttribute('thing')->compile());
+            $rc = $this->reflectCallable($twigCallable);
+            $r = $rc->getReflector();
+            $callable = $rc->getCallable();
+
+            if (\is_string($callable)) {
+                $compiler->raw($callable);
+            } elseif (\is_array($callable) && \is_string($callable[0])) {
+                if (!$r instanceof \ReflectionMethod || $r->isStatic()) {
+                    $compiler->raw(\sprintf('%s::%s', $callable[0], $callable[1]));
+                } else {
+                    $compiler->raw(\sprintf('$this->env->getRuntime(\'%s\')->%s', $callable[0], $callable[1]));
+                }
+            } elseif (\is_array($callable) && $callable[0] instanceof ExtensionInterface) {
+                $class = \get_class($callable[0]);
+                if (!$compiler->getEnvironment()->hasExtension($class)) {
+                    // Compile a non-optimized call to trigger a \Twig\Error\RuntimeError, which cannot be a compile-time error
+                    $compiler->raw(\sprintf('$this->env->getExtension(\'%s\')', $class));
+                } else {
+                    $compiler->raw(\sprintf('$this->extensions[\'%s\']', ltrim($class, '\\')));
+                }
+
+                $compiler->raw(\sprintf('->%s', $callable[1]));
+            } else {
+                $compiler->raw(\sprintf('$this->env->get%s(\'%s\')->getCallable()', ucfirst($this->getAttribute('type')), $twigCallable->getDynamicName()));
+            }
         }
 
-        $this->compileArguments($compiler, $isArray);
-
-        if ($closingParenthesis) {
-            $compiler->raw(')');
-        }
+        $this->compileArguments($compiler);
     }
 
-    protected function compileArguments(Compiler $compiler, $isArray = false)
+    protected function compileArguments(Compiler $compiler, $isArray = false): void
     {
+        if (\func_num_args() >= 2) {
+            trigger_deprecation('twig/twig', '3.11', 'Passing a second argument to "%s()" is deprecated.', __METHOD__);
+        }
+
         $compiler->raw($isArray ? '[' : '(');
 
         $first = true;
 
-        if ($this->hasAttribute('needs_environment') && $this->getAttribute('needs_environment')) {
+        $twigCallable = $this->getAttribute('twig_callable');
+
+        if ($twigCallable->needsCharset()) {
+            $compiler->raw('$this->env->getCharset()');
+            $first = false;
+        }
+
+        if ($twigCallable->needsEnvironment()) {
+            if (!$first) {
+                $compiler->raw(', ');
+            }
             $compiler->raw('$this->env');
             $first = false;
         }
 
-        if ($this->hasAttribute('needs_context') && $this->getAttribute('needs_context')) {
+        if ($twigCallable->needsContext()) {
             if (!$first) {
                 $compiler->raw(', ');
             }
@@ -74,14 +100,20 @@ abstract class CallExpression extends AbstractExpression
             $first = false;
         }
 
-        if ($this->hasAttribute('arguments')) {
-            foreach ($this->getAttribute('arguments') as $argument) {
-                if (!$first) {
-                    $compiler->raw(', ');
-                }
-                $compiler->string($argument);
-                $first = false;
+        if (self::needsIsSandboxed($twigCallable)) {
+            if (!$first) {
+                $compiler->raw(', ');
             }
+            $compiler->raw('$this->env->hasExtension(\Twig\Extension\SandboxExtension::class) && $this->env->getExtension(\Twig\Extension\SandboxExtension::class)->getChecker()->isSandboxed($this->source)');
+            $first = false;
+        }
+
+        foreach ($twigCallable->getArguments() as $argument) {
+            if (!$first) {
+                $compiler->raw(', ');
+            }
+            $compiler->string($argument);
+            $first = false;
         }
 
         if ($this->hasNode('node')) {
@@ -93,10 +125,7 @@ abstract class CallExpression extends AbstractExpression
         }
 
         if ($this->hasNode('arguments')) {
-            $callable = $this->hasAttribute('callable') ? $this->getAttribute('callable') : null;
-
-            $arguments = $this->getArguments($callable, $this->getNode('arguments'));
-
+            $arguments = (new CallableArgumentsExtractor($this, $this->getAttribute('twig_callable')))->extractArguments($this->getNode('arguments'));
             foreach ($arguments as $node) {
                 if (!$first) {
                     $compiler->raw(', ');
@@ -109,8 +138,13 @@ abstract class CallExpression extends AbstractExpression
         $compiler->raw($isArray ? ']' : ')');
     }
 
+    /**
+     * @deprecated since Twig 3.12, use Twig\Util\CallableArgumentsExtractor::getArguments() instead
+     */
     protected function getArguments($callable, $arguments)
     {
+        trigger_deprecation('twig/twig', '3.12', 'The "%s()" method is deprecated, use Twig\Util\CallableArgumentsExtractor::getArguments() instead.', __METHOD__);
+
         $callType = $this->getAttribute('type');
         $callName = $this->getAttribute('name');
 
@@ -121,28 +155,28 @@ abstract class CallExpression extends AbstractExpression
                 $named = true;
                 $name = $this->normalizeName($name);
             } elseif ($named) {
-                throw new SyntaxError(sprintf('Positional arguments cannot be used after named arguments for %s "%s".', $callType, $callName), $this->getTemplateLine(), $this->getSourceContext());
+                throw new SyntaxError(\sprintf('Positional arguments cannot be used after named arguments for %s "%s".', $callType, $callName), $this->getTemplateLine(), $this->getSourceContext());
             }
 
             $parameters[$name] = $node;
         }
 
-        $isVariadic = $this->hasAttribute('is_variadic') && $this->getAttribute('is_variadic');
+        $isVariadic = $this->getAttribute('twig_callable')->isVariadic();
         if (!$named && !$isVariadic) {
             return $parameters;
         }
 
         if (!$callable) {
             if ($named) {
-                $message = sprintf('Named arguments are not supported for %s "%s".', $callType, $callName);
+                $message = \sprintf('Named arguments are not supported for %s "%s".', $callType, $callName);
             } else {
-                $message = sprintf('Arbitrary positional arguments are not supported for %s "%s".', $callType, $callName);
+                $message = \sprintf('Arbitrary positional arguments are not supported for %s "%s".', $callType, $callName);
             }
 
             throw new \LogicException($message);
         }
 
-        $callableParameters = $this->getCallableParameters($callable, $isVariadic);
+        [$callableParameters, $isPhpVariadic] = $this->getCallableParameters($callable, $isVariadic);
         $arguments = [];
         $names = [];
         $missingArguments = [];
@@ -162,11 +196,11 @@ abstract class CallExpression extends AbstractExpression
 
             if (\array_key_exists($name, $parameters)) {
                 if (\array_key_exists($pos, $parameters)) {
-                    throw new SyntaxError(sprintf('Argument "%s" is defined twice for %s "%s".', $name, $callType, $callName), $this->getTemplateLine(), $this->getSourceContext());
+                    throw new SyntaxError(\sprintf('Argument "%s" is defined twice for %s "%s".', $name, $callType, $callName), $this->getTemplateLine(), $this->getSourceContext());
                 }
 
                 if (\count($missingArguments)) {
-                    throw new SyntaxError(sprintf(
+                    throw new SyntaxError(\sprintf(
                         'Argument "%s" could not be assigned for %s "%s(%s)" because it is mapped to an internal PHP function which cannot determine default value for optional argument%s "%s".',
                         $name, $callType, $callName, implode(', ', $names), \count($missingArguments) > 1 ? 's' : '', implode('", "', $missingArguments)
                     ), $this->getTemplateLine(), $this->getSourceContext());
@@ -185,18 +219,17 @@ abstract class CallExpression extends AbstractExpression
             } elseif ($callableParameter->isDefaultValueAvailable()) {
                 $optionalArguments[] = new ConstantExpression($callableParameter->getDefaultValue(), -1);
             } elseif ($callableParameter->isOptional()) {
-                if (empty($parameters)) {
+                if (!$parameters) {
                     break;
-                } else {
-                    $missingArguments[] = $name;
                 }
+                $missingArguments[] = $name;
             } else {
-                throw new SyntaxError(sprintf('Value for argument "%s" is required for %s "%s".', $name, $callType, $callName), $this->getTemplateLine(), $this->getSourceContext());
+                throw new SyntaxError(\sprintf('Value for argument "%s" is required for %s "%s".', $name, $callType, $callName), $this->getTemplateLine(), $this->getSourceContext());
             }
         }
 
         if ($isVariadic) {
-            $arbitraryArguments = new ArrayExpression([], -1);
+            $arbitraryArguments = $isPhpVariadic ? new VariadicExpression([], -1) : new ArrayExpression([], -1);
             foreach ($parameters as $key => $value) {
                 if (\is_int($key)) {
                     $arbitraryArguments->addElement($value);
@@ -212,7 +245,7 @@ abstract class CallExpression extends AbstractExpression
             }
         }
 
-        if (!empty($parameters)) {
+        if ($parameters) {
             $unknownParameter = null;
             foreach ($parameters as $parameter) {
                 if ($parameter instanceof Node) {
@@ -222,7 +255,7 @@ abstract class CallExpression extends AbstractExpression
             }
 
             throw new SyntaxError(
-                sprintf(
+                \sprintf(
                     'Unknown argument%s "%s" for %s "%s(%s)".',
                     \count($parameters) > 1 ? 's' : '', implode('", "', array_keys($parameters)), $callType, $callName, implode(', ', $names)
                 ),
@@ -234,82 +267,109 @@ abstract class CallExpression extends AbstractExpression
         return $arguments;
     }
 
-    protected function normalizeName($name)
+    /**
+     * @deprecated since Twig 3.12
+     */
+    protected function normalizeName(string $name): string
     {
+        trigger_deprecation('twig/twig', '3.12', 'The "%s()" method is deprecated.', __METHOD__);
+
         return strtolower(preg_replace(['/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], ['\\1_\\2', '\\1_\\2'], $name));
     }
 
-    private function getCallableParameters($callable, $isVariadic)
+    // To be removed in 4.0
+    private function getCallableParameters($callable, bool $isVariadic): array
     {
-        list($r) = $this->reflectCallable($callable);
-        if (null === $r) {
-            return [];
-        }
+        $twigCallable = $this->getAttribute('twig_callable');
+        $rc = $this->reflectCallable($twigCallable);
+        $callableName = $rc->getName();
 
-        $parameters = $r->getParameters();
-        if ($this->hasNode('node')) {
-            array_shift($parameters);
-        }
-        if ($this->hasAttribute('needs_environment') && $this->getAttribute('needs_environment')) {
-            array_shift($parameters);
-        }
-        if ($this->hasAttribute('needs_context') && $this->getAttribute('needs_context')) {
-            array_shift($parameters);
-        }
-        if ($this->hasAttribute('arguments') && null !== $this->getAttribute('arguments')) {
-            foreach ($this->getAttribute('arguments') as $argument) {
-                array_shift($parameters);
-            }
-        }
+        $parameters = $rc->getTwigParameters($this->hasNode('node'));
+
+        $isPhpVariadic = false;
         if ($isVariadic) {
             $argument = end($parameters);
-            $isArray = $argument && $argument->hasType() && 'array' === $argument->getType()->getName();
+            $isArray = $argument && $argument->hasType() && $argument->getType() instanceof \ReflectionNamedType && 'array' === $argument->getType()->getName();
             if ($isArray && $argument->isDefaultValueAvailable() && [] === $argument->getDefaultValue()) {
                 array_pop($parameters);
+            } elseif ($argument && $argument->isVariadic()) {
+                array_pop($parameters);
+                $isPhpVariadic = true;
             } else {
-                $callableName = $r->name;
-                if ($r instanceof \ReflectionMethod) {
-                    $callableName = $r->getDeclaringClass()->name.'::'.$callableName;
-                }
-
-                throw new \LogicException(sprintf('The last parameter of "%s" for %s "%s" must be an array with default value, eg. "array $arg = []".', $callableName, $this->getAttribute('type'), $this->getAttribute('name')));
+                throw new \LogicException(\sprintf('The last parameter of "%s" for %s "%s" must be an array with default value, eg. "array $arg = []".', $callableName, $this->getAttribute('type'), $twigCallable->getName()));
             }
         }
 
-        return $parameters;
+        return [$parameters, $isPhpVariadic];
     }
 
-    private function reflectCallable($callable)
+    private function reflectCallable(TwigCallableInterface $callable): ReflectionCallable
     {
-        if (null !== $this->reflector) {
-            return $this->reflector;
+        if (!$this->reflector) {
+            $this->reflector = new ReflectionCallable($callable);
         }
 
-        if (\is_array($callable)) {
-            if (!method_exists($callable[0], $callable[1])) {
-                // __call()
-                return [null, []];
-            }
-            $r = new \ReflectionMethod($callable[0], $callable[1]);
-        } elseif (\is_object($callable) && !$callable instanceof \Closure) {
-            $r = new \ReflectionObject($callable);
-            $r = $r->getMethod('__invoke');
-            $callable = [$callable, '__invoke'];
-        } elseif (\is_string($callable) && false !== $pos = strpos($callable, '::')) {
-            $class = substr($callable, 0, $pos);
-            $method = substr($callable, $pos + 2);
-            if (!method_exists($class, $method)) {
-                // __staticCall()
-                return [null, []];
-            }
-            $r = new \ReflectionMethod($callable);
-            $callable = [$class, $method];
-        } else {
-            $r = new \ReflectionFunction($callable);
+        return $this->reflector;
+    }
+
+    /**
+     * @internal
+     *
+     * To be removed in 4.0 and replaced by $twigCallable->needsIsSandboxed().
+     */
+    public static function needsIsSandboxed(TwigCallableInterface $twigCallable): bool
+    {
+        if (method_exists($twigCallable, 'needsIsSandboxed')) {
+            return $twigCallable->needsIsSandboxed();
         }
 
-        return $this->reflector = [$r, $callable];
+        trigger_deprecation('twig/twig', '3.25', 'Not implementing the "needsIsSandboxed()" method in "%s" is deprecated. This method will be part of the "%s" interface in 4.0.', $twigCallable::class, TwigCallableInterface::class);
+
+        return false;
+    }
+
+    /**
+     * Overrides the Twig callable based on attributes (as potentially, attributes changed between the creation and the compilation of the node).
+     *
+     * To be removed in 4.0 and replace by $this->getAttribute('twig_callable').
+     */
+    private function getTwigCallable(): TwigCallableInterface
+    {
+        $current = $this->getAttribute('twig_callable');
+
+        $this->setAttribute('twig_callable', match ($this->getAttribute('type')) {
+            'test' => (new TwigTest(
+                $this->getAttribute('name'),
+                $this->hasAttribute('callable') ? $this->getAttribute('callable') : $current->getCallable(),
+                [
+                    'needs_is_sandboxed' => $this->hasAttribute('needs_is_sandboxed') ? $this->getAttribute('needs_is_sandboxed') : self::needsIsSandboxed($current),
+                    'is_variadic' => $this->hasAttribute('is_variadic') ? $this->getAttribute('is_variadic') : $current->isVariadic(),
+                ],
+            ))->withDynamicArguments($this->getAttribute('name'), $this->hasAttribute('dynamic_name') ? $this->getAttribute('dynamic_name') : $current->getDynamicName(), $this->hasAttribute('arguments') ? $this->getAttribute('arguments') : $current->getArguments()),
+            'function' => (new TwigFunction(
+                $this->hasAttribute('name') ? $this->getAttribute('name') : $current->getName(),
+                $this->hasAttribute('callable') ? $this->getAttribute('callable') : $current->getCallable(),
+                [
+                    'needs_environment' => $this->hasAttribute('needs_environment') ? $this->getAttribute('needs_environment') : $current->needsEnvironment(),
+                    'needs_context' => $this->hasAttribute('needs_context') ? $this->getAttribute('needs_context') : $current->needsContext(),
+                    'needs_charset' => $this->hasAttribute('needs_charset') ? $this->getAttribute('needs_charset') : $current->needsCharset(),
+                    'needs_is_sandboxed' => $this->hasAttribute('needs_is_sandboxed') ? $this->getAttribute('needs_is_sandboxed') : self::needsIsSandboxed($current),
+                    'is_variadic' => $this->hasAttribute('is_variadic') ? $this->getAttribute('is_variadic') : $current->isVariadic(),
+                ],
+            ))->withDynamicArguments($this->getAttribute('name'), $this->hasAttribute('dynamic_name') ? $this->getAttribute('dynamic_name') : $current->getDynamicName(), $this->hasAttribute('arguments') ? $this->getAttribute('arguments') : $current->getArguments()),
+            'filter' => (new TwigFilter(
+                $this->getAttribute('name'),
+                $this->hasAttribute('callable') ? $this->getAttribute('callable') : $current->getCallable(),
+                [
+                    'needs_environment' => $this->hasAttribute('needs_environment') ? $this->getAttribute('needs_environment') : $current->needsEnvironment(),
+                    'needs_context' => $this->hasAttribute('needs_context') ? $this->getAttribute('needs_context') : $current->needsContext(),
+                    'needs_charset' => $this->hasAttribute('needs_charset') ? $this->getAttribute('needs_charset') : $current->needsCharset(),
+                    'needs_is_sandboxed' => $this->hasAttribute('needs_is_sandboxed') ? $this->getAttribute('needs_is_sandboxed') : self::needsIsSandboxed($current),
+                    'is_variadic' => $this->hasAttribute('is_variadic') ? $this->getAttribute('is_variadic') : $current->isVariadic(),
+                ],
+            ))->withDynamicArguments($this->getAttribute('name'), $this->hasAttribute('dynamic_name') ? $this->getAttribute('dynamic_name') : $current->getDynamicName(), $this->hasAttribute('arguments') ? $this->getAttribute('arguments') : $current->getArguments()),
+        });
+
+        return $this->getAttribute('twig_callable');
     }
 }
-
-class_alias('Twig\Node\Expression\CallExpression', 'Twig_Node_Expression_Call');

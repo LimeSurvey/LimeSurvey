@@ -19,7 +19,6 @@
 
 namespace phpseclib3\Crypt\DH\Formats\Keys;
 
-use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Crypt\Common\Formats\Keys\PKCS8 as Progenitor;
 use phpseclib3\File\ASN1;
 use phpseclib3\File\ASN1\Maps;
@@ -62,22 +61,9 @@ abstract class PKCS8 extends Progenitor
      */
     public static function load($key, $password = '')
     {
-        if (!Strings::is_stringable($key)) {
-            throw new \UnexpectedValueException('Key should be a string - not a ' . gettype($key));
-        }
-
-        $isPublic = strpos($key, 'PUBLIC') !== false;
-
         $key = parent::load($key, $password);
 
         $type = isset($key['privateKey']) ? 'privateKey' : 'publicKey';
-
-        switch (true) {
-            case !$isPublic && $type == 'publicKey':
-                throw new \UnexpectedValueException('Human readable string claims non-public key but DER encoded string claims public key');
-            case $isPublic && $type == 'privateKey':
-                throw new \UnexpectedValueException('Human readable string claims public key but DER encoded string claims private key');
-        }
 
         $decoded = ASN1::decodeBER($key[$type . 'Algorithm']['parameters']->element);
         if (empty($decoded)) {
@@ -103,10 +89,10 @@ abstract class PKCS8 extends Progenitor
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $prime
-     * @param \phpseclib3\Math\BigInteger $base
-     * @param \phpseclib3\Math\BigInteger $privateKey
-     * @param \phpseclib3\Math\BigInteger $publicKey
+     * @param BigInteger $prime
+     * @param BigInteger $base
+     * @param BigInteger $privateKey
+     * @param BigInteger $publicKey
      * @param string $password optional
      * @param array $options optional
      * @return string
@@ -126,9 +112,9 @@ abstract class PKCS8 extends Progenitor
     /**
      * Convert a public key to the appropriate format
      *
-     * @param \phpseclib3\Math\BigInteger $prime
-     * @param \phpseclib3\Math\BigInteger $base
-     * @param \phpseclib3\Math\BigInteger $publicKey
+     * @param BigInteger $prime
+     * @param BigInteger $base
+     * @param BigInteger $publicKey
      * @param array $options optional
      * @return string
      */
@@ -141,6 +127,6 @@ abstract class PKCS8 extends Progenitor
         $params = ASN1::encodeDER($params, Maps\DHParameter::MAP);
         $params = new ASN1\Element($params);
         $key = ASN1::encodeDER($publicKey, ['type' => ASN1::TYPE_INTEGER]);
-        return self::wrapPublicKey($key, $params);
+        return self::wrapPublicKey($key, $params, null, $options);
     }
 }

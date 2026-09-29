@@ -304,7 +304,7 @@ abstract class PHP extends Engine
      * @param bool $y_negative
      * @return array
      */
-    public static function subtractHelper(array $x_value, $x_negative, array $y_value, $y_negative)
+    protected static function subtractHelper(array $x_value, $x_negative, array $y_value, $y_negative)
     {
         $x_size = count($x_value);
         $y_size = count($y_value);
@@ -533,6 +533,13 @@ abstract class PHP extends Engine
             $quotient = new static();
             $remainder = new static();
             $quotient->value = $q;
+            // The common residue is the first positive modulo, so it is only the
+            // negative remainders that need the divisor added. A remainder of 0 is
+            // already the residue; adding the divisor would return the modulus
+            // itself, which is never a valid residue.
+            if ($this->is_negative && $r) {
+                $r = $y->value[0] - $r;
+            }
             $remainder->value = [$r];
             $quotient->is_negative = $this->is_negative != $y->is_negative;
             return [$this->normalize($quotient), $this->normalize($remainder)];
@@ -664,8 +671,9 @@ abstract class PHP extends Engine
 
         $quotient->is_negative = $x_sign != $y_sign;
 
-        // calculate the "common residue", if appropriate
-        if ($x_sign) {
+        // calculate the "common residue", if appropriate. A remainder of 0 is
+        // already the residue -- see divideHelper's single-digit branch.
+        if ($x_sign && count($x->value)) {
             $y->rshift($shift);
             $x = $y->subtract($x);
         }
@@ -1325,5 +1333,33 @@ abstract class PHP extends Engine
         }
 
         return array_reverse($vals);
+    }
+
+    /**
+     * @return bool
+     */
+    protected static function testJITOnWindows()
+    {
+        // see https://github.com/php/php-src/issues/11917
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' && function_exists('opcache_get_status') && PHP_VERSION_ID < 80213 && !defined('PHPSECLIB_ALLOW_JIT')) {
+            $status = opcache_get_status();
+            if ($status && isset($status['jit']) && $status['jit']['enabled'] && $status['jit']['on']) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Return the size of a BigInteger in bits
+     *
+     * @return int
+     */
+    public function getLength()
+    {
+        $max = count($this->value) - 1;
+        return $max != -1 ?
+            $max * static::BASE + intval(ceil(log($this->value[$max] + 1, 2))) :
+            0;
     }
 }

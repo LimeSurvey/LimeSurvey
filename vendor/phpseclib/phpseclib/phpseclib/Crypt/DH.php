@@ -28,6 +28,7 @@ use phpseclib3\Crypt\Common\AsymmetricKey;
 use phpseclib3\Crypt\DH\Parameters;
 use phpseclib3\Crypt\DH\PrivateKey;
 use phpseclib3\Crypt\DH\PublicKey;
+use phpseclib3\Exception\BadConfigurationException;
 use phpseclib3\Exception\NoKeyLoadedException;
 use phpseclib3\Exception\UnsupportedOperationException;
 use phpseclib3\Math\BigInteger;
@@ -49,7 +50,7 @@ abstract class DH extends AsymmetricKey
     /**
      * DH prime
      *
-     * @var \phpseclib3\Math\BigInteger
+     * @var BigInteger
      */
     protected $prime;
 
@@ -58,14 +59,14 @@ abstract class DH extends AsymmetricKey
      *
      * Prime divisor of p-1
      *
-     * @var \phpseclib3\Math\BigInteger
+     * @var BigInteger
      */
     protected $base;
 
     /**
      * Public Key
      *
-     * @var \phpseclib3\Math\BigInteger
+     * @var BigInteger
      */
     protected $publicKey;
 
@@ -81,6 +82,11 @@ abstract class DH extends AsymmetricKey
      */
     public static function createParameters(...$args)
     {
+        $class = new \ReflectionClass(static::class);
+        if ($class->isFinal()) {
+            throw new \RuntimeException('createParameters() should not be called from final classes (' . static::class . ')');
+        }
+
         $params = new Parameters();
         if (count($args) == 2 && $args[0] instanceof BigInteger && $args[1] instanceof BigInteger) {
             //if (!$args[0]->isPrime()) {
@@ -238,10 +244,15 @@ abstract class DH extends AsymmetricKey
      *
      * @param Parameters $params
      * @param int $length optional
-     * @return DH\PrivateKey
+     * @return PrivateKey
      */
     public static function createKey(Parameters $params, $length = 0)
     {
+        $class = new \ReflectionClass(static::class);
+        if ($class->isFinal()) {
+            throw new \RuntimeException('createKey() should not be called from final classes (' . static::class . ')');
+        }
+
         $one = new BigInteger(1);
         if ($length) {
             $max = $one->bitwise_leftShift($length);
@@ -285,21 +296,64 @@ abstract class DH extends AsymmetricKey
         }
 
         if ($private instanceof EC\PrivateKey) {
+            $privateCurve = $private->getCurve();
             switch (true) {
                 case $public instanceof EC\PublicKey:
+                    if ($privateCurve !== $public->getCurve()) {
+                        throw new \InvalidArgumentException("The public key curve (" . $public->getCurve() . ") and private key curve ($privateCurve) need to match");
+                    }
+                    $orig = $public;
                     $public = $public->getEncodedCoordinates();
                     // fall-through
                 case is_string($public):
-                    $point = $private->multiply($public);
-                    switch ($private->getCurve()) {
-                        case 'Curve25519':
-                        case 'Curve448':
-                            $secret = $point;
-                            break;
-                        default:
-                            // according to https://www.secg.org/sec1-v2.pdf#page=33 only X is returned
-                            $secret = substr($point, 1, (strlen($point) - 1) >> 1);
+                    $forcedEngine = EC::getForcedEngine();
+                    if ($forcedEngine === 'libsodium' && $privateCurve !== 'Curve25519') {
+                        throw new BadConfigurationException('Engine libsodium is forced but can only used with Curve25519 for ECDH');
                     }
+                    if (!isset($forcedEngine) || $forcedEngine === 'OpenSSL') {
+                        // PHP 7.3.0 introduced the openssl_pkey_derive() function
+                        // openssl_dh_computee_key() has been around since PHP 5.3.0+ BUT it did not support ECDH
+                        // until PHP 8.1.0 / OpenSSL 3.0.0
+                        if ($forcedEngine === 'OpenSSL' && !function_exists('openssl_pkey_derive')) {
+                            throw new BadConfigurationException('Engine OpenSSL is forced but unsupported for ECDH');
+                        }
+                        if (function_exists('openssl_pkey_derive')) {
+                            $privateStr = (string) $private->withPassword();
+                            $publicStr = (string) (isset($orig) ? $orig : EC::convertPointToPublicKey($private->getCurve(), $public));
+                            $result = openssl_pkey_derive($publicStr, $privateStr);
+                            if ($result) {
+                                return $result;
+                            }
+                            if ($forcedEngine === 'OpenSSL') {
+                                // i suppose we _could_ try openssl_dh_compute_key() at this point
+                                // quoting https://www.php.net/openssl-dh-compute-key "ECDH is only supported as of PHP 8.1.0 and OpenSSL 3.0.0". ie.
+                                // PHP_VERSION_ID >= 80100 && OPENSSL_VERSION_NUMBER >= 0x3000000f
+                                // but i think that's overkill. if openssl_pkey_derive() doesn't work it seems doubtful to me that openssl_dh_compute_key() would
+                                throw new BadConfigurationException('Engine OpenSSL is forced but was unable to perform ECDH because of ' . openssl_error_string());
+                            }
+                        }
+                    }
+                    $curveName = $private->getCurve();
+                    $isMontgomeryCurve = $curveName == 'Curve25519' || $curveName == 'Curve448';
+                    if (!$isMontgomeryCurve) {
+                        $public = EC::convertPointToPublicKey($curveName, $public, false);
+                    }
+                    $point = $private->multiply($public);
+                    if ($isMontgomeryCurve) {
+                        /*
+                        "Both MAY check, without leaking extra information about the value of K,
+                         whether K is the all-zero value and abort if so"
+                        -- https://datatracker.ietf.org/doc/html/rfc7748#section-6.1 (and #section-6.2)
+                        */
+                        $size = $curveName == 'Curve25519' ? 32 : 56;
+                        // throw exception if hash_equals is false, otherwise, return $point
+                        if (hash_equals(str_repeat("\0", $size), $point)) {
+                            throw new \UnexpectedValueException('All-zero shared secret detected (points order is too small)');
+                        }
+                        return $point;
+                    }
+                    // according to https://www.secg.org/sec1-v2.pdf#page=33 only X is returned
+                    $secret = substr($point, 1, (strlen($point) - 1) >> 1);
                     /*
                     if (($secret[0] & "\x80") === "\x80") {
                         $secret = "\0$secret";
@@ -387,9 +441,9 @@ abstract class DH extends AsymmetricKey
      */
     public function getParameters()
     {
-        $type = self::validatePlugin('Keys', 'PKCS1', 'saveParameters');
+        $type = DH::validatePlugin('Keys', 'PKCS1', 'saveParameters');
 
         $key = $type::saveParameters($this->prime, $this->base);
-        return self::load($key, 'PKCS1');
+        return DH::load($key, 'PKCS1');
     }
 }

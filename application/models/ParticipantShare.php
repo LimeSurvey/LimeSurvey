@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -136,13 +136,21 @@ class ParticipantShare extends LSActiveRecord
     {
         $loggedInUser = yii::app()->user->getId();
         if ($this->participant->owner_uid == $loggedInUser) {
-            $inputHtml = "<input type='checkbox' data-size='small' data-off-color='warning' data-on-color='primary' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeEditableStatus' "
-            . ($this->can_edit ? "checked" : "")
-            . "/>";
-            return  $inputHtml;
-        } else {
-            return ($this->can_edit ? gT("Yes") : gT('No'));
+            $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'canedithtml_' . $this->participant_id . "_" . $this->share_uid,
+                'checkedOption' => $this->can_edit ? "1" : "0",
+                'selectOptions' => [
+                    '1' => gT('Yes'),
+                    '0' => gT('No'),
+                ],
+                'htmlOptions'   => [
+                    'class' => 'action_changeEditableStatus'
+                ]
+            ], true);
+            return $inputHtml;
         }
+
+        return ($this->can_edit ? gT("Yes") : gT('No'));
     }
 
     /**
@@ -151,32 +159,34 @@ class ParticipantShare extends LSActiveRecord
      */
     public function getButtons()
     {
-        $userId = yii::app()->user->id;
+        $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $userId = App()->user->id;
         $isOwner = $this->participant->owner_uid == $userId;
-        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
-        $buttons = "<div class='icon-btn-row'>";
-        if ($isOwner || $isSuperAdmin) {
-            $url = Yii::app()->createUrl(
+            $url = App()->createUrl(
                 'admin/participants/sa/deleteSingleParticipantShare',
                 [
                     'participantId' => urlencode($this->participant_id),
                     'shareUid'      => $this->share_uid
                 ]
             );
-            $buttons .= "<span data-toggle='tooltip' title='" . gT("Delete sharing") . "'><a href='#'
-            class='btn btn-sm btn-default action_delete_shareParticipant'
-            data-toggle='modal' 
-            data-target='#confirmation-modal'
-            data-title='" . gt('Unshare this participant') . "'
-            data-btntext='" . gt('Unshare') . "'
-            data-message='" . gT('Do you really want to unshare this participant?') . "' 
-            data-onclick='(function() { LS.CPDB.deleteSingleParticipantShare(\"" . $url . "\"); })'>"
-                . "<i class='fa fa-trash text-danger'></i>"
-                . "</a></span>";
-        }
-        $buttons .= "</div>";
 
-        return $buttons;
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title' => gT('Delete sharing'),
+            'linkClass' => 'action_delete_shareParticipant',
+            'iconClass' => 'ri-delete-bin-fill text-danger',
+            'linkAttributes' => [
+                'data-bs-toggle' => 'modal',
+                'data-bs-target' => '#confirmation-modal',
+                'data-title'     => gT('Unshare this participant'),
+                'data-btntext'   => gT('Unshare'),
+                'data-message'   => gT('Do you really want to unshare this participant?'),
+                'data-onclick'   => "(function() { LS.CPDB.deleteSingleParticipantShare(\"$url\")})",
+            ],
+            'enabledCondition' => $isOwner || $permission_superadmin_read
+        ];
+
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
@@ -194,7 +204,7 @@ class ParticipantShare extends LSActiveRecord
         $participantIdAndShareUid = $this->participant_id . ',' . $this->share_uid;
 
         if ($isOwner || $isSuperAdmin) {
-            $html = "<input type='checkbox' class='selector_participantShareCheckbox' name='selectedParticipantShare[]' value='" . $participantIdAndShareUid . "' >";
+            $html = "<input type='checkbox' class='selector_participantShareCheckbox massiveActionsCheckbox' name='selectedParticipantShare[]' value='" . $participantIdAndShareUid . "' >";
         } else {
             $html = '';
         }
@@ -208,60 +218,67 @@ class ParticipantShare extends LSActiveRecord
     public function getColumns()
     {
         $participantFilter = yii::app()->request->getPost('Participant');
-        $cols = array(
-            array(
-                "name" => 'checkbox',
-                "type" => 'raw',
-                "header" => "<input type='checkbox' id='action_toggleAllParticipantShare' />",
-                "filter" => false
-            ),
-            array(
-                "name" => 'buttons',
-                "type" => 'raw',
-                "header" => gT("Action"),
-                "filter" => false
-            ),
-            array(
-                "name" => 'participant.lastname',
+        $cols = [
+            [
+                "name"              => 'checkbox',
+                "type"              => 'raw',
+                "header"            => "<input type='checkbox' id='action_toggleAllParticipantShare' />",
+                "filter"            => false,
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column'],
+            ],
+            [
+                "name"   => 'participant.lastname',
                 "header" => gT("Last name"),
                 "filter" => TbHtml::textField("Participant[lastname]", $participantFilter['lastname'] ?? '')
-            ),
-            array(
-                "name" => 'participant.firstname',
+            ],
+            [
+                "name"   => 'participant.firstname',
                 "header" => gT("First name"),
                 "filter" => TbHtml::textField("Participant[firstname]", $participantFilter['firstname'] ?? '')
-            ),
-            array(
-                "name" => 'participant.email',
+            ],
+            [
+                "name"   => 'participant.email',
                 "header" => gT("Email address"),
                 "filter" => TbHtml::textField("Participant[email]", $participantFilter['email'] ?? '')
-            ),
-            array(
-                "name" => 'share_uid',
-                "value" => '$data->sharedBy',
-                "type" => 'raw',
+            ],
+            [
+                "name"   => 'share_uid',
+                "value"  => '$data->sharedBy',
+                "type"   => 'raw',
                 "header" => gT("Shared with"),
                 "filter" => $this->getSharedByList($this->share_uid)
-            ),
-            array(
-                'name' => 'ownerName',
-                'value' => '$data->getOwnerName()',
+            ],
+            [
+                'name'   => 'ownerName',
+                'value'  => '$data->getOwnerName()',
                 'header' => 'Owner'
-            ),
-            array(
-                "name" => 'date_added',
+            ],
+            [
+                "name"   => 'date_added',
                 "header" => gT("Date added")
-            ),
-            array(
-                "name" => 'can_edit',
-                "value" => '$data->getCanEditHtml()',
+            ],
+            [
+                "name"   => 'can_edit',
+                "value"  => '$data->getCanEditHtml()',
                 "header" => gT("Can edit?"),
-                "filter" => array(1 => gT('Yes'), 0 => gT('No')),
-                "type" => "raw"
-            ),
-        );
+                "filter" => [1 => gT('Yes'), 0 => gT('No')],
+                "type"   => "raw"
+            ],
+            [
+                "name"              => 'buttons',
+                "type"              => 'raw',
+                "header"            => gT("Action"),
+                "filter"            => false,
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column'],
+            ],
+        ];
         return $cols;
     }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -328,8 +345,14 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
-     * @param array $data
-     * @param array $permission
+     * Creates or updates a participant share, after verifying the current user is
+     * allowed to grant it (the participant's owner, a superadmin, or a user with the
+     * participant panel update permission). Merely holding an editable share of the
+     * participant is not enough: a sharee may edit the participant, but may not
+     * reshare it or grant edit rights to further accounts.
+     *
+     * @param array $data Share attributes: participant_id, share_uid, date_added, can_edit
+     * @param array $permission Caller's permission flags: hasUpdatePermission, isSuperAdmin
      *
      * @return void
      * @throws CException
@@ -343,10 +366,10 @@ class ParticipantShare extends LSActiveRecord
 
         // Check if share already exists
         $arShare = $this->findByPk(['participant_id' => $data['participant_id'], 'share_uid' => $data['share_uid']]);
-        $canEditShared = $this->canEditSharedParticipant($data['participant_id']);
         $isOwner = $ownerid['owner_uid'] == $userId;
 
-        if ($ownerid['owner_uid'] == $data['share_uid'] || (!$permission && !$canEditShared && !$isOwner && !$isSuperAdmin && !$hasUpdatePermission)) {
+        $isAllowedToShare = $isOwner || $isSuperAdmin || $hasUpdatePermission;
+        if ($ownerid['owner_uid'] == $data['share_uid'] || !$isAllowedToShare) {
             ls\ajax\AjaxHelper::outputNoPermission();
             return;
         }
@@ -361,13 +384,36 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
+     * Returns whether the current user is allowed to create or modify a share of the
+     * given participant: true for the participant's owner, a superadmin, or a user
+     * with the participant panel update permission. Merely holding an editable share
+     * of the participant is not enough: a sharee may edit the participant (see
+     * canEditSharedParticipant()), but may not reshare it or grant edit rights to
+     * further accounts. Used to gate every mutation of a participant share, not just
+     * the initial creation in storeParticipantShare().
+     *
+     * @param string $participantId
+     * @return boolean
+     */
+    public function isAllowedToManageShare($participantId)
+    {
+        $userId = App()->user->getId();
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $hasUpdatePermission = Permission::model()->hasGlobalPermission('participantpanel', 'update');
+        $ownerid = App()->db->createCommand()->select('owner_uid')->from('{{participants}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $participantId, PDO::PARAM_STR)->queryRow();
+        $isOwner = $ownerid && $ownerid['owner_uid'] == $userId;
+
+        return $isOwner || $isSuperAdmin || $hasUpdatePermission;
+    }
+
+    /**
      * @param array $data
      * @return void
      */
     public function updateShare($data)
     {
-        if (strpos($data['participant_id'], '--') !== false) {
-            list($participantId, $shareuid) = explode("--", $data['participant_id']);
+        if (strpos((string) $data['participant_id'], '--') !== false) {
+            list($participantId, $shareuid) = explode("--", (string) $data['participant_id']);
             $data = array("participant_id" => $participantId, "share_uid" => $shareuid, "can_edit" => $data['can_edit']);
         }
         $criteria = new CDbCriteria();

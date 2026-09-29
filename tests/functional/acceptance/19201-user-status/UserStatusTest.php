@@ -1,0 +1,245 @@
+<?php
+
+namespace ls\tests;
+
+use Throwable;
+use User;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\WebDriverSelect;
+
+/**
+ * Acceptance tests for user account status management in the User Management grid.
+ *
+ * Covers the ability to deactivate users via the per-row action dropdown and via
+ * the massive-action menu, and verifies that the superadmin account cannot be
+ * deactivated at all (its "Deactivate" action is rendered as a disabled link).
+ *
+ * @group user
+ */
+class UserStatusTest extends TestBaseClassWeb
+{
+    // TODO: 
+    // Check that you cannot deactive yourself (even when not superadmin)
+    //   Create new user with permission to edit users
+    //   Login as new user
+    //   Go to user management
+    //   Click on my own action button
+    //   "Deactivate" should be disabled
+    // Activate massive action
+    // Deactivate user you do not own?
+    // Try to login as not-active
+    // Try to login as active
+
+    /**
+     * Logs in as the admin user before any test in this class runs.
+     *
+     * Credentials are read from the ADMINUSERNAME and PASSWORD environment
+     * variables, falling back to 'admin' / 'password' when they are not set.
+     * The Yii session is seeded with the superadmin uid so that server-side
+     * permission checks pass alongside the browser session.
+     */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        $username = getenv('ADMINUSERNAME');
+        if (!$username) {
+            $username = 'admin';
+        }
+
+        $password = getenv('PASSWORD');
+        if (!$password) {
+            $password = 'password';
+        }
+
+        // Permission to everything.
+        \Yii::app()->session['loginID'] = 1;
+
+        // Browser login.
+        self::adminLogin($username, $password, $wait = false);
+    }
+
+    /**
+     * Verifies that the "Deactivate" action for the superadmin is rendered as a
+     * disabled, non-interactive link in the action dropdown.
+     *
+     * The rowLink.js initialisation removes the href attribute and sets
+     * aria-disabled="true" on any anchor with the .disabled class inside the
+     * grid, so the assertions check for those attributes rather than a plain
+     * href="#".
+     */
+    public function testCannotDeactiveSuperadmin()
+    {
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $web = self::$webDriver;
+
+        try {
+            // Go to User Management page
+            $url = $urlMan->createUrl('userManagement/index');
+            $web->get($url);
+
+            // Click on action dropdown
+            $dropdownButton = $web->findByCss('.dropdown.ls-action_dropdown');
+            $dropdownButton->click();
+            // @var string Something like dropdown_3
+            $id = $dropdownButton->getAttribute('id');
+            $parts = explode('_', $id);
+            $this->assertCount(2, $parts);
+
+            // Get belonging <ul>
+            $dropdownMenuItems = $web->findManyByCss('#dropdownmenu_' . (int) $parts[1] . ' li');
+            $deactiveElement = $dropdownMenuItems[1];
+            $deactiveElementAnchor = $deactiveElement
+                ->findElement(
+                    WebDriverBy::cssSelector('a')
+                );
+
+            $this->assertEquals('Deactivate', $deactiveElement->getText(), 'Text is Deactivate');
+            $this->assertTrue($deactiveElement->isDisplayed(), 'Element is displayed');
+            $this->assertNull($deactiveElementAnchor->getAttribute('href'), 'Disabled anchor href is removed');
+            $this->assertEquals('true', $deactiveElementAnchor->getAttribute('aria-disabled'), 'Disabled anchor has aria-disabled=true');
+            $this->assertEquals('-1', $deactiveElementAnchor->getAttribute('tabindex'), 'Disabled anchor is not keyboard-focusable');
+        } catch (Throwable $e) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            echo $e->getMessage();
+            debug_print_backtrace();
+            $this->assertFalse(true);
+        }
+    }
+
+    /**
+     * Verifies that a regular (non-superadmin) user can be deactivated through
+     * the per-row action dropdown.
+     *
+     * Creates a fresh user owned by the superadmin, navigates to the User
+     * Management grid, opens the action dropdown for that user's row, clicks
+     * "Deactivate", confirms the modal, and asserts that the user's
+     * user_status column is set to 0 in the database.
+     */
+    public function testCanDeactivateNewUser()
+    {
+        // Delete all users but superadmin
+        User::model()->deleteAll('uid NOT IN (1)');
+        // Insert new user
+        $uid = User::insertUser(
+            $new_user = 'newuser',
+            $new_pass = 'asd',
+            $new_full_name = 'New user',
+            $parent_user = 1,
+            $new_email = 'new@user.com'
+        );
+        $this->assertFalse($uid instanceof User, 'Failed to create user: ' . ($uid instanceof User ? json_encode($uid->getErrors()) : ''));
+        $uid = (int) $uid;
+        $user = User::model()->findByPk($uid);
+        $this->assertEquals(1, (int) $user->user_status, 'User status is 1');
+
+        // Go to User Management page
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $web = self::$webDriver;
+        $url = $urlMan->createUrl('userManagement/index');
+        $web->get($url);
+
+        // Find row for new user
+        $uidTds = $web->findManyByCss('.uid');
+        $this->assertCount(2, $uidTds, 'Found exactly two uids');
+
+        // Get parent, which is the table row
+        $row = $uidTds[1]->findElement(WebDriverBy::xpath('..'));
+
+        // Find action button
+        $dropdownButton = $row->findElement(WebDriverBy::cssSelector('.dropdown.ls-action_dropdown'));
+        $dropdownButton->click();
+
+        // Find ul
+        $id = $dropdownButton->getAttribute('id');
+        $parts = explode('_', $id);
+        $this->assertCount(2, $parts);
+
+        // Get belonging <ul>
+        $dropdownMenuItems = $web->findManyByCss('#dropdownmenu_' . (int) $parts[1] . ' li');
+        $deactiveElement = $dropdownMenuItems[1];
+        $deactiveElementAnchor = $deactiveElement
+            ->findElement(
+                WebDriverBy::cssSelector('a')
+            );
+
+        // Click on "Deactivate"
+        $deactiveElementAnchor->click();
+
+        // Wait for modal
+        $web->waitById('UserManagement-action-modal');
+
+        // Click on "Save"
+        $modal = $web->findById('UserManagement-action-modal');
+        $saveButton = $modal->findElement(WebDriverBy::cssSelector('.modal-footer .btn.btn-primary'));
+        $saveButton->click();
+
+        // Check database
+        $user = User::model()->findByPk($uid);
+        $this->assertEquals(0, (int) $user->user_status, 'User status is 0');
+    }
+
+    /**
+     * Verifies that a regular user can be deactivated via the massive-action
+     * "Edit status" menu.
+     *
+     * Creates a fresh user, selects its checkbox in the User Management grid,
+     * opens the massive-action menu, chooses "Deactivate" from the status
+     * dropdown, confirms the modal, and asserts that user_status is 0 in the
+     * database.
+     */
+    public function testFloatingActionDeactivate()
+    {
+        // Delete all users but superadmin
+        User::model()->deleteAll('uid NOT IN (1)');
+        // Insert new user
+        $uid = User::insertUser(
+            $new_user = 'newuser',
+            $new_pass = 'asd',
+            $new_full_name = 'New user',
+            $parent_user = 1,
+            $new_email = 'new@user.com'
+        );
+        $this->assertFalse($uid instanceof User, 'Failed to create user: ' . ($uid instanceof User ? json_encode($uid->getErrors()) : ''));
+        $uid = (int) $uid;
+        $user = User::model()->findByPk($uid);
+        $this->assertEquals(1, (int) $user->user_status, 'User status is 1');
+
+        // Go to User Management page
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $web = self::$webDriver;
+        $url = $urlMan->createUrl('userManagement/index');
+        $web->get($url);
+
+        // Find row for new user
+        $uidTds = $web->findManyByCss('.uid');
+        $this->assertCount(2, $uidTds, 'Found exactly two uids');
+
+        // Get parent, which is the table row
+        $row = $uidTds[1]->findElement(WebDriverBy::xpath('..'));
+
+        $checkbox = $row->findElement(WebDriverBy::cssSelector('.usermanagement--selector-userCheckbox'));
+        $checkbox->click();
+
+        // Use floating actions: open "More actions" and choose "Edit status"
+        $floatingBar = $web->findById('floating-actions-bar-usermanagement--identity-gridPanel');
+        $floatingBar->findElement(WebDriverBy::cssSelector('.dropdown-toggle'))->click();
+        $floatingBar->findElement(WebDriverBy::cssSelector('.floating-actions-item[data-action="batchStatus"]'))->click();
+
+        // Wait for the floating-actions modal to show
+        $web->waitById('floating-actions-modal-usermanagement--identity-gridPanel-batchStatus-d3_1');
+
+        // Choose "Deactivate" in dropdown
+        (new WebDriverSelect($web->findByCss('select[name=status_selector]')))->selectByValue('deactivate');
+
+        $web->findByCss('.modal.show .btn-ok')->click();
+
+        // Check database for result
+        $user = User::model()->findByPk($uid);
+        $this->assertEquals(0, (int) $user->user_status, 'User status is 0');
+    }
+}

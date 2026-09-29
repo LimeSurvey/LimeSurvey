@@ -11,118 +11,64 @@
 
 namespace Twig;
 
+use Twig\Node\Expression\FilterExpression;
 use Twig\Node\Node;
 
 /**
  * Represents a template filter.
  *
- * @final
- *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @see https://twig.symfony.com/doc/templates.html#filters
  */
-class TwigFilter
+final class TwigFilter extends AbstractTwigCallable
 {
-    protected $name;
-    protected $callable;
-    protected $options;
-    protected $arguments = [];
-
-    public function __construct($name, $callable, array $options = [])
+    /**
+     * @param callable|array{class-string, string}|null $callable A callable implementing the filter. If null, you need to overwrite the "node_class" option to customize compilation.
+     */
+    public function __construct(string $name, $callable = null, array $options = [])
     {
-        $this->name = $name;
-        $this->callable = $callable;
+        parent::__construct($name, $callable, $options);
+
         $this->options = array_merge([
-            'needs_environment' => false,
-            'needs_context' => false,
-            'is_variadic' => false,
             'is_safe' => null,
             'is_safe_callback' => null,
             'pre_escape' => null,
             'preserves_safety' => null,
-            'node_class' => '\Twig\Node\Expression\FilterExpression',
-            'deprecated' => false,
-            'alternative' => null,
-        ], $options);
+            'node_class' => FilterExpression::class,
+        ], $this->options);
     }
 
-    public function getName()
+    public function getType(): string
     {
-        return $this->name;
+        return 'filter';
     }
 
-    public function getCallable()
-    {
-        return $this->callable;
-    }
-
-    public function getNodeClass()
-    {
-        return $this->options['node_class'];
-    }
-
-    public function setArguments($arguments)
-    {
-        $this->arguments = $arguments;
-    }
-
-    public function getArguments()
-    {
-        return $this->arguments;
-    }
-
-    public function needsEnvironment()
-    {
-        return $this->options['needs_environment'];
-    }
-
-    public function needsContext()
-    {
-        return $this->options['needs_context'];
-    }
-
-    public function getSafe(Node $filterArgs)
+    public function getSafe(Node $filterArgs): ?array
     {
         if (null !== $this->options['is_safe']) {
             return $this->options['is_safe'];
         }
 
         if (null !== $this->options['is_safe_callback']) {
-            return \call_user_func($this->options['is_safe_callback'], $filterArgs);
+            return $this->options['is_safe_callback']($filterArgs);
         }
+
+        return [];
     }
 
-    public function getPreservesSafety()
+    public function getPreservesSafety(): array
     {
-        return $this->options['preserves_safety'];
+        return $this->options['preserves_safety'] ?? [];
     }
 
-    public function getPreEscape()
+    public function getPreEscape(): ?string
     {
         return $this->options['pre_escape'];
     }
 
-    public function isVariadic()
+    public function getMinimalNumberOfRequiredArguments(): int
     {
-        return $this->options['is_variadic'];
-    }
-
-    public function isDeprecated()
-    {
-        return (bool) $this->options['deprecated'];
-    }
-
-    public function getDeprecatedVersion()
-    {
-        return $this->options['deprecated'];
-    }
-
-    public function getAlternative()
-    {
-        return $this->options['alternative'];
+        return parent::getMinimalNumberOfRequiredArguments() + 1;
     }
 }
-
-class_alias('Twig\TwigFilter', 'Twig_SimpleFilter');
-
-// Ensure that the aliased name is loaded to keep BC for classes implementing the typehint with the old aliased name.
-class_exists('Twig\Node\Node');

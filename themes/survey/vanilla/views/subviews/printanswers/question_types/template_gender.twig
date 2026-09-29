@@ -1,13 +1,13 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
- <div class="col-md-8">
+ <div class="col-lg-8">
     <div class="row">
-        <div class="col-md-4 text-right">
+        <div class="col-lg-4 text-end">
         </div>
-        <div class="col-md-8 text-left">
-            {% if question.answervalue is sameas("M") %}
+        <div class="col-lg-8 text-start">
+            {% if question.answervalue is same as("M") %}
                 {{ gT("Male") }} <i class="fa fa-mars"></i>
-            {% elseif question.answervalue is sameas("F") %}
+            {% elseif question.answervalue is same as("F") %}
                 {{ gT("Female") }} <i class="fa fa-venus"></i>
             {% else %}
                 {{question.answervalue}}

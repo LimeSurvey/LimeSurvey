@@ -30,8 +30,8 @@ function doFileUpload()
 {
     var fieldname = $('#ia').val();
     /* Load the previously uploaded files */
-    var filecount = window.parent.window.$('#' + fieldname + '_filecount').val();
-    $('#' + fieldname + '_filecount').val(filecount);
+    var filecount = window.parent.window.$('#' + fieldname + '_Cfilecount').val();
+    $('#' + fieldname + '_Cfilecount').val(filecount);
 
     var image_extensions = new Array("gif", "jpeg", "jpg", "png", "swf", "psd", "bmp", "tiff", "jp2", "iff", "bmp", "xbm", "ico");
 
@@ -63,15 +63,15 @@ function doFileUpload()
             {
                 if ($('#' + fieldname + '_show_title').val() == 1)
                 {
-                    previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='" + fieldname + "_title_" + i + "'>" + uploadLang.titleFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='" + escapeHtml(json[i - 1].title) + "' id='" + fieldname + "_title_" + i + "' /></div></div>";
+                    previewblock += "<div class='mb-3'><label class='control-label col-5' for='" + fieldname + "_title_" + i + "'>" + uploadLang.titleFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='" + escapeHtml(json[i - 1].title) + "' id='" + fieldname + "_title_" + i + "' /></div></div>";
                 }
                 if ($('#' + fieldname + '_show_comment').val() == 1)
                 {
-                    previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='" + fieldname + "_comment_" + i + "'>" + uploadLang.commentFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='" + escapeHtml(json[i - 1].comment) + "' id='" + fieldname + "_comment_" + i + "' /></div></div>";
+                    previewblock += "<div class='mb-3'><label class='control-label col-5' for='" + fieldname + "_comment_" + i + "'>" + uploadLang.commentFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='" + escapeHtml(json[i - 1].comment) + "' id='" + fieldname + "_comment_" + i + "' /></div></div>";
                 }
 
             }
-            previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\"" + fieldname + "\", " + i + ")'><span class='fa fa-trash'></span>&nbsp;" + uploadLang.deleteFile + "</a></div></div>";
+            previewblock += "<div class='mb-3'><div class='col-5'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\"" + fieldname + "\", " + i + ")'><span class='fa fa-trash ri-delete-bin-fill'></span>&nbsp;" + uploadLang.deleteFile + "</a></div></div>";
             previewblock += "</fieldset></div>";
 
             previewblock += "<input type='hidden' id='" + fieldname + "_size_" + i + "' value=" + json[i - 1].size + " />" +
@@ -103,14 +103,14 @@ function doFileUpload()
         ),
         onSubmit: function (file, ext) {
             var maxfiles = parseInt($('#' + fieldname + '_maxfiles').val());
-            var filecount = parseInt($('#' + fieldname + '_filecount').val());
+            var filecount = parseInt($('#' + fieldname + '_Cfilecount').val());
             var allowed_filetypes = $('#' + fieldname + '_allowed_filetypes').val().split(",");
 
             /* If maximum number of allowed filetypes have already been uploaded,
              * do not upload the file and display an error message ! */
             if (filecount >= maxfiles)
             {
-                $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + uploadLang.errorNoMoreFiles + '</p>');
+                $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle ri-error-warning-fill"></span>&nbsp;' + uploadLang.errorNoMoreFiles + '</p>');
                 fixParentHeigth(fieldname);
                 return false;
             }
@@ -130,7 +130,7 @@ function doFileUpload()
             }
             if (allowSubmit == false)
             {
-                $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + uploadLang.errorOnlyAllowed.replace('%s', $('#' + fieldname + '_allowed_filetypes').val()) + '</p>');
+                $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle ri-error-warning-fill"></span>&nbsp;' + uploadLang.errorOnlyAllowed.replace('%s', $('#' + fieldname + '_allowed_filetypes').val()) + '</p>');
                 fixParentHeigth(fieldname);
                 return false;
             }
@@ -177,7 +177,7 @@ function doFileUpload()
 
             if (metadata.success)
             {
-                $('#notice').html('<p class="alert alert-success"><span class="fa fa-success"></span>&nbsp;' + metadata.msg + '</p>');
+                $('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + metadata.msg + '</p>');
                 if ($('#field' + fieldname + '_listfiles').length == 0)
                 {
                     $("<ul id='field" + fieldname + "_listfiles' class='files-list' />").insertAfter("#uploadstatus");
@@ -197,14 +197,14 @@ function doFileUpload()
                 {
                     if ($('#' + fieldname + '_show_title').val() == 1)
                     {
-                        previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='" + fieldname + "_title_" + count + "'>" + uploadLang.titleFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='' id='" + fieldname + "_title_" + count + "' /></div></div>";
+                        previewblock += "<div class='mb-3'><label class='control-label col-5' for='" + fieldname + "_title_" + count + "'>" + uploadLang.titleFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='' id='" + fieldname + "_title_" + count + "' /></div></div>";
                     }
                     if ($('#' + fieldname + '_show_comment').val() == 1)
                     {
-                        previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='" + fieldname + "_comment_" + count + "'>" + uploadLang.commentFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='' id='" + fieldname + "_comment_" + count + "' /></div></div>";
+                        previewblock += "<div class='mb-3'><label class='control-label col-5' for='" + fieldname + "_comment_" + count + "'>" + uploadLang.commentFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='' id='" + fieldname + "_comment_" + count + "' /></div></div>";
                     }
                 }
-                previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\"" + fieldname + "\", " + count + ")'><span class='fa fa-trash'></span>&nbsp;" + uploadLang.deleteFile + "</a></div></div>";
+                previewblock += "<div class='mb-3'><div class='col-5'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\"" + fieldname + "\", " + count + ")'><span class='fa fa-trash ri-delete-bin-fill'></span>&nbsp;" + uploadLang.deleteFile + "</a></div></div>";
                 previewblock += "</fieldset></div>";
 
                 previewblock += "<input type='hidden' id='" + fieldname + "_size_" + count + "' value=" + metadata.size + " />" +
@@ -217,26 +217,26 @@ function doFileUpload()
 
                 // add file to the list
                 $('#field' + fieldname + '_listfiles').prepend(previewblock);
-                var filecount = parseInt($('#' + fieldname + '_filecount').val());
+                var filecount = parseInt($('#' + fieldname + '_Cfilecount').val());
                 var minfiles = parseInt($('#' + fieldname + '_minfiles').val());
                 filecount++;
                 var maxfiles = parseInt($('#' + fieldname + '_maxfiles').val());
-                $('#' + fieldname + '_filecount').val(filecount);
+                $('#' + fieldname + '_Cfilecount').val(filecount);
 
                 if (filecount < minfiles) {
-                    $('#uploadstatus').html(uploadLang.errorNeedMore.replace('%s', (minfiles - filecount))).removeClass('hidden');
+                    $('#uploadstatus').html(uploadLang.errorNeedMore.replace('%s', (minfiles - filecount))).removeClass('d-none');
                 } else if (filecount < maxfiles) {
-                    $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s', (maxfiles - filecount))).removeClass('hidden');
+                    $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s', (maxfiles - filecount))).removeClass('d-none');
                 } else {
-                    $('#uploadstatus').html(uploadLang.errorMaxReached).removeClass('hidden');
+                    $('#uploadstatus').html(uploadLang.errorMaxReached).removeClass('d-none');
                 }
                 fixParentHeigth(fieldname);
                 if (filecount >= maxfiles) {
-                    //$('#notice').html('<p class="alert alert-success"><span class="fa fa-check"></span>&nbsp;' + uploadLang.errorTooMuch + '</p>');
+                    //$('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + uploadLang.errorTooMuch + '</p>');
                 }
                 fixParentHeigth(fieldname);
             } else {
-                $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + metadata.msg + '</p>');
+                $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle ri-error-warning-fill"></span>&nbsp;' + metadata.msg + '</p>');
                 fixParentHeigth(fieldname);
             }
 
@@ -292,7 +292,7 @@ function passJSON(fieldname, show_title, show_comment, pos)
 
 function saveAndExit(fieldname, show_title, show_comment, pos)
 {
-    var filecount = parseInt($('#' + fieldname + '_filecount').val());
+    var filecount = parseInt($('#' + fieldname + '_Cfilecount').val());
     var minfiles = parseInt($('#' + fieldname + '_minfiles').val());
 
     if (minfiles != 0 && filecount < minfiles && showpopups)
@@ -318,7 +318,7 @@ function deletefile(fieldname, count)
     var filename = $("#" + fieldname + "_filename_" + count).val();
     var name = $("#" + fieldname + "_name_" + count).val();
 
-    var filecount = parseInt($('#' + fieldname + '_filecount').val());
+    var filecount = parseInt($('#' + fieldname + '_Cfilecount').val());
     var licount = parseInt($('#' + fieldname + '_licount').val());
 
     fileheight = $("#" + fieldname + "_li_" + count).height();
@@ -336,13 +336,13 @@ function deletefile(fieldname, count)
             }, csrfData)
         })
         .done(function (msg) {
-            $('#notice').html('<p class="alert alert-success"><span class="fa fa-check"></span>&nbsp;' + msg + '</p>');
+            $('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + msg + '</p>');
             setTimeout(function () {
                 $(".success").remove();
             }, 5000);
             $("#" + fieldname + "_li_" + count).hide();
             filecount--;
-            $('#' + fieldname + '_filecount').val(filecount);
+            $('#' + fieldname + '_Cfilecount').val(filecount);
             file_index = $("#" + fieldname + "_file_index_" + count).val();
             for (j = count; j <= licount; j++)
             {

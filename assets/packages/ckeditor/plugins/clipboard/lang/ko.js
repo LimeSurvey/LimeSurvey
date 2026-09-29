@@ -11,5 +11,6 @@ CKEDITOR.plugins.setLang( 'clipboard', 'ko', {
 	pasteNotification: 'Press %1 to paste. Your browser doesn‘t support pasting with the toolbar button or context menu option.', // MISSING
 	pasteArea: '붙여넣기 범위',
 	pasteMsg: 'Paste your content inside the area below and press OK.', // MISSING
-	fileFormatNotSupportedNotification: 'This file format is not supported. You can try with one of the supported formats: ${formats}.' // MISSING
+	fileFormatNotSupportedNotification: 'The ${formats} file format(s) are not supported.', // MISSING
+	fileWithoutFormatNotSupportedNotification: 'The file format is not supported.' // MISSING
 } );

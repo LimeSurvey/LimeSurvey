@@ -22,8 +22,20 @@ var AdvancedRankingQuestion = function (options) {
     var relevancename= "relevance"+rankingName,
         rankingID = "javatbd" + rankingName;
 
+    // Build a map from data-value (title) to element id from the DOM
+    var buildValueToIdMap = function () {
+        var map = {};
+        $('#sortable-choice-' + questionId + ' .sortable-item').each(function () {
+            var val = $(this).data('value');
+            if (val) {
+                map[val] = $(this).attr('id');
+            }
+        });
+        return map;
+    };
+
     //define HTML snippets
-    var screenReader = "<div class='sr-only'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankhelp + "</div>"
+    var screenReader = "<div class='visually-hidden'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankadvancedhelp + "</div>"
 
     //define functions
     var createSorting = function(){
@@ -33,12 +45,21 @@ var AdvancedRankingQuestion = function (options) {
         var sortableObjectChoice = {
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
-            onEnd: function(){updateRankingNumber();}
+            onEnd: function(){
+                updateRankingNumber();
+            },
+            onMove: function (ev) {
+                if (max_answers > 0 && $('#sortable-rank-' + questionId + ' li').length >= max_answers) {
+                    return false;
+                }
+            }
         },
         sortableObjectRank = {
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
-            onEnd: function(){updateRankingNumber();},
+            onEnd: function(){
+                updateRankingNumber();
+            },
             onSort: function (evt) {
                 if ($(evt.item).hasClass("disabled")) {
                     /* see https://github.com/RubaXa/Sortable/issues/933 */
@@ -56,8 +77,8 @@ var AdvancedRankingQuestion = function (options) {
         }
 
 
-        $('#sortable-choice-' + questionId).sortable(sortableObjectChoice);
-        $('#sortable-rank-' + questionId).sortable(sortableObjectRank);
+        Sortable.create(document.getElementById('sortable-choice-' + questionId), sortableObjectChoice);
+        Sortable.create(document.getElementById('sortable-rank-' + questionId), sortableObjectRank);
 
         $('#question' + questionId + ' .ls-remove').remove();
         // Adapt choice and list height
@@ -113,16 +134,17 @@ var AdvancedRankingQuestion = function (options) {
      * Update answers after updating drag and drop part
      */
     updateDragDropRank = function() {
-        
         $('#question' + questionId + ' .select-item select').val('');
-
+        if (numbersActive === 1) {
+            updateRankingNumber();
+        }
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function (index,item) {
-            if(numbersActive === 1){
-                updateRankingNumber();
+           var valToSet = $(this).data("value");
+           var $targetSelect = $('#question' + questionId + ' .select-item select').eq(index);
+        
+            if ($targetSelect.length > 0) {
+                $targetSelect.val(valToSet).trigger("change", { source: 'dragdrop' });
             }
-
-            $('#question' + questionId + ' .select-item select').eq(index).val($(this).data("value"));
-
         });
 
         // Update #relevance and lauch checkconditions function
@@ -132,7 +154,6 @@ var AdvancedRankingQuestion = function (options) {
             if ($(this).val() != "") {
                 $("#" + relevancename + (index+1) ).val("1");
             }
-            $(this).trigger("change", { source: 'dragdrop' });
         });
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').removeClass("text-error");
         $('#sortable-choice-' + questionId + ' .answer-item.sortable-item.ls-choice').removeClass("text-error");
@@ -145,17 +166,20 @@ var AdvancedRankingQuestion = function (options) {
             window.templateCore.alertSurveyDialog(txtAlert, '');
         }
     },
-    loadDragDropRank = function (questionId) {
-        
+    loadDragDropRank = function () {
         // Update #relevance
         $("[id^=" + relevancename + "]").val('0');
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function () {
             $(this).appendTo('#sortable-choice-' + questionId );
         });
-        $('#question' + questionId + ' .select-item select').each(function (index) {
+        var valueToId = buildValueToIdMap();
+        $('#question' + questionId + ' .select-item select :selected').each(function (index) {
             if ($(this).val() != '') {
                 $("#" + relevancename + (index+1)).val("1");
-                $('#sortable-choice-' + questionId + ' #' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
+                var elId = valueToId[$(this).val()];
+                if (elId) {
+                    $('#sortable-choice-' + questionId + ' #' + elId).appendTo('#sortable-rank-' + questionId);
+                }
             }
         });
 
@@ -168,8 +192,8 @@ var AdvancedRankingQuestion = function (options) {
 
     fixChoiceListHeight = function() {
         //Keep the target field as big as the source field
-        var minHeight = $('#sortable-choice-' + questionId).height();
-        var minWidth = $('#sortable-choice-' + questionId).width();
+        var minHeight = $('#sortable-choice-' + questionId).actual('height');
+        var minWidth = $('#sortable-choice-' + questionId).actual('width');
         $('#sortable-choice-' + questionId).css('min-height', minHeight);
         $('#sortable-rank-' + questionId).css('min-height', minHeight);
         $('#sortable-choice-' + questionId).css('min-width', minWidth);

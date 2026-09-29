@@ -13,6 +13,15 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('#btnAdd').click(addLanguages);
     $("#frmglobalsettings").submit(UpdateRestrictedLanguages);
 
+    // Intercept save button clicks to validate before the central save controller runs
+    $(document).on('click.emailPluginValidation', '#save-form-button, #save-and-close-form-button', function(e) {
+        var formId = $(this).attr('data-form-id');
+        if (formId === 'frmglobalsettings' && !validateEmailMethodPlugin()) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
+    });
+
     var getStorageUrl = '';
     $('#global-settings-calculate-storage').on(
         'click',
@@ -34,7 +43,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     } else if (activeTab) {
         $('a[href="' + activeTab + '"]').tab('show');
     }
-    $('body').on('click', 'a[data-toggle=\'tab\']', function (e) {
+    $('body').on('click', 'a[data-bs-toggle=\'tab\']', function (e) {
         e.preventDefault();
         var tab_name = this.getAttribute('href');
         if (history.pushState) {
@@ -50,7 +59,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     });
     $(window).on('popstate', function () {
         var anchor = location.hash ||
-            $('a[data-toggle=\'tab\']').first().attr('href');
+            $('a[data-bs-toggle=\'tab\']').first().attr('href');
         $('a[href=\'' + anchor + '\']').tab('show');
     });
 
@@ -69,21 +78,35 @@ function defaultLanguageChange(ui,evt){
 function removeLanguages(ui,evt)
 {
     // Do not allow to remove the standard language
-    if ($.inArray($('#defaultlang').val(),$("#includedLanguages").selectedValues())>-1)
+    if ($("#includedLanguages option[value="+$('#defaultlang').val()+"]:selected").length>0)
     {
         $("#includedLanguages option[value='"+$('#defaultlang').val()+"']").prop("selected", false);
         alert (msgCantRemoveDefaultLanguage);
     }
-    $('#includedLanguages').copyOptions('#excludedLanguages');
-    $("#excludedLanguages").sortOptions();
-    $("#includedLanguages").removeOption(/./,true);
+    var options = $('#includedLanguages option:selected').sort().clone();
+    $('#excludedLanguages').append(options);    
+    $('#includedLanguages option:selected').remove();
+    var options = $("#excludedLanguages option");                    // Collect options         
+    options.detach().sort(function(a,b) {               // Detach from select, then Sort
+        var at = $(a).text();
+        var bt = $(b).text();         
+        return (at > bt)?1:((at < bt)?-1:0);            // Tell the sort function how to order
+    });
+    options.appendTo("#excludedLanguages");      
 }
 
 function addLanguages(ui,evt)
 {
-    $('#excludedLanguages').copyOptions('#includedLanguages');
-    $("#includedLanguages").sortOptions();
-    $("#excludedLanguages").removeOption(/./,true);
+    var options = $('#excludedLanguages option:selected').sort().clone();
+    $('#includedLanguages').append(options);    
+    $('#excludedLanguages option:selected').remove();
+    var options = $("#includedLanguages option");                    // Collect options         
+    options.detach().sort(function(a,b) {               // Detach from select, then Sort
+        var at = $(a).text();
+        var bt = $(b).text();         
+        return (at > bt)?1:((at < bt)?-1:0);            // Tell the sort function how to order
+    });
+    options.appendTo("#includedLanguages");     
 }
 
 function UpdateRestrictedLanguages(){
@@ -96,20 +119,24 @@ function UpdateRestrictedLanguages(){
 
 function Emailchange(ui,evt)
 {
-    smtp_enabled=($('#emailmethod input:radio:checked').val()=='smtp');
-    if (smtp_enabled==true) {
-        smtp_enabled='';
-        $('#emailsmtpssl label').removeClass('disabled');
-        $('#emailsmtpdebug label').removeClass('disabled');
+    const selectedMethod = $('#emailmethod input:radio:checked').val();
+
+    // Hide all method-specific settings, then show only the relevant ones
+    $('.email-method-setting').hide();
+    if (selectedMethod === 'smtp') {
+        $('.email-method-smtp').show();
+    } else if (selectedMethod === 'plugin') {
+        $('.email-method-plugin').show();
     }
-    else {
-        $('#emailsmtpdebug label').addClass('disabled');
-        $('#emailsmtpssl label').addClass('disabled');
-        smtp_enabled='disabled';
+}
+
+function validateEmailMethodPlugin() {
+    var selectedMethod = $('#emailmethod input:radio:checked').val();
+    if (selectedMethod === 'plugin' && $('#emailplugin').val() === '') {
+        LS.LsGlobalNotifier.createAlert(msgEmailPluginRequired, 'danger', {showCloseButton: true});
+        return false;
     }
-    $("#emailsmtphost").prop('disabled',smtp_enabled);
-    $("#emailsmtpuser").prop('disabled',smtp_enabled);
-    $("#emailsmtppassword").prop('disabled',smtp_enabled);
+    return true;
 }
 
 function BounceChange(ui,evt)

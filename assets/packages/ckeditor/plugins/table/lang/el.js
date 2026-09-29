@@ -27,6 +27,8 @@ CKEDITOR.plugins.setLang( 'table', 'el', {
 		borderColor: 'Χρώμα Περιγράμματος',
 		data: 'Δεδομένα',
 		header: 'Κεφαλίδα',
+		columnHeader: 'Column Header', // MISSING
+		rowHeader: 'Row Header', // MISSING
 		yes: 'Ναι',
 		no: 'Όχι',
 		invalidWidth: 'Το πλάτος του κελιού πρέπει να είναι αριθμός.',
@@ -50,7 +52,7 @@ CKEDITOR.plugins.setLang( 'table', 'el', {
 	headersColumn: 'Πρώτη στήλη',
 	headersNone: 'Κανένα',
 	headersRow: 'Πρώτη Γραμμή',
-	heightUnit: 'height unit', // MISSING
+	heightUnit: 'μονάδα ύψους',
 	invalidBorder: 'Το πάχος του περιγράμματος πρέπει να είναι ένας αριθμός.',
 	invalidCellPadding: 'Η αναπλήρωση των κελιών πρέπει να είναι θετικός αριθμός.',
 	invalidCellSpacing: 'Η απόσταση μεταξύ των κελιών πρέπει να είναι ένας θετικός αριθμός.',

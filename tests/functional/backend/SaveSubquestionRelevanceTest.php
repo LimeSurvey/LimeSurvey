@@ -6,7 +6,7 @@ use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverDimension;
 use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\TimeoutException;
 
 /**
  * Edit subquestion relevance.
@@ -95,6 +95,9 @@ class SaveSubquestionRelevanceTest extends TestBaseClassWeb
             $editButton = self::$webDriver->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::id('questionEditorButton')));
             $editButton->click();
 
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');                                                                                                
+            sleep(1);
+
             // Edit subquestion relevance
             $subquestionRelevanceField = self::$webDriver->wait(10)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::id('subquestions[' . $sqid . '][0][relevance]')));
             $subquestionRelevanceField->clear()->sendKeys($subquestionRelevanceEquation);
@@ -133,11 +136,11 @@ class SaveSubquestionRelevanceTest extends TestBaseClassWeb
         try {
             $button = self::$webDriver->wait(1)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
+                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-outline-secondary')
                 )
             );
             $button->click();
-        } catch (TimeOutException $ex) {
+        } catch (TimeoutException $ex) {
             // Do nothing.
         } catch (NoSuchElementException $ex) {
             // Do nothing.

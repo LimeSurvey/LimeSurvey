@@ -4,6 +4,7 @@ namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
 use Exception;
+use Survey;
 
 class TestBaseClass extends TestCase
 {
@@ -37,6 +38,15 @@ class TestBaseClass extends TestCase
     {
         parent::setUpBeforeClass();
 
+        // Enable Debug and Error Reporting if logging is enabled
+        $isDebug = getenv('RUNNER_DEBUG', false);
+        // fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No'));
+        if ($isDebug) {
+            error_reporting(E_ALL);
+            ini_set('display_errors', '1');
+            ini_set('display_startup_errors', '1');
+        }
+
         // Clear database cache.
         \Yii::app()->db->schema->refresh();
 
@@ -57,21 +67,25 @@ class TestBaseClass extends TestCase
         self::$screenshotsFolder = self::$tempFolder . '/screenshots';
         self::$testHelper->importAll();
 
-        \Yii::import('application.helpers.globalsettings_helper', true);
     }
 
     /**
      * @param string $fileName
+     * @param integer $asuser
      * @return void
      */
-    protected static function importSurvey($fileName)
+    protected static function importSurvey($fileName, $asuser = 1)
     {
-        \Yii::app()->session['loginID'] = 1;
+        \Yii::app()->session['loginID'] = $asuser;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {
             throw new Exception(sprintf('Survey file %s not found', $surveyFile));
         }
 
+        // Reset the cache to prevent import from failing if there is a cached survey and it's active.
+        // When importing, activating, deleting and importing again (usual with automated tests),
+        // as using the same SID, it was picking up the cached (old) version of the survey
+        Survey::model()->resetCache();
         $translateLinksFields = false;
         $newSurveyName = null;
         $result = \importSurveyFile(
@@ -81,10 +95,11 @@ class TestBaseClass extends TestCase
             null
         );
         if ($result) {
-            if ($result['error']) {
+            if (!empty($result['error'])) {
                 throw new Exception(sprintf('Could not import survey %s: %s', $fileName, $result['error']));
             }
-            \Survey::model()->resetCache(); // Reset the cache so findByPk doesn't return a previously cached survey
+            // Reset the cache so findByPk doesn't return a previously cached survey
+            Survey::model()->resetCache();
             self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
         } else {
@@ -126,6 +141,8 @@ class TestBaseClass extends TestCase
         \Yii::app()->session['loginID'] = 1;
 
         if (self::$testSurvey) {
+            // Clear database cache.
+            \Yii::app()->db->schema->refresh();
             if (!self::$testSurvey->delete()) {
                 self::assertTrue(
                     false,
@@ -156,6 +173,8 @@ class TestBaseClass extends TestCase
             $plugin->active = 1;
             $plugin->save();
         }
+
+        return $plugin;
     }
 
     /**
@@ -172,19 +191,61 @@ class TestBaseClass extends TestCase
         }
     }
 
+    /**
+     * Dispatches an event to a specific plugin.
+     *
+     * The provided key/value pairs are set on the created PluginEvent before dispatch.
+     *
+     * @param string $pluginName The name of the target plugin.
+     * @param string $eventName The event name to dispatch.
+     * @param array $eventValues Key/value pairs to set on the event (each key becomes an event property).
+     * @return \PluginEvent The dispatched event instance with the provided values set.
+     */
+    public static function dispatchPluginEvent($pluginName, $eventName, $eventValues)
+    {
+        $oEvent = (new \PluginEvent($eventName));
+        foreach ($eventValues as $key => $value) {
+            $oEvent->set($key, $value);
+        }
+        \Yii::app()->getPluginManager()->dispatchEvent($oEvent, $pluginName);
+
+        return $oEvent;
+    }
+
+    /**
+     * Create a new User record, ensure a password is set (defaulting to a known test password if missing),
+     * apply the provided global permissions, and return the created user model.
+     *
+     * If `users_name` is present in `$userData`, any existing users with that name are removed before creation.
+     * If `password` is missing, empty, or a single space, a default password (`testpassword123`) is used; otherwise the provided password is hashed.
+     *
+     * @param array $userData Associative array of user attributes for the new user (e.g., `users_name`, `password`, etc.).
+     * @param array $permissions Map of permission keys to settings applied as global permissions for the new user.
+     * @return \User The newly created user model.
+     * @throws \Exception If the user model cannot be saved (includes validation errors).
+     */
     protected static function createUserWithPermissions(array $userData, array $permissions = [])
     {
-        if ($userData['password'] != ' ') {
+        if (!empty($userData['users_name'])) {
+            \User::model()->deleteAllByAttributes([
+                'users_name' => $userData['users_name']
+            ]);
+        }
+        
+        // Ensure password is set (use default if not provided)
+        if (empty($userData['password']) || $userData['password'] == ' ') {
+            $userData['password'] = password_hash('testpassword123', PASSWORD_DEFAULT);
+        } else {
             $userData['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
         }
 
         $oUser = new \User();
         $oUser->setAttributes($userData);
 
-        if(!$oUser->save()) {
-            throw new Exception( 
+        if (!$oUser->save()) {
+            throw new Exception(
                 "Could not save user: "
-                .print_r($oUser->getErrors(),true)
+                . print_r($oUser->getErrors(), true)
             );
         };
 
@@ -237,5 +298,30 @@ class TestBaseClass extends TestCase
             ];
         }
         return $results;
+    }
+
+    /**
+     * @param string $pluginName
+     * @return iPlugin
+     */
+    protected static function loadTestPlugin($pluginName)
+    {
+        require_once self::$dataFolder . "/plugins/{$pluginName}.php";
+        $plugin = \Plugin::model()->findByAttributes(['name' => $pluginName]);
+        if (!$plugin) {
+            $plugin = new \Plugin();
+            $plugin->name = $pluginName;
+            $plugin->active = 1;
+            $plugin->save();
+        } else {
+            $plugin->active = 1;
+            $plugin->save();
+        }
+
+        $plugin = App()->getPluginManager()->loadPlugin($pluginName, $plugin->id);
+        if (is_null($plugin)) {
+            throw new Exception(sprintf('Failed to load test plugin %s', $pluginName));
+        }
+        return $plugin;
     }
 }

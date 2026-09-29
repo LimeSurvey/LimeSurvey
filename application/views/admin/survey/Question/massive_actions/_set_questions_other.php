@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Set question group and position modal body (parsed to massive action widget)
  */
@@ -8,15 +9,21 @@
 
 ?>
 <form class="custom-modal-datas form-horizontal" data-trigger-validation="true">
-    <div  class="form-group" id="OtherSelection">
-        <label class="col-sm-4 control-label"><?php eT("Option 'Other':"); ?></label>
-        <div class="col-sm-8">
-            <select class="form-control custom-data attributes-to-update" id="other" name="other" required>
-                <option value="" selected="selected"><?php eT('Please select an option');?></option>
-                <option value="false"><?php eT('Off');?></option>
-                <option value="true"><?php eT('On');?></option>
-            </select>
+    <div  class="mb-3" id="OtherSelection">
+        <label class="col-md-4 form-label"><?php eT("Option 'Other':"); ?></label>
+        <div class="col-md-8">
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'other',
+                'checkedOption' => '0',
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ],
+                'htmlOptions'   => [
+                    'class'       => 'custom-data'
+                ],
+            ]); ?>
         </div>
-        <input type="hidden" name="sid" value="<?php echo (int) Yii::app()->request->getParam('surveyid',0); ?>" class="custom-data"/>
+        <input type="hidden" name="sid" value="<?php echo (int) Yii::app()->request->getParam('surveyid', 0); ?>" class="custom-data"/>
     </div>
 </form>

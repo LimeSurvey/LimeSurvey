@@ -1,0 +1,45 @@
+<div class="row ls-slider-answer-row">
+    {% if sliderleft is not empty and sliderright is not empty %}
+        <div class='col-auto'>
+            <div class="h-100 d-flex flex-column justify-content-between">
+                {% if sliderleft is not empty %}
+                    <div class="slider-left">
+                        {{ sliderleft }}
+                    </div>
+                {% endif %}
+                {% if sliderright is not empty %}
+                    <div class="slider-right">
+                        {{ sliderright }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    {% if slider_showminmax %}
+        <div class="col-auto">
+            <div class="h-100 d-flex flex-column justify-content-between">
+                <div class='col-auto help-block slider-min-block'> {{ slider_reversed == 'false' ? slider_min : slider_max }}</div>
+                <div class='col-auto help-block slider-max-block'> {{ slider_reversed == 'false' ? slider_max : slider_min }}</div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="slider-container slider-{{ slider_orientation }} ls-input-group col-6 col-md-5 flex-grow-1" id="answer{{ myfname }}slid-container">
+        {{ C.Html.textField( myfname ~ 'slid', dispVal ,{
+            'class': 'form-control answer-item numeric-item d-none',
+            'id' : "answer" ~ myfname ~ "slid",
+        }) }}
+        {{ C.Html.textField( myfname, dispVal ,{
+            'class': 'form-control answer-item numeric-item ls-js-hidden slider-untouched',
+            'id' : "answer" ~ myfname,
+            'aria-labelledby' : 'label-' ~ myfname
+        }) }}
+    </div>
+    {% if slider_reset %}
+        <div class="col-auto ls-no-js-hidden ls-input-group-reset align-self-center">
+            <button id="answer{{ myfname }}_resetslider" class='btn btn-outline-secondary btn-sm btn-slider-reset' title="{{ gT("Reset") }}"
+                    data-bs-toggle="tooltip">
+                <i class='ri-arrow-go-back-line slider-reset-icon' aria-hidden='true'></i>
+            </button>
+        </div>
+    {% endif %}
+</div>

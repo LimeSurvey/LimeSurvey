@@ -6,6 +6,7 @@ use Exception;
 
 class Update_155 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         addColumn('{{surveys}}', 'googleanalyticsstyle', "string(1)");
@@ -13,7 +14,7 @@ class Update_155 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->renameColumn('{{surveys}}', 'showXquestions', 'showxquestions');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
     }

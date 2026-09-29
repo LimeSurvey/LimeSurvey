@@ -166,7 +166,7 @@ abstract class Engine implements \JsonSerializable
                     $x = substr($x, 1);
                 }
 
-                $x = preg_replace('#^(?:0x)?([A-Fa-f0-9]*).*#', '$1', $x);
+                $x = preg_replace('#^(?:0x)?([A-Fa-f0-9]*).*#s', '$1', $x);
 
                 $is_negative = false;
                 if ($base < 0 && hexdec($x[0]) >= 8) {
@@ -187,7 +187,7 @@ abstract class Engine implements \JsonSerializable
                 // (?<!^)(?:-).*: find any -'s that aren't at the beginning and then any characters that follow that
                 // (?<=^|-)0*: find any 0's that are preceded by the start of the string or by a - (ie. octals)
                 // [^-0-9].*: find any non-numeric characters and then any characters that follow that
-                $this->value = preg_replace('#(?<!^)(?:-).*|(?<=^|-)0*|[^-0-9].*#', '', $x);
+                $this->value = preg_replace('#(?<!^)(?:-).*|(?<=^|-)0*|[^-0-9].*#s', '', $x);
                 if (!strlen($this->value) || $this->value == '-') {
                     $this->value = '0';
                 }
@@ -200,7 +200,7 @@ abstract class Engine implements \JsonSerializable
                     $x = substr($x, 1);
                 }
 
-                $x = preg_replace('#^([01]*).*#', '$1', $x);
+                $x = preg_replace('#^([01]*).*#s', '$1', $x);
 
                 $temp = new static(Strings::bits2bin($x), 128 * $base); // ie. either -16 or +16
                 $this->value = $temp->value;
@@ -316,11 +316,9 @@ abstract class Engine implements \JsonSerializable
             return $this->normalize($n->subtract($temp));
         }
 
-        extract($this->extendedGCD($n));
-        /**
-         * @var Engine $gcd
-         * @var Engine $x
-         */
+        $extended = $this->extendedGCD($n);
+        $gcd = $extended['gcd'];
+        $x = $extended['x'];
 
         if (!$gcd->equals(static::$one[static::class])) {
             return false;
@@ -367,9 +365,49 @@ abstract class Engine implements \JsonSerializable
     }
 
     /**
+     *  __serialize() magic method
+     *
+     * __sleep / __wakeup were depreciated in PHP 8.5
+     * Will be called, automatically, when serialize() is called on a Math_BigInteger object.
+     *
+     * @see self::__unserialize()
+     * @access public
+     */
+    public function __serialize()
+    {
+        $result = ['hex' => $this->toHex(true)];
+        if ($this->precision > 0) {
+            $result['precision'] = $this->precision;
+        }
+        return $result;
+    }
+
+    /**
+     *  __unserialize() magic method
+     *
+     * __sleep / __wakeup were depreciated in PHP 8.5
+     * Will be called, automatically, when unserialize() is called on a Math_BigInteger object.
+     *
+     * @see self::__serialize()
+     * @access public
+     */
+    public function __unserialize(array $data)
+    {
+        $temp = new static($data['hex'], -16);
+        $this->value = $temp->value;
+        $this->is_negative = $temp->is_negative;
+        if (isset($data['precision']) && $data['precision'] > 0) {
+            // recalculate $this->bitmask
+            $this->setPrecision($data['precision']);
+        }
+    }
+
+    /**
      * JSON Serialize
      *
      * Will be called, automatically, when json_encode() is called on a BigInteger object.
+     *
+     * @return array{hex: string, precision?: int]
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
@@ -511,8 +549,8 @@ abstract class Engine implements \JsonSerializable
 
         $carry = 0;
         for ($i = strlen($x) - 1; $i >= 0; --$i) {
-            $temp = ord($x[$i]) << $shift | $carry;
-            $x[$i] = chr($temp);
+            $temp = (ord($x[$i]) << $shift) | $carry;
+            $x[$i] = chr($temp & 0xFF);
             $carry = $temp >> 8;
         }
         $carry = ($carry != 0) ? chr($carry) : '';
@@ -617,7 +655,7 @@ abstract class Engine implements \JsonSerializable
      */
     public function getLengthInBytes()
     {
-        return strlen($this->toBytes());
+        return (int) ceil($this->getLength() / 8);
     }
 
     /**
@@ -640,6 +678,11 @@ abstract class Engine implements \JsonSerializable
             }
 
             return $this->normalize($temp->powModInner($e, $n));
+        }
+
+        if ($this->compare($n) > 0 || $this->isNegative()) {
+            list(, $temp) = $this->divide($n);
+            return $temp->powModInner($e, $n);
         }
 
         return $this->powModInner($e, $n);
@@ -733,11 +776,9 @@ abstract class Engine implements \JsonSerializable
      */
     public static function random($size)
     {
-        extract(static::minMaxBits($size));
-        /**
-         * @var BigInteger $min
-         * @var BigInteger $max
-         */
+        $minMax = static::minMaxBits($size);
+        $min = $minMax['min'];
+        $max = $minMax['max'];
         return static::randomRange($min, $max);
     }
 
@@ -751,11 +792,9 @@ abstract class Engine implements \JsonSerializable
      */
     public static function randomPrime($size)
     {
-        extract(static::minMaxBits($size));
-        /**
-         * @var static $min
-         * @var static $max
-         */
+        $minMax = static::minMaxBits($size);
+        $min = $minMax['min'];
+        $max = $minMax['max'];
         return static::randomRangePrime($min, $max);
     }
 
@@ -777,6 +816,11 @@ abstract class Engine implements \JsonSerializable
             $temp = $max;
             $max = $min;
             $min = $temp;
+        }
+
+        $length = $max->getLength();
+        if ($length > 8196) {
+            throw new \RuntimeException("Generation of random prime numbers larger than 8196 has been disabled ($length)");
         }
 
         $x = static::randomRange($min, $max);
@@ -983,6 +1027,15 @@ abstract class Engine implements \JsonSerializable
      */
     public function isPrime($t = false)
     {
+        // OpenSSL limits RSA keys to 16384 bits. The length of an RSA key is equal to the length of the modulo, which is
+        // produced by multiplying the primes p and q by one another. The largest number two 8196 bit primes can produce is
+        // a 16384 bit number so, basically, 8196 bit primes are the largest OpenSSL will generate and if that's the largest
+        // that it'll generate it also stands to reason that that's the largest you'll be able to test primality on
+        $length = $this->getLength();
+        if ($length > 8196) {
+            throw new \RuntimeException("Primality testing is not supported for numbers larger than 8196 bits ($length)");
+        }
+
         if (!$t) {
             $t = $this->setupIsPrime();
         }

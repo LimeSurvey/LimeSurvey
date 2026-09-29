@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -15,6 +15,11 @@
 
 class HtmlEditorPop extends SurveyCommonAction
 {
+    /**
+     * Renders the pop-up HTML editor for a single field.
+     *
+     * @return void
+     */
     public function index()
     {
         Yii::app()->loadHelper('admin.htmleditor');
@@ -35,8 +40,12 @@ class HtmlEditorPop extends SurveyCommonAction
             $aData['sControlIdDis'] = $aData['sFieldName'] . '_popupctrldis';
             $aData['toolbarname'] = 'popup';
             $aData['htmlformatoption'] = '';
-            $aData['contentsLangDirection'] = sanitize_xss_string(App()->request->getQuery('contdir'));
-            if (in_array($aData['sFieldType'], array('email-invitation', 'email-registration', 'email-confirmation', 'email-reminder'))) {
+            $contentsLangDirection = App()->request->getQuery('contdir');
+            if (!in_array(strtolower((string) $contentsLangDirection), ['ltr', 'rtl'])) {
+                $contentsLangDirection = getLanguageRTL(Yii::app()->session['adminlang']) ? 'rtl' : 'ltr';
+            }
+            $aData['contentsLangDirection'] = $contentsLangDirection;
+            if (isEmailEditorFieldtype($aData['sFieldType'])) {
                 $aData['htmlformatoption'] = ',fullPage:true';
             }
 

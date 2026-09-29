@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -18,6 +18,9 @@
  */
 
 require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
+require_once __DIR__ . '/Traits/LSApplicationTrait.php';
+
+use LimeSurvey\Yii\Application\AppErrorHandler;
 
 /**
 * Implements global config
@@ -30,12 +33,13 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 * @property CWebUser $user The user session information.
 * @property LSETwigViewRenderer $twigRenderer Twig rendering plugin
 * @property PluginManager $pluginManager The LimeSurvey Plugin manager
-* @property TbApi $bootstrap The bootstrap renderer
 * @property CHttpSession $session The HTTP session
 *
 */
 class LSYii_Application extends CWebApplication
 {
+    use LSApplicationTrait;
+
     protected $config = array();
 
     /**
@@ -55,6 +59,16 @@ class LSYii_Application extends CWebApplication
      * @var integer|null
      */
     protected $dbVersion;
+
+    /* @var integer| null the current userId for all action */
+    private $currentUserId;
+
+    /* @var integer|false the current survey ID */
+    private static $surveyId = false;
+    /* @var integer|false the current survey ID */
+    private static $questionId = false;
+    /* @var integer|false the current group ID */
+    private static $groupId = false;
 
     /**
      *
@@ -81,6 +95,11 @@ class LSYii_Application extends CWebApplication
             $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'] . DIRECTORY_SEPARATOR . 'runtime';
         } /* No need to test runtimePath validity : Yii return an exception without issue */
 
+        /* Make sure the runtime path exists, e.g. after the tempdir content was cleared */
+        if (!is_dir($aApplicationConfig['runtimePath'])) {
+            @mkdir($aApplicationConfig['runtimePath'], 0775, true);
+        }
+
         /* If LimeSurvey is configured to load custom Twig exstensions, add them to Twig Component */
         if (array_key_exists('use_custom_twig_extensions', $baseConfig) && $baseConfig ['use_custom_twig_extensions']) {
             $aApplicationConfig = $this->getTwigCustomExtensionsConfig($baseConfig['usertwigextensionrootdir'], $aApplicationConfig);
@@ -100,8 +119,16 @@ class LSYii_Application extends CWebApplication
             App()->getAssetManager()->setBaseUrl($this->config['tempurl'] . '/assets');
         }
         if (!isset($aApplicationConfig['components']['assetManager']['basePath'])) {
-            App()->getAssetManager()->setBasePath($this->config['tempdir'] . '/assets');
+            $assetPath = $this->config['tempdir'] . '/assets';
+            /* Make sure the assets path exists, e.g. after the tempdir content was cleared */
+            if (!is_dir($assetPath)) {
+                @mkdir($assetPath, 0775, true);
+            }
+            App()->getAssetManager()->setBasePath($assetPath);
         }
+
+        // Load common helper
+        $this->loadHelper("common");
     }
 
     /* @inheritdoc */
@@ -134,7 +161,7 @@ class LSYii_Application extends CWebApplication
     public function setConfigs()
     {
 
-        // TODO: check the whole configuration process. It must be easier and clearer. Too many repitions
+        // TODO: check the whole configuration process. It must be easier and clearer. Too many repetitions
 
         /* Default config */
         $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
@@ -149,6 +176,12 @@ class LSYii_Application extends CWebApplication
             $securityConfig = require($configdir . '/security.php');
             if (is_array($securityConfig)) {
                 $this->config = array_merge($this->config, $securityConfig);
+            }
+        }
+        if (file_exists($configdir . '/allowed_hosts.php')) {
+            $allowedHostsConfig = require($configdir . '/allowed_hosts.php');
+            if (is_array($allowedHostsConfig)) {
+                $this->config = array_merge($this->config, $allowedHostsConfig);
             }
         }
         if (file_exists($configdir .  '/config.php')) {
@@ -212,7 +245,7 @@ class LSYii_Application extends CWebApplication
      * Loads a library
      *
      * @access public
-     * @param string $library Libraby name
+     * @param string $library Library name
      * @return void
      */
     public function loadLibrary($library)
@@ -236,7 +269,7 @@ class LSYii_Application extends CWebApplication
     /**
      * Set a 'flash message'.
      *
-     * A flahs message will be shown on the next request and can contain a message
+     * A flash message will be shown on the next request and can contain a message
      * to tell that the action was successful or not. The message is displayed and
      * cleared when it is shown in the view using the widget:
      * <code>
@@ -285,6 +318,16 @@ class LSYii_Application extends CWebApplication
         return $this->config[$name] ?? $default;
     }
 
+    /**
+     * Returns the array of available configurations
+     *
+     * @access public
+     * @return array
+     */
+    public function getAvailableConfigs()
+    {
+        return $this->config;
+    }
 
     /**
      * For future use, cache the language app wise as well.
@@ -298,11 +341,11 @@ class LSYii_Application extends CWebApplication
         // This method is also called from AdminController and LSUser
         // But if a param is defined, it should always have the priority
         // eg: index.php/admin/authentication/sa/login/&lang=de
-        if ($this->request->getParam('lang') !== null && in_array('authentication', explode('/', Yii::app()->request->url))) {
+        if ($this->request->getParam('lang') !== null && in_array('authentication', explode('/', (string) Yii::app()->request->url))) {
             $sLanguage = $this->request->getParam('lang');
         }
 
-        $sLanguage = preg_replace('/[^a-z0-9-]/i', '', $sLanguage);
+        $sLanguage = \LSYii_Validators::languageCodeFilter($sLanguage);
         App()->session['_lang'] = $sLanguage; // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
         parent::setLanguage($sLanguage);
     }
@@ -320,11 +363,11 @@ class LSYii_Application extends CWebApplication
     /**
      * Get the pluginManager
      *
-     * @return PluginManager
+     * @return \LimeSurvey\PluginManager\PluginManager
      */
-    public function getPluginManager()
+    public function getPluginManager(): \LimeSurvey\PluginManager\PluginManager
     {
-        /** @var PluginManager $pluginManager */
+        /** @var \LimeSurvey\PluginManager\PluginManager $pluginManager */
         $pluginManager = $this->getComponent('pluginManager');
         return $pluginManager;
     }
@@ -382,37 +425,18 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event)
     {
-        if (!Yii::app() instanceof CWebApplication) {
-            /* Don't update for CLI */
-            return;
-        }
-        if (defined('PHP_ENV') && PHP_ENV == 'test') {
-            // If run from phpunit, die with exception message.
-            die($event->exception->getMessage());
-        }
-        if (!$this->dbVersion) {
-            /* Not installed or DB broken or to old */
-            return;
-        }
-        if ($this->dbVersion < 200) {
-            /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
-            return;
-        }
-        // Handle specific exception cases, like "user friendly" exceptions and exceptions on ajax requests
-        $this->handleSpecificExceptions($event->exception);
-        $statusCode = $event->exception->statusCode ?? null; // Needed ?
-        if (Yii::app()->getConfig('debug') > 1) {
-            /* Can restrict to admin ? */
-            /* debug ro 2 : always send Yii debug even 404 */
-            return;
-        }
-        if (Yii::app()->getConfig('debug') > 0 && $statusCode != '404') {
-            /* debug is set and not a 404 : always send Yii debug*/
-            return;
-        }
-        Yii::app()->setComponent('errorHandler', array(
-            'errorAction' => 'surveys/error',
-        ));
+        (new AppErrorHandler())->onException($this->dbVersion, $event);
+    }
+
+    /**
+     * @see http://www.yiiframework.com/doc/api/1.1/CApplication#onError-detail
+
+     * @param CErrorEvent $event
+     * @return void
+     */
+    public function onError($event)
+    {
+        (new AppErrorHandler())->onError($this->dbVersion, $event);
     }
 
     /**
@@ -442,7 +466,7 @@ class LSYii_Application extends CWebApplication
             /* Security issue */
             Yii::log("Disable access to " . $realFilePath . " directory", 'error', 'application.security.files.is_file');
             if ($throwException) {
-                throw new CHttpException(403, "Disable for security reasons.");
+                throw new CHttpException(403, "Disable for security reasons.", 'unescaped');
             }
             return false;
         }
@@ -465,15 +489,10 @@ class LSYii_Application extends CWebApplication
         $files = array();
 
         foreach ($iterator as $info) {
-            $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
+            $ext = pathinfo((string) $info->getPathname(), PATHINFO_EXTENSION);
             if ($ext == 'xml') {
                 $CustomTwigExtensionsManifestFiles[] = $info->getPathname();
             }
-        }
-
-        // Then we read each manifest and add their functions to Twig Component
-        if (\PHP_VERSION_ID < 80000) {
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
         }
 
         foreach ($CustomTwigExtensionsManifestFiles as $ctemFile) {
@@ -501,80 +520,66 @@ class LSYii_Application extends CWebApplication
             }
         }
 
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
-        }
-
         return $aApplicationConfig;
     }
 
     /**
-     * Handles specific exception cases, like "user friendly" exceptions and exceptions on ajax requests.
-     *
-     * @param CException $exception
-     * @return void
+     * @inheritdoc
+     * Special handling for SEO friendly URLs
      */
-    private function handleSpecificExceptions($exception)
+    public function createController($route, $owner = null)
     {
-        if (
-            Yii::app()->request->isAjaxRequest &&
-            $exception instanceof CHttpException
-        ) {
-            $this->outputJsonError($exception);
-        } elseif ($exception instanceof LSUserException) {
-            $this->handleFriendlyException($exception);
+        $controller = parent::createController($route, $owner);
+
+        // If no controller is found by standard ways, check if the route matches
+        // an existing survey's alias.
+        if (is_null($controller)) {
+            $controller = $this->createControllerFromShortUrl($route);
         }
+
+        return $controller;
     }
 
     /**
-     * Handles "friendly" exceptions by setting a flash message and redirecting.
-     * If the exception doesn't specify a redirect URL, the referrer is used.
-     *
-     * @param array $error
-     * @param LSUserException $exception
-     * @return void
+     * Create controller from short url if the route matches a survey alias.
+     * @param string $route the route of the request.
+     * @return array<mixed>|null
      */
-    private function handleFriendlyException($exception)
+    private function createControllerFromShortUrl($route)
     {
-        $message = "<p>" . $exception->getMessage() . "</p>" . $exception->getDetailedErrorSummary();
-        Yii::app()->setFlashMessage($message, 'error');
-        if ($exception->getRedirectUrl() != null) {
-            $redirectTo = $exception->getRedirectUrl();
-        } else {
-            $redirectTo = Yii::app()->request->urlReferrer;
+        $route = ltrim($route, "/");
+        $alias = explode("/", $route)[0];
+        /* Remove all non printable see mantis #20090 */
+        /* @see https://stackoverflow.com/a/66587087 for regexp source */
+        $alias = preg_replace('/[^\PCc^\PCn^\PCs]/u', '', $alias);
+        if (empty($alias)) {
+            return null;
         }
-        Yii::app()->request->redirect($redirectTo);
-    }
 
-    /**
-     * Outputs an exception as JSON.
-     *
-     * @param CHttpException $exception
-     * @return void
-     */
-    private function outputJsonError($exception)
-    {
-        $outputData = [
-            'success' => false,
-            'message' => $exception->getMessage(),
-        ];
-        if ($exception instanceof LSUserException) {
-            if ($exception->getRedirectUrl() != null) {
-                $outputData['redirectTo'] = $exception->getRedirectUrl();
-            }
-            if ($exception->getNoReload() != null) {
-                $outputData['noReload'] = $exception->getNoReload();
-            }
-            // Add the detailed errors to the message, so simple handlers can just show it.
-            $outputData['message'] = "<p>" . $exception->getMessage() . "</p>". $exception->getDetailedErrorSummary();
-            // But save the "simpler" message on 'error', and the list of errors on "detailedErrors"
-            // so that more complex handlers can decide what to show.
-            $outputData['error'] = $exception->getMessage();
-            $outputData['detailedErrors'] = $exception->getDetailedErrors();
+        // When updating from versions that didn't support short urls, this code runs before the update process,
+        // so we cannot assume the field exists. We try to retrieve the Survey Language Settings and, if it fails,
+        // just don't do anything.
+        try {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('surveyls_alias = :alias');
+            $criteria->params[':alias'] = $alias;
+            $criteria->index = 'surveyls_language';
+
+            $languageSettings = SurveyLanguageSetting::model()->find($criteria);
+        } catch (CDbException $ex) {
+            // It's probably just because the field doesn't exist, so don't do anything.
         }
-        header('Content-Type: application/json');
-        http_response_code($exception->statusCode);
-        die(json_encode($outputData));
+
+        if (empty($languageSettings)) {
+            return null;
+        }
+
+        // If no language is specified in the request, add a GET param based on the survey's language for this alias
+        $language = $this->request->getParam('lang');
+        if (empty($language)) {
+            $_GET['lang'] = $languageSettings->surveyls_language;
+        }
+        return parent::createController("survey/index/sid/" . $languageSettings->surveyls_survey_id);
     }
 
     /**
@@ -601,5 +606,129 @@ class LSYii_Application extends CWebApplication
         App()->getSession()->setCookieParams([
             'lifetime' => $lifetime
         ]);
+    }
+
+    /**
+     * Get survey survey id by param
+     * @param boolean $throwError Whether to throw an error
+     * @return false|integer
+     */
+    public static function getSurveyId($throwError = true)
+    {
+        if (is_int(self::$surveyId)) {
+            /* Survey is set and is valid */
+            return self::$surveyId;
+        }
+        $surveyId = Yii::app()->request->getParam(
+            'sid',
+            Yii::app()->request->getParam(
+                'surveyid',
+                Yii::app()->request->getParam('surveyId')
+            )
+        );
+        if (!$surveyId || !self::checkInteger($surveyId, $throwError)) {
+            return false;
+        }
+        /* surveyId is set and is an integer */
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            if ($throwError) {
+                throw new CHttpException(404, gT('Survey not found.', 'unescaped'));
+            }
+            return false;
+        }
+        self::$surveyId = $surveyId;
+        return self::$surveyId;
+    }
+
+    /**
+     * Get survey survey id by param
+     * @param boolean $throwError Whether to throw an error
+     * @return false|integer
+     */
+    public static function getGroupId($throwError = true)
+    {
+        if (is_int(self::$groupId)) {
+            /* groupId is set and is valid */
+            return self::$groupId;
+        }
+        $groupId = Yii::app()->request->getParam('gid');
+        if (!$groupId || !self::checkInteger($groupId, $throwError)) {
+            return false;
+        }
+        /* groupId is set and is an integer */
+        $group = QuestionGroup::model()->findByPk($groupId);
+        if (!$group) {
+            if ($throwError) {
+                throw new CHttpException(404, gT('Group not found.', 'unescaped'));
+            }
+            return false;
+        }
+        $surveyId = self::getSurveyId($throwError);
+        if ($surveyId && $surveyId != $group->sid) {
+            if ($throwError) {
+                throw new CHttpException(400, gT('Your request is invalid.', 'unescaped'));
+            }
+            return false;
+        }
+        /* We can set self::$surveyId according to question */
+        self::$surveyId = $group->sid;
+        self::$groupId = $groupId;
+        return self::$groupId;
+    }
+
+    /**
+     * Get question id by param (sid)
+     * @param boolean $throwError Whether to throw an error
+     * @return false|integer
+     */
+    public static function getQuestionId($throwError = true)
+    {
+        if (is_int(self::$questionId)) {
+            /* questionId is set and is valid */
+            return self::$questionId;
+        }
+        $questionId = Yii::app()->request->getParam('qid');
+        if (!$questionId || !self::checkInteger($questionId, $throwError)) {
+            return false;
+        }
+        /* questionId is set and is an integer */
+        $question = Question::model()->findByPk($questionId);
+        if (!$question) {
+            if ($throwError) {
+                throw new CHttpException(404, gT('Question not found.', 'unescaped'));
+            }
+            return false;
+        }
+        $surveyId = self::getSurveyId($throwError);
+        if ($surveyId && $surveyId != $question->sid) {
+            if ($throwError) {
+                throw new CHttpException(400, gT('Your request is invalid.', 'unescaped'));
+            }
+            return false;
+        }
+        /* We can set self::$surveyId according to question */
+        self::$surveyId = $question->sid;
+        self::$questionId = $questionId;
+        return self::$questionId;
+    }
+    
+    /**
+     * Check validity of an integer
+     * @param $id mixed
+     * @param $throwError Whether to throw an error
+     * @throws CHttpException
+     * @return boolean
+     */
+    private static function checkInteger($id, $throwError = true)
+    {
+        $intId = intval($id);
+        if (strval($intId) !== strval($id)) {
+            if ($throwError) {
+                throw new CHttpException(400, gT('Your request is invalid.', 'unescaped'));
+            }
+            return false;
+        }
+        return true;
     }
 }

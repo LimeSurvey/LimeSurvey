@@ -2,7 +2,9 @@
 
 namespace Html2Text;
 
-class SpanTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SpanTest extends TestCase
 {
 
     public function testIgnoreSpans()

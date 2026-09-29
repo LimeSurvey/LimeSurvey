@@ -1,0 +1,26 @@
+.welcome {
+    #lime-logo {
+        animation : fadein 1s;
+    }
+    .recent-activity {
+        margin-top    : 1.72rem;
+        font-size     : 0.95rem;
+        padding-right : 3rem;
+        opacity       : 0.7;
+    }
+    .survey-dashboard {
+        display : flex;
+    }
+}
+
+#welcomeModal {
+    z-index : 20000;
+}
+
+.list-surveys-container {
+  #survey-grid {
+    .table {
+      box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+    }
+  }
+}

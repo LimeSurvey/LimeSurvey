@@ -70,52 +70,43 @@ class ValueLabel extends Record
 
         // Number of variables that the associated value labels from the value label record are to be applied.
         $varCount = $buffer->readInt();
+        $decodeShortVar = false;
         for ($i = 0; $i < $varCount; $i++) {
             $varIndex = $buffer->readInt() - 1;
-
-            // Decode values for short variables
-            if (isset($this->variables[$varIndex])) {
-                $varWidth = $this->variables[$varIndex]->width;
-                if ($varWidth > 0) {
-                    foreach ($this->labels as $labelIdx => $label) {
-                        $this->labels[$labelIdx]['value'] = rtrim(Utils::doubleToString($label['value']));
-                    }
-                }
-            }
-
             $this->indexes[] = $varIndex;
+
+            if (isset($this->variables[$varIndex]) && ($this->variables[$varIndex]->width > 0)) {
+                $decodeShortVar = true;
+            }
+        }
+
+        // Decode values for short variables
+        if ($decodeShortVar) {
+            foreach ($this->labels as $labelIdx => $label) {
+                $this->labels[$labelIdx]['value'] = rtrim(Utils::doubleToString($label['value']));
+            }
         }
     }
 
     public function write(Buffer $buffer)
     {
-        $convertToDouble = false;
-        $varIndex        = reset($this->indexes);
-        if (false !== $varIndex && isset($this->variables[$varIndex - 1])) {
-            $varWidth        = $this->variables[$varIndex - 1]->width;
-            $convertToDouble = $varWidth > 0;
-        }
+        $var = (count($this->variables) > 0) ? $this->variables[count($this->variables) - 1] : null;
+        $convertToDouble = (isset($var) && ($var->width > 0));
 
         // Value label record.
         $buffer->writeInt(self::TYPE);
         $buffer->writeInt(\count($this->labels));
         foreach ($this->labels as $item) {
-            $labelLength      = min(mb_strlen($item['label']), self::LABEL_MAX_LENGTH);
-            $label            = mb_substr($item['label'], 0, $labelLength);
-            $labelLengthBytes = mb_strlen($label, '8bit');
-            while ($labelLengthBytes > 255) {
-                // Strip one char, can be multiple bytes
-                $label            = mb_substr($label, 0, -1);
-                $labelLengthBytes = mb_strlen($label, '8bit');
-            }
-
+            $labelLengthBytes = $buffer->lengthBytes($item['label'], self::LABEL_MAX_LENGTH);
+            $labelLengthBytesRound = Utils::roundUp($labelLengthBytes + 1, 8) - 1;
+            
             if ($convertToDouble) {
                 $item['value'] = Utils::stringToDouble($item['value']);
             }
 
             $buffer->writeDouble($item['value']);
             $buffer->write(\chr($labelLengthBytes));
-            $buffer->writeString($label, Utils::roundUp($labelLengthBytes + 1, 8) - 1);
+            $buffer->writeString($item['label'], $labelLengthBytesRound);
         }
 
         // Value label variable record.

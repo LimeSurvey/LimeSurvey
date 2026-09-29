@@ -6,10 +6,10 @@
 
 <!-- thead -->
 <td></td>
-<th class="answer-text">{{ gT('Yes') }}</th>
-<th class="answer-text">{{ gT('Uncertain') }}</th>
-<th class="answer-text">{{ gT('No') }}</th>
+<th class="answer-text" id="answer{{ basename }}-Y" role="columnheader">{{ gT('Yes') }}</th>
+<th class="answer-text" id="answer{{ basename }}-U" role="columnheader">{{ gT('Uncertain') }}</th>
+<th class="answer-text" id="answer{{ basename }}-N" role="columnheader">{{ gT('No') }}</th>
 {% if no_answer %}
-    <th class="answer-text noanswer-text">{{ gT('No answer') }}</th>
+    <th class="answer-text noanswer-text" id="answer{{ basename }}-" role="columnheader">{{ gT('No answer') }}</th>
 {% endif %}
 <!-- end of  thead -->

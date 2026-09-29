@@ -13,82 +13,78 @@ namespace Twig\Profiler;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
- *
- * @final
  */
-class Profile implements \IteratorAggregate, \Serializable
+final class Profile implements \IteratorAggregate, \Serializable
 {
-    const ROOT = 'ROOT';
-    const BLOCK = 'block';
-    const TEMPLATE = 'template';
-    const MACRO = 'macro';
-
-    private $template;
-    private $name;
-    private $type;
+    public const ROOT = 'ROOT';
+    public const BLOCK = 'block';
+    public const TEMPLATE = 'template';
+    public const MACRO = 'macro';
     private $starts = [];
     private $ends = [];
     private $profiles = [];
 
-    public function __construct($template = 'main', $type = self::ROOT, $name = 'main')
-    {
-        $this->template = $template;
-        $this->type = $type;
-        $this->name = 0 === strpos($name, '__internal_') ? 'INTERNAL' : $name;
+    public function __construct(
+        private string $template = 'main',
+        private string $type = self::ROOT,
+        private string $name = 'main',
+    ) {
+        $this->name = str_starts_with($name, '__internal_') ? 'INTERNAL' : $name;
         $this->enter();
     }
 
-    public function getTemplate()
+    public function getTemplate(): string
     {
         return $this->template;
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function isRoot()
+    public function isRoot(): bool
     {
         return self::ROOT === $this->type;
     }
 
-    public function isTemplate()
+    public function isTemplate(): bool
     {
         return self::TEMPLATE === $this->type;
     }
 
-    public function isBlock()
+    public function isBlock(): bool
     {
         return self::BLOCK === $this->type;
     }
 
-    public function isMacro()
+    public function isMacro(): bool
     {
         return self::MACRO === $this->type;
     }
 
-    public function getProfiles()
+    /**
+     * @return Profile[]
+     */
+    public function getProfiles(): array
     {
         return $this->profiles;
     }
 
-    public function addProfile(self $profile)
+    public function addProfile(self $profile): void
     {
         $this->profiles[] = $profile;
     }
 
     /**
      * Returns the duration in microseconds.
-     *
-     * @return float
      */
-    public function getDuration()
+    public function getDuration(): float
     {
         if ($this->isRoot() && $this->profiles) {
             // for the root node with children, duration is the sum of all child durations
@@ -104,21 +100,33 @@ class Profile implements \IteratorAggregate, \Serializable
     }
 
     /**
-     * Returns the memory usage in bytes.
-     *
-     * @return int
+     * Returns the start time in microseconds.
      */
-    public function getMemoryUsage()
+    public function getStartTime(): float
+    {
+        return $this->starts['wt'] ?? 0.0;
+    }
+
+    /**
+     * Returns the end time in microseconds.
+     */
+    public function getEndTime(): float
+    {
+        return $this->ends['wt'] ?? 0.0;
+    }
+
+    /**
+     * Returns the memory usage in bytes.
+     */
+    public function getMemoryUsage(): int
     {
         return isset($this->ends['mu']) && isset($this->starts['mu']) ? $this->ends['mu'] - $this->starts['mu'] : 0;
     }
 
     /**
      * Returns the peak memory usage in bytes.
-     *
-     * @return int
      */
-    public function getPeakMemoryUsage()
+    public function getPeakMemoryUsage(): int
     {
         return isset($this->ends['pmu']) && isset($this->starts['pmu']) ? $this->ends['pmu'] - $this->starts['pmu'] : 0;
     }
@@ -126,7 +134,7 @@ class Profile implements \IteratorAggregate, \Serializable
     /**
      * Starts the profiling.
      */
-    public function enter()
+    public function enter(): void
     {
         $this->starts = [
             'wt' => microtime(true),
@@ -138,7 +146,7 @@ class Profile implements \IteratorAggregate, \Serializable
     /**
      * Stops the profiling.
      */
-    public function leave()
+    public function leave(): void
     {
         $this->ends = [
             'wt' => microtime(true),
@@ -147,31 +155,31 @@ class Profile implements \IteratorAggregate, \Serializable
         ];
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->starts = $this->ends = $this->profiles = [];
         $this->enter();
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->profiles);
     }
 
-    public function serialize()
+    public function serialize(): string
     {
         return serialize($this->__serialize());
     }
 
-    public function unserialize($data)
+    public function unserialize($data): void
     {
-        $this->__unserialize(unserialize($data));
+        $this->__unserialize(unserialize($data, ['allowed_classes' => [self::class]]));
     }
 
     /**
      * @internal
      */
-    public function __serialize()
+    public function __serialize(): array
     {
         return [$this->template, $this->name, $this->type, $this->starts, $this->ends, $this->profiles];
     }
@@ -179,10 +187,8 @@ class Profile implements \IteratorAggregate, \Serializable
     /**
      * @internal
      */
-    public function __unserialize(array $data)
+    public function __unserialize(array $data): void
     {
-        list($this->template, $this->name, $this->type, $this->starts, $this->ends, $this->profiles) = $data;
+        [$this->template, $this->name, $this->type, $this->starts, $this->ends, $this->profiles] = $data;
     }
 }
-
-class_alias('Twig\Profiler\Profile', 'Twig_Profiler_Profile');

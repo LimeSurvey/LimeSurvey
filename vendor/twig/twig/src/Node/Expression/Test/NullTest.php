@@ -15,7 +15,7 @@ use Twig\Compiler;
 use Twig\Node\Expression\TestExpression;
 
 /**
- * Checks that a variable is null.
+ * Checks that an expression is null.
  *
  *  {{ var is none }}
  *
@@ -23,7 +23,7 @@ use Twig\Node\Expression\TestExpression;
  */
 class NullTest extends TestExpression
 {
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler
             ->raw('(null === ')
@@ -31,6 +31,10 @@ class NullTest extends TestExpression
             ->raw(')')
         ;
     }
-}
 
-class_alias('Twig\Node\Expression\Test\NullTest', 'Twig_Node_Expression_Test_Null');
+    public function getStringCoercedChildNames(): array
+    {
+        // `=== null` is strict, no coercion
+        return [];
+    }
+}

@@ -2,7 +2,7 @@
 error_reporting(E_STRICT);
 
 if (isset($_GET['d'])) { 
-    $degree = $_GET['d']; 
+    $degree = (float)$_GET['d']; 
 } else { 
     $degree = 0; 
 }

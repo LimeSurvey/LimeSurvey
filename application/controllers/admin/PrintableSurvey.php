@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -65,7 +65,7 @@ class PrintableSurvey extends SurveyCommonAction
                 $dformat = getDateFormatData($dateformattype);
                 $dformat = $dformat['phpdate'];
 
-                $expirytimestamp = strtotime($surveyexpirydate);
+                $expirytimestamp = strtotime((string) $surveyexpirydate);
                 $expirytimeofday_h = date('H', $expirytimestamp);
                 $expirytimeofday_m = date('i', $expirytimestamp);
 
@@ -93,6 +93,10 @@ class PrintableSurvey extends SurveyCommonAction
 
             LimeExpressionManager::StartSurvey($surveyid, 'survey', null, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
             LimeExpressionManager::NavigateForwards();
+            // Process EM expressions in survey-level text fields so functions like qrCode() render correctly.
+            $aSurveyInfo['surveyls_welcometext'] = LimeExpressionManager::ProcessString((string) $aSurveyInfo['surveyls_welcometext']);
+            $aSurveyInfo['surveyls_description'] = LimeExpressionManager::ProcessString((string) $aSurveyInfo['surveyls_description']);
+            $end = LimeExpressionManager::ProcessString((string) $end);
             Yii::app()->clientScript->reset(); // Remove all scripts
             /* Add css */
             Yii::app()->getClientScript()->registerPackage('printable');
@@ -111,19 +115,19 @@ class PrintableSurvey extends SurveyCommonAction
             //if $showsgqacode is enabled at config.php show table name for reference
             $showsgqacode = Yii::app()->getConfig("showsgqacode");
             if (isset($showsgqacode) && $showsgqacode == true) {
-                $surveyname = $surveyname . "<br />[" . gT('Database') . " " . gT('table') . ": $surveytable]";
+                $surveyname = $surveyname . "<br />[" . sprintf(gT('Table name: %s'), $surveytable) . "]";
             }
 
             /* Get the HTML tag */
             Yii::app()->loadHelper('surveytranslator');
-            $lang = App()->getLanguage();
+            $lang = getHtmlLangAttributeValue(App()->getLanguage());
             $langDir = (getLanguageRTL(App()->getLanguage())) ? "rtl" : "ltr";
             $htmlTag = " lang='$lang' class='dir-$langDir' dir='$langDir'";
 
             $printarray = array(
                 'sitename' => Yii::app()->getConfig("sitename"),
                 'therearexquestions' => 0,
-                'submit_text' => gT("Submit Your Survey."),
+                'submit_text' => gT("Submit your survey."),
                 'end' => $end,
                 'submit_by' => $surveyexpirydate,
                 'thanks' => gT("Thank you for completing this survey."),
@@ -137,15 +141,31 @@ class PrintableSurvey extends SurveyCommonAction
 
             $fieldmap = createFieldMap($oSurvey, 'full', false, false, $sLanguageCode);
 
+            // For print condition text : need questionobject of some specific question
+            $criteria = new CDBCriteria();
+            $criteria->select = ['cqid'];
+            $criteria->with = ['questions'];
+            $criteria->compare('questions.sid', $surveyid);
+            $neededTypes = [QuestionType::QT_1_ARRAY_DUAL];
+            $criteria->addInCondition('questions.type', $neededTypes);
+            $oConditions = Condition::model()->with('questions')->findAll($criteria);
+            // We need only the question attributes
+            /* array[] Needed question attributes for condition question */
+            $conditionQuestionsAttributes = [];
+            foreach ($oConditions as $oCondition) {
+                $conditionQuestionsAttributes[$oCondition->cqid] = QuestionAttribute::model()->getQuestionAttributes($oCondition->questions);
+            }
             // =========================================================
-            // START doin the business:
+            // START doing the business:
             foreach ($arGroups as $arQuestionGroup) {
                 // ---------------------------------------------------
                 // START doing groups
                 $arQuestions = $arQuestionGroup->questions;
 
                 if (!empty($arQuestionGroup->questiongroupl10ns[$sLanguageCode]->description)) {
-                    $group_desc = $arQuestionGroup->questiongroupl10ns[$sLanguageCode]->description;
+                    $group_desc = LimeExpressionManager::ProcessString(
+                        $arQuestionGroup->questiongroupl10ns[$sLanguageCode]->description
+                    );
                 } else {
                     $group_desc = '';
                 }
@@ -170,10 +190,7 @@ class PrintableSurvey extends SurveyCommonAction
                 foreach ($arQuestions as $arQuestion) {
                     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                     // START doing questions
-
-                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
-
-
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion);
                     if ($qidattributes['hidden'] == 1 && $arQuestion['type'] != Question::QT_ASTERISK_EQUATION) {
                         continue;
                     }
@@ -184,8 +201,6 @@ class PrintableSurvey extends SurveyCommonAction
                     $sExplanation = ''; //reset conditions explanation
                     $s = 0;
                     // TMSW Condition->Relevance:  show relevance instead of this whole section to create $explanation
-
-
                     $scenarioresult = Condition::model()->getScenarios($arQuestion['qid']);
                     $scenarioresult = $scenarioresult->readAll();
                     //Loop through distinct scenarios, thus grouping them together.
@@ -209,7 +224,7 @@ class PrintableSurvey extends SurveyCommonAction
                             if ($x > 0) {
                                 $sExplanation .= ' <em class="scenario-and-separator">' . gT('and') . '</em> ';
                             }
-                            if (trim($distinctrow['method']) == '') {
+                            if (trim((string) $distinctrow['method']) == '') {
                                 //If there is no method chosen assume "equals"
                                 $distinctrow['method'] = '==';
                             }
@@ -237,8 +252,8 @@ class PrintableSurvey extends SurveyCommonAction
                             if (!$distinctrow['cqid']) {
                                 // cqid == 0  ==> token attribute match
                                 $tokenData = getTokenFieldsAndNames($surveyid);
-                                preg_match('/^{TOKEN:([^}]*)}$/', $distinctrow['cfieldname'], $extractedTokenAttr);
-                                $sExplanation .= "Your " . $tokenData[strtolower($extractedTokenAttr[1])]['description'] . " ";
+                                preg_match('/^{TOKEN:([^}]*)}$/', (string) $distinctrow['cfieldname'], $extractedTokenAttr);
+                                $sExplanation .= "Your " . ($tokenData[strtolower($extractedTokenAttr[1])]['description'] ?? "") . " ";
                                 if ($distinctrow['method'] == '==') {
                                     $sExplanation .= gT("is") . " ";
                                 } elseif ($distinctrow['method'] == '!=') {
@@ -256,11 +271,10 @@ class PrintableSurvey extends SurveyCommonAction
                                 } else {
                                     $sExplanation .= gT("is") . " ";
                                 }
-                                $answer_section = ' ' . $distinctrow['value'] . ' ';
+                                $answer_section = ' ' . ($distinctrow['value'] ?? "") . ' ';
                             }
 
                             $conresult = Condition::model()->getConditionsQuestions($distinctrow['cqid'], $arQuestion['qid'], $scenariorow['scenario'], $sLanguageCode);
-
                             $conditions = array();
                             foreach ($conresult->readAll() as $conrow) {
                                 $value = $conrow['value'];
@@ -320,9 +334,9 @@ class PrintableSurvey extends SurveyCommonAction
                                         // TODO: Fallthru on purpose?
                                         /* FALLTHRU */
                                     case Question::QT_1_ARRAY_DUAL:
-                                        $labelIndex = preg_match("/^[^#]+#([01]{1})$/", $conrow['cfieldname']);
+                                        $labelIndex = preg_match("/^[^#]+#([01]{1})$/", (string) $conrow['cfieldname']);
                                         $condition = "qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND scale_id=" . $labelIndex;
-                                        $fresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
+                                        $fresult = Answer::model()->findAll(['condition' => $condition]);
                                         foreach ($fresult as $frow) {
                                             $conditions[] = $frow->answerl10ns[$sLanguageCode]->answer;
                                         }
@@ -331,11 +345,11 @@ class PrintableSurvey extends SurveyCommonAction
                                     case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                                     case Question::QT_O_LIST_WITH_COMMENT:
                                     case Question::QT_R_RANKING:
-                                        $condition = "qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
-                                        $ansresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
+                                        $condition = "parent_qid='{$conrow['cqid']}' AND title='{$conrow['value']}'";
+                                        $qresult = Question::model()->findAll(['condition' => $condition]);
 
-                                        foreach ($ansresult as $ansrow) {
-                                            $conditions[] = $ansrow->answerl10ns[$sLanguageCode]->answer;
+                                        foreach ($qresult as $qrow) {
+                                            $conditions[] = $qrow->questionl10ns[$sLanguageCode]->question;
                                         }
                                         if ($conrow['value'] == "-oth-") {
                                             $conditions[] = gT("Other");
@@ -359,7 +373,7 @@ class PrintableSurvey extends SurveyCommonAction
                                     case Question::QT_H_ARRAY_COLUMN:
                                     default:
                                         $condition = " qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
-                                        $fresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
+                                        $fresult = Answer::model()->findAll(['condition' => $condition]);
                                         foreach ($fresult as $frow) {
                                             $conditions[] = $frow->answerl10ns[$sLanguageCode]->answer;
                                         } // while
@@ -385,19 +399,19 @@ class PrintableSurvey extends SurveyCommonAction
                                         break;
 
                                     case Question::QT_1_ARRAY_DUAL: // dual: (Label 1), (Label 2)
-                                        $labelIndex = substr($conrow['cfieldname'], -1);
+                                        $labelIndex = substr((string) $conrow['cfieldname'], -1);
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $condition = "parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}'";
                                         $ansresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);
-                                        $cqidattributes = QuestionAttribute::model()->getQuestionAttributes($conrow['cqid']);
+                                        $cqidattributes = $conditionQuestionsAttributes[$conrow['cqid']];
                                         if ($labelIndex == 0) {
-                                            if (trim($cqidattributes['dualscale_headerA'][$sLanguageCode]) != '') {
+                                            if (trim((string) $cqidattributes['dualscale_headerA'][$sLanguageCode]) != '') {
                                                 $header = gT($cqidattributes['dualscale_headerA'][$sLanguageCode]);
                                             } else {
                                                 $header = '1';
                                             }
                                         } elseif ($labelIndex == 1) {
-                                            if (trim($cqidattributes['dualscale_headerB'][$sLanguageCode]) != '') {
+                                            if (trim((string) $cqidattributes['dualscale_headerB'][$sLanguageCode]) != '') {
                                                 $header = gT($cqidattributes['dualscale_headerB'][$sLanguageCode]);
                                             } else {
                                                 $header = '2';
@@ -414,7 +428,7 @@ class PrintableSurvey extends SurveyCommonAction
                                         $ansresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);
                                         foreach ($ansresult as $ansrow) {
                                             $condition = "qid = '{$conrow['cqid']}' AND code = '{$conrow['value']}'";
-                                            $fresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
+                                            $fresult = Answer::model()->findAll(['condition' => $condition]);
                                             foreach ($fresult as $frow) {
                                                 //$conditions[]=$frow['title'];
                                                 $answer_section = " (" . $ansrow->question . "[" . $frow['answer'] . "])";
@@ -423,8 +437,8 @@ class PrintableSurvey extends SurveyCommonAction
                                         break;
                                     case Question::QT_R_RANKING: // (Rank 1), (Rank 2)...
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
-                                        $rankid = $thiscquestion['aid'];
-                                        $answer_section = " (" . gT("RANK") . " $rankid)";
+                                        $rankid = $thiscquestion['title'];
+                                        $answer_section = " (" . sprintf(gT("Rank %s"), $rankid) . ")";
                                         break;
                                     default: // nothing to add
                                         break;
@@ -440,9 +454,9 @@ class PrintableSurvey extends SurveyCommonAction
                             // Following line commented out because answer_section  was lost, but is required for some question types
                             //$explanation .= " ".gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
                             if ($distinctrow['cqid']) {
-                                $sExplanation .= " <span class='scenario-at-separator'>" . gT("at question") . "</span> '" . " [" . $subresult['title'] . "]' (" . strip_tags($subresult->questionl10ns[$sLanguageCode]->question) . "$answer_section)";
+                                $sExplanation .= " <span class='scenario-at-separator'>" . gT("at question") . "</span> '" . " [" . $subresult['title'] . "]' (" . strip_tags((string) $subresult->questionl10ns[$sLanguageCode]->question) . "$answer_section)";
                             } else {
-                                $sExplanation .= " " . $distinctrow['value'];
+                                $sExplanation .= " " . ($distinctrow['value'] ?? "");
                             }
                             //$distinctrow
                             $x++;
@@ -450,8 +464,15 @@ class PrintableSurvey extends SurveyCommonAction
                         $s++;
                     }
 
-                    $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
-                    $relevance = trim($qinfo['info']['relevance']);
+                    //Defaulting to dummy array to avoid crashes when qinfo is not found for this question
+                    $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']) ?? [
+                        "info" => [
+                            "relevance" => ""
+                        ],
+                        "relEqn" => "",
+                        "validTip" => ""
+                    ];
+                    $relevance = trim((string) $qinfo['info']['relevance']);
                     $sEquation = $qinfo['relEqn'];
 
                     if (trim($relevance) != '' && trim($relevance) != '1') {
@@ -478,10 +499,10 @@ class PrintableSurvey extends SurveyCommonAction
                     //END OF GETTING CONDITIONS
 
                     $qid = $arQuestion['qid'];
-                    $fieldname = "$surveyid" . "X" . "$gid" . "X" . "$qid";
+                    $fieldname = "Q" . "$qid";
 
                     if (isset($showsgqacode) && $showsgqacode == true) {
-                        $arQuestion['question'] = $arQuestion['question'] . "<br />" . gT("ID:") . " $fieldname <br />" .
+                        $arQuestion['question'] = $arQuestion['question'] . "<br />" . sprintf(gT("ID: %s"), $fieldname) . " <br />" .
                             gT("Question code:") . " " . $arQuestion['title'];
                     }
 
@@ -490,7 +511,10 @@ class PrintableSurvey extends SurveyCommonAction
                         // content of the question code field
                         'code' => $arQuestion['title'],
                         // content of the question field
-                        'text' => preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is', '', $arQuestion->questionl10ns[$sLanguageCode]->question),
+                        'text' => LimeExpressionManager::ProcessString(
+                            preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is', '', (string) $arQuestion->questionl10ns[$sLanguageCode]->question),
+                            $arQuestion['qid']
+                        ),
                         // if there are conditions on a question, list the conditions.
                         'scenario' => $sExplanation,
                         // translated 'mandatory' identifier
@@ -513,7 +537,7 @@ class PrintableSurvey extends SurveyCommonAction
                         // contains formatted HTML answer
                         'answer' => ''
                     );
-                    if (trim($question['type_help']) != "") {
+                    if (trim((string) $question['type_help']) != "") {
                         $question['type_help'] = CHtml::tag("div", array("class" => "tip-help"), $question['type_help']);
                     }
                    /* if (isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass'] != "") {
@@ -538,7 +562,10 @@ class PrintableSurvey extends SurveyCommonAction
 
                     //DIFFERENT TYPES OF DATA FIELD HERE
                     if (!empty($arQuestion->questionl10ns[$sLanguageCode]->help)) {
-                        $question['help'] = $arQuestion->questionl10ns[$sLanguageCode]->help;
+                        $question['help'] = LimeExpressionManager::ProcessString(
+                            $arQuestion->questionl10ns[$sLanguageCode]->help,
+                            $arQuestion['qid']
+                        );
                     }
 
 
@@ -554,7 +581,7 @@ class PrintableSurvey extends SurveyCommonAction
                     switch ($arQuestion['type']) {
                             // ==================================================================
                         case Question::QT_5_POINT_CHOICE:    //5 POINT CHOICE
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT('Please choose *only one* of the following:'));
+                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT('Please choose only one of the following options:'));
                             $question['answer'] .= "\n\t<ul class='list-print-answers list-unstyled'>\n";
                             for ($i = 1; $i <= 5; $i++) {
                                 $question['answer'] .= "\t\t<li>\n\t\t\t" . self::inputTypeImage('radio', $i) . "\n\t\t\t$i " . self::addsgqacode("($i)") . "\n\t\t</li>\n";
@@ -571,7 +598,7 @@ class PrintableSurvey extends SurveyCommonAction
 
                             // ==================================================================
                         case Question::QT_G_GENDER:  //GENDER
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *only one* of the following:"));
+                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose only one of the following options:"));
 
                             $question['answer'] .= "\n\t<ul class='list-print-answers list-unstyled'>\n";
                             $question['answer'] .= "\t\t<li>\n\t\t\t" . self::inputTypeImage('radio', gT("Female")) . "\n\t\t\t" . gT("Female") . " " . self::addsgqacode("(F)") . "\n\t\t</li>\n";
@@ -583,16 +610,16 @@ class PrintableSurvey extends SurveyCommonAction
                         case Question::QT_L_LIST:
                             // ==================================================================
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-                            if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator']) != '') {
+                            if (isset($qidattributes['category_separator']) && trim((string) $qidattributes['category_separator']) != '') {
                                 $optCategorySeparator = $qidattributes['category_separator'];
                             } else {
                                 unset($optCategorySeparator);
                             }
 
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *only one* of the following:"));
+                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose only one of the following options:"));
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
 
-                            $dearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}", 'order' => 'sortorder, code']);
+                            $dearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}"]);
                             $deacount = count($dearesult);
                             if ($arQuestion['other'] == "Y") {
                                 $deacount++;
@@ -608,7 +635,7 @@ class PrintableSurvey extends SurveyCommonAction
                             foreach ($dearesult as $dearow) {
                                 $rowAnswer = $dearow->answerl10ns[$sLanguageCode]->answer;
                                 if (isset($optCategorySeparator)) {
-                                    list($category, $answer) = explode($optCategorySeparator, $dearow->answerl10ns[$sLanguageCode]->answer);
+                                    list($category, $answer) = explode($optCategorySeparator, (string) $dearow->answerl10ns[$sLanguageCode]->answer);
 
                                     if ($category != '') {
                                         $rowAnswer = "($category) $answer " . self::addsgqacode("(" . $dearow['code'] . ")");
@@ -632,15 +659,11 @@ class PrintableSurvey extends SurveyCommonAction
                             }
 
                             if ($arQuestion['other'] == 'Y') {
-                                /*echo '<pre>';
-                                print_r($qidattributes);
-                                echo '</pre>';
-                                die();*/
-                                if (trim($qidattributes["printable_help"][$sLanguageCode]) == '') {
+                                if (!isset($qidattributes["printable_help"][$sLanguageCode]) || trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
                                     $qidattributes["printable_help"][$sLanguageCode] = gT("Other");
                                 }
                                 //                    $printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".self::inputTypeImage('radio' , gT("Other"))."\n\t\t\t".gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
-                                $question['answer'] .= $wrapper['item-start-other'] . self::inputTypeImage('radio', gT($qidattributes["printable_help"][$sLanguageCode])) . ' ' . gT($qidattributes["printable_help"][$sLanguageCode]) . self::addsgqacode(" (-oth-)") . "\n\t\t\t" . self::inputTypeImage('other') . self::addsgqacode(" (" . $arQuestion['sid'] . "X" . $arQuestion['gid'] . "X" . $arQuestion['qid'] . "other)") . "\n" . $wrapper['item-end'];
+                                $question['answer'] .= $wrapper['item-start-other'] . self::inputTypeImage('radio', gT($qidattributes["printable_help"][$sLanguageCode])) . ' ' . gT($qidattributes["printable_help"][$sLanguageCode]) . self::addsgqacode(" (-oth-)") . "\n\t\t\t" . self::inputTypeImage('other') . self::addsgqacode(" (" . "Q" . $arQuestion['qid'] . "_Cother)") . "\n" . $wrapper['item-end'];
                             }
                             $question['answer'] .= $wrapper['whole-end'];
                             //Let's break the presentation into columns.
@@ -648,8 +671,8 @@ class PrintableSurvey extends SurveyCommonAction
 
                             // ==================================================================
                         case Question::QT_O_LIST_WITH_COMMENT:  //LIST WITH COMMENT
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *only one* of the following:"));
-                            $dearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}", 'order' => 'sortorder, code']);
+                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose only one of the following options:"));
+                            $dearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}"]);
 
                             $question['answer'] = "\t<ul class='list-print-answers list-unstyled'>\n";
                             foreach ($dearesult as $dearow) {
@@ -658,12 +681,12 @@ class PrintableSurvey extends SurveyCommonAction
                             $question['answer'] .= "\t</ul>\n";
 
                             $question['answer'] .= "\t<div class=\"comment\">\n\t\t" . gT("Make a comment on your choice here:") . "\n";
-                            $question['answer'] .= "\t\t" . self::inputTypeImage('textarea', gT("Make a comment on your choice here:"), 50, 8) . self::addsgqacode(" (" . $arQuestion['sid'] . "X" . $arQuestion['gid'] . "X" . $arQuestion['qid'] . "comment)") . "\n\t</div>\n";
+                            $question['answer'] .= "\t\t" . self::inputTypeImage('textarea', gT("Make a comment on your choice here:"), 50, 8) . self::addsgqacode(" (" . "Q" . $arQuestion['qid'] . "_Ccomment)") . "\n\t</div>\n";
                             break;
 
                             // ==================================================================
                         case Question::QT_R_RANKING:  // Ranking Type Question
-                            $rearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}", 'order' => 'sortorder, code']);
+                            $rearesult = Question::model()->with('questionl10ns')->findAll(['condition' => "parent_qid={$arQuestion['qid']}"]);
                             $reacount = count($rearesult);
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please number each box in order of preference from 1 to") . " $reacount");
                             $question['type_help'] .= self::minMaxAnswersHelp($qidattributes, $sLanguageCode, $surveyid);
@@ -671,7 +694,7 @@ class PrintableSurvey extends SurveyCommonAction
                             foreach ($rearesult as $rearow) {
                                 $question['answer'] .= "\t<li>\n";
                                 $question['answer'] .= "\t" . self::inputTypeImage('rank') . "\n";
-                                $question['answer'] .= "\t\t" . $rearow->answerl10ns[$sLanguageCode]->answer . self::addsgqacode(" (" . $fieldname . $rearow['code'] . ")") . "\n";
+                                $question['answer'] .= "\t\t" . $rearow->questionl10ns[$sLanguageCode]->question . self::addsgqacode(" (" . $fieldname . $rearow['title'] . ")") . "\n";
                                 $question['answer'] .= "\t</li>\n";
                             }
                             $question['answer'] .= "\n</ul>\n";
@@ -680,7 +703,7 @@ class PrintableSurvey extends SurveyCommonAction
                             // ==================================================================
                         case Question::QT_M_MULTIPLE_CHOICE:
                             $dcols = $qidattributes['display_columns'];
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *all* that apply:"));
+                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose all that apply:"));
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
 
                             $condition = "parent_qid={$arQuestion['qid']}";
@@ -710,7 +733,7 @@ class PrintableSurvey extends SurveyCommonAction
                                 }
                             }
                             if ($arQuestion['other'] == "Y") {
-                                if (trim($qidattributes["printable_help"][$sLanguageCode]) == '') {
+                                if (!isset($qidattributes["printable_help"][$sLanguageCode]) || trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
                                     $qidattributes["printable_help"][$sLanguageCode] = "Other";
                                 }
                                 $question['answer'] .= $wrapper['item-start-other'] . self::inputTypeImage('checkbox', '') . gT($qidattributes["printable_help"][$sLanguageCode]) . ":\n\t\t" . self::inputTypeImage('other') . self::addsgqacode(" (" . $fieldname . "other) ") . $wrapper['item-end'];
@@ -732,8 +755,8 @@ class PrintableSurvey extends SurveyCommonAction
                             foreach ($mearesult as $mearow) {
                                 $longest_string = longestString($mearow->questionl10ns[$sLanguageCode]->question, $longest_string);
                                 $question['answer'] .= "\t<li class='row'>";
-                                $question['answer'] .= "<div class='col-sm-{$aWidth['label']}'>\n\t\t" . self::inputTypeImage('checkbox', $mearow->questionl10ns[$sLanguageCode]->question) . $mearow->questionl10ns[$sLanguageCode]->question . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ") ") . "</div>\n";
-                                $question['answer'] .= "\t\t<div class='col-sm-{$aWidth['answer']}'>" . self::inputTypeImage('text', 'comment box', 50) . self::addsgqacode(" (" . $fieldname . $mearow['title'] . "comment) ") . "</div>\n";
+                                $question['answer'] .= "<div class='col-md-{$aWidth['label']}'>\n\t\t" . self::inputTypeImage('checkbox', $mearow->questionl10ns[$sLanguageCode]->question) . $mearow->questionl10ns[$sLanguageCode]->question . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ") ") . "</div>\n";
+                                $question['answer'] .= "\t\t<div class='col-md-{$aWidth['answer']}'>" . self::inputTypeImage('text', 'comment box', 50) . self::addsgqacode(" (" . $fieldname . $mearow['title'] . "comment) ") . "</div>\n";
                                 $question['answer'] .= "\t</li>\n";
                                 $j++;
                             }
@@ -749,7 +772,7 @@ class PrintableSurvey extends SurveyCommonAction
                             // ==================================================================
                         case Question::QT_Q_MULTIPLE_SHORT_TEXT:  //Multiple short text
                             $aWidth = $this->getColumnWidth($qidattributes['label_input_columns'], $qidattributes['text_input_columns']);
-                            break;
+                            // fallthru
                         case Question::QT_K_MULTIPLE_NUMERICAL:  //MULTIPLE NUMERICAL
                             //~ $question['type_help'] = "";
                             $width = (isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
@@ -770,12 +793,12 @@ class PrintableSurvey extends SurveyCommonAction
                                 $longest_string = longestString($mearow->questionl10ns[$sLanguageCode]->question, $longest_string);
                                 $rowQuestion = $mearow->questionl10ns[$sLanguageCode]->question;
                                 if (isset($qidattributes['slider_layout']) && $qidattributes['slider_layout'] == 1) {
-                                    $rowQuestion = explode(':', $mearow->questionl10ns[$sLanguageCode]->question);
+                                    $rowQuestion = explode(':', (string) $mearow->questionl10ns[$sLanguageCode]->question);
                                     $rowQuestion = $mearow->questionl10ns[$sLanguageCode]->question[0];
                                 }
                                 $question['answer'] .= "\t<li class='row'>\n";
-                                $question['answer'] .= "\t\t<div class='col-sm-{$aWidth['label']}'>" . $rowQuestion . "</div>\n";
-                                $question['answer'] .= "\t\t<div class='col-sm-{$aWidth['answer']}'>" . self::inputTypeImage('text', $rowQuestion, $width, $height) . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ") ") . "</div>\n";
+                                $question['answer'] .= "\t\t<div class='col-md-{$aWidth['label']}'>" . $rowQuestion . "</div>\n";
+                                $question['answer'] .= "\t\t<div class='col-md-{$aWidth['answer']}'>" . self::inputTypeImage('text', $rowQuestion, $width, $height) . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ") ") . "</div>\n";
                                 $question['answer'] .= "\t</li>\n";
                             }
                             $question['answer'] = "\n<ul class='list-print-answers list-unstyled'>\n" . $question['answer'] . "</ul>\n";
@@ -824,7 +847,7 @@ class PrintableSurvey extends SurveyCommonAction
 
                             // ==================================================================
                         case Question::QT_Y_YES_NO_RADIO:  //YES/NO
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *only one* of the following:"));
+                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose only one of the following options:"));
                             $question['answer'] = "\n<ul class='list-print-answers list-unstyled'>\n\t<li>\n\t\t" . self::inputTypeImage('radio', gT('Yes')) . "\n\t\t" . gT('Yes') . self::addsgqacode(" (Y)") . "\n\t</li>\n";
                             $question['answer'] .= "\n\t<li>\n\t\t" . self::inputTypeImage('radio', gT('No')) . "\n\t\t" . gT('No') . self::addsgqacode(" (N)") . "\n\t</li>\n</ul>\n";
                             break;
@@ -835,7 +858,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $condition = "parent_qid = {$arQuestion['qid']}";
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
-                            $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
+                            $answerwidth = (trim((string) $qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
                             $question['answer'] .= "\t\t\t<td style='width:{$answerwidth}%'><span></span></td>\n";
                             for ($i = 1; $i <= 5; $i++) {
@@ -850,8 +873,8 @@ class PrintableSurvey extends SurveyCommonAction
                                 $rowclass = alternation($rowclass, 'row');
 
                                 //semantic differential question type?
-                                if (strpos($mearow->questionl10ns[$sLanguageCode]->question, '|')) {
-                                    $answertext = substr($mearow->questionl10ns[$sLanguageCode]->question, 0, strpos($mearow->questionl10ns[$sLanguageCode]->question, '|')) . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ")") . " ";
+                                if (strpos((string) $mearow->questionl10ns[$sLanguageCode]->question, '|')) {
+                                    $answertext = substr((string) $mearow->questionl10ns[$sLanguageCode]->question, 0, strpos((string) $mearow->questionl10ns[$sLanguageCode]->question, '|')) . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ")") . " ";
                                 } else {
                                     $answertext = $mearow->questionl10ns[$sLanguageCode]->question . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ")");
                                 }
@@ -864,8 +887,8 @@ class PrintableSurvey extends SurveyCommonAction
                                 $answertext .= $mearow->questionl10ns[$sLanguageCode]->question;
 
                                 //semantic differential question type?
-                                if (strpos($mearow->questionl10ns[$sLanguageCode]->question, '|')) {
-                                    $answertext2 = substr($mearow->questionl10ns[$sLanguageCode]->question, strpos($mearow->questionl10ns[$sLanguageCode]->question, '|') + 1);
+                                if (strpos((string) $mearow->questionl10ns[$sLanguageCode]->question, '|')) {
+                                    $answertext2 = substr((string) $mearow->questionl10ns[$sLanguageCode]->question, strpos((string) $mearow->questionl10ns[$sLanguageCode]->question, '|') + 1);
                                     $question['answer'] .= "\t\t\t<th class=\"answertextright\">$answertext2</td>\n";
                                 }
                                 $question['answer'] .= "\t\t</tr>\n";
@@ -878,7 +901,7 @@ class PrintableSurvey extends SurveyCommonAction
                         case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
-                            $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
+                            $answerwidth = (trim((string) $qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
                             $question['answer'] .= "\t\t\t<td style='width:{$answerwidth}%'><span></span></td>\n";
                             for ($i = 1; $i <= 10; $i++) {
@@ -906,7 +929,7 @@ class PrintableSurvey extends SurveyCommonAction
                         case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
-                            $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
+                            $answerwidth = (trim((string) $qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
                             $question['answer'] .= "\t\t\t<td style='width:{$answerwidth}%'><span></span></td>\n";
                             $question['answer'] .= '<th>' . gT("Yes") . self::addsgqacode(" (Y)") . '</th>';
@@ -937,7 +960,7 @@ class PrintableSurvey extends SurveyCommonAction
                         case Question::QT_E_ARRAY_INC_SAME_DEC:  // Array (Increase/Same/Decrease)
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
-                            $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
+                            $answerwidth = (trim((string) $qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
                             $question['answer'] .= "\t\t\t<td style='width:{$answerwidth}%'><span></span></td>\n";
                             $question['answer'] .= '<th>' . gT("Increase") . self::addsgqacode(" (I)") . '</th>';
@@ -974,7 +997,7 @@ class PrintableSurvey extends SurveyCommonAction
 
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
 
-                            $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
+                            $answerwidth = (trim((string) $qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
                             $question['answer'] .= "\t\t\t<td style='width:{$answerwidth}%'><span></span></td>\n";
                             $fresult = Question::model()->findAll(['condition' => "parent_qid='{$arQuestion['qid']}' and scale_id=1", 'order' => 'question_order']);
@@ -999,8 +1022,8 @@ class PrintableSurvey extends SurveyCommonAction
                                 $rowclass = alternation($rowclass, 'row');
 
                                 $answertext = $frow->questionl10ns[$sLanguageCode]->question;
-                                if (strpos($answertext, '|')) {
-                                    $answertext = substr($answertext, 0, strpos($answertext, '|'));
+                                if (strpos((string) $answertext, '|')) {
+                                    $answertext = substr((string) $answertext, 0, strpos((string) $answertext, '|'));
                                 }
                                 $question['answer'] .= "\t\t\t\t\t<th class=\"answertext\">$answertext</th>\n";
                                 //$printablesurveyoutput .="\t\t\t\t\t<td>";
@@ -1014,8 +1037,8 @@ class PrintableSurvey extends SurveyCommonAction
                                     $question['answer'] .= "\t\t\t</td>\n";
                                 }
                                 $answertext = $frow->questionl10ns[$sLanguageCode]->question;
-                                if (strpos($answertext, '|')) {
-                                    $answertext = substr($answertext, strpos($answertext, '|') + 1);
+                                if (strpos((string) $answertext, '|')) {
+                                    $answertext = substr((string) $answertext, strpos((string) $answertext, '|') + 1);
                                     $question['answer'] .= "\t\t\t<th class=\"answertextright\">$answertext</th>\n";
                                 }
                                 $question['answer'] .= "\t\t</tr>\n";
@@ -1029,7 +1052,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $width = (isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
                             $mearesult = Question::model()->findAll("parent_qid='{$arQuestion['qid']}' AND scale_id=0");
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
-                            $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
+                            $answerwidth = (trim((string) $qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
                             $question['answer'] .= "\t\t\t<td style='width:{$answerwidth}%'><span></span></td>\n";
                             $fresult = Question::model()->findAll(['condition' => "parent_qid='{$arQuestion['qid']}' and scale_id=1", 'order' => 'question_order']);
@@ -1053,8 +1076,8 @@ class PrintableSurvey extends SurveyCommonAction
                                 $question['answer'] .= "\t\t<tr class=\"$rowclass\">\n";
                                 $rowclass = alternation($rowclass, 'row');
                                 $answertext = $mearow->questionl10ns[$sLanguageCode]->question;
-                                if (strpos($answertext, '|')) {
-                                    $answertext = substr($answertext, 0, strpos($answertext, '|'));
+                                if (strpos((string) $answertext, '|')) {
+                                    $answertext = substr((string) $answertext, 0, strpos((string) $answertext, '|'));
                                 }
                                 $question['answer'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
 
@@ -1064,8 +1087,8 @@ class PrintableSurvey extends SurveyCommonAction
                                     $question['answer'] .= "\t\t\t</td>\n";
                                 }
                                 $answertext = $mearow->questionl10ns[$sLanguageCode]->question;
-                                if (strpos($answertext, '|')) {
-                                    $answertext = substr($answertext, strpos($answertext, '|') + 1);
+                                if (strpos((string) $answertext, '|')) {
+                                    $answertext = substr((string) $answertext, strpos((string) $answertext, '|') + 1);
                                     $question['answer'] .= "\t\t\t\t<th class=\"answertextright\">$answertext</th>\n";
                                 }
                                 $question['answer'] .= "\t\t</tr>\n";
@@ -1079,14 +1102,14 @@ class PrintableSurvey extends SurveyCommonAction
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
 
-                            $fresult = Answer::model()->findAll(['condition' => "scale_id=0 AND qid='{$arQuestion['qid']}'", 'order' => 'sortorder, code']);
+                            $fresult = Answer::model()->findAll(['condition' => "scale_id=0 AND qid='{$arQuestion['qid']}'"]);
                             $fcount = count($fresult);
                             $i = 1;
                             $column_headings = array();
                             foreach ($fresult as $frow) {
                                 $column_headings[] = $frow->answerl10ns[$sLanguageCode]->answer . self::addsgqacode(" (" . $frow['code'] . ")");
                             }
-                            if (trim($qidattributes['answer_width']) != '') {
+                            if (trim((string) $qidattributes['answer_width']) != '') {
                                 $iAnswerWidth = 100 - $qidattributes['answer_width'];
                             } else {
                                 $iAnswerWidth = 77;
@@ -1096,7 +1119,7 @@ class PrintableSurvey extends SurveyCommonAction
                             } else {
                                 $heading = '';
                             }
-                            $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
+                            $answerwidth = (trim((string) $qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
                             $question['answer'] .= "\t\t\t<td style='width:{$answerwidth}%'><span></span></td>\n";
                             foreach ($column_headings as $heading) {
@@ -1113,8 +1136,8 @@ class PrintableSurvey extends SurveyCommonAction
                                 $rowclass = alternation($rowclass, 'row');
 
                                 //semantic differential question type?
-                                if (strpos($mearow->questionl10ns[$sLanguageCode]->question, '|')) {
-                                    $answertext = substr($mearow->questionl10ns[$sLanguageCode]->question, 0, strpos($mearow->questionl10ns[$sLanguageCode]->question, '|')) . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ")") . " ";
+                                if (strpos((string) $mearow->questionl10ns[$sLanguageCode]->question, '|')) {
+                                    $answertext = substr((string) $mearow->questionl10ns[$sLanguageCode]->question, 0, strpos((string) $mearow->questionl10ns[$sLanguageCode]->question, '|')) . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ")") . " ";
                                 } else {
                                     $answertext = $mearow->questionl10ns[$sLanguageCode]->question . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ")");
                                 }
@@ -1129,8 +1152,8 @@ class PrintableSurvey extends SurveyCommonAction
                                 $answertext = $mearow->questionl10ns[$sLanguageCode]->question;
 
                                 //semantic differential question type?
-                                if (strpos($mearow->questionl10ns[$sLanguageCode]->question, '|')) {
-                                    $answertext2 = substr($mearow->questionl10ns[$sLanguageCode]->question, strpos($mearow->questionl10ns[$sLanguageCode]->question, '|') + 1);
+                                if (strpos((string) $mearow->questionl10ns[$sLanguageCode]->question, '|')) {
+                                    $answertext2 = substr((string) $mearow->questionl10ns[$sLanguageCode]->question, strpos((string) $mearow->questionl10ns[$sLanguageCode]->question, '|') + 1);
                                     $question['answer'] .= "\t\t\t<th class=\"answertextright\">$answertext2</th>\n";
                                 }
                                 $question['answer'] .= "\t\t</tr>\n";
@@ -1146,11 +1169,11 @@ class PrintableSurvey extends SurveyCommonAction
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
 
-                            $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
+                            $answerwidth = (trim((string) $qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
 
                             $condition = "qid={$arQuestion['qid']} AND scale_id=0";
-                            $fresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
+                            $fresult = Answer::model()->findAll(['condition' => $condition]);
                             $fcount = count($fresult);
 
                             $l1 = 0;
@@ -1165,7 +1188,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $printablesurveyoutput2 .= "\t\t\t<td><span></span></td>\n";
                              //$fquery1 = "SELECT * FROM {{answers}} WHERE qid='{$deqrow['qid']}'  AND language='{$sLanguageCode}' AND scale_id=1 ORDER BY sortorder, code";
                             // $fresult1 = Yii::app()->db->createCommand($fquery1)->query();
-                            $fresult1 = Answer::model()->findAll(['condition' => "qid='{$arQuestion['qid']}' AND scale_id=1", 'order' => 'sortorder, code']);
+                            $fresult1 = Answer::model()->findAll(['condition' => "qid='{$arQuestion['qid']}' AND scale_id=1"]);
                             $fcount1 = count($fresult1);
                             $l2 = 0;
 
@@ -1220,8 +1243,8 @@ class PrintableSurvey extends SurveyCommonAction
                                 }
 
                                 $answertext = $mearow->questionl10ns[$sLanguageCode]->question;
-                                if (strpos($answertext, '|')) {
-                                    $answertext = substr($answertext, strpos($answertext, '|') + 1);
+                                if (strpos((string) $answertext, '|')) {
+                                    $answertext = substr((string) $answertext, strpos((string) $answertext, '|') + 1);
                                     $question['answer'] .= "\t\t\t<th class=\"answertextright\">$answertext</th>\n";
                                 }
                                 $question['answer'] .= "\t\t</tr>\n";
@@ -1238,7 +1261,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $fresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);
 
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
-                            $answerwidth = (trim($qidattributes['answer_width_bycolumn']) != '') ? $qidattributes['answer_width_bycolumn'] : 33;
+                            $answerwidth = (trim((string) $qidattributes['answer_width_bycolumn']) != '') ? $qidattributes['answer_width_bycolumn'] : 33;
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
                             $question['answer'] .= "\t\t\t<td style='width:{$answerwidth}%'><span></span></td>\n";
 
@@ -1252,7 +1275,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $a = 1;
                             $rowclass = 'ls-odd';
 
-                            $mearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']} AND scale_id=0", 'order' => 'sortorder,code']);
+                            $mearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']} AND scale_id=0"]);
                             foreach ($mearesult as $mearow) {
                                 //$_POST['type']=$type;
                                 $question['answer'] .= "\t\t<tr class=\"$rowclass\">\n";
@@ -1300,8 +1323,8 @@ class PrintableSurvey extends SurveyCommonAction
     /**
      * A poor mans templating system.
      *
-     *     $template    template filename (path is privided by config.php)
-     *     $input        a key => value array containg all the stuff to be put into the template
+     *     $template    template filename (path is provided by config.php)
+     *     $input        a key => value array containing all the stuff to be put into the template
      *     $line         for debugging purposes only.
      *
      * Returns a formatted string containing template with
@@ -1350,7 +1373,7 @@ class PrintableSurvey extends SurveyCommonAction
 
         /* How di this work ? */
         if (!empty($title)) {
-            $div_title = ' title="' . htmlspecialchars($title) . '"';
+            $div_title = ' title="' . htmlspecialchars((string) $title) . '"';
         } else {
             $div_title = '';
         }
@@ -1438,7 +1461,7 @@ class PrintableSurvey extends SurveyCommonAction
         );
     }
 
-    private function starReplace($input)
+    private function starReplace(string $input)
     {
         return preg_replace(
             '/\*(.*)\*/U',
@@ -1454,7 +1477,7 @@ class PrintableSurvey extends SurveyCommonAction
     {
         $output = "";
         if (!empty($qidattributes['array_filter'])) {
-            $aFilter = explode(';', $qidattributes['array_filter']);
+            $aFilter = explode(';', (string) $qidattributes['array_filter']);
             $output .= "\n<div class='extrahelp'>";
             foreach ($aFilter as $sFilter) {
                 $oQuestion = Question::model()->findByAttributes(array('title' => $sFilter, 'sid' => $surveyid));
@@ -1467,7 +1490,7 @@ class PrintableSurvey extends SurveyCommonAction
             $output .= "</div>\n";
         }
         if (!empty($qidattributes['array_filter'])) {
-            $aFilter = explode(';', $qidattributes['array_filter']);
+            $aFilter = explode(';', (string) $qidattributes['array_filter']);
             $output .= "\n<div class='extrahelp'>";
             foreach ($aFilter as $sFilter) {
                 $oQuestion = Question::model()->findByAttributes(array('title' => $sFilter, 'sid' => $surveyid));

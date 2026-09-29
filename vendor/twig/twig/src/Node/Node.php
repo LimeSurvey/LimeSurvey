@@ -12,6 +12,7 @@
 
 namespace Twig\Node;
 
+use Twig\Attribute\YieldReady;
 use Twig\Compiler;
 use Twig\Source;
 
@@ -19,256 +20,293 @@ use Twig\Source;
  * Represents a node in the AST.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @implements \IteratorAggregate<int|string, Node>
  */
-class Node implements \Twig_NodeInterface
+#[YieldReady]
+class Node implements \Countable, \IteratorAggregate
 {
+    /**
+     * @var array<string|int, Node>
+     */
     protected $nodes;
     protected $attributes;
     protected $lineno;
     protected $tag;
 
-    private $name;
     private $sourceContext;
+    private ?string $documentation = null;
+    /** @var array<string, NameDeprecation> */
+    private $nodeNameDeprecations = [];
+    /** @var array<string, NameDeprecation> */
+    private $attributeNameDeprecations = [];
 
     /**
-     * @param array  $nodes      An array of named nodes
-     * @param array  $attributes An array of attributes (should not be nodes)
-     * @param int    $lineno     The line number
-     * @param string $tag        The tag name associated with the Node
+     * @param array<string|int, Node> $nodes      An array of named nodes
+     * @param array                   $attributes An array of attributes (should not be nodes)
+     * @param int                     $lineno     The line number
      */
-    public function __construct(array $nodes = [], array $attributes = [], $lineno = 0, $tag = null)
+    public function __construct(array $nodes = [], array $attributes = [], int $lineno = 0)
     {
+        if (self::class === static::class) {
+            trigger_deprecation('twig/twig', '3.15', \sprintf('Instantiating "%s" directly is deprecated; the class will become abstract in 4.0.', self::class));
+        }
+
         foreach ($nodes as $name => $node) {
-            if (!$node instanceof \Twig_NodeInterface) {
-                @trigger_error(sprintf('Using "%s" for the value of node "%s" of "%s" is deprecated since version 1.25 and will be removed in 2.0.', \is_object($node) ? \get_class($node) : (null === $node ? 'null' : \gettype($node)), $name, static::class), E_USER_DEPRECATED);
+            if (!$node instanceof self) {
+                throw new \InvalidArgumentException(\sprintf('Using "%s" for the value of node "%s" of "%s" is not supported. You must pass a \Twig\Node\Node instance.', get_debug_type($node), $name, static::class));
             }
         }
         $this->nodes = $nodes;
         $this->attributes = $attributes;
         $this->lineno = $lineno;
-        $this->tag = $tag;
+
+        if (\func_num_args() > 3) {
+            trigger_deprecation('twig/twig', '3.12', \sprintf('The "tag" constructor argument of the "%s" class is deprecated and ignored (check which TokenParser class set it to "%s"), the tag is now automatically set by the Parser when needed.', static::class, func_get_arg(3) ?: 'null'));
+        }
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        $attributes = [];
-        foreach ($this->attributes as $name => $value) {
-            $attributes[] = sprintf('%s: %s', $name, str_replace("\n", '', var_export($value, true)));
+        $repr = static::class;
+
+        if ($this->tag) {
+            $repr .= \sprintf("\n  tag: %s", $this->tag);
         }
 
-        $repr = [static::class.'('.implode(', ', $attributes)];
+        if (null !== $this->documentation) {
+            $repr .= \sprintf("\n  documentation: %s", str_replace("\n", '\\n', $this->documentation));
+        }
+
+        $attributes = [];
+        foreach ($this->attributes as $name => $value) {
+            if (\is_callable($value)) {
+                $v = '\Closure';
+            } elseif ($value instanceof \Stringable) {
+                $v = (string) $value;
+            } else {
+                $v = str_replace("\n", '', var_export($value, true));
+            }
+            $attributes[] = \sprintf('%s: %s', $name, $v);
+        }
+
+        if ($attributes) {
+            $repr .= \sprintf("\n  attributes:\n    %s", implode("\n    ", $attributes));
+        }
 
         if (\count($this->nodes)) {
+            $repr .= "\n  nodes:";
             foreach ($this->nodes as $name => $node) {
-                $len = \strlen($name) + 4;
+                $len = \strlen($name) + 6;
                 $noderepr = [];
                 foreach (explode("\n", (string) $node) as $line) {
                     $noderepr[] = str_repeat(' ', $len).$line;
                 }
 
-                $repr[] = sprintf('  %s: %s', $name, ltrim(implode("\n", $noderepr)));
+                $repr .= \sprintf("\n    %s: %s", $name, ltrim(implode("\n", $noderepr)));
             }
-
-            $repr[] = ')';
-        } else {
-            $repr[0] .= ')';
         }
 
-        return implode("\n", $repr);
+        return $repr;
+    }
+
+    public function __clone()
+    {
+        foreach ($this->nodes as $name => $node) {
+            $this->nodes[$name] = clone $node;
+        }
     }
 
     /**
-     * @deprecated since 1.16.1 (to be removed in 2.0)
+     * @return void
      */
-    public function toXml($asDom = false)
-    {
-        @trigger_error(sprintf('%s is deprecated since version 1.16.1 and will be removed in 2.0.', __METHOD__), E_USER_DEPRECATED);
-
-        $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom->formatOutput = true;
-        $dom->appendChild($xml = $dom->createElement('twig'));
-
-        $xml->appendChild($node = $dom->createElement('node'));
-        $node->setAttribute('class', static::class);
-
-        foreach ($this->attributes as $name => $value) {
-            $node->appendChild($attribute = $dom->createElement('attribute'));
-            $attribute->setAttribute('name', $name);
-            $attribute->appendChild($dom->createTextNode($value));
-        }
-
-        foreach ($this->nodes as $name => $n) {
-            if (null === $n) {
-                continue;
-            }
-
-            $child = $n->toXml(true)->getElementsByTagName('node')->item(0);
-            $child = $dom->importNode($child, true);
-            $child->setAttribute('name', $name);
-
-            $node->appendChild($child);
-        }
-
-        return $asDom ? $dom : $dom->saveXML();
-    }
-
     public function compile(Compiler $compiler)
     {
         foreach ($this->nodes as $node) {
-            $node->compile($compiler);
+            $compiler->subcompile($node);
         }
     }
 
-    public function getTemplateLine()
+    public function getTemplateLine(): int
     {
         return $this->lineno;
     }
 
-    /**
-     * @deprecated since 1.27 (to be removed in 2.0)
-     */
-    public function getLine()
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0. Use getTemplateLine() instead.', E_USER_DEPRECATED);
-
-        return $this->lineno;
-    }
-
-    public function getNodeTag()
+    public function getNodeTag(): ?string
     {
         return $this->tag;
     }
 
+    public function getDocumentation(): ?string
+    {
+        return $this->documentation;
+    }
+
     /**
-     * @return bool
+     * @internal
      */
-    public function hasAttribute($name)
+    public function setDocumentation(?string $documentation): void
+    {
+        $this->documentation = $documentation;
+    }
+
+    /**
+     * @internal
+     */
+    public function setNodeTag(string $tag): void
+    {
+        if ($this->tag) {
+            throw new \LogicException('The tag of a node can only be set once.');
+        }
+
+        $this->tag = $tag;
+    }
+
+    public function hasAttribute(string $name): bool
     {
         return \array_key_exists($name, $this->attributes);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAttribute($name)
+    public function getAttribute(string $name)
     {
         if (!\array_key_exists($name, $this->attributes)) {
-            throw new \LogicException(sprintf('Attribute "%s" does not exist for Node "%s".', $name, static::class));
+            throw new \LogicException(\sprintf('Attribute "%s" does not exist for Node "%s".', $name, static::class));
+        }
+
+        $triggerDeprecation = \func_num_args() > 1 ? func_get_arg(1) : true;
+        if ($triggerDeprecation && isset($this->attributeNameDeprecations[$name])) {
+            $dep = $this->attributeNameDeprecations[$name];
+            if ($dep->getNewName()) {
+                trigger_deprecation($dep->getPackage(), $dep->getVersion(), 'Getting attribute "%s" on a "%s" class is deprecated, get the "%s" attribute instead.', $name, static::class, $dep->getNewName());
+            } else {
+                trigger_deprecation($dep->getPackage(), $dep->getVersion(), 'Getting attribute "%s" on a "%s" class is deprecated.', $name, static::class);
+            }
         }
 
         return $this->attributes[$name];
     }
 
-    /**
-     * @param string $name
-     * @param mixed  $value
-     */
-    public function setAttribute($name, $value)
+    public function setAttribute(string $name, $value): void
     {
+        $triggerDeprecation = \func_num_args() > 2 ? func_get_arg(2) : true;
+        if ($triggerDeprecation && isset($this->attributeNameDeprecations[$name])) {
+            $dep = $this->attributeNameDeprecations[$name];
+            if ($dep->getNewName()) {
+                trigger_deprecation($dep->getPackage(), $dep->getVersion(), 'Setting attribute "%s" on a "%s" class is deprecated, set the "%s" attribute instead.', $name, static::class, $dep->getNewName());
+            } else {
+                trigger_deprecation($dep->getPackage(), $dep->getVersion(), 'Setting attribute "%s" on a "%s" class is deprecated.', $name, static::class);
+            }
+        }
+
         $this->attributes[$name] = $value;
     }
 
-    public function removeAttribute($name)
+    public function deprecateAttribute(string $name, NameDeprecation $dep): void
+    {
+        $this->attributeNameDeprecations[$name] = $dep;
+    }
+
+    public function removeAttribute(string $name): void
     {
         unset($this->attributes[$name]);
     }
 
     /**
-     * @return bool
+     * @param string|int $name
      */
-    public function hasNode($name)
+    public function hasNode(string $name): bool
     {
-        return \array_key_exists($name, $this->nodes);
+        return isset($this->nodes[$name]);
     }
 
     /**
-     * @return Node
+     * @param string|int $name
      */
-    public function getNode($name)
+    public function getNode(string $name): self
     {
-        if (!\array_key_exists($name, $this->nodes)) {
-            throw new \LogicException(sprintf('Node "%s" does not exist for Node "%s".', $name, static::class));
+        if (!isset($this->nodes[$name])) {
+            throw new \LogicException(\sprintf('Node "%s" does not exist for Node "%s".', $name, static::class));
+        }
+
+        $triggerDeprecation = \func_num_args() > 1 ? func_get_arg(1) : true;
+        if ($triggerDeprecation && isset($this->nodeNameDeprecations[$name])) {
+            $dep = $this->nodeNameDeprecations[$name];
+            if ($dep->getNewName()) {
+                trigger_deprecation($dep->getPackage(), $dep->getVersion(), 'Getting node "%s" on a "%s" class is deprecated, get the "%s" node instead.', $name, static::class, $dep->getNewName());
+            } else {
+                trigger_deprecation($dep->getPackage(), $dep->getVersion(), 'Getting node "%s" on a "%s" class is deprecated.', $name, static::class);
+            }
         }
 
         return $this->nodes[$name];
     }
 
-    public function setNode($name, $node = null)
+    /**
+     * @param string|int $name
+     */
+    public function setNode(string $name, self $node): void
     {
-        if (!$node instanceof \Twig_NodeInterface) {
-            @trigger_error(sprintf('Using "%s" for the value of node "%s" of "%s" is deprecated since version 1.25 and will be removed in 2.0.', \is_object($node) ? \get_class($node) : (null === $node ? 'null' : \gettype($node)), $name, static::class), E_USER_DEPRECATED);
+        $triggerDeprecation = \func_num_args() > 2 ? func_get_arg(2) : true;
+        if ($triggerDeprecation && isset($this->nodeNameDeprecations[$name])) {
+            $dep = $this->nodeNameDeprecations[$name];
+            if ($dep->getNewName()) {
+                trigger_deprecation($dep->getPackage(), $dep->getVersion(), 'Setting node "%s" on a "%s" class is deprecated, set the "%s" node instead.', $name, static::class, $dep->getNewName());
+            } else {
+                trigger_deprecation($dep->getPackage(), $dep->getVersion(), 'Setting node "%s" on a "%s" class is deprecated.', $name, static::class);
+            }
         }
 
+        if (null !== $this->sourceContext) {
+            $node->setSourceContext($this->sourceContext);
+        }
         $this->nodes[$name] = $node;
     }
 
-    public function removeNode($name)
+    /**
+     * @param string|int $name
+     */
+    public function removeNode(string $name): void
     {
         unset($this->nodes[$name]);
     }
 
+    /**
+     * @param string|int $name
+     */
+    public function deprecateNode(string $name, NameDeprecation $dep): void
+    {
+        $this->nodeNameDeprecations[$name] = $dep;
+    }
+
+    /**
+     * @return int
+     */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return \count($this->nodes);
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->nodes);
     }
 
-    public function setTemplateName($name)
+    public function getTemplateName(): ?string
     {
-        $this->name = $name;
-        foreach ($this->nodes as $node) {
-            if (null !== $node) {
-                $node->setTemplateName($name);
-            }
-        }
+        return $this->sourceContext ? $this->sourceContext->getName() : null;
     }
 
-    public function getTemplateName()
-    {
-        return $this->name;
-    }
-
-    public function setSourceContext(Source $source)
+    public function setSourceContext(Source $source): void
     {
         $this->sourceContext = $source;
         foreach ($this->nodes as $node) {
-            if ($node instanceof self) {
-                $node->setSourceContext($source);
-            }
+            $node->setSourceContext($source);
         }
     }
 
-    public function getSourceContext()
+    public function getSourceContext(): ?Source
     {
         return $this->sourceContext;
     }
-
-    /**
-     * @deprecated since 1.27 (to be removed in 2.0)
-     */
-    public function setFilename($name)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0. Use setTemplateName() instead.', E_USER_DEPRECATED);
-
-        $this->setTemplateName($name);
-    }
-
-    /**
-     * @deprecated since 1.27 (to be removed in 2.0)
-     */
-    public function getFilename()
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0. Use getTemplateName() instead.', E_USER_DEPRECATED);
-
-        return $this->name;
-    }
 }
-
-class_alias('Twig\Node\Node', 'Twig_Node');
-
-// Ensure that the aliased name is loaded to keep BC for classes implementing the typehint with the old aliased name.
-class_exists('Twig\Compiler');

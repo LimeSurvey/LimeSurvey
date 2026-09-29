@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="8"
+    reportMixedIssues="false"
+    useDocblockTypes="false"
+    findUnusedBaselineEntry="false"
+    findUnusedCode="false"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    autoloader="tests/phpstan/phpstan_bootstrap.php"
+>
+    <issueHandlers>
+        <UndefinedDocblockClass errorLevel="suppress" />
+        <UndefinedClass errorLevel="suppress" />
+        <EmptyArrayAccess errorLevel="suppress" />
+        <UndefinedConstant errorLevel="suppress" />
+        <ParadoxicalCondition errorLevel="suppress" />
+        <InvalidStaticInvocation errorLevel="suppress" />
+        <UndefinedGlobalVariable errorLevel="suppress" />
+        <NoValue errorLevel="suppress" />
+        <UnusedClass errorLevel="suppress" />
+        <UnsupportedPropertyReferenceUsage errorLevel="suppress" />
+        <!-- New in Psalm 6, wants the PHP 8.3 #[\Override] attribute added to
+             every overriding method (~1500 hits codebase-wide). A style/
+             annotation nag, not a correctness issue; out of scope here. -->
+        <MissingOverrideAttribute errorLevel="suppress" />
+    </issueHandlers>
+    <projectFiles>
+        <directory name="application/" />
+        <ignoreFiles>
+            <directory name="vendor" />
+            <directory name="assets/packages/pchart" />
+            <directory name="application/views" />
+            <directory name="application/tests" />
+            <directory name="application/libraries/*/views" />
+            <directory name="application/core/plugins/*/views" />
+            <directory name="application/core/plugins/*/vendor" />
+            <directory name="application/extensions/*/views" />
+            <directory name="application/extensions/admin/*/views" />
+            <directory name="application/extensions/admin/grid/*/views" />
+            <directory name="application/extensions/admin/survey/*/views" />
+            <directory name="application/extensions/admin/survey/question/*/views" />
+            <directory name="application/extensions/*/*/*/views" />
+            <file name="application/libraries/simpletester.php" />
+            <file name="application/libraries/admin/quexmlpdf.php" />
+            <file name="application/libraries/admin/pdf.php" />
+            <file name="application/libraries/jsonRPCClient.php" />
+            <file name="application/core/plugins/TwoFactorAdminLogin/helper/phpqrcode.php" />
+        </ignoreFiles>
+    </projectFiles>
+</psalm>

@@ -18,13 +18,13 @@ class OtherGeneralOption extends GeneralOption
         $this->formElement = new FormElement(
             'other',
             null,
-            gT('Activate the "other" option for your question'),
+            gT('Activate the "other" option for your question', 'unescaped'),
             $question->other,
             [
                 'classes' => [],
                 'options' => [
-                    new SwitchOption(gt('Off'), 'N'),
-                    new SwitchOption(gt('On'), 'Y')
+                    new SwitchOption(gT('Off'), 'N'),
+                    new SwitchOption(gT('On'), 'Y')
                 ]
             ]
         );

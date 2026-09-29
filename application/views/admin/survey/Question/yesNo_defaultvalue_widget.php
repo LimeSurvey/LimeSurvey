@@ -15,85 +15,82 @@
      * For this feature you need editDefaultvalues.php, database.php, adminstyle.css
      */
 
-    class yesNo_defaultvalue_widget extends CWidget
+class yesNo_defaultvalue_widget extends CWidget
+{
+    public $widgetOptions;
+
+    //init() method is called automatically before all others
+    public function init()
     {
-        public $widgetOptions;
+        /*you can set initial default values and other stuff here.
+         * it's also a good place to register any CSS or Javascript your
+         * widget may need. */
+    }
 
-        //init() method is called automatically before all others
-        public function init()
-        {
-            /*you can set initial default values and other stuff here.
-             * it's also a good place to register any CSS or Javascript your
-             * widget may need. */
+    public function run()
+    {
 
-        }
+        $questionrow = $this->widgetOptions['questionrow'];
+        $langopts = $this->widgetOptions['langopts'];
+        $language = $this->widgetOptions['language'];
+        $defaultValues =  $this->widgetOptions['langopts'][$language][$questionrow['type']][0] ?? null;
 
-        public function run()
-        {
+        $elementId = $this->widgetOptions['elementId'] ?? null;
+        $emElementId = $this->widgetOptions['emElementId'] ?? null;
 
-            $questionrow = $this->widgetOptions['questionrow'];
-            $langopts = $this->widgetOptions['langopts'];
-            $language = $this->widgetOptions['language'];
-            $defaultValues =  $this->widgetOptions['langopts'][$language][$questionrow['type']][0] ?? null;
+        $emfield_css = '';
+        $emValue = '';
+        $select = '';
+        $sEmfield_css_class = '';
 
-            $elementId = isset($this->widgetOptions['elementId']) ? $this->widgetOptions['elementId'] : null;
-            $emElementId = isset($this->widgetOptions['emElementId']) ? $this->widgetOptions['emElementId'] : null;
-
-            $emfield_css = '';
-            $emValue = '';
-            $select = '';
-            $sEmfield_css_class = '';
-
-            // prepare variables for prefilling the form
-            if(!is_null ($defaultValues))
-            {
-                $sDefaultValue = $defaultValues;
-                if(($sDefaultValue == 'N') || ($sDefaultValue == 'Y') || ($sDefaultValue == '') ){ //|| 'Y' || NULL)){
+        // prepare variables for prefilling the form
+        if (!is_null($defaultValues)) {
+            $sDefaultValue = $defaultValues;
+            if (($sDefaultValue == 'N') || ($sDefaultValue == 'Y') || ($sDefaultValue == '')) { //|| 'Y' || NULL)){
                 $select = $defaultValues;
-            }else{
+            } else {
                 $select = 'EM';
                 $emValue = $defaultValues;
             }
+        }
+
+        if ($questionrow['type'] == Question::QT_Y_YES_NO_RADIO) { // do we need this?
+            if (empty($elementId)) {
+                $elementId = 'defaultanswerscale_0_' . $language;
             }
 
-            if($questionrow['type'] == Question::QT_Y_YES_NO_RADIO) // do we need this?
-            {
-                if (empty($elementId)) {
-                    $elementId = 'defaultanswerscale_0_' . $language;
-                }
+            if (empty($emElementId)) {
+                $emElementId = $elementId . '_EM';
+            }
 
-                if (empty($emElementId)) {
-                    $emElementId = $elementId . '_EM';
-                }
+            $aList = array(
+                'N'    => gT('No', 'unescaped'),
+                'Y'    => gT('Yes', 'unescaped'),
+                'EM'   => gT('EM value', 'unescaped')
+            );
 
-                $aList = array(
-                    'N'    => gT('No','unescaped'),
-                    'Y'    => gT('Yes','unescaped'),
-                    'EM'   => gT('EM value','unescaped')
-                );
-
-                $aHtmlOptions = array(
-                    'empty'    => gT('<No default value>'),
-                    'class'    => $elementId . ' form-control',
-                    'onchange' => '// show EM Value Field
+            $aHtmlOptions = array(
+                'empty'    => gT('(No default value)'),
+                'class'    => $elementId . ' form-control',
+                'onchange' => '// show EM Value Field
                                    if ($(this).val() == "EM"){
-                                       $("#"+$(this).closest("select").attr("id")+ "_EM").removeClass("hide");
+                                       $("#"+$(this).closest("select").attr("id")+ "_EM").removeClass("d-none");
                                    }else{
-                                       $("#"+$(this).closest("select").attr("id")+ "_EM").addClass("hide");} '
-                );
+                                       $("#"+$(this).closest("select").attr("id")+ "_EM").addClass("d-none");} '
+            );
 
-                echo CHtml::dropDownList($elementId, $select, $aList, $aHtmlOptions);
+            echo CHtml::dropDownList($elementId, $select, $aList, $aHtmlOptions);
 
-                // textfield preparation
-                if(empty($defaultValues) ||  $defaultValues == 'Y')
-                {
-                    $sEmfield_css_class = 'hide';
-                }
-                echo CHtml::textField ($emElementId, $emValue, array(
-                        'id'    => $emElementId,
-                        'class' => 'form-control ' . $sEmfield_css_class,
-                        'width' => 100
-                    ));
+            // textfield preparation
+            if (empty($defaultValues) ||  $defaultValues == 'Y') {
+                $sEmfield_css_class = 'd-none';
             }
+            // The onchange handler above finds the EM field by the select's id + "_EM"
+            echo CHtml::textField($emElementId, $emValue, array(
+                    'id'    => CHtml::getIdByName($elementId) . '_EM',
+                    'class' => 'form-control ' . $sEmfield_css_class,
+                    'width' => 100
+                ));
         }
     }
+}

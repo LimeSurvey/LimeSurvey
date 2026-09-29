@@ -4,7 +4,6 @@ namespace LimeSurvey\PluginManager;
 
 interface iPluginStorage
 {
-
     /**
      * Returns plugin data.
      * @param object $plugin The plugin object getting its data.

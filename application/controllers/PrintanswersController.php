@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -36,7 +36,7 @@ class PrintanswersController extends LSYii_Controller
      * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $printableexport='pdf'.
      * @param mixed $surveyid
      * @param bool $printableexport
-     * @return
+     * @return void
      */
     public function actionView($surveyid, $printableexport = false)
     {
@@ -48,15 +48,15 @@ class PrintanswersController extends LSYii_Controller
 
         Yii::app()->loadHelper('database');
 
-        if (isset($_SESSION['survey_' . $iSurveyID]['sid'])) {
-            $iSurveyID = $_SESSION['survey_' . $iSurveyID]['sid'];
+        if (isset($_SESSION['responses_' . $iSurveyID]['sid'])) {
+            $iSurveyID = $_SESSION['responses_' . $iSurveyID]['sid'];
         } else {
             //die('Invalid survey/session');
         }
         // Get the survey inforamtion
         // Set the language for dispay
-        if (isset($_SESSION['survey_' . $iSurveyID]['s_lang'])) {
-            $sLanguage = $_SESSION['survey_' . $iSurveyID]['s_lang'];
+        if (isset($_SESSION['responses_' . $iSurveyID]['s_lang'])) {
+            $sLanguage = $_SESSION['responses_' . $iSurveyID]['s_lang'];
         } elseif ($survey) {
             // survey exist
             {
@@ -76,7 +76,7 @@ class PrintanswersController extends LSYii_Controller
         //Yii::app()->clientScript->registerPackage( 'survey-template' );
 
         //Survey is not finished or don't exist
-        if (!isset($_SESSION['survey_' . $iSurveyID]['srid'])) {
+        if (!isset($_SESSION['responses_' . $iSurveyID]['srid'])) {
             //display "sorry but your session has expired"
             $this->sTemplate = $oTemplate->sTemplateName;
             $error = $this->renderPartial("/survey/system/errorWarning", array(
@@ -103,7 +103,7 @@ class PrintanswersController extends LSYii_Controller
             // App()->end();
         }
         //Fin session time out
-        $sSRID = $_SESSION['survey_' . $iSurveyID]['srid']; //I want to see the answers with this id
+        $sSRID = $_SESSION['responses_' . $iSurveyID]['srid']; //I want to see the answers with this id
         //Ensure script is not run directly, avoid path disclosure
         //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
 
@@ -139,6 +139,7 @@ class PrintanswersController extends LSYii_Controller
         if (empty($sExportType)) {
             Yii::app()->setLanguage($sLanguage);
             $aData['aSurveyInfo']['include_content'] = 'printanswers';
+            $aData['aSurveyInfo']['trackUrlPageName'] = 'printanswers';
             Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, false);
         } elseif ($sExportType == 'pdf') {
             // Get images for TCPDF from template directory
@@ -162,27 +163,28 @@ class PrintanswersController extends LSYii_Controller
 
             $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, true);
             //filter all scripts
-            $html = preg_replace("/<script>[^<]*<\/script>/", '', $html);
+            $html = preg_replace("/<script>[^<]*<\/script>/", '', (string) $html);
             //replace fontawesome icons
-            $html = preg_replace('/(<i class="fa fa-check-square-o"><\/i>|<i class="fa fa-close"><\/i>)/', '[X]', $html);
-            $html = preg_replace('/<i class="fa fa-minus-square-o">\<\/i>/', '[-]', $html);
-            $html = preg_replace('/<i class="fa fa-square-o"><\/i>/', '[ ]', $html);
-            $html = preg_replace('/<i class="fa fa-plus"><\/i>/', '+', $html);
-            $html = preg_replace('/<i class="fa fa-circle"><\/i>/', '|', $html);
-            $html = preg_replace('/<i class="fa fa-minus"><\/i>/', '-', $html);
+            $html = preg_replace('/(<i class="ri-checkbox-line"><\/i>|<i class="ri-close-fill"><\/i>)/', '[X]', $html);
+            $html = preg_replace('/<i class="ri-checkbox-indeterminate-line">\<\/i>/', '[-]', $html);
+            $html = preg_replace('/<i class="ri-checkbox-blank-line"><\/i>/', '[ ]', $html);
+            $html = preg_replace('/<i class="ri-add-line"><\/i>/', '+', $html);
+            $html = preg_replace('/<i class="ri-checkbox-blank-circle-fill"><\/i>/', '|', $html);
+            $html = preg_replace('/<i class="ri-subtract-fill"><\/i>/', '-', $html);
 
             $oPDF->writeHTML($html, true, false, true, false, '');
 
             header("Cache-Control: must-revalidate, no-store, no-cache"); // Don't store in cache because it is sensitive data
 
             $sExportFileName = sanitize_filename($sSurveyName);
-            $oPDF->Output($sExportFileName . "-" . $iSurveyID . ".pdf", "D");
+            $oPDF->write_out($sExportFileName . "-" . $iSurveyID . ".pdf");
             LimeExpressionManager::FinishProcessingGroup();
             LimeExpressionManager::FinishProcessingPage();
         } elseif ($sExportType == 'quexmlpdf') {
             Yii::import("application.libraries.admin.quexmlpdf", true);
 
             $quexmlpdf = new quexmlpdf();
+            $quexmlpdf->applyGlobalSettings();
 
             // Setting the selected language for printout
             App()->setLanguage($sLanguage);
@@ -193,12 +195,12 @@ class PrintanswersController extends LSYii_Controller
 
             Yii::app()->loadHelper('export');
 
-            $quexml = quexml_export($iSurveyID, $sLanguage, $sSRID);
+            $quexml = quexml_export($iSurveyID, $sLanguage, $sSRID, true);
 
             $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
 
             $sExportFileName = sanitize_filename($sSurveyName);
-            $quexmlpdf->Output($sExportFileName . "-" . $iSurveyID . "-queXML.pdf", 'D');
+            $quexmlpdf->write_out($sExportFileName . "-" . $iSurveyID . "-queXML.pdf");
         }
     }
 }

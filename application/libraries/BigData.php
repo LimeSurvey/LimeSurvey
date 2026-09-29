@@ -6,9 +6,6 @@
      */
 class BigData
 {
-
-
-
     /**
      * This function combines json_encode and echo.
      * If a stream is passed (or is part of the array) it's content will be
@@ -213,7 +210,6 @@ class BigData
 
 class BigFile
 {
-
     public $fileName;
     protected $deleteAfterUse;
     protected $defaultEcho;
@@ -230,9 +226,11 @@ class BigFile
         if (!isset($type)) {
             $type = $this->defaultEcho;
         }
-        if (method_exists($this, "echo_{$type}")) {
-            call_user_func(array($this, "echo_{$type}"));
+        // TODO: No other types supported, ever?
+        if ($type !== 'base64') {
+            throw new Exception('Unsupported echo type');
         }
+        $this->echo_base64();
         if ($this->deleteAfterUse) {
             unlink($this->fileName);
         }

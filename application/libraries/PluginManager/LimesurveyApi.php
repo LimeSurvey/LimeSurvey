@@ -146,6 +146,13 @@ class LimesurveyApi
     }
     /**
      * Check if a table does exist in the database
+     *
+     * Uses schema->getTableNames() rather than schema->getTable($sTableName) on purpose:
+     * getTableNames() issues a single lightweight "SHOW TABLES" query (cached per schema),
+     * while getTable() additionally runs "SHOW FULL COLUMNS" and "SHOW CREATE TABLE" per call
+     * to build the full column/constraint metadata, which is unnecessary overhead when all
+     * that is needed is an existence check.
+     *
      * @param iPlugin $plugin
      * @param string $sTableName Table name to check for (without dbprefix!))
      * @return boolean True or false if table exists or not
@@ -180,7 +187,7 @@ class LimesurveyApi
 
     /**
      * Returns an array of all available template names - does a basic check if the template might be valid
-     * @return array
+     * @return array|string
      */
     public function getTemplateList()
     {
@@ -234,6 +241,27 @@ class LimesurveyApi
     }
 
     /**
+     * Get the current survey in current oage
+     * @param boolean $onlyactivated return it only if activated
+     * @return false|integer
+     */
+    public function getCurrentSurveyid($onlyactivated = false)
+    {
+        $surveyId = \LimeExpressionManager::getLEMsurveyId();
+        if (empty($surveyId)) {
+            return false;
+        }
+        $survey = \Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            return false;
+        }
+        if ($onlyactivated && !$survey->getIsActive()) {
+            return false;
+        }
+        return $surveyId;
+    }
+
+    /**
      * Get the current Response
      * @param integer $surveyId
      * @return \Response|null
@@ -241,12 +269,12 @@ class LimesurveyApi
     public function getCurrentResponses($surveyId = null)
     {
         if (empty($surveyId)) {
-            $surveyId = \LimeExpressionManager::getLEMsurveyId();
+            $surveyId = $this->getCurrentSurveyid();
         }
         if (empty($surveyId)) {
             return;
         }
-        $sessionSurvey = Yii::app()->session["survey_{$surveyId}"];
+        $sessionSurvey = Yii::app()->session["responses_{$surveyId}"];
         if (empty($sessionSurvey['srid'])) {
             return;
         }
@@ -270,7 +298,7 @@ class LimesurveyApi
     }
 
     /**
-     * Return a token object from a token id and a survey id
+     * Return a token object from a token id and a survey ID
      *
      * @param int $iSurveyId
      * @param int $iTokenId
@@ -289,7 +317,7 @@ class LimesurveyApi
      */
     public function getGroupList($surveyId)
     {
-        $result = \QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
+        $result = \QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyId), 'group_name');
         return $result;
     }
 
@@ -306,13 +334,13 @@ class LimesurveyApi
     }
 
     /**
-     * Gets the table name for responses for the specified survey id.
+     * Gets the table name for responses for the specified survey ID.
      * @param int $surveyId
      * @return string
      */
     public function getResponseTable($surveyId)
     {
-        return App()->getDb()->tablePrefix . 'survey_' . $surveyId;
+        return App()->getDb()->tablePrefix . 'responses_' . $surveyId;
     }
 
     /**
@@ -323,10 +351,10 @@ class LimesurveyApi
     public function getOldResponseTables($surveyId)
     {
         $tables = array();
-        $base = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId;
-        $timingbase = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId . '_timings_';
+        $base = App()->getDb()->tablePrefix . 'old_responses_' . $surveyId;
+        $timingbase = App()->getDb()->tablePrefix . 'old_timings_' . $surveyId;
         foreach (App()->getDb()->getSchema()->getTableNames() as $table) {
-            if (strpos($table, $base) === 0 && strpos($table, $timingbase) === false) {
+            if (strpos((string) $table, $base) === 0 && strpos((string) $table, $timingbase) === false) {
                 $tables[] = $table;
             }
         }
@@ -398,14 +426,18 @@ class LimesurveyApi
     /**
      * @param int $surveyId
      * @param string $language
-     * $param array $conditions
+     * @param array $conditions
      * @return \Question[]
      */
     public function getQuestions($surveyId, $language = 'en', $conditions = array())
     {
-        $conditions['sid'] = $surveyId;
-        $conditions['language'] = $language;
-        return \Question::model()->with('subquestions')->findAllByAttributes($conditions);
+        $criteria = new \CDbCriteria();
+        $criteria->addCondition('t.sid = :sid');
+        $criteria->addCondition('questionl10ns.language = :language');
+        $criteria->params[':sid'] = $surveyId;
+        $criteria->params[':language'] = $language;
+
+        return \Question::model()->with('subquestions', 'questionl10ns')->findAllByAttributes($conditions, $criteria);
     }
 
     /**
@@ -526,14 +558,16 @@ class LimesurveyApi
         $db_group_name = flattenText($groupName, false, true, 'UTF-8', true);
         $db_group_description = flattenText($groupDescription);
 
-        if (isset($db_group_name) && strlen($db_group_name) > 0) {
+        if (isset($db_group_name) && strlen((string) $db_group_name) > 0) {
             $newUserGroup = new \UserGroup();
             $newUserGroup->owner_id = 1;
             $newUserGroup->name = $db_group_name;
             $newUserGroup->description = $db_group_description;
             if ($newUserGroup->save()) {
-                \UserInGroup::model()->insertRecords(array('ugid' => $newUserGroup->getPrimaryKey(), 'uid' => 1));
-                return true;
+                $newUserInGroup = new \UserInGroup();
+                $newUserInGroup->ugid = $newUserGroup->getPrimaryKey();
+                $newUserInGroup->uid = 1;
+                return $newUserInGroup->save();
             } else {
                 return false;
             }
@@ -563,8 +597,11 @@ class LimesurveyApi
                     throw new InvalidArgumentException('user must not be group owner');
                 } else {
                     $user_in_group = $this->getUserInGroup($ugid, $uid);
-                    if (empty($user_in_group) && \UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid))) {
-                        return true;
+                    if (empty($user_in_group)) {
+                        $newUserInGroup = new \UserInGroup();
+                        $newUserInGroup->ugid = $ugid;
+                        $newUserInGroup->uid = $uid;
+                        return $newUserInGroup->save();
                     } else {
                         return false;
                     }
@@ -627,5 +664,26 @@ class LimesurveyApi
         }
 
         return $questionAttributes;
+    }
+
+    /**
+     * Get a formatted date time by a string
+     * Used to return date from date input in admin
+     * @param string $dateValue the string as date value
+     * @param string $returnFormat the final date format
+     * @param integer|null $currentFormat the current format of dateValue, default from App()->session['dateformat'] @see getDateFormatData function (in surveytranslator_helper)
+     * @return string
+     */
+    public static function getFormattedDateTime($dateValue, $returnFormat, $currentFormat = null)
+    {
+        if (empty($dateValue)) {
+            return "";
+        }
+        if (empty($currentFormat)) {
+            $currentFormat = intval(App()->session['dateformat']);
+        }
+        $dateformatdetails = getDateFormatData($currentFormat);
+        $datetimeobj = new \Date_Time_Converter($dateValue, $dateformatdetails['phpdate'] . " H:i");
+        return $datetimeobj->convert($returnFormat);
     }
 }

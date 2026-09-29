@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * WhCountries.php
@@ -9,17 +10,17 @@
  * @link http://www.ramirezcobos.com/
  * @link http://www.2amigos.us/
  */
+
 Yii::import('yiiwheels.widgets.formhelpers.WhDropDownInputWidget');
 
 class WhGoogleFonts extends WhDropDownInputWidget
 {
-
     public function init()
     {
         parent::init();
         TbHtml::addCssClass('bfh-googlefonts', $this->htmlOptions);
 
-        if(!isset($this->htmlOptions['data-font'])) {
+        if (!isset($this->htmlOptions['data-font'])) {
             $this->htmlOptions['data-font'] = TbArray::popValue('data-value', $this->htmlOptions);
         }
         unset($this->htmlOptions['data-name'], $this->htmlOptions['data-value']);
@@ -27,10 +28,9 @@ class WhGoogleFonts extends WhDropDownInputWidget
 
     public function run()
     {
-        if(!$this->readOnly) {
+        if (!$this->readOnly) {
             echo $this->dropDownList();
-        } else
-        {
+        } else {
             echo CHtml::tag('span', $this->htmlOptions, '');
         }
 

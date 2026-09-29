@@ -1,0 +1,66 @@
+// Jumbotron and custom element message-box
+.jumbotron {
+  text-align       : center;
+  background-color : transparent;
+  padding          : 48px 60px;
+  border-radius    : $border-radius;
+  margin-bottom    : 20px;
+  margin-top       : 14px;
+
+  &.message-box {
+    background-color : transparent;
+    margin-top       : 1em;
+  }
+
+  & h2, &.h2 {
+    //style as h1
+    @include h1;
+  }
+
+  p {
+    margin-bottom : 15px;
+    font-size     : $font-size-lg;
+  }
+
+  .container {
+    max-width : 100%;
+  }
+}
+
+.container .jumbotron {
+  border-radius : $border-radius;
+}
+
+// Message Box based on Jumbotron
+.message-box {
+  position   : relative;
+  margin-top : 20px;
+  animation  : slidefromtop 1s;
+  border     : 1px solid $active-green;
+
+}
+
+.message-box-error {
+  border : 1px solid $error;
+}
+
+.message-box-warning {
+  border : 1px solid $warning;
+}
+
+
+#welcome-jumbotron {
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: transparent;
+
+  p {
+    margin-top : 1.72rem;
+    margin-bottom: 0px;
+    font-size     : $font-size-base;
+  }
+}
+
+#welcome-jumbotron > img {
+  width: 294px;
+}

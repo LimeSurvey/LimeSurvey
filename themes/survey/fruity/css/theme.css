@@ -1,7 +1,7 @@
 /*
     LimeSurvey
 
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
 
     License: GNU/GPL License v2 or later, see LICENSE.php
@@ -29,7 +29,7 @@
 */
 body {
      padding-bottom: 10px;
-     padding-top: 60px;/* now is redefine in JS to fit any title length */
+     padding-top: 90px;/* now is redefine in JS to fit any title length */
 }
 
 
@@ -48,10 +48,7 @@ element.style {
 /* specific for survey listing */
 @media (min-width: 761px) {
   .surveys-list .btn-group {
-    width: 50%;
-  }
-  .language_change_container{
-      height: 90vh;
+    width: 49%;
   }
 }
 
@@ -146,7 +143,6 @@ element.style {
   position: relative;
 }
 
-.ls-question-help,
 .ls-questionhelp{
   margin-bottom:5px;
 }
@@ -295,7 +291,7 @@ element.style {
 .radio-item label,.checkbox-item label {
     cursor: pointer;
 }
-.radio-item [type='radio'],.checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
+.radio-item [type='radio'],.checkbox-item [type='checkbox'] { /* Why we must positioning at same place */
     cursor: pointer;
 }
 .js td.radio-item,.js td.checkbox-item{
@@ -303,6 +299,7 @@ element.style {
 }
 
 .slider-item {
+    margin-bottom: 20px;
     min-height: 50px;
 }
 
@@ -348,11 +345,13 @@ only screen and (max-width: 760px),
  */
 
 /* General */
-.button-item .ls-icon {
+.button-item .ls-icon, .ls-button-label .ls-icon {
     display: block;
 }
-.button-item .ls-icon {
+
+.button-item .ls-icon, .ls-button-label .ls-icon {
     font-size: 1.4em;
+    line-height: 1.4em;
 }
 
 html body .navbar.navbar-default.navbar-fixed-top {
@@ -482,6 +481,74 @@ table > tbody > tr > td.ddprefix {
     margin-right: 5px;
 }
 
+.othertext-suffix-label {
+    padding-top: 6px;
+}
+
+.othertext-suffix-label.button-suffix {
+    font-weight: bold;
+}
+
+.no-prefix-othertext .othertext-label-checkox-container {
+    padding-right: 0;
+}
+.no-prefix-othertext.checkbox-text-item .col-auto.d-flex {
+    padding-right: 0;
+}
+.no-prefix-othertext.checkbox-text-item .col-auto:not(.d-flex) {
+    padding-left: 0;
+}
+
+.no-prefix-othertext .control-label {
+    padding: 0;
+    min-height: 1.5em;
+}
+
+.no-prefix-othertext .other-text-item {
+    padding-left: 0;
+}
+
+.ls-input-sized .other-text-item.col {
+    flex-grow: 0;
+}
+.other-text-item.ls-input-group input {
+    max-width: 100%;
+}
+/* MP-with-comments other row: label col grows to fit content; comment wraps to next line when label content overflows */
+.multipleco-other-row > .multipleco-other-label-col {
+    flex: 1 0 auto;
+    width: fit-content;
+    min-width: 33.33%;
+    max-width: 100%;
+}
+.multipleco-other-row > .multipleco-other-comment-col {
+    margin-left: auto;
+}
+/* Inner flex row: prefix, input, suffix wrap in source order within the label column */
+.multipleco-other-inner {
+    gap: 0.25rem 0.5rem;
+}
+.multipleco-other-inner .label-text.control-label {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow-wrap: break-word;
+    margin-bottom: 0;
+}
+.multipleco-other-inner .multipleco-other-topic {
+    flex: 1 1 6rem;
+    min-width: 6rem;
+    max-width: 100%;
+}
+.ls-input-sized .multipleco-other-inner .multipleco-other-topic {
+    flex: 0 0 auto;
+    max-width: 100%;
+}
+.multipleco-other-inner .othertext-suffix-label {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
 .geoname_search {
     margin-bottom: 10px;
 }
@@ -602,7 +669,6 @@ div.yes-no .btn-group label {
     //padding-bottom:0.5em;
   }
 
-  .ls-question-help,
   .ls-questionhelp{
     font-size:14px;
   }
@@ -666,8 +732,6 @@ p.return-to-survey{
     font-size: 50%;
     vertical-align: top;
 }
-}
-
 
 /* Remove question container*/
 #navbar {
@@ -702,10 +766,6 @@ body .checkbox-item label::after {
     padding: 0px;
 }
 
-.btn:focus, .btn:hover {
-    color: #fff;
-}
-
 /* Remove borders when checkbox is checked */
 .checkbox-item input[type="checkbox"]:checked + label::before{
     border: none;
@@ -727,4 +787,8 @@ body .checkbox-item label::after {
     border-left: none;
     border-right: none;
     outline: none;
+}
+
+label {
+    font-weight: bold;
 }

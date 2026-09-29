@@ -526,8 +526,29 @@ class CHttpRequest extends CApplicationComponent
 		}
 		else
 		{
-			return utf8_encode($pathInfo);
+			return $this->utf8Encode($pathInfo);
 		}
+	}
+
+	/**
+	 * Encodes an ISO-8859-1 string to UTF-8
+	 * @param string $s
+	 * @return string the UTF-8 translation of `s`.
+	 * @see https://github.com/yiisoft/yii/issues/4505
+	 * @see https://github.com/symfony/polyfill-php72/blob/master/Php72.php#L24
+	 */
+	private function utf8Encode($s)
+	{
+		$s.=$s;
+		$len=strlen($s);
+		for ($i=$len>>1,$j=0; $i<$len; ++$i,++$j) {
+			switch (true) {
+				case $s[$i] < "\x80": $s[$j] = $s[$i]; break;
+				case $s[$i] < "\xC0": $s[$j] = "\xC2"; $s[++$j] = $s[$i]; break;
+				default: $s[$j] = "\xC3"; $s[++$j] = chr(ord($s[$i]) - 64); break;
+			}
+		}
+		return substr($s, 0, $j);
 	}
 
 	/**
@@ -800,7 +821,7 @@ class CHttpRequest extends CApplicationComponent
 
 	private $_port;
 
- 	/**
+	/**
 	 * Returns the port to use for insecure requests.
 	 * Defaults to 80, or the port specified by the server if the current
 	 * request is insecure.
@@ -951,11 +972,11 @@ class CHttpRequest extends CApplicationComponent
 						if($matches[4][$i]==='q')
 						{
 							// sanity check on q value
-							$q=(double)$matches[5][$i];
+							$q=(float)$matches[5][$i];
 							if($q>1)
-								$q=(double)1;
+								$q=(float)1;
 							elseif($q<0)
-								$q=(double)0;
+								$q=(float)0;
 							$accept['params'][$matches[4][$i]]=$q;
 						}
 						else
@@ -966,7 +987,7 @@ class CHttpRequest extends CApplicationComponent
 				}
 				// q defaults to 1 if not explicitly given
 				if(!isset($accept['params']['q']))
-					$accept['params']['q']=(double)1;
+					$accept['params']['q']=(float)1;
 				$accepts[] = $accept;
 			}
 		}

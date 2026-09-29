@@ -12,8 +12,10 @@
 namespace Twig\TokenParser;
 
 use Twig\Error\SyntaxError;
+use Twig\Node\ConfigNode;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Node;
+use Twig\Node\Nodes;
 use Twig\Token;
 
 /**
@@ -28,13 +30,13 @@ use Twig\Token;
  *
  * @see https://twig.symfony.com/doc/templates.html#horizontal-reuse for details.
  *
- * @final
+ * @internal
  */
-class UseTokenParser extends AbstractTokenParser
+final class UseTokenParser extends AbstractTokenParser
 {
-    public function parse(Token $token)
+    public function parse(Token $token): Node
     {
-        $template = $this->parser->getExpressionParser()->parseExpression();
+        $template = $this->parser->parseExpression();
         $stream = $this->parser->getStream();
 
         if (!$template instanceof ConstantExpression) {
@@ -43,7 +45,7 @@ class UseTokenParser extends AbstractTokenParser
 
         $targets = [];
         if ($stream->nextIf('with')) {
-            do {
+            while (true) {
                 $name = $stream->expect(Token::NAME_TYPE)->getValue();
 
                 $alias = $name;
@@ -56,20 +58,18 @@ class UseTokenParser extends AbstractTokenParser
                 if (!$stream->nextIf(Token::PUNCTUATION_TYPE, ',')) {
                     break;
                 }
-            } while (true);
+            }
         }
 
         $stream->expect(Token::BLOCK_END_TYPE);
 
-        $this->parser->addTrait(new Node(['template' => $template, 'targets' => new Node($targets)]));
+        $this->parser->addTrait(new Nodes(['template' => $template, 'targets' => new Nodes($targets)]));
 
-        return new Node();
+        return new ConfigNode($token->getLine());
     }
 
-    public function getTag()
+    public function getTag(): string
     {
         return 'use';
     }
 }
-
-class_alias('Twig\TokenParser\UseTokenParser', 'Twig_TokenParser_Use');

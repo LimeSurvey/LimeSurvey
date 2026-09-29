@@ -1,0 +1,76 @@
+.list-group {
+    border-radius : 0;
+}
+
+.list-group-item {
+    background-color : $white;
+    border           : none;
+    .selector__toggle_full_text {
+        padding : 4px 0;
+    }
+}
+
+.list-group-item-success {
+    color            : $primary;
+    background-color : $primary-bg-success;
+}
+
+.list-group-item-info {
+    color            : $primary-bg_info_hover;
+    background-color : $primary-bg_info;
+}
+
+.list-group-item-warning {
+    color            : $warning;
+    background-color : $warning-bg;
+}
+
+.list-group-item-danger {
+    color            : $red-10;
+    background-color : $danger-bg;
+}
+
+.list-group-item.disabled {
+    color            : $g-400;
+    pointer-events   : auto;
+    cursor           : not-allowed;
+}
+
+// Admin sidebar and PreviewModalWidget (question type selection)
+a.list-group-item {
+    color: $g-700;
+    &.active {
+        &,
+        &:hover,
+        &:focus {
+            color: $white;
+            background-color: $active-green;
+            border: 1px solid $active-green;
+
+            .list-group-item-text {
+                color: $active-green-hover;
+            }
+        }
+        .list-group-item-text {
+            color: $active-green;
+        }
+        > .badge {
+            color: $active-green;
+            background-color: $white;
+        }
+    }
+    .list-group-item-heading {
+        color: $g-800;
+    }
+    &:hover {
+        background-color: $active-green-hover;
+    }
+    &:focus-visible:not(:active) {
+        @include inset-border(2px, $grape90);
+        background-color: $white;
+    }
+    &:active {
+        color: $g-900;
+        background-color: $g-100;
+    }
+}

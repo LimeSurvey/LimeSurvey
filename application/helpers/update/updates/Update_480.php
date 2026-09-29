@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_480 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->createTable(
@@ -19,7 +20,7 @@ class Update_480 extends DatabaseUpdateBase
             '{{message}}',
             [
                 'id' => "integer NOT NULL",
-                'language' => "string(50) NOT NULL default ''",
+                'language' => "string(50) NOT NULL DEFAULT ''",
                 'translation' => "text",
             ],
             $this->options

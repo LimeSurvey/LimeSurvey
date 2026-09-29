@@ -2,12 +2,12 @@
 
 /* @var $viewData array */
 
-extract($viewData);
+extract($viewData ?? []);
 
 ?>
 <div id="translationloading" style="width: 100%; font-weight: bold; color: #000; text-align: center;">
     <br/>
-    <?php eT("Loading translations"); ?><br/><br/>
+    <?php eT("Loading translations..."); ?><br/><br/>
 </div>
 
 <?php echo CHtml::form(array("quickTranslation/index/surveyid/{$surveyid}/lang/{$tolang}"), 'post', array('name' => 'translateform', 'id' => 'translateform')); ?>
@@ -19,22 +19,33 @@ extract($viewData);
 
 <script type="text/javascript">
     sGoogleApiError = "<?php eT("There was an error using the Google API.");?>";
-    sDetailedError = "<?php eT("Detailed Error");?>";
-    translateJsonUrl = "<?php echo $this->createUrl("quickTranslation/ajaxtranslategoogleapi"); ?>";
+    sDetailedError = "<?php eT("Error message: %s");?>";
+    translateJsonUrl = "<?php echo $this->createUrl("quickTranslation/ajaxtranslategoogleapi", ['surveyid' => $surveyid]); ?>";
 </script>
 
 <div id="translationtabs">
-    <ul class="nav nav-tabs">
-        <?php for ($i = 0, $len = count($tab_names); $i < $len; $i++) { ?>
-            <li <?php echo ($i == 0) ? 'class="active"' : '' ?> >
-                <a data-toggle="tab" href="#tab-<?php echo $tab_names[$i]; ?>">
+    <ul class="nav nav-tabs" id="quick-translation-tabs" role="tablist" aria-label="<?php echo gT('Translation sections'); ?>">
+        <?php for ($i = 0, $len = count($tab_names ?? []); $i < $len; $i++) {
+            $tabName = $tab_names[$i];
+            $tabId = 'quick-translation-tab-' . $tabName;
+            $panelId = 'tab-' . $tabName;
+            $isActive = ($i === 0);
+            ?>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link <?php echo $isActive ? 'active' : ''; ?>"
+                   id="<?php echo $tabId; ?>"
+                   data-bs-toggle="tab"
+                   href="#<?php echo $panelId; ?>"
+                   role="tab"
+                   aria-controls="<?php echo $panelId; ?>"
+                   aria-selected="<?php echo $isActive ? 'true' : 'false'; ?>"
+                   tabindex="<?php echo $isActive ? '0' : '-1'; ?>">
                 <span>
                     <?php echo $amTypeOptions[$i]["description"]; ?>
                 </span>
                 </a>
             </li>
         <?php } ?>
-        <?php $i = 0; ?>
     </ul>
     <div class="tab-content">
 
@@ -44,16 +55,20 @@ extract($viewData);
 
         foreach ($singleTabs as $tabData) {
             //find the correct singleTabdata
-            $this->renderpartial('translatetabs_view', [
-                'baselangdesc' => $baselangdesc,
-                'tolangdesc' => $tolangdesc,
-                'tabData' => $tabData
-            ]);
+            $this->renderpartial('translatetabs_view', array_merge(
+                [
+                    'baselangdesc' => $baselangdesc,
+                    'tolangdesc' => $tolangdesc,
+                ],
+                $tabData
+            ));
         }
         ?>
     </div>
     <p>
-        <input type='submit' class='standardbtn hidden' value='<?php eT("Save");?>' <?php if ($bReadOnly){?>disabled='disabled'<?php }?>/>
+        <input type='submit' class='standardbtn d-none' value='<?php eT("Save");?>' <?php if ($bReadOnly) {
+            ?>disabled='disabled'<?php
+                                                               }?>/>
     </p>
 </div>
 <?php

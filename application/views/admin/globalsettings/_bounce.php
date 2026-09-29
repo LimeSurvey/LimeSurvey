@@ -1,74 +1,84 @@
 <?php
+
 /**
  * This view generate the 'bounce' tab inside global settings.
  *
  */
+
 ?>
 
-
-<div class="form-group">
-    <label class=" control-label" for='siteadminbounce'><?php eT("Default site bounce email:"); ?></label>
+<div class="container">
+<div class="row">
+<div class="col-6">
+<div class="mb-3">
+    <label class=" form-label" for='siteadminbounce'><?php eT("Default site bounce email:"); ?></label>
     <div class="">
-        <input class="form-control" type='text' size='50' id='siteadminbounce' name='siteadminbounce' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminbounce')); ?>" />
+        <input class="form-control" type='email' size='50' id='siteadminbounce' name='siteadminbounce' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('siteadminbounce')); ?>" />
     </div>
 </div>
 
-<div class="form-group">
-    <label class=" control-label"  for='bounceaccounttype'><?php eT("Server type:"); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                'name' => 'bounceaccounttype',
-                'value'=> getGlobalSetting('bounceaccounttype') ,
-                'selectOptions'=>array(
-                "off"=>gT("Off",'unescaped'),
-                "IMAP"=>gT("IMAP",'unescaped'),
-                "POP"=>gT("POP",'unescaped')
-                )
-                ));?>
+<div class="mb-3">
+    <label class=" form-label"  for='bounceaccounttype'><?php eT("Server type:"); ?></label>
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'bounceaccounttype',
+            'ariaLabel'     => gT('Server type:'),
+            'checkedOption' => Yii::app()->getConfig('bounceaccounttype'),
+            'selectOptions' => [
+                "off"  => gT("Off", 'unescaped'),
+                "IMAP" => "IMAP",
+                "POP"  => "POP3",
+            ]
+        ]); ?>
     </div>
 </div>
 
 
-<div class="form-group">
-    <label class=" control-label"  for='bounceaccounthost'><?php eT("Server name & port:"); ?></label>
+<div class="mb-3">
+    <label class=" form-label"  for='bounceaccounthost'><?php eT("Server name & port:"); ?></label>
     <div class="">
-        <input class="form-control" type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccounthost'))?>" />
-        <span class='hint'><?php eT("Enter your hostname and port, e.g.: imap.gmail.com:993"); ?></span>
+        <input class="form-control" type='text' size='50' id='bounceaccounthost' aria-describedby="bounce_ins" name='bounceaccounthost' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('bounceaccounthost'))?>" />
+        <span id="bounce_ins" class='hint'><?php eT("Enter your hostname and port, e.g.: imap.gmail.com:993"); ?></span>
     </div>
 
 </div>
 
-<div class="form-group">
-    <label class=" control-label"  for='bounceaccountuser'><?php eT("User name:"); ?></label>
+<div class="mb-3">
+    <label class=" form-label"  for='bounceaccountuser'><?php eT("User name:"); ?></label>
     <div class="">
         <input class="form-control" type='text' size='50' id='bounceaccountuser' name='bounceaccountuser'
-            value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccountuser'))?>" />
+            value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('bounceaccountuser'))?>" />
     </div>
 </div>
 
-<div class="form-group">
-    <label class=" control-label"  for='bounceaccountpass'><?php eT("Password:"); ?></label>
+<div class="mb-3">
+    <label class=" form-label"  for='bounceaccountpass'><?php eT("Password:"); ?></label>
     <div class="">
         <input class="form-control" type='password' size='50' autocomplete="off" id='bounceaccountpass' name='bounceaccountpass' value='enteredpassword' />
     </div>
 </div>
 
-<div class="form-group">
-    <label class=" control-label"  for='bounceencryption'><?php eT("Encryption type:"); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                'name' => 'bounceencryption',
-                'value'=> strtolower(getGlobalSetting('bounceencryption')),
-                'selectOptions'=>array(
-                "off"=>gT("Off (unsafe)",'unescaped'),
-                "ssl"=>"SSL/TLS",
-                "tls"=>"StartTLS"
-                )
-                ));?>
+<div class="mb-3">
+    <label class=" form-label"  for='bounceencryption'><?php eT("Encryption type:"); ?></label>
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'bounceencryption',
+            'ariaLabel' => gT('Encryption type'),
+            'checkedOption' => strtolower((string) Yii::app()->getConfig('bounceencryption')),
+            'selectOptions' => [
+                "off" => gT("Off", 'unescaped'),
+                "ssl" => "SSL/TLS",
+                "tls" => "StartTLS"
+            ]
+        ]); ?>
     </div>
 </div>
 
+</div>
+</div>
+</div>
 
-<?php if (Yii::app()->getConfig("demoMode")==true):?>
+
+<?php if (Yii::app()->getConfig("demoMode") == true) :?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
 <?php endif; ?>

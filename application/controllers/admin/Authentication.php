@@ -5,7 +5,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -35,6 +35,10 @@ class Authentication extends SurveyCommonAction
      */
     public function index()
     {
+        // if the session is not readable clear browser cookies
+        if (!session_id()) {
+            App()->request->cookies->clear();
+        }
         /* Set adminlang to the one set in dropdown */
         if (Yii::app()->request->getParam('loginlang', 'default') != 'default') {
             Yii::app()->session['adminlang'] = Yii::app()->request->getParam('loginlang', 'default');
@@ -57,7 +61,7 @@ class Authentication extends SurveyCommonAction
                 ls\ajax\AjaxHelper::outputSuccess(gT('Successful login'));
                 return;
             } elseif ($failed) {
-                ls\ajax\AjaxHelper::outputError(gT('Incorrect username and/or password!'));
+                ls\ajax\AjaxHelper::outputError(gT('Incorrect or expired username and/or password!'));
                 return;
             }
         } else {
@@ -138,11 +142,11 @@ class Authentication extends SurveyCommonAction
             // Call the plugin method newLoginForm
             // For Authdb:  @see: application/core/plugins/Authdb/Authdb.php: function newLoginForm()
             $newLoginForm = new PluginEvent('newLoginForm');
-            App()->getPluginManager()->dispatchEvent($newLoginForm); // inject the HTML of the form inside the private varibale "_content" of the plugin
+            App()->getPluginManager()->dispatchEvent($newLoginForm); // inject the HTML of the form inside the private variable "_content" of the plugin
             $aData['summary'] = self::getSummary('logout');
-            $aData['pluginContent'] = $newLoginForm->getAllContent(); // Retreives the private varibale "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
+            $aData['pluginContent'] = $newLoginForm->getAllContent(); // Retrieves the private variable "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
         } else {
-            // The form has been submitted, or the plugin has been stoped (so normally, the value of login/password are available)
+            // The form has been submitted, or the plugin has been stopped (so normally, the value of login/password are available)
 
                 // Handle getting the post and populating the identity there
             $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin); // If form has been submitted, $_POST['authMethod'] is set, else  $identity->plugin should be set, ELSE: TODO error
@@ -171,6 +175,26 @@ class Authentication extends SurveyCommonAction
                 $event->set('identity', $identity);
                 App()->getPluginManager()->dispatchEvent($event);
 
+                // If allowed_hosts.php does not exist, write the current host as valid
+                $allowedHosts = App()->loadAllowedHosts();
+                if (empty($allowedHosts)) {
+                    $currentHost = App()->request->getServerName();
+                    if (App()->writeAllowedHosts([$currentHost])) {
+                        Yii::app()->setFlashMessage(
+                            sprintf(
+                                gT('The allowed hosts file (application/config/allowed_hosts.php) has been created with "%s" as trusted host. For security reasons, LimeSurvey can only be accessed through that domain. If you need additional hosts, please edit the allowed hosts file directly.'),
+                                htmlspecialchars($currentHost)
+                            ),
+                            'info'
+                        );
+                    } else {
+                        Yii::app()->setFlashMessage(
+                            gT('The allowed hosts file (application/config/allowed_hosts.php) could not be created because the application/config directory is not writable. No trusted host restriction is currently enforced. Please make the directory writable, then login again, to enable host header protection.'),
+                            'warning'
+                        );
+                    }
+                }
+
                 return array('success');
             } else {
                 // Failed
@@ -181,7 +205,7 @@ class Authentication extends SurveyCommonAction
                 $message = $identity->errorMessage;
                 if (empty($message)) {
                     // If no message, return a default message
-                    $message = gT('Incorrect username and/or password!');
+                    $message = gT('Incorrect or expired username and/or password!');
                 }
                 return array('failed', $message);
             }
@@ -194,10 +218,14 @@ class Authentication extends SurveyCommonAction
      * This action sets a password for new user or resets a password for an existing user.
      * If validation time is expired, no password will be changed.
      * After password has been changed successfully it redirects to LogIn-Page.
+     * If the current user is already logged in, it shows a warning and redirects to the
+     * administration page instead of showing the form.
      *
+     * @return void
      */
     public function newPassword()
     {
+        $this->redirectIfLoggedIn(gT('You cannot reset the password for a user while being logged in as someone else.'));
 
         //validation key could be a GET- or a POST-PARAM
         $validation_key = Yii::app()->request->getParam('param'); //as link from email
@@ -230,21 +258,18 @@ class Authentication extends SurveyCommonAction
 
         if (!$errorExists && !$usedLink) {
             //check if password is set correctly
-            $password = Yii::app()->request->getPost('password');
-            $passwordRepeat = Yii::app()->request->getPost('password_repeat');
-
-            $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
-            $oPasswordTestEvent->set('password', $password);
-            $oPasswordTestEvent->set('passwordOk', true);
-            $oPasswordTestEvent->set('passwordError', '');
-            Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
-            $passwordError = $oPasswordTestEvent->get('passwordError');
-            if (($password !== null && $passwordRepeat !== null) && ($password === $passwordRepeat) && $oPasswordTestEvent->get('passwordOk')) {
+            $password = Yii::app()->request->getPost('password', '');
+            $passwordRepeat = Yii::app()->request->getPost('password_repeat', '');
+            $passwordStrengthError = $user->checkPasswordStrength($passwordRepeat);
+            if (($password !== null && $passwordRepeat !== null) && ($password === $passwordRepeat) && $passwordStrengthError == '') {
                 //now everything is ok, save password
                 $user->setPassword($password, true);
+                // And remove validation_key
+                $user->unsetAttributes(['validation_key', 'validation_key_expiration']);
+                $user->save(false, ['validation_key', 'validation_key_expiration']);
                 App()->getController()->redirect(array('/admin/authentication/sa/login'));
             } else {
-                Yii::app()->setFlashMessage(sprintf(gT('Password cannot be blank and must fulfill minimum requirements: %s'), $passwordError), 'error');
+                Yii::app()->setFlashMessage(sprintf(gT('Password cannot be blank and must fulfill minimum requirements: %s'), $passwordStrengthError), 'error');
             }
         }
 
@@ -254,7 +279,7 @@ class Authentication extends SurveyCommonAction
             'errorExists' => $errorExists,
             'errorMsg' => $errorMsg,
             'randomPassword' => $randomPassword,
-            'validationKey' => $user->validation_key
+            'validationKey' => $validation_key
         ];
 
         $this->renderWrappedTemplate('authentication', 'newPassword', $aData);
@@ -266,17 +291,8 @@ class Authentication extends SurveyCommonAction
      */
     public function logout()
     {
-        /* Adding beforeLogout event */
-        $beforeLogout = new PluginEvent('beforeLogout');
-        App()->getPluginManager()->dispatchEvent($beforeLogout);
-        regenerateCSRFToken();
         App()->user->logout();
         App()->user->setFlash('loginmessage', gT('Logout successful.'));
-
-        /* Adding afterLogout event */
-        $event = new PluginEvent('afterLogout');
-        App()->getPluginManager()->dispatchEvent($event);
-
         $this->getController()->redirect(array('/admin/authentication/sa/login'));
     }
 
@@ -305,7 +321,7 @@ class Authentication extends SurveyCommonAction
             $aData = [];
             if (($user === null) || ($user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $user->uid))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
-                $aData['message'] = '<br>' . sprintf(gt('If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes.'), \LimeSurvey\Models\Services\PasswordManagement::MIN_TIME_NEXT_FORGOT_PW_EMAIL) . '<br>';
+                $aData['message'] = '<br>' . sprintf(gT('If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes.'), \LimeSurvey\Models\Services\PasswordManagement::MIN_TIME_NEXT_FORGOT_PW_EMAIL) . '<br>';
             } else {
                 $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($user);
                 $aData['message'] = $passwordManagement->sendForgotPasswordEmailLink();
@@ -325,10 +341,10 @@ class Authentication extends SurveyCommonAction
     {
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}')) {
-            $sDBVersion = getGlobalSetting('DBVersion');
+            $sDBVersion = Yii::app()->getConfig('DBVersion');
             if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber')) {
                 // Try a silent update first
-                Yii::app()->loadHelper('update/updatedb');
+                Yii::app()->loadHelper('update.updatedb');
                 if (!db_upgrade_all(intval($sDBVersion), true)) {
                     Yii::app()->getController()->redirect(array('/admin/databaseupdate/sa/db'));
                 }
@@ -356,7 +372,7 @@ class Authentication extends SurveyCommonAction
             case 'login':
             default:
                 $sSummary = '<br />' . sprintf(gT('Welcome %s!'), Yii::app()->session['full_name']) . '<br />&nbsp;';
-                if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === false) {
+                if (!empty(Yii::app()->session['redirect_after_login']) && strpos((string) Yii::app()->session['redirect_after_login'], 'logout') === false) {
                     Yii::app()->session['metaHeader'] = '<meta http-equiv="refresh"'
                     . ' content="1;URL=' . Yii::app()->session['redirect_after_login'] . '" />';
                     $sSummary = '<p><font size="1"><i>' . gT('Reloading screen. Please wait.') . '</i></font>';
@@ -370,10 +386,16 @@ class Authentication extends SurveyCommonAction
 
     /**
      * Redirects a logged in user to the administration page
+     *
+     * @param string|null $flashMessage optional warning message to show after redirecting
+     * @return void
      */
-    private function redirectIfLoggedIn()
+    private function redirectIfLoggedIn(?string $flashMessage = null)
     {
         if (!Yii::app()->user->getIsGuest()) {
+            if ($flashMessage !== null) {
+                Yii::app()->setFlashMessage($flashMessage, 'warning');
+            }
             $this->runDbUpgrade();
             Yii::app()->getController()->redirect(array('/admin'));
         }

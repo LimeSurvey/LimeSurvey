@@ -49,7 +49,9 @@ class RenderFivePointChoice extends QuestionBaseRenderer
                 'id'                     => $this->sSGQA,
                 'labelText'              => gT('No answer'),
                 'itemExtraClass'         => 'noanswer-item',
-                'checkedState'           => (!$this->mSessionValue ? ' CHECKED ' : ''),
+                'checkedState'           => (
+                    PRESELECT_NO_ANSWER && !$this->mSessionValue
+                ) ? ' CHECKED ' : '',
                 'checkconditionFunction' => $this->checkconditionFunction,
             );
         }
@@ -77,7 +79,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
                 true
             );
         }
-        
+
         if ($this->getQuestionAttribute('slider_rating') == 2) {
             $slider_rating = 2;
             $this->aPackages[] = 'question-5pointchoice-slider';

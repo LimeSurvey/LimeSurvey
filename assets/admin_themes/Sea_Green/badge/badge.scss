@@ -1,0 +1,18 @@
+.badge {
+  padding: 4px 8px;
+  font-weight: $font-weight-500;
+  border-radius: 2px;
+  background-color: $g-100 ;
+  color: $g-900 ;
+  &.bg-primary, &.bg-secondary, &.bg-info, &.bg-dark  {
+    color: $white;
+  }
+}
+.badge.reverse-color {
+  color: $g-100 !important;
+  background-color: $g-900 !important;
+}
+.badge.rounded-pill {
+  padding: 4px 12px !important;
+}
+

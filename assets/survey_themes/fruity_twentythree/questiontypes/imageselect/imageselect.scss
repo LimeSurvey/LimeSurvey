@@ -1,0 +1,170 @@
+.imageselect-list {
+    .imageselect-listitem {
+    }
+    // imageselect-radio with absoluteurl
+    .imageselect-listitem .imageselect-container {
+        .imageselect-checkbox {
+            display : none;
+        }
+        .imageselect-radiobutton::before {
+            content       : "";
+            display       : inline-block;
+            position      : absolute;
+            width         : 26px;
+            height        : 26px;
+            left          : 0;
+            top           : 0;
+            margin-left   : 0;
+            border-radius : 50%;
+            transition    : border 0.15s ease-in-out;
+            z-index       : 1;
+        }
+        .imageselect-radiobutton::after {
+            content            : " ";
+            display            : inline-block;
+            position           : absolute;
+            width              : 14px;
+            height             : 14px;
+            left               : 4px;
+            top                : 4px;
+            margin-left        : 2px;
+            margin-top         : 2px;
+            border-radius      : 50%;
+            -webkit-transform  : scale(0, 0);
+            -ms-transform      : scale(0, 0);
+            -o-transform       : scale(0, 0);
+            transform          : scale(0, 0);
+            -webkit-transition : -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            -moz-transition    : -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            -o-transition      : -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            transition         : transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            z-index            : 1;
+        }
+        .imageselect-radiobutton.d-none {
+            display  : inline-block !important;
+            position : absolute;
+            top      : 8px;
+            left     : 8px;
+        }
+    }
+    // imageselect-radio with imagetagurl
+    .imageselect-container {
+        &.radio-item {
+            padding-left : 33px;
+        }
+    }
+}
+
+// hidden in other themes:
+.imageselect-select.d-none {
+    display  : inline-block !important;
+    position : absolute;
+    top      : 8px;
+}
+
+.imageselect-select.d-none {
+    left : 45px;
+}
+
+// imageselect list radio
+li.imageselect-listitem .imageselect-container .imageselect-label {
+    border-radius : $border-radius !important;
+    overflow      : hidden;
+}
+
+.imageselect-container .imageselect-radiobutton::before,
+.imageselect-list .no-anwser-item .radio-label::before,
+.imageselect-list .radio-text-item .label-radio::before {
+    content       : "";
+    display       : inline-block;
+    position      : absolute;
+    width         : 26px;
+    height        : 26px;
+    left          : 0;
+    top           : 0;
+    margin-left   : -20px;
+    border-radius : 50%;
+    transition    : border 0.15s ease-in-out;
+    z-index       : 1;
+}
+
+.imageselect-list .imageselect-radiobutton::after,
+.imageselect-list .no-anwser-item .radio-label::after,
+.imageselect-list .radio-text-item .label-radio::after {
+    display            : inline-block;
+    position           : absolute;
+    content            : " ";
+    width              : 14px;
+    height             : 14px;
+    left               : 4px;
+    top                : 4px;
+    margin-left        : -18px;
+    margin-top         : 2px;
+    border-radius      : 50%;
+    -webkit-transform  : scale(0, 0);
+    -ms-transform      : scale(0, 0);
+    -o-transform       : scale(0, 0);
+    transform          : scale(0, 0);
+    -webkit-transition : -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    -moz-transition    : -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    -o-transition      : -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    transition         : transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    z-index            : 1;
+}
+
+li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked + label + .imageselect-radiobutton:after {
+    transform : scale(1, 1);
+}
+
+// no answer, other
+.imageselect-list {
+    .no-anwser-item, .radio-text-item, .radio-item {
+        padding-left : 55px;
+    }
+    no-anwser-item .radio-label, .radio-text-item .label-radio {
+        padding-left : 10px;
+        padding-top  : 2px;
+    }
+    no-anwser-item {
+        // "row g-1" without the actual class, to match other-item
+        margin-left : calc(4px * -.5);
+    }
+    .othertext-label-checkox-container {
+        padding-left : 0;
+    }
+}
+
+.imageselect-list .no-anwser-item .radio-label, .imageselect-list .radio-text-item .label-radio {
+    font-weight : $font-weight-600;
+}
+
+// Multiple choice
+.imageselect-container .imageselect-select::before {
+    margin-left : -16px;
+    z-index     : 2;
+}
+
+.imageselect-select::after {
+    content : "";
+    z-index : 1;
+}
+
+input.imageselect-checkbox:checked ~ .imageselect-select::after {
+    font-family : "remixicon";
+    content     : "\eb7b";
+    padding     : 0;
+    font-size   : 20px;
+    font-weight : $font-weight-900;
+    text-align  : center;
+    margin-left : -16px;
+}
+
+//Make multi spacing like imageselect list radio
+.checkbox-item.imageselect-listitem {
+    padding : 0;
+    margin  : 6px 8px;
+}
+
+.imageselect-other .othertext-label-checkbox-container {
+    padding-left : 48px;
+}

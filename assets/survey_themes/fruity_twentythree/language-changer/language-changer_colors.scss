@@ -1,0 +1,29 @@
+.form-change-lang {
+    .language-icon, .control-label {
+        color : $g-700;
+    }
+
+    #language-changer-select {
+        color            : $base-color;
+        border-color     : transparent;
+        background-color : transparent;
+        &:focus {
+            border-color : $base-color;
+        }
+    }
+
+    #lang-select {
+        &::after {
+            cursor         : pointer;
+            position       : absolute;
+            top            : 50%;
+            right          : 6px;
+            transform      : translateY(-50%);
+            color          : $base-color;
+            font-family    : 'remixicon';
+            content        : "\ea50";
+            z-index        : 5;
+            pointer-events : none;
+        }
+    }
+}

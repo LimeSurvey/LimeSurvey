@@ -12,13 +12,15 @@
 namespace Twig\Node\Expression\Binary;
 
 use Twig\Compiler;
+use Twig\Node\CoercesChildrenToStringInterface;
+use Twig\Node\Expression\ReturnBoolInterface;
 
-class InBinary extends AbstractBinary
+class InBinary extends AbstractBinary implements ReturnBoolInterface, CoercesChildrenToStringInterface
 {
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler
-            ->raw('twig_in_filter(')
+            ->raw('CoreExtension::inFilter(')
             ->subcompile($this->getNode('left'))
             ->raw(', ')
             ->subcompile($this->getNode('right'))
@@ -26,10 +28,13 @@ class InBinary extends AbstractBinary
         ;
     }
 
-    public function operator(Compiler $compiler)
+    public function operator(Compiler $compiler): Compiler
     {
         return $compiler->raw('in');
     }
-}
 
-class_alias('Twig\Node\Expression\Binary\InBinary', 'Twig_Node_Expression_Binary_In');
+    public function getStringCoercedChildNames(): array
+    {
+        return ['left', 'right'];
+    }
+}

@@ -28,11 +28,11 @@
             <div class="ls-input-group">
         {% endif %}
             <!-- Prefix -->
-            {% if processString("trim(" ~ prefix ~ ")") != '' %}
+            {% if prefix!= '' %}
                 <div class='ls-input-group-extra prefix-text prefix'>{{ processString(prefix) }}</div>
             {% endif %}
             <textarea
-                class="form-control textarea {{ kpclass }}"
+                class="form-control textarea"
                 name="{{ name }}"
                 id="{{ freeTextId }}"
                 rows="{{ drows }}"
@@ -44,7 +44,7 @@
             >{{ dispVal }}</textarea>
 
             <!-- Suffix -->
-            {% if processString("trim(" ~ suffix ~ ")") != '' %}
+            {% if suffix %}
                 <div class='ls-input-group-extra suffix-text suffix'>{{ processString(suffix) }}</div>
             {% endif %}
         {% if prefix != '' or suffix != '' %}

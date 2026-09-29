@@ -6,6 +6,7 @@ use Exception;
 
 class Update_166 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
@@ -24,7 +25,7 @@ class Update_166 extends DatabaseUpdateBase
                 'entity_id,entity,permission,uid',
                 true
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
         upgradePermissions166();

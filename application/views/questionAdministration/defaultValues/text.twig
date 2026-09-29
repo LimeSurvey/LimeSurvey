@@ -8,8 +8,8 @@
  * @var bool $hasUpdatePermission
  */
 #}
-<div class="form-group col-sm-12">
-    <label class="control-label" for='defaultvalues[{{ lang }}]'>
+<div class="mb-3">
+    <label class="form-label" for='defaultvalues[{{ lang }}]'>
         {{ gT("Default value:") }}
     </label>
     <textarea {{ hasUpdatePermission ? '' : 'disabled="disabled" readonly="readonly"' }}

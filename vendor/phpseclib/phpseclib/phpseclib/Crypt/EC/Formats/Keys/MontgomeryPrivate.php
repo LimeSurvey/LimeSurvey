@@ -33,6 +33,8 @@ use phpseclib3\Math\BigInteger;
  */
 abstract class MontgomeryPrivate
 {
+    use Common;
+
     /**
      * Is invisible flag
      *
@@ -59,11 +61,11 @@ abstract class MontgomeryPrivate
                 throw new \LengthException('The only supported lengths are 32 and 56');
         }
 
-        $components = ['curve' => $curve];
-        $components['dA'] = new BigInteger($key, 256);
-        $curve->rangeCheck($components['dA']);
-        // note that EC::getEncodedCoordinates does some additional "magic" (it does strrev on the result)
-        $components['QA'] = $components['curve']->multiplyPoint($components['curve']->getBasePoint(), $components['dA']);
+        $components = [
+            'curve' => $curve,
+            'dA' => new BigInteger($key, 256)
+        ];
+        $components['QA'] = self::deriveMontgomeryPublicKey($components);
 
         return $components;
     }
@@ -71,7 +73,7 @@ abstract class MontgomeryPrivate
     /**
      * Convert an EC public key to the appropriate format
      *
-     * @param \phpseclib3\Crypt\EC\BaseCurves\Montgomery $curve
+     * @param MontgomeryCurve $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @return string
      */
@@ -83,8 +85,8 @@ abstract class MontgomeryPrivate
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $privateKey
-     * @param \phpseclib3\Crypt\EC\BaseCurves\Montgomery $curve
+     * @param BigInteger $privateKey
+     * @param MontgomeryCurve $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param string $secret optional
      * @param string $password optional
@@ -96,6 +98,6 @@ abstract class MontgomeryPrivate
             throw new UnsupportedFormatException('MontgomeryPrivate private keys do not support encryption');
         }
 
-        return $privateKey->toBytes();
+        return str_pad($privateKey->toBytes(), $curve::SIZE, "\0", STR_PAD_RIGHT);
     }
 }

@@ -1,0 +1,23 @@
+{#
+ * This file render the content of the timed question
+ * @var iQid
+ * @var time_limit_message_style
+ * @var time_limit_message
+ * @var time_limit_warning_style
+ * @var time_limit_warning_message
+ * @var time_limit_warning_2_style
+ * @var time_limit_warning_2_message
+ * @var time_limit_timer_style
+ * @var
+#}
+<div id='LS_question{{ iQid }}_Timer' class='{{ time_limit_timer_class }} alert alert-info' style='{{ time_limit_timer_style|escape("html_attr") }}'>
+</div>
+<div id='LS_question{{ iQid }}_warning' class='{{ time_limit_warning_class }} alert alert-warning' style='{{ time_limit_warning_style|escape("html_attr") }}'>
+    {{ time_limit_warning_message }}
+</div>
+<div id='LS_question{{ iQid }}_warning_2' class='{{ time_limit_warning_2_class}} alert alert-warning' style='{{ time_limit_warning_2_style|escape("html_attr") }}'>
+    {{ time_limit_warning_2_message }}
+</div>
+<div id='question{{ iQid }}_timer' class='{{ time_limit_message_class}} alert alert-danger' style='{{ time_limit_message_style|escape("html_attr") }}'>
+    {{ time_limit_message }}
+</div>

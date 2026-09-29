@@ -12,28 +12,12 @@
 namespace Twig\Node\Expression\Binary;
 
 use Twig\Compiler;
+use Twig\Node\Expression\ReturnNumberInterface;
 
-class PowerBinary extends AbstractBinary
+class PowerBinary extends AbstractBinary implements ReturnNumberInterface
 {
-    public function compile(Compiler $compiler)
-    {
-        if (\PHP_VERSION_ID >= 50600) {
-            return parent::compile($compiler);
-        }
-
-        $compiler
-            ->raw('pow(')
-            ->subcompile($this->getNode('left'))
-            ->raw(', ')
-            ->subcompile($this->getNode('right'))
-            ->raw(')')
-        ;
-    }
-
-    public function operator(Compiler $compiler)
+    public function operator(Compiler $compiler): Compiler
     {
         return $compiler->raw('**');
     }
 }
-
-class_alias('Twig\Node\Expression\Binary\PowerBinary', 'Twig_Node_Expression_Binary_Power');

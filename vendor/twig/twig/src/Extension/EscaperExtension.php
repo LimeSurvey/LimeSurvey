@@ -9,17 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace Twig\Extension {
+namespace Twig\Extension;
+
+use Twig\Environment;
+use Twig\FileExtensionEscapingStrategy;
+use Twig\Node\Expression\ConstantExpression;
+use Twig\Node\Expression\Filter\EscapeFilter;
+use Twig\Node\Expression\Filter\RawFilter;
+use Twig\Node\Node;
 use Twig\NodeVisitor\EscaperNodeVisitor;
+use Twig\Runtime\EscaperRuntime;
 use Twig\TokenParser\AutoEscapeTokenParser;
 use Twig\TwigFilter;
 
-/**
- * @final
- */
-class EscaperExtension extends AbstractExtension
+final class EscaperExtension extends AbstractExtension
 {
-    protected $defaultStrategy;
+    private $environment;
+    private $escapers = [];
+    private $escaper;
+    private $defaultStrategy;
 
     /**
      * @param string|false|callable $defaultStrategy An escaping strategy
@@ -31,21 +39,55 @@ class EscaperExtension extends AbstractExtension
         $this->setDefaultStrategy($defaultStrategy);
     }
 
-    public function getTokenParsers()
+    public function getTokenParsers(): array
     {
         return [new AutoEscapeTokenParser()];
     }
 
-    public function getNodeVisitors()
+    public function getNodeVisitors(): array
     {
         return [new EscaperNodeVisitor()];
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new TwigFilter('raw', 'twig_raw_filter', ['is_safe' => ['all']]),
+            new TwigFilter('escape', [EscaperRuntime::class, 'escape'], ['is_safe_callback' => [self::class, 'escapeFilterIsSafe'], 'node_class' => EscapeFilter::class]),
+            new TwigFilter('e', [EscaperRuntime::class, 'escape'], ['is_safe_callback' => [self::class, 'escapeFilterIsSafe'], 'node_class' => EscapeFilter::class]),
+            new TwigFilter('raw', null, ['is_safe' => ['all'], 'node_class' => RawFilter::class]),
         ];
+    }
+
+    public function getLastModified(): int
+    {
+        return max(
+            parent::getLastModified(),
+            filemtime((new \ReflectionClass(EscaperRuntime::class))->getFileName()),
+        );
+    }
+
+    /**
+     * @deprecated since Twig 3.10
+     */
+    public function setEnvironment(Environment $environment): void
+    {
+        $triggerDeprecation = \func_num_args() > 1 ? func_get_arg(1) : true;
+        if ($triggerDeprecation) {
+            trigger_deprecation('twig/twig', '3.10', 'The "%s()" method is deprecated and not needed if you are using methods from "Twig\Runtime\EscaperRuntime".', __METHOD__);
+        }
+
+        $this->environment = $environment;
+        $this->escaper = null;
+    }
+
+    /**
+     * @deprecated since Twig 3.10
+     */
+    public function setEscaperRuntime(EscaperRuntime $escaper): void
+    {
+        trigger_deprecation('twig/twig', '3.10', 'The "%s()" method is deprecated and not needed if you are using methods from "Twig\Runtime\EscaperRuntime".', __METHOD__);
+
+        $this->escaper = $escaper;
     }
 
     /**
@@ -54,25 +96,12 @@ class EscaperExtension extends AbstractExtension
      * The strategy can be a valid PHP callback that takes the template
      * name as an argument and returns the strategy to use.
      *
-     * @param string|false|callable $defaultStrategy An escaping strategy
+     * @param string|false|callable(string $templateName): string $defaultStrategy An escaping strategy
      */
-    public function setDefaultStrategy($defaultStrategy)
+    public function setDefaultStrategy($defaultStrategy): void
     {
-        // for BC
-        if (true === $defaultStrategy) {
-            @trigger_error('Using "true" as the default strategy is deprecated since version 1.21. Use "html" instead.', E_USER_DEPRECATED);
-
-            $defaultStrategy = 'html';
-        }
-
-        if ('filename' === $defaultStrategy) {
-            @trigger_error('Using "filename" as the default strategy is deprecated since version 1.27. Use "name" instead.', E_USER_DEPRECATED);
-
-            $defaultStrategy = 'name';
-        }
-
         if ('name' === $defaultStrategy) {
-            $defaultStrategy = ['\Twig\FileExtensionEscapingStrategy', 'guess'];
+            $defaultStrategy = [FileExtensionEscapingStrategy::class, 'guess'];
         }
 
         $this->defaultStrategy = $defaultStrategy;
@@ -85,7 +114,7 @@ class EscaperExtension extends AbstractExtension
      *
      * @return string|false The default strategy to use for the template
      */
-    public function getDefaultStrategy($name)
+    public function getDefaultStrategy(string $name)
     {
         // disable string callables to avoid calling a function named html or js,
         // or any other upcoming escaping strategy
@@ -96,25 +125,90 @@ class EscaperExtension extends AbstractExtension
         return $this->defaultStrategy;
     }
 
-    public function getName()
+    /**
+     * Defines a new escaper to be used via the escape filter.
+     *
+     * @param string                                        $strategy The strategy name that should be used as a strategy in the escape call
+     * @param callable(Environment, string, string): string $callable A valid PHP callable
+     *
+     * @deprecated since Twig 3.10
+     */
+    public function setEscaper($strategy, callable $callable): void
     {
-        return 'escaper';
+        trigger_deprecation('twig/twig', '3.10', 'The "%s()" method is deprecated, use the "Twig\Runtime\EscaperRuntime::setEscaper()" method instead (be warned that Environment is not passed anymore to the callable).', __METHOD__);
+
+        $escaper = $this->getEscaper(__METHOD__);
+
+        $this->escapers[$strategy] = $callable;
+        $callable = function ($string, $charset) use ($callable) {
+            return $callable($this->environment, $string, $charset);
+        };
+
+        $escaper->setEscaper($strategy, $callable);
     }
-}
 
-class_alias('Twig\Extension\EscaperExtension', 'Twig_Extension_Escaper');
-}
+    /**
+     * Gets all defined escapers.
+     *
+     * @return array<string, callable(Environment, string, string): string> An array of escapers
+     *
+     * @deprecated since Twig 3.10
+     */
+    public function getEscapers()
+    {
+        trigger_deprecation('twig/twig', '3.10', 'The "%s()" method is deprecated, use the "Twig\Runtime\EscaperRuntime::getEscaper()" method instead.', __METHOD__);
 
-namespace {
-/**
- * Marks a variable as being safe.
- *
- * @param string $string A PHP variable
- *
- * @return string
- */
-function twig_raw_filter($string)
-{
-    return $string;
-}
+        return $this->escapers;
+    }
+
+    /**
+     * @deprecated since Twig 3.10
+     */
+    public function setSafeClasses(array $safeClasses = []): void
+    {
+        trigger_deprecation('twig/twig', '3.10', 'The "%s()" method is deprecated, use the "Twig\Runtime\EscaperRuntime::setSafeClasses()" method instead.', __METHOD__);
+
+        $this->getEscaper(__METHOD__)->setSafeClasses($safeClasses);
+    }
+
+    /**
+     * @deprecated since Twig 3.10
+     */
+    public function addSafeClass(string $class, array $strategies): void
+    {
+        trigger_deprecation('twig/twig', '3.10', 'The "%s()" method is deprecated, use the "Twig\Runtime\EscaperRuntime::addSafeClass()" method instead.', __METHOD__);
+
+        $this->getEscaper(__METHOD__)->addSafeClass($class, $strategies);
+    }
+
+    private function getEscaper(string $fromMethod): EscaperRuntime
+    {
+        if (isset($this->escaper)) {
+            return $this->escaper;
+        }
+
+        if (isset($this->environment)) {
+            return $this->escaper = $this->environment->getRuntime(EscaperRuntime::class);
+        }
+
+        throw new \LogicException(\sprintf('You must call "setEnvironment()" before calling "%s()".', $fromMethod));
+    }
+
+    /**
+     * @internal
+     *
+     * @return array<string>
+     */
+    public static function escapeFilterIsSafe(Node $filterArgs)
+    {
+        foreach ($filterArgs as $arg) {
+            if ($arg instanceof ConstantExpression) {
+                return [$arg->getAttribute('value')];
+            }
+
+            return [];
+        }
+
+        return ['html'];
+    }
 }

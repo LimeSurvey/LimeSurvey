@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhTimeAgoFormatter class
  *
@@ -68,8 +69,7 @@ class WhTimeAgoFormatter extends CFormatter
     {
         if ($value instanceof DateTime) {
             $value = date_timestamp_get($value);
-
-        } else if (!is_numeric($value) && is_string($value)) {
+        } elseif (!is_numeric($value) && is_string($value)) {
             $value = strtotime($value);
         }
 
@@ -137,9 +137,8 @@ class WhTimeAgoFormatter extends CFormatter
                 } else {
                     $message = $this->data[$key];
                 }
-                return trim(implode($separator, array($prefix, preg_replace('/%d/i', $number, $message), $suffix)));
+                return trim(implode($separator, array($prefix, preg_replace('/%d/i', $number, (string) $message), $suffix)));
             }
         }
     }
-
 }

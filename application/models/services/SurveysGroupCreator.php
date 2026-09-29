@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Models\Services;
 
+use CHtml;
+use LimeSurvey\Datavalueobjects\TypedMessage;
 use LSHttpRequest;
 use LSWebUser;
 use SurveysGroups;
@@ -22,8 +24,11 @@ class SurveysGroupCreator
     /** @var SurveysGroups */
     private $surveysGroup;
 
-    /** @var $surveysGroupsettings */
+    /** @var SurveysGroupsettings */
     private $surveysGroupsettings;
+
+    /** @var TypedMessage[] an array of messages providing extra details */
+    private $messages = [];
 
     /**
      * @param LSHttpRequest $request
@@ -58,9 +63,35 @@ class SurveysGroupCreator
             $this->surveysGroupsettings->gsid = $this->surveysGroup->gsid;
             $this->surveysGroupsettings->setToInherit();
 
-            return $this->surveysGroupsettings->save();
+            if ($this->surveysGroupsettings->save()) {
+                return true;
+            } else {
+                $this->messages[] = new TypedMessage(CHtml::errorSummary($this->surveysGroupsettings), 'error');
+                return false;
+            }
         } else {
+            $this->messages[] = new TypedMessage(CHtml::errorSummary($this->surveysGroup), 'error');
             return false;
         }
+    }
+
+    /**
+     * Returns the messages of the given type, or all messages if
+     * no type is specified.
+     * @param string|null $type
+     * @return TypedMessage[]
+     */
+    public function getMessages($type = null)
+    {
+        if (empty($type)) {
+            return $this->messages;
+        }
+        $messages = [];
+        foreach ($this->messages as $message) {
+            if ($message->getType() === $type) {
+                $messages[] = $message;
+            }
+        }
+        return $messages;
     }
 }

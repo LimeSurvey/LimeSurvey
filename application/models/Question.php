@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2013-2022 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2013-2022 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -27,19 +27,20 @@ use LimeSurvey\Helpers\questionHelper;
  * @property string $other Other option enabled for question (Y/N)
  * @property string $mandatory Whether question is mandatory (Y/S/N)
  * @property string $encrypted Whether question is encrypted (Y/N)
+ * @property string $question_theme_name
  * @property integer $question_order Question order in greoup
  * @property integer $parent_qid Questions parent question ID eg for subquestions
  * @property integer $scale_id  The scale ID
  * @property integer $same_default Saves if user set to use the same default value across languages in default options dialog ('Edit default answers')
- * @property string $relevance Questions relevane equation
+ * @property string $relevance Questions relevance equation
  * @property string $modulename
  * @property integer $same_script Whether the same script should be used for all languages
  *
  * @property Survey $survey
- * @property QuestionGroup $groups  //@TODO should be singular
- * @property Question $parents      //@TODO should be singular
+ * @property QuestionGroup $group
+ * @property Question $parent
  * @property Question[] $subquestions
- * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
+ * @property QuestionAttribute[] $questionattributes NB! returns all QuestionAttribute Models for this QID regardless of the specified language
  * @property QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @property Answer[] $answers
@@ -79,6 +80,17 @@ class Question extends LSActiveRecord
     const QT_COLON_ARRAY_NUMBERS = ':';
     const QT_SEMICOLON_ARRAY_TEXT = ';';
 
+    const ORDER_TYPES_SUBQUESTION = [
+        self::QT_M_MULTIPLE_CHOICE,
+        self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+        self::QT_R_RANKING,
+    ];
+    const ORDER_TYPES_ANSWER = [
+        self::QT_L_LIST,
+        self::QT_EXCLAMATION_LIST_DROPDOWN,
+        self::QT_O_LIST_WITH_COMMENT
+    ];
+
     const START_SORTING_VALUE = 1; //this is the start value for question_order
 
     const DEFAULT_QUESTION_THEME = 'core';  // The question theme name to use when no theme is specified
@@ -86,9 +98,9 @@ class Question extends LSActiveRecord
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
     public $gid;
-    /** Defaut relevance **/
+    /** Default relevance **/
     public $relevance = '';
-    /** defaut same_script , avoid public break during update **/
+    /** Default same_script , avoid public break during update **/
     public $same_script = 0;
 
     /** @var QuestionTheme cached question theme*/
@@ -126,7 +138,13 @@ class Question extends LSActiveRecord
             'parent' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
             'questionattributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
             'questionl10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
-            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid' => 'qid'), 'order' => App()->getDb()->quoteColumnName('subquestions.question_order') . ' ASC'),
+            'subquestions' => array(
+                self::HAS_MANY,
+                'Question',
+                array('parent_qid' => 'qid'),
+                'order' => 'subquestions.question_order ASC',
+                'together' => false
+            ),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
             'answers' => array(self::HAS_MANY, 'Answer', 'qid'),
             // This relation will fail for non saved questions, which is often the case
@@ -137,14 +155,26 @@ class Question extends LSActiveRecord
 
     /**
      * @inheritdoc
+     * replace under condition $oQuestion->survey to use Survey::$findByPkCache
+     */
+    public function getRelated($name, $refresh = false, $params = array())
+    {
+        if ($name == 'survey' && !$refresh && empty($params)) {
+            return Survey::model()->findByPk($this->sid);
+        }
+        return parent::getRelated($name, $refresh, $params);
+    }
+
+    /**
+     * @inheritdoc
      * TODO: make it easy to read (if possible)
      */
     public function rules()
     {
         /* Basic rules */
         $aRules = array(
-            array('title', 'required', 'on' => 'update, insert', 'message' => gT('The question code is mandatory.', 'unescaped')),
-            array('title', 'length', 'min' => 1, 'max' => 20, 'on' => 'update, insert'),
+            array('title', 'required', 'on' => 'update, insert, saveall', 'message' => gT('The question code is mandatory.', 'unescaped')),
+            array('title', 'length', 'min' => 1, 'max' => 20, 'on' => 'update, insert, saveall'),
             array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly' => true),
             array('qid', 'unique','message' => sprintf(gT("Question id (qid) : '%s' is already in use."), $this->qid)),// Still needed ?
             array('other', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
@@ -154,7 +184,8 @@ class Question extends LSActiveRecord
             array('scale_id', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('same_default', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('type', 'length', 'min' => 1, 'max' => 1),
-            array('preg,relevance', 'safe'),
+            array('relevance', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
+            array('preg', 'safe'),
             array('modulename', 'length', 'max' => 255),
             array('same_script', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );
@@ -167,7 +198,7 @@ class Question extends LSActiveRecord
             return 'N';
         });
         /* Don't save empty or 'core' question theme name */
-        $aRules[] = ['question_theme_name', 'questionThemeNameValidator'];
+        $aRules[] = ['question_theme_name', 'filter', 'filter' =>  [$this, 'questionThemeNameValidator'] ];
         /* Specific rules to avoid collapse with column name in database */
         if ($this->parent_qid) {
             /* Subquestion specific rules */
@@ -181,7 +212,8 @@ class Question extends LSActiveRecord
                         ':scale_id' => $this->scale_id
                         )
                     ),
-                    'message' => gT('Subquestion codes must be unique.')
+                    'message' => gT('Subquestion codes must be unique.'),
+                    'except' => 'saveall'
             );
             /* Disallow other title if question allow other */
             $oParentQuestion = Question::model()->findByPk(array("qid" => $this->parent_qid));
@@ -205,6 +237,9 @@ class Question extends LSActiveRecord
                 // Disallow other if sub question have 'other' for title
                 $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
+        }
+        if ($this->survey->isActive) {
+            $aRules = array_merge($aRules, $this->rulesForActiveSurvey());
         }
         /* When question exist and are already set with title, allow keep bad title */
         if (!$this->isNewRecord) {
@@ -255,7 +290,7 @@ class Question extends LSActiveRecord
                 'except' => 'archiveimport'
             );
             $aRules[] = array(
-                'title', 'match', 'pattern' => '/^[[:alnum:]]*$/',
+                'title', 'match', 'pattern' => '/^[a-zA-z0-9]*$/',
                 'message' => gT('Subquestion codes may only contain alphanumeric characters.'),
                 'except' => 'archiveimport'
             );
@@ -263,7 +298,17 @@ class Question extends LSActiveRecord
         return $aRules;
     }
 
-
+    /**
+     * return rules specific for activated survey
+     * @return array
+     */
+    private function rulesForActiveSurvey()
+    {
+        $aRules = array();
+        /* can not update group */
+        $aRules[] = array('gid', 'LSYii_DisableUpdateValidator');
+        return $aRules;
+    }
 
     /**
      * Rewrites sort order for questions in a group
@@ -331,69 +376,59 @@ class Question extends LSActiveRecord
         return $aAttributes;
     }
 
+//    /**
+//     * TODO: replace this function call by $oSurvey->questions defining a relation in SurveyModel
+//     * @param integer $sid
+//     * @param integer $gid
+//     * @return CDbDataReader
+//     */
+//    public function getQuestions($sid, $gid)
+//    {
+//        return Yii::app()->db->createCommand()
+//            ->select()
+//            ->from(self::tableName())
+//            ->where(array('and', 'sid=:sid', 'gid=:gid', 'parent_qid=0'))
+//            ->order('question_order asc')
+//            ->bindParam(":sid", $sid, PDO::PARAM_INT)
+//            ->bindParam(":gid", $gid, PDO::PARAM_INT)
+//            //->bindParam(":language", $language, PDO::PARAM_STR)
+//            ->query();
+//    }
+
     /**
-     * Add custom attributes (if there are any custom attributes). It also removes all attributeNames where inputType is
-     * empty. Otherwise (not adding and removing anything)it returns the incoming parameter $aAttributeNames.
+     * Return the key=>value answer for a given $qid
      *
-     * @param array $aAttributeNames  the values from getQuestionAttributesSettings($sType)
-     * @param array $aAttributeValues  $attributeValues['question_template'] != 'core', only if this is true the function changes something
-     * @param Question $oQuestion      this is needed to check if a questionTemplate has custom attributes
-     * @return mixed  returns the incoming parameter $aAttributeNames or
-     *
-     * @deprecated use QuestionTheme::getAdditionalAttrFromExtendedTheme() to retrieve question theme attributes and
-     *             QuestionAttributeHelper->mergeQuestionAttributes() to merge with base attributes.
+     * @staticvar array $questionCache
+     * @param integer $parent_qid
+     * @param string $title
+     * @param string $sLanguage
+     * @param integer $iScaleID
+     * @return string|null The answer text
      */
-    public static function getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion)
+    public function getQuestionFromTitle($parent_qid, $title, $sLanguage, $iScaleID = 0)
     {
-        if (isset($aAttributeValues['question_template']) && ($aAttributeValues['question_template'] != 'core')) {
-            if (empty($oQuestion)) {
-                throw new Exception('oQuestion cannot be empty');
+        static $questionCache = array();
+
+        if (
+            array_key_exists($parent_qid, $questionCache)
+                && array_key_exists($title, $questionCache[$parent_qid])
+                && array_key_exists($sLanguage, $questionCache[$parent_qid][$title])
+                && array_key_exists($iScaleID, $questionCache[$parent_qid][$title][$sLanguage])
+        ) {
+            // We have a hit :)
+            return $questionCache[$parent_qid][$title][$sLanguage][$iScaleID];
+        } else {
+            $aQuestion = Question::model()->findByAttributes(array('parent_qid' => $parent_qid, 'title' => $title, 'scale_id' => $iScaleID));
+            if (is_null($aQuestion)) {
+                return null;
             }
-            $oQuestionTemplate = QuestionTemplate::getInstance($oQuestion);
-            if ($oQuestionTemplate->bHasCustomAttributes) {
-                // Add the custom attributes to the list
-                foreach ($oQuestionTemplate->oConfig->attributes->attribute as $attribute) {
-                    $sAttributeName = (string)$attribute->name;
-                    $sInputType = (string)$attribute->inputtype;
-                    // remove attribute if inputtype is empty
-                    if (empty($sInputType)) {
-                        unset($aAttributeNames[$sAttributeName]);
-                    } else {
-                        $aCustomAttribute = json_decode(json_encode((array)$attribute), 1);
-                        $aCustomAttribute = array_merge(
-                            QuestionAttribute::getDefaultSettings(),
-                            array("category" => gT("Template")),
-                            $aCustomAttribute
-                        );
-                        $aAttributeNames[$sAttributeName] = $aCustomAttribute;
-                    }
-                }
+            if (!isset($aQuestion->questionl10ns[$sLanguage])) {
+                Yii::log("QuestionL10n record missing for language \"{$sLanguage}\" and qid {$aQuestion->qid}", 'warning', 'application.models.Question.getQuestionFromTitle');
+                return null;
             }
+            $questionCache[$parent_qid][$title][$sLanguage][$iScaleID] = $aQuestion->questionl10ns[$sLanguage]->question;
+            return $questionCache[$parent_qid][$title][$sLanguage][$iScaleID];
         }
-        return $aAttributeNames;
-    }
-
-    public function getTypeGroup()
-    {
-    }
-
-    /**
-     * TODO: replace this function call by $oSurvey->questions defining a relation in SurveyModel
-     * @param integer $sid
-     * @param integer $gid
-     * @return CDbDataReader
-     */
-    public function getQuestions($sid, $gid)
-    {
-        return Yii::app()->db->createCommand()
-            ->select()
-            ->from(self::tableName())
-            ->where(array('and', 'sid=:sid', 'gid=:gid', 'parent_qid=0'))
-            ->order('question_order asc')
-            ->bindParam(":sid", $sid, PDO::PARAM_INT)
-            ->bindParam(":gid", $gid, PDO::PARAM_INT)
-            //->bindParam(":language", $language, PDO::PARAM_STR)
-            ->query();
     }
 
     /**
@@ -456,56 +491,52 @@ class Question extends LSActiveRecord
     public function removeFromLastVisited()
     {
         $oCriteria = new CDbCriteria();
-        $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
-        $oCriteria->compare('stg_value', $this->qid, false, 'AND');
-        SettingGlobal::model()->deleteAll($oCriteria);
+        $oCriteria->compare('stg_name', 'last_question');
+        $oCriteria->compare('stg_value', $this->qid);
+        SettingsUser::model()->deleteAll($oCriteria);
     }
 
     /**
      * Delete all subquestions that belong to this question.
      *
+     * @param ?array $exceptIds Don't delete subquestions with these ids.
      * @return void
-     * @todo Duplication from delete()
      */
-    public function deleteAllSubquestions()
+    public function deleteAllSubquestions($exceptIds = [])
     {
-        $ids = $this->allSubQuestionIds;
-        $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
-        $res = Question::model()->deleteAll((new CDbCriteria())->addInCondition('qid', $ids));
-        QuestionAttribute::model()->deleteAll($qidsCriteria);
-        QuestionL10n::model()->deleteAll($qidsCriteria);
-        QuotaMember::model()->deleteAll($qidsCriteria);
-        $defaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
-        foreach ($defaultValues as $defaultValue) {
-            DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultValue->dvid));
-            DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultValue->dvid));
+        $ids = !empty($exceptIds)
+            ? array_diff($this->allSubQuestionIds, $exceptIds)
+            : $this->allSubQuestionIds;
+
+        $questions = Question::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
+        foreach ($questions as $question) {
+            $question->delete();
         }
     }
 
     /**
      * Delete all question and its subQuestion Answers
-     *
+     * @param array $exceptIds Don't delete answers with these ids.
      * @return void
      */
-    public function deleteAllAnswers()
+    public function deleteAllAnswers(array $exceptIds = [])
     {
         $ids = array_merge([$this->qid], $this->allSubQuestionIds);
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
-
-        $answerIds = [];
+        $qidsCriteria->addNotInCondition('aid', $exceptIds);
         $answers = Answer::model()->findAll($qidsCriteria);
         if (!empty($answers)) {
             foreach ($answers as $answer) {
-                $answerIds[] = $answer->aid;
+                $answerId = $answer->aid;
+                if ($answer->delete()) {
+                    AnswerL10n::model()->deleteAllByAttributes(['aid' => $answerId]);
+                }
             }
         }
-        $aidsCriteria = (new CDbCriteria())->addInCondition('aid', $answerIds);
-        AnswerL10n::model()->deleteAll($aidsCriteria);
-        Answer::model()->deleteAll($qidsCriteria);
     }
 
     /**
-     * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
+     * TODO: replace it everywhere by Answer::model()->findAll([Criteria Object])
      * @param string $fields
      * @param mixed $condition
      * @param string|false $orderby
@@ -542,60 +573,6 @@ class Question extends LSActiveRecord
                     'params'    => array(':sid' => $surveyid)
                 )
             );
-    }
-
-    /**
-     * @return string
-     */
-    public function getTypedesc()
-    {
-        $types = self::typeList();
-        $typeDesc = $types[$this->type]["description"];
-
-        if (YII_DEBUG) {
-            $typeDesc .= ' <em>' . $this->type . '</em>';
-        }
-
-        return $typeDesc;
-    }
-
-    /**
-     * This function contains the question type definitions.
-     * @param string $language Language for translation
-     * @return array The question type definitions
-     *
-     * Explanation of questiontype array:
-     *
-     * description : Question description
-     * subquestions : 0= Does not support subquestions x=Number of subquestion scales
-     * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
-     * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
-     * @deprecated use QuestionTheme::findQuestionMetaDataForAllTypes() instead
-     */
-    public static function typeList($language = null)
-    {
-        $QuestionTypes = QuestionType::modelsAttributes($language);
-
-        /**
-         * @todo Check if this actually does anything, since the values are arrays.
-         */
-        asort($QuestionTypes);
-
-        return $QuestionTypes;
-    }
-
-    /**
-     * This function return the name by question type
-     * @param string question type
-     * @return string Question type name
-     *
-     * Maybe move class in typeList ?
-     * @deprecated use $this->>questionType->description instead
-     */
-    public static function getQuestionTypeName($sType)
-    {
-        $typeList = self::typeList();
-        return $typeList[$sType]['description'];
     }
 
     /**
@@ -680,175 +657,79 @@ class Question extends LSActiveRecord
         $previewUrl .= '/' . $this->sid . '/gid/' . $this->gid . '/qid/' . $this->qid;
         $editurl     = Yii::app()->createUrl("questionAdministration/edit/questionId/$this->qid/tabOverviewEditor/editor");
 
-        $buttons = "<div class='icon-btn-row'>";
+        $permission_edit_question = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update');
+        $permission_summary_question = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read');
+        $permission_delete_question = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete');
 
-        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
-            $buttons .= '<a class="btn btn-sm btn-default"  data-toggle="tooltip" title="' . gT("Edit question") . '" href="' . $editurl . '" role="button"><span class="fa fa-pencil" ></span></a>';
-        }
-
-        $buttons .= '<a class="btn btn-sm btn-default open-preview"  data-toggle="tooltip" title="' . gT("Question preview") . '"  aria-data-url="' . $previewUrl . '" aria-data-sid="' . $this->sid . '" aria-data-gid="' . $this->gid . '" aria-data-qid="' . $this->qid . '" aria-data-language="' . $this->survey->language . '" href="#" role="button" ><span class="fa fa-eye"  ></span></a> ';
-
-        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
-            $buttons .= '<a class="btn btn-sm btn-default"  data-toggle="tooltip" title="' . gT("Question summary") . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
-        }
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit question'),
+            'iconClass'        => 'ri-pencil-fill',
+            'url'              => $editurl,
+            'enabledCondition' => $permission_edit_question
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Question preview'),
+            'iconClass'        => 'ri-eye-fill',
+            'linkClass'        => 'open-preview',
+            'linkAttributes'   => [
+                'data-bs-toggle' => 'tooltip',
+                'aria-data-url' => $previewUrl,
+                'aria-data-sid' => $this->sid,
+                'aria-data-gid' => $this->gid,
+                'aria-data-qid' => $this->qid,
+                'aria-data-language' => $this->survey->language
+            ]
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Question summary'),
+            'iconClass'        => 'ri-list-unordered',
+            'url'              => $url,
+            'enabledCondition' => $permission_summary_question,
+            'linkAttributes'   => [
+                'data-bs-toggle' => 'tooltip',
+            ]
+        ];
 
         $oSurvey = Survey::model()->findByPk($this->sid);
-
-        if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
-            $buttons .= '<a class="btn btn-sm btn-default"  data-toggle="tooltip" title="' . gT("Delete question") . '" href="#" role="button"'
-                . " onclick='$.bsconfirm(\"" . CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
-                            . "\", {\"confirm_ok\": \"" . gT("Yes") . "\", \"confirm_cancel\": \"" . gT("No") . "\"}, function() {"
-                            . convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $this->qid]))
-                        . "});'>"
-                    . ' <i class="fa fa-trash text-danger"></i>
-                </a>';
-        }
-        $buttons .= "</div>";
-        return $buttons;
-    }
-
-    public function getOrderedAnswers($scale_id = null)
-    {
-        //reset answers set prior to this call
-        $aAnswerOptions = [
-            0 => []
+        $surveyIsNotActive = $oSurvey->active !== 'Y';
+        $dropdownItems[] = [
+            'title'            => gT('Delete question'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $surveyIsNotActive && $permission_delete_question,
+            'linkAttributes'   => [
+                'data-bs-toggle' => 'tooltip',
+                'onclick' => '$.fn.bsconfirm("'
+                    . CHtml::encode(gT("Deleting will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
+                    . '", {"confirm_ok": "'
+                    . gT("Delete")
+                    . '", "confirm_cancel": "'
+                    . gT("Cancel")
+                    . '"}, function() {'
+                    . convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $this->qid]))
+                    . "});"
+            ]
         ];
 
-        foreach ($this->answers as $oAnswer) {
-            if ($scale_id !== null && $oAnswer->scale_id != $scale_id) {
-                continue;
-            }
-            $aAnswerOptions[$oAnswer->scale_id][] = $oAnswer;
-        }
-
-
-        if ($scale_id !== null) {
-            return $aAnswerOptions[$scale_id];
-        }
-
-        // Random order
-        if ($this->getQuestionAttribute('random_order') == 1 && $this->getQuestionType()->subquestions == 0) {
-            foreach ($aAnswerOptions as $scaleId => $aScaleArray) {
-                $keys = array_keys($aScaleArray);
-                shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
-
-                $aNew = array();
-                foreach ($keys as $key) {
-                    $aNew[$key] = $aScaleArray[$key];
-                }
-                $aAnswerOptions[$scaleId] = $aNew;
-            }
-
-            return $aAnswerOptions;
-        }
-
-        // Alphabetic ordrer
-        $alphasort = $this->getQuestionAttribute('alphasort');
-        if ($alphasort == 1) {
-            foreach ($aAnswerOptions as $scaleId => $aScaleArray) {
-                $aSorted = array();
-
-                // We create an aray aSorted that will use the answer in the current language as key, and that will store its old index as value
-                foreach ($aScaleArray as $iKey => $oAnswer) {
-                    $aSorted[$oAnswer->answerl10ns[$this->survey->language]->answer] = $iKey;
-                }
-
-                ksort($aSorted);
-
-                // Now, we create a new array that store the old values of $aAnswerOptions in the order of $aSorted
-                $aNew = array();
-                foreach ($aSorted as $sAnswer => $iKey) {
-                    $aNew[] = $aScaleArray[$iKey];
-                }
-                $aAnswerOptions[$scaleId] = $aNew;
-            }
-            return $aAnswerOptions;
-        }
-
-        foreach ($aAnswerOptions as $scaleId => $aScaleArray) {
-            usort($aScaleArray, function ($a, $b) {
-                return $a->sortorder > $b->sortorder
-                    ? 1
-                    : ($a->sortorder < $b->sortorder ? -1 : 0);
-            });
-            $aAnswerOptions[$scaleId] = $aScaleArray;
-        }
-        return $aAnswerOptions;
-    }
-
-    /**
-     * get subquestions fort the current question object in the right order
-     * @param int $random
-     * @param string $exclude_all_others
-     * @return array
-     */
-    public function getOrderedSubQuestions($scale_id = null)
-    {
-
-
-        //reset subquestions set prior to this call
-        $aSubQuestions = [
-            0 => []
-        ];
-
-        $aOrderedSubquestions = $this->subquestions;
-
-        if ($this->getQuestionAttribute('random_order') == 1) {
-            require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
-            ls\mersenne\setSeed($this->sid);
-
-            $aOrderedSubquestions = ls\mersenne\shuffle($aOrderedSubquestions);
-        } else {
-            usort($aOrderedSubquestions, function ($oQuestionA, $oQuestionB) {
-                if ($oQuestionA->question_order == $oQuestionB->question_order) {
-                    return 0;
-                }
-                return $oQuestionA->question_order < $oQuestionB->question_order ? -1 : 1;
-            });
-        }
-
-
-        $excludedSubquestion = null;
-        foreach ($aOrderedSubquestions as $i => $oSubquestion) {
-            if ($scale_id !== null && $oSubquestion->scale_id != $scale_id) {
-                continue;
-            }
-            //if  exclude_all_others is set then the related answer should keep its position at all times
-            //thats why we have to re-position it if it has been randomized
-            if (
-                ($this->getQuestionAttribute('exclude_all_others') != '' && $this->getQuestionAttribute('random_order') == 1)
-                && ($oSubquestion->title == $this->getQuestionAttribute('exclude_all_others'))
-            ) {
-                $excludedSubquestionPosition = (safecount($aSubQuestions[$oSubquestion->scale_id]) - 1);
-                $excludedSubquestion = $oSubquestion;
-                continue;
-            }
-            $aSubQuestions[$oSubquestion->scale_id][] = $oSubquestion;
-        }
-
-        if ($excludedSubquestion != null) {
-            array_splice($aSubQuestions[$excludedSubquestion->scale_id], ($excludedSubquestion->question_order - 1), 0, [$excludedSubquestion]);
-        }
-
-        if ($scale_id !== null) {
-            return $aSubQuestions[$scale_id];
-        }
-
-        return $aSubQuestions;
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
     public function getMandatoryIcon()
     {
         if ($this->type != Question::QT_X_TEXT_DISPLAY && $this->type != Question::QT_VERTICAL_FILE_UPLOAD) {
             if ($this->mandatory == "Y") {
-                $sIcon = '<span class="fa fa-asterisk text-danger"></span>';
+                $sIcon = '<span class="ri-star-fill text-danger"></span>';
             } elseif ($this->mandatory == "S") {
-                $sIcon = '<span class="fa fa-asterisk text-danger"> ' . gT('Soft') . '</span>';
+                $sIcon = '<span class="ri-star-fill text-danger"> ' . gT('Soft') . '</span>';
             } else {
                 $sIcon = '<span></span>';
             }
         } else {
-            $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="' . gT('Not relevant for this question type') . '"></span>';
+            $sIcon = '<span class="ri-forbid-2-line text-danger" data-bs-toggle="tooltip" title="' . gT('Not relevant for this question type') . '"></span>';
         }
         return $sIcon;
     }
@@ -860,9 +741,9 @@ class Question extends LSActiveRecord
     public function getOtherIcon()
     {
         if ($this->getAllowOther()) {
-            $sIcon = ($this->other === "Y") ? '<span class="fa fa-dot-circle-o"></span>' : '<span></span>';
+            $sIcon = ($this->other === "Y") ? '<span class="ri-record-circle-line"></span>' : '<span></span>';
         } else {
-            $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="' . gT('Not relevant for this question type') . '"></span>';
+            $sIcon = '<span class="ri-forbid-2-line text-danger" data-bs-toggle="tooltip" title="' . gT('Not relevant for this question type') . '"></span>';
         }
         return $sIcon;
     }
@@ -890,6 +771,18 @@ class Question extends LSActiveRecord
         return (
             !$this->parent_qid
             && $this->getQuestionType()->subquestions
+        );
+    }
+
+    /**
+     * Return true if the question type supports answer options
+     * @return boolean
+     */
+    public function getAllowAnswerOptions()
+    {
+        return (
+            !$this->parent_qid
+            && $this->getQuestionType()->answerscales > 0
         );
     }
 
@@ -944,13 +837,6 @@ class Question extends LSActiveRecord
                 'selectableRows' => '100',
             ),
             array(
-                'header' => gT('Action'),
-                'name' => 'actions',
-                'type' => 'raw',
-                'value' => '$data->buttons',
-                'htmlOptions' => array('class' => ''),
-            ),
-            array(
                 'header' => gT('Question ID'),
                 'name' => 'question_id',
                 'value' => '$data->qid',
@@ -958,7 +844,7 @@ class Question extends LSActiveRecord
             array(
                 'header' => gT("Group / Question order"),
                 'name' => 'question_order',
-                'value' => '$data->group->group_order ." / ". $data->question_order',
+                'value' => '$data->group->group_order ." / ". $data->question_order',
             ),
             array(
                 'header' => gT('Code'),
@@ -976,7 +862,7 @@ class Question extends LSActiveRecord
                 'header' => gT('Question type'),
                 'name' => 'type',
                 'type' => 'raw',
-                'value' => '$data->typedesc',
+                'value' => 'gT($data->question_theme->title) . (YII_DEBUG ? " <em>{$data->type}</em>" : "")',
                 'htmlOptions' => array('class' => ''),
             ),
 
@@ -1001,6 +887,14 @@ class Question extends LSActiveRecord
                 'value' => '$data->otherIcon',
                 'htmlOptions' => array('class' => 'text-center'),
             ),
+            array(
+                'header' => gT('Action'),
+                'name' => 'actions',
+                'type' => 'raw',
+                'value' => '$data->buttons',
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
+            ),
         );
     }
 
@@ -1015,8 +909,8 @@ class Question extends LSActiveRecord
                 'desc' => 't.qid desc',
             ),
             'question_order' => array(
-                'asc' => 'g.group_order asc, t.question_order asc',
-                'desc' => 'g.group_order desc,t.question_order desc',
+                'asc' => 'g.group_order asc, t.question_order asc, t.title asc',
+                'desc' => 'g.group_order desc,t.question_order desc, t.title desc',
             ),
             'title' => array(
                 'asc' => 't.title asc',
@@ -1052,17 +946,22 @@ class Question extends LSActiveRecord
             'question_order' => CSort::SORT_ASC,
         );
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
         //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';
-        $criteria->with = array('group' => array('alias' => 'g'), 'questionl10ns' => array('alias' => 'ql10n', 'condition' => "language='" . $this->survey->language . "'"));
+        $criteria->with = [
+            'group' => ['alias' => 'g'],
+            'questionl10ns' => ['alias' => 'ql10n', 'condition' => "language='" . $this->survey->language . "'"],
+            'question_theme' => ['alias' => 'qt']
+        ];
 
         if (!empty($this->title)) {
-            $criteria2 = new CDbCriteria();
+            $criteria2 = new LSDbCriteria();
             $criteria2->compare('t.title', $this->title, true, 'OR');
             $criteria2->compare('ql10n.question', $this->title, true, 'OR');
             $criteria2->compare('t.type', $this->title, true, 'OR');
+            $criteria2->compare('qt.description', $this->title, true, 'OR');
             /* search exact qid and make sure it's a numeric */
             if (is_numeric($this->title)) {
                 $criteria2->compare('t.qid', $this->title, false, 'OR');
@@ -1102,14 +1001,13 @@ class Question extends LSActiveRecord
     protected function beforeSave()
     {
         if (parent::beforeSave()) {
+            /* No update when surey activated */
             $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-
             if ($surveyIsActive) {
                 //don't override questiontype when survey is active, set it back to what it was...
                 $oActualValue = Question::model()->findByPk(array("qid" => $this->qid));
                 $this->type = $oActualValue->type;
             }
-
             if ($surveyIsActive && $this->getIsNewRecord()) {
                 return false;
             }
@@ -1118,7 +1016,6 @@ class Question extends LSActiveRecord
             return false;
         }
     }
-
 
     /**
      * Fix sub question of a parent question
@@ -1160,19 +1057,11 @@ class Question extends LSActiveRecord
 
     public function getBasicFieldName()
     {
-        if ($this->parent_qid != 0) {
-            /* Fix #15228: This survey throw a Error when try to print : seems subquestion gid can be outdated */
-            // Use parents relation
-            if (!empty($this->parents)) { // Maybe need to throw error or find it if it's not set ?
-                return "{$this->parents->sid}X{$this->parents->gid}X{$this->parent_qid}";
-            }
-            return "{$this->sid}X{$this->gid}X{$this->parent_qid}";
-        }
-        return "{$this->sid}X{$this->gid}X{$this->qid}";
+        return ($this->parent_qid != 0) ? "Q{$this->parent_qid}" : "Q{$this->qid}";
     }
 
     /**
-     * @return QuestionAttribute[]
+     * @return mixed
      */
     public function getQuestionAttribute($sAttribute)
     {
@@ -1433,6 +1322,7 @@ class Question extends LSActiveRecord
         return !$isAlreadySorted;
     }
 
+
     /**
      * Returns the highest question_order value that exists for a questiongroup inside the related questions.
      * ($question->question_order).
@@ -1459,30 +1349,20 @@ class Question extends LSActiveRecord
      * Increases all question_order numbers for questions belonging to the group by +1
      *
      * @param int $questionGroupId
+     * @param integer|null $after questionorder
      */
-    public static function increaseAllOrderNumbersForGroup($questionGroupId)
+    public static function increaseAllOrderNumbersForGroup($questionGroupId, $after = null)
     {
-        $questionsInGroup = Question::model()->findAllByAttributes(["gid" => $questionGroupId]);
+        $criteria = new CDbCriteria();
+        $criteria->compare("gid", $questionGroupId);
+        if ($after) {
+            $criteria->compare("question_order", ">=" . $after);
+        }
+        $questionsInGroup = Question::model()->findAll($criteria);
         foreach ($questionsInGroup as $question) {
             $question->question_order = $question->question_order + 1;
             $question->save();
         }
-    }
-
-    /**
-     * @deprecated 5.3.x
-     * unknow usage
-     */
-    public function getHasSubquestions()
-    {
-    }
-
-    /**
-     * @deprecated 5.3.x
-     * unknow usage
-     */
-    public function getHasAnsweroptions()
-    {
     }
 
     /**
@@ -1508,6 +1388,7 @@ class Question extends LSActiveRecord
     {
         if (parent::update($attributes)) {
             $this->removeInvalidSubquestions();
+            $this->removeInvalidAnswerOptions();
             return true;
         } else {
             return false;
@@ -1530,6 +1411,25 @@ class Question extends LSActiveRecord
             foreach ($aSubquestions as $oSubquestion) {
                 /* Use delete to delete related model */
                 $oSubquestion->delete();
+            }
+        }
+    }
+
+    /**
+     * Removes all answer options if the question's type doesn't allow answer options.
+     * @return void
+     */
+    protected function removeInvalidAnswerOptions()
+    {
+        if ($this->getAllowAnswerOptions()) {
+            return;
+        }
+
+        // Remove answer options if the question's type doesn't allow answer options
+        $answerOptions = Answer::model()->findAll("qid=:qid", array("qid" => $this->qid));
+        if (!empty($answerOptions)) {
+            foreach ($answerOptions as $answerOption) {
+                $answerOption->delete();
             }
         }
     }
@@ -1630,16 +1530,30 @@ class Question extends LSActiveRecord
      */
     public function questionThemeNameValidator()
     {
-        // As long as there is a question theme name, and it's not 'core', it's ok.
-        if (!empty($this->question_theme_name) && $this->question_theme_name != 'core') {
-            return;
+        /* need a type */
+        if (empty($this->type)) {
+            return null;
         }
-
-        // If question_theme_name is empty or 'core', we fetch the value from the question_theme related to the question_type
+        /* not needed in child question */
+        if (!empty($this->parent_qid)) {
+            return null;
+        }
+        if (!empty($this->question_theme_name) && $this->question_theme_name != 'core') {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('question_type = :question_type AND name = :name');
+            $criteria->params = [':question_type' => $this->type, ':name' => $this->question_theme_name];
+            $questionTheme = QuestionTheme::model()->query($criteria, false);
+            if ($questionTheme) {
+                return $this->question_theme_name;
+            }
+        }
+        /* Get default theme name from type */
         $baseQuestionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($this->type);
         if (!empty($baseQuestionThemeName)) {
-            $this->question_theme_name = $baseQuestionThemeName;
+            return $baseQuestionThemeName;
         }
+        /* Not a valid type ? */
+        return null;
     }
 
     /**
@@ -1652,5 +1566,26 @@ class Question extends LSActiveRecord
     public function getQuestionTheme()
     {
         return $this->getRelated("question_theme", $this->isNewRecord);
+    }
+
+    /**
+     * Is it a dual scale type.
+     */
+    public function getIsDualScale()
+    {
+        $dualScaleTypes = $this->getDualScaleTypes();
+        return in_array($this->type, $dualScaleTypes);
+    }
+
+    /**
+     * Returns the question types that are dual scale.
+     */
+    public function getDualScaleTypes()
+    {
+        $dualScaleTypes = array(
+            Question::QT_1_ARRAY_DUAL
+        );
+
+        return $dualScaleTypes;
     }
 }

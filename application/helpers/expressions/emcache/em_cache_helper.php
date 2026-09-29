@@ -23,7 +23,7 @@ class EmCacheHelper
      * @return void
      * @throws InvalidArgumentException if $surveyinfo is null.
      */
-    public static function init(array $surveyinfo = null)
+    public static function init(?array $surveyinfo = null)
     {
         if (empty($surveyinfo)) {
             throw new \InvalidArgumentException('$surveyinfo is empty, cannot initialise helper');
@@ -115,7 +115,7 @@ class EmCacheHelper
      * @todo Setting per survey.
      * @todo Don't cache questions with expressions.
      */
-    public static function cacheQanda(array $ia, array $session = null)
+    public static function cacheQanda(array $ia, ?array $session = null)
     {
         /** @var boolean */
         $cacheQanda = \Yii::app()->getConfig('emcache_cache_qanda');
@@ -134,7 +134,7 @@ class EmCacheHelper
 
         // Check subquestions etc.
         foreach (array_keys($session) as $key) {
-            if (strpos($key, $ia[1]) !== false) {
+            if (strpos($key, (string) $ia[1]) !== false) {
                 if (!empty($session[$key])) {
                     // Found subquestion answer, do not use cache.
                     return false;
@@ -149,7 +149,6 @@ class EmCacheHelper
      * True if all conditions are met to use the emcache.
      *
      * @return boolean
-     * @todo check ajaxmode
      */
     public static function useCache()
     {
@@ -189,7 +188,7 @@ class EmCacheHelper
         }
 
         // Don't use emcache with randomization.
-        if ($_SESSION['survey_' . self::$surveyinfo['sid']]['randomized']) {
+        if ($_SESSION['responses_' . self::$surveyinfo['sid']]['randomized']) {
             return false;
         }
 

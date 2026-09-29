@@ -5,9 +5,9 @@
 // Begin       : 2010-06-03
 // Last Update : 2014-04-25
 // Author      : Nicola Asuni - Tecnick.com LTD - www.tecnick.com - info@tecnick.com
-// License     : GNU-LGPL v3 (http://www.gnu.org/copyleft/lesser.html)
+// License     : GNU-LGPL v3 (https://www.gnu.org/copyleft/lesser.html)
 // -------------------------------------------------------------------
-// Copyright (C) 2010-2013  Nicola Asuni - Tecnick.com LTD
+// Copyright (C) 2010-2013 2026 Nicola Asuni - Tecnick.com LTD
 //
 // This file is part of TCPDF software library.
 //
@@ -22,7 +22,7 @@
 // See the GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with TCPDF.  If not, see <http://www.gnu.org/licenses/>.
+// along with TCPDF.  If not, see <https://www.gnu.org/licenses/>.
 //
 // See LICENSE.TXT file for more information.
 // -------------------------------------------------------------------
@@ -89,6 +89,7 @@ if (!defined('PDF417DEFS')) {
  * @package com.tecnick.tcpdf
  * @author Nicola Asuni
  * @version 1.0.003
+ * @deprecated TCPDF is deprecated: migrate to tecnickcom/tc-lib-pdf.
  */
 class PDF417 {
 
@@ -943,8 +944,8 @@ class PDF417 {
 						// tmp array for the 6 bytes block
 						$cw6 = array();
 						do {
-							$d = bcmod($t, '900');
-							$t = bcdiv($t, '900');
+							$d = bcmod($t, '900', 0);
+							$t = bcdiv($t, '900', 0);
 							// prepend the value to the beginning of the array
 							array_unshift($cw6, $d);
 						} while ($t != '0');
@@ -969,8 +970,8 @@ class PDF417 {
 					}
 					$t = '1'.$code;
 					do {
-						$d = bcmod($t, '900');
-						$t = bcdiv($t, '900');
+						$d = bcmod($t, '900', 0);
+						$t = bcdiv($t, '900', 0);
 						array_unshift($cw, $d);
 					} while ($t != '0');
 					$code = $rest;

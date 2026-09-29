@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -28,7 +28,7 @@
 * format.
 *
 * Data formatting operations that may be specific to the data export routines
-* are relegated to the Writer class hierarcy and work with the Survey object
+* are relegated to the Writer class hierarchy and work with the Survey object
 * and FormattingOptions objects to provide proper style/content when exporting
 * survey information.
 *
@@ -105,7 +105,7 @@ class ExportSurveyResultsService
         $writer->init($survey, $sLanguageCode, $oOptions);
 
         $countResponsesCommand = $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
-        $countResponsesCommand->order = null;
+        $countResponsesCommand->order = false;
         $countResponsesCommand->select('count(*)');
         $responseCount = $countResponsesCommand->queryScalar();
         $maxRows = 100;

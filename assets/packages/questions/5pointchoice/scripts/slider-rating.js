@@ -14,13 +14,13 @@ function getRatingSlider(qID){
     basicSettings = {
     },
     package = {
-      sliderHtmlElement       : $("<div id='emoji_slider_container_"+qID+"' class='slider-wrapper' aria-hidden='true'></div>"),               //wrapper for the slider parts
+      sliderHtmlElement       : $("<div id='emoji_slider_container_"+qID+"' class='ls-emojislider slider-wrapper' aria-hidden='true'></div>"),               //wrapper for the slider parts
       sliderInnerHtmlElement  : $("<div class='slider-labels'></div>"),                                                    //the labels of the wrapper
       sliderGrabContainer     : $("<div id='emoji_slider_grab_container_"+qID+"' class='slider-grab-container'></div>"),   //the container for the handle and the colorline
       sliderLine              : $("<div id='slider_line_item_"+qID+"' class='slider-line'></div>"),                        //The colored baseline
       sliderHandle            : $("<div id='slider_handle_item_"+qID+"' class='slider-handle'></div>"),                    //the handle
       sliderLabelEmoji        : $("<div class='slider-label'><i class='emoji emoji-enormous'></i></div>"),
-      sliderLabelNoAnswer     : $("<div class='slider-label slider-label-6' data-position='6'><i class='fa fa-ban' style='font-size:28px;'></i></div>")
+      sliderLabelNoAnswer     : $("<div class='slider-label slider-label-6' data-position='6'><i class='emoji emoji-enormous emoji-noanswer'></i></div>"),
     },
     mapEmojiToValue = function(position){
       var imageMap = {1: "emoji-sad",2: "emoji-mildlyunamused",3: "emoji-whatever",4: "emoji-smile",5: "emoji-grin-eyes",6: "emoji-grin",7: "emoji-bigsmile"};
@@ -66,12 +66,9 @@ function getRatingSlider(qID){
     setValueAndColorize = function(index){
       answersList.find('input[type=radio][value='+index+']').trigger('click');
       $("#emoji_slider_container_"+qID).find(".slider-label").find('i').removeClass('emoji-color'); //remove all other color-classes
-      if(index==6){ //if it is the "no Answer" set, add text-danger instead of emoji-color
-         $("#emoji_slider_container_"+qID).find(".slider-label-6").find('i').addClass('text-danger');
+      $("#emoji_slider_container_"+qID).find(".slider-label-"+index).find('i').addClass('emoji-color');
+      if(index==6){ //"no answer" position
          answersList.find('input[type=radio][value=""]').trigger('click');
-      } else {
-        $("#emoji_slider_container_"+qID).find(".slider-label-6").find('i').removeClass('text-danger');
-        $("#emoji_slider_container_"+qID).find(".slider-label-"+index).find('i').addClass('emoji-color');
       }
     },
     //Method to unset all events on dragend
@@ -174,7 +171,7 @@ function getRatingSlider(qID){
   //hide the basic radioes
     pinUpHtml();
     bindEventsToContainer();
-    answersList.addClass("slidered-list sr-only");
+    answersList.addClass("slidered-list visually-hidden");
   //if a value is set, set it in the emojis
   var openValue = checkOpenValue();
     if(openValue){

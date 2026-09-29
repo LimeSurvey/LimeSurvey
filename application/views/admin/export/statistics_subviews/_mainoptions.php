@@ -1,15 +1,15 @@
 <h4 class=""><?php
     eT("Main options"); ?></h4>
 <div class="row">
-    <div class="col-md-6 col-sm-12">
-        <div class='form-group'>
-            <label for='completionstate' class="control-label"><?php
+    <div class="col-lg-6 col-md-12">
+        <div class='mb-3'>
+            <label for='completionstate' class="form-label"><?php
                 eT("Include:"); ?> </label>
             <div class="">
                 <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                     'name' => 'completionstate',
-                    'value' => incompleteAnsFilterState(),
+                    'checkedOption' => incompleteAnsFilterState(),
                     'selectOptions' => array(
                         "all" => gT("All responses", 'unescaped'),
                         "complete" => gT("Complete only", 'unescaped'),
@@ -18,72 +18,58 @@
                 )); ?>
             </div>
         </div>
-        <div class='form-group'>
-            <label for='outputtype' class="control-label"><?php
+        <div class='mb-3'>
+            <label for='outputtype' class="form-label"><?php
                 eT("Output format:") ?></label>
             <div>
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default active">
-                        <input name="outputtype" value="html" type="radio" checked='checked' id="outputtypehtml">
-                        <?php
-                        eT('HTML'); ?>
-                    </label>
-                    <label class="btn btn-default">
-                        <input name="outputtype" value="pdf" type="radio" id="outputtypepdf"><?php
-                        eT('PDF'); ?>
-                    </label>
-                    <label class="btn btn-default">
-                        <input name="outputtype" value="xls" class="active" type="radio" id="outputtypexls"
-                               onclick='nographs();'><?php
-                        eT('Excel'); ?>
-                    </label>
-                </div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'outputtype',
+                    'checkedOption' => 'html',
+                    'selectOptions' => [
+                        'html' => gT('HTML'),
+                        'pdf' => gT('PDF'),
+                        'xls' => gT('Excel'),
+                    ],
+                ]); ?>
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-sm-12">
-        <div class='form-group'>
+    <div class="col-lg-6 col-md-12">
+        <div class='mb-3'>
             <?php
             $sViewsummaryall = (int)Yii::app()->request->getPost('viewsummaryall'); ?>
-            <label class="control-label" for='viewsummaryall'><?php
+            <label class="form-label" for='viewsummaryall'><?php
                 eT("View summary of all available fields:"); ?></label>
             <div>
-                <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                    'name' => 'viewsummaryall',
-                    'id' => 'viewsummaryall',
-                    'value' => $sViewsummaryall,
-                    'selectOptions' => array(
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'viewsummaryall',
+                    'checkedOption' => $sViewsummaryall,
+                    'selectOptions' => [
                         '1' => gT('On', 'unescaped'),
                         '0' => gT('Off', 'unescaped'),
-                    ),
-                    'htmlOptions' => array(
+                    ],
+                    'htmlOptions'   => [
                         'class' => 'text-option-inherit'
-                    )
-                ));
-                ?>
+                    ]
+                ]); ?>
             </div>
         </div>
-        <div class='form-group'>
-            <label for='usegraph' class="control-label"><?php
+        <div class='mb-3'>
+            <label for='usegraph' class="form-label"><?php
                 eT("Show graphs:"); ?></label>
             <div class=''>
-                <?php
-                $sUsegraph = (int)Yii::app()->request->getPost('usegraph'); ?>
-                <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                    'name' => 'usegraph',
-                    'id' => 'usegraph',
-                    'value' => $sUsegraph,
-                    'selectOptions' => array(
+                <?php $sUsegraph = (int)Yii::app()->request->getPost('usegraph'); ?>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'usegraph',
+                    'checkedOption' => $sUsegraph,
+                    'selectOptions' => [
                         '1' => gT('On', 'unescaped'),
                         '0' => gT('Off', 'unescaped'),
-                    ),
-                    'htmlOptions' => array(
+                    ],
+                    'htmlOptions'   => [
                         'class' => 'text-option-inherit'
-                    )
-                ));
-                ?>
+                    ]
+                ]); ?>
             </div>
             <?php
             if ($error != '') {
@@ -101,14 +87,14 @@
             $language_options .= ">" . $temp[1] . "</option>\n";
         }
         ?>
-        <div class='form-group' <?php
+        <div class='mb-3' <?php
         if (count($survlangs) == 1) {
             echo "style='display:none'";
         } ?>>
-            <label for='statlang' class="control-label"><?php
+            <label for='statlang' class="form-label"><?php
                 eT("Statistics report language:"); ?></label>
             <div class=''>
-                <select name="statlang" id="statlang" class="form-control">
+                <select name="statlang" id="statlang" class="form-select">
                     <?php
                     echo $language_options; ?>
                 </select>

@@ -11,17 +11,8 @@
 
 namespace Twig\Extension;
 
-use Twig\Environment;
-
-abstract class AbstractExtension implements ExtensionInterface
+abstract class AbstractExtension implements LastModifiedExtensionInterface
 {
-    /**
-     * @deprecated since 1.23 (to be removed in 2.0), implement \Twig_Extension_InitRuntimeInterface instead
-     */
-    public function initRuntime(Environment $environment)
-    {
-    }
-
     public function getTokenParsers()
     {
         return [];
@@ -49,24 +40,28 @@ abstract class AbstractExtension implements ExtensionInterface
 
     public function getOperators()
     {
-        return [];
+        return [[], []];
     }
 
-    /**
-     * @deprecated since 1.23 (to be removed in 2.0), implement \Twig_Extension_GlobalsInterface instead
-     */
-    public function getGlobals()
+    public function getExpressionParsers(): array
     {
         return [];
     }
 
-    /**
-     * @deprecated since 1.26 (to be removed in 2.0), not used anymore internally
-     */
-    public function getName()
+    public function getLastModified(): int
     {
-        return static::class;
+        $filename = (new \ReflectionClass($this))->getFileName();
+        if (!is_file($filename)) {
+            return 0;
+        }
+
+        $lastModified = filemtime($filename);
+
+        // Track modifications of the runtime class if it exists and follows the naming convention
+        if (str_ends_with($filename, 'Extension.php') && is_file($filename = substr($filename, 0, -13).'Runtime.php')) {
+            $lastModified = max($lastModified, filemtime($filename));
+        }
+
+        return $lastModified;
     }
 }
-
-class_alias('Twig\Extension\AbstractExtension', 'Twig_Extension');

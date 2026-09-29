@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_356 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         switch (\Yii::app()->db->driverName) {
@@ -27,7 +28,7 @@ class Update_356 extends DatabaseUpdateBase
                     '{{boxes}}',
                     [
                         'title' => 'LimeStore',
-                        'ico' => 'fa fa-cart-plus',
+                        'ico' => 'ri-shopping-cart-fill',
                         'desc' => 'LimeSurvey extension marketplace',
                         'url' => 'https://account.limesurvey.org/limestore'
                     ],

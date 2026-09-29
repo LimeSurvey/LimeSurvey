@@ -23,7 +23,7 @@ use Twig\Node\Expression\TestExpression;
  */
 class EvenTest extends TestExpression
 {
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler
             ->raw('(')
@@ -32,6 +32,10 @@ class EvenTest extends TestExpression
             ->raw(')')
         ;
     }
-}
 
-class_alias('Twig\Node\Expression\Test\EvenTest', 'Twig_Node_Expression_Test_Even');
+    public function getStringCoercedChildNames(): array
+    {
+        // PHP `%` rejects Stringable with a TypeError, no coercion
+        return [];
+    }
+}

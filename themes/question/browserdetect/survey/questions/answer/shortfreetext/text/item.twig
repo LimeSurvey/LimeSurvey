@@ -1,17 +1,11 @@
 {#
-!!!! BECAREFUL: ONLY FOR TESTING !!!!!
-!!!! DON'T START TO TRANSLATE ALL VIEWS BASED ON THIS MODEL !!!!!
-
-!!!! IT WILL PROBABLY FIRST NEED TO CHANGE  THE TWIG TEMPLATE SYNTAX TO AVOID CONFLICT WITH EXPRESSION MANAGER !!!!
-
 /**
  * Shortfreetext, input text style, item Html
  *
- * $extraclass
+ * $extraclass 
  * $name        $ia[1]
  * $prefix
  * $suffix
- * $kpclass
  * $tiwidth
  * $dispVal
  * $maxlength
@@ -43,7 +37,7 @@ question_template_attribute.add_platform_info           : {{question_template_at
 
         <!-- Input -->
         <input
-            class="form-control {{kpclass}}"
+            class="form-control"
             type="text"
             name="{{name}}"
             id="answer{{name}}"

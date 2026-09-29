@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhRedactor class
  *
@@ -8,7 +9,8 @@
  * @package YiiWheels.widgets.redactor
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('bootstrap.helpers.TbArray');
+
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhRedactor extends CInputWidget
 {
@@ -65,7 +67,6 @@ class WhRedactor extends CInputWidget
         } else {
             echo CHtml::textArea($name, $this->value, $this->htmlOptions);
         }
-
     }
 
     /**

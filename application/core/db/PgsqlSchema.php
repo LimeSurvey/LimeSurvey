@@ -2,7 +2,6 @@
 
 class PgsqlSchema extends CPgsqlSchema
 {
-
     public function __construct($conn)
     {
         parent::__construct($conn);
@@ -14,6 +13,10 @@ class PgsqlSchema extends CPgsqlSchema
         $this->columnTypes['decimal'] = 'numeric (10,0)'; // Same default than MySql (not used)
         $this->columnTypes['mediumtext'] = 'text';
         $this->columnTypes['longtext'] = 'text';
+        /**
+         * JSON.
+         */
+        $this->columnTypes['json'] = 'json';
     }
 
     /**
@@ -29,9 +32,9 @@ class PgsqlSchema extends CPgsqlSchema
         } elseif (preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', $type, $matches)) {
             // With params : some test to do
             $baseType = parent::getColumnType($matches[1]);
-            if (preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', $baseType, $baseMatches)) {
+            if (preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', (string) $baseType, $baseMatches)) {
                 // Replace the default Yii param
-                $sResult = preg_replace('/\(.+\)/', "(" . $matches[2] . ")", parent::getColumnType($matches[1] . " " . $matches[3]));
+                $sResult = preg_replace('/\(.+\)/', "(" . $matches[2] . ")", (string) parent::getColumnType($matches[1] . " " . $matches[3]));
             } else {
                 // Get the base type and join
                 $sResult = join(" ", array($baseType, "(" . $matches[2] . ")", $matches[3]));
@@ -74,5 +77,15 @@ class PgsqlSchema extends CPgsqlSchema
             $table,
             implode(', ', $columns)
         );
+    }
+
+    /**
+     * Creates a command builder for the database.
+     * This method may be overridden by child classes to create a DBMS-specific command builder.
+     * @return LSPgsqlDbCommandBuilder command builder instance
+     */
+    protected function createCommandBuilder()
+    {
+        return new LSPgsqlDbCommandBuilder($this);
     }
 }

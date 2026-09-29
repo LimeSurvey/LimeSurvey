@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -52,70 +52,19 @@ class Export extends SurveyCommonAction
     }
 
     /**
-     * This function exports a ZIP archives of several ZIP archives - it is used in the listSurvey controller
-     * The SIDs are read from session flashdata.
-     */
-    public function surveyarchives()
-    {
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            safeDie('Access denied.');
-        }
-
-        $aSurveyIDs = $this->session->flashdata('sids');
-        $aExportedFiles = array();
-
-        foreach ($aSurveyIDs as $iSurveyID) {
-            $iSurveyID = (int) $iSurveyID;
-
-            if ($iSurveyID > 0) {
-                $aExportedFiles[$iSurveyID] = $this->exportarchive($iSurveyID, false);
-            }
-        }
-
-        if (count($aExportedFiles) > 0) {
-            $aZIPFileName = $this->config->item("tempdir") . DIRECTORY_SEPARATOR . randomChars(30);
-
-            $this->load->library("admin/pclzip", array('p_zipname' => $aZIPFileName));
-
-            $zip = new PclZip($aZIPFileName);
-            foreach ($aExportedFiles as $iSurveyID => $sFileName) {
-                $zip->add(
-                    array(
-                        array(
-                            PCLZIP_ATT_FILE_NAME => $sFileName,
-                            PCLZIP_ATT_FILE_NEW_FULL_NAME => 'survey_archive_' . $iSurveyID . '.zip'
-                        )
-                    )
-                );
-
-                unlink($sFileName);
-            }
-        }
-
-        if (is_file($aZIPFileName)) {
-            //Send the file for download!
-            header("Expires: 0");
-            header("Cache-Control: must-revalidate, no-store, no-cache");
-            header("Content-Type: application/force-download");
-            header("Content-Disposition: attachment; filename=survey_archives_pack.zip");
-            header("Content-Description: File Transfer");
-            @readfile($aZIPFileName);
-
-            //Delete the temporary file
-            unlink($aZIPFileName);
-            return;
-        }
-    }
-
-    /**
      * Export Group
      */
     public function group()
     {
         $gid = sanitize_int(Yii::app()->request->getParam('gid'));
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
-
-        group_export("exportstructurecsvGroup", $iSurveyID, $gid);
+        $group = QuestionGroup::model()->findByPk($gid);
+        if (empty($group)) {
+            throw new CHttpException(404, gT("Invalid group ID"));
+        }
+        if (!Permission::model()->hasSurveyPermission($group->sid, 'surveycontent', 'export')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        group_export("exportstructurecsvGroup", $group->sid, $gid);
 
         return;
     }
@@ -125,10 +74,15 @@ class Export extends SurveyCommonAction
      */
     public function question()
     {
-        $gid = sanitize_int(Yii::app()->request->getParam('gid'));
         $qid = sanitize_int(Yii::app()->request->getParam('qid'));
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
-        questionExport("exportstructurecsvQuestion", $iSurveyID, $gid, $qid);
+        $question = Question::model()->findByPk($qid);
+        if (empty($question)) {
+            throw new CHttpException(404, gT("Invalid question ID"));
+        }
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'export')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        questionExport("exportstructurecsvQuestion", $question->sid, $question->gid, $qid);
     }
 
     /**
@@ -136,28 +90,11 @@ class Export extends SurveyCommonAction
      */
     public function exportresults()
     {
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid')) ??
-            sanitize_int(Yii::app()->request->getParam('surveyId'));
+        $iSurveyID = sanitize_int(App()->request->getParam('surveyid', App()->request->getParam('surveyId')));
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        if (!isset($imageurl)) {
-            $imageurl = "./images";
-        }
         if (!isset($iSurveyID)) {
             $iSurveyID = returnGlobal('sid');
-        }
-
-        if (!isset($convertyto1)) {
-            $convertyto1 = returnGlobal('convertyto1');
-        }
-        if (!isset($convertnto2)) {
-            $convertnto2 = returnGlobal('convertnto2');
-        }
-        if (!isset($convertyto)) {
-            $convertyto = returnGlobal('convertyto');
-        }
-        if (!isset($convertnto)) {
-            $convertnto = returnGlobal('convertnto');
         }
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
@@ -169,9 +106,9 @@ class Export extends SurveyCommonAction
             $this->getController()->redirect($this->getController()->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
         }
 
-        Yii::app()->loadHelper("admin/exportresults");
+        Yii::app()->loadHelper("admin.exportresults");
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . '/exportresults.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . '/exportresults.js');
 
         $sExportType = Yii::app()->request->getPost('type');
         $sHeadingFormat = Yii::app()->request->getPost('headstyle');
@@ -219,12 +156,14 @@ class Export extends SurveyCommonAction
             $aFields = array();
             $aFieldsOptions = array();
             foreach ($aFieldMap as $sFieldName => $fieldinfo) {
-                $sCode = viewHelper::getFieldCode($fieldinfo);
-                $aFields[$sFieldName] = $sCode . ' - ' . htmlspecialchars(ellipsize(html_entity_decode(viewHelper::getFieldText($fieldinfo)), 40, .6, '...'));
-                $aFieldsOptions[$sFieldName] = array('title' => viewHelper::getFieldText($fieldinfo), 'data-fieldname' => $fieldinfo['fieldname'], 'data-emcode' => viewHelper::getFieldCode($fieldinfo, array('LEMcompat' => true))); // No need to filter title : Yii do it (remove all tag)
+                if (($fieldinfo['type'] !== Question::QT_R_RANKING) || ($fieldinfo['suffix'] === '')) {
+                    $sCode = viewHelper::getFieldCode($fieldinfo);
+                    $aFields[$sFieldName] = $sCode . ' - ' . (string) ellipsize(html_entity_decode((string) viewHelper::getFieldText($fieldinfo)), 40, .6, '...');
+                    $aFieldsOptions[$sFieldName] = array('title' => viewHelper::getFieldText($fieldinfo), 'data-fieldname' => $fieldinfo['fieldname'], 'data-emcode' => viewHelper::getFieldCode($fieldinfo, array('LEMcompat' => true))); // No need to filter title : Yii do it (remove all tag)
+                }
             }
 
-            $data['SingleResponse'] = (int) returnGlobal('id');
+            $data['SingleResponse'] = intval(App()->getRequest()->getParam('id'));
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
             $data['selectinc'] = $selectinc;
@@ -288,6 +227,25 @@ class Export extends SurveyCommonAction
             $data['topBar']['showExportButton'] = true;
             $data['topBar']['showCloseButton'] = true;
 
+            // If editor is enabled, redirect to editor results list
+            $editorEnabled = Yii::app()->getConfig('editorEnabled');
+            if ($editorEnabled) {
+                $closeUrl = Yii::app()->createUrl('editorLink/index', ['route' => 'responses/' . $survey->sid . '/results/list']);
+            } else {
+                // Default redirect to responses browse
+                $closeUrl = Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid]);
+            }
+
+            $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showExportButton' => true,
+                    'showCloseButton' => true,
+                    'closeUrl' => $closeUrl
+                ],
+                true
+            );
+
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $data['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
             $data['subaction'] = gT('Export results');
@@ -348,7 +306,7 @@ class Export extends SurveyCommonAction
         }
 
         if (Yii::app()->request->getPost('response_id')) {
-                    $sFilter = "{{survey_{$iSurveyID}}}.id=" . (int) Yii::app()->request->getPost('response_id');
+                    $sFilter = "{{responses_{$iSurveyID}}}.id=" . (int) Yii::app()->request->getPost('response_id');
         } elseif (App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_' . $iSurveyID])) {
             $sFilter = Yii::app()->session['statistics_selects_' . $iSurveyID];
         } else {
@@ -387,7 +345,7 @@ class Export extends SurveyCommonAction
             // Default to 2 (16 and up)
             Yii::app()->session['spssversion'] = 2;
         }
-        $spssver = Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']);
+        $spssver = CHtml::encode(Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']));
         Yii::app()->session['spssversion'] = $spssver;
 
         $length_varlabel = '231'; // Set the max text length of Variable Labels
@@ -405,9 +363,15 @@ class Export extends SurveyCommonAction
         $headerComment = '*$Rev: 121017 $' . " $filterstate $spssver.\n";
 
         if (Yii::app()->request->getPost('dldata')) {
+            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
+                throw new CHttpException(403, gT("You do not have permission to access this page."));
+            }
             $subaction = "dldata";
         }
         if (Yii::app()->request->getPost('dlstructure')) {
+            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
+                throw new CHttpException(403, gT("You do not have permission to access this page."));
+            }
             $subaction = "dlstructure";
         }
 
@@ -451,6 +415,15 @@ class Export extends SurveyCommonAction
             $data['topBar']['name'] = 'baseTopbar_view';
             $data['topBar']['showCloseButton'] = true;
 
+            $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $iSurveyID])
+                ],
+                true
+            );
+
             $this->renderWrappedTemplate('export', 'spss_view', $data);
             return;
         }
@@ -464,7 +437,7 @@ class Export extends SurveyCommonAction
         }
         App()->setLanguage($sLanguage);
 
-        Yii::app()->loadHelper("admin/exportresults");
+        Yii::app()->loadHelper("admin.exportresults");
         viewHelper::disableHtmlLogging();
 
         if ($subaction == 'dldata') {
@@ -550,11 +523,11 @@ class Export extends SurveyCommonAction
             echo "*Define Variable Properties.\n";
             foreach ($fields as $field) {
                 if (!$field['hide']) {
-                    $label_parts = strSplitUnicode(str_replace('"', '""', stripTagsFull($field['VariableLabel'])), $length_varlabel - strlen($field['id']));
+                    $label_parts = strSplitUnicode(str_replace('"', '""', (string) stripTagsFull($field['VariableLabel'])), $length_varlabel - strlen((string) $field['id']));
                     //if replaced quotes are splitted by, we need to mve the first quote to the next row
                     foreach ($label_parts as $idx => $label_part) {
-                        if ($idx != count($label_parts) && substr($label_part, -1) == '"' && substr($label_part, -2) != '"') {
-                            $label_parts[$idx] = rtrim($label_part, '"');
+                        if ($idx != count($label_parts) && substr((string) $label_part, -1) == '"' && substr((string) $label_part, -2) != '"') {
+                            $label_parts[$idx] = rtrim((string) $label_part, '"');
                             if (array_key_exists($idx + 1, $label_parts)) {
                                 $label_parts[$idx + 1] = '"' . $label_parts[$idx + 1];
                             }
@@ -577,7 +550,7 @@ class Export extends SurveyCommonAction
                     foreach ($answers as $answer) {
                         $i++;
 
-                        if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'])) {
+                        if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'] ?? '')) {
                             $str = "{$answer['code']}";
                         } else {
                             $str = "\"{$answer['code']}\"";
@@ -594,7 +567,7 @@ class Export extends SurveyCommonAction
 
             // Add instructions to change variable type and recode 'Other' option.
             // This is needed when all answer option codes are numeric but the question has 'Other' enabled,
-            // because the variable is initialy set as alphanumeric in order to hold the '-oth-' value. See issue #16939
+            // because the variable is initially set as alphanumeric in order to hold the '-oth-' value. See issue #16939
             foreach ($fields as $field) {
                 if (isset($field['needsAlterType'])) {
                     echo "RECODE {$field['id']} (\"-oth-\" = \"666666\").\n";
@@ -621,17 +594,17 @@ class Export extends SurveyCommonAction
                 if (isset($field['sql_name']) && $field['hide'] === 0) {
                     $ftitle = $field['title'];
 
-                    if (!preg_match("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
+                    if (!preg_match("/^([a-z]|[A-Z])+.*$/", (string) $ftitle)) {
                         $ftitle = "q_" . $ftitle;
                     }
 
-                    $ftitle = str_replace(array(" ", "-", ":", ";", "!", "/", "\\", "'"), array("_", "_hyph_", "_dd_", "_dc_", "_excl_", "_fs_", "_bs_", '_qu_'), $ftitle);
+                    $ftitle = str_replace(array(" ", "-", ":", ";", "!", "/", "\\", "'"), array("_", "_hyph_", "_dd_", "_dc_", "_excl_", "_fs_", "_bs_", '_qu_'), (string) $ftitle);
 
                     if ($ftitle != $field['title']) {
                         echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
                     }
 
-                    echo "RENAME VARIABLE ( " . $field['id'] . ' = ' . $ftitle . " ).\n";
+                    echo "RENAME VARIABLES ( " . $field['id'] . ' = ' . $ftitle . " ).\n";
                 }
             }
             echo "RESTORE LOCALE.\n";
@@ -663,7 +636,7 @@ class Export extends SurveyCommonAction
             $aData['display']['menu_bars']['browse'] = gT("Export VV file");
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
 
-            $surveytable = "{{survey_$iSurveyId}}";
+            $surveytable = "{{responses_$iSurveyId}}";
             // Control if fieldcode are unique
             $fieldnames = App()->db->schema->getTable($surveytable)->getColumnNames();
             foreach ($fieldnames as $field) {
@@ -682,6 +655,16 @@ class Export extends SurveyCommonAction
             $aData['topBar']['name'] = 'baseTopbar_view';
             $aData['topBar']['showExportButton'] = true;
             $aData['topBar']['showCloseButton'] = true;
+
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showExportButton' => true,
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $iSurveyId])
+                ],
+                true
+            );
 
             $this->renderWrappedTemplate('export', 'vv_view', $aData);
         } elseif (isset($iSurveyId) && $iSurveyId) {
@@ -709,7 +692,7 @@ class Export extends SurveyCommonAction
             $this->addHeaders($fileName, "text/tab-separated-values", 0);
 
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
-            $surveytable = "{{survey_$iSurveyId}}";
+            $surveytable = "{{responses_$iSurveyId}}";
 
             $fieldnames = App()->db->schema->getTable($surveytable)->getColumnNames();
 
@@ -727,19 +710,29 @@ class Export extends SurveyCommonAction
                     if ($vvVersion >= 2) {
                         $firstline[] = viewHelper::getFieldText($fielddata, array('separator' => $questionSeparator, 'abbreviated' => $questionAbbreviated,));
                     } else {
-                        $firstline[] = preg_replace('/\s+/', ' ', flattenText($fielddata['question'], false, true, 'UTF-8', true));
+                        $firstline[] = preg_replace('/\s+/', ' ', (string) flattenText($fielddata['question'], false, true, 'UTF-8', true));
                     }
                 }
                 if ($vvVersion == 2) {
                     $fieldcode = viewHelper::getFieldCode($fielddata, array("LEMcompat" => true));
-                    $fieldcode = ($fieldcode) ? $fieldcode : $field; // $fieldcode is empty for token if there are no survey participants table
+                    $fieldcode = ($fieldcode) ? $fieldcode : $field; // $fieldcode is empty for token if there are no survey participant list
                 } else {
                     $fieldcode = $field;
                 }
                 $secondline[] = $fieldcode;
             }
-            fputcsv($vvOutput, $firstline, "\t");
-            fputcsv($vvOutput, $secondline, "\t");
+            fputcsv(
+                stream: $vvOutput,
+                fields: $firstline,
+                separator: "\t",
+                escape: "\\"
+            );
+            fputcsv(
+                stream: $vvOutput,
+                fields: $secondline,
+                separator: "\t",
+                escape: "\\"
+            );
             $query = "SELECT * FROM " . Yii::app()->db->quoteTableName($surveytable);
 
             if (incompleteAnsFilterState() == "incomplete") {
@@ -759,7 +752,7 @@ class Export extends SurveyCommonAction
                     if (is_null($row[$field])) {
                         $value = '{question_not_shown}';
                     } else {
-                        $value = trim($row[$field]);
+                        $value = trim((string) $row[$field]);
                         // sunscreen for the value. necessary for the beach.
                         // careful about the order of these arrays:
                         // lbrace has to be substituted *first*
@@ -798,7 +791,12 @@ class Export extends SurveyCommonAction
                 /* it is important here to stream output data, line by line
                  * in order to avoid huge memory consumption when exporting large
                  * quantities of answers */
-                fputcsv($vvOutput, $responseLine, "\t");
+                fputcsv(
+                    stream: $vvOutput,
+                    fields: $responseLine,
+                    separator: "\t",
+                    escape: "\\"
+                );
                 unset($responseLine);
             }
             fclose($vvOutput);
@@ -807,17 +805,30 @@ class Export extends SurveyCommonAction
     }
 
     /**
-     * Resources Export
+     * Exports the resources of a survey or label set as a ZIP file and sends it to the browser.
+     *
+     * Participant uploads (fu_ files) are left out, since they belong to responses.
+     *
+     * @return void
+     * @throws CHttpException If the user lacks export permission
+     * @throws Exception If the ZIP file cannot be created
      */
     public function resources()
     {
+
         switch (Yii::app()->request->getParam('export')) {
             case 'survey':
                 $iSurveyID = sanitize_int(Yii::app()->getRequest()->getParam('surveyid'));
+                if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
+                    throw new CHttpException(403, gT('You are not allowed to access this resource.'));
+                }
                 $resourcesdir = 'surveys/' . $iSurveyID;
                 $zipfilename = "resources-survey-$iSurveyID.zip";
                 break;
             case 'label':
+                if (!Permission::model()->hasGlobalPermission('labelsets', 'export')) {
+                    throw new CHttpException(403, gT('You are not allowed to access this resource.'));
+                }
                 $lid = sanitize_int(Yii::app()->getRequest()->getParam('lid'));
                 $resourcesdir = 'labels/' . $lid;
                 $zipfilename = "resources-labelset-$lid.zip";
@@ -828,23 +839,55 @@ class Export extends SurveyCommonAction
             $resourcesdir = Yii::app()->getConfig('uploaddir') . "/{$resourcesdir}/";
             $tmpdir = Yii::app()->getConfig('tempdir') . '/';
             $zipfilepath = $tmpdir . $zipfilename;
-            Yii::app()->loadLibrary('admin.pclzip');
-            $zip = new PclZip($zipfilepath);
-            $zipdirs = array();
+            $zip = new LimeSurvey\Zip();
+            if ($zip->open($zipfilepath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+                throw new Exception("Error : " . $zip->getStatusString());
+            }
             foreach (array('files', 'flash', 'images') as $zipdir) {
                 if (is_dir($resourcesdir . $zipdir)) {
-                    $zipdirs[] = $resourcesdir . $zipdir . '/';
+                    $dirPath = $resourcesdir . $zipdir;
+                    $files = new RecursiveIteratorIterator(
+                        new RecursiveDirectoryIterator($dirPath),
+                        RecursiveIteratorIterator::LEAVES_ONLY
+                    );
+                    foreach ($files as $file) {
+                        if (!$file->isDir() && !$this->isResponseUploadFile($file, $dirPath)) {
+                            $filePath = $file->getRealPath();
+                            $relativePath = substr($filePath, strlen($resourcesdir));
+                            $zip->addFile($filePath, $relativePath);
+                        }
+                    }
                 }
             }
-            if ($zip->create($zipdirs, PCLZIP_OPT_REMOVE_PATH, $resourcesdir) === 0) {
-                safeDie("Error : " . $zip->errorInfo(true));
-            } elseif (file_exists($zipfilepath)) {
+            if (!$zip->close()) {
+                throw new Exception("Error : " . $zip->getStatusString());
+            }
+            if (file_exists($zipfilepath)) {
                 $this->addHeaders($zipfilename, 'application/force-download', 0);
                 readfile($zipfilepath);
                 unlink($zipfilepath);
                 Yii::app()->end();
+            } else {
+                throw new Exception(gT("Error: There are no files to download."));
             }
         }
+    }
+
+    /**
+     * Checks whether a file is a participant upload (fu_ file) stored in the survey's files directory.
+     *
+     * Participant uploads belong to responses, not to survey resources, so they must not be
+     * part of the resources export.
+     *
+     * @param SplFileInfo $file    The file found while walking the resources directory
+     * @param string      $dirPath The resources subdirectory currently being exported
+     * @return bool True if the file is a participant upload
+     */
+    private function isResponseUploadFile(SplFileInfo $file, string $dirPath): bool
+    {
+        return basename($dirPath) === 'files'
+            && realpath($file->getPath()) === realpath($dirPath)
+            && preg_match('/^fu_[a-z0-9]+$/', $file->getFilename()) === 1;
     }
 
     /**
@@ -853,7 +896,7 @@ class Export extends SurveyCommonAction
     public function dumplabel()
     {
         if (!Permission::model()->hasGlobalPermission('labelsets', 'export')) {
-            safeDie('No permission.');
+            throw new CHttpException(403, gT('You are not allowed to access this resource.'));
         }
         $lid = sanitize_int(Yii::app()->request->getParam('lid'));
         // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
@@ -884,7 +927,7 @@ class Export extends SurveyCommonAction
         $xml->startDocument('1.0', 'UTF-8');
         $xml->startElement('document');
         $xml->writeElement('LimeSurveyDocType', 'Label set');
-        $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
+        $xml->writeElement('DBVersion', Yii::app()->getConfig("DBVersion"));
 
         // Label sets table
         $lsquery = "SELECT * FROM {{labelsets}} WHERE lid=" . implode(' or lid=', $lids);
@@ -901,8 +944,21 @@ class Export extends SurveyCommonAction
 
         $xml->endElement(); // close columns
         $xml->endDocument();
+        if ($token = Yii::app()->request->getPost('export_token')) {
+            Yii::app()->session[$token] = true;
+        }
         Yii::app()->end();
     }
+
+    public function exportstatus($token)
+    {
+        $done = boolval(Yii::app()->session[$token]);
+
+        header('Content-Type: application/json');
+        echo CJSON::encode(['done' => $done]);
+        Yii::app()->end();
+    }
+
 
     /**
      * Export multiple surveys structure. Called via ajax from surveys list massive action
@@ -945,12 +1001,12 @@ class Export extends SurveyCommonAction
     {
         $aSurveys = json_decode($sSurveys);
         $aResults = array();
-        Yii::app()->loadLibrary('admin.pclzip');
         $bArchiveIsEmpty = true;
         $sTempDir        = Yii::app()->getConfig("tempdir");
         $sZip            = randomChars(30);
         $aZIPFilePath    = $sTempDir . DIRECTORY_SEPARATOR . $sZip;
-        $zip             = new PclZip($aZIPFilePath);
+        $zip = new LimeSurvey\Zip();
+        $zip->open($aZIPFilePath, ZipArchive::CREATE);
 
         foreach ($aSurveys as $iSurveyID) {
             $iSurveyID = filter_var($iSurveyID, FILTER_VALIDATE_INT);
@@ -989,7 +1045,7 @@ class Export extends SurveyCommonAction
                         $bArchiveIsEmpty                = false;
                         $archiveFile                    = $archiveName;
                         $newArchiveFileFullName         = 'survey_archive_' . $iSurveyID . '.lsa';
-                        $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
+                        $zip->addFromString($newArchiveFileFullName, file_get_contents($archiveFile));
                         unlink($archiveFile);
                     } else {
                         $aResults[$iSurveyID]['error'] = gT("Unknown error");
@@ -1004,7 +1060,7 @@ class Export extends SurveyCommonAction
                         $bArchiveIsEmpty                = false;
                         $archiveFile                    = $archiveName;
                         $newArchiveFileFullName         = 'survey_printables_' . $iSurveyID . '.zip';
-                        $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
+                        $zip->addFromString($newArchiveFileFullName, file_get_contents($archiveFile));
                         unlink($archiveFile);
                     } else {
                         $aResults[$iSurveyID]['error'] = gT("Unknown error");
@@ -1019,10 +1075,20 @@ class Export extends SurveyCommonAction
                     $lssFileName = "limesurvey_survey_{$iSurveyID}.lss";
                     $archiveFile = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
                     file_put_contents($archiveFile, surveyGetXMLData($iSurveyID));
-                    $this->addToZip($zip, $archiveFile, $lssFileName);
+                    $zip->addFromString($lssFileName, file_get_contents($archiveFile));
                     unlink($archiveFile);
                     break;
             }
+        }
+        $zip->close();
+        /* Set in user state */
+        if (!$bArchiveIsEmpty) {
+            $allowedZipFiles = App()->getUser()->getState("allowedZipFiles", []);
+            if (!is_array($allowedZipFiles)) {
+                $allowedZipFiles = [];
+            }
+            $allowedZipFiles[$sZip] = $sZip;
+            App()->getUser()->setState("allowedZipFiles", $allowedZipFiles);
         }
         return array('aResults' => $aResults, 'sZip' => $sZip, 'bArchiveIsEmpty' => $bArchiveIsEmpty);
     }
@@ -1037,6 +1103,14 @@ class Export extends SurveyCommonAction
         $sTempDir     = Yii::app()->getConfig("tempdir");
         $sZip         = get_absolute_path($sZip);
         $aZIPFileName = $sTempDir . DIRECTORY_SEPARATOR . $sZip;
+        /* get in user state */
+        $allowedZipFiles = App()->getUser()->getState("allowedZipFiles", []);
+        if (!is_array($allowedZipFiles)) {
+            $allowedZipFiles = [];
+        }
+        if (!isset($allowedZipFiles[$sZip])) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
 
         if (is_file($aZIPFileName)) {
             $fn = "surveys_archive.zip";
@@ -1045,7 +1119,10 @@ class Export extends SurveyCommonAction
             $this->addHeaders($fn, "application/force-download", 0);
 
             @readfile($aZIPFileName);
-
+            /* Delete the file and remove it from allowed */
+            @unlink($aZIPFileName);
+            unset($allowedZipFiles[$sZip]);
+            App()->getUser()->setState("allowedZipFiles", $allowedZipFiles);
             return;
         }
     }
@@ -1078,32 +1155,32 @@ class Export extends SurveyCommonAction
         $sLSTFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
         $sLSIFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
 
-        Yii::app()->loadLibrary('admin.pclzip');
-        $zip = new PclZip($aZIPFileName);
+        $zip = new LimeSurvey\Zip();
+        $zip->open($aZIPFileName, ZipArchive::CREATE);
 
         file_put_contents($sLSSFileName, surveyGetXMLData($iSurveyID));
-
-        $this->addToZip($zip, $sLSSFileName, 'survey_' . $iSurveyID . '.lss');
-
+        $zip->addFromString('survey_' . $iSurveyID . '.lss', file_get_contents($sLSSFileName));
         unlink($sLSSFileName);
 
         if ($survey->isActive) {
-            getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
-            $this->addToZip($zip, $sLSRFileName, 'survey_' . $iSurveyID . '_responses.lsr');
+            getXMLDataSingleTable($iSurveyID, 'responses_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
+            $zip->addFromString('survey_' . $iSurveyID . '_responses.lsr', file_get_contents($sLSRFileName));
             unlink($sLSRFileName);
         }
 
         if ($survey->hasTokensTable) {
             getXMLDataSingleTable($iSurveyID, 'tokens_' . $iSurveyID, 'Tokens', 'tokens', $sLSTFileName);
-            $this->addToZip($zip, $sLSTFileName, 'survey_' . $iSurveyID . '_tokens.lst');
+            $zip->addFromString('survey_' . $iSurveyID . '_tokens.lst', file_get_contents($sLSTFileName));
             unlink($sLSTFileName);
         }
 
         if (isset($survey->hasTimingsTable) && $survey->hasTimingsTable == 'Y') {
-            getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
-            $this->addToZip($zip, $sLSIFileName, 'survey_' . $iSurveyID . '_timings.lsi');
+            getXMLDataSingleTable($iSurveyID, 'timings_' . $iSurveyID, 'Timings', 'timings', $sLSIFileName);
+            $zip->addFromString('survey_' . $iSurveyID . '_timings.lsi', file_get_contents($sLSIFileName));
             unlink($sLSIFileName);
         }
+
+        $zip->close();
 
         if (is_file($aZIPFileName)) {
             if ($bSendToBrowser) {
@@ -1122,25 +1199,6 @@ class Export extends SurveyCommonAction
                 return($aZIPFileName);
             }
         }
-    }
-
-    /**
-     * Add to zip
-     *
-     * @param PclZip $zip
-     * @param string $name
-     * @param string $full_name
-     */
-    private function addToZip(PclZip $zip, string $name, string $full_name)
-    {
-        $zip->add(
-            array(
-            array(
-            PCLZIP_ATT_FILE_NAME => $name,
-            PCLZIP_ATT_FILE_NEW_FULL_NAME => $full_name
-            )
-            )
-        );
     }
 
     /**
@@ -1168,20 +1226,11 @@ class Export extends SurveyCommonAction
             echo $this->xmlToJson($surveyInXmlFormat);
             Yii::app()->end();
         } elseif ($action == "exportstructurequexml") {
-            if (isset($surveyprintlang) && !empty($surveyprintlang)) {
-                $quexmllang = $surveyprintlang;
-            } else {
-                $quexmllang = Survey::model()->findByPk($iSurveyID)->language;
-            }
-
-            if (!(isset($noheader) && $noheader == true)) {
-                $fn = "survey_{$iSurveyID}_{$quexmllang}.xml";
-
-                $this->addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
-
-                echo quexml_export($iSurveyID, $quexmllang);
-                Yii::app()->end();
-            }
+            $quexmllang = Survey::model()->findByPk($iSurveyID)->language;
+            $fn = "survey_{$iSurveyID}_{$quexmllang}.xml";
+            $this->addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
+            echo quexml_export($iSurveyID, $quexmllang);
+            Yii::app()->end();
         } elseif ($action == 'exportstructuretsv') {
             $this->exporttsv($iSurveyID);
         } elseif ($action == "exportarchive") {
@@ -1192,34 +1241,6 @@ class Export extends SurveyCommonAction
     }
 
     /**
-     * Return a list of queXML settings
-     *
-     * @return string[] queXML settings
-     */
-    private function quexmlsettings(): array
-    {
-        return array(
-            'queXMLBackgroundColourQuestion',
-            'queXMLPageFormat',
-            'queXMLPageOrientation',
-            'queXMLEdgeDetectionFormat',
-            'queXMLBackgroundColourSection',
-            'queXMLSectionHeight',
-            'queXMLResponseLabelFontSize',
-            'queXMLResponseLabelFontSizeSmall',
-            'queXMLResponseTextFontSize',
-            'queXMLQuestionnaireInfoMargin',
-            'queXMLSingleResponseHorizontalHeight',
-            'queXMLSingleResponseAreaHeight',
-            'queXMLStyle',
-            'queXMLAllowSplittingVas',
-            'queXMLAllowSplittingMatrixText',
-            'queXMLAllowSplittingSingleChoiceVertical',
-            'queXMLAllowSplittingSingleChoiceHorizontal'
-        );
-    }
-
-    /**
      * Clear queXML settings from settings table
      *
      * @param int $iSurveyID
@@ -1227,10 +1248,6 @@ class Export extends SurveyCommonAction
      */
     public function quexmlclear(int $iSurveyID)
     {
-        $queXMLSettings = $this->quexmlsettings();
-        foreach ($queXMLSettings as $s) {
-            SettingGlobal::setSetting($s, '');
-        }
         $this->getController()->redirect($this->getController()->createUrl("/admin/export/sa/quexml/surveyid/{$iSurveyID}"));
     }
 
@@ -1244,8 +1261,9 @@ class Export extends SurveyCommonAction
     {
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
-
-        $queXMLSettings = $this->quexmlsettings();
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $aData = array();
         $aData['surveyid'] = $iSurveyID;
         $aData['slangs'] = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -1259,12 +1277,13 @@ class Export extends SurveyCommonAction
         array_unshift($aData['slangs'], $aData['baselang']);
 
         Yii::import("application.libraries.admin.quexmlpdf", true);
-        $defaultquexmlpdf = new quexmlpdf($this->getController());
+        $defaultquexmlpdf = new quexmlpdf();
+        $queXMLSettings = $defaultquexmlpdf->_quexmlsettings();
 
         foreach ($queXMLSettings as $s) {
-            $aData[$s] = getGlobalSetting($s);
+            $aData[$s] = Yii::app()->getConfig($s);
 
-            if ($aData[$s] === null || trim($aData[$s]) === '') {
+            if ($aData[$s] === null || trim((string) $aData[$s]) === '') {
                 $method = str_replace("queXML", "get", $s);
                 $aData[$s] = $defaultquexmlpdf->$method();
             }
@@ -1273,19 +1292,18 @@ class Export extends SurveyCommonAction
         if (empty($_POST['ok'])) {
             $this->renderWrappedTemplate('survey', 'queXMLSurvey_view', $aData);
         } else {
-            $quexmlpdf = new quexmlpdf($this->getController());
+            $quexmlpdf = new quexmlpdf();
 
-            //Save settings globally and generate queXML document
+            // Set settings in static var without updating it and generate queXML document
             foreach ($queXMLSettings as $s) {
-                if ($s !== 'queXMLStyle') {
-                    SettingGlobal::setSetting($s, Yii::app()->request->getPost($s));
-                }
-
+                App()->setConfig($s, Yii::app()->request->getPost($s));
                 $method = str_replace("queXML", "set", $s);
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
             }
 
-            $lang = Yii::app()->request->getPost('save_language');
+            $lang = \LSYii_Validators::languageCodeFilter(
+                Yii::app()->request->getPost('save_language')
+            );
 
             // Setting the selected language for printout
             App()->setLanguage($lang);
@@ -1303,32 +1321,15 @@ class Export extends SurveyCommonAction
             //NEED TO GET QID from $quexmlpdf
             $qid = intval($quexmlpdf->getQuestionnaireId());
 
-            Yii::import('application.helpers.common_helper', true);
-            $zipdir = createRandomTempDir();
-
-            $f1 = "$zipdir/quexf_banding_{$qid}_{$lang}.xml";
-            $f2 = "$zipdir/quexmlpdf_{$qid}_{$lang}.pdf";
-            $f3 = "$zipdir/quexml_{$qid}_{$lang}.xml";
-            $f4 = "$zipdir/readme.txt";
-            $f5 = "$zipdir/quexmlpdf_style_{$qid}_{$lang}.xml";
-
-            file_put_contents($f5, $quexmlpdf->exportStyleXML());
-            file_put_contents($f1, $quexmlpdf->getLayout());
-            file_put_contents($f2, $quexmlpdf->Output("quexml_$qid.pdf", 'S'));
-            file_put_contents($f3, $quexml);
-            file_put_contents($f4, gT('This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys.'));
-
-            Yii::app()->loadLibrary('admin.pclzip');
             $zipfile = Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . "quexmlpdf_{$qid}_{$lang}.zip";
-            $z = new PclZip($zipfile);
-            $z->create($zipdir, PCLZIP_OPT_REMOVE_PATH, $zipdir);
-
-            unlink($f1);
-            unlink($f2);
-            unlink($f3);
-            unlink($f4);
-            unlink($f5);
-            rmdir($zipdir);
+            $zip = new LimeSurvey\Zip();
+            $zip->open($zipfile, ZipArchive::CREATE);
+            $zip->addFromString("quexmlpdf_style_{$qid}_{$lang}.xml", $quexmlpdf->exportStyleXML());
+            $zip->addFromString("quexf_banding_{$qid}_{$lang}.xml", $quexmlpdf->getLayout());
+            $zip->addFromString("quexmlpdf_{$qid}_{$lang}.pdf", $quexmlpdf->Output("quexml_$qid.pdf", 'S'));
+            $zip->addFromString("quexml_{$qid}_{$lang}.xml", $quexml);
+            $zip->addFromString("readme.txt", gT('This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys.'));
+            $zip->close();
 
             $fn = "quexmlpdf_{$qid}_{$lang}.zip";
             $this->addHeaders($fn, "application/zip", 0);
@@ -1351,22 +1352,20 @@ class Export extends SurveyCommonAction
     private function exportPrintableHtmls(int $iSurveyID, bool $readFile = true): string
     {
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $assetsDir = substr(Template::getTemplateURL($oSurvey->templateEffectiveName), 1);
+        $assetsDir = substr((string) Template::getTemplateURL($oSurvey->templateEffectiveName), 1);
         $fullAssetsDir = Template::getTemplatePath($oSurvey->templateEffectiveName);
         $aLanguages = $oSurvey->getAllLanguages();
 
-        Yii::import('application.helpers.common_helper', true);
-        $zipdir = createRandomTempDir();
-
-        $fn = "printable_survey_" . preg_replace('([^\w\s\d\-_~,;\[\]\(\).])', '', $oSurvey->currentLanguageSettings->surveyls_title) . "_{$oSurvey->primaryKey}.zip";
+        $fn = "printable_survey_" . preg_replace('([^\w\s\d\-_~,;\[\]\(\).])', '', (string) $oSurvey->currentLanguageSettings->surveyls_title) . "_{$oSurvey->primaryKey}.zip";
 
         $tempdir = Yii::app()->getConfig("tempdir");
         $zipfile = "$tempdir/" . $fn;
 
-        Yii::app()->loadLibrary('admin.pclzip');
-        $z = new PclZip($zipfile);
-        $z->create($zipdir, PCLZIP_OPT_REMOVE_PATH, $zipdir);
-        $z->add($fullAssetsDir, PCLZIP_OPT_REMOVE_PATH, $fullAssetsDir, PCLZIP_OPT_ADD_PATH, $assetsDir);
+        $zip = new LimeSurvey\Zip();
+        $zip->open($zipfile, ZipArchive::CREATE);
+
+        $zipHelper = new LimeSurvey\Helpers\ZipHelper($zip);
+        $zipHelper->addFolder($fullAssetsDir, $assetsDir);
 
         // Store current language
         $siteLanguage = Yii::app()->language;
@@ -1377,11 +1376,14 @@ class Export extends SurveyCommonAction
             }
 
             $file = $this->exportPrintableHtml($oSurvey, $language, $tempdir);
-            $z->add($file, PCLZIP_OPT_REMOVE_PATH, $tempdir);
+            $relativePath = substr($file, strlen($tempdir));
+            $zip->addFromString($relativePath, file_get_contents($file));
             unlink($file);
         }
         // set language back (get's changed in loop above)
         Yii::app()->language = $siteLanguage;
+
+        $zip->close();
 
         if ($readFile) {
             $this->addHeaders($fn, "application/zip", 0);
@@ -1412,7 +1414,7 @@ class Export extends SurveyCommonAction
 
         // remove first slash to get local path for local storage for template assets
         $templateDir = Template::getTemplateURL($oSurvey->templateEffectiveName);
-        $response = str_replace($templateDir, substr($templateDir, 1), $response);
+        $response = str_replace($templateDir, substr((string) $templateDir, 1), (string) $response);
 
         file_put_contents($file, $response);
         return $file;
@@ -1460,18 +1462,10 @@ class Export extends SurveyCommonAction
      */
     private function xmlToJson(string $fileContents): string
     {
-        if (\PHP_VERSION_ID < 80000) {
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        }
-
         $fileContents          = str_replace(array("\n", "\r", "\t"), '', $fileContents);
         $fileContents          = trim(str_replace('"', "'", $fileContents));
         $simpleXml             = simplexml_load_string($fileContents, 'SimpleXMLElement', LIBXML_NOCDATA);
         $json                  = json_encode($simpleXml);
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-        }
         return $json;
     }
 

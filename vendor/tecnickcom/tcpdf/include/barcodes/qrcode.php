@@ -5,9 +5,9 @@
 // Begin       : 2010-03-22
 // Last Update : 2012-07-25
 // Author      : Nicola Asuni - Tecnick.com LTD - www.tecnick.com - info@tecnick.com
-// License     : GNU-LGPL v3 (http://www.gnu.org/copyleft/lesser.html)
+// License     : GNU-LGPL v3 (https://www.gnu.org/copyleft/lesser.html)
 // -------------------------------------------------------------------
-// Copyright (C) 2010-2012 Nicola Asuni - Tecnick.com LTD
+// Copyright (C) 2010-2026 Nicola Asuni - Tecnick.com LTD
 //
 // This file is part of TCPDF software library.
 //
@@ -22,7 +22,7 @@
 // See the GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with TCPDF.  If not, see <http://www.gnu.org/licenses/>.
+// along with TCPDF.  If not, see <https://www.gnu.org/licenses/>.
 //
 // See LICENSE.TXT file for more information.
 // -------------------------------------------------------------------
@@ -261,6 +261,7 @@ if (!defined('QRCODEDEFS')) {
  * @package com.tecnick.tcpdf
  * @author Nicola Asuni
  * @version 1.0.010
+ * @deprecated TCPDF is deprecated: migrate to tecnickcom/tc-lib-pdf.
  */
 class QRcode {
 
@@ -884,14 +885,15 @@ class QRcode {
 	protected function getCode() {
 		if ($this->count < $this->dataLength) {
 			$row = $this->count % $this->blocks;
-			$col = $this->count / $this->blocks;
+			$col = (int)($this->count / $this->blocks);
 			if ($col >= $this->rsblocks[0]['dataLength']) {
 				$row += $this->b1;
 			}
+			$row = (int) $row;
 			$ret = $this->rsblocks[$row]['data'][$col];
 		} elseif ($this->count < $this->dataLength + $this->eccLength) {
 			$row = ($this->count - $this->dataLength) % $this->blocks;
-			$col = ($this->count - $this->dataLength) / $this->blocks;
+			$col = (int)(($this->count - $this->dataLength) / $this->blocks);
 			$ret = $this->rsblocks[$row]['ecc'][$col];
 		} else {
 			return 0;
@@ -1062,7 +1064,7 @@ class QRcode {
 	 protected function makeMaskNo($maskNo, $width, $s, &$d, $maskGenOnly=false) {
 		$b = 0;
 		$bitMask = array();
-		$bitMask = $this->generateMaskNo($maskNo, $width, $s, $d);
+		$bitMask = $this->generateMaskNo($maskNo, $width, $s);
 		if ($maskGenOnly) {
 			return;
 		}
@@ -1460,7 +1462,7 @@ class QRcode {
 		$stringLen = strlen($this->dataStr);
 		$p = 0;
 		while ($p < $stringLen) {
-			$mode = $this->identifyMode(substr($this->dataStr, $p), $this->hint);
+			$mode = $this->identifyMode(substr($this->dataStr, $p));
 			if ($mode == QR_MODE_KJ) {
 				$p += 2;
 			} else {
@@ -1692,7 +1694,7 @@ class QRcode {
 			return -1;
 		}
 		$buf = array($size, $index, $parity);
-		$entry = $this->newInputItem(QR_MODE_ST, 3, buf);
+		$entry = $this->newInputItem(QR_MODE_ST, 3, $buf);
 		array_unshift($items, $entry);
 		return $items;
 	}

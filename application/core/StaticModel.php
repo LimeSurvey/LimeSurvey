@@ -6,7 +6,6 @@
  */
 class StaticModel extends CModel
 {
-
     /**
      * Models attributes as array indexed by primary key
      * @return array

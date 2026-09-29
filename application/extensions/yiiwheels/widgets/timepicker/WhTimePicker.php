@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhTimePicker widget class
  *
@@ -8,7 +9,8 @@
  * @package YiiWheels.widgets.timepicker
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('bootstrap.helpers.TbArray');
+
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhTimePicker extends CInputWidget
 {
@@ -66,7 +68,6 @@ class WhTimePicker extends CInputWidget
         $this->renderField();
 
         $this->registerClientScript();
-
     }
 
     /**
@@ -80,7 +81,7 @@ class WhTimePicker extends CInputWidget
         TbArray::defaultValue('name', $name, $this->htmlOptions);
 
         echo '<div class="input-group">';
-        echo '<div class="input-group-addon"><span class="fa fa-time"></span></div>';
+        echo '<div class="input-group-text"><span class="fa fa-time"></span></div>';
         if ($this->hasModel()) {
             echo CHtml::activeTextField($this->model, $this->attribute, $this->htmlOptions);
         } else {

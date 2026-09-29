@@ -7,12 +7,13 @@ class Update_488 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->addColumn(
             '{{questions}}',
             'same_script',
-            "integer NOT NULL default '0'"
+            "integer NOT NULL DEFAULT 0"
         );
     }
 }

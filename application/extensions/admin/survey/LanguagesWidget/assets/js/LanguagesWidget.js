@@ -23,6 +23,48 @@ $.fn.select2.amd.define(
 
     Utils.Extend(LanguagesWidgetSelectionAdapter, MultipleSelection);
 
+    LanguagesWidgetSelectionAdapter.prototype.selectionContainer = function () {
+      return $(
+        '<li class="select2-selection__choice">' +
+          '<button type="button" class="select2-selection__choice__remove" tabindex="0">' +
+            '<span aria-hidden="true">&times;</span>' +
+          '</button>' +
+          '<span class="select2-selection__choice__display"></span>' +
+        '</li>'
+      );
+    };
+
+    LanguagesWidgetSelectionAdapter.prototype.decorateSelection = function ($selection, selection) {
+      var formatted = this.display(selection, $selection);
+      var rendered = this.$selection.find('.select2-selection__rendered')[0];
+      var selectionIdPrefix = rendered.getAttribute('id') + '-choice-';
+      var selectionId = selectionIdPrefix + Utils.generateChars(4) + '-';
+
+      if (selection.id) {
+        selectionId += selection.id;
+      } else {
+        selectionId += Utils.generateChars(4);
+      }
+
+      var $display = $selection.find('.select2-selection__choice__display');
+      $display.append(formatted)[0].setAttribute('id', selectionId);
+
+      var title = selection.title || selection.text;
+      if (title) {
+        $selection[0].setAttribute('title', title);
+      }
+
+        var remove = $selection.find('.select2-selection__choice__remove')[0];
+        var messages = this.options.get('messages') || {};
+        remove.setAttribute('aria-label', messages.remove || 'Remove');
+        remove.setAttribute('aria-describedby', selectionId);
+        var disabled = this.options.get('disabled');
+        remove.disabled = !!disabled;
+        remove.setAttribute('tabindex', disabled ? '-1' : '0');
+
+      $selection.data('data', selection);
+    };
+
     LanguagesWidgetSelectionAdapter.prototype.update = function (data) {
       this.clear();
 
@@ -45,12 +87,7 @@ $.fn.select2.amd.define(
         selection.isBaseLanguage = this.baseLanguage && selection.id == this.baseLanguage;
 
         var $selection = this.selectionContainer();
-        var formatted = this.display(selection, $selection);
-
-        $selection.append(formatted);
-        $selection.prop('title', selection.title || selection.text);
-
-        $selection.data('data', selection);
+        this.decorateSelection($selection, selection);
 
         // Add base language options
         if (this.baseLanguageElement) {
@@ -82,7 +119,8 @@ $.fn.select2.amd.define(
 
       var $rendered = this.$selection.find('.select2-selection__rendered');
 
-      Utils.appendMany($rendered, $selections);
+      //Utils.appendMany($rendered, $selections); // /Utils.appendMany (from v4.0.13) no longer exists
+      $rendered.append($selections); // New method since 4.1.0-rc.0
     };
     LanguagesWidgetSelectionAdapter.prototype.bind = function (container, $container) {
       var self = this;
@@ -94,7 +132,7 @@ $.fn.select2.amd.define(
           originalEvent: evt
         });
       });
-  
+
       this.$selection.on(
         'click',
         '.select2-selection__choice__remove',
@@ -105,16 +143,35 @@ $.fn.select2.amd.define(
           if (self.options.get('disabled')) {
             return;
           }
-  
+
           var $remove = $(this);
           var $selection = $remove.parent();
-  
+
           var data = $selection.data('data');
-  
+
           self.trigger('unselect', {
             originalEvent: evt,
             data: data
           });
+        }
+      );
+
+      this.$selection.on(
+        'keydown',
+        '.select2-selection__choice__remove',
+        function (evt) {
+          if (self.options.get('disabled')) {
+            return;
+          }
+
+          if (evt.key === 'Enter' || evt.key === ' ' || evt.keyCode === 13 || evt.keyCode === 32) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            $(this).trigger('click');
+            return;
+          }
+
+          evt.stopPropagation();
         }
       );
 
@@ -163,13 +220,10 @@ $.fn.select2.amd.define(
       data.selected = false;
 
       if (data.isBaseLanguage) {
-        LS.LsGlobalNotifier.create(
-          this.messages.cannotRemoveBaseLanguage,
-          'well-lg bg-danger text-center'
-        );
+        LS.LsGlobalNotifier.createAlert(this.messages.cannotRemoveBaseLanguage, 'danger', {showCloseButton: true});
         return;
       } else {
-        $.bsconfirm(
+        $.fn.bsconfirm(
           this.messages.removeLanguageConfirmation,
           {
             confirm_cancel: this.messages.cancel,
@@ -183,7 +237,7 @@ $.fn.select2.amd.define(
               self.$element.trigger('change');
               return;
             }
-      
+
             self.current(function (currentData) {
               var val = [];
               for (var d = 0; d < currentData.length; d++) {
@@ -192,7 +246,7 @@ $.fn.select2.amd.define(
                   val.push(id);
                 }
               }
-      
+
               self.$element.val(val);
               self.$element.trigger('change');
             });

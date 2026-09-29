@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -38,16 +38,11 @@ class LSActiveRecord extends CActiveRecord
         $sCreateFieldName = ($this->hasAttribute('created') ? 'created' : null);
         $sUpdateFieldName = ($this->hasAttribute('modified') ? 'modified' : null);
         $sDriverName = Yii::app()->db->getDriverName();
-        if ($sDriverName == 'sqlsrv' || $sDriverName == 'dblib') {
-            $sTimestampExpression = new CDbExpression('GETDATE()');
-        } else {
-            $sTimestampExpression = new CDbExpression('NOW()');
-        }
         $aBehaviors['CTimestampBehavior'] = [
             'class'               => 'zii.behaviors.CTimestampBehavior',
             'createAttribute'     => $sCreateFieldName,
             'updateAttribute'     => $sUpdateFieldName,
-            'timestampExpression' => $sTimestampExpression
+            'timestampExpression' => "date('Y-m-d H:i:s', time())"
         ];
         // Some tables might not exist/not be up to date during a database upgrade so in that case disconnect plugin events
         if (!Yii::app()->getConfig('Updating')) {
@@ -236,7 +231,6 @@ class LSActiveRecord extends CActiveRecord
                 }
             }
         }
-
         return parent::updateAll($attributes, $condition, $params);
     }
 
@@ -272,7 +266,7 @@ class LSActiveRecord extends CActiveRecord
      * @param int $iSurveyId
      * @param string $sClassName
      * @return array
-     * TODO: Should be split into seperate functions in the appropiate model or helper class
+     * TODO: Should be split into separate functions in the appropriate model or helper class
      * TODO: Make an interface for records that support encryption.
      */
     public function getAllEncryptedAttributes($iSurveyId, $sClassName)
@@ -309,7 +303,7 @@ class LSActiveRecord extends CActiveRecord
                     $aAttributes[] = $attribute;
                 }
             }
-        } elseif ($sClassName == 'SurveyDynamic' || $sClassName == 'Response_' . $iSurveyId) {
+        } elseif ($sClassName == 'SurveyDynamic' || $sClassName == 'Response_' . $iSurveyId || $sClassName == 'Survey_' . $iSurveyId) {
             // response attributes
             $aAttributes = Response::getEncryptedAttributes($iSurveyId);
         }
@@ -318,10 +312,10 @@ class LSActiveRecord extends CActiveRecord
     }
 
     /**
-     * Attribute values are encrypted ( if needed )to be used for searching purposes
+     * Attribute values are encrypted ( if needed ) to be used for searching purposes
      * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
      * An attribute value can be an array which will be used to generate an IN condition.
-     * @return array attributes array with encrypted atrribute values is returned
+     * @return array attributes array with encrypted attribute values is returned
      */
     public function encryptAttributeValues($attributes = null, $bEncryptedOnly = false, $bReplaceValues = true)
     {
@@ -399,7 +393,7 @@ class LSActiveRecord extends CActiveRecord
             $sodium = Yii::app()->sodiumOld;
         }
         // if $value is provided, it would decrypt
-        if ($value) {
+        if (isset($value) && $value !== '') {
             try {
                 return $sodium->decrypt($value);
             } catch (throwable $e) {
@@ -418,13 +412,13 @@ class LSActiveRecord extends CActiveRecord
 
 
     /**
-     * Enrypt single value
+     * Encrypt single value
      * @param string $value String value which needs to be encrypted
      */
     public static function encryptSingle($value = '')
     {
         // if $value is provided, it would decrypt
-        if (!empty($value)) {
+        if (isset($value) && $value !== "") {
             // load sodium library
             $sodium = Yii::app()->sodium;
             return $sodium->encrypt($value);
@@ -445,52 +439,42 @@ class LSActiveRecord extends CActiveRecord
 
 
     /**
-     * Encrypt values before saving to the database
+     * Saves the current record with encrypt values before saving to the database
+     * @see CActiveRecord->save
+     * @param boolean $runValidation whether to perform validation before saving the record.
+     * @param array $attributes list of attributes that need to be saved. Defaults to null for all attributes.
+     * @return boolean whether the saving succeeds
      */
-    public function encryptSave($runValidation = false)
+    public function encryptSave($runValidation = true, $attributes = null)
     {
         // run validation on attribute values before encryption take place, it is impossible to validate encrypted values
         if ($runValidation) {
-            if (!$this->validate()) {
+            if (!$this->validate($attributes)) {
                 return false;
             }
         }
 
         // encrypt attributes
         $this->decryptEncryptAttributes('encrypt');
-
         // call save() method  without validation, validation is already done ( if needed )
-        return $this->save(false);
+        return $this->save(false, $attributes);
     }
 
     /**
      * Encrypt/decrypt values
+     * @param string $action 'decrypt' or 'encrypt' (or other function)
+     * @return void
      */
     public function decryptEncryptAttributes($action = 'decrypt')
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
 
-        $class = get_class($this);
-        // TODO: Use OOP polymorphism instead of switching on class names.
-        if ($class === 'ParticipantAttribute') {
-            $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(["select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'"]), 'attribute_id', '');
-            if (array_key_exists($this->attribute_id, $aParticipantAttributes)) {
-                $this->value = $sodium->$action($this->value);
-            }
-        } else {
-            $attributes = $this->encryptAttributeValues($this->attributes, true, false);
-            $LEM = LimeExpressionManager::singleton();
-            $updatedValues = $LEM->getUpdatedValues();
-            foreach ($attributes as $key => $attribute) {
-                if ($action === 'decrypt' && array_key_exists($key, $updatedValues)) {
-                    continue;
-                }
-                $this->$key = $sodium->$action($attribute);
-            }
+        $attributes = $this->encryptAttributeValues($this->getAttributes(), true, false);
+        foreach ($attributes as $key => $attribute) {
+            $this->$key = $sodium->$action($attribute);
         }
     }
-
     /**
      * Function to show encryption symbol in gridview attribute header if value ois encrypted
      * @param int $surveyId
@@ -505,7 +489,7 @@ class LSActiveRecord extends CActiveRecord
         $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
         if (isset($encryptedAttributes)) {
             if (in_array($attributeName, $encryptedAttributes)) {
-                return ' <span  data-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
+                return ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
             }
         }
     }

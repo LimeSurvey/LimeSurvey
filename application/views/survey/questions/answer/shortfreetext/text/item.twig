@@ -6,7 +6,6 @@
  * $name        $ia[1]
  * $prefix
  * $suffix
- * $kpclass
  * $tiwidth
  * $dispVal
  * $placeholder
@@ -26,13 +25,13 @@
         <div class="ls-input-group">
     {% endif %}
         <!-- Prefix -->
-        {% if processString("trim(" ~ prefix ~ ")") != '' %}
+        {% if prefix != '' %}
             <div class='ls-input-group-extra prefix-text prefix'>{{ processString(prefix) }}</div>
         {% endif %}
 
         <!-- Input -->
         <input
-            class="form-control {{ kpclass }}"
+            class="form-control"
             type="text"
             name="{{ name }}"
             id="answer{{ name }}"
@@ -45,7 +44,7 @@
         />
 
         <!-- Suffix -->
-        {% if processString("trim(" ~ suffix ~ ")") != '' %}
+        {% if suffix %}
             <div class='ls-input-group-extra suffix-text suffix'>{{ processString(suffix) }}</div>
         {% endif %}
     {% if prefix != '' or suffix != '' %}

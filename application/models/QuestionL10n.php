@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -15,13 +15,18 @@
 
 /**
  * Class QuestionL10n
- * @property integer $id primary key
- * @property integer $qid question id
- * @property string $language Question language code. Note: There is a unique key on qid & language columns combined
- * @property string $question Question display text. The actual question.
- * @property string $help Question help-text for display
- * @property string $script Question script to be executed on runtime
  *
+ * Localization model for the {{question_l10ns}} table.
+ * Stores per-language translations of question text, help text, and scripts.
+ *
+ * @property int    $id       Primary key (auto-increment)
+ * @property int    $qid      Foreign key to the questions table
+ * @property string $language Language code (e.g. 'en'). Unique together with $qid
+ * @property string $question Question display text (the actual question shown to participants)
+ * @property string $help     Question help-text displayed to participants
+ * @property string $script   JavaScript to be executed at runtime for this question
+ *
+ * @see Question
  */
 class QuestionL10n extends LSActiveRecord
 {
@@ -68,7 +73,10 @@ class QuestionL10n extends LSActiveRecord
         return array('index' => 'language');
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     * @return array Validation rules for model attributes
+     */
     public function rules()
     {
         $rules = array(
@@ -76,7 +84,7 @@ class QuestionL10n extends LSActiveRecord
             ['qid', 'numerical', 'integerOnly' => true],
             array('question', 'LSYii_Validators'),
             array('help', 'LSYii_Validators'),
-            array('script', 'LSYii_Validators'),
+            array('script', 'safe'),
             array('language', 'length', 'min' => 2, 'max' => 20), // in array languages ?
             /* Add rules for existing unique index : idx1_question_ls ['qid', 'language'] */
             array('qid', 'unique', 'criteria' => array(
@@ -91,6 +99,9 @@ class QuestionL10n extends LSActiveRecord
                 ),
             ),
         );
+        if (!Yii::app()->user->isScriptUpdateAllowed()) {
+            $rules[] = array('script', 'LSYii_NoUpdateValidator');
+        }
         return $rules;
     }
 }

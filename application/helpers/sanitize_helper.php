@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -102,7 +102,7 @@ function nice_addslashes($string)
     if (MAGIC_QUOTES) {
         return $string;
     } else {
-        return addslashes($string);
+        return addslashes((string) $string);
     }
 }
 
@@ -116,7 +116,7 @@ function nice_addslashes($string)
  *     $force_lowercase - Force the string to lowercase?
  *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
  */
-function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true)
+function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true, $directory = false)
 {
     // sanitize filename
     $filename = mb_ereg_replace(
@@ -126,7 +126,7 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
         [#\[\]@!$&\'()+,;=]|
         [{}^\~`]',
         '-',
-        $filename
+        (string) $filename
     );
     // Removes smart quotes
     $filename = str_replace(array("\xe2\x80\x98", "\xe2\x80\x99", "\xe2\x80\x9c", "\xe2\x80\x9d", "\xe2\x80\x93", "\xe2\x80\x94", "\xe2\x80\xa6"), array('','', '', '', '-', '--','...'), $filename);
@@ -137,8 +137,9 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
         $filename = beautify_filename($filename);
     }
     // maximise filename length to 255 bytes http://serverfault.com/a/9548/44086
-    $ext = pathinfo($filename, PATHINFO_EXTENSION);
-    $filename = mb_strcut(pathinfo($filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding($filename)) . ($ext ? '.' . $ext : '');
+    $ext = pathinfo((string) $filename, PATHINFO_EXTENSION);
+    $filename_info = $directory ? $filename : pathinfo((string) $filename, PATHINFO_FILENAME);
+    $filename = mb_strcut($filename_info, 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding((string) $filename)) . ($ext ? '.' . $ext : '');
     $filename = ($alphanumeric) ? mb_ereg_replace("[^a-zA-Z0-9]", "", $filename) : $filename;
 
     if ($force_lowercase) {
@@ -188,8 +189,8 @@ function beautify_filename($filename)
 
 function sanitize_dirname($string, $force_lowercase = false, $alphanumeric = false)
 {
-    $string = str_replace(".", "", $string);
-    return sanitize_filename($string, $force_lowercase, $alphanumeric, false);
+    $string = str_replace(".", "", (string) $string);
+    return sanitize_filename($string, $force_lowercase, $alphanumeric, false, true);
 }
 
 
@@ -197,7 +198,7 @@ function sanitize_dirname($string, $force_lowercase = false, $alphanumeric = fal
 function sanitize_paranoid_string($string, $min = '', $max = '')
 {
     if (isset($string)) {
-        $string = preg_replace("/[^_.a-zA-Z0-9]/", "", $string);
+        $string = preg_replace("/[^_.a-zA-Z0-9]/", "", (string) $string);
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
                 return false;
@@ -209,7 +210,7 @@ function sanitize_paranoid_string($string, $min = '', $max = '')
 function sanitize_cquestions($string, $min = '', $max = '')
 {
     if (isset($string)) {
-        $string = preg_replace("/[^_.a-zA-Z0-9+#]/", "", $string);
+        $string = preg_replace("/[^_.a-zA-Z0-9+#]/", "", (string) $string);
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
                 return false;
@@ -226,8 +227,8 @@ function sanitize_system_string($string, $min = '', $max = '')
         // separate commands, nested execution, file redirection,
         // background processing, special commands (backspace, etc.), quotes
         // newlines, or some other special characters
-        $string = preg_replace($pattern, '', $string);
-        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpretted as ONE argument
+        $string = preg_replace($pattern, '', (string) $string);
+        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpreted as ONE argument
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
             return false;
@@ -240,7 +241,7 @@ function sanitize_xss_string($string)
 {
     if (isset($string)) {
         $bad = array('*', '^', '&', ';', '\"', '(', ')', '%', '$', '?');
-        return str_replace($bad, '', $string);
+        return str_replace($bad, '', (string) $string);
     }
 }
 
@@ -250,22 +251,22 @@ function sanitize_xss_string($string)
 function sanitize_sql_db_tablename($string)
 {
     $bad = array('*', '^', '&', '\'', '-', ';', '\"', '(', ')', '%', '$', '?');
-    return str_replace($bad, "", $string);
+    return str_replace($bad, "", (string) $string);
 }
 
 // sanitize a string for SQL input (simple slash out quotes and slashes)
 function sanitize_ldap_string($string, $min = '', $max = '')
 {
     $pattern = '/(\)|\(|\||&)/';
-    $len = strlen($string);
+    $len = strlen((string) $string);
     if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
         return false;
     }
-    return preg_replace($pattern, '', $string);
+    return preg_replace($pattern, '', (string) $string);
 }
 
 
-// sanitize a string for HTML (make sure nothing gets interpretted!)
+// sanitize a string for HTML (make sure nothing gets interpreted!)
 function sanitize_html_string($string)
 {
     $pattern[0] = '/\&/';
@@ -290,20 +291,20 @@ function sanitize_html_string($string)
     $replacement[8] = '&#41;';
     $replacement[9] = '&#43;';
     $replacement[10] = '&#45;';
-    return preg_replace($pattern, $replacement, $string);
+    return preg_replace($pattern, $replacement, (string) $string);
 }
 
 // make int int!
 function sanitize_int($integer, $min = '', $max = '')
 {
-    $int = preg_replace("#[^0-9]#", "", $integer);
+    $int = preg_replace("#[^0-9]#", "", (string) $integer);
     if ((($min != '') && ($int < $min)) || (($max != '') && ($int > $max))) {
         return false;
     }
     if ($int == '') {
         return null;
     }
-    return $int;
+    return (int) $int;
 }
 
 // sanitize a username
@@ -315,7 +316,7 @@ function sanitize_int($integer, $min = '', $max = '')
 function sanitize_user($string)
 {
     $username_length = 64;
-    $string = mb_substr($string, 0, $username_length);
+    $string = mb_substr((string) $string, 0, $username_length);
     return $string;
 }
 
@@ -325,21 +326,21 @@ function sanitize_user($string)
 function sanitize_userfullname($string)
 {
     $username_length = 50;
-    $string = mb_substr($string, 0, $username_length);
+    $string = mb_substr((string) $string, 0, $username_length);
     return $string;
 }
 
 function sanitize_labelname($string)
 {
     $labelname_length = 100;
-    $string = mb_substr($string, 0, $labelname_length);
+    $string = mb_substr((string) $string, 0, $labelname_length);
     return $string;
 }
 
 // make float float!
 function sanitize_float($float, $min = '', $max = '')
 {
-    $float = str_replace(',', '.', $float);
+    $float = str_replace(',', '.', (string) $float);
     // GMP library allows for high precision and high value numbers
     if (function_exists('gmp_init') && defined('GMP_VERSION') && version_compare(GMP_VERSION, '4.3.2') == 1) {
         $gNumber = gmp_init($float);
@@ -416,15 +417,6 @@ function check_html_string($input, $min = '', $max = '')
 }
 
 
-function check_ldap_string($input, $min = '', $max = '')
-{
-    // FIXME undefined function sanitize_string
-    if ($input != sanitize_string($input, $min, $max)) {
-        return false;
-    }
-    return true;
-}
-
 function check_system_string($input, $min = '', $max = '')
 {
     if ($input != sanitize_system_string($input, $min, $max)) {
@@ -440,13 +432,14 @@ function check_system_string($input, $min = '', $max = '')
  * @param string $min
  * @param string $max
  * @return bool
- * @deprecated  2018-01-29 has undefined function my_utf8_decode inside !!
+ * @throws Exception
  */
 function check($input, $flags, $min = '', $max = '')
 {
     $oldput = $input;
     if ($flags & UTF8) {
-        $input = my_utf8_decode($input);
+        // This case used before function my_utf8_decode, which doesn't exist.
+        throw new Exception('UTF8 not supported');
     }
     if ($flags & PARANOID) {
         $input = sanitize_paranoid_string($input, $min, $max);
@@ -472,13 +465,32 @@ function check($input, $flags, $min = '', $max = '')
     return true;
 }
 
+/**
+ * Sanitizes a language code by removing all non-alphanumeric and non-dash characters.
+ *
+ * This function removes any characters that are not letters (a-z), numbers (0-9),
+ * or hyphens (-) from the input string. It is case-insensitive in its matching.
+ * @deprecated 7.0.0 Use LSYii_Validators::languageCodeFilter
+ *
+ * @param string $codetosanitize The language code string to sanitize.
+ * @return string The sanitized language code containing only letters and hyphens.
+ */
 function sanitize_languagecode($codetosanitize)
 {
-    return preg_replace('/[^a-z0-9-]/i', '', $codetosanitize);
+    return preg_replace('/[^a-z-]/i', '', (string) $codetosanitize);
 }
 
+
 /**
- * @param string $codestringtosanitize
+ * Sanitizes a space-separated string of language codes.
+ *
+ * This function takes a space-separated string of language codes, splits them into an array,
+ * sanitizes each individual language code by removing all non-alphanumeric and non-dash characters,
+ * and then rejoins them back into a space-separated string.
+ * @deprecated 7.0.0 Use LSYii_Validators::multiLanguageCodeFilter
+ *
+ * @param string $codestringtosanitize A space-separated string of language codes to sanitize.
+ * @return string A space-separated string of sanitized language codes containing only alphanumeric characters and hyphens.
  */
 function sanitize_languagecodeS($codestringtosanitize)
 {
@@ -487,6 +499,16 @@ function sanitize_languagecodeS($codestringtosanitize)
     return implode(" ", $codearray);
 }
 
+/**
+/* Sanitize a google api key
+ * @see https://docs.cloud.google.com/docs/authentication/api-keys#components
+ * @param string|null
+ * @return string
+ **/
+function sanitize_googleapikey($string)
+{
+    return preg_replace('/[^A-Za-z0-9_-]/', '', trim(strval($string)));
+}
 
 function sanitize_signedint($integer, $min = '', $max = '')
 {
@@ -510,4 +532,93 @@ function check_ip_address($ip)
 {
     // Leave the wrapper in case we need to enhance the checks later
     return filter_var($ip, FILTER_VALIDATE_IP);
+}
+
+/**
+ * Returns true if the argument is an absolute URL (either starting with schema+domain or just "/").
+ * @param string $string
+ * @return boolean
+ */
+function check_absolute_url($string)
+{
+    // Regular expression based on Symfony's UrlValidator (https://github.com/symfony/symfony/blob/6.3/src/Symfony/Component/Validator/Constraints/UrlValidator.php)
+    // Modified to allow absolute URLs without the schema and domain.
+    $pattern = '~^
+        (http|https)://                                 # protocol
+        (((?:[\_\.\pL\pN-]|%%[0-9A-Fa-f]{2})+:)?((?:[\_\.\pL\pN-]|%%[0-9A-Fa-f]{2})+)@)?  # basic auth
+        (
+            (?:
+                (?:xn--[a-z0-9-]++\.)*+xn--[a-z0-9-]++            # a domain name using punycode
+                    |
+                (?:[\pL\pN\pS\pM\-\_]++\.)+[\pL\pN\pM]++          # a multi-level domain name
+                    |
+                [a-z0-9\-\_]++                                    # a single-level domain name
+            )\.?
+                |                                                 # or
+            \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}                    # an IP address
+                |                                                 # or
+            \[
+                (?:(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){6})(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:::(?:(?:(?:[0-9a-f]{1,4})):){5})(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:[0-9a-f]{1,4})))?::(?:(?:(?:[0-9a-f]{1,4})):){4})(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){0,1}(?:(?:[0-9a-f]{1,4})))?::(?:(?:(?:[0-9a-f]{1,4})):){3})(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){0,2}(?:(?:[0-9a-f]{1,4})))?::(?:(?:(?:[0-9a-f]{1,4})):){2})(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){0,3}(?:(?:[0-9a-f]{1,4})))?::(?:(?:[0-9a-f]{1,4})):)(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){0,4}(?:(?:[0-9a-f]{1,4})))?::)(?:(?:(?:(?:(?:[0-9a-f]{1,4})):(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){0,5}(?:(?:[0-9a-f]{1,4})))?::)(?:(?:[0-9a-f]{1,4})))|(?:(?:(?:(?:(?:(?:[0-9a-f]{1,4})):){0,6}(?:(?:[0-9a-f]{1,4})))?::))))
+            \]  # an IPv6 address
+        )
+        (:[0-9]+)?                              # a port (optional)
+        (?:/ (?:[\pL\pN\-._\~!$&\'()*+,;=:@]|%%[0-9A-Fa-f]{2})* )*          # a path
+        (?:\? (?:[\pL\pN\-._\~!$&\'\[\]()*+,;=:@/?]|%%[0-9A-Fa-f]{2})* )?   # a query (optional)
+        (?:\# (?:[\pL\pN\-._\~!$&\'()*+,;=:@/?]|%%[0-9A-Fa-f]{2})* )?       # a fragment (optional)
+
+        |^(/\S+)$   # Simple absolute URL (without domain part).
+
+    $~ixu';
+
+    return preg_match($pattern, $string) == 1;
+}
+
+/**
+ * Returns true if the argument looks like a path/URL to an image file (absolute or relative).
+ * @param string $string
+ * @return boolean
+ */
+function check_image_url($string)
+{
+    if (!is_string($string) || $string === '') {
+        return false;
+    }
+    // Strip query string/fragment before checking the file extension.
+    $path = strtok($string, '?#');
+    return (bool) preg_match('/\.(jpe?g|png|gif|bmp|webp|svg)$/i', (string) $path);
+}
+
+/**
+ * Remove all chars from $value that are not alphanumeric or dash or underscore
+ *
+ * @param string $value
+ * @return string
+ */
+function sanitize_alphanumeric($value)
+{
+    return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $value);
+}
+
+/**
+ * Validate that a value is safe to use as a single filesystem path component.
+ *
+ * This rejects empty values, leading-dot names, path separators and ASCII
+ * control characters so callers can safely append the value to a trusted
+ * base path without worrying about directory traversal or hidden directories.
+ *
+ * @param string $string
+ * @return bool
+ */
+function validate_path_component($string)
+{
+    if (!is_string($string)) {
+        return false;
+    }
+
+    return !(
+        $string === ''
+        || strpos($string, '.') === 0
+        || preg_match('/[\\\\\/]/', $string) === 1
+        || preg_match('/[\x00-\x1F\x7F]/', $string) === 1
+    );
 }

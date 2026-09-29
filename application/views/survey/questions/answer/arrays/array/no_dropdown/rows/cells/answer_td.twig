@@ -17,9 +17,10 @@
         name="{{ myfname }}"
         value="{{ ld }}"
         id="answer{{ myfname }}-{{ ld }}"
-        {{ CHECKED }}
+        aria-labelledby="answer{{ basename }}-{{ ld }}"
+        {{ checked }}
     />
-    <label for="answer{{ myfname }}-{{ ld }}" class="ls-label-xs-visibility">
+    <label for="answer{{ myfname }}-{{ ld }}" class="ls-label-xs-visibility" aria-hidden="true">
         {{ processString(label) }}
     </label>
 </td>

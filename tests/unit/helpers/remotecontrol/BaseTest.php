@@ -1,8 +1,10 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
 
-abstract class BaseTest extends TestHelper
+use ls\tests\TestBaseClass;
+
+abstract class BaseTest extends TestBaseClass
 {
     /* @var User */
     public $user;
@@ -16,7 +18,6 @@ abstract class BaseTest extends TestHelper
 
     protected function setUp(): void
     {
-        $this->importAll();
         \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
 
         $user = \User::model()->findByPk(1);

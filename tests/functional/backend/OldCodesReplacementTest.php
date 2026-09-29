@@ -8,6 +8,7 @@ use Facebook\WebDriver\WebDriverBy;
  * Tests old codes replacement on survey import.
  *
  * @since 2021-08-06
+ * @group question
  */
 class OldCodesReplacementTest extends TestBaseClassWeb
 {

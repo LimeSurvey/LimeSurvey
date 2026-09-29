@@ -4,7 +4,7 @@ namespace ls\tests\controllers;
 
 /**
  *  LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -45,12 +45,19 @@ class UserManagementTest extends TestBaseClass
     public static function setupBeforeClass(): void
     {
         parent::setupBeforeClass();
+        $_SESSION = [];
         include(ROOT.DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'datasets'.DIRECTORY_SEPARATOR.'userdata.php');
         //\Yii::import('application.controllers.admin.UserManagement', true);
         \Yii::import('application.controllers.UserManagementController', true);
         \Yii::import('application.models.User', true);
         \Yii::app()->session['loginID'] = 1;
-        
+
+        // Clean up leftover user from a previous failed run.
+        $existingUser = \User::model()->findByAttributes(['users_name' => $aDataSet['new_user_data']['users_name']]);
+        if ($existingUser) {
+            $existingUser->delete();
+        }
+
         $oUser = new \User();
         $oUser->setAttributes($aDataSet['new_user_data']);
         if(!$oUser->save()) {
@@ -109,6 +116,7 @@ class UserManagementTest extends TestBaseClass
     }
 
     public function testUpdateAdminUserTamperproofed() {
+        $_SESSION = [];
         $oUserManagementController = new \UserManagementController('userManagement');
         $aChangeDataSet = $this->dataSet['change_admin_user'];
         $aChangeDataSet['uid'] = 1;
@@ -116,14 +124,14 @@ class UserManagementTest extends TestBaseClass
         try {
             $oUserManagementController->updateAdminUser($aChangeDataSet);
         } catch(\CException $exception) {
-            if($exception->getCode() == 500) {
-                
+            if($exception->statusCode == 403) {
                 \Yii::app()->session['loginID'] = 1;
                 $this->assertTrue(true);
                 return;
             }
+            /* throw the exception : user was not updated, but bad exception happen */
+            throw $exception;
         }
-
         \Yii::app()->session['loginID'] = 1;
         throw new \Exception( 
             "Test ".__METHOD__ ." failed: \n"

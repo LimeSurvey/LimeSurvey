@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -105,7 +105,7 @@ class SurveyController extends LSYii_Controller
     public function actions()
     {
         return array(
-            'index' => 'application.controllers.survey.index',
+            'index' => 'application.controllers.survey.SurveyIndex',
             'optin' => 'application.controllers.optin',
             'optout' => 'application.controllers.optout',
             'printanswers' => 'application.controllers.printanswers',

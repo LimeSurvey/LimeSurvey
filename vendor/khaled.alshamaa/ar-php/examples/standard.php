@@ -16,7 +16,8 @@ spaces before and after punctuations, brackets and units etc ...</p>
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output:</h2>
+<h2 dir="ltr" id="example-1">
+<a href="#example-1" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 1:</h2>
 <?php
 error_reporting(E_STRICT);
 
@@ -49,7 +50,7 @@ END;
 
 </div><br />
 <div class="Paragraph">
-<h2>Example Code:</h2>
+<h2>Example Code 1:</h2>
 <?php
 $code = <<< ENDALL
 <?php
@@ -76,10 +77,14 @@ ENDALL;
 
 highlight_string($code);
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_standard" target="_blank">standard</a>
+</i>
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output:</h2>
+<h2 dir="ltr" id="example-2">
+<a href="#example-2" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 2:</h2>
 <?php
     $content = <<<END
 إذا رُمتَ أنْ تَحيا سَليماً مِن الأذى
@@ -116,7 +121,7 @@ END;
 
 </div><br />
 <div class="Paragraph">
-<h2>Example Code:</h2>
+<h2>Example Code 2:</h2>
 <?php
 $code = <<< ENDALL
 <?php
@@ -157,10 +162,14 @@ ENDALL;
 
 highlight_string($code);
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_stripHarakat" target="_blank">stripHarakat</a>
+</i>
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output:</h2>
+<h2 dir="ltr" id="example-3">
+<a href="#example-3" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 3:</h2>
 <?php
     $content = <<<END
 هل تعلم أن النقاط تم إختراعها للعجم وليس للعرب، 
@@ -180,7 +189,7 @@ END;
 ?>
 </div><br />
 <div class="Paragraph">
-<h2>Example Code:</h2>
+<h2>Example Code 3:</h2>
 <?php
 $code = <<< ENDALL
 <?php
@@ -205,12 +214,16 @@ ENDALL;
 
 highlight_string($code);
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_noDots" target="_blank">noDots</a>
+</i>
 </div><br />
 
 <div class="Paragraph" dir="rtl">
-<h2 dir="ltr">Example Output:</h2>
+<h2 dir="ltr" id="example-4">
+<a href="#example-4" class="anchor"><img src="./images/link_icon.png" width="16" border="0"></a>Example Output 4:</h2>
 <?php
-    $text = 'آسِفـــةٌ لا تَنَبُّؤْ';
+    $text = 'آسِفـــةٌ لا تَنَبُّؤْ 456';
 
     $Arabic->setNorm('stripTatweel', true)
            ->setNorm('stripTanween', true)
@@ -231,17 +244,18 @@ highlight_string($code);
 
     echo '<hr /><b>Normalized Text</b>';
     echo '<p dir="rtl" align="justify">';
-    echo $Arabic->arNormalizeText($text) . '</p>';
+    echo $Arabic->arNormalizeText($text) . '<br/>';
+    echo $Arabic->arNormalizeText($text, 'Hindu') . '</p>';
 ?>
 </div><br />
 <div class="Paragraph">
-<h2>Example Code:</h2>
+<h2>Example Code 4:</h2>
 <?php
 $code = <<< ENDALL
 <?php
 	\$Arabic = new \\ArPHP\\I18N\\Arabic();
     
-    \$text = 'آسِفـــةٌ لا تَنَبُّؤْ';
+    \$text = 'آسِفـــةٌ لا تَنَبُّؤْ 456';
 
     \$Arabic->setNorm('stripTatweel', true)
            ->setNorm('stripTanween', true)
@@ -262,11 +276,16 @@ $code = <<< ENDALL
 
     echo '<hr /><b>Normalized Text</b>';
     echo '<p dir="rtl" align="justify">';
-    echo \$Arabic->arNormalizeText(\$text) . '</p>';    
+    echo \$Arabic->arNormalizeText(\$text) . '<br/>';
+    echo \$Arabic->arNormalizeText(\$text, 'Hindu') . '</p>';    
 ENDALL;
 
 highlight_string($code);
 ?>
+<hr/><i>Related Documentation: 
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_setNorm" target="_blank">setNorm</a>,
+<a href="https://khaled-alshamaa.github.io/ar-php/classes/ArPHP-I18N-Arabic.html#method_arNormalizeText" target="_blank">arNormalizeText</a>
+</i>
 </div>
 
 <footer><i><a href="https://github.com/khaled-alshamaa/ar-php">Ar-PHP</a>, an open-source library for website developers to process Arabic content</i></footer>

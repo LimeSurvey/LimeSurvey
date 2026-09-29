@@ -1,0 +1,36 @@
+$ranking-border-radius: 8px;
+.ranking-advanced-style {
+    .ranking-advanced-sorted-items {
+        .sortable-rank {
+            border-radius: $ranking-border-radius;
+        }
+        .sortable-rank-subtitle {
+            display: none;
+        }
+    }
+    .ranking-advanced-available-items,
+    .ranking-advanced-sorted-items{
+        margin-bottom: 12px;
+        padding: 6px;
+        .sortable-rank-subtitle {
+            font-weight: $font-weight-600;
+        }
+    }
+    .sortable-item {
+        border-radius: $border-radius;
+    }
+    .selector__dragHandle.d-none {
+        display: inline-block !important;
+        margin-left: 8px;
+    }
+    .selector__dragHandle.fa-bars {
+        display: none;
+    }
+    .icon-divider {
+        display: none;
+    }
+
+    .sortable-list {
+        border: none;
+    }
+}

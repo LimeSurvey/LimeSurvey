@@ -22,7 +22,7 @@ class RenderBoilerplate extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/boilerplate/answer';
     }
-    
+
     public function getRows()
     {
         return;
@@ -41,7 +41,7 @@ class RenderBoilerplate extends QuestionBaseRenderer
             'ia' => $this->aFieldArray,
             'name' => $this->sSGQA,
             'basename' => $this->sSGQA, /* is this needed ? */
-            'coreClass' => 'ls-answers hidden ' . $sCoreClasses,
+            'coreClass' => 'ls-answers d-none ' . $sCoreClasses,
             ), true);
 
         $inputnames[] = $this->sSGQA;

@@ -12,7 +12,7 @@
 
 namespace Twig\TokenParser;
 
-use Twig\Error\SyntaxError;
+use Twig\Node\ConfigNode;
 use Twig\Node\Node;
 use Twig\Token;
 
@@ -21,34 +21,21 @@ use Twig\Token;
  *
  *  {% extends "base.html" %}
  *
- * @final
+ * @internal
  */
-class ExtendsTokenParser extends AbstractTokenParser
+final class ExtendsTokenParser extends AbstractTokenParser
 {
-    public function parse(Token $token)
+    public function parse(Token $token): Node
     {
         $stream = $this->parser->getStream();
-
-        if ($this->parser->peekBlockStack()) {
-            throw new SyntaxError('Cannot use "extend" in a block.', $token->getLine(), $stream->getSourceContext());
-        } elseif (!$this->parser->isMainScope()) {
-            throw new SyntaxError('Cannot use "extend" in a macro.', $token->getLine(), $stream->getSourceContext());
-        }
-
-        if (null !== $this->parser->getParent()) {
-            throw new SyntaxError('Multiple extends tags are forbidden.', $token->getLine(), $stream->getSourceContext());
-        }
-        $this->parser->setParent($this->parser->getExpressionParser()->parseExpression());
-
+        $this->parser->setParent($this->parser->parseExpression(), false);
         $stream->expect(Token::BLOCK_END_TYPE);
 
-        return new Node();
+        return new ConfigNode($token->getLine());
     }
 
-    public function getTag()
+    public function getTag(): string
     {
         return 'extends';
     }
 }
-
-class_alias('Twig\TokenParser\ExtendsTokenParser', 'Twig_TokenParser_Extends');

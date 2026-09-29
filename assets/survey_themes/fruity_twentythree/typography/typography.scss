@@ -1,0 +1,133 @@
+body {
+  font-weight: $font-weight-normal;
+  font-size: $font-size-base;
+  line-height: $line-height-24;
+  font-family: $ibm-sans-font-family;
+}
+
+h1,
+.h1 {
+  @include h1;
+}
+
+h2,
+.h2 {
+  @include h2;
+}
+
+h3,
+.h3 {
+  @include h3;
+}
+
+label {
+  @include h2;
+}
+
+.large-heading {
+  @include largeheading;
+  font-family: $ibm-serif-font-family;
+}
+
+dl {
+  font-weight: $font-weight-normal;
+  font-size: $font-size-base;
+  line-height: $line-height-24;
+  dt {
+    font-weight: $font-weight-600;
+    font-size: $font-size-base;
+    line-height: $line-height-24;
+  }
+}
+
+.fw-bold {
+  font-weight: 600 !important;
+}
+
+.reg-12 {
+  @include reg-12;
+}
+
+.med-12 {
+  @include reg-12;
+  font-weight: $font-weight-500;
+  letter-spacing: 0.036px;
+}
+
+.semi-14 {
+  @include semi-14;
+}
+
+.med-14_C {
+  @include med-14_C;
+}
+
+.med-16_C {
+  @include med-16_C;
+}
+
+.reg-18 {
+  @include reg-18;
+}
+
+// LINKS
+a {
+  font-weight: inherit;
+  font-size: inherit;
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:focus-visible {
+    outline: none;
+    padding: 1px 4px;
+    border-radius: 0px;
+    border: 2px solid $grape90;
+  }
+}
+
+.has-link {
+  cursor: pointer;
+}
+
+.has-link a:hover {
+  text-decoration: none;
+}
+
+.has-link a {
+  font-weight: $font-weight-normal;
+}
+
+.text-muted {
+  font-size: $font-size-base;
+  line-height: 20px;
+}
+
+// old_vanilla
+.h1,
+.h2,
+.h3,
+h1,
+h2,
+h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.h4,
+.h5,
+.h6,
+h4,
+h5,
+h6 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.superset {
+  font-size: 50%;
+  vertical-align: super;
+}

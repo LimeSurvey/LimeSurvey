@@ -1,0 +1,223 @@
+$btn-primary-color   : $base-color;
+$btn-secondary-color : $g-600;
+$btn-info-color      : $grape;
+$btn-success-color   : $success;
+$btn-danger-color    : $error;
+$btn-warning-color   : $warning;
+$btn-light-color     : $g-200;
+$btn-dark-color      : $g-900;
+$btn-disabled-color  : $g-600;
+$btn-hover-boxshadow : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+$btn-focus-boxshadow : 4px 4px 0px rgba(123, 97, 255, 0.4);
+// outline variants
+*[class*="btn-outline-"] {
+    background-color : $white;
+    border           : 1px solid $g-900;
+
+    &:hover {
+        // default_outline_hover
+        box-shadow       : $btn-hover-boxshadow;
+        background-color : $white;
+    }
+
+    &:focus, &:active, &.active, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
+        // default_outline_focus
+        box-shadow       : $btn-focus-boxshadow;
+        background-color : $white;
+    }
+
+    &.disabled, &[disabled] {
+        background-color : $white;
+        border           : 1px solid $g-600;
+        color            : $g-600;
+
+        &:hover, &:focus, &:active, &.active {
+            background-color : $white;
+            border           : 1px solid $g-600;
+            color            : $g-600;
+            box-shadow       : none;
+        }
+    }
+}
+
+$btn-variants        : (
+    primary: $base-color,
+    secondary: $g-600,
+    success: $success,
+    warning: $warning,
+    danger: $error,
+    info: $grape,
+    light: $g-200,
+    dark: $g-900,
+    cancel: $g-600,
+    outline-primary: $base-color,
+    outline-secondary: $g-900,
+    outline-success: $success,
+    outline-warning: $warning,
+    outline-danger: $error,
+    outline-info: $grape,
+    outline-light: $g-200,
+    outline-dark: $g-900,
+    outline-cancel: $g-600,
+);
+@mixin button-variant($color, $variant) {
+    $otherColorBtns : ('success', 'warning', 'danger');
+    $font-color     : $white;
+    @if (str-index($variant, 'outline-')) {
+        color            : $color;
+        border-color     : $color;
+        &:hover {
+            color        : $color;
+            border-color : $color;
+            box-shadow   : $btn-hover-boxshadow;
+        }
+        &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
+            color        : $color;
+            border-color : $color;
+            box-shadow   : $color;
+        }
+    } @else {
+        @if index($otherColorBtns, $variant) {
+            $font-color : $g-900;
+        }
+        background-color : $color;
+        border-color     : $color;
+        color            : $font-color;
+        &:hover, &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
+            color            : $font-color;
+            background-color : $color;
+            border-color     : $color;
+        }
+        &:hover {
+            color      : $font-color;
+            box-shadow : $btn-hover-boxshadow;
+        }
+        &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
+            box-shadow : $btn-focus-boxshadow;
+        }
+        &.disabled, &[disabled] {
+            // default_disabled
+            color            : $g-600;
+            background-color : $g-400;
+            box-shadow       : none;
+            border-color     : $g-400;
+            opacity          : 1;
+
+            &:hover, &:focus, &:active, &.active {
+                // default_disabled
+                color            : $g-600;
+                background-color : $g-400;
+                box-shadow       : none;
+            }
+        }
+    }
+}
+
+@each $state, $value in $btn-variants {
+    .btn-#{$state} {
+        @include button-variant($value, $state);
+    }
+}
+
+// btn-link should be outsourced to links.scss or whatever it will be called
+.btn-link {
+    color : $btn-primary-color;
+
+    &:hover, &:focus {
+        color : $btn-primary-color;
+    }
+}
+
+.btn-outline-secondary .menu-button-divider,
+.btn-success .menu-button-divider,
+.btn-warning .menu-button-divider,
+.btn-danger .menu-button-divider {
+    border-left : 1px solid $g-900;
+}
+
+.btn-primary[disabled] .menu-button-divider,
+.btn-primary.disabled .menu-button-divider,
+.btn-info[disabled] .menu-button-divider,
+.btn-info.disabled .menu-button-divider,
+.btn-outline-secondary[disabled] .menu-button-divider,
+.btn-outline-secondary.disabled .menu-button-divider,
+.btn-secondary[disabled] .menu-button-divider,
+.btn-secondary.disabled .menu-button-divider,
+.btn-success[disabled] .menu-button-divider,
+.btn-success.disabled .menu-button-divider,
+.btn-warning[disabled] .menu-button-divider,
+.btn-warning.disabled .menu-button-divider,
+.btn-danger[disabled] .menu-button-divider,
+.btn-danger.disabled .menu-button-divider {
+    border-left : 1px solid $g-600;
+}
+
+.btn.readonly,
+.btn.readonly:hover {
+    cursor             : not-allowed;
+    opacity            : 0.65;
+    filter             : alpha(opacity=65);
+    -webkit-box-shadow : none;
+    box-shadow         : none;
+    border             : 1px solid #cccccc;
+}
+
+// btn-check (Bootstrap Buttons question type) START
+.btn-check + .btn {
+    color            : $g-700;
+    background-color : $white;
+    border           : 2px solid $g-700;
+
+    &:hover {
+        box-shadow : none;
+    }
+
+    &:focus, &:active, &.active, &:active:focus {
+        box-shadow : none;
+    }
+}
+
+.btn-check {
+    + .btn-primary {
+        &:hover {
+            color            : $white;
+            background-color : $btn-primary-color;
+            border-color     : $btn-primary-color;
+            box-shadow       : none;
+        }
+
+        &:active,
+        &.active,
+        &:active:focus {
+            color            : $white;
+            background-color : $btn-primary-color;
+            border-color     : $btn-primary-color;
+            box-shadow       : none;
+        }
+    }
+
+    &:focus + .btn-primary {
+        color            : $g-700;
+        background-color : $white;
+        border           : 2px solid $g-700;
+        box-shadow       : none;
+    }
+
+    &:active + .btn-primary {
+        color            : $white;
+        background-color : $btn-primary-color;
+        border-color     : $btn-primary-color;
+        box-shadow       : none;
+    }
+
+    &:checked + .btn-primary,
+    &:checked + .btn-primary:focus,
+    &:focus:checked + .btn-primary {
+        color            : $white;
+        background-color : $btn-primary-color;
+        border-color     : $btn-primary-color;
+        box-shadow       : none;
+    }
+}
+
+// btn-check END

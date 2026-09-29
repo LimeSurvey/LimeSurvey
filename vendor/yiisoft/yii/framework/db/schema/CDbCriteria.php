@@ -168,18 +168,21 @@ class CDbCriteria extends CComponent
 	{
 		$map=array();
 		$params=array();
-		foreach($this->params as $name=>$value)
+		if(is_array($this->params))
 		{
-			if(strpos($name,self::PARAM_PREFIX)===0)
+			foreach($this->params as $name=>$value)
 			{
-				$newName=self::PARAM_PREFIX.self::$paramCount++;
-				$map[$name]=$newName;
+				if(strpos($name,self::PARAM_PREFIX)===0)
+				{
+					$newName=self::PARAM_PREFIX.self::$paramCount++;
+					$map[$name]=$newName;
+				}
+				else
+				{
+					$newName=$name;
+				}
+				$params[$newName]=$value;
 			}
-			else
-			{
-				$newName=$name;
-			}
-			$params[$newName]=$value;
 		}
 		if (!empty($map))
 		{
@@ -194,10 +197,17 @@ class CDbCriteria extends CComponent
 			foreach($sqlContentFieldNames as $field)
 			{
 				if(is_array($this->$field))
+				{
 					foreach($this->$field as $k=>$v)
-						$this->{$field}[$k]=strtr($v,$map);
-				else
+					{
+						if (is_scalar($v))
+							$this->{$field}[$k]=strtr($v,$map);
+					}
+				}
+				elseif(is_scalar($this->$field))
+				{
 					$this->$field=strtr($this->$field,$map);
+				}
 			}
 		}
 		$this->params=$params;
@@ -580,7 +590,7 @@ class CDbCriteria extends CComponent
 			$scopes2=(array)$criteria->scopes;
 			foreach($scopes1 as $k=>$v)
 			{
-				if(is_integer($k))
+				if(is_int($k))
 					$scopes[]=$v;
 				elseif(isset($scopes2[$k]))
 					$scopes[]=array($k=>$v);
@@ -589,7 +599,7 @@ class CDbCriteria extends CComponent
 			}
 			foreach($scopes2 as $k=>$v)
 			{
-				if(is_integer($k))
+				if(is_int($k))
 					$scopes[]=$v;
 				elseif(isset($scopes1[$k]))
 					$scopes[]=array($k=>$v);
@@ -606,7 +616,7 @@ class CDbCriteria extends CComponent
 			$this->with=(array)$this->with;
 			foreach((array)$criteria->with as $k=>$v)
 			{
-				if(is_integer($k))
+				if(is_int($k))
 					$this->with[]=$v;
 				elseif(isset($this->with[$k]))
 				{

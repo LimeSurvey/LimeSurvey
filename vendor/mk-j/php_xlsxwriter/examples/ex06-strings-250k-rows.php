@@ -8,8 +8,10 @@ for($j=0; $j<16192;$j++)
 	$s.= $chars[rand()%36];
 
 
+$header = array('c1'=>'string','c2'=>'string','c3'=>'string','c4'=>'string');
+
 $writer = new XLSXWriter();
-$writer->writeSheetHeader('Sheet1', array('c1'=>'string','c2'=>'string','c3'=>'string','c4'=>'string') );//optional
+$writer->writeSheetHeader('Sheet1', $header);
 for($i=0; $i<250000; $i++)
 {
 	$s1 = substr($s, rand()%4000, rand()%5+5);

@@ -7,6 +7,8 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 
 /**
  * @since 2019-05-28
+ * @group expression
+ * @group debugoff
  */
 class EmCacheSurveyTest extends TestBaseClassWeb
 {
@@ -188,6 +190,9 @@ class EmCacheSurveyTest extends TestBaseClassWeb
             $textQuestion = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
             $textQuestion->sendKeys('bla bla bla');
 
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
+
             $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $nextButton->click();
 
@@ -201,6 +206,7 @@ class EmCacheSurveyTest extends TestBaseClassWeb
             $textQuestion = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
             $this->assertEquals('bla bla bla', $textQuestion->getText(), 'Answer remain when going back');
 
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
             sleep(1);
 
             // Submit survey.
@@ -212,7 +218,7 @@ class EmCacheSurveyTest extends TestBaseClassWeb
 
             // Get all answers.
             $dbo = \Yii::app()->getDb();
-            $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
+            $query = sprintf('SELECT * FROM {{responses_%d}}', self::$surveyId);
             $result = $dbo->createCommand($query)->queryAll();
             $this->assertCount(1, $result);
             $this->assertEquals('bla bla bla', $result[0][$sgqa]);

@@ -11,7 +11,7 @@ class FormattingOptions
      * The columns that have been selected for output.  The values must be
      * in fieldMap format.
      *
-     * @var array[]string
+     * @var array
      */
     public $selectedColumns;
 

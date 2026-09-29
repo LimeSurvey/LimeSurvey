@@ -4,7 +4,6 @@ namespace LimeSurvey\Menu;
 
 class MenuButton extends Menu implements MenuButtonInterface
 {
-
     /**
      * @var string
      */
@@ -13,7 +12,7 @@ class MenuButton extends Menu implements MenuButtonInterface
     /**
      * @var string
      */
-    protected $buttonClass = "btn btn-success";
+    protected $buttonClass = "btn btn-primary";
 
     /**
      * @var bool

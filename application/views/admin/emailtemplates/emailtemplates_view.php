@@ -5,105 +5,128 @@
  * @var Survey $oSurvey
  */
 
-$count=0;
+$count = 0;
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyEmailTemplates');
 
-App()->getClientScript()->registerScript( "EmailTemplateViews_variables", "
-var sReplaceTextConfirmation='".gT("This will replace the existing text. Continue?","js")."';
-var sKCFinderLanguage='".sTranslateLangCode2CK(App()->language)."';
+App()->getClientScript()->registerScript(
+    "EmailTemplateViews_variables",
+    "
+var sReplaceTextConfirmation='" . gT("This will replace the existing text. Continue?", "js") . "';
+var sKCFinderLanguage='" . sTranslateLangCode2CK(App()->language) . "';
 
 var LS = LS || {};  // namespace
     LS.lang = LS.lang || {};  // object holding translations
-    LS.lang['Remove attachment'] = '".gT("Remove attachment")."';
-    LS.lang['Edit condition'] = '".gT("Edit condition")."';
-", LSYii_ClientScript::POS_BEGIN );
+    LS.lang['Remove attachment'] = '" . gT("Remove attachment") . "';
+    LS.lang['Edit condition'] = '" . gT("Edit condition") . "';
+",
+    LSYii_ClientScript::POS_BEGIN
+);
 
-?>        
-        <div class="side-body <?php echo getSideBodyClass(false); ?>">
-    <h3><?php eT("Edit email templates"); ?></h3>
-
+?>
+<div class="side-body">
+    <h1 class="h3"  ><?php eT("Edit email templates"); ?></h1>
+    <?php if (!empty($missingAttachments)): ?>
+        <div class="alert alert-warning" role="alert">
+            <p><?= gT("The following email attachments refer to files that do not exist anymore. They will not be sent and will be removed when you save, unless you replace them:") ?></p>
+            <ul class="mb-0">
+                <?php foreach ($missingAttachments as $missingAttachment): ?>
+                    <li>
+                        <?= CHtml::encode(getLanguageNameFromCode($missingAttachment['language'], false)) ?> /
+                        <?= CHtml::encode($missingAttachment['template']) ?>:
+                        <?= CHtml::encode($missingAttachment['file']) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
     <div class="row">
-        <div class="col-lg-12 content-right">
-
-<?php echo CHtml::form(array('admin/emailtemplates/sa/update/surveyid/'.$surveyid), 'post', array('name'=>'emailtemplates', 'class'=>'', 'id'=>'emailtemplates'));?>
-
-        <ul class="nav nav-tabs">
-            <?php foreach ($oSurvey->allLanguages as $grouplang): ?>
-                <li role="presentation" class="<?php if($count==0){ echo 'active'; $count++; }?>" >
-                    <a data-toggle="tab" href='#tab-<?php echo $grouplang; ?>'><?php echo getLanguageNameFromCode($grouplang,false); ?>
-                        <?php if ($grouplang == $oSurvey->language): ?>
-                            <?php echo ' ('.gT("Base language").')'; ?>
+        <div class="col-12 content-right">
+            <?php echo CHtml::form(['admin/emailtemplates/sa/update/surveyid/' . $surveyid], 'post', ['name' => 'emailtemplates', 'class' => '', 'id' => 'emailtemplates']); ?>
+            <ul class="nav nav-tabs" role="tablist">
+                <?php foreach ($oSurvey->allLanguages as $grouplang): ?>
+                    <?php $langTabId = 'tab-lang-' . CHtml::encode($grouplang); ?>
+                    <li role="presentation" class="nav-item">
+                        <a class="nav-link <?= ($count == 0) ? 'active' : '' ?>" id="<?= $langTabId ?>" role="tab" aria-selected="<?= ($count == 0) ? 'true' : 'false' ?>" aria-controls="tab-<?= $grouplang ?>" data-bs-toggle="tab" href="#tab-<?= $grouplang ?>">
+                            <?php $count++ ?>
+                            <?= getLanguageNameFromCode($grouplang, false) . " " . (($grouplang == $oSurvey->language) ? "(" . gT("Base language") . ")" : "") ?>
+                            <?php if (in_array($grouplang, array_column($missingAttachments ?? [], 'language'))): ?>
+                                <i class="ri-error-warning-fill text-danger" aria-hidden="true"></i>
+                                <span class="visually-hidden"><?= gT("Missing attachment files") ?></span>
                             <?php endif; ?>
-                    </a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-        <div class="tab-content">
-            <?php
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+            <div class="tab-content">
+                <?php
                 $count = 0;
-                $active = 'active';
+                $active = 'show active';
                 foreach ($oSurvey->allLanguages as $key => $grouplang) {
                     $bplang = $bplangs[$key];
                     $esrow = $attrib[$key];
                     $aDefaultTexts = $defaulttexts[$key];
 
-                    $this->renderPartial('/admin/emailtemplates/email_language_tab', compact( 'ishtml', 'surveyid', 'grouplang', 'bplang', 'esrow', 'aDefaultTexts', 'active'));
+                    $this->renderPartial('/admin/emailtemplates/email_language_tab', compact('ishtml', 'surveyid', 'grouplang', 'bplang', 'esrow', 'aDefaultTexts', 'active'));
 
-                    if($count == 0) {
+                    if ($count == 0) {
                         $count++;
                         $active = '';
                     }
                 }
-            ?>
-            <p>
-                <?php echo CHtml::htmlButton(gT('Save'),array('type'=>'submit','value'=>'save','name'=>'save', 'class'=>'hidden')) ?>
-                <?php echo CHtml::htmlButton(gT('Save and close'),array('type'=>'submit','value'=>'saveclose','name'=>'save', 'class'=>'hidden')) ?>
-                <?php echo CHtml::hiddenField('action','tokens'); ?>
-                <?php echo CHtml::hiddenField('language',$esrow->surveyls_language); ?>
-            </p>
-        </div>
-    <?php echo CHtml::endForm() ?>
+                ?>
+                <p>
+                    <?php echo CHtml::htmlButton(gT('Save'), ['type' => 'submit', 'value' => 'save', 'name' => 'save', 'class' => 'd-none']) ?>
+                    <?php echo CHtml::htmlButton(gT('Save and close'), ['type' => 'submit', 'value' => 'saveclose', 'name' => 'save', 'class' => 'd-none']) ?>
+                    <?php echo CHtml::hiddenField('action', 'tokens'); ?>
+                    <?php echo CHtml::hiddenField('language', $esrow->surveyls_language); ?>
+                </p>
+            </div>
+            <?php echo CHtml::endForm() ?>
 
-</div>
-</div>
-</div>
-
-<div class="modal modal-large fade" tabindex="-1" role="dialog" id="kc-modal-open">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title"><?=gT("Choose file to add")?></h4>
-      </div>
-      <div class="modal-body" style="padding: 0;">
-        <iframe frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
-      </div>
-        <div class='modal-footer'>
-            <button type="button" class='btn btn-default' data-dismiss='modal'><?php eT("Cancel");?></button>
         </div>
     </div>
-  </div>
+</div>
+
+<div class="modal modal-large fade" tabindex="-1" role="dialog" id="kc-modal-open" aria-modal="true" aria-labelledby="kc-modal-open-title">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="kc-modal-open-title" class="modal-title h5"><?= gT("Choose file to add") ?></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close') ?>"></button>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <iframe id="browseiframe" frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
+            </div>
+            <div class='modal-footer'>
+                <button type="button" class='btn btn-cancel' data-bs-dismiss='modal'><?php eT("Cancel"); ?></button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="attachment-relevance-editor" class="modal fade">
     <div class='modal-dialog'>
         <div class='modal-content'>
             <div class='modal-header'>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
-                <label for='attachment-relevance-condition' class="h4 modal-title"><?php eT("Condition");?></label>
+                <h5 class="modal-title"><?php eT("Condition"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class='modal-body'>
                 <div class='input-group'>
-                    <div class="input-group-addon">{</div>
+                    <div class="input-group-text">{</div>
                     <textarea class='form-control' id='attachment-relevance-condition'></textarea>
-                    <div class="input-group-addon">}</div>
+                    <div class="input-group-text">}</div>
                 </div>
             </div>
             <div class='modal-footer'>
-                <button type="button" class='btn btn-default' data-dismiss='modal'><?php eT("Close");?></button>
-                <button type="button" class='btn btn-success'><?php eT("Add");?></button>
+                <button type="button" class='btn btn-outline-secondary' data-bs-dismiss='modal'>
+                    <?php eT("Close"); ?>
+                </button>
+                <button type="button" class='btn btn-primary'>
+                    <?php eT("Add"); ?>
+                </button>
             </div>
         </div>
     </div>

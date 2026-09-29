@@ -2,7 +2,7 @@
 
 /**
  * This file is part of statFunctions plugin
- * @version 0.2.0
+ * @version 0.2.1
  */
 
 namespace statFunctions;
@@ -14,6 +14,7 @@ use Survey;
 use SurveyDynamic;
 use CDbCriteria;
 use Permission;
+use LimeSurvey\PluginManager\LimesurveyApi as LimesurveyApi;
 
 class countFunctions
 {
@@ -27,8 +28,9 @@ class countFunctions
      */
     public static function statCountIf($qCode, $comparaison, $submitted = true, $self = true)
     {
-        $surveyId = LimeExpressionManager::getLEMsurveyId();
-        if (!Survey::model()->findByPk($surveyId)->getIsActive()) {
+        $api = new LimesurveyApi();
+        $surveyId = $api->getCurrentSurveyid(true);
+        if (!$surveyId) {
             return 0;
         }
         $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
@@ -45,8 +47,8 @@ class countFunctions
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
-        if (!$self && isset($_SESSION['survey_' . $surveyId]['srid'])) {
-            $srid = $_SESSION['survey_' . $surveyId]['srid'];
+        if (!$self && isset($_SESSION['responses_' . $surveyId]['srid'])) {
+            $srid = $_SESSION['responses_' . $surveyId]['srid'];
             $oCriteria->compare("id", "<>" . $srid);
         }
         $oCriteria->compare($sQuotedColumn, $comparaison);
@@ -62,8 +64,9 @@ class countFunctions
      */
     public static function statCount($qCode, $submitted = true, $self = true)
     {
-        $surveyId = LimeExpressionManager::getLEMsurveyId();
-        if (!Survey::model()->findByPk($surveyId)->getIsActive()) {
+        $api = new LimesurveyApi();
+        $surveyId = $api->getCurrentSurveyid(true);
+        if (!$surveyId) {
             return 0;
         }
         $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
@@ -84,8 +87,8 @@ class countFunctions
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
-        if (!$self && isset($_SESSION['survey_' . $surveyId]['srid'])) {
-            $srid = $_SESSION['survey_' . $surveyId]['srid'];
+        if (!$self && isset($_SESSION['responses_' . $surveyId]['srid'])) {
+            $srid = $_SESSION['responses_' . $surveyId]['srid'];
             $oCriteria->compare("id", "<>" . $srid);
         }
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));

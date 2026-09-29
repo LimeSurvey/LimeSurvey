@@ -16,10 +16,7 @@ if (!file_exists(dirname(__FILE__) . '/config.php')) {
     $userConfig = require(dirname(__FILE__) . '/config.php');
 }
 
-if (!date_default_timezone_set(@date_default_timezone_get())) {
-    date_default_timezone_set('Europe/London');
-}
-
+date_default_timezone_set('UTC'); 
 
 if (function_exists('mb_internal_encoding')) {
     // Needed to substring arabic etc
@@ -42,15 +39,24 @@ $internalConfig = array(
 
         // Third party path
         'vendor' => realpath(__DIR__ . '/../../vendor'),
+        'node_modules' => realpath(__DIR__ . '/../../node_modules'),
+        'node_modules_datatables' => realpath(__DIR__ . '/../../node_modules/datatables.net'),
+        'node_modules_datatables_bs5' => realpath(__DIR__ . '/../../node_modules/datatables.net-bs5'),
+        'node_modules_decimal' => realpath(__DIR__ . '/../../node_modules/decimal.js'),
+        'node_modules_jquery_actual' => realpath(__DIR__ . '/../../node_modules/jquery.actual'),
+        'node_modules.chartjs' => realpath(__DIR__ . '/../../node_modules/chart.js/dist'),
+        'node_modules.moment.min' => realpath(__DIR__ . '/../../node_modules/moment/min'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
         'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 
+        // bootstrap 5 configuration
+        'bootstrap' => realpath(__DIR__ . '/../../assets/bootstrap_5'),
         // yiistrap configuration
-        'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
+        'yiistrap_fork' => realpath(__DIR__ . '/../extensions/bootstrap5'),
         'vendor.twbs.bootstrap.dist' => realpath(__DIR__ . '/../extensions/bootstrap'),
         // yiiwheels configuration
         'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
-        'vendor.twbs.bootstrap.dist',
+//        'vendor.twbs.bootstrap.dist',
 
         //Basic questiontype objects
         'questiontypes' => realpath(__DIR__ . '/../core/QuestionTypes')
@@ -79,7 +85,7 @@ $internalConfig = array(
     ),
     'params' => array(
         'defaultPageSize' => 10, // Default page size for most of the grids
-        'pageSizeOptions' => array(5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100), // Default page size options for most of the grids
+        'pageSizeOptions' => array(5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100, 250 => 250, 500 => 500,), // Default page size options for most of the grids
         'pageSizeOptionsTokens' => array(5 => 5, 10 => 10, 25 => 25, 50 => 50, 100 => 100, 250 => 250, 500 => 500, 1000 => 1000, 2500 => 2500, 5000 => 5000, 10000 => 10000), // Tokens needs different options
         'defaultEllipsizeHeaderValue' => 30, // Default max characters before ellipsizing the headers of responses grid
         'defaultEllipsizeQuestionValue' => 50, // Default max characters before ellipsizing the questions inside responses grid
@@ -94,9 +100,9 @@ $internalConfig = array(
         'application.helpers.*',
         'application.controllers.*',
         'application.modules.*',
-        'bootstrap.helpers.*',
-        'bootstrap.widgets.*',
-        'bootstrap.behaviors.*',
+        'yiistrap_fork.widgets.*',
+        'yiistrap_fork.helpers.*',
+        'yiistrap_fork.behaviors.*',
         'yiiwheels.widgets.select2.WhSelect2',
         'vendor.Twig.*',
         'vendor.sodium.*',
@@ -106,10 +112,6 @@ $internalConfig = array(
     ),
     'preload' => array('log', 'ETwigViewRenderer'),
     'components' => array(
-        // yiistrap configuration
-        'bootstrap' => array(
-            'class' => 'bootstrap.components.TbApi',
-        ),
         // yiiwheels configuration
         'yiiwheels' => array(
             'class' => 'yiiwheels.YiiWheels',
@@ -149,7 +151,8 @@ $internalConfig = array(
             'enableCookieValidation' => false, // Enable to activate cookie protection
             'noCsrfValidationParams' => array(),
             'noCsrfValidationRoutes' => array(
-                'remotecontrol',
+                'rest',
+                'admin/remotecontrol',
                 'plugins/unsecure',
             ),
             'csrfCookie' => array(
@@ -173,12 +176,16 @@ $internalConfig = array(
                 ),
 
                 // Log file saved in /tmp/runtime/plugin.log
+                // Only uncomment this section if you want to log plugin activities
+                // because the log could contain sensitive information
+                /*
                 'plugin' => array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'trace, info, error, warning',
                     'logFile' => 'plugin.log',
                     'categories' => 'plugin.*'  // The category will be the name of the plugin
-                )
+                ),
+                */
             )
         ),
         'cache' => array(
@@ -221,7 +228,7 @@ $internalConfig = array(
             'class' => 'application.core.LimeMailer',
         ),
         'ETwigViewRenderer' => array(
-            'class' => 'vendor.yiiext.twig-renderer.ETwigViewRenderer',
+            'class' => 'vendor.vintagesucks.twig-renderer.ETwigViewRenderer',
             'twigPathAlias' => 'vendor.twig.twig.lib.Twig'
         ),
         'twigRenderer' => array(
@@ -235,10 +242,10 @@ $internalConfig = array(
             ),
             'extensions' => array(
                 'LS_Twig_Extension',
-                'Twig_Extension_Sandbox',
-                'Twig_Extension_StringLoader',
-                'Twig_Extension_Debug',
-                // 'Twig_Extension_Escaper' // In the future, this extenstion could be use to build a powerfull XSS filter
+                '\Twig\Extension\SandboxExtension',
+                '\Twig\Extension\StringLoaderExtension',
+                '\Twig\Extension\DebugExtension',
+                // 'Twig_Extension_Escaper' // In the future, this extension could be used to build a powerful XSS filter
             ),
             'globals' => array(
                 'html' => 'CHtml'
@@ -278,11 +285,13 @@ $internalConfig = array(
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
                 'getLanguageRTL'          => 'LS_Twig_Extension::getLanguageRTL',
+                'getHtmlLangAttributeValue' => 'getHtmlLangAttributeValue',
 
                 'intval'                  => 'intval',
-                'empty'                   => 'empty',
+                'empty'                   => 'LS_Twig_Extension::isEmpty',
                 'count'                   => 'LS_Twig_Extension::safecount',
                 'reset'                   => 'reset',
+                'strip_tags'              => 'strip_tags',
                 'in_array'                => 'in_array',
                 'in_multiarray'           => 'LS_Twig_Extension::in_multiarray',
                 'array_search'            => 'array_search',
@@ -290,7 +299,7 @@ $internalConfig = array(
                 'getPost'                 => 'LS_Twig_Extension::getPost',
                 'getParam'                => 'LS_Twig_Extension::getParam',
                 'getQuery'                => 'LS_Twig_Extension::getQuery',
-                'isset'                   => 'isset',
+                'isset'                   => 'LS_Twig_Extension::isSet',
                 'assetPublish'            => 'LS_Twig_Extension::assetPublish',
                 'image'                   => 'LS_Twig_Extension::image',
                 'imageSrc'                => 'LS_Twig_Extension::imageSrc',
@@ -302,20 +311,21 @@ $internalConfig = array(
                 'createUrl'               => 'LS_Twig_Extension::createUrl',
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
                 'json_encode'             => 'CJSON::encode',
-                'getLanguageNameFromCode' => 'getLanguageNameFromCode',
                 'checkconditionFunction'  => 'checkconditionFunction',
                 'doRender'                => 'doRender',
-                'flattenText'             => 'flattenText',
                 'getEditor'               => 'getEditor',
                 'darkencss'               => 'LS_Twig_Extension::darkencss',
                 'lightencss'              => 'LS_Twig_Extension::lightencss',
                 'makeFlashMessage'        => 'makeFlashMessage',
                 'getAllTokenAnswers'      => 'LS_Twig_Extension::getAllTokenAnswers',
+                'getGoogleAnalyticsTrackingUrl' => 'LS_Twig_Extension::getGoogleAnalyticsTrackingUrl',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
                 't'     => 'gT',
                 'gT'    => 'gT',
+                'isAbsoluteUrl' => 'check_absolute_url',
+                'isImageUrl' => 'check_image_url',
             ),
 
             'sandboxConfig' => array(
@@ -343,23 +353,32 @@ $internalConfig = array(
                     'capitalize',
                     'lower',
                     'upper',
-                    'strip_tags',
+                    'striptags',
                     'number_format',
+                    'isAbsoluteUrl',
+                    'isImageUrl'
                 ),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox", "tag"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
                     'LSCaptcha'                          =>  array("renderOut"),
+                    'TemplateConfiguration'             =>  array("__toString"),
+                    'SimpleXMLElement'                  =>  array("__toString"),
                 ),
                 'properties' =>  array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
                     'TemplateConfiguration'             =>  array("sTemplateurl"),
-                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'nokeyboard', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice', 'aOptions'),
-                    'SurveyLanguageSetting' => array('surveyls_description', 'surveyls_welcometext', 'surveyls_endtext', 'surveyls_policy_notice', 'surveyls_policy_error', 'surveyls_policy_notice_label'),
-                    'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'relevance', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid'),
-                    'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance')
+                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice', 'aOptions', 'isListPublic', 'sSurveyUrl', 'localizedTitle'),
+                    'SurveyLanguageSetting' => array('surveyls_description', 'surveyls_welcometext', 'surveyls_endtext', 'surveyls_policy_notice', 'surveyls_policy_error', 'surveyls_policy_notice_label', 'surveyls_title'),
+                    'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'relevance', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid', 'questionType', 'questionl10ns', 'survey', 'text', 'scenario', 'answer', 'code', 'comment'),
+                    'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance'),
+                    'Template' => array('title', 'name'),
+                    'QuestionType' => array('code'),
+                    'Answer' => array('aid', 'answerl10ns', 'code', 'assessment_value'),
+                    'QuestionL10n' => array('question'),
+                    'AnswerL10n' => array('answer'),
                 ),
                 'functions' => array(
                     'getLanguageData',
@@ -394,6 +413,7 @@ $internalConfig = array(
                     'getTextDisplayWidget',
                     'getYesNoDefaultValueWidget',
                     'getLanguageNameFromCode',
+                    'getHtmlLangAttributeValue',
                     'getAllQuestionClasses',
                     'checkPermission',
                     'intval',
@@ -423,16 +443,15 @@ $internalConfig = array(
                     /* Not in twigRenderer[functions] */
                     'include',
                     'dump',
-                    'getLanguageNameFromCode',
                     'checkconditionFunction',
                     'doRender',
-                    'flattenText',
                     'range',
                     'getEditor',
                     'darkencss',
                     'lightencss',
                     'getAllTokenAnswers',
                     'makeFlashMessage',
+                    'getGoogleAnalyticsTrackingUrl',
                 ),
             ),
         ),

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Render the selector for question massive actions.
  */
@@ -29,14 +30,14 @@
         'type' => 'dropdown-header',
         'text' => gT("General"),
     );
-    if(!$oSurvey->isActive) {
+    if (!$oSurvey->isActive) {
         // Delete
         $aActions[] = array(
             // li element
             'type' => 'action',
             'action' => 'delete',
             'url' => App()->createUrl('questionAdministration/deleteMultiple/'),
-            'iconClasses' => 'fa fa-trash text-danger',
+            'iconClasses' => 'ri-delete-bin-fill text-danger',
             'text' => gT('Delete'),
             'grid-reload' => 'yes',
 
@@ -50,14 +51,14 @@
             'htmlModalBody' => gT('Deleting these questions will also delete their corresponding answer options and subquestions. Are you sure you want to continue??'),
         );
     }
-    if(!$oSurvey->isActive) {
+    if (!$oSurvey->isActive) {
         // Set question and group
         $aActions[] = array(
             // li element
             'type' => 'action',
             'action' => 'set-group-position',
             'url' => App()->createUrl('questionAdministration/setMultipleQuestionGroup/'),
-            'iconClasses' => 'fa fa-folder-open',
+            'iconClasses' => 'ri-folder-line',
             'text' => gT('Set question group and position'),
             'grid-reload' => 'yes',
 
@@ -78,7 +79,7 @@
         'type' => 'action',
         'action' => 'set-mandatory',
         'url' => App()->createUrl('questionAdministration/changeMultipleQuestionMandatoryState/'),
-        'iconClasses' => 'fa fa-asterisk text-danger',
+        'iconClasses' => 'ri-star-fill text-danger',
         'text' => gT('Set "Mandatory" state'),
         'grid-reload' => 'yes',
 
@@ -96,7 +97,7 @@
         'type' => 'action',
         'action' => 'set-css',
         'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
-        'iconClasses' => 'fa fa-css3',
+        'iconClasses' => 'ri-css3-fill',
         'text' => gT('Set CSS class'),
         'grid-reload' => 'yes',
 
@@ -114,7 +115,7 @@
         'type' => 'action',
         'action' => 'set-statistics',
         'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
-        'iconClasses' => 'fa fa-bar-chart',
+        'iconClasses' => 'ri-bar-chart-fill',
         'text' => gT('Set statistics options'),
         'grid-reload' => 'yes',
 
@@ -123,7 +124,7 @@
         'modalType' => 'cancel-apply',
         'keepopen' => 'no',
         'sModalTitle' => gT('Set statistics options'),
-        'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_statistics_options',  ['model' => $model], true),
+        'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_statistics_options', ['model' => $model], true),
     );
 
     // Separator
@@ -136,10 +137,10 @@
     $aActions[] = array(
         // li element
         'type' => 'dropdown-header',
-        'text' => gT("Advanced") . ' ' . '(' . gT("only apply to certain question types") . ')',
+        'text' => gT("Advanced"),
     );
 
-    if(!$oSurvey->isActive) {
+    if (!$oSurvey->isActive) {
         // Set other
         // DEPEND IF SURVEY IS ACTIVE !!!! (checked by questionEditor/changeMultipleQuestionOtherState )
         // TODO: don't show that action if survey is active
@@ -148,7 +149,7 @@
             'type' => 'action',
             'action' => 'set-other',
             'url' => App()->createUrl('questionAdministration/changeMultipleQuestionOtherState'),
-            'iconClasses' => 'fa fa-dot-circle-o',
+            'iconClasses' => 'ri-record-circle-line',
             'text' => gT('Set "Other" state'),
             'grid-reload' => 'yes',
 
@@ -161,7 +162,7 @@
             'sModalTitle' => gT('Set "Other" state'),
             'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_questions_other', ['model' => $model], true),
         );
-    }    
+    }
 
     // Set subquestions/answers sort options
     $aActions[] = array(
@@ -169,7 +170,7 @@
         'type' => 'action',
         'action' => 'set-subquestions-answers-sort',
         'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
-        'iconClasses' => 'fa fa-sort',
+        'iconClasses' => 'ri-shuffle-line',
         'text' => gT('Present subquestions/answer options in random order'),
         'grid-reload' => 'yes',
 
@@ -181,9 +182,9 @@
         'keepopen' => 'false',
         'sModalTitle' => gT('Present subquestions/answer options in random order'),
         'htmlModalBody' => $this->renderPartial(
-                '/admin/survey/Question/massive_actions/_set_subquestansw_order',
-                ['model' => $model],
-                true
+            '/admin/survey/Question/massive_actions/_set_subquestansw_order',
+            ['model' => $model],
+            true
         ),
     );
 
@@ -196,7 +197,7 @@
             'dropUpText'  => gT('Selected question(s)...'),
             'aActions'    => $aActions,
     ));
-?>
+    ?>
 
 
 <!--

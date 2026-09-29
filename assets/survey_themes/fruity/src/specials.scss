@@ -1,0 +1,2 @@
+.checkbox-item input[type="checkbox"]:focus-visible + label::before{border-color:$color_cornflower_blue_approx;box-shadow: 0 0 0 3px $color_cornflower_blue_60_approx}
+.radio-item input[type="radio"]:focus-visible + label::before{border-color:$color_cornflower_blue_approx;box-shadow: 0 0 0 3px $color_cornflower_blue_60_approx}

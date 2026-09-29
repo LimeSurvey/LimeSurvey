@@ -9,6 +9,8 @@ if (class_exists('ParagonIE_Sodium_Core_Util', false)) {
  */
 abstract class ParagonIE_Sodium_Core_Util
 {
+    const U32_MAX = 0xFFFFFFFF;
+
     /**
      * @param int $integer
      * @param int $size (16, 32, 64)
@@ -31,6 +33,28 @@ abstract class ParagonIE_Sodium_Core_Util
                 +
             (($negative >> $realSize) & 1)
         );
+    }
+
+    /**
+     * @param string $a
+     * @param string $b
+     * @return string
+     * @throws SodiumException
+     */
+    public static function andStrings($a, $b)
+    {
+        /* Type checks: */
+        if (!is_string($a)) {
+            throw new TypeError('Argument 1 must be a string');
+        }
+        if (!is_string($b)) {
+            throw new TypeError('Argument 2 must be a string');
+        }
+        $len = self::strlen($a);
+        if (self::strlen($b) !== $len) {
+            throw new SodiumException('Both strings must be of equal length to combine with bitwise AND');
+        }
+        return $a & $b;
     }
 
     /**
@@ -157,6 +181,8 @@ abstract class ParagonIE_Sodium_Core_Util
             $len = max($leftLen, $rightLen);
             $left = str_pad($left, $len, "\x00", STR_PAD_RIGHT);
             $right = str_pad($right, $len, "\x00", STR_PAD_RIGHT);
+        } elseif ($leftLen !== $rightLen) {
+            throw new SodiumException("Argument #1 and argument #2 must have the same length");
         }
 
         $gt = 0;
@@ -309,58 +335,46 @@ abstract class ParagonIE_Sodium_Core_Util
      * @internal You should not use this directly from another application
      *
      * @param string $hexString
+     * @param string $ignore
      * @param bool $strictPadding
      * @return string (raw binary)
-     * @throws RangeException
+     *
+     * @throws SodiumException
      * @throws TypeError
      */
-    public static function hex2bin($hexString, $strictPadding = false)
+    public static function hex2bin($hexString, $ignore = '', $strictPadding = false)
     {
         /* Type checks: */
         if (!is_string($hexString)) {
             throw new TypeError('Argument 1 must be a string, ' . gettype($hexString) . ' given.');
         }
-
-        /** @var int $hex_pos */
-        $hex_pos = 0;
-        /** @var string $bin */
-        $bin = '';
-        /** @var int $c_acc */
-        $c_acc = 0;
-        /** @var int $hex_len */
-        $hex_len = self::strlen($hexString);
-        /** @var int $state */
-        $state = 0;
-        if (($hex_len & 1) !== 0) {
-            if ($strictPadding) {
-                throw new RangeException(
-                    'Expected an even number of hexadecimal characters'
-                );
-            } else {
-                $hexString = '0' . $hexString;
-                ++$hex_len;
-            }
+        if (!is_string($ignore)) {
+            throw new TypeError('Argument 2 must be a string, ' . gettype($hexString) . ' given.');
         }
+
+        $hex_pos = 0;
+        $bin = '';
+        $c_acc = 0;
+        $hex_len = self::strlen($hexString);
+        $state = 0;
 
         $chunk = unpack('C*', $hexString);
         while ($hex_pos < $hex_len) {
             ++$hex_pos;
             /** @var int $c */
             $c = $chunk[$hex_pos];
-            /** @var int $c_num */
             $c_num = $c ^ 48;
-            /** @var int $c_num0 */
             $c_num0 = ($c_num - 10) >> 8;
-            /** @var int $c_alpha */
             $c_alpha = ($c & ~32) - 55;
-            /** @var int $c_alpha0 */
             $c_alpha0 = (($c_alpha - 10) ^ ($c_alpha - 16)) >> 8;
             if (($c_num0 | $c_alpha0) === 0) {
+                if ($ignore && $state === 0 && strpos($ignore, self::intToChr($c)) !== false) {
+                    continue;
+                }
                 throw new RangeException(
                     'hex2bin() only expects hexadecimal characters'
                 );
             }
-            /** @var int $c_val */
             $c_val = ($c_num0 & $c_num) | ($c_alpha & $c_alpha0);
             if ($state === 0) {
                 $c_acc = $c_val * 16;
@@ -368,6 +382,11 @@ abstract class ParagonIE_Sodium_Core_Util
                 $bin .= pack('C', $c_acc | $c_val);
             }
             $state ^= 1;
+        }
+        if ($strictPadding && $state !== 0) {
+            throw new SodiumException(
+                'Expected an even number of hexadecimal characters'
+            );
         }
         return $bin;
     }
@@ -382,7 +401,6 @@ abstract class ParagonIE_Sodium_Core_Util
      */
     public static function intArrayToString(array $ints)
     {
-        /** @var array<int, int> $args */
         $args = $ints;
         foreach ($args as $i => $v) {
             $args[$i] = (int) ($v & 0xff);
@@ -514,10 +532,8 @@ abstract class ParagonIE_Sodium_Core_Util
      */
     public static function memcmp($left, $right)
     {
-        if (self::hashEquals($left, $right)) {
-            return 0;
-        }
-        return -1;
+        $e = (int) !self::hashEquals($left, $right);
+        return 0 - $e;
     }
 
     /**

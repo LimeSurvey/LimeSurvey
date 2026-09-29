@@ -42,9 +42,9 @@ class JsPhpCompareTest extends TestBaseClassWeb
         $HiddenByRelevanceQuestion = $questions['HiddenByRelevance'];
         $singleChoiceQuestion1 = $questions['Q00'];
         $singleChoiceQuestion2 = $questions['Q01'];
-        $sgqaHiddenByRelevance = $HiddenByRelevanceQuestion->sid."X".$HiddenByRelevanceQuestion->gid."X".$HiddenByRelevanceQuestion->qid;
-        $sgqaQuestion1 = $singleChoiceQuestion1->sid."X".$singleChoiceQuestion1->gid."X".$singleChoiceQuestion1->qid;
-        $sgqaQuestion2 = $singleChoiceQuestion2->sid."X".$singleChoiceQuestion2->gid."X".$singleChoiceQuestion2->qid;
+        $sgqaHiddenByRelevance = "Q".$HiddenByRelevanceQuestion->qid;
+        $sgqaQuestion1 = "Q".$singleChoiceQuestion1->qid;
+        $sgqaQuestion2 = "Q".$singleChoiceQuestion2->qid;
         try {
 
             self::$webDriver->get($url);
@@ -70,6 +70,10 @@ class JsPhpCompareTest extends TestBaseClassWeb
             $this->assertEquals('Q00+"" lt Q01+"" :', $checkJsText,"Current text of TestJS2 is \"".$checkJsText."\"");
             // Fill some value to relevant question
             self::$webDriver->findElement(WebDriverBy::id('answer'.$sgqaHiddenByRelevance))->sendKeys("answered");
+
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
+
             // Click next (to do the test on PHP)
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();
@@ -88,8 +92,7 @@ class JsPhpCompareTest extends TestBaseClassWeb
             file_put_contents($filename, $screenshot);
             $this->assertFalse(
                 true,
-                'Url: ' . $url . PHP_EOL .
-                'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
+                self::$testHelper->javaTrace($ex)
             );
         }
     }

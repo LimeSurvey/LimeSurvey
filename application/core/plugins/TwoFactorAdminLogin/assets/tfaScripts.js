@@ -3,7 +3,7 @@ var TFALOG = new ConsoleShim('TFA', !window.debugState.backend);
 
 // Spinner to indicate loading on ajax requests
 var loaderSpinner = '<div class="ls-flex ls-flex-column align-items-center align-content-center" style="height: 200px;">';
-loaderSpinner  +='<i class="fa fa-gear fa-spin" style="font-size: 128px;color:rgba(50, 134, 55, 0.5);"></i>';
+loaderSpinner  +='<i class="ri-settings-5-fill remix-spin" style="font-size: 128px;color:rgba(50, 134, 55, 0.5);"></i>';
 loaderSpinner  +='</div>';
 var loaderHtml = '<div class="modal-body">';
 loaderHtml += loaderSpinner;
@@ -19,20 +19,19 @@ var confirmButtonAction = function(additionalCB) {
     return function(e){
         e.preventDefault();
         var $self = $(this);
-        $.bsconfirm($self.data('confirmtext'), $self.data('buttons'), function(){
+        $.fn.bsconfirm($self.data('confirmtext'), $self.data('buttons'), function(){
             $.ajax({
                 url: $self.data('href'),
                 data: $.merge({uid: $self.data('uid')}, LS.data.csrfTokenData),
                 method: 'post',
                 success: function(resolve){
-                    var classes = resolve.success ? 'well-lg bg-primary text-center' : 'well-lg bg-danger text-center';
-                    LS.notifyFader(resolve.message, classes);
+                    LS.ajaxAlerts(resolve.message, 'success', {showCloseButton: true});
                     $('#identity__bsconfirmModal').modal('hide');
                     additionalCB();
                 },
                 error: function(error) {
                     console.error(error);
-                    LS.notifyFader($self.data('errortext'), 'well-lg bg-primary text-center');
+                    LS.ajaxAlerts($self.data('errortext'), 'danger', {showCloseButton: true});
                     $('#identity__bsconfirmModal').modal('hide');
                     additionalCB();
                 }
@@ -80,7 +79,7 @@ var TFAUserSettingsClass = function(){
 
     var startSubmit = function(){
         $(formId).before(
-            '<div class="col-sm-12 text-center"><i class="fa fa-spinner fa-pulse fa-4x TFA--usereditspinner"></i></div>'
+            '<div class="TFA--usereditspinner d-flex h-100 w-100 align-items-center" style="position: absolute; background: rgba(0,0,0,0.1); z-index: 999;"><div class="col-12 text-center"><i class="ri-loader-2-fill remix-pulse remix-4x"></i></div></div>'
         ).find('button').prop('disabled',true);
     };
     var stopSubmit = function(){
@@ -96,7 +95,11 @@ var TFAUserSettingsClass = function(){
     var wireCreateForm = function(){
         var onSubmit = function(e, self) {
             e.preventDefault();
-            if($('#confirmationKey').val() == '') {
+            const authType = $('#TFAUserKey_authType').val();
+            if (
+                (authType == 'totp' && $('#confirmationKey').val() == '')
+                || (authType == 'yubi' && $('#yubikeyOtp').val() == '')
+            ) {
                 return;
             }
             startSubmit();
@@ -108,26 +111,55 @@ var TFAUserSettingsClass = function(){
                 success: function(data){
                     stopSubmit();
                     if(data.success) {
+                        $(formId).find('.errorContainer').hide();
+                        $('#TFA--actionmodal').modal('hide');
                         $(formId).parent().html(data.message);
                         modalCloseTimeout = setTimeout(triggerModalClose, 2000);
                         if(data.data.reload != undefined) {
                             setTimeout(function(){window.location.reload();}, 1500);
                         }
+                        LS.ajaxAlerts(data.message, 'success', {showCloseButton: true});
                         return;
                     }
-                    $(formId).find('.errorContainer').html(data.message);
+                    $(formId).find('.errorContainer').html(data.message).show();
                 }
             });
         };
 
         $(formId).on('submit',function(e) {onSubmit(e,this);});
-        //$('#TFA--submitform').on('click',function(e) {onSubmit(e,this);});
+        $('#TFA--submitform').on('click',function(e) {
+            e.preventDefault();
+            onSubmit(e,this);
+        });
+
+        // Handle ENTER keypress in confirmation key field
+        $('#confirmationKey,#yubikeyOtp').on('keydown', function(e){
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                onSubmit(e, this);
+            }
+        });
 
         $('#TFA--cancelform').on('click',function(e) {
             e.preventDefault();
             triggerModalClose();
         });
-        
+
+        $('#TFAUserKey_authType').on('change', function(){
+            if($(this).val() == 'totp') {
+                $('#yubiSection').hide();
+                $('#totpSection').show();
+                $('#confirmationKey').prop('required', true);
+                $('#yubikeyOtp').prop('required', false);
+            } else {
+                $('#totpSection').hide();
+                $('#yubiSection').show();
+                $('#confirmationKey').prop('required', false);
+                $('#yubikeyOtp').prop('required', true);
+            }
+        });
+
+        $('#TFAUserKey_authType').trigger('change');
     };
 
     var bsButtonAction = confirmButtonAction(function(){

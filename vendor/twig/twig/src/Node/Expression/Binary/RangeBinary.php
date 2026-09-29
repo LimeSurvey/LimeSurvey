@@ -12,10 +12,12 @@
 namespace Twig\Node\Expression\Binary;
 
 use Twig\Compiler;
+use Twig\Node\CoercesChildrenToStringInterface;
+use Twig\Node\Expression\ReturnArrayInterface;
 
-class RangeBinary extends AbstractBinary
+class RangeBinary extends AbstractBinary implements ReturnArrayInterface, CoercesChildrenToStringInterface
 {
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler
             ->raw('range(')
@@ -26,10 +28,13 @@ class RangeBinary extends AbstractBinary
         ;
     }
 
-    public function operator(Compiler $compiler)
+    public function operator(Compiler $compiler): Compiler
     {
         return $compiler->raw('..');
     }
-}
 
-class_alias('Twig\Node\Expression\Binary\RangeBinary', 'Twig_Node_Expression_Binary_Range');
+    public function getStringCoercedChildNames(): array
+    {
+        return ['left', 'right'];
+    }
+}

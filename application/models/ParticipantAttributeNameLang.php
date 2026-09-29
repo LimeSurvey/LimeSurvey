@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -52,7 +52,7 @@ class ParticipantAttributeNameLang extends LSActiveRecord
     {
         // NOTE: you should only define rules for those attributes that will receive user inputs.
         return array(
-            array('attribute_name', 'filter', 'filter' => 'strip_tags'),
+            array('attribute_name', 'LSYii_FilterValidator', 'filter' => 'strip_tags', 'skipOnEmpty' => true),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('attribute_id, attribute_name, lang', 'safe', 'on' => 'search'),

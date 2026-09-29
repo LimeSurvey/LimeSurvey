@@ -53,7 +53,7 @@ class DocWriter extends Writer
      * @param array $values
      * @param FormattingOptions $oOptions
      */
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
         if ($oOptions->answerFormat == 'short') {
             //No headers at all, only output values.

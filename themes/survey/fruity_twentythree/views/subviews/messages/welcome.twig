@@ -1,0 +1,35 @@
+{#
+LimeSurvey
+Copyright (C) 2007-2026 The LimeSurvey Project Team
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
+
+
+(¯`·._.·(¯`·._.·  Welcome page ·._.·´¯)·._.·´¯)
+
+This view is used to render the welcome message in All In One mode.
+TODO: use it for other modes too
+
+In this file, you have access to the array aSurveyInfo that contains the datas of the current survey
+To see what's inside aSurveyInfo, turn debug mode on and copy the following line to the end of this file:
+{{ dump(aSurveyInfo) }}
+#}
+
+{% set hasImage = aSurveyInfo.welcomeimage['image_path'] is defined and aSurveyInfo.welcomeimage['image_path'] %}
+
+<!-- Welcome Message -->
+<div id="{{ aSurveyInfo.id.welcomecontainer }}" class="{{ aSurveyInfo.class.welcomecontainer }}" {{ aSurveyInfo.attr.welcomecontainer }}>
+    {% if hasImage %}
+        {{ include('./subviews/messages/welcome_subviews/welcome_image_container.twig') }}
+    {% else %}
+        {{ include('./subviews/messages/welcome_subviews/welcome_content.twig') }}
+        {# Privacy policy checkbox/message is part of the welcome page, so it's also wrapped by the welcome image when present #}
+        {{ include('./subviews/privacy/privacy.twig') }}
+        {{ include('./subviews/messages/welcome_subviews/welcome_questioncount.twig') }}
+    {% endif %}
+</div>

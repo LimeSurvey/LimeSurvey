@@ -12,6 +12,9 @@
  */
 ?>
 <br /><table class='table table-hover'>
+    <caption class="visually-hidden">
+        <?php eT("Global settings overview"); ?>
+    </caption>
     <tr>
         <th ><?php eT("Users"); ?>:</th><td><?php echo $usercount; ?></td>
     </tr>
@@ -25,28 +28,26 @@
         <th ><?php eT("Deactivated result tables"); ?>:</th><td><?php echo $deactivatedsurveys; ?></td>
     </tr>
     <tr>
-        <th ><?php eT("Active survey participants tables"); ?>:</th><td><?php echo $activetokens; ?></td>
+        <th ><?php eT("Active survey participant lists"); ?>:</th><td><?php echo $activetokens; ?></td>
     </tr>
     <tr>
-        <th ><?php eT("Deactivated survey participants tables"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
+        <th ><?php eT("Deactivated survey participant lists"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
     </tr>
     <?php
-        if (Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)
-        {
-            $fUsed=calculateTotalFileUploadUsage();
+    if (Yii::app()->getConfig('iFileUploadTotalSpaceMB') > 0) {
+        $fUsed = calculateTotalFileUploadUsage();
         ?>
         <tr>
-            <th ><?php eT("Used/free space for file uploads"); ?>:</th><td><?php echo sprintf('%01.2F',$fUsed); ?> MB / <?php echo sprintf('%01.2F',Yii::app()->getConfig('iFileUploadTotalSpaceMB')-$fUsed); ?> MB</td>
+            <th ><?php eT("Used/free space for file uploads"); ?>:</th><td><?php echo sprintf('%01.2F', $fUsed); ?> MB / <?php echo sprintf('%01.2F', Yii::app()->getConfig('iFileUploadTotalSpaceMB') - $fUsed); ?> MB</td>
         </tr>
         <?php
-        }
+    }
     ?>
 </table>
 <?php
-    if (Permission::model()->hasGlobalPermission('superadmin','read'))
-    {
+if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
     ?>
-        <p><a href="<?php echo $this->createUrl('admin/globalsettings',array('sa'=>'showphpinfo')) ?>" target="blank" class="button"><?php eT("Show PHPInfo"); ?></a></p>
+        <p><a href="<?php echo $this->createUrl('admin/globalsettings', array('sa' => 'showphpinfo')) ?>" target="blank" class="button"><?php eT("Show PHPInfo"); ?></a></p>
     <?php
-    }
-    ?>
+}
+?>

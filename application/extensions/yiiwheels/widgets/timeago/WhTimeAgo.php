@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhTimeAgo class
  *
@@ -8,7 +9,8 @@
  * @package YiiWheels.widgets.timeago
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('bootstrap.helpers.TbArray');
+
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhTimeAgo extends CWidget
 {
@@ -56,7 +58,6 @@ class WhTimeAgo extends CWidget
         if (!$this->selector) {
             $this->selector = '#' . TbArray::getValue('id', $this->htmlOptions);
         }
-
     }
 
     /**
@@ -92,5 +93,4 @@ class WhTimeAgo extends CWidget
         /* initialize plugin */
         $this->getApi()->registerPlugin('timeago', $this->selector, $this->pluginOptions);
     }
-
 }

@@ -43,6 +43,8 @@ class Authdb extends AuthPluginBase
 
         $oEvent = $this->getEvent();
         $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
+        $expires = null;
+        $status = true;
 
         if (empty($preCollectedUserArray)) {
             // Do nothing if the user to be added is not DB type
@@ -53,13 +55,25 @@ class Authdb extends AuthPluginBase
             $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
             $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
             $presetPassword = null;
+            if (Yii::app()->request->getPost('status')) {
+                $status = flattenText(Yii::app()->request->getPost('status'), false, true);
+            }
+            if (Yii::app()->request->getPost('expires')) {
+                $expires = flattenText(Yii::app()->request->getPost('expires'), false, true);
+            }
         } else {
             $new_user = flattenText($preCollectedUserArray['users_name']);
             $new_email = flattenText($preCollectedUserArray['email']);
             $new_full_name = flattenText($preCollectedUserArray['full_name']);
             $presetPassword = flattenText($preCollectedUserArray['password']);
+            if (!empty($preCollectedUserArray['status'])) {
+                $status = $preCollectedUserArray['status'];
+            }
+            if (!empty($preCollectedUserArray['expires'])) {
+                $expires = $preCollectedUserArray['expires'];
+            }
         }
-        
+
         if (!LimeMailer::validateAddress($new_email)) {
             $oEvent->set('errorCode', self::ERROR_INVALID_EMAIL);
             $oEvent->set('errorMessageTitle', gT("Failed to add user"));
@@ -68,9 +82,15 @@ class Authdb extends AuthPluginBase
         }
 
         $new_pass = $presetPassword ?? createPassword();
-        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
+        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email, $expires, $status);
+        if ($iNewUID instanceof User) {
+            $oEvent->set('errorCode', self::ERROR_NOT_ADDED);
+            $oEvent->set('errorMessageTitle', gT("Failed to add user"));
+            $oEvent->set('errorMessageBody', CHtml::errorSummary($iNewUID));
+            return;
+        }
         if (!$iNewUID) {
-            $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
+            $oEvent->set('errorCode', self::ERROR_NOT_ADDED);
             $oEvent->set('errorMessageTitle', '');
             $oEvent->set('errorMessageBody', gT("Failed to add user"));
             return;
@@ -125,8 +145,56 @@ class Authdb extends AuthPluginBase
         }
 
         $this->getEvent()->getContent($this)
-                ->addContent(CHtml::tag('span', array(), "<label for='user'>" . gT("Username") . "</label>" . CHtml::textField('user', $sUserName, array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))))
-                ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', $sPassword, array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))));
+                ->addContent(CHtml::tag('span', array(), "<label for='user'>" . gT("Username") . "</label>" . CHtml::textField('user', $sUserName, array('size' => 240, 'maxlength' => 240, 'class' => "form-control ls-important-field"))))
+                ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', $sPassword, array('size' => 240, 'maxlength' => 240, 'class' => "form-control ls-important-field"))));
+    }
+
+    /**
+     * Split the raw value stored in users.one_time_pw into its password_hash() hash part
+     * and an optional actor identifier, using a colon as separator: "<hash>:<actorId>".
+     * The actor identifier is set by external tooling (e.g. support access) to identify
+     * who the one-time password was issued to, for attribution in the audit log.
+     * For backward compatibility, a value without a colon is treated as a bare hash
+     * with no actor identifier. password_hash() output never contains a colon, so the
+     * split on the first colon is always unambiguous.
+     *
+     * @param string $rawValue The raw value of users.one_time_pw
+     * @return array{0: string, 1: string|null} Two-element array: [hash, actorId]
+     */
+    private function splitOneTimePassword($rawValue)
+    {
+        if ($rawValue === '') {
+            return ['', null];
+        }
+        if (strpos($rawValue, ':') === false) {
+            return [$rawValue, null];
+        }
+        [$hash, $actorId] = explode(':', $rawValue, 2);
+        return [$hash, $actorId !== '' ? $actorId : null];
+    }
+
+    /**
+     * Verify a one time password against its stored hash.
+     * Supports the current password_hash() format (recognized by its leading "$", e.g.
+     * "$2y$..." or "$argon2id$...") and, for backward compatibility only, a legacy plain
+     * SHA-256 hex digest.
+     *
+     * @deprecated The SHA-256 branch is obsolete and only kept so one_time_pw values written
+     * by external tooling before the switch to password_hash() keep working. Do not use it
+     * for anything new; all one-time passwords should be hashed with password_hash() going
+     * forward, and this branch should eventually be removed.
+     *
+     * @param string $onepass The one time password submitted by the user
+     * @param string $storedHash The hash part previously stored in users.one_time_pw
+     * @return bool Whether $onepass matches $storedHash
+     */
+    private function verifyOneTimePassword($onepass, $storedHash)
+    {
+        if ($storedHash[0] === '$') {
+            return password_verify($onepass, $storedHash);
+        }
+        // Obsolete legacy format: plain SHA-256 hex digest, no salt, no adaptive cost.
+        return hash_equals(hash('sha256', $onepass), $storedHash);
     }
 
     public function newUserSession()
@@ -170,11 +238,15 @@ class Authdb extends AuthPluginBase
             return;
         }
 
-        if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && hash('sha256', $onepass) == $user->one_time_pw) {
-            $user->one_time_pw = '';
-            $user->save();
-            $this->setAuthSuccess($user);
-            return;
+        if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords')) {
+            [$storedHash, $actorId] = $this->splitOneTimePassword((string) $user->one_time_pw);
+            if ($storedHash !== '' && $this->verifyOneTimePassword($onepass, $storedHash)) {
+                $user->one_time_pw = '';
+                $user->save();
+                $identity->oneTimePasswordActorId = $actorId;
+                $this->setAuthSuccess($user);
+                return;
+            }
         }
 
         if (!$user->checkPassword($password)) {
@@ -244,7 +316,7 @@ class Authdb extends AuthPluginBase
         $exports = $event->get('exportplugins');
 
         // Yes we overwrite existing classes if available
-        $className = get_class();
+        $className = get_class($this);
         $exports['csv'] = $className;
         $exports['xls'] = $className;
         $exports['pdf'] = $className;
@@ -286,5 +358,14 @@ class Authdb extends AuthPluginBase
         }
 
         $event->set('writer', $writer);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getAuthMethodName()
+    {
+        // Using string literal here so it can be picked by translation bot
+        return gT('LimeSurvey internal database');
     }
 }

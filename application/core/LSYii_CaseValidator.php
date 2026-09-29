@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -18,7 +18,6 @@ if (!defined('BASEPATH')) {
 
 class LSYii_CaseValidator extends CValidator
 {
-
     public $type = 'lower';
 
 
@@ -26,7 +25,7 @@ class LSYii_CaseValidator extends CValidator
     {
 
         if ($this->type == 'upper') {
-            if (strtoupper($object->$attribute) == $object->$attribute) {
+            if (strtoupper((string) $object->$attribute) == $object->$attribute) {
                 return;
             } else {
                 $this->addError($object, $attribute, gT('Text needs to be uppercase.'));
@@ -34,7 +33,7 @@ class LSYii_CaseValidator extends CValidator
             }
         } else {
             // default to lowercase
-            if (strtolower($object->$attribute) == $object->$attribute) {
+            if (strtolower((string) $object->$attribute) == $object->$attribute) {
                 return;
             } else {
                 $this->addError($object, $attribute, gT('Text needs to be lowercase.'));

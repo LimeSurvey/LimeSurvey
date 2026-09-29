@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_447 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
 
@@ -19,7 +20,7 @@ class Update_447 extends DatabaseUpdateBase
                 $defaultCreationEmailContent = \LsDefaultDataSets::getDefaultUserAdministrationSettings();
                 $replaceValue = $defaultCreationEmailContent['admincreationemailtemplate'];
             } else { // if not empty replace PASSWORD with *** and write it back to DB
-                $replaceValue = str_replace('PASSWORD', '***', $adminCreationEmailTemplateValue[0]['stg_value']);
+                $replaceValue = str_replace('PASSWORD', '***', (string) $adminCreationEmailTemplateValue[0]['stg_value']);
             }
             $this->db->createCommand()->update(
                 '{{settings_global}}',

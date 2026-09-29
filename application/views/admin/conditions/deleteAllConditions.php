@@ -7,7 +7,7 @@
 <p>
     <?php eT("Continue?"); ?>
 </p>
-<?php echo CHtml::beginForm(array("admin/conditions/sa/index/",'subaction'=>'resetsurveylogic','surveyid'=>$iSurveyID)); ?>
+<?php echo CHtml::beginForm(array("admin/conditions/sa/index/",'subaction' => 'resetsurveylogic','surveyid' => $iSurveyID)); ?>
 <button
     class='btn btn-danger'
     type = "submit"
@@ -17,7 +17,7 @@
     <?php eT('Yes'); ?>
 </button>
 <a
-    class='btn btn-default'
+    class='btn btn-cancel'
     href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$iSurveyID"); ?>"
 >
     <?php eT('Cancel'); ?>

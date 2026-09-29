@@ -13,13 +13,19 @@
 namespace Twig\Node\Expression\Unary;
 
 use Twig\Compiler;
+use Twig\Node\Expression\ReturnBoolInterface;
+use Twig\Node\Expression\Test\TrueTest;
+use Twig\Node\Node;
 
-class NotUnary extends AbstractUnary
+class NotUnary extends AbstractUnary implements ReturnBoolInterface
 {
-    public function operator(Compiler $compiler)
+    public function __construct(Node $node, int $lineno)
     {
-        $compiler->raw('!');
+        parent::__construct(TrueTest::wrap($node), $lineno);
+    }
+
+    public function operator(Compiler $compiler): Compiler
+    {
+        return $compiler->raw('!');
     }
 }
-
-class_alias('Twig\Node\Expression\Unary\NotUnary', 'Twig_Node_Expression_Unary_Not');

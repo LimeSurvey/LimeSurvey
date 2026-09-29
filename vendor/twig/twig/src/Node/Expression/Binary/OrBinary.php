@@ -13,13 +13,19 @@
 namespace Twig\Node\Expression\Binary;
 
 use Twig\Compiler;
+use Twig\Node\Expression\ReturnBoolInterface;
+use Twig\Node\Expression\Test\TrueTest;
+use Twig\Node\Node;
 
-class OrBinary extends AbstractBinary
+class OrBinary extends AbstractBinary implements ReturnBoolInterface
 {
-    public function operator(Compiler $compiler)
+    public function __construct(Node $left, Node $right, int $lineno)
+    {
+        parent::__construct(TrueTest::wrap($left), TrueTest::wrap($right), $lineno);
+    }
+
+    public function operator(Compiler $compiler): Compiler
     {
         return $compiler->raw('||');
     }
 }
-
-class_alias('Twig\Node\Expression\Binary\OrBinary', 'Twig_Node_Expression_Binary_Or');

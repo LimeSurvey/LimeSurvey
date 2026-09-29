@@ -81,9 +81,9 @@ function runActions(targetCreateModal, targetGrid, urls)
             });
         },
         runRestoreModal :  function (urlMenu, urlMenuEntry) {
-            $('#restoremodalsurveymenu').find('.modal-content').html('<div ' + 'class="ls-flex align-items-center align-content-center" style="height:200px"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>')
+            $('#restoremodalsurveymenu').find('.modal-content').html('<div ' + 'class="ls-flex align-items-center align-content-center" style="height:200px"><i class="fa fa-spinner fa-pulse fa-3x fa-fw ri-loader-fill remix-pulse ri-3x"></i></div>')
             //url is depending on which tab is active
-            let active_tab = $('#menueslist li.active a').attr('href');
+            let active_tab = $('#menueslist a.active').attr('href');
             var urlRestore = '';
             if (active_tab === '#surveymenues') {
                 urlRestore = urlMenu;
@@ -133,8 +133,9 @@ var getBindActionForSurveymenuEntries = function (targetCreateModal, targetGrid,
         $(this).find('.modal-content').html('');
     });
 
-    $('#surveymenu-entries-grid').on('click', 'tr', function () {
-        $(this).find('.action_selectthisentry').prop('checked', !$(this).find('.action_selectthisentry').prop('checked'));
+    $('#surveymenu-entries-grid').off('click.rowSelect').on('click.rowSelect', 'tr', function () {
+        var $cb = $(this).find('.action_selectthisentry');
+        $cb.prop('checked', !$cb.prop('checked')).trigger('change');
     });
     $('.action_selectthisentry').on('click', function (e) {
         e.stopPropagation();
@@ -150,8 +151,7 @@ var getBindActionForSurveymenuEntries = function (targetCreateModal, targetGrid,
         e.stopPropagation();
         e.preventDefault();
         actions.runEditModal({
-            menuentryid: $(this).closest('tr').data('surveymenu-entry-id'),
-            ajax: true
+            menuentryid: $(this).data('menuentryid'),
         });
     });
 
@@ -161,7 +161,7 @@ var getBindActionForSurveymenuEntries = function (targetCreateModal, targetGrid,
         var idDeleteModal = $('#deletemodal');
         var idDeleteModalBtn = $('#deletemodalentry-confirm');
         actions.runDeleteModal(idDeleteModal,{
-            menuEntryid: $(this).closest('tr').data('surveymenu-entry-id'),
+            menuEntryid: $(this).data('menuentryid'),
             ajax: true
         }, idDeleteModalBtn);
     });
@@ -196,8 +196,9 @@ var getBindActionForSurveymenus = function (targetCreateModal, targetGrid, urls)
         $(this).find('.modal-content').html('');
     });
 
-    $('#surveymenu-grid').on('click', 'tr', function () {
-        $(this).find('.action_selectthismenu').prop('checked', !$(this).find('.action_selectthismenu').prop('checked'));
+    $('#surveymenu-grid').off('click.rowSelect').on('click.rowSelect', 'tr', function () {
+        var $cb = $(this).find('.action_selectthismenu');
+        $cb.prop('checked', !$cb.prop('checked')).trigger('change');
     });
 
     $('.action_selectthismenu').on('click', function (e) {
@@ -208,8 +209,7 @@ var getBindActionForSurveymenus = function (targetCreateModal, targetGrid, urls)
         e.stopPropagation();
         e.preventDefault();
         actions.runEditModal({
-            menuid: $(this).closest('tr').data('surveymenu-id'),
-            ajax: true
+            menuid: $(this).data('menuid'),
         });
     });
 
@@ -219,7 +219,7 @@ var getBindActionForSurveymenus = function (targetCreateModal, targetGrid, urls)
         var idDeleteModal = $('#deletesurveymenumodal');
         var idDeleteModalBtn = $('#deletemodal-confirm');
         actions.runDeleteModal(idDeleteModal,{
-            menuid: $(this).closest('tr').data('surveymenu-id'),
+            menuid: $(this).data('menuid'),
             ajax: true
         },idDeleteModalBtn);
     });

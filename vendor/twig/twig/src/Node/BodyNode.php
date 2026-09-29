@@ -11,13 +11,14 @@
 
 namespace Twig\Node;
 
+use Twig\Attribute\YieldReady;
+
 /**
  * Represents a body node.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
+#[YieldReady]
 class BodyNode extends Node
 {
 }
-
-class_alias('Twig\Node\BodyNode', 'Twig_Node_Body');

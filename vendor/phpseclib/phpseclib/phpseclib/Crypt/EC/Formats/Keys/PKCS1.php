@@ -132,8 +132,8 @@ abstract class PKCS1 extends Progenitor
         $components = [];
         $components['curve'] = self::loadCurveByParam($key['parameters']);
         $components['dA'] = new BigInteger($key['privateKey'], 256);
-        $components['QA'] = isset($ecPrivate['publicKey']) ?
-            self::extractPoint($ecPrivate['publicKey'], $components['curve']) :
+        $components['QA'] = isset($key['publicKey']) ?
+            self::extractPoint($key['publicKey'], $components['curve']) :
             $components['curve']->multiplyPoint($components['curve']->getBasePoint(), $components['dA']);
 
         return $components;
@@ -162,8 +162,8 @@ abstract class PKCS1 extends Progenitor
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $privateKey
-     * @param \phpseclib3\Crypt\EC\BaseCurves\Base $curve
+     * @param BigInteger $privateKey
+     * @param BaseCurve $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param string $secret optional
      * @param string $password optional

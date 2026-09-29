@@ -35,7 +35,7 @@ class ExcelWriter extends Writer
         $this->workbook = new XLSXWriter();
         $this->workbook->setTempDir(Yii::app()->getConfig('tempdir'));
         $worksheetName = $survey->languageSettings['surveyls_title'];
-        $worksheetName = mb_substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'), array(' '), $worksheetName), 0, 31, 'utf-8'); // Remove invalid characters
+        $worksheetName = mb_substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'), array(' '), (string) $worksheetName), 0, 31, 'utf-8'); // Remove invalid characters
         if ($worksheetName == '') {
             $worksheetName = 'survey_' . $survey->id;
         }
@@ -43,7 +43,7 @@ class ExcelWriter extends Writer
         $this->forceDownload = !($oOptions->output == 'file');
     }
 
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
         if (!$this->hasOutputHeader) {
             $this->workbook->writeSheetRow($this->currentSheet, $headers);

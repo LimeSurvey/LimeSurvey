@@ -13,13 +13,12 @@
 namespace Twig\Node\Expression\Binary;
 
 use Twig\Compiler;
+use Twig\Node\Expression\ReturnNumberInterface;
 
-class AddBinary extends AbstractBinary
+class AddBinary extends AbstractBinary implements ReturnNumberInterface
 {
-    public function operator(Compiler $compiler)
+    public function operator(Compiler $compiler): Compiler
     {
         return $compiler->raw('+');
     }
 }
-
-class_alias('Twig\Node\Expression\Binary\AddBinary', 'Twig_Node_Expression_Binary_Add');

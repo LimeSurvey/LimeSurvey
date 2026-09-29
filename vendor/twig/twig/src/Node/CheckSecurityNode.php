@@ -11,60 +11,102 @@
 
 namespace Twig\Node;
 
+use Twig\Attribute\YieldReady;
 use Twig\Compiler;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
+#[YieldReady]
 class CheckSecurityNode extends Node
 {
-    protected $usedFilters;
-    protected $usedTags;
-    protected $usedFunctions;
+    private $usedFilters;
+    private $usedTags;
+    private $usedFunctions;
+    private $usedTests;
 
-    public function __construct(array $usedFilters, array $usedTags, array $usedFunctions)
+    /**
+     * @param array<string, int> $usedFilters
+     * @param array<string, int> $usedTags
+     * @param array<string, int> $usedFunctions
+     * @param array<string, int> $usedTests
+     */
+    public function __construct(array $usedFilters, array $usedTags, array $usedFunctions, array $usedTests = [])
     {
+        if (\func_num_args() < 4) {
+            trigger_deprecation('twig/twig', '3.28', 'Not passing the "$usedTests" argument to "%s::__construct()" is deprecated; it will be required in 4.0.', static::class);
+        }
+
         $this->usedFilters = $usedFilters;
         $this->usedTags = $usedTags;
         $this->usedFunctions = $usedFunctions;
+        $this->usedTests = $usedTests;
 
         parent::__construct();
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
-        $tags = $filters = $functions = [];
-        foreach (['tags', 'filters', 'functions'] as $type) {
-            foreach ($this->{'used'.ucfirst($type)} as $name => $node) {
-                if ($node instanceof Node) {
-                    ${$type}[$name] = $node->getTemplateLine();
-                } else {
-                    ${$type}[$node] = null;
-                }
-            }
+        if (isset($this->usedTags['use'])) {
+            $compiler
+                ->write("\n")
+                ->write("protected function checkTraitsAllowed(): void\n")
+                ->write("{\n")
+                ->indent()
+                ->write("if (!\$this->sandbox->isSandboxed(\$this->source)) {\n")
+                ->indent()
+                ->write("return;\n")
+                ->outdent()
+                ->write("}\n\n")
+                ->write("try {\n")
+                ->indent()
+                ->write("\$this->sandbox->checkSecurity(['use'], [], [], [], \$this->source);\n")
+                ->outdent()
+                ->write("} catch (SecurityNotAllowedTagError \$e) {\n")
+                ->indent()
+                ->write('$e->setTemplateLine(')->repr($this->usedTags['use'])->raw(");\n\n")
+                ->write("throw \$e;\n")
+                ->outdent()
+                ->write("}\n")
+                ->outdent()
+                ->write("}\n")
+            ;
         }
 
         $compiler
             ->write("\n")
+            ->write("public function ensureSecurityChecked(): void\n")
+            ->write("{\n")
+            ->indent()
+            ->write("if (\$this->sandbox->isSandboxed(\$this->source)) {\n")
+            ->indent()
+            ->write("\$this->checkSecurity();\n")
+            ->outdent()
+            ->write("}\n")
+            ->outdent()
+            ->write("}\n")
+            ->write("\n")
             ->write("public function checkSecurity()\n")
             ->write("{\n")
             ->indent()
-            ->write('static $tags = ')->repr(array_filter($tags))->raw(";\n")
-            ->write('static $filters = ')->repr(array_filter($filters))->raw(";\n")
-            ->write('static $functions = ')->repr(array_filter($functions))->raw(";\n\n")
+            ->write('static $tags = ')->repr(array_filter($this->usedTags))->raw(";\n")
+            ->write('static $filters = ')->repr(array_filter($this->usedFilters))->raw(";\n")
+            ->write('static $functions = ')->repr(array_filter($this->usedFunctions))->raw(";\n")
+            ->write('static $tests = ')->repr(array_filter($this->usedTests))->raw(";\n\n")
             ->write("try {\n")
             ->indent()
             ->write("\$this->sandbox->checkSecurity(\n")
             ->indent()
-            ->write(!$tags ? "[],\n" : "['".implode("', '", array_keys($tags))."'],\n")
-            ->write(!$filters ? "[],\n" : "['".implode("', '", array_keys($filters))."'],\n")
-            ->write(!$functions ? "[]\n" : "['".implode("', '", array_keys($functions))."']\n")
+            ->write('')->repr(array_keys($this->usedTags))->raw(",\n")
+            ->write('')->repr(array_keys($this->usedFilters))->raw(",\n")
+            ->write('')->repr(array_keys($this->usedFunctions))->raw(",\n")
+            ->write('')->repr(array_keys($this->usedTests))->raw(",\n")
+            ->write("\$this->source\n")
             ->outdent()
             ->write(");\n")
             ->outdent()
             ->write("} catch (SecurityError \$e) {\n")
             ->indent()
-            ->write("\$e->setSourceContext(\$this->getSourceContext());\n\n")
             ->write("if (\$e instanceof SecurityNotAllowedTagError && isset(\$tags[\$e->getTagName()])) {\n")
             ->indent()
             ->write("\$e->setTemplateLine(\$tags[\$e->getTagName()]);\n")
@@ -77,6 +119,10 @@ class CheckSecurityNode extends Node
             ->indent()
             ->write("\$e->setTemplateLine(\$functions[\$e->getFunctionName()]);\n")
             ->outdent()
+            ->write("} elseif (\$e instanceof SecurityNotAllowedTestError && isset(\$tests[\$e->getTestName()])) {\n")
+            ->indent()
+            ->write("\$e->setTemplateLine(\$tests[\$e->getTestName()]);\n")
+            ->outdent()
             ->write("}\n\n")
             ->write("throw \$e;\n")
             ->outdent()
@@ -86,5 +132,3 @@ class CheckSecurityNode extends Node
         ;
     }
 }
-
-class_alias('Twig\Node\CheckSecurityNode', 'Twig_Node_CheckSecurity');

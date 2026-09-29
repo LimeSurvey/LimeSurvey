@@ -2,88 +2,111 @@
 
 class AuditLog extends \LimeSurvey\PluginManager\PluginBase
 {
-
     protected $storage = 'DbStorage';
     protected static $description = 'Core: Create an audit log of changes';
     protected static $name = 'auditlog';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     protected $settings = array(
+        'settingsIntro' => array(
+            'type' => 'info',
+            'content' => '<h2 class="h4 mb-3">Log events</h2>',
+        ),
+        'separatorUsers' => array(
+            'type' => 'separator',
+            'title' => 'User accounts',
+        ),
         'AuditLog_Log_UserSave' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a user was modified or created',
-            'default' => '1',
-        ),
-        'AuditLog_Log_UserLogin' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a user has logged in successfully',
-            'default' => '1',
-        ),
-        'AuditLog_Log_UserLogout' => array(
-            'type' => 'checkbox',
-            'label' =>  'Log if user has logged out',
-            'default' => '1',
-        ),
-        'AuditLog_Log_UserFailedLoginAttempt' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a user login has failed',
+            'type' => 'boolean',
+            'label' => 'User created or modified',
             'default' => '1',
         ),
         'AuditLog_Log_UserDelete' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a user was deleted',
+            'type' => 'boolean',
+            'label' => 'User deleted',
             'default' => '1',
         ),
-        'AuditLog_Log_DataEntryCreate' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a survey admin creates a response',
+        'AuditLog_Log_UserLogin' => array(
+            'type' => 'boolean',
+            'label' => 'Successful login',
             'default' => '1',
         ),
-        'AuditLog_Log_DataEntryUpdate' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a survey admin modifies a response',
+        'AuditLog_Log_UserLogout' => array(
+            'type' => 'boolean',
+            'label' =>  'Logout',
             'default' => '1',
         ),
-        'AuditLog_Log_DataEntryDelete' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a survey admin delete a response',
-            'default' => '1',
-        ),
-        'AuditLog_Log_DataEntryImport' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a survey admin imports responses',
-            'default' => '1',
-        ),
-        'AuditLog_Log_TokenSave' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a survey participant was modified or created',
-            'default' => '1',
-        ),
-        'AuditLog_Log_TokenDelete' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a survey participant was deleted',
-            'default' => '1',
-        ),
-        'AuditLog_Log_ParticipantSave' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a central database participant was modified or created',
-            'default' => '1',
-        ),
-        'AuditLog_Log_ParticipantDelete' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a central database participant was deleted',
+        'AuditLog_Log_UserFailedLoginAttempt' => array(
+            'type' => 'boolean',
+            'label' => 'Failed login attempt',
             'default' => '1',
         ),
         'AuditLog_Log_UserPermissionsChanged' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a user permissions changes',
+            'type' => 'boolean',
+            'label' => 'Permissions changed',
             'default' => '1',
         ),
+        'separatorResponses' => array(
+            'type' => 'separator',
+            'title' => 'Survey responses',
+        ),
+        'AuditLog_Log_DataEntryCreate' => array(
+            'type' => 'boolean',
+            'label' => 'Response created',
+            'default' => '1',
+        ),
+        'AuditLog_Log_DataEntryUpdate' => array(
+            'type' => 'boolean',
+            'label' => 'Response modified',
+            'default' => '1',
+        ),
+        'AuditLog_Log_DataEntryDelete' => array(
+            'type' => 'boolean',
+            'label' => 'Response deleted',
+            'default' => '1',
+        ),
+        'AuditLog_Log_DataEntryImport' => array(
+            'type' => 'boolean',
+            'label' => 'Responses imported',
+            'default' => '1',
+        ),
+        'separatorParticipants' => array(
+            'type' => 'separator',
+            'title' => 'Survey participants',
+        ),
+        'AuditLog_Log_TokenSave' => array(
+            'type' => 'boolean',
+            'label' => 'Participant created or modified',
+            'default' => '1',
+        ),
+        'AuditLog_Log_TokenDelete' => array(
+            'type' => 'boolean',
+            'label' => 'Participant deleted',
+            'default' => '1',
+        ),
+        'separatorCentralParticipants' => array(
+            'type' => 'separator',
+            'title' => 'Central database participants',
+        ),
+        'AuditLog_Log_ParticipantSave' => array(
+            'type' => 'boolean',
+            'label' => 'Participant created or modified',
+            'default' => '1',
+        ),
+        'AuditLog_Log_ParticipantDelete' => array(
+            'type' => 'boolean',
+            'label' => 'Participant deleted',
+            'default' => '1',
+        ),
+        'separatorSurveySettings' => array(
+            'type' => 'separator',
+            'title' => 'Survey settings',
+        ),
         'AuditLog_Log_SurveySettings' => array(
-            'type' => 'checkbox',
-            'label' => 'Log if a user changes survey settings',
+            'type' => 'boolean',
+            'label' => 'Settings changed',
             'default' => '1',
         ),
     );
@@ -104,6 +127,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $this->subscribe('beforeDataEntryImport');
         $this->subscribe('beforeTokenSave');
         $this->subscribe('beforeTokenDelete');
+        $this->subscribe('beforeTokenDeleteMany');
         $this->subscribe('beforeParticipantSave');
         $this->subscribe('beforeParticipantDelete');
         $this->subscribe('beforeLogout');
@@ -160,6 +184,12 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $oAutoLog->entity = 'user';
         $oAutoLog->entityid = $iUserID;
         $oAutoLog->action = 'afterSuccessfulLogin';
+
+        $identity = $this->getEvent()->get('identity');
+        if (!empty($identity->oneTimePasswordActorId)) {
+            $oAutoLog->newvalues = json_encode(['oneTimePasswordActor' => $identity->oneTimePasswordActorId]);
+        }
+
         $oAutoLog->save();
     }
 
@@ -232,7 +262,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         if (count($aValues)) {
             $oAutoLog = $this->api->newModel($this, 'log');
             $oAutoLog->uid = $currentUID;
-            $oAutoLog->entity = 'survey_' . $iSurveyID;
+            $oAutoLog->entity = 'responses_' . $iSurveyID;
             $oAutoLog->action = "create";
             $oAutoLog->newvalues = json_encode($aValues);
             $oAutoLog->save();
@@ -269,7 +299,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         if (count($aDiffOld)) {
             $oAutoLog = $this->api->newModel($this, 'log');
             $oAutoLog->uid = $currentUID;
-            $oAutoLog->entity = 'survey_' . $iSurveyID;
+            $oAutoLog->entity = 'responses_' . $iSurveyID;
             $oAutoLog->action = "update";
             $oAutoLog->entityid = $event->get('iResponseID');
             $oAutoLog->oldvalues = json_encode($aDiffOld);
@@ -297,7 +327,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
 
         $oAutoLog = $this->api->newModel($this, 'log');
         $oAutoLog->uid = $currentUID;
-        $oAutoLog->entity = 'survey_' . $iSurveyID;
+        $oAutoLog->entity = 'responses_' . $iSurveyID;
         $oAutoLog->action = "delete";
         $oAutoLog->entityid = $event->get('iResponseID');
         $oAutoLog->oldvalues = json_encode($oldvalues);
@@ -324,7 +354,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         if (count($aValues)) {
             $oAutoLog = $this->api->newModel($this, 'log');
             $oAutoLog->uid = $currentUID;
-            $oAutoLog->entity = 'survey_' . $iSurveyID;
+            $oAutoLog->entity = 'responses_' . $iSurveyID;
             $oAutoLog->action = "import";
             $oAutoLog->newvalues = json_encode($aValues);
             $oAutoLog->fields = implode(',', array_keys($aValues));
@@ -371,8 +401,8 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-    * Function catches if a participant of a particular survey was modified or created
-    * All data is saved - only the password hash is anonymized for security reasons
+    * Function catches if a participant of a particular survey was deleted
+    * All data is saved
     */
     public function beforeTokenDelete()
     {
@@ -382,12 +412,25 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             return;
         }
 
-        $sTokenIds = $this->getEvent()->get('sTokenIds');
-        $aTokenIds = explode(',', $sTokenIds);
+        // beforeTokenDelete mutated through time.
+        // At the very beginning, the event was dispatched with an sTokenIds parameter.
+        // Then, dynamic model events were introduced, and this event mutated its interface.
+        // The code below accepts both kinds of interface.
+        $sTokenIds = $event->get('sTokenIds');
+        if (!empty($sTokenIds)) {
+            $aTokenIds = explode(',', (string) $sTokenIds);
+        } else {
+            // If sTokenIds is empty, assume we're dealing with a dynamic model event.
+            // In this case, the dynamicId parameter contains the token ID.
+            $aTokenIds = [$event->get('dynamicId')];
+        }
+        if (empty($aTokenIds)) {
+            return;
+        }
         $oCurrentUser = $this->api->getCurrentUser();
 
         foreach ($aTokenIds as $tokenId) {
-            $token = Token::model($iSurveyID)->find('tid=' . $tokenId);
+            $token = Token::model($iSurveyID)->findByPk((int) $tokenId);
 
             if (!is_null($token)) {
                 $aValues = $token->getAttributes();
@@ -395,11 +438,54 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
                 $oAutoLog->uid = $oCurrentUser->uid;
                 $oAutoLog->entity = 'token';
                 $oAutoLog->action = 'delete';
-                $oAutoLog->entityid = $aValues['participant_id'];
+                $oAutoLog->entityid = $aValues['tid'];
                 $oAutoLog->oldvalues = json_encode($aValues);
                 $oAutoLog->fields = implode(',', array_keys($aValues));
                 $oAutoLog->save();
             }
+        }
+    }
+
+    /**
+    * Function catches if multiple participants of a particular survey were deleted
+    * All data is saved
+    */
+    public function beforeTokenDeleteMany()
+    {
+        $event = $this->getEvent();
+        $surveyId = $event->get('iSurveyID');
+        if (!$this->checkSetting('AuditLog_Log_TokenDelete') || !$this->get('auditing', 'Survey', $surveyId, true)) {
+            return;
+        }
+
+        $filterCriteria = $event->get('filterCriteria');
+
+        // We need to "fix" (update) the criteria given by parameter.
+        // - SELECT queries are built with the table alias.
+        // - DELETE queries are not.
+        // We are given a DELETE query criteria and need to use it on a SELECT query,
+        // so we replace the table name with the alias.
+        $tokenModel = Token::model($surveyId);
+        $selectCriteria = clone $filterCriteria;
+        $tableName = $tokenModel->getTableSchema()->rawName;
+        $alias = $tokenModel->getTableAlias(true);
+        // Replace the table name with the alias
+        $selectCriteria->condition = str_replace($tableName, $alias, $selectCriteria->condition);
+
+        $tokens = $tokenModel->findAll($selectCriteria);
+
+        $oCurrentUser = $this->api->getCurrentUser();
+
+        foreach ($tokens as $token) {
+            $aValues = $token->getAttributes();
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->uid = $oCurrentUser->uid;
+            $oAutoLog->entity = 'token';
+            $oAutoLog->action = 'delete';
+            $oAutoLog->entityid = $aValues['tid'];
+            $oAutoLog->oldvalues = json_encode($aValues);
+            $oAutoLog->fields = implode(',', array_keys($aValues));
+            $oAutoLog->save();
         }
     }
 

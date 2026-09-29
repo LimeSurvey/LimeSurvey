@@ -7,7 +7,14 @@
  * @var array<mixed> $defaultValues
  */
 #}
-{% set opts = defaultValues[lang][question.type][0] %}
+{% set opts = defaultValues[lang][question.type][0] ?? {} %}
+{% if opts['template']['options'] is defined %}
+    {% set templateOptions = opts['template']['options'] %}
+{% elseif question.type in ['M', 'P'] %}
+    {% set templateOptions = {'': gT('(No default value)'), 'Y': gT('Checked')} %}
+{% else %}
+    {% set templateOptions = {} %}
+{% endif %}
 {% if question.type in ['L', 'M', 'O', 'P', '!'] %}
     {% set inputStyle = 'enum' %}
 {% elseif question.type in ['K', 'Q'] %}
@@ -17,7 +24,7 @@
 {% endif %}
 {% if inputStyle == 'enum' or inputStyle == 'text' %}
     <div class="default-answer-rows">
-        {% for subquestion in opts['sqresult'] %}
+        {% for subquestion in opts['sqresult'] ?? [] %}
             {% include 'defaultValuesSubquestionRow.twig' with {
                 'lang': lang,
                 'scale_id': 0,
@@ -34,7 +41,7 @@
         'scale_id': 0,
         'subquestion_title': '{{title_placeholder}}',
         'subquestion_text': '{{text_placeholder}}',
-        'options': opts['template']['options'],
+        'options': templateOptions,
         'defaultvalue': '',
         'is_template': true
     } %}

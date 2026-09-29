@@ -6,6 +6,7 @@ use Exception;
 
 class Update_363 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $aTableNames = dbGetTablesLike("tokens%");
@@ -19,7 +20,7 @@ class Update_363 extends DatabaseUpdateBase
                         break;
                     case 'pgsql':
                         $this->db->createCommand()->createIndex(
-                            'idx_email_' . substr($sTableName, 7) . '_' . rand(1, 50000),
+                            'idx_email_' . substr((string) $sTableName, 7) . '_' . rand(1, 50000),
                             $sTableName,
                             'email',
                             false
@@ -27,7 +28,7 @@ class Update_363 extends DatabaseUpdateBase
                         break;
                         // MSSQL does not support indexes on text fields so no dice
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 rollBackToTransactionBookmark();
             }
         }

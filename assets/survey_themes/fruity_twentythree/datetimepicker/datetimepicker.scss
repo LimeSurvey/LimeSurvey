@@ -1,0 +1,111 @@
+$td-timepicker-font-size : 1.2em !default;
+$td-border-radius        : 2px !default;
+.tempus-dominus-widget {
+    padding : 0;
+    width   : 20rem;
+    .timepicker-hour,
+    .timepicker-minute,
+    .timepicker-second {
+        font-size : $td-timepicker-font-size;
+    }
+    .calendar-header {
+        margin-bottom : 2px;
+        font-weight   : normal;
+        padding       : 8px;
+        & i {
+            font-size : 20px;
+        }
+    }
+    .toolbar {
+        grid-auto-rows : 32px;
+        margin-top     : 2px;
+        padding        : 10px;
+        & div {
+            border-radius : $td-border-radius;
+        }
+    }
+    .date-container-days {
+        grid-auto-rows : 32px;
+        padding        : 8px 12px;
+    }
+    .time-container-clock {
+        grid-auto-rows : minmax(24px, auto);
+        padding        : 0 32px;
+    }
+    // adjust padding only when dateformat contains seconds
+    .time-container-clock:has([data-time-component="seconds"]) {
+        padding : 0 6px;
+    }
+    .date-container-decades,
+    .date-container-years,
+    .date-container-months,
+    .date-container-days,
+    .time-container-clock,
+    .time-container-hour,
+    .time-container-minute,
+    .time-container-second {
+        div:not(.no-highlight) {
+            height        : 24px;
+            border-radius : $td-border-radius;
+            border        : 2px solid transparent;
+        }
+    }
+    .time-container {
+        margin-top    : 31px;
+        margin-bottom : 31px;
+    }
+    .toolbar {
+        & i {
+            font-size : 20px;
+            padding   : 2px 0;
+        }
+    }
+    .date-container-days {
+        & .dow {
+            font-weight : $font-weight-normal;
+        }
+    }
+    .date-container-decades,
+    .date-container-years,
+    .date-container-months,
+    .date-container-days,
+    .time-container-clock,
+    .time-container-hour,
+    .time-container-minute,
+    .time-container-second {
+        div:not(.no-highlight) {
+            &:hover {
+                border-radius : $td-border-radius;
+            }
+
+            &.today {
+                &:before {
+                    bottom : 0;
+                    right  : 0;
+                    left   : auto;
+                    -moz-transform: scale(1, 1) #{"/*!rtl:scale(-1, 1)*/"};
+                    -webkit-transform: scale(1, 1) #{"/*!rtl:scale(-1, 1)*/"};
+                    -o-transform: scale(1, 1)/ #{"*!rtl:scale(-1, 1)*/"};
+                    -ms-transform: scale(1, 1) #{"/*!rtl:scale(-1, 1)*/"};
+                    transform: scale(1, 1) #{"/*!rtl:scale(-1, 1)*/"};
+                }
+            }
+        }
+    }
+    [data-time-component="hours"],
+    .separator,
+    [data-time-component="minutes"],
+    [data-time-component="seconds"] {
+        height      : 75px !important;
+        font-size   : 62px;
+        font-weight : $font-weight-300;
+    }
+    [data-action="incrementHours"],
+    [data-action="incrementMinutes"],
+    [data-action="incrementSeconds"] {
+        align-self : end;
+    }
+    .date-container-days div:not(.no-highlight) {
+        width : 24px;
+    }
+}

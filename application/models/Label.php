@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey (tm)
- * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2011-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -65,6 +65,13 @@ class Label extends LSActiveRecord
                             'params' => array(':lid' => $this->lid)
                     ),
                     'message' => '{attribute} "{value}" is already in use.'),
+            // Only alphanumeric
+            array(
+                'code',
+                'match',
+                'pattern' => '/^[[:alnum:]]*$/',
+                'message' => gT('Label codes may only contain alphanumeric characters.'),
+            ),
             array('sortorder', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('assessment_value', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );
@@ -98,18 +105,5 @@ class Label extends LSActiveRecord
     public function getLabelCodeInfo($lid)
     {
         return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from($this->tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
-    }
-
-    /**
-     * @param $data
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $lbls = new self();
-        foreach ($data as $k => $v) {
-                    $lbls->$k = $v;
-        }
-        $lbls->save();
     }
 }

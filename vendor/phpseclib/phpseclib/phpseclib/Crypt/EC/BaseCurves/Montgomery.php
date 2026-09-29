@@ -39,7 +39,7 @@ class Montgomery extends Base
     /**
      * Prime Field Integer factory
      *
-     * @var \phpseclib3\Math\PrimeField
+     * @var PrimeField
      */
     protected $factory;
 
@@ -219,9 +219,12 @@ class Montgomery extends Base
     public function multiplyPoint(array $p, BigInteger $d)
     {
         $p1 = [$this->one, $this->zero];
-        $alreadyInternal = isset($x[1]);
+        $alreadyInternal = isset($p[1]);
         $p2 = $this->convertToInternal($p);
         $x = $p[0];
+
+        $r = $this->randomInteger();
+        $p2 = [$p2[0]->multiply($r), $p2[1]->multiply($r)];
 
         $b = $d->toBits();
         $b = str_pad($b, 256, '0', STR_PAD_LEFT);
@@ -246,7 +249,7 @@ class Montgomery extends Base
      *
      *   x=X/Z
      *
-     * @return \phpseclib3\Math\PrimeField\Integer[]
+     * @return PrimeInteger[]
      */
     public function convertToInternal(array $p)
     {
@@ -266,7 +269,7 @@ class Montgomery extends Base
     /**
      * Returns the affine point
      *
-     * @return \phpseclib3\Math\PrimeField\Integer[]
+     * @return PrimeInteger[]
      */
     public function convertToAffine(array $p)
     {
@@ -274,6 +277,9 @@ class Montgomery extends Base
             return $p;
         }
         list($x, $z) = $p;
+        if ($z->equals($this->zero)) {
+            return [clone $this->zero];
+        }
         return [$x->divide($z)];
     }
 }

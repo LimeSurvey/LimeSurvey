@@ -1,0 +1,48 @@
+.nav-tabs {
+    border : none;
+    .nav-link {
+        font-size        : $font-size-sm;
+        color            : $nav-tabs-link-active-color;
+        border-radius    : 0;
+        border-top       : 2px solid $g-200;
+        border-bottom    : 2px solid $g-400;
+        background-color : $g-200;
+        padding          : 6px 20px;
+        &:focus {
+            border-bottom: 2px solid $grape90;
+            @include inset-border(2px, $grape90);
+        }
+
+        &:hover:not(.active), &:active:not(.active) {
+            @include inset-border(1px, $grape75);
+            border-bottom : 2px solid $grape75;
+        }
+        &:active:not(.active) {
+            background-color: $g-300;
+        }
+        &.disabled,
+        &:disabled {
+            color            : $g-600;
+            background-color : $g-200;
+        }
+    }
+    .nav-link.active,
+    .nav-item.show .nav-link {
+        background-color : $white;
+        border-top       : 2px solid $active-green;
+        border-bottom    : 2px solid $white;
+    }
+
+    .nav-link.active {
+        &:focus {
+            box-shadow : none;
+        }
+        &:focus-visible {
+            @include inset-border(2px, $active-green);
+        }
+    }
+}
+.tab-content {
+  padding: 1rem;
+  background-color: $white;
+}

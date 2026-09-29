@@ -13,7 +13,7 @@
 ( function() {
 
 	CKEDITOR.plugins.add( 'notification', {
-		lang: 'az,bg,ca,cs,da,de,de-ch,en,en-au,eo,es,es-mx,et,eu,fa,fr,gl,hr,hu,id,it,ja,km,ko,ku,lt,lv,nb,nl,oc,pl,pt,pt-br,ro,ru,sk,sq,sr,sr-latn,sv,tr,ug,uk,zh,zh-cn', // %REMOVE_LINE_CORE%
+		lang: 'az,bg,ca,cs,da,de,de-ch,el,en,en-au,eo,es,es-mx,et,eu,fa,fr,gl,hr,hu,id,it,ja,km,ko,ku,lt,lv,nb,nl,oc,pl,pt,pt-br,ro,ru,sk,sq,sr,sr-latn,sv,tr,ug,uk,zh,zh-cn', // %REMOVE_LINE_CORE%
 
 		init: function( editor ) {
 			editor._.notificationArea = new Area( editor );
@@ -236,7 +236,7 @@
 			var show = true;
 
 			if ( this.editor.fire( 'notificationUpdate', { notification: this, options: options } ) === false ) {
-				// The idea of cancelable event is to let user create their own way of displaying notification, so if
+				// The idea of cancelable event is to let user create his own way of displaying notification, so if
 				// `notificationUpdate` event will be canceled there will be no interaction with notification area, but on
 				// the other hand the logic should work anyway so object will be updated (including `element` property).
 				// Note: we can safely update the element's attributes below, because this element is created inside

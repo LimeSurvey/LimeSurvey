@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey (tm)
- * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2011-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -14,7 +14,6 @@
  */
 class InstallCommand extends CConsoleCommand
 {
-
     /**
      * If true, output trace.
      * @var boolean
@@ -28,17 +27,20 @@ class InstallCommand extends CConsoleCommand
     public $connection;
 
     /**
-     * @param array $aArguments
-     * @return int
+     * Installs LimeSurvey: creates the database (if needed), tables, admin user and permissions.
+     *
+     * @param array $args Expected order: [0] admin username, [1] admin password, [2] admin full name, [3] admin email, [4] optional verbose flag.
+     * @return int Returns 0 on success, 1 if required arguments are missing or table creation fails.
      * @throws CException
      * @throws Exception
      */
-    public function run($aArguments)
+    #[\Override]
+    public function run($args)
     {
-        if (isset($aArguments) && isset($aArguments[0]) && isset($aArguments[1]) && isset($aArguments[2]) && isset($aArguments[3])) {
+        if (isset($args) && isset($args[0]) && isset($args[1]) && isset($args[2]) && isset($args[3])) {
             Yii::import('application.helpers.common_helper', true);
 
-            $this->setNoisy($aArguments);
+            $this->setNoisy($args);
 
             try {
                 $this->output('Connecting to database...');
@@ -62,7 +64,7 @@ class InstallCommand extends CConsoleCommand
                 return 1;
             }
 
-            $this->createUser($aArguments);
+            $this->createUser($args);
             $this->createPermissions();
 
             $this->output('All done!');
@@ -77,9 +79,11 @@ class InstallCommand extends CConsoleCommand
 
 
     /**
-     * @param string $sProperty
-     * @param string $connectionString
-     * @return string|null
+     * Extracts the value of a property (e.g. dbname) from a PDO-style connection string.
+     *
+     * @param string $sProperty Name of the property to extract, e.g. 'dbname'.
+     * @param string|null $connectionString Connection string to parse; defaults to the current connection's string.
+     * @return string|null The property value, or null if not found.
      */
     public function getDBConnectionStringProperty($sProperty, $connectionString = null)
     {
@@ -87,16 +91,17 @@ class InstallCommand extends CConsoleCommand
             $connectionString = $this->connection->connectionString;
         }
         // Yii doesn't give us a good way to get the database name
-        if (preg_match('/' . $sProperty . '=([^;]*)/', $connectionString, $aMatches) == 1) {
+        if (preg_match('/' . $sProperty . '=([^;]*)/', (string) $connectionString, $aMatches) == 1) {
             return $aMatches[1];
         }
         return null;
     }
 
     /**
-     * Create database with name?
+     * Creates the database specified in the connection string, then reconnects to it.
+     *
      * @return void
-     * @throws CException
+     * @throws CException If the connection cannot be opened or the database could not be created.
      */
     protected function createDatabase()
     {
@@ -107,7 +112,7 @@ class InstallCommand extends CConsoleCommand
         App()->configure(array('components' => array('db' => array('autoConnect' => true))));
         $connectionString = $this->connection->connectionString;
         $this->output($connectionString);
-        $this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', $connectionString);
+        $this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', (string) $connectionString);
         try {
             $this->output('Opening connection...');
             $this->connection->active = true;
@@ -158,7 +163,9 @@ class InstallCommand extends CConsoleCommand
     }
 
     /**
-     * @param string $msg
+     * Prints a message to stdout, but only when $noisy is true.
+     *
+     * @param string $msg The message to print.
      * @return void
      */
     public function output($msg)
@@ -181,6 +188,12 @@ class InstallCommand extends CConsoleCommand
     }
 
 
+    /**
+     * Sets the connection charset to utf8mb4 for the supported database drivers.
+     *
+     * @return void
+     * @throws Exception If the database driver is not supported.
+     */
     private function prepareCharset()
     {
         $this->connection->charset = 'utf8';
@@ -199,6 +212,12 @@ class InstallCommand extends CConsoleCommand
         }
     }
 
+    /**
+     * Inserts the initial admin user record.
+     *
+     * @param array $data Same order as run()'s $args: [0] username, [1] password, [2] full name, [3] email.
+     * @return void
+     */
     private function createUser($data)
     {
         $this->output('Creating admin user...');
@@ -206,7 +225,7 @@ class InstallCommand extends CConsoleCommand
             $this->connection->tablePrefix . 'users',
             array(
                 'users_name' => $data[0],
-                'password' => password_hash($data[1], PASSWORD_DEFAULT),
+                'password' => password_hash((string) $data[1], PASSWORD_DEFAULT),
                 'full_name' => $data[2],
                 'parent_id' => 0,
                 'lang' => 'auto',
@@ -215,6 +234,11 @@ class InstallCommand extends CConsoleCommand
         );
     }
 
+    /**
+     * Grants the initial admin user (uid=1) the superadmin permission.
+     *
+     * @return void
+     */
     private function createPermissions()
     {
         $this->output('Creating permissions ...');

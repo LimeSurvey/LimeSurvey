@@ -1,0 +1,18 @@
+<div id="question{{question.qid}}" class="{{question.class}} question-wrapper">
+    <div class="q-text">
+        <h3>{{question.number}} {{question.code ? '[' ~ question.code ~ ']' : ''}}{{question.text}}
+            <span class="mandatory">{{question.mandatory}}</span>
+        </h3>
+        <p class="q-scenaria">{{question.scenario}}</p>
+        <p class="q-type-help">{{question.type_help}}</p>
+        <p class="q-man-message">{{question.man_message}}</p>
+        <p class="q-validation">{{question.valid_message}}</p>
+        <p class="q-fvalidation">{{question.file_valid_message}}</p>
+    </div>
+    <div class="q-answer">
+        {{question.answer}}
+    </div>
+    <div class="q-help">
+        {{question.help}}
+    </div>
+</div>

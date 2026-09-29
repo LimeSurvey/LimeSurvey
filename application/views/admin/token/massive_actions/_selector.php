@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Render the selector for surveys massive actions.
  *
  */
+
 ?>
 
 
@@ -14,23 +16,31 @@
             'dropupId'    => 'tokenListActions',
             'dropUpText'  => gT('Selected participant(s)...'),
 
-            'aActions'    => array(
+            'aActions' => array(
                 // Massive update
                 array(
                     // li element
-                    'type'        => 'action',
-                    'action'      => 'edit',
-                    'disabled'     => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
-                    'url'         => App()->createUrl('/admin/tokens/sa/editMultiple/'),
-                    'iconClasses' => 'fa fa-pencil text-success',
-                    'text'        => gT('Batch-edit participants'),
-                    'grid-reload' => 'yes',
+                    'type'           => 'action',
+                    'action'         => 'edit',
+                    'disabled'       => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
+                    'url'            => App()->createUrl('/admin/tokens/sa/editMultiple/'),
+                    'iconClasses'    => 'ri-pencil-fill',
+                    'text'           => gT('Batch-edit participants'),
+                    'grid-reload'    => 'yes',
                     // modal
-                    'actionType'    => 'modal',
-                    'modalType'     => 'cancel-save',
-                    'keepopen'      => 'yes',
-                    'sModalTitle'   => gT('Batch-edit participants'),
-                    'htmlModalBody' => $this->renderPartial('./token/massive_actions/_update', array('dateformatdetails' => getDateFormatData(Yii::app()->session['dateformat']), 'aLanguages' => $aLanguages), true),
+                    'actionType'     => 'modal',
+                    'largeModalView' => true,
+                    'modalType'      => 'cancel-save',
+                    'keepopen'       => 'yes',
+                    'sModalTitle'    => gT('Batch-edit participants'),
+                    'htmlModalBody'  => $this->renderPartial(
+                        './token/massive_actions/_update',
+                        array(
+                            'dateformatdetails' => getDateFormatData(Yii::app()->session['dateformat']),
+                            'aLanguages'        => $aLanguages
+                        ),
+                        true
+                    ),
                 ),
 
                 // Delete
@@ -40,7 +50,7 @@
                     'action'      => 'delete',
                     'disabled'     => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'delete'),
                     'url'         =>  App()->createUrl('/admin/tokens/sa/deleteMultiple/'),
-                    'iconClasses' => 'fa fa-trash text-danger',
+                    'iconClasses' => 'ri-delete-bin-fill text-danger',
                     'text'        =>  gT('Delete'),
                     'grid-reload' => 'yes',
 
@@ -51,7 +61,7 @@
                     'sModalTitle'   => gT('Delete survey participants'),
                     'htmlModalBody' => gT('Are you sure you want to delete the selected participants?'),
                     'aCustomDatas'  => array(
-                        array( 'name'=>'sid',  'value'=> $surveyid),
+                        array( 'name' => 'sid',  'value' => $surveyid),
                     ),
                 ),
 
@@ -76,8 +86,8 @@
                     'type'            => 'action',
                     'action'          => 'invite',
                     'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
-                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/surveyid/'.$surveyid),
-                    'iconClasses'     => 'icon-invite text-success',
+                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/surveyid/' . $surveyid),
+                    'iconClasses'     => 'ri-mail-send-fill',
                     'text'            =>  gT('Send email invitations'),
 
                     'aLinkSpecificDatas'  => array(
@@ -94,8 +104,8 @@
                     'type'            => 'action',
                     'action'          => 'remind',
                     'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
-                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/'.$surveyid),
-                    'iconClasses'     => 'icon-remind text-success',
+                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/' . $surveyid),
+                    'iconClasses'     => 'ri-mail-volume-fill',
                     'text'            =>  gT('Send email reminder'),
 
                     'aLinkSpecificDatas'  => array(
@@ -126,7 +136,7 @@
                     // li element
                     'type'            => 'action',
                     'action'          => 'addCPDB',
-                    'url'             =>  App()->createUrl('admin/participants/sa/attributeMapToken/sid/'.$surveyid),
+                    'url'             =>  App()->createUrl('admin/participants/sa/attributeMapToken/sid/' . $surveyid),
                     'iconClasses'     => 'ui-icon ui-add-to-cpdb-link',
                     'text'            =>  gT('Add participants to central database'),
                     'disabled'         => !Permission::model()->hasGlobalPermission('participantpanel', 'create'),
@@ -141,4 +151,4 @@
             ),
 
     ));
-?>
+    ?>

@@ -50,7 +50,7 @@ blockquote {
   border-left: 0;
 }
 .blockquote-reverse,
-blockquote.pull-left {
+blockquote.float-start {
   padding-left: 15px;
   padding-right: 0;
   border-left: 5px solid #eeeeee;
@@ -938,7 +938,7 @@ th {
   float: left;
   text-align: right;
 }
-.dropdown-menu.pull-right {
+.dropdown-menu.float-end {
   left: 0;
   right: auto;
   float: right;
@@ -1258,27 +1258,27 @@ th {
 .progress-bar {
   float: right;
 }
-.media > .pull-left {
+.media > .float-start {
   margin-right: 10px;
 }
-.media > .pull-left.flip {
+.media > .float-start.flip {
   margin-right: 0;
   margin-left: 10px;
 }
-.media > .pull-right {
+.media > .float-end {
   margin-left: 10px;
 }
-.media > .pull-right.flip {
+.media > .float-end.flip {
   margin-left: 0;
   margin-right: 10px;
 }
 .media-right,
-.media > .pull-right {
+.media > .float-end {
   padding-right: 10px;
   padding-left: initial;
 }
 .media-left,
-.media > .pull-left {
+.media > .float-start {
   padding-left: 10px;
   padding-right: initial;
 }
@@ -1475,10 +1475,10 @@ th {
     padding-bottom: 30px;
   }
 }
-.dir-rtl .pull-right {
+.dir-rtl .float-end {
   float: left !important;
 }
-.dir-rtl .pull-left {
+.dir-rtl .float-start {
   float: right !important;
 }
 /*# sourceMappingURL=bootstrap-rtl.css.map */

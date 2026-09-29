@@ -19,7 +19,7 @@ class LSSodium
 
         if ($this->bLibraryExists === false) {
             /*throw new SodiumException(sprintf(gT("This operation uses data encryption functions which require Sodium library to be installed, but library was not found. If you don't want to use data encryption, you have to disable encryption in attribute settings. Here is a link to the manual page:
-            %s", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));*/
+            %s", 'unescaped'), 'https://www.limesurvey.org/manual/Data_encryption#Errors'));*/
         } else {
             $this->checkIfKeyExists();
         }
@@ -61,7 +61,7 @@ class LSSodium
      */
     protected function getEncryptionNonce()
     {
-        return sodium_hex2bin(Yii::app()->getConfig('encryptionnonce'));
+        return sodium_hex2bin((string) Yii::app()->getConfig('encryptionnonce'));
     }
 
     /**
@@ -70,7 +70,7 @@ class LSSodium
      */
     protected function getEncryptionSecretBoxKey()
     {
-        return sodium_hex2bin(Yii::app()->getConfig('encryptionsecretboxkey'));
+        return sodium_hex2bin((string) Yii::app()->getConfig('encryptionsecretboxkey'));
     }
 
     /**
@@ -115,7 +115,7 @@ class LSSodium
     public function encrypt($sDataToEncrypt): string
     {
         if ($this->bLibraryExists === true) {
-            if ($sDataToEncrypt) {
+            if (isset($sDataToEncrypt) && $sDataToEncrypt !== "") {
                 $sEncrypted = base64_encode(ParagonIE_Sodium_Compat::crypto_secretbox((string) $sDataToEncrypt, $this->sEncryptionNonce, $this->sEncryptionSecretBoxKey));
                 return $sEncrypted;
             }
@@ -127,9 +127,9 @@ class LSSodium
     /**
      *
      * Decrypt encrypted string.
-     * @param string $sEncryptedString Encrypted string to decrypt
+     * @param string $sEncryptedString Encrypted string to decrypt, if it string 'null', didn't try to decode
      * @param bool $bReturnFalseIfError false by default. If TRUE, return false in case of error (bad decryption). Else, return given $encryptedInput value
-     * @return string Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or inpyt encryptedString
+     * @return string Return decrypted value (string or unserialized object) if succeeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
      * @throws SodiumException
      */
     public function decrypt($sEncryptedString, $bReturnFalseIfError = false): string
@@ -138,7 +138,7 @@ class LSSodium
             if (!empty($sEncryptedString) && $sEncryptedString !== 'null') {
                 $plaintext = ParagonIE_Sodium_Compat::crypto_secretbox_open(base64_decode($sEncryptedString), $this->sEncryptionNonce, $this->sEncryptionSecretBoxKey);
                 if ($plaintext === false) {
-                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));
+                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://www.limesurvey.org/manual/Data_encryption#Errors'));
                 } else {
                     return $plaintext;
                 }
@@ -175,7 +175,7 @@ class LSSodium
         $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
             . "/*" . "\n"
             . " * LimeSurvey" . "\n"
-            . " * Copyright (C) 2007-2019 The LimeSurvey Project Team / Carsten Schmitz" . "\n"
+            . " * Copyright (C) 2007-2026 The LimeSurvey Project Team" . "\n"
             . " * All rights reserved." . "\n"
             . " * License: GNU/GPL License v3 or later, see LICENSE.php" . "\n"
             . " * LimeSurvey is free software. This version may have been modified pursuant" . "\n"

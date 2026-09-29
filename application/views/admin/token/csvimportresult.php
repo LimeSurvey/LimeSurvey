@@ -5,9 +5,9 @@
  */
 
 ?>
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php if (empty($aTokenListArray) || $iRecordImported == 0) :?>
                 <div class="jumbotron message-box message-box-error">
                     <h2 class="text-danger">
@@ -45,7 +45,7 @@
                                 !empty($aInvalideAttrFieldName) ||
                                 !empty($aMissingAttrFieldName)
 ) { ?>
-                        <h2 class='text-warning'><?php eT('Warnings'); ?></h2>
+                        <h2 class='text-danger'><?php eT('Warnings'); ?></h2>
                     <p>
                         <ul class="list-unstyled">
                                     <?php if (!empty($aInvalidTokenList)) { ?>
@@ -63,7 +63,7 @@
                                     <?php } ?>
                                     <?php if (!empty($aDuplicateList)) { ?>
                                 <li>
-                                        <?php printf(gT("%s duplicate records removed"), count($aDuplicateList)); ?>
+                                        <?php printf(gT("%s duplicate records skipped"), count($aDuplicateList)); ?>
                                     [<a href='#' onclick='$("#duplicateslist").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist well' id='duplicateslist' style='display: none;'>
                                         <ul class="list-unstyled">
@@ -91,7 +91,7 @@
 
                                     <?php if (!empty($aInvalidEmailList)) { ?>
                                 <li>
-                                        <?php printf(gT("%s records with invalid email address removed"), count($aInvalidEmailList)); ?>
+                                        <?php printf(gT("%s records with invalid email address skipped"), count($aInvalidEmailList)); ?>
                                     [<a href='#' onclick='$("#invalidemaillist").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist well' id='invalidemaillist' style='display: none;'>
                                         <ul class="list-unstyled">
@@ -130,8 +130,8 @@
                                         foreach ($aModelErrorList as $aModelError) {
                                             ?>
                                             <div class="row">
-                                                <div class="col-md-1 col-md-offset-4"><?php printf(gT("Line %s:"), $aModelError['line']);?></div>
-                                                <div class="col-md-6"><?php echo $aModelError['errors'];?></div>
+                                                <div class="col-lg-1 offset-lg-4"><?php printf(gT("Line %s:"), $aModelError['line']);?></div>
+                                                <div class="col-lg-6"><?php echo $aModelError['errors'];?></div>
                                             </div>
                                         <?php } ?>
 
@@ -169,7 +169,7 @@
                     <?php } ?>
                     </p>
                     <p>
-                        <input class="btn btn-large btn-default" type='button' value='<?php eT("Browse participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
+                        <input class="btn btn-large btn-outline-secondary" type='button' value='<?php eT("Browse participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
                     </p>
                 </div>
 

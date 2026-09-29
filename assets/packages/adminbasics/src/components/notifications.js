@@ -40,12 +40,12 @@ const NotifcationSystem  = function (){
      */
     __notificationIsRead = (that) => {
         LOG.log('notificationIsRead');
-        $.ajax({
+        return $.ajax({
             url: $(that).data('read-url'),
             method: 'GET',
-        }).done((response) => {
-            // Fetch new HTML for menu widget
-            __updateNotificationWidget($(that).data('update-url'));
+        }).then(() => {
+            // Fetch new HTML for menu widget; return so callers can chain on completion.
+            return __updateNotificationWidget($(that).data('update-url'));
         });
 
     },
@@ -54,9 +54,10 @@ const NotifcationSystem  = function (){
      * Fetch notification as JSON and show modal
      * @param {object} that The notification link
      * @param {url} URL to fetch notification as JSON
+     * @param {boolean} alreadyRead If the notification was already marked as read before showing
      * @return
      */
-    __showNotificationModal = (that, url) => {
+    __showNotificationModal = (that, url, alreadyRead = false) => {
         LOG.log('showNotificationModal');
         $.ajax({
             url: url,
@@ -67,15 +68,52 @@ const NotifcationSystem  = function (){
 
             $('#admin-notification-modal .modal-title').html(not.title);
             $('#admin-notification-modal .modal-body-text').html(not.message);
-            $('#admin-notification-modal .modal-content').addClass('panel-' + not.display_class);
+            $('#admin-notification-modal .modal-content').addClass('card-' + not.display_class);
             $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
-            $('#admin-notification-modal').modal();
-            
-            // TODO: Will this work in message includes a link that is clicked?
+
+            const modal = new bootstrap.Modal(document.getElementById('admin-notification-modal'));
+            modal.show();
+
+            // Move screen reader / keyboard focus to the modal title once the modal is visible
+            $('#admin-notification-modal').one('shown.bs.modal', () => {
+                const title = document.getElementById('admin-notification-modal-title');
+                if (title) {
+                    title.focus();
+                }
+            });
+
+            // Track any pending internal-link navigation triggered from within the message body.
+            let pendingHref = null;
+
+            // Intercept internal (same-origin) links in the notification message body:
+            // prevent immediate navigation, mark as read first, then navigate.
+            $('#admin-notification-modal .modal-body-text').off('click.notificationLink');
+            $('#admin-notification-modal .modal-body-text').on('click.notificationLink', 'a', (e) => {
+                const link = e.currentTarget;
+                if (link.origin === window.location.origin) {
+                    e.preventDefault();
+                    pendingHref = link.href;
+                    bootstrap.Modal.getInstance(document.getElementById('admin-notification-modal')).hide();
+                }
+            });
+
             $('#admin-notification-modal').off('hidden.bs.modal');
             $('#admin-notification-modal').on('hidden.bs.modal', (e) => {
-                __notificationIsRead(that);
-                $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
+                $('#admin-notification-modal .modal-content').removeClass('card-' + not.display_class);
+                // Restore focus after __updateNotificationWidget() has completed (or failed).
+                // Use .always() so focus is restored even if the read-url or widget-refresh
+                // requests reject.
+                const readRequest = alreadyRead ? $.Deferred().resolve().promise() : __notificationIsRead(that);
+                readRequest.always(() => {
+                    if (pendingHref) {
+                        window.location.href = pendingHref;
+                    } else {
+                        const dropdownToggle = document.getElementById('admin-notifications-menu-button');
+                        if (dropdownToggle) {
+                            dropdownToggle.focus();
+                        }
+                    }
+                });
             });
         });
     },
@@ -95,6 +133,17 @@ const NotifcationSystem  = function (){
             const url = $(that).data('url');
             const importance = $(that).data('importance');
             const status = $(that).data('status');
+
+            // Important 2 = nag only once (used e.g. for redirect).
+            // Mark as read before showing: the message may redirect on its own
+            // (e.g. survey template import), so the modal is never closed.
+            if (importance == 2 && status == 'new') {
+                __notificationIsRead(that).always(() => {
+                    __showNotificationModal(that, url, true);
+                });
+                LOG.log('stoploop');
+                return false;  // Stop loop
+            }
 
             // Important notifications are shown as pop-up on load
             if (importance == 3 && status == 'new') {
@@ -122,10 +171,10 @@ const NotifcationSystem  = function (){
     
     updateNotificationWidget = (url, openAfter) => {
         // Make sure menu is open after load
-        __updateNotificationWidget(url).then(() =>{
-            if (openAfter !== false) {
-                $('#notification-li').addClass('open');
-            }
+        __updateNotificationWidget(url).then(() => {
+            let dropdownToggleEl = document.querySelector('#notification-li .dropdown-toggle');
+            let dropdownList = new bootstrap.Dropdown(dropdownToggleEl);
+            dropdownList.show();
         });
         // Only update once
         $('#notification-li').off('click.showNotification');
@@ -144,9 +193,11 @@ const NotifcationSystem  = function (){
     },
 
     deleteAllNotifications = (url, updateUrl) => {
+        let data = document.querySelector('#notification-clear-all > a').getAttribute('data-params');
         return $.ajax({
             url: url,
-            method: 'GET',
+            data: data,
+            method: 'POST',
             success: (response) => {
                LOG.log('response', response);
             }

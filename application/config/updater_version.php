@@ -1,7 +1,8 @@
 <?php
+
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -15,8 +16,8 @@
 
     // THIS FILE SHOULD NOT BE CHANGED MANUALLY !
 
-$config['updaterversion'] = 11;
-$config['comfort_update_server_url'] = 'comfortupdate.limesurvey.org/';
-//$config['comfort_update_server_url'] = 'web.comfortupdate.org/';
-$config['comfort_update_server_ssl'] = 0;
+$config['updaterversion'] = 20;
+$config['comfort_update_server_url'] = 'comfortupdate.limesurvey.org';
+$config['comfort_update_server_ssl'] = 1;
+$config['allow_non_public_release'] = 0;  // Used internally for debugging
 return $config;

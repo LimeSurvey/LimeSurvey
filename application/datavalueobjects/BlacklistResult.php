@@ -5,7 +5,7 @@ namespace LimeSurvey\Datavalueobjects;
 /**
  * Class BlacklistResult
  *
- * This class represents the result of a blacklist operation
+ * This class represents the result of a blocklist operation
  *
  * @package LimeSurvey\Datavalueobjects
  */
@@ -21,7 +21,8 @@ class BlacklistResult
      * @param bool $blacklisted
      * @param string[]|string $messages
      */
-    public function __construct($blacklisted = false, $messages = ['']) {
+    public function __construct($blacklisted = false, $messages = [''])
+    {
         $this->blacklisted = $blacklisted;
         if (!is_array($messages)) {
             $messages = [$messages];

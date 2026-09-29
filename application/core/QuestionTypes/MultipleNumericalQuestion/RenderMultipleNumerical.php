@@ -24,8 +24,8 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
         'triangle',
         'custom',
     ];
-    
-    
+
+
     private $sSeparator;
     private $useSliderLayout;
 
@@ -45,41 +45,45 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->setSubquestions();
         $this->setPrefixAndSuffix();
-        
+
         $this->sSeparator   = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
         $this->useSliderLayout = $this->getQuestionAttribute('slider_layout') == 1;
-        
+
         $this->widthArray = $this->getLabelInputWidth();
         $this->extraclass   .= " numberonly";
 
         if (intval($this->setDefaultIfEmpty($this->getQuestionAttribute('maximum_chars'), 0)) > 0) {
             // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-            $this->maxlength = intval(trim($this->getQuestionAttribute('maximum_chars')));
+            $this->maxlength = intval(trim((string) $this->getQuestionAttribute('maximum_chars')));
             $this->extraclass .= " ls-input-maxchars";
         }
 
-        if (ctype_digit(trim($this->getQuestionAttribute('input_size')))) {
-            $this->inputsize = trim($this->getQuestionAttribute('input_size'));
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('input_size')))) {
+            $this->inputsize = trim((string) $this->getQuestionAttribute('input_size'));
             $this->extraclass .= " ls-input-sized";
         }
 
         if ($this->useSliderLayout) {
             $this->sCoreClasses  .= " slider-list";
-            $this->extraclass   .= " withslider";
             $this->sliderOptionsArray = [
-                'slider_step'          => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_accuracy')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_min'           => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_min')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_max'           => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_max')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_default'       => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_default')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_orientation'   => (trim($this->getQuestionAttribute('slider_orientation')) == 0) ? 'horizontal' : 'vertical',
-                'slider_custom_handle' => (trim($this->getQuestionAttribute('slider_custom_handle'))),
+                'slider_step'          => trim((string) LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_accuracy')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
+                'slider_min'           => trim((string) LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_min')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
+                'slider_max'           => trim((string) LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_max')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
+                'slider_default'       => trim((string) LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_default')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
+                'slider_custom_handle' => (trim((string) $this->getQuestionAttribute('slider_custom_handle'))),
             ];
-            
+            if ((trim($this->getQuestionAttribute('slider_orientation')) == 0)) {
+                $this->sliderOptionsArray['slider_orientation'] = 'horizontal';
+                $this->extraclass .= ' ' . 'withslider' . ' ' . 'ls-slider-item-horizontal';
+            } else {
+                $this->sliderOptionsArray['slider_orientation'] = 'vertical';
+                $this->extraclass .= ' ' . 'withslider' . ' ' . 'ls-slider-item-vertical';
+            }
             $this->sliderOptionsArray['slider_min'] = (is_numeric($this->sliderOptionsArray['slider_min'])) ? $this->sliderOptionsArray['slider_min'] : 0;
             $this->sliderOptionsArray['slider_mintext'] = $this->sliderOptionsArray['slider_min'];
             $this->sliderOptionsArray['slider_max'] = (is_numeric($this->sliderOptionsArray['slider_max'])) ? $this->sliderOptionsArray['slider_max'] : 100;
             $this->sliderOptionsArray['slider_maxtext'] = $this->sliderOptionsArray['slider_max'];
-            
+
             //Eventually reset numbers with wrong decimal separator
             if ($this->sSeparator != '.') {
                 $this->sliderOptionsArray['slider_step']    = preg_replace('/' . $this->sSeparator . '/', '.', $this->sliderOptionsArray['slider_step']);
@@ -87,7 +91,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
             $this->sliderOptionsArray['slider_step']    = (is_numeric($this->sliderOptionsArray['slider_step'])) ? $this->sliderOptionsArray['slider_step'] : 1;
             $this->sliderOptionsArray['slider_default'] = (is_numeric($this->sliderOptionsArray['slider_default'])) ? $this->sliderOptionsArray['slider_default'] : "";
-            $this->sliderOptionsArray['slider_handle']  = $this->handleOptions[(trim($this->getQuestionAttribute('slider_handle')))];
+            $this->sliderOptionsArray['slider_handle']  = $this->handleOptions[(trim((string) $this->getQuestionAttribute('slider_handle')))];
             $this->sliderOptionsArray['slider_default_set'] = (bool) ($this->getQuestionAttribute('slider_default_set') && $this->sliderOptionsArray['slider_default'] !== '');
 
             // Put the slider init to initial state (when no click is set or when 'reset')
@@ -99,10 +103,10 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
             } elseif ($this->getQuestionAttribute('slider_middlestart') == 1) {
                 $this->sliderOptionsArray['slider_position'] = intval(($this->sliderOptionsArray['slider_max'] + $this->sliderOptionsArray['slider_min']) / 2);
             }
-            
+
             $this->sliderOptionsArray['slider_separator'] = $this->setDefaultIfEmpty($this->getQuestionAttribute('slider_separator'), "");
             $this->sliderOptionsArray['slider_reset'] = ($this->getQuestionAttribute('slider_reset')) ? 1 : 0;
-    
+
             // Slider reversed value
             if ($this->getQuestionAttribute('slider_reversed') == 1) {
                 $this->sliderOptionsArray['slider_reversed'] = 'true';
@@ -138,7 +142,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
             $this->prefix = $sPrefix;
             $this->extraclass .= " withprefix";
         }
-        
+
         $sSuffix = $this->setDefaultIfEmpty($this->getQuestionAttribute('suffix', $this->sLanguage), '');
         if ($sSuffix != '') {
             $this->suffix = $sSuffix;
@@ -155,7 +159,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
     {
         $aRows = [];
         foreach ($this->aSubQuestions[0] as $oSubquestion) {
-            $myfname = $this->sSGQA . $oSubquestion->title;
+            $myfname = $this->sSGQA . '_S' . $oSubquestion->qid;
             $sSubquestionText = $this->setDefaultIfEmpty($oSubquestion->questionl10ns[$this->sLanguage]->question, "&nbsp;");
             $labelText = $sSubquestionText;
 
@@ -179,8 +183,8 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                     $dispVal = rtrim(rtrim($dispVal, "0"), ".");
                 }
             }
-            $sUnformatedValue = $dispVal; // Send the real value for slider
-            $dispVal = str_replace('.', $this->sSeparator, $dispVal);
+            $sUnformattedValue = $dispVal; // Send the real value for slider
+            $dispVal = str_replace('.', $this->sSeparator, (string) $dispVal);
 
             if (!$this->useSliderLayout) {
                 $aRows[] = array(
@@ -204,25 +208,14 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                     'integeronly'            => $this->getQuestionAttribute('num_value_int_only'),
                 );
             } else {
-                $sliderWidth = 12;
-
                 if ($this->sliderOptionsArray['slider_separator'] != '') {
-                    $aAnswer     = explode($this->sliderOptionsArray['slider_separator'], $sSubquestionText);
+                    $aAnswer     = explode($this->sliderOptionsArray['slider_separator'], (string) $sSubquestionText);
                     $theanswer   = $aAnswer[0] ?? "";
                     $labelText   = $theanswer;
                     $sliderleft  = $aAnswer[1] ?? null;
                     $sliderright = $aAnswer[2] ?? null;
-
-                    /* sliderleft and sliderright is in input, but is part of answers then take label width */
-                    if (!empty($sliderleft)) {
-                        $sliderWidth = $sliderWidth - 2;
-                    }
-                    
-                    if (!empty($sliderright)) {
-                        $sliderWidth = $sliderWidth - 2;
-                    }
                 } else {
-                    $theanswer = $sQuestionText;
+                    $theanswer = $sSubquestionText;
                     $sliders   = false;
                 }
 
@@ -243,8 +236,8 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                         'dispVal'                => $dispVal,
                         'sliderleft'             => $sliderleft,
                         'sliderright'            => $sliderright,
-                        'sliderWidth'            => $sliderWidth,
-                        'sUnformatedValue'       => $sUnformatedValue,
+                        'sUnformattedValue'      => $sUnformattedValue,
+                        'sUnformatedValue'       => $sUnformattedValue, // Backward compatibility for custom question themes
                         'extraclass'             => $this->extraclass,
                         'qid'                    => $this->oQuestion->qid,
                         'prefix'                 => $this->prefix,
@@ -269,8 +262,8 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
     public function renderSlider($sCoreClasses)
     {
-        
-        
+
+
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/answer',
             array(
@@ -281,7 +274,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
             true
         );
     }
-    
+
     public function renderInput($sCoreClasses)
     {
         return Yii::app()->twigRenderer->renderQuestion(
@@ -294,7 +287,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
             true
         );
     }
-    
+
     public function render($sCoreClasses = '')
     {
         $answer = '';
@@ -320,16 +313,17 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
         $displaytotal     = false;
         $equals_num_value = false;
-        if (trim($this->getQuestionAttribute('equals_num_value')) != ''
-        || trim($this->getQuestionAttribute('min_num_value')) != ''
-        || trim($this->getQuestionAttribute('max_num_value')) != ''
+        if (
+            trim((string) $this->getQuestionAttribute('equals_num_value')) != ''
+            || trim((string) $this->getQuestionAttribute('min_num_value')) != ''
+            || trim((string) $this->getQuestionAttribute('max_num_value')) != ''
         ) {
             $qinfo = LimeExpressionManager::GetQuestionStatus($this->oQuestion->qid);
 
-            $sumRemainingEqn = LimeExpressionManager::ProcessString('{'.$qinfo['sumRemainingEqn'].'}', $this->oQuestion->qid);
-            $sumEqn = LimeExpressionManager::ProcessString('{'.$qinfo['sumEqn'].'}', $this->oQuestion->qid);
+            $sumRemainingEqn = LimeExpressionManager::ProcessString('{' . $qinfo['sumRemainingEqn'] . '}', $this->oQuestion->qid);
+            $sumEqn = LimeExpressionManager::ProcessString('{' . $qinfo['sumEqn'] . '}', $this->oQuestion->qid);
 
-            if (trim($this->getQuestionAttribute('equals_num_value')) != '') {
+            if (trim((string) $this->getQuestionAttribute('equals_num_value')) != '') {
                 $equals_num_value = true;
             }
             $displaytotal = true;

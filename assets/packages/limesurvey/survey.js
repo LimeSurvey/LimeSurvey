@@ -21,24 +21,24 @@ function triggerEmRelevance(){
 /* On question */
 function triggerEmRelevanceQuestion(){
     /* Action on this question */
-    $("[id^='question']").on('relevance:on',function(event,data) {
+    $("[id^='question'].question-container").on('relevance:on',function(event,data) {
         /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. 
         Don't want to stop propagation. */
         if(event.target != this) return; 
         $(this).removeClass("ls-irrelevant ls-hidden");
     });
-    $("[id^='question']").on('relevance:off',function(event,data) {
+    $("[id^='question'].question-container").on('relevance:off',function(event,data) {
         if(event.target != this) return;
         $(this).addClass("ls-irrelevant ls-hidden");
     });
     /* In all in one mode : need updating group too */
-    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:on',function(event,data) {
+    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question'].question-container").on('relevance:on',function(event,data) {
         if(event.target != this) return;
         $(this).closest("[id^='group-']").removeClass("ls-hidden");
     });
-    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:off',function(event,data) {
+    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question'].question-container").on('relevance:off',function(event,data) {
         if(event.target != this) return;
-        if($(this).closest("[id^='group-']").find("[id^='question']").length==$(this).closest("[id^='group-']").find("[id^='question'].ls-hidden").length){
+        if($(this).closest("[id^='group-']").find("[id^='question'].question-container").length==$(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length){
             $(this).closest("[id^='group-']").addClass("ls-hidden");
         }
     });
@@ -56,21 +56,29 @@ function triggerEmRelevanceGroup(){
 }
 /* On subquestion and answers-list */
 function triggerEmRelevanceSubQuestion(){
-    $("[id^='question']").on('relevance:on',"[id^='javatbd']",function(event,data) {
+    $("[id^='question'].question-container").on('relevance:on',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
         $(this).removeClass("ls-irrelevant ls-"+data.style);
+        /* In all in one mode : need updating group too */
+        $(this).closest("[id^='group-']").removeClass("ls-hidden");
         if(data.style=='disabled'){
-            $(event.target).find('input').each(function(itrt, item ){
-                $(item).prop("disabled", false );
-            });
+            if($(event.target).hasClass("answer-item")) {
+                $(event.target).find('input').each(function(itrt, item ){
+                    $(item).prop("disabled", false );
+                });
+            } else {
+                $(event.target).find('.answer-item input').each(function(itrt, item ){
+                    $(item).prop("disabled", false );
+                });
+            }
         }
         if(data.style=='hidden'){
             updateLineClass($(this));
             updateRepeatHeading($(this).closest(".ls-answers"));
         }
     });
-    $("[id^='question']").on('relevance:off',"[id^='javatbd']",function(event,data) {
+    $("[id^='question'].question-container").on('relevance:off',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
         $(this).addClass("ls-irrelevant ls-"+data.style);
@@ -89,7 +97,10 @@ function triggerEmRelevanceSubQuestion(){
             updateLineClass($(this));
             updateRepeatHeading($(this).closest(".ls-answers"));
         }
-            
+        /* In all in one mode : need updating group too */
+        if ($(this).closest("[id^='group-']").find("[id^='question'].question-container").length == $(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length) {
+            $(this).closest("[id^='group-']").addClass("ls-hidden");
+        }
         console.ls.log($(this).find('input[disabled]'));
     });
 }
@@ -139,7 +150,7 @@ function manageIndex(){
     /* only needed if it's not inside form (form#limesurvey) */
     $(".ls-index-buttons").on('click','[name="move"]',function(e){
         if(!$(this).closest('form').length && $('form#limesurvey').length==1){
-            $(this).clone().addClass("hidden").appendTo('form#limesurvey').click();
+            $(this).clone().addClass("d-none").appendTo('form#limesurvey').click();
         }
     });
 }
@@ -280,21 +291,45 @@ function activateActionLink(){
     if(!$('form#limesurvey').length){
         $('[data-limesurvey-submit]').remove();
     }
-    /* Submit limesurvey form on click */
+    /* Try to submit limesurvey form on click */
     else{
         $('[data-limesurvey-submit]').on('click',function(event) {
             event.preventDefault();
             var submit=$(this).data('limesurvey-submit');
             var confirmedby=$(this).data('confirmedby');
+            /* Trigger click on a button, needed for policy for example */
+            var submitbtn=false;
             if(!confirmedby){
                 $.each(submit, function(name, value) {
-                    $("<input/>",{
-                        'type':"hidden",
-                        'name':name,
-                        'value':value,
-                    }).appendTo('form#limesurvey');
+                    if ($("form#limesurvey [name='"+name+"']").length == 0) {
+                        $("<input/>",{
+                            'type':"hidden",
+                            'name':name,
+                            'value':value,
+                        }).appendTo('form#limesurvey');
+                    } else {
+                        $("form#limesurvey [name='"+name+"']").last().attr('value',value);
+                        /* If it was a submit button : choose it for jquery action done on load */
+                        if ($("form#limesurvey [name='"+name+"']").last().attr('type') == "submit") {
+                            submitbtn = $("form#limesurvey [name='"+name+"']").last();
+                        }
+                    }
                 });
-                $('form#limesurvey').submit();
+                /* If no submit button : create one */
+                if (!submitbtn) {
+                    if ($("#js-limesurvey-submit").length == 0) {
+                        $("<input/>",{
+                            'type':"submit",
+                            'id':"js-limesurvey-submit",
+                            'name':"js-limesurvey-submit",
+                            'class':"d-none ls-hidden",
+                            'style':"display:none",
+                            'value':"js-limesurvey-submit",
+                        }).appendTo('form#limesurvey');
+                    }
+                    submitbtn=$("#js-limesurvey-submit");
+                }
+                $(submitbtn).trigger('click');
             }else{
                 var submits=$.extend(submit,confirmedby);
                 confirmSurveyDialog($(this).data('confirmlabel'),$(this).text(),submits)
@@ -380,7 +415,7 @@ function triggerEmClassChange(){
 /**
  * has-error management for ls-error-mandatory
  * Only add ls-error-mandatory in PHP currently, not in js : different behaviour after try next and don't try next
- * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no boostrap, for before submit : use only css in template
+ * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no bootstrap, for before submit : use only css in template
  */
 function updateMandatoryErrorClass(){
     $(".ls-error-mandatory .has-error,.ls-error-mandatory.has-error").on("blur",":text,textarea",function(event){
@@ -420,13 +455,16 @@ function activateSoftMandatory(){
     $('#mandatory-soft-alert-box-modal').on('click', function (ev) {
         ev.preventDefault();
         var $form = $('#limesurvey');
-        $form.append('<input type="hidden" name="mandSoft" value="' + $(this).data('movenext') + '" />');
+        $form.find(".ls-mandSoft-checkbox").prop('checked', true);
         $form.find('#ls-button-submit').trigger('click');
         $("#bootstrap-alert-box-modal").modal('hide');
     });
 }
 
 function resetQuestionTimers(sid) {
+    if(!window.localStorage) {
+        return;
+    }
     var surveyTimersItemName = 'limesurvey_timers_by_sid_' + sid;
     var timers = JSON.parse(window.localStorage.getItem(surveyTimersItemName) || "[]");
     timers.forEach(function(timersessionname, idx){

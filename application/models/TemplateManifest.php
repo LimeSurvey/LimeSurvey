@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -39,16 +39,10 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function actualizeLastUpdate()
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $config = simplexml_load_file(realpath($this->xmlFile));
         $config->metadata->lastUpdate = date("Y-m-d H:i:s");
         $config->asXML(realpath($this->xmlFile)); // Belt
         touch($this->path); // & Suspenders ;-)
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
@@ -71,7 +65,9 @@ class TemplateManifest extends TemplateConfiguration
 
         foreach ($filesFromXML as $file) {
             if ($file->attributes()->type == $sType) {
-                $aScreenFiles[] = (string) $file;
+                // prevent accidental linebreaks and empty spaces in xml file string from breaking file path when loading it
+                $file = trim(str_replace(["\r", "\n"], '', $file));
+                $aScreenFiles[] = $file;
             }
         }
 
@@ -235,7 +231,7 @@ class TemplateManifest extends TemplateConfiguration
          * It implies they respect the convention :
          * $aSurveyData[custom screen name][custom variable] = custom variable value
          * Where custom variable value can't be an array.
-         * TODO: for LS5, refactor all the twig views and theme editor so we use only this convetion.
+         * TODO: for LS5, refactor all the twig views and theme editor so we use only this convention.
          * Eg: don't use arrays like $thissurvey['aAssessments']["datas"]["total"][0] or $thissurvey['aGroups'][1]["aQuestions"][1]
         */
         $thissurvey = $this->getCustomScreenData($thissurvey);
@@ -382,6 +378,8 @@ class TemplateManifest extends TemplateConfiguration
 
         $thissurvey['aGroups'][1]["showdescription"] = true;
         $thissurvey['aGroups'][1]["aQuestions"][1]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["SGQ"]           = "1234X56X79";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["type"]          = "L";
         $thissurvey['aGroups'][1]["aQuestions"][1]["mandatory"]     = true;
 
         // If called from command line to generate Twig temp, renderPartial doesn't exist in ConsoleApplication
@@ -394,6 +392,8 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aGroups'][1]["aQuestions"][1]["attributes"]    = 'id="question42"';
 
         $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["SGQ"]           = "1234X56X78";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["type"]          = "T";
         $thissurvey['aGroups'][1]["aQuestions"][2]["mandatory"]     = false;
         if (method_exists(Yii::app()->getController(), 'renderPartial')) {
             $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = Yii::app()->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array('alt' => true), true);
@@ -414,9 +414,9 @@ class TemplateManifest extends TemplateConfiguration
 
         $thissurvey['aAssessments']['show'] = true;
 
-
-        $thissurvey['aError']['title'] = gT("Error");
-        $thissurvey['aError']['message'] = gT("This is an error message example");
+        $thissurvey['aError']['title'] = '<p class=" text-danger inherit-sizes" role="alert">' . gT("Error title") . '</p>';
+        $thissurvey['aError']['message'] = '<p class="message-0">' . gT("This is an error message example") . '</p>';
+        $thissurvey['adminemail'] = 'your-email@example.net';
 
         // Datas for assessments
         $thissurvey['aAssessments']["datas"]["total"][0]["name"]       = gT("Welcome to the Assessment");
@@ -429,15 +429,18 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aAssessments']["datas"]["subtotal_score"][1]      = 3;
         $thissurvey['aAssessments']["datas"]["total_score"]            = 3;
 
+        $thissurvey['aLoadForm']['aCaptcha']['show'] = true;
+        $thissurvey['aLoadForm']['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => 1));
+
         // Those values can be overwritten by XML
-        $thissurvey['name'] = gT("Template Sample");
+        $thissurvey['name'] = gT("Theme sample");
         $thissurvey['description'] =
         "<p>" . gT('This is a sample survey description. It could be quite long.') . "</p>" .
         "<p>" . gT("But this one isn't.") . "<p>";
         $thissurvey['welcome'] =
         "<p>" . gT('Welcome to this sample survey') . "<p>" .
-        "<p>" . gT('You should have a great time doing this') . "<p>";
-        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey');
+        "<p>" . gT('You should have a great time doing this.') . "<p>";
+        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey.');
         $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
 
@@ -487,7 +490,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($filesFromXML as $file) {
             if ($file->attributes()->role == "content") {
                 // The path of the file is defined inside the theme itself.
-                $aExplodedFile = pathinfo($file);
+                $aExplodedFile = pathinfo((string) $file);
                 $sFormatedFile = $aExplodedFile['filename'];
                 return (string) $sFormatedFile;
             }
@@ -497,7 +500,7 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Retreives the absolute path for a file to edit (current template, mother template, etc)
+     * Retrieves the absolute path for a file to edit (current template, mother template, etc)
      * Also perform few checks (permission to edit? etc)
      *
      * @param string $sFile relative path to the file to edit
@@ -525,7 +528,7 @@ class TemplateManifest extends TemplateConfiguration
         if (!file_exists($this->path . $sFile) && !file_exists($this->viewPath . $sFile)) {
             // Copy file from mother template to local directory
             $sSourceFilePath = $this->getFilePath($sFile, $this);
-            $sDestinationFilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig') ? $this->viewPath . $sFile : $this->path . $sFile;
+            $sDestinationFilePath = (pathinfo((string) $sFile, PATHINFO_EXTENSION) == 'twig') ? $this->viewPath . $sFile : $this->path . $sFile;
 
             //PHP 7 seems not to create the folder on copy automatically.
             @mkdir(dirname($sDestinationFilePath), 0775, true);
@@ -537,7 +540,7 @@ class TemplateManifest extends TemplateConfiguration
             if ($sExt == "css" || $sExt == "js") {
                 // Check if that CSS/JS file is in DB/XML
                 $aFiles = $this->getFilesForPackages($sExt, $this);
-                $sFile  = str_replace('./', '', $sFile);
+                $sFile  = str_replace('./', '', (string) $sFile);
 
                 // The CSS/JS file is a configuration one....
                 if (in_array($sFile, $aFiles)) {
@@ -610,47 +613,60 @@ class TemplateManifest extends TemplateConfiguration
         return $otherfiles;
     }
 
-
     /**
+     * Returns the complete URL path to a given template name
      *
+     * @return string template url
+     * @throws CException
      */
     public function getTemplateURL()
     {
         Yii::import('application.helpers.SurveyThemeHelper');
         // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
         if (SurveyThemeHelper::isStandardTemplate($this->sTemplateName)) {
-            return Yii::app()->getConfig("standardthemerooturl") . '/' . $this->sTemplateName . '/';
-        } else {
-            return  Yii::app()->getConfig("userthemerooturl") . '/' . $this->sTemplateName . '/';
+            return App()->getConfig("standardthemerooturl") . '/' . $this->sTemplateName . '/';
         }
 
-    //    return Template::getTemplateURL($this->sTemplateName);
+        return  App()->getConfig("userthemerooturl") . '/' . $this->sTemplateName . '/';
     }
 
-
+    /**
+     * Get buttons/actions for the "Available admin themes", not installed
+     * @return string
+     * @throws CException
+     */
     public function getButtons()
     {
-        $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->sTemplateName));
+        //$sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->sTemplateName));
         $sDeleteUrl   = Yii::app()->getController()->createUrl('admin/themes/sa/deleteAvailableTheme/');
-
+        $templatezip = Yii::app()->getController()->createUrl('admin/themes/sa/templatezip/templatename/' . $this->sTemplateName);
 
         // TODO: load to DB
-        $sEditorLink = "<a
-            id='template_editor_link_" . $this->sTemplateName . "'
-            href='" . $sEditorUrl . "'
-            class='btn btn-default btn-block'>
-                <span class='icon-templates'></span>
-                " . gT('Theme editor') . "
+        $sExportLink = "<a
+            id='button-export'
+            href='" . $templatezip . "'
+            class='btn btn-outline-secondary btn-sm'>
+                <span class='ri-upload-2-fill'></span>
+                " . gT('Export') . "
             </a>";
 
             //
 
         // TODO: Installs Theme (maybe rename importManifest to install ?)
-        $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'frmínstalltheme','name' => 'frmínstalltheme', 'class' => 'btn-block')) .
+        $sLoadLink = CHtml::form(
+            [
+                "themeOptions/importManifest/"
+            ],
+            'post',
+            [
+                'id' => 'frmínstalltheme',
+                'name' => 'frmínstalltheme'
+            ]
+        ) .
                 "<input type='hidden' name='templatename' value='" . $this->sTemplateName . "'>
                 <button id='template_options_link_" . $this->sTemplateName . "'
-                class='btn btn-default btn-block'>
-                    <span class='fa fa-download text-warning'></span>
+                class='btn btn-outline-secondary btn-sm w-100'>
+                    <span class='ri-download-fill'></span>
                     " . gT('Install') . "
                 </button>
                 </form>";
@@ -663,22 +679,23 @@ class TemplateManifest extends TemplateConfiguration
             $sDeleteLink = '<a
               id="template_delete_link_' . $this->sTemplateName . '"
               href="' . $sDeleteUrl . '"
-              data-post=\'{ "templatename": "' . $this->sTemplateName . '" }\'
+              data-post=\'{ "templatename": "' . CHtml::encode($this->sTemplateName) . '" }\'
               data-text="' . gT('Are you sure you want to delete this theme? ') . '"
-              data-button-no="' . gt('Cancel') . '"  
-              data-button-yes="' . gt('Delete') . '"
+              data-button-no="' . gT('Cancel') . '"  
+              data-button-yes="' . gT('Delete') . '"
               data-button-type="btn-danger"
               title="' . gT('Delete') . '"
-              class="btn btn-danger btn-block selector--ConfirmModal">
-                  <span class="fa fa-trash "></span>
+              class="btn btn-danger btn-sm selector--ConfirmModal">
+                  <span class="ri-delete-bin-fill "></span>
                   ' . gT('Delete') . '
                   </a>';
         }
 
-        return $sEditorLink . $sLoadLink . $sDeleteLink;
+        return '<div class="d-grid gap-2">' . $sLoadLink . $sExportLink . $sDeleteLink . '</div>';
     }
 
     /**
+     * Installs an available theme
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      * @param string $sTemplateName the name of the template to import
      * @return boolean true on success | exception
@@ -702,6 +719,7 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['version']          = (string) $oTemplate->config->metadata->version;
         $aDatas['license']          = (string) $oTemplate->config->metadata->license;
         $aDatas['description']      = (string) $oTemplate->config->metadata->description;
+        $aDatas['title']            = (string) $oTemplate->config->metadata->title;
 
         // Engine, files, and options can be inherited from a moter template
         // It means that the while field should always be inherited, not a subfield (eg: all files, not only css add)
@@ -711,7 +729,7 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['view_folder']       = (string) $oREngineTemplate->config->engine->viewdirectory;
         $aDatas['files_folder']      = (string) $oREngineTemplate->config->engine->filesdirectory;
         $aDatas['cssframework_name'] = (string) $oREngineTemplate->config->engine->cssframework->name;
-        $aDatas['cssframework_css']  = self::getAssetsToReplaceFormated($oREngineTemplate->config->engine, 'css'); //self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
+        $aDatas['cssframework_css']  = self::getAssetsToReplaceFormatted($oREngineTemplate->config->engine, 'css'); //self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
         $aDatas['cssframework_js']   = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_js');
         $aDatas['packages_to_load']  = self::formatArrayFields($oREngineTemplate, 'engine', 'packages');
 
@@ -749,7 +767,7 @@ class TemplateManifest extends TemplateConfiguration
             $oTemplateConfiguration->sid = $iSurveyId;
 
             if (isAssociativeArray((array)$xml->config->options)) {
-                $oTemplateConfiguration->options  = TemplateConfig::formatToJsonArray($xml->config->options);
+                $oTemplateConfiguration->options  = TemplateConfig::convertOptionsToJson($xml->config->options[0]);
             }
 
             if ($oTemplateConfiguration->save()) {
@@ -833,7 +851,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function changeDateInDOM($oNewManifest, $sDate = '')
     {
-        $sDate = (empty($sDate)) ? dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust")) : $sDate;
+        $sDate = (empty($sDate)) ? gmdate("Y-m-d H:i") : $sDate;
         $oConfig = $oNewManifest->getElementsByTagName('config')->item(0);
         $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         if ($ometadata->getElementsByTagName('creationDate')) {
@@ -865,16 +883,37 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function rename($sOldName, $sNewName)
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
         $oNewManifest = self::getManifestDOM($sConfigPath);
         self::changeNameInDOM($oNewManifest, $sNewName);
         self::changeDateInDOM($oNewManifest);
         $oNewManifest->save($sConfigPath . "/config.xml");
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
+        self::updateChildrenExtends($sOldName, $sNewName);
+    }
+
+    /**
+     * Update the <extends> node in the manifest of every custom theme (installed or not)
+     * that references $sOldName, so child themes keep resolving their renamed parent.
+     *
+     * @param string $sOldName The previous name of the parent template
+     * @param string $sNewName The new name of the parent template
+     */
+    public static function updateChildrenExtends($sOldName, $sNewName)
+    {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $aUserThemes = SurveyThemeHelper::getTemplateInFolder(Yii::app()->getConfig('userthemerootdir'));
+        foreach ($aUserThemes as $sThemeName => $sThemePath) {
+            if ($sThemeName === $sNewName || !file_exists($sThemePath . '/config.xml')) {
+                continue;
+            }
+            $oManifest = self::getManifestDOM($sThemePath);
+            $oConfig = $oManifest->getElementsByTagName('config')->item(0);
+            $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
+            $oExtendsNode = $ometadata->getElementsByTagName('extends')->item(0);
+            if ($oExtendsNode !== null && $oExtendsNode->nodeValue === $sOldName) {
+                self::changeExtendsInDom($oManifest, $sNewName);
+                $oManifest->save($sThemePath . '/config.xml');
+            }
         }
     }
 
@@ -927,7 +966,7 @@ class TemplateManifest extends TemplateConfiguration
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
         $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         $oOldMailNode   = $ometadata->getElementsByTagName('authorEmail')->item(0);
-        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(Yii::app()->getConfig('siteadminemail')));
+        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars((string) Yii::app()->getConfig('siteadminemail')));
         $ometadata->replaceChild($oNvMailNode, $oOldMailNode);
     }
 
@@ -959,7 +998,7 @@ class TemplateManifest extends TemplateConfiguration
      * 1. Delete files and engine nodes
      * 2. Update the name of the template
      * 3. Change the creation/modification date to the current date
-     * 4. Change the autor name to the current logged in user
+     * 4. Change the author name to the current logged in user
      * 5. Change the author email to the admin email
      *
      * Used in template editor
@@ -974,9 +1013,6 @@ class TemplateManifest extends TemplateConfiguration
         $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
 
         // First we get the XML file
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $oNewManifest = self::getManifestDOM($sConfigPath);
 
         self::deleteEngineInDom($oNewManifest);
@@ -987,41 +1023,50 @@ class TemplateManifest extends TemplateConfiguration
         self::changeExtendsInDom($oNewManifest, $sToExtends);
 
         $oNewManifest->save($sConfigPath . "/config.xml");
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
      * Read the config.xml file of the template and push its contents to $this->config
+     * @throws Exception
      */
-    private function readManifest()
+    private function readManifest(): void
     {
         $this->xmlFile = $this->path . 'config.xml';
 
-        if (file_exists(realpath($this->xmlFile))) {
-            if (\PHP_VERSION_ID < 80000) {
-                $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-            }
-            $sXMLConfigFile        = file_get_contents(realpath($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-            $oDOMConfig = new DOMDocument();
-            $oDOMConfig->loadXML($sXMLConfigFile);
-            $oXPath = new DOMXpath($oDOMConfig);
-            foreach ($oXPath->query('//comment()') as $oComment) {
-                $oComment->parentNode->removeChild($oComment);
-            }
-            $oXMLConfig = simplexml_import_dom($oDOMConfig);
-            $filenames = $oXMLConfig->config->xpath("//file");
-            if ($filenames) {
-                foreach ($filenames as $oFileName) {
-                    $oFileName[0] = get_absolute_path($oFileName[0]);
-                }
-            }
+        if (!file_exists(realpath($this->xmlFile)) && $path = SurveyThemeHelper::getNestedThemeConfigPath($this->sTemplateName)) {
+            $templateDir = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName;
+            $tempDir = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName . '_tmp';
 
-            $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+            mkdir($tempDir);
+            rename($path, $tempDir);
+            rmdirr($templateDir);
+            rename($tempDir, $templateDir);
+
+            $this->xmlFile = $templateDir . DIRECTORY_SEPARATOR .  'config.xml';
+        }
+
+        if (file_exists(realpath($this->xmlFile))) {
+            SurveyThemeHelper::checkConfigFiles($this->xmlFile);
+            $sXMLConfigFile = file_get_contents(
+                realpath($this->xmlFile)
+            ); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $oDOMConfig = new DOMDocument();
+            // the loadXML is error suppressed, so we can check the return value
+            $bLoadXMLSuccess = @$oDOMConfig->loadXML($sXMLConfigFile);
+            if ($bLoadXMLSuccess) {
+                $oXPath = new DOMXpath($oDOMConfig);
+                foreach ($oXPath->query('//comment()') as $oComment) {
+                    $oComment->parentNode->removeChild($oComment);
+                }
+                $oXMLConfig = simplexml_import_dom($oDOMConfig);
+                $filenames = $oXMLConfig->config->xpath("//file");
+                if ($filenames) {
+                    foreach ($filenames as $oFileName) {
+                        $oFileName[0] = get_absolute_path($oFileName[0]);
+                    }
+                }
+
+                $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
             }
         } else {
             throw new Exception(" Error: Can't find a manifest for $this->sTemplateName in ' $this->path ' ");
@@ -1065,7 +1110,7 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Set the template name.
-     * If no templateName provided, then a survey id should be given (it will then load the template related to the survey)
+     * If no templateName provided, then a survey ID should be given (it will then load the template related to the survey)
      *
      * @var     $sTemplateName  string the name of the template
      * @var     $iSurveyId      int    the id of the survey
@@ -1073,9 +1118,9 @@ class TemplateManifest extends TemplateConfiguration
     private function setTemplateName($sTemplateName = '', $iSurveyId = '')
     {
         // If it is called from the template editor, a template name will be provided.
-        // If it is called for survey taking, a survey id will be provided
+        // If it is called for survey taking, a survey ID will be provided
         if ($sTemplateName == '' && $iSurveyId == '') {
-            /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
+            /* Some controller didn't test completely survey ID (PrintAnswersController for example), then set to default here */
             $sTemplateName = App()->getConfig('defaulttheme');
         }
 
@@ -1135,9 +1180,6 @@ class TemplateManifest extends TemplateConfiguration
     public function addFileReplacement($sFile, $sType)
     {
         // First we get the XML file
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $oNewManifest = new DOMDocument();
         $oNewManifest->load($this->path . "config.xml");
 
@@ -1164,9 +1206,6 @@ class TemplateManifest extends TemplateConfiguration
         $oAssetType->appendChild($oAssetElem);
         $oConfig->insertBefore($oFiles, $oOptions);
         $oNewManifest->save($this->path . "config.xml");
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
@@ -1188,7 +1227,7 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Proxy for Yii::app()->clientScript->removeFileFromPackage()
-     * It's not realy needed here, but it is needed for TemplateConfiguration model.
+     * It's not really needed here, but it is needed for TemplateConfiguration model.
      * So, we use it here to have the same interface for TemplateManifest and TemplateConfiguration,
      * So, in the future, we'll can both inherit them from a same object (best would be to extend CModel to create a LSYii_Template)
      *
@@ -1257,7 +1296,7 @@ class TemplateManifest extends TemplateConfiguration
             $this->oOptions = new stdClass();
         }
 
-        // Not mandatory (use package dependances)
+        // Not mandatory (use package dependencies)
         $this->cssFramework             = (!empty($this->config->xpath("//cssframework"))) ? $this->config->engine->cssframework : '';
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
@@ -1315,7 +1354,7 @@ class TemplateManifest extends TemplateConfiguration
      * @param boolean $bInlcudeRemove   also get the files to remove
      * @return stdClass
      */
-    public static function getAssetsToReplaceFormated($oEngine, $sType, $bInlcudeRemove = false)
+    public static function getAssetsToReplaceFormatted($oEngine, $sType, $bInlcudeRemove = false)
     {
         $oAssetsToReplaceFormated = new stdClass();
         if (!empty($oEngine->cssframework->$sType) && !empty($oEngine->cssframework->$sType->attributes()->replace)) {
@@ -1326,6 +1365,19 @@ class TemplateManifest extends TemplateConfiguration
             $oAssetsToReplaceFormated->replace = array(array($sAssetsToReplace, $sAssetsReplacement));
         }
         return $oAssetsToReplaceFormated;
+    }
+
+    /**
+     * Deprecated alias for getAssetsToReplaceFormatted()
+     * @deprecated Use getAssetsToReplaceFormatted() instead
+     * @param string  $sType            css|js the type of file
+     * @param boolean $bInlcudeRemove   also get the files to remove
+     * @return stdClass
+     */
+    public static function getAssetsToReplaceFormated($oEngine, $sType, $bInlcudeRemove = false)
+    {
+        trigger_error('getAssetsToReplaceFormated() is deprecated, use getAssetsToReplaceFormatted() instead', E_USER_DEPRECATED);
+        return self::getAssetsToReplaceFormatted($oEngine, $sType, $bInlcudeRemove);
     }
 
     /**
@@ -1371,20 +1423,15 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Get options_page value from template configuration
+     * Loads the options definition from XML file
+     * @return array|false returns the array of options or false on failing to load the file
      */
     public static function getOptionAttributes($path)
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $file = realpath($path . "config.xml");
         if (file_exists($file)) {
             $sXMLConfigFile        = file_get_contents($file);
             $oXMLConfig = simplexml_load_string($sXMLConfigFile);
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
-            }
             $aOptions['categories'] = array();
 
             foreach ($oXMLConfig->options->children() as $key => $option) {
@@ -1392,26 +1439,80 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['title'] = !empty($option['title']) ? (string)$option['title'] : '';
                 $aOptions['optionAttributes'][$key]['category'] = !empty($option['category']) ? (string)$option['category'] : gT('Simple options');
                 $aOptions['optionAttributes'][$key]['width'] = !empty($option['width']) ? (string)$option['width'] : '2';
+                $aOptions['optionAttributes'][$key]['library'] = !empty($option['library']) ? (string)$option['library'] : '';
+                $aOptions['optionAttributes'][$key]['colorSwatch'] = !empty($option['colorSwatch']) ? (bool)$option['colorSwatch'] : '';
+                /* rows for textarea */
+                $aOptions['optionAttributes'][$key]['rows'] = !empty($option['rows']) ? (string)$option['rows'] : '4';
                 $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string)$option['options'] : '';
                 $aOptions['optionAttributes'][$key]['optionlabels'] = !empty($option['optionlabels']) ? (string)$option['optionlabels'] : '';
+                $aOptions['optionAttributes'][$key]['optionimages'] = !empty($option['optionimages']) ? (string)$option['optionimages'] : '';
                 $aOptions['optionAttributes'][$key]['parent'] = !empty($option['parent']) ? (string)$option['parent'] : '';
 
                 if (!empty($option->dropdownoptions)) {
-                    $dropdownOptions = '';
-                    if ($key == 'font') {
-                        $dropdownOptions .= TemplateManifest::getFontDropdownOptions();
+                    $dropdownOptions = $option->dropdownoptions; // The element to insert into
+                    $dropdownOptionsDom = dom_import_simplexml($dropdownOptions);
+                    if ($key === 'font') {
+                        $dropdownOptionsFonts = TemplateManifest::getFontDropdownOptions();
+                        if (!empty($dropdownOptionsFonts)) {
+                            $fontDropdownOptions = simplexml_load_string($dropdownOptionsFonts); // The element to insert
+                            if ($fontDropdownOptions !== false) {
+                                $child_dom = dom_import_simplexml($fontDropdownOptions);
+                                // Import the child node into the parent's document
+                                $child_imported = $dropdownOptionsDom->ownerDocument->importNode($child_dom, true);
+                                // If the parent has children, insert before the first one.
+                                if ($dropdownOptionsDom->firstChild) {
+                                    $dropdownOptionsDom->insertBefore($child_imported, $dropdownOptionsDom->firstChild);
+                                } else {
+                                    // If the parent has no children, you can just append it (which makes it the first)
+                                    $dropdownOptionsDom->appendChild($child_imported);
+                                }
+                            }
+                        }
                     }
-                    foreach ($option->xpath('//options/' . $key . '/dropdownoptions') as $option) {
-                        $dropdownOptions .= $option->asXml();
+                    $dropdownOptionsString = $dropdownOptions->asXML();
+                    $dropdownOptionsArray = [];
+                    if (isset($dropdownOptions->optgroup)) {
+                        $optgroup = 0;
+                        foreach ($dropdownOptions->optgroup as $XMLElementKey => $XMLElement) {
+                            foreach ($XMLElement->attributes() as $attributeKey => $attributeValue) {
+                                $dropdownOptionsArray[$XMLElementKey][$optgroup]['attributes'][$attributeKey] = (string)$attributeValue;
+                            }
+                            $optionIterator = 0;
+                            /** @var SimpleXMLElement $options */
+                            foreach ($XMLElement->children() as $optionKey => $options) {
+                                $dropdownOptionsArray[$XMLElementKey][$optgroup][$optionKey][$optionIterator]['value'] = (string)$options[0];
+                                foreach ($options->attributes() as $attributeKey => $attributeValue) {
+                                    $dropdownOptionsArray[$XMLElementKey][$optgroup][$optionKey][$optionIterator]['attributes'][$attributeKey]  = (string)$attributeValue;
+                                }
+                                $optionIterator++;
+                            }
+                            $optgroup++;
+                        }
+                    } else {
+                        $optionIterator = 0;
+                        /** @var SimpleXMLElement $options */
+                        foreach ($dropdownOptions->children() as $optionKey => $options) {
+                            $dropdownOptionsArray[$optionKey][$optionIterator]['value'] = (string)$options[0];
+                            foreach ($options->attributes() as $attributeKey => $attributeValue) {
+                                $dropdownOptionsArray[$optionKey][$optionIterator]['attributes'][$attributeKey] = (string)$attributeValue;
+                            }
+                            $optionIterator++;
+                        }
                     }
-
-                    $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptions;
+                    $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptionsString;
+                    $aOptions['optionAttributes'][$key]['dropdownoptionsArray'] = $dropdownOptionsArray;
                 } else {
                     $aOptions['optionAttributes'][$key]['dropdownoptions'] = '';
                 }
 
                 if (!in_array($aOptions['optionAttributes'][$key]['category'], $aOptions['categories'])) {
                     $aOptions['categories'][] = $aOptions['optionAttributes'][$key]['category'];
+                }
+            }
+            // different sorting for react part
+            if (isset($oXMLConfig->optionsOrderReact)) {
+                foreach ($oXMLConfig->optionsOrderReact->children() as $key => $optionOrderReact) {
+                    $aOptions['optionsOrderReact'][$key]['category'] = !empty($optionOrderReact['category']) ? (string)$optionOrderReact['category'] : gT('Display options');
                 }
             }
 
@@ -1427,7 +1528,7 @@ class TemplateManifest extends TemplateConfiguration
         $fontOptions = '';
         $fontPackages = App()->getClientScript()->fontPackages;
         $coreFontPackages = $fontPackages['core'];
-        // TODO: Why not set?
+        // user fonts can only be added while manually inserting files into the uploaddir see fonts.php
         if (isset($fontPackages['user'])) {
             $userFontPackages = $fontPackages['user'];
         } else {
@@ -1439,7 +1540,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($coreFontPackages as $coreKey => $corePackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local Server") . ' - ' . gT("Core") . '">';
+                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("Core") . '">';
             }
             $fontOptions .= '<option class="font-' . $coreKey . '"     value="' . $coreKey . '"     data-font-package="' . $coreKey . '"      >' . $corePackage['title'] . '</option>';
         }
@@ -1452,7 +1553,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($userFontPackages as $userKey => $userPackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local Server") . ' - ' . gT("User") . '">';
+                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("User") . '">';
             }
             $fontOptions .= '<option class="font-' . $userKey . '"     value="' . $userKey . '"     data-font-package="' . $userKey . '"      >' . $userPackage['title'] . '</option>';
         }
@@ -1473,12 +1574,13 @@ class TemplateManifest extends TemplateConfiguration
     {
         $sDescription = $this->config->metadata->description;
 
-          // If wrong Twig in manifest, we don't want to block the whole list rendering
-          // Note: if no twig statement in the description, twig will just render it as usual
+        // If wrong Twig in manifest, we don't want to block the whole list rendering
+        // Note: if no twig statement in the description, twig will just render it as usual
         try {
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->config->metadata->description);
+            $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
-          // It should never happen, but let's avoid to anoy final user in production mode :)
+            // It should never happen, but let's avoid to annoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
                     "Twig error in template " .

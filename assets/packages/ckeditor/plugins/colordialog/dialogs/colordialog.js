@@ -1,6 +1,6 @@
 ﻿/*
- Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
- For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ CKEditor 4 LTS ("Long Term Support") is available under the terms of the Extended Support Model.
 */
 CKEDITOR.dialog.add("colordialog",function(w){function l(){h.getById(p).removeStyle("background-color");m.getContentElement("picker","selectedColor").setValue("");x()}function y(a){a=a.data.getTarget();var c;"td"==a.getName()&&(c=a.getChild(0).getHtml())&&(x(),e=a,e.setAttribute("aria-selected",!0),e.addClass("cke_colordialog_selected"),m.getContentElement("picker","selectedColor").setValue(c))}function x(){e&&(e.removeClass("cke_colordialog_selected"),e.removeAttribute("aria-selected"),e=null)}function D(a){a=
 a.replace(/^#/,"");for(var c=0,b=[];2>=c;c++)b[c]=parseInt(a.substr(2*c,2),16);return 165<=.2126*b[0]+.7152*b[1]+.0722*b[2]}function z(a){!a.name&&(a=new CKEDITOR.event(a));var c=!/mouse/.test(a.name),b=a.data.getTarget(),f;"td"==b.getName()&&(f=b.getChild(0).getHtml())&&(q(a),c?d=b:A=b,c&&b.addClass(D(f)?"cke_colordialog_focused_light":"cke_colordialog_focused_dark"),r(f))}function B(){d&&(d.removeClass("cke_colordialog_focused_light"),d.removeClass("cke_colordialog_focused_dark"));r(!1);d=null}

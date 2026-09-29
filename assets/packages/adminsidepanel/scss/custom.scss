@@ -1,112 +1,20 @@
 /* New adminsidepanel */
 
 #sidebar {
-    padding-top: 15px;
-    width:100%;
 
-    .questiongroup-list-group>li.selected {
-        opacity: 0.9;
-        &.activated {
-            opacity: 1;
-        }
-    }
-
-    .tabbutton.btn-primary {
-        outline: none;
-        &:after {
-            position: absolute;
-            left: 43%;
-            bottom: -12px;
-            font: normal normal normal 14px/1 FontAwesome;
-            font-size: 28px;
-            text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
-            content: "\F078";
-        }
-    }
-    .overflow-auto {
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-    .resize-handle {
-        position: absolute;
-        right: 14px;
-        top: 0;
-        bottom: 0;
-        height: 100%;
-        width: 4px;
-        cursor: col-resize;
-        button {
-            outline: 0;
-            &:focus,
-            &:active,
-            &:hover {
-                outline: 0 !important;
-            }
-            cursor: col-resize;
-            width:100%;
-            height:100%;
-            text-align: left;
-            border-radius: 0;
-            padding: 0px 7px 0px 4px;
-            i {
-                font-size: 12px;
-                width: 5px;
-            }
-        }
-    }
     .transition-animate-width {
         -moz-transition: all 0.5s ease;
         -webkit-transition: all 0.5s ease;
         -ms-transition: all 0.5s ease;
         transition: all 0.5s ease;
     }
-    div[class^="col-"],
-    div[class*=" col-"] {
-        &.nofloat {
-            float: none;
-        }
-    }
-    .button-sub-bar {
-        min-height: 32px;
-    }
+
     &.fill-height,
     .fill-height {
         height: 100%
     }
-    .dragPointer {
-        cursor: move;
-        &.disabled {
-            color: #999999;
-            cursor: not-allowed;
-        }
-    }
-    .question-question-list {
-        .question-question-list-item {
-            padding: 0;
-            .question-question-list-item-drag {
-                margin: 10px 15px;
-            }
-            &.selected {
-                padding-left: 20px;
-                .question-question-list-item-drag {
-                    margin: 10px 10px 10px 5px;
-                }
-            }
-            .question-question-list-item-link {
-                padding: 10px 25px 10px 10px;
-                display: inline-flex;
-                flex-wrap: wrap;
-            }
-        }
-    }
-    .question_text_ellipsize {
-        display: inline-block;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        padding-left: 2px;
-    }
+
+
 }
 
 .bigIcons {
@@ -130,16 +38,16 @@
                 .list-group-item {
                     //padding-left:15px;
                     &:last-of-type {
+                        border-bottom: 1px solid #dadada;
                         margin-bottom: 10px;
                     }
                 }
             }
         }
     }
-    .breadcrumb>li+li:before {
-        padding: 0 5px;
-        content: "\f061";
-        font: normal normal normal 18px/1 FontAwesome;
+    .pager li > a, .pager li > span {
+        border-radius: 4px;
+        margin: 1px;
     }
 }
 
@@ -215,6 +123,8 @@
 #pjax-content {
     .side-body {
         min-height: 0;
+        overflow: hidden;
+
     }
 }
 
@@ -232,62 +142,6 @@
 
 .side-body {
     min-height: 400px;
-}
-
-footer.footer {
-    position: static;
-}
-
-ol.breadcrumb.title-bar-breadcrumb {
-    margin-bottom: 0px;
-    > :first-child {
-        a {
-            &.animate::after {
-                margin-left: 0px;
-            }
-        }
-    }
-    a {
-        text-decoration: none;
-        line-height: 24px;
-        font-size: 18px;
-        &.animate::after {
-            text-align: right;
-            content: '';
-            display: block;
-            width: 0;
-            height: 2px;
-        }
-        &.animate:hover::after {
-            width: 100%;
-        }
-        &.animate.home-icon:hover::after {
-            margin-left: 0;
-            width: 100% !important;
-        }
-    }
-    li {
-        line-height: 24px;
-        font-size: 18px;
-        &.active {
-            font-style: italic
-        }
-        >div {
-            display: inline-block;
-        }
-    }
-    .menu-label {
-        width: 100%;
-        display: block;
-        font-size: 85%;
-        font-style: normal;
-    }
-}
-
-.breadcrumb-title {
-    line-height: 24px;
-    font-size: 18px;
-    padding: 8px 15px;
 }
 
 #pjax-file-load-container {
@@ -323,24 +177,6 @@ ol.breadcrumb.title-bar-breadcrumb {
     }
 }
 
-.btn-group {
-    .btn{
-        input[type=radio],
-        input[type=checkbox] {
-            outline: none;
-            margin:0;
-            padding: 0;
-            border: 0;
-            &:after{
-                display:none;
-            }
-            &:before{
-                display:none;
-            }
-        }
-    }
-}
-
 .blocker-loading {
     display: block;
     height: 96%;
@@ -353,20 +189,23 @@ ol.breadcrumb.title-bar-breadcrumb {
     position: fixed;
     justify-content: center;
     align-items: center;
-    
+
     .blocker-loading-container {
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100%;
         width: 100%;
-        
+
         .loading-icon-fa {
             display: flex;
             z-index: 9999;
             font-size: 13rem;
         }
     }
+}
+.simpleWrapper {
+    z-index: 999;
 }
 @media(max-width: 768px) {
     .navbar-header {
@@ -383,8 +222,176 @@ ol.breadcrumb.title-bar-breadcrumb {
         padding-right:10px;
     }
     #vue-apps-main-container,
-    footer.footer,
     .surveymanagerbar {
         margin-left:22px
     }
 }
+
+.black-caret {
+    color: black;
+}
+
+div[class^="col-"],
+div[class*=" col-"] {
+    &.nofloat {
+        float: none;
+    }
+}
+
+// Original _questionsgroups.vue scoped styles
+.scoped-bottom-bar {
+    align-self: flex-end;
+}
+.scoped-toolbuttons-left {
+    flex: 3 0 auto;
+    align-self: flex-start;
+    .btn {
+        flex: 1;
+    }
+}
+.scoped-toolbuttons-right {
+    flex: 2 1 auto;
+    align-self: flex-end;
+    white-space: nowrap;
+    .btn {
+        float: right;
+    }
+}
+.list-group-item.question-question-list-item .editIcon {
+    margin: 10px 10px 10px 5px;
+}
+.display-as-container {
+    display: block;
+}
+#questionexplorer {
+    overflow: auto;
+    background-color: #fff;
+    min-height: 100vh;
+}
+.question-question-list-item .dropdown-menu li a.disabled {
+    opacity: 0.5;
+}
+
+// Drag and drop styles
+.list-group-item.dragged,
+.question-question-list-item.dragged {
+    opacity: 0.5;
+    background-color: #f0f0f0;
+}
+
+.dragPointer {
+    cursor: grab;
+
+    &:active {
+        cursor: grabbing;
+    }
+
+    &.disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}
+
+// Dropdown 3-dot icons - always visible
+.questiongroup-dropdown,
+.question-dropdown {
+    display: block;
+}
+
+// Group expand/collapse toggle: keep the theme's .btn sizing from making it taller
+// than the group name's line, so the chevron lines up with the text
+#sidebar .q-group .toggle-questiongroup.btn {
+    display: flex;
+    align-items: center;
+    height: 24px;
+    min-height: 0;
+    line-height: 1;
+
+    i {
+        font-size: 16px;
+        line-height: 1;
+    }
+}
+
+// Reserve space on the group name for the absolutely-positioned badge + actions
+// menu so a long name truncates with an ellipsis before them instead of running underneath.
+#sidebar .q-group .questiongroup-link {
+    padding-right: 70px;
+}
+
+// Let the question name fill the row up to the absolutely-positioned actions menu,
+// reserving space for it. Replaces the fixed col-9 width, which truncated too early.
+// The #questionexplorer id keeps this ahead of the theme's padding on this element.
+#sidebar #questionexplorer .question-question-list-item-link {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-right: 40px;
+}
+
+.question-question-list-item.resize-covered:hover .question-dropdown {
+    right: 34px !important;
+}
+
+// Same for question groups: shift the badge + actions menu clear of the resize button.
+.q-group.resize-covered:hover .position-absolute {
+    right: 29px !important;
+}
+
+// Sidebar loader overlay
+.sidebar_loader {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    background: rgba(231, 231, 231, 0.3);
+    z-index: 4501;
+    box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);
+    top: 0;
+}
+
+// Resize handle styles
+.resize-handle {
+    position: absolute;
+    right: -20px;
+    top: 0;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: ew-resize;
+    pointer-events: none;
+
+    .resize-btn {
+        background: transparent;
+        border: none;
+        cursor: ew-resize;
+        padding: 4px;
+        color: #888;
+        transition: color 0.2s;
+        pointer-events: auto;
+
+        &:hover {
+            color: #333;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    #sidebar .resize-handle {
+        &>button {
+            width: 20px;
+            background: var(--LS-admintheme-basecolor);
+        }
+    }
+}
+
+.scoped-placeholder-greyed-area {
+    display: none;
+
+    @media (max-width: 768px) {
+        display: block;
+        background: rgba(125, 125, 125, 0.2);
+        height: 100%;
+        width: 20vw;
+    }
+}
+

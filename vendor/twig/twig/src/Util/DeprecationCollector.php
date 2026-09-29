@@ -17,17 +17,12 @@ use Twig\Source;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
- *
- * @final
  */
-class DeprecationCollector
+final class DeprecationCollector
 {
-    private $twig;
-    private $deprecations;
-
-    public function __construct(Environment $twig)
-    {
-        $this->twig = $twig;
+    public function __construct(
+        private Environment $twig,
+    ) {
     }
 
     /**
@@ -38,7 +33,7 @@ class DeprecationCollector
      *
      * @return array An array of deprecations
      */
-    public function collectDir($dir, $ext = '.twig')
+    public function collectDir(string $dir, string $ext = '.twig'): array
     {
         $iterator = new \RegexIterator(
             new \RecursiveIteratorIterator(
@@ -56,11 +51,16 @@ class DeprecationCollector
      *
      * @return array An array of deprecations
      */
-    public function collect(\Traversable $iterator)
+    public function collect(\Traversable $iterator): array
     {
-        $this->deprecations = [];
+        $deprecations = [];
+        set_error_handler(static function ($type, $msg) use (&$deprecations) {
+            if (\E_USER_DEPRECATED === $type) {
+                $deprecations[] = $msg;
+            }
 
-        set_error_handler([$this, 'errorHandler']);
+            return false;
+        });
 
         foreach ($iterator as $name => $contents) {
             try {
@@ -72,21 +72,6 @@ class DeprecationCollector
 
         restore_error_handler();
 
-        $deprecations = $this->deprecations;
-        $this->deprecations = [];
-
         return $deprecations;
     }
-
-    /**
-     * @internal
-     */
-    public function errorHandler($type, $msg)
-    {
-        if (E_USER_DEPRECATED === $type) {
-            $this->deprecations[] = $msg;
-        }
-    }
 }
-
-class_alias('Twig\Util\DeprecationCollector', 'Twig_Util_DeprecationCollector');

@@ -8,12 +8,12 @@
  */
 #}
 {% set opts = defaultValues[lang][question.type][0] %}
-<div class="form-group">
-    <label class="control-label" for='defaultvalues[{{ lang }}][0]'>
+<div class="mb-3">
+    <label class="form-label" for='defaultvalues[{{ lang }}][0]'>
         {{ gT("Default answer value:") }}
     </label>
     <select
-        class='form-control'
+        class='form-select'
         name='defaultvalues[{{ lang }}][0]'
         id='defaultvalues[{{ lang }}][0]'
     >
@@ -28,10 +28,10 @@
     </select>
 </div>
 {%  if question.other == 'Y' %}
-    <div class="form-group col-sm-12">
-        <label class="control-label" for='other[{{ lang }}][0]'>
+    <div class="mb-3">
+        <label class="form-label" for='other[{{ lang }}][0]'>
             {{ gT("Default value for option 'Other':") }}
         </label>
-        <input type='text' name='other[{{ lang }}][0]' id='other[{{ lang }}][0]' value='{{ defaultValues[lang][question.type]['Ydefaultvalue'] }}'>
+        <input type='text' class='form-control' name='other[{{ lang }}][0]' id='other[{{ lang }}][0]' value='{{ defaultValues[lang][question.type]['Ydefaultvalue'] }}'>
     </div>
 {% endif %}

@@ -12,26 +12,25 @@
 namespace Twig\Node\Expression\Binary;
 
 use Twig\Compiler;
+use Twig\Node\Expression\ReturnBoolInterface;
 
-class StartsWithBinary extends AbstractBinary
+class StartsWithBinary extends AbstractBinary implements ReturnBoolInterface
 {
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $left = $compiler->getVarName();
         $right = $compiler->getVarName();
         $compiler
-            ->raw(sprintf('(is_string($%s = ', $left))
+            ->raw(\sprintf('(is_string($%s = ', $left))
             ->subcompile($this->getNode('left'))
-            ->raw(sprintf(') && is_string($%s = ', $right))
+            ->raw(\sprintf(') && is_string($%s = ', $right))
             ->subcompile($this->getNode('right'))
-            ->raw(sprintf(') && (\'\' === $%2$s || 0 === strpos($%1$s, $%2$s)))', $left, $right))
+            ->raw(\sprintf(') && str_starts_with($%1$s, $%2$s))', $left, $right))
         ;
     }
 
-    public function operator(Compiler $compiler)
+    public function operator(Compiler $compiler): Compiler
     {
         return $compiler->raw('');
     }
 }
-
-class_alias('Twig\Node\Expression\Binary\StartsWithBinary', 'Twig_Node_Expression_Binary_StartsWith');

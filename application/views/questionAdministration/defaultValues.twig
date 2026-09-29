@@ -16,7 +16,7 @@
  *   - Case 2: answerscales = 0 and subquestions = 1
  *   - Case 3: answerscales = 0 and subquestions = 0
  *
- * See QuestionAdministrationController::updateQuestionDefaultValues() for details.
+ * See QuestionAggregateService\DefaultValuesService::save() for details.
  */
 #}
 {% set first=true %}
@@ -73,11 +73,11 @@
         {% endif %}
 
         {% if first and allLanguages|length > 1 %}
-            <div class="form-group col-sm-12">
-                <label class="control-label" for='samedefault'>
-                    {{ gT('Use same default value across languages:') }}
+            <div class="form-check mb-3">
+                <input type='checkbox' class="form-check-input" name='samedefault' id='samedefault' value='1' {{ question['same_default'] ? 'checked="checked"' : '' }} />
+                <label class="form-check-label" for='samedefault'>
+                    {{ gT('Use same default value across languages') }}
                 </label>
-                <input type='checkbox' name='samedefault' id='samedefault' {{ question['same_default'] ? 'checked="checked"' : '' }} />
             </div>
         {% endif %}
     </div>

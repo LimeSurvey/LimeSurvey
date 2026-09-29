@@ -6,7 +6,6 @@
  *
  * @var $id
  * @var $hint_comment
- * @var $kpclass
  * @var $name
  * @var $tarows
  * @var $has_comment_saved
@@ -20,7 +19,7 @@
 
 <!-- answer -->
 <div class="{{ coreClass }} row" role="group" aria-labelledby="ls-question-text-{{ basename }}">
-    <div class="answers-list radio-list col-sm-6 col-xs-12">
+    <div class="answers-list radio-list col-md-6 col-12">
         <ul class="list-unstyled" role="radiogroup">
                 {# rows/row.php #}
                 {{ sRows }}
@@ -33,13 +32,13 @@
         }}
     </div>
 
-    <div class="form-group answer-item text-item col-sm-6 col-xs-12">
+    <div class="mb-3 answer-item text-item col-md-6 col-12">
         <label class="control-label" for="{{ id }}">
             {{ processString(hint_comment) }}:
         </label>
         {{ C.Html.textArea(name,comment_saved,({
             'id' : id,
-            'class' : "form-control"~kpclass,
+            'class' : "form-control",
             'rows' : tarows
         }))
         }}

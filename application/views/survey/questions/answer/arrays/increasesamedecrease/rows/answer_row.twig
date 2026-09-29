@@ -2,6 +2,7 @@
 
  * Array, Increase Same Decrease
  *
+ * @var $basename
  * @var $myfname
  * @var $sDisplayStyle
  * @var $answertext
@@ -21,7 +22,7 @@
 <!-- answer_row -->
 <tr id="javatbd{{ myfname }}" class="row-inc-same-dec answers-list radio-list {% if odd %}ls-odd{% else %}ls-even{% endif %} {% if error %} ls-error-mandatory has-error{%endif %}" role="radiogroup"  aria-labelledby="answertext{{ myfname }}">
     <!-- Answer text /  Errors -->
-    <th id="answertext{{ myfname }}" class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
+    <th id="answertext{{ myfname }}" class="answertext control-label{% if answerwidth==0 %} visually-hidden{% endif %}" role="rowheader">
         {{ processString(answertext) }}
         {# Value for expression manager javascript (use id) ; no need to submit #}
         {{ C.Html.hiddenField("java"~myfname,value,({
@@ -37,10 +38,11 @@
             type="radio"
             name="{{ myfname }}"
             id="answer{{ myfname }}-I"
+            aria-labelledby="answer{{ basename }}-I"
             value="I"
             {{ Ichecked }}
             />
-        <label for="answer{{ myfname }}-I" class="ls-label-xs-visibility">
+        <label for="answer{{ myfname }}-I" class="ls-label-xs-visibility" aria-hidden="true">
             {{ gT("Increase") }}
         </label>
     </td>
@@ -51,10 +53,11 @@
             type="radio"
             name="{{ myfname }}"
             id="answer{{ myfname }}-S"
+            aria-labelledby="answer{{ basename }}-S"
             value="S"
             {{ Schecked }}
         />
-        <label for="answer{{ myfname }}-S" class="ls-label-xs-visibility">
+        <label for="answer{{ myfname }}-S" class="ls-label-xs-visibility" aria-hidden="true">
             {{ gT("Same") }}
         </label>
     </td>
@@ -65,10 +68,11 @@
             type="radio"
             name="{{ myfname }}"
             id="answer{{ myfname }}-D"
+            aria-labelledby="answer{{ basename }}-D"
             value="D"
             {{ Dchecked }}
         />
-        <label for="answer{{ myfname }}-D" class="ls-label-xs-visibility">
+        <label for="answer{{ myfname }}-D" class="ls-label-xs-visibility" aria-hidden="true">
             {{ gT("Decrease") }}
         </label>
     </td>
@@ -80,10 +84,11 @@
                 type="radio"
                 name="{{ myfname }}"
                 id="answer{{ myfname }}-"
+                aria-labelledby="answer{{ basename }}-"
                 value=""
                 {{ NAchecked }}
             />
-            <label for="answer{{ myfname }}-" class="ls-label-xs-visibility">
+            <label for="answer{{ myfname }}-" class="ls-label-xs-visibility" aria-hidden="true">
                 {{ gT("No answer") }}
             </label>
         </td>

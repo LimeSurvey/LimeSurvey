@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /**
@@ -17,26 +19,49 @@ $minVersion = ($debug > 0) ? "" : ".min";
 if (isset($_GET['isAjax'])) {
     return array();
 }
+
+// When adding new fonts, please keep fonts ordered alphabetically
 $coreFonts = array(
-    
+
+    'font-ibm-sans' => array(
+        'title' => 'IBM Sans',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/ibm-plex-sans',
+        'basePath' => 'fonts.ibm-plex-sans',
+        'css' => array(
+            'ibm-sans.css',
+        ),
+    ),
+
+    'font-ibm-serif' => array(
+        'title' => 'IBM Plex Serif',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/ibm-plex-serif',
+        'basePath' => 'fonts.ibm-plex-serif',
+        'css' => array(
+            'ibm-serif.css',
+        ),
+    ),
+
+    'remix' => array(
+        'title' => 'Remix Icon',
+        'type' => 'core',
+        //'basePath' => 'vendor.bootstrap', // Need fix vendor alias
+        'devBaseUrl' => 'assets/fonts/font-src/remix',
+        'basePath' => 'fonts.font-src.remix',
+        'css' => array(
+            'remixicon.css',
+        ),
+    ),
+
     'fontawesome' => array(
         'title' => 'Font Awesome',
         'type' => 'core',
         //'basePath' => 'vendor.bootstrap', // Need fix vendor alias
         'devBaseUrl' => 'assets/fonts/font-src/fontawesome/',
         'basePath' => 'fonts.font-src.fontawesome',
-        'css'=> array(
-            'css/font-awesome'.$minVersion.'.css',
-        ),
-    ),
-
-    'font-roboto' => array(
-        'title' => 'Roboto',
-        'type' => 'core',
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
         'css' => array(
-            'roboto.css',
+            'css/font-awesome' . $minVersion . '.css',
         ),
     ),
 
@@ -50,13 +75,13 @@ $coreFonts = array(
         ),
     ),
 
-    'font-noto' => array(
-        'title' => 'Noto',
+    'font-lato' => array(
+        'title' => 'Lato',
         'type' => 'core',
         'devBaseUrl' => 'assets/fonts/',
         'basePath' => 'fonts',
         'css' => array(
-            'noto.css',
+            'lato.css',
         ),
     ),
 
@@ -70,25 +95,26 @@ $coreFonts = array(
         ),
     ),
 
-    'font-ubuntu' => array(
-        'title' => 'Ubuntu',
+    'font-noto' => array(
+        'title' => 'Noto',
         'type' => 'core',
         'devBaseUrl' => 'assets/fonts/',
         'basePath' => 'fonts',
         'css' => array(
-            'ubuntu.css',
+            'noto.css',
         ),
     ),
 
-    'font-lato' => array(
-        'title' => 'Lato',
+    'font-roboto' => array(
+        'title' => 'Roboto',
         'type' => 'core',
         'devBaseUrl' => 'assets/fonts/',
         'basePath' => 'fonts',
         'css' => array(
-            'lato.css',
+            'roboto.css',
         ),
     ),
+
 
     // see: https://www.w3schools.com/cssref/css_websafe_fonts.asp
     'font-websafe' => array(
@@ -101,13 +127,54 @@ $coreFonts = array(
         ),
     ),
 
+    'font-opensans' => array(
+        'title' => 'Open Sans',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'opensans.css',
+        ),
+    ),
+
+    'font-source-sans-pro' => array(
+        'title' => 'Source Sans Pro',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'source-sans-pro.css',
+        ),
+    ),
+
+    'font-raleway' => array(
+        'title' => 'Raleway',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'raleway.css',
+        ),
+    ),
+
+    'font-ubuntu' => array(
+        'title' => 'Ubuntu',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'ubuntu.css',
+        ),
+    ),
+
+
 );
 
 // get user fonts configuration from /upload/fonts directory
 // simple implementation
 // TODO: move this section to new fonts model once it become needed
 $userFonts = array();
-$config = require(__DIR__.'/../config/config-defaults.php');
+$config = require(__DIR__ . '/../config/config-defaults.php');
 $configUserFontsDir = $config['userfontsrootdir'];
 $configUserFontsUrl = $config['userfontsurl'];
 if (is_dir($configUserFontsDir)) {
@@ -115,14 +182,11 @@ if (is_dir($configUserFontsDir)) {
         if (!$userFont->isDot() && $userFont->isDir()) {
             $userFontDir = $userFont->getFilename();
             $configFile = $configUserFontsDir . DIRECTORY_SEPARATOR . $userFontDir . DIRECTORY_SEPARATOR . 'config.xml';
-            if (function_exists('simplexml_load_file') && file_exists($configFile)){
-                if (\PHP_VERSION_ID < 80000) {
-                    libxml_disable_entity_loader(false); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-                }
+            if (function_exists('simplexml_load_file') && file_exists($configFile)) {
                 $xml = simplexml_load_file($configFile);
                 $cssFiles = array();
-                foreach($xml->files->css as $file){
-                    if (!empty((string)$file)){
+                foreach ($xml->files->css as $file) {
+                    if (!empty((string)$file)) {
                         $cssFiles[] = (string)$file;
                     }
                 }
@@ -131,16 +195,12 @@ if (is_dir($configUserFontsDir)) {
                     'title' => $xml->metadata->title,
                     'type' => 'user',
                     'devBaseUrl' => $configUserFontsUrl . DIRECTORY_SEPARATOR . $xml->metadata->name . DIRECTORY_SEPARATOR,
-                        'basePath' => 'fonts',
-                        'css' => $cssFiles,
+                    'basePath' => 'fonts',
+                    'css' => $cssFiles,
                 );
-                if (\PHP_VERSION_ID < 80000) {
-                    libxml_disable_entity_loader(true);
-                }
             }
         }
     }
 }
 
 return array_merge($coreFonts, $userFonts);
-

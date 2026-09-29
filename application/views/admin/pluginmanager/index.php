@@ -13,136 +13,104 @@ echo viewHelper::getViewTestTag('pluginManager');
 
 $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']));
 
+// Remember which grid page the admin was on, the same way pageSize is
+// remembered, so returning from a plugin's detail page (e.g. via "Close")
+// lands back on that page instead of always resetting to page 1.
+// Yii omits the "page" param entirely for page 1 (it's the implicit
+// default), so an explicit pager click to page 1 looks identical to a
+// plain page reload unless we also check for the grid's own ajax marker,
+// which is present on every real pager interaction (including to page 1)
+// but absent on a fresh page load.
+$requestedPage = Yii::app()->request->getParam('page');
+$isPluginsGridAjaxRequest = Yii::app()->request->getParam('ajax') === 'plugins-grid';
+if ($requestedPage !== null) {
+    Yii::app()->user->setState('pluginListPage', intval($requestedPage));
+} elseif ($isPluginsGridAjaxRequest) {
+    Yii::app()->user->setState('pluginListPage', 1);
+}
+
+$sort               = new CSort();
+$sort->attributes   = [
+    'name' => [
+        'asc' => 'name',
+        'desc' => 'name desc',
+    ],
+    'description' => [
+        'asc' => 'description',
+        'desc' => 'description desc',
+    ],
+    'status' => [
+        'asc' => 'active',
+        'desc' => 'active desc',
+        'default' => 'desc',
+    ],
+];
+$sort->defaultOrder = [
+    'name' => CSort::SORT_ASC,
+];
+
+$providerOptions = [
+    'pagination' => [
+        'pageSize' => $pageSize,
+    ],
+    'sort' => $sort,
+    'caseSensitiveSort' => false,
+];
+// Only set an explicit currentPage when this is neither an explicit page
+// request nor a pager click to page 1 (recognized via the ajax marker);
+// otherwise let CPagination's normal GET-based page navigation behave
+// exactly as before.
+if ($requestedPage === null && !$isPluginsGridAjaxRequest) {
+    $providerOptions['pagination']['currentPage'] = max(0, intval(Yii::app()->user->getState('pluginListPage', 1)) - 1);
+}
+
+$dataProvider = new CArrayDataProvider($plugins, $providerOptions);
+
+$gridColumns = [
+    [
+        'header' => gT('Plugin'),
+        'name' => 'name',
+        'type' => 'html',
+        'value' => '$data->getName()'
+    ],
+    [
+        'header' => gT('Description'),
+        'name' => 'description',
+        'type' => 'html',
+        'value' => '$data->getPossibleDescription()',
+        'htmlOptions' => ['class' => 'can-contain-link'],
+    ],
+    [
+        'header' => gT('Status'),
+        'type' => 'raw',
+        'name' => 'status',
+        'value' => '$data->getStatus(false, "fs-3")',
+        'headerHtmlOptions' => ['class' => 'text-center'],
+        'htmlOptions' => ['class' => 'text-center'],
+    ],
+    [
+        'header'            => gT('Action'),
+        'name'              => 'actions',
+        'value'             => '$data->buttons',
+        'type'              => 'raw',
+        'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+        'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
+    ]
+];
+
+$this->widget(
+    'application.extensions.admin.grid.CLSGridView',
+    [
+        'id'                       => 'plugins-grid',
+        'lsCaption'                  => gT('Plugins'),
+        'dataProvider'             => $dataProvider,
+        'lsPageSizeCurrentValue'     => $pageSize,
+        'columns' => $gridColumns,
+        'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
+        'ajaxUpdate' => 'plugins-grid',
+        'lsAfterAjaxUpdate'          => []
+    ]
+);
+
+$this->renderPartial('./pluginmanager/uploadModal', []);
 ?>
-<div class='container-fluid'>
-    <div class='row'>
-        <div class='pull-right'>
-            <?php /* Disabled for prototype 1.
-                <a
-                    href=''
-                    class='btn btn-default '
-                    data-tooltip='true'
-                    title='<?php eT('Install plugins from the extension shop'); ?>'
-                >
-                    <i class='fa fa-shopping-cart'></i>&nbsp;
-                    <?php eT('Browse the shop'); ?>
-                </a>
-                 */ ?>
-            <?php foreach ($extraMenus as $menu): ?>
-                <a
-                    href='<?php echo $menu->getHref(); ?>'
-                    <?php if ($menu->getOnClick()): ?>
-                        onclick='<?php echo $menu->getOnClick(); ?>'
-                    <?php endif; ?>
-                    <?php if ($menu->getTooltip()): ?>
-                        data-toggle='tooltip'
-                        data-title='<?php echo $menu->getTooltip(); ?>'
-                    <?php endif; ?>
-                    class='btn btn-default'
-                >
-                    <?php if ($menu->getIconClass()): ?>
-                        <i class='<?php echo $menu->getIconClass(); ?>'></i>&nbsp;
-                    <?php endif; ?>
-                    <?php echo $menu->getLabel(); ?>
-                </a>
-            <?php endforeach; ?>
-        </div>
-    </div>
-
-    <?php
-
-    $sort = new CSort();
-    $sort->attributes = [
-        'name'        => [
-            'asc'  => 'name',
-            'desc' => 'name desc',
-        ],
-        'description' => [
-            'asc'  => 'description',
-            'desc' => 'description desc',
-        ],
-        'status'      => [
-            'asc'     => 'active',
-            'desc'    => 'active desc',
-            'default' => 'desc',
-        ],
-    ];
-    $sort->defaultOrder = [
-        'name' => CSort::SORT_ASC,
-    ];
-
-    $providerOptions = [
-        'pagination'        => [
-            'pageSize' => $pageSize,
-        ],
-        'sort'              => $sort,
-        'caseSensitiveSort' => false,
-    ];
-
-    $dataProvider = new CArrayDataProvider($plugins, $providerOptions);
-
-    $gridColumns = [
-        [
-            'type'   => 'raw',
-            'header' => gT('Action'),
-            'name'   => 'action',
-            'value'  => '$data->getActionButtons()'
-        ],
-        [
-            'header' => gT('Status'),
-            'type'   => 'html',
-            'name'   => 'status',
-            'value'  => '$data->getStatus()'
-        ],
-        [
-            'header' => gT('Plugin'),
-            'name'   => 'name',
-            'type'   => 'html',
-            'value'  => '$data->getName()'
-        ],
-        [
-            'header' => gT('Description'),
-            'name'   => 'description',
-            'type'   => 'html',
-            'value'  => '$data->getPossibleDescription()'
-        ],
-    ];
-
-    $this->widget(
-        'bootstrap.widgets.TbGridView',
-        [
-            'id'                       => 'plugins-grid',
-            'dataProvider'             => $dataProvider,
-            'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
-            'template'                 => "{items}\n<div id='pluginsListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-            'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSize',
-                        $pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        [
-                            'class' => 'changePageSize form-control',
-                            'style' => 'display: inline; width: auto'
-                        ]
-                    )
-                ),
-            'columns'                  => $gridColumns,
-            'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
-            'ajaxUpdate'               => 'plugins-grid'
-        ]
-    );
-
-    $this->renderPartial('./pluginmanager/uploadModal', []);
-    ?>
-</div>
-
-<script type="text/javascript">
-    jQuery(function ($) {
-        // To update rows per page via ajax
-        $(document).on("change", '#pageSize', function () {
-            $.fn.yiiGridView.update('plugins-grid', {data: {pageSize: $(this).val()}});
-        });
-    });
-</script>

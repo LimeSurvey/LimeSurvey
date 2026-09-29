@@ -1,0 +1,60 @@
+{
+  "name": "jsuri",
+  "description": "Uri and query string manipulation",
+  "version": "1.3.1",
+  "author": "Derek Watson <watson@dcw.ca> (http://dcw.ca)",
+  "contributors": [
+    {
+      "name": "James M. Greene",
+      "email": "james.m.greene@gmail.com",
+      "url": "http://jamesgreene.net/"
+    }
+  ],
+  "homepage": "https://github.com/derek-watson/jsUri",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/derek-watson/jsUri.git"
+  },
+  "keywords": [
+    "uri",
+    "url",
+    "query",
+    "path"
+  ],
+  "main": "Uri",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha",
+    "lint": "./node_modules/.bin/jshint Uri.js",
+    "minify": "./node_modules/.bin/uglifyjs Uri.js > Uri.min.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jshint": "~2.1.11",
+    "uglify-js": "~2.4.0",
+    "mocha": "~1.14.0"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  },
+  "jshintConfig": {
+    "boss":      true,
+    "node":      true,
+    "smarttabs": true,
+    "undef":     true,
+    "unused":    true,
+    "onecase":   true,
+    "lastsemic": true,
+    "indent":    2,
+    "newcap"        : true,
+    "noempty"       : true,
+    "nonew"         : true,
+    "nomen"         : true,
+    "sub"           : false,
+    "trailing"      : true,
+    "white"         : false
+  },
+  "spm": {
+    "main": "Uri.js"
+  }
+}

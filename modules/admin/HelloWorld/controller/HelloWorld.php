@@ -1,7 +1,7 @@
 <?php
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -57,7 +57,7 @@ class HelloWorld extends SurveyCommonAction
       /*
        * This function is the root one. It will say "hello root" and nothing else. You can access it via :
        * index.php?r=admin/HelloWorld/sa/HelloWorldSurvey&surveyid=XXXXX
-       * where XXXXX is any valid survey id.
+       * where XXXXX is any valid survey ID.
        */
       public function HelloWorldSurvey($surveyid)
       {

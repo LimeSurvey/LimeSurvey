@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -23,12 +23,12 @@ if (!defined('BASEPATH')) {
 function CheckForDBUpgrades($subaction = null)
 {
     $dbversionnumber = Yii::app()->getConfig('dbversionnumber');
-    $currentDBVersion = GetGlobalSetting('DBVersion');
+    $currentDBVersion = Yii::app()->getConfig('DBVersion');
     if (intval($dbversionnumber) > intval($currentDBVersion)) {
-        Yii::app()->loadHelper('update/updatedb');
+        Yii::app()->loadHelper('update.updatedb');
         if (isset($subaction) && $subaction == "yes") {
             $header = Yii::app()->getController()->getAdminHeader(false, true);
-            $header = preg_replace('/<###begin###>/', '', $header);
+            $header = preg_replace('/<###begin###>/', '', (string) $header);
             echo $header;
             $result = db_upgrade_all(intval($currentDBVersion));
             if ($result) {
@@ -45,7 +45,11 @@ function CheckForDBUpgrades($subaction = null)
             } else {
                 $msg = '';
                 foreach (yii::app()->user->getflashes() as $key => $message) {
-                    $msg .= '<div class="alert alert-danger flash-' . $key . '">' . $message . "</div>\n";
+                    $msg .= App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => $message,
+                            'type' => 'danger',
+                            'htmlOptions' => ['class' => "flash-$key"]
+                        ], true) . "\n";
                 }
                 $data = $msg . "<p><a href='" . Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db") . "'>" . gT("Please fix this error in your database and try again") . "</a></p></div> ";
             }
@@ -80,7 +84,7 @@ function ShowDBUpgradeNotice()
 function getDBConnectionStringProperty($sProperty)
 {
     // Yii doesn't give us a good way to get the database name
-    preg_match('/' . $sProperty . '=([^;]*)/', Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
+    preg_match('/' . $sProperty . '=([^;]*)/', (string) Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
     if (count($aMatches) === 0) {
         return null;
     }

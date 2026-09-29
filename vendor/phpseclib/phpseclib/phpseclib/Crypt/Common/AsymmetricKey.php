@@ -30,14 +30,14 @@ abstract class AsymmetricKey
     /**
      * Precomputed Zero
      *
-     * @var \phpseclib3\Math\BigInteger
+     * @var BigInteger
      */
     protected static $zero;
 
     /**
      * Precomputed One
      *
-     * @var \phpseclib3\Math\BigInteger
+     * @var BigInteger
      */
     protected static $one;
 
@@ -51,14 +51,14 @@ abstract class AsymmetricKey
     /**
      * Hash function
      *
-     * @var \phpseclib3\Crypt\Hash
+     * @var Hash
      */
     protected $hash;
 
     /**
      * HMAC function
      *
-     * @var \phpseclib3\Crypt\Hash
+     * @var Hash
      */
     private $hmac;
 
@@ -79,13 +79,6 @@ abstract class AsymmetricKey
     private static $invisiblePlugins = [];
 
     /**
-     * Available Engines
-     *
-     * @var boolean[]
-     */
-    protected static $engines = [];
-
-    /**
      * Key Comment
      *
      * @var null|string
@@ -93,8 +86,16 @@ abstract class AsymmetricKey
     private $comment;
 
     /**
+     * OpenSSL configuration file name.
+     *
+     * @see self::createKey()
+     * @var ?string
+     */
+    protected static $configFile;
+
+    /**
      * @param string $type
-     * @return string
+     * @return array|string
      */
     abstract public function toString($type, array $options = []);
 
@@ -119,6 +120,10 @@ abstract class AsymmetricKey
             self::$one = new BigInteger(1);
         }
 
+        if (!isset(self::$configFile)) {
+            self::$configFile = dirname(__FILE__) . '/../../openssl.cnf';
+        }
+
         self::loadPlugins('Keys');
         if (static::ALGORITHM != 'RSA' && static::ALGORITHM != 'DH') {
             self::loadPlugins('Signature');
@@ -130,11 +135,16 @@ abstract class AsymmetricKey
      *
      * @param string $key
      * @param string $password optional
-     * @return AsymmetricKey
+     * @return PublicKey|PrivateKey
      */
     public static function load($key, $password = false)
     {
         self::initialize_static_variables();
+
+        $class = new \ReflectionClass(static::class);
+        if ($class->isFinal()) {
+            throw new \RuntimeException('load() should not be called from final classes (' . static::class . ')');
+        }
 
         $components = false;
         foreach (self::$plugins[static::ALGORITHM]['Keys'] as $format) {
@@ -359,6 +369,18 @@ abstract class AsymmetricKey
     }
 
     /**
+     * Sets the OpenSSL config file path
+     *
+     * Set to the empty string to use the default config file
+     *
+     * @param string $val
+     */
+    public static function setOpenSSLConfigPath($val)
+    {
+        self::$configFile = $val;
+    }
+
+    /**
      * Add a fileformat plugin
      *
      * The plugin needs to either already be loaded or be auto-loadable.
@@ -377,7 +399,7 @@ abstract class AsymmetricKey
             $shortname = $meta->getShortName();
             self::$plugins[static::ALGORITHM]['Keys'][strtolower($shortname)] = $fullname;
             if ($meta->hasConstant('IS_INVISIBLE')) {
-                self::$invisiblePlugins[static::ALGORITHM] = strtolower($name);
+                self::$invisiblePlugins[static::ALGORITHM][] = strtolower($shortname);
             }
         }
     }
@@ -414,34 +436,28 @@ abstract class AsymmetricKey
     }
 
     /**
-     * Tests engine validity
-     *
+     * Force engine (useful for unit testing)
      */
-    public static function useBestEngine()
+    public static function forceEngine($engine = null)
     {
-        static::$engines = [
-            'PHP' => true,
-            'OpenSSL' => extension_loaded('openssl'),
-            // this test can be satisfied by either of the following:
-            // http://php.net/manual/en/book.sodium.php
-            // https://github.com/paragonie/sodium_compat
-            'libsodium' => function_exists('sodium_crypto_sign_keypair')
-        ];
-
-        return static::$engines;
+        if (!isset($engine)) {
+            static::$forcedEngine = null;
+            return;
+        }
+        switch ($engine) {
+            case 'PHP':
+            case 'OpenSSL':
+            case 'libsodium':
+                static::$forcedEngine = $engine;
+                break;
+            default:
+                throw new \InvalidArgumentException('Valid engines are null, PHP, OpenSSL or libsodium');
+        }
     }
 
-    /**
-     * Flag to use internal engine only (useful for unit testing)
-     *
-     */
-    public static function useInternalEngine()
+    public static function getForcedEngine()
     {
-        static::$engines = [
-            'PHP' => true,
-            'OpenSSL' => false,
-            'libsodium' => false
-        ];
+        return static::$forcedEngine;
     }
 
     /**
@@ -526,7 +542,7 @@ abstract class AsymmetricKey
     /**
      * Integer to Octet String
      *
-     * @param \phpseclib3\Math\BigInteger $v
+     * @param BigInteger $v
      * @return string
      */
     private function int2octets($v)
@@ -546,7 +562,7 @@ abstract class AsymmetricKey
      * Bit String to Integer
      *
      * @param string $in
-     * @return \phpseclib3\Math\BigInteger
+     * @return BigInteger
      */
     protected function bits2int($in)
     {

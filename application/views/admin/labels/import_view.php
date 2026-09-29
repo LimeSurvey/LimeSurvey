@@ -1,26 +1,26 @@
-<?php if (isset($aImportResults['fatalerror'])):?>
+<?php if (isset($aImportResults['fatalerror'])) :?>
     <div class="jumbotron message-box message-box-error">
-            <h2 class="text-danger"><?php eT("Import Label Set") ?></h2>
+            <h2 class="text-danger"><?php eT("Import label set(s)") ?></h2>
             <p class="lead text-danger"><?php eT("Error") ?></p>
             <p><?php echo $aImportResults['fatalerror']; ?></p>
 
             <p>
-                <a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
+                <a class="btn btn-lg btn-primary" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
                     <?php eT("Return to label set administration"); ?>
                 </a>
             </p>
     </div>
-<?php else:?>
+<?php else :?>
     <div class="jumbotron message-box">
-            <h2 class="text-success"><?php eT("Import Label Set") ?></h2>
+            <h2 class="text-success"><?php eT("Import label set(s)") ?></h2>
             <p class="lead"><?php eT("File upload succeeded.") ?></p>
-            <?php if (count($aImportResults['warnings']) > 0): ?>
-                <p  class="lead text-warning">
+            <?php if (count($aImportResults['warnings']) > 0) : ?>
+                <p  class="lead text-danger">
                     <?php eT("Warnings") ?>
                 </p>
                 <p>
                     <ul class="list-unstyled">
-                        <?php foreach ($aImportResults['warnings'] as $warning):?>
+                        <?php foreach ($aImportResults['warnings'] as $warning) :?>
                             <li><?php echo $warning ?></li>
                         <?php endforeach;?>
                     </ul>
@@ -43,7 +43,7 @@
             </p>
 
             <p>
-                <a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
+                <a class="btn btn-lg btn-primary" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
                     <?php eT("Return to label set administration"); ?>
                 </a>
             </p>

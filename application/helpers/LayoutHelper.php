@@ -1,12 +1,15 @@
 <?php
 
+use LimeSurvey\Menu\Menu;
+use LimeSurvey\Menu\MenuItem;
+
 /**
  * Class LayoutHelper
  */
 class LayoutHelper
 {
     /**
-     * Header
+     * Header (html header)
      *
      * @param array $aData
      * @param bool $sendHTTPHeader
@@ -18,7 +21,7 @@ class LayoutHelper
             if ($sendHTTPHeader) {
                 header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
             }
-            $this->getAdminHeader();
+            $this->getAdminHeader(false, false, $aData);
         }
     }
 
@@ -28,9 +31,10 @@ class LayoutHelper
      * @access protected
      * @param bool $meta
      * @param bool $return
+     * @param array $pageData Optional page data (e.g. topbar, title_bar) to set document title for screen readers
      * @return string|null
      */
-    public function getAdminHeader(bool $meta = false, bool $return = false)
+    public function getAdminHeader(bool $meta = false, bool $return = false, array $pageData = [])
     {
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
@@ -59,7 +63,6 @@ class LayoutHelper
         $aData['datepickerlang'] = "";
 
         $aData['sitename'] = Yii::app()->getConfig("sitename");
-        $aData['firebug'] = useFirebug();
 
         if (!empty(Yii::app()->session['dateformat'])) {
             $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
@@ -71,6 +74,13 @@ class LayoutHelper
         $aData['sAdmintheme'] = $oAdminTheme->name;
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
 
+        $aData['pageTitle'] = null;
+        if (!empty($pageData['topbar'] ?? null) && !empty($pageData['topbar']['title'] ?? null)) {
+            $aData['pageTitle'] = strip_tags((string) $pageData['topbar']['title']);
+        } elseif (!empty($pageData['title_bar'] ?? null) && !empty($pageData['title_bar']['title'] ?? null)) {
+            $aData['pageTitle'] = strip_tags((string) $pageData['title_bar']['title']);
+        }
+
         $sOutput = Yii::app()->getController()->renderPartial("/layouts/header", $aData, true);
 
         if ($return) {
@@ -81,6 +91,13 @@ class LayoutHelper
     }
 
     /**
+     * This is the topbar for the whole application consisting of:
+     * -- Create survey (link)
+     * -- Surveys
+     * -- Help
+     * -- Configuration (collapse menu items e.g. 'Usermanagement', 'Dashboard')
+     * -- Notifications
+     * -- admin
      * _showadminmenu() function returns html text for the administration button bar
      *
      * @access public
@@ -96,26 +113,15 @@ class LayoutHelper
      */
     public function showadminmenu($aData): ?string
     {
-        // We don't wont the admin menu to be shown in login page
+        // We don't want the admin menu to be shown in login page
         if (!Yii::app()->user->isGuest) {
-            // Default password notification
-            if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug") < 2) {
-                $not = new UniqueNotification(array(
-                    'user_id' => App()->user->id,
-                    'importance' => Notification::HIGH_IMPORTANCE,
-                    'title' => gT('Password warning'),
-                    'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
-                        gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
-                ));
-                $not->save();
-            }
-            if (!(App()->getConfig('ssl_disable_alert')) && strtolower(App()->getConfig('force_ssl') != 'on') && \Permission::model()->hasGlobalPermission("superadmin")) {
+            if (!(Yii::app()->getConfig('ssl_disable_alert')) && strtolower(Yii::app()->getConfig('force_ssl')) != 'on' && \Permission::model()->hasGlobalPermission("superadmin")) {
                 $not = new UniqueNotification(array(
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
                     'title' => gT('SSL not enforced'),
-                    'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
-                        gT("Warning: Please enforce SSL encrpytion in Global settings/Security after SSL is properly configured for your webserver.")
+                    'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
+                        gT("Warning: Please enforce SSL encryption in Global settings/Security after SSL is properly configured for your webserver.")
                 ));
                 $not->save();
             }
@@ -130,7 +136,7 @@ class LayoutHelper
             $aData['dataForConfigMenu']['userscount'] = User::model()->count();
 
             //Check if have a comfortUpdate key
-            if (getGlobalSetting('emailsmtpdebug') != '') {
+            if (Yii::app()->getConfig('update_key') != '') {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('Activated');
             } else {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('None');
@@ -140,12 +146,12 @@ class LayoutHelper
 
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
-            $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result && !$updateNotification->unstable_update;
+            $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result;
 
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
-
-           // $aData['extraMenus'] = ''; //todo extraMenu should work
+            //new create process (including survey, survey group, import survey)
+            $aData['extraMenus'][] = $this->getCreateMenu();
 
             // Get notification menu
             $surveyId = $aData['surveyid'] ?? null;
@@ -155,6 +161,72 @@ class LayoutHelper
             Yii::app()->getController()->renderPartial("/layouts/adminmenu", $aData);
         }
         return null;
+    }
+
+    /**
+     * Returns extra menu for the new create process (including create, copy, and import survey).
+     *
+     * @return Menu
+     */
+    public function getCreateMenu()
+    {
+        $itemClass = 'create-menu-item';
+        $menuItemHeader = [
+            'isDivider' => false,
+            'isSmallText' => true,
+            'label' => gT('New survey...'),
+            'href' => '#',
+            'iconClass' => 'ri-add-line',
+        ];
+        $menuItems[] = (new MenuItem($menuItemHeader));
+
+        $menuItemNewSurvey = [
+            'isDivider' => false,
+            'isSmallText' => false,
+            'label' => gT('Create'),
+            'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
+            'iconClass' => 'ri-add-line',
+            'id' => 'create-survey-link',
+            'itemClass' => $itemClass
+        ];
+        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+
+        $menuItemCopySurvey = [
+            'isDivider' => false,
+            'isSmallText' => false,
+            'label' => gT('Copy'),
+            'isModal' => true,
+            'modalId' => 'copySurvey_modal',
+            'iconClass' => 'ri-file-copy-line',
+            'itemClass' => $itemClass
+        ];
+        $menuItems[] = (new MenuItem($menuItemCopySurvey));
+
+        $menuItemImport = [
+            'isDivider' => false,
+            'isSmallText' => false,
+            'label' => gT('Import'),
+            'isModal' => true,
+            'modalId' => 'importSurvey_modal',
+            'iconClass' => 'ri-upload-line',
+            'itemClass' => $itemClass
+        ];
+        $menuItems[] = (new MenuItem($menuItemImport));
+
+        $options = [
+            'id' => 'createMenuButton',
+            'label' => '+',
+            'iconClass' => 'ri-add-line',
+            'isDropDown' => true,
+            'isDropDownButton' => true,
+            'dropDownButtonClass' => 'btn btn-info btn-create dropdown-toggle-no-caret',
+            'menuItems' => $menuItems,
+            'isPrepended' => true,
+        ];
+
+        $createMenu = new Menu($options);
+
+        return $createMenu;
     }
 
     /**
@@ -180,52 +252,60 @@ class LayoutHelper
         return $extraMenus;
     }
 
-    /**
-     * This is for rendering a particular Menubar (e.g. the userGroupBar)
-     *
-     * @param array $aData
-     */
-    public function renderMenuBar(array $aData)
+    public function renderTopbarTemplate($aData)
     {
-        if (isset($aData['menubar_pathname'])) {
-            Yii::app()->getController()->renderPartial($aData['menubar_pathname'], $aData);
-        }
-    }
+        $titleTextBreadcrumb = null;
+        $titleBackLink = null;
+        $isBreadCrumb = isset($aData['title_bar']); //only the existence is important, indicator for breadcrumb
 
-    /**
-     * Renders specific button bar with buttons like (saveBtn, saveAndCloseBtn, closeBtn)
-     * If rendered or not depends on aData['fullpagebar'] is set to true in a specific action
-     *
-     * @param array $aData
-     */
-    public function fullpagebar(array $aData)
-    {
-        if ((isset($aData['fullpagebar']))) {
-            if (isset($aData['fullpagebar']['closebutton']['url']) && !isset($aData['fullpagebar']['closebutton']['url_keep'])) {
-                $sAlternativeUrl = '/admin/index';
-                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
+        if (isset($aData['topbar']['title'])) {
+            $titleTextBreadcrumb = $aData['topbar']['title'];
+        } elseif ($isBreadCrumb) {
+            $titleTextBreadcrumb = App()->getController()->renderPartial("/layouts/title_bar", $aData, true);
+        }
+        if (isset($aData['topbar']['backLink'])) {
+            $titleBackLink = $aData['topbar']['backLink'];
+        }
+
+        $middle = $aData['topbar']['middleButtons'] ?? '';
+        $rightSide = $aData['topbar']['rightButtons'] ?? '';
+        if ($titleTextBreadcrumb !== null) {
+            //special case for question administration (overview and editor)
+            if (isset($aData['topBar']['name']) && ($aData['topBar']['name'] === 'questionTopbar_view')) {
+                $topbarData = TopbarConfiguration::getSurveyTopbarData($aData['surveyid']);
+                $topbarQuestionEditorData = TopbarConfiguration::getQuestionTopbarData($aData['surveyid']);
+                $topbarQuestionEditorData['breadcrumb'] = $titleTextBreadcrumb;
+                $topbarQuestionEditorData = array_merge($topbarQuestionEditorData, $aData);
+                $topbarQuestionEditorData = array_merge($topbarQuestionEditorData, $topbarData);
+
+                return App()->getController()->renderPartial(
+                    '/questionAdministration/partial/topbarBtns/questionTopbar_view',
+                    $topbarQuestionEditorData,
+                    true
+                );
             }
-            App()->getClientScript()->registerScriptFile(
-                App()->getConfig('adminscripts') . 'topbar.js',
-                CClientScript::POS_END
+
+            return App()->getController()->widget(
+                'ext.LimeTopbarWidget.TopbarWidget',
+                [
+                    'leftSide'     => $titleTextBreadcrumb,
+                    'middle'       => $middle, //array of ButtonWidget
+                    'rightSide'    => $rightSide, //array of ButtonWidget
+                    'isBreadCrumb' => $isBreadCrumb,
+                    'titleBackLink' => $titleBackLink
+                ],
+                true
             );
-            Yii::app()->getController()->renderPartial("/layouts/fullpagebar_view", $aData);
         }
+        return ''; //no topbar shown in this case
     }
 
     /**
-     * Renders the green bar.
-     * @param array $aData
-     */
-    public function surveyManagerBar(array $aData)
-    {
-        if (isset($aData['pageTitle'])) {
-            Yii::app()->getController()->renderPartial("/layouts/surveymanagerbar", $aData);
-        }
-    }
-
-    /**
-     * Display the update notification
+     * Display the update notification bar.
+     * Passes security_update_available and stability_labels to the notification view.
+     *
+     * @return string|void Rendered notification HTML, or void if no update
+     * @throws CException
      */
     public function updatenotification()
     {
@@ -253,9 +333,13 @@ class LayoutHelper
             $updateNotification = $updateModel->updateNotification;
 
             if ($updateNotification->result) {
-                return Yii::app()->getController()->renderPartial(
+                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js');
+                return App()->getController()->renderPartial(
                     "/admin/update/_update_notification",
-                    array('security_update_available' => $updateNotification->security_update)
+                    array(
+                        'security_update_available' => $updateNotification->security_update,
+                        'stability_labels' => Yii::app()->session['update_stability_labels'] ?? [],
+                    )
                 );
             }
         }
@@ -301,10 +385,12 @@ class LayoutHelper
      * @access protected
      * @param string $url
      * @param bool $return
+     * @param bool $questionEditor if footer is on question editor layout page
      * @return string|null
      */
-    public function getAdminFooter(string $url, bool $return = false): ?string
+    public function getAdminFooter(string $url, bool $return = false, bool $questionEditor = false): ?string
     {
+        $aData['questionEditor'] = $questionEditor;
         $aData['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
         $aData['buildtext'] = "";
@@ -326,17 +412,6 @@ class LayoutHelper
         return Yii::app()->getController()->renderPartial("/admin/super/footer", $aData, $return);
     }
 
-    /**
-     * Renders the titlebar of question editor page
-     *
-     * @param $aData
-     */
-    public function rendertitlebar($aData)
-    {
-        if (isset($aData['title_bar'])) {
-            Yii::app()->getController()->renderPartial("/layouts/title_bar", $aData);
-        }
-    }
 
     /**
      * Show side menu for survey view
@@ -348,6 +423,13 @@ class LayoutHelper
         $iSurveyID = $aData['surveyid'];
 
         $survey = Survey::model()->findByPk($iSurveyID);
+
+        $event = new PluginEvent('beforeRenderSurveySidemenu', $this);
+        App()->getPluginManager()->dispatchEvent($event);
+        if ($event->get('sidemenu')) {
+            return;
+        }
+
         // TODO : create subfunctions
         $sumresult1 = Survey::model()->with(
             array(
@@ -384,12 +466,12 @@ class LayoutHelper
             $aData['aGroups'] = $aGroups;
             $aData['surveycontent'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'read');
             $aData['surveycontentupdate'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'update');
-            $aData['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
+            $aData['sideMenuBehaviour'] = Yii::app()->getConfig('sideMenuBehaviour');
 
             Yii::app()->getController()->renderPartial("/layouts/sidemenu", $aData);
         } else {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-            Yii::app()->getController()->redirect(array("admin/index"));
+            Yii::app()->getController()->redirect(array("dashboard/view"));
         }
     }
 
@@ -440,146 +522,5 @@ class LayoutHelper
         $event->set('aData', $aData);
         $result = App()->getPluginManager()->dispatchEvent($event);
         return $result->get('html');
-    }
-
-    /**
-     * New Topbar
-     * @param array $aData
-     * @return mixed
-     */
-    public static function renderTopbar(array $aData)
-    {
-        App()->getClientScript()->registerScriptFile(
-            App()->getConfig('adminscripts') . 'topbar.js',
-            CClientScript::POS_END
-        );
-
-        $oTopbarConfig = TopbarConfiguration::createFromViewData($aData);
-
-        return Yii::app()->getController()->widget(
-            'ext.TopbarWidget.TopbarWidget',
-            array(
-                'config' => $oTopbarConfig,
-                'aData' => $aData,
-            ),
-            true
-        );
-    }
-
-    /**
-     * Vue Topbar
-     * @param array $aData
-     */
-    public function renderGeneraltopbar(array $aData)
-    {
-        $aData['topBar'] = $aData['topBar'] ?? [];
-        $aData['topBar'] = array_merge(
-            [
-                'type' => 'survey',
-                'sid' => $aData['sid'],
-                'gid' => $aData['gid'] ?? 0,
-                'qid' => $aData['qid'] ?? 0,
-                'showSaveButton' => false,
-                'showCloseButton' => false,
-            ],
-            $aData['topBar']
-        ); //$aData['topBar']['showSaveButton']['url']
-
-        Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
-    }
-
-    /**
-     * listquestion groups
-     *
-     * @deprecated not used anymore, is rendered directly from actionListquestiongroups
-     *
-     * @param array $aData
-     */
-    public function renderListQuestionGroups(array $aData)
-    {
-        if (isset($aData['display']['menu_bars']['listquestiongroups'])) {
-            Yii::app()->getController()->renderPartial("/questionGroupsAdministration/listquestiongroups", $aData);
-        }
-    }
-
-    /**
-     *
-     * @param $aData
-     * @deprecated rendered now directly in QuestionAdministration see action listquestions ...
-     *
-     */
-    public function renderListQuestions($aData)
-    {
-        if (isset($aData['display']['menu_bars']['listquestions'])) {
-            $iSurveyID = $aData['surveyid'];
-            $oSurvey = $aData['oSurvey'];
-
-            // The DataProvider will be build from the Question model, search method
-            $model = new Question('search');
-
-            // Global filter
-            if (isset($_GET['Question'])) {
-                $model->setAttributes($_GET['Question'], false);
-            }
-
-            // Filter group
-            if (isset($_GET['gid'])) {
-                $model->gid = $_GET['gid'];
-            }
-
-            // Set number of page
-            if (isset($_GET['pageSize'])) {
-                App()->user->setState('pageSize', (int) $_GET['pageSize']);
-            }
-
-            $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
-
-            // We filter the current survey id
-            $model->sid = $iSurveyID;
-
-            $aData['model'] = $model;
-
-            Yii::app()->getController()->renderPartial("/admin/survey/Question/listquestions", $aData);
-        }
-    }
-
-    /**
-     * todo: document me...
-     *
-     * @param array $aData
-     */
-    public function renderGeneralTopbarAdditions(array $aData)
-    {
-        $aData['topBar'] = $aData['topBar'] ?? [];
-        $aData['topBar'] = array_merge(
-            [
-                'type' => 'survey',
-                'sid' => $aData['sid'],
-                'gid' => $aData['gid'] ?? 0,
-                'qid' => $aData['qid'] ?? 0,
-                'showSaveButton' => false,
-                'showCloseButton' => false,
-            ],
-            $aData['topBar']
-        );
-
-        if (isset($aData['qid'])) {
-            $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'question';
-        } elseif (isset($aData['gid'])) {
-            $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'group';
-        } elseif (isset($aData['surveyid'])) {
-            $sid = $aData['sid'];
-            $oSurvey       = Survey::model()->findByPk($sid);
-            $respstatsread = Permission::model()->hasSurveyPermission($sid, 'responses', 'read')  ||
-                Permission::model()->hasSurveyPermission($sid, 'statistics', 'read') ||
-                Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
-            $surveyexport = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
-            $oneLanguage  = (count($oSurvey->allLanguages) == 1);
-            $aData['respstatsread'] = $respstatsread;
-            $aData['surveyexport']  = $surveyexport;
-            $aData['onelanguage']   = $oneLanguage;
-            $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'survey';
-        }
-        Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_additions", $aData);
     }
 }

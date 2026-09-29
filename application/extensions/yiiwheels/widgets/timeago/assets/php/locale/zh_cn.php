@@ -1,10 +1,11 @@
 <?php
+
 // Simplified Chinese
 return array (
-    'prefixAgo' => NULL,
+    'prefixAgo' => null,
     'prefixFromNow' => "从现在开始",
     'suffixAgo' => "之前",
-    'suffixFromNow' => NULL,
+    'suffixFromNow' => null,
     'seconds' => "不到 1 分钟",
     'minute' => "大约 1 分钟",
     'minutes' => "%d 分钟",

@@ -4,8 +4,10 @@ include_once("xlsxwriter.class.php");
 
 $chars = 'abcdefgh';
 
+$header = array('c1'=>'string','c2'=>'integer','c3'=>'integer','c4'=>'integer','c5'=>'integer');
+
 $writer = new XLSXWriter();
-$writer->writeSheetHeader('Sheet1', array('c1'=>'string','c2'=>'integer','c3'=>'integer','c4'=>'integer','c5'=>'integer'), ['freeze_rows'=>1, 'freeze_columns'=>1] );
+$writer->writeSheetHeader('Sheet1', $header, ['freeze_rows'=>1, 'freeze_columns'=>1] );
 for($i=0; $i<250; $i++)
 {
     $writer->writeSheetRow('Sheet1', array(

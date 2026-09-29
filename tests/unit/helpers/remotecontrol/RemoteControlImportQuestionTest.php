@@ -1,0 +1,204 @@
+<?php
+
+namespace ls\tests\unit\helpers\remotecontrol;
+
+/**
+ * Tests for the LimeSurvey remote API.
+ */
+class RemoteControlImportQuestionTest extends BaseTest
+{
+    /**
+     * Setup.
+     *
+     * @return void
+     */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setupBeforeClass();
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        /** @var string */
+        $filename = self::$surveysFolder . '/limesurvey_survey_import_question_test.lss';
+        self::importSurvey($filename);
+    }
+
+    /**
+     * Importing a question with a question code that does not previously exist.
+     */
+    public function testImportQuestionWithUniqueQuestionCode()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        /** @var integer the only group id */
+        $testGroupId = self::$testSurvey->groups[0]->gid;
+
+        // Attempt Importing Question
+        $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test_II.lsq';
+        $question = base64_encode(file_get_contents($questionFile));
+        $result = $this->handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
+        $this->assertIsInt($result, 'There was an error importing a question with a code that did not already exists.');
+    }
+
+    /**
+     * Importing a question with a question code that already exists.
+     */
+    public function testImportQuestionWithRepeatedQuestionCode()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        /** @var integer the only group id */
+        $testGroupId = self::$testSurvey->groups[0]->gid;
+
+        // Attempt Importing Question
+        $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test.lsq';
+        $question = base64_encode(file_get_contents($questionFile));
+        $result = $this->handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
+
+        $this->assertIsArray($result, 'There was an error importing a question with a code that already exists.');
+    }
+
+    /**
+     * Importing a question with a question code that already exists.
+     * But set a new title
+     */
+    public function testImportQuestionWithRepeatedQuestionCodeSetNew()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        /** @var integer the only group id */
+        $testGroupId = self::$testSurvey->groups[0]->gid;
+        $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test.lsq';
+        $question = base64_encode(file_get_contents($questionFile));
+        /* must return integer */
+        $result = $this->handler->import_question(
+            $sessionKey,
+            self::$surveyId,
+            $testGroupId,
+            $question,
+            'lsq',
+            'N',
+            'QNewTitle'
+        );
+        $this->assertIsInt($result, 'There was an error importing a question with a code that already exists and new title is set.');
+        /* Validate is set */
+        $oQuestion = \Question::model()->find(
+            "qid = :qid",
+            array(':qid' => $result)
+        );
+        $this->assertNotEmpty($oQuestion);
+        $this->assertEquals('QNewTitle', $oQuestion->title);
+        /* must return array */
+        $result = $this->handler->import_question(
+            $sessionKey,
+            self::$surveyId,
+            $testGroupId,
+            $question,
+            'lsq',
+            'N',
+            'QNewTitle'
+        );
+        $this->assertIsArray($result, 'There was an error importing a question set a code that already exists.');
+    }
+
+    /**
+     * Importing a question with a question code that already exists.
+     * But set a new title
+     */
+    public function testImportQuestionWithSetTextAndHelp()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        /** @var integer the only group id */
+        $testGroupId = self::$testSurvey->groups[0]->gid;
+        $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test.lsq';
+        $question = base64_encode(file_get_contents($questionFile));
+        $result = $this->handler->import_question(
+            $sessionKey,
+            self::$surveyId,
+            $testGroupId,
+            $question,
+            'lsq',
+            'N',
+            'QNewTitle2', // new code
+            'QNewText', // new quetsion text (all i10n)
+            'QNewHelp' // new quetsion help (all i10n)
+        );
+
+        $this->assertIsInt($result, 'There was an error importing a question with a code that already exists and new title is set when set text and help.');
+        $oQuestionL10n = \QuestionL10n::model()->find(
+            "qid = :qid and language = :language",
+            array(':qid' => $result, ':language' => "en")
+        );
+        $this->assertNotEmpty($oQuestionL10n);
+        $this->assertEquals('QNewText', $oQuestionL10n->question);
+        $this->assertEquals('QNewHelp', $oQuestionL10n->help);
+
+    }
+
+    /**
+     * Importing a question with a group that doesn't belong to the survey.
+     * The group lookup is survey-scoped, so a group from another survey is treated as invalid.
+     */
+    public function testImportQuestionWithMismatchedGroupId()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $mismatchedSurveyId = $this->handler->add_survey($sessionKey, 0, 'Test Survey for Group Mismatch', 'en');
+
+        try {
+            $this->assertIsInt($mismatchedSurveyId, 'Failed to create mismatched survey');
+
+            // Create a group in the mismatched survey
+            $mismatchedGroupId = $this->handler->add_group($sessionKey, $mismatchedSurveyId, 'Test Group');
+            $this->assertIsInt($mismatchedGroupId, 'Failed to create group in mismatched survey');
+
+            // Attempt to import a question from our test survey into the group from the mismatched survey
+            $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test_II.lsq';
+            $question = base64_encode(file_get_contents($questionFile));
+            $result = $this->handler->import_question($sessionKey, self::$surveyId, $mismatchedGroupId, $question, 'lsq');
+
+            // Verify the error response - group not found in this survey returns generic invalid group error
+            $this->assertIsArray($result, 'Response should be an array for mismatch error');
+            $this->assertArrayHasKey('status', $result, 'Error response should have a status field');
+            $this->assertStringContainsString('Invalid group ID', $result['status']);
+            $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
+            $this->assertEquals('ERR_INVALID_GROUP', $result['error_code'], 'Should return generic invalid group error, not leak cross-survey existence');
+        } finally {
+            if (is_int($mismatchedSurveyId)) {
+                $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
+            }
+            $this->handler->release_session_key($sessionKey);
+        }
+    }
+
+    /**
+     * Testing list_questions with a group that doesn't belong to the survey.
+     * The group lookup is survey-scoped, so a group from another survey is treated as not found.
+     */
+    public function testListQuestionsWithMismatchedGroupId()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $mismatchedSurveyId = $this->handler->add_survey($sessionKey, 0, 'Test Survey for List Questions Mismatch', 'en');
+
+        try {
+            $this->assertIsInt($mismatchedSurveyId, 'Failed to create mismatched survey');
+
+            // Create a group in the mismatched survey
+            $mismatchedGroupId = $this->handler->add_group($sessionKey, $mismatchedSurveyId, 'Test Group for List');
+            $this->assertIsInt($mismatchedGroupId, 'Failed to create group in mismatched survey');
+
+            // Attempt to list questions from our test survey using the group from the mismatched survey
+            $result = $this->handler->list_questions($sessionKey, self::$surveyId, $mismatchedGroupId);
+
+            // Verify the error response - group not found in this survey returns generic not-found error
+            $this->assertIsArray($result, 'Response should be an array for mismatch error');
+            $this->assertArrayHasKey('status', $result, 'Error response should have a status field');
+            $this->assertStringContainsString('group not found', $result['status']);
+            $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
+            $this->assertEquals('ERR_INVALID_GROUP', $result['error_code'], 'Should return generic invalid group error, not leak cross-survey existence');
+        } finally {
+            if (is_int($mismatchedSurveyId)) {
+                $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
+            }
+            $this->handler->release_session_key($sessionKey);
+        }
+    }
+}

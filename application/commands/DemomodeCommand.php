@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey (tm)
-* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2011-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -13,10 +13,13 @@
 */
 class DemomodeCommand extends CConsoleCommand
 {
-
-    public function run($sArgument)
+    /**
+     * @return int
+     */
+    #[\Override]
+    public function run($args)
     {
-        if (isset($sArgument) && isset($sArgument[0]) && $sArgument[0] = 'yes') {
+        if (isset($args) && isset($args[0]) && $args[0] = 'yes') {
             echo "\n###### Restoring installation to demomode #####\n";
             echo "|| Resetting Database\n";
             $this->resetDatabase();
@@ -25,10 +28,12 @@ class DemomodeCommand extends CConsoleCommand
             echo "|| Installing demo surveys\n";
             $this->createDemo();
             echo "##### Done recreating demo state #####\n";
+            return 0;
         } else {
             // TODO: a valid error process
             echo 'This CLI command wipes a LimeSurvey installation clean (including all user except for the user ID 1 and user-uploaded content). '
                . 'For security reasons this command can only started if you add the parameter \'yes\' to the command line.';
+            return 1;
         }
     }
 
@@ -48,6 +53,7 @@ class DemomodeCommand extends CConsoleCommand
             '{{defaultvalue_l10ns}}',
             '{{failed_login_attempts}}',
             '{{groups}}',
+            '{{group_l10ns}}',
             '{{labels}}',
             '{{label_l10ns}}',
             '{{labelsets}}',
@@ -68,9 +74,11 @@ class DemomodeCommand extends CConsoleCommand
             '{{surveys_languagesettings}}',
             '{{survey_links}}',
             '{{templates}}',
+            '{{asset_version}}',
             '{{template_configuration}}',
             '{{user_in_groups}}',
             '{{user_groups}}',
+            '{{user_in_permissionrole}}',
         ];
         foreach ($truncatableTables as $table) {
             $quotedTable = Yii::app()->db->quoteTableName($table);
@@ -78,7 +86,7 @@ class DemomodeCommand extends CConsoleCommand
             Yii::app()->db->createCommand($actquery)->execute();
         }
         //Now delete the basics in all other tables
-        $actquery = "delete from {{permissions}} where uid<>1";
+        $actquery = "delete from {{permissions}} where uid<>1 or entity<>'global'";
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "delete from {{surveys_groupsettings}} where gsid>1";
         Yii::app()->db->createCommand($actquery)->execute();
@@ -90,13 +98,11 @@ class DemomodeCommand extends CConsoleCommand
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "delete from {{users}} where uid<>1";
         Yii::app()->db->createCommand($actquery)->execute();
-        $actquery = "update {{users}} set lang='en'";
-        Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "update {{users}} set lang='auto'";
         Yii::app()->db->createCommand($actquery)->execute();
-        $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_question%'";
+        $actquery = "delete from {{settings_user}} where stg_name LIKE 'last_question'";
         Yii::app()->db->createCommand($actquery)->execute();
-        $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_survey%'";
+        $actquery = "delete from {{settings_user}} where stg_name LIKE 'last_survey'";
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "update {{users}} set email = 'test@domain.test', full_name='Administrator'";
         Yii::app()->db->createCommand($actquery)->execute();
@@ -107,6 +113,8 @@ class DemomodeCommand extends CConsoleCommand
         $actquery = "update {{settings_global}} set stg_value='Administrator' where stg_name='siteadminname'";
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "update {{settings_global}} set stg_value='Sea_Green' where stg_name='admintheme'";
+        Yii::app()->db->createCommand($actquery)->execute();
+        $actquery = "update {{settings_global}} set stg_value='' where stg_name='restrictToLanguages'";
         Yii::app()->db->createCommand($actquery)->execute();
 
         $surveyidresult = dbGetTablesLike("tokens%");
@@ -121,7 +129,7 @@ class DemomodeCommand extends CConsoleCommand
 
         $surveyidresult = dbGetTablesLike("survey\_%");
         foreach ($surveyidresult as $sv) {
-            if (strpos($sv, 'survey_links') === false && strpos($sv, 'survey_url_parameters') === false) {
+            if (strpos((string) $sv, 'survey_links') === false && strpos((string) $sv, 'survey_url_parameters') === false) {
                                 Yii::app()->db->createCommand("drop table " . $sv)->execute();
             }
         }
@@ -153,18 +161,21 @@ class DemomodeCommand extends CConsoleCommand
 
     private function createDemo()
     {
-        Yii::app()->loadHelper('admin/import');
-        require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/replacements_helper.php');
-        require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/expressions/em_manager_helper.php');
-        require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/expressions/em_core_helper.php');
-        require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/admin/activate_helper.php');
+        Yii::app()->loadHelper('admin.import');
+        Yii::import('application.helpers.replacements_helper', true);
+        Yii::import('application.helpers.expressions.em_manager_helper', true);
+        Yii::import('application.helpers.expressions.em_core_helper', true);
+        Yii::import('application.helpers.admin.activate_helper', true);
 
         Yii::app()->session->add('loginID', 1);
         $documentationSurveyPath = dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'demosurveys' . DIRECTORY_SEPARATOR;
         $aSamplesurveys = scandir($documentationSurveyPath);
         $surveysToActivate = [];
         foreach ($aSamplesurveys as $sSamplesurvey) {
-            $result = null;
+            if ($sSamplesurvey[0] == '.') {
+                continue;
+            }
+            echo "Importing {$sSamplesurvey}\n";
             //Try catch for console application to be able to import surveys
 
             $result = @ XMLImportSurvey($documentationSurveyPath . $sSamplesurvey);
@@ -177,7 +188,7 @@ class DemomodeCommand extends CConsoleCommand
         foreach ($surveysToActivate as $surveyID) {
             $survey = \Survey::model()->findByPk($surveyID);
             $surveyActivator = new SurveyActivator($survey);
-            $result = $surveyActivator->activate();
+            $surveyActivator->activate();
         }
     }
 }

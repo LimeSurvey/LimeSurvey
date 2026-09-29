@@ -11,15 +11,14 @@
 
 namespace Twig\Node\Expression\Test;
 
+use Twig\Attribute\FirstClassTwigCallableReady;
 use Twig\Compiler;
 use Twig\Error\SyntaxError;
-use Twig\Node\Expression\ArrayExpression;
-use Twig\Node\Expression\BlockReferenceExpression;
-use Twig\Node\Expression\ConstantExpression;
-use Twig\Node\Expression\FunctionExpression;
-use Twig\Node\Expression\GetAttrExpression;
-use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\AbstractExpression;
+use Twig\Node\Expression\SupportDefinedTestInterface;
 use Twig\Node\Expression\TestExpression;
+use Twig\Node\Node;
+use Twig\TwigTest;
 
 /**
  * Checks if a variable is defined in the current context.
@@ -33,39 +32,37 @@ use Twig\Node\Expression\TestExpression;
  */
 class DefinedTest extends TestExpression
 {
-    public function __construct(\Twig_NodeInterface $node, $name, ?\Twig_NodeInterface $arguments, $lineno)
+    /**
+     * @param AbstractExpression $node
+     */
+    #[FirstClassTwigCallableReady]
+    public function __construct(Node $node, TwigTest|string $name, ?Node $arguments, int $lineno)
     {
-        if ($node instanceof NameExpression) {
-            $node->setAttribute('is_defined_test', true);
-        } elseif ($node instanceof GetAttrExpression) {
-            $node->setAttribute('is_defined_test', true);
-            $this->changeIgnoreStrictCheck($node);
-        } elseif ($node instanceof BlockReferenceExpression) {
-            $node->setAttribute('is_defined_test', true);
-        } elseif ($node instanceof FunctionExpression && 'constant' === $node->getAttribute('name')) {
-            $node->setAttribute('is_defined_test', true);
-        } elseif ($node instanceof ConstantExpression || $node instanceof ArrayExpression) {
-            $node = new ConstantExpression(true, $node->getTemplateLine());
-        } else {
+        if (!$node instanceof AbstractExpression) {
+            trigger_deprecation('twig/twig', '3.15', 'Not passing a "%s" instance to the "node" argument of "%s" is deprecated ("%s" given).', AbstractExpression::class, static::class, $node::class);
+        }
+
+        if (!$node instanceof SupportDefinedTestInterface) {
             throw new SyntaxError('The "defined" test only works with simple variables.', $lineno);
+        }
+
+        $node->enableDefinedTest();
+
+        if (\is_string($name) && 'defined' !== $name) {
+            trigger_deprecation('twig/twig', '3.12', 'Creating a "DefinedTest" instance with a test name that is not "defined" is deprecated.');
         }
 
         parent::__construct($node, $name, $arguments, $lineno);
     }
 
-    protected function changeIgnoreStrictCheck(GetAttrExpression $node)
-    {
-        $node->setAttribute('ignore_strict_check', true);
-
-        if ($node->getNode('node') instanceof GetAttrExpression) {
-            $this->changeIgnoreStrictCheck($node->getNode('node'));
-        }
-    }
-
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler->subcompile($this->getNode('node'));
     }
-}
 
-class_alias('Twig\Node\Expression\Test\DefinedTest', 'Twig_Node_Expression_Test_Defined');
+    public function getStringCoercedChildNames(): array
+    {
+        // the `defined` test does not coerce its node to string (it only inspects existence)
+        return [];
+    }
+}

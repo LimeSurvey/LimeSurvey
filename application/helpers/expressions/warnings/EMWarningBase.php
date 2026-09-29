@@ -2,7 +2,7 @@
 
 /**
  * LimeSurvey
- * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -70,7 +70,7 @@ class EMWarningBase implements EMWarningInterface
             return CHtml::link(
                 $this->msg,
                 $this->helpLink,
-                array("target" => "_blank",'class' => 'text-warning')
+                array("target" => "_blank",'class' => 'text-danger')
             );
         } else {
             return '[no help link]';

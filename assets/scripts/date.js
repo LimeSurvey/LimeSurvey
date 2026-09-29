@@ -1,22 +1,39 @@
 /**
- * Function to launch timepicker in question id
+ * Function to check conditions in date question
  */
 function doPopupDate(qId) {
+    $("#question" + qId).find('.date-timepicker-group').on('show.td', function () {
+        var minDate = $("#datemin" + $(this).data("basename")).text().trim();
+        var maxDate = $("#datemax" + $(this).data("basename")).text().trim();
 
-    /* need to update picker min/max value according to live value */
-    $("#question"+qId).find('.date-timepicker-group').on('dp.show', function(){
-        var minDate=$("#datemin"+$(this).data("basename")).text().trim();
-        var maxDate=$("#datemax"+$(this).data("basename")).text().trim();
-        var format=$(this).data("DateTimePicker").format();
-        /* unsure of this part : don't need format ? */
-        minDate = moment(minDate.substr(0,10), "YYYY-MM-DD");
-        maxDate = moment(maxDate.substr(0,10), "YYYY-MM-DD");
-        $(this).data("DateTimePicker").minDate(minDate);
-        $(this).data("DateTimePicker").maxDate(maxDate);
+        let picker = window["picker_answer" + $(this).data("basename")];
+        let locale = picker.optionsStore.options.localization.locale;
+
+        // Setting minDate and maxDate on the Tempus Dominus instance
+        if (minDate) {
+            let min = moment(minDate.substr(0,10));
+            min.set({h: 0, m: 0, s: 0});
+            picker.optionsStore.options.restrictions.minDate = tempusDominus.DateTime.convert(min.toDate(), locale);
+        }
+        if (maxDate) {
+            let max = moment(maxDate.substr(0,10));
+            max.set({h: 23, m: 59, s: 59});
+            picker.optionsStore.options.restrictions.maxDate = tempusDominus.DateTime.convert(max.toDate(), locale);
+        }
+
+        // Check current date is within the valid range
+        if (minDate && picker.viewDate.isBefore(picker.optionsStore.options.restrictions.minDate)) {
+            picker.dates.setValue(picker.optionsStore.options.restrictions.minDate);
+        }
+        if (maxDate && picker.viewDate.isAfter(picker.optionsStore.options.restrictions.maxDate)) {
+            picker.dates.setValue(picker.optionsStore.options.restrictions.maxDate);
+        }
+
+        picker.display._update('all');
     });
+
     /* need to launch EM each time is updated */
-    $("#question"+qId).find('.date-timepicker-group').on('dp.change', function(){
-        // $(this).find(":text").triggerHandler("change");/* Why this don't work ? */
+    $("#question"+qId).find('.date-timepicker-group').on('change.td', function(){
         checkconditions($(this).find(":text").val(), $(this).find(":text").attr('name'), 'text', 'keyup')
     });
 }
