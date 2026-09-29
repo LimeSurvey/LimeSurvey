@@ -117,6 +117,9 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     );
 
 
+    /**
+     * Subscribes to the events that are logged, and to the events needed for the plugin and survey settings
+     */
     public function init()
     {
         $this->subscribe('beforeSurveySettings');
@@ -687,6 +690,10 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         }
     }
 
+    /**
+     * Function catches if the settings of a survey were changed
+     * Only the changed attributes are saved, with their old and new values
+     */
     public function beforeSurveySettingsSave()
     {
         $event = $this->getEvent();

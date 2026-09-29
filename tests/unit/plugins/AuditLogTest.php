@@ -55,6 +55,10 @@ class AuditLogTest extends TestBaseClass
         parent::tearDown();
     }
 
+    /**
+     * A deleted survey leaves one entry saying who deleted which survey,
+     * with its titles in all languages so it can still be identified.
+     */
     public function testSurveyDeletionIsLoggedWithSurveyIdAndTitles()
     {
         $surveyId = $this->importTestSurvey();
@@ -74,6 +78,9 @@ class AuditLogTest extends TestBaseClass
         $this->assertEquals(['en' => 'Audit log test (en)', 'es' => 'Audit log test (es)'], $oldValues['titles']);
     }
 
+    /**
+     * The bounce account password is a credential: it must not be copied into the audit log.
+     */
     public function testSurveyDeletionLogDoesNotContainBounceAccountPassword()
     {
         $surveyId = $this->importTestSurvey();
@@ -91,6 +98,9 @@ class AuditLogTest extends TestBaseClass
         $this->assertStringNotContainsString($encryptedPassword, $rows[0]['oldvalues']);
     }
 
+    /**
+     * The global "Survey deleted" setting switches the entry off.
+     */
     public function testSurveyDeletionIsNotLoggedWhenGlobalSettingIsOff()
     {
         self::$plugin->saveSettings(['AuditLog_Log_SurveyDelete' => '0']);
@@ -102,6 +112,9 @@ class AuditLogTest extends TestBaseClass
         $this->assertSame([], $this->getLogRowsAfter($lastLogId));
     }
 
+    /**
+     * The per-survey "Audit log for this survey" setting must not allow deleting a survey without a trace.
+     */
     public function testSurveyDeletionIsLoggedEvenWhenSurveyAuditingIsOff()
     {
         $surveyId = $this->importTestSurvey();
@@ -117,6 +130,33 @@ class AuditLogTest extends TestBaseClass
         $rows = $this->getLogRowsAfter($lastLogId);
         $this->assertCount(1, $rows);
         $this->assertSame((string) $surveyId, $rows[0]['entityid']);
+    }
+
+    /**
+     * If the audit entry cannot be written, the survey must not be deleted:
+     * the entry is written before the survey row is removed, and the database error aborts the deletion.
+     */
+    public function testSurveyIsNotDeletedWhenAuditEntryCannotBeWritten()
+    {
+        $surveyId = $this->importTestSurvey();
+        $db = \Yii::app()->db;
+        // Load the log table schema first, so the write fails on insert like on a database failure.
+        // Loading it while the table is missing would keep a broken model cached for the rest of the run.
+        \PluginDynamic::model($db->tablePrefix . 'auditlog_log');
+        $db->createCommand()->renameTable('{{auditlog_log}}', '{{auditlog_log_unavailable}}');
+        $exception = null;
+        try {
+            \Survey::model()->deleteSurvey($surveyId);
+        } catch (\CDbException $e) {
+            $exception = $e;
+        } finally {
+            $db->createCommand()->renameTable('{{auditlog_log_unavailable}}', '{{auditlog_log}}');
+        }
+
+        $this->assertNotNull($exception, 'Deletion did not fail although the audit entry could not be written');
+        \Survey::model()->resetCache();
+        $this->assertNotNull(\Survey::model()->findByPk($surveyId), 'Survey was deleted without an audit entry');
+        $this->deleteSurvey($surveyId);
     }
 
     /**
@@ -156,6 +196,9 @@ class AuditLogTest extends TestBaseClass
         self::$testSurvey = null;
     }
 
+    /**
+     * @return int Id of the most recent audit log entry, 0 if there is none
+     */
     private function getLastLogId(): int
     {
         return (int) \Yii::app()->db->createCommand()
