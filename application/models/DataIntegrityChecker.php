@@ -640,9 +640,9 @@ class DataIntegrityChecker
 
     /**
      * Renumbers question groups with a duplicate group_order within their survey,
-     * via QuestionGroup::updateGroupOrder(), which re-sorts by (group_order,
-     * group_name) - group_name in the survey's base language as a stable tiebreaker
-     * for groups that currently share the same group_order - then assigns
+     * via QuestionGroup::updateGroupOrder(), which re-sorts every group by
+     * (group_order, group_name, gid) - group_name in the survey's base language, then
+     * the group ID, as stable tiebreakers for groups that share a group_order - then assigns
      * sequential, unique group_order values in that resulting order.
      *
      * @param array[] $groupOrderDuplicates rows of ['sid' => ..., 'organizerLink' => ...]

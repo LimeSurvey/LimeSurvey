@@ -337,9 +337,8 @@ class CheckIntegrityTest extends TestBaseClass
 
     public function testFixGroupOrderDuplicatesUsesGroupNameInBaseLanguageAsTiebreaker()
     {
-        // Survey 143933's base language is 'de'; the l10n rows below must use that
-        // language, since QuestionGroup::updateGroupOrder() only sorts by group_name
-        // for the survey's base language.
+        // The l10n rows below use the survey's base language, since
+        // QuestionGroup::updateGroupOrder() only sorts by group_name in that language.
         $gidCharlie = $this->createOrderedGroupFixture(50, 'Charlie group');
         $gidAlpha = $this->createOrderedGroupFixture(50, 'Alpha group');
         $gidBravo = $this->createOrderedGroupFixture(50, 'Bravo group');
@@ -365,6 +364,38 @@ class CheckIntegrityTest extends TestBaseClass
             ->where('sid = :sid', array(':sid' => self::$surveyId))
             ->queryRow();
         $this->assertSame($counts['totalgroups'], $counts['distinctorders'], 'Groups still have duplicate group_order values after the fix.');
+    }
+
+    /** Verifies that a group without a base-language name is still renumbered. */
+    public function testFixGroupOrderDuplicatesRenumbersGroupsWithoutABaseLanguageName()
+    {
+        // Both at group_order 0: renumbering starts at 0, so a group skipped by the
+        // renumbering would keep colliding with whichever group is renumbered to 0.
+        $gidNamed = $this->createOrderedGroupFixture(0, 'Named group');
+
+        // Only localized in the survey's additional language, not its base language.
+        $unnamedGroup = new \QuestionGroup();
+        $unnamedGroup->sid = self::$surveyId;
+        $unnamedGroup->group_order = 0;
+        $this->assertTrue($unnamedGroup->save(), 'Could not save group fixture: ' . json_encode($unnamedGroup->errors));
+        $groupL10n = new \QuestionGroupL10n();
+        $groupL10n->gid = $unnamedGroup->gid;
+        $groupL10n->group_name = 'Additional language only group';
+        $groupL10n->language = self::$testSurvey->additionalLanguages[0];
+        $this->assertTrue($groupL10n->save(), 'Could not save group l10n fixture: ' . json_encode($groupL10n->errors));
+
+        $aData = array('messages' => array(), 'warnings' => array());
+        $this->callMethod('fixGroupOrderDuplicates', array(array(array('sid' => self::$surveyId)), $aData));
+
+        $orderByGid = \Yii::app()->db->createCommand()
+            ->select('gid, group_order')
+            ->from('{{groups}}')
+            ->where('sid = :sid', array(':sid' => self::$surveyId))
+            ->queryAll();
+        $orderByGid = array_column($orderByGid, 'group_order', 'gid');
+
+        $this->assertNotEquals($orderByGid[$gidNamed], $orderByGid[$unnamedGroup->gid]);
+        $this->assertCount(count($orderByGid), array_unique($orderByGid), 'A group without a base-language name kept a duplicate group_order.');
     }
 
     public function testFixQuestionOrderDuplicatesUsesQuestionCodeAsTiebreaker()
