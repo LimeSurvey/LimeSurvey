@@ -102,11 +102,16 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         ),
         'separatorSurveySettings' => array(
             'type' => 'separator',
-            'title' => 'Survey settings',
+            'title' => 'Surveys',
         ),
         'AuditLog_Log_SurveySettings' => array(
             'type' => 'boolean',
             'label' => 'Settings changed',
+            'default' => '1',
+        ),
+        'AuditLog_Log_SurveyDelete' => array(
+            'type' => 'boolean',
+            'label' => 'Survey deleted',
             'default' => '1',
         ),
     );
@@ -117,6 +122,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $this->subscribe('beforeSurveySettings');
         $this->subscribe('newSurveySettings');
         $this->subscribe('beforeSurveySettingsSave');
+        $this->subscribe('beforeSurveyDelete');
         $this->subscribe('beforeActivate');
         $this->subscribe('beforeUserSave');
         $this->subscribe('beforeUserDelete');
@@ -710,5 +716,36 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
                 $oAutoLog->save();
             }
         }
+    }
+
+    /**
+     * Function catches if a survey was deleted
+     * The survey attributes and its titles in all languages are saved
+     * - only the bounce account password is removed for security reasons
+     */
+    public function beforeSurveyDelete()
+    {
+        // The survey setting 'auditing' is not checked: it must not be possible to delete a survey without a trace
+        if (!$this->checkSetting('AuditLog_Log_SurveyDelete')) {
+            return;
+        }
+        $oSurvey = $this->getEvent()->get('model');
+        $oCurrentUser = $this->api->getCurrentUser();
+
+        $aOldValues = $oSurvey->getAttributes();
+        unset($aOldValues['bounceaccountpass']);
+        $aOldValues['titles'] = array();
+        foreach ($oSurvey->languagesettings as $sLanguage => $oLanguageSetting) {
+            $aOldValues['titles'][$sLanguage] = $oLanguageSetting->surveyls_title;
+        }
+
+        $oAutoLog = $this->api->newModel($this, 'log');
+        $oAutoLog->uid = $oCurrentUser ? $oCurrentUser->uid : null;
+        $oAutoLog->entity = 'survey';
+        $oAutoLog->entityid = $oSurvey->sid;
+        $oAutoLog->action = 'delete';
+        $oAutoLog->oldvalues = json_encode($aOldValues);
+        $oAutoLog->fields = implode(',', array_keys($aOldValues));
+        $oAutoLog->save();
     }
 }
