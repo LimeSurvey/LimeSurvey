@@ -1505,7 +1505,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getCountFullAnswers()
     {
-        if (!$this->isActive || !$this->hasResponsesTable ) {
+        if (!$this->isActive || !$this->hasResponsesTable) {
             return 0;
         }
         return Yii::app()->db->createCommand()
@@ -1521,7 +1521,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getCountIncompleteAnswers()
     {
-        if (!$this->isActive || !$this->hasResponsesTable ) {
+        if (!$this->isActive || !$this->hasResponsesTable) {
             return 0;
         }
         return Yii::app()->db->createCommand()
@@ -1537,7 +1537,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getCountTotalAnswers()
     {
-        if (!$this->isActive || !$this->hasResponsesTable ) {
+        if (!$this->isActive || !$this->hasResponsesTable) {
             return 0;
         }
         return Yii::app()->db->createCommand()
