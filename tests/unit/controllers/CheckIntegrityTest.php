@@ -503,8 +503,22 @@ class CheckIntegrityTest extends TestBaseClass
         }
     }
 
+    /** Verifies that a failed table drop is reported as a warning instead of aborting the pass. */
+    public function testDropTableIfExistsWarnsWhenTheDropFails()
+    {
+        $tableName = \Yii::app()->db->tablePrefix . 'old_responses_999999910_20200101120000';
+        $aData = array('messages' => array(), 'warnings' => array());
+        $dropped = $this->callMethod('dropTableIfExists', array($tableName, &$aData));
+
+        $this->assertFalse($dropped);
+        $this->assertCount(1, $aData['warnings'], 'A failed drop should be reported as a warning.');
+        $this->assertStringContainsString($tableName, $aData['warnings'][0]);
+    }
+
     /**
-     * @param string $tableName
+     * Checks whether a table exists, querying the database directly.
+     *
+     * @param string $tableName Full (prefixed) table name.
      * @return bool
      */
     private function tableExistsRaw($tableName)

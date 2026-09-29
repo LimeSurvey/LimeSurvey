@@ -155,16 +155,16 @@ class DataIntegrityChecker
     }
 
     /**
-     * Delete orphan token tables
+     * Drops old participant list tables that the check flagged for automatic deletion.
      *
-     * @param array $tokenTables
-     * @param array $aData
-     * @return array
+     * @param string[] $tokenTables Full (prefixed) names of the tables to drop.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per dropped table and a warning per failed drop.
      */
     private function deleteOrphanTokenTables(array $tokenTables, array $aData)
     {
         foreach ($tokenTables as $aTokenTable) {
-            if ($this->dropTableIfExists($aTokenTable)) {
+            if ($this->dropTableIfExists($aTokenTable, $aData)) {
                 $aData['messages'][] = sprintf(gT('Deleting orphan survey participant list: %s'), $aTokenTable);
             }
         }
@@ -172,16 +172,17 @@ class DataIntegrityChecker
     }
 
     /**
-     * Drop orphan survey tables
+     * Drops old survey tables that the check flagged for automatic deletion, together
+     * with their related archived questions tables.
      *
-     * @param array $surveyTables
-     * @param array $aData
-     * @return array
+     * @param string[] $surveyTables Full (prefixed) names of the tables to drop.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per dropped table and a warning per failed drop.
      */
     private function dropOrphanSurveyTables(array $surveyTables, array $aData)
     {
         foreach ($surveyTables as $aSurveyTable) {
-            if ($this->dropTableIfExists($aSurveyTable)) {
+            if ($this->dropTableIfExists($aSurveyTable, $aData)) {
                 $aData['messages'][] = sprintf(gT('Deleting orphan survey table: %s'), $aSurveyTable);
             }
             $aData = $this->dropRelatedArchivedQuestionsTable($aSurveyTable, $aData);
@@ -199,8 +200,9 @@ class DataIntegrityChecker
      * needed and would otherwise be left orphaned in the database.
      *
      * @param string $sSurveyTableName Full (prefixed) name of the archived survey responses table
-     * @param array $aData
-     * @return array
+     * @param array $aData For view generation.
+     * @return array $aData with a message if the questions archive was dropped, or a
+     *               warning if dropping it failed.
      */
     public function dropRelatedArchivedQuestionsTable($sSurveyTableName, array $aData)
     {
@@ -214,28 +216,34 @@ class DataIntegrityChecker
             $sDBPrefix . 'old_questions_',
             (string) $sSurveyTableName
         );
-        if ($this->dropTableIfExists($sQuestionsTableName)) {
+        // Not every responses archive has a questions archive (e.g. older archives), so
+        // only attempt the drop - and so risk a warning - when there is one.
+        if (!tableExists(substr($sQuestionsTableName, strlen((string) $sDBPrefix)))) {
+            return $aData;
+        }
+        if ($this->dropTableIfExists($sQuestionsTableName, $aData)) {
             $aData['messages'][] = sprintf(gT('Deleting related archived questions table: %s'), $sQuestionsTableName);
         }
         return $aData;
     }
 
     /**
-     * Drops a table, tolerating it already being gone. This tool can now run
-     * unattended and repeatedly (see the checkintegrity console command), so a table
-     * this pass detected can legitimately disappear before the drop runs - e.g. an
-     * admin deleting the survey through the web UI concurrently - and that race
-     * should not abort the whole automatic-fix pass.
+     * Drops a table, reporting a failure as a warning instead of aborting the whole
+     * automatic-fix pass. This tool can run unattended and repeatedly (see the
+     * checkintegrity console command), so a drop can fail mid-pass - e.g. because an
+     * admin deleted the survey through the web UI concurrently.
      *
-     * @param string $tableName
-     * @return bool true if the table was dropped, false if it no longer existed
+     * @param string $tableName Full (prefixed) name of the table to drop.
+     * @param array $aData For view generation; receives a warning if the drop failed.
+     * @return bool true if the table was dropped, false if the drop failed.
      */
-    private function dropTableIfExists($tableName)
+    private function dropTableIfExists($tableName, array &$aData)
     {
         try {
             Yii::app()->db->createCommand()->dropTable($tableName);
             return true;
         } catch (CDbException $e) {
+            $aData['warnings'][] = sprintf(gT('Unable to delete table %s: %s'), $tableName, $e->getMessage());
             return false;
         }
     }
