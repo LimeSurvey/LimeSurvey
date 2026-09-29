@@ -15,7 +15,8 @@ use QuestionAdministrationController;
 class QuestionAdministrationDefaultValuesTest extends TestBaseClass
 {
     /**
-     * Imports a survey with List (radio) questions.
+     * Imports a survey in English and German with a List (radio) question and
+     * a Multiple choice question with six subquestions.
      *
      * @return void
      */
@@ -23,7 +24,7 @@ class QuestionAdministrationDefaultValuesTest extends TestBaseClass
     {
         parent::setUpBeforeClass();
         \Yii::import('application.controllers.QuestionAdministrationController', true);
-        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_767665_ListRadioOtherPositionTest.lss');
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_373616_copySurvey.lss');
     }
 
     /**
@@ -32,12 +33,7 @@ class QuestionAdministrationDefaultValuesTest extends TestBaseClass
      */
     public function testGetDefaultValuesUsesSelectedQuestionType()
     {
-        $question = Question::model()->findByAttributes([
-            'sid' => self::$surveyId,
-            'type' => Question::QT_L_LIST,
-            'parent_qid' => 0,
-        ]);
-        $this->assertNotNull($question);
+        $question = $this->getQuestion(Question::QT_L_LIST);
         DI::getContainer()->get(DefaultValuesService::class)
             ->save($question, ['defaultvalues' => ['en' => ['A2']]]);
 
@@ -62,5 +58,84 @@ class QuestionAdministrationDefaultValuesTest extends TestBaseClass
             Question::QT_S_SHORT_FREE_TEXT
         );
         $this->assertSame('A2', $shortText['en'][Question::QT_S_SHORT_FREE_TEXT][0]);
+    }
+
+    /**
+     * @testdox getDefaultValues() returns subquestion defaults per language without a query per subquestion
+     * @return void
+     */
+    public function testGetDefaultValuesForSubquestions()
+    {
+        $question = $this->getQuestion(Question::QT_M_MULTIPLE_CHOICE);
+        DI::getContainer()->get(DefaultValuesService::class)->save($question, [
+            'defaultvalues' => [
+                'en' => ['SQ001' => ['Y']],
+                'de' => ['SQ003' => ['Y']],
+            ],
+        ]);
+
+        // Warm up the schema cache, so only the queries of getDefaultValues() itself are counted
+        QuestionAdministrationController::getDefaultValues(self::$surveyId, $question->gid, $question->qid);
+        $db = \Yii::app()->db;
+        $enableProfiling = $db->enableProfiling;
+        $db->enableProfiling = true;
+        try {
+            $queriesBefore = $this->countQueries();
+            $defaultValues = QuestionAdministrationController::getDefaultValues(
+                self::$surveyId,
+                $question->gid,
+                $question->qid
+            );
+            $queriesAfter = $this->countQueries();
+        } finally {
+            $db->enableProfiling = $enableProfiling;
+        }
+
+        foreach (['en' => 'SQ001', 'de' => 'SQ003'] as $language => $checkedTitle) {
+            $rows = $defaultValues[$language][Question::QT_M_MULTIPLE_CHOICE][0]['sqresult'];
+            $this->assertSame(
+                ['SQ001', 'SQ002', 'SQ003', 'SQ004', 'SQ005', 'SQ006'],
+                array_column($rows, 'title'),
+                "Subquestions in $language, in question order"
+            );
+            $checked = array_column(array_filter($rows, function ($row) {
+                return $row['defaultvalue'] === 'Y';
+            }), 'title');
+            $this->assertSame([$checkedTitle], $checked, "Checked subquestions in $language");
+            $this->assertNotEmpty($rows[0]['question'], "Subquestion text in $language");
+        }
+
+        // 2 languages x 6 subquestions: the former implementation ran more than 14 queries here
+        $this->assertLessThanOrEqual(5, $queriesAfter - $queriesBefore, 'Queries run by getDefaultValues()');
+    }
+
+    /**
+     * Returns the number of SQL statements profiled so far.
+     * Like CDbConnection::getStats(), but refreshes the logger's cached profiling results.
+     *
+     * @return int
+     */
+    private function countQueries()
+    {
+        $logger = \Yii::getLogger();
+        return count($logger->getProfilingResults(null, 'system.db.CDbCommand.query', true))
+            + count($logger->getProfilingResults(null, 'system.db.CDbCommand.execute', true));
+    }
+
+    /**
+     * Returns the first question of the given type in the test survey.
+     *
+     * @param string $type Question type
+     * @return Question
+     */
+    private function getQuestion($type)
+    {
+        $question = Question::model()->findByAttributes([
+            'sid' => self::$surveyId,
+            'type' => $type,
+            'parent_qid' => 0,
+        ]);
+        $this->assertNotNull($question);
+        return $question;
     }
 }
