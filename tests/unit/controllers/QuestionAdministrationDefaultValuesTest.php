@@ -110,6 +110,74 @@ class QuestionAdministrationDefaultValuesTest extends TestBaseClass
     }
 
     /**
+     * Every question type supported by the "Default answers" tab.
+     *
+     * @return array<string, array{string}>
+     */
+    public static function supportedQuestionTypeProvider()
+    {
+        $types = [];
+        foreach (DefaultValuesService::SUPPORTED_QUESTION_TYPES as $type) {
+            $types["type $type"] = [$type];
+        }
+        return $types;
+    }
+
+    /**
+     * @testdox The "Default answers" tab renders in the Twig sandbox for question type $type
+     * @dataProvider supportedQuestionTypeProvider
+     * @param string $type Question type
+     * @return void
+     */
+    public function testDefaultAnswersTabRenders($type)
+    {
+        $questionType = \QuestionType::modelsAttributes()[$type];
+        // Answer options and subquestions come from the stored question, the type is switched in memory only
+        $question = $this->getQuestion(
+            $questionType['subquestions'] > 0 ? Question::QT_M_MULTIPLE_CHOICE : Question::QT_L_LIST
+        );
+        $question->type = $type;
+        $survey = $question->survey;
+
+        // The Yes/No widget is created through the current controller, which a unit test does not have
+        $controller = \Yii::app()->getController();
+        if ($controller === null) {
+            \Yii::app()->setController(new \CController('test'));
+        }
+
+        // Same as application/views/questionAdministration/extraOptions.php
+        $twigRenderer = \Yii::app()->twigRenderer;
+        $twigRenderer->getLoader()->addPath(\Yii::app()->getBasePath() . '/views/questionAdministration', '__main__');
+        try {
+            $html = $twigRenderer->renderViewFromFile(
+                '/application/views/questionAdministration/defaultValues.twig',
+                [
+                    'subquestions' => $questionType['subquestions'],
+                    'answerScales' => $questionType['answerscales'],
+                    'answers' => $question->getScaledAnswerOptions(),
+                    'question' => $question,
+                    'allLanguages' => $survey->allLanguages,
+                    'language' => $survey->language,
+                    'defaultValues' => QuestionAdministrationController::getDefaultValues(
+                        self::$surveyId,
+                        $question->gid,
+                        $question->qid,
+                        $type
+                    ),
+                    'sameDefault' => (bool)$question->same_default,
+                    'hasUpdatePermission' => true,
+                ],
+                true
+            );
+        } finally {
+            \Yii::app()->setController($controller);
+        }
+
+        $this->assertStringContainsString('lang-de', $html);
+        $this->assertStringContainsString("name='samedefault'", $html);
+    }
+
+    /**
      * Returns the number of SQL statements profiled so far.
      * Like CDbConnection::getStats(), but refreshes the logger's cached profiling results.
      *

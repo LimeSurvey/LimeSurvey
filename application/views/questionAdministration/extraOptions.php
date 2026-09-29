@@ -105,6 +105,7 @@
                         'allLanguages' => $survey->allLanguages,
                         'language' => $survey->language,
                         'defaultValues' => $defaultValues,
+                        'sameDefault' => (bool)$question->same_default,
                         'hasUpdatePermission' => Permission::model()->hasSurveyPermission($survey->sid, 'surveycontent', 'update'),
                     ],
                     true

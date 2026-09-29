@@ -10,6 +10,7 @@
  * @var string $language
  * @var array<mixed> $defaultValues
  * @var bool $hasUpdatePermission
+ * @var bool $sameDefault "Use same default value across languages" (Question::$same_default is not allowed in the Twig sandbox)
  *
  * Supported combinations of answerscales and subquestions:
  *   - Case 1: answerscales = 1 and subquestions = 0
@@ -61,7 +62,7 @@
 
         {% if first and allLanguages|length > 1 %}
             <div class="form-check mb-3">
-                <input type='checkbox' class="form-check-input" name='samedefault' id='samedefault' value='1' {{ question['same_default'] ? 'checked="checked"' : '' }} />
+                <input type='checkbox' class="form-check-input" name='samedefault' id='samedefault' value='1' {{ sameDefault ? 'checked="checked"' : '' }} />
                 <label class="form-check-label" for='samedefault'>
                     {{ gT('Use same default value across languages') }}
                 </label>

@@ -22,7 +22,7 @@
         </option>
         {% for answer in opts['answers'] %}
             {# data-common-id matches the answer option row, so the default survives a code change (see questionEditor.js) #}
-            <option {{ (answer.attributes['code'] == opts['defaultvalue']) ? 'selected="selected"' : '' }} value="{{ answer.attributes['code'] }}" data-common-id="{{ answer.aid }}_0">
+            <option {{ (answer.code == opts['defaultvalue']) ? 'selected="selected"' : '' }} value="{{ answer.code }}" data-common-id="{{ answer.aid }}_0">
                 {{ flattenText(answer.answerl10ns[lang].answer) }}
             </option>
         {% endfor %}
