@@ -40,6 +40,7 @@ class QuestionAttribute extends LSActiveRecord
     /**
      * @return static
      */
+    #[\Override]
     public static function model($className = __CLASS__)
     {
         /** @var self $model */
@@ -48,12 +49,14 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /** @inheritdoc */
+    #[\Override]
     public function tableName()
     {
         return '{{question_attributes}}';
     }
 
     /** @inheritdoc */
+    #[\Override]
     public function primaryKey()
     {
         return 'qaid';
@@ -63,6 +66,7 @@ class QuestionAttribute extends LSActiveRecord
      * @inheritdoc
      * @todo Remove?
      */
+    #[\Override]
     public function relations()
     {
         return array(
@@ -77,12 +81,14 @@ class QuestionAttribute extends LSActiveRecord
      * In that case disable the defaultScope by using MyModel::model()->resetScope()->findAll();
      * @return array Scope that indexes the records by their attribute bane
      */
+    #[\Override]
     public function defaultScope()
     {
         return array('index' => 'attribute');
     }
 
     /** @inheritdoc */
+    #[\Override]
     public function rules()
     {
         return array(

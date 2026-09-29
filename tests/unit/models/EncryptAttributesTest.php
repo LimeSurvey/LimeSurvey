@@ -295,4 +295,39 @@ class EncryptAttributesTest extends TestBaseClass
         /* "" is not crypted */
         $this->assertEquals('', $answer);
     }
+
+    /**
+     * Response values must be decrypted even when the ExpressionManager singleton
+     * (restored from a running survey in the same session) holds updated values for them.
+     * @see https://bugs.limesurvey.org/view.php?id=20728
+     * @return void
+     */
+    public function testResponseDecryptIgnoresExpressionManagerUpdatedValues()
+    {
+        $responses = \Response::model(self::$surveyId)->findAll();
+        $this->assertCount(1, $responses);
+        $response = $responses[0];
+        $response->decrypt();
+
+        $survey = \Survey::model()->findByPk(self::$surveyId);
+        $sgqa = 'Q' . $survey->groups[0]->questions[0]->qid;
+
+        $response->$sgqa = 'Answer from last page';
+        $response->encryptSave(false);
+
+        // Simulate the survey session: the last submitted page updated this answer
+        $LEM = \LimeExpressionManager::singleton();
+        $updatedValuesProperty = new \ReflectionProperty(\LimeExpressionManager::class, 'updatedValues');
+        $updatedValuesProperty->setAccessible(true);
+        $originalUpdatedValues = $updatedValuesProperty->getValue($LEM);
+        $updatedValuesProperty->setValue($LEM, [$sgqa => ['type' => 'T', 'value' => 'Answer from last page']]);
+
+        try {
+            $response = \Response::model(self::$surveyId)->findByPk($response->id);
+            $response->decrypt();
+            $this->assertEquals('Answer from last page', $response->$sgqa);
+        } finally {
+            $updatedValuesProperty->setValue($LEM, $originalUpdatedValues);
+        }
+    }
 }

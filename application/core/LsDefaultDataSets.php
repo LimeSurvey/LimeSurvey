@@ -2721,14 +2721,6 @@ class LsDefaultDataSets
     public static function mockTranslateArrayContainer()
     {
         $translationArray = [
-            // Question themes
-            gT("Bootstrap dropdown"),
-            gT("Bootstrap buttons"),
-            gT("Image select list (Radio)"),
-            gT("Image select multiple choice"),
-            gT("Browser detection"),
-            gT("Input on demand"),
-            gT("Ranking advanced"),
             // Other
             gT("Survey container"),
             gT("Hide privacy info"),

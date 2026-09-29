@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_435 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             // Check if default survey groups exists - at some point it was possible to delete it

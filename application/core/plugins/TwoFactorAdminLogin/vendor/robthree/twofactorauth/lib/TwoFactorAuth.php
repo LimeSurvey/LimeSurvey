@@ -1,61 +1,61 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RobThree\Auth;
 
 use RobThree\Auth\Providers\Qr\IQRCodeProvider;
+use RobThree\Auth\Providers\Qr\QRServerProvider;
+use RobThree\Auth\Providers\Rng\CSRNGProvider;
+use RobThree\Auth\Providers\Rng\HashRNGProvider;
 use RobThree\Auth\Providers\Rng\IRNGProvider;
+use RobThree\Auth\Providers\Rng\OpenSSLRNGProvider;
+use RobThree\Auth\Providers\Time\HttpTimeProvider;
 use RobThree\Auth\Providers\Time\ITimeProvider;
+use RobThree\Auth\Providers\Time\LocalMachineTimeProvider;
+use RobThree\Auth\Providers\Time\NTPTimeProvider;
 
 // Based on / inspired by: https://github.com/PHPGangsta/GoogleAuthenticator
 // Algorithms, digits, period etc. explained: https://github.com/google/google-authenticator/wiki/Key-Uri-Format
 class TwoFactorAuth
 {
-    private $algorithm;
-    private $period;
-    private $digits;
-    private $issuer;
-    private $qrcodeprovider = null;
-    private $rngprovider = null;
-    private $timeprovider = null;
-    private static $_base32dict = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567=';
-    private static $_base32;
-    private static $_base32lookup = array();
-    private static $_supportedalgos = array('sha1', 'sha256', 'sha512', 'md5');
+    private static string $_base32dict = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567=';
 
-    function __construct($issuer = null, $digits = 6, $period = 30, $algorithm = 'sha1', IQRCodeProvider $qrcodeprovider = null, IRNGProvider $rngprovider = null, ITimeProvider $timeprovider = null)
-    {
-        $this->issuer = $issuer;
-        if (!is_int($digits) || $digits <= 0) {
-            throw new TwoFactorAuthException('Digits must be int > 0');
+    /** @var array<string> */
+    private static array $_base32;
+
+    /** @var array<string, int> */
+    private static array $_base32lookup = array();
+
+    public function __construct(
+        private readonly ?string   $issuer = null,
+        private readonly int       $digits = 6,
+        private readonly int       $period = 30,
+        private readonly Algorithm $algorithm = Algorithm::Sha1,
+        private ?IQRCodeProvider   $qrcodeprovider = null,
+        private ?IRNGProvider      $rngprovider = null,
+        private ?ITimeProvider     $timeprovider = null
+    ) {
+        if ($this->digits <= 0) {
+            throw new TwoFactorAuthException('Digits must be > 0');
         }
-        $this->digits = $digits;
 
-        if (!is_int($period) || $period <= 0) {
+        if ($this->period <= 0) {
             throw new TwoFactorAuthException('Period must be int > 0');
         }
-        $this->period = $period;
 
-        $algorithm = strtolower(trim((string) $algorithm));
-        if (!in_array($algorithm, self::$_supportedalgos)) {
-            throw new TwoFactorAuthException('Unsupported algorithm: ' . $algorithm);
-        }
-        $this->algorithm = $algorithm;
-        $this->qrcodeprovider = $qrcodeprovider;
-        $this->rngprovider = $rngprovider;
-        $this->timeprovider = $timeprovider;
-
-        self::$_base32 = str_split((string) self::$_base32dict);
+        self::$_base32 = str_split(self::$_base32dict);
         self::$_base32lookup = array_flip(self::$_base32);
     }
 
     /**
      * Create a new secret
      */
-    public function createSecret($bits = 80, $requirecryptosecure = true)
+    public function createSecret(int $bits = 80, bool $requirecryptosecure = true): string
     {
         $secret = '';
-        $bytes = ceil($bits / 5);   //We use 5 bits of each byte (since we have a 32-character 'alphabet' / BASE32)
-        $rngprovider = $this->getRngprovider();
+        $bytes = (int)ceil($bits / 5);   // We use 5 bits of each byte (since we have a 32-character 'alphabet' / BASE32)
+        $rngprovider = $this->getRngProvider();
         if ($requirecryptosecure && !$rngprovider->isCryptographicallySecure()) {
             throw new TwoFactorAuthException('RNG provider is not cryptographically secure');
         }
@@ -69,25 +69,25 @@ class TwoFactorAuth
     /**
      * Calculate the code with given secret and point in time
      */
-    public function getCode($secret, $time = null)
+    public function getCode(string $secret, ?int $time = null): string
     {
         $secretkey = $this->base32Decode($secret);
 
         $timestamp = "\0\0\0\0" . pack('N*', $this->getTimeSlice($this->getTime($time)));  // Pack time into binary string
-        $hashhmac = hash_hmac((string) $this->algorithm, $timestamp, (string) $secretkey, true);             // Hash it with users secret key
+        $hashhmac = hash_hmac($this->algorithm->value, $timestamp, $secretkey, true);             // Hash it with users secret key
         $hashpart = substr($hashhmac, ord(substr($hashhmac, -1)) & 0x0F, 4);               // Use last nibble of result as index/offset and grab 4 bytes of the result
         $value = unpack('N', $hashpart);                                                   // Unpack binary value
         $value = $value[1] & 0x7FFFFFFF;                                                   // Drop MSB, keep only 31 bits
 
-        return str_pad($value % pow(10, $this->digits), $this->digits, '0', STR_PAD_LEFT);
+        return str_pad((string)($value % 10 ** $this->digits), $this->digits, '0', STR_PAD_LEFT);
     }
 
     /**
      * Check if the code is correct. This will accept codes starting from ($discrepancy * $period) sec ago to ($discrepancy * period) sec from now
      */
-    public function verifyCode($secret, $code, $discrepancy = 1, $time = null, &$timeslice = 0)
+    public function verifyCode(string $secret, string $code, int $discrepancy = 1, ?int $time = null, ?int &$timeslice = 0): bool
     {
-        $timetamp = $this->getTime($time);
+        $timestamp = $this->getTime($time);
 
         $timeslice = 0;
 
@@ -96,7 +96,7 @@ class TwoFactorAuth
         // of the match. Each iteration we either set the timeslice variable to the timeslice of the match
         // or set the value to itself.  This is an effort to maintain constant execution time for the code.
         for ($i = -$discrepancy; $i <= $discrepancy; $i++) {
-            $ts = $timetamp + ($i * $this->period);
+            $ts = $timestamp + ($i * $this->period);
             $slice = $this->getTimeSlice($ts);
             $timeslice = $this->codeEquals($this->getCode($secret, $ts), $code) ? $slice : $timeslice;
         }
@@ -105,54 +105,32 @@ class TwoFactorAuth
     }
 
     /**
-     * Timing-attack safe comparison of 2 codes (see http://blog.ircmaxell.com/2014/11/its-all-about-time.html)
-     */
-    private function codeEquals($safe, $user)
-    {
-        if (function_exists('hash_equals')) {
-            return hash_equals($safe, $user);
-        }
-        // In general, it's not possible to prevent length leaks. So it's OK to leak the length. The important part is that
-        // we don't leak information about the difference of the two strings.
-        if (strlen((string) $safe) === strlen((string) $user)) {
-            $result = 0;
-            for ($i = 0; $i < strlen((string) $safe); $i++) {
-                $result |= (ord($safe[$i]) ^ ord($user[$i]));
-            }
-            return $result === 0;
-        }
-        return false;
-    }
-
-    /**
      * Get data-uri of QRCode
      */
-    public function getQRCodeImageAsDataUri($label, $secret, $size = 200)
+    public function getQRCodeImageAsDataUri(string $label, string $secret, int $size = 200): string
     {
-        if (!is_int($size) || $size <= 0) {
-            throw new TwoFactorAuthException('Size must be int > 0');
+        if ($size <= 0) {
+            throw new TwoFactorAuthException('Size must be > 0');
         }
 
         $qrcodeprovider = $this->getQrCodeProvider();
         return 'data:'
             . $qrcodeprovider->getMimeType()
             . ';base64,'
-            . base64_encode((string) $qrcodeprovider->getQRCodeImage($this->getQRText($label, $secret), $size));
+            . base64_encode($qrcodeprovider->getQRCodeImage($this->getQRText($label, $secret), $size));
     }
 
     /**
      * Compare default timeprovider with specified timeproviders and ensure the time is within the specified number of seconds (leniency)
+     * @param array<ITimeProvider> $timeproviders
+     * @throws TwoFactorAuthException
      */
-    public function ensureCorrectTime(array $timeproviders = null, $leniency = 5)
+    public function ensureCorrectTime(?array $timeproviders = null, int $leniency = 5): void
     {
-        if ($timeproviders != null && !is_array($timeproviders)) {
-            throw new TwoFactorAuthException('No timeproviders specified');
-        }
-
-        if ($timeproviders == null) {
+        if ($timeproviders === null) {
             $timeproviders = array(
-                new Providers\Time\NTPTimeProvider(),
-                new Providers\Time\HttpTimeProvider()
+                new NTPTimeProvider(),
+                new HttpTimeProvider(),
             );
         }
 
@@ -172,43 +150,96 @@ class TwoFactorAuth
         }
     }
 
-    private function getTime($time)
+    /**
+     * Builds a string to be encoded in a QR code
+     */
+    public function getQRText(string $label, string $secret): string
+    {
+        return 'otpauth://totp/' . rawurlencode($label)
+            . '?secret=' . rawurlencode($secret)
+            . '&issuer=' . rawurlencode((string)$this->issuer)
+            . '&period=' . $this->period
+            . '&algorithm=' . rawurlencode(strtoupper($this->algorithm->value))
+            . '&digits=' . $this->digits;
+    }
+
+    public function getQrCodeProvider(): IQRCodeProvider
+    {
+        // Set default QR Code provider if none was specified
+        return $this->qrcodeprovider ??= new QRServerProvider();
+    }
+
+    /**
+     * @throws TwoFactorAuthException
+     */
+    public function getRngProvider(): IRNGProvider
+    {
+        if ($this->rngprovider !== null) {
+            return $this->rngprovider;
+        }
+        if (function_exists('random_bytes')) {
+            return $this->rngprovider = new CSRNGProvider();
+        }
+        if (function_exists('openssl_random_pseudo_bytes')) {
+            return $this->rngprovider = new OpenSSLRNGProvider();
+        }
+        if (function_exists('hash')) {
+            return $this->rngprovider = new HashRNGProvider();
+        }
+        throw new TwoFactorAuthException('Unable to find a suited RNGProvider');
+    }
+
+    public function getTimeProvider(): ITimeProvider
+    {
+        // Set default time provider if none was specified
+        return $this->timeprovider ??= new LocalMachineTimeProvider();
+    }
+
+    /**
+     * Timing-attack safe comparison of 2 codes (see http://blog.ircmaxell.com/2014/11/its-all-about-time.html)
+     */
+    private function codeEquals(string $safe, string $user): bool
+    {
+        if (function_exists('hash_equals')) {
+            return hash_equals($safe, $user);
+        }
+        // In general, it's not possible to prevent length leaks. So it's OK to leak the length. The important part is that
+        // we don't leak information about the difference of the two strings.
+        if (strlen($safe) === strlen($user)) {
+            $result = 0;
+            $strlen = strlen($safe);
+            for ($i = 0; $i < $strlen; $i++) {
+                $result |= (ord($safe[$i]) ^ ord($user[$i]));
+            }
+            return $result === 0;
+        }
+        return false;
+    }
+
+    private function getTime(?int $time = null): int
     {
         return $time ?? $this->getTimeProvider()->getTime();
     }
 
-    private function getTimeSlice($time = null, $offset = 0)
+    private function getTimeSlice(?int $time = null, int $offset = 0): int
     {
         return (int)floor($time / $this->period) + ($offset * $this->period);
     }
 
-    /**
-     * Builds a string to be encoded in a QR code
-     */
-    public function getQRText($label, $secret)
+    private function base32Decode(string $value): string
     {
-        return 'otpauth://totp/' . rawurlencode((string) $label)
-            . '?secret=' . rawurlencode((string) $secret)
-            . '&issuer=' . rawurlencode((string) $this->issuer)
-            . '&period=' . intval($this->period)
-            . '&algorithm=' . rawurlencode(strtoupper((string) $this->algorithm))
-            . '&digits=' . intval($this->digits);
-    }
-
-    private function base32Decode($value)
-    {
-        if (strlen((string) $value) == 0) {
+        if ($value === '') {
             return '';
         }
 
-        if (preg_match('/[^' . preg_quote((string) self::$_base32dict) . ']/', (string) $value) !== 0) {
+        if (preg_match('/[^' . preg_quote(self::$_base32dict, '/') . ']/', $value) !== 0) {
             throw new TwoFactorAuthException('Invalid base32 string');
         }
 
         $buffer = '';
-        foreach (str_split((string) $value) as $char) {
+        foreach (str_split($value) as $char) {
             if ($char !== '=') {
-                $buffer .= str_pad(decbin(self::$_base32lookup[$char]), 5, 0, STR_PAD_LEFT);
+                $buffer .= str_pad(decbin(self::$_base32lookup[$char]), 5, '0', STR_PAD_LEFT);
             }
         }
         $length = strlen($buffer);
@@ -216,58 +247,8 @@ class TwoFactorAuth
 
         $output = '';
         foreach (explode(' ', $blocks) as $block) {
-            $output .= chr(bindec(str_pad($block, 8, 0, STR_PAD_RIGHT)));
+            $output .= chr(bindec(str_pad($block, 8, '0', STR_PAD_RIGHT)));
         }
         return $output;
-    }
-
-    /**
-     * @return IQRCodeProvider
-     * @throws TwoFactorAuthException
-     */
-    public function getQrCodeProvider()
-    {
-        // Set default QR Code provider if none was specified
-        if (null === $this->qrcodeprovider) {
-            return $this->qrcodeprovider = new Providers\Qr\GoogleQRCodeProvider();
-        }
-        return $this->qrcodeprovider;
-    }
-
-    /**
-     * @return IRNGProvider
-     * @throws TwoFactorAuthException
-     */
-    public function getRngprovider()
-    {
-        if (null !== $this->rngprovider) {
-            return $this->rngprovider;
-        }
-        if (function_exists('random_bytes')) {
-            return $this->rngprovider = new Providers\Rng\CSRNGProvider();
-        }
-        if (function_exists('mcrypt_create_iv')) {
-            return $this->rngprovider = new Providers\Rng\MCryptRNGProvider();
-        }
-        if (function_exists('openssl_random_pseudo_bytes')) {
-            return $this->rngprovider = new Providers\Rng\OpenSSLRNGProvider();
-        }
-        if (function_exists('hash')) {
-            return $this->rngprovider = new Providers\Rng\HashRNGProvider();
-        }
-        throw new TwoFactorAuthException('Unable to find a suited RNGProvider');
-    }
-
-    /**
-     * @return ITimeProvider
-     * @throws TwoFactorAuthException
-     */
-    public function getTimeProvider()
-    {
-        // Set default time provider if none was specified
-        if (null === $this->timeprovider) {
-            return $this->timeprovider = new Providers\Time\LocalMachineTimeProvider();
-        }
-        return $this->timeprovider;
     }
 }
