@@ -18,6 +18,7 @@ class LoadQuestionTypes
         Yii::import('questiontypes.ArrayOfIncSameDecQuestions.*');
         Yii::import('questiontypes.ArrayYesUncertainNo.*');
         Yii::import('questiontypes.BoilerplateQuestion.*');
+        Yii::import('questiontypes.BrowserDetect.*');
         Yii::import('questiontypes.Date.*');
         Yii::import('questiontypes.DummyQuestion.*');
         Yii::import('questiontypes.Equation.*');
@@ -120,6 +121,7 @@ class LoadQuestionTypes
                 break;
             case Question::QT_S_SHORT_FREE_TEXT:
                 Yii::import('questiontypes.ShortFreeText.*');
+                Yii::import('questiontypes.BrowserDetect.*');
                 break;
             case Question::QT_Y_YES_NO_RADIO:
                 Yii::import('questiontypes.YesNoRadio.*');

@@ -6,7 +6,6 @@ import {
   getDisplayAttributes,
   getGeneralAttributes,
   getTimerAttributes,
-  getLocationAttributes,
 } from '../attributes'
 
 const simpleSettings = () => {
@@ -20,7 +19,6 @@ const simpleSettings = () => {
     generalAttributes.LOGIC,
     displayAttributes.SHOW_PLATFORM_INFORMATION,
     getStatisticsAttributes().SHOW_IN_STATISTICS,
-    getLocationAttributes().USE_MAPPING_SERVICE,
   ]
 }
 
@@ -79,10 +77,6 @@ const fileMetaDataSettings = () => {
   return []
 }
 
-const locationSettings = () => {
-  return Object.values(getLocationAttributes())
-}
-
 const sliderSettings = () => {
   return []
 }
@@ -115,10 +109,6 @@ export const getBrowserDetectionSettings = () => {
     {
       title: getQuestionAttributesTitles().FILE_META_DATA,
       attributes: fileMetaDataSettings(),
-    },
-    {
-      title: getQuestionAttributesTitles().LOCATION,
-      attributes: locationSettings(),
     },
     {
       title: getQuestionAttributesTitles().SLIDER,

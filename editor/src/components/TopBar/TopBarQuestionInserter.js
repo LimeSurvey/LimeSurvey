@@ -121,6 +121,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
         answers: { ...question.answers },
         subquestions: { ...question.subquestions },
       })
+
     addToBuffer(operation)
   }
 
@@ -297,7 +298,6 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
    */
   const getDefaultAttributes = (questionThemeName) => {
     if (
-      questionThemeName === getQuestionTypeInfo().BROWSER_DETECTION.theme ||
       questionThemeName === getQuestionTypeInfo().MAP.theme
     ) {
       return { location_mapservice: { '': '100' } }

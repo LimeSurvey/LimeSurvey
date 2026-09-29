@@ -90,10 +90,6 @@ const fileMetaDataSettings = () => {
   return []
 }
 
-const locationSettings = () => {
-  return []
-}
-
 const sliderSettings = () => {
   return []
 }
@@ -127,10 +123,6 @@ export const getShortTextSettings = () => {
     {
       title: getQuestionAttributesTitles().FILE_META_DATA,
       attributes: fileMetaDataSettings(),
-    },
-    {
-      title: getQuestionAttributesTitles().LOCATION,
-      attributes: locationSettings(),
     },
     {
       title: getQuestionAttributesTitles().SLIDER,
