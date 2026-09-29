@@ -4,8 +4,7 @@ import classNames from 'classnames'
 
 import { useSurveyUpdatePermission } from 'hooks'
 import { formatUrlPreview, getSurveyAccessLink } from 'helpers'
-import { Input } from 'components/UIComponents'
-import pencilIcon from 'assets/icons/pencil-icon.svg'
+import { CustomizeButton, Input } from 'components/UIComponents'
 
 import CopyButton from './CopyButton'
 import { SurveyAccessModeSelector } from './SurveyAccessMode/SurveyAccessModeSelector'
@@ -138,29 +137,15 @@ export const PublicSurveyAlias = ({
         />
       </div>
       {editable && !isEditingAlias && (
-        <div
-          className={classNames(
-            'text-decoration-none',
-            'alias-info',
-            'med14-c',
-            'text-primary',
-            'd-flex',
-            'align-items-center',
-            'gap-2',
-            { 'disable-settings ': !hasUpdatePermission }
-          )}
-        >
-          <span
-            onClick={handleLinkToggle}
-            className="cursor-pointer disable-select"
-          >
-            <img src={pencilIcon} /> {t('Customize link')}
-          </span>
-        </div>
+        <CustomizeButton
+          text={t('Customize link')}
+          isDisabled={!hasUpdatePermission}
+          onClick={handleLinkToggle}
+        />
       )}
       {isEditingAlias && (
-        <div className="d-flex alias-info">
-          <div className="text-decoration-none btn med14-c text-info d-flex align-items-center gap-2">
+        <div className="d-flex">
+          <div className="text-decoration-none px-3 med14-c text-info d-flex align-items-center gap-2">
             <span
               onClick={onAliasCancel}
               className="cursor-pointer disable-select"
@@ -168,7 +153,7 @@ export const PublicSurveyAlias = ({
               {t('Cancel')}
             </span>
           </div>
-          <div className="text-decoration-none btn med14-c text-success d-flex align-items-center gap-2">
+          <div className="text-decoration-none px-3 med14-c text-success d-flex align-items-center gap-2">
             <span
               onClick={onAliasSave}
               className="cursor-pointer disable-select"

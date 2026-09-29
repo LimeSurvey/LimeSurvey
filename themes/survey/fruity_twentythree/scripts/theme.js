@@ -421,11 +421,11 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
           $(this).find('span.fa-exclamation-circle').removeClass('d-none');
         });
         $(this).on('classChangeGood', function () {
-          /* If user choose hide-tip : leave it */
-          var parent = $(this).parents('div.hide-tip');
+          /* If user choose hide-tip : hide it again once no other tip in the same block is still in error */
+          var parent = $(this).parent('div.ls-questionhelp');
           parent.removeClass('text-danger');
           parent.addClass('text-info');
-          if (parent.hasClass('tip-was-hidden')) {
+          if (parent.hasClass('tip-was-hidden') && parent.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
             parent.removeClass('tip-was-hidden').addClass('hide-tip');
           }
           var questionContainer = $(this).parents('div.question-container');

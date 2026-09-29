@@ -9,11 +9,13 @@ class FileUploadProcessor extends AbstractQuestionProcessor
 {
     protected string $rt;
 
+    #[\Override]
     public function rt(): void
     {
         $this->rt = 'Q' . $this->question['qid'];
     }
 
+    #[\Override]
     public function process(): StatisticsChartDTO
     {
         $this->rt();

@@ -1040,8 +1040,6 @@ class SurveyCondition
      */
     protected function getQuestionNavOptions($gid, $qid, array $theserows, array $postrows, array $args, $caller): string
     {
-        /** @var integer $gid */
-        /** @var integer $qid */
         /** @var string $questiontitle */
         /** @var string $sCurrentFullQuestionText */
         extract($args);
@@ -1121,8 +1119,6 @@ class SurveyCondition
     protected function getQuickAddConditionForm(int $gid, int $qid, array $args, $caller)
     {
         /** @var integer $iSurveyID */
-        /** @var integer $gid */
-        /** @var integer $qid */
         /** @var string $subaction */
         /** @var string $method */
         /** @var string $p_csrctoken */

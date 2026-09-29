@@ -10,6 +10,7 @@ class Update_612 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up()
     {
         $templateConfigurations = $this->db->createCommand()

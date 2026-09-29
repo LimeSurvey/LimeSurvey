@@ -560,7 +560,6 @@ class CopySurvey
                     if (in_array($firstLetter, ['+', 'Q', 'S', 'R'])) {
                         if ($firstLetter !== 'R') {
                             $offset = (($firstLetter === '+') ? 2 : 1);
-                            $qid = -1;
                             if (!isset($mappingQuestionIds[substr($parts[$index], $offset)])) {
                                 $oldQuestion = Question::model()->findByPk(substr($parts[$index], $offset));
                                 if (!$oldQuestion) {

@@ -15798,7 +15798,8 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 .no-tables-general table.ls-answers tr {
   text-align: right;
 }
-.no-tables-general table.ls-answers thead {
+.no-tables-general table.ls-answers thead,
+.no-tables-general table.ls-answers thead:not(.ls-hidden) {
   display: none;
 }
 .no-tables-general table.ls-answers tbody td {
@@ -15905,7 +15906,8 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   .no-tables-mobile table.ls-answers tr {
     text-align: right;
   }
-  .no-tables-mobile table.ls-answers thead {
+  .no-tables-mobile table.ls-answers thead,
+  .no-tables-mobile table.ls-answers thead:not(.ls-hidden) {
     display: none;
   }
   .no-tables-mobile table.ls-answers tbody td {

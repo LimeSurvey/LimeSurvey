@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_346 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             createSurveyMenuTable($this->db);

@@ -55,7 +55,7 @@ class Native implements Serializable
     /**
      * The closure's reference.
      *
-     * @var string
+     * @var string|int
      */
     protected $reference;
 
@@ -133,7 +133,9 @@ class Native implements Serializable
             }
         }
 
-        $this->reference = spl_object_hash($this->closure);
+        $this->reference = PHP_VERSION_ID >= 80600
+            ? spl_object_id($this->closure)
+            : spl_object_hash($this->closure);
 
         $this->scope[$this->closure] = $this;
 
@@ -265,7 +267,7 @@ class Native implements Serializable
             $instance = $data;
             $reflection = new ReflectionObject($instance);
 
-            if (! $reflection->isUserDefined()) {
+            if (! $reflection->isUserDefined() || static::hasInternalAncestry($reflection)) {
                 $storage[$instance] = $data;
 
                 return;
@@ -497,7 +499,7 @@ class Native implements Serializable
 
             $reflection = new ReflectionObject($data);
 
-            if (! $reflection->isUserDefined()) {
+            if (! $reflection->isUserDefined() || static::hasInternalAncestry($reflection)) {
                 $this->scope[$instance] = $data;
 
                 return;
@@ -564,6 +566,32 @@ class Native implements Serializable
         PHP_VERSION_ID >= 80400
             ? $property->setRawValue($object, $value)
             : $property->setValue($object, $value);
+    }
+
+    /**
+     * Determine if the class inherits from a PHP internal class.
+     *
+     * Instances of such classes carry internal state that
+     * newInstanceWithoutConstructor() cannot rebuild (e.g. DateTime
+     * subclasses like Carbon), so they must be kept as-is instead of
+     * being reconstructed property by property.
+     *
+     * @param  \ReflectionObject  $reflection
+     * @return bool
+     */
+    protected static function hasInternalAncestry(ReflectionObject $reflection): bool
+    {
+        $class = $reflection->getParentClass();
+
+        while ($class !== false) {
+            if ($class->isInternal()) {
+                return true;
+            }
+
+            $class = $class->getParentClass();
+        }
+
+        return false;
     }
 
     /**

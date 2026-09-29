@@ -106,11 +106,11 @@ export var TemplateCoreClass = function () {
                 });
 
                 $(this).on('classChangeGood', function () {
-                    /* If user choose hide-tip : leave it */
-                    let parent = $(this).parents('div.hide-tip');
+                    /* If user choose hide-tip : hide it again once no other tip in the same block is still in error */
+                    let parent = $(this).parent('div.ls-questionhelp');
                     parent.removeClass('text-danger');
                     parent.addClass('text-info');
-                    if (parent.hasClass('tip-was-hidden')) {
+                    if (parent.hasClass('tip-was-hidden') && parent.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
                         parent.removeClass('tip-was-hidden').addClass('hide-tip');
                     }
                     let questionContainer = $(this).parents('div.question-container');
