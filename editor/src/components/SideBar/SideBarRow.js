@@ -121,7 +121,8 @@ export const SideBarRow = ({
         >
           <div
             style={{
-              cursor: provided.dragHandleProps ? 'grab' : 'pointer',
+              cursor:
+                provided.dragHandleProps !== undefined ? 'grab' : 'pointer',
             }}
             className={classNames(
               'sidebar-row-title-container d-flex align-items-center'
@@ -179,20 +180,22 @@ export const SideBarRow = ({
                 </TooltipContainer>
               )}
             </div>
-            <Dropdown
-              className="meatball-dropdown"
-              testId={menuId}
-              align="start"
-              portalMenu
-              menuItems={menuItems}
-              toggleSettings={{
-                iconClassName: 'ri-more-fill',
-                variant: 'light',
-                id: menuToggleId,
-                testId: menuToggleId,
-                title: '',
-              }}
-            />
+            {menuItems.length > 0 ? (
+              <Dropdown
+                className="meatball-dropdown"
+                testId={menuId}
+                align="start"
+                portalMenu
+                menuItems={menuItems}
+                toggleSettings={{
+                  iconClassName: 'ri-more-fill',
+                  variant: 'light',
+                  id: menuToggleId,
+                  testId: menuToggleId,
+                  title: '',
+                }}
+              />
+            ) : null}
           </div>
         </div>
         {isOpen && <div style={{ paddingLeft: '18px' }}>{children}</div>}
