@@ -283,9 +283,7 @@ export const ColumnsManagement = ({
             <div ref={provided.innerRef} {...provided.droppableProps}>
               <div
                 data-testid="normal-columns-container"
-                className={classNames('columns-container mb-3', {
-                  'has-timing-columns': timingColumns.length,
-                })}
+                className="columns-container mb-3 has-timing-columns"
               >
                 {normalColumns.map((column, index) => (
                   <DraggableColumn
