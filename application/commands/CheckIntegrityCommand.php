@@ -40,11 +40,11 @@ class CheckIntegrityCommand extends CConsoleCommand
      * @return int 0 on a clean pass, 1 if a fix could not be applied, 2 if the check
      *             did not converge within MAX_PASSES.
      */
+    #[\Override]
     public function run($args)
     {
         Yii::import('application.controllers.admin.CheckIntegrity', true);
 
-        /** @var CheckIntegrity $checkIntegrity */
         $checkIntegrity = new CheckIntegrity($this, 'checkintegrity');
 
         $hasWarnings = false;
@@ -93,6 +93,7 @@ class CheckIntegrityCommand extends CConsoleCommand
     /**
      * @return string
      */
+    #[\Override]
     public function getHelp()
     {
         return <<<EOD
