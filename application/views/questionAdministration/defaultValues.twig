@@ -24,7 +24,13 @@
 
 <!-- Loop all language, and then hide all but the current selected one with JS. -->
 {% for lang in allLanguages %}
-    <div class="lang-hide lang-{{ lang }}">
+    <div class="lang-hide lang-{{ lang }}" data-lang="{{ lang }}">
+        {% if not first %}
+            {# Shown while "Use same default value across languages" is ticked, see questionEditor.js #}
+            <p class="form-text same-default-hint {{ sameDefault ? '' : 'd-none' }}">
+                {{ gT('The default answer of the base language (%s) is used for all languages.')|format(getLanguageNameFromCode(language, false)) }}
+            </p>
+        {% endif %}
         {% if question.type in ['L', 'O', '!'] %}
             {% include 'defaultValues/singleAnswerScale.twig' with {
                 'question': question,
@@ -62,7 +68,7 @@
 
         {% if first and allLanguages|length > 1 %}
             <div class="form-check mb-3">
-                <input type='checkbox' class="form-check-input" name='samedefault' id='samedefault' value='1' {{ sameDefault ? 'checked="checked"' : '' }} />
+                <input type='checkbox' class="form-check-input" name='samedefault' id='samedefault' value='1' data-base-language="{{ lang }}" {{ sameDefault ? 'checked="checked"' : '' }} />
                 <label class="form-check-label" for='samedefault'>
                     {{ gT('Use same default value across languages') }}
                 </label>

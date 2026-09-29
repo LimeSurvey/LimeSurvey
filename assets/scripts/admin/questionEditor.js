@@ -1870,6 +1870,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#advanced-options-container').replaceWith(advancedSettingsHtml);
         $('#extra-options-container').replaceWith(extraOptionsHtml);
         makeAnswersTableSortable();
+        applySameDefaultValues();
         $('.question-option-help').hide();
         $('#ls-loading').hide();
 
@@ -2082,6 +2083,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               bindSubQuestionEvents();
               bindAnswerEvents();
               makeAnswersTableSortable();
+              applySameDefaultValues();
               toggleLanguageElements();
               // Hide loading gif.
               $('#ls-loading').hide();
@@ -2305,16 +2307,87 @@ $(document).on('ready pjax:scriptcomplete', function () {
         });
       });
     }
+    applySameDefaultValues();
   }
 
   /**
-   * Refresh the "Default answers" tab whenever it is shown.
+   * "Use same default value across languages": the survey then uses the default answer of the base
+   * language for all languages. The inputs of the other languages are disabled and show the base
+   * language value. Their own values are kept and restored when the option is unticked.
+   * Disabled inputs are not posted, so the stored values of the other languages are left untouched.
+   */
+  function applySameDefaultValues() {
+    const tabpane = $('#defaultanswers');
+    const checkbox = tabpane.find('#samedefault');
+    if (checkbox.length === 0) {
+      return;
+    }
+    const baseLanguage = checkbox.data('base-language');
+    const sameDefault = checkbox.is(':checked');
+    // Own values of the other languages by input name. Stored on the tab, so they are reset whenever the tab is rendered again.
+    if (!tabpane.data('ownValues')) {
+      tabpane.data('ownValues', {});
+    }
+    const ownValues = tabpane.data('ownValues');
+
+    tabpane.find('.lang-hide[data-lang]').each(function () {
+      const language = $(this).data('lang');
+      if (language === baseLanguage) {
+        return;
+      }
+      $(this).find('.same-default-hint').toggleClass('d-none', !sameDefault);
+      $(this)
+        .find('[name^="defaultvalues\\["], [name^="defaultvalues_em\\["], [name^="other\\["]')
+        .not('.defaultvalues-template *')
+        .each(function () {
+          const input = $(this);
+          const name = input.attr('name');
+          if (sameDefault) {
+            if (!(name in ownValues)) {
+              ownValues[name] = input.val();
+            }
+            // The language is the first bracket in the name, e.g. defaultvalues[de][SQ001][0]
+            const baseName = name.replace(`[${language}]`, `[${baseLanguage}]`);
+            const baseInput = tabpane.find(`[name="${$.escapeSelector(baseName)}"]`);
+            input.val(baseInput.length ? baseInput.val() : '');
+            if (!input.prop('disabled')) {
+              input.prop('disabled', true).attr('data-same-default-disabled', '1');
+            }
+          } else {
+            if (name in ownValues) {
+              input.val(ownValues[name]);
+              delete ownValues[name];
+            }
+            // Only enable what was disabled here, not inputs disabled for lack of permission
+            if (input.attr('data-same-default-disabled')) {
+              input.prop('disabled', false).removeAttr('data-same-default-disabled');
+            }
+          }
+          // Yes/No: the expression field is only shown while "EM value" is selected
+          const expressionField = input.is('select') ? document.getElementById(`${input.attr('id')}_EM`) : null;
+          if (expressionField) {
+            $(expressionField).toggleClass('d-none', input.val() !== 'EM');
+          }
+        });
+    });
+  }
+
+  /**
+   * Refresh the "Default answers" tab whenever it is shown, and keep the other languages in sync
+   * with the base language while "Use same default value across languages" is ticked.
    * Delegated from document, so it survives #extra-options-container being replaced.
    */
   function bindExtraOptionsEvents() {
     $(document)
       .off('show.bs.tab.defaultanswers')
-      .on('show.bs.tab.defaultanswers', '[data-bs-toggle="tab"][href="#defaultanswers"]', synchronizeDefaultAnswers);
+      .on('show.bs.tab.defaultanswers', '[data-bs-toggle="tab"][href="#defaultanswers"]', synchronizeDefaultAnswers)
+      .off('change.samedefault input.samedefault')
+      .on('change.samedefault input.samedefault', '#defaultanswers #samedefault, #defaultanswers .lang-hide :input', function () {
+        const baseLanguage = $('#defaultanswers #samedefault').data('base-language');
+        if (this.id === 'samedefault' || $(this).closest('.lang-hide').data('lang') === baseLanguage) {
+          applySameDefaultValues();
+        }
+      });
   }
 
   /**
@@ -2495,4 +2568,5 @@ $(document).on('ready pjax:scriptcomplete', function () {
     $(document).on('focusout', '#answeroptions table.answeroptions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
 
     bindExtraOptionsEvents();
+    applySameDefaultValues();
 });
