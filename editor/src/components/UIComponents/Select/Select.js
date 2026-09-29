@@ -12,7 +12,7 @@ import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
 // the reason for using "==" instead of "===" is that sometimes the backend returns numbers and sometimes strings, we want to make sure it works in both cases
 // till we have a backend that is consistent in the types it returns, we need to keep this logic here
 const optionFilter = (options, fieldName, value) =>
-  options.find((option) => option[fieldName] == value)
+  options.find((option) => option[fieldName] == value[fieldName])
 
 export const Select = ({
   labelText,

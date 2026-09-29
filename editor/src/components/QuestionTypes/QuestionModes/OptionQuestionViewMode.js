@@ -284,7 +284,7 @@ export const OptionQuestionViewMode = ({
     let matched = false
     if (UiComponentToRender.name === selectName) {
       children[0]?.options.map((option, index) => {
-        if (option.value === valueInfo?.aid) {
+        if (option.value == valueInfo?.value) {
           matched = true
           setSelectedIndex(index)
         }
@@ -470,7 +470,9 @@ export const OptionQuestionViewMode = ({
                 />
               </div>
             )}
-            {child.isOther && (
+            {(child.isOther ||
+              (UiComponentToRender.name === selectName &&
+                value?.value === OTHER_CODE)) && (
               <Input
                 onClick={(e) => {
                   e.stopPropagation()
