@@ -200,27 +200,38 @@ export const ResponsesTable = ({
       questionLabel: meta.questionLabel,
       title: meta.title,
     })
-    const generatedTimingColumns = generateColumns(
+    const generatedResponseColumns = generateColumns(
       responsesData.surveyQuestions || surveyQuestions,
       survey,
       responsesData.timingFields
-    ).filter((column) => column.meta?.columnCategory === 'timing')
+    )
+    const generatedTimingColumns = generatedResponseColumns.filter(
+      (column) => column.meta?.columnCategory === 'timing'
+    )
     const currentTimingColumns = columns.filter(
       (column) => column.meta?.columnCategory === 'timing'
     )
     const timingFieldsChanged =
       JSON.stringify(generatedTimingColumns.map(timingColumnDefinition)) !==
       JSON.stringify(currentTimingColumns.map(timingColumnDefinition))
+    const nonTimingColumnIds = (items) =>
+      items
+        .filter(
+          ({ id, meta }) =>
+            id !== SelectColumnId &&
+            id !== ActionsColumnId &&
+            meta?.columnCategory !== 'timing'
+        )
+        .map(({ id }) => id)
+    const nonTimingColumnsChanged =
+      JSON.stringify(nonTimingColumnIds(generatedResponseColumns)) !==
+      JSON.stringify(nonTimingColumnIds(columns))
 
     let generatedColumns = columns
 
-    // Regenerate columns when timing fields change.
-    if (!columns.length || timingFieldsChanged) {
-      generatedColumns = generateColumns(
-        responsesData.surveyQuestions || surveyQuestions,
-        survey,
-        responsesData.timingFields
-      )
+    // Regenerate columns when their generated definitions change.
+    if (!columns.length || timingFieldsChanged || nonTimingColumnsChanged) {
+      generatedColumns = generatedResponseColumns
 
       if (!hideSelect) {
         generatedColumns = [defaultColumns.SELECT, ...generatedColumns]
