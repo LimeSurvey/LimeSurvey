@@ -72,6 +72,17 @@ class ResponseAggregateBatchTest extends TestCase
         $this->assertSame(3, $this->invoke($batch, 'aggregateValues', [$values, $numericRequest]));
     }
 
+    public function testNumericTextPatternMatchesDatabaseDriverRules(): void
+    {
+        $batch = new ResponseAggregateBatch(1);
+        $sqlServerPattern = $this->invoke($batch, 'numericPatternForDriver', ['sqlsrv']);
+        $defaultPattern = $this->invoke($batch, 'numericPatternForDriver', ['pgsql']);
+
+        $this->assertSame(1, preg_match('/' . $sqlServerPattern . '/', ' +1.5'));
+        $this->assertSame(0, preg_match('/' . $defaultPattern . '/', ' +1.5'));
+        $this->assertSame(1, preg_match('/' . $defaultPattern . '/', '-1.5'));
+    }
+
     public function testEncryptedNumericAggregatesUseFourDecimalPrecision(): void
     {
         $batch = new ResponseAggregateBatch(1);

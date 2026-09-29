@@ -40,6 +40,7 @@ final class ResponseAggregateBatch
 
     /** Plain decimal test for numeric answers stored in text columns */
     private const NUMERIC_PATTERN = '^-?[0-9]*\.?[0-9]+$';
+    private const SQL_SERVER_NUMERIC_PATTERN = '^\s*[+-]?[0-9]*\.?[0-9]+$';
 
     /** Separator joining the columns of a multi-field aggregate into one field key */
     private const FIELD_SEPARATOR = "\x1E";
@@ -438,7 +439,24 @@ final class ResponseAggregateBatch
 
         return $numericColumn
             ? is_numeric($value)
-            : preg_match('/' . self::NUMERIC_PATTERN . '/', (string)$value) === 1;
+            : preg_match('/' . $this->numericPattern() . '/', (string)$value) === 1;
+    }
+
+    private function numericPattern(): string
+    {
+        return $this->numericPatternForDriver($this->getDb()->getDriverName());
+    }
+
+    private function numericPatternForDriver(string $driverName): string
+    {
+        switch ($driverName) {
+            case 'sqlsrv':
+            case 'mssql':
+            case 'dblib':
+                return self::SQL_SERVER_NUMERIC_PATTERN;
+            default:
+                return self::NUMERIC_PATTERN;
+        }
     }
 
     private function normalizedNumericValue($value, bool $numericColumn = false): ?float
