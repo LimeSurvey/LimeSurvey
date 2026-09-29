@@ -12,9 +12,4 @@ if (!defined('BASEPATH')) {
  * This file has no functionality except for being searchable by the translation script.
  * When adding or changing such a text in config.xml, update the matching entry here.
  */
-gT('Semicolon-separated list of answer codes that keep their original database position when answers are randomized');
-gT("Set the size of the 'Other:' input. The input will be displayed approximately this size in width.");
-gT("'Other:' text input box size");
-gT("Maximum characters allowed for 'Other:' option");
-gT("'Other:' option maximum characters");
-gT('The answer options will be distributed across the number of columns set here. Any number up from 1 can be entered, but we only support systems up to 16.');
+gT('Semicolon-separated list of row subquestion codes that keep their original database position when subquestions (rows) are randomized');

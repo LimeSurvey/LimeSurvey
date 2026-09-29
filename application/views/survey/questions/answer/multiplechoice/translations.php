@@ -17,4 +17,4 @@ gT("'Other:' text input box size");
 gT("Maximum characters allowed for 'Other:' option");
 gT("'Other:' option maximum characters");
 gT('Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized');
-gT('The answer options will be distributed across the number of columns set here. Any number up to 1 can be entered, but we only support systems up to 16.');
+gT('The answer options will be distributed across the number of columns set here. Any number up from 1 can be entered, but we only support systems up to 16.');
