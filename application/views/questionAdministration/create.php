@@ -9,6 +9,8 @@
 /** @var string $jsVariablesHtml */
 /** @var string $modalsHtml */
 /** @var string $selectormodeclass */
+/** @var bool $hasDefaultValuesTab */
+/** @var array $defaultValues see QuestionAdministrationController::getDefaultValues() */
 
 ?>
 
@@ -96,6 +98,7 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
                     [
                         'question' => $oQuestion,
                         'survey' => $oSurvey,
+                        'hasDefaultValuesTab' => $hasDefaultValuesTab,
                         'defaultValues' => $defaultValues,
                     ]
                 ); ?>

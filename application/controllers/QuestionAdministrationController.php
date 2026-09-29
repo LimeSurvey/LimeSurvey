@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\QuestionAggregateService;
+use LimeSurvey\Models\Services\QuestionAggregateService\DefaultValuesService;
 use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     PermissionDeniedException,
@@ -275,8 +276,6 @@ class QuestionAdministrationController extends LSBaseController
         $this->aData['gid'] = $question->gid;
         $this->aData['qid'] = $question->qid;
 
-        $this->aData['hasdefaultvalues'] = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
-
         $generalSettings = $this->getGeneralOptions(
             $question->qid,
             $question->type,
@@ -286,10 +285,8 @@ class QuestionAdministrationController extends LSBaseController
 
         $selectormodeclass = $this->getSelectorModeClass();
 
-        // A new question has no qid yet, so it has no stored default values
-        $defaultValues = empty($question->qid)
-            ? []
-            : self::getDefaultValues($question->sid, $question->gid, $question->qid);
+        $hasDefaultValuesTab = $this->hasDefaultValuesTab($question);
+        $defaultValues = $hasDefaultValuesTab ? $this->getDefaultValuesForEditor($question) : [];
 
         $viewData = [
             'oSurvey'                => $question->survey,
@@ -301,6 +298,7 @@ class QuestionAdministrationController extends LSBaseController
             'jsVariablesHtml'       => $jsVariablesHtml,
             'modalsHtml'            => $modalsHtml,
             'selectormodeclass'     => $selectormodeclass,
+            'hasDefaultValuesTab'   => $hasDefaultValuesTab,
             'defaultValues'         => $defaultValues,
         ];
 
@@ -329,13 +327,14 @@ class QuestionAdministrationController extends LSBaseController
         App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
-        $defaultValues = self::getDefaultValues($question->sid, $question->gid, $question->qid);
+        $hasDefaultValuesTab = $this->hasDefaultValuesTab($question);
         $this->renderPartial(
             'extraOptions',
             [
                 'question' => $question,
                 'survey' => $question->survey,
-                'defaultValues' => $defaultValues,
+                'hasDefaultValuesTab' => $hasDefaultValuesTab,
+                'defaultValues' => $hasDefaultValuesTab ? $this->getDefaultValuesForEditor($question) : [],
             ]
         );
     }
@@ -1280,7 +1279,8 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Load edit default values of a question screen
+     * Former "Edit default answers" screen.
+     * Default answers are now edited in the question editor, so old links are redirected there.
      *
      * @access public
      * @param int $surveyid
@@ -1290,85 +1290,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionEditdefaultvalues($surveyid, $gid, $qid)
     {
-        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
-            App()->user->setFlash('error', gT("Access denied!"));
-            $this->redirect(App()->request->urlReferrer);
-        }
-        $iSurveyID = (int)$surveyid;
-        $gid = (int)$gid;
-        $qid = (int)$qid;
-        $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid,]);
-        // $aQuestionTypeMetadata = QuestionType::modelsAttributes();  this is old!
-        // TODO: $questionMetaData should be $questionThemeSettings
-        $questionMetaData = QuestionTheme::findQuestionMetaData($oQuestion->type)['settings'];
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-
-        $oDefaultValues = self::getDefaultValues($iSurveyID, $gid, $qid);
-
-        $aData = [
-            'oQuestion'    => $oQuestion,
-            'qid'          => $qid,
-            'sid'          => $iSurveyID,
-            'surveyid'     => $iSurveyID, // todo needed in beforeRender
-            'langopts'     => $oDefaultValues,
-            'questionrow'  => $oQuestion->attributes,
-            'gid'          => $gid,
-            'questionMetaData' => $questionMetaData
-            //'qtproperties' => $aQuestionTypeMetadata,
-        ];
-        $aData['oSurvey'] = $oSurvey;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
-        $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
-        $this->createUrl(
-            "questionAdministration/view",
-            ["surveyid" => $iSurveyID, "gid" => $gid, "qid" => $qid]
-        );
-        $aData['questiongroupbar']['closebutton']['url'] = $this->createUrl(
-            "questionAdministration/view",
-            ["surveyid" => $iSurveyID, "gid" => $gid, "qid" => $qid]
-        );
-        $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
-        $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
-        $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
-        $aData['sidemenu']['state'] = false;
-        $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = $gid ?? false;
-        $aData['sidemenu']['explorer']['qid'] = $qid ?? false;
-        $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
-
-        $aData['showSaveButton'] = true;
-        $aData['showSaveAndCloseButton'] = true;
-        $aData['showWhiteCloseButton'] = true;
-        $aData['closeUrl'] = Yii::app()->createUrl(
-            'questionAdministration/view/',
-            [
-                'surveyid' => $oQuestion->sid,
-                'gid' => $oQuestion->gid,
-                'qid' => $oQuestion->qid,
-                'landOnSideMenuTab' => 'structure'
-            ]
-        );
-        $aData['hasUpdatePermission'] = Permission::model()->hasSurveyPermission(
-            $iSurveyID,
-            'surveycontent',
-            'update'
-        ) ? '' : 'disabled="disabled" readonly="readonly"';
-
-        $topbarData = TopbarConfiguration::getQuestionTopbarData($iSurveyID);
-        $topbarData = array_merge($topbarData, $aData);
-        $aData['topbar']['middleButtons'] = $this->renderPartial(
-            'partial/topbarBtns/editQuestionTopbarLeft_view',
-            $topbarData,
-            true
-        );
-        $aData['topbar']['rightButtons'] = $this->renderPartial(
-            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
-            $topbarData,
-            true
-        );
-
-        $this->aData = $aData;
-        $this->render('editdefaultvalues', $aData);
+        $this->redirect(['questionAdministration/edit', 'questionId' => (int)$qid, 'tabOverviewEditor' => 'editor']);
     }
 
     /**
@@ -1916,9 +1838,11 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $surveyId
      * @param string $questionType One-char string
      * @param int $questionId Null or 0 if new question is being created.
+     * @param ?string $questionTheme The selected question theme
      * @return void
+     * @throws CHttpException
      */
-    public function actionGetExtraOptionsHTML(int $surveyId, string $questionType, $questionId = null)
+    public function actionGetExtraOptionsHTML(int $surveyId, string $questionType, $questionId = null, ?string $questionTheme = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1929,7 +1853,7 @@ class QuestionAdministrationController extends LSBaseController
         }
         Yii::app()->loadHelper("admin.htmleditor");
         // NB: This works even when $questionId is null (get default question values).
-        $question = $this->getQuestionObject($questionId, $questionType);
+        $question = $this->getQuestionObject($questionId, $questionType, null, $questionTheme);
         if ($questionId) {
             // NB: Could happen if user manipulates request.
             if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
@@ -1937,17 +1861,14 @@ class QuestionAdministrationController extends LSBaseController
             }
         }
 
-        // A new question has no qid yet, so it has no stored default values
-        $defaultValues = empty($question->qid)
-            ? []
-            : self::getDefaultValues($surveyId, $question->gid, $question->qid);
-
+        $hasDefaultValuesTab = $this->hasDefaultValuesTab($question);
         $this->renderPartial(
             "extraOptions",
             [
-                'question'         => $question,
-                'survey'           => $question->survey,
-                'defaultValues'    => $defaultValues,
+                'question'            => $question,
+                'survey'              => $question->survey,
+                'hasDefaultValuesTab' => $hasDefaultValuesTab,
+                'defaultValues'       => $hasDefaultValuesTab ? $this->getDefaultValuesForEditor($question) : [],
             ]
         );
     }
@@ -2187,14 +2108,51 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
+     * Whether the question editor shows the "Default answers" tab for the question.
+     *
+     * Like the survey structure sidebar, this follows the question theme metadata,
+     * so custom question themes can switch default answers off. The tab is also
+     * limited to the question types it can render.
+     *
+     * @param Question $question The question, with the question type and theme currently selected in the editor
+     * @return bool
+     */
+    private function hasDefaultValuesTab(Question $question): bool
+    {
+        if (!in_array($question->type, DefaultValuesService::SUPPORTED_QUESTION_TYPES, true)) {
+            return false;
+        }
+        $themeSettings = QuestionTheme::findQuestionMetaData($question->type, $question->question_theme_name)['settings'];
+        return !empty($themeSettings->hasdefaultvalues);
+    }
+
+    /**
+     * Get the stored default values of a question for the "Default answers" tab.
+     *
+     * @param Question $question The question, with the question type currently selected in the editor
+     * @return array See getDefaultValues()
+     */
+    private function getDefaultValuesForEditor(Question $question): array
+    {
+        // A new question has no qid yet, so it has no stored default values
+        if (empty($question->qid)) {
+            return [];
+        }
+        // The question type may have been changed in the editor but not saved yet
+        return self::getDefaultValues($question->sid, $question->gid, $question->qid, $question->type);
+    }
+
+    /**
      * Gets default value(s) for a question or subquestion from table defaultvalue_l10ns
      *
      * @param int $iSurveyID
      * @param int $gid
      * @param int $qid
-     * @return array Array with defaultValues
+     * @param ?string $questionType Question type to structure the result for, instead of the stored question type.
+     *                              Used when the type has been changed in the question editor but not saved yet.
+     * @return array Array with defaultValues, indexed by language and question type
      */
-    public static function getDefaultValues(int $iSurveyID, int $gid, int $qid)
+    public static function getDefaultValues(int $iSurveyID, int $gid, int $qid, ?string $questionType = null)
     {
         $aDefaultValues = [];
         $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid,]);
@@ -2204,6 +2162,9 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         $aQuestionAttributes = $oQuestion->attributes;
+        if (!empty($questionType)) {
+            $aQuestionAttributes['type'] = $questionType;
+        }
         $aQuestionTypeMetadata = QuestionType::modelsAttributes();
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 

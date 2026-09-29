@@ -27,26 +27,22 @@
         {% if question.type in ['L', 'O', '!'] %}
             {% include 'defaultValues/singleAnswerScale.twig' with {
                 'question': question,
-                'lang': lang,
-                'defaultvalues': defaultValues
+                'lang': lang
             } %}
         {% elseif question.type in ['K', 'M', 'P', 'Q'] %}
             {% include 'defaultValues/singleSubquestion.twig' with {
                 'question': question,
-                'lang': lang,
-                'defaultvalues': defaultValues
+                'lang': lang
             } %}
         {% elseif question.type == 'Y' %}
             {% include 'defaultValues/yesNo.twig' with {
                 'question': question,
-                'lang': lang,
-                'defaultvalues': defaultValues
+                'lang': lang
             } %}
         {% elseif question.type == '5' %}
             {% include 'defaultValues/fixedOptions.twig' with {
                 'question': question,
                 'lang': lang,
-                'defaultvalues': defaultValues,
                 'options': {
                     '1': '1',
                     '2': '2',
@@ -55,19 +51,10 @@
                     '5': '5',
                 },
             } %}
-        {# TODO: Properly handle the date format
-        {% elseif question.type == 'D' %}
-            {% include 'defaultValues/date.twig' with {
-                'question': question,
-                'lang': lang,
-                'defaultvalues': defaultValues
-            } %}
-        #}
         {% elseif question.type in ['S', 'T', 'U', 'N', 'D'] %}
             {% include 'defaultValues/text.twig' with {
                 'question': question,
                 'lang': lang,
-                'defaultvalues': defaultValues,
                 'hasUpdatePermission': hasUpdatePermission
             } %}
         {% endif %}

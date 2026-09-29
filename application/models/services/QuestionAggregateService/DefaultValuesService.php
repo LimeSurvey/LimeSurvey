@@ -18,6 +18,27 @@ use LimeSurvey\Models\Services\Exception\PersistErrorException;
  */
 class DefaultValuesService
 {
+    /**
+     * Question types whose default answers can be edited in the question editor
+     * @var string[]
+     */
+    public const SUPPORTED_QUESTION_TYPES = [
+        QuestionType::QT_L_LIST,
+        QuestionType::QT_O_LIST_WITH_COMMENT,
+        QuestionType::QT_EXCLAMATION_LIST_DROPDOWN,
+        QuestionType::QT_K_MULTIPLE_NUMERICAL,
+        QuestionType::QT_M_MULTIPLE_CHOICE,
+        QuestionType::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+        QuestionType::QT_Q_MULTIPLE_SHORT_TEXT,
+        QuestionType::QT_5_POINT_CHOICE,
+        QuestionType::QT_Y_YES_NO_RADIO,
+        QuestionType::QT_D_DATE,
+        QuestionType::QT_N_NUMERICAL,
+        QuestionType::QT_S_SHORT_FREE_TEXT,
+        QuestionType::QT_T_LONG_FREE_TEXT,
+        QuestionType::QT_U_HUGE_FREE_TEXT,
+    ];
+
     private DefaultValue $modelDefaultValue;
     private DefaultValueL10n $modelDefaultValueL10n;
 
@@ -72,6 +93,12 @@ class DefaultValuesService
             );
         }
 
+        if ($question->questionType->subquestions > 0) {
+            // Subquestions may have just been created, so reload them once
+            // before matching them by title below.
+            $question->refresh();
+        }
+
         foreach ($question->survey->allLanguages as $language) {
             switch ($question->type) {
                 case QuestionType::QT_L_LIST:
@@ -90,7 +117,6 @@ class DefaultValuesService
                 case QuestionType::QT_Q_MULTIPLE_SHORT_TEXT:
                     // Subquestions may have just been created, so they are
                     // matched by title instead of by qid.
-                    $question->refresh();
                     foreach ($question->subquestions as $subquestion) {
                         if (isset($defaultAnswers[$language][$subquestion->title][0])) {
                             $this->storeDefaultValue(

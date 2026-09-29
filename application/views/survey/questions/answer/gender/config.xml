@@ -19,7 +19,7 @@
         <group>Mask questions</group>
         <subquestions>0</subquestions>
         <answerscales>0</answerscales>
-        <hasdefaultvalues>1</hasdefaultvalues>
+        <hasdefaultvalues>0</hasdefaultvalues>
         <assessable>0</assessable>
         <class>gender</class>
     </metadata>

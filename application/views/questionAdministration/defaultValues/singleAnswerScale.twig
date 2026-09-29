@@ -21,8 +21,9 @@
             {{ gT('<No default value>') }}
         </option>
         {% for answer in opts['answers'] %}
-            <option {{ (answer.attributes['code'] == opts['defaultvalue']) ? 'selected="selected"' : '' }} value="{{ answer.attributes['code'] }}">
-                {{ answer.answerl10ns[lang].answer }}
+            {# data-common-id matches the answer option row, so the default survives a code change (see questionEditor.js) #}
+            <option {{ (answer.attributes['code'] == opts['defaultvalue']) ? 'selected="selected"' : '' }} value="{{ answer.attributes['code'] }}" data-common-id="{{ answer.aid }}_0">
+                {{ flattenText(answer.answerl10ns[lang].answer) }}
             </option>
         {% endfor %}
     </select>

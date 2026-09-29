@@ -1835,7 +1835,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.ajax({
           url: extraOptionsUrl,
           method: 'GET',
-          data: { questionType },
+          data: { questionType, questionTheme },
           dataType: 'html',
           success: (data) => {
             resolve(data);
@@ -1870,7 +1870,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#advanced-options-container').replaceWith(advancedSettingsHtml);
         $('#extra-options-container').replaceWith(extraOptionsHtml);
         makeAnswersTableSortable();
-        bindExtraOptionsEvents();
         $('.question-option-help').hide();
         $('#ls-loading').hide();
 
@@ -2233,12 +2232,14 @@ $(document).on('ready pjax:scriptcomplete', function () {
     if (answerScales == 1 && subquestionScales == 0) {
       _.forEach(languages, (curLanguage, x) => {
         const defaultAnswerInput = $(`#defaultvalues\\[${curLanguage}\\]\\[0\\]`);
-        // Get the currently selected default option
+        // Get the currently selected default option.
+        // It is matched by the answer option's stable id (data-common-id), so a changed answer code keeps its default.
         const currentDefault = defaultAnswerInput.val();
+        const currentDefaultCommonId = defaultAnswerInput.find('option:selected').attr('data-common-id');
         // Clear current options, except the 'empty' one
         defaultAnswerInput.find('option:not([value=""])').remove();
 
-        var currentDefaultMissing = true;
+        var newDefault = '';
         // Loop through all the answer options table rows
         const rows = $(`#answeroptions_${curLanguage}_0 tbody tr`);
         rows.each(function () {
@@ -2249,15 +2250,18 @@ $(document).on('ready pjax:scriptcomplete', function () {
             code = $(this).find('.code-title').text().trim();
           }
           const text = $(this).find('.answeroption-text input.answer').val();
-          $('<option></option>').attr('value', code).text(text).appendTo(defaultAnswerInput);
-          if (code == currentDefault) {
-            currentDefaultMissing = false;
-            defaultAnswerInput.val(code);
+          const commonId = $(this).attr('data-common-id') ?? '';
+          // Answer text may contain HTML from the editor: show it as plain text, like flattenText() does server side
+          const plainText = new DOMParser().parseFromString(text || '', 'text/html').body.textContent;
+          $('<option></option>').attr('value', code).attr('data-common-id', commonId).text(plainText).appendTo(defaultAnswerInput);
+          const isCurrentDefault = currentDefaultCommonId
+            ? commonId === currentDefaultCommonId
+            : code == currentDefault;
+          if (currentDefault !== '' && isCurrentDefault) {
+            newDefault = code;
           }
         });
-        if (currentDefaultMissing) {
-          defaultAnswerInput.val("");
-        }
+        defaultAnswerInput.val(newDefault);
       });
     } else if (answerScales == 0 && subquestionScales == 1) {
       _.forEach(languages, (curLanguage, x) => {

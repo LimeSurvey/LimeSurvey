@@ -223,7 +223,7 @@ class QuestionType extends StaticModel
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'other' => false,
-                'hasdefaultvalues' => 1,
+                'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0,
                 'class' => 'gender'

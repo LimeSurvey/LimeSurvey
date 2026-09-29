@@ -1,3 +1,9 @@
+<?php
+/** @var Question $question */
+/** @var Survey $survey */
+/** @var bool $hasDefaultValuesTab Whether to show the "Default answers" tab */
+/** @var array $defaultValues see QuestionAdministrationController::getDefaultValues() */
+?>
 <div class="col-12" id="extra-options-container">
     <?php $tabCount = 0; ?>
     <!-- Subquestions and Answers tabs -->
@@ -26,7 +32,7 @@
                 </a>
             </li>
         <?php endif; ?>
-        <?php if ($question->questionType->hasdefaultvalues > 0) : ?>
+        <?php if (!empty($hasDefaultValuesTab)) : ?>
             <li class="nav-item" role="presentation">
                 <a class="nav-link <?= (++$tabCount == 1) ? "active" : "" ?>"
                     href="#defaultanswers"
@@ -82,7 +88,7 @@
                 ); ?>
             </div>
         <?php endif; ?>
-        <?php if ($question->questionType->hasdefaultvalues > 0) : ?>
+        <?php if (!empty($hasDefaultValuesTab)) : ?>
             <div role="tabpanel"
                 class="tab-pane<?php echo (++$tabCount == 1 ? ' active' : ''); ?>"
                 data-subquestions="<?= $question->questionType->subquestions ?>"

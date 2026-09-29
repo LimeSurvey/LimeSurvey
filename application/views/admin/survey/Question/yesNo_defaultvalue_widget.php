@@ -12,7 +12,7 @@
      * DEV MEMO:
      * Validation could be difficult cause if you using tokens and you don't had setup a working token dataset
      *
-     * For this feature you need editDefaultvalues.php, database.php, adminstyle.css
+     * Used by the "Default answers" tab of the question editor (questionAdministration/defaultValues/yesNo.twig)
      */
 
 class yesNo_defaultvalue_widget extends CWidget
@@ -27,6 +27,15 @@ class yesNo_defaultvalue_widget extends CWidget
          * widget may need. */
     }
 
+    /**
+     * Render the default value select of a Yes/No question and the field for an expression.
+     *
+     * Widget options: language, questionrow (Question or its attributes), langopts (see
+     * QuestionAdministrationController::getDefaultValues()), and optionally elementId and
+     * emElementId as the input names of the select and the expression field.
+     *
+     * @return void
+     */
     public function run()
     {
 
@@ -81,14 +90,15 @@ class yesNo_defaultvalue_widget extends CWidget
 
             echo CHtml::dropDownList($elementId, $select, $aList, $aHtmlOptions);
 
-            // textfield preparation
-            if (empty($defaultValues) ||  $defaultValues == 'Y') {
+            // The expression field is only needed while "EM value" is selected
+            if ($select !== 'EM') {
                 $sEmfield_css_class = 'd-none';
             }
             // The onchange handler above finds the EM field by the select's id + "_EM"
             echo CHtml::textField($emElementId, $emValue, array(
                     'id'    => CHtml::getIdByName($elementId) . '_EM',
                     'class' => 'form-control ' . $sEmfield_css_class,
+                    'aria-label' => gT('EM value'),
                     'width' => 100
                 ));
         }
