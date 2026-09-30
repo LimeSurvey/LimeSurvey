@@ -1,0 +1,52 @@
+.assessment-value-input {
+  padding: 4px 8px;
+  border-radius: $border-radius-xs;
+  border: 1px solid $grape;
+  color: $grape;
+  text-align: center;
+  font-size: $font-size-xxs;
+  font-style: $font-style-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-16;
+  letter-spacing: 0.023px;
+  height: 28px;
+  flex-shrink: 0;
+  &:focus-visible {
+    outline-color: $grape;
+  }
+}
+
+.assessment-value-measure {
+  padding: 4px 8px;
+  font-size: $font-size-xxs;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-16;
+  letter-spacing: 0.023px;
+}
+
+.assessment-value-container {
+  display: flex;
+  align-items: center;
+  // Keeps the input pinned to the right edge of the row, no matter how
+  // long the answer option text in front of it is.
+  margin-left: auto;
+}
+
+.assessment-value-label-row {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.assessment-value-badge {
+  background-color: $white;
+  border: 1px solid $grape;
+  color: $grape;
+  border-radius: $border-radius-xs;
+  font-size: $font-size-xs;
+  font-style: $font-style-base;
+  font-weight: $font-weight-500;
+  line-height: $line-height-16;
+  letter-spacing: 0.036px;
+  padding: 4px 8px;
+}

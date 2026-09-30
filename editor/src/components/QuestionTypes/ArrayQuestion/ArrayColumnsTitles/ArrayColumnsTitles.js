@@ -220,7 +220,7 @@ export const ArrayColumnsTitles = ({
               scaleId === SCALE_1
                 ? highestSubquestionWidth +
                   dragIconSize +
-                  (isFocused && showQNumCode?.showNumber ? 80 : 0)
+                  (isFocused && showQNumCode?.showNumber ? 90 : 0)
                 : 0,
           }}
         ></div>

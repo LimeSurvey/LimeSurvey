@@ -72,7 +72,7 @@ export const ArrayRow = ({
             />
           </div>
         )}
-        <div>
+        <div className="array-question-code">
           {isFocused &&
             showQuestionCode &&
             showQNumCode?.showNumber &&
@@ -110,7 +110,7 @@ export const ArrayRow = ({
             minWidth: showContentEditor
               ? highestWidth +
                 dragIconSize +
-                (isNoAnswer && isFocused && showQNumCode?.showNumber ? 80 : 0)
+                (isNoAnswer && isFocused && showQNumCode?.showNumber ? 90 : 0)
               : '100px',
             maxWidth: !showContentEditor && '100px',
             display: showContentEditor ? 'flex' : 'none',

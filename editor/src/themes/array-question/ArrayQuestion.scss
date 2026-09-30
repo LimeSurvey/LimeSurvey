@@ -36,6 +36,10 @@
         }
       }
     }
+    // Reserve the drag handle width (14px) plus a 16px gap before the code tag.
+    .array-question-code:not(:empty) {
+      padding-left: 30px;
+    }
     &:hover {
       .remove-item-button {
         &.remove-item-button {

@@ -5,6 +5,9 @@
   .question-header,
   .questoin-header-title-container {
     min-width: 100%;
+    .content-editor.question-title {
+      @include reg24;
+    }
   }
 
   .title-default-heading {
@@ -38,6 +41,9 @@
     .question-description-content-editor {
       width: 100%;
       @include label-m;
+      .content-editable {
+        padding-left: 0;
+      }
     }
   }
 
@@ -134,14 +140,30 @@
     width: max-content;
     max-width: 300px;
   }
+  &.edit-mode {
+    .child-ui-component {
+      max-width: none;
+      // Let only the text column shrink/wrap; min-width: 0 allows it to go
+      // below its max-content width instead of squeezing its siblings.
+      flex: 0 1 auto;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+  }
 
   .child {
     display: flex;
     flex-direction: row;
     justify-content: start;
     align-items: center;
-    gap: 8px;
+    gap: 16px;
     width: 100%;
+
+    // Fixed-size controls (remove button, drag handle, code tag, assessment
+    // value) must never shrink, otherwise their spacing varies per row.
+    > :not(.child-ui-component) {
+      flex-shrink: 0;
+    }
   }
 }
 

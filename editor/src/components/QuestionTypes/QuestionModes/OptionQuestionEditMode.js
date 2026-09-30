@@ -1,5 +1,6 @@
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
+import { useRef } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
@@ -12,6 +13,8 @@ import { ImageChoice } from 'components/QuestionTypes/ImageChoice'
 import { getQuestionTypeInfo } from '../getQuestionTypeInfo'
 import { singleChoiceThemes } from '../singleChoiceThemes'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
+import { AssessmentValueInput } from '../AssessmentValueInput'
+import { AssessmentValueBadge } from '../AssessmentValueBadge'
 
 const imageThemeComponents = [
   getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
@@ -19,7 +22,7 @@ const imageThemeComponents = [
 ]
 
 export const OptionQuestionEditMode = ({
-  question: { questionThemeName } = {},
+  question: { questionThemeName, showAssessmentValue } = {},
   handleChildLUpdate,
   isFocused,
   handleChildAdd,
@@ -27,6 +30,7 @@ export const OptionQuestionEditMode = ({
   handleChildDelete,
   language,
   handleChildCodeUpdate,
+  handleChildAssessmentValueUpdate,
   _children = [],
   isTitleFocused,
 }) => {
@@ -34,6 +38,15 @@ export const OptionQuestionEditMode = ({
   const { survey } = useSurvey(surveyId)
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
   const isImageTheme = imageThemeComponents.includes(questionThemeName)
+
+  const childrenContainerRef = useRef(null)
+
+  const handleBadgeClick = () => {
+    const firstInput = childrenContainerRef.current?.querySelector(
+      'input.assessment-value-input'
+    )
+    firstInput?.focus()
+  }
 
   const childrenInfo = {
     idKey: isSingleChoiceTheme ? 'aid' : 'qid',
@@ -62,9 +75,14 @@ export const OptionQuestionEditMode = ({
   const UiComponentToRender = isImageTheme ? ImageChoice : ContentEditor
 
   return (
-    <div>
+    <div ref={childrenContainerRef}>
+      {showAssessmentValue && (
+        <div className="assessment-value-label-row">
+          <AssessmentValueBadge onClick={handleBadgeClick} />
+        </div>
+      )}
       <DragAndDrop
-        className="children-parent"
+        className="children-parent edit-mode"
         onDragEnd={handleOnDragEnd}
         droppableId={'droppable'}
       >
@@ -75,7 +93,7 @@ export const OptionQuestionEditMode = ({
             index={index}
           >
             {(provided, snapshot) => (
-              <div>
+              <div className="w-100">
                 <div
                   ref={provided.innerRef}
                   {...provided.draggableProps}
@@ -165,6 +183,18 @@ export const OptionQuestionEditMode = ({
                       showToolbar={true}
                     />
                   </div>
+                  {showAssessmentValue && (
+                    <AssessmentValueInput
+                      assessmentValue={child.assessmentValue}
+                      onChange={(e) =>
+                        handleChildAssessmentValueUpdate({
+                          newAssessmentValue: e.target.value,
+                          childIndex: index,
+                          childArray: _children,
+                        })
+                      }
+                    />
+                  )}
                 </div>
               </div>
             )}

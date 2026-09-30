@@ -319,6 +319,40 @@ export const useQuestionChildren = ({
     handleUpdate({ [childKey]: updatedChildren })
   }
 
+  const handleChildAssessmentValueUpdate = ({
+    newAssessmentValue = '',
+    childIndex,
+    childArray = [],
+  }) => {
+    const updatedChildren = [...childArray]
+
+    if (updatedChildren[childIndex] === undefined) {
+      reportExtras({
+        extraData: {
+          questionThemeName: question.questionThemeName,
+          updatedEntities: updatedChildren,
+          updateKey: 'answers',
+          index: childIndex,
+          question,
+        },
+        message: `Error while updating assessment value in ${question.questionThemeName} - unable to find item`,
+      })
+      return
+    }
+
+    updatedChildren[childIndex] = {
+      ...updatedChildren[childIndex],
+      assessmentValue: newAssessmentValue,
+    }
+
+    const operation = createBufferOperation(question.qid)
+      .answer()
+      .update([...updatedChildren])
+
+    addToBuffer(operation)
+    handleUpdate({ answers: updatedChildren })
+  }
+
   const validateCode = ({
     newCode,
     childIndex,
@@ -389,6 +423,7 @@ export const useQuestionChildren = ({
     handleOnChildDragEnd,
     handleChildLUpdate,
     handleChildCodeUpdate,
+    handleChildAssessmentValueUpdate,
     activeLanguage,
   }
 }

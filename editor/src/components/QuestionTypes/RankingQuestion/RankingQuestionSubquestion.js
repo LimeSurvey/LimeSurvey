@@ -54,6 +54,7 @@ export const RankingQuestionSubquestion = ({
           <div className="d-flex align-items-center gap-3">
             {isFocused && survey.showQNumCode?.showNumber && (
               <SubquestionCodeInput
+                className="ms-2"
                 isSurveyActive={isSurveyActive}
                 code={title}
                 onChange={(e) => handleCodeUpdate(e.target.value, index)}
