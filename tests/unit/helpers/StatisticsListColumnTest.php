@@ -48,11 +48,22 @@ class StatisticsListColumnTest extends TestBaseClass
 
     /**
      * Listing a real response table column works.
+     * Browsing is only offered for text answer columns, so use one of those
+     * (comparing an integer column with '' fails on PostgreSQL).
      */
     public function testListColumnAcceptsResponseTableColumn()
     {
+        $column = null;
+        foreach (\SurveyDynamic::model(self::$surveyId)->getTableSchema()->columns as $name => $columnSchema) {
+            if (preg_match('/^Q\d/', (string) $name) && preg_match('/char|text/i', (string) $columnSchema->dbType)) {
+                $column = (string) $name;
+                break;
+            }
+        }
+        $this->assertNotNull($column, 'The test survey has no text answer column.');
+
         $helper = new \statistics_helper();
-        $result = $helper->_listcolumn(self::$surveyId, 'id', 'id', 'desc', 'N');
+        $result = $helper->_listcolumn(self::$surveyId, $column, 'id', 'desc', 'N');
 
         $this->assertNotEmpty($result);
         $this->assertArrayHasKey('id', $result[0]);
