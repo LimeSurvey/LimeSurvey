@@ -171,6 +171,86 @@ class CopySurveyTest extends TestBaseClass
      * @return \LimeSurvey\Models\Services\CopySurveyResult
      * @throws \Exception
      */
+    /**
+     * Regression test for #20420: copying a survey whose survey group the current
+     * user is not allowed to use must not fail, but place the copy in the default group.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testCopySurveyFallsBackToDefaultGroupWhenSourceGroupIsNotUsable()
+    {
+        $survey = Survey::model()->findByPk(self::$testSurvey->sid);
+        $originalAttributes = $survey->getAttributes(['gsid', 'anonymized', 'adminemail']);
+
+        $restrictedGroup = new \SurveysGroups();
+        $restrictedGroup->name = 'copytest' . bin2hex(random_bytes(4));
+        $restrictedGroup->title = 'Restricted copy test group';
+        $restrictedGroup->alwaysavailable = 0;
+        $restrictedGroup->sortorder = $restrictedGroup->getNextOrderPosition();
+        $restrictedGroup->owner_id = 1;
+        $restrictedGroup->created_by = 1;
+        $this->assertTrue($restrictedGroup->save(), json_encode($restrictedGroup->getErrors()));
+        $restrictedGroupSettings = new \SurveysGroupsettings();
+        $restrictedGroupSettings->setToInherit();
+        $restrictedGroupSettings->gsid = $restrictedGroup->gsid;
+        $restrictedGroupSettings->anonymized = 'Y';
+        $restrictedGroupSettings->adminemail = 'restricted-group@example.org';
+        $this->assertTrue($restrictedGroupSettings->save(), json_encode($restrictedGroupSettings->getErrors()));
+
+        // Source survey inherits these settings from its (restricted) survey group
+        $survey->gsid = $restrictedGroup->gsid;
+        $survey->anonymized = 'I';
+        $survey->adminemail = 'inherit';
+        $this->assertTrue($survey->save(false));
+        $survey = Survey::model()->findByPk($survey->sid);
+
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $user = self::createUserWithPermissions(
+            [
+                'full_name'  => $userName,
+                'users_name' => $userName,
+                'email'      => $userName . '@example.org',
+                'password'   => 'testpassword123',
+            ],
+            [
+                'surveys' => ['create' => 'on', 'read' => 'on', 'export' => 'on'],
+            ]
+        );
+
+        $copiedSurvey = null;
+        try {
+            \Yii::app()->session['loginID'] = $user->uid;
+            $result = $this->copySurvey($survey);
+            \Yii::app()->session['loginID'] = 1;
+
+            $copiedSurvey = $result->getCopiedSurvey();
+            $this->assertNotNull($copiedSurvey, 'Copy should succeed even if the source survey group is not usable.');
+            $this->assertEquals(1, $copiedSurvey->gsid, 'Copy should be placed in the default survey group.');
+            $this->assertNotEmpty($result->getWarnings(), 'A warning about the changed survey group is expected.');
+            $this->assertSame('Y', $copiedSurvey->anonymized, 'Inherited settings must be kept on the copy.');
+            $this->assertSame('restricted-group@example.org', $copiedSurvey->adminemail, 'Inherited settings must be kept on the copy.');
+        } finally {
+            \Yii::app()->session['loginID'] = 1;
+            if ($copiedSurvey instanceof Survey) {
+                $copiedSurvey->delete();
+            }
+            $survey->setAttributes($originalAttributes, false);
+            $survey->save(false);
+            $restrictedGroupSettings->delete();
+            $restrictedGroup->delete();
+            \Permission::model()->deleteAllByAttributes(['uid' => $user->uid]);
+            \User::model()->deleteByPk($user->uid);
+        }
+    }
+
+    /**
+     * Runs the copy survey service with default options.
+     *
+     * @param Survey $survey The source survey
+     * @return \LimeSurvey\Models\Services\CopySurveyResult
+     * @throws \Exception
+     */
     private function copySurvey(Survey $survey)
     {
         $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(

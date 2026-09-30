@@ -17,6 +17,7 @@ use QuestionL10n;
 use Survey;
 use Permission;
 use SurveyLanguageSetting;
+use SurveysGroupsettings;
 use Template;
 use Yii;
 use Answer;
@@ -79,11 +80,14 @@ class CopySurvey
         $destinationSurvey->datecreated = date("Y-m-d H:i:s");
         $destinationSurvey->lastmodified = date("Y-m-d H:i:s");
         $destinationSurvey->attributedescriptions = $this->sourceSurvey->attributedescriptions;
+        $this->ensureUsableSurveyGroup($copySurveyResult, $destinationSurvey);
         $transaction = App()->db->beginTransaction();
 
         try {
             if (!$destinationSurvey->save()) {
-                throw new \Exception(gT("Failed to copy survey"));
+                throw new \Exception(
+                    gT("Failed to copy survey") . ': ' . implode(' ', array_merge(...array_values($destinationSurvey->getErrors())))
+                );
             }
 
             //this call is necessary to prevent errors when copying the survey with the configured template
@@ -449,6 +453,44 @@ class CopySurvey
         }
 
         return $destinationSurvey;
+    }
+
+    /**
+     * Moves the destination survey to the default survey group if the current
+     * user is not allowed to use the survey group of the source survey.
+     *
+     * Settings inherited from the source survey group are replaced by their effective
+     * values, so the copy behaves like the source survey despite the changed group.
+     *
+     * @param CopySurveyResult $copySurveyResult Result container receiving a warning when the group is changed
+     * @param Survey $destinationSurvey The survey copy, not yet saved
+     * @return void
+     */
+    private function ensureUsableSurveyGroup(CopySurveyResult $copySurveyResult, Survey $destinationSurvey): void
+    {
+        if ($destinationSurvey->validate(['gsid'])) {
+            return;
+        }
+        $destinationSurvey->clearErrors('gsid');
+
+        $sourceOptions = $this->sourceSurvey->oOptions;
+        if ($sourceOptions === null) {
+            $this->sourceSurvey->setOptions($this->sourceSurvey->gsid);
+            $sourceOptions = $this->sourceSurvey->oOptions;
+        }
+        foreach (SurveysGroupsettings::model()->attributeNames() as $attribute) {
+            if (in_array($attribute, ['gsid', 'owner_id'])) {
+                continue;
+            }
+            if ($destinationSurvey->hasAttribute($attribute) && property_exists($sourceOptions, $attribute)) {
+                $destinationSurvey->$attribute = $sourceOptions->$attribute;
+            }
+        }
+        $destinationSurvey->gsid = 1;
+
+        $copySurveyResult->setWarnings(
+            gT("You are not allowed to use the survey group of the source survey, therefore the copy was placed in the default survey group. Settings inherited from the source survey group were applied directly to the copy.")
+        );
     }
 
     /**
