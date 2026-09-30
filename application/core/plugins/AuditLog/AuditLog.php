@@ -693,6 +693,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     /**
      * Function catches if the settings of a survey were changed
      * Only the changed attributes are saved, with their old and new values
+     * - the bounce account password is left out for security reasons
      */
     public function beforeSurveySettingsSave()
     {
@@ -709,6 +710,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             $oldSurvey = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
 
             $oldAttributes = $oldSurvey->getAttributes();
+            unset($newAttributes['bounceaccountpass'], $oldAttributes['bounceaccountpass']);
             $diff = array_diff_assoc($newAttributes, $oldAttributes);
             if (count($diff) > 0) {
                 $oAutoLog = $this->api->newModel($this, 'log');
@@ -729,30 +731,43 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
      * Function catches if a survey was deleted
      * The survey attributes and its titles in all languages are saved
      * - only the bounce account password is removed for security reasons
+     * If the entry cannot be saved, the error is written to the plugin log and the survey is still deleted
      */
     public function beforeSurveyDelete()
     {
-        // The survey setting 'auditing' is not checked: it must not be possible to delete a survey without a trace
+        // The survey setting 'auditing' is not checked, so the entry cannot be switched off per survey
         if (!$this->checkSetting('AuditLog_Log_SurveyDelete')) {
             return;
         }
         $oSurvey = $this->getEvent()->get('model');
-        $oCurrentUser = $this->api->getCurrentUser();
+        // A failing entry must not block the deletion (e.g. bulk delete or RemoteControl)
+        try {
+            $oCurrentUser = $this->api->getCurrentUser();
 
-        $aOldValues = $oSurvey->getAttributes();
-        unset($aOldValues['bounceaccountpass']);
-        $aOldValues['titles'] = array();
-        foreach ($oSurvey->languagesettings as $sLanguage => $oLanguageSetting) {
-            $aOldValues['titles'][$sLanguage] = $oLanguageSetting->surveyls_title;
+            $aOldValues = $oSurvey->getAttributes();
+            unset($aOldValues['bounceaccountpass']);
+            $aOldValues['titles'] = array();
+            foreach ($oSurvey->languagesettings as $sLanguage => $oLanguageSetting) {
+                $aOldValues['titles'][$sLanguage] = $oLanguageSetting->surveyls_title;
+            }
+
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->uid = $oCurrentUser ? $oCurrentUser->uid : null;
+            $oAutoLog->entity = 'survey';
+            $oAutoLog->entityid = $oSurvey->sid;
+            $oAutoLog->action = 'delete';
+            $oAutoLog->oldvalues = json_encode($aOldValues, JSON_INVALID_UTF8_SUBSTITUTE);
+            $oAutoLog->fields = implode(',', array_keys($aOldValues));
+            $oAutoLog->save();
+        } catch (Exception $e) {
+            $this->log(
+                sprintf(
+                    'Could not save the audit log entry for deleting survey %d: %s',
+                    $oSurvey->sid,
+                    $e->getMessage()
+                ),
+                CLogger::LEVEL_ERROR
+            );
         }
-
-        $oAutoLog = $this->api->newModel($this, 'log');
-        $oAutoLog->uid = $oCurrentUser ? $oCurrentUser->uid : null;
-        $oAutoLog->entity = 'survey';
-        $oAutoLog->entityid = $oSurvey->sid;
-        $oAutoLog->action = 'delete';
-        $oAutoLog->oldvalues = json_encode($aOldValues);
-        $oAutoLog->fields = implode(',', array_keys($aOldValues));
-        $oAutoLog->save();
     }
 }

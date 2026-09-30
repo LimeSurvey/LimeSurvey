@@ -13,6 +13,9 @@ class AuditLogTest extends TestBaseClass
     /** @var bool Whether AuditLog was already active before this test class ran */
     private static $wasActive;
 
+    /** @var mixed The web user id before this test class ran */
+    private static $previousUserId;
+
     /**
      * Activate and load AuditLog, create its log table and act as the superadmin.
      */
@@ -28,14 +31,16 @@ class AuditLogTest extends TestBaseClass
         self::dispatchPluginEvent('AuditLog', 'beforeActivate', []);
 
         \Yii::app()->session['loginID'] = 1;
+        self::$previousUserId = \Yii::app()->user->getId();
         \Yii::app()->user->setId(1);
     }
 
     /**
-     * Leave AuditLog as it was found, so it does not log (or fail) in other test classes.
+     * Leave AuditLog and the web user as they were found, so they do not affect other test classes.
      */
     public static function tearDownAfterClass(): void
     {
+        \Yii::app()->user->setId(self::$previousUserId);
         if (!self::$wasActive) {
             // Every handler is subscribed under its own method name
             foreach (get_class_methods(self::$plugin) as $method) {
@@ -133,29 +138,77 @@ class AuditLogTest extends TestBaseClass
     }
 
     /**
-     * If the audit entry cannot be written, the survey must not be deleted:
-     * the entry is written before the survey row is removed, and the database error aborts the deletion.
+     * A failing audit entry must not block the deletion (e.g. bulk delete or RemoteControl):
+     * the survey is deleted and the error is written to the plugin log.
      */
-    public function testSurveyIsNotDeletedWhenAuditEntryCannotBeWritten()
+    public function testSurveyIsDeletedAndErrorLoggedWhenAuditEntryCannotBeWritten()
     {
         $surveyId = $this->importTestSurvey();
         $db = \Yii::app()->db;
         // Load the log table schema first, so the write fails on insert like on a database failure.
         // Loading it while the table is missing would keep a broken model cached for the rest of the run.
         \PluginDynamic::model($db->tablePrefix . 'auditlog_log');
+        // Empty the in-memory log, so only messages logged during this deletion are read below
+        \Yii::getLogger()->flush();
         $db->createCommand()->renameTable('{{auditlog_log}}', '{{auditlog_log_unavailable}}');
-        $exception = null;
         try {
-            \Survey::model()->deleteSurvey($surveyId);
-        } catch (\CDbException $e) {
-            $exception = $e;
+            $this->deleteSurvey($surveyId);
         } finally {
             $db->createCommand()->renameTable('{{auditlog_log_unavailable}}', '{{auditlog_log}}');
         }
 
-        $this->assertNotNull($exception, 'Deletion did not fail although the audit entry could not be written');
+        $errors = \Yii::getLogger()->getLogs(\CLogger::LEVEL_ERROR, 'plugin.auditlog');
+        $this->assertCount(1, $errors);
+        $this->assertStringContainsString((string) $surveyId, $errors[0][0]);
+    }
+
+    /**
+     * Invalid UTF-8 (e.g. from legacy data) must not turn the entry into an empty one:
+     * the invalid bytes are replaced and the rest of the survey data is kept.
+     */
+    public function testSurveyDeletionLogReplacesInvalidUtf8()
+    {
+        $surveyId = $this->importTestSurvey();
+        $survey = \Survey::model()->findByPk($surveyId);
+        // "\xB1" on its own is not valid UTF-8
+        $survey->admin = "Survey admin \xB1";
+        $lastLogId = $this->getLastLogId();
+
+        $this->assertTrue($survey->delete(), 'Survey could not be deleted');
+        self::$testSurvey = null;
+
+        $rows = $this->getLogRowsAfter($lastLogId);
+        $this->assertCount(1, $rows);
+        $oldValues = json_decode($rows[0]['oldvalues'], true);
+        $this->assertIsArray($oldValues, 'The entry has no survey data');
+        $this->assertEquals($surveyId, $oldValues['sid']);
+        $this->assertSame("Survey admin \u{FFFD}", $oldValues['admin']);
+    }
+
+    /**
+     * A changed bounce account password must not be copied into the "Settings changed" entry either.
+     */
+    public function testSurveySettingsChangeLogDoesNotContainBounceAccountPassword()
+    {
+        $surveyId = $this->importTestSurvey();
+        $survey = \Survey::model()->findByPk($surveyId);
+        $encryptedPassword = \LSActiveRecord::encryptSingle('new-bounce-secret-456');
+        $survey->bounceaccountpass = $encryptedPassword;
+        $survey->admin = 'New survey admin';
+        $lastLogId = $this->getLastLogId();
+
+        // Same event the survey general settings service dispatches before saving the survey
+        self::dispatchPluginEvent('AuditLog', 'beforeSurveySettingsSave', ['modifiedSurvey' => $survey]);
+
+        $rows = $this->getLogRowsAfter($lastLogId);
+        $this->assertCount(1, $rows);
+        $this->assertSame('update', $rows[0]['action']);
+        $this->assertSame('admin', $rows[0]['fields']);
+        $this->assertStringNotContainsString('bounceaccountpass', $rows[0]['oldvalues'] . $rows[0]['newvalues']);
+        $this->assertStringNotContainsString($encryptedPassword, $rows[0]['newvalues']);
+
+        // The changes above were never saved
         \Survey::model()->resetCache();
-        $this->assertNotNull(\Survey::model()->findByPk($surveyId), 'Survey was deleted without an audit entry');
         $this->deleteSurvey($surveyId);
     }
 
