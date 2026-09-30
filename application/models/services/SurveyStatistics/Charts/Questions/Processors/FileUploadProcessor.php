@@ -8,6 +8,7 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processor
  */
 class FileUploadProcessor extends AbstractQuestionProcessor
 {
+    #[\Override]
     public function process()
     {
         return [
