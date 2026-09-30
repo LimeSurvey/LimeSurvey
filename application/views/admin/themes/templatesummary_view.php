@@ -191,15 +191,16 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                 </div>
             </div>
 
+            <?php if (!empty($globalfiles)) { ?>
             <div class="card card-primary mb-3">
                 <div class="col-12 card-body">
                     <label class="card-title"><?php eT("Global files:"); ?></label>
-                    <?php foreach ($globalfiles as $fileName => $file) { ?>
+                    <?php foreach (array_keys($globalfiles) as $fileName) { ?>
                         <div class="row">
                             <div class="col-8">
                                 <a href="<?php echo $this->createUrl('admin/themes',
-                                    ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
-                                   class="<?= $file === $relativePathEditfile ? 'text-danger' : 'text-success'?>">
+                                    ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $fileName]); ?>"
+                                   class="<?= $isGlobalFile && $fileName === $relativePathEditfile ? 'text-danger' : 'text-success'?>">
                                     <?= CHtml::encode($fileName); ?>
                                 </a>
                             </div>
@@ -210,6 +211,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     <?php } ?>
                 </div>
             </div>
+            <?php } ?>
 
             <div class="card card-primary mb-3">
                 <div class="col-12 card-body" style="">

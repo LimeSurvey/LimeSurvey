@@ -992,16 +992,16 @@ JAVASCRIPT
      * @param string $templatename The name of the template being edited.
      * @param string $screenname The name of the current screen (e.g. 'welcome', 'question').
      * @param string $editfile The absolute path to the file currently open in the editor.
-     * @param string $relativePathEditfile The relative path of the file being edited (used for saving).
+     * @param string $relativePathEditfile The relative path of the file being edited (used for saving),
+     *                                     or the file name of a global file.
      * @param array $templates List of all available templates.
      * @param array $files List of view/screen files for the current template.
      * @param array $cssfiles List of CSS files for the current template.
      * @param array $jsfiles List of JavaScript files for the current template.
      * @param array $otherfiles List of other (non-view, non-CSS, non-JS) files.
-     * @param array $globalfiles List of global (shared) files available across templates.
+     * @param array $globalfiles Global (shared) files available across templates, as [ fileName => fullPath ].
      * @param string $myoutput The rendered HTML output for the template preview iframe.
-     * @param bool $isGlobalFile Whether the file being edited is a global (shared) file.
-     *                                         Defaults to false.
+     * @param bool $isGlobalFile Whether the file being edited is a global (shared) file. Defaults to false.
      *
      * @return array $aViewUrls Array containing the view URL key 'templatesummary_view' with the
      *                          assembled data array to be passed to the view renderer.
@@ -1114,7 +1114,7 @@ JAVASCRIPT
      * @access protected
      * @param string $templatename
      * @param string $screenname
-     * @param string $editfile
+     * @param string $editfile Relative path of a theme file, or the file name of a global (shared) file
      * @param bool $showsummary
      * @return array
      */
@@ -1134,7 +1134,15 @@ JAVASCRIPT
         $jsfiles      = $oEditedTemplate->getValidScreenFiles("js");
         $otherfiles   = $oEditedTemplate->getOtherFiles();
         $globalfiles  = $oEditedTemplate->getGlobalFiles();
-        // NOTE: editfile fallback to $sLayoutFile is handled below together with global file detection.
+        // Global (shared) files are addressed by their file name. Theme files take precedence.
+        $isGlobalFile = false;
+        if (empty($editfile) || !(in_array($editfile, $files) || in_array($editfile, $cssfiles) || in_array($editfile, $jsfiles))) {
+            if (isset($globalfiles[$editfile])) {
+                $isGlobalFile = true;
+            } else {
+                $editfile = $sLayoutFile;
+            }
+        }
 
         // Standard screens
         $screens = $oEditedTemplate->getScreensList();
@@ -1313,12 +1321,9 @@ JAVASCRIPT
             $files = array(0 => $files);
         }
 
-        // A global file path is already absolute — use it directly without getFilePathForEditing.
-        $isGlobalFile = in_array($editfile, $globalfiles);
         if ($isGlobalFile) {
-            $sEditfile = $editfile;
+            $sEditfile = $globalfiles[$editfile];
         } else {
-            $editfile  = (empty($editfile) || !(in_array($editfile, $files) || in_array($editfile, $cssfiles) || in_array($editfile, $jsfiles))) ? $sLayoutFile : $editfile;
             $sEditfile = $oEditedTemplate->getFilePathForEditing($editfile, array_merge($files, $aCssAndJsfiles));
         }
 

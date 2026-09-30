@@ -622,9 +622,9 @@ class TemplateManifest extends TemplateConfiguration
     public function getGlobalFiles()
     {
         $globalFiles = [];
-        $buildPath   = App()->getBasePath() . '/../assets/packages/survey-theme-global/build';
+        $buildPath   = Yii::getPathOfAlias('core.survey-theme-global.build');
 
-        if (file_exists($buildPath) && $handle = opendir($buildPath)) {
+        if ($buildPath && is_dir($buildPath) && $handle = opendir($buildPath)) {
             while (false !== ($file = readdir($handle))) {
                 if ($file === '.' || $file === '..') {
                     continue;
@@ -634,6 +634,7 @@ class TemplateManifest extends TemplateConfiguration
                 }
             }
             closedir($handle);
+            ksort($globalFiles);
         }
 
         return $globalFiles;
