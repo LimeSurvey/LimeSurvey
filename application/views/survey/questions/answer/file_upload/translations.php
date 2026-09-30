@@ -12,6 +12,6 @@ if (!defined('BASEPATH')) {
  * This file has no functionality except for being searchable by the translation script.
  * When adding or changing such a text in config.xml, update the matching entry here.
  */
-gT('Min number of files');
+gT('Minimum number of files');
 gT('The participant cannot upload a single file larger than this size');
-gT('Max number of files');
+gT('Maximum number of files');

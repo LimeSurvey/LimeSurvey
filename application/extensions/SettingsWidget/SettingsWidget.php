@@ -169,11 +169,15 @@ class SettingsWidget extends CWidget
     }
 
     /**
-     * @param string $name
-     * @param array $metaData
-     * @param array $form
-     * @param boolean $return
-     * @param string $wrapper
+     * Render a single setting (label, input and help).
+     * If the setting is localized and 'language' is an array of language codes,
+     * one input is rendered per language, posted as {$name}[$language].
+     *
+     * @param string $name Setting name
+     * @param array $metaData Setting definition
+     * @param array|null $form Unused form configuration
+     * @param boolean $return Whether to return the HTML instead of echoing it
+     * @param string $wrapper HTML tag used to wrap the setting
      * @return string|void
      * @throws CHttpException
      */
@@ -182,6 +186,24 @@ class SettingsWidget extends CWidget
         // No type : invalid setting
         if (!isset($metaData['type'])) {
             throw new CHttpException(405, 'invalid settings type');
+        }
+        // Localized setting with multiple languages : render one setting per language
+        if (!empty($metaData['localized']) && isset($metaData['language']) && is_array($metaData['language'])) {
+            App()->loadHelper('surveytranslator');
+            $result = '';
+            foreach ($metaData['language'] as $language) {
+                $languageMetaData = $metaData;
+                $languageMetaData['language'] = $language;
+                if (isset($languageMetaData['label'])) {
+                    $languageMetaData['label'] .= ' (' . getLanguageNameFromCode($language, false) . ')';
+                }
+                $result .= $this->renderSetting($name, $languageMetaData, $form, true, $wrapper);
+            }
+            if ($return) {
+                return $result;
+            }
+            echo $result;
+            return;
         }
         $wrapperCss = '';
         if ($metaData['type'] === 'radio') {

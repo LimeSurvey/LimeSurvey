@@ -507,6 +507,7 @@ export const ResponsesTable = ({
           isBulkActionRef.current = false
         }}
         table={table}
+        saveTimings={survey.saveTimings}
         QuestionComponent={
           <QuestionPreview
             surveySettings={{

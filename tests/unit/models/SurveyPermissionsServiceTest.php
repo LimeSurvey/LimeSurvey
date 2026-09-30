@@ -194,6 +194,26 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
     }
 
     /**
+     * Test that the list of users which could be added to survey permissions
+     * is sorted alphabetically by username.
+     *
+     * @return void
+     */
+    public function testSurveyUserListIsSortedByUsername()
+    {
+        $oSurveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $returnedUsernames = array_column($oSurveyPermissions->getSurveyUserList(), 'usersname');
+
+        // Fixture users are created in non-alphabetical order, so compare only their relative order.
+        $fixtureUsernames = ['user1group', 'user2group', 'user3group', 'normaluser1', 'userGlobalSurvey'];
+        $actualOrder = array_values(array_intersect($returnedUsernames, $fixtureUsernames));
+        $this->assertSame(
+            ['normaluser1', 'user1group', 'user2group', 'user3group', 'userGlobalSurvey'],
+            $actualOrder
+        );
+    }
+
+    /**
      * Add a normal user to survey permission (not survey owner)
      *
      * @return void

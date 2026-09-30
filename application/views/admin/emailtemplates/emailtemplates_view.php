@@ -27,6 +27,17 @@ var LS = LS || {};  // namespace
 ?>
 <div class="side-body">
     <h1 class="h3"  ><?php eT("Edit email templates"); ?></h1>
+    <?php if (!$ishtml): ?>
+        <?php $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => gT("The HTML editor is not available because the option 'Use HTML format for participant emails' is disabled for this survey. All email templates, including the admin notifications, are therefore edited and sent as plain text.") . ' '
+                . CHtml::link(
+                    gT("Change this in the participant settings."),
+                    App()->createUrl('surveyAdministration/rendersidemenulink', ['surveyid' => $surveyid, 'subaction' => 'tokens']),
+                    ['class' => 'alert-link']
+                ),
+            'type' => 'info',
+        ]); ?>
+    <?php endif; ?>
     <?php if (!empty($missingAttachments)): ?>
         <div class="alert alert-warning" role="alert">
             <p><?= gT("The following email attachments refer to files that do not exist anymore. They will not be sent and will be removed when you save, unless you replace them:") ?></p>
