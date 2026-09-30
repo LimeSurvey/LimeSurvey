@@ -17,6 +17,7 @@ use QuestionL10n;
 use Survey;
 use Permission;
 use SurveyLanguageSetting;
+use SurveyURLParameter;
 use Template;
 use Yii;
 use Answer;
@@ -111,6 +112,14 @@ class CopySurvey
         $destinationSurvey->currentLanguageSettings->save();
         $mappingGroupIdsAndQuestionIds = $this->copyGroupsAndQuestions($copySurveyResult, $destinationSurvey);
         $this->copySurveyAssessments($copySurveyResult, $destinationSurvey, $mappingGroupIdsAndQuestionIds['questionGroupIds']);
+        if ($this->options->isUrlParameters()) {
+            $this->copySurveyUrlParameters(
+                $copySurveyResult,
+                $destinationSurvey,
+                $mappingGroupIdsAndQuestionIds['questionIds'],
+                $mappingGroupIdsAndQuestionIds['subquestionIds']
+            );
+        }
 
         if ($this->options->isQuotas()) {
             $copySurveyQuotas = new CopySurveyQuotas($this->sourceSurvey, $destinationSurvey);
@@ -314,6 +323,44 @@ class CopySurvey
     }
 
     /**
+     * Copy survey URL parameters to the destination survey
+     *
+     * @param CopySurveyResult $copySurveyResult
+     * @param Survey $destinationSurvey
+     * @param array $mappingQuestionIds old qid => new qid
+     * @param array $mappingSubquestionIds old subquestion qid => new subquestion qid
+     * @return void
+     * @throws PersistErrorException
+     */
+    private function copySurveyUrlParameters($copySurveyResult, $destinationSurvey, $mappingQuestionIds, $mappingSubquestionIds)
+    {
+        $sourceParameters = SurveyURLParameter::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid]);
+        $cntCopiedUrlParameters = 0;
+
+        foreach ($sourceParameters as $sourceParameter) {
+            $destinationParameter = new SurveyURLParameter();
+            $destinationParameter->sid = $destinationSurvey->sid;
+            $destinationParameter->parameter = $sourceParameter->parameter;
+            $destinationParameter->targetqid = !empty($sourceParameter->targetqid)
+                ? ($mappingQuestionIds[$sourceParameter->targetqid] ?? null)
+                : null;
+            $destinationParameter->targetsqid = !empty($sourceParameter->targetsqid)
+                ? ($mappingSubquestionIds[$sourceParameter->targetsqid] ?? null)
+                : null;
+
+            if (!$destinationParameter->save()) {
+                throw new PersistErrorException(
+                    gT("Failed to copy survey URL parameters")
+                    . ': '
+                    . json_encode($destinationParameter->getErrors())
+                );
+            }
+            $cntCopiedUrlParameters++;
+        }
+        $copySurveyResult->setCntUrlParameters($cntCopiedUrlParameters);
+    }
+
+    /**
      * Copy all question groups of the survey to the destination survey.
      *
      * @param CopySurveyResult $copyResults
@@ -401,6 +448,7 @@ class CopySurvey
         }
         $copyResults->setCntQuestions($cntCopiedQuestions);
         $mapping['questionIds'] = $mappingQuestionIds;
+        $mapping['subquestionIds'] = $mappedSubquestionIds;
         $this->copyDefaultAnswers($mappingQuestionIds, $mappedSubquestionIds);
 
         return $mapping;
