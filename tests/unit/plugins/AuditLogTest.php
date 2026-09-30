@@ -84,22 +84,19 @@ class AuditLogTest extends TestBaseClass
     }
 
     /**
-     * The bounce account password is a credential: it must not be copied into the audit log.
+     * The bounce account password is a credential: the entry only shows that one was set, masked.
      */
-    public function testSurveyDeletionLogDoesNotContainBounceAccountPassword()
+    public function testSurveyDeletionLogMasksBounceAccountPassword()
     {
         $surveyId = $this->importTestSurvey();
-        // Stored encrypted, as the bounce settings page does
-        $encryptedPassword = \LSActiveRecord::encryptSingle('bounce-secret-123');
-        \Survey::model()->updateByPk($surveyId, ['bounceaccountpass' => $encryptedPassword]);
-        \Survey::model()->resetCache();
+        $encryptedPassword = $this->setBounceAccountPassword($surveyId, 'bounce-secret-123');
         $lastLogId = $this->getLastLogId();
 
         $this->deleteSurvey($surveyId);
 
         $rows = $this->getLogRowsAfter($lastLogId);
         $this->assertCount(1, $rows);
-        $this->assertArrayNotHasKey('bounceaccountpass', json_decode($rows[0]['oldvalues'], true));
+        $this->assertSame('*MASKED*PASSWORD*', json_decode($rows[0]['oldvalues'], true)['bounceaccountpass']);
         $this->assertStringNotContainsString($encryptedPassword, $rows[0]['oldvalues']);
     }
 
@@ -186,14 +183,15 @@ class AuditLogTest extends TestBaseClass
     }
 
     /**
-     * A changed bounce account password must not be copied into the "Settings changed" entry either.
+     * A changed bounce account password is logged as changed in the "Settings changed" entry, masked.
      */
-    public function testSurveySettingsChangeLogDoesNotContainBounceAccountPassword()
+    public function testSurveySettingsChangeLogMasksChangedBounceAccountPassword()
     {
         $surveyId = $this->importTestSurvey();
+        $oldEncryptedPassword = $this->setBounceAccountPassword($surveyId, 'old-bounce-secret-123');
         $survey = \Survey::model()->findByPk($surveyId);
-        $encryptedPassword = \LSActiveRecord::encryptSingle('new-bounce-secret-456');
-        $survey->bounceaccountpass = $encryptedPassword;
+        $newEncryptedPassword = \LSActiveRecord::encryptSingle('new-bounce-secret-456');
+        $survey->bounceaccountpass = $newEncryptedPassword;
         $survey->admin = 'New survey admin';
         $lastLogId = $this->getLastLogId();
 
@@ -203,11 +201,34 @@ class AuditLogTest extends TestBaseClass
         $rows = $this->getLogRowsAfter($lastLogId);
         $this->assertCount(1, $rows);
         $this->assertSame('update', $rows[0]['action']);
-        $this->assertSame('admin', $rows[0]['fields']);
-        $this->assertStringNotContainsString('bounceaccountpass', $rows[0]['oldvalues'] . $rows[0]['newvalues']);
-        $this->assertStringNotContainsString($encryptedPassword, $rows[0]['newvalues']);
+        $this->assertSame('admin,bounceaccountpass', $rows[0]['fields']);
+        $this->assertSame('*MASKED*OLD*PASSWORD*', json_decode($rows[0]['oldvalues'], true)['bounceaccountpass']);
+        $this->assertSame('*MASKED*NEW*PASSWORD*', json_decode($rows[0]['newvalues'], true)['bounceaccountpass']);
+        $this->assertStringNotContainsString($oldEncryptedPassword, $rows[0]['oldvalues'] . $rows[0]['newvalues']);
+        $this->assertStringNotContainsString($newEncryptedPassword, $rows[0]['oldvalues'] . $rows[0]['newvalues']);
 
         // The changes above were never saved
+        \Survey::model()->resetCache();
+        $this->deleteSurvey($surveyId);
+    }
+
+    /**
+     * An unchanged bounce account password does not show up in the "Settings changed" entry.
+     */
+    public function testSurveySettingsChangeLogLeavesOutUnchangedBounceAccountPassword()
+    {
+        $surveyId = $this->importTestSurvey();
+        $this->setBounceAccountPassword($surveyId, 'bounce-secret-123');
+        $survey = \Survey::model()->findByPk($surveyId);
+        $survey->admin = 'New survey admin';
+        $lastLogId = $this->getLastLogId();
+
+        self::dispatchPluginEvent('AuditLog', 'beforeSurveySettingsSave', ['modifiedSurvey' => $survey]);
+
+        $rows = $this->getLogRowsAfter($lastLogId);
+        $this->assertCount(1, $rows);
+        $this->assertSame('admin', $rows[0]['fields']);
+
         \Survey::model()->resetCache();
         $this->deleteSurvey($surveyId);
     }
@@ -236,6 +257,20 @@ class AuditLogTest extends TestBaseClass
             );
         }
         \Survey::model()->resetCache();
+    }
+
+    /**
+     * Store a bounce account password encrypted, as the bounce settings page does.
+     * @param int $surveyId
+     * @param string $password
+     * @return string The stored (encrypted) value
+     */
+    private function setBounceAccountPassword(int $surveyId, string $password): string
+    {
+        $encryptedPassword = \LSActiveRecord::encryptSingle($password);
+        \Survey::model()->updateByPk($surveyId, ['bounceaccountpass' => $encryptedPassword]);
+        \Survey::model()->resetCache();
+        return $encryptedPassword;
     }
 
     /**

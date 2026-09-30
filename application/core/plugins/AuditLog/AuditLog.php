@@ -693,7 +693,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     /**
      * Function catches if the settings of a survey were changed
      * Only the changed attributes are saved, with their old and new values
-     * - the bounce account password is left out for security reasons
+     * - the bounce account password is masked for security reasons
      */
     public function beforeSurveySettingsSave()
     {
@@ -710,7 +710,11 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             $oldSurvey = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
 
             $oldAttributes = $oldSurvey->getAttributes();
-            unset($newAttributes['bounceaccountpass'], $oldAttributes['bounceaccountpass']);
+            // If the bounce account password has changed then indicate that it has changed but assign fake values
+            if ($newAttributes['bounceaccountpass'] != $oldAttributes['bounceaccountpass']) {
+                $oldAttributes['bounceaccountpass'] = '*MASKED*OLD*PASSWORD*';
+                $newAttributes['bounceaccountpass'] = '*MASKED*NEW*PASSWORD*';
+            }
             $diff = array_diff_assoc($newAttributes, $oldAttributes);
             if (count($diff) > 0) {
                 $oAutoLog = $this->api->newModel($this, 'log');
@@ -730,7 +734,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     /**
      * Function catches if a survey was deleted
      * The survey attributes and its titles in all languages are saved
-     * - only the bounce account password is removed for security reasons
+     * - only the bounce account password is masked for security reasons
      * If the entry cannot be saved, the error is written to the plugin log and the survey is still deleted
      */
     public function beforeSurveyDelete()
@@ -745,7 +749,10 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             $oCurrentUser = $this->api->getCurrentUser();
 
             $aOldValues = $oSurvey->getAttributes();
-            unset($aOldValues['bounceaccountpass']);
+            // Indicate that a bounce account password was set but assign a fake value
+            if (!empty($aOldValues['bounceaccountpass'])) {
+                $aOldValues['bounceaccountpass'] = '*MASKED*PASSWORD*';
+            }
             $aOldValues['titles'] = array();
             foreach ($oSurvey->languagesettings as $sLanguage => $oLanguageSetting) {
                 $aOldValues['titles'][$sLanguage] = $oLanguageSetting->surveyls_title;
