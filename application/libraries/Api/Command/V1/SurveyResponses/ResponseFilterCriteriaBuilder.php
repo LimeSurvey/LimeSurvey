@@ -12,6 +12,7 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\JsonElementCo
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\MultiSelectConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\NotEmptyConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\RangeConditionHandler;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\SurveyContextAwareInterface;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedCondition;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 
@@ -52,6 +53,14 @@ class ResponseFilterCriteriaBuilder
      * @var array<int,string>
      */
     private array $relations = [];
+
+    /** Passed to handlers that need to know how a column is stored. */
+    private ?int $surveyId;
+
+    public function __construct(?int $surveyId = null)
+    {
+        $this->surveyId = $surveyId;
+    }
 
     /**
      * @param ResolvedFilter[] $filters
@@ -127,6 +136,10 @@ class ResponseFilterCriteriaBuilder
 
         $handlerClass = self::HANDLERS[$operator];
         $handler = new $handlerClass();
+
+        if ($handler instanceof SurveyContextAwareInterface) {
+            $handler->setSurveyId($this->surveyId);
+        }
 
         // Handlers that take one key are given one; the rest read an array and
         // OR across it themselves.

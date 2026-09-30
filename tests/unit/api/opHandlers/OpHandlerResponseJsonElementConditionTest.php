@@ -108,4 +108,76 @@ class OpHandlerResponseJsonElementConditionTest extends TestCondition
         $this->expectException(InvalidArgumentException::class);
         $handler->execute(['Q140', 'Q141'], ['position' => 0, 'value' => 'SQ001']);
     }
+
+    /**
+     * Postgres raises a hard error when ->> is applied to a text column, so
+     * there the operator is written only for a column that really is json.
+     */
+    public function testPostgresReadsJsonColumnsWithTheOperator(): void
+    {
+        $handler = $this->postgresHandler(true);
+
+        $criteria = $handler->execute('Q140', ['position' => 1, 'value' => 'SQ006']);
+
+        $paramName = array_key_first($criteria->params);
+        $this->assertStringContainsString('->> 1', $criteria->condition);
+        $this->assertSame(['SQ006'], array_values($criteria->params));
+        $this->assertStringContainsString($paramName, $criteria->condition);
+    }
+
+    /**
+     * An encrypted ranking is stored as text. The filter must come back empty
+     * rather than take the whole responses query down with it.
+     */
+    public function testPostgresMatchesNothingOnANonJsonColumn(): void
+    {
+        $handler = $this->postgresHandler(false);
+
+        $criteria = $handler->execute('Q140', ['position' => 1, 'value' => 'SQ006']);
+
+        $this->assertSame('1=0', $criteria->condition);
+        // A bound value the SQL never mentions is an error on some drivers.
+        $this->assertSame([], $criteria->params);
+    }
+
+    /** Without the survey there is no way to tell how the column is stored. */
+    public function testPostgresRefusesWithoutTheSurveyItBelongsTo(): void
+    {
+        $handler = new class extends JsonElementConditionHandler {
+            protected function driverName(): string
+            {
+                return 'pgsql';
+            }
+        };
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('needs the survey it belongs to');
+        $handler->execute('Q140', ['position' => 0, 'value' => 'SQ001']);
+    }
+
+    /**
+     * Postgres without a database behind it: the driver and the column's
+     * storage type are the only things these branches read.
+     */
+    private function postgresHandler(bool $isJson): JsonElementConditionHandler
+    {
+        return new class ($isJson) extends JsonElementConditionHandler {
+            private bool $isJson;
+
+            public function __construct(bool $isJson)
+            {
+                $this->isJson = $isJson;
+            }
+
+            protected function driverName(): string
+            {
+                return 'pgsql';
+            }
+
+            protected function isJsonColumn(string $field): bool
+            {
+                return $this->isJson;
+            }
+        };
+    }
 }

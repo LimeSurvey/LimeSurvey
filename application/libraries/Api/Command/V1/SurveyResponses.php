@@ -334,7 +334,7 @@ class SurveyResponses implements CommandInterface
             new ParticipantResolver($this->getParticipantAttributes())
         );
 
-        $builder = new ResponseFilterCriteriaBuilder();
+        $builder = new ResponseFilterCriteriaBuilder((int) $this->getSurveyId($request));
         $criteria->mergeWith($builder->build($resolver->resolve($filterSet)));
 
         // Participant filters read a table joined to the responses, so the
