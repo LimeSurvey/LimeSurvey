@@ -2153,6 +2153,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $results['theme_options_differences'] = array();
     $results['access_mode'] = SurveyAccessModeService::$ACCESS_TYPE_OPEN;
     $sTemplateName = '';
+    // Collect notices about expressions the XSS filter disables during this import (see below)
+    LSYii_Validators::clearDisabledExpressionNotices();
 
     /** @var bool Indicates if the email templates have attachments with untranslated URLs or not */
     $hasOldAttachments = false;
@@ -3322,6 +3324,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     }
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
+    // Warn if the XSS filter disabled expressions in imported texts (unsafe for a filtered user, e.g. entity decoding)
+    if (!empty(LSYii_Validators::getDisabledExpressionNotices())) {
+        array_unshift($results['importwarnings'], "<span class='warningtitle'>" . gT('Attention: Some expressions in the imported texts were disabled because they could produce unsafe output.') . '</span>');
+    }
     return $results;
 }
 

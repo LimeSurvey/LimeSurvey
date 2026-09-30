@@ -320,7 +320,12 @@ class Database extends SurveyCommonAction
             // @todo: Should we be catching only this kind of exceptions or all Throwable?
             // BUt that could show sensitive information
             Yii::app()->setFlashMessage(
-                $e->getMessage(),
+                $e->getErrorModel()
+                    ? CHtml::errorSummary(
+                        $e->getErrorModel(),
+                        CHtml::tag('p', array('class' => 'strong'), CHtml::encode($e->getMessage()))
+                    )
+                    : $e->getMessage(),
                 'error'
             );
         }
