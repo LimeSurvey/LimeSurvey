@@ -125,15 +125,16 @@ const mapAnswers = (answers, language) =>
     }
   })
 
-// Some flat answer types keep their options built-in rather than stored in
-// `question.answers`, so we generate them here (matching the editor's
-// condition-designer handlers). Returns null for types that use real answers.
+// 1..n, for the point-choice scales.
 const numberScale = (upTo) =>
   Array.from({ length: upTo }, (unused, index) => ({
     value: String(index + 1),
     label: String(index + 1),
   }))
 
+// Some answer types keep their options built-in rather than stored in
+// `question.answers`, so we generate them here (matching the editor's
+// condition-designer handlers). Returns null for types that use real answers.
 const synthesizeAnswerOptions = (type) => {
   switch (type) {
     case '5': // 5 point choice → 1..5

@@ -222,4 +222,91 @@ class ResponseFilterSetTest extends TestCase
     {
         $this->assertFalse(ResponseFilterSet::fromRequestValue([])->hasParticipantFilter());
     }
+
+    /**
+     * A value that cannot be read as what it claims to be has to fail here.
+     * Left alone it does not fail anywhere: an unreadable bound counts as no
+     * bound, and a row with no usable bound at all is dropped — showing every
+     * response to someone who thinks they filtered.
+     *
+     * @dataProvider malformedValues
+     */
+    public function testAMalformedValueIsRejected(array $entry, string $expected): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage($expected);
+        ResponseFilterSet::fromRequestValue([$entry]);
+    }
+
+    public function malformedValues(): array
+    {
+        $question = ['source' => 'question', 'qid' => 42];
+
+        return [
+            'text where a number belongs' => [
+                $question + ['numberMin' => 'abc'],
+                'numberMin must be a number',
+            ],
+            'unreadable upper bound' => [
+                $question + ['numberMax' => 'ten'],
+                'numberMax must be a number',
+            ],
+            'date in the wrong format' => [
+                $question + ['dateFrom' => '31/01/2024'],
+                'dateFrom must be a date formatted as Y-m-d',
+            ],
+            // createFromFormat() alone rolls this over into 2025 instead of
+            // refusing it, which is why the round trip matters.
+            'date that does not exist' => [
+                $question + ['dateTo' => '2024-13-45'],
+                'dateTo must be a date formatted as Y-m-d',
+            ],
+            'row that is not a number' => [
+                $question + ['row' => 'abc'],
+                'row must be a whole number',
+            ],
+            'subquestion that is not a number' => [
+                $question + ['subquestion' => '12a'],
+                'subquestion must be a whole number',
+            ],
+            'text sent as a list' => [
+                $question + ['text' => ['a', 'b']],
+                'text must be a single value',
+            ],
+            'participant value sent as a list' => [
+                ['source' => 'participant', 'attribute' => 'email', 'value' => ['a']],
+                'value must be a single value',
+            ],
+            'survey data bound that is not a number' => [
+                ['source' => 'surveyData', 'field' => 'id', 'numberMin' => 'first'],
+                'numberMin must be a number',
+            ],
+        ];
+    }
+
+    /** The shapes a well-formed value is allowed to take still pass. */
+    public function testWellFormedValuesAreAccepted(): void
+    {
+        $set = ResponseFilterSet::fromRequestValue([
+            [
+                'source' => 'question',
+                'qid' => 42,
+                'numberMin' => '2.5',
+                'numberMax' => 10,
+                'row' => '1002',
+                'subquestion' => 901,
+            ],
+            [
+                'source' => 'question',
+                'qid' => 43,
+                'dateFrom' => '2024-01-31',
+                'dateTo' => '2024-12-01',
+            ],
+        ]);
+
+        $this->assertSame(2, $set->count());
+        $this->assertSame(2.5, $set->all()[0]->getNumberMin());
+        $this->assertSame(1002, $set->all()[0]->getRow());
+        $this->assertSame('2024-01-31', $set->all()[1]->getDateFrom());
+    }
 }

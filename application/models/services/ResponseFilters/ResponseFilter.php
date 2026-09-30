@@ -14,9 +14,10 @@ use InvalidArgumentException;
  * derived server-side from the question type, so a stale or forged value can
  * not change which columns are searched.
  *
- * Validation here is structural only — that the shape is well formed and the
- * enums are known. Whether a qid actually belongs to the survey is checked by
- * the resolver, which has the field map.
+ * Validation here covers the shape: that the keys are known, the enums are
+ * known, and each value can be read as what the contract says it is. Whether a
+ * qid actually belongs to the survey is checked by the resolver, which has the
+ * field map.
  */
 class ResponseFilter
 {
@@ -69,6 +70,21 @@ class ResponseFilter
         self::FILE_UPLOADED_YES,
         self::FILE_UPLOADED_NO,
     ];
+
+    /** The one date format the response columns are compared against. */
+    private const DATE_FORMAT = 'Y-m-d';
+
+    /** Values the contract spells as a number. */
+    private const NUMERIC_KEYS = ['numberMin', 'numberMax'];
+
+    /** Values the contract spells as a date. */
+    private const DATE_KEYS = ['dateFrom', 'dateTo'];
+
+    /** Values naming a subquestion by its id. */
+    private const ID_KEYS = ['subquestion', 'row'];
+
+    /** Values compared as text, and so cast to string further down. */
+    private const TEXT_KEYS = ['text', 'value', 'column', 'column2', 'attribute'];
 
     /**
      * Every key the contract accepts. Anything else is rejected rather than
@@ -140,6 +156,8 @@ class ResponseFilter
         $payload = $raw;
         unset($payload['join'], $payload['source']);
 
+        self::validateScalars($payload, $at);
+
         switch ($source) {
             case self::SOURCE_QUESTION:
                 self::validateQuestion($payload, $at);
@@ -153,6 +171,90 @@ class ResponseFilter
         }
 
         return new self($join, $source, $payload);
+    }
+
+    /**
+     * Check the values that are read straight back out of the payload later.
+     *
+     * A malformed value would otherwise not fail at all, and the failure is the
+     * dangerous direction: a non-numeric bound reads as "no bound", and a row
+     * whose bounds are both unreadable resolves to no conditions — so the whole
+     * row is dropped and the user is shown every response while believing the
+     * filter applied. A date the SQL cannot use ends up bound as `false`, and a
+     * row id that is not a number becomes 0.
+     *
+     * @param array<string,mixed> $payload
+     */
+    private static function validateScalars(array $payload, string $at): void
+    {
+        foreach (self::NUMERIC_KEYS as $key) {
+            if (self::isBlank($payload, $key)) {
+                continue;
+            }
+            if (!is_numeric($payload[$key])) {
+                throw new InvalidArgumentException("$at $key must be a number.");
+            }
+        }
+
+        foreach (self::DATE_KEYS as $key) {
+            if (self::isBlank($payload, $key)) {
+                continue;
+            }
+            if (!self::isDate($payload[$key])) {
+                throw new InvalidArgumentException(
+                    "$at $key must be a date formatted as " . self::DATE_FORMAT . '.'
+                );
+            }
+        }
+
+        foreach (self::ID_KEYS as $key) {
+            if (self::isBlank($payload, $key)) {
+                continue;
+            }
+            $value = $payload[$key];
+            $isWholeNumber = is_int($value) || (is_string($value) && ctype_digit($value));
+            if (!$isWholeNumber || (int) $value < 0) {
+                throw new InvalidArgumentException("$at $key must be a whole number.");
+            }
+        }
+
+        foreach (self::TEXT_KEYS as $key) {
+            if (self::isBlank($payload, $key)) {
+                continue;
+            }
+            if (!is_scalar($payload[$key])) {
+                throw new InvalidArgumentException("$at $key must be a single value.");
+            }
+        }
+    }
+
+    /**
+     * A key the user left alone. Absent and empty mean the same here: the
+     * filter simply does not use that value.
+     *
+     * @param array<string,mixed> $payload
+     */
+    private static function isBlank(array $payload, string $key): bool
+    {
+        return !isset($payload[$key]) || $payload[$key] === '';
+    }
+
+    /**
+     * Same round trip DateRangeConditionHandler::validateDate() does, so a date
+     * accepted here is one the SQL can actually use. createFromFormat() alone
+     * would let '2024-13-45' through by rolling it over into the next year.
+     *
+     * @param mixed $value
+     */
+    private static function isDate($value): bool
+    {
+        if (!is_string($value)) {
+            return false;
+        }
+
+        $date = \DateTime::createFromFormat(self::DATE_FORMAT, $value);
+
+        return $date !== false && $date->format(self::DATE_FORMAT) === $value;
     }
 
     /**
