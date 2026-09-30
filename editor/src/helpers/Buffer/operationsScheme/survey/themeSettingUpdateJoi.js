@@ -21,6 +21,7 @@ export const themeSettingUpdateJoi = Joi.object({
     backgroundimage: Joi.string().optional(),
     brandlogo: Joi.string().optional(),
     cornerradius: Joi.string().optional(),
+    deselectsinglechoice: Joi.string().optional(),
     container: Joi.string().optional(),
     zebrastriping: Joi.string().optional(),
     crosshover: Joi.string().optional(),

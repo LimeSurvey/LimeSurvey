@@ -1,3 +1,4 @@
+import { format } from 'util'
 import {
   ToggleButtons,
   Input,
@@ -126,13 +127,17 @@ export const getPresentationSettingsBlocks = () => ({
           )
 
           return surveyLanguages.map((option) => {
-            let addOn =
-              option === survey.language ? ' (' + t('Base language') + ')' : ''
+            const isBaseLanguage = option === survey.language
             let languageOption = {
               value: option,
               label: languages
-                ? languages[option]?.description + addOn
-                : 'No data available',
+                ? isBaseLanguage
+                  ? format(
+                      t('%s (Base language)'),
+                      languages[option]?.description
+                    )
+                  : languages[option]?.description
+                : t('No data available'),
             }
 
             return languageOption

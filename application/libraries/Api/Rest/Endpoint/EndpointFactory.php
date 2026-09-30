@@ -203,7 +203,8 @@ class EndpointFactory
     /**
      * Get auth token.
      *
-     * Attempts to read from 'authToken' GET parameter and falls back to authorisation bearer token.
+     * Attempts to read from 'authToken' GET parameter, then from the
+     * 'X-Auth-Token' header, and falls back to the authorisation bearer token.
      *
      * @return string|null
      */
@@ -211,9 +212,37 @@ class EndpointFactory
     {
         $token = Yii::app()->request->getParam('authToken');
         if (!$token) {
+            $token = $this->getAuthTokenHeader();
+        }
+        if (!$token) {
             $token = $this->getAuthBearerToken();
         }
         return $token;
+    }
+
+    /**
+     * Get auth token from the custom 'X-Auth-Token' header.
+     *
+     * The bundled React editor sends its token via this header instead of
+     * the standard 'Authorization' header, because on IIS with Windows
+     * Authentication enabled (and Anonymous Authentication disabled), any
+     * request carrying an 'Authorization' header is intercepted and
+     * challenged by IIS itself before it reaches PHP, even when the header
+     * uses a scheme (Bearer) that Windows Authentication does not
+     * understand. This causes the browser to show a credential prompt
+     * instead of letting the request through (issue #20692).
+     *
+     * @return string|null
+     */
+    protected function getAuthTokenHeader()
+    {
+        // HTTP header field names are case-insensitive (RFC 7230), so lowercase
+        // all keys. Some servers or proxies (e.g. HTTP/2) send them lowercased.
+        $headers = array_change_key_case(getAllHeaders(), CASE_LOWER);
+
+        return $headers['x-auth-token']
+            ?? $_SERVER['HTTP_X_AUTH_TOKEN']
+            ?? null;
     }
 
     /**

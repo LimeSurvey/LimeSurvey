@@ -72,6 +72,20 @@
                 <tr class='data-entry-separator'><td colspan='3'></td></tr>
             <?php }
 
+            if ($thissurvey['savequotaexit'] == "Y") { //Give quota exit field
+                ?>
+                <tr>
+                <td valign='top' width='1%'></td>
+                <td valign='top' align='right' width='30%'><strong>
+                <?php echo gT("Quota exit",'html',$sDataEntryLanguage); ?>:</strong></td>
+                <td valign='top'  align='left' style='padding-left: 20px'>
+                <input type='text' name='quota_exit' value='' />
+                </td>
+                </tr>
+
+                <tr class='data-entry-separator'><td colspan='3'></td></tr>
+            <?php }
+
             if ($thissurvey['ipaddr'] == "Y") { //Give ipaddress field
                 ?>
                 <tr>
@@ -79,7 +93,7 @@
                 <td valign='top' align='right' width='30%'><strong>
                 <?php echo gT("IP address", 'html', $sDataEntryLanguage); ?>:</strong></td>
                 <td valign='top'  align='left' style='padding-left: 20px'>
-                <input type='text' name='ipaddr' value='NULL' />
+                <input type='text' name='ipaddr' value='' />
                 </td>
                 </tr>
 

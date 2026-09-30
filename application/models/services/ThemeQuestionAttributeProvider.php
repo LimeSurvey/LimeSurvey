@@ -9,6 +9,7 @@ namespace LimeSurvey\Models\Services;
 class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
 {
     /** @inheritdoc */
+    #[\Override]
     public function getDefinitions($options = [])
     {
         /** @var string question theme from the filter or, if not set, from the question */

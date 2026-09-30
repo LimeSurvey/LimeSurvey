@@ -14,6 +14,7 @@ class Update_708 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->update(

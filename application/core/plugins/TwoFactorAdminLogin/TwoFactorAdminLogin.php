@@ -658,7 +658,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
                 $this->get('issuer', null, null, 'LimeSurvey - survey software'),
                 ((int) $this->get('digits', null, null, 6)),
                 ((int) $this->get('period', null, null, 30)),
-                $this->get('algorithm', null, null, 'sha1'),
+                RobThree\Auth\Algorithm::from((string) $this->get('algorithm', null, null, 'sha1')),
                 $mp
             );
         }

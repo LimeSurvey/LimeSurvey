@@ -9,6 +9,7 @@ class Update_623 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         if (\Yii::app()->db->driverName == 'pgsql') {

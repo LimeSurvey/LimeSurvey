@@ -1,3 +1,4 @@
+import { format } from 'util'
 import {
   addNoAnswerIfAllowed,
   createAnswer,
@@ -33,7 +34,7 @@ export const rankingTypeHandler = (
       subquestions[j],
       fieldname,
       language,
-      `${t('RANK')} ${rankingPos}`
+      format(t('Rank %s'), rankingPos)
     )
 
     rankingAnswers.forEach(({ value, label }) => {

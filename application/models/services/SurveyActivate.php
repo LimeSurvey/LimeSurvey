@@ -66,10 +66,13 @@ class SurveyActivate
                 'ipaddr',
                 'ipanonymize',
                 'refurl',
-                'savetimings'
+                'savetimings',
+                'savequotaexit'
             ];
             foreach ($fields as $field) {
-                $survey->{$field} = $survey->aOptions[$field];
+                if (array_key_exists($field, $survey->aOptions)) {
+                    $survey->{$field} = $survey->aOptions[$field];
+                }
                 $postfieldvalue = $this->app->request->getPost($field, null);
                 if ($postfieldvalue !== null) {
                     $survey->{$field} = $this->app->request->getPost($field, $params[$field] ?? null);

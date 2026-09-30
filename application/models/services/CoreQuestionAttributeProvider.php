@@ -9,6 +9,7 @@ namespace LimeSurvey\Models\Services;
 class CoreQuestionAttributeProvider extends QuestionAttributeProvider
 {
     /** @inheritdoc */
+    #[\Override]
     public function getDefinitions($options = [])
     {
         /** @var string question type */
@@ -17,7 +18,6 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
             return [];
         }
 
-        /** @var boolean */
         $advancedOnly = !empty($options['advancedOnly']);
 
         return $this->getQuestionAttributes($questionType, $advancedOnly);
@@ -45,7 +45,6 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
         }
         $advancedAttributes = $this->getAdvancedAttributesFromXml($xmlFilePath);
 
-        /** @var array<string,array> An array of question attributes */
         $attributes = array_merge($generalAttributes, $advancedAttributes);
 
         return $attributes;

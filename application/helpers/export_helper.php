@@ -541,7 +541,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
     $fieldnames = array_keys($fieldmap);
     $num_results = safecount($fieldnames);
     $diff = 0;
-    $noQID = array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage', 'seed');
+    $noQID = array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage', 'seed', 'quota_exit');
     # Build array that has to be returned
     for ($i = 0; $i < $num_results; $i++) {
         #Condition for SPSS fields:
@@ -591,6 +591,10 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
             case 'seed':
                 $fieldtype = 'A';
                 $val_size = 31;
+                break;
+            case 'quota_exit':
+                $fieldtype = 'F';
+                $val_size = 7;
                 break;
             default:
                 // Not set for default
