@@ -1,3 +1,6 @@
-# How to build
+# Global survey theme package
 
-Run `gulp build_survey_theme_global` from repository root.
+CSS and JavaScript shared by all survey themes.
+
+Build from the repository root with `yarn gulp build_survey_theme_global`.
+See `assets/survey_themes/README.md` for details.
