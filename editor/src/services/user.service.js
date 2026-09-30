@@ -12,7 +12,9 @@ export class UserService {
     return await this.restClient.get(`user-detail/${id}`)
   }
 
-  getUserPermissions = async () => {
-    return await this.restClient.get('user-permissions')
+  getUserPermissions = async (surveyId) => {
+    return await this.restClient.get('user-permissions', {}, undefined, false, {
+      surveyId,
+    })
   }
 }

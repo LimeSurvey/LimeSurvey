@@ -30,9 +30,9 @@ export const PermissionsProvider = ({ children }) => {
     setPermissions(null)
     setError(null)
     userService
-      .getUserPermissions()
-      .then(({ permissions: { global, survey } }) => {
-        setPermissions({ global, survey })
+      .getUserPermissions(surveyId)
+      .then(({ permissions: { global, survey, effective } }) => {
+        setPermissions({ global, survey, effective })
       })
       .catch(() => {
         setError(
@@ -40,7 +40,7 @@ export const PermissionsProvider = ({ children }) => {
         )
         setLoading(false)
       })
-  }, [auth?.token])
+  }, [auth?.token, surveyId])
 
   useEffect(() => {
     if (!permissions) {
@@ -53,67 +53,16 @@ export const PermissionsProvider = ({ children }) => {
       return
     }
 
-    const { global, survey: surveyPermissions } = permissions
-    const isSuperAdmin =
-      global?.superadmin?.read === true || global?.superadmin?.read === 1
-
-    // Check if user is survey owner (has any permissions for this survey)
-    const surveySpecificPermissions = surveyPermissions?.[surveyId]
-    const isSurveyOwnerValue = !!surveySpecificPermissions
-
-    // Get global permissions
-    const globalSurveyRead =
-      global?.surveys?.read === true || global?.surveys?.read === 1
-    const globalSurveyUpdate =
-      global?.surveys?.update === true || global?.surveys?.update === 1
-
-    // Get survey-specific permissions (these have priority over global)
-    const surveyRead =
-      surveySpecificPermissions?.survey?.read === true ||
-      surveySpecificPermissions?.survey?.read === 1
-    const surveyUpdate =
-      surveySpecificPermissions?.survey?.update === true ||
-      surveySpecificPermissions?.survey?.update === 1
-    const responsesRead =
-      surveySpecificPermissions?.responses?.read === true ||
-      surveySpecificPermissions?.responses?.read === 1
-    const responsesUpdate =
-      surveySpecificPermissions?.responses?.update === true ||
-      surveySpecificPermissions?.responses?.update === 1
-    const statisticsRead =
-      surveySpecificPermissions?.statistics?.read === true ||
-      surveySpecificPermissions?.statistics?.read === 1
-
-    // Survey permissions: superadmin OR (survey-specific if exists, else global)
-    // Local survey permissions have priority over global permissions
-    const hasSurveyReadPermissionValue =
-      isSuperAdmin || (isSurveyOwnerValue ? surveyRead : globalSurveyRead)
-    const hasSurveyUpdatePermissionValue =
-      isSuperAdmin || (isSurveyOwnerValue ? surveyUpdate : globalSurveyUpdate)
-
-    // Response permissions: superadmin OR survey-specific OR global survey update
-    // If you can update responses, you can also read them
-    // Statistics.read also grants access to responses page (for viewing statistics)
-    // Global survey update permission also grants response update permission
-    const hasResponsesReadPermissionValue =
-      isSuperAdmin ||
-      responsesRead ||
-      responsesUpdate ||
-      statisticsRead ||
-      globalSurveyUpdate
-    const hasResponsesUpdatePermissionValue =
-      isSuperAdmin || responsesUpdate || globalSurveyUpdate
-
-    setHasSurveyReadPermission(hasSurveyReadPermissionValue)
-    setHasSurveyUpdatePermission(hasSurveyUpdatePermissionValue)
-    setHasResponsesReadPermission(hasResponsesReadPermissionValue)
-    setHasResponsesUpdatePermission(hasResponsesUpdatePermissionValue)
+    // Resolved by the backend, incl. survey group inheritance
+    const { effective } = permissions
+    setHasSurveyReadPermission(!!effective?.surveyRead)
+    setHasSurveyUpdatePermission(!!effective?.surveyUpdate)
+    setHasResponsesReadPermission(!!effective?.responsesRead)
+    setHasResponsesUpdatePermission(!!effective?.responsesUpdate)
 
     setLoading(false)
   }, [
     permissions,
-    surveyId,
-    auth?.token,
     setHasSurveyReadPermission,
     setHasSurveyUpdatePermission,
     setHasResponsesReadPermission,
