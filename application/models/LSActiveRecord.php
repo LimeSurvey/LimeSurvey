@@ -471,12 +471,7 @@ class LSActiveRecord extends CActiveRecord
         $sodium = Yii::app()->sodium;
 
         $attributes = $this->encryptAttributeValues($this->getAttributes(), true, false);
-        $LEM = LimeExpressionManager::singleton();
-        $updatedValues = $LEM->getUpdatedValues();
         foreach ($attributes as $key => $attribute) {
-            if ($action === 'decrypt' && array_key_exists($key, $updatedValues)) {
-                continue;
-            }
             $this->$key = $sodium->$action($attribute);
         }
     }
