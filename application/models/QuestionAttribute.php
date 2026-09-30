@@ -33,6 +33,9 @@ use LimeSurvey\Models\Services\QuestionAttributeHelper;
  */
 class QuestionAttribute extends LSActiveRecord
 {
+    /** @var string A date limit (date_min/date_max) given as YYYY-MM-DD date, optionally followed by HH:MM or HH:MM:SS */
+    public const DATE_LIMIT_PATTERN = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])([ T]([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?)?$/D';
+
     protected static $questionAttributesSettings = array();
 
     protected $xssFilterAttributes = ['value'];

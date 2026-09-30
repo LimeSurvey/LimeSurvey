@@ -221,9 +221,9 @@ class DateTimePicker extends CInputWidget
     private function getRestrictionsOptionsString()
     {
         $minDate = $this->getValue('data-minDate', $this->htmlOptions, 'undefined');
-        $minDate = $minDate != 'undefined' ? "'$minDate'" : $minDate;
+        $minDate = $minDate != 'undefined' ? "'" . CJavaScript::quote($minDate) . "'" : $minDate;
         $maxDate = $this->getValue('data-maxDate', $this->htmlOptions, 'undefined');
-        $maxDate = $maxDate != 'undefined' ? "'$maxDate'" : $maxDate;
+        $maxDate = $maxDate != 'undefined' ? "'" . CJavaScript::quote($maxDate) . "'" : $maxDate;
 
         return "{
                 minDate: $minDate, 

@@ -84,13 +84,13 @@ class RenderDate extends QuestionBaseRenderer
 
             if (ctype_digit($date_min) && (strlen($date_min) == 4)) {
                 $this->minDate = $date_min . '-01-01'; // backward compatibility: if only a year is given, add month and day
-            } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date_min)) {
-                // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
+            } elseif (preg_match(QuestionAttribute::DATE_LIMIT_PATTERN, $date_min)) {
                 $this->minDate = $date_min;
             } elseif ($date_time_em !== false) {
                 $this->minDate = (string) date("Y-m-d", $date_time_em);
             } else {
-                $this->minDate = '{' . $this->getQuestionAttribute('date_min') . '}';
+                // an expression: escape its result, on the server and when EM updates it in the browser
+                $this->minDate = '{htmlspecialchars(' . $this->getQuestionAttribute('date_min') . ')}';
             }
         } else {
             $this->minDate = '1900-01-01'; // We need some default value
@@ -106,19 +106,20 @@ class RenderDate extends QuestionBaseRenderer
 
             if (ctype_digit($date_max) && (strlen($date_max) == 4)) {
                 $this->maxDate = $date_max . '-12-31'; // backward compatibility: if only a year is given, add month and day
-            } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date_max)) {
-        // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
+            } elseif (preg_match(QuestionAttribute::DATE_LIMIT_PATTERN, $date_max)) {
+                // it's a YYYY-MM-DD date, optionally followed by a time
                 $this->maxDate = $date_max;
             } elseif ($date_time_em !== false) {
                 $this->maxDate = (string) date("Y-m-d", $date_time_em);
             } else {
-                $this->maxDate = '{' . $this->getQuestionAttribute('date_max') . '}';
+                // an expression: escape its result, on the server and when EM updates it in the browser
+                $this->maxDate = '{htmlspecialchars(' . $this->getQuestionAttribute('date_max') . ')}';
             }
         } else {
             $this->maxDate = '2187-12-31'; // Why 2187 ?
         }
 
-        if (!empty($this->maxDate)) {
+        if (!empty($this->maxDate) && !preg_match('/[ T][0-9]{2}:[0-9]{2}(:[0-9]{2})?$/', $this->maxDate)) {
             $this->maxDate .= " 23:59:59.999";
         }
     }
