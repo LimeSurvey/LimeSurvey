@@ -2993,10 +2993,24 @@ class userstatistics_helper
     }
 
     /**
-     *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
+     * Returns a simple list of values in a particular column, that meet the requirements of the SQL
+     *
+     * @param int    $surveyid   Survey ID
+     * @param string $column     Response table column to list
+     * @param string $sortby     Response table column to sort by (optional)
+     * @param string $sortmethod Sort direction, ASC or DESC (optional)
+     * @param string $sorttype   N for numerical sorting (optional)
+     * @return array[] List of ['id' => response ID, 'value' => column value]
+     * @throws InvalidArgumentException if $column or $sortby is not a response table column
      */
     function _listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
+        // Security (mantis #20741): quoteColumnName() does not escape identifier quoting
+        // characters, so only real response table columns may be passed to it.
+        $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
+        if (!in_array($column, $validColumns, true) || ($sortby != '' && !in_array($sortby, $validColumns, true))) {
+            throw new InvalidArgumentException('Statistics column listing references an unknown column.');
+        }
         $search['condition'] = Yii::app()->db->quoteColumnName($column) . " != ''";
         $sDBDriverName = Yii::app()->db->getDriverName();
         if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') {
@@ -3027,6 +3041,11 @@ class userstatistics_helper
             if ($sorttype == 'N') {
                 $sortby = "($sortby * 1)";
             } //Converts text sorting into numerical sorting
+            // Avoid bad sortmethod parameter (mantis #20145)
+            $sortmethod = strtoupper($sortmethod);
+            if ($sortmethod && !in_array($sortmethod, ['ASC', 'DESC'])) {
+                $sortmethod = "";
+            }
             $search['order'] = $sortby . ' ' . $sortmethod;
         }
         $results = SurveyDynamic::model($surveyid)->findAll($search);
