@@ -8,6 +8,7 @@ use PluginSetting;
 use Question;
 use QuestionAttribute;
 use Survey;
+use TemplateConfiguration;
 
 class CopySurveyTest extends TestBaseClass
 {
@@ -107,6 +108,52 @@ class CopySurveyTest extends TestBaseClass
             }
 
             self::deActivatePlugin('expressionFixedDbVar');
+        }
+    }
+
+    /**
+     * Test that survey-specific theme options are copied with the survey.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testCopySurveyCopiesSurveyThemeOptions()
+    {
+        $survey = Survey::model()->findByPk(self::$testSurvey->sid);
+        $sourceConfiguration = TemplateConfiguration::model()->findByAttributes([
+            'sid' => $survey->sid,
+            'template_name' => 'vanilla',
+        ]);
+        $this->assertNotNull($sourceConfiguration, 'Expected the imported test survey to have a vanilla theme configuration.');
+
+        $originalOptions = $sourceConfiguration->options;
+        $customOptions = json_encode(['container' => 'off', 'ajaxmode' => 'off']);
+        $sourceConfiguration->options = $customOptions;
+        $this->assertTrue($sourceConfiguration->save(), json_encode($sourceConfiguration->errors));
+
+        $copiedSurvey = null;
+        try {
+            $result = $this->copySurvey($survey);
+
+            $this->assertEquals($result->getErrors(), []);
+
+            $copiedSurvey = $result->getCopiedSurvey();
+            $this->assertNotNull($copiedSurvey);
+
+            $copiedConfiguration = TemplateConfiguration::model()->findByAttributes([
+                'sid' => $copiedSurvey->sid,
+                'template_name' => 'vanilla',
+            ]);
+            $this->assertNotNull($copiedConfiguration, 'Survey theme configuration should be copied with the survey.');
+            $this->assertSame($customOptions, $copiedConfiguration->options);
+            $this->assertSame('inherit', $copiedConfiguration->files_css);
+        } finally {
+            $sourceConfiguration->options = $originalOptions;
+            $sourceConfiguration->save();
+
+            if ($copiedSurvey instanceof Survey) {
+                $copiedSurvey->delete();
+            }
         }
     }
 
