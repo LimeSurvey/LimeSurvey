@@ -14,10 +14,14 @@ import { PaginationButtons } from 'components'
 import { QuestionPreview } from 'components/Survey/Questions/QuestionPreview'
 import {
   getDefaultColumns,
+  getInitialColumnVisibility,
   generateColumns,
   generateData,
   SelectColumnId,
   ActionsColumnId,
+  applyStoredColumnVisibility,
+  readColumnVisibility,
+  writeColumnVisibility,
 } from '../../utils'
 import { Toast } from 'helpers'
 
@@ -47,6 +51,9 @@ export const ResponsesTable = ({
   hideActions = false,
   hideSelect = false,
   disableUpdatingResponses = false,
+  deepLinkResponseId = null,
+  onResponseModalOpen = () => {},
+  onResponseModalClose = () => {},
 }) => {
   const [firstLoad, setFirstLoad] = useState(true)
   const [data, setData] = useState([])
@@ -55,6 +62,7 @@ export const ResponsesTable = ({
   const [persistentSelection, setPersistentSelection] = useState({})
   const clickedRowRef = useRef({})
   const isBulkActionRef = useRef(false)
+  const openedDeepLinkRef = useRef(null)
   const [responseViewRowInfo, setResponseViewRowInfo] = useState(null)
   const [showColumnManagementModal, setShowColumnManagementModal] =
     useState(false)
@@ -182,7 +190,8 @@ export const ResponsesTable = ({
     if (!columns.length) {
       generatedColumns = generateColumns(
         responsesData.surveyQuestions || surveyQuestions,
-        survey
+        survey,
+        responsesData.timingFields
       )
 
       if (!hideSelect) {
@@ -194,6 +203,13 @@ export const ResponsesTable = ({
       }
 
       setColumns(generatedColumns)
+      setColumnVisibility(
+        applyStoredColumnVisibility(
+          generatedColumns,
+          getInitialColumnVisibility(generatedColumns),
+          readColumnVisibility(survey.sid)
+        )
+      )
       // else if we have columns, then we pop the actions column and readd it to update the columns ref
     } else if (!hideActions && columns.length) {
       columns.pop()
@@ -283,7 +299,40 @@ export const ResponsesTable = ({
 
     setResponseViewRowInfo(row)
     setShowSurveyDetails(true)
+
+    if (row?.original?.id !== undefined) {
+      onResponseModalOpen(row.original.id)
+    }
   }
+
+  // Close cleanup so the shared `id` is removed from the URL.
+  const handleSetShowSurveyDetails = (value) => {
+    setShowSurveyDetails(value)
+    if (!value) {
+      onResponseModalClose()
+    }
+  }
+
+  // Open the detail modal for a deep-linked response once its page data loads.
+  useEffect(() => {
+    if (isFetching || !deepLinkResponseId || !data.length) {
+      return
+    }
+
+    if (openedDeepLinkRef.current === deepLinkResponseId) {
+      return
+    }
+
+    const row = table
+      .getRowModel()
+      .rows.find((r) => String(r?.original?.id) === String(deepLinkResponseId))
+
+    if (row) {
+      openedDeepLinkRef.current = deepLinkResponseId
+      clickedRowRef.current = row
+      showSurveyPreview(row)
+    }
+  }, [data, isFetching, deepLinkResponseId])
 
   const handleOnSave = (valuesInfo, row) => {
     const updateValue = {}
@@ -344,6 +393,7 @@ export const ResponsesTable = ({
 
     setColumnVisibility(columnVisibility)
     setColumnsOrder(columnOrder)
+    writeColumnVisibility(survey.sid, columnsInfo)
   }
 
   useEffect(() => {
@@ -446,7 +496,7 @@ export const ResponsesTable = ({
         showFiltersColumn={showFiltersColumn}
         setShowFiltersColumn={setShowFiltersColumn}
         showSurveyDetails={showSurveyDetails}
-        setShowSurveyDetails={setShowSurveyDetails}
+        setShowSurveyDetails={handleSetShowSurveyDetails}
         showQuestionComponent={showQuestionComponent}
         setShowQuestionComponent={setShowQuestionComponent}
         setShowColumnManagementModal={setShowColumnManagementModal}

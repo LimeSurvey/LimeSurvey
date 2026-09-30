@@ -18,6 +18,7 @@ class TwigCommand extends CConsoleCommand
     /**
      * Load the needed helpers, set default vaules, etc
      */
+    #[\Override]
     public function init()
     {
       // Needed helpers for correct rendering
@@ -136,7 +137,7 @@ class TwigCommand extends CConsoleCommand
                 if (file_exists($sTwigFile)) {
                     $this->aLogs[$sQuestionName] = "$sTwigFile";
                     $line       = file_get_contents($sTwigFile);
-                    $sHtml      = Yii::app()->twigRenderer->convertTwigToHtml($line, $aQuestionData);
+                    Yii::app()->twigRenderer->convertTwigToHtml($line, $aQuestionData);
                 } elseif (is_dir($sQuestionDirectory) && $sQuestionName != "arrays") {
                   // Recursive step
                     $this->actionGenerateQuestionsCache($sQuestionDirectory);
@@ -166,13 +167,12 @@ class TwigCommand extends CConsoleCommand
             $oAdminDirectory = new RecursiveDirectoryIterator($sAdminDir);
             $oAdminIterator = new RecursiveIteratorIterator($oAdminDirectory);
             $oAdminRegex = new RegexIterator($oAdminIterator, '/^.+\.twig$/i', RecursiveRegexIterator::GET_MATCH);
-            $aAdminData = array();
             foreach ($oAdminRegex as $oTwigFile) {
                 $sTwigFile = $oTwigFile[0];
                 if (file_exists($sTwigFile)) {
                     $this->aLogs["twig"] = "$sTwigFile";
                     $line       = file_get_contents($sTwigFile);
-                    $sHtml      = Yii::app()->twigRenderer->convertTwigToHtml($line);
+                    Yii::app()->twigRenderer->convertTwigToHtml($line);
                 }
             }
         }
@@ -247,7 +247,7 @@ class TwigCommand extends CConsoleCommand
                 $sLayoutFile  = $sLayout ;
                 $thissurvey['include_content'] = $sContent;
 
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
+                Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
                     $sLayoutFile,
                     array(
                     'aSurveyInfo' => $thissurvey,

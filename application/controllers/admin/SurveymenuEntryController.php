@@ -97,13 +97,24 @@ class SurveymenuEntryController extends SurveyCommonAction
      */
     public function create()
     {
+        if (!Permission::model()->hasGlobalPermission('settings', 'update') || Yii::app()->getConfig('demoMode')) {
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         $model = new SurveymenuEntries();
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['SurveymenuEntries'])) {
-            $model->attributes = $_POST['SurveymenuEntries'];
+            $aSurveymenuEntry = $_POST['SurveymenuEntries'];
+            $aSurveymenuEntry['menu_id'] = (int) $aSurveymenuEntry['menu_id'];
+            if (($aSurveymenuEntry['menu_id'] == 1 || $aSurveymenuEntry['menu_id'] == 2) && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                Yii::app()->user->setFlash('error', gT("Access denied!"));
+                $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+            }
+            $model->attributes = $aSurveymenuEntry;
             if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
             }
@@ -148,6 +159,10 @@ class SurveymenuEntryController extends SurveyCommonAction
             $aSurveymenuEntry['changed_at'] = date('Y-m-d H:i:s');
             $aSurveymenuEntry['created_at'] = date('Y-m-d H:i:s');
             $aSurveymenuEntry['menu_id'] = (int) $aSurveymenuEntry['menu_id'];
+            if (($aSurveymenuEntry['menu_id'] == 1 || $aSurveymenuEntry['menu_id'] == 2) && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                Yii::app()->user->setFlash('error', gT("Access denied!"));
+                $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+            }
             $model->setAttributes($aSurveymenuEntry);
             if ($model->save()) {
                 $model->id = $model->getPrimaryKey();

@@ -97,22 +97,16 @@ class ValueLabel extends Record
         $buffer->writeInt(self::TYPE);
         $buffer->writeInt(\count($this->labels));
         foreach ($this->labels as $item) {
-            $labelLength      = min(mb_strlen($item['label']), self::LABEL_MAX_LENGTH);
-            $label            = mb_substr($item['label'], 0, $labelLength);
-            $labelLengthBytes = mb_strlen($label, '8bit');
-            while ($labelLengthBytes > 255) {
-                // Strip one char, can be multiple bytes
-                $label            = mb_substr($label, 0, -1);
-                $labelLengthBytes = mb_strlen($label, '8bit');
-            }
-
+            $labelLengthBytes = $buffer->lengthBytes($item['label'], self::LABEL_MAX_LENGTH);
+            $labelLengthBytesRound = Utils::roundUp($labelLengthBytes + 1, 8) - 1;
+            
             if ($convertToDouble) {
                 $item['value'] = Utils::stringToDouble($item['value']);
             }
 
             $buffer->writeDouble($item['value']);
             $buffer->write(\chr($labelLengthBytes));
-            $buffer->writeString($label, Utils::roundUp($labelLengthBytes + 1, 8) - 1);
+            $buffer->writeString($item['label'], $labelLengthBytesRound);
         }
 
         // Value label variable record.

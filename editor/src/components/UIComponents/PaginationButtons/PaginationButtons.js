@@ -39,7 +39,7 @@ export const PaginationButtons = ({
       <div className="pagination-buttons__content">
         {totalResults != null && (
           <span className="pagination-buttons__results">
-            {format(t('%s results'), totalResults)}
+            {format(t('%s records'), totalResults)}
           </span>
         )}
         <div className="pagination-buttons__nav">
@@ -88,7 +88,7 @@ export const PaginationButtons = ({
           </Button>
         </div>
         <div className="pagination-buttons__page-size">
-          <span>{t('items per page')}</span>
+          <span>{t('Records per page')}</span>
           <ReactSelect
             options={[
               { value: 10, label: 10 },

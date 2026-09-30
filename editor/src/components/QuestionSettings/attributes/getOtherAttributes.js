@@ -47,6 +47,7 @@ export const getOtherAttributes = () => ({
   CHOICE_HEADER: {
     component: Input,
     attributePath: 'attributes.choice_title',
+    languageBased: true,
     props: {
       labelText: t('Choice header'),
       dataTestId: 'choice-header',
@@ -55,6 +56,7 @@ export const getOtherAttributes = () => ({
   RANK_HEADER: {
     component: Input,
     attributePath: 'attributes.rank_title',
+    languageBased: true,
     props: {
       labelText: t('Rank header'),
       dataTestId: 'rank-header',
@@ -124,7 +126,7 @@ export const getOtherAttributes = () => ({
     component: ToggleButtons,
     attributePath: 'attributes.other_numbers_only',
     props: {
-      labelText: t("Numbers only for 'Other' text"),
+      labelText: t("Numbers only in 'Other' input field"),
       dataTestId: 'other-numbers-only',
       toggleOptions: getOnOffOptions(),
       defaultValue: '0',

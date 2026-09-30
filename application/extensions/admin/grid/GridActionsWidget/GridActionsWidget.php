@@ -44,12 +44,12 @@ class GridActionsWidget extends CWidget
     public function registerClientScript(): void
     {
         App()->getClientScript()->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/GridActionsWidget/assets/action_dropdown.js',
+            App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/action_dropdown.js'),
             CClientScript::POS_END
         );
         // Link for each row
         App()->clientScript->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/assets/rowLink.js',
+            App()->getAssetManager()->publish(dirname(__FILE__, 2) . '/assets/rowLink.js'),
             CClientScript::POS_END
         );
     }

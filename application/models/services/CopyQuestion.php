@@ -304,8 +304,10 @@ class CopyQuestion
     /**
      * Copies the question settings (general_settings (on the left in questioneditor) and advanced settings (bottom)
      *
-     * @param $questionIdToCopy
-     * @param $surveyId int The id of the survey to which the question should be copied.
+     * The 'image' setting is adjusted to the new survey id only when the 'adjustLinks' option is set.
+     *
+     * @param int $questionIdToCopy id of the question whose settings are copied
+     * @param int|null $surveyId The id of the survey to which the question should be copied.
      *
      * * @before $this->newQuestion must exist and should not be null
      *
@@ -313,7 +315,10 @@ class CopyQuestion
      */
     private function copyQuestionsSettings($questionIdToCopy, $surveyId = null)
     {
-        $settingsFromQuestionToCopy = \QuestionAttribute::model()->findAllByAttributes(['qid' => $questionIdToCopy]);
+        // resetScope() is required: QuestionAttribute's defaultScope indexes results by
+        // the 'attribute' column, which collapses multilingual (i18n) attribute rows
+        // (same attribute name, different language) into a single array entry.
+        $settingsFromQuestionToCopy = \QuestionAttribute::model()->resetScope()->findAllByAttributes(['qid' => $questionIdToCopy]);
         $areSettingsCopied = false;
         if ($this->newQuestion !== null) {
             $areSettingsCopied = true;
@@ -322,7 +327,11 @@ class CopyQuestion
                 $newSetting->attributes = $settingToCopy->attributes;
                 $newSetting->qaid = null;  //create new id
                 $newSetting->qid = $this->newQuestion->qid;
-                if (($surveyId !== null) && ($settingToCopy->attribute === 'image')) {
+                if (
+                    $surveyId !== null
+                    && $settingToCopy->attribute === 'image'
+                    && !empty($this->copyOptions['adjustLinks'])
+                ) {
                     //change the image path to the new survey id
                     $newSetting->value = translateLinks(
                         'survey',

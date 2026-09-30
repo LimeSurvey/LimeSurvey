@@ -41,12 +41,12 @@
             </div>
             {% if(aSurveyInfo.mandNonSoft == false and aSurveyInfo.mandSoft)%}
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
-                <a id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterlink }}" data-movenext="{{ aSurveyInfo.aNavigator.aMoveNext.value }}">{{ gT("Continue without answering") }}</a>
-                <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Answer question") }}</a>
+                <button type="button" id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterlink }}" data-movenext="{{ aSurveyInfo.aNavigator.aMoveNext.value }}">{{ gT("Continue without answering") }}</button>
+                <button type="button" data-bs-dismiss="modal" class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Answer question") }}</button>
             </div>
             {% else %}
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
-                <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Close") }}</a>
+                <button type="button" data-bs-dismiss="modal" class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Close") }}</button>
             </div>
             {% endif %}
         </div>
@@ -59,7 +59,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{ gT("Exit and clear survey" ) }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ gT('Close') }}"></button>
             </div>
             <div class="modal-body">
                 <p>{{ gT("Please confirm you want to clear your response?") }}</p>

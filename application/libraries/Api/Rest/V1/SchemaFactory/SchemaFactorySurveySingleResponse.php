@@ -38,6 +38,8 @@ class SchemaFactorySurveySingleResponse
                 Schema::string('startDate')->example('2025-06-12 08:19:01'),
                 Schema::string('dateLastAction')->example('2025-06-12 08:19:23'),
                 Schema::boolean('completed')->example(true),
+                Schema::integer('quotaExit')->nullable()->example(12),
+                Schema::string('quotaExitName')->nullable()->example('Young respondents'),
                 Schema::object('answers')
                     ->additionalProperties($answerSchema)
                     ->example([

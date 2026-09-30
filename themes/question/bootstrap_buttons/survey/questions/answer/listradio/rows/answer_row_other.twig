@@ -23,7 +23,7 @@
 {% set max_buttons_row = (question_template_attribute.max_buttons_row == 'default' or question_template_attribute.max_buttons_row is empty) ? 'col-md-2' : question_template_attribute.max_buttons_row %}
 
 <!-- answer_row_other -->
-<div class="bootstrap-buttons-div col-12 {{ max_buttons_row }} {{ otherItemExtraClass }}">
+<li class="bootstrap-buttons-div col-12 {{ max_buttons_row }} {{ otherItemExtraClass }}">
     <div id="javatbd{{ name }}_Cother" class="form-check bootstrap-buttons-div col-12 {% if checkedState!='' %} active focus {% endif %}" {{ sDisplayStyle }}>
         <input
             class="btn-check visually-hidden button-item"
@@ -42,5 +42,5 @@
             {{ answer_other }}
         >
     </div>
-</div>
+</li>
 <!-- end of answer_row_other -->

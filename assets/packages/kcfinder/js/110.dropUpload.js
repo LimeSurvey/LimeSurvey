@@ -2,7 +2,7 @@
   *
   *      @desc Upload files using drag and drop
   *   @package KCFinder
-  *   @version 3.12
+  *   @version 3.13.0-limesurvey
   *    @author Forum user (updated by Pavel Tzonkov)
   * @copyright 2010-2014 KCFinder Project
   *   @license http://opensource.org/licenses/GPL-3.0 GPLv3

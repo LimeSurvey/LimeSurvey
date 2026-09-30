@@ -286,17 +286,17 @@ CKEDITOR.editorConfig = function (a) {
         a.toolbar_popup = [
             ["Save", "Sourcedialog", "Createlimereplacementfields"],
             ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "),
-            "Image Html5video VideoDetector Flash Table HorizontalRule EmojiPanel SpecialChar".split(" "), "/", "Bold Italic Underline Strike - Subscript Superscript".split(" "), 
+            "Image Html5video VideoDetector Table HorizontalRule EmojiPanel SpecialChar".split(" "), "/", "Bold Italic Underline Strike - Subscript Superscript".split(" "), 
             "NumberedList BulletedList - Outdent Indent Blockquote CreateDiv".split(" "), ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
             ["BidiLtr", "BidiRtl"],
             ["Link", "Unlink", "Anchor", "Iframe"], "/", ["Styles", "Format", "Font", "FontSize"],
             ["TextColor", "BGColor"],
-            ["ShowBlocks", "Templates"]
+            ["ShowBlocks"]
         ];
         a.toolbar_inline = [
             ["Maximize", "Sourcedialog", "Createlimereplacementfields", "SwitchToolbar"],
             ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "),
-            ["Image", "Html5video", "VideoDetector", "Flash"],
+            ["Image", "Html5video", "VideoDetector"],
             ["Table", "HorizontalRule", "EmojiPanel", "SpecialChar"],
             ["Bold", "Italic", "Underline", "Strike"],
             ["Subscript", "Superscript"],
@@ -304,7 +304,7 @@ CKEDITOR.editorConfig = function (a) {
             ["Outdent", "Indent", "Blockquote", "CreateDiv"],
             ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
             ["BidiLtr", "BidiRtl"],
-            ["ShowBlocks", "Templates"],
+            ["ShowBlocks"],
             ["Link", "Unlink"],
             ["Styles", "Format", "Font", "FontSize"],
             ["Anchor", "Iframe"],
@@ -321,7 +321,7 @@ CKEDITOR.editorConfig = function (a) {
         a.toolbar = [
             ["Sourcedialog", "Createlimereplacementfields"],
             ["Cut","Copy", "Paste", "PasteText", "PasteFromWord"], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "),
-            ["Image", "Html5video","VideoDetector", "Flash"],
+            ["Image", "Html5video","VideoDetector"],
             ["Table", "HorizontalRule", "EmojiPanel", "SpecialChar"],
             ["Bold", "Italic", "Underline", "Strike"],
             ["Subscript", "Superscript"],
@@ -329,7 +329,7 @@ CKEDITOR.editorConfig = function (a) {
             ["Outdent", "Indent", "Blockquote", "CreateDiv"],
             ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
             ["BidiLtr", "BidiRtl"],
-            ["ShowBlocks", "Templates"],
+            ["ShowBlocks"],
             ["Link", "Unlink"],
             ["Styles", "Format", "Font", "FontSize"],
             ["Anchor", "Iframe"],

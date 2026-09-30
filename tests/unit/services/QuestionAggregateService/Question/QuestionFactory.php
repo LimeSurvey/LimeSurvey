@@ -21,6 +21,7 @@ class QuestionFactory
             $mockSet->modelSurvey,
             $mockSet->modelCondition,
             $mockSet->l10nService,
+            $mockSet->questionAttributeHelper,
             $mockSet->proxySettingsUser,
             $mockSet->proxyQuestion,
             $mockSet->yiiApp,

@@ -1033,6 +1033,11 @@ class SurveyAdministrationController extends LSBaseController
         if (count($aGroups)) {
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
+                // Cast identifiers to int so the JSON stays consistent with jQuery's
+                // numeric .data() conversion on the client (see issue 20625).
+                $curGroup['gid'] = (int) $curGroup['gid'];
+                $curGroup['sid'] = (int) $curGroup['sid'];
+                $curGroup['group_order'] = (int) $curGroup['group_order'];
                 $curGroup['group_name'] = viewHelper::flatEllipsizeText($group->questiongroupl10ns[$baselang]->group_name, true, 150);
                 $curGroup['groupDropdown'] = [];
                 $condarray = getGroupDepsForConditions($surveyid, "all", $group->gid, "by-targgid");
@@ -1047,7 +1052,7 @@ class SurveyAdministrationController extends LSBaseController
                         "gid" => $group['gid'],
                         'parent_qid' => 0
                     ),
-                    array('order' => 'question_order ASC')
+                    array('order' => 'question_order ASC, title ASC')
                 );
 
                 if ($configData['hasSurveyContentReadPermission']) {
@@ -1121,6 +1126,13 @@ class SurveyAdministrationController extends LSBaseController
                 foreach ($group->aQuestions as $question) {
                     if (is_object($question)) {
                         $curQuestion = $question->attributes;
+                        // Cast identifiers to int so the JSON stays consistent with jQuery's
+                        // numeric .data() conversion on the client (see issue 20625).
+                        $curQuestion['qid'] = (int) $curQuestion['qid'];
+                        $curQuestion['gid'] = (int) $curQuestion['gid'];
+                        $curQuestion['sid'] = (int) $curQuestion['sid'];
+                        $curQuestion['parent_qid'] = (int) $curQuestion['parent_qid'];
+                        $curQuestion['question_order'] = (int) $curQuestion['question_order'];
                         $curQuestion['link'] = $this->createUrl(
                             "questionAdministration/view",
                             ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid' => $question->qid]
@@ -1631,6 +1643,7 @@ class SurveyAdministrationController extends LSBaseController
         $iSurveyID = (int)Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
+        $fileData = null;
         if (
             Permission::model()->hasSurveyPermission(
                 $iSurveyID,
@@ -1655,6 +1668,15 @@ class SurveyAdministrationController extends LSBaseController
                     $message = $returnedData['uploadResultMessage'];
                     $debug = $returnedData['debug'];
                     $success = $returnedData['success'];
+                    // Return the uploaded file's dropdown entry so the image selectors can be updated client-side.
+                    if ($success) {
+                        $templateName = App()->request->getPost('templatename');
+                        $themeConfiguration = Template::model()->getInstance($templateName, $iSurveyID);
+                        if ($themeConfiguration !== null && method_exists($themeConfiguration, 'getImageFileListEntry')) {
+                            $uploadedFilePath = $destDir . DIRECTORY_SEPARATOR . $returnedData['fileName'];
+                            $fileData = $themeConfiguration->getImageFileListEntry($returnedData['fileName'], $uploadedFilePath);
+                        }
+                    }
                 } else {
                     $message = sprintf(
                         gT("Incorrect permissions in your %s folder."),
@@ -1677,7 +1699,8 @@ class SurveyAdministrationController extends LSBaseController
                 'data' => [
                     'success' => $success,
                     'message' => $message,
-                    'debug' => $debug
+                    'debug' => $debug,
+                    'file' => $fileData
                 ]
             ),
         );
@@ -2378,23 +2401,6 @@ class SurveyAdministrationController extends LSBaseController
         if ($copiedSurvey !== null) {
             $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $copiedSurvey->sid]);
             $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $copiedSurvey->sid;
-            $questionGroupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
-
-            // Make the link point to the first group/question if available
-            if (!empty($questionGroupList)) {
-                $oFirstGroup = $questionGroupList[0];
-                $oFirstQuestion = Question::model()->primary()->findByAttributes(
-                    ['gid' => $oFirstGroup->gid],
-                    ['order' => 'question_order ASC']
-                );
-
-                $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
-                    $copiedSurvey->sid,
-                    $oFirstGroup->gid,
-                    !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
-                    'structure'
-                );
-            }
         }
 
         $this->aData = $aData;
@@ -2517,7 +2523,7 @@ class SurveyAdministrationController extends LSBaseController
         if (!$aData['bFailed'] && isset($aImportResults)) {
             $aData['aImportResults'] = $aImportResults;
             if (isset($aImportResults['newsid'])) {
-                // Set link pointing to survey administration overview. This link will be updated if the survey has groups
+                // Set link pointing to survey administration overview
                 $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $aImportResults['newsid']]);
                 $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $aImportResults['newsid'];
             }
@@ -2528,22 +2534,6 @@ class SurveyAdministrationController extends LSBaseController
             $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $aImportResults['newsid']]);
 
             $this->resetExpressionManager($oSurvey, $aGrouplist);
-
-            // Make the link point to the first group/question if available
-            if (!empty($aGrouplist)) {
-                $oFirstGroup = $aGrouplist[0];
-                $oFirstQuestion = Question::model()->primary()->findByAttributes(
-                    ['gid' => $oFirstGroup->gid],
-                    ['order' => 'question_order ASC']
-                );
-
-                $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
-                    $aImportResults['newsid'],
-                    $oFirstGroup->gid,
-                    !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
-                    'structure'
-                );
-            }
         }
 
         $this->aData = $aData;
@@ -3004,25 +2994,22 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();
 
-        $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
-        if (!$editorEnabled) {
-            $this->createSampleSubquestion(
-                1,
-                $iSurveyID,
-                $iGroupID,
-                $oQuestion->qid,
-                $sLanguage,
-                gT('Option A')
-            );
-            $this->createSampleSubquestion(
-                2,
-                $iSurveyID,
-                $iGroupID,
-                $oQuestion->qid,
-                $sLanguage,
-                gT('Option B')
-            );
-        }
+        $this->createSampleSubquestion(
+            1,
+            $iSurveyID,
+            $iGroupID,
+            $oQuestion->qid,
+            $sLanguage,
+            gT('Option A')
+        );
+        $this->createSampleSubquestion(
+            2,
+            $iSurveyID,
+            $iGroupID,
+            $oQuestion->qid,
+            $sLanguage,
+            gT('Option B')
+        );
 
         return $oQuestion->qid;
     }
@@ -3141,6 +3128,9 @@ class SurveyAdministrationController extends LSBaseController
         }
         if ($oSurvey->emailresponseto != '') {
             $surveysummary2[] = gT("Detailed email notification with response data is sent to:") . ' ' . htmlspecialchars((string)$aSurveyInfo['emailresponseto']);
+        }
+        if ($oSurvey->isSaveQuotaExit) {
+            $surveysummary2[] = gT("Matched quota ID will be saved.");
         }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
@@ -3567,14 +3557,7 @@ class SurveyAdministrationController extends LSBaseController
 
         // Based on Database::actionUpdateSurveyLocaleSettings()
         $paramData['parameter'] = trim($paramData['parameter'] ?? '');
-        if (
-            $paramData['parameter'] == ''
-            || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $paramData['parameter'])
-            || $paramData['parameter'] == 'sid'
-            || $paramData['parameter'] == 'newtest'
-            || $paramData['parameter'] == 'token'
-            || $paramData['parameter'] == 'lang'
-        ) {
+        if (!SurveyURLParameter::isValidParameterName($paramData['parameter'])) {
             return $this->renderPartial(
                 '/admin/super/_renderJson',
                 ['data' => ['success' => false, 'message' => gT("Invalid URL parameter")]]

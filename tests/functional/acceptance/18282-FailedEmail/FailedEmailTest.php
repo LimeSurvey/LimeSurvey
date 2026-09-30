@@ -175,18 +175,16 @@ class FailedEmailTest extends TestBaseClassWeb
         $createRecords();
         $web->get($url);
         $web->wait(15)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]')));
-        // Click select-all checkbox and trigger change event to enable massive action button
+        // Click select-all checkbox and trigger change event to reveal the floating actions bar
         $web->findElement(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]'))->click();
         $web->executeScript("$('.grid-view-ls input[type=\"checkbox\"]').trigger('change');");
-        $web->wait(15)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#failedEmailActions [data-bs-toggle="dropdown"]:not([disabled])')));
-        $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-bs-toggle="dropdown"]'))->click();
-        $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedEmailActions [data-action="resend"]')));
-        $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-action="resend"]'))->click();
-        $web->wait(15)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 .btn-ok')));
-        $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 .btn-ok'))->click();
+        $web->wait(15)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#floating-actions-bar-failedemail-grid [data-action="resend"]:not([disabled])')));
+        $web->findElement(WebDriverBy::cssSelector('#floating-actions-bar-failedemail-grid [data-action="resend"]'))->click();
+        $web->wait(15)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#floating-actions-modal-failedemail-grid-resend-0 .btn-ok')));
+        $web->findElement(WebDriverBy::cssSelector('#floating-actions-modal-failedemail-grid-resend-0 .btn-ok'))->click();
         // this can take up around 20 seconds per mail if the email server cant be reached
-        $web->wait(50)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #failedemail-action-modal--resendresult')));
-        $this->assertTrue($web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #failedemail-action-modal--resendresult'))->isDisplayed());
+        $web->wait(50)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#floating-actions-modal-failedemail-grid-resend-0 #failedemail-action-modal--resendresult')));
+        $this->assertTrue($web->findElement(WebDriverBy::cssSelector('#floating-actions-modal-failedemail-grid-resend-0 #failedemail-action-modal--resendresult'))->isDisplayed());
 
         // --- Massive action Delete Email (fresh records + page load) ---
         $createRecords();
@@ -194,13 +192,11 @@ class FailedEmailTest extends TestBaseClassWeb
         $web->wait(15)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]')));
         $web->findElement(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]'))->click();
         $web->executeScript("$('.grid-view-ls input[type=\"checkbox\"]').trigger('change');");
-        $web->wait(15)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#failedEmailActions [data-bs-toggle="dropdown"]:not([disabled])')));
-        $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-bs-toggle="dropdown"]'))->click();
-        $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedEmailActions [data-action="delete"]')));
-        $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-action="delete"]'))->click();
-        $web->wait(15)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 .btn-ok')));
-        $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 .btn-ok'))->click();
-        $web->wait(30)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 #failedemail-action-modal--deleteresult')));
-        $this->assertTrue($web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 #failedemail-action-modal--deleteresult'))->isDisplayed());
+        $web->wait(15)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#floating-actions-bar-failedemail-grid [data-action="delete"]:not([disabled])')));
+        $web->findElement(WebDriverBy::cssSelector('#floating-actions-bar-failedemail-grid [data-action="delete"]'))->click();
+        $web->wait(15)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#floating-actions-modal-failedemail-grid-delete-2 .btn-ok')));
+        $web->findElement(WebDriverBy::cssSelector('#floating-actions-modal-failedemail-grid-delete-2 .btn-ok'))->click();
+        $web->wait(30)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#floating-actions-modal-failedemail-grid-delete-2 #failedemail-action-modal--deleteresult')));
+        $this->assertTrue($web->findElement(WebDriverBy::cssSelector('#floating-actions-modal-failedemail-grid-delete-2 #failedemail-action-modal--deleteresult'))->isDisplayed());
     }
 }

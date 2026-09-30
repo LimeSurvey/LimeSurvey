@@ -37,10 +37,7 @@ class EditorConfig
                     $result = true;
                 } else {
                     $survey = \Survey::model()->findByPk($surveyId);
-                    if (
-                        $survey
-                        && \Template::isBasedOn($survey->getTemplateEffectiveName(), 'fruity_twentythree')
-                    ) {
+                    if ($survey && $survey->getIsEditorCompatible()) {
                         $result = true;
                     }
                 }

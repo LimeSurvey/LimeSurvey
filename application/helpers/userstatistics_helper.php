@@ -321,6 +321,29 @@ function buildSelects($allfields, $surveyid, $language)
         }
     }
 
+    // Security (bug #20648): the response table columns are the only identifiers
+    // that may be used in the filter query. Every POST key is validated against
+    // this list before being passed to quoteColumnName(), which does not escape
+    // identifier quoting characters and is not injection-safe on its own.
+    $validColumns = array();
+    $responseSchema = SurveyDynamic::model($surveyid)->getTableSchema();
+    if ($responseSchema !== null) {
+        foreach ($responseSchema->getColumnNames() as $columnName) {
+            $validColumns[strtolower($columnName)] = $columnName;
+        }
+    }
+
+    // Quotes a response-table column for a filter condition and rejects any
+    // identifier that is not a real column, so quoteColumnName() (which does not
+    // escape identifier quotes) cannot be abused for SQL injection (bug #20648).
+    $quoteColumn = function ($column) use ($validColumns) {
+        $key = strtolower((string) $column);
+        if (!isset($validColumns[$key])) {
+            throw new InvalidArgumentException('Statistics filter references an unknown column.');
+        }
+        return Yii::app()->db->quoteColumnName($validColumns[$key]);
+    };
+
     // creates array of post variable names
     for (reset($_POST); $key = key($_POST); next($_POST)) {
         $postvars[] = $key;
@@ -340,6 +363,8 @@ function buildSelects($allfields, $surveyid, $language)
     */
     if (isset($postvars)) {
         foreach ($postvars as $pv) {
+            // Reset per iteration so a value from a previous key cannot leak in.
+            $firstletter = '';
             //Only do this if there is actually a value for the $pv
 
             if (
@@ -363,6 +388,7 @@ function buildSelects($allfields, $surveyid, $language)
                 * | - File Upload
                 * K - Multiple numerical input
                 */
+            try {
             if (
                 $pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
                     $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
@@ -370,7 +396,7 @@ function buildSelects($allfields, $surveyid, $language)
             ) {
                 //pull out just the fieldnames
                 //put together some SQL here
-                $thisquestion = Yii::app()->db->quoteColumnName($pv) . " IN (";
+                $thisquestion = $quoteColumn($pv) . " IN (";
 
                 $db = Yii::app()->db;
                 foreach ($_POST[$pv] as $condition) {
@@ -395,7 +421,7 @@ function buildSelects($allfields, $surveyid, $language)
                 foreach ($aresult as $arow) {
                     // only add condition if answer has been chosen
                     if (in_array($arow['title'], $_POST[$pv])) {
-                        $mselects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)) . "_S" . $arow['qid']) . " = 'Y'";
+                        $mselects[] = $quoteColumn(substr($pv, 1, strlen($pv)) . "_S" . $arow['qid']) . " = 'Y'";
                     }
                 }
                 /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
@@ -411,12 +437,12 @@ function buildSelects($allfields, $surveyid, $language)
             elseif ($firstletter == "N" || $firstletter == "K") {
                 //value greater than
                 if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1)) . " > " . sanitize_int($_POST[$pv]);
+                    $selects[] = $quoteColumn(substr($pv, 1, -1)) . " > " . sanitize_int($_POST[$pv]);
                 }
 
                 //value less than
                 if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1)) . " < " . sanitize_int($_POST[$pv]);
+                    $selects[] = $quoteColumn(substr($pv, 1, -1)) . " < " . sanitize_int($_POST[$pv]);
                 }
             }
 
@@ -424,22 +450,22 @@ function buildSelects($allfields, $surveyid, $language)
             elseif ($firstletter == "|") {
                 // no. of files greater than
                 if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1) . "_Cfilecount") . " > " . sanitize_int($_POST[$pv]);
+                                            $selects[] = $quoteColumn(substr($pv, 1, -1) . "_Cfilecount") . " > " . sanitize_int($_POST[$pv]);
                 }
 
                 // no. of files less than
                 if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1) . "_Cfilecount") . " < " . sanitize_int($_POST[$pv]);
+                                            $selects[] = $quoteColumn(substr($pv, 1, -1) . "_Cfilecount") . " < " . sanitize_int($_POST[$pv]);
                 }
             }
 
                 //"id" is a built in field, the unique database id key of each response row
             elseif (substr($pv, 0, 2) == "id") {
                 if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 0, -1)) . " > " . sanitize_int($_POST[$pv]);
+                    $selects[] = $quoteColumn(substr($pv, 0, -1)) . " > " . sanitize_int($_POST[$pv]);
                 }
                 if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 0, -1)) . " < " . sanitize_int($_POST[$pv]);
+                    $selects[] = $quoteColumn(substr($pv, 0, -1)) . " < " . sanitize_int($_POST[$pv]);
                 }
             }
 
@@ -453,7 +479,7 @@ function buildSelects($allfields, $surveyid, $language)
                 $columnName = ($pv[1] === 'Q') ? substr($pv, 1) : $pv;
                 if (is_array($pvParts) and count($pvParts)) {
                     foreach ($pvParts as $pvPart) {
-                        $selectSubs[] = Yii::app()->db->quoteColumnName($columnName) . " LIKE " . App()->db->quoteValue($pvPart);
+                        $selectSubs[] = $quoteColumn($columnName) . " LIKE " . App()->db->quoteValue($pvPart);
                     }
                     if (count($selectSubs)) {
                         $selects[] = ' (' . implode(' OR ', $selectSubs) . ') ';
@@ -465,16 +491,16 @@ function buildSelects($allfields, $surveyid, $language)
             elseif ($firstletter == "D" && $_POST[$pv] != "") {
                 //Date equals
                 if (substr($pv, -2) == "eq") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 3)) . " = " . App()->db->quoteValue($_POST[$pv]);
+                    $selects[] = $quoteColumn(substr($pv, 1, strlen($pv) - 3)) . " = " . App()->db->quoteValue($_POST[$pv]);
                 } else {
                     //date less than
                     if (substr($pv, -4) == "less") {
-                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " >= " . App()->db->quoteValue($_POST[$pv]);
+                        $selects[] = $quoteColumn(substr($pv, 1, strlen($pv) - 5)) . " >= " . App()->db->quoteValue($_POST[$pv]);
                     }
 
                     //date greater than
                     if (substr($pv, -4) == "more") {
-                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " <= " . App()->db->quoteValue($_POST[$pv]);
+                        $selects[] = $quoteColumn(substr($pv, 1, strlen($pv) - 5)) . " <= " . App()->db->quoteValue($_POST[$pv]);
                     }
                 }
             }
@@ -503,6 +529,9 @@ function buildSelects($allfields, $surveyid, $language)
                         $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " > " . App()->db->quoteValue($sDateValue);
                     }
                 }
+            }
+            } catch (InvalidArgumentException $e) {
+                // bug #20648: ignore filters that reference a column outside the response table.
             }
         }
     }    //end foreach -> loop through filter options to create SQL

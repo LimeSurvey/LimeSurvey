@@ -477,7 +477,7 @@
                 </option>
             </options>
             <default>1</default>
-            <help>Use javascript function to remove text and uncheck checkbox (or use ExpressionScript Engine only).</help>
+            <help>Use JavaScript function to remove text and uncheck checkbox (or use ExpressionScript Engine only).</help>
             <caption>Remove text or uncheck checkbox automatically</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -564,7 +564,7 @@
                 </option>
             </options>
             <default>0</default>
-            <help>If the participant marks all options, uncheck all and check the option set in the &amp;quot;Exclusive option&amp;quot; setting</help>
+            <help>If the participant marks all options, uncheck all and check the option set in the &quot;Exclusive option&quot; setting</help>
             <caption>Auto-check exclusive option if all others are checked</caption>
             <i18n></i18n>
             <readonly></readonly>

@@ -657,6 +657,9 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent because demo-mode is activated.'));
             return false;
         }
+        // Remove any previously set value first: this mailer instance can be reused across several
+        // recipients in a loop, and addCustomHeader() alone would keep stacking duplicate headers.
+        $this->clearCustomHeader("X-messagetype");
         $this->addCustomHeader("X-messagetype", $this->emailType);
         // If the email method is set to "Plugin", we need to dispatch an event to that specific plugin
         // so it can perform it's logic without depending on the more generic "beforeEmail" event.
@@ -833,9 +836,11 @@ class LimeMailer extends PHPMailer
         $resendHeader['message_type'] = $this->message_type;
         $resendHeader['Subject'] = $this->Subject;
         $resendHeader['uniqueid'] = $this->uniqueid;
-        $resendHeader['boundary'][1] = $this->boundary[1];
-        $resendHeader['boundary'][2] = $this->boundary[2];
-        $resendHeader['boundary'][3] = $this->boundary[3];
+        // The boundary array is only populated once the MIME message is built (preSend).
+        // When sending fails before that (e.g. a missing attachment) it stays empty, so guard the keys.
+        $resendHeader['boundary'][1] = $this->boundary[1] ?? '';
+        $resendHeader['boundary'][2] = $this->boundary[2] ?? '';
+        $resendHeader['boundary'][3] = $this->boundary[3] ?? '';
         $resendHeader['MIMEBody'] = $this->MIMEBody;
 
         return $resendHeader;

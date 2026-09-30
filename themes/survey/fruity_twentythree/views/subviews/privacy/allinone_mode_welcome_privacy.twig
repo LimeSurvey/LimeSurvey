@@ -19,8 +19,9 @@
 #}
 {% if aSurveyInfo.format == 'A' %}
     {% if not aSurveyInfo.showwelcome is defined or not aSurveyInfo.showwelcome != 'N' %}
+        {# welcome.twig also renders the privacy message, so the welcome image (if set) wraps it too #}
         {{ include('./subviews/messages/welcome.twig') }}
+    {% else %}
+        {{ include('./subviews/privacy/privacy.twig') }}
     {% endif %}
-
-    {{ include('./subviews/privacy/privacy.twig') }}
 {% endif %}

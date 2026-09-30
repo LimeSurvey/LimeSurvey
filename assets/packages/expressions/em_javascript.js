@@ -486,11 +486,11 @@ function LEMis_numeric(mixed_var)
 {
     var isNumericRegex = new RegExp(/^(-)?\d*(,|\.)?\d*$/);
     return ( ( ( typeof mixed_var === 'string' && isNumericRegex.test(mixed_var)) || typeof mixed_var === 'number') && mixed_var !== '' && !isNaN(mixed_var));
-}
+} 
 
-function LEMis_string(a)
+function LEMis_string(mixedVar)
 {
-    return isNaN(a);
+    return typeof mixedVar === 'string';
 }
 
 /**

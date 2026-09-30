@@ -227,13 +227,13 @@ App()->getController()->renderPartial('/surveyAdministration/partial/_modalDelet
 ?>
 
 <!-- Modal for admin notifications -->
-<div id="admin-notification-modal" class="modal fade" role="dialog">
+<div id="admin-notification-modal" class="modal fade" role="dialog" aria-labelledby="admin-notification-modal-title" aria-modal="true">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content"> <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger
         ?>
             <div class="modal-header card-header">
-                <h2 class="modal-title h5"><?php eT("Notifications"); ?></h2>
+                <h2 class="modal-title h5" id="admin-notification-modal-title" tabindex="-1"><?php eT("Notifications"); ?></h2>
                 <span class='notification-date'></span>
             </div>
             <div class="modal-body">

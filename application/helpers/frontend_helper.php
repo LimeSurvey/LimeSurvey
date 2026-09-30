@@ -424,7 +424,8 @@ function submittokens($quotaexit = false)
         $token->usesleft--;
     }
     $token->decrypt();
-    $token->encryptSave();
+    /* Need to save only updated attributes , mantis 17610 */
+    $token->encryptSave(true, ['completed', 'usesleft']);
 
     if ($quotaexit == false) {
         $token->decrypt();
@@ -666,6 +667,10 @@ function getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bI
  */
 function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, int $responseId, string $emailType, ?string $language, LimeMailer $mailer): bool
 {
+    // In demo mode emails are never actually sent, so don't record them as failed.
+    if (App()->getConfig('demoMode')) {
+        return false;
+    }
     $errorMessage = $mailer->getError();
     $resendVars = json_encode($mailer->getResendEmailVars());
     if (isset($id)) {

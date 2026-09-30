@@ -148,10 +148,8 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('font-icomoon');
             App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style
             App()->getClientScript()->registerPackage('adminsidepanel'); // The new admin panel
-            App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
-            App()->getClientScript()->registerPackage('ckeditor'); //
-            App()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global scope
-            App()->getClientScript()->registerPackage('modaleditor');
+            // CKEditor (and the modaleditor, which depends on it) is only registered on pages
+            // that actually use an editor, via PrepareEditorScript(). See bug #19391.
         }
         App()->getClientScript()->registerPackage('select2-bootstrap');
         // Then we add the different CSS/JS files to load in arrays
@@ -274,7 +272,6 @@ class AdminTheme extends CFormModel
             'application/extensions/yiiwheels/widgets/sparklines/assets',
             'application/extensions/yiiwheels/widgets/datepicker/assets',
             'application/extensions/yiiwheels/widgets/multiselect/assets',
-            'application/extensions/yiiwheels/widgets/gallery/assets',
             'application/extensions/yiiwheels/widgets/select2/assets',
             'application/extensions/yiiwheels/widgets/ace/assets',
             'application/extensions/yiiwheels/widgets/modal/assets',

@@ -717,7 +717,17 @@ class LimeExpressionManager
             unset($_SESSION['LEMdirtyFlag']);
         } elseif (!isset(self::$instance)) {
             if (isset($_SESSION['LEMsingleton'])) {
-                self::$instance = unserialize($_SESSION['LEMsingleton']);
+                $restored = @unserialize($_SESSION['LEMsingleton'], ['allowed_classes' => [LimeExpressionManager::class, ExpressionManager::class]]);
+                /* $_SESSION['LEMsingleton'] can be not empty but unserialize return false */
+                /* You need to check if it's OK */
+                if (!($restored instanceof self) || !($restored->em instanceof ExpressionManager)) {
+                    if (!empty($_SESSION['LEMsid'])) {
+                        killSurveySession($_SESSION['LEMsid']);
+                    }
+                    unset($_SESSION['LEMsingleton']);
+                    throw new CHttpException(400, gT("We are sorry but your session has expired.", 'unescaped'));
+                }
+                self::$instance = $restored;
                 /* Since we get it via session, need to launch core event again */
                 self::$instance->em->ExpressionManagerStartEvent();
             } else {
@@ -4128,6 +4138,26 @@ class LimeExpressionManager
     }
 
     /**
+     * Return whether a subquestion is relevant, using its own array_filter/relevance
+     * status when the ExpressionManager tracks it individually (i.e. $sgqa is a known
+     * variable), and falling back to the parent question's relevance otherwise (e.g.
+     * pseudo subquestions such as the "other" field, which are not tracked under their
+     * own SGQA/fieldname).
+     *
+     * @param string $sgqa The subquestion's SGQA/fieldname
+     * @param int $qid The (parent) question id to fall back to
+     * @return boolean
+     */
+    public static function SubQuestionOrQuestionIsRelevant($sgqa, $qid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if (!isset($LEM->knownVars[$sgqa])) {
+            return self::QuestionIsRelevant($qid);
+        }
+        return self::SubQuestionIsRelevant($sgqa);
+    }
+
+    /**
      * Return whether question $qid is relevanct
      * @param int $qid
      * @return boolean
@@ -4304,6 +4334,38 @@ class LimeExpressionManager
     {
         $LEM =& LimeExpressionManager::singleton();
         return $LEM->_ProcessRelevance($eqn, $questionNum, null, $jsResultVar, $type, $hidden);
+    }
+
+    /**
+     * Validate one ExpressionScript expression in the context of a question.
+     *
+     * @param string $expression
+     * @param int|null $questionId
+     * @return array{errors: array, warnings: array}
+     */
+    public static function validateExpression($expression, $questionId = null)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        $questionSeq = $questionId !== null && isset($LEM->questionId2questionSeq[$questionId])
+            ? $LEM->questionId2questionSeq[$questionId]
+            : -1;
+        $groupSeq = $questionId !== null && isset($LEM->questionId2groupSeq[$questionId])
+            ? $LEM->questionId2groupSeq[$questionId]
+            : -1;
+
+        $LEM->em->validateExpression(
+            htmlspecialchars_decode((string) $expression, ENT_QUOTES),
+            $groupSeq,
+            $questionSeq
+        );
+
+        $result = [
+            'errors' => $LEM->em->GetErrors(),
+            'warnings' => $LEM->em->GetWarnings(),
+        ];
+        $LEM->em->ResetErrorsAndWarnings();
+
+        return $result;
     }
 
     /**
@@ -4677,6 +4739,7 @@ class LimeExpressionManager
         $LEM->surveyOptions['displayTimezone'] = Yii::app()->getConfig('displayTimezone') ?: date_default_timezone_get();
         $LEM->surveyOptions['tempdir'] = (isset($aSurveyOptions['tempdir']) ? $aSurveyOptions['tempdir'] : '/temp/');
         $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : null);
+        $LEM->surveyOptions['savequotaexit'] = (isset($aSurveyOptions['savequotaexit']) ? $aSurveyOptions['savequotaexit'] : false);
         $LEM->debugLevel = $debugLevel;
         $_SESSION[$LEM->sessid]['LEMdebugLevel'] = $debugLevel; // need acces to SESSSION to decide whether to cache serialized instance of $LEM
         switch ($surveyMode) {
@@ -5357,6 +5420,8 @@ class LimeExpressionManager
                     return $message;
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
+                    // Decrypt the stored values before setting the new plain ones: encryptSave() encrypts all of them again
+                    $oResponse->decrypt();
                     try {
                         $questions = $survey->questions;
                         $empty = ['', false, null];
@@ -5388,8 +5453,8 @@ class LimeExpressionManager
                         }
                         $this->throwFatalError();
                     }
-                    $oResponse->decrypt();
-                    if (!$oResponse->encryptSave()) {
+                    // Save only needed value, no validation
+                    if (!$oResponse->encryptSave(false, array_keys($aResponseAttributes))) {
                         $message = submitfailed('', print_r($oResponse->getErrors(), true)); // $response->getErrors() is array[string[]], then can not join
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                             $message .= CHTml::errorSummary($oResponse, $this->gT('Error on response update'));  // Add SQL error according to debugLevel
@@ -5588,10 +5653,17 @@ class LimeExpressionManager
                 while (true) {
                     $LEM->currentQset = [];    // reset active list of questions
                     if (++$LEM->currentGroupSeq >= $LEM->numGroups) {
+                        if ($seq < $LEM->numGroups) {
+                            // Jumped to an existing step, but no relevant group from there on: never submit without an explicit submit (see #11833)
+                            $moveResult = $LEM->jumpToLastRelevantGroup($message, $now);
+                            if (!is_null($moveResult)) {
+                                return $moveResult;
+                            }
+                        }
                         $message .= $LEM->_UpdateValuesInDatabase(true);
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
                         $LEM->lastMoveResult = [
-                            'finished'      => true, /* Maybe is better to NEVER set finished to true when use JumpTo, but only when NavigateForwards */
+                            'finished'      => true,
                             'message'       => $message,
                             'gseq'          => $LEM->currentGroupSeq,
                             'seq'           => $LEM->currentGroupSeq,
@@ -5684,6 +5756,13 @@ class LimeExpressionManager
                 while (true) {
                     $LEM->currentQset = [];    // reset active list of questions
                     if (++$LEM->currentQuestionSeq >= $LEM->numQuestions) {
+                        if ($seq < $LEM->numQuestions) {
+                            // Jumped to an existing step, but no relevant question from there on: never submit without an explicit submit (see #11833)
+                            $moveResult = $LEM->jumpToLastRelevantQuestion($message, $now, $notRelevantSteps, $hiddenSteps);
+                            if (!is_null($moveResult)) {
+                                return $moveResult;
+                            }
+                        }
                         $message .= $LEM->_UpdateValuesInDatabase(true);
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
                         $LEM->lastMoveResult = [
@@ -5761,6 +5840,102 @@ class LimeExpressionManager
                 }
                 break;
         }
+    }
+
+    /**
+     * Display the last relevant group of the survey in group by group mode.
+     * Used when a jump reached the end of the survey without an explicit submit, to not finalize the response.
+     * @param string $message messages collected during the move so far
+     * @param float $now microtime when the move started, for runtime timings
+     * @return array|null the move result, null if there is no relevant group at all
+     */
+    private function jumpToLastRelevantGroup($message, $now)
+    {
+        for ($gseq = $this->numGroups - 1; $gseq >= 0; $gseq--) {
+            $this->currentQset = [];    // reset active list of questions
+            $result = $this->_ValidateGroup($gseq);
+            if (is_null($result)) {
+                continue;   // this is an invalid group - skip it
+            }
+            $message .= $result['message'];
+            if (!$result['relevant'] || $result['hidden']) {
+                continue;
+            }
+            $this->currentGroupSeq = $gseq;
+            $message .= $this->_UpdateValuesInDatabase();
+            $this->runtimeTimings[] = [__CLASS__ . '::JumpTo', (microtime(true) - $now)];
+            $this->lastMoveResult = [
+                'finished'      => false,
+                'message'       => $message,
+                'gseq'          => $this->currentGroupSeq,
+                'seq'           => $this->currentGroupSeq,
+                'mandViolation' => (($this->maxGroupSeq > $this->currentGroupSeq) ? $result['mandViolation'] : false),
+                'mandSoft'      => (isset($result['mandSoft'])) ? $result['mandSoft'] : false,
+                'mandNonSoft'   => (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
+                'valid'         => (($this->maxGroupSeq > $this->currentGroupSeq) ? $result['valid'] : false),
+                'unansweredSQs' => $result['unansweredSQs'],
+                'invalidSQs'    => $result['invalidSQs'],
+            ];
+            return $this->lastMoveResult;
+        }
+        return null;
+    }
+
+    /**
+     * Display the last relevant question of the survey in question by question mode.
+     * Used when a jump reached the end of the survey without an explicit submit, to not finalize the response.
+     * @param string $message messages collected during the move so far
+     * @param float $now microtime when the move started, for runtime timings
+     * @param integer $notRelevantSteps number of not relevant steps counted during the move so far
+     * @param integer $hiddenSteps number of hidden steps counted during the move so far
+     * @return array|null the move result, null if there is no relevant question at all
+     */
+    private function jumpToLastRelevantQuestion($message, $now, $notRelevantSteps, $hiddenSteps)
+    {
+        for ($qseq = $this->numQuestions - 1; $qseq >= 0; $qseq--) {
+            $this->currentQset = [];    // reset active list of questions
+            $this->groupRelevanceInfo = [];
+            if (!isset($this->questionSeq2relevance[$qseq])) {
+                continue;
+            }
+            $qInfo = $this->questionSeq2relevance[$qseq];
+            $this->currentQuestionSeq = $qseq;
+            $this->currentQID = $qInfo['qid'];
+            $this->currentGroupSeq = $qInfo['gseq'];
+            $this->ProcessAllNeededRelevance($qseq);
+            $this->_CreateSubQLevelRelevanceAndValidationEqns($qseq);
+            $result = $this->_ValidateQuestion($qseq);
+            $message .= $result['message'];
+            $grel = $this->gRelInfo[$this->currentGroupSeq]['result'];
+            if (!$grel || !$result['relevant'] || $result['hidden']) {
+                if (!$grel || !$result['relevant']) {
+                    $notRelevantSteps--;
+                }
+                if ($result['hidden']) {
+                    $hiddenSteps--;
+                }
+                continue;
+            }
+            $message .= $this->_UpdateValuesInDatabase();
+            $this->runtimeTimings[] = [__CLASS__ . '::JumpTo', (microtime(true) - $now)];
+            $this->lastMoveResult = [
+                'finished'      => false,
+                'message'       => $message,
+                'qseq'          => $this->currentQuestionSeq,
+                'gseq'          => $this->currentGroupSeq,
+                'seq'           => $this->currentQuestionSeq,
+                'mandViolation' => (($this->maxQuestionSeq > $this->currentQuestionSeq) ? $result['mandViolation'] : false),
+                'mandSoft'      => (isset($result['mandSoft'])) ? $result['mandSoft'] : false,
+                'mandNonSoft'   => (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
+                'valid'         => (($this->maxQuestionSeq > $this->currentQuestionSeq) ? $result['valid'] : true),
+                'unansweredSQs' => $result['unansweredSQs'],
+                'invalidSQs'    => $result['invalidSQs'],
+                'notRelevantSteps'   => $notRelevantSteps,
+                'hiddenSteps'   => $hiddenSteps
+            ];
+            return $this->lastMoveResult;
+        }
+        return null;
     }
 
     /**
@@ -6124,7 +6299,10 @@ class LimeExpressionManager
             }
             foreach ($sgqas as $sgqa) {
                 // for each subq, see if it is part of an array_filter or array_filter_exclude
-                if (!isset($LEM->subQrelInfo[$qid])) {
+                if (
+                    !isset($LEM->subQrelInfo[$qid])
+                    || ($qInfo['type'] == Question::QT_R_RANKING && $sgqa === 'Q' . $qid)
+                ) {
                     $relevantSQs[] = $sgqa;
                     continue;
                 }
@@ -6362,11 +6540,33 @@ class LimeExpressionManager
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                 case Question::QT_L_LIST: //LIST drop-down/radio-button list
-                    // If at least one checkbox is checked, we're OK
-                    if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs))) {
+                    $bOtherCheckedWithoutValue = false;
+                    if ($qInfo['type'] == Question::QT_M_MULTIPLE_CHOICE && $qInfo['other'] == 'Y') {
+                        foreach ($sgqas as $s) {
+                            if (
+                                str_ends_with($s, '_Cother')
+                                && in_array($s, $relevantSQs)
+                                && in_array($s, $unansweredSQs)
+                                && self::isOtherCheckedWithoutValue($s)
+                            ) {
+                                $bOtherCheckedWithoutValue = true;
+                                $qmandViolation = true;
+                            }
+                        }
+                    }
+
+                    $bNoneChecked = !$bOtherCheckedWithoutValue
+                        && count($relevantSQs) > 0
+                        && (count($relevantSQs) == count($unansweredSQs));
+                    if ($bNoneChecked) {
                         $qmandViolation = true;
                     }
-                    if (!($qInfo['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qInfo['type'] == Question::QT_L_LIST)) {
+
+                    $bShowCheckAnItem = $qInfo['type'] != Question::QT_M_MULTIPLE_CHOICE || $bNoneChecked;
+                    if (
+                        !($qInfo['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qInfo['type'] == Question::QT_L_LIST)
+                        && $bShowCheckAnItem
+                    ) {
                         $sMandatoryText = $LEM->gT('Please check at least one item.');
                         $mandatoryTip .= App()->twigRenderer->renderPartial(
                             '/survey/questions/question_help/mandatory_tip.twig',
@@ -6479,7 +6679,7 @@ class LimeExpressionManager
                         $maxUnrankedAnswers = 0;
                         $sMandatoryText = $LEM->gT('Please rank all items.');
                     }
-                    if (count($unansweredSQs) > $maxUnrankedAnswers) {
+                    if (count($unansweredSQs) - 1 > $maxUnrankedAnswers) {
                         $qmandViolation = true; // TODO - what about 'other'?
                     }
                     $mandatoryTip .= App()->twigRenderer->renderPartial(
@@ -7440,14 +7640,16 @@ class LimeExpressionManager
                             $relParts[] = "    }\n";
                             break;
                         case Question::QT_R_RANKING:
-                            $qid = substr((string) $sq['rowdivid'], 2 + strlen((string) $sq['sgqa']));
-                            $question = \Question::model()->find("qid = :qid", [":qid" => $qid]);
-                            $listItem = $question->title;
-                            $relParts[] = " $('#questionQ{$arg['qid']} .select-list select').each(function(){ \n";
-                            $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
-                            $relParts[] = "     $(this).val('').trigger('change'); \n";
-                            $relParts[] = "   }; \n";
-                            $relParts[] = " }); \n";
+                            if (preg_match('/^Q' . $arg['qid'] . '_S(\d+)$/', (string) $sq['rowdivid'], $matches)) {
+                                $qid = (int) $matches[1];
+                                $question = \Question::model()->find("qid = :qid", [":qid" => $qid]);
+                                $listItem = $question->title;
+                                $relParts[] = " $('#questionQ{$arg['qid']} .select-list select').each(function(){ \n";
+                                $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
+                                $relParts[] = "     $(this).val('').trigger('change'); \n";
+                                $relParts[] = "   }; \n";
+                                $relParts[] = " }); \n";
+                            }
                             break;
                         default:
                             break;
@@ -8868,6 +9070,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         return $updatedValues;
     }
 
+    /**
+     * @param string $sq
+     * @return boolean
+     */
+    public static function isOtherCheckedWithoutValue($sq)
+    {
+        if (empty($_POST[$sq . 'cbox'])) {
+            return false;
+        }
+        return trim((string) ($_POST[$sq] ?? '')) === '';
+    }
+
     public static function isValidVariable($varName)
     {
         $LEM =& LimeExpressionManager::singleton();
@@ -9291,7 +9505,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         // End Message
 
         $LEM =& LimeExpressionManager::singleton();
-        $LEM->sPreviewMode = 'logic';
         // We set $LEM->em->resetErrorsAndWarningsOnEachPart = false because, if a string has more than one expression, error information could be lost
         $LEM->em->resetErrorsAndWarningsOnEachPart = false;
         $aSurveyInfo = getSurveyInfo($sid, $_SESSION['LEMlang']);
@@ -9311,6 +9524,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $surveyOptions = [
             'assessments'                 => $assessments === null ? ($aSurveyInfo['assessments'] == 'Y') : $assessments,
             'hyperlinkSyntaxHighlighting' => true,
+            'previewmode'                 => 'logic',
         ];
 
         $varNamesUsed = []; // keeps track of whether variables have been declared

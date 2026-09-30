@@ -81,6 +81,19 @@ class AttributesService
     }
 
     /**
+     * Apply the current user's saved defaults when creating a question.
+     * Explicit attributes from the create request are saved afterwards and
+     * therefore take precedence over these defaults.
+     */
+    public function saveUserDefaults(Question $question): void
+    {
+        $defaults = $this->questionAttributeHelper->getUserDefaultsForQuestionType($question->type);
+        if (!empty($defaults)) {
+            $this->save($question, $defaults);
+        }
+    }
+
+    /**
      * Saves the base attributes of questions as they come in
      *
      * @param Question $question
@@ -102,6 +115,7 @@ class AttributesService
      * } $dataSet
      * @return void
      * @throws PersistErrorException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function save($question, $dataSet)
     {

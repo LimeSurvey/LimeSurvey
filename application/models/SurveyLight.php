@@ -46,6 +46,7 @@
  * @property string $ipaddr Whether Participants IP address will be saved: (Y/N)
  * @property string $ipanonymize Whether id addresses should be anonymized (Y/N)
  * @property string $refurl Save referrer URL: (Y/N)
+ * @property string $savequotaexit Whether to save matched quota ID: (Y/N)
  * @property string $datecreated Date survey was created (YYYY-MM-DD hh:mm:ss)
  * @property string $publicstatistics Public statistics: (Y/N)
  * @property string $publicgraphs Show graphs in public statistics: (Y/N)
@@ -63,6 +64,7 @@
  * @property string $showxquestions Show "There are X questions in this survey": (Y/N)
  * @property string $showgroupinfo Show group name and/or group description: (Y/N)
  * @property string $shownoanswer Show "No answer": (Y/N)
+ * @property string $preselectnoanswer Preselect "No answer": (Y/N)
  * @property string $showqnumcode Show question number and/or code: (Y/N)
  * @property integer $bouncetime
  * @property string $bounceprocessing
@@ -127,6 +129,7 @@
  * @property bool $isIpAddr Whether Participants IP address will be saved
  * @property bool $isIpAnonymize Whether Participants IP address will be saved
  * @property bool $isRefUrl Save referrer URL
+ * @property bool $isSaveQuotaExit Whether to save matched quota ID
  * @property bool $isPublicStatistics Public statistics
  * @property bool $isPublicGraphs Show graphs in public statistics
  * @property bool $isListPublic List survey publicly
@@ -137,6 +140,7 @@
  * @property bool $isShowXQuestions Show "There are X questions in this survey"
  * @property bool $isShowGroupInfo Show group name and/or group description
  * @property bool $isShowNoAnswer Show "No answer"
+ * @property bool $isPreselectNoAnswer Preselect "No answer"
  * @property bool $isShowQnumCode Show question number and/or code
  * @property bool $isShowWelcome Show welcome screen
  * @property bool $isShowProgress how progress bar

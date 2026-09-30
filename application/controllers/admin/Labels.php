@@ -440,7 +440,7 @@ class Labels extends SurveyCommonAction
     public function getAllSets()
     {
         /* Using of label sets are not controlled all label sets can be used by every one */
-        $results = LabelSet::model()->findAll();
+        $results = LabelSet::model()->findAll(array('order' => 'label_name'));
         $output = array();
         foreach ($results as $row) {
             $output[$row->lid] = flattenText($row->getAttribute('label_name'));
@@ -456,7 +456,7 @@ class Labels extends SurveyCommonAction
      */
     public function getRestrictedSets()
     {
-        $labelSets = LabelSet::model()->permission()->findAll();
+        $labelSets = LabelSet::model()->permission()->findAll(array('order' => 'label_name'));
         $output = array();
         foreach ($labelSets as $labelSet) {
             $output[$labelSet->lid] = flattenText($labelSet->getAttribute('label_name'));

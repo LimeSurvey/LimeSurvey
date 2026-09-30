@@ -74,7 +74,7 @@
                         >
                             <!-- Please choose... -->
                             {% if ansrow.sActualAnswer0 == '' %}
-                                <option value="" selected="selected">
+                                <option value=""{% if not ansrow.showNoAnswer0 %} selected="selected"{% endif %}>
                                     {{ gT('Please choose...') }}
                                 </option>
                             {% endif %}
@@ -89,8 +89,8 @@
                             {% endfor %}
 
                             <!-- No answer -->
-                            {% if ansrow.showNoAnswer0 and ansrow.sActualAnswer0 != '' %}
-                                <option value="">{{ gT('No answer') }}</option>
+                            {% if ansrow.showNoAnswer0 %}
+                                <option value=""{% if ansrow.sActualAnswer0 == '' %} selected="selected"{% endif %}>{{ gT('No answer') }}</option>
                             {% endif %}
                         </select>
                         {% if ddsuffix != '' %}
@@ -124,7 +124,7 @@
                         <select class='form-select' name="{{ ansrow.myfname1 }}" id="answer{{ ansrow.myfid1 }}" aria-labelledby="answertext{{ ansrow.myfname }}">
                             <!-- Please choose... -->
                             {% if ansrow.sActualAnswer1 is empty %}
-                                <option value="" selected="selected">{{ gT('Please choose...') }}</option>
+                                <option value=""{% if not ansrow.showNoAnswer1 %} selected="selected"{% endif %}>{{ gT('Please choose...') }}</option>
                             {% endif %}
 
                             <!-- Second label set -->
@@ -138,8 +138,8 @@
                             {% endfor %}
 
                             <!-- No answer -->
-                            {% if ansrow.showNoAnswer1 and ansrow.sActualAnswer1 != '' %}
-                                <option value="">{{ gT('No answer') }}</option>
+                            {% if ansrow.showNoAnswer1 %}
+                                <option value=""{% if ansrow.sActualAnswer1 == '' %} selected="selected"{% endif %}>{{ gT('No answer') }}</option>
                             {% endif %}
 
                         </select>

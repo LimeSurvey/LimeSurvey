@@ -2,7 +2,6 @@ oembed {
   display: block;
   background: grey;
 }
-
 oembed > .svgcontainer {
   min-height: 400px;
   display: flex;
@@ -12,13 +11,11 @@ oembed > .svgcontainer {
   align-items: center;
   align-self: center;
 }
-
-oembed > .svgcontainer > svg {
-  width: 120px;
-}
-
 oembed > .svgcontainer > svg:hover {
   fill: #efefef;
+}
+oembed > .svgcontainer > svg {
+  width: 120px;
 }
 
 oembed, embed {

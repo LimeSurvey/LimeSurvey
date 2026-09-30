@@ -14,10 +14,11 @@
 <!-- List Radio -->
 <!-- answer -->
 {{ sTimer }}
-<div class="container-fluid">
-    <div class="row {{coreClass}} " data-bs-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{name }}">
+<div>
+    <ul class="{{coreClass}} list-unstyled bootstrap-buttons-list" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{name }}">
     {# rows/answer_row.php #}
     {{ sRows }}
+    </ul>
 
     {# Value for expression manager javascript (use id) ; no need to submit #}
     {{ C.Html.hiddenField("java"~name,value,({
@@ -25,7 +26,6 @@
         'disabled' : true,
     }))
     }}
-    </div>
     {# Must add it only if other is set ! #}
     <div class="row align-items-center mb-3 ls-js-hidden answer-item" id="div{{ name }}other">
         <div class="col-auto">
@@ -43,9 +43,9 @@
             >
         </div>
         {% if otherTextRight is defined and otherTextRight|length > 0 %}
-            <div class="othertext-suffix-label button-suffix col-auto">
+            <label class="othertext-suffix-label button-suffix col-auto" for="answer{{ name }}othertext">
                 {{ processString(otherTextRight) }}
-            </div>
+            </label>
         {% endif %}
     </div>
 </div>
