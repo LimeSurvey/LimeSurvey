@@ -24,6 +24,7 @@ import { ArrayTextTable } from './ArrayTextTable.js'
 import { ResponsesGrid } from './ResponsesGrid.js'
 import { MultiNumericalGrid } from './MultiNumericalGrid.js'
 import { FileUploadTable } from './FileUploadTable.js'
+import { LocationMap } from './LocationMap.js'
 import {
   BarChart,
   PieChart,
@@ -61,9 +62,24 @@ const VIEW = {
   LINE: 'line',
   POLAR_AREA: 'polar-area',
   DOUGHNUT: 'doughnut',
+  MAP: 'map',
 }
 
 const VIEWS = [
+  {
+    value: VIEW.MAP,
+    label: () => t('Map'),
+    icon: () => <i className="ri-map-pin-line"></i>,
+    isAvailable: ({ isMap }) => isMap,
+    render: ({ surveyId, question, filters }) => (
+      <LocationMap
+        surveyId={surveyId}
+        questionCode={question?.code}
+        fields={question?.fields}
+        filters={filters}
+      />
+    ),
+  },
   {
     value: VIEW.BAR_CHART,
     label: () => t('Bar chart'),
@@ -74,12 +90,14 @@ const VIEWS = [
       isNumerical,
       isMultiNumerical,
       isFileUpload,
+      isMap,
     }) =>
       !isArray &&
       !isArrayText &&
       !isNumerical &&
       !isMultiNumerical &&
-      !isFileUpload,
+      !isFileUpload &&
+      !isMap,
     render: ({
       isRanking,
       data,
@@ -149,13 +167,15 @@ const VIEWS = [
       isNumerical,
       isMultiNumerical,
       isFileUpload,
+      isMap,
     }) =>
       !isRanking &&
       !isArray &&
       !isArrayText &&
       !isNumerical &&
       !isMultiNumerical &&
-      !isFileUpload,
+      !isFileUpload &&
+      !isMap,
     // Comment types keep only Bar/Table/Comments in the quick toggle; pie moves
     // to the meatball menu.
     menuOnly: ({ hasComments }) => hasComments,
@@ -309,6 +329,7 @@ const getStorageKey = (surveyId, chartId, index) =>
 
 const getDefaultView = (availableViews, viewContext) => {
   const preferredViews = [
+    viewContext.isMap && VIEW.MAP,
     viewContext.isArrayText && VIEW.TABLE,
     viewContext.isArray && !viewContext.isArrayNumbers && VIEW.STACKED_BAR,
     viewContext.isNumerical && VIEW.TABLE,
@@ -338,6 +359,10 @@ export const ChartRendererV2 = ({
   const isNumerical = question?.type === QT_N_NUMERICAL
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
   const isFileUpload = question?.type === QT_VERTICAL_FILE_UPLOAD
+  // Short text with a mapping service (Map/browser detection): answers are
+  // "lat;lng" coordinates, shown as pins.
+  const isMap =
+    question?.type === QT_S_SHORT_FREE_TEXT && Number(question?.mapService) > 0
   const isGridable =
     isNumerical ||
     [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
@@ -376,6 +401,7 @@ export const ChartRendererV2 = ({
     isNumerical,
     isMultiNumerical,
     isFileUpload,
+    isMap,
     isGridable,
   }
 
