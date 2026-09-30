@@ -92,6 +92,9 @@ class CopySurveyOptions
         $this->quotas = $quotas;
     }
 
+    /**
+     * @return bool whether survey URL parameters should be copied
+     */
     public function isUrlParameters(): bool
     {
         return $this->urlParameters;
