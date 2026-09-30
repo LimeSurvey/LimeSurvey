@@ -69,28 +69,27 @@ const Submenu = ({
 
 // Rendered on document.body so an open menu is not clipped by a scrolling
 // parent (the sidebar) and can stay position: absolute while that parent scrolls.
-const DropdownMenuPortal = React.forwardRef(function DropdownMenuPortal(
-  props,
-  ref
-) {
-  if (typeof document === 'undefined') {
-    return null
+const DropdownMenuPortal = React.forwardRef(
+  function DropdownMenuPortal(props, ref) {
+    if (typeof document === 'undefined') {
+      return null
+    }
+
+    const { portalClassName, children, ...domProps } = props
+    delete domProps.show
+    delete domProps.close
+    delete domProps.align
+
+    return createPortal(
+      <div className={portalClassName}>
+        <div ref={ref} {...domProps}>
+          {children}
+        </div>
+      </div>,
+      document.body
+    )
   }
-
-  const { portalClassName, children, ...domProps } = props
-  delete domProps.show
-  delete domProps.close
-  delete domProps.align
-
-  return createPortal(
-    <div className={portalClassName}>
-      <div ref={ref} {...domProps}>
-        {children}
-      </div>
-    </div>,
-    document.body
-  )
-})
+)
 
 export const Dropdown = ({
   menuItems = [],
