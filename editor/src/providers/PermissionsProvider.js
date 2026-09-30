@@ -27,19 +27,28 @@ export const PermissionsProvider = ({ children }) => {
 
   // Fetch permissions if we have auth token but no permissions yet
   useEffect(() => {
+    const controller = new AbortController()
     setPermissions(null)
     setError(null)
     userService
-      .getUserPermissions(surveyId)
+      .getUserPermissions(surveyId, controller.signal)
       .then(({ permissions: { global, survey, effective } }) => {
+        if (controller.signal.aborted) {
+          return
+        }
         setPermissions({ global, survey, effective })
       })
       .catch(() => {
+        if (controller.signal.aborted) {
+          return
+        }
         setError(
           t('Failed to load permissions. Please try again or contact support.')
         )
         setLoading(false)
       })
+
+    return () => controller.abort()
   }, [auth?.token, surveyId])
 
   useEffect(() => {
