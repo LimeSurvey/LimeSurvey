@@ -280,10 +280,8 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Make the &#039;Other:&#039; comment field mandatory when the &#039;Other:&#039;
-                option is active
-            </help>
-            <caption>&#039;Other:&#039; comment mandatory</caption>
+            <help>Make the 'Other:' comment field mandatory when the 'Other:' option is active</help>
+            <caption>'Other:' comment mandatory</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

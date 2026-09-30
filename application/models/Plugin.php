@@ -515,13 +515,14 @@ class Plugin extends LSActiveRecord
      * Get installation folder of this plugin.
      * Installation folder is different for core and
      * user plugins.
-     * @return string
-     * @throws Exception
+     *
+     * @return string Absolute path to the plugin folder
+     * @throws Exception if the plugin type is unknown or empty, or its alias has no folder
      */
     protected function getDir()
     {
         $pluginManager = App()->getPluginManager();
-        $alias = $pluginManager->pluginDirs[$this->plugin_type];
+        $alias = $pluginManager->pluginDirs[(string) $this->plugin_type] ?? null;
 
         if (empty($alias)) {
             throw new \Exception('Unknown plugin type: ' . json_encode($this->plugin_type));

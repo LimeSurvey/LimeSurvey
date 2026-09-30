@@ -3528,7 +3528,8 @@ function cleanCacheTempDirectoryDaily()
 /**
  * Cleans the temporary directory by removing files older than 1 day.
  * It also cleans the 'upload' subdirectory within the temporary directory.
- * Additionally, it calls the 'cleanAssetCacheDirectory' function to clean the asset cache directory.
+ * Additionally, it calls the 'cleanAssetCacheDirectory' function to clean the asset cache directory
+ * and the 'cleanExtensionInstallTempDirectories' function to remove orphaned extension upload folders.
  *
  * @return void
  */
@@ -3554,6 +3555,25 @@ function cleanCacheTempDirectory()
 
     closedir($dp);
     cleanAssetCacheDirectory(60);
+    cleanExtensionInstallTempDirectories();
+}
+
+/**
+ * Removes orphaned extension upload folders (tempdir/install_*) older than 1 day.
+ * These are left behind when a plugin or theme ZIP was uploaded but the installation
+ * was never confirmed or aborted (e.g. the user navigated away or the session expired).
+ *
+ * @return void
+ */
+function cleanExtensionInstallTempDirectories()
+{
+    $threshold = strtotime('-1 days');
+    $installDirs = glob(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'install_*', GLOB_ONLYDIR);
+    foreach ($installDirs ?: [] as $path) {
+        if (!is_link($path) && filemtime($path) < $threshold) {
+            rmdirr($path);
+        }
+    }
 }
 /**
  * This function cleans the asset directory by removing directories that are older than a certain threshold.
