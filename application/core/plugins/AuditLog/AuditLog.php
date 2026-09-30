@@ -634,7 +634,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $pluginsettings = $this->getPluginSettings(true);
 
         $event = $this->getEvent();
-        $currentAuditingSetting = $this->get('auditing', 'Survey', $event->get('survey'))
+        $currentAuditingSetting = $this->get('auditing', 'Survey', $event->get('survey'), 1);
 
         // Build the auditing setting meta data
         $auditingSetting = array(
