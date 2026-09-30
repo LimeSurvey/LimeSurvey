@@ -1019,8 +1019,7 @@ JAVASCRIPT
         $globalfiles,
         $myoutput,
         $isGlobalFile = false
-    )
-    {
+    ) {
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
         Yii::app()->loadHelper("admin.template");
