@@ -320,7 +320,6 @@ class CopySurvey
      * @param array $mappingQuestionIds old qid => new qid
      * @param array $mappingSubquestionIds old subquestion qid => new subquestion qid
      * @return void
-     * @throws PersistErrorException
      */
     private function copySurveyUrlParameters($copySurveyResult, $destinationSurvey, $mappingQuestionIds, $mappingSubquestionIds)
     {
@@ -338,12 +337,25 @@ class CopySurvey
                 ? ($mappingSubquestionIds[$sourceParameter->targetsqid] ?? null)
                 : null;
 
+            $hasUnmappedQuestion = !empty($sourceParameter->targetqid) && $destinationParameter->targetqid === null;
+            $hasUnmappedSubquestion = !empty($sourceParameter->targetsqid) && $destinationParameter->targetsqid === null;
+            if ($hasUnmappedQuestion || $hasUnmappedSubquestion) {
+                // clear both to avoid having parameter pointing at the whole question when target subquestion is unmapped
+                $destinationParameter->targetqid = null;
+                $destinationParameter->targetsqid = null;
+                $copySurveyResult->setWarnings(sprintf(
+                    gT("The target question of URL parameter '%s' could not be found in the copied survey, the target was removed."),
+                    \CHtml::encode($sourceParameter->parameter)
+                ));
+            }
+
             if (!$destinationParameter->save()) {
-                throw new PersistErrorException(
-                    gT("Failed to copy survey URL parameters")
-                    . ': '
-                    . json_encode($destinationParameter->getErrors())
-                );
+                $copySurveyResult->setWarnings(sprintf(
+                    gT("URL parameter '%s' could not be copied: %s"),
+                    \CHtml::encode($sourceParameter->parameter),
+                    \CHtml::encode(json_encode($destinationParameter->getErrors()))
+                ));
+                continue;
             }
             $cntCopiedUrlParameters++;
         }
