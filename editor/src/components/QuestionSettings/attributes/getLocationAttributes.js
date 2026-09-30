@@ -1,6 +1,10 @@
 import { AlignButtons, Input, ToggleButtons } from 'components/UIComponents'
 import { getYesNoOptions } from 'helpers/options'
 
+/**
+ * Returns the location (map) attribute definitions.
+ * @returns {Object<string, Object>} Attribute definitions.
+ */
 export const getLocationAttributes = () => ({
   USE_MAPPING_SERVICE: {
     component: ToggleButtons,

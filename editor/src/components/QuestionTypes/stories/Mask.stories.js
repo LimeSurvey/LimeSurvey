@@ -84,6 +84,9 @@ const browserDetectionQuestion = mockQuestionType(
   getQuestionTypeInfo().BROWSER_DETECTION
 )
 
+/**
+ * Story previewing the browser detection question.
+ */
 export const BrowserDetection = () => {
   return <QuestionPreview question={browserDetectionQuestion} />
 }
@@ -92,6 +95,9 @@ export const BrowserDetection = () => {
 
 const mapQuestion = mockQuestionType(getQuestionTypeInfo().MAP)
 
+/**
+ * Story previewing the map question.
+ */
 export const Map = () => {
   return <QuestionPreview question={mapQuestion} />
 }

@@ -2,6 +2,10 @@ import { ToggleButtons, Select } from 'components/UIComponents'
 import { getOnOffOptions } from 'helpers/options'
 import { statisticsGraphs } from '../../../pages/Responses/components/ResponsesStatistics/ChartsUtils'
 
+/**
+ * Returns the statistics attribute definitions.
+ * @returns {Object<string, Object>} Attribute definitions.
+ */
 export const getStatisticsAttributes = () => ({
   SHOW_IN_STATISTICS: {
     component: Select,

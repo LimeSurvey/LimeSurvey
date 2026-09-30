@@ -303,6 +303,17 @@ const getDefaultView = (availableViews, viewContext) => {
   )
 }
 
+/**
+ * Renders the statistics card of a question with its chart, table or grid view.
+ * @param {Object} props
+ * @param {Object} props.data Chart data.
+ * @param {number} props.index Card index.
+ * @param {number|string} props.surveyId Survey id.
+ * @param {string} props.chartId Chart id.
+ * @param {Object} props.question Question metadata.
+ * @param {string} props.valueType Count or percentage.
+ * @param {Object} props.filters Active statistics filters.
+ */
 export const ChartRendererV2 = ({
   data,
   index = 0,

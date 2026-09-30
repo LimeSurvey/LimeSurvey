@@ -8,6 +8,10 @@ import {
   getTimerAttributes,
 } from '../attributes'
 
+/**
+ * Attributes shown in the simple settings section of a browser detection question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const simpleSettings = () => {
   const generalAttributes = getGeneralAttributes()
   const displayAttributes = getDisplayAttributes()
@@ -73,6 +77,10 @@ const themeOptionsSettings = () => {
   return []
 }
 
+/**
+ * Browser detection questions have no file metadata settings.
+ * @returns {Object[]} Empty list.
+ */
 const fileMetaDataSettings = () => {
   return []
 }
@@ -81,6 +89,10 @@ const sliderSettings = () => {
   return []
 }
 
+/**
+ * Returns the settings sections of the browser detection question type.
+ * @returns {{title: string, attributes: Object[]}[]} Settings sections.
+ */
 export const getBrowserDetectionSettings = () => {
   return [
     {

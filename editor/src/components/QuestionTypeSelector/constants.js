@@ -15,6 +15,10 @@ export const getQuestionGroupItem = () => ({
   theme: getQuestionTypeInfo().QUESTION_GROUP.theme,
 })
 
+/**
+ * Returns the question types grouped by category for the question type selector.
+ * @returns {{title: string, icon: JSX.Element, items: Object[]}[]}
+ */
 export const getQuestionItemsList = () => [
   {
     title: t('Single choice'),

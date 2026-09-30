@@ -6,6 +6,11 @@ import { ContentEditor } from 'components/UIComponents'
 
 import './TextQuestion.scss'
 
+/**
+ * Read-only text input showing the detected browser (and optionally platform) info.
+ * @param {Object} props
+ * @param {Object} props.attributes Question attributes.
+ */
 export const BrowserDetectionTextAnswer = ({ attributes = {} }) => {
   const [browserInfo, setBrowserInfo] = useState('')
 

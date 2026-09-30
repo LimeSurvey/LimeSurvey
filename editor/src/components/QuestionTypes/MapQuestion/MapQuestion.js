@@ -16,6 +16,11 @@ const DEFAULT_ZOOM = 11
 const DEFAULT_HEIGHT = 300
 const GOOGLE_MAPS_SERVICE = '1'
 
+/**
+ * Reads the scalar value of a question attribute.
+ * @param {*} attribute Question attribute.
+ * @returns {*} Attribute value.
+ */
 const attributeScalar = (attribute) => {
   const raw = getAttributeValue(attribute)
   if (raw && typeof raw === 'object' && 'value' in raw) {
@@ -24,6 +29,12 @@ const attributeScalar = (attribute) => {
   return raw
 }
 
+/**
+ * Parses a "lat<separator>lng" string into a coordinate pair.
+ * @param {string} value Coordinates string.
+ * @param {string} separator Separator between latitude and longitude.
+ * @returns {number[]|null} [lat, lng] or null if invalid.
+ */
 const parseLatLng = (value, separator) => {
   if (!value || typeof value !== 'string') {
     return null
@@ -37,6 +48,15 @@ const parseLatLng = (value, separator) => {
   return coords
 }
 
+/**
+ * OpenStreetMap map with a draggable marker to pick a location.
+ * @param {Object} props
+ * @param {string} props.value Stored "lat;lng" value.
+ * @param {string} props.defaultCoordinates Default "lat lng" coordinates.
+ * @param {number} props.zoom Map zoom level.
+ * @param {number} props.height Map height in pixels.
+ * @param {Function} props.onChange Called with the new "lat;lng" value.
+ */
 const LeafletMapComponent = ({
   value,
   defaultCoordinates,
@@ -66,6 +86,10 @@ const LeafletMapComponent = ({
     setPosition(initialPosition)
   }, [initialPosition])
 
+  /**
+   * Moves the marker and reports the new location.
+   * @param {{lat: number, lng: number}} latLng New position.
+   */
   const updatePosition = useCallback(
     ({ lat, lng }) => {
       const newPosition = [lat, lng]
@@ -75,6 +99,10 @@ const LeafletMapComponent = ({
     [onChange]
   )
 
+  /**
+   * Moves the marker to the clicked map position.
+   * @returns {null}
+   */
   const MapClickHandler = () => {
     useMapEvents({
       click: (event) => updatePosition(event.latlng),
@@ -82,6 +110,10 @@ const LeafletMapComponent = ({
     return null
   }
 
+  /**
+   * Keeps the map view centered on the marker position and zoom.
+   * @returns {null}
+   */
   const MapViewSyncer = () => {
     const map = useMap()
     useEffect(() => {
@@ -126,6 +158,13 @@ const LeafletMapComponent = ({
   )
 }
 
+/**
+ * Map question rendering Google Maps or OpenStreetMap based on the configured service.
+ * @param {Object} props
+ * @param {Object} props.question Question with its attributes.
+ * @param {Object[]} props.values Answer values.
+ * @param {Function} props.onValueChange Called with the new value and its key.
+ */
 export const MapQuestion = ({
   question: { attributes = {} } = {},
   values = [],
@@ -143,6 +182,10 @@ export const MapQuestion = ({
     attributes.location_defaultcoordinates
   )
 
+  /**
+   * Forwards the new location to the parent.
+   * @param {string} newValue New "lat;lng" value.
+   */
   const handleOnChange = (newValue) => {
     onValueChange(newValue, value.key)
   }

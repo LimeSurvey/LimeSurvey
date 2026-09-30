@@ -47,6 +47,10 @@ import {
   getYesNoSettings,
 } from './rankingAndRating'
 
+/**
+ * Returns the settings sections per question theme.
+ * @returns {Object<string, Object[]>} Settings sections keyed by theme name.
+ */
 export const getQuestionSettings = () => {
   return {
     [getQuestionTypeInfo().ARRAY.theme]: getArrayPointChoiceSettings(),

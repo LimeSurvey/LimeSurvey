@@ -11,6 +11,10 @@ import {
   getLocationAttributes,
 } from '../attributes'
 
+/**
+ * Attributes shown in the simple settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const simpleSettings = () => {
   const generalAttributes = getGeneralAttributes()
   const displayAttributes = getDisplayAttributes()
@@ -25,6 +29,10 @@ const simpleSettings = () => {
   ]
 }
 
+/**
+ * Attributes shown in the general settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const generalSettings = () => {
   const generalAttributes = getGeneralAttributes()
   return [
@@ -36,6 +44,10 @@ const generalSettings = () => {
   ]
 }
 
+/**
+ * Attributes shown in the display settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const displaySettings = () => {
   const displayAttributes = getDisplayAttributes()
   return [
@@ -46,6 +58,10 @@ const displaySettings = () => {
   ]
 }
 
+/**
+ * Attributes shown in the logic settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const logicSettings = () => {
   const logicAttributes = getLogicAttributes()
   return [
@@ -55,14 +71,26 @@ const logicSettings = () => {
   ]
 }
 
+/**
+ * Attributes shown in the other settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const otherSettings = () => {
   return [getOtherAttributes().INSERT_PAGE_BREAK_IN_PRINTABLE_VIEW]
 }
 
+/**
+ * Map questions have no input settings.
+ * @returns {Object[]} Empty list.
+ */
 const inputSettings = () => {
   return []
 }
 
+/**
+ * Attributes shown in the statistics settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const statisticsSettings = () => {
   const statisticsAttributes = getStatisticsAttributes()
   return [
@@ -72,18 +100,34 @@ const statisticsSettings = () => {
   ]
 }
 
+/**
+ * Attributes shown in the timer settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const timerSettings = () => {
   return Object.values(getTimerAttributes())
 }
 
+/**
+ * Map questions have no theme option settings.
+ * @returns {Object[]} Empty list.
+ */
 const themeOptionsSettings = () => {
   return []
 }
 
+/**
+ * Map questions have no file metadata settings.
+ * @returns {Object[]} Empty list.
+ */
 const fileMetaDataSettings = () => {
   return []
 }
 
+/**
+ * Attributes shown in the location settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const locationSettings = () => {
   return [
     ...Object.values(getLocationAttributes()),
@@ -108,10 +152,18 @@ const locationSettings = () => {
   ]
 }
 
+/**
+ * Map questions have no slider settings.
+ * @returns {Object[]} Empty list.
+ */
 const sliderSettings = () => {
   return []
 }
 
+/**
+ * Returns the settings sections of the map question type.
+ * @returns {{title: string, attributes: Object[]}[]} Settings sections.
+ */
 export const getMapSettings = () => {
   return [
     {

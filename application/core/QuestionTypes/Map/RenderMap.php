@@ -18,16 +18,32 @@
  */
 class RenderMap extends QuestionBaseRenderer
 {
+    /**
+     * Returns the base view path of the map templates.
+     *
+     * @return string
+     */
     public function getMainView()
     {
         return '/survey/questions/answer/map/location_mapservice';
     }
 
+    /**
+     * Map questions have no rows.
+     *
+     * @return void
+     */
     public function getRows()
     {
         return;
     }
 
+    /**
+     * Renders the map question using Google Maps or OpenStreetMap depending on the configured service.
+     *
+     * @param string $sCoreClasses Additional CSS classes for the answer container
+     * @return array{0: string, 1: string[]} Rendered HTML and the list of input names
+     */
     public function render($sCoreClasses = '')
     {
         $coreClass = 'ls-answers map-item geoloc-item ' . $sCoreClasses;
@@ -48,6 +64,14 @@ class RenderMap extends QuestionBaseRenderer
         return array($answer, [$this->sSGQA]);
     }
 
+    /**
+     * Renders the Google Maps variant and registers its scripts.
+     *
+     * @param string $coreClass CSS classes for the answer container
+     * @param string|null $currentLocation Stored answer value ("lat;lng") or null
+     * @param int $iMapService Map service id
+     * @return string Rendered HTML
+     */
     private function renderGoogleMap($coreClass, $currentLocation, $iMapService)
     {
         $currentLatLong = $this->resolveGoogleLatLong($currentLocation);
@@ -100,6 +124,14 @@ class RenderMap extends QuestionBaseRenderer
         );
     }
 
+    /**
+     * Renders the OpenStreetMap (Leaflet) variant and registers its scripts and styles.
+     *
+     * @param string $coreClass CSS classes for the answer container
+     * @param string|null $currentLocation Stored answer value ("lat;lng") or null
+     * @param int $iMapService Map service id
+     * @return string Rendered HTML
+     */
     private function renderOpenStreetMap($coreClass, $currentLocation, $iMapService)
     {
         [$currentCenter, $currentLatLong] = $this->resolveOsmLatLong($currentLocation);
@@ -160,6 +192,12 @@ class RenderMap extends QuestionBaseRenderer
         );
     }
 
+    /**
+     * Resolves the initial Google Maps position from the stored value, the IP address or the default coordinates.
+     *
+     * @param string|null $currentLocation Stored answer value ("lat;lng") or null
+     * @return array{0: string|float, 1: string|float} [latitude, longitude], empty strings if unresolved
+     */
     private function resolveGoogleLatLong($currentLocation)
     {
         $currentLatLong = $this->parseStoredLatLong($currentLocation);
@@ -199,6 +237,12 @@ class RenderMap extends QuestionBaseRenderer
         return array($floatLat, $floatLng);
     }
 
+    /**
+     * Resolves the OpenStreetMap center and marker position from the stored value, the IP address or the default coordinates.
+     *
+     * @param string|null $currentLocation Stored answer value ("lat;lng") or null
+     * @return array{0: array, 1: array} [map center, marker lat/long]
+     */
     private function resolveOsmLatLong($currentLocation)
     {
         $currentLatLong = $this->parseStoredLatLong($currentLocation);
@@ -230,6 +274,12 @@ class RenderMap extends QuestionBaseRenderer
         return [$currentCenter, $currentLatLong];
     }
 
+    /**
+     * Parses a stored "lat;lng" answer value.
+     *
+     * @param string|null $currentLocation Stored answer value
+     * @return array{0: string, 1: string}|null [latitude, longitude] or null if the value is not a coordinate pair
+     */
     private function parseStoredLatLong($currentLocation)
     {
         if (strlen((string) $currentLocation) > 2 && strpos((string) $currentLocation, ';')) {
@@ -240,6 +290,11 @@ class RenderMap extends QuestionBaseRenderer
         return null;
     }
 
+    /**
+     * Builds the flags string telling map.js which location parts (city, state, country, postal) to store.
+     *
+     * @return string
+     */
     private function buildLocationSaveFlags()
     {
         $strBuild = '';

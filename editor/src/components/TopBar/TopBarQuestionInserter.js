@@ -121,7 +121,6 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
         answers: { ...question.answers },
         subquestions: { ...question.subquestions },
       })
-
     addToBuffer(operation)
   }
 

@@ -126,7 +126,6 @@ class QuestionType extends StaticModel
      * TODO choose between self::modelsAttributes and QuestionTheme::findQuestionMetaData or QuestionTheme::getAllQuestionMetaData
      * TODO QuestionTheme 1591616914305: Needs to be replaced by @link QuestionTheme::getAllQuestionMetaData() however translations inside the xml need to be inserted first
      */
-
     public static function modelsAttributes($language = '')
     {
         return [
@@ -471,8 +470,13 @@ class QuestionType extends StaticModel
     public static function textCodes()
     {
         return [
-            self::QT_I_LANGUAGE, self::QT_J_MAP, self::QT_S_SHORT_FREE_TEXT, self::QT_U_HUGE_FREE_TEXT,
-            self::QT_Q_MULTIPLE_SHORT_TEXT, self::QT_T_LONG_FREE_TEXT, self::QT_SEMICOLON_ARRAY_TEXT,
+            self::QT_I_LANGUAGE,
+            self::QT_J_MAP,
+            self::QT_S_SHORT_FREE_TEXT,
+            self::QT_U_HUGE_FREE_TEXT,
+            self::QT_Q_MULTIPLE_SHORT_TEXT,
+            self::QT_T_LONG_FREE_TEXT,
+            self::QT_SEMICOLON_ARRAY_TEXT,
             self::QT_COLON_ARRAY_NUMBERS,
         ];
     }
@@ -485,7 +489,9 @@ class QuestionType extends StaticModel
     public static function charCodes()
     {
         return [
-            self::QT_5_POINT_CHOICE, self::QT_G_GENDER, self::QT_Y_YES_NO_RADIO,
+            self::QT_5_POINT_CHOICE,
+            self::QT_G_GENDER,
+            self::QT_Y_YES_NO_RADIO,
             self::QT_X_TEXT_DISPLAY
         ];
     }

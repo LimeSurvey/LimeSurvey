@@ -9,6 +9,13 @@ import { ShortTextAnswer } from './ShortTextAnswer'
 import { NumericAnswer } from './NumericAnswer'
 import { BrowserDetectionTextAnswer } from './BrowserDetectionTextAnswer'
 
+/**
+ * Text question rendering the answer component matching the question theme.
+ * @param {Object} props
+ * @param {Object} props.question Question with theme name and attributes.
+ * @param {Object[]} props.values Answer values.
+ * @param {Function} props.onValueChange Called with the new value and its key.
+ */
 export const TextQuestion = ({
   question: { questionThemeName, attributes },
   values = [],

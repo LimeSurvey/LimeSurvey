@@ -1,3 +1,7 @@
+/**
+ * Returns the type code, theme and title of the supported question types.
+ * @returns {Object<string, {type: string, theme: string, title: string}>}
+ */
 export const getQuestionTypeInfo = () => {
   return {
     ARRAY: {

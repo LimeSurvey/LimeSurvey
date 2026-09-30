@@ -86,6 +86,10 @@ const themeOptionsSettings = () => {
   return []
 }
 
+/**
+ * Short text questions have no file metadata settings.
+ * @returns {Object[]} Empty list.
+ */
 const fileMetaDataSettings = () => {
   return []
 }
@@ -94,6 +98,10 @@ const sliderSettings = () => {
   return []
 }
 
+/**
+ * Returns the settings sections of the short text question type.
+ * @returns {{title: string, attributes: Object[]}[]} Settings sections.
+ */
 export const getShortTextSettings = () => {
   return [
     {
