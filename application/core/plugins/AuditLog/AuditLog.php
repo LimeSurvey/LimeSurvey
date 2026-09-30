@@ -675,11 +675,8 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $event = $this->getEvent();
         $iSurveyID = $event->get('survey');
 
-        $oCurrentUser = $this->api->getCurrentUser();
-        $iCurrentUserID = $oCurrentUser ? $oCurrentUser->uid : null;
-
         // Authorization: allow if user is superadmin OR has surveysettings update permission
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update', $iCurrentUserID)) {
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
             App()->setFlashMessage(gT('You are not allowed to change plugin settings for this survey.'), 'error');
             return;
         }
