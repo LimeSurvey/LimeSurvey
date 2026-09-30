@@ -37,6 +37,13 @@ class QuestionResolverTest extends TestCase
             // Array: one column per row, holding the answer picked on the scale.
             'Q100_S1001' => $this->column(['qid' => 100, 'type' => 'F', 'sqid' => 1001]),
             'Q100_S1002' => $this->column(['qid' => 100, 'type' => 'F', 'sqid' => 1002]),
+            // The array types whose scale is built into the type: 5 point,
+            // 10 point, yes/no/uncertain and increase/same/decrease. Stored
+            // exactly like F above, one column per row.
+            'Q101_S1011' => $this->column(['qid' => 101, 'type' => 'A', 'sqid' => 1011]),
+            'Q102_S1021' => $this->column(['qid' => 102, 'type' => 'B', 'sqid' => 1021]),
+            'Q103_S1031' => $this->column(['qid' => 103, 'type' => 'C', 'sqid' => 1031]),
+            'Q104_S1041' => $this->column(['qid' => 104, 'type' => 'E', 'sqid' => 1041]),
             // Dual scale: the same row answered twice, split by scale id.
             'Q110_S1101#0' => $this->column(['qid' => 110, 'type' => '1', 'sqid' => 1101, 'scaleid' => 0]),
             'Q110_S1101#1' => $this->column(['qid' => 110, 'type' => '1', 'sqid' => 1101, 'scaleid' => 1]),
@@ -343,6 +350,42 @@ class QuestionResolverTest extends TestCase
         $this->assertSame(['Q100_S1002'], $condition->getKeys());
         $this->assertSame(ResolvedCondition::OPERATOR_EQUAL, $condition->getOperator());
         $this->assertSame('A2', $condition->getValue());
+    }
+
+    /**
+     * A, B, C and E keep their scale in the question type rather than in the
+     * answers table. That changes where the *options* come from, not how the
+     * answer is stored, so they resolve exactly like F: the row's own column
+     * holds the code that was picked.
+     *
+     * @dataProvider builtInScaleArrays
+     */
+    public function testAnArrayWithABuiltInScaleResolvesToTheRowColumn(
+        int $qid,
+        int $row,
+        string $code,
+        string $expectedColumn
+    ): void {
+        $condition = $this->singleCondition([
+            'qid' => $qid,
+            'row' => $row,
+            'column' => $code,
+        ]);
+
+        $this->assertSame([$expectedColumn], $condition->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_EQUAL, $condition->getOperator());
+        $this->assertSame($code, $condition->getValue());
+    }
+
+    /** The codes are the ones LimeSurvey stores for each of these scales. */
+    public function builtInScaleArrays(): array
+    {
+        return [
+            '5 point' => [101, 1011, '3', 'Q101_S1011'],
+            '10 point' => [102, 1021, '10', 'Q102_S1021'],
+            'yes/no/uncertain' => [103, 1031, 'U', 'Q103_S1031'],
+            'increase/same/decrease' => [104, 1041, 'D', 'Q104_S1041'],
+        ];
     }
 
     /**

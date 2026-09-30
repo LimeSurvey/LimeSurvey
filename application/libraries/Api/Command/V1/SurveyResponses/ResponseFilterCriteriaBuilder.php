@@ -11,6 +11,7 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\EqualConditio
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\JsonElementConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\MultiSelectConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\NotEmptyConditionHandler;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\NullConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\RangeConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\SurveyContextAwareInterface;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedCondition;
@@ -45,6 +46,7 @@ class ResponseFilterCriteriaBuilder
         ResolvedCondition::OPERATOR_NOT_EMPTY => NotEmptyConditionHandler::class,
         ResolvedCondition::OPERATOR_EMPTY => EmptyConditionHandler::class,
         ResolvedCondition::OPERATOR_JSON_ELEMENT => JsonElementConditionHandler::class,
+        ResolvedCondition::OPERATOR_NULL => NullConditionHandler::class,
     ];
 
     /**

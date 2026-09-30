@@ -217,13 +217,10 @@ class ResponseFilterCriteriaBuilderTest extends TestCondition
         $this->assertSame([], $this->builder->getRelations());
     }
 
-    /**
-     * Every operator the resolvers emit must have a handler, or a filter the
-     * user built would silently do nothing.
-     */
-    public function testEveryResolvedOperatorHasAHandler(): void
+    /** A value that exercises each operator, keyed by the operator itself. */
+    private function sampleValues(): array
     {
-        $operators = [
+        return [
             ResolvedCondition::OPERATOR_EQUAL => 'Y',
             ResolvedCondition::OPERATOR_CONTAIN => 'text',
             ResolvedCondition::OPERATOR_RANGE => [1, 10],
@@ -232,15 +229,66 @@ class ResponseFilterCriteriaBuilderTest extends TestCondition
             ResolvedCondition::OPERATOR_NOT_EMPTY => null,
             ResolvedCondition::OPERATOR_EMPTY => null,
             ResolvedCondition::OPERATOR_JSON_ELEMENT => ['position' => 0, 'value' => 'SQ001'],
+            ResolvedCondition::OPERATOR_NULL => 'true',
         ];
+    }
 
-        foreach ($operators as $operator => $value) {
+    /**
+     * Every operator the resolvers emit must have a handler, or a filter the
+     * user built would silently do nothing.
+     */
+    public function testEveryResolvedOperatorHasAHandler(): void
+    {
+        foreach ($this->sampleValues() as $operator => $value) {
             $criteria = $this->builder->build([
                 $this->row([new ResolvedCondition(['col'], $operator, $value)]),
             ]);
 
             $this->assertNotSame('', $criteria->condition, "No SQL built for operator: $operator");
         }
+    }
+
+    /**
+     * The list above was hand-written once and then fell behind: OPERATOR_NULL
+     * was added without a sample, so the test above passed while the "Included
+     * responses" filter threw on every request. Read the operators off the
+     * class instead, so a new one fails here until it is covered.
+     */
+    public function testTheOperatorListCoversEveryDeclaredOperator(): void
+    {
+        $declared = [];
+        foreach ((new \ReflectionClass(ResolvedCondition::class))->getConstants() as $name => $value) {
+            if (strpos($name, 'OPERATOR_') === 0) {
+                $declared[] = $value;
+            }
+        }
+
+        $this->assertSame(
+            [],
+            array_diff($declared, array_keys($this->sampleValues())),
+            'An operator is declared but never built in this test.'
+        );
+    }
+
+    /**
+     * "Included responses" is the one filter that asks whether a column holds
+     * anything at all: a response counts as complete once it has a submit date.
+     */
+    public function testCompletenessBecomesANullTest(): void
+    {
+        $complete = $this->builder->build([
+            $this->row([
+                new ResolvedCondition(['submitdate'], ResolvedCondition::OPERATOR_NULL, 'true'),
+            ]),
+        ]);
+        $this->assertFieldConditions($complete->condition, '[0] IS NOT NULL', ['submitdate']);
+
+        $incomplete = $this->builder->build([
+            $this->row([
+                new ResolvedCondition(['submitdate'], ResolvedCondition::OPERATOR_NULL, 'false'),
+            ]),
+        ]);
+        $this->assertFieldConditions($incomplete->condition, '[0] IS NULL', ['submitdate']);
     }
 
     public function testAnUnknownOperatorThrows(): void

@@ -30,6 +30,12 @@ class QuestionKindTest extends TestCase
             'multiple numerical' => ['K', QuestionKind::SUB_NUMBER],
             'array' => ['F', QuestionKind::ARRAY_SCALE],
             'array by column' => ['H', QuestionKind::ARRAY_SCALE],
+            // Their scale is built into the type rather than stored as
+            // answers, but they are stored one column per row like any array.
+            'array 5 point' => ['A', QuestionKind::ARRAY_SCALE],
+            'array 10 point' => ['B', QuestionKind::ARRAY_SCALE],
+            'array yes/no/uncertain' => ['C', QuestionKind::ARRAY_SCALE],
+            'array increase/same/decrease' => ['E', QuestionKind::ARRAY_SCALE],
             'array dual scale' => ['1', QuestionKind::ARRAY_DUAL],
             'array numbers' => [':', QuestionKind::ARRAY_GRID],
             'array texts' => [';', QuestionKind::ARRAY_GRID],

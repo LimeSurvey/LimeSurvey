@@ -39,6 +39,10 @@ class QuestionKind
 
     /** Array types: row x column, sometimes with a value in the cell. */
     private const ARRAY_TYPES = [
+        'A' => self::ARRAY_SCALE,
+        'B' => self::ARRAY_SCALE,
+        'C' => self::ARRAY_SCALE,
+        'E' => self::ARRAY_SCALE,
         'F' => self::ARRAY_SCALE,
         'H' => self::ARRAY_SCALE,
         '1' => self::ARRAY_DUAL,
