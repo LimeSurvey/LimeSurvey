@@ -24,6 +24,38 @@ class LSActiveRecord extends CActiveRecord
 
     public $bEncryption = false;
 
+    /** @var array Attribute values as loaded from the database, used to detect modified attributes */
+    private $loadedAttributes = [];
+
+    /**
+     * Keep a copy of the attributes as loaded from the database, to detect later which ones were modified
+     *
+     * @return void
+     */
+    protected function afterFind()
+    {
+        parent::afterFind();
+        $this->loadedAttributes = $this->getAttributes();
+    }
+
+    /**
+     * Whether an attribute was modified compared to the value loaded from the database.
+     * New records, and attributes not loaded from the database, count as modified.
+     *
+     * @param string $name The attribute name
+     * @return boolean
+     */
+    public function isAttributeModifiedFromStored($name)
+    {
+        if ($this->getIsNewRecord()) {
+            return true;
+        }
+        if (!array_key_exists($name, $this->loadedAttributes)) {
+            return true;
+        }
+        return (string) $this->loadedAttributes[$name] !== (string) $this->$name;
+    }
+
     /**
      * Lists the behaviors of this model
      *
@@ -107,15 +139,16 @@ class LSActiveRecord extends CActiveRecord
      * This is a convenience method, that uses the primary key of the model to
      * retrieve the highest value.
      *
-     * @param string $field The field that contains the Id, when null primary key is used if it is a single field
-     * @param boolean $forceRefresh Don't use value from static cache but always requery the database
-     * @return false|int
+     * The value is always queried from the database: a request-level cache keyed by field
+     * name would return stale or wrong values for models sharing a field name (e.g.
+     * SurveyDynamic for different surveys) or after new records were inserted.
+     *
+     * @param string|null $field The field that contains the Id, when null primary key is used if it is a single field
+     * @return false|int|string
      * @throws Exception
      */
-    public function getMaxId($field = null, $forceRefresh = false)
+    public function getMaxId($field = null)
     {
-        static $maxIds = [];
-
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
             if (is_string($primaryKey)) {
@@ -126,17 +159,10 @@ class LSActiveRecord extends CActiveRecord
             }
         }
 
-        if ($forceRefresh || !array_key_exists($field, $maxIds)) {
-            $maxId = $this->dbConnection->createCommand()
-                ->select('MAX(' . $this->dbConnection->quoteColumnName($field) . ')')
-                ->from($this->tableName())
-                ->queryScalar();
-
-            // Save so we can reuse in the same request
-            $maxIds[$field] = $maxId;
-        }
-
-        return $maxIds[$field];
+        return $this->dbConnection->createCommand()
+            ->select('MAX(' . $this->dbConnection->quoteColumnName($field) . ')')
+            ->from($this->tableName())
+            ->queryScalar();
     }
 
     /**
@@ -145,15 +171,16 @@ class LSActiveRecord extends CActiveRecord
      * This is a convenience method, that uses the primary key of the model to
      * retrieve the highest value.
      *
-     * @param string $field The field that contains the Id, when null primary key is used if it is a single field
-     * @param boolean $forceRefresh Don't use value from static cache but always requery the database
-     * @return false|int
+     * The value is always queried from the database: a request-level cache keyed by field
+     * name would return stale or wrong values for models sharing a field name (e.g.
+     * SurveyDynamic for different surveys) or after new records were inserted.
+     *
+     * @param string|null $field The field that contains the Id, when null primary key is used if it is a single field
+     * @return false|int|string
      * @throws Exception
      */
-    public function getMinId($field = null, $forceRefresh = false)
+    public function getMinId($field = null)
     {
-        static $minIds = [];
-
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
             if (is_string($primaryKey)) {
@@ -164,17 +191,10 @@ class LSActiveRecord extends CActiveRecord
             }
         }
 
-        if ($forceRefresh || !array_key_exists($field, $minIds)) {
-            $minId = $this->dbConnection->createCommand()
-                ->select('MIN(' . $this->dbConnection->quoteColumnName($field) . ')')
-                ->from($this->tableName())
-                ->queryScalar();
-
-            // Save so we can reuse in the same request
-            $minIds[$field] = $minId;
-        }
-
-        return $minIds[$field];
+        return $this->dbConnection->createCommand()
+            ->select('MIN(' . $this->dbConnection->quoteColumnName($field) . ')')
+            ->from($this->tableName())
+            ->queryScalar();
     }
 
     /**
