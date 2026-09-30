@@ -447,6 +447,17 @@ class CLSGridView extends TbGridView
             if ($columnsSelected !== null) {
                 $this->addColumns($columnsSelected);
             }
+        } else {
+            // No stored preference yet: pre-select whichever additional columns are
+            // marked 'default' => true, so a column can be shown out of the box while
+            // still being deselectable, instead of having to live in the always-visible
+            // base column set to get that.
+            $defaultColumns = array_keys(array_filter($this->lsAdditionalColumns, function ($column) {
+                return !empty($column['default']);
+            }));
+            if (!empty($defaultColumns)) {
+                $this->addColumns($defaultColumns);
+            }
         }
     }
 
@@ -459,6 +470,9 @@ class CLSGridView extends TbGridView
                 $column_data = $additionalColumns[$selectedColumn];
             }
             if (is_array($column_data)) {
+                // 'default' is only a hint for appendAdditionalColumns() above; it is not
+                // a real CGridColumn property, so it must not reach Yii::createComponent().
+                unset($column_data['default']);
                 $this->lsAdditionalColumnsSelected[] = $selectedColumn;
                 array_splice($this->columns, count($this->columns) - 2, 0, [$column_data]);
             }

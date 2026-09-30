@@ -426,7 +426,12 @@ LS.gridSelection = (function () {
      */
     function _syncHeaderCheckbox(gridId) {
         var $grid    = $('#' + gridId);
-        var $tbodyCb = $grid.find('tbody .massiveActionsCheckbox');
+        // Permanently disabled rows (e.g. "can't select yourself") are never added to the
+        // selection store by the handlers below, so they must be excluded here too -
+        // otherwise the header checkbox could never show as fully checked.
+        var $tbodyCb = $grid.find('tbody .massiveActionsCheckbox').filter(function () {
+            return !$(this).is(':disabled') || $(this).hasClass('grid-selectall-locked') || $(this).hasClass('grid-threshold-locked');
+        });
         var total    = $tbodyCb.length;
 
         if (total === 0) {
