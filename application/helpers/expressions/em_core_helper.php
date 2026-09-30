@@ -57,6 +57,16 @@ class ExpressionManager
         'mandatory',
         'rowdivid',
     );
+    /* var string[] functions that ignore empty arguments : in text replacement and equation, a not applicable (irrelevant) variable
+     * used directly as argument of one of this functions is read as empty (like in PHP) instead of emptying the whole expression.
+     * The function must return the same result in PHP and JS for an empty argument.
+     * @see https://bugs.limesurvey.org/view.php?id=14932
+     */
+    private $aRDP_NAtolerantFunctions = array(
+        'count',
+        'sum',
+        'unique',
+    );
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
     private $RDP_TokenType;
@@ -89,7 +99,7 @@ class ExpressionManager
      * @var array
      */
     private $substitutionInfo; // array of JavaScripts to managing dynamic substitution
-    private $jsExpression; // caches computation of JavaScript equivalent for an Expression
+    private $jsExpression = array(); // caches computation of JavaScript equivalent for an Expression, indexed by NA tolerant mode
 
     private $questionSeq; // sequence order of question - so can detect if try to use variable before it is set
     private $groupSeq; // sequence order of groups - so can detect if try to use variable before it is set
@@ -601,7 +611,7 @@ class ExpressionManager
         $this->RDP_evalStatus = false;
         $this->RDP_result = null;
         $this->varsUsed = array();
-        $this->jsExpression = null;
+        $this->jsExpression = array();
 
         if ($this->HasSyntaxErrors()) {
             return false;
@@ -1239,15 +1249,20 @@ class ExpressionManager
 
     /**
      * Converts the most recent expression into a valid JavaScript expression, mapping function and variable names and operators as needed.
+     * By default, the whole expression is empty if any variable used without NAOK is not applicable (irrelevant).
+     * @param boolean $naTolerant : variables used only as direct arguments of NA tolerant functions (count, sum, unique)
+     *        don't empty the expression, they are read as empty like in PHP. For text replacement and equation, not for boolean expressions.
+     * @see https://bugs.limesurvey.org/view.php?id=14932
      * @return string the JavaScript expression
      */
-    public function GetJavaScriptEquivalentOfExpression()
+    public function GetJavaScriptEquivalentOfExpression($naTolerant = false)
     {
-        if (!is_null($this->jsExpression)) {
-            return $this->jsExpression;
+        $cacheKey = $naTolerant ? 'naTolerant' : 'default';
+        if (isset($this->jsExpression[$cacheKey])) {
+            return $this->jsExpression[$cacheKey];
         }
         if ($this->HasErrors()) {
-            $this->jsExpression = '';
+            $this->jsExpression[$cacheKey] = '';
             return '';
         }
         $tokens = $this->RDP_tokens;
@@ -1261,6 +1276,12 @@ class ExpressionManager
         $bracket = 0;
         /* @var string static string to be parsed bedfore send to JS */
         $staticStringToParse = "";
+        /* @var array<string|null> function name (or null for simple bracket) for each currently open bracket */
+        $openBrackets = array();
+        /* @var string[] variables used as direct argument of a NA tolerant function */
+        $naTolerantVars = array();
+        /* @var string[] variables used elsewhere */
+        $naCheckedVars = array();
         for ($i = 0; $i < $numTokens; ++$i) {
             $token = $tokens[$i]; // When do these need to be quoted?
             if (!empty($staticStringToParse)) { /* Currently inside a static function */
@@ -1324,6 +1345,11 @@ class ExpressionManager
                                 }
                             }
                         } else {
+                            if ($this->isNAtolerantArgument($tokens, $i, end($openBrackets))) {
+                                $naTolerantVars[] = $token[0];
+                            } else {
+                                $naCheckedVars[] = $token[0];
+                            }
                             if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", (string) $token[0])) {
                                 /* This is a static variables : set as static */
                                 $static = $this->sProcessStringContainingExpressions("{" . $token[0] . "}", 0, 1, 1, -1, -1, true);
@@ -1341,7 +1367,11 @@ class ExpressionManager
                         }
                         break;
                     case 'LP':
+                        $openBrackets[] = ($i > 0 && in_array($tokens[$i - 1][2], array('WORD', 'SGQA'))) ? (string) $tokens[$i - 1][0] : null;
+                        $stringParts[] = $token[0];
+                        break;
                     case 'RP':
+                        array_pop($openBrackets);
                         $stringParts[] = $token[0];
                         break;
                     case 'NUMBER':
@@ -1392,7 +1422,11 @@ class ExpressionManager
         }
         // for each variable that does not have a default value, add clause to throw error if any of them are NA
         $nonNAvarsUsed = array();
+        $naIgnoredVars = $naTolerant ? array_diff($naTolerantVars, $naCheckedVars) : array();
         foreach ($this->GetVarsUsed() as $var) {
+            if (in_array($var, $naIgnoredVars)) {
+                continue;
+            }
             /* This function wants to see the NAOK suffix (NAOK|valueNAOK|shown)
              * OR static var and Check dynamic var inside static function too
              * see https://bugs.limesurvey.org/view.php?id=18008 for issue about sgqa and question
@@ -1411,11 +1445,30 @@ class ExpressionManager
         }
         $varsUsed = implode("', '", $nonNAvarsUsed);
         if ($varsUsed != '') {
-            $this->jsExpression = "LEMif(LEManyNA('" . $varsUsed . "'),'',(" . $mainClause . "))";
+            $this->jsExpression[$cacheKey] = "LEMif(LEManyNA('" . $varsUsed . "'),'',(" . $mainClause . "))";
         } else {
-            $this->jsExpression = '(' . $mainClause . ')';
+            $this->jsExpression[$cacheKey] = '(' . $mainClause . ')';
         }
-        return $this->jsExpression;
+        return $this->jsExpression[$cacheKey];
+    }
+
+    /**
+     * Check if the variable token at $index is a whole argument of a NA tolerant function,
+     * e.g. Q1_SQ1 in count(Q1_SQ1, Q1_SQ2), but not in count(Q1_SQ1 + 1)
+     * @param array[] $tokens the tokens of the expression
+     * @param integer $index index of the variable token
+     * @param string|null|false $function name of the function of the innermost open bracket, null for a simple bracket, false if none
+     * @return boolean
+     */
+    private function isNAtolerantArgument($tokens, $index, $function)
+    {
+        if (!is_string($function) || !in_array($function, $this->aRDP_NAtolerantFunctions)) {
+            return false;
+        }
+        if ($index == 0 || !in_array($tokens[$index - 1][2], array('LP', 'COMMA'))) {
+            return false;
+        }
+        return isset($tokens[$index + 1]) && in_array($tokens[$index + 1][2], array('RP', 'COMMA'));
     }
 
     /**
@@ -1452,7 +1505,7 @@ class ExpressionManager
     {
         $jsParts = array();
         $jsParts[] = "jQuery('#{$elementId}').html(LEMfixnum(\n";
-        $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
+        $jsParts[] = $this->GetJavaScriptEquivalentOfExpression(true);
         $jsParts[] = "));\n";
         // Add an event after html is updated (see #11937 and really good helper for template manager)
         $jsParts[] = "jQuery('#{$elementId}').trigger('html:updated');\n"; // See http://learn.jquery.com/events/introduction-to-custom-events/#naming-custom-events for colons in name
