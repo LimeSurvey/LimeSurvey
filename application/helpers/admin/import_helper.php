@@ -2391,6 +2391,21 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (isset($insertdata['surveyls_email_confirm'])) {
                 $insertdata['surveyls_email_confirm'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_confirm']);
             }
+            if (isset($insertdata['surveyls_endtext'])) {
+                $insertdata['surveyls_endtext'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_endtext']);
+            }
+            if (isset($insertdata['surveyls_policy_notice'])) {
+                $insertdata['surveyls_policy_notice'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_policy_notice']);
+            }
+            if (isset($insertdata['surveyls_policy_error'])) {
+                $insertdata['surveyls_policy_error'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_policy_error']);
+            }
+            if (isset($insertdata['email_admin_notification'])) {
+                $insertdata['email_admin_notification'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['email_admin_notification']);
+            }
+            if (isset($insertdata['email_admin_responses'])) {
+                $insertdata['email_admin_responses'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['email_admin_responses']);
+            }
         } else {
             if (checkOldLinks('survey', $iOldSID, $insertdata['surveyls_title'])) {
                 $results['importwarnings'][] = gT("Survey title has outdated links.");
@@ -2415,6 +2430,21 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             if (isset($insertdata['surveyls_email_confirm']) && checkOldLinks('survey', $iOldSID, $insertdata['surveyls_email_confirm'])) {
                 $results['importwarnings'][] = gT("Confirmation email template has outdated links.");
+            }
+            if (isset($insertdata['surveyls_endtext']) && checkOldLinks('survey', $iOldSID, $insertdata['surveyls_endtext'])) {
+                $results['importwarnings'][] = gT("End text has outdated links.");
+            }
+            if (isset($insertdata['surveyls_policy_notice']) && checkOldLinks('survey', $iOldSID, $insertdata['surveyls_policy_notice'])) {
+                $results['importwarnings'][] = gT("Data policy notice has outdated links.");
+            }
+            if (isset($insertdata['surveyls_policy_error']) && checkOldLinks('survey', $iOldSID, $insertdata['surveyls_policy_error'])) {
+                $results['importwarnings'][] = gT("Data policy error message has outdated links.");
+            }
+            if (isset($insertdata['email_admin_notification']) && checkOldLinks('survey', $iOldSID, $insertdata['email_admin_notification'])) {
+                $results['importwarnings'][] = gT("Basic admin notification email template has outdated links.");
+            }
+            if (isset($insertdata['email_admin_responses']) && checkOldLinks('survey', $iOldSID, $insertdata['email_admin_responses'])) {
+                $results['importwarnings'][] = gT("Detailed admin notification email template has outdated links.");
             }
         }
 

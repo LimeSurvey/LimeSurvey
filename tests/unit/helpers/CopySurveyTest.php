@@ -4,10 +4,14 @@ namespace ls\tests\unit\helpers;
 
 use LimeSurvey\Models\Services\CopySurveyOptions;
 use ls\tests\TestBaseClass;
+use Answer;
+use AnswerL10n;
 use PluginSetting;
 use Question;
 use QuestionAttribute;
+use QuestionL10n;
 use Survey;
+use SurveyLanguageSetting;
 
 class CopySurveyTest extends TestBaseClass
 {
@@ -161,6 +165,77 @@ class CopySurveyTest extends TestBaseClass
             foreach ($languageValues as $language => $value) {
                 QuestionAttribute::model()->setQuestionAttributeWithLanguage($sourceQuestion->qid, 'printable_help', '', $language);
             }
+        }
+    }
+
+    /**
+     * Test that links to the survey upload folder are adjusted to the new survey id
+     * in answer options, subquestion help texts and the survey end text.
+     *
+     * Regression test for issue #18701.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testCopySurveyTranslatesResourceLinks()
+    {
+        $survey = Survey::model()->findByPk(self::$testSurvey->sid);
+        $link = static function ($surveyId) {
+            return '<img src="/upload/surveys/' . $surveyId . '/images/test.png" />';
+        };
+
+        $answerL10n = AnswerL10n::model()->find(
+            'aid IN (SELECT aid FROM {{answers}} a JOIN {{questions}} q ON q.qid = a.qid WHERE q.sid = :sid)',
+            [':sid' => $survey->sid]
+        );
+        $this->assertNotNull($answerL10n, 'Expected the test survey to contain an answer option.');
+        $subquestion = Question::model()->find('sid = :sid AND parent_qid > 0', [':sid' => $survey->sid]);
+        $this->assertNotNull($subquestion, 'Expected the test survey to contain a subquestion.');
+        $subquestionL10n = QuestionL10n::model()->findByAttributes(['qid' => $subquestion->qid]);
+        $languageSetting = SurveyLanguageSetting::model()->findByAttributes(['surveyls_survey_id' => $survey->sid]);
+
+        $originalValues = [$answerL10n->answer, $subquestionL10n->help, $languageSetting->surveyls_endtext];
+        $answerL10n->answer = $link($survey->sid);
+        $this->assertTrue($answerL10n->save());
+        $subquestionL10n->help = $link($survey->sid);
+        $this->assertTrue($subquestionL10n->save());
+        $languageSetting->surveyls_endtext = $link($survey->sid);
+        $this->assertTrue($languageSetting->save());
+
+        $copiedSurvey = null;
+        try {
+            $result = $this->copySurvey($survey);
+            $this->assertEquals($result->getErrors(), []);
+            $copiedSurvey = $result->getCopiedSurvey();
+            $this->assertNotNull($copiedSurvey);
+
+            $copiedAnswerL10n = AnswerL10n::model()->find(
+                'language = :language AND aid IN (SELECT aid FROM {{answers}} a JOIN {{questions}} q ON q.qid = a.qid WHERE q.sid = :sid AND a.code = :code)',
+                [':sid' => $copiedSurvey->sid, ':code' => Answer::model()->findByPk($answerL10n->aid)->code, ':language' => $answerL10n->language]
+            );
+            $this->assertNotNull($copiedAnswerL10n);
+            $this->assertStringContainsString('/upload/surveys/' . $copiedSurvey->sid . '/', $copiedAnswerL10n->answer);
+
+            $copiedSubquestion = Question::model()->findByAttributes(['sid' => $copiedSurvey->sid, 'title' => $subquestion->title]);
+            $copiedSubquestionL10n = QuestionL10n::model()->findByAttributes([
+                'qid' => $copiedSubquestion->qid,
+                'language' => $subquestionL10n->language,
+            ]);
+            $this->assertStringContainsString('/upload/surveys/' . $copiedSurvey->sid . '/', $copiedSubquestionL10n->help);
+
+            $copiedLanguageSetting = SurveyLanguageSetting::model()->findByPk([
+                'surveyls_survey_id' => $copiedSurvey->sid,
+                'surveyls_language' => $languageSetting->surveyls_language,
+            ]);
+            $this->assertStringContainsString('/upload/surveys/' . $copiedSurvey->sid . '/', $copiedLanguageSetting->surveyls_endtext);
+        } finally {
+            if ($copiedSurvey instanceof Survey) {
+                $copiedSurvey->delete();
+            }
+            [$answerL10n->answer, $subquestionL10n->help, $languageSetting->surveyls_endtext] = $originalValues;
+            $answerL10n->save();
+            $subquestionL10n->save();
+            $languageSetting->save();
         }
     }
 
