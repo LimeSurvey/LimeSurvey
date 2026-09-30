@@ -24,6 +24,38 @@ class LSActiveRecord extends CActiveRecord
 
     public $bEncryption = false;
 
+    /** @var array Attribute values as loaded from the database, used to detect modified attributes */
+    private $loadedAttributes = [];
+
+    /**
+     * Keep a copy of the attributes as loaded from the database, to detect later which ones were modified
+     *
+     * @return void
+     */
+    protected function afterFind()
+    {
+        parent::afterFind();
+        $this->loadedAttributes = $this->getAttributes();
+    }
+
+    /**
+     * Whether an attribute was modified compared to the value loaded from the database.
+     * New records, and attributes not loaded from the database, count as modified.
+     *
+     * @param string $name The attribute name
+     * @return boolean
+     */
+    public function isAttributeModifiedFromStored($name)
+    {
+        if ($this->getIsNewRecord()) {
+            return true;
+        }
+        if (!array_key_exists($name, $this->loadedAttributes)) {
+            return true;
+        }
+        return (string) $this->loadedAttributes[$name] !== (string) $this->$name;
+    }
+
     /**
      * Lists the behaviors of this model
      *
