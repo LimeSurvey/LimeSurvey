@@ -36,7 +36,7 @@ export const BrowserDetectionTextAnswer = ({ attributes = {} }) => {
             disabled={true}
           />
         </Form.Group>
-        {attributes.suffix && (
+        {attributes.suffix?.value && (
           <ContentEditor disabled={true} value={attributes.suffix?.value} />
         )}
       </div>

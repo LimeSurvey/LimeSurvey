@@ -34,6 +34,10 @@ class RenderMap extends QuestionBaseRenderer
         $iMapService = (int) ($this->getQuestionAttribute('location_mapservice') ?? 100);
         $currentLocation = $this->mSessionValue !== '' ? $this->mSessionValue : null;
 
+        if ($iMapService === 1 && empty(sanitize_googleapikey(App()->getConfig('googleMapsAPIKey')))) {
+            $iMapService = 100;
+        }
+
         if ($iMapService == 1) {
             $answer = $this->renderGoogleMap($coreClass, $currentLocation, $iMapService);
         } else {
@@ -266,12 +270,14 @@ class RenderMap extends QuestionBaseRenderer
         $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
         if ($ipInfoDbAPIKey) {
             // ipinfodb.com needs a key
-            $oXML = simplexml_load_file("http://api.ipinfodb.com/v3/ip-city/?key=$ipInfoDbAPIKey&ip=$sIPAddress&format=xml");
-            if ($oXML->{'statusCode'} == "OK") {
+            $context = stream_context_create(['http' => ['timeout' => 3]]);
+            $sXML = file_get_contents("http://api.ipinfodb.com/v3/ip-city/?key=$ipInfoDbAPIKey&ip=$sIPAddress&format=xml", false, $context);
+            $oXML = $sXML !== false ? simplexml_load_string($sXML) : false;
+            if ($oXML !== false && $oXML->{'statusCode'} == "OK") {
                 $lat = (float) $oXML->{'latitude'};
                 $lng = (float) $oXML->{'longitude'};
 
-                return(array($lat, $lng));
+                return (array($lat, $lng));
             } else {
                 return false;
             }
