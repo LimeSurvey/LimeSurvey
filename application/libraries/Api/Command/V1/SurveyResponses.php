@@ -312,12 +312,21 @@ class SurveyResponses implements CommandInterface
      * @param Request $request
      * @throws \InvalidArgumentException on a malformed or unresolvable filter,
      *     which the command turns into a bad request rather than a 500.
+     * @throws PermissionDeniedException when a participant filter is sent by a
+     *     caller who may not read the survey's participants.
      */
     protected function applyFilterSet(\LSDbCriteria &$criteria, Request $request): void
     {
         $filterSet = ResponseFilterSet::fromRequestValue($request->getData('filterSet', null));
         if ($filterSet->isEmpty()) {
             return;
+        }
+
+        if (
+            $filterSet->hasParticipantFilter()
+            && !$this->permission->hasSurveyPermission($this->getSurveyId($request), 'tokens')
+        ) {
+            throw new PermissionDeniedException();
         }
 
         $resolver = new ResponseFilterResolver(

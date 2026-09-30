@@ -65,6 +65,21 @@ class ResponseFilterSet
         return $this->filters === [];
     }
 
+    /**
+     * Whether any row filters on participant data, which lives in the survey's
+     * token table and is read under a permission of its own.
+     */
+    public function hasParticipantFilter(): bool
+    {
+        foreach ($this->filters as $filter) {
+            if ($filter->getSource() === ResponseFilter::SOURCE_PARTICIPANT) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function count(): int
     {
         return count($this->filters);

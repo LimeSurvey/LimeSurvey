@@ -197,4 +197,29 @@ class ResponseFilterSetTest extends TestCase
         $this->assertNull($filter->getNumberMin());
         $this->assertNull($filter->getNumberMax());
     }
+
+    /**
+     * The command reads this to decide whether the caller needs permission to
+     * read the survey's participants, so it has to see a participant row
+     * wherever it sits in the set.
+     */
+    public function testReportsWhetherTheSetReadsParticipantData(): void
+    {
+        $without = ResponseFilterSet::fromRequestValue([
+            ['source' => 'question', 'qid' => 42, 'answerCodes' => ['Y']],
+            ['source' => 'surveyData', 'field' => 'id', 'numberMin' => 1],
+        ]);
+        $this->assertFalse($without->hasParticipantFilter());
+
+        $with = ResponseFilterSet::fromRequestValue([
+            ['source' => 'question', 'qid' => 42, 'answerCodes' => ['Y']],
+            ['source' => 'participant', 'attribute' => 'email', 'value' => 'a@b.c'],
+        ]);
+        $this->assertTrue($with->hasParticipantFilter());
+    }
+
+    public function testAnEmptySetReadsNoParticipantData(): void
+    {
+        $this->assertFalse(ResponseFilterSet::fromRequestValue([])->hasParticipantFilter());
+    }
 }
