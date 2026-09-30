@@ -513,7 +513,15 @@ class Statistics extends SurveyCommonAction
 
 
     /**
-     *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
+     * Returns a simple list of values in a particular column, that meet the requirements of the SQL
+     *
+     * @param int    $surveyid   Survey ID
+     * @param string $column     Response table column to list
+     * @param string $sortby     Response table column to sort by (optional)
+     * @param string $sortmethod Sort direction, ASC or DESC (optional)
+     * @param string $sorttype   N for numerical sorting, T for text sorting (optional)
+     * @return void
+     * @throws CHttpException 403 without statistics read permission, 400 on invalid parameters
      */
     public function listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
@@ -523,6 +531,15 @@ class Statistics extends SurveyCommonAction
         // Break for sortmethod bad parameter (mantis #20145)
         $sortmethod = strtoupper($sortmethod);
         if ($sortmethod && !in_array($sortmethod, ['ASC', 'DESC'])) {
+            throw new CHttpException(400, gT("Invalid request."));
+        }
+        // Only real response table columns may be listed or sorted by (mantis #20741)
+        $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
+        if (
+            !in_array($column, $validColumns, true)
+            || ($sortby !== '' && !in_array($sortby, $validColumns, true))
+            || !in_array($sorttype, ['', 'N', 'T'], true)
+        ) {
             throw new CHttpException(400, gT("Invalid request."));
         }
         Yii::app()->loadHelper('admin.statistics');

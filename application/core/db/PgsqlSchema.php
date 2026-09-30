@@ -75,6 +75,32 @@ class PgsqlSchema extends CPgsqlSchema
         );
     }
 
+    /**
+     * Quotes a table name for use in a query.
+     * Unlike the Yii parent, any embedded double quote is escaped by doubling it, so a
+     * name cannot break out of the quoted identifier (mantis #20741).
+     *
+     * @param string $name table name
+     * @return string the properly quoted table name
+     */
+    public function quoteSimpleTableName($name)
+    {
+        return '"' . str_replace('"', '""', (string) $name) . '"';
+    }
+
+    /**
+     * Quotes a column name for use in a query.
+     * Unlike the Yii parent, any embedded double quote is escaped by doubling it, so a
+     * name cannot break out of the quoted identifier (mantis #20741).
+     *
+     * @param string $name column name
+     * @return string the properly quoted column name
+     */
+    public function quoteSimpleColumnName($name)
+    {
+        return '"' . str_replace('"', '""', (string) $name) . '"';
+    }
+
 	/**
 	 * Creates a command builder for the database.
 	 * This method may be overridden by child classes to create a DBMS-specific command builder.
