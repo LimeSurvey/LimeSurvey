@@ -32,12 +32,9 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
 
         [$minParam, $maxParam] = array_keys($criteria->params);
-        // Condition should cast and use both Min and Max placeholders
-        $this->assertFieldConditions(
-            $criteria->condition,
-            "CAST([0] AS UNSIGNED) BETWEEN $minParam AND $maxParam",
-            ['id']
-        );
+        // The column is read as a number, and both bounds are placeholders.
+        $this->assertFieldConditions($criteria->condition, '[0]', ['id']);
+        $this->assertStringContainsString("BETWEEN $minParam AND $maxParam", $criteria->condition);
         $this->assertSame(
             [$minParam => 10.0, $maxParam => 25.0],
             $criteria->params
@@ -52,7 +49,7 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
         $minParam = array_key_first($criteria->params);
-        $this->assertFieldConditions($criteria->condition, "CAST([0] AS UNSIGNED) >= $minParam", ['score']);
+        $this->assertFieldConditions($criteria->condition, ">= $minParam", ['score']);
         $this->assertSame([$minParam => 7.0], $criteria->params);
     }
 
@@ -64,7 +61,7 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
         $maxParam = array_key_first($criteria->params);
-        $this->assertFieldConditions($criteria->condition, "CAST([0] AS UNSIGNED) <= $maxParam", ['score']);
+        $this->assertFieldConditions($criteria->condition, "<= $maxParam", ['score']);
         $this->assertSame([$maxParam => 42.0], $criteria->params);
     }
 
@@ -85,7 +82,7 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
         [$minParam, $maxParam] = array_keys($criteria->params);
         $this->assertFieldConditions(
             $criteria->condition,
-            "CAST([0] AS UNSIGNED) BETWEEN $minParam AND $maxParam",
+            "BETWEEN $minParam AND $maxParam",
             ['idDROPTABLEresponses--']
         );
 
@@ -146,18 +143,74 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
     }
 
     /**
-     * Ensure the condition always casts to UNSIGNED (as implemented).
+     * An unsigned integer cast truncated 2.5 to 2 and wrapped -3 to
+     * 18446744073709551613, so answers were compared against a number nobody
+     * asked for. The cast has to be exact and signed.
      */
-    public function testConditionUsesUnsignedCast(): void
+    public function testConditionCastsToAnExactSignedDecimal(): void
     {
         $handler = new RangeConditionHandler();
 
         $criteria = $handler->execute('numeric_field', ['5', '15']);
-        [$minParam, $maxParam] = array_keys($criteria->params);
-        $this->assertFieldConditions(
-            $criteria->condition,
-            "CAST([0] AS UNSIGNED) BETWEEN $minParam AND $maxParam",
-            ['numeric_field']
-        );
+
+        $this->assertStringContainsString('DECIMAL(30,10)', $criteria->condition);
+        $this->assertStringNotContainsString('UNSIGNED', $criteria->condition);
+    }
+
+    /**
+     * A cell that is not a number has to drop out of the range. MySQL reads
+     * such a cell as 0, which otherwise pulls every blank and every piece of
+     * junk into any range spanning zero.
+     */
+    public function testNonNumericCellsAreExcluded(): void
+    {
+        $handler = new RangeConditionHandler();
+
+        $criteria = $handler->execute('numeric_field', ['-1', '1']);
+
+        $this->assertStringContainsString('CASE WHEN', $criteria->condition);
+        $this->assertStringContainsString('REGEXP', $criteria->condition);
+    }
+
+    /**
+     * Postgres will not read text as a number on its own and fails the whole
+     * query on a cell it cannot convert, so the test happens inside CASE and
+     * the column is read as text before it is matched.
+     */
+    public function testPostgresGuardsTheCastInsideCase(): void
+    {
+        $criteria = $this->handlerFor('pgsql')->execute('numeric_field', ['5', '15']);
+
+        $this->assertStringContainsString('CASE WHEN CAST', $criteria->condition);
+        $this->assertStringContainsString('AS TEXT) ~ ', $criteria->condition);
+        $this->assertStringContainsString('DECIMAL(30,10)', $criteria->condition);
+        $this->assertStringNotContainsString('REGEXP', $criteria->condition);
+    }
+
+    /** MSSQL answers with NULL by itself, so it needs no guard of its own. */
+    public function testMssqlUsesTryCast(): void
+    {
+        $criteria = $this->handlerFor('sqlsrv')->execute('numeric_field', ['5', '15']);
+
+        $this->assertStringContainsString('TRY_CAST', $criteria->condition);
+        $this->assertStringNotContainsString('CASE WHEN', $criteria->condition);
+    }
+
+    /** The per-driver branches are otherwise only reachable on those drivers. */
+    private function handlerFor(string $driver): RangeConditionHandler
+    {
+        return new class ($driver) extends RangeConditionHandler {
+            private string $driver;
+
+            public function __construct(string $driver)
+            {
+                $this->driver = $driver;
+            }
+
+            protected function driverName(): string
+            {
+                return $this->driver;
+            }
+        };
     }
 }
