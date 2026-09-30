@@ -5,6 +5,7 @@ namespace helpers;
 use LimeSurvey\Models\Services\CopySurveyOptions;
 use ls\tests\TestBaseClass;
 use PluginSetting;
+use Question;
 use Survey;
 use SurveyURLParameter;
 
