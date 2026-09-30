@@ -9,8 +9,10 @@ import useAuth from './useAuth'
 
 // A failed request resolves with the normalized error rather than rejecting,
 // so the payload has to be told apart from a real answer. Only errors carry an
-// http status.
-const isApiError = (payload) => Boolean(payload && payload.httpStatus)
+// http status — and the status is 0 when the request never reached the server,
+// so the key has to be looked for rather than read for truth.
+const isApiError = (payload) =>
+  typeof payload === 'object' && payload !== null && 'httpStatus' in payload
 
 export function useResponses(
   surveyId,
@@ -28,6 +30,7 @@ export function useResponses(
   const {
     data: payload,
     isFetching,
+    isPlaceholderData,
     refetch,
   } = useQuery({
     // filterSet is part of the key, so changing the filter refetches rather
@@ -74,13 +77,18 @@ export function useResponses(
   // otherwise leave the page with an error object where the rows should be —
   // either read as responses and crash, or withheld and leave the page loading
   // forever. Keeping the previous rows lets the message explain itself.
-  const lastResponses = useRef(undefined)
-  if (!error && payload) {
-    lastResponses.current = payload
+  const lastResponses = useRef({ surveyId: null, payload: undefined })
+  if (!error && payload && !isPlaceholderData) {
+    lastResponses.current = { surveyId, payload }
   }
 
+  const previous =
+    lastResponses.current.surveyId === surveyId
+      ? lastResponses.current.payload
+      : undefined
+
   return {
-    responses: error ? lastResponses.current : payload,
+    responses: error ? previous : payload,
     error,
     isFetching,
     refetch,

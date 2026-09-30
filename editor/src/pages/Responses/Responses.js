@@ -283,20 +283,32 @@ export const Responses = () => {
     }
   }
 
+  // Nothing to show yet. When the very first request is the one that failed
+  // there are no earlier rows to fall back on, and a loader that never resolves
+  // would read as "still working" — so the reason takes its place. The Toaster
+  // lives here too, or the message the effect above raises has nowhere to go.
   if (!survey?.sid || !responses) {
     return (
-      <>
-        <div
-          style={{ height: '100vh' }}
-          className="d-flex flex-column justify-content-center align-items-center"
-        >
-          <span
-            style={{ width: 48, height: 48 }}
-            className="loader mb-4"
-          ></span>
-          <h1 className="">{t('Loading responses...')}</h1>
-        </div>
-      </>
+      <div
+        style={{ height: '100vh' }}
+        className="d-flex flex-column justify-content-center align-items-center"
+      >
+        <Toaster />
+        {responsesError ? (
+          <>
+            <h1 className="">{t('Responses could not be loaded')}</h1>
+            <p className="mt-2">{responsesError.message}</p>
+          </>
+        ) : (
+          <>
+            <span
+              style={{ width: 48, height: 48 }}
+              className="loader mb-4"
+            ></span>
+            <h1 className="">{t('Loading responses...')}</h1>
+          </>
+        )}
+      </div>
     )
   }
 
