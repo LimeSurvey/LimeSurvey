@@ -19,6 +19,7 @@ use Permission;
 use SurveyLanguageSetting;
 use SurveyURLParameter;
 use Template;
+use TemplateConfiguration;
 use Yii;
 use Answer;
 
@@ -87,6 +88,7 @@ class CopySurvey
                 throw new \Exception(gT("Failed to copy survey"));
             }
 
+            $this->copySurveyThemeConfigurations($destinationSurvey);
             //this call is necessary to prevent errors when copying the survey with the configured template
             Template::model()->getTemplateConfiguration(null, $destinationSurvey->sid)->getApiVersion();
             $this->copySurveyPluginSettings($destinationSurvey);
@@ -370,6 +372,43 @@ class CopySurvey
             $cntCopiedUrlParameters++;
         }
         $copySurveyResult->setCntUrlParameters($cntCopiedUrlParameters);
+    }
+
+    /**
+     * Copy the survey-specific theme options to the destination survey.
+     *
+     * Mirrors the survey import (see TemplateManifest::importManifestLss()): only the
+     * theme options are copied, all other settings are set to inherit, and configurations
+     * of themes which are no longer installed are skipped.
+     *
+     * @param Survey $destinationSurvey
+     * @return void
+     * @throws PersistErrorException
+     */
+    private function copySurveyThemeConfigurations($destinationSurvey)
+    {
+        $sourceConfigurations = TemplateConfiguration::model()->findAllByAttributes([
+            'sid' => $this->sourceSurvey->sid,
+        ]);
+
+        foreach ($sourceConfigurations as $sourceConfiguration) {
+            if (!Template::checkIfTemplateExists($sourceConfiguration->template_name)) {
+                continue;
+            }
+            $destinationConfiguration = new TemplateConfiguration();
+            $destinationConfiguration->setToInherit();
+            $destinationConfiguration->template_name = $sourceConfiguration->template_name;
+            $destinationConfiguration->sid = $destinationSurvey->sid;
+            $destinationConfiguration->options = $sourceConfiguration->options;
+
+            if (!$destinationConfiguration->save()) {
+                throw new PersistErrorException(
+                    gT("Failed to copy survey theme options")
+                    . ': '
+                    . json_encode($destinationConfiguration->getErrors())
+                );
+            }
+        }
     }
 
     /**
