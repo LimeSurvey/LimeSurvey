@@ -43,6 +43,10 @@
     background: $g-100;
   }
 
+  span .form-control[disabled] {
+    color: $g-700;
+  }
+
   .qe-input-icon-right {
     transform: translate(0, -50%);
   }
@@ -84,6 +88,12 @@
 
 .customize-button-container.disable-settings {
   color: $g-400;
+}
+
+.survey-alias-actions {
+  display: flex;
+  justify-content: end;
+  gap: 12px;
 }
 
 .social-cards-wrapper {
