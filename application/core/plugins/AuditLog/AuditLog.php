@@ -650,14 +650,17 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         // Disable the control for non-superadmin users to prevent them from disabling audit
         $oCurrentUser = $this->api->getCurrentUser();
         $allowNonSuperDisable = isset($pluginsettings['AuditLog_AllowNonSuperadminDisable']['current']) && $pluginsettings['AuditLog_AllowNonSuperadminDisable']['current'] == 1;
-        if ($oCurrentUser && !$allowNonSuperDisable && !Permission::model()->hasGlobalPermission('superadmin', 'read', $oCurrentUser->uid)) {
+
+        $isSuperAdmin = $oCurrentUser
+            && Permission::model()->hasGlobalPermission('superadmin', 'read', $oCurrentUser->uid);
+
+        if (!$allowNonSuperDisable && !$isSuperAdmin) {
             $auditingSetting['htmlOptions'] = array('disabled' => 'disabled');
             $auditingSetting['help'] = gT('Only superadmins can disable the audit log for a survey.');
-        } elseif ($oCurrentUser && $allowNonSuperDisable && !Permission::model()->hasGlobalPermission('superadmin', 'read', $oCurrentUser->uid)) {
-            // If non-superadmins are allowed to disable auditing, provide a hint about permissions
+        } elseif ($allowNonSuperDisable && !$isSuperAdmin) {
             $auditingSetting['help'] = gT('You can disable the audit log for surveys where you have survey settings update permission.');
         }
-
+        
         $event->set("surveysettings.{$this->id}", array(
             'name' => get_class($this),
             'settings' => array(
