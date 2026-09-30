@@ -221,7 +221,10 @@ export const SurveyLogicProvider = ({ children }) => {
       setIsPatchSurveyRunning(false)
 
       // maybe there's some delayed operations.
-      if (operationsBuffer.isEmpty() && surveyRefreshRequired) {
+      const pendingOperations = new OperationsBuffer(
+        queryClient.getQueryData([STATES.BUFFER])
+      )
+      if (pendingOperations.isEmpty() && surveyRefreshRequired) {
         fetchSurvey(surveyId)
         setSurveyRefreshRequired(false)
       }
