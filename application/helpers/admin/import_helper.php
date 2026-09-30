@@ -13,6 +13,7 @@
 */
 
 use LimeSurvey\Helpers\questionHelper;
+use LimeSurvey\Models\Services\GenderQuestionConverter;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
@@ -154,6 +155,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
     /** @var Question[] */
     $importedQuestions = [];
+    $legacyGenderQids = [];
     $results['questions'] = 0;
     if (isset($xml->questions)) {
         foreach ($xml->questions->rows->row as $row) {
@@ -191,6 +193,10 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 $sScenario = 'archiveimport';
             } else {
                 $sScenario = 'import';
+            }
+
+            if (convertLegacyGenderQuestionType($insertdata)) {
+                $legacyGenderQids[$iOldQID] = $iOldQID;
             }
 
             $oQuestion = new Question($sScenario);
@@ -594,6 +600,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $importlanguages, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
+    finalizeLegacyGenderQuestions($legacyGenderQids, $aQIDReplacements, $results);
     // Batch process INSERTANS conversions to minimize database writes
     processPendingInsertansUpdates($pendingInsertansUpdates, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
     savePendingInsertansUpdates($pendingInsertansUpdates);
@@ -729,6 +736,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     }
 
     $importedQuestions = array();
+    $legacyGenderQids = [];
 
     foreach ($xml->questions->rows->row as $row) {
         $insertdata = array();
@@ -758,6 +766,10 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             unset($insertdata['question']);
             unset($insertdata['help']);
             unset($insertdata['language']);
+        }
+
+        if (convertLegacyGenderQuestionType($insertdata)) {
+            $legacyGenderQids[$iOldQID] = $iOldQID;
         }
 
         $oQuestion = new Question('import');
@@ -1199,6 +1211,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
+    finalizeLegacyGenderQuestions($legacyGenderQids, $aQIDReplacements, $results);
 
     LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
 
@@ -2608,6 +2621,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $oldQIDGIDMap = [];
     /** @var Question[] */
     $importedQuestions = [];
+    $legacyGenderQids = [];
     if (isset($xml->questions)) {
         // There could be surveys without a any questions.
         foreach ($xml->questions->rows->row as $row) {
@@ -2654,6 +2668,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $sScenario = 'archiveimport';
             } else {
                 $sScenario = 'import';
+            }
+
+            if (convertLegacyGenderQuestionType($insertdata)) {
+                $legacyGenderQids[$iOldQID] = $iOldQID;
             }
 
             $oQuestion = new Question($sScenario);
@@ -3178,6 +3196,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
+    finalizeLegacyGenderQuestions($legacyGenderQids, $aQIDReplacements, $results);
 
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
 
@@ -5390,6 +5409,7 @@ function handleLegacyRankingAnswers(
  *
  * @param array      $insertdata        Subquestion data row (by reference)
  * @param Question[] $importedQuestions Already-imported parent questions keyed by new qid
+ * @return void
  */
 function convertRankingSubquestionType(array &$insertdata, array $importedQuestions): void
 {
@@ -5398,5 +5418,57 @@ function convertRankingSubquestionType(array &$insertdata, array $importedQuesti
         && $importedQuestions[$insertdata['parent_qid']]->type === Question::QT_R_RANKING
     ) {
         $insertdata['type'] = Question::QT_R_RANKING;
+    }
+}
+
+/**
+ * Switch a question row of the removed Gender question type to List (radio),
+ * so it can be saved. The answer options are added by finalizeLegacyGenderQuestions()
+ * once the question attributes are imported.
+ *
+ * @param array $insertdata Question data row (by reference)
+ * @return bool True if the row was a Gender question
+ */
+function convertLegacyGenderQuestionType(array &$insertdata): bool
+{
+    if (($insertdata['type'] ?? '') !== GenderQuestionConverter::LEGACY_TYPE || !empty($insertdata['parent_qid'])) {
+        return false;
+    }
+    $insertdata['type'] = Question::QT_L_LIST;
+    return true;
+}
+
+/**
+ * Complete the conversion of imported Gender questions into List (radio) questions
+ * and add an import warning about it.
+ *
+ * @param array $legacyGenderQids  Old question IDs of the imported Gender questions
+ * @param array $aQIDReplacements  Mapping of old to new question IDs
+ * @param array $results           Import results (by reference)
+ * @return void
+ */
+function finalizeLegacyGenderQuestions(array $legacyGenderQids, array $aQIDReplacements, array &$results): void
+{
+    if (empty($legacyGenderQids)) {
+        return;
+    }
+    $converter = new GenderQuestionConverter(Yii::app()->db);
+    $questionCodes = [];
+    foreach ($legacyGenderQids as $iOldQID) {
+        if (!isset($aQIDReplacements[$iOldQID])) {
+            continue;
+        }
+        $oQuestion = Question::model()->findByPk($aQIDReplacements[$iOldQID]);
+        if (empty($oQuestion)) {
+            continue;
+        }
+        $converter->convertQuestion((int) $oQuestion->qid, (int) $oQuestion->sid);
+        $questionCodes[] = CHtml::encode($oQuestion->title);
+    }
+    if (!empty($questionCodes)) {
+        $results['importwarnings'][] = sprintf(
+            gT("The Gender question type is no longer available. These questions were converted to List (radio) questions with the answer options Female and Male: %s"),
+            implode(', ', $questionCodes)
+        );
     }
 }

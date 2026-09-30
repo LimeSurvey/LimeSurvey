@@ -6,7 +6,6 @@ import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from 'tests/testUtils'
 
 import { FivePointChoiceQuestion } from './FivePointChoiceQuestion/FivePointChoiceQuestion'
-import { GenderQuestion } from './GenderQuestion/GenderQuestion'
 import { OptionQuestionViewMode } from './QuestionModes/OptionQuestionViewMode'
 import { YesNoQuestion } from './YesNoQuestion/YesNoQuestion'
 import { getQuestionTypeInfo } from './getQuestionTypeInfo'
@@ -96,7 +95,7 @@ describe('No answer preselection', () => {
     const user = userEvent.setup()
 
     await renderWithProviders(
-      <GenderQuestion
+      <YesNoQuestion
         question={{ ...question, attributes: { display_type: '1' } }}
         surveySettings={{ showNoAnswer: true, preselectNoAnswer: false }}
         values={[{ key: 'field', value: null }]}
@@ -125,14 +124,6 @@ describe('No answer preselection', () => {
     [
       'Yes/No',
       YesNoQuestion,
-      {
-        question: { ...question, attributes: { display_type: '1' } },
-        values: [{ key: 'field', value: null }],
-      },
-    ],
-    [
-      'gender',
-      GenderQuestion,
       {
         question: { ...question, attributes: { display_type: '1' } },
         values: [{ key: 'field', value: null }],

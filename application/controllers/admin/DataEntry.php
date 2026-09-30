@@ -24,7 +24,6 @@
 *D - Date
 *E - Array (Increase, Same, Decrease)
 *F - Array
-*G - Gender
 *H - Array by Column
 *I - Language Switch
 *K - Multiple numerical input
@@ -824,14 +823,6 @@ class DataEntry extends SurveyCommonAction
                             }
                             $questionInputs[$fname['fieldname']] = CHtml::dateTimeLocalField($fname['fieldname'], $thisdate);
                         }
-                        break;
-                    case Question::QT_G_GENDER: //GENDER drop-down list
-                        $select_options = array(
-                        '' => gT("Please choose") . '...',
-                        'F' => gT("Female"),
-                        'M' => gT("Male")
-                        );
-                        $questionInputs[$fname['fieldname']] = CHtml::listBox($fname['fieldname'], $idrow[$fname['fieldname']], $select_options);
                         break;
                     case Question::QT_L_LIST: //LIST drop-down
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List (Radio)

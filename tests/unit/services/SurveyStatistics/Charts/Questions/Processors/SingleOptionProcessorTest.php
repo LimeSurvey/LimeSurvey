@@ -11,6 +11,13 @@ class SingleOptionProcessorTest extends TestCase
 {
     use ResponseAggregateBatchTestHelper;
 
+    /**
+     * Create a processor for a single question of the given type.
+     *
+     * @param string $type The question type
+     * @param string $other Whether the question has an "other" option ('Y' or 'N')
+     * @return SingleOptionProcessor
+     */
     private function makeProcessor(string $type, string $other = 'N'): SingleOptionProcessor
     {
         $processor = new SingleOptionProcessor();
@@ -26,17 +33,6 @@ class SingleOptionProcessorTest extends TestCase
         $processor->setBatch(new ResponseAggregateBatch(1));
 
         return $processor;
-    }
-
-    /**
-     * @testdox process() builds Female/Male/NoAnswer items for gender questions
-     */
-    public function testHandleGender()
-    {
-        $plan = $this->makeProcessor(Question::QT_G_GENDER)->process();
-
-        $this->assertSame(['Female', 'Male', 'NoAnswer'], $plan['legend']);
-        $this->assertSame(['F', 'M', 'NoAnswer'], array_column($plan['data'], 'key'));
     }
 
     /**

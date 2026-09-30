@@ -26,19 +26,6 @@ export const FileUpload = () => {
   return <QuestionPreview question={fileUploadQuestion} />
 }
 
-const genderQuestion = mockQuestionTypeWithSettings(
-  getQuestionTypeInfo().GENDER
-)
-
-export const Gender = () => {
-  return (
-    <QuestionPreview
-      question={genderQuestion}
-      surveySettings={genderQuestion.surveySettings}
-    />
-  )
-}
-
 const multipleNumericalInputsQuestion = mockQuestionType(
   getQuestionTypeInfo().MULTIPLE_NUMERICAL_INPUTS
 )

@@ -108,6 +108,7 @@ function quoteSPSS($sText, $sQuoteChar, $aField)
  * @param string $q sep Quote separator. Use ' for SPSS, " for R
  * @param bool $header logical $header If TRUE, adds SQGA code as column headings (used by export to R)
  * @param string $sLanguage
+ * @return void
  */
 function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '', $q = '\'', $header = false, $sLanguage = '')
 {
@@ -194,17 +195,6 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                             echo quoteSPSS($na, $q, $field);
                         }
                         break;
-                    case 'G': //Gender
-                        if ($row[$fieldno] === 'F') {
-                            echo quoteSPSS('1', $q, $field);
-                        } elseif ($row[$fieldno] === 'M') {
-                            echo quoteSPSS('2', $q, $field);
-                        } elseif ($row[$fieldno] === '') {
-                            echo quoteSPSS($sEmptyAnswerValue, $q, $field);
-                        } else {
-                            echo quoteSPSS($na, $q, $field);
-                        }
-                        break;
                     case 'C': //Yes/No/Uncertain
                         if ($row[$fieldno] === 'Y') {
                             echo quoteSPSS('1', $q, $field);
@@ -277,7 +267,8 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
 /**
  * Check it the gives field has a labelset and return it as an array if true
  *
- * @param $field array field from SPSSFieldMap
+ * @param array $field field from SPSSFieldMap
+ * @param array|null $qidattributes The question attributes, loaded from the database if null
  * @param string $language
  * @return array|bool
  */
@@ -399,10 +390,6 @@ function SPSSGetValues($field, $qidattributes, $language)
             $answers[] = array('code' => 0, 'value' => gT('Not selected'));
         }
     }
-    if ($field['LStype'] == "G") {
-        $answers[] = array('code' => 1, 'value' => gT('Female'));
-        $answers[] = array('code' => 2, 'value' => gT('Male'));
-    }
     if ($field['LStype'] == "Y") {
         $answers[] = array('code' => 1, 'value' => gT('Yes'));
         $answers[] = array('code' => 2, 'value' => gT('No'));
@@ -464,7 +451,9 @@ function SPSSGetValues($field, $qidattributes, $language)
 /**
  * Creates a fieldmap with all information necessary to output the fields
  *
- * @param $prefix string prefix for the variable ID
+ * @param int $iSurveyID The survey ID
+ * @param string $prefix prefix for the variable ID
+ * @param string $sLanguage The language of the exported texts
  * @return array
  */
 function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
@@ -481,7 +470,6 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
         Question::QT_C_ARRAY_YES_UNCERTAIN_NO => array('name' => 'Array (Yes/No/Uncertain)', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_X_TEXT_DISPLAY => array('name' => 'Text display', 'size' => 1, 'SPSStype' => 'A', 'hide' => 1),
         Question::QT_D_DATE => array('name' => 'Date', 'size' => 20, 'SPSStype' => 'DATETIME23.2'),
-        Question::QT_G_GENDER => array('name' => 'Gender', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_U_HUGE_FREE_TEXT => array('name' => 'Huge free text', 'size' => 1, 'SPSStype' => 'A'),
         Question::QT_I_LANGUAGE => array('name' => 'Language Switch', 'size' => 2, 'SPSStype' => 'A'),
         Question::QT_EXCLAMATION_LIST_DROPDOWN => array('name' => 'List (Dropdown)', 'size' => 1, 'SPSStype' => 'F'),
@@ -1674,6 +1662,12 @@ function quexml_create_question($RowQ, $additional = false)
 
 /**
  * Export quexml survey.
+ *
+ * @param int $surveyi The survey ID
+ * @param string $quexmllan The language to export
+ * @param int|false $iResponseID Response to fill in as default values, false for none
+ * @param bool $EMreplace Whether to process ExpressionScript in the texts
+ * @return string The queXML document
  */
 function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = false)
 {
@@ -2011,11 +2005,6 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
                         break;
                     case "Y": //YES/NO radio-buttons
                         $response->appendChild(QueXMLFixedArray(array(gT("Yes") => 'Y', gT("No") => 'N')));
-                        quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
-                        $question->appendChild($response);
-                        break;
-                    case "G": //GENDER drop-down list
-                        $response->appendChild(QueXMLFixedArray(array(gT("Female") => 'F', gT("Male") => 'M')));
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         $question->appendChild($response);
                         break;

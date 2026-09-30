@@ -455,7 +455,6 @@ class QuestionTemplate extends CFormModel
             "D" => 'date',
             "E" => 'arrays/increasesamedecrease',
             "F" => 'arrays/array',
-            "G" => 'gender',
             "H" => 'arrays/column',
             "I" => 'language',
             "K" => 'multiplenumeric',

@@ -6806,7 +6806,7 @@ export const surveyExample = {
           qid: 117,
           parentQid: 0,
           sid: 596477,
-          type: 'G',
+          type: 'L',
           title: 'G05Q21',
           preg: null,
           other: false,
@@ -6815,7 +6815,7 @@ export const surveyExample = {
           sortOrder: 4,
           scaleId: 0,
           sameDefault: null,
-          questionThemeName: 'gender',
+          questionThemeName: 'bootstrap_buttons',
           moduleName: '',
           gid: 8,
           relevance: '1',
@@ -6836,13 +6836,6 @@ export const surveyExample = {
               '': {
                 qaid: '791',
                 value: '',
-              },
-            },
-            display_type: {
-              'qid': '117',
-              '': {
-                qaid: '792',
-                value: '0',
               },
             },
             hide_tip: {
@@ -6916,7 +6909,40 @@ export const surveyExample = {
               },
             },
           },
-          answers: [],
+          answers: [
+            {
+              aid: 108,
+              qid: 117,
+              code: 'F',
+              sortOrder: 0,
+              assessmentValue: 0,
+              scaleId: 0,
+              l10ns: {
+                en: {
+                  id: 108,
+                  aid: 108,
+                  answer: 'Female',
+                  language: 'en',
+                },
+              },
+            },
+            {
+              aid: 109,
+              qid: 117,
+              code: 'M',
+              sortOrder: 1,
+              assessmentValue: 0,
+              scaleId: 0,
+              l10ns: {
+                en: {
+                  id: 109,
+                  aid: 109,
+                  answer: 'Male',
+                  language: 'en',
+                },
+              },
+            },
+          ],
         },
       ],
     },

@@ -51,6 +51,9 @@ class QuestionStatistics implements StatisticsChartInterface
     /** @var \Survey|null Survey model injected by the service to avoid a second fetch */
     private ?\Survey $survey = null;
 
+    /**
+     * Register the chart processor of each question type.
+     */
     public function __construct()
     {
         $this->factories = [
@@ -81,7 +84,6 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_F_ARRAY => fn() => new SingleOptionMultipleChartsProcessor(),
             Question::QT_H_ARRAY_COLUMN => fn() => new SingleOptionMultipleChartsProcessor(),
 
-            Question::QT_G_GENDER => fn() => new SingleOptionProcessor(),
             Question::QT_Y_YES_NO_RADIO => fn() => new SingleOptionProcessor(),
             Question::QT_I_LANGUAGE => fn() => new SingleOptionProcessor(),
             Question::QT_5_POINT_CHOICE => fn() => new SingleOptionProcessor(),

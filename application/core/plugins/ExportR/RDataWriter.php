@@ -60,14 +60,6 @@ class RDataWriter extends CsvWriter
                 }
                 break;
 
-            case Question::QT_G_GENDER:       // Gender question
-                if ($value == 'F') {
-                    return 1;
-                } elseif ($value == 'M') {
-                    return 2;
-                }
-                break;
-
             case Question::QT_M_MULTIPLE_CHOICE:       // Multiple choice
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 if (!empty($column) && isset($this->fieldmap[$column])) {

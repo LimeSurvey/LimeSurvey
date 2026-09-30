@@ -1099,18 +1099,6 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
                         $this_answer = gT("No answer", null, $sLanguage);
                 }
                 break;
-            case Question::QT_G_GENDER:
-                switch ($sValue) {
-                    case "M":
-                        $this_answer = gT("Male", null, $sLanguage);
-                        break;
-                    case "F":
-                        $this_answer = gT("Female", null, $sLanguage);
-                        break;
-                    default:
-                        $this_answer = gT("No answer", null, $sLanguage);
-                }
-                break;
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                 switch ($sValue) {
                     case "Y":
@@ -1452,7 +1440,6 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     }
                     break;
                 case \Question::QT_D_DATE:
-                case \Question::QT_G_GENDER:
                 case \Question::QT_I_LANGUAGE:
                 case \Question::QT_S_SHORT_FREE_TEXT:
                 case \Question::QT_T_LONG_FREE_TEXT:
@@ -1772,7 +1759,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         // If S or A don't exist then set it to 0
         // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
 
-        // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
+        // Types "L", "!", "O", "D", "N", "X", "Y", "5", "S", "T", "U"
         $fieldname = "Q{$arow['qid']}";
 
         if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != Question::QT_R_RANKING && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {

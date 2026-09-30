@@ -58,7 +58,6 @@ class Question extends LSActiveRecord
     const QT_D_DATE = 'D';
     const QT_E_ARRAY_INC_SAME_DEC = 'E';
     const QT_F_ARRAY = 'F';
-    const QT_G_GENDER = 'G';
     const QT_H_ARRAY_COLUMN = 'H';
     const QT_I_LANGUAGE = 'I';
     const QT_K_MULTIPLE_NUMERICAL = 'K';
@@ -577,7 +576,7 @@ class Question extends LSActiveRecord
 
     /**
      * This function return the class by question type
-     * @param string question type
+     * @param string $sType question type
      * @return string Question class to be added to the container
      *
      * Maybe move class in typeList ?
@@ -602,8 +601,6 @@ class Question extends LSActiveRecord
                 return 'array-increase-same-decrease';
             case Question::QT_F_ARRAY:
                 return 'array-flexible-row';
-            case Question::QT_G_GENDER:
-                return 'gender';
             case Question::QT_H_ARRAY_COLUMN:
                 return 'array-flexible-column';
             case Question::QT_I_LANGUAGE:
@@ -1048,10 +1045,14 @@ class Question extends LSActiveRecord
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion, 'title', 'title'));
         Question::model()->deleteAll($criteria);
     }
-    /** @return string[] */
+    /**
+     * Get the question types that can be used in quotas.
+     *
+     * @return string[]
+     */
     public static function getQuotableTypes()
     {
-        return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!', '*');
+        return array('M', 'Y', 'A', 'B', 'I', 'L', 'O', '!', '*');
     }
 
 
@@ -1104,6 +1105,13 @@ class Question extends LSActiveRecord
         return $result;
     }
 
+    /**
+     * Get the renderer of the question type.
+     *
+     * @param array $aFieldArray The question field data passed to the renderer
+     * @param string|null $type The question type, defaults to the type of this question
+     * @return QuestionBaseRenderer
+     */
     public function getRenderererObject($aFieldArray, $type = null)
     {
         $type = $type ?? $this->type;
@@ -1172,9 +1180,6 @@ class Question extends LSActiveRecord
             case Question::QT_F_ARRAY:
                 $oRenderer = new RenderArrayFlexibleRow($aFieldArray);
                 break;
-            case Question::QT_G_GENDER:
-                $oRenderer = new RenderGenderDropdown($aFieldArray);
-                break;
             case Question::QT_H_ARRAY_COLUMN:
                 $oRenderer = new RendererArrayFlexibleColumn($aFieldArray);
                 break;
@@ -1204,6 +1209,12 @@ class Question extends LSActiveRecord
         return $oRenderer;
     }
 
+    /**
+     * Get the data set of the question type.
+     *
+     * @param string|null $type The question type, defaults to the type of this question
+     * @return QuestionBaseDataSet
+     */
     public function getDataSetObject($type = null)
     {
         $type = $type ?? $this->type;
@@ -1252,8 +1263,6 @@ class Question extends LSActiveRecord
                 return new DataSetArrayOfIncSameDecQuestions($this->qid);
             case Question::QT_F_ARRAY:
                 return new DataSetArrayFlexibleRow($this->qid);
-            case Question::QT_G_GENDER:
-                return new DataSetGenderDropdown($this->qid);
             case Question::QT_H_ARRAY_COLUMN:
                 return new DataSetArrayFlexibleColumn($this->qid);
             case Question::QT_N_NUMERICAL:

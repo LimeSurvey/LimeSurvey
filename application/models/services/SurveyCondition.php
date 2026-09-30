@@ -956,14 +956,6 @@ class SurveyCondition
                             $canswers[] = array($fieldName, " ", gT("No answer"));
                         }
                         break;
-                    case \Question::QT_G_GENDER: //Gender
-                        $canswers[] = array($fieldName, "F", gT("Female"));
-                        $canswers[] = array($fieldName, "M", gT("Male"));
-                        // Only Show No-Answer if question is not mandatory
-                        if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                            $canswers[] = array($fieldName, " ", gT("No answer"));
-                        }
-                        break;
                     case \Question::QT_5_POINT_CHOICE: // 5 choice
                         for ($i = 1; $i <= 5; $i++) {
                             $canswers[] = array($fieldName, $i, $i);

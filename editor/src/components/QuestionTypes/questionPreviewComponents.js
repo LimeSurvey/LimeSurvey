@@ -6,7 +6,6 @@ import { RatingQuestion } from './RatingQuestion/RatingQuestion'
 import { FileUpload } from './FileUpload/FileUpload'
 import { RankingAdvancedQuestion } from './RankingAdvancedQuestion/RankingAdvancedQuestion'
 import { Equation } from './Equation/Equation'
-import { GenderQuestion } from './GenderQuestion/GenderQuestion'
 import { YesNoQuestion } from './YesNoQuestion/YesNoQuestion'
 import { OptionQuestionViewMode } from './QuestionModes/OptionQuestionViewMode'
 import { TextDisplay } from './TextQuestion/TextDisplay'
@@ -68,7 +67,6 @@ export const questionPreviewComponents = {
   [getQuestionTypeInfo().RANKING_ADVANCED.theme]: RankingAdvancedQuestion,
   [getQuestionTypeInfo().EQUATION.theme]: Equation,
   [getQuestionTypeInfo().DATE_TIME.theme]: DateTimePickerComponent,
-  [getQuestionTypeInfo().GENDER.theme]: GenderQuestion,
   [getQuestionTypeInfo().YES_NO.theme]: YesNoQuestion,
   [getQuestionTypeInfo().TEXT_DISPLAY.theme]: TextDisplay,
 }

@@ -201,15 +201,6 @@ class SPSSWriter extends Writer
                         'code' => 0,
                         'answer' => gT('Not selected')
                     );
-                } elseif ($aQuestion['type'] == "G") {
-                    $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
-                        'code' => 'F',
-                        'answer' => gT('Female')
-                    );
-                    $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
-                        'code' => 'M',
-                        'answer' => gT('Male')
-                    );
                 } elseif ($aQuestion['type'] == "Y") {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,

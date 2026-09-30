@@ -42,7 +42,6 @@ export const getQuestionTypeInfo = () => {
       title: t('5 point choice'),
     },
     EQUATION: { type: '*', theme: 'equation', title: t('Equation') },
-    GENDER: { type: 'G', theme: 'gender', title: t('Gender') },
     INCREASE_SAME_DECREASE: {
       type: 'E',
       theme: 'increasedecrease',

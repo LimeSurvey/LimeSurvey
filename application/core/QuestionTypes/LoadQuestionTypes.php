@@ -3,7 +3,10 @@
 class LoadQuestionTypes
 {
     /**
+     * Import the classes of all question types.
+     *
      * @todo Configure autoloader in composer.json instead of this
+     * @return void
      */
     public static function loadAll()
     {
@@ -22,7 +25,6 @@ class LoadQuestionTypes
         Yii::import('questiontypes.DummyQuestion.*');
         Yii::import('questiontypes.Equation.*');
         Yii::import('questiontypes.FileUpload.*');
-        Yii::import('questiontypes.GenderDropdown.*');
         Yii::import('questiontypes.HugeFreeText.*');
         Yii::import('questiontypes.Language.*');
         Yii::import('questiontypes.ListDropdown.*');
@@ -39,6 +41,12 @@ class LoadQuestionTypes
         Yii::import('questiontypes.YesNoRadio.*');
     }
 
+    /**
+     * Import the classes of a single question type.
+     *
+     * @param string $type The question type code
+     * @return void
+     */
     public static function load($type)
     {
         switch ($type) {
@@ -104,9 +112,6 @@ class LoadQuestionTypes
                 break;
             case Question::QT_F_ARRAY:
                 Yii::import('questiontypes.ArrayFlexibleRow.*');
-                break;
-            case Question::QT_G_GENDER:
-                Yii::import('questiontypes.GenderDropdown.*');
                 break;
             case Question::QT_H_ARRAY_COLUMN:
                 Yii::import('questiontypes.ArrayFlexibleColumn.*');
