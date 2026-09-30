@@ -634,6 +634,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $pluginsettings = $this->getPluginSettings(true);
 
         $event = $this->getEvent();
+        $currentAuditingSetting = $this->get('auditing', 'Survey', $event->get('survey'))
 
         // Build the auditing setting meta data
         $auditingSetting = array(
@@ -644,18 +645,21 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             'tab' => 'notification', // @todo: Setting no used yet
             'category' => 'Auditing for person-related data', // @todo: Setting no used yet
             'label' => 'Audit log for this survey:',
-            'current' => $this->get('auditing', 'Survey', $event->get('survey'))
+            'current' => $currentAuditingSetting
         );
 
-        // Disable the control for non-superadmin users to prevent them from disabling audit
-        $allowNonSuperDisable = isset($pluginsettings['AuditLog_AllowNonSuperadminDisable']['current']) && $pluginsettings['AuditLog_AllowNonSuperadminDisable']['current'] == 1;
-        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin');
+        // If auditing is currrently enabled for this survey
+        if ($currentAuditingSetting == 1) {
+            // Disable the control for non-superadmin users to prevent them from disabling it
+            $allowNonSuperDisable = isset($pluginsettings['AuditLog_AllowNonSuperadminDisable']['current']) && $pluginsettings['AuditLog_AllowNonSuperadminDisable']['current'] == 1;
+            $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin');
 
-        if (!$allowNonSuperDisable && !$isSuperAdmin) {
-            $auditingSetting['htmlOptions'] = array('disabled' => 'disabled');
-            $auditingSetting['help'] = gT('Only superadmins can disable the audit log for a survey.');
-        } elseif ($allowNonSuperDisable && !$isSuperAdmin) {
-            $auditingSetting['help'] = gT('You can disable the audit log for surveys where you have survey settings update permission.');
+            if (!$allowNonSuperDisable && !$isSuperAdmin) {
+                $auditingSetting['htmlOptions'] = array('disabled' => 'disabled');
+                $auditingSetting['help'] = gT('Only superadmins can disable the audit log for a survey.');
+            } elseif ($allowNonSuperDisable && !$isSuperAdmin) {
+                $auditingSetting['help'] = gT('You can disable the audit log for surveys where you have survey settings update permission.');
+            }
         }
 
         $event->set("surveysettings.{$this->id}", array(
