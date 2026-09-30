@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Dropdown as BootstrapDropdown } from 'react-bootstrap'
 import classNames from 'classnames'
 
@@ -66,11 +67,36 @@ const Submenu = ({
   )
 }
 
+// Rendered on document.body so an open menu is not clipped by a scrolling
+// parent (the sidebar) and can stay position: absolute while that parent scrolls.
+const DropdownMenuPortal = React.forwardRef(
+  function DropdownMenuPortal(props, ref) {
+    if (typeof document === 'undefined') {
+      return null
+    }
+
+    const { portalClassName, children, ...domProps } = props
+    delete domProps.show
+    delete domProps.close
+    delete domProps.align
+
+    return createPortal(
+      <div className={portalClassName}>
+        <div ref={ref} {...domProps}>
+          {children}
+        </div>
+      </div>,
+      document.body
+    )
+  }
+)
+
 export const Dropdown = ({
   menuItems = [],
   className = '',
   testId = '',
   align = 'end',
+  portalMenu = false,
   toggleSettings = {
     iconClassName: 'ri-more-fill',
     variant: 'light',
@@ -89,7 +115,7 @@ export const Dropdown = ({
     >
       <BootstrapDropdown.Toggle
         variant={toggleSettings.variant}
-        className="button me-2"
+        className="button me-2 dropdown-toggler"
         id={toggleSettings.id}
         data-testid={toggleSettings.testId}
         role="menu"
@@ -97,7 +123,15 @@ export const Dropdown = ({
         {toggleSettings.title}
         <i className={toggleSettings.iconClassName}></i>
       </BootstrapDropdown.Toggle>
-      <BootstrapDropdown.Menu>
+      <BootstrapDropdown.Menu
+        {...(portalMenu
+          ? {
+              as: DropdownMenuPortal,
+              portalClassName: classNames('lsr-dropdown', className),
+              popperConfig: { strategy: 'absolute' },
+            }
+          : {})}
+      >
         {menuItems.map(
           (
             {
