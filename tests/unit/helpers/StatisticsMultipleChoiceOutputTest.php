@@ -21,7 +21,22 @@ class StatisticsMultipleChoiceOutputTest extends TestBaseClass
 
         parent::setUpBeforeClass();
 
-        self::importSurvey(self::$surveysFolder . '/survey_simple_statistics.lsa');
+        // getSubQuestions() caches subquestions per survey ID for the whole test process, so a
+        // survey ID another test class already imported and deleted would be activated without
+        // its subquestion columns. Import under a free survey ID, then activate.
+        do {
+            $surveyId = random_int(100000, 999999);
+        } while (\Survey::model()->findByPk($surveyId) !== null);
+        Yii::app()->session['loginID'] = 1;
+        \Survey::model()->resetCache();
+        $result = \importSurveyFile(self::$surveysFolder . '/limesurvey_survey_573386.lss', false, null, $surveyId);
+        if (empty($result) || !empty($result['error'])) {
+            throw new \Exception('Could not import limesurvey_survey_573386.lss: ' . ($result['error'] ?? ''));
+        }
+        \Survey::model()->resetCache();
+        self::$surveyId = $result['newsid'];
+        self::$testSurvey = \Survey::model()->findByPk(self::$surveyId);
+        self::$testHelper->activateSurvey(self::$surveyId);
 
         self::$question = \Question::model()->findByAttributes([
             'sid' => self::$surveyId,
