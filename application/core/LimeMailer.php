@@ -349,6 +349,7 @@ class LimeMailer extends PHPMailer
      * Add the List-Unsubscribe headers if the message offers an opt-out link
      * Only token emails whose raw template uses OPTOUTURL or whose body contains the opt-out url get the headers,
      * so that one click unsubscribe is not offered on emails without an opt-out link (e.g. registration or confirmation)
+     * List-Unsubscribe-Post (one click unsubscribe) is only added if the opt-out url uses HTTPS, as required by RFC 8058
      * @see https://datatracker.ietf.org/doc/html/rfc2369
      * @see https://datatracker.ietf.org/doc/html/rfc8058
      * @return void
@@ -378,7 +379,10 @@ class LimeMailer extends PHPMailer
         $this->clearCustomHeader("List-Unsubscribe");
         $this->clearCustomHeader("List-Unsubscribe-Post");
         $this->addCustomHeader("List-Unsubscribe", "<$unsubscribeUrl>");
-        $this->addCustomHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click");
+        // one click unsubscribe requires an HTTPS URI, over plain HTTP the receiver only gets the manual opt-out link
+        if (strtolower((string) parse_url($unsubscribeUrl, PHP_URL_SCHEME)) === 'https') {
+            $this->addCustomHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click");
+        }
     }
 
     /**

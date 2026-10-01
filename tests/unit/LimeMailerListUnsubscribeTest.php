@@ -10,6 +10,9 @@ class LimeMailerListUnsubscribeTest extends TestBaseClass
     /** @var string Token of the first participant of the imported survey */
     private static $token;
 
+    /** @var string Host info of the request before the tests */
+    private static $originalHostInfo;
+
     /**
      * Import a survey with participants and set a controller for url creation.
      * @return void
@@ -21,6 +24,27 @@ class LimeMailerListUnsubscribeTest extends TestBaseClass
         self::importSurvey($filename);
         \Yii::app()->setController(new DummyController('dummyid'));
         self::$token = \Token::model(self::$surveyId)->find()->token;
+        self::$originalHostInfo = \Yii::app()->getRequest()->getHostInfo();
+    }
+
+    /**
+     * Restore the original host info of the request.
+     * @return void
+     */
+    public static function tearDownAfterClass(): void
+    {
+        \Yii::app()->getRequest()->setHostInfo(self::$originalHostInfo);
+        parent::tearDownAfterClass();
+    }
+
+    /**
+     * Use an HTTPS host by default, as required for one click unsubscribe.
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        \Yii::app()->getRequest()->setHostInfo('https://example.org');
     }
 
     /**
@@ -33,6 +57,7 @@ class LimeMailerListUnsubscribeTest extends TestBaseClass
         $headers = $this->getListUnsubscribeHeaders($mailer);
 
         $this->assertCount(1, $headers['List-Unsubscribe']);
+        $this->assertStringStartsWith('<https://example.org', $headers['List-Unsubscribe'][0]);
         $this->assertStringContainsString(self::$token, $headers['List-Unsubscribe'][0]);
         $this->assertSame(['List-Unsubscribe=One-Click'], $headers['List-Unsubscribe-Post']);
     }
@@ -64,6 +89,21 @@ class LimeMailerListUnsubscribeTest extends TestBaseClass
         $headers = $this->getListUnsubscribeHeaders($mailer);
 
         $this->assertSame([], $headers['List-Unsubscribe']);
+        $this->assertSame([], $headers['List-Unsubscribe-Post']);
+    }
+
+    /**
+     * Over plain HTTP only List-Unsubscribe is added, List-Unsubscribe-Post requires an HTTPS URI (RFC 8058).
+     * @return void
+     */
+    public function testNoOneClickHeaderOverHttp()
+    {
+        \Yii::app()->getRequest()->setHostInfo('http://example.org');
+        $mailer = $this->getTokenMailer('Click {OPTOUTURL} to opt out.');
+        $headers = $this->getListUnsubscribeHeaders($mailer);
+
+        $this->assertCount(1, $headers['List-Unsubscribe']);
+        $this->assertStringStartsWith('<http://example.org', $headers['List-Unsubscribe'][0]);
         $this->assertSame([], $headers['List-Unsubscribe-Post']);
     }
 
