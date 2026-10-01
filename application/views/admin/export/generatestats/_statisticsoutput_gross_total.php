@@ -34,11 +34,11 @@
         </td>
         <td align='right' colspan="2">
             <strong>
-            <?php if ($sumallitems > 0){ ?>
+            <?php if ($sumallitems > 0) { ?>
                 100.00%
             <?php } else { ?>
                 0.00%
-                <?php } ?>
+            <?php } ?>
             </strong>
         </td>
     </tr>

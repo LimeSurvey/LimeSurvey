@@ -8,6 +8,7 @@
         //default hover
         box-shadow : $btn-hover-boxshadow;
         color      : $white;
+        text-decoration: none;
     }
     &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
         // default_focus

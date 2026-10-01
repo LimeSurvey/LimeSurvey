@@ -23,7 +23,8 @@ export var ThemeScripts = function () {
      * in endpage and in $(window).resize
      */
     var fixBodyPadding = function fixBodyPadding() {
-        $('body').css('padding-top', Math.round($('#survey-nav').outerHeight()) + 'px');
+        var navHeight = Math.round($('#survey-nav.fixed-top').outerHeight() || 0);
+        $('body').css('padding-top', navHeight + 'px');
     };
 
     /**
@@ -147,7 +148,7 @@ export var ThemeScripts = function () {
             });
 
             // Bind language changer onclick event.
-            // This function is defined in assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js
+            // This function is defined in assets/survey_themes/fruity_twentythree/language-changer/language-changer.js
             // eslint-disable-next-line no-undef
             activateLanguageChanger();
 

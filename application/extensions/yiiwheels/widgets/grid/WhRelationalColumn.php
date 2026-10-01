@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhRelationalColumn class
  *
@@ -11,6 +12,7 @@
  * @package YiiWheels.widgets.grid
  * @uses Yiistrap.widgets.TbDataColumn
  */
+
 Yii::import('yiistrap_fork.widgets.TbDataColumn');
 
 class WhRelationalColumn extends TbDataColumn
@@ -67,10 +69,11 @@ class WhRelationalColumn extends TbDataColumn
     {
         parent::init();
 
-        if (empty($this->url))
+        if (empty($this->url)) {
             $this->url = Yii::app()->getRequest()->requestUri;
+        }
 
-		$this->attachBehavior('ywplugin', array('class' => 'yiiwheels.behaviors.WhPlugin'));
+        $this->attachBehavior('ywplugin', array('class' => 'yiiwheels.behaviors.WhPlugin'));
         $this->registerClientScript();
     }
 
@@ -86,10 +89,11 @@ class WhRelationalColumn extends TbDataColumn
         $options = $this->htmlOptions;
         if ($this->cssClassExpression !== null) {
             $class = $this->evaluateExpression($this->cssClassExpression, array('row' => $row, 'data' => $data));
-            if (isset($options['class']))
+            if (isset($options['class'])) {
                 $options['class'] .= ' ' . $class;
-            else
+            } else {
                 $options['class'] = $class;
+            }
         }
         echo CHtml::openTag('td', $options);
         echo CHtml::openTag('span', array('class' => $this->cssClass, 'data-rowid' => $this->getPrimaryKey($data)));
@@ -111,10 +115,11 @@ class WhRelationalColumn extends TbDataColumn
             ) : $data->{$this->keyAttribute};
             return is_array($key) ? implode(',', $key) : $key;
         }
-        if ($this->grid->dataProvider instanceof CArrayDataProvider || $this->grid->dataProvider instanceof CSqlDataProvider)
+        if ($this->grid->dataProvider instanceof CArrayDataProvider || $this->grid->dataProvider instanceof CSqlDataProvider) {
             return is_object(
                 $data
             ) ? $data->{$this->grid->dataProvider->keyField} : $data[$this->grid->dataProvider->keyField];
+        }
 
         return null;
     }
@@ -124,22 +129,25 @@ class WhRelationalColumn extends TbDataColumn
      */
     public function registerClientScript()
     {
-		$path = __DIR__ . DIRECTORY_SEPARATOR . 'assets';
-		$assetsUrl = $this->getAssetsUrl($path);
+        $path = __DIR__ . DIRECTORY_SEPARATOR . 'assets';
+        $assetsUrl = $this->getAssetsUrl($path);
 
         /** @var $cs CClientScript */
         $cs = Yii::app()->getClientScript();
-		$cs->registerCssFile($assetsUrl . '/css/bootstrap-relational.css');
+        $cs->registerCssFile($assetsUrl . '/css/bootstrap-relational.css');
 
         if ($this->afterAjaxUpdate !== null) {
-            if ((!$this->afterAjaxUpdate instanceof CJavaScriptExpression) && strpos(
+            if (
+                (!$this->afterAjaxUpdate instanceof CJavaScriptExpression) && strpos(
                     $this->afterAjaxUpdate,
                     'js:'
                 ) !== 0
-            )
+            ) {
                 $this->afterAjaxUpdate = new CJavaScriptExpression($this->afterAjaxUpdate);
-        } else
+            }
+        } else {
             $this->afterAjaxUpdate = 'js:$.noop';
+        }
 
         $this->ajaxErrorMessage = CHtml::encode($this->ajaxErrorMessage);
         $afterAjaxUpdate        = CJavaScript::encode($this->afterAjaxUpdate);

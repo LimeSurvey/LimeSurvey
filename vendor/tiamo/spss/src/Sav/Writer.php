@@ -39,6 +39,16 @@ class Writer
     public $data;
 
     /**
+     * @var int
+     */
+    public $lastCase = -1;
+
+    /**
+     * @var int
+     */
+    public $dataPosition = -1;
+
+    /**
      * @var Buffer
      */
     protected $buffer;
@@ -59,7 +69,7 @@ class Writer
             $this->write($data);
         }
     }
-    
+
     /**
      * @param array $data
      * @param string $file
@@ -70,7 +80,28 @@ class Writer
     {
         return new self($data, Buffer::factory(fopen($file, 'wb+')));
     }
+    
+    /**
+     * @param int $index
+     *
+     * @return string|null
+     */
+    public function getVariableName($index)
+    {
+        $subType = Record\Info\LongVariableNames::SUBTYPE;
+        if (isset($this->info) && isset($this->info[$subType])) {
+            $names = $this->info[$subType]->data;
+            $shortName = (isset($this->variables[$index])) ? $this->variables[$index]->name : "";
+            return (isset($names) && \is_array($names) && isset($names[$shortName])) ? $names[$shortName] : $shortName;
+        }
+        return null;
+    }
 
+    /**
+     * @param array $data
+     *
+     * @return void
+     */
     public function write($data)
     {
         $this->header                  = new Record\Header($data['header']);
@@ -97,23 +128,43 @@ class Writer
         $this->info[Record\Info\VariableAttributes::SUBTYPE]      = new Record\Info\VariableAttributes();
         $this->info[Record\Info\LongStringValueLabels::SUBTYPE]   = new Record\Info\LongStringValueLabels();
         $this->info[Record\Info\LongStringMissingValues::SUBTYPE] = new Record\Info\LongStringMissingValues();
-        $this->info[Record\Info\CharacterEncoding::SUBTYPE]       = new Record\Info\CharacterEncoding('UTF-8');
 
+        $encode = (isset($data['info']) && isset($data['info']['characterEncoding'])) ? $data['info']['characterEncoding'] : 'UTF-8';
+        $this->info[Record\Info\CharacterEncoding::SUBTYPE]       = new Record\Info\CharacterEncoding($encode);
+        $this->buffer->charset = $encode;
+
+        // FIXME: This means we can not set any other encode here?
+        // https://www.gnu.org/software/pspp/pspp-dev/html_node/Machine-Integer-Info-Record.html#character_002dcode
+        $charactersCode = array(
+            "utf-8" => 65001,
+            "iso 8859-1" => 28591,
+            "windows-1252" => 1252,
+            "windows-1250" => 1250,
+            "dec kanji" => 4,
+            "8-bit ascii" => 3,
+            "7-bit ascii" => 2,
+            "ebcdic" => 1
+        );
+
+        $chCode = isset($charactersCode[strtolower($encode)]) ? $charactersCode[strtolower($encode)] : 65001;
+        $this->info[Record\Info\MachineInteger::SUBTYPE]->characterCode = $chCode;
         $this->data = new Record\Data();
-
         $nominalIdx = 0;
+        $shortVarsPrefix = array();
 
         /** @var Variable $var */
-        // for ($idx = 0; $idx <= $variablesCount; $idx++) {
         foreach (array_values($data['variables']) as $idx => $var) {
             if (\is_array($var)) {
                 $var = new Variable($var);
             }
 
-            //if (! preg_match('/^[A-Za-z0-9_]+$/', $var->name)) {
             // UTF-8 and '.' characters could pass here
-            if (!preg_match('/^[A-Za-z0-9_\.\x{4e00}-\x{9fa5}]+$/u', $var->name)) {
+            if (!preg_match('/^(?!#|\$|\.)[\w0-9_.#@$\x{4e00}-\x{9fa5}]+(?<!\.|_)$/u', $var->name)) {
                 throw new \InvalidArgumentException(sprintf('Variable name `%s` contains an illegal character.', $var->name));
+            }
+
+            if (in_array($var->name, ['ALL', 'AND', 'BY', 'EQ', 'GE', 'GT', 'LE', 'LT', 'NE', 'NOT', 'OR', 'TO', 'WITH'])) {
+                $var->name = \uniqid($var->name);
             }
 
             if (empty($var->width)) {
@@ -123,7 +174,10 @@ class Writer
             $variable = new Record\Variable();
 
             // TODO: refactory - keep 7 positions so we can add after that for 100 very long string segments
-            $variable->name  = 'V' . str_pad($idx + 1, 5, 0, STR_PAD_LEFT);
+            $prefix = mb_strtoupper(mb_substr($var->name, 0, min(mb_strlen($var->name), 5)));
+            $variable->name  = ((Record\Variable::isVeryLong($var->width) !== false) && (!in_array($prefix, $shortVarsPrefix))) ?
+                               $prefix : 'V' . str_pad($idx + 1, 5, 0, STR_PAD_LEFT);
+            array_push($shortVarsPrefix, $prefix);
             $variable->width = Variable::FORMAT_TYPE_A === $var->format ? $var->width : 0;
 
             $variable->label = $var->label;
@@ -144,12 +198,14 @@ class Writer
             $shortName = $variable->name;
             $longName  = $var->name;
 
-            if ($var->attributes !== []) {
+            if (\is_array($var->attributes) && (\count($var->attributes) !== 0)) {
                 $this->info[Record\Info\VariableAttributes::SUBTYPE][$longName] = $var->attributes;
             }
 
-            if ($var->missing !== []) {
-                if ($var->width <= 8) {
+            if (\is_array($var->missing) && (\count($var->missing) !== 0)) {
+                if (Record\Variable::isVeryLong($var->width) !== false) {
+                    $this->info[Record\Info\LongStringMissingValues::SUBTYPE][$shortName] = $var->missing;
+                } else {
                     if (\count($var->missing) >= 3) {
                         $variable->missingValuesFormat = 3;
                     } elseif (2 === \count($var->missing)) {
@@ -158,15 +214,13 @@ class Writer
                         $variable->missingValuesFormat = 1;
                     }
                     $variable->missingValues = $var->missing;
-                } else {
-                    $this->info[Record\Info\LongStringMissingValues::SUBTYPE][$shortName] = $var->missing;
                 }
             }
 
             $this->variables[$idx] = $variable;
 
-            if ($var->values !== []) {
-                if ($variable->width > 8) {
+            if (\is_array($var->values) && (\count($var->values) !== 0)) {
+                if (Record\Variable::isVeryLong($variable->width) !== false) {
                     $this->info[Record\Info\LongStringValueLabels::SUBTYPE][$longName] = [
                         'width'  => $var->width,
                         'values' => $var->values,
@@ -180,8 +234,8 @@ class Writer
                             'value' => $key,
                             'label' => $value,
                         ];
-                        $valueLabel->indexes = [$nominalIdx + 1];
                     }
+                    $valueLabel->indexes = [$nominalIdx + 1];
                     $this->valueLabels[] = $valueLabel;
                 }
             }
@@ -248,7 +302,9 @@ class Writer
             $info->write($this->buffer);
         }
 
+        $this->dataPosition = $this->buffer->position();
         $this->data->write($this->buffer);
+        $this->lastCase = $this->header->casesCount - 1;
     }
 
     /**
@@ -267,6 +323,7 @@ class Writer
 
         // write data
         $this->data->writeCase($this->buffer, $row);
+        $this->lastCase = $this->header->casesCount - 1;
     }
 
     /**
@@ -297,6 +354,14 @@ class Writer
     public function getBuffer()
     {
         return $this->buffer;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfCases()
+    {
+        return $this->header->casesCount;
     }
 
     /**

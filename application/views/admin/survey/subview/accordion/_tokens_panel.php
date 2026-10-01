@@ -8,15 +8,18 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyParticipantTokenOptions');
 
-App()->getClientScript()->registerScript("tokens-panel-variables",
+App()->getClientScript()->registerScript(
+    "tokens-panel-variables",
     "
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '" . gT("If you are using participants or notification emails you need to set an administrator email address.",
-        'js') . "'
+    var sAdminEmailAddressNeeded = '" . gT(
+        "If you are using participants or notification emails you need to set an administrator email address.",
+        'js'
+    ) . "'
     var sURLParameters = '';
     var sAddParam = '';
     
@@ -44,7 +47,8 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
     });
     
 ",
-    LSYii_ClientScript::POS_BEGIN);
+    LSYii_ClientScript::POS_BEGIN
+);
 
 App()->getClientScript()->registerScript("edit-after-completion-message", "
     (function(){
@@ -129,13 +133,31 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             'name' => 'anonymized',
                             'checkedOption' => $oSurvey->anonymized,
                             'ariaLabel' => gT('Anonymized responses:'),
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
-                                ['I' => $oSurveyOptions->anonymized . " ᴵ" ]) : $optionsOnOff,
+                            'selectOptions' => ($bShowInherited) ? array_merge(
+                                $optionsOnOff,
+                                ['I' => $oSurveyOptions->anonymized . " ᴵ" ]
+                            ) : $optionsOnOff,
                         ]);
                     } ?>
                 </div>
             </div>
-
+            <div class="mb-3">
+                <label class="form-label" id='showtokenpolicy-label'><?php  eT("Show privacy policy on access code form:") ; ?></label>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'showtokenpolicy',
+                        'checkedOption' => $oSurvey->showtokenpolicy,
+                        'htmlOptions' => [
+                            'aria-labelledby' => "showtokenpolicy-label",
+                            'aria-describedby' => "showtokenpolicy-help"
+                        ],
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->showtokenpolicy . " ᴵ" ])
+                            : $optionsOnOff
+                    ]) ?>
+                    <div id="showtokenpolicy-help" class="form-text"><?php eT("Only applies when 'Show privacy policy text with mandatory checkbox' is set to Inline text or Collapsible text.", 'unescaped'); ?></div>
+                </div>
+            </div>
             <!-- Enable token-based response persistence -->
             <div class="mb-3">
                 <label class=" form-label" for='tokenanswerspersistence' title='<?php  eT("With non-anonymized responses (and the survey participant list field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) their previous answers will be reloaded."); ?>'>
@@ -147,7 +169,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                         'checkedOption' => $oSurvey->tokenanswerspersistence,
                         'ariaLabel' => gT('Enable participant-based response persistence:'),
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' =>$oSurveyOptions->tokenanswerspersistence . " ᴵ" ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->tokenanswerspersistence . " ᴵ" ])
                             : $optionsOnOff
                     ]) ?>
                 </div>
@@ -176,7 +198,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                 <?php $tokenlength = $oSurvey->tokenlength; ?>
                 <div class="d-flex align-items-center">
                     <div class="content-right me-4">
-                            <label class=" form-label"  for='tokenlength'><?php  eT("Set access code length to:"); ?></label>
+                            <label class=" form-label"  for='tokenlength'><?php  eT("Access code length:"); ?></label>
                             <div style='width:170px'>
                               <input class="form-control inherit-edit <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-none' : 'd-block'); ?>" type='text' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars((string) $tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
                               <input class="form-control inherit-readonly <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars((string) $oSurveyOptions->tokenlength); ?>" readonly />
@@ -214,7 +236,23 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                     ]); ?>
                 </div>
             </div>
-
+            <div class="mb-3">
+                <label class="form-label" id='showregisterpolicy-label'><?php  eT("Show privacy policy on register form:") ; ?></label>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'showregisterpolicy',
+                        'checkedOption' => $oSurvey->showregisterpolicy,
+                        'htmlOptions' => [
+                            'aria-labelledby' => "showregisterpolicy-label",
+                            'aria-describedby' => "showregisterpolicy-help"
+                        ],
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->showregisterpolicy . " ᴵ" ])
+                            : $optionsOnOff
+                    ]) ?>
+                    <div id="showregisterpolicy-help" class="form-text"><?php eT("Only applies when 'Show privacy policy text with mandatory checkbox' is set to Inline text or Collapsible text.", 'unescaped'); ?></div>
+                </div>
+            </div>
             <!-- Use HTML format for token emails -->
             <div class="mb-3">
                 <label class=" form-label" for='htmlemail'><?php  eT("Use HTML format for participant emails:"); ?></label>
@@ -227,12 +265,12 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->htmlemail . " ᴵ" ])
                             : $optionsOnOff,
                     ]);
-                    $this->widget('yiistrap_fork.widgets.TbModal', [
-                        'id'      => 'htmlemailModal',
-                        'header'  => gT('Warning', 'unescaped'),
-                        'content' => '<p>' . gT("If you change the email format, you'll have to review your email templates to fit the new format") . '</p>',
-                        'footer'  => TbHtml::button('Close', ['data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'])
-                    ]); ?>
+                                                           $this->widget('yiistrap_fork.widgets.TbModal', [
+                                                           'id'      => 'htmlemailModal',
+                                                           'header'  => gT('Warning', 'unescaped'),
+                                                           'content' => '<p>' . gT("If you change the email format, you'll have to review your email templates to fit the new format") . '</p>',
+                                                           'footer'  => TbHtml::button('Close', ['data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'])
+                                                           ]); ?>
                 </div>
             </div>
 
@@ -243,10 +281,10 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'sendconfirmation',
                         'checkedOption' => $oSurvey->sendconfirmation,
-                         'ariaLabel' => gT('Send confirmation emails:'),
-                        'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
-
-                            ['I' => $oSurveyOptions->sendconfirmation . " ᴵ"]) : $optionsOnOff
+                        'ariaLabel' => gT('Send confirmation emails:'),
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->sendconfirmation . " ᴵ"])
+                            : $optionsOnOff
                     ]); ?>
                 </div>
             </div>
@@ -259,14 +297,14 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
     <?php
     $this->widget('yiistrap_fork.widgets.TbModal', array(
         'id' => 'alertPrivacy1',
-        'header' => gT('Warning','unescaped'),                    
-        'content' => '<p>'.gT("You can't use 'Anonymized responses' when participant-based response persistence is enabled.").'</p>',
+        'header' => gT('Warning', 'unescaped'),
+        'content' => '<p>' . gT("You can't use 'Anonymized responses' when participant-based response persistence is enabled.") . '</p>',
         'footer' => TbHtml::button('Close', array('data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'))
     ));
     $this->widget('yiistrap_fork.widgets.TbModal', array(
         'id' => 'alertPrivacy2',
-        'header' => gT('Warning','unescaped'),
-        'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
+        'header' => gT('Warning', 'unescaped'),
+        'content' => '<p>' . gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.") . '</p>',
         'footer' => TbHtml::button('Close', array('data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'))
     ));
     ?>

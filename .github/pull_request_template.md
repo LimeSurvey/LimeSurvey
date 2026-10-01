@@ -1,3 +1,4 @@
+<!-- 
 # Thank you for contributing to LimeSurvey!
 
 To make our work easier, please make sure to follow the instructions below.
@@ -23,3 +24,4 @@ To make our work easier, please make sure to follow the instructions below.
 Fixed issue #<Mantis issue number>: <Description>
 New feature #<Mantis issue number>: <Description>
 Dev: <Description for a change that's neither a feature nor a bug>
+-->

@@ -6,6 +6,8 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
 class NullConditionHandler implements HandlerInterface
 {
+    use ConditionHandlerHelperTrait;
+
     public function canHandle(string $operation): bool
     {
         return true;
@@ -23,6 +25,8 @@ class NullConditionHandler implements HandlerInterface
             $value = [$value];
         }
 
+        /** @psalm-suppress RedundantCastGivenDocblockType */
+        $quotedKey = $this->sanitizeKey((string) $key);
         $conditions = [];
 
         foreach ($value as $item) {
@@ -31,7 +35,7 @@ class NullConditionHandler implements HandlerInterface
                 continue;
             }
 
-            $conditions[] = $key . ' IS ' . ($item === 'true' ? 'NOT ' : '') . 'NULL';
+            $conditions[] = $quotedKey . ' IS ' . ($item === 'true' ? 'NOT ' : '') . 'NULL';
         }
 
         if (!empty($conditions)) {

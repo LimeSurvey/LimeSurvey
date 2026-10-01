@@ -20,6 +20,9 @@ class CopySurveyOptions
     /** @var bool whether to copy survey quotas */
     private bool $quotas;
 
+    /** @var bool whether to copy survey URL parameters */
+    private bool $urlParameters;
+
     /** @var bool whether to copy survey permissions */
     private bool $permissions;
 
@@ -28,6 +31,9 @@ class CopySurveyOptions
 
     /** @var bool whether to reset a surveys response start-id */
     private bool $resetResponseStartId;
+
+    /** @var string|null custom title for the copied survey (null = use default " - Copy" suffix) */
+    private ?string $newTitle = null;
 
     /**
      * Sets an initial state for copying options.
@@ -40,6 +46,7 @@ class CopySurveyOptions
         $this->answerOptions = true;
         $this->conditions = true;
         $this->quotas = true;
+        $this->urlParameters = true;
         $this->permissions = true;
         $this->resetStartAndEndDate = false;
         $this->resetResponseStartId = false;
@@ -85,6 +92,19 @@ class CopySurveyOptions
         $this->quotas = $quotas;
     }
 
+    /**
+     * @return bool whether survey URL parameters should be copied
+     */
+    public function isUrlParameters(): bool
+    {
+        return $this->urlParameters;
+    }
+
+    public function setUrlParameters(bool $urlParameters): void
+    {
+        $this->urlParameters = $urlParameters;
+    }
+
     public function isPermissions(): bool
     {
         return $this->permissions;
@@ -113,5 +133,22 @@ class CopySurveyOptions
     public function setResetResponseStartId(bool $resetResponseStartId): void
     {
         $this->resetResponseStartId = $resetResponseStartId;
+    }
+
+    /**
+     * @return string|null Custom title for the copied survey, or null to use default.
+     */
+    public function getNewTitle(): ?string
+    {
+        return $this->newTitle;
+    }
+
+    /**
+     * @param string|null $newTitle Custom title for the copied survey, or null to use default.
+     * @return void
+     */
+    public function setNewTitle(?string $newTitle): void
+    {
+        $this->newTitle = $newTitle;
     }
 }

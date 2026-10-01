@@ -20,18 +20,15 @@ final class Profile implements \IteratorAggregate, \Serializable
     public const BLOCK = 'block';
     public const TEMPLATE = 'template';
     public const MACRO = 'macro';
-
-    private $template;
-    private $name;
-    private $type;
     private $starts = [];
     private $ends = [];
     private $profiles = [];
 
-    public function __construct(string $template = 'main', string $type = self::ROOT, string $name = 'main')
-    {
-        $this->template = $template;
-        $this->type = $type;
+    public function __construct(
+        private string $template = 'main',
+        private string $type = self::ROOT,
+        private string $name = 'main',
+    ) {
         $this->name = str_starts_with($name, '__internal_') ? 'INTERNAL' : $name;
         $this->enter();
     }
@@ -103,6 +100,22 @@ final class Profile implements \IteratorAggregate, \Serializable
     }
 
     /**
+     * Returns the start time in microseconds.
+     */
+    public function getStartTime(): float
+    {
+        return $this->starts['wt'] ?? 0.0;
+    }
+
+    /**
+     * Returns the end time in microseconds.
+     */
+    public function getEndTime(): float
+    {
+        return $this->ends['wt'] ?? 0.0;
+    }
+
+    /**
      * Returns the memory usage in bytes.
      */
     public function getMemoryUsage(): int
@@ -160,7 +173,7 @@ final class Profile implements \IteratorAggregate, \Serializable
 
     public function unserialize($data): void
     {
-        $this->__unserialize(unserialize($data));
+        $this->__unserialize(unserialize($data, ['allowed_classes' => [self::class]]));
     }
 
     /**

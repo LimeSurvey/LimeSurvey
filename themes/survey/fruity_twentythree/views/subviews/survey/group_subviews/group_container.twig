@@ -1,6 +1,6 @@
 {#
     LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v2 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -17,6 +17,10 @@
     The container div itself could often change from a template to another, so we clearly separate it.
     NOTE: see views/subviews/survey/group.twig comments for more infos
 #}
+
+{% set sGroupName = processString(aGroup.name) %}
+{% set bShowGroupTitle = (aGroup.showgroupinfo == 'N' or aGroup.showgroupinfo == 'B')
+    and sGroupName|striptags|replace({'&nbsp;': ' '})|trim != '' %}
 
 <div class="{{ aSurveyInfo.class.groupcontainer }} space-col" {{ aSurveyInfo.attr.groupcontainer }}>
 

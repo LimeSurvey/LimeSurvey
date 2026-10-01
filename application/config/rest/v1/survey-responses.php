@@ -9,7 +9,6 @@ use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactorySurveyResponses,
     SchemaFactorySurveyResponsesPatch
 };
-
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 $errorSchema = (new SchemaFactoryError())->make();
@@ -27,8 +26,9 @@ $rest['v1/survey-responses/$id'] = [
         'params' => [
             'filters' => ['type' => 'array'],
             'sort' => ['type' => 'array'],
-            'pageSize' => ['type' => 'array'],
-            'page' => ['type' => 'array']
+            'page' => ['type' => 'array'],
+            'language' => ['type' => 'string'],
+            'fields' => ['type' => 'array']
         ],
         'responses' => [
             'success' => [

@@ -1,0 +1,63 @@
+.question-type-general-settings .overlay-trigger-button[disabled] {
+  border-color: $g-100;
+  background-color: $g-100;
+  color: $g-400;
+}
+
+.lime-toggle-btn-group .btn-group:has(.btn-outline-lime-toggle.disabled) {
+  background: $g-100;
+
+  .btn {
+    color: $g-400;
+    border: 0;
+  }
+
+  .btn-check:checked + .btn-outline-lime-toggle.disabled {
+    background: $white;
+  }
+}
+
+.qe-input-group .form-control[disabled] {
+  border-color: $g-100;
+  background-color: $g-100;
+  color: $g-400;
+
+  &::placeholder {
+    color: $g-400;
+  }
+}
+
+.select-component .select--is-disabled .select {
+  background-color: $g-100;
+  border-color: $g-100;
+
+  .select__indicator,
+  .select__single-value,
+  .select__placeholder {
+    color: $g-400;
+  }
+}
+
+.dropzone.disabled {
+  background-color: $g-100;
+  border-color: $g-400;
+
+  .icon,
+  .label {
+    color: $g-400;
+  }
+}
+
+.button[disabled],
+.add-question-button[disabled] {
+  background-color: $g-400;
+  border-color: $g-400;
+  color: $g-600;
+
+  span {
+    color: $g-600 !important;
+  }
+  svg {
+    fill: $g-600;
+  }
+}

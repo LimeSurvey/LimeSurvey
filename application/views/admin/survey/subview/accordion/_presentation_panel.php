@@ -36,6 +36,61 @@ $optionsQuestionIndex = array(
 if ($bShowInherited) {
     $optionsQuestionIndex['-1'] = $oSurveyOptions->questionindex . " ᴵ";
 }
+
+$sEffectiveShowNoAnswer = isset($oSurvey->oOptions->shownoanswer)
+    ? $oSurvey->oOptions->shownoanswer
+    : $oSurvey->shownoanswer;
+$bDisableNoAnswerPreselection = $sEffectiveShowNoAnswer !== 'Y';
+$mInheritedShowNoAnswer = $oSurvey->shownoanswer === 'I'
+    ? $sEffectiveShowNoAnswer === 'Y'
+    : null;
+
+App()->getClientScript()->registerScript(
+    'toggle-no-answer-preselection',
+    "
+    (function () {
+        var inheritedShowNoAnswer = " . CJavaScript::encode($mInheritedShowNoAnswer) . ";
+        var showNoAnswerInputs = document.querySelectorAll('input[name=\"shownoanswer\"]');
+        var preselectInputs = document.querySelectorAll('#preselectnoanswer input[name=\"preselectnoanswer\"]');
+        var preservedValue = document.getElementById('preselectnoanswer-disabled-value');
+        var preselectGroup = document.getElementById('preselectnoanswer');
+        var disabledMessage = " . CJavaScript::encode(gT('Enable “No answer” to configure this setting.')) . ";
+
+        function updateNoAnswerPreselectionState() {
+            var selectedShowNoAnswer = document.querySelector('input[name=\"shownoanswer\"]:checked');
+            var showNoAnswer = selectedShowNoAnswer && (
+                selectedShowNoAnswer.value === 'Y'
+                || (selectedShowNoAnswer.value === 'I' && inheritedShowNoAnswer !== false)
+            );
+            var selectedPreselection = document.querySelector(
+                '#preselectnoanswer input[name=\"preselectnoanswer\"]:checked'
+            );
+
+            preselectInputs.forEach(function (input) {
+                input.disabled = !showNoAnswer;
+            });
+
+            if (preservedValue) {
+                preservedValue.disabled = Boolean(showNoAnswer);
+                if (selectedPreselection) {
+                    preservedValue.value = selectedPreselection.value;
+                }
+            }
+
+            if (preselectGroup) {
+                preselectGroup.setAttribute('aria-disabled', String(!showNoAnswer));
+                preselectGroup.setAttribute('title', showNoAnswer ? '' : disabledMessage);
+            }
+        }
+
+        showNoAnswerInputs.forEach(function (input) {
+            input.addEventListener('change', updateNoAnswerPreselectionState);
+        });
+        updateNoAnswerPreselectionState();
+    }());
+    ",
+    LSYii_ClientScript::POS_READY
+);
 ?>
 
 <!-- Presentation panel -->
@@ -59,7 +114,41 @@ if ($bShowInherited) {
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->shownoanswer . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
+                </div>
+            </div>
+
+            <!-- Preselect "No answer" -->
+            <div class="mb-3">
+                <label class="form-label" for="preselectnoanswer"><?php eT('... “No answer” preselected'); ?></label>
+                <div>
+                    <?php $this->widget(
+                        'ext.ButtonGroupWidget.ButtonGroupWidget',
+                        array(
+                            'name' => 'preselectnoanswer',
+                            'checkedOption' => $oSurvey->preselectnoanswer,
+                            'ariaLabel' => gT('No answer preselected'),
+                            'selectOptions' => ($bShowInherited) ?
+                                array_merge(
+                                    $optionsOnOff,
+                                    array('I' => $oSurveyOptions->preselectnoanswer . " ᴵ")
+                                ) : $optionsOnOff,
+                            'htmlOptions' => array(
+                                'disabled' => $bDisableNoAnswerPreselection,
+                                'title' => $bDisableNoAnswerPreselection
+                                    ? gT('Enable “No answer” to configure this setting.')
+                                    : '',
+                            )
+                        )
+                    ); ?>
+                    <?= CHtml::hiddenField(
+                        'preselectnoanswer',
+                        $oSurvey->preselectnoanswer,
+                        array(
+                            'id' => 'preselectnoanswer-disabled-value',
+                            'disabled' => !$bDisableNoAnswerPreselection,
+                        )
+                    ) ?>
                 </div>
             </div>
 
@@ -163,25 +252,7 @@ if ($bShowInherited) {
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showwelcome . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
-                </div>
-            </div>
-
-            <!-- Show on-screen keyboard -->
-            <div class="mb-3">
-                <label class=" form-label" for='nokeyboard'><?php eT("... on-screen keyboard"); ?></label>
-                <div class="">
-                    <?php $this->widget(
-                        'ext.ButtonGroupWidget.ButtonGroupWidget',
-                        array(
-                            'name' => 'nokeyboard',
-                            'checkedOption' => $oSurvey->nokeyboard,
-                            'ariaLabel' => gT('on-screen keyboard'),
-                            'selectOptions' => ($bShowInherited) ?
-                                array_merge($optionsOnOff, array('I' => $oSurveyOptions->nokeyboard . " ᴵ")) : $optionsOnOff
-                        )
-                    );
-                    ?>
+                                                                ?>
                 </div>
             </div>
 
@@ -199,7 +270,7 @@ if ($bShowInherited) {
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showprogress . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
 
@@ -216,7 +287,7 @@ if ($bShowInherited) {
                             'selectOptions' => $optionsQuestionIndex
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
 
@@ -268,7 +339,7 @@ if ($bShowInherited) {
                                 ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->autoredirect . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
         </div>
@@ -287,7 +358,7 @@ if ($bShowInherited) {
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->allowprev . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                            ?>
                 </div>
             </div>
             <!-- Participants may print answers -->
@@ -304,7 +375,7 @@ if ($bShowInherited) {
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->printanswers . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
         </div>
@@ -327,7 +398,7 @@ if ($bShowInherited) {
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicstatistics . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                    ?>
                 </div>
             </div>
         </div>
@@ -348,7 +419,7 @@ if ($bShowInherited) {
                             array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicgraphs . " ᴵ")) : $optionsOnOff
                     )
                 );
-                ?>
+                                                                    ?>
             </div>
         </div>
     </div>

@@ -27,3 +27,21 @@
         gap: 5px;
     }
 }
+
+//SurveySidemenuWidget
+#survey-settings-panel {
+    .survey-settings {
+        a:hover {
+            background-color: $g-200;
+        }
+        a:focus-visible {
+            @include inset-border(2px, $grape90);
+            background-color: $white;
+            color: $g-800;
+        }
+        a:active {
+            background-color: $g-100;
+            color: $g-800;
+        }
+    }
+}

@@ -1,7 +1,0 @@
-# composer related
-composer.lock
-composer.phar
-vendor
-
-# build logs
-build

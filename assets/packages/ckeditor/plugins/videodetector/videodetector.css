@@ -1,48 +1,47 @@
-.videodetector {
-    position      : relative;
-    width         : 100%;
-    height        : 0;
-    padding-bottom: 60%;
-}
-
 .videodetector iframe {
-    position: absolute;
-    top     : 0;
-    left    : 0;
-    width   : 100%;
-    height  : 100%;
+    display     : block;
+    width       : 100%;
+    aspect-ratio: 16 / 9;
+    border      : 0;
 }
 
-.remove-videodetector{
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    z-index: 999;
-    cursor: pointer!important;
-    display: none;
-    outline: none;
-    padding: 10px 20px;
-    appearance: none;
-    -webkit-appearance: none;
-    box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
-    border-radius: 3px;
-    border: none;
-    background-color: #e74c3c;
-    color: #fff;
-    font-weight: bold;
-    font-size: 12px;
-    text-transform: uppercase;
-    -webkit-transition: 0.2s;
-    -moz-transition: 0.2s;
-    -ms-transition: 0.2s;
-    -o-transition: 0.2s;
-    transition: 0.2s;
+/* Let clicks reach the widget so the video can be selected, edited (double-click) and deleted */
+.cke_widget_wrapper .videodetector iframe {
+    pointer-events: none;
 }
 
-.remove-videodetector:hover{
-    background-color: #c0392b;
+.cke_widget_wrapper .videodetector {
+    position: relative;
 }
 
-.videodetector:hover .remove-videodetector{
+.cke_videodetector_resizer {
+    display         : none;
+    position        : absolute;
+    right           : -6px;
+    bottom          : -6px;
+    width           : 12px;
+    height          : 12px;
+    box-sizing      : border-box;
+    background-color: #fff;
+    border          : 2px solid #333;
+    cursor          : nwse-resize;
+}
+
+[dir="rtl"] .cke_videodetector_resizer {
+    right : auto;
+    left  : -6px;
+    cursor: nesw-resize;
+}
+
+.cke_widget_wrapper:hover .cke_videodetector_resizer,
+.cke_widget_selected .cke_videodetector_resizer,
+.cke_videodetector_resizing .cke_videodetector_resizer {
     display: block;
+}
+
+/* Keep the resize cursor and avoid selecting text while dragging */
+.cke_videodetector_resizing,
+.cke_videodetector_resizing * {
+    cursor     : nwse-resize !important;
+    user-select: none;
 }

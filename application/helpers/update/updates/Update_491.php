@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_491 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         // Upate 489 belongs with this update. Due to a faulty deployment, we start from scratch here with failed_emails table.

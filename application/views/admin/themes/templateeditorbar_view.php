@@ -67,37 +67,45 @@ $importModal = false;
 <div class="mt-3 mb-3">
     <div class="row row-cols-auto align-items-center justify-content-end gx-2">
         <!-- Theme Select Box -->
-        <label class="col col-form-label text-nowrap" for='templatedir'><?php eT("Theme:"); ?></label>
+        <label class="col col-form-label text-nowrap" id="templatedir-label" for='templatedir'><?php eT("Theme:"); ?></label>
         <div class="col">
             <select class="col listboxtemplates form-select activate-search" id='templatedir' name='templatedir'
+                    aria-labelledby="templatedir-label"
                     onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
-                    echo $this->createUrl("admin/themes",
+                    echo $this->createUrl(
+                        "admin/themes",
                         [
                             'sa'         => 'view',
                             'editfile'   => $relativePathEditfile,
                             'screenname' => $screenname
-                        ]); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
+                        ]
+                    ); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
                 <?php echo themeoptions($templates, $templatename); ?>
             </select>
         </div>
 
         <!-- Screen Select Box -->
-        <label class="col col-form-label text-nowrap" for='listboxtemplates'><?php eT("Screen:"); ?></label>
+        <label class="col col-form-label text-nowrap" id="listboxtemplates-label" for='listboxtemplates'><?php eT("Screen:"); ?></label>
         <div>
-            <?php echo CHtml::dropDownList('screenname',
+            <?php echo CHtml::dropDownList(
+                'screenname',
                 $screenname,
                 $screens,
                 [
                     'id'       => 'listboxtemplates',
                     'class'    => "col listboxtemplates form-select activate-search",
-                    'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl("admin/themes",
-                            [
+                    'aria-labelledby' => 'listboxtemplates-label',
+                    'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl(
+                        "admin/themes",
+                        [
                                 'sa'           => 'view',
                                 'editfile'     => $relativePathEditfile,
                                 'templatename' => $templatename
-                            ]) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
-                ]); ?>
+                        ]
+                    ) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
+                ]
+            ); ?>
         </div>
 <!--        @TODO unused button???-->
         <?php if (isset($fullpagebar['savebutton']['form'])) : ?>

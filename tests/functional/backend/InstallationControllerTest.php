@@ -8,6 +8,7 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2017-11-24
+ * @group survey
  */
 class InstallationControllerTest extends TestBaseClassWeb
 {

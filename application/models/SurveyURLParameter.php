@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -49,6 +49,23 @@ class SurveyURLParameter extends LSActiveRecord
         /** @var self $model */
         $model = parent::model($className);
         return $model;
+    }
+
+    /**
+     * Check whether a string may be used as a panel integration URL parameter name.
+     *
+     * The name must start with a letter or underscore and may then contain letters,
+     * digits, underscores and hyphens. Dots and spaces are rejected because PHP
+     * converts them to underscores in $_GET keys. Names reserved by LimeSurvey
+     * itself (sid, newtest, token, lang) are rejected as well.
+     *
+     * @param string $parameterName The trimmed parameter name to check
+     * @return bool True if the name is valid
+     */
+    public static function isValidParameterName(string $parameterName): bool
+    {
+        return preg_match('/^[a-zA-Z_][a-zA-Z0-9_-]*$/', $parameterName) === 1
+            && !in_array($parameterName, ['sid', 'newtest', 'token', 'lang'], true);
     }
 
     /** @inheritdoc */

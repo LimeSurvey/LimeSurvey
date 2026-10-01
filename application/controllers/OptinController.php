@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -53,7 +53,7 @@ class OptinController extends LSYii_Controller
         if (!isset($languageCode) || $languageCode == "" || !$languageCode) {
             $baseLanguage = $survey->language;
         } else {
-            $baseLanguage = sanitize_languagecode($languageCode);
+            $baseLanguage = \LSYii_Validators::languageCodeFilter($languageCode);
         }
 
         Yii::app()->setLanguage($baseLanguage);
@@ -105,7 +105,7 @@ class OptinController extends LSYii_Controller
         if (!isset($languageCode) || $languageCode == "" || !$languageCode) {
             $baseLanguage = $survey->language;
         } else {
-            $baseLanguage = sanitize_languagecode($languageCode);
+            $baseLanguage = \LSYii_Validators::languageCodeFilter($languageCode);
         }
 
         Yii::app()->setLanguage($baseLanguage);
@@ -176,7 +176,7 @@ class OptinController extends LSYii_Controller
         if (!isset($languageCode) || $languageCode == "" || !$languageCode) {
             $baseLanguage = $survey->language;
         } else {
-            $baseLanguage = sanitize_languagecode($languageCode);
+            $baseLanguage = \LSYii_Validators::languageCodeFilter($languageCode);
         }
 
         Yii::app()->setLanguage($baseLanguage);

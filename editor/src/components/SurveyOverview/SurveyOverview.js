@@ -1,0 +1,278 @@
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Button, Card, Container } from 'react-bootstrap'
+
+import { ContentEditor, PublicSurveyAlias } from 'components'
+import { ACCESS_MODES, PAGES, SURVEY_MENU_TITLES } from 'helpers'
+import { useStatisticsAtGlance } from 'hooks'
+import { getSharingPanels } from 'shared/getSharingPanels'
+import { BrandedQRCode } from 'shared/BrandedQRCode'
+import { CheckIcon, EyeIcon, StopIcon } from 'components/icons'
+
+import rightArrowIcon from 'assets/icons/right-arrow.svg'
+import pencilIconWhite from 'assets/icons/pencil-icon-white.svg'
+
+import OverViewToast from './OverViewToast'
+
+export const SurveyOverview = ({
+  survey = {},
+  update,
+  hasOperations,
+  numberOfQuestions = 0,
+  hasSurveyUpdatePermission,
+  editSurvey,
+  togglePublish,
+  toastMessage,
+  activeLanguage,
+  setShowOverViewModal = () => {},
+  createBufferOperation = () => {},
+  addToBuffer = () => {},
+}) => {
+  const navigate = useNavigate()
+  const [link, setLink] = useState('')
+  const [isWide, setIsWide] = useState(false)
+
+  const {
+    statistics = {},
+    refetch,
+    isFetching,
+  } = useStatisticsAtGlance(survey?.sid)
+
+  const surveyTitle = survey?.languageSettings?.[survey?.language]?.title
+  const dateCreated = new Date(survey.dateCreated)
+
+  useEffect(() => {
+    // Refetch statistics every time the modal opens
+    if (survey?.sid) {
+      refetch()
+    }
+  }, [survey?.sid, refetch])
+
+  const numberRefs = useRef([])
+  const statsRef = useRef(null)
+
+  const handleShowingSharingPanel = () => {
+    setShowOverViewModal(false)
+    navigate(
+      `/${PAGES.SHARE}/${survey.sid}/${getSharingPanels().sharing.panel}/${SURVEY_MENU_TITLES.sharingOverview}`
+    )
+  }
+
+  const handleShowingResultsPanel = () => {
+    setShowOverViewModal(false)
+    navigate(`/responses/${survey.sid}`)
+  }
+
+  useLayoutEffect(() => {
+    const grid = statsRef.current
+    if (!grid) return undefined
+
+    const ROW_GAP = 20
+    const RESERVED_SPACE = 120
+
+    const applyLayout = () => {
+      const cardWidth = (grid.clientWidth - ROW_GAP * 2) / 3 // a card in 3-up
+      const overflows = numberRefs.current.some(
+        (el) => el && el.offsetWidth + RESERVED_SPACE > cardWidth
+      )
+      setIsWide(overflows)
+    }
+
+    applyLayout()
+
+    const observer = new ResizeObserver(applyLayout)
+    observer.observe(grid)
+    numberRefs.current.forEach((el) => el && observer.observe(el))
+
+    return () => observer.disconnect()
+  }, [statistics])
+
+  return (
+    <Container className="overview-modal p-0 w-100 h-100 d-flex flex-row justfiy-content-between">
+      {!survey?.sid || !statistics || isFetching ? ( // Loading state here within the modal so there's no flicker when switching states
+        <div className="overview-section overview-main-section w-75 d-flex align-items-center justify-content-center gap-3">
+          <span
+            style={{ width: 48, height: 48 }}
+            className="loader"
+            role="status"
+          ></span>
+          <h2 className="text-muted m-0">{t('Loading overview...')}</h2>
+        </div>
+      ) : (
+        <>
+          <div className="overview-section overview-main-section w-75">
+            {toastMessage && (
+              <div className="row mb-4 px-3">
+                <OverViewToast message={toastMessage} />
+              </div>
+            )}
+            <div
+              ref={statsRef}
+              className={`overview-stats${isWide ? ' is-wide' : ''}`}
+            >
+              <div className="overview-stat-card">
+                <Card className="h-68 w-100">
+                  <Card.Body className="d-flex flex-row flex-nowrap align-items-center gap-8px">
+                    <span
+                      className="reg28 text-nowrap"
+                      ref={(el) => (numberRefs.current[0] = el)}
+                    >
+                      {statistics.totalResponses}
+                    </span>
+                    <div className="reg14-container">
+                      <span className="reg14">{t('Total responses')}</span>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </div>
+              <div className="overview-stat-card">
+                <Card className="h-68 w-100">
+                  <Card.Body className="d-flex flex-row flex-nowrap align-items-center gap-8px">
+                    <span
+                      className="reg28 text-nowrap"
+                      ref={(el) => (numberRefs.current[1] = el)}
+                    >
+                      {statistics.totalResponses -
+                        statistics.incompleteResponses}
+                    </span>
+                    <div className="reg14-container">
+                      <span className="reg14">{t('Full responses')}</span>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </div>
+              <div className="overview-stat-card">
+                <Card className="h-68 w-100">
+                  <Card.Body className="d-flex flex-row flex-nowrap align-items-center gap-8px">
+                    {statistics.completionRate ? (
+                      <>
+                        <span
+                          className="reg28 text-nowrap"
+                          ref={(el) => (numberRefs.current[2] = el)}
+                        >
+                          {`${statistics.completionRate}%`}
+                        </span>
+                        <div className="reg14-container">
+                          <span className="reg14">{t('Response rate')}</span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="reg14-container">
+                        <span className="reg14">{t('No responses')}</span>
+                      </div>
+                    )}
+                  </Card.Body>
+                </Card>
+              </div>
+              <div className="overview-stat-card">
+                <Card className="h-68 w-100">
+                  <Card.Body className="d-flex flex-row flex-nowrap align-items-center gap-8px">
+                    <span
+                      className="reg28 text-nowrap"
+                      ref={(el) => (numberRefs.current[3] = el)}
+                    >
+                      {statistics.incompleteResponses}
+                    </span>
+                    <div className="reg14-container">
+                      <span className="reg14">{t('Incomplete responses')}</span>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </div>
+            </div>
+            <div
+              onClick={handleShowingResultsPanel}
+              className="text-primary text-start arrow-link med14-c cursor-pointer"
+            >
+              {t('View results overview')} <img src={rightArrowIcon} />
+            </div>
+            <div className="row g-4">
+              <div className="col-md-8 d-flex align-items-stretch">
+                <Card className="card d-flex flex-column justify-content-between h-100 w-100">
+                  <PublicSurveyAlias
+                    parentName="Overview"
+                    survey={survey}
+                    update={update}
+                    setLink={setLink}
+                    language={activeLanguage}
+                    editable={false}
+                    currentSurveyAccessMode={
+                      survey?.access_mode || ACCESS_MODES.OPEN_TO_ALL
+                    }
+                    createBufferOperation={createBufferOperation}
+                    addToBuffer={addToBuffer}
+                  />
+                </Card>
+              </div>
+              <div className="col-md-4 d-flex align-items-stretch">
+                <Card className="text-center h-100 w-100">
+                  <BrandedQRCode value={link} />
+                </Card>
+              </div>
+            </div>
+
+            <div
+              onClick={handleShowingSharingPanel}
+              className="text-primary med14-c arrow-link text-start cursor-pointer"
+            >
+              {t('View sharing overview')} <img src={rightArrowIcon} />
+            </div>
+          </div>
+
+          <div className="overview-section overview-right-section w-25 bg-white d-flex flex-column justify-content-between">
+            <div className="text-start">
+              <div className="reg18">
+                <ContentEditor
+                  disabled={true}
+                  value={surveyTitle || t('Survey title')}
+                  className="survey-overview-content-editor"
+                />
+              </div>
+              <div className="reg12">{dateCreated.toLocaleDateString()}</div>
+            </div>
+            <div>
+              <Button
+                className="text-start d-flex align-items-center gap-2 reg14 font-normal w-100"
+                onClick={editSurvey}
+              >
+                <img src={pencilIconWhite} />
+                {t('Edit survey')}
+              </Button>
+              <Button
+                variant={survey.active ? 'danger' : 'success'}
+                className={
+                  ' align-items-center w-100 my-2 d-flex gap-2 text-start reg14'
+                }
+                onClick={() => togglePublish()}
+                disabled={
+                  hasOperations ||
+                  numberOfQuestions === 0 ||
+                  !hasSurveyUpdatePermission
+                }
+              >
+                <div className="d-flex align-items-center stop-icon">
+                  {survey.active ? (
+                    <StopIcon />
+                  ) : (
+                    <CheckIcon className="fill-current text-white" />
+                  )}
+                </div>
+                <p className="m-0 reg-14 text-white">
+                  {survey.active ? t('Deactivate') : t('Activate')}
+                </p>
+              </Button>
+
+              <Button
+                variant="secondary"
+                className="w-100 d-flex align-items-center gap-2 text-start reg14"
+                onClick={() => window.open(survey.previewLink, '_blank')}
+              >
+                <EyeIcon fill="#FFF" /> {t('Preview survey')}
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
+    </Container>
+  )
+}

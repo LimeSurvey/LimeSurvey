@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Send email reminder
  */
+
 ?>
 
 <div class='side-body'>
@@ -10,8 +12,8 @@
         <div class="col-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>
 
-            <?php if ($thissurvey['active'] != 'Y'): ?>
-                <?php if ($thissurvey[$baselang]['active'] != 'Y'): ?>
+            <?php if ($thissurvey['active'] != 'Y') : ?>
+                <?php if ($thissurvey[$baselang]['active'] != 'Y') : ?>
                     <div class="jumbotron message-box message-box-error">
                         <h2 class='text-danger'><?php eT('Warning!'); ?></h2>
                         <p class="lead text-danger">
@@ -20,10 +22,10 @@
                     </div>
                 <?php endif; ?>
             <?php endif; ?>
-            <?php if (count($warnings)): ?>
+            <?php if (count($warnings)) : ?>
                 <div class="alert alert-warning">
                     <ul class='list-unstyled'>
-                    <?php foreach($warnings as $warning): ?>
+                    <?php foreach ($warnings as $warning) : ?>
                         <li>
                             <?= $warning ?>
                         </li>
@@ -34,7 +36,7 @@
             <?php echo CHtml::form(array("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}"), 'post', array('id' => 'sendreminder', 'class' => '')); ?>
             <div class="row">
                 <div class="col-md-6">
-                    <?php if (count($tokenids) > 0): ?>
+                    <?php if (count($tokenids) > 0) : ?>
                         <div class='mb-3'>
                             <label class='form-label '><?php eT("Send reminder to participant ID(s):"); ?></label>
                             <div class=''>
@@ -125,7 +127,7 @@
                 <div class="col-md-6">
                     <!-- Max reminders -->
                     <div class='mb-3'>
-                        <label class='form-label ' for='maxremindercount'><?php eT("Max reminders:"); ?></label>
+                        <label class='form-label ' for='maxremindercount'><?php eT("Maximum reminders:"); ?></label>
                         <div class=''>
                             <input type="text" id="maxremindercount" class="form-control" size="25" value=""
                                    name="maxremindercount" style="width: 50%;"/>
@@ -135,7 +137,7 @@
                     <!-- Min days between reminders -->
                     <div class='mb-3'>
                         <label class='form-label '
-                               for='minreminderdelay'><?php eT("Min days between reminders:"); ?></label>
+                               for='minreminderdelay'><?php eT("Minimum days between reminders:"); ?></label>
                         <div class=''>
                             <input type="text" id="minreminderdelay" class="form-control" size="25" value=""
                                    name="minreminderdelay" style="width: 50%;">
@@ -146,7 +148,7 @@
             <div>
                 <ul class="nav nav-tabs">
                     <?php $c = true ?>
-                    <?php foreach ($oSurvey->allLanguages as $language): ?>
+                    <?php foreach ($oSurvey->allLanguages as $language) : ?>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link <?= $c ? "active" : "" ?>" data-bs-toggle="tab" href="#<?= $language ?>">
                                 <?php if ($c) {
@@ -178,7 +180,7 @@
                         <div id="<?php echo $language; ?>" class="tab-pane fade <?php if ($c) {
                             $c = false;
                             echo 'show active';
-                        } ?>">
+                                 } ?>">
 
                             <div class='mb-3'>
                                 <label class='form-label '
@@ -201,7 +203,7 @@
                                        for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                 <div class="input-group htmleditor ">
                                     <?php echo CHtml::textArea("message_{$language}", $textarea, array('cols' => 80, 'rows' => 20, 'class' => 'form-control')); ?>
-                                    <?php echo getEditor("email-reminder", "message_$language", "[" . gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
+                                    <?php echo getEditor("email-reminder", "message_$language", "[" . gT("Reminder email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                 </div>
                             </div>
                         </div>
@@ -211,7 +213,7 @@
                     <div class='mb-3'>
                         <div class=''></div>
                         <div class=''>
-                            <?php echo CHtml::submitButton(gT("Send Reminders", 'unescaped'), array('class' => 'btn btn-outline-secondary')); ?>
+                            <?php echo CHtml::submitButton(gT("Send reminders", 'unescaped'), array('class' => 'btn btn-outline-secondary')); ?>
                         </div>
 
                         <?php

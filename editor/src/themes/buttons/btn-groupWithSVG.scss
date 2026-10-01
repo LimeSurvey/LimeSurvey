@@ -1,0 +1,143 @@
+// Shared base for button groups with SVG icon options (e.g. image alignment,
+// privacy policy display mode). Component-specific layout/spacing lives in
+// .lime-align-btn-group and .lime-privacy-policy-btn-group below.
+.lime-svg-btn-group {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  .btn-check:active + .btn-outline-lime-svg,
+  .btn-check:checked + .btn-outline-lime-svg,
+  .btn-outline-lime-svg.active,
+  .btn-outline-lime-svg.dropdown-toggle.show,
+  .btn-outline-lime-svg:active {
+    background-color: $aubergine;
+    border-color: $g-700;
+    color: $g-700;
+    border-radius: 2px;
+
+    &.disabled,
+    &[disabled] {
+      border-color: $g-600;
+      background-color: $g-400;
+      color: $g-600;
+    }
+  }
+
+  .btn-check:active + .btn-outline-lime-svg:focus,
+  .btn-check:checked + .btn-outline-lime-svg:focus,
+  .btn-outline-lime-svg.active:focus,
+  .btn-outline-lime-svg.dropdown-toggle.show:focus,
+  .btn-outline-lime-svg:active:focus,
+  .btn-outline-lime-svg:active,
+  .btn-check:focus + .btn-outline-lime-svg,
+  .btn-outline-lime-svg:hover {
+    box-shadow: none;
+    background-color: $aubergine;
+    border-color: $g-700;
+    color: $white;
+  }
+}
+
+// Special button group with icons for image alignment
+.lime-align-btn-group {
+  .btn {
+    color: $white;
+    font-weight: $font-weight-500;
+    font-size: $font-size-sm;
+    line-height: $line-height-20;
+    background: $g-400;
+    padding: 2px;
+    border-radius: 1.5px;
+    min-height: 40px;
+    min-width: 68.62px;
+    width: 100%;
+    align-items: stretch;
+    .left-side {
+      width: 50%;
+      font-size: $font-size-xxl;
+    }
+    .right-side {
+      width: 50%;
+      background-color: $g-600;
+    }
+    .center-side {
+      width: 100%;
+      font-size: $font-size-xxl;
+      background-color: $g-600;
+    }
+  }
+  .btn-check:active + .btn-outline-lime-svg,
+  .btn-check:checked + .btn-outline-lime-svg,
+  .btn-outline-lime-svg.active,
+  .btn-outline-lime-svg.dropdown-toggle.show,
+  .btn-outline-lime-svg:active {
+    .left-side {
+      color: $white;
+    }
+    .center-side {
+      color: $white;
+      background-color: $grape;
+    }
+    .right-side {
+      background-color: $grape;
+    }
+  }
+}
+
+// Button group with icons and labels for the privacy policy display mode
+.lime-privacy-policy-btn-group {
+  justify-content: flex-end;
+  gap: 14px;
+
+  .btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+
+    .privacy-icon-bg {
+      fill: $g-200;
+    }
+    .privacy-icon-accent {
+      fill: $g-400;
+    }
+  }
+
+  .btn-check:active + .btn-outline-lime-svg,
+  .btn-check:checked + .btn-outline-lime-svg,
+  .btn-outline-lime-svg.active,
+  .btn-outline-lime-svg.dropdown-toggle.show,
+  .btn-outline-lime-svg:active,
+  .btn-outline-lime-svg:hover,
+  .btn-check:active + .btn-outline-lime-svg:focus,
+  .btn-check:checked + .btn-outline-lime-svg:focus,
+  .btn-outline-lime-svg.active:focus,
+  .btn-outline-lime-svg.dropdown-toggle.show:focus,
+  .btn-outline-lime-svg:active:focus,
+  .btn-check:focus + .btn-outline-lime-svg {
+    background-color: transparent;
+    color: inherit;
+    box-shadow: none;
+
+    .privacy-icon-bg {
+      fill: $aubergine;
+    }
+    .privacy-icon-accent {
+      fill: #6130bc;
+    }
+
+    // keep the label's own color/background untouched by the button's
+    // checked/active/hover/focus state styling
+    .privacy-policy-btn-label {
+      color: $g-900;
+      background-color: transparent;
+    }
+  }
+
+  .privacy-policy-btn-label {
+    font-weight: $font-weight-500;
+    font-size: $font-size-sm;
+    line-height: $line-height-20;
+    color: $g-900;
+  }
+}

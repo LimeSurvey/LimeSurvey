@@ -22,7 +22,8 @@ class OperationResult
      * @param bool $success
      * @param TypedMessage[]|TypedMessage $messages
      */
-    public function __construct($success = false, $messages = []) {
+    public function __construct($success = false, $messages = [])
+    {
         $this->success = $success;
         if (!is_array($messages)) {
             $messages = [$messages];

@@ -30,7 +30,7 @@ if( ENVIRONEMENT=='production' ) {
                             "browsers": "> 0.25%, not dead",
                             "ie": "11"
                         },
-                        modules: 'false',
+                        modules: false,
                         useBuiltIns: 'entry',
                         corejs: 3,
                     }
@@ -62,7 +62,7 @@ if( ENVIRONEMENT=='production' ) {
                             "browsers": "> 0.25%, not dead",
                             "ie": "11"
                         },
-                        modules: 'false',
+                        modules: false,
                         useBuiltIns: 'entry',
                         corejs: 3,
                     }

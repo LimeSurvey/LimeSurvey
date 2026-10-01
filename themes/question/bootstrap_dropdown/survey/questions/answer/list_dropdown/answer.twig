@@ -66,6 +66,48 @@
                 }, 200);
             });
             {% endif %}
+
+            {#
+                Keyboard access for the answer options (WCAG 2.1 SC 2.1.1).
+
+            #}
+            var $bsWrapper = $('#answer{{ name }}').closest('.bootstrap-select');
+            var $bsToggle  = $bsWrapper.find('.dropdown-toggle').first();
+
+            $bsToggle.attr('data-toggle', 'dropdown');
+            var handledKeys = ['ArrowUp', 'ArrowDown', 'Escape', 'Enter'];
+
+            window.addEventListener('keydown', function (event) {
+                if (handledKeys.indexOf(event.key) === -1) {
+                    return;
+                }
+                // Ignore other widgets on the page; each one binds its own listener.
+                if (!event.target || typeof event.target.closest !== 'function'
+                    || event.target.closest('.bootstrap-select') !== $bsWrapper.get(0)) {
+                    return;
+                }
+                var isOpen = $bsToggle.attr('aria-expanded') === 'true';
+
+                if (event.key === 'Escape' && !isOpen) {
+                    return;
+                }
+
+                event.stopPropagation();
+                event.preventDefault();
+
+                var $listbox = $bsWrapper.find('[role="listbox"]').first();
+                var target = (isOpen && $listbox.length) ? $listbox.get(0) : $bsToggle.get(0);
+                var keyCode = (event.key === 'Enter' && !isOpen) ? 40 : event.keyCode;
+
+                $.fn.selectpicker.Constructor.prototype.keydown.call(
+                    target,
+                    $.Event('keydown', { which: keyCode, keyCode: keyCode })
+                );
+
+                if (event.key === 'Enter' && isOpen && $bsToggle.attr('aria-expanded') === 'true') {
+                    $bsToggle.trigger('click.bs.dropdown.data-api').trigger('focus');
+                }
+            }, true);
         });
 
     </script>

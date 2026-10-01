@@ -14,6 +14,7 @@ use Facebook\WebDriver\WebDriverSelect;
  * https://docs.phpunit.de/en/10.5/annotations.html#backupglobals
  *
  * @backupGlobals enabled
+ * @group user
  */
 class UserStatusControllerTest extends TestBaseClass
 {
@@ -37,6 +38,8 @@ class UserStatusControllerTest extends TestBaseClass
             $parent_user = 1,
             $new_email = 'new@user.com'
         );
+        $this->assertFalse($uid instanceof User, 'Failed to create user: ' . ($uid instanceof User ? json_encode($uid->getErrors()) : ''));
+        $uid = (int) $uid;
 
         // Not good, should inject the request object instead.
         $_GET['userid'] = $uid;

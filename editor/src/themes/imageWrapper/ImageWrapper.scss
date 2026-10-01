@@ -1,0 +1,13 @@
+// Stacks an image and an overlay on top of each other (used by ImageWrapper
+// when an image is rendered as a background). Both children are placed in
+// the same grid cell so the container's height grows to fit whichever of
+// the two is taller, instead of the overlay being cropped to the image's
+// height (or the image being stretched/cropped to the overlay's height).
+.image-background-stack {
+  display: grid;
+
+  .image-background-stack-item {
+    grid-area: 1 / 1;
+    width: 100%;
+  }
+}

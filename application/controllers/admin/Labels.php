@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2023 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -76,9 +76,17 @@ class Labels extends SurveyCommonAction
             $zip->close();
 
             // now read tempdir and copy authorized files only
-            $folders = array('flash', 'files', 'images');
+            $folders = array('files', 'images');
+            $hasResourceFolders = false;
             foreach ($folders as $folder) {
-                list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
+                if (is_dir($extractdir . "/" . $folder)) {
+                    $hasResourceFolders = true;
+                    break;
+                }
+            }
+            foreach ($folders as $folder) {
+                $filterImportedService = new \LimeSurvey\Models\Services\FilterImportedResources();
+                list($_aImportedFilesInfo, $_aErrorFilesInfo) = $filterImportedService->filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
                 $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
                 $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
             }
@@ -89,8 +97,11 @@ class Labels extends SurveyCommonAction
             // Delete the temporary file
             unlink($zipfilename);
 
-            if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo)) {
-                $this->getController()->error(gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+            if (empty($aErrorFilesInfo) && empty($aImportedFilesInfo)) {
+                $sError = $hasResourceFolders
+                    ? gT("This ZIP archive contains no valid Resources files. Import failed.")
+                    : gT("The ZIP archive must contain a 'files' and/or an 'images' folder at its top level, with the resource files placed inside. Import failed.");
+                $this->getController()->error($sError, $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
         } else {
             $this->getController()->error(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
@@ -193,7 +204,7 @@ class Labels extends SurveyCommonAction
 
         /* other sa ? What is the default ? */
         $langidsarray = explode(" ", trim((string) $langids)); // Make an array of it
-        /* unknow usage */
+        /* unknown usage */
         $panecookie = 'new';
         /* render data */
         $aData['langids'] = $langids;
@@ -237,12 +248,10 @@ class Labels extends SurveyCommonAction
         $aViewUrls = array();
         $aData = array();
 
-        // Includes some javascript files
-        App()->getClientScript()->registerPackage('jquery-json');
         $model = LabelSet::model()->findByPk($lid);
         if ($lid > 0) {
             $lid = $this->validateLabelSetId($lid, 'read');
-            // Now recieve all labelset information and display it
+            // Now receive all labelset information and display it
             $aData['lid'] = $lid;
             $aData['row'] = $model->attributes;
 
@@ -250,6 +259,8 @@ class Labels extends SurveyCommonAction
             $lslanguages = explode(" ", trim((string) $model->languages));
 
             Yii::app()->loadHelper("admin.htmleditor");
+
+            initKcfinder();
 
             $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
@@ -288,7 +299,7 @@ class Labels extends SurveyCommonAction
         }
 
         if ($lid == 0) {
-            $aData['topbar']['title'] = gT('Label sets list');
+            $aData['topbar']['title'] = gT('Label set list');
             $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns/leftSideButtons',
                 [
@@ -305,7 +316,7 @@ class Labels extends SurveyCommonAction
                 true
             );
         } else {
-            $aData['topbar']['title'] = gT('Label sets list');
+            $aData['topbar']['title'] = gT('Label set list');
             $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns_singlelabelset/leftSideButtons',
                 [
@@ -439,7 +450,7 @@ class Labels extends SurveyCommonAction
     public function getAllSets()
     {
         /* Using of label sets are not controlled all label sets can be used by every one */
-        $results = LabelSet::model()->findAll();
+        $results = LabelSet::model()->findAll(array('order' => 'label_name'));
         $output = array();
         foreach ($results as $row) {
             $output[$row->lid] = flattenText($row->getAttribute('label_name'));
@@ -455,7 +466,7 @@ class Labels extends SurveyCommonAction
      */
     public function getRestrictedSets()
     {
-        $labelSets = LabelSet::model()->permission()->findAll();
+        $labelSets = LabelSet::model()->permission()->findAll(array('order' => 'label_name'));
         $output = array();
         foreach ($labelSets as $labelSet) {
             $output[$labelSet->lid] = flattenText($labelSet->getAttribute('label_name'));
@@ -505,7 +516,7 @@ class Labels extends SurveyCommonAction
             throw new CHttpException(500, $exception->getMessage());
         }
 
-        eT('Label set successfully saved');
+        eT('Label set successfully saved.');
     }
 
     /**
@@ -610,53 +621,6 @@ class Labels extends SurveyCommonAction
         Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             ['data' => $returnArray]
-        );
-        App()->end();
-    }
-
-    /**
-     * New label set from question editor
-     * @deprecated : not used in 6.0 and before
-     * @return void
-     */
-    public function newLabelSetFromQuestionEditor()
-    {
-        $aLabelSet = Yii::app()->request->getPost('labelSet', []);
-        $oLabelSet = new LabelSet();
-        $aLabels = $aLabelSet['labels'];
-        $oLabelSet->label_name = $aLabelSet['label_name'];
-        $oLabelSet->languages = $aLabelSet['languages'];
-        $oLabelSet->owner_id = App()->user->getId();
-        $result = $oLabelSet->save();
-        $aDebug['saveLabelSet'] = $result;
-
-        foreach ($aLabelSet['labels'] as $i => $aLabel) {
-            $oLabel = new Label();
-            $oLabel->lid = $oLabelSet->lid;
-            $oLabel->code = $aLabel['code'] ?? $aLabel['title'];
-            $oLabel->sortorder = $i;
-            $oLabel->assessment_value = $aLabel['assessment_value'] ?? 0;
-            $partResult = $oLabel->save();
-            $aDebug['saveLabel_' . $i] = $partResult;
-            $result = $result && $partResult;
-            foreach ($oLabelSet->languageArray as $language) {
-                $oLabelL10n = new LabelL10n();
-                $oLabelL10n->label_id = $oLabel->id;
-                $oLabelL10n->language = $language;
-                $oLabelL10n->title = $aLabel[$language]['question'] ?? $aLabel[$language]['answer'];
-
-                $lngResult = $oLabelL10n->save();
-                $aDebug['saveLabel_' . $i . '_' . $language] = $lngResult;
-                $result = $result && $lngResult;
-            }
-        }
-
-        Yii::app()->getController()->renderPartial(
-            '/admin/super/_renderJson',
-            ['data' => [
-                'success' => $result,
-                'message' => gT('Label set successfully saved')
-            ]]
         );
         App()->end();
     }
@@ -779,7 +743,7 @@ class Labels extends SurveyCommonAction
     /**
      * Sanitize existence and permission of LabelSet->pk, throw exception if there are an issue.
      * @param $lid mixed, sanitized to intreger
-     * @param $permisson to check
+     * @param $permission to check
      * @return integer : the label id
      * @throws CHttpException
      */

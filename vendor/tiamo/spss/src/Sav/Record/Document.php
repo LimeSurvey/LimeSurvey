@@ -55,6 +55,7 @@ class Document extends Record implements \ArrayAccess
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->lines[$offset]);
@@ -65,6 +66,7 @@ class Document extends Record implements \ArrayAccess
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->lines[$offset];
@@ -74,6 +76,7 @@ class Document extends Record implements \ArrayAccess
      * @param mixed $offset
      * @param mixed $value
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->lines[$offset] = $value;
@@ -82,6 +85,7 @@ class Document extends Record implements \ArrayAccess
     /**
      * @param mixed $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->lines[$offset]);
