@@ -180,21 +180,16 @@ class Export extends SurveyCommonAction
             $data['thissurvey'] = $thissurvey;
             $data['display']['menu_bars']['browse'] = gT("Export results");
             $data['topBar']['type'] = 'responses';
-            // Export plugins, leave out all entries that are not plugin
-            $exports = array_filter($exports);
+            // Export plugins
             $exportData = array();
-            foreach ($exports as $key => $plugin) {
-                $event = new PluginEvent('listExportOptions');
-                $event->set('type', $key);
-                $oPluginManager = App()->getPluginManager();
-                $oPluginManager->dispatchEvent($event, $plugin);
+            foreach ($resultsService->getExportOptions() as $key => $exportOption) {
                 $exportData[$key] = array(
-                    'onclick' => $event->get('onclick'),
-                    'label'   => $event->get('label'),
-                    'tooltip' => $event->get('tooltip', null)
+                    'onclick' => $exportOption['onclick'],
+                    'label'   => $exportOption['label'],
+                    'tooltip' => $exportOption['tooltip']
                 );
-                if ($event->get('default', false)) {
-                    $default = $event->get('label');
+                if ($exportOption['default']) {
+                    $default = $exportOption['label'];
                 }
             }
             $data['exports'] = $exportData; // Pass available exports

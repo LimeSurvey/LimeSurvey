@@ -151,4 +151,29 @@ class ExportSurveyResultsService
 
         return $this->_exports;
     }
+
+    /**
+     * Get the display options of all export types provided by a plugin
+     *
+     * @return array Indexed by export type, each entry with the keys 'label', 'tooltip', 'onclick' and 'default'
+     */
+    public function getExportOptions()
+    {
+        $exportOptions = array();
+        $oPluginManager = App()->getPluginManager();
+        // Leave out all entries that are not plugin
+        foreach (array_filter($this->getExports()) as $type => $plugin) {
+            $event = new PluginEvent('listExportOptions');
+            $event->set('type', $type);
+            $oPluginManager->dispatchEvent($event, $plugin);
+            $exportOptions[$type] = array(
+                'label'   => $event->get('label'),
+                'tooltip' => $event->get('tooltip', null),
+                'onclick' => $event->get('onclick'),
+                'default' => (bool) $event->get('default', false),
+            );
+        }
+
+        return $exportOptions;
+    }
 }

@@ -3560,9 +3560,14 @@ class remotecontrol_handle
     /**
      * List available response export formats.
      *
+     * Each entry contains the 'type' to use as document type in export_responses
+     * and export_responses_by_token, a plain-text 'label' and 'tooltip' (tooltip can be null)
+     * and 'isDefault', which flags the default export format.
+     * Labels and tooltips are always in English.
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @return array On success: list of export format metadata. On failure: array with status information
+     * @return array On success: list of export formats. On failure: array with status information
      */
     public function list_response_exports($sSessionKey)
     {
@@ -3572,32 +3577,40 @@ class remotecontrol_handle
 
         Yii::app()->loadHelper('admin.exportresults');
         $oExport = new ExportSurveyResultsService();
-        $aExports = array_filter($oExport->getExports());
+        $aExportOptions = $oExport->getExportOptions();
 
-        if (empty($aExports)) {
-            return array();
+        if (empty($aExportOptions)) {
+            return array('status' => 'No export formats found');
         }
 
-        ksort($aExports, SORT_STRING);
-        $oPluginManager = App()->getPluginManager();
-        $aExportOptions = array();
-
-        foreach ($aExports as $sType => $sPluginClass) {
-            $event = new PluginEvent('listExportOptions');
-            $event->set('type', $sType);
-            $oPluginManager->dispatchEvent($event, $sPluginClass);
-
-            $aExportOptions[] = array(
+        ksort($aExportOptions, SORT_STRING);
+        $aExportFormats = array();
+        foreach ($aExportOptions as $sType => $aExportOption) {
+            $aExportFormats[] = array(
                 'type' => (string) $sType,
-                'pluginClass' => (string) $sPluginClass,
-                'label' => $event->get('label', null),
-                'tooltip' => $event->get('tooltip', null),
-                'onclick' => $event->get('onclick', null),
-                'isDefault' => (bool) $event->get('default', false),
+                'label' => $this->htmlToPlainText($aExportOption['label']),
+                'tooltip' => $this->htmlToPlainText($aExportOption['tooltip']),
+                'isDefault' => $aExportOption['default'],
             );
         }
 
-        return $aExportOptions;
+        return $aExportFormats;
+    }
+
+    /**
+     * Convert an HTML fragment meant for the admin GUI to plain text,
+     * keeping words on both sides of a tag apart
+     *
+     * @param string|null $sHtml The HTML fragment
+     * @return string|null The plain text, or null if no or an empty fragment was given
+     */
+    protected function htmlToPlainText($sHtml)
+    {
+        if ($sHtml === null || $sHtml === '') {
+            return null;
+        }
+        $sText = flattenText(str_replace('<', ' <', (string) $sHtml), false, true);
+        return trim(preg_replace('~\s+~u', ' ', $sText));
     }
 
     /**
