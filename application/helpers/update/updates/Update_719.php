@@ -13,6 +13,7 @@ class Update_719 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up()
     {
         /* Create or alter encryption_method column, handling cases where dev git users may already have it */
