@@ -1456,10 +1456,11 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                 if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lss') {
                     //Import the LSS file
                     $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, null, $sNewSurveyName, null, true, false, $targetSurveyGroup);
-                    if ($aImportResults && $aImportResults['newsid']) {
-                        $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
-                        $SurveyIntegrity->fixSurveyIntegrity();
+                    if (empty($aImportResults['newsid'])) {
+                        break;
                     }
+                    $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
+                    $SurveyIntegrity->fixSurveyIntegrity();
                     // Activate the survey
                     Yii::app()->loadHelper("admin.activate");
                     $survey = Survey::model()->findByPk($aImportResults['newsid']);
@@ -1468,6 +1469,19 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                     unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
                     break;
                 }
+            }
+            if (empty($aImportResults['newsid'])) {
+                // No survey structure could be imported (missing or invalid LSS file): remove the extracted files and stop here
+                foreach ($files as $filename) {
+                    $extractedFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename;
+                    if (is_file($extractedFilePath)) {
+                        unlink($extractedFilePath);
+                    }
+                }
+                if (empty($aImportResults['error'])) {
+                    $aImportResults['error'] = gT("This is not a valid LimeSurvey LSA file.");
+                }
+                return $aImportResults;
             }
 
             // Step 2 - import the responses file
