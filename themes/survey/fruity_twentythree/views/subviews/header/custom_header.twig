@@ -15,7 +15,7 @@
     This file is empty in Vanilla, and contains the code for the background option in Fruity
 #}
 
-{# Custom backgroud option #}
+{# Custom background option #}
 <style>
     {% if (aSurveyInfo.options.backgroundimage == "on" and imageSrc(aSurveyInfo.options.backgroundimagefile )) %}
         body {
@@ -45,10 +45,12 @@
         background-color: {{ aSurveyInfo.options.questionbackgroundcolor  }};
     }
 
-    {% set checkicon = '"\\' ~  aSurveyInfo.options.checkicon   ~ '"' %}
-    .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after {
-        content: {{ checkicon }};
-    }
+    {% if (aSurveyInfo.options.checkicon is defined and aSurveyInfo.options.checkicon is not empty) %}
+        {% set checkicon = '"\\' ~  aSurveyInfo.options.checkicon   ~ '"' %}
+        .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after {
+            content: {{ checkicon }};
+        }
+    {% endif %}
 
     {% if (aSurveyInfo.options.animatecheckbox == "on" ) %}
 

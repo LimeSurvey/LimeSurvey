@@ -21,24 +21,24 @@ export function triggerEmRelevance(){
 /* On question */
 export function triggerEmRelevanceQuestion(){
     /* Action on this question */
-    $("[id^='question']").on('relevance:on',function(event,data) {
+    $("[id^='question'].question-container").on('relevance:on',function(event,data) {
         /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. 
         Don't want to stop propagation. */
         if(event.target != this) return; 
         $(this).removeClass("ls-irrelevant ls-hidden");
     });
-    $("[id^='question']").on('relevance:off',function(event,data) {
+    $("[id^='question'].question-container").on('relevance:off',function(event,data) {
         if(event.target != this) return;
         $(this).addClass("ls-irrelevant ls-hidden");
     });
     /* In all in one mode : need updating group too */
-    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:on',function(event,data) {
+    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question'].question-container").on('relevance:on',function(event,data) {
         if(event.target != this) return;
         $(this).closest("[id^='group-']").removeClass("ls-hidden");
     });
-    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:off',function(event,data) {
+    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question'].question-container").on('relevance:off',function(event,data) {
         if(event.target != this) return;
-        if($(this).closest("[id^='group-']").find("[id^='question']").length==$(this).closest("[id^='group-']").find("[id^='question'].ls-hidden").length){
+        if($(this).closest("[id^='group-']").find("[id^='question'].question-container").length==$(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length){
             $(this).closest("[id^='group-']").addClass("ls-hidden");
         }
     });
@@ -56,10 +56,11 @@ export function triggerEmRelevanceGroup(){
 }
 /* On subquestion and answers-list */
 export function triggerEmRelevanceSubQuestion(){
-    $("[id^='question']").on('relevance:on',"[id^='javatbd']",function(event,data) {
+    $("[id^='question'].question-container").on('relevance:on',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
         $(this).removeClass("ls-irrelevant ls-"+data.style);
+
         if(data.style=='disabled'){
             if($(event.target).hasClass("answer-item")) {
                 $(event.target).find('input').each(function(itrt, item ){
@@ -72,11 +73,13 @@ export function triggerEmRelevanceSubQuestion(){
             }
         }
         if(data.style=='hidden'){
+            /* In all in one mode : need updating group too */
+            $(this).closest("[id^='group-']").removeClass("ls-hidden");
             updateLineClass($(this));
             updateRepeatHeading($(this).closest(".ls-answers"));
         }
     });
-    $("[id^='question']").on('relevance:off',"[id^='javatbd']",function(event,data) {
+    $("[id^='question'].question-container").on('relevance:off',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
         $(this).addClass("ls-irrelevant ls-"+data.style);
@@ -92,10 +95,13 @@ export function triggerEmRelevanceSubQuestion(){
         }
 
         if(data.style=='hidden'){
+            /* In all in one mode : need updating group too */
+            if ($(this).closest("[id^='group-']").find("[id^='question'].question-container").length == $(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length) {
+                $(this).closest("[id^='group-']").addClass("ls-hidden");
+            }
             updateLineClass($(this));
             updateRepeatHeading($(this).closest(".ls-answers"));
         }
-            
         console.ls.log($(this).find('input[disabled]'));
     });
 }
@@ -148,147 +154,6 @@ export function manageIndex(){
             $(this).clone().addClass("d-none").appendTo('form#limesurvey').click();
         }
     });
-}
-
-/**
- * Reload page when participant selects a new language.
- * Sets input[name=lang] to new language and submits limesurvey form.
- */
-export function activateLanguageChanger(){
-    var limesurveyForm = $('form#limesurvey');
-    if(limesurveyForm.length == 0 && $('form[name="limesurvey"]').length == 1) { /* #form-token for example */
-        limesurveyForm = $('form[name="limesurvey"]');
-    }
-    //autosizing for width of select (space between caret and selected option text)
-    var autoSizeSelect = function() {
-        var text = $('#language-changer-select').find('option:selected').text();
-        var $aux = $('<span/>').text(text);
-        $aux.addClass('h2');
-        $('#language-changer-select').after($aux);
-        var width = $aux.width() + 8;
-        $('#language-changer-select').width(width);
-        $aux.remove();
-    };
-    /**
-     * @param {string} lang Language to change to.
-     */
-    var applyChangeAndSubmit = function(lang) {
-        // Remove existing onsubmitbuttoninput, no need to remove lang : last one is the submitted
-        $("#onsubmitbuttoninput").remove();
-        // Append new input.
-        $('<input type="hidden">')
-            .attr('name', 'lang')
-            .val(lang)
-            .appendTo(limesurveyForm);
-        // Append move type.
-        /* onsubmitbuttoninput is related to template (and ajax) : MUST move to template with ajax … */
-        $('<input type="hidden" id="onsubmitbuttoninput" name="move" value="changelang" />').appendTo(limesurveyForm);
-        limesurveyForm.submit();
-    };
-    autoSizeSelect();
-    $(document).on('click', 'a.ls-language-link', function() {
-        var closestForm = $(this).closest('form');
-        if (!closestForm.length) {
-            /* we are not in a forum, can not submit directly */
-            if (limesurveyForm.length == 1) {
-                /* The limesurvey form exist in document, move select and button inside and click */
-                var newLang = $(this).data('limesurvey-lang');
-                applyChangeAndSubmit(newLang);
-                // TODO: Check all code below. When does it happen?
-            } else {
-                // If there are no form : we can't use it */
-                if($(this).data('targeturl')){
-                    /* If we have a target url : just move location to this url with lang set */
-                    /* possible usage : in clear all */
-                    var target=$(this).data('targeturl');
-                    /* adding lang in get param manually */
-                    if(target.indexOf("?") >=0){
-                        target+="&lang="+$(this).val();
-                    }else{
-                        target+="?lang="+$(this).val();
-                    }
-                    /* directly move to location */
-                    location.href = target;
-                    return false;
-                }else{
-                    var lang = $(this).data('limesurvey-lang');
-                    /* No form, not targeturl : just see what happen */
-                    $("<form>", {
-                        "class":'ls-js-hidden',
-                        "html": '<input type="hidden" name="lang" value="' + lang + '" />',
-                        "action": target,
-                        "method": 'get'
-                    }).appendTo(document.body).submit();
-                }
-
-            }
-        }else{
-            /* we are inside a form : just submit : but remove other lang input if exist : be sure it's this one send */
-            $(this).closest('form').find("[name='lang']").not($(this)).remove();
-            $(this).closest('.ls-language-changer-item').find(":submit").click();
-        }
-    });
-    /* Language changer dropdown */
-    /* Don't activate change when using key up / key down */
-    $('.form-change-lang [name="lang"]').on('keypress keydown keyup', function(event) {
-        var code = event.keyCode || event.which;
-        /* packaje name : limesurvey */
-        $(this).data("limesurvey-lastkey",code);
-    });
-    $('.form-change-lang [name="lang"]').on('click', function(event) {
-        /* didn't work with chrome , chrom bug : onclick are an intrinsic event see https://www.w3.org/TR/html401/interact/forms.html#h-17.6 */
-        /* Happen rarely (keyboard + mouse + still have the button */
-        $(this).data("limesurvey-lastkey",null);
-    });
-    $('.form-change-lang [name="lang"]').on('change', function(event) {
-        autoSizeSelect();
-        if( $(this).data("limesurvey-lastkey") == 38 || $(this).data("lastkey") == 40) {
-            /* Last key is up or down : disable auto submit mantis #16024 */
-            return;
-        }
-        var closestForm = $(this).closest('form');
-        var newLang = $(this).val();
-        if (!closestForm.length) {
-            /* we are not in a form, can not submit directly */
-            // Remind user can put language changer everywhere, not only in home page, but for example in clear all page etc … in form or not etc ...
-            if (limesurveyForm.length == 1) {
-                /* The limesurvey form exist in document, move select and button inside and click */
-                applyChangeAndSubmit(newLang);
-            } else {
-                // If there are no form : we can't use it */
-                if($(this).parent().data('targeturl')){
-                    /* If we have a target url : just move location to this url with lang set */
-                    /* targeturl was used for preview gropup and question in 2.6lts : check if still used/usable */
-                    var target=$(this).parent().data('targeturl');
-                    /* adding lang in get param manually */
-                    if(target.indexOf("?") >=0){
-                        target+="&lang="+$(this).val();
-                    }else{
-                        target+="?lang="+$(this).val();
-                    }
-                    /* directly move to location */
-                    location.href = target;
-                    return false;
-                }else{
-                    /* No form, not targeturl : just see what happen */
-                    /* This must not happen : issue in theme */
-                    $("<form>", {
-                        "class":'ls-js-hidden',
-                        "html": '<input type="hidden" name="lang" value="' + newLang + '" />',
-                        "action": target,
-                        "method": 'get'
-                    }).appendTo(document.body).submit();
-                }
-
-            }
-        }else{
-            /* we are inside a form : just submit : but remove other lang input if exist : be sure it's this one send */
-            $(this).closest('form').find("[name='lang']").not(this).remove();
-            $(this).closest('.form-change-lang').find(':submit').click();
-        }
-    });
-
-
 }
 
 /**
@@ -476,7 +341,6 @@ window.triggerEmRelevanceSubQuestion = triggerEmRelevanceSubQuestion;
 window.updateLineClass = updateLineClass;
 window.updateRepeatHeading = updateRepeatHeading;
 window.manageIndex = manageIndex;
-window.activateLanguageChanger = activateLanguageChanger;
 window.activateActionLink = activateActionLink;
 window.confirmSurveyDialog = confirmSurveyDialog;
 window.activateConfirmButton = activateConfirmButton;

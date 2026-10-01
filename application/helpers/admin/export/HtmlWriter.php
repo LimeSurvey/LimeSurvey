@@ -31,7 +31,7 @@ class HtmlWriter extends Writer
         parent::init($survey, $sLanguageCode, $oOptions);
         $this->survey = $survey;
         if ($oOptions->output == 'display') {
-            //header("Content-Disposition: attachment; filename=results-survey".$survey->id.".html");
+            header("Content-Disposition: attachment; filename=results-survey" . $survey->id . ".html");
             header("Content-type: text/html; charset=UTF-8");
             $this->handle = fopen('php://output', 'w');
         } elseif ($oOptions->output == 'file') {

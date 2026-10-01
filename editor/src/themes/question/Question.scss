@@ -117,11 +117,6 @@
   width: 90%;
 }
 
-.dropzone {
-  min-height: 160px;
-  min-width: 260px;
-}
-
 .children-parent {
   display: flex;
   flex-direction: column;
@@ -158,7 +153,8 @@
 }
 
 .select-option,
-.choice {
+.choice,
+.other-suffix {
   @include choice;
   outline: none;
 

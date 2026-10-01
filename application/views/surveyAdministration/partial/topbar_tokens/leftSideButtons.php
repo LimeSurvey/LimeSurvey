@@ -23,24 +23,25 @@ if ($hasTokensCreatePermission || $hasTokensImportPermission) {
     <?php
 }
 
-if ($tokenexists) {
-    if ($hasTokensUpdatePermission || $hasSurveySettingsUpdatePermission) {
-        $this->widget(
-            'ext.ButtonWidget.ButtonWidget',
-            [
-                'name' => 'tokens-manage-attributes',
-                'id' => 'tokens-manage-attributes',
-                'text' => gT('Manage attributes'),
-                'icon' => 'ri-server-fill',
-                'link' => Yii::App()->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$oSurvey->sid"),
-                'htmlOptions' => [
-                    'class' => 'btn btn-outline-secondary',
-                    'role' => 'button'
-                ],
-            ]
-        );
-    }
+// Managing attributes is allowed even before the participant table exists
+if ($hasTokensUpdatePermission || $hasSurveySettingsUpdatePermission) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'tokens-manage-attributes',
+            'id' => 'tokens-manage-attributes',
+            'text' => gT('Manage attributes'),
+            'icon' => 'ri-server-fill',
+            'link' => Yii::App()->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$oSurvey->sid"),
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+                'role' => 'button'
+            ],
+        ]
+    );
+}
 
+if ($tokenexists) {
     if ($hasTokensExportPermission) {
         $this->widget(
             'ext.ButtonWidget.ButtonWidget',

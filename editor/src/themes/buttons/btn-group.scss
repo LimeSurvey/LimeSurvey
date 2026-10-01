@@ -17,6 +17,7 @@
       font-size: $font-size-sm;
       line-height: $line-height-20;
     }
+
     .btn-check:active + .btn-outline-lime-toggle,
     .btn-check:checked + .btn-outline-lime-toggle,
     .btn-outline-lime-toggle.active,
@@ -74,82 +75,47 @@
         border-radius: 2px;
         border-left: 2px solid $grape;
       }
+
+      .btn-outline-lime-toggle:hover {
+        background-color: $g-200;
+      }
+    }
+  }
+
+  // Icon-only quick-access variant (e.g. the statistics chart view toggle):
+  // lighter track, $g-700 inactive icons and $g-750 for the active one.
+  &.quick-access {
+    .btn-group {
+      background: $g-200;
+
+      .btn {
+        color: $g-700;
+        text-align: center;
+        border: none;
+        border-left: 2px solid transparent;
+
+        &:focus-visible {
+          outline: 2px solid $grape;
+          outline-offset: 2px;
+        }
+      }
+
+      .btn-check:active + .btn-outline-lime-toggle,
+      .btn-check:checked + .btn-outline-lime-toggle,
+      .btn-outline-lime-toggle.active,
+      .btn-outline-lime-toggle.dropdown-toggle.show,
+      .btn-outline-lime-toggle:active {
+        background-color: $white;
+        color: $g-750;
+        border: none;
+        border-radius: 2px;
+        border-left: 2px solid $grape;
+      }
     }
   }
 }
 .lime-toggle-btn-group.isSecondary {
   .btn-group {
     background: $grape;
-  }
-}
-.lime-align-btn-group {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-
-  .btn {
-    color: $white;
-    font-weight: $font-weight-500;
-    font-size: $font-size-sm;
-    line-height: $line-height-20;
-
-    background: $g-400;
-    padding: 2px;
-    border-radius: 1.5px;
-    min-height: 40px;
-    min-width: 68.62px;
-    width: 100%;
-    .left-side {
-      width: 50%;
-      font-size: $font-size-xxl;
-    }
-    .right-side {
-      width: 50%;
-      background-color: $g-600;
-    }
-    .center-side {
-      width: 100%;
-      font-size: $font-size-xxl;
-    }
-  }
-  .btn-check:active + .btn-outline-lime-alignment,
-  .btn-check:checked + .btn-outline-lime-alignment,
-  .btn-outline-lime-alignment.active,
-  .btn-outline-lime-alignment.dropdown-toggle.show,
-  .btn-outline-lime-alignment:active {
-    background-color: $aubergine;
-    border-color: $g-700;
-    color: $g-700;
-    border-radius: 2px;
-    .left-side {
-      color: $white;
-    }
-    .center-side {
-      color: $white;
-      background-color: $grape;
-    }
-    .right-side {
-      background-color: $grape;
-    }
-    &.disabled,
-    &[disabled] {
-      border-color: $g-600;
-      background-color: $g-400;
-      color: $g-600;
-    }
-  }
-
-  .btn-check:active + .btn-outline-lime-alignment:focus,
-  .btn-check:checked + .btn-outline-lime-alignment:focus,
-  .btn-outline-lime-alignment.active:focus,
-  .btn-outline-lime-alignment.dropdown-toggle.show:focus,
-  .btn-outline-lime-alignment:active:focus,
-  .btn-outline-lime-alignment:active,
-  .btn-check:focus + .btn-outline-lime-alignment,
-  .btn-outline-lime-alignment:hover {
-    box-shadow: none;
-    background-color: $aubergine;
-    border-color: $g-700;
-    color: $white;
   }
 }

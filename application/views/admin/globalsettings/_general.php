@@ -38,17 +38,26 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
         <!-- Default Template -->
         <div class="mb-3">
             <label class="col-12 form-label" for="defaulttheme">
-                <?php eT("Default theme:");
+                <?php eT("Theme for public survey list and error pages:");
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
-                <select class="form-select" name="defaulttheme" id="defaulttheme">
+                <select class="form-select" name="defaulttheme" id="defaulttheme" aria-describedby="defaulttheme-hint">
                     <?php foreach ($templatenames as $templatename) : ?>
                         <option value='<?php echo CHtml::encode($templatename); ?>' <?php echo ($thisdefaulttheme == $templatename) ? "selected='selected'" : "" ?> >
                             <?php echo CHtml::encode($templatename); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+            <div class="col-12 form-label ">
+                <span class="hint" id="defaulttheme-hint">
+                <?php printf(
+                    gT("Also used as a fallback if a survey theme is missing. To set the theme for new surveys, use %sGlobal survey settings > General > Theme%s."),
+                    '<a href="' . CHtml::encode(App()->createUrl('admin/globalsettings/sa/surveysettings', ['partial' => '_generaloptions_panel'])) . '">',
+                    '</a>'
+                ); ?>
+                </span>
             </div>
         </div>
 
@@ -76,7 +85,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
                 <?php eT("Administration theme:"); ?>
             </label>
             <div class="col-12">
-                <select class="form-select" name="admintheme" id="admintheme">
+                <select class="form-select" name="admintheme" id="admintheme" aria-describedby="admintheme-hint">
                     <?php foreach ($aListOfThemeObjects as $templatename => $templateconfig) : ?>
                         <option value='<?php echo CHtml::encode($templatename); ?>' <?php echo ($thisadmintheme == $templatename) ? "selected='selected'" : "" ?> >
                             <?php echo CHtml::encode($templateconfig->metadata->name); ?>
@@ -86,7 +95,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </div>
             <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
                 <div class="col-12 form-label ">
-                    <span class="hint">
+                    <span class="hint" id="admintheme-hint">
                     <?php eT("You can add your custom themes in upload/admintheme"); ?>
                     </span>
                 </div>
@@ -100,7 +109,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </label>
             <div class="col-md-4">
                 <span>
-                    <select class="form-select" name="displayTimezone" id="displayTimezone">
+                    <select class="form-select" name="displayTimezone" id="displayTimezone" aria-describedby="displayTimezone-hint">
                     <?php // show a select box with all available time zones
                     $displayTimezone = App()->getConfig('displayTimezone');
                     ?>
@@ -116,7 +125,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
                 </span>
             </div>                
             <div class="col-12 form-label ">
-                <span class="hint">
+                <span class="hint" id="displayTimezone-hint">
                 <?php eT("Determines what time zone is used for displaying dates and times in surveys."); ?>  
                 </span>
             </div>
@@ -403,6 +412,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <div class="col-12">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => $globalGeneralSetting['name'],
+                        'ariaLabel'     => strip_tags((string) $globalGeneralSetting['label']),
                         'checkedOption' => $globalGeneralSetting['checkedOption'],
                         'selectOptions' => $globalGeneralSetting['selectOptions'],
                         'htmlOptions'   => $globalGeneralSetting['htmlOptions'] ?? [],

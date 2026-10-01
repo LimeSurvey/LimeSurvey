@@ -88,7 +88,7 @@ class SurveyCondition
     public function getFieldName(int $sid, int $gid, int $qid, string $title = '')
     {
         $questions = $title ? \Question::model()->findAll($qid . ' IN (qid, parent_qid)') : [\Question::model()->findByPk($qid)];
-        return getFieldName("{{responses_{$sid}}}", $sid . self::X . $gid . self::X . $qid . $title, $questions, $sid, $gid, true);
+        return getFieldName("{{responses_{$sid}}}", $sid . self::X . $gid . self::X . $qid . $title, $questions, $sid, $gid);
     }
 
     /**
@@ -901,7 +901,7 @@ class SurveyCondition
                 }
 
                 for ($i = 1; $i <= $acount; $i++) {
-                    $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], $aresult[$i - 1 ]->aid);
+                    $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], (string)$i);
                     $cquestions[] = array("{$rows['title']}: [RANK $i] " . strip_tags((string) $rows['question']), $rows['qid'], $rows['type'], $fieldName);
                     foreach ($quicky as $qck) {
                         $canswers[] = array($fieldName, $qck[0], $qck[1]);
@@ -1040,8 +1040,6 @@ class SurveyCondition
      */
     protected function getQuestionNavOptions($gid, $qid, array $theserows, array $postrows, array $args, $caller): string
     {
-        /** @var integer $gid */
-        /** @var integer $qid */
         /** @var string $questiontitle */
         /** @var string $sCurrentFullQuestionText */
         extract($args);
@@ -1121,8 +1119,6 @@ class SurveyCondition
     protected function getQuickAddConditionForm(int $gid, int $qid, array $args, $caller)
     {
         /** @var integer $iSurveyID */
-        /** @var integer $gid */
-        /** @var integer $qid */
         /** @var string $subaction */
         /** @var string $method */
         /** @var string $p_csrctoken */

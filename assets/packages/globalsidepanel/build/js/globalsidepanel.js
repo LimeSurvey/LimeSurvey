@@ -54,7 +54,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator.js */ "../../../node_modules/core-js/modules/web.dom-collections.iterator.js");
 /* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_16__);
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-
+;
 
 
 
@@ -522,7 +522,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../meta/lib/ConsoleShim.js */ "../meta/lib/ConsoleShim.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-
+;
 
 
 
@@ -543,8 +543,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
  * Handles async operations
  */
 
-
-var LOG = new _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_11__["default"]('globalsidepanel');
+;
+var LOG = new _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_11__["default"]('globalsidepanel', !(window.debugState && window.debugState.backend));
 var Actions = /*#__PURE__*/function () {
   function Actions(StateManager) {
     _classCallCheck(this, Actions);
@@ -664,7 +664,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_11__);
 /* harmony import */ var _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../meta/lib/ConsoleShim.js */ "../meta/lib/ConsoleShim.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-
+;
 
 
 
@@ -686,8 +686,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
  * Main sidebar with resizable functionality
  */
 
-
-var LOG = new _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_12__["default"]('globalsidepanel');
+;
+var LOG = new _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_12__["default"]('globalsidepanel', !(window.debugState && window.debugState.backend));
 var GlobalSidemenu = /*#__PURE__*/function () {
   function GlobalSidemenu(container, store, actions, components) {
     _classCallCheck(this, GlobalSidemenu);
@@ -750,10 +750,11 @@ var GlobalSidemenu = /*#__PURE__*/function () {
     key: "init",
     value: function init() {
       var _this = this;
+      this.render();
+      this.attachEventListeners();
       this.actions.getMenus().then(function () {
         _this.controlActiveLink();
-        _this.render();
-        _this.attachEventListeners();
+        _this.update();
         _this.mounted();
       }).catch(function (error) {
         LOG.error('Failed to load menus', error);
@@ -763,7 +764,7 @@ var GlobalSidemenu = /*#__PURE__*/function () {
     key: "render",
     value: function render() {
       if (!this.container) return;
-      this.container.innerHTML = "\n            <div\n                id=\"sidebar\"\n                class=\"d-flex col-lg-4 ls-ba position-relative transition-animate-width bg-white py-4 h-100\"\n                style=\"min-width: 250px; width: ".concat(this.sideBarWidth, "px;\"\n            >\n                <div class=\"col-12\">\n                    <div class=\"mainMenu col-12\">\n                        <div id=\"sidemenu-container\" style=\"min-height: ").concat(this.calculateSideBarMenuHeight, "px\"></div>\n                    </div>\n                </div>\n                <div class=\"resize-handle ls-flex-column\" style=\"height: 100%; max-height: ").concat(this.getWindowHeight, "px\">\n                    <button\n                        id=\"resize-handle-btn\"\n                        class=\"btn\"\n                        style=\"display: ").concat(this.store.get('isCollapsed') ? 'none' : 'block', "\"\n                    >\n                        <svg width=\"9\" height=\"14\" viewBox=\"0 0 9 14\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                            <path fill-rule=\"evenodd\" clip-rule=\"evenodd\"\n                                d=\"M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z\"\n                                fill=\"currentColor\" />\n                        </svg>\n                    </button>\n                </div>\n                ").concat(this.isMouseDown ? '<div class="mouseup-support" style="position:fixed; inset: 0;"></div>' : '', "\n            </div>\n        ");
+      this.container.innerHTML = "\n            <div\n                id=\"sidebar\"\n                class=\"d-flex col-lg-4 ls-ba position-relative transition-animate-width bg-white py-4 h-100\"\n                style=\"min-width: 250px; width: ".concat(this.sideBarWidth, "px;\"\n            >\n                <div class=\"col-12\">\n                    <div class=\"mainMenu col-12\">\n                        <div id=\"sidemenu-container\" style=\"min-height: ").concat(this.calculateSideBarMenuHeight, "px\"></div>\n                    </div>\n                </div>\n                <div class=\"resize-handle ls-flex-column\" style=\"height: 100%;\">\n                    <button\n                        id=\"resize-handle-btn\"\n                        class=\"btn resize-btn\"\n                        style=\"display: ").concat(this.store.get('isCollapsed') ? 'none' : 'block', "\"\n                    >\n                        <svg width=\"9\" height=\"14\" viewBox=\"0 0 9 14\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                            <path fill-rule=\"evenodd\" clip-rule=\"evenodd\"\n                                d=\"M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z\"\n                                fill=\"currentColor\" />\n                        </svg>\n                    </button>\n                </div>\n                ").concat(this.isMouseDown ? '<div class="mouseup-support" style="position:fixed; inset: 0;"></div>' : '', "\n            </div>\n        ");
       this.sidebarEl = this.container.querySelector('#sidebar');
       this.renderSubComponents();
     }
@@ -851,6 +852,8 @@ var GlobalSidemenu = /*#__PURE__*/function () {
     key: "mousedown",
     value: function mousedown(e) {
       this.isMouseDown = true;
+      var sidebar = document.getElementById('sidebar');
+      this.grabOffset = sidebar ? sidebar.getBoundingClientRect().right - e.clientX : 0;
       $("#sidebar").removeClass("transition-animate-width");
       $("#pjax-content").removeClass("transition-animate-width");
     }
@@ -880,7 +883,9 @@ var GlobalSidemenu = /*#__PURE__*/function () {
           this.sideBarWidth = screen.width / 2;
           return;
         }
-        this.sideBarWidth = e.pageX - 4;
+        var sidebar = document.getElementById('sidebar');
+        var left = sidebar ? sidebar.getBoundingClientRect().left : 0;
+        this.sideBarWidth = e.clientX - left + (this.grabOffset || 0);
       }
     }
   }, {
@@ -972,7 +977,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_18__);
 /* harmony import */ var _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../../meta/lib/ConsoleShim.js */ "../meta/lib/ConsoleShim.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-
+;
 
 
 
@@ -1001,8 +1006,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
  * Displays menu items
  */
 
-
-var LOG = new _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_19__["default"]('globalsidepanel');
+;
+var LOG = new _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_19__["default"]('globalsidepanel', !(window.debugState && window.debugState.backend));
 var Sidemenu = /*#__PURE__*/function () {
   function Sidemenu(container, store, menu) {
     _classCallCheck(this, Sidemenu);
@@ -1041,24 +1046,24 @@ var Sidemenu = /*#__PURE__*/function () {
       var target = menuItem.link_external ? '_blank' : '';
       var tooltip = this.reConvertHTML(menuItem.menu_description);
       var menuItemPartial = menuItem.partial.split('/').pop();
-      var isSelected = this.store.get('lastMenuItemOpen') === menuItemPartial;
-      return "\n            <a data-menu-item=\"".concat(esc(menuItemPartial), "\"\n               href=\"").concat(esc(href), "\"\n               target=\"").concat(target, "\"\n               id=\"sidemenu_").concat(esc(menuItem.name), "\"\n               class=\"list-group-item ").concat(linkClass, "\"\n               title=\"").concat(esc(tooltip), "\"\n               data-bs-toggle=\"tooltip\">\n                <div class=\"col-12 ").concat(esc(menuItem.menu_class || ''), "\">\n                    <div class=\"ls-space padding all-0 ").concat(isSelected ? 'col-md-10' : 'col-12', "\">\n                        ").concat(this.renderMenuIcon(menuItem), "\n                        <span>").concat(esc(menuItem.menu_title), "</span>\n                        ").concat(menuItem.link_external ? '<i class="ri-external-link-fill">&nbsp;</i>' : '', "\n                    </div>\n                    ").concat(isSelected ? "\n                        <div class=\"col-md-2 text-center ls-space padding all-0 background white\">\n                            <i class=\"ri-arrow-right-s-line\">&nbsp;</i>\n                        </div>\n                    " : '', "\n                </div>\n            </a>\n        ");
+      return "\n            <a data-menu-item=\"".concat(esc(menuItemPartial), "\"\n               href=\"").concat(esc(href), "\"\n               target=\"").concat(target, "\"\n               id=\"sidemenu_").concat(esc(menuItem.name), "\"\n               class=\"list-group-item ").concat(linkClass, "\"\n               title=\"").concat(esc(tooltip), "\"\n               data-bs-toggle=\"tooltip\">\n                <div class=\"col-12 ").concat(esc(menuItem.menu_class || ''), "\">\n                    <div class=\"ls-space padding all-0 col-12\">\n                        ").concat(this.renderMenuIcon(menuItem), "\n                        <span>").concat(menuItem.menu_title, "</span>\n                        ").concat(menuItem.link_external ? '<i class="ri-external-link-fill">&nbsp;</i>' : '', "\n                    </div>\n                </div>\n            </a>\n        ");
     }
   }, {
     key: "renderMenuIcon",
     value: function renderMenuIcon(menuItem) {
       if (!menuItem.menu_icon) return '';
       var esc = this.escapeHTML;
-      var iconType = menuItem.menu_icon_type || 'fontawesome';
-      var iconClass = '';
-      if (iconType === 'fontawesome') {
-        iconClass = "fa fa-".concat(esc(menuItem.menu_icon));
-      } else if (iconType === 'remix') {
-        iconClass = "ri-".concat(esc(menuItem.menu_icon));
-      } else if (iconType === 'iconClass') {
-        iconClass = esc(menuItem.menu_icon);
+      switch (menuItem.menu_icon_type || 'fontawesome') {
+        case 'fontawesome':
+          return "<i class=\"fa fa-".concat(esc(menuItem.menu_icon), "\">&nbsp;</i>");
+        case 'image':
+          return "<img width=\"32px\" src=\"".concat(esc(menuItem.menu_icon), "\" />");
+        case 'iconclass':
+        case 'remix':
+          return "<i class=\"".concat(esc(menuItem.menu_icon), "\">&nbsp;</i>");
+        default:
+          return '';
       }
-      return "<i class=\"".concat(iconClass, "\"></i>");
     }
   }, {
     key: "getHref",
@@ -1358,20 +1363,23 @@ var isArrayIteratorMethod = __webpack_require__(/*! ../internals/is-array-iterat
 var isConstructor = __webpack_require__(/*! ../internals/is-constructor */ "../../../node_modules/core-js/internals/is-constructor.js");
 var lengthOfArrayLike = __webpack_require__(/*! ../internals/length-of-array-like */ "../../../node_modules/core-js/internals/length-of-array-like.js");
 var createProperty = __webpack_require__(/*! ../internals/create-property */ "../../../node_modules/core-js/internals/create-property.js");
-var getIterator = __webpack_require__(/*! ../internals/get-iterator */ "../../../node_modules/core-js/internals/get-iterator.js");
-var getIteratorMethod = __webpack_require__(/*! ../internals/get-iterator-method */ "../../../node_modules/core-js/internals/get-iterator-method.js");
+var setArrayLength = __webpack_require__(/*! ../internals/array-set-length */ "../../../node_modules/core-js/internals/array-set-length.js");
+var getIterator = __webpack_require__(/*! ../internals/get-iterator-internal */ "../../../node_modules/core-js/internals/get-iterator-internal.js");
+var getIteratorMethod = __webpack_require__(/*! ../internals/get-iterator-method-internal */ "../../../node_modules/core-js/internals/get-iterator-method-internal.js");
+var iteratorClose = __webpack_require__(/*! ../internals/iterator-close */ "../../../node_modules/core-js/internals/iterator-close.js");
+var doesNotExceedSafeInteger = __webpack_require__(/*! ../internals/does-not-exceed-safe-integer */ "../../../node_modules/core-js/internals/does-not-exceed-safe-integer.js");
 
 var $Array = Array;
 
 // `Array.from` method implementation
 // https://tc39.es/ecma262/#sec-array.from
 module.exports = function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
-  var O = toObject(arrayLike);
   var IS_CONSTRUCTOR = isConstructor(this);
   var argumentsLength = arguments.length;
   var mapfn = argumentsLength > 1 ? arguments[1] : undefined;
   var mapping = mapfn !== undefined;
   if (mapping) mapfn = bind(mapfn, argumentsLength > 2 ? arguments[2] : undefined);
+  var O = toObject(arrayLike);
   var iteratorMethod = getIteratorMethod(O);
   var index = 0;
   var length, result, step, iterator, next, value;
@@ -1381,8 +1389,17 @@ module.exports = function from(arrayLike /* , mapfn = undefined, thisArg = undef
     iterator = getIterator(O, iteratorMethod);
     next = iterator.next;
     for (;!(step = call(next, iterator)).done; index++) {
+      try {
+        doesNotExceedSafeInteger(index);
+      } catch (error) {
+        iteratorClose(iterator, 'throw', error);
+      }
       value = mapping ? callWithSafeIterationClosing(iterator, mapfn, [step.value, index], true) : step.value;
-      createProperty(result, index, value);
+      try {
+        createProperty(result, index, value);
+      } catch (error) {
+        iteratorClose(iterator, 'throw', error);
+      }
     }
   } else {
     length = lengthOfArrayLike(O);
@@ -1392,7 +1409,7 @@ module.exports = function from(arrayLike /* , mapfn = undefined, thisArg = undef
       createProperty(result, index, value);
     }
   }
-  result.length = index;
+  setArrayLength(result, index);
   return result;
 };
 
@@ -1451,13 +1468,11 @@ module.exports = {
 
 
 var bind = __webpack_require__(/*! ../internals/function-bind-context */ "../../../node_modules/core-js/internals/function-bind-context.js");
-var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "../../../node_modules/core-js/internals/function-uncurry-this.js");
 var IndexedObject = __webpack_require__(/*! ../internals/indexed-object */ "../../../node_modules/core-js/internals/indexed-object.js");
 var toObject = __webpack_require__(/*! ../internals/to-object */ "../../../node_modules/core-js/internals/to-object.js");
 var lengthOfArrayLike = __webpack_require__(/*! ../internals/length-of-array-like */ "../../../node_modules/core-js/internals/length-of-array-like.js");
 var arraySpeciesCreate = __webpack_require__(/*! ../internals/array-species-create */ "../../../node_modules/core-js/internals/array-species-create.js");
-
-var push = uncurryThis([].push);
+var createProperty = __webpack_require__(/*! ../internals/create-property */ "../../../node_modules/core-js/internals/create-property.js");
 
 // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterReject }` methods implementation
 var createMethod = function (TYPE) {
@@ -1468,28 +1483,28 @@ var createMethod = function (TYPE) {
   var IS_FIND_INDEX = TYPE === 6;
   var IS_FILTER_REJECT = TYPE === 7;
   var NO_HOLES = TYPE === 5 || IS_FIND_INDEX;
-  return function ($this, callbackfn, that, specificCreate) {
+  return function ($this, callbackfn, that) {
     var O = toObject($this);
     var self = IndexedObject(O);
     var length = lengthOfArrayLike(self);
     var boundFunction = bind(callbackfn, that);
     var index = 0;
-    var create = specificCreate || arraySpeciesCreate;
-    var target = IS_MAP ? create($this, length) : IS_FILTER || IS_FILTER_REJECT ? create($this, 0) : undefined;
+    var resIndex = 0;
+    var target = IS_MAP ? arraySpeciesCreate($this, length) : IS_FILTER || IS_FILTER_REJECT ? arraySpeciesCreate($this, 0) : undefined;
     var value, result;
     for (;length > index; index++) if (NO_HOLES || index in self) {
       value = self[index];
       result = boundFunction(value, index, O);
       if (TYPE) {
-        if (IS_MAP) target[index] = result; // map
+        if (IS_MAP) createProperty(target, index, result);    // map
         else if (result) switch (TYPE) {
-          case 3: return true;              // some
-          case 5: return value;             // find
-          case 6: return index;             // findIndex
-          case 2: push(target, value);      // filter
+          case 3: return true;                                // some
+          case 5: return value;                               // find
+          case 6: return index;                               // findIndex
+          case 2: createProperty(target, resIndex++, value);  // filter
         } else switch (TYPE) {
-          case 4: return false;             // every
-          case 7: push(target, value);      // filterReject
+          case 4: return false;                               // every
+          case 7: createProperty(target, resIndex++, value);  // filterReject
         }
       }
     }
@@ -1552,6 +1567,43 @@ module.exports = function (METHOD_NAME) {
     };
     return array[METHOD_NAME](Boolean).foo !== 1;
   });
+};
+
+
+/***/ }),
+
+/***/ "../../../node_modules/core-js/internals/array-set-length.js":
+/*!*******************************************************************!*\
+  !*** ../../../node_modules/core-js/internals/array-set-length.js ***!
+  \*******************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+
+var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "../../../node_modules/core-js/internals/descriptors.js");
+var isArray = __webpack_require__(/*! ../internals/is-array */ "../../../node_modules/core-js/internals/is-array.js");
+
+var $TypeError = TypeError;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+
+// Safari < 13 does not throw an error in this case
+var SILENT_ON_NON_WRITABLE_LENGTH_SET = DESCRIPTORS && !function () {
+  // makes no sense without proper strict mode support
+  if (this !== undefined) return true;
+  try {
+    // eslint-disable-next-line es/no-object-defineproperty -- safe
+    Object.defineProperty([], 'length', { writable: false }).length = 1;
+  } catch (error) {
+    return error instanceof TypeError;
+  }
+}();
+
+module.exports = SILENT_ON_NON_WRITABLE_LENGTH_SET ? function (O, length) {
+  if (isArray(O) && !getOwnPropertyDescriptor(O, 'length').writable) {
+    throw new $TypeError('Cannot set read only .length');
+  } return O.length = length;
+} : function (O, length) {
+  return O.length = length;
 };
 
 
@@ -1666,6 +1718,7 @@ try {
       SAFE_CLOSING = true;
     }
   };
+  // eslint-disable-next-line unicorn/no-immediate-mutation -- ES3 syntax limitation
   iteratorWithReturn[ITERATOR] = function () {
     return this;
   };
@@ -1680,6 +1733,7 @@ module.exports = function (exec, SKIP_CLOSING) {
   var ITERATION_SUPPORT = false;
   try {
     var object = {};
+    // eslint-disable-next-line unicorn/no-immediate-mutation -- ES3 syntax limitation
     object[ITERATOR] = function () {
       return {
         next: function () {
@@ -2029,7 +2083,7 @@ var $TypeError = TypeError;
 var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF; // 2 ** 53 - 1 == 9007199254740991
 
 module.exports = function (it) {
-  if (it > MAX_SAFE_INTEGER) throw $TypeError('Maximum allowed index exceeded');
+  if (it > MAX_SAFE_INTEGER) throw new $TypeError('Maximum allowed index exceeded');
   return it;
 };
 
@@ -2259,27 +2313,6 @@ module.exports = function (exec) {
 
 /***/ }),
 
-/***/ "../../../node_modules/core-js/internals/function-apply.js":
-/*!*****************************************************************!*\
-  !*** ../../../node_modules/core-js/internals/function-apply.js ***!
-  \*****************************************************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-
-var NATIVE_BIND = __webpack_require__(/*! ../internals/function-bind-native */ "../../../node_modules/core-js/internals/function-bind-native.js");
-
-var FunctionPrototype = Function.prototype;
-var apply = FunctionPrototype.apply;
-var call = FunctionPrototype.call;
-
-// eslint-disable-next-line es/no-function-prototype-bind, es/no-reflect -- safe
-module.exports = typeof Reflect == 'object' && Reflect.apply || (NATIVE_BIND ? call.bind(apply) : function () {
-  return call.apply(apply, arguments);
-});
-
-
-/***/ }),
-
 /***/ "../../../node_modules/core-js/internals/function-bind-context.js":
 /*!************************************************************************!*\
   !*** ../../../node_modules/core-js/internals/function-bind-context.js ***!
@@ -2315,7 +2348,7 @@ var fails = __webpack_require__(/*! ../internals/fails */ "../../../node_modules
 
 module.exports = !fails(function () {
   // eslint-disable-next-line es/no-function-prototype-bind -- safe
-  var test = (function () { /* empty */ }).bind();
+  var test = function () { /* empty */ }.bind();
   // eslint-disable-next-line no-prototype-builtins -- safe
   return typeof test != 'function' || test.hasOwnProperty('prototype');
 });
@@ -2357,7 +2390,7 @@ var getDescriptor = DESCRIPTORS && Object.getOwnPropertyDescriptor;
 
 var EXISTS = hasOwn(FunctionPrototype, 'name');
 // additional protection from minified / mangled / dropped function names
-var PROPER = EXISTS && (function something() { /* empty */ }).name === 'something';
+var PROPER = EXISTS && function something() { /* empty */ }.name === 'something';
 var CONFIGURABLE = EXISTS && (!DESCRIPTORS || (DESCRIPTORS && getDescriptor(FunctionPrototype, 'name').configurable));
 
 module.exports = {
@@ -2453,89 +2486,49 @@ module.exports = function (namespace, method) {
 
 /***/ }),
 
-/***/ "../../../node_modules/core-js/internals/get-iterator-method.js":
-/*!**********************************************************************!*\
-  !*** ../../../node_modules/core-js/internals/get-iterator-method.js ***!
-  \**********************************************************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-
-var classof = __webpack_require__(/*! ../internals/classof */ "../../../node_modules/core-js/internals/classof.js");
-var getMethod = __webpack_require__(/*! ../internals/get-method */ "../../../node_modules/core-js/internals/get-method.js");
-var isNullOrUndefined = __webpack_require__(/*! ../internals/is-null-or-undefined */ "../../../node_modules/core-js/internals/is-null-or-undefined.js");
-var Iterators = __webpack_require__(/*! ../internals/iterators */ "../../../node_modules/core-js/internals/iterators.js");
-var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "../../../node_modules/core-js/internals/well-known-symbol.js");
-
-var ITERATOR = wellKnownSymbol('iterator');
-
-module.exports = function (it) {
-  if (!isNullOrUndefined(it)) return getMethod(it, ITERATOR)
-    || getMethod(it, '@@iterator')
-    || Iterators[classof(it)];
-};
-
-
-/***/ }),
-
-/***/ "../../../node_modules/core-js/internals/get-iterator.js":
-/*!***************************************************************!*\
-  !*** ../../../node_modules/core-js/internals/get-iterator.js ***!
-  \***************************************************************/
+/***/ "../../../node_modules/core-js/internals/get-iterator-internal.js":
+/*!************************************************************************!*\
+  !*** ../../../node_modules/core-js/internals/get-iterator-internal.js ***!
+  \************************************************************************/
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 
 var call = __webpack_require__(/*! ../internals/function-call */ "../../../node_modules/core-js/internals/function-call.js");
-var aCallable = __webpack_require__(/*! ../internals/a-callable */ "../../../node_modules/core-js/internals/a-callable.js");
+var isCallable = __webpack_require__(/*! ../internals/is-callable */ "../../../node_modules/core-js/internals/is-callable.js");
 var anObject = __webpack_require__(/*! ../internals/an-object */ "../../../node_modules/core-js/internals/an-object.js");
 var tryToString = __webpack_require__(/*! ../internals/try-to-string */ "../../../node_modules/core-js/internals/try-to-string.js");
-var getIteratorMethod = __webpack_require__(/*! ../internals/get-iterator-method */ "../../../node_modules/core-js/internals/get-iterator-method.js");
+var getIteratorMethod = __webpack_require__(/*! ../internals/get-iterator-method-internal */ "../../../node_modules/core-js/internals/get-iterator-method-internal.js");
 
 var $TypeError = TypeError;
 
 module.exports = function (argument, usingIterator) {
   var iteratorMethod = arguments.length < 2 ? getIteratorMethod(argument) : usingIterator;
-  if (aCallable(iteratorMethod)) return anObject(call(iteratorMethod, argument));
+  if (isCallable(iteratorMethod)) return anObject(call(iteratorMethod, argument));
   throw new $TypeError(tryToString(argument) + ' is not iterable');
 };
 
 
 /***/ }),
 
-/***/ "../../../node_modules/core-js/internals/get-json-replacer-function.js":
-/*!*****************************************************************************!*\
-  !*** ../../../node_modules/core-js/internals/get-json-replacer-function.js ***!
-  \*****************************************************************************/
+/***/ "../../../node_modules/core-js/internals/get-iterator-method-internal.js":
+/*!*******************************************************************************!*\
+  !*** ../../../node_modules/core-js/internals/get-iterator-method-internal.js ***!
+  \*******************************************************************************/
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 
-var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "../../../node_modules/core-js/internals/function-uncurry-this.js");
-var isArray = __webpack_require__(/*! ../internals/is-array */ "../../../node_modules/core-js/internals/is-array.js");
-var isCallable = __webpack_require__(/*! ../internals/is-callable */ "../../../node_modules/core-js/internals/is-callable.js");
 var classof = __webpack_require__(/*! ../internals/classof-raw */ "../../../node_modules/core-js/internals/classof-raw.js");
-var toString = __webpack_require__(/*! ../internals/to-string */ "../../../node_modules/core-js/internals/to-string.js");
+var isNullOrUndefined = __webpack_require__(/*! ../internals/is-null-or-undefined */ "../../../node_modules/core-js/internals/is-null-or-undefined.js");
+var getMethod = __webpack_require__(/*! ../internals/get-method */ "../../../node_modules/core-js/internals/get-method.js");
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "../../../node_modules/core-js/internals/well-known-symbol.js");
 
-var push = uncurryThis([].push);
+var ITERATOR = wellKnownSymbol('iterator');
+var ArrayPrototype = Array.prototype;
 
-module.exports = function (replacer) {
-  if (isCallable(replacer)) return replacer;
-  if (!isArray(replacer)) return;
-  var rawLength = replacer.length;
-  var keys = [];
-  for (var i = 0; i < rawLength; i++) {
-    var element = replacer[i];
-    if (typeof element == 'string') push(keys, element);
-    else if (typeof element == 'number' || classof(element) === 'Number' || classof(element) === 'String') push(keys, toString(element));
-  }
-  var keysLength = keys.length;
-  var root = true;
-  return function (key, value) {
-    if (root) {
-      root = false;
-      return value;
-    }
-    if (isArray(this)) return value;
-    for (var j = 0; j < keysLength; j++) if (keys[j] === key) return value;
-  };
+module.exports = function (it) {
+  if (!isNullOrUndefined(it)) return getMethod(it, ITERATOR)
+    || getMethod(it, '@@iterator')
+    || (classof(it) === 'Arguments' ? ArrayPrototype[ITERATOR] : undefined);
 };
 
 
@@ -3035,6 +3028,25 @@ module.exports = false;
 
 /***/ }),
 
+/***/ "../../../node_modules/core-js/internals/is-raw-json.js":
+/*!**************************************************************!*\
+  !*** ../../../node_modules/core-js/internals/is-raw-json.js ***!
+  \**************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+
+var isObject = __webpack_require__(/*! ../internals/is-object */ "../../../node_modules/core-js/internals/is-object.js");
+var getInternalState = (__webpack_require__(/*! ../internals/internal-state */ "../../../node_modules/core-js/internals/internal-state.js").get);
+
+module.exports = function isRawJSON(O) {
+  if (!isObject(O)) return false;
+  var state = getInternalState(O);
+  return !!state && state.type === 'RawJSON';
+};
+
+
+/***/ }),
+
 /***/ "../../../node_modules/core-js/internals/is-symbol.js":
 /*!************************************************************!*\
   !*** ../../../node_modules/core-js/internals/is-symbol.js ***!
@@ -3297,7 +3309,7 @@ module.exports = {
 /***/ (function(module) {
 
 
-module.exports = {};
+module.exports = Object.create ? Object.create(null) : {};
 
 
 /***/ }),
@@ -3402,6 +3414,27 @@ module.exports = Math.trunc || function trunc(x) {
   var n = +x;
   return (n > 0 ? floor : ceil)(n);
 };
+
+
+/***/ }),
+
+/***/ "../../../node_modules/core-js/internals/native-raw-json.js":
+/*!******************************************************************!*\
+  !*** ../../../node_modules/core-js/internals/native-raw-json.js ***!
+  \******************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+
+/* eslint-disable es/no-json -- safe */
+var fails = __webpack_require__(/*! ../internals/fails */ "../../../node_modules/core-js/internals/fails.js");
+
+module.exports = !fails(function () {
+  var unsafeInt = '9007199254740993';
+  // eslint-disable-next-line es/no-json-rawjson -- feature detection
+  var raw = JSON.rawJSON(unsafeInt);
+  // eslint-disable-next-line es/no-json-israwjson -- feature detection
+  return !JSON.isRawJSON(raw) || JSON.stringify(raw) !== unsafeInt;
+});
 
 
 /***/ }),
@@ -3918,6 +3951,72 @@ module.exports = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
 
 /***/ }),
 
+/***/ "../../../node_modules/core-js/internals/parse-json-string.js":
+/*!********************************************************************!*\
+  !*** ../../../node_modules/core-js/internals/parse-json-string.js ***!
+  \********************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "../../../node_modules/core-js/internals/function-uncurry-this.js");
+var hasOwn = __webpack_require__(/*! ../internals/has-own-property */ "../../../node_modules/core-js/internals/has-own-property.js");
+
+var $SyntaxError = SyntaxError;
+var $parseInt = parseInt;
+var fromCharCode = String.fromCharCode;
+var at = uncurryThis(''.charAt);
+var slice = uncurryThis(''.slice);
+var exec = uncurryThis(/./.exec);
+
+var codePoints = {
+  '\\"': '"',
+  '\\\\': '\\',
+  '\\/': '/',
+  '\\b': '\b',
+  '\\f': '\f',
+  '\\n': '\n',
+  '\\r': '\r',
+  '\\t': '\t'
+};
+
+var IS_4_HEX_DIGITS = /^[\da-f]{4}$/i;
+// eslint-disable-next-line regexp/no-control-character -- safe
+var IS_C0_CONTROL_CODE = /^[\u0000-\u001F]$/;
+
+module.exports = function (source, i) {
+  var unterminated = true;
+  var value = '';
+  while (i < source.length) {
+    var chr = at(source, i);
+    if (chr === '\\') {
+      var twoChars = slice(source, i, i + 2);
+      if (hasOwn(codePoints, twoChars)) {
+        value += codePoints[twoChars];
+        i += 2;
+      } else if (twoChars === '\\u') {
+        i += 2;
+        var fourHexDigits = slice(source, i, i + 4);
+        if (!exec(IS_4_HEX_DIGITS, fourHexDigits)) throw new $SyntaxError('Bad Unicode escape at: ' + i);
+        value += fromCharCode($parseInt(fourHexDigits, 16));
+        i += 4;
+      } else throw new $SyntaxError('Unknown escape sequence: "' + twoChars + '"');
+    } else if (chr === '"') {
+      unterminated = false;
+      i++;
+      break;
+    } else {
+      if (exec(IS_C0_CONTROL_CODE, chr)) throw new $SyntaxError('Bad control character in string literal at: ' + i);
+      value += chr;
+      i++;
+    }
+  }
+  if (unterminated) throw new $SyntaxError('Unterminated string at: ' + i);
+  return { value: value, end: i };
+};
+
+
+/***/ }),
+
 /***/ "../../../node_modules/core-js/internals/path.js":
 /*!*******************************************************!*\
   !*** ../../../node_modules/core-js/internals/path.js ***!
@@ -3975,18 +4074,29 @@ var NPCG_INCLUDED = /()??/.exec('')[1] !== undefined;
 
 var PATCH = UPDATES_LAST_INDEX_WRONG || NPCG_INCLUDED || UNSUPPORTED_Y || UNSUPPORTED_DOT_ALL || UNSUPPORTED_NCG;
 
+var setGroups = function (re, groups) {
+  var object = re.groups = create(null);
+  for (var i = 0; i < groups.length; i++) {
+    var group = groups[i];
+    object[group[0]] = re[group[1]];
+  }
+};
+
 if (PATCH) {
   patchedExec = function exec(string) {
     var re = this;
     var state = getInternalState(re);
     var str = toString(string);
     var raw = state.raw;
-    var result, reCopy, lastIndex, match, i, object, group;
+    var result, reCopy, lastIndex;
 
     if (raw) {
       raw.lastIndex = re.lastIndex;
       result = call(patchedExec, raw, str);
       re.lastIndex = raw.lastIndex;
+
+      if (result && state.groups) setGroups(result, state.groups);
+
       return result;
     }
 
@@ -4005,8 +4115,10 @@ if (PATCH) {
 
       strCopy = stringSlice(str, re.lastIndex);
       // Support anchored sticky behavior.
-      if (re.lastIndex > 0 && (!re.multiline || re.multiline && charAt(str, re.lastIndex - 1) !== '\n')) {
-        source = '(?: ' + source + ')';
+      var prevChar = re.lastIndex > 0 && charAt(str, re.lastIndex - 1);
+      if (re.lastIndex > 0 &&
+        (!re.multiline || re.multiline && prevChar !== '\n' && prevChar !== '\r' && prevChar !== '\u2028' && prevChar !== '\u2029')) {
+        source = '(?: (?:' + source + '))';
         strCopy = ' ' + strCopy;
         charsAdded++;
       }
@@ -4020,11 +4132,11 @@ if (PATCH) {
     }
     if (UPDATES_LAST_INDEX_WRONG) lastIndex = re.lastIndex;
 
-    match = call(nativeExec, sticky ? reCopy : re, strCopy);
+    var match = call(nativeExec, sticky ? reCopy : re, strCopy);
 
     if (sticky) {
       if (match) {
-        match.input = stringSlice(match.input, charsAdded);
+        match.input = str;
         match[0] = stringSlice(match[0], charsAdded);
         match.index = re.lastIndex;
         re.lastIndex += match[0].length;
@@ -4036,19 +4148,13 @@ if (PATCH) {
       // Fix browsers whose `exec` methods don't consistently return `undefined`
       // for NPCG, like IE8. NOTE: This doesn't work for /(.?)?/
       call(nativeReplace, match[0], reCopy, function () {
-        for (i = 1; i < arguments.length - 2; i++) {
+        for (var i = 1; i < arguments.length - 2; i++) {
           if (arguments[i] === undefined) match[i] = undefined;
         }
       });
     }
 
-    if (match && groups) {
-      match.groups = object = create(null);
-      for (i = 0; i < groups.length; i++) {
-        group = groups[i];
-        object[group[0]] = match[group[1]];
-      }
-    }
+    if (match && groups) setGroups(match, groups);
 
     return match;
   };
@@ -4332,10 +4438,10 @@ var SHARED = '__core-js_shared__';
 var store = module.exports = globalThis[SHARED] || defineGlobalProperty(SHARED, {});
 
 (store.versions || (store.versions = [])).push({
-  version: '3.45.1',
+  version: '3.50.0',
   mode: IS_PURE ? 'pure' : 'global',
-  copyright: '© 2014-2025 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.45.1/LICENSE',
+  copyright: '© 2013–2025 Denis Pushkarev (zloirock.ru), 2025–2026 CoreJS Company (core-js.io). All rights reserved.',
+  license: 'https://github.com/zloirock/core-js/blob/v3.50.0/LICENSE',
   source: 'https://github.com/zloirock/core-js'
 });
 
@@ -4350,9 +4456,11 @@ var store = module.exports = globalThis[SHARED] || defineGlobalProperty(SHARED, 
 
 
 var store = __webpack_require__(/*! ../internals/shared-store */ "../../../node_modules/core-js/internals/shared-store.js");
+// eslint-disable-next-line es/no-object-create -- safe
+var create = Object.create || Object;
 
 module.exports = function (key, value) {
-  return store[key] || (store[key] = value || {});
+  return store[key] || (store[key] = value || create(null));
 };
 
 
@@ -4417,6 +4525,7 @@ var toString = __webpack_require__(/*! ../internals/to-string */ "../../../node_
 var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "../../../node_modules/core-js/internals/require-object-coercible.js");
 
 var $RangeError = RangeError;
+var floor = Math.floor;
 
 // `String.prototype.repeat` method implementation
 // https://tc39.es/ecma262/#sec-string.prototype.repeat
@@ -4425,7 +4534,7 @@ module.exports = function repeat(count) {
   var result = '';
   var n = toIntegerOrInfinity(count);
   if (n < 0 || n === Infinity) throw new $RangeError('Wrong number of repetitions');
-  for (;n > 0; (n >>>= 1) && (str += str)) if (n & 1) result += str;
+  for (;n > 0; (n = floor(n / 2)) && (str += str)) if (n % 2) result += str;
   return result;
 };
 
@@ -4733,7 +4842,7 @@ var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ 
 
 var TO_STRING_TAG = wellKnownSymbol('toStringTag');
 var test = {};
-
+// eslint-disable-next-line unicorn/no-immediate-mutation -- ES3 syntax limitation
 test[TO_STRING_TAG] = 'z';
 
 module.exports = String(test) === '[object z]';
@@ -4951,6 +5060,7 @@ var toObject = __webpack_require__(/*! ../internals/to-object */ "../../../node_
 var lengthOfArrayLike = __webpack_require__(/*! ../internals/length-of-array-like */ "../../../node_modules/core-js/internals/length-of-array-like.js");
 var doesNotExceedSafeInteger = __webpack_require__(/*! ../internals/does-not-exceed-safe-integer */ "../../../node_modules/core-js/internals/does-not-exceed-safe-integer.js");
 var createProperty = __webpack_require__(/*! ../internals/create-property */ "../../../node_modules/core-js/internals/create-property.js");
+var setArrayLength = __webpack_require__(/*! ../internals/array-set-length */ "../../../node_modules/core-js/internals/array-set-length.js");
 var arraySpeciesCreate = __webpack_require__(/*! ../internals/array-species-create */ "../../../node_modules/core-js/internals/array-species-create.js");
 var arrayMethodHasSpeciesSupport = __webpack_require__(/*! ../internals/array-method-has-species-support */ "../../../node_modules/core-js/internals/array-method-has-species-support.js");
 var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "../../../node_modules/core-js/internals/well-known-symbol.js");
@@ -4996,7 +5106,7 @@ $({ target: 'Array', proto: true, arity: 1, forced: FORCED }, {
         createProperty(A, n++, E);
       }
     }
-    A.length = n;
+    setArrayLength(A, n);
     return A;
   }
 });
@@ -5116,6 +5226,7 @@ var toAbsoluteIndex = __webpack_require__(/*! ../internals/to-absolute-index */ 
 var lengthOfArrayLike = __webpack_require__(/*! ../internals/length-of-array-like */ "../../../node_modules/core-js/internals/length-of-array-like.js");
 var toIndexedObject = __webpack_require__(/*! ../internals/to-indexed-object */ "../../../node_modules/core-js/internals/to-indexed-object.js");
 var createProperty = __webpack_require__(/*! ../internals/create-property */ "../../../node_modules/core-js/internals/create-property.js");
+var setArrayLength = __webpack_require__(/*! ../internals/array-set-length */ "../../../node_modules/core-js/internals/array-set-length.js");
 var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "../../../node_modules/core-js/internals/well-known-symbol.js");
 var arrayMethodHasSpeciesSupport = __webpack_require__(/*! ../internals/array-method-has-species-support */ "../../../node_modules/core-js/internals/array-method-has-species-support.js");
 var nativeSlice = __webpack_require__(/*! ../internals/array-slice */ "../../../node_modules/core-js/internals/array-slice.js");
@@ -5152,7 +5263,7 @@ $({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT }, {
     }
     result = new (Constructor === undefined ? $Array : Constructor)(max(fin - k, 0));
     for (n = 0; k < fin; k++, n++) if (k in O) createProperty(result, n, O[k]);
-    result.length = n;
+    setArrayLength(result, n);
     return result;
   }
 });
@@ -5229,27 +5340,54 @@ if (DESCRIPTORS && !FUNCTION_NAME_EXISTS) {
 
 var $ = __webpack_require__(/*! ../internals/export */ "../../../node_modules/core-js/internals/export.js");
 var getBuiltIn = __webpack_require__(/*! ../internals/get-built-in */ "../../../node_modules/core-js/internals/get-built-in.js");
-var apply = __webpack_require__(/*! ../internals/function-apply */ "../../../node_modules/core-js/internals/function-apply.js");
 var call = __webpack_require__(/*! ../internals/function-call */ "../../../node_modules/core-js/internals/function-call.js");
 var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "../../../node_modules/core-js/internals/function-uncurry-this.js");
 var fails = __webpack_require__(/*! ../internals/fails */ "../../../node_modules/core-js/internals/fails.js");
+var isArray = __webpack_require__(/*! ../internals/is-array */ "../../../node_modules/core-js/internals/is-array.js");
 var isCallable = __webpack_require__(/*! ../internals/is-callable */ "../../../node_modules/core-js/internals/is-callable.js");
+var isObject = __webpack_require__(/*! ../internals/is-object */ "../../../node_modules/core-js/internals/is-object.js");
+var create = __webpack_require__(/*! ../internals/object-create */ "../../../node_modules/core-js/internals/object-create.js");
+var isRawJSON = __webpack_require__(/*! ../internals/is-raw-json */ "../../../node_modules/core-js/internals/is-raw-json.js");
 var isSymbol = __webpack_require__(/*! ../internals/is-symbol */ "../../../node_modules/core-js/internals/is-symbol.js");
-var arraySlice = __webpack_require__(/*! ../internals/array-slice */ "../../../node_modules/core-js/internals/array-slice.js");
-var getReplacerFunction = __webpack_require__(/*! ../internals/get-json-replacer-function */ "../../../node_modules/core-js/internals/get-json-replacer-function.js");
+var classof = __webpack_require__(/*! ../internals/classof-raw */ "../../../node_modules/core-js/internals/classof-raw.js");
+var thisNumberValue = __webpack_require__(/*! ../internals/this-number-value */ "../../../node_modules/core-js/internals/this-number-value.js");
+var includes = (__webpack_require__(/*! ../internals/array-includes */ "../../../node_modules/core-js/internals/array-includes.js").includes);
+var hasOwn = __webpack_require__(/*! ../internals/has-own-property */ "../../../node_modules/core-js/internals/has-own-property.js");
+var toString = __webpack_require__(/*! ../internals/to-string */ "../../../node_modules/core-js/internals/to-string.js");
+var parseJSONString = __webpack_require__(/*! ../internals/parse-json-string */ "../../../node_modules/core-js/internals/parse-json-string.js");
+var uid = __webpack_require__(/*! ../internals/uid */ "../../../node_modules/core-js/internals/uid.js");
 var NATIVE_SYMBOL = __webpack_require__(/*! ../internals/symbol-constructor-detection */ "../../../node_modules/core-js/internals/symbol-constructor-detection.js");
+var NATIVE_RAW_JSON = __webpack_require__(/*! ../internals/native-raw-json */ "../../../node_modules/core-js/internals/native-raw-json.js");
 
 var $String = String;
+var $TypeError = TypeError;
 var $stringify = getBuiltIn('JSON', 'stringify');
+var $BigInt = getBuiltIn('BigInt');
+var stringValueOf = uncurryThis(''.valueOf);
+var booleanValueOf = uncurryThis(true.valueOf);
+var bigIntValueOf = $BigInt && uncurryThis($BigInt.prototype.valueOf);
 var exec = uncurryThis(/./.exec);
 var charAt = uncurryThis(''.charAt);
 var charCodeAt = uncurryThis(''.charCodeAt);
 var replace = uncurryThis(''.replace);
+var slice = uncurryThis(''.slice);
+var push = uncurryThis([].push);
+var pop = uncurryThis([].pop);
 var numberToString = uncurryThis(1.1.toString);
 
-var tester = /[\uD800-\uDFFF]/g;
-var low = /^[\uD800-\uDBFF]$/;
-var hi = /^[\uDC00-\uDFFF]$/;
+var surrogates = /[\uD800-\uDFFF]/g;
+var leadingSurrogates = /^[\uD800-\uDBFF]$/;
+var trailingSurrogates = /^[\uDC00-\uDFFF]$/;
+var digits = /^\d+$/;
+
+// a placeholder of a raw JSON value
+var RAW_MARK = uid();
+// a prefix of keys of a reordered object, see `createOrderedObject`
+var KEY_MARK = uid();
+// the last key of a reordered object, marks the end of its serialization
+var END_MARK = uid();
+var RAW_MARK_LENGTH = RAW_MARK.length;
+var KEY_MARK_LENGTH = KEY_MARK.length;
 
 var WRONG_SYMBOLS_CONVERSION = !NATIVE_SYMBOL || fails(function () {
   var symbol = getBuiltIn('Symbol')('stringify detection');
@@ -5267,38 +5405,189 @@ var ILL_FORMED_UNICODE = fails(function () {
     || $stringify('\uDEAD') !== '"\\udead"';
 });
 
-var stringifyWithSymbolsFix = function (it, replacer) {
-  var args = arraySlice(arguments);
-  var $replacer = getReplacerFunction(replacer);
-  if (!isCallable($replacer) && (it === undefined || isSymbol(it))) return; // IE8 returns string on undefined
-  args[1] = function (key, value) {
-    // some old implementations (like WebKit) could pass numbers as keys
-    if (isCallable($replacer)) value = call($replacer, this, $String(key), value);
-    if (!isSymbol(value)) return value;
-  };
-  return apply($stringify, null, args);
-};
+var isRawJSONValue = NATIVE_RAW_JSON ? getBuiltIn('JSON', 'isRawJSON') : isRawJSON;
 
-var fixIllFormed = function (match, offset, string) {
+var stringifyWithProperSymbolsConversion = WRONG_SYMBOLS_CONVERSION ? function (it, replacer, space) {
+  return $stringify(it, function (key, value) {
+    var replaced = call(replacer, this, key, value);
+    if (!isSymbol(replaced)) return replaced;
+  }, space);
+} : $stringify;
+
+var fixIllFormedJSON = function (match, offset, string) {
   var prev = charAt(string, offset - 1);
   var next = charAt(string, offset + 1);
-  if ((exec(low, match) && !exec(hi, next)) || (exec(hi, match) && !exec(low, prev))) {
+  if (
+    (exec(leadingSurrogates, match) && !exec(trailingSurrogates, next)) ||
+    (exec(trailingSurrogates, match) && !exec(leadingSurrogates, prev))
+  ) {
     return '\\u' + numberToString(charCodeAt(match, 0), 16);
   } return match;
 };
 
-if ($stringify) {
-  // `JSON.stringify` method
-  // https://tc39.es/ecma262/#sec-json.stringify
-  $({ target: 'JSON', stat: true, arity: 3, forced: WRONG_SYMBOLS_CONVERSION || ILL_FORMED_UNICODE }, {
-    // eslint-disable-next-line no-unused-vars -- required for `.length`
-    stringify: function stringify(it, replacer, space) {
-      var args = arraySlice(arguments);
-      var result = apply(WRONG_SYMBOLS_CONVERSION ? stringifyWithSymbolsFix : $stringify, null, args);
-      return ILL_FORMED_UNICODE && typeof result == 'string' ? replace(result, tester, fixIllFormed) : result;
+// `PropertyList` of `JSON.stringify`
+// https://tc39.es/ecma262/#sec-json.stringify
+var getPropertyList = function (replacer) {
+  if (!isArray(replacer)) return;
+  var rawLength = replacer.length;
+  var propertyList = [];
+  // a null prototype object is used as a set of already added keys to keep the deduplication linear
+  var addedKeys = create(null);
+  for (var i = 0; i < rawLength; i++) {
+    var element = replacer[i];
+    var key;
+    if (typeof element == 'string') key = element;
+    else if (typeof element == 'number' || classof(element) === 'Number' || classof(element) === 'String') key = toString(element);
+    else continue;
+    if (!hasOwn(addedKeys, key)) {
+      addedKeys[key] = true;
+      push(propertyList, key);
     }
-  });
-}
+  }
+  return propertyList;
+};
+
+// values with such an internal slot are unwrapped by `SerializeJSONProperty` instead of being serialized as objects
+var hasInternalSlot = function (valueOf, it) {
+  try {
+    valueOf(it);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+// the slot check is expensive, so it's performed only for the kind reported by the value itself -
+// a value lying about its kind via `Symbol.toStringTag` is serialized as an ordinary object
+var isBoxedPrimitive = function (it) {
+  var kind = classof(it);
+  return (kind === 'Number' && hasInternalSlot(thisNumberValue, it))
+    || (kind === 'String' && hasInternalSlot(stringValueOf, it))
+    || (kind === 'Boolean' && hasInternalSlot(booleanValueOf, it))
+    || (!!bigIntValueOf && kind === 'BigInt' && hasInternalSlot(bigIntValueOf, it));
+};
+
+// only objects serialized by `SerializeJSONObject` are affected by the property list
+var isSerializedAsObject = function (it) {
+  if (!isObject(it) || isCallable(it) || isArray(it)) return false;
+  try {
+    return !isBoxedPrimitive(it);
+  // `classof` reads `Symbol.toStringTag`, so a proxy could throw - it has no internal slots anyway
+  } catch (error) {
+    return true;
+  }
+};
+
+// the engine unwraps it in the same order as it would read the original property,
+// so the property is read lazily and `toJSON` is called once and with the original key
+var createElementHolder = function (holder, key) {
+  return {
+    toJSON: function () {
+      var element = holder[key];
+      if (isObject(element) || typeof element == 'bigint') {
+        var elementToJSON = element.toJSON;
+        if (isCallable(elementToJSON)) element = call(elementToJSON, element, key);
+      } return element;
+    }
+  };
+};
+
+// own keys of objects are sorted - integer-like keys are moved to the beginning,
+// so such keys should be marked and restored in the serialized string
+var getKeyPrefix = function (propertyList) {
+  for (var i = 0, length = propertyList.length; i < length; i++) {
+    if (exec(digits, propertyList[i])) return KEY_MARK;
+  } return '';
+};
+
+// `SerializeJSONObject` iterates the property list, so the value is replaced with an object with keys in this order
+var createOrderedObject = function (value, propertyList, keyPrefix) {
+  // keys are not marked if the property list has no integer-like keys, so `Object.prototype`
+  // with a setter, a non-writable property or `__proto__` should not intercept the assignment
+  var ordered = create(null);
+  for (var i = 0, length = propertyList.length; i < length; i++) {
+    var key = propertyList[i];
+    ordered[keyPrefix + key] = createElementHolder(value, key);
+  }
+  ordered[END_MARK] = null;
+  return ordered;
+};
+
+// `JSON.stringify` method
+// https://tc39.es/ecma262/#sec-json.stringify
+// https://github.com/tc39/proposal-json-parse-with-source
+if ($stringify) $({ target: 'JSON', stat: true, arity: 3, forced: WRONG_SYMBOLS_CONVERSION || ILL_FORMED_UNICODE || !NATIVE_RAW_JSON }, {
+  stringify: function stringify(text, replacer, space) {
+    var replacerFunction = isCallable(replacer) ? replacer : undefined;
+    var propertyList = replacerFunction ? undefined : getPropertyList(replacer);
+    var keyPrefix = propertyList && getKeyPrefix(propertyList);
+    var rawStrings = [];
+    var openObjects = [];
+    var parentOrdered = [];
+    var currentOrdered;
+    var marked = false;
+    var root = true;
+
+    var json = stringifyWithProperSymbolsConversion(text, function (key, value) {
+      // some old implementations (like WebKit) could pass numbers as keys
+      key = $String(key);
+
+      if (propertyList) {
+        if (key === END_MARK) {
+          pop(openObjects);
+          currentOrdered = pop(parentOrdered);
+          return;
+        }
+        if (root) root = false;
+        // the innermost reordered object already contains only keys of the property list and arrays are not
+        // affected by it, the rest of objects (like objects with a fake `Symbol.toStringTag`) are filtered here
+        else if (this !== currentOrdered && !isArray(this) && !includes(propertyList, key)) return;
+      } else if (replacerFunction) value = call(replacerFunction, this, key, value);
+
+      if (isRawJSONValue(value)) {
+        if (NATIVE_RAW_JSON) return value;
+        marked = true;
+        return RAW_MARK + (push(rawStrings, value.rawJSON) - 1);
+      }
+
+      if (propertyList && isSerializedAsObject(value)) {
+        // reordered objects are new each time, so cycles should be detected before the engine does it
+        if (includes(openObjects, value)) throw new $TypeError('Converting circular structure to JSON');
+        var ordered = createOrderedObject(value, propertyList, keyPrefix);
+        push(openObjects, value);
+        push(parentOrdered, currentOrdered);
+        currentOrdered = ordered;
+        if (keyPrefix) marked = true;
+        return ordered;
+      }
+
+      return value;
+    }, space);
+
+    if (typeof json != 'string') return json;
+
+    if (ILL_FORMED_UNICODE) json = replace(json, surrogates, fixIllFormedJSON);
+
+    if (!marked) return json;
+
+    var result = '';
+    var length = json.length;
+
+    for (var i = 0; i < length; i++) {
+      var chr = charAt(json, i);
+      if (chr === '"') {
+        var end = parseJSONString(json, ++i).end - 1;
+        var string = slice(json, i, end);
+        if (slice(string, 0, RAW_MARK_LENGTH) === RAW_MARK) result += rawStrings[slice(string, RAW_MARK_LENGTH)];
+        else if (slice(string, 0, KEY_MARK_LENGTH) === KEY_MARK) result += '"' + slice(string, KEY_MARK_LENGTH) + '"';
+        else result += '"' + string + '"';
+        i = end;
+      } else result += chr;
+    }
+
+    return result;
+  }
+});
 
 
 /***/ }),
@@ -5670,7 +5959,7 @@ var fallbackDefineProperty = function (O, P, Attributes) {
   nativeDefineProperty(O, P, Attributes);
   if (ObjectPrototypeDescriptor && O !== ObjectPrototype) {
     nativeDefineProperty(ObjectPrototype, P, ObjectPrototypeDescriptor);
-  }
+  } return O;
 };
 
 var setSymbolDescriptor = DESCRIPTORS && fails(function () {
@@ -5696,7 +5985,8 @@ var $defineProperty = function defineProperty(O, P, Attributes) {
   var key = toPropertyKey(P);
   anObject(Attributes);
   if (hasOwn(AllSymbols, key)) {
-    if (!Attributes.enumerable) {
+    // first definition - default non-enumerable; redefinition - preserve existing state
+    if (!('enumerable' in Attributes) ? !hasOwn(O, key) || (hasOwn(O, HIDDEN) && O[HIDDEN][key]) : !Attributes.enumerable) {
       if (!hasOwn(O, HIDDEN)) nativeDefineProperty(O, HIDDEN, createPropertyDescriptor(1, nativeObjectCreate(null)));
       O[HIDDEN][key] = true;
     } else {
@@ -5877,6 +6167,7 @@ hiddenKeys[HIDDEN] = true;
 var $ = __webpack_require__(/*! ../internals/export */ "../../../node_modules/core-js/internals/export.js");
 var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "../../../node_modules/core-js/internals/descriptors.js");
 var globalThis = __webpack_require__(/*! ../internals/global-this */ "../../../node_modules/core-js/internals/global-this.js");
+var call = __webpack_require__(/*! ../internals/function-call */ "../../../node_modules/core-js/internals/function-call.js");
 var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "../../../node_modules/core-js/internals/function-uncurry-this.js");
 var hasOwn = __webpack_require__(/*! ../internals/has-own-property */ "../../../node_modules/core-js/internals/has-own-property.js");
 var isCallable = __webpack_require__(/*! ../internals/is-callable */ "../../../node_modules/core-js/internals/is-callable.js");
@@ -5906,6 +6197,14 @@ if (DESCRIPTORS && isCallable(NativeSymbol) && (!('description' in SymbolPrototy
   };
 
   copyConstructorProperties(SymbolWrapper, NativeSymbol);
+  // wrap Symbol.for for correct handling of empty string descriptions
+  var nativeFor = SymbolWrapper['for'];
+  SymbolWrapper['for'] = { 'for': function (key) {
+    var stringKey = toString(key);
+    var symbol = call(nativeFor, this, stringKey);
+    if (stringKey === '') EmptyStringDescriptionStore[symbol] = true;
+    return symbol;
+  } }['for'];
   SymbolWrapper.prototype = SymbolPrototype;
   SymbolPrototype.constructor = SymbolWrapper;
 
@@ -6202,7 +6501,7 @@ var charAt = (__webpack_require__(/*! ../internals/string-multibyte */ "./node_m
 // `AdvanceStringIndex` abstract operation
 // https://tc39.es/ecma262/#sec-advancestringindex
 module.exports = function (S, index, unicode) {
-  return index + (unicode ? charAt(S, index).length : 1);
+  return index + (unicode ? charAt(S, index).length || 1 : 1);
 };
 
 
@@ -6961,7 +7260,7 @@ var $TypeError = TypeError;
 var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF; // 2 ** 53 - 1 == 9007199254740991
 
 module.exports = function (it) {
-  if (it > MAX_SAFE_INTEGER) throw $TypeError('Maximum allowed index exceeded');
+  if (it > MAX_SAFE_INTEGER) throw new $TypeError('Maximum allowed index exceeded');
   return it;
 };
 
@@ -7076,8 +7375,7 @@ module.exports = /ipad|iphone|ipod/i.test(userAgent) && typeof Pebble != 'undefi
 
 var userAgent = __webpack_require__(/*! ../internals/environment-user-agent */ "./node_modules/core-js/internals/environment-user-agent.js");
 
-// eslint-disable-next-line redos/no-vulnerable -- safe
-module.exports = /(?:ipad|iphone|ipod).*applewebkit/i.test(userAgent);
+module.exports = /ipad|iphone|ipod/i.test(userAgent) && /applewebkit/i.test(userAgent);
 
 
 /***/ }),
@@ -7423,7 +7721,7 @@ var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-j
 
 module.exports = !fails(function () {
   // eslint-disable-next-line es/no-function-prototype-bind -- safe
-  var test = (function () { /* empty */ }).bind();
+  var test = function () { /* empty */ }.bind();
   // eslint-disable-next-line no-prototype-builtins -- safe
   return typeof test != 'function' || test.hasOwnProperty('prototype');
 });
@@ -7465,7 +7763,7 @@ var getDescriptor = DESCRIPTORS && Object.getOwnPropertyDescriptor;
 
 var EXISTS = hasOwn(FunctionPrototype, 'name');
 // additional protection from minified / mangled / dropped function names
-var PROPER = EXISTS && (function something() { /* empty */ }).name === 'something';
+var PROPER = EXISTS && function something() { /* empty */ }.name === 'something';
 var CONFIGURABLE = EXISTS && (!DESCRIPTORS || (DESCRIPTORS && getDescriptor(FunctionPrototype, 'name').configurable));
 
 module.exports = {
@@ -7561,49 +7859,49 @@ module.exports = function (namespace, method) {
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/get-iterator-method.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/core-js/internals/get-iterator-method.js ***!
-  \***************************************************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-
-var classof = __webpack_require__(/*! ../internals/classof */ "./node_modules/core-js/internals/classof.js");
-var getMethod = __webpack_require__(/*! ../internals/get-method */ "./node_modules/core-js/internals/get-method.js");
-var isNullOrUndefined = __webpack_require__(/*! ../internals/is-null-or-undefined */ "./node_modules/core-js/internals/is-null-or-undefined.js");
-var Iterators = __webpack_require__(/*! ../internals/iterators */ "./node_modules/core-js/internals/iterators.js");
-var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
-
-var ITERATOR = wellKnownSymbol('iterator');
-
-module.exports = function (it) {
-  if (!isNullOrUndefined(it)) return getMethod(it, ITERATOR)
-    || getMethod(it, '@@iterator')
-    || Iterators[classof(it)];
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/get-iterator.js":
-/*!********************************************************!*\
-  !*** ./node_modules/core-js/internals/get-iterator.js ***!
-  \********************************************************/
+/***/ "./node_modules/core-js/internals/get-iterator-internal.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/core-js/internals/get-iterator-internal.js ***!
+  \*****************************************************************/
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 
 var call = __webpack_require__(/*! ../internals/function-call */ "./node_modules/core-js/internals/function-call.js");
-var aCallable = __webpack_require__(/*! ../internals/a-callable */ "./node_modules/core-js/internals/a-callable.js");
+var isCallable = __webpack_require__(/*! ../internals/is-callable */ "./node_modules/core-js/internals/is-callable.js");
 var anObject = __webpack_require__(/*! ../internals/an-object */ "./node_modules/core-js/internals/an-object.js");
 var tryToString = __webpack_require__(/*! ../internals/try-to-string */ "./node_modules/core-js/internals/try-to-string.js");
-var getIteratorMethod = __webpack_require__(/*! ../internals/get-iterator-method */ "./node_modules/core-js/internals/get-iterator-method.js");
+var getIteratorMethod = __webpack_require__(/*! ../internals/get-iterator-method-internal */ "./node_modules/core-js/internals/get-iterator-method-internal.js");
 
 var $TypeError = TypeError;
 
 module.exports = function (argument, usingIterator) {
   var iteratorMethod = arguments.length < 2 ? getIteratorMethod(argument) : usingIterator;
-  if (aCallable(iteratorMethod)) return anObject(call(iteratorMethod, argument));
+  if (isCallable(iteratorMethod)) return anObject(call(iteratorMethod, argument));
   throw new $TypeError(tryToString(argument) + ' is not iterable');
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/get-iterator-method-internal.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/core-js/internals/get-iterator-method-internal.js ***!
+  \************************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+
+var classof = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js/internals/classof-raw.js");
+var isNullOrUndefined = __webpack_require__(/*! ../internals/is-null-or-undefined */ "./node_modules/core-js/internals/is-null-or-undefined.js");
+var getMethod = __webpack_require__(/*! ../internals/get-method */ "./node_modules/core-js/internals/get-method.js");
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
+
+var ITERATOR = wellKnownSymbol('iterator');
+var ArrayPrototype = Array.prototype;
+
+module.exports = function (it) {
+  if (!isNullOrUndefined(it)) return getMethod(it, ITERATOR)
+    || getMethod(it, '@@iterator')
+    || (classof(it) === 'Arguments' ? ArrayPrototype[ITERATOR] : undefined);
 };
 
 
@@ -8256,8 +8554,8 @@ var tryToString = __webpack_require__(/*! ../internals/try-to-string */ "./node_
 var isArrayIteratorMethod = __webpack_require__(/*! ../internals/is-array-iterator-method */ "./node_modules/core-js/internals/is-array-iterator-method.js");
 var lengthOfArrayLike = __webpack_require__(/*! ../internals/length-of-array-like */ "./node_modules/core-js/internals/length-of-array-like.js");
 var isPrototypeOf = __webpack_require__(/*! ../internals/object-is-prototype-of */ "./node_modules/core-js/internals/object-is-prototype-of.js");
-var getIterator = __webpack_require__(/*! ../internals/get-iterator */ "./node_modules/core-js/internals/get-iterator.js");
-var getIteratorMethod = __webpack_require__(/*! ../internals/get-iterator-method */ "./node_modules/core-js/internals/get-iterator-method.js");
+var getIterator = __webpack_require__(/*! ../internals/get-iterator-internal */ "./node_modules/core-js/internals/get-iterator-internal.js");
+var getIteratorMethod = __webpack_require__(/*! ../internals/get-iterator-method-internal */ "./node_modules/core-js/internals/get-iterator-method-internal.js");
 var iteratorClose = __webpack_require__(/*! ../internals/iterator-close */ "./node_modules/core-js/internals/iterator-close.js");
 
 var $TypeError = TypeError;
@@ -8279,7 +8577,9 @@ module.exports = function (iterable, unboundFunction, options) {
   var iterator, iterFn, index, length, result, next, step;
 
   var stop = function (condition) {
-    if (iterator) iteratorClose(iterator, 'normal');
+    var $iterator = iterator;
+    iterator = undefined;
+    if ($iterator) iteratorClose($iterator, 'normal');
     return new Result(true, condition);
   };
 
@@ -8309,10 +8609,13 @@ module.exports = function (iterable, unboundFunction, options) {
 
   next = IS_RECORD ? iterable.next : iterator.next;
   while (!(step = call(next, iterator)).done) {
+    // `IteratorValue` errors should propagate without closing the iterator
+    var value = step.value;
     try {
-      result = callFn(step.value);
+      result = callFn(value);
     } catch (error) {
-      iteratorClose(iterator, 'throw', error);
+      if (iterator) iteratorClose(iterator, 'throw', error);
+      else throw error;
     }
     if (typeof result == 'object' && result && isPrototypeOf(ResultPrototype, result)) return result;
   } return new Result(false);
@@ -8559,7 +8862,7 @@ module.exports = {
 /***/ (function(module) {
 
 
-module.exports = {};
+module.exports = Object.create ? Object.create(null) : {};
 
 
 /***/ }),
@@ -9748,18 +10051,29 @@ var NPCG_INCLUDED = /()??/.exec('')[1] !== undefined;
 
 var PATCH = UPDATES_LAST_INDEX_WRONG || NPCG_INCLUDED || UNSUPPORTED_Y || UNSUPPORTED_DOT_ALL || UNSUPPORTED_NCG;
 
+var setGroups = function (re, groups) {
+  var object = re.groups = create(null);
+  for (var i = 0; i < groups.length; i++) {
+    var group = groups[i];
+    object[group[0]] = re[group[1]];
+  }
+};
+
 if (PATCH) {
   patchedExec = function exec(string) {
     var re = this;
     var state = getInternalState(re);
     var str = toString(string);
     var raw = state.raw;
-    var result, reCopy, lastIndex, match, i, object, group;
+    var result, reCopy, lastIndex;
 
     if (raw) {
       raw.lastIndex = re.lastIndex;
       result = call(patchedExec, raw, str);
       re.lastIndex = raw.lastIndex;
+
+      if (result && state.groups) setGroups(result, state.groups);
+
       return result;
     }
 
@@ -9778,8 +10092,10 @@ if (PATCH) {
 
       strCopy = stringSlice(str, re.lastIndex);
       // Support anchored sticky behavior.
-      if (re.lastIndex > 0 && (!re.multiline || re.multiline && charAt(str, re.lastIndex - 1) !== '\n')) {
-        source = '(?: ' + source + ')';
+      var prevChar = re.lastIndex > 0 && charAt(str, re.lastIndex - 1);
+      if (re.lastIndex > 0 &&
+        (!re.multiline || re.multiline && prevChar !== '\n' && prevChar !== '\r' && prevChar !== '\u2028' && prevChar !== '\u2029')) {
+        source = '(?: (?:' + source + '))';
         strCopy = ' ' + strCopy;
         charsAdded++;
       }
@@ -9793,11 +10109,11 @@ if (PATCH) {
     }
     if (UPDATES_LAST_INDEX_WRONG) lastIndex = re.lastIndex;
 
-    match = call(nativeExec, sticky ? reCopy : re, strCopy);
+    var match = call(nativeExec, sticky ? reCopy : re, strCopy);
 
     if (sticky) {
       if (match) {
-        match.input = stringSlice(match.input, charsAdded);
+        match.input = str;
         match[0] = stringSlice(match[0], charsAdded);
         match.index = re.lastIndex;
         re.lastIndex += match[0].length;
@@ -9809,19 +10125,13 @@ if (PATCH) {
       // Fix browsers whose `exec` methods don't consistently return `undefined`
       // for NPCG, like IE8. NOTE: This doesn't work for /(.?)?/
       call(nativeReplace, match[0], reCopy, function () {
-        for (i = 1; i < arguments.length - 2; i++) {
+        for (var i = 1; i < arguments.length - 2; i++) {
           if (arguments[i] === undefined) match[i] = undefined;
         }
       });
     }
 
-    if (match && groups) {
-      match.groups = object = create(null);
-      for (i = 0; i < groups.length; i++) {
-        group = groups[i];
-        object[group[0]] = match[group[1]];
-      }
-    }
+    if (match && groups) setGroups(match, groups);
 
     return match;
   };
@@ -10156,10 +10466,10 @@ var SHARED = '__core-js_shared__';
 var store = module.exports = globalThis[SHARED] || defineGlobalProperty(SHARED, {});
 
 (store.versions || (store.versions = [])).push({
-  version: '3.48.0',
+  version: '3.50.0',
   mode: IS_PURE ? 'pure' : 'global',
   copyright: '© 2013–2025 Denis Pushkarev (zloirock.ru), 2025–2026 CoreJS Company (core-js.io). All rights reserved.',
-  license: 'https://github.com/zloirock/core-js/blob/v3.48.0/LICENSE',
+  license: 'https://github.com/zloirock/core-js/blob/v3.50.0/LICENSE',
   source: 'https://github.com/zloirock/core-js'
 });
 
@@ -10174,9 +10484,11 @@ var store = module.exports = globalThis[SHARED] || defineGlobalProperty(SHARED, 
 
 
 var store = __webpack_require__(/*! ../internals/shared-store */ "./node_modules/core-js/internals/shared-store.js");
+// eslint-disable-next-line es/no-object-create -- safe
+var create = Object.create || Object;
 
 module.exports = function (key, value) {
-  return store[key] || (store[key] = value || {});
+  return store[key] || (store[key] = value || create(null));
 };
 
 
@@ -11191,38 +11503,54 @@ if (DESCRIPTORS && !FUNCTION_NAME_EXISTS) {
 
 var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
 var getBuiltIn = __webpack_require__(/*! ../internals/get-built-in */ "./node_modules/core-js/internals/get-built-in.js");
-var apply = __webpack_require__(/*! ../internals/function-apply */ "./node_modules/core-js/internals/function-apply.js");
 var call = __webpack_require__(/*! ../internals/function-call */ "./node_modules/core-js/internals/function-call.js");
 var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
 var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
 var isArray = __webpack_require__(/*! ../internals/is-array */ "./node_modules/core-js/internals/is-array.js");
 var isCallable = __webpack_require__(/*! ../internals/is-callable */ "./node_modules/core-js/internals/is-callable.js");
+var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
+var create = __webpack_require__(/*! ../internals/object-create */ "./node_modules/core-js/internals/object-create.js");
 var isRawJSON = __webpack_require__(/*! ../internals/is-raw-json */ "./node_modules/core-js/internals/is-raw-json.js");
 var isSymbol = __webpack_require__(/*! ../internals/is-symbol */ "./node_modules/core-js/internals/is-symbol.js");
 var classof = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js/internals/classof-raw.js");
+var thisNumberValue = __webpack_require__(/*! ../internals/this-number-value */ "./node_modules/core-js/internals/this-number-value.js");
+var includes = (__webpack_require__(/*! ../internals/array-includes */ "./node_modules/core-js/internals/array-includes.js").includes);
+var hasOwn = __webpack_require__(/*! ../internals/has-own-property */ "./node_modules/core-js/internals/has-own-property.js");
 var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules/core-js/internals/to-string.js");
-var arraySlice = __webpack_require__(/*! ../internals/array-slice */ "./node_modules/core-js/internals/array-slice.js");
 var parseJSONString = __webpack_require__(/*! ../internals/parse-json-string */ "./node_modules/core-js/internals/parse-json-string.js");
 var uid = __webpack_require__(/*! ../internals/uid */ "./node_modules/core-js/internals/uid.js");
 var NATIVE_SYMBOL = __webpack_require__(/*! ../internals/symbol-constructor-detection */ "./node_modules/core-js/internals/symbol-constructor-detection.js");
 var NATIVE_RAW_JSON = __webpack_require__(/*! ../internals/native-raw-json */ "./node_modules/core-js/internals/native-raw-json.js");
 
 var $String = String;
+var $TypeError = TypeError;
 var $stringify = getBuiltIn('JSON', 'stringify');
+var $BigInt = getBuiltIn('BigInt');
+var stringValueOf = uncurryThis(''.valueOf);
+var booleanValueOf = uncurryThis(true.valueOf);
+var bigIntValueOf = $BigInt && uncurryThis($BigInt.prototype.valueOf);
 var exec = uncurryThis(/./.exec);
 var charAt = uncurryThis(''.charAt);
 var charCodeAt = uncurryThis(''.charCodeAt);
 var replace = uncurryThis(''.replace);
 var slice = uncurryThis(''.slice);
 var push = uncurryThis([].push);
+var pop = uncurryThis([].pop);
 var numberToString = uncurryThis(1.1.toString);
 
 var surrogates = /[\uD800-\uDFFF]/g;
-var lowSurrogates = /^[\uD800-\uDBFF]$/;
-var hiSurrogates = /^[\uDC00-\uDFFF]$/;
+var leadingSurrogates = /^[\uD800-\uDBFF]$/;
+var trailingSurrogates = /^[\uDC00-\uDFFF]$/;
+var digits = /^\d+$/;
 
-var MARK = uid();
-var MARK_LENGTH = MARK.length;
+// a placeholder of a raw JSON value
+var RAW_MARK = uid();
+// a prefix of keys of a reordered object, see `createOrderedObject`
+var KEY_MARK = uid();
+// the last key of a reordered object, marks the end of its serialization
+var END_MARK = uid();
+var RAW_MARK_LENGTH = RAW_MARK.length;
+var KEY_MARK_LENGTH = KEY_MARK.length;
 
 var WRONG_SYMBOLS_CONVERSION = !NATIVE_SYMBOL || fails(function () {
   var symbol = getBuiltIn('Symbol')('stringify detection');
@@ -11240,46 +11568,112 @@ var ILL_FORMED_UNICODE = fails(function () {
     || $stringify('\uDEAD') !== '"\\udead"';
 });
 
-var stringifyWithProperSymbolsConversion = WRONG_SYMBOLS_CONVERSION ? function (it, replacer) {
-  var args = arraySlice(arguments);
-  var $replacer = getReplacerFunction(replacer);
-  if (!isCallable($replacer) && (it === undefined || isSymbol(it))) return; // IE8 returns string on undefined
-  args[1] = function (key, value) {
-    // some old implementations (like WebKit) could pass numbers as keys
-    if (isCallable($replacer)) value = call($replacer, this, $String(key), value);
-    if (!isSymbol(value)) return value;
-  };
-  return apply($stringify, null, args);
+var isRawJSONValue = NATIVE_RAW_JSON ? getBuiltIn('JSON', 'isRawJSON') : isRawJSON;
+
+var stringifyWithProperSymbolsConversion = WRONG_SYMBOLS_CONVERSION ? function (it, replacer, space) {
+  return $stringify(it, function (key, value) {
+    var replaced = call(replacer, this, key, value);
+    if (!isSymbol(replaced)) return replaced;
+  }, space);
 } : $stringify;
 
 var fixIllFormedJSON = function (match, offset, string) {
   var prev = charAt(string, offset - 1);
   var next = charAt(string, offset + 1);
-  if ((exec(lowSurrogates, match) && !exec(hiSurrogates, next)) || (exec(hiSurrogates, match) && !exec(lowSurrogates, prev))) {
+  if (
+    (exec(leadingSurrogates, match) && !exec(trailingSurrogates, next)) ||
+    (exec(trailingSurrogates, match) && !exec(leadingSurrogates, prev))
+  ) {
     return '\\u' + numberToString(charCodeAt(match, 0), 16);
   } return match;
 };
 
-var getReplacerFunction = function (replacer) {
-  if (isCallable(replacer)) return replacer;
+// `PropertyList` of `JSON.stringify`
+// https://tc39.es/ecma262/#sec-json.stringify
+var getPropertyList = function (replacer) {
   if (!isArray(replacer)) return;
   var rawLength = replacer.length;
-  var keys = [];
+  var propertyList = [];
+  // a null prototype object is used as a set of already added keys to keep the deduplication linear
+  var addedKeys = create(null);
   for (var i = 0; i < rawLength; i++) {
     var element = replacer[i];
-    if (typeof element == 'string') push(keys, element);
-    else if (typeof element == 'number' || classof(element) === 'Number' || classof(element) === 'String') push(keys, toString(element));
-  }
-  var keysLength = keys.length;
-  var root = true;
-  return function (key, value) {
-    if (root) {
-      root = false;
-      return value;
+    var key;
+    if (typeof element == 'string') key = element;
+    else if (typeof element == 'number' || classof(element) === 'Number' || classof(element) === 'String') key = toString(element);
+    else continue;
+    if (!hasOwn(addedKeys, key)) {
+      addedKeys[key] = true;
+      push(propertyList, key);
     }
-    if (isArray(this)) return value;
-    for (var j = 0; j < keysLength; j++) if (keys[j] === key) return value;
+  }
+  return propertyList;
+};
+
+// values with such an internal slot are unwrapped by `SerializeJSONProperty` instead of being serialized as objects
+var hasInternalSlot = function (valueOf, it) {
+  try {
+    valueOf(it);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+// the slot check is expensive, so it's performed only for the kind reported by the value itself -
+// a value lying about its kind via `Symbol.toStringTag` is serialized as an ordinary object
+var isBoxedPrimitive = function (it) {
+  var kind = classof(it);
+  return (kind === 'Number' && hasInternalSlot(thisNumberValue, it))
+    || (kind === 'String' && hasInternalSlot(stringValueOf, it))
+    || (kind === 'Boolean' && hasInternalSlot(booleanValueOf, it))
+    || (!!bigIntValueOf && kind === 'BigInt' && hasInternalSlot(bigIntValueOf, it));
+};
+
+// only objects serialized by `SerializeJSONObject` are affected by the property list
+var isSerializedAsObject = function (it) {
+  if (!isObject(it) || isCallable(it) || isArray(it)) return false;
+  try {
+    return !isBoxedPrimitive(it);
+  // `classof` reads `Symbol.toStringTag`, so a proxy could throw - it has no internal slots anyway
+  } catch (error) {
+    return true;
+  }
+};
+
+// the engine unwraps it in the same order as it would read the original property,
+// so the property is read lazily and `toJSON` is called once and with the original key
+var createElementHolder = function (holder, key) {
+  return {
+    toJSON: function () {
+      var element = holder[key];
+      if (isObject(element) || typeof element == 'bigint') {
+        var elementToJSON = element.toJSON;
+        if (isCallable(elementToJSON)) element = call(elementToJSON, element, key);
+      } return element;
+    }
   };
+};
+
+// own keys of objects are sorted - integer-like keys are moved to the beginning,
+// so such keys should be marked and restored in the serialized string
+var getKeyPrefix = function (propertyList) {
+  for (var i = 0, length = propertyList.length; i < length; i++) {
+    if (exec(digits, propertyList[i])) return KEY_MARK;
+  } return '';
+};
+
+// `SerializeJSONObject` iterates the property list, so the value is replaced with an object with keys in this order
+var createOrderedObject = function (value, propertyList, keyPrefix) {
+  // keys are not marked if the property list has no integer-like keys, so `Object.prototype`
+  // with a setter, a non-writable property or `__proto__` should not intercept the assignment
+  var ordered = create(null);
+  for (var i = 0, length = propertyList.length; i < length; i++) {
+    var key = propertyList[i];
+    ordered[keyPrefix + key] = createElementHolder(value, key);
+  }
+  ordered[END_MARK] = null;
+  return ordered;
 };
 
 // `JSON.stringify` method
@@ -11287,20 +11681,57 @@ var getReplacerFunction = function (replacer) {
 // https://github.com/tc39/proposal-json-parse-with-source
 if ($stringify) $({ target: 'JSON', stat: true, arity: 3, forced: WRONG_SYMBOLS_CONVERSION || ILL_FORMED_UNICODE || !NATIVE_RAW_JSON }, {
   stringify: function stringify(text, replacer, space) {
-    var replacerFunction = getReplacerFunction(replacer);
+    var replacerFunction = isCallable(replacer) ? replacer : undefined;
+    var propertyList = replacerFunction ? undefined : getPropertyList(replacer);
+    var keyPrefix = propertyList && getKeyPrefix(propertyList);
     var rawStrings = [];
+    var openObjects = [];
+    var parentOrdered = [];
+    var currentOrdered;
+    var marked = false;
+    var root = true;
 
     var json = stringifyWithProperSymbolsConversion(text, function (key, value) {
       // some old implementations (like WebKit) could pass numbers as keys
-      var v = isCallable(replacerFunction) ? call(replacerFunction, this, $String(key), value) : value;
-      return !NATIVE_RAW_JSON && isRawJSON(v) ? MARK + (push(rawStrings, v.rawJSON) - 1) : v;
+      key = $String(key);
+
+      if (propertyList) {
+        if (key === END_MARK) {
+          pop(openObjects);
+          currentOrdered = pop(parentOrdered);
+          return;
+        }
+        if (root) root = false;
+        // the innermost reordered object already contains only keys of the property list and arrays are not
+        // affected by it, the rest of objects (like objects with a fake `Symbol.toStringTag`) are filtered here
+        else if (this !== currentOrdered && !isArray(this) && !includes(propertyList, key)) return;
+      } else if (replacerFunction) value = call(replacerFunction, this, key, value);
+
+      if (isRawJSONValue(value)) {
+        if (NATIVE_RAW_JSON) return value;
+        marked = true;
+        return RAW_MARK + (push(rawStrings, value.rawJSON) - 1);
+      }
+
+      if (propertyList && isSerializedAsObject(value)) {
+        // reordered objects are new each time, so cycles should be detected before the engine does it
+        if (includes(openObjects, value)) throw new $TypeError('Converting circular structure to JSON');
+        var ordered = createOrderedObject(value, propertyList, keyPrefix);
+        push(openObjects, value);
+        push(parentOrdered, currentOrdered);
+        currentOrdered = ordered;
+        if (keyPrefix) marked = true;
+        return ordered;
+      }
+
+      return value;
     }, space);
 
     if (typeof json != 'string') return json;
 
     if (ILL_FORMED_UNICODE) json = replace(json, surrogates, fixIllFormedJSON);
 
-    if (NATIVE_RAW_JSON) return json;
+    if (!marked) return json;
 
     var result = '';
     var length = json.length;
@@ -11310,9 +11741,9 @@ if ($stringify) $({ target: 'JSON', stat: true, arity: 3, forced: WRONG_SYMBOLS_
       if (chr === '"') {
         var end = parseJSONString(json, ++i).end - 1;
         var string = slice(json, i, end);
-        result += slice(string, 0, MARK_LENGTH) === MARK
-          ? rawStrings[slice(string, MARK_LENGTH)]
-          : '"' + string + '"';
+        if (slice(string, 0, RAW_MARK_LENGTH) === RAW_MARK) result += rawStrings[slice(string, RAW_MARK_LENGTH)];
+        else if (slice(string, 0, KEY_MARK_LENGTH) === KEY_MARK) result += '"' + slice(string, KEY_MARK_LENGTH) + '"';
+        else result += '"' + string + '"';
         i = end;
       } else result += chr;
     }
@@ -12135,6 +12566,11 @@ var handleNCG = function (string) {
     chr = charAt(string, index);
     if (chr === '\\') {
       chr += charAt(string, ++index);
+      // use `\x5c` for escaped backslash to avoid corruption by `\k<name>` to `\N` replacement below
+      if (!ncg && charAt(chr, 1) === '\\') {
+        result += '\\x5c';
+        continue;
+      }
     } else if (chr === ']') {
       brackets = false;
     } else if (!brackets) switch (true) {
@@ -12143,15 +12579,13 @@ var handleNCG = function (string) {
         break;
       case chr === '(':
         result += chr;
-        // ignore non-capturing groups
-        if (stringSlice(string, index + 1, index + 3) === '?:') {
-          continue;
-        }
         if (exec(IS_NCG, stringSlice(string, index + 1))) {
           index += 2;
           ncg = true;
+          groupid++;
+        } else if (charAt(string, index + 1) !== '?') {
+          groupid++;
         }
-        groupid++;
         continue;
       case chr === '>' && ncg:
         if (groupname === '' || hasOwn(names, groupname)) {
@@ -12165,6 +12599,14 @@ var handleNCG = function (string) {
     }
     if (ncg) groupname += chr;
     else result += chr;
+  }
+  // convert `\k<name>` backreferences to numbered backreferences
+  for (var ni = 0; ni < named.length; ni++) {
+    var backref = '\\k<' + named[ni][0] + '>';
+    var numRef = '\\' + named[ni][1];
+    while (stringIndexOf(result, backref) > -1) {
+      result = replace(result, backref, numRef);
+    }
   } return [result, named];
 };
 
@@ -12333,10 +12775,10 @@ $({ target: 'String', proto: true, forced: !MDN_POLYFILL_BUG && !CORRECT_IS_REGE
   endsWith: function endsWith(searchString /* , endPosition = @length */) {
     var that = toString(requireObjectCoercible(this));
     notARegExp(searchString);
+    var search = toString(searchString);
     var endPosition = arguments.length > 1 ? arguments[1] : undefined;
     var len = that.length;
     var end = endPosition === undefined ? len : min(toLength(endPosition), len);
-    var search = toString(searchString);
     return slice(that, end - search.length, end) === search;
   }
 });
@@ -12469,23 +12911,24 @@ fixRegExpWellKnownSymbolLogic('replace', function (_, nativeReplace, maybeCallNa
       var rx = anObject(this);
       var S = toString(string);
 
+      var functionalReplace = isCallable(replaceValue);
+      if (!functionalReplace) replaceValue = toString(replaceValue);
+      var flags = toString(getRegExpFlags(rx));
+
       if (
         typeof replaceValue == 'string' &&
-        stringIndexOf(replaceValue, UNSAFE_SUBSTITUTE) === -1 &&
-        stringIndexOf(replaceValue, '$<') === -1
+        !~stringIndexOf(replaceValue, UNSAFE_SUBSTITUTE) &&
+        !~stringIndexOf(replaceValue, '$<') &&
+        !~stringIndexOf(flags, 'y')
       ) {
         var res = maybeCallNative(nativeReplace, rx, S, replaceValue);
         if (res.done) return res.value;
       }
 
-      var functionalReplace = isCallable(replaceValue);
-      if (!functionalReplace) replaceValue = toString(replaceValue);
-
-      var flags = toString(getRegExpFlags(rx));
-      var global = stringIndexOf(flags, 'g') !== -1;
+      var global = !!~stringIndexOf(flags, 'g');
       var fullUnicode;
       if (global) {
-        fullUnicode = stringIndexOf(flags, 'u') !== -1;
+        fullUnicode = !!~stringIndexOf(flags, 'u') || !!~stringIndexOf(flags, 'v');
         rx.lastIndex = 0;
       }
 
@@ -12617,7 +13060,7 @@ var fallbackDefineProperty = function (O, P, Attributes) {
   nativeDefineProperty(O, P, Attributes);
   if (ObjectPrototypeDescriptor && O !== ObjectPrototype) {
     nativeDefineProperty(ObjectPrototype, P, ObjectPrototypeDescriptor);
-  }
+  } return O;
 };
 
 var setSymbolDescriptor = DESCRIPTORS && fails(function () {
@@ -12643,7 +13086,8 @@ var $defineProperty = function defineProperty(O, P, Attributes) {
   var key = toPropertyKey(P);
   anObject(Attributes);
   if (hasOwn(AllSymbols, key)) {
-    if (!Attributes.enumerable) {
+    // first definition - default non-enumerable; redefinition - preserve existing state
+    if (!('enumerable' in Attributes) ? !hasOwn(O, key) || (hasOwn(O, HIDDEN) && O[HIDDEN][key]) : !Attributes.enumerable) {
       if (!hasOwn(O, HIDDEN)) nativeDefineProperty(O, HIDDEN, createPropertyDescriptor(1, nativeObjectCreate(null)));
       O[HIDDEN][key] = true;
     } else {
@@ -12824,6 +13268,7 @@ hiddenKeys[HIDDEN] = true;
 var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
 var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_modules/core-js/internals/descriptors.js");
 var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var call = __webpack_require__(/*! ../internals/function-call */ "./node_modules/core-js/internals/function-call.js");
 var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
 var hasOwn = __webpack_require__(/*! ../internals/has-own-property */ "./node_modules/core-js/internals/has-own-property.js");
 var isCallable = __webpack_require__(/*! ../internals/is-callable */ "./node_modules/core-js/internals/is-callable.js");
@@ -12853,6 +13298,14 @@ if (DESCRIPTORS && isCallable(NativeSymbol) && (!('description' in SymbolPrototy
   };
 
   copyConstructorProperties(SymbolWrapper, NativeSymbol);
+  // wrap Symbol.for for correct handling of empty string descriptions
+  var nativeFor = SymbolWrapper['for'];
+  SymbolWrapper['for'] = { 'for': function (key) {
+    var stringKey = toString(key);
+    var symbol = call(nativeFor, this, stringKey);
+    if (stringKey === '') EmptyStringDescriptionStore[symbol] = true;
+    return symbol;
+  } }['for'];
   SymbolWrapper.prototype = SymbolPrototype;
   SymbolPrototype.constructor = SymbolWrapper;
 
@@ -13111,56 +13564,46 @@ handlePrototype(DOMTokenListPrototype, 'DOMTokenList');
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/global */
-/******/ 	!function() {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
-/******/ 	}();
+/******/ 	__webpack_require__.g = (function() {
+/******/ 		if (typeof globalThis === 'object') return globalThis;
+/******/ 		try {
+/******/ 			return this || new Function('return this')();
+/******/ 		} catch (e) {
+/******/ 			if (typeof window === 'object') return window;
+/******/ 		}
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
-/******/ 	!function() {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = function(exports) {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	}();
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
@@ -13213,9 +13656,11 @@ var init = function init() {
 
   // Initialize actions
   var actions = new _actions__WEBPACK_IMPORTED_MODULE_1__["default"](store);
+  var placeholder = container.querySelector('global-sidemenu');
+  var mountEl = placeholder ? placeholder.parentElement : container;
 
   // Initialize main component
-  var globalSidePanel = new _components_GlobalSidemenu__WEBPACK_IMPORTED_MODULE_2__["default"](container, store, actions, {
+  var globalSidePanel = new _components_GlobalSidemenu__WEBPACK_IMPORTED_MODULE_2__["default"](mountEl, store, actions, {
     Sidemenu: _components_Sidemenu__WEBPACK_IMPORTED_MODULE_3__["default"]
   });
   return {

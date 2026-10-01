@@ -11,9 +11,12 @@ jest.mock('components/UIComponents', () => {
       value = '',
       className = '',
       onClick,
+      showToolbar = false,
     }) =>
       React.createElement('div', {
         'data-testid': testId,
+        'data-show-toolbar': String(showToolbar),
+        'data-use-rich-text-editor': String(showToolbar),
         className,
         onClick,
         'role': 'button',

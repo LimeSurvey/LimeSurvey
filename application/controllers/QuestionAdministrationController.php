@@ -89,6 +89,7 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         SettingsUser::setUserSetting('last_question', $qid);
+        SettingsUser::setUserSetting('last_question_gid', $question->gid, null, 'Survey', $question->sid);
 
         // Check update permission to determine view mode
         $hasUpdatePermission = Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update');
@@ -129,6 +130,8 @@ class QuestionAdministrationController extends LSBaseController
 
         $oQuestion = $this->getQuestionObject();
         $oQuestion->sid = $surveyid;
+
+        SettingsUser::setUserSetting('last_question_gid', $oQuestion->gid, null, 'Survey', $surveyid);
 
         $this->aData['showSaveAndNewGroupButton'] = true;
         $this->aData['showSaveAndNewQuestionButton'] = true;
@@ -530,6 +533,8 @@ class QuestionAdministrationController extends LSBaseController
                 $data
             );
 
+            SettingsUser::setUserSetting('last_question_gid', $question->gid, null, 'Survey', $surveyId);
+
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             // only those two values are valid
             if (
@@ -697,6 +702,10 @@ class QuestionAdministrationController extends LSBaseController
     {
         $iQuestionId = (int)$iQuestionId;
         $oQuestion = $this->getQuestionObject($iQuestionId, $type, $gid);
+
+        if (!Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'read')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
 
         $aQuestionInformationObject = $this->getCompiledQuestionData($oQuestion);
         $surveyInfo = $this->getCompiledSurveyInfo($oQuestion);
@@ -2238,18 +2247,20 @@ class QuestionAdministrationController extends LSBaseController
                 for ($scale_id = 0; $scale_id < $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions']; $scale_id++) {
                     $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id] = [];
 
+                    $criteria = new CDbCriteria();
+                    $criteria->condition = 'sid = :sid AND gid = :gid AND parent_qid = :parent_qid AND scale_id = :scale_id AND questionl10ns.language = :language';
+                    $criteria->params = [
+                        ':sid'        => $iSurveyID,
+                        ':gid'        => $gid,
+                        ':parent_qid' => $qid,
+                        ':scale_id'   => 0,
+                        ':language'   => $language
+                    ];
+                    $criteria->order = 'question_order ASC';
+
                     $sqresult = Question::model()
                         ->with('questionl10ns')
-                        ->findAll(
-                            'sid = :sid AND gid = :gid AND parent_qid = :parent_qid AND scale_id = :scale_id AND questionl10ns.language =:language ORDER BY question_order ASC',
-                            [
-                                ':sid'        => $iSurveyID,
-                                ':gid'        => $gid,
-                                ':parent_qid' => $qid,
-                                ':scale_id'   => 0,
-                                ':language'   => $language
-                            ]
-                        );
+                        ->findAll($criteria);
 
                     $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id]['sqresult'] = [];
 
@@ -2334,7 +2345,7 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestion = Question::model()->findByPk($iQuestionId);
 
         if (empty($oQuestion)) {
-            $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType, $questionThemeName);
+            $oQuestion = QuestionCreate::create($iSurveyId, $sQuestionType, $questionThemeName);
         }
 
         if ($sQuestionType != null) {

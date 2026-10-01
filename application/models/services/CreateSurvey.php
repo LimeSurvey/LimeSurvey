@@ -197,6 +197,7 @@ class CreateSurvey
         $this->survey->ipaddr = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->ipanonymize = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->refurl = self::STRING_SHORT_VALUE_INHERIT;
+        $this->survey->savequotaexit = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->usecookie = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->emailnotificationto = 'inherit';
         $this->survey->allowregister = self::STRING_SHORT_VALUE_INHERIT;
@@ -207,6 +208,7 @@ class CreateSurvey
         $this->survey->showgroupinfo = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->showqnumcode = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->shownoanswer = self::STRING_SHORT_VALUE_INHERIT;
+        $this->survey->preselectnoanswer = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->showwelcome = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->allowprev =  self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->questionindex = self::INTEGER_VALUE_FOR_INHERIT;

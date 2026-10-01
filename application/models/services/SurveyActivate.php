@@ -66,10 +66,13 @@ class SurveyActivate
                 'ipaddr',
                 'ipanonymize',
                 'refurl',
-                'savetimings'
+                'savetimings',
+                'savequotaexit'
             ];
             foreach ($fields as $field) {
-                $survey->{$field} = $survey->aOptions[$field];
+                if (array_key_exists($field, $survey->aOptions)) {
+                    $survey->{$field} = $survey->aOptions[$field];
+                }
                 $postfieldvalue = $this->app->request->getPost($field, null);
                 if ($postfieldvalue !== null) {
                     $survey->{$field} = $this->app->request->getPost($field, $params[$field] ?? null);
@@ -108,6 +111,9 @@ class SurveyActivate
      */
     public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false): bool
     {
+        if (in_array(\Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
+            $preserveIDs = true;
+        }
         require_once "application/helpers/admin/import_helper.php";
         $deactivatedArchives = getDeactivatedArchives($surveyId);
         $archives = [];

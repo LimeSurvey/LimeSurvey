@@ -68,6 +68,7 @@ export const CodeEditor = ({
   width = '75vw',
   className = 'text-start',
   extensions = htmlExtensions,
+  title = '',
   onChange = (newValue) => {
     document.getElementById(id)?.setAttribute('data-value', newValue)
   },
@@ -77,15 +78,18 @@ export const CodeEditor = ({
   }, [id, value])
 
   return (
-    <CodeMirror
-      id={id}
-      value={value}
-      height={height}
-      width={width}
-      className={className}
-      theme={codeEditorTheme}
-      extensions={extensions}
-      onChange={onChange}
-    />
+    <>
+      {title && <div className="code-editor-title mb-4 mt-2">{title}</div>}
+      <CodeMirror
+        id={id}
+        value={value}
+        height={height}
+        width={width}
+        className={className}
+        theme={codeEditorTheme}
+        extensions={extensions}
+        onChange={onChange}
+      />
+    </>
   )
 }

@@ -24,6 +24,9 @@ class SPSSWriter extends Writer
     protected $headers = array();
     protected $headersSGQA = array();
     protected $aQIDnonumericalAnswers = array();
+    protected $maxStringLength;
+
+    protected $spssfileversion = null;
 
     function __construct($pluginsettings)
     {
@@ -145,6 +148,8 @@ class SPSSWriter extends Writer
                 $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
             } elseif ($aQuestion['varname'] == 'refurl') {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
+            } elseif ($aQuestion['varname'] == 'quota_exit') {
+                $aFieldmap['questions'][$sSGQAkey]['type'] = 'N';
             } elseif ($aQuestion['varname'] == 'lastpage') {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = 'N';
             }

@@ -33,7 +33,7 @@
         Here the list of the css/js files to add to the template package.
         About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
         NOTE: The "add" tag also count as a "replace" tag.
-              Eg: You can't just "add" a file in the extended theme with the same name as a file here. It will always "replace" it. You must use a diffrent file name.
+              Eg: You can't just "add" a file in the extended theme with the same name as a file here. It will always "replace" it. You must use a different file name.
               Eg: Vanilla manifest already has "<add>css/theme.css</add>". So if you use "<add>css/theme.css</add>" in an extended theme, it will replace the vanilla css/theme.css
         NOTE: If an extended theme, if you don't change a file that is defined here, you don't need to add it again.
               Eg: css/ajaxify.css is already added in vanilla. Nor fruity nor bootswatch modify it, so ne need to add / replace it in fruity or bootswatch.
@@ -118,7 +118,7 @@
         </packages>
 
         <!--
-            List of pages/files for tempalte editor
+            List of pages/files for template editor
             When a user select a page, the related files will be offer in the editable files
         -->
         <template_editor>

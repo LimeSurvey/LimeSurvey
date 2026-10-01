@@ -24,6 +24,38 @@ class LSActiveRecord extends CActiveRecord
 
     public $bEncryption = false;
 
+    /** @var array Attribute values as loaded from the database, used to detect modified attributes */
+    private $loadedAttributes = [];
+
+    /**
+     * Keep a copy of the attributes as loaded from the database, to detect later which ones were modified
+     *
+     * @return void
+     */
+    protected function afterFind()
+    {
+        parent::afterFind();
+        $this->loadedAttributes = $this->getAttributes();
+    }
+
+    /**
+     * Whether an attribute was modified compared to the value loaded from the database.
+     * New records, and attributes not loaded from the database, count as modified.
+     *
+     * @param string $name The attribute name
+     * @return boolean
+     */
+    public function isAttributeModifiedFromStored($name)
+    {
+        if ($this->getIsNewRecord()) {
+            return true;
+        }
+        if (!array_key_exists($name, $this->loadedAttributes)) {
+            return true;
+        }
+        return (string) $this->loadedAttributes[$name] !== (string) $this->$name;
+    }
+
     /**
      * Lists the behaviors of this model
      *
@@ -107,15 +139,16 @@ class LSActiveRecord extends CActiveRecord
      * This is a convenience method, that uses the primary key of the model to
      * retrieve the highest value.
      *
-     * @param string $field The field that contains the Id, when null primary key is used if it is a single field
-     * @param boolean $forceRefresh Don't use value from static cache but always requery the database
-     * @return false|int
+     * The value is always queried from the database: a request-level cache keyed by field
+     * name would return stale or wrong values for models sharing a field name (e.g.
+     * SurveyDynamic for different surveys) or after new records were inserted.
+     *
+     * @param string|null $field The field that contains the Id, when null primary key is used if it is a single field
+     * @return false|int|string
      * @throws Exception
      */
-    public function getMaxId($field = null, $forceRefresh = false)
+    public function getMaxId($field = null)
     {
-        static $maxIds = [];
-
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
             if (is_string($primaryKey)) {
@@ -126,17 +159,10 @@ class LSActiveRecord extends CActiveRecord
             }
         }
 
-        if ($forceRefresh || !array_key_exists($field, $maxIds)) {
-            $maxId = $this->dbConnection->createCommand()
-                ->select('MAX(' . $this->dbConnection->quoteColumnName($field) . ')')
-                ->from($this->tableName())
-                ->queryScalar();
-
-            // Save so we can reuse in the same request
-            $maxIds[$field] = $maxId;
-        }
-
-        return $maxIds[$field];
+        return $this->dbConnection->createCommand()
+            ->select('MAX(' . $this->dbConnection->quoteColumnName($field) . ')')
+            ->from($this->tableName())
+            ->queryScalar();
     }
 
     /**
@@ -145,15 +171,16 @@ class LSActiveRecord extends CActiveRecord
      * This is a convenience method, that uses the primary key of the model to
      * retrieve the highest value.
      *
-     * @param string $field The field that contains the Id, when null primary key is used if it is a single field
-     * @param boolean $forceRefresh Don't use value from static cache but always requery the database
-     * @return false|int
+     * The value is always queried from the database: a request-level cache keyed by field
+     * name would return stale or wrong values for models sharing a field name (e.g.
+     * SurveyDynamic for different surveys) or after new records were inserted.
+     *
+     * @param string|null $field The field that contains the Id, when null primary key is used if it is a single field
+     * @return false|int|string
      * @throws Exception
      */
-    public function getMinId($field = null, $forceRefresh = false)
+    public function getMinId($field = null)
     {
-        static $minIds = [];
-
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
             if (is_string($primaryKey)) {
@@ -164,17 +191,10 @@ class LSActiveRecord extends CActiveRecord
             }
         }
 
-        if ($forceRefresh || !array_key_exists($field, $minIds)) {
-            $minId = $this->dbConnection->createCommand()
-                ->select('MIN(' . $this->dbConnection->quoteColumnName($field) . ')')
-                ->from($this->tableName())
-                ->queryScalar();
-
-            // Save so we can reuse in the same request
-            $minIds[$field] = $minId;
-        }
-
-        return $minIds[$field];
+        return $this->dbConnection->createCommand()
+            ->select('MIN(' . $this->dbConnection->quoteColumnName($field) . ')')
+            ->from($this->tableName())
+            ->queryScalar();
     }
 
     /**
@@ -231,7 +251,6 @@ class LSActiveRecord extends CActiveRecord
                 }
             }
         }
-
         return parent::updateAll($attributes, $condition, $params);
     }
 
@@ -313,7 +332,7 @@ class LSActiveRecord extends CActiveRecord
     }
 
     /**
-     * Attribute values are encrypted ( if needed )to be used for searching purposes
+     * Attribute values are encrypted ( if needed ) to be used for searching purposes
      * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
      * An attribute value can be an array which will be used to generate an IN condition.
      * @return array attributes array with encrypted attribute values is returned
@@ -440,13 +459,17 @@ class LSActiveRecord extends CActiveRecord
 
 
     /**
-     * Encrypt values before saving to the database
+     * Saves the current record with encrypt values before saving to the database
+     * @see CActiveRecord->save
+     * @param boolean $runValidation whether to perform validation before saving the record.
+     * @param array $attributes list of attributes that need to be saved. Defaults to null for all attributes.
+     * @return boolean whether the saving succeeds
      */
-    public function encryptSave($runValidation = false)
+    public function encryptSave($runValidation = true, $attributes = null)
     {
         // run validation on attribute values before encryption take place, it is impossible to validate encrypted values
         if ($runValidation) {
-            if (!$this->validate()) {
+            if (!$this->validate($attributes)) {
                 return false;
             }
         }
@@ -454,37 +477,24 @@ class LSActiveRecord extends CActiveRecord
         // encrypt attributes
         $this->decryptEncryptAttributes('encrypt');
         // call save() method  without validation, validation is already done ( if needed )
-        return $this->save(false);
+        return $this->save(false, $attributes);
     }
 
     /**
      * Encrypt/decrypt values
+     * @param string $action 'decrypt' or 'encrypt' (or other function)
+     * @return void
      */
     public function decryptEncryptAttributes($action = 'decrypt')
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
 
-        $class = get_class($this);
-        // TODO: Use OOP polymorphism instead of switching on class names.
-        if ($class === 'ParticipantAttribute') {
-            $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(["select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'"]), 'attribute_id', '');
-            if (array_key_exists($this->attribute_id, $aParticipantAttributes)) {
-                $this->value = $sodium->$action($this->value);
-            }
-        } else {
-            $attributes = $this->encryptAttributeValues($this->attributes, true, false);
-            $LEM = LimeExpressionManager::singleton();
-            $updatedValues = $LEM->getUpdatedValues();
-            foreach ($attributes as $key => $attribute) {
-                if ($action === 'decrypt' && array_key_exists($key, $updatedValues)) {
-                    continue;
-                }
-                $this->$key = $sodium->$action($attribute);
-            }
+        $attributes = $this->encryptAttributeValues($this->getAttributes(), true, false);
+        foreach ($attributes as $key => $attribute) {
+            $this->$key = $sodium->$action($attribute);
         }
     }
-
     /**
      * Function to show encryption symbol in gridview attribute header if value ois encrypted
      * @param int $surveyId

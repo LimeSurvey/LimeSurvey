@@ -120,8 +120,8 @@
         <div class="mb-3">
             <label class="form-label" for="sendingrate"><?php eT("Email sending rate:"); ?></label>
             <div>
-                <?php echo CHtml::numberField("sendingrate", Yii::app()->getConfig('sendingrate'), array('class' => 'form-control', 'size' => 5, 'min' => 1)); ?>
-                <span class="hint"><?php eT("Number of seconds to wait until the next email batch is sent."); ?></span>
+                <?php echo CHtml::numberField("sendingrate", Yii::app()->getConfig('sendingrate'), array('class' => 'form-control', 'size' => 5, 'min' => 1, 'id' => 'sendingrate', 'aria-describedby' => 'sendingrate-hint')); ?>
+                <span class="hint" id="sendingrate-hint"><?php eT("Number of seconds to wait until the next email batch is sent."); ?></span>
             </div>
         </div>
         <!-- Test email -->

@@ -23,6 +23,12 @@ class ExtensionConfig
     public $xml;
 
     /**
+     * Per-request cache used by loadFromFileCached(), keyed by file path.
+     * @var array<string, ExtensionConfig>
+     */
+    private static $loadedConfigs = [];
+
+    /**
      *
      */
     public function __construct(SimpleXMLElement $xml)
@@ -153,16 +159,42 @@ class ExtensionConfig
         if (!file_exists($file)) {
             return null;
         } else {
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(false);
-            }
             $xml = simplexml_load_file(realpath($file));
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
-            }
             $config = new self($xml);
             return $config;
         }
+    }
+
+    /**
+     * Same as loadFromFile(), but keeps the instance for the rest of the request,
+     * so a config.xml that is read for every question is only parsed once.
+     * Only use it for files that are not modified during the request (e.g. not in
+     * the extension installers), and don't modify the returned instance.
+     * Missing files are not cached.
+     *
+     * @param string $file Full file path.
+     * @return ExtensionConfig|null
+     */
+    public static function loadFromFileCached($file)
+    {
+        if (!isset(self::$loadedConfigs[$file])) {
+            $config = self::loadFromFile($file);
+            if ($config === null) {
+                return null;
+            }
+            self::$loadedConfigs[$file] = $config;
+        }
+        return self::$loadedConfigs[$file];
+    }
+
+    /**
+     * Empties the cache used by loadFromFileCached()
+     *
+     * @return void
+     */
+    public static function clearCache()
+    {
+        self::$loadedConfigs = [];
     }
 
     /**
@@ -186,13 +218,7 @@ class ExtensionConfig
         if ($configString === null) {
             throw new Exception('Config file is empty');
         }
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $xml = simplexml_load_string($configString);
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
         return new self($xml);
     }
 

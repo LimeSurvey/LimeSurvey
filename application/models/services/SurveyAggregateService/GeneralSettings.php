@@ -105,6 +105,7 @@ class GeneralSettings
             );
         }
 
+        $this->modelSurvey->resetCache();
         $survey = $this->modelSurvey->findByPk(
             $surveyId
         );
@@ -248,6 +249,10 @@ class GeneralSettings
                 'type' => static::FIELD_TYPE_YN,
                 'canUpdate' => $surveyNotActive
             ],
+            'savequotaexit' => [
+                'type' => static::FIELD_TYPE_YN,
+                'canUpdate' => $surveyNotActive
+            ],
             'publicgraphs' => ['type' => static::FIELD_TYPE_YN],
             'usecookie' => ['type' => static::FIELD_TYPE_YN],
             'allowregister' => ['type' => static::FIELD_TYPE_YN],
@@ -260,6 +265,7 @@ class GeneralSettings
             'showgroupinfo' => [],
             'showqnumcode' => [],
             'shownoanswer' => ['type' => static::FIELD_TYPE_YN],
+            'preselectnoanswer' => ['type' => static::FIELD_TYPE_YN],
             'showwelcome' => ['type' => static::FIELD_TYPE_YN],
             'showsurveypolicynotice' => ['default' => 0],
             'showtokenpolicy' => ['type' => static::FIELD_TYPE_YN],
@@ -295,7 +301,8 @@ class GeneralSettings
             'bounce_email' => [],
             'gsid' => ['default' => 1],
             'format' => [],
-            'template' => []
+            'template' => [],
+            'welcome_image' => []
         ];
     }
 

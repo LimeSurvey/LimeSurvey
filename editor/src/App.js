@@ -58,7 +58,12 @@ function App() {
           persistOptions={persistOptions}
         >
           <I18Provider i18n={i18nInstance}>
-            <RouterProvider router={router} />
+            <RouterProvider
+              router={router}
+              future={{
+                v7_startTransition: true,
+              }}
+            />
           </I18Provider>
           <div className="d-none">
             {process.env.REACT_APP_RELEASE}@{process.env.REACT_APP_COMMIT_HASH}

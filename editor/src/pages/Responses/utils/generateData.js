@@ -10,44 +10,44 @@ import {
   getSubquestionById,
   getSubquestionByProperty,
   isRankingQuestion,
-  RemoveHTMLTagsInString,
+  htmlToPlainText,
+  OTHER_CODE,
 } from 'helpers'
 import { cloneDeep } from 'lodash'
 
 export const generateData = (responses, language, generatedColumns) => {
   const data = []
   const questions = {}
+  const formatDate = (date) =>
+    date ? dayJsHelper(date).format('MM-DD-YYYY HH:mm:ss') : 'N/A'
 
-  responses.map((response, index) => {
-    data.push({})
-    data[index].language = response.language
-    data[index].id = response.id
-    data[index].seed = response.seed
-    data[index].submitDate = response.submitDate
-    data[index].token = response.token
-    data[index].firstName = response.firstName
-    data[index].lastName = response.lastName
-    data[index].email = response.email
-
-    const formatDate = (date) =>
-      date ? dayJsHelper(date).format('MM-DD-YYYY HH:mm:ss') : 'N/A'
-    data[index].dateLastAction = formatDate(response.dateLastAction)
-    data[index].startDate = formatDate(response.startDate)
-    data[index].submitDate = formatDate(response.submitDate)
-
-    data[index].ipAddr = response.ipAddr
-    data[index].refUrl = response.refUrl
-    data[index].completed = response.completed
-      ? 'ri-check-line text-success'
-      : 'ri-close-large-line text-danger'
-
-    data[index].answer = {}
-    data[index].meta = {}
+  responses.forEach((response, index) => {
+    data.push({
+      ...response.timings,
+      language: response.language,
+      id: response.id,
+      seed: response.seed,
+      token: response.token,
+      firstName: response.firstName,
+      lastName: response.lastName,
+      email: response.email,
+      quotaExit: response.quotaExit,
+      quotaExitName: response.quotaExitName,
+      dateLastAction: formatDate(response.dateLastAction),
+      startDate: formatDate(response.startDate),
+      submitDate: formatDate(response.submitDate),
+      ipAddr: response.ipAddr,
+      refUrl: response.refUrl,
+      completed: response.completed
+        ? 'ri-check-line text-success'
+        : 'ri-close-large-line text-danger',
+      answer: {},
+      meta: {},
+    })
 
     Object.entries(response.answers).forEach(([, _answer]) => {
       const answer = cloneDeep(_answer)
       let { value, qid, sqid, actual_aid } = answer
-
       let question =
         questions[qid] ||
         generatedColumns?.find(
@@ -89,37 +89,83 @@ export const generateData = (responses, language, generatedColumns) => {
         isQuestionWithSubquestions(question.questionThemeName)
       const maybeComment =
         !answer.actual_aid && !answer.sqid && answer.key?.includes('comment')
+      const maybeOther =
+        !answer.actual_aid && !answer.sqid && answer.key?.endsWith('other')
 
       answer.aid = actual_aid
+      // When "Other" is selected in single-choice, value is '-oth-' but has no real aid
+      if (!answer.aid && answer.value === OTHER_CODE) {
+        answer.aid = OTHER_CODE
+      }
       const idName = isQuestionWithAnswers(question.questionThemeName)
         ? 'aid'
         : 'sqid'
 
       if (isRankingQuestion(question.questionThemeName)) {
-        questionSubquestion = getSubquestionByProperty(
-          answer.value,
-          'title',
-          question
-        ).subquestion
+        handleRankingQuestionType(
+          answer,
+          value,
+          qid,
+          index,
+          response,
+          cell,
+          question,
+          language
+        )
+        return
       }
-
       if (
         !questionAnswer &&
         !questionSubquestion &&
         !hasAnswersOrSubquestions
       ) {
         cell.push({
-          value: RemoveHTMLTagsInString(value),
+          value: htmlToPlainText(value),
           key: answer.key,
           aid: answer.actual_aid,
           [idName]: answer[idName],
           responseId: response.id,
         })
       } else {
-        if (maybeComment) {
+        if (maybeOther) {
+          if (isQuestionWithAnswers(question.questionThemeName)) {
+            // Single-choice: this is the Other text field ? attach to the '-oth-' cell item.
+            // If no such item exists (e.g. dropdown where main field is blank), promote it.
+            let otherItem = cell.find((c) => c.aid === OTHER_CODE)
+            if (!otherItem) {
+              const candidate = cell.find(
+                (c) => !c.aid && c.value === OTHER_CODE
+              )
+              if (candidate) {
+                candidate.aid = OTHER_CODE
+                otherItem = candidate
+              }
+            }
+            if (otherItem) {
+              otherItem.otherText = { value, key: answer.key }
+              if (value) {
+                otherItem.answerTitle = value
+                otherItem.value = value
+              }
+            }
+          } else {
+            // Multiple-choice: value IS the text the respondent typed; non-empty means checked
+            cell.push({
+              value: value,
+              key: answer.key,
+              aid: null,
+              [idName]: OTHER_CODE,
+              qid: OTHER_CODE,
+              checked: !!value,
+              otherText: { value, key: answer.key },
+              responseId: response.id,
+              questionThemeName: question.questionThemeName,
+            })
+          }
+        } else if (maybeComment) {
           value = !questionAnswer
-            ? RemoveHTMLTagsInString(value)
-            : RemoveHTMLTagsInString(questionAnswer?.l10ns[language]?.answer)
+            ? htmlToPlainText(value)
+            : htmlToPlainText(questionAnswer?.l10ns[language]?.answer)
 
           if (!cell.length) {
             cell.push({
@@ -148,12 +194,10 @@ export const generateData = (responses, language, generatedColumns) => {
             responseId: response.id,
             questionThemeName: question.questionThemeName,
             subquestionTitle:
-              RemoveHTMLTagsInString(
-                questionSubquestion?.l10ns[language]?.question
-              ) || value,
-            answerTitle:
-              RemoveHTMLTagsInString(questionAnswer?.l10ns[language]?.answer) ||
+              htmlToPlainText(questionSubquestion?.l10ns[language]?.question) ||
               value,
+            answerTitle:
+              htmlToPlainText(questionAnswer?.l10ns[language]?.answer) || value,
           })
         }
       }
@@ -206,4 +250,44 @@ const handleFileUploadQuestionType = (
     // eslint-disable-next-line no-console
     console.error('Error parsing file upload value:', error)
   }
+}
+
+const handleRankingQuestionType = (
+  answer,
+  value,
+  qid,
+  index,
+  response,
+  cell,
+  question,
+  language
+) => {
+  let values = []
+  try {
+    const parsed = JSON.parse(value)
+    values = Array.isArray(parsed) ? parsed : []
+  } catch (error) {
+    //
+  }
+
+  values.forEach((subquestionTitle) => {
+    const questionSubquestion = getSubquestionByProperty(
+      subquestionTitle,
+      'title',
+      question
+    ).subquestion
+
+    cell.push({
+      value: subquestionTitle,
+      key: answer.key,
+      aid: answer.actual_aid,
+      qid: questionSubquestion?.qid ?? '',
+      checked: subquestionTitle ? true : false,
+      responseId: response.id,
+      questionThemeName: question.questionThemeName,
+      subquestionTitle:
+        htmlToPlainText(questionSubquestion?.l10ns[language]?.question) ||
+        subquestionTitle,
+    })
+  })
 }

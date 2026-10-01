@@ -1,48 +1,49 @@
-$aubergine             : #25003E; // background
-$zucchini              : #003E24; // background
-$focus                 : #3BFFB7; // background
-$grape                 : #8146F6; // background secondary
-$grape-light           : #D3C5FA; // background secondary
-$litschi               : #FF9AA2; // background secondary
-$blueberry             : #A3C8FF; // background passive
-$orange                : #FFBA68; // tertiary
-$banana                : #FFE872; // tertiary
-$apple                 : #B2FF8E; // tertiary
-$success               : #4DD753; // success
-$warning               : #FFE046; // warning
-$error                 : #FF515F; // danger/error
-$lime-green            : #7FF409; // links on dark
-$action                : #4200FF; // links on light
-$active-green          : #14AE5C; // buttons & links
-$elevation-shadow      : rgba(66, 0, 255, 0.2); // LSD/Elevation/Shadow
-$elevation-shadow-soft : rgba(0, 0, 0, 0.2); // LSD/Elevation/ShadowSoft
-$body-background       : #fff;
+$aubergine: #25003e; // background
+$zucchini: #003e24; // background
+$focus: #3bffb7; // background
+$grape: #8146f6; // background secondary
+$grape-light: #d3c5fa; // background secondary
+$litschi: #ff9aa2; // background secondary
+$blueberry: #3d67ff; // background passive
+$orange: #ffba68; // tertiary
+$banana: #ffe872; // tertiary
+$apple: #b2ff8e; // tertiary
+$success: #4dd753; // success
+$warning: #ffe046; // warning
+$error: #ff515f; // danger/error
+$lime-green: #7ff409; // links on dark
+$action: #4200ff; // links on light
+$active-green: #0f8545; // buttons & links
+$elevation-shadow: rgba(66, 0, 255, 0.2); // LSD/Elevation/Shadow
+$elevation-shadow-soft: rgba(0, 0, 0, 0.2); // LSD/Elevation/ShadowSoft
+$body-background: #fff;
 
-$white                 : #fff;
-$black                 : #000;
-$black60               : #666666; // rgba(0, 0, 0, 0.6);
-$black75               : rgba(0, 0, 0, 0.75);
-$grape75               : rgba(123, 97, 255, 0.4);
-$heading-title-color   : #152536;
+$white: #fff;
+$black: #000;
+$black60: #666666; // rgba(0, 0, 0, 0.6);
+$black75: rgba(0, 0, 0, 0.75);
+$grape75: rgba(123, 97, 255, 0.4);
+$grape90: rgba(123, 97, 255, 0.9);
+$heading-title-color: #152536;
 
-$g-900                 : #1E1E1E;
-$g-800                 : #333641;
-$g-700                 : #6E748C;
-$g-600                 : #9094A7;
-$g-400                 : #D3D5DA;
-$g-300                 : #DDDEE8;
-$g-200                 : #EEEFF7;
-$g-100                 : #F9F9FB;
+$g-900: #1e1e1e;
+$g-800: #333641;
+$g-700: #6e748c;
+$g-600: #9094a7;
+$g-400: #d3d5da;
+$g-300: #dddee8;
+$g-200: #eeeff7;
+$g-100: #f9f9fb;
 
-$theme-colors          : (
-        "primary": $base-color,
-        "secondary": $g-600,
-        "success": $success,
-        "danger": $error,
-        "warning": $warning,
-        "info": $grape,
-        "light": $g-200,
-        "dark": $g-900,
-        "black60": $black60,
-        "cancel": $g-600, // replace with secondary
+$theme-colors: (
+  "primary": $base-color,
+  "secondary": $g-600,
+  "success": $success,
+  "danger": $error,
+  "warning": $warning,
+  "info": $grape,
+  "light": $g-200,
+  "dark": $g-900,
+  "black60": $black60,
+  "cancel": $g-600, // replace with secondary
 );

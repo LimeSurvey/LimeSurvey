@@ -1,4 +1,9 @@
-import { Input, Select, ToggleButtons } from 'components/UIComponents'
+import {
+  ExpressionScriptEditor,
+  Input,
+  Select,
+  ToggleButtons,
+} from 'components/UIComponents'
 import { getCommentedCheckboxOptions, getOnOffOptions } from 'helpers/options'
 const commentedCheckboxOptions = getCommentedCheckboxOptions()
 export const getLogicAttributes = () => ({
@@ -42,14 +47,12 @@ export const getLogicAttributes = () => ({
     },
   },
   EQUATION: {
-    component: Input,
+    component: ExpressionScriptEditor,
     attributePath: 'attributes.equation',
     props: {
       labelText: t('Equation'),
-      className: 'textarea',
-      type: 'textarea',
-      role: 'textarea',
-      rows: 3,
+      height: '140px',
+      ariaLabel: t('Equation'),
     },
   },
   ARRAY_FILTER_EXCLUSION: {
@@ -168,6 +171,7 @@ export const getLogicAttributes = () => ({
   MAXIMUM_COLUMNS_FOR_ANSWERS: {
     component: Input,
     attributePath: 'attributes.max_subquestions',
+    disableWhenActive: true,
     props: {
       labelText: t('Maximum columns for answers'),
       dataTestId: 'maximum-columns-for-answers',
