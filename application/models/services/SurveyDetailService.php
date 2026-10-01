@@ -9,6 +9,9 @@ class SurveyDetailService
     private const CACHE_KEY_PREFIX = 'survey_detail_';
     private const CACHE_DURATION = 3600; // Cache duration in seconds (1 hour)
 
+    /** @var array<int, string> Last lastmodified value written per survey id in this request */
+    private static $lastTouched = [];
+
     /**
      * Gets the survey cache if exists and false otherwise
      * @param int $surveyId
@@ -91,5 +94,22 @@ class SurveyDetailService
         $survey->lastmodified = gmdate('Y-m-d H:i:s');
         $survey->save();
         $this->removeCache($survey->sid);
+    }
+
+    /**
+     * Updates survey's lastmodified timestamp & clears details cache without loading or saving the survey model.
+     * Repeated calls for the same survey within the same second (e.g. during an import) are skipped.
+     * @param int $surveyId
+     * @return void
+     */
+    public function touchSurveyLastModified(int $surveyId)
+    {
+        $now = gmdate('Y-m-d H:i:s');
+        if ((self::$lastTouched[$surveyId] ?? null) === $now) {
+            return;
+        }
+        Survey::model()->updateByPk($surveyId, ['lastmodified' => $now]);
+        $this->removeCache($surveyId);
+        self::$lastTouched[$surveyId] = $now;
     }
 }
