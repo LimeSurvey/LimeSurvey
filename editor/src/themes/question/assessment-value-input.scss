@@ -12,7 +12,8 @@
   height: 28px;
   flex-shrink: 0;
   &:focus-visible {
-    outline-color: $grape;
+    outline: 2px solid $grape;
+    outline-offset: -2px;
   }
 }
 
@@ -36,9 +37,11 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
+  margin-bottom: 16px;
 }
 
 .assessment-value-badge {
+  cursor: pointer;
   background-color: $white;
   border: 1px solid $grape;
   color: $grape;
@@ -49,4 +52,13 @@
   line-height: $line-height-16;
   letter-spacing: 0.036px;
   padding: 4px 8px;
+  &:hover {
+    background-color: $g-200;
+    // $grape on $g-200 is only 4.43:1; darkened text keeps WCAG AA (5.39:1).
+    color: darken($grape, 5%);
+  }
+  &:focus-visible {
+    outline: 2px solid $grape;
+    outline-offset: -2px;
+  }
 }

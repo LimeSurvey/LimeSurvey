@@ -284,6 +284,9 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
         questionTypeInfo.type
       ),
       languages: survey.languages,
+      showAssessmentValue:
+        survey.assessments === 'Y' &&
+        questionWithAnswersTheme.includes(questionThemeName),
     })
 
     handleAddQuestion(newQuestion)

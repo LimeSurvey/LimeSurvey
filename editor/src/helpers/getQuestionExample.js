@@ -19,6 +19,7 @@ export const getQuestionExample = ({
   relevance = '1',
   languages = [],
   scenarios = [],
+  showAssessmentValue = false,
 }) => {
   qid = qid ?? `${NEW_OBJECT_ID_PREFIX}${RandomNumber()}`
 
@@ -54,5 +55,6 @@ export const getQuestionExample = ({
     answers,
     subquestions,
     scenarios,
+    showAssessmentValue,
   }
 }

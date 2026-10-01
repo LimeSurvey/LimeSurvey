@@ -40,6 +40,22 @@
     .array-question-code:not(:empty) {
       padding-left: 30px;
     }
+    .array-question-code,
+    .array-answer-metadata {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      .assessment-value-container {
+        margin-left: 0;
+      }
+    }
+    .array-row-assessment-value {
+      display: flex;
+      margin-left: auto;
+      padding-left: 16px;
+    }
     &:hover {
       .remove-item-button {
         &.remove-item-button {

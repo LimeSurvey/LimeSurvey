@@ -175,6 +175,20 @@
   z-index: 10;
 }
 
+.question-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: $border-radius-xs;
+
+  &:focus-visible {
+    outline: 2px solid $g-700;
+    outline-offset: -2px;
+  }
+}
+
 .question-code {
   width: 79px;
 }

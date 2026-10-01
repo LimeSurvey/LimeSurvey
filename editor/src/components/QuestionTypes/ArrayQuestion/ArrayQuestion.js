@@ -31,6 +31,7 @@ export const ArrayQuestion = ({
   handleChildDelete,
   handleOnChildDragEnd,
   handleChildCodeUpdate,
+  handleChildAssessmentValueUpdate,
   isTitleFocused,
 }) => {
   const { addToBuffer } = useBuffer()
@@ -151,7 +152,7 @@ export const ArrayQuestion = ({
   }
 
   return (
-    <>
+    <div>
       <div className="array-question d-flex gap-5" data-testid="array-question">
         <div className="d-flex">
           <div>
@@ -176,6 +177,12 @@ export const ArrayQuestion = ({
               headersHeight={headersHeight}
               showNoAnswer={showNoAnswer && isArrayPointChoice}
               handleChildCodeUpdate={handleChildCodeUpdate}
+              handleChildAssessmentValueUpdate={
+                handleChildAssessmentValueUpdate
+              }
+              showAssessmentValue={
+                isFocused && question.showAssessmentValue
+              }
               istitleFocused={isTitleFocused}
             />
             <ArrayRows
@@ -201,6 +208,12 @@ export const ArrayQuestion = ({
               setVerticalEntitiesInfo={setVerticalEntitiesInfo}
               showNoAnswer={showNoAnswer}
               handleChildCodeUpdate={handleChildCodeUpdate}
+              handleChildAssessmentValueUpdate={
+                handleChildAssessmentValueUpdate
+              }
+              showAssessmentValue={
+                isFocused && question.showAssessmentValue
+              }
               istitleFocused={isTitleFocused}
             />
           </div>
@@ -258,6 +271,12 @@ export const ArrayQuestion = ({
                 headersHeight={headersHeight}
                 showNoAnswer={showNoAnswer}
                 handleChildLUpdate={handleChildLUpdate}
+                handleChildAssessmentValueUpdate={
+                  handleChildAssessmentValueUpdate
+                }
+                showAssessmentValue={
+                  isFocused && question.showAssessmentValue
+                }
                 istitleFocused={isTitleFocused}
               />
               <ArrayRows
@@ -335,6 +354,6 @@ export const ArrayQuestion = ({
           </Button>
         </TooltipContainer>
       </div>
-    </>
+    </div>
   )
 }

@@ -1,5 +1,8 @@
 import classNames from 'classnames'
 import { Form } from 'react-bootstrap'
+import { format } from 'util'
+
+const getAccessibleLabel = (code) => format(t('Subquestion code %s'), code)
 
 export const SubquestionCodeErrorMessage = ({ errorMessage, maxWidth }) => (
   <div className={'text-wrap d-block '} style={{ maxWidth: maxWidth }}>
@@ -29,6 +32,8 @@ export const SubquestionCodeInput = ({
         style={isColumnTitle ? { marginLeft: '0px' } : undefined}
         className="question-code-tag"
         type="text"
+        autoComplete="off"
+        aria-label={getAccessibleLabel(code)}
         value={code}
         onChange={onChange}
       />

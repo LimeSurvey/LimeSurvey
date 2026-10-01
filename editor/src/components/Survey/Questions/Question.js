@@ -22,6 +22,7 @@ import { QuestionBody } from './QuestionBody'
 import { QuestionFooter } from './QuestionFooter'
 import { getQuestionTypeInfo } from '../../QuestionTypes'
 import { QuestionContainer } from './QuestionContainer'
+import { AssessmentValueBadge } from '../../QuestionTypes/AssessmentValueBadge'
 
 const isInTestMode = process.env.STORYBOOK_DEV === 'true'
 
@@ -165,6 +166,12 @@ export const Question = ({
                   setIsTitleFocused={setIsTitleFocused}
                 />
               </div>
+              {focused.qid === question.qid &&
+                question.showAssessmentValue && (
+                  <div className="assessment-value-label-row">
+                    <AssessmentValueBadge />
+                  </div>
+                )}
               <div className="question-body-container">
                 <QuestionBody
                   language={language}

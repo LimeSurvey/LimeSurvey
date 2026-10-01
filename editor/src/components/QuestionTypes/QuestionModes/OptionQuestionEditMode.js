@@ -1,6 +1,5 @@
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import { useRef } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
@@ -14,7 +13,6 @@ import { getQuestionTypeInfo } from '../getQuestionTypeInfo'
 import { singleChoiceThemes } from '../singleChoiceThemes'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
 import { AssessmentValueInput } from '../AssessmentValueInput'
-import { AssessmentValueBadge } from '../AssessmentValueBadge'
 
 const imageThemeComponents = [
   getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
@@ -38,15 +36,6 @@ export const OptionQuestionEditMode = ({
   const { survey } = useSurvey(surveyId)
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
   const isImageTheme = imageThemeComponents.includes(questionThemeName)
-
-  const childrenContainerRef = useRef(null)
-
-  const handleBadgeClick = () => {
-    const firstInput = childrenContainerRef.current?.querySelector(
-      'input.assessment-value-input'
-    )
-    firstInput?.focus()
-  }
 
   const childrenInfo = {
     idKey: isSingleChoiceTheme ? 'aid' : 'qid',
@@ -75,12 +64,7 @@ export const OptionQuestionEditMode = ({
   const UiComponentToRender = isImageTheme ? ImageChoice : ContentEditor
 
   return (
-    <div ref={childrenContainerRef}>
-      {showAssessmentValue && (
-        <div className="assessment-value-label-row">
-          <AssessmentValueBadge onClick={handleBadgeClick} />
-        </div>
-      )}
+    <div>
       <DragAndDrop
         className="children-parent edit-mode"
         onDragEnd={handleOnDragEnd}
@@ -123,7 +107,10 @@ export const OptionQuestionEditMode = ({
                       )}
                     />
                   </div>
-                  <div style={{ height: 28 }} {...provided.dragHandleProps}>
+                  <div
+                    className="question-drag-handle"
+                    {...provided.dragHandleProps}
+                  >
                     <DragIcon
                       className={classNames('text-secondary fill-current', {
                         'd-none': !isFocused,
@@ -186,6 +173,7 @@ export const OptionQuestionEditMode = ({
                   {showAssessmentValue && (
                     <AssessmentValueInput
                       assessmentValue={child.assessmentValue}
+                      answerCode={child.code}
                       onChange={(e) =>
                         handleChildAssessmentValueUpdate({
                           newAssessmentValue: e.target.value,

@@ -2,6 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 import { SubquestionCodeInput } from '../../subquestionCodeComponents'
+import { AssessmentValueInput } from '../../AssessmentValueInput'
 import { DragIcon, CloseCircleFillIcon } from 'components/icons'
 import { useAppState, useSurvey } from 'hooks'
 import {
@@ -37,6 +38,9 @@ export const ArrayRow = ({
   isNoAnswer = false,
   code,
   scaleId,
+  showAssessmentValue = false,
+  assessmentValue,
+  handleAssessmentValueUpdate = () => {},
   isTitleFocused,
   id = '',
 }) => {
@@ -200,6 +204,15 @@ export const ArrayRow = ({
               </React.Fragment>
             ))}
         </div>
+        {showAssessmentValue && !isNoAnswer && (
+          <div className="array-row-assessment-value">
+            <AssessmentValueInput
+              assessmentValue={assessmentValue}
+              answerCode={code}
+              onChange={(e) => handleAssessmentValueUpdate(e.target.value)}
+            />
+          </div>
+        )}
       </div>
     </div>
   )
