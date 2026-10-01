@@ -97,6 +97,10 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'refurl',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
+            'saveQuotaExit' => [
+                'key' => 'savequotaexit',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'dateCreated' => [
                 'key' => 'datecreated',
                 'date',
@@ -188,6 +192,10 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'shownoanswer',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
+            'preselectNoAnswer' => [
+                'key' => 'preselectnoanswer',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'showQNumCode' => 'showqnumcode',
             'bounceTime' => [
                 'key' => 'bouncetime',
@@ -244,6 +252,7 @@ class TransformerInputSurvey extends Transformer
             'code' => [
                 'key' => 'code'
             ],
+            'welcomeImage' => ['key' => 'welcome_image', 'json' => true]
         ]);
     }
 

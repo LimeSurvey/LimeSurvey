@@ -48,7 +48,7 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
                 [
                     'id' => 'usergroup-members-grid',
                     'dataProvider' => $dataProvider,
-                    'caption' => gT('Group members'),
+                    'lsCaption' => gT('Group members'),
                     'filter' => $model,
                     'ajaxType'        => 'POST',
                     'emptyText' => gT('No user group members found.'),
@@ -58,18 +58,7 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
                         'addableUsers' => $addableUsers,
                         'ugid' => $ugid
                     ], true),
-                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $dataProvider->pagination->getPageSize(),
-                            App()->params['pageSizeOptions'],
-                            [
-                                    'class' => 'changePageSize form-select',
-                                    'style' => 'display: inline; width: auto'
-                                ]
-                        )
-                    ),
+                    'lsPageSizeCurrentValue' => $dataProvider->pagination->getPageSize(),
                     'columns' => [
                         array(
                             'header'      => gT('Username'),

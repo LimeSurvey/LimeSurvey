@@ -36,6 +36,61 @@ $optionsQuestionIndex = array(
 if ($bShowInherited) {
     $optionsQuestionIndex['-1'] = $oSurveyOptions->questionindex . " ᴵ";
 }
+
+$sEffectiveShowNoAnswer = isset($oSurvey->oOptions->shownoanswer)
+    ? $oSurvey->oOptions->shownoanswer
+    : $oSurvey->shownoanswer;
+$bDisableNoAnswerPreselection = $sEffectiveShowNoAnswer !== 'Y';
+$mInheritedShowNoAnswer = $oSurvey->shownoanswer === 'I'
+    ? $sEffectiveShowNoAnswer === 'Y'
+    : null;
+
+App()->getClientScript()->registerScript(
+    'toggle-no-answer-preselection',
+    "
+    (function () {
+        var inheritedShowNoAnswer = " . CJavaScript::encode($mInheritedShowNoAnswer) . ";
+        var showNoAnswerInputs = document.querySelectorAll('input[name=\"shownoanswer\"]');
+        var preselectInputs = document.querySelectorAll('#preselectnoanswer input[name=\"preselectnoanswer\"]');
+        var preservedValue = document.getElementById('preselectnoanswer-disabled-value');
+        var preselectGroup = document.getElementById('preselectnoanswer');
+        var disabledMessage = " . CJavaScript::encode(gT('Enable “No answer” to configure this setting.')) . ";
+
+        function updateNoAnswerPreselectionState() {
+            var selectedShowNoAnswer = document.querySelector('input[name=\"shownoanswer\"]:checked');
+            var showNoAnswer = selectedShowNoAnswer && (
+                selectedShowNoAnswer.value === 'Y'
+                || (selectedShowNoAnswer.value === 'I' && inheritedShowNoAnswer !== false)
+            );
+            var selectedPreselection = document.querySelector(
+                '#preselectnoanswer input[name=\"preselectnoanswer\"]:checked'
+            );
+
+            preselectInputs.forEach(function (input) {
+                input.disabled = !showNoAnswer;
+            });
+
+            if (preservedValue) {
+                preservedValue.disabled = Boolean(showNoAnswer);
+                if (selectedPreselection) {
+                    preservedValue.value = selectedPreselection.value;
+                }
+            }
+
+            if (preselectGroup) {
+                preselectGroup.setAttribute('aria-disabled', String(!showNoAnswer));
+                preselectGroup.setAttribute('title', showNoAnswer ? '' : disabledMessage);
+            }
+        }
+
+        showNoAnswerInputs.forEach(function (input) {
+            input.addEventListener('change', updateNoAnswerPreselectionState);
+        });
+        updateNoAnswerPreselectionState();
+    }());
+    ",
+    LSYii_ClientScript::POS_READY
+);
 ?>
 
 <!-- Presentation panel -->
@@ -60,6 +115,40 @@ if ($bShowInherited) {
                         )
                     );
                                                                 ?>
+                </div>
+            </div>
+
+            <!-- Preselect "No answer" -->
+            <div class="mb-3">
+                <label class="form-label" for="preselectnoanswer"><?php eT('... “No answer” preselected'); ?></label>
+                <div>
+                    <?php $this->widget(
+                        'ext.ButtonGroupWidget.ButtonGroupWidget',
+                        array(
+                            'name' => 'preselectnoanswer',
+                            'checkedOption' => $oSurvey->preselectnoanswer,
+                            'ariaLabel' => gT('No answer preselected'),
+                            'selectOptions' => ($bShowInherited) ?
+                                array_merge(
+                                    $optionsOnOff,
+                                    array('I' => $oSurveyOptions->preselectnoanswer . " ᴵ")
+                                ) : $optionsOnOff,
+                            'htmlOptions' => array(
+                                'disabled' => $bDisableNoAnswerPreselection,
+                                'title' => $bDisableNoAnswerPreselection
+                                    ? gT('Enable “No answer” to configure this setting.')
+                                    : '',
+                            )
+                        )
+                    ); ?>
+                    <?= CHtml::hiddenField(
+                        'preselectnoanswer',
+                        $oSurvey->preselectnoanswer,
+                        array(
+                            'id' => 'preselectnoanswer-disabled-value',
+                            'disabled' => !$bDisableNoAnswerPreselection,
+                        )
+                    ) ?>
                 </div>
             </div>
 

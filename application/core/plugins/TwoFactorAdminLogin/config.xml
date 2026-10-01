@@ -19,7 +19,7 @@
         <version>4.0</version>
  	    <version>3.0</version>
     </compatibility>
-    <updaters>
+    <updaters disabled="disabled">
         <updater>
             <stable>1</stable>
             <type>rest</type>

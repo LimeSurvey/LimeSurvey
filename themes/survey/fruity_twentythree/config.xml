@@ -283,6 +283,10 @@
                     <file type="view" role="subview">./subviews/header/nav_bar.twig</file>
                     <file type="view" role="subview">./subviews/header/progress_bar.twig</file>
                     <file type="view" role="subview">./subviews/messages/welcome.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome_subviews/welcome_content.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome_subviews/welcome_image_container.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome_subviews/welcome_image.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome_subviews/welcome_questioncount.twig</file>
                     <file type="view" role="subview">./subviews/messages/warnings.twig</file>
                     <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
@@ -471,6 +475,7 @@
                     <file type="view" role="subview">./subviews/navigation/language_changer.twig</file>
                     <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
                     <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/navigator_next_submit_button.twig</file>
                     <file type="view" role="subview">./subviews/navigation/navigator_complement.twig</file>
                     <file type="view" role="subview">./subviews/navigation/clearall_buttons.twig</file>
                     <file type="view" role="subview">./subviews/navigation/save_buttons.twig</file>

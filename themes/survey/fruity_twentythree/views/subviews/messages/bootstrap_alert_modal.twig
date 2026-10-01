@@ -41,12 +41,12 @@
             </div>
             {% if(aSurveyInfo.mandNonSoft == false and aSurveyInfo.mandSoft)%}
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
-                <a id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterlink }}" data-movenext="{{ aSurveyInfo.aNavigator.aMoveNext.value }}">{{ gT("Continue without answering") }}</a>
-                <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Answer question") }}</a>
+                <button type="button" id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterlink }}" data-movenext="{{ aSurveyInfo.aNavigator.aMoveNext.value }}">{{ gT("Continue without answering") }}</button>
+                <button type="button" data-bs-dismiss="modal" class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Answer question") }}</button>
             </div>
             {% else %}
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
-                <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Close") }}</a>
+                <button type="button" data-bs-dismiss="modal" class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Close") }}</button>
             </div>
             {% endif %}
         </div>

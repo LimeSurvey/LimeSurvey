@@ -18,13 +18,13 @@ export const PrivacyPolicyButtons = ({
     },
     {
       value: 2,
-      label: t('Pop-Up'),
+      label: t('Popup/Collapsible'),
       Icon: PrivacyMandatoryPopUpIcon,
       testId: 'popup-privacy-btn',
     },
     {
       value: 0,
-      label: t('No'),
+      label: t('Off'),
       Icon: PrivacyMandatoryNoIcon,
       testId: 'no-privacy-btn',
     },

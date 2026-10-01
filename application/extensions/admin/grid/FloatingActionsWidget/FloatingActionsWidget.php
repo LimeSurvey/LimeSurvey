@@ -75,7 +75,7 @@ class FloatingActionsWidget extends CWidget
 
         // 3. Register the widget JavaScript
         Yii::app()->getClientScript()->registerScriptFile(
-            Yii::app()->getConfig('extensionsurl') . 'admin/grid/FloatingActionsWidget/assets/floatingActions.js',
+            Yii::app()->getAssetManager()->publish(dirname(__FILE__) . '/assets/floatingActions.js'),
             CClientScript::POS_END
         );
 

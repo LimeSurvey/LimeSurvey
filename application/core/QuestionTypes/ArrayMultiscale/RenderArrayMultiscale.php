@@ -193,8 +193,15 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
             $aData['labels0'] = $this->aLabels[0];
             $aData['labels1'] = $this->aLabels[1];
-            $aData['aSubQuestions'][$i]['showNoAnswer0'] = ($sActualAnswer0 != '' && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER);
-            $aData['aSubQuestions'][$i]['showNoAnswer1'] = ($sActualAnswer1 != '' && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER);
+            $showNoAnswer = (
+                $this->oQuestion->mandatory != 'Y'
+                && $this->oQuestion->mandatory != 'S'
+                && SHOW_NO_ANSWER
+            );
+            $aData['aSubQuestions'][$i]['showNoAnswer0'] = $showNoAnswer
+                && ($sActualAnswer0 !== '' || PRESELECT_NO_ANSWER);
+            $aData['aSubQuestions'][$i]['showNoAnswer1'] = $showNoAnswer
+                && ($sActualAnswer1 !== '' || PRESELECT_NO_ANSWER);
 
             $this->inputnames[] = $myfname0;
             $this->inputnames[] = $myfname1;
@@ -301,7 +308,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                         // If value is empty, notset should be checked.
                         // string "0" should be considered as valid answer,
                         // so notset should not be checked in that case.
-                        if ($fname0value !== '0' && empty($fname0value)) {
+                        if (PRESELECT_NO_ANSWER && $fname0value !== '0' && empty($fname0value)) {
                             //$answer .= CHECKED;
                             $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                         } else {
@@ -329,7 +336,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                     // If value is empty, notset should be checked.
                     // string "0" should be considered as valid answer,
                     // so notset should not be checked in that case.
-                    if ($fname1value !== '0' && empty($fname1value)) {
+                    if (PRESELECT_NO_ANSWER && $fname1value !== '0' && empty($fname1value)) {
                         #$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname1_notset'] = CHECKED;
                     } else {
@@ -340,7 +347,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                     // If value is empty, notset should be checked.
                     // string "0" should be considered as valid answer,
                     // so notset should not be checked in that case.
-                    if ($fname0value !== '0' && empty($fname0value)) {
+                    if (PRESELECT_NO_ANSWER && $fname0value !== '0' && empty($fname0value)) {
                         //$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                     } else {

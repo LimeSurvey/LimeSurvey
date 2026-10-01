@@ -66,6 +66,17 @@ export const getNotificationsDataSettingsBlocks = () => ({
           noPermissionDisabled: true,
         },
       },
+      SAVE_QUOTA_EXIT: {
+        keyPath: 'saveQuotaExit',
+        props: {
+          id: 'saveQuotaExit',
+          mainText: t('Save quota exit'),
+          childComponent: ToggleButtons,
+          toggleOptions: getOnOffOptions(ONOFF_BOOLEAN),
+          activeDisabled: true,
+          noPermissionDisabled: true,
+        },
+      },
       ASSESSMENTS: {
         keyPath: 'assessments',
         props: {

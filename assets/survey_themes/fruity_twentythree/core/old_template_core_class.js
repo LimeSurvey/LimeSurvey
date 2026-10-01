@@ -6,7 +6,6 @@ import {
     updateLineClass,
     updateRepeatHeading,
     manageIndex,
-    activateLanguageChanger,
     activateActionLink,
     confirmSurveyDialog,
     activateConfirmButton,
@@ -58,7 +57,7 @@ export var TemplateCoreClass = function () {
         /* confirmSurveyDialog @see application/core/package/limesurvey */
         confirmSurveyDialog: function (text, title, submits) {
             $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title);
-            $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" + "<div class='btn-group btn-group-justified' role='group'><a class='btn btn-warning btn-confirm' data-bs-dismiss='modal'>" + LSvar.lang.yes + "</a><a class='btn btn-cancel' data-bs-dismiss='modal'>" + LSvar.lang.no + "</a></div>");
+            $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" + "<div class='btn-group btn-group-justified' role='group'><button type='button' class='btn btn-warning btn-confirm' data-bs-dismiss='modal'>" + LSvar.lang.yes + "</button><button type='button' class='btn btn-cancel' data-bs-dismiss='modal'>" + LSvar.lang.no + "</button></div>");
             const modal = new bootstrap.Modal(document.getElementById('bootstrap-alert-box-modal'), {})
             modal.show();
             $("#bootstrap-alert-box-modal .btn-confirm").on('click', function () {
@@ -107,11 +106,11 @@ export var TemplateCoreClass = function () {
                 });
 
                 $(this).on('classChangeGood', function () {
-                    /* If user choose hide-tip : leave it */
-                    let parent = $(this).parents('div.hide-tip');
+                    /* If user choose hide-tip : hide it again once no other tip in the same block is still in error */
+                    let parent = $(this).parent('div.ls-questionhelp');
                     parent.removeClass('text-danger');
                     parent.addClass('text-info');
-                    if (parent.hasClass('tip-was-hidden')) {
+                    if (parent.hasClass('tip-was-hidden') && parent.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
                         parent.removeClass('tip-was-hidden').addClass('hide-tip');
                     }
                     let questionContainer = $(this).parents('div.question-container');

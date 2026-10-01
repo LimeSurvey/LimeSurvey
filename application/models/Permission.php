@@ -699,6 +699,7 @@ class Permission extends LSActiveRecord
      */
     public function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
+        $iUserID = $this->getUserId($iUserID);
         if (isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID])) {
             return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID];
         }

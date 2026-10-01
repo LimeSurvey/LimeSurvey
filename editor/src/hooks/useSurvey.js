@@ -26,6 +26,9 @@ export const useSurvey = (id) => {
   const [, setSurveyRefreshRequired] = useAppState(
     STATES.SURVEY_REFRESH_REQUIRED
   )
+  const [, setLoadedSurveyId] = useAppState(STATES.LOADED_SURVEY_ID, null, {
+    meta: { persist: false },
+  })
   const [surveyHash, setSurveyHash] = useAppState(STATES.SURVEY_HASH, {
     updateHash: 0,
     refetchHash: 0,
@@ -59,6 +62,9 @@ export const useSurvey = (id) => {
   })
 
   const fetchSurvey = async (id, signal) => {
+    const requestedSurveyId = id?.toString()
+    queryClient.setQueryData([STATES.REQUESTED_SURVEY_ID], requestedSurveyId)
+
     const currentSurveyId = data?.survey?.sid?.toString()
     const isSameSurvey = id?.toString() === currentSurveyId
     const isDemoMode = process.env.REACT_APP_DEMO_MODE === 'true'
@@ -72,6 +78,7 @@ export const useSurvey = (id) => {
 
     if (isStorybook || isDemoMode) {
       setSurvey(surveyData.survey)
+      setLoadedSurveyId(id)
       return surveyData
     }
 
@@ -83,7 +90,15 @@ export const useSurvey = (id) => {
 
     if (!newData) return {}
 
+    const latestRequestedSurveyId = queryClient.getQueryData([
+      STATES.REQUESTED_SURVEY_ID,
+    ])
+    if (latestRequestedSurveyId !== requestedSurveyId) {
+      return queryClient.getQueryData([STATES.SURVEY]) || { survey: {} }
+    }
+
     if (newData?.survey === SURVEY_NOT_MODIFIED || !newData?.survey) {
+      setLoadedSurveyId(id)
       return queryClient.getQueryData([STATES.SURVEY]) || { survey: {} }
     }
 
@@ -99,6 +114,7 @@ export const useSurvey = (id) => {
       // we should schdule a refetch to update the survey data.
       setSurveyRefreshRequired(true)
       queryClient.cancelQueries({ queryKey: [STATES.SURVEY] })
+      setLoadedSurveyId(id)
       return data
     }
 
@@ -109,6 +125,7 @@ export const useSurvey = (id) => {
         ...newData.survey.themesettings,
       },
     })
+    setLoadedSurveyId(id)
 
     // Survey hash is used to keep track of the survey data.
     setSurveyHash({ ...surveyHash, refetchHash: Math.random() })
@@ -195,7 +212,7 @@ export const useSurvey = (id) => {
       },
       PATCH_DEBOUNCE_TIME
     ),
-    [surveyService.surveyId, surveyService.auth?.restHeaders?.Authorization]
+    [surveyService.surveyId, surveyService.auth?.token]
   )
 
   const fetchSurveyQuestionsFieldnameMap = async (sid, signal) => {

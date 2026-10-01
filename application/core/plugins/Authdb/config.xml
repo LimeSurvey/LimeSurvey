@@ -7,7 +7,7 @@
         <lastUpdate>2018-01-24</lastUpdate>
         <author>Menno Dekker</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Core: Database authentication + exports]]></description>
     </metadata>

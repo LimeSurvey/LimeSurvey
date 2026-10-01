@@ -1,7 +1,8 @@
 import React from 'react'
-import { STATES, isTrue } from 'helpers'
+import { useParams } from 'react-router-dom'
+import { STATES, isTempId, isTrue } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
-import { useAppState } from 'hooks'
+import { useAppState, useExpressionScriptValidation } from 'hooks'
 import { SettingsWrapper } from 'components/UIComponents'
 
 import { TooltipContainer } from '../TooltipContainer/TooltipContainer'
@@ -14,10 +15,19 @@ export const Setting = ({
   title = '',
   attributes = [],
   simpleSettings = false,
+  hasDefaultAttributeValues = false,
   sectionExpanded,
   onSectionToggle,
 }) => {
+  const { surveyId } = useParams()
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
+  const validateExpression = useExpressionScriptValidation(
+    surveyId,
+    question?.qid
+  )
   const isDependsOnSatisfied = (dependsOn, dependsOnValue) => {
     if (!dependsOn) {
       return true
@@ -170,17 +180,27 @@ export const Setting = ({
           attribute.attributePath,
           attribute.languageBased
         )
-        const isDisabled =
-          ([
-            'questionThemeName',
-            'encrypted',
-            'attributes.save_as_default',
-            'other',
-          ].includes(attribute.attributePath) ||
-            attribute.disableWhenActive) &&
-          isSurveyActive
-            ? true
-            : false
+
+        const ATTRIBUTES_DISABLED_WHEN_ACTIVE = [
+          'questionThemeName',
+          'encrypted',
+          'attributes.save_as_default',
+          'defaultAttributeValuesActions',
+          'other',
+        ]
+
+        const isDisabledWhenActive =
+          ATTRIBUTES_DISABLED_WHEN_ACTIVE.includes(attribute.attributePath) ||
+          attribute.disableWhenActive
+
+        const isDisabledByActiveSurvey = isDisabledWhenActive && isSurveyActive
+
+        const isActionAttribute = !!attribute.action
+        const isActionDisabled =
+          isActionAttribute &&
+          (isTempId(question.qid) || !hasSurveyUpdatePermission)
+
+        const isDisabled = isDisabledByActiveSurvey || isActionDisabled
 
         const options =
           typeof attribute.getOptions === 'function'
@@ -190,6 +210,14 @@ export const Setting = ({
         const attributeProps = {
           ...attribute.props,
           ...(options ? { options } : {}),
+          ...(attribute.attributePath === 'attributes.equation'
+            ? { validateExpression }
+            : {}),
+          ...(attribute.action
+            ? {
+                hasDefaultAttributeValues,
+              }
+            : {}),
         }
 
         return (
@@ -205,6 +233,7 @@ export const Setting = ({
                 {...attributeProps}
                 activeDisabled={isDisabled}
                 noPermissionDisabled={true}
+                hasSurveyUpdatePermission={hasSurveyUpdatePermission}
                 value={
                   value
                     ? value
@@ -213,7 +242,11 @@ export const Setting = ({
                       : ''
                 }
                 name={attribute.attributePath}
-                update={(value) => handleUpdateAttribute(value, attribute)}
+                update={(value) =>
+                  attribute.action
+                    ? handleUpdate(value, false)
+                    : handleUpdateAttribute(value, attribute)
+                }
                 isSimpleSettings={simpleSettings}
                 theme="light"
               />

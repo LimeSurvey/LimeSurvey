@@ -34,7 +34,7 @@ class SideBarWidget extends CWidget
                 $boxData['url'] = $box->url;
                 $boxData['external'] = true;
             }
-            $boxData['title'] = $box->title;
+            $boxData['title'] = $box->getLocalizedTitle();
             $boxData['ico'] = $box->getIconName();
             $boxData['description'] = $box->desc;
             $boxData['selected'] = substr($route, 0, strlen($box->url)) === $box->url;

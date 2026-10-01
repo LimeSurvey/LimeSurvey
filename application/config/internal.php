@@ -176,12 +176,16 @@ $internalConfig = array(
                 ),
 
                 // Log file saved in /tmp/runtime/plugin.log
+                // Only uncomment this section if you want to log plugin activities
+                // because the log could contain sensitive information
+                /*
                 'plugin' => array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'trace, info, error, warning',
                     'logFile' => 'plugin.log',
                     'categories' => 'plugin.*'  // The category will be the name of the plugin
                 ),
+                */
             )
         ),
         'cache' => array(
@@ -280,6 +284,7 @@ $internalConfig = array(
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
                 'getLanguageRTL'          => 'LS_Twig_Extension::getLanguageRTL',
+                'getHtmlLangAttributeValue' => 'getHtmlLangAttributeValue',
 
                 'intval'                  => 'intval',
                 'empty'                   => 'LS_Twig_Extension::isEmpty',
@@ -319,6 +324,7 @@ $internalConfig = array(
                 't'     => 'gT',
                 'gT'    => 'gT',
                 'isAbsoluteUrl' => 'check_absolute_url',
+                'isImageUrl' => 'check_image_url',
             ),
 
             'sandboxConfig' => array(
@@ -348,7 +354,8 @@ $internalConfig = array(
                     'upper',
                     'striptags',
                     'number_format',
-                    'isAbsoluteUrl'
+                    'isAbsoluteUrl',
+                    'isImageUrl'
                 ),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox", "tag"),
@@ -362,7 +369,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
                     'TemplateConfiguration'             =>  array("sTemplateurl"),
-                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice', 'aOptions', 'isListPublic', 'sSurveyUrl', 'localizedTitle'),
+                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice', 'aOptions', 'isListPublic', 'sSurveyUrl', 'localizedTitle'),
                     'SurveyLanguageSetting' => array('surveyls_description', 'surveyls_welcometext', 'surveyls_endtext', 'surveyls_policy_notice', 'surveyls_policy_error', 'surveyls_policy_notice_label', 'surveyls_title'),
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'relevance', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid', 'questionType', 'questionl10ns', 'survey', 'text', 'scenario', 'answer', 'code', 'comment'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance'),
@@ -404,6 +411,7 @@ $internalConfig = array(
                     'getExpressionManagerOutput',
                     'getTextDisplayWidget',
                     'getLanguageNameFromCode',
+                    'getHtmlLangAttributeValue',
                     'getAllQuestionClasses',
                     'checkPermission',
                     'intval',

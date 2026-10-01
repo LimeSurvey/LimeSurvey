@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useAppState, useBuffer, useErrors, useSurvey } from 'hooks'
@@ -24,11 +24,9 @@ export const TopBar = ({
   showAddQuestionButton = true,
   showPublishSettings = true,
   showPreviewButton = true,
-  showShareButton = true,
   showShareActionButton = false,
   showExportResponsesButton = false,
   showExportStatisticsButton = false,
-  setShowOverviewModalRef,
 }) => {
   const { survey, update, surveyList } = useSurvey(surveyId)
   const { getError } = useErrors()
@@ -44,6 +42,18 @@ export const TopBar = ({
     STATES.HAS_SURVEY_UPDATE_PERMISSION,
     false
   )
+  const [loadedSurveyId] = useAppState(STATES.LOADED_SURVEY_ID, null, {
+    meta: { persist: false },
+  })
+  const overviewAutoOpenedForSurvey = useRef(null)
+  const isCurrentSurvey =
+    survey.sid !== undefined && Number(survey.sid) === Number(surveyId)
+  const isCurrentSurveyLoaded = Number(loadedSurveyId) === Number(surveyId)
+  const canShowOverview =
+    topbarConfig?.shouldAutoOpenOverview &&
+    isCurrentSurvey &&
+    isCurrentSurveyLoaded &&
+    survey.active === true
 
   const activeLanguage = useMemo(
     () =>
@@ -113,15 +123,19 @@ export const TopBar = ({
 
   useEffect(() => {
     setFocusedQuestionGroup(null)
-    if (setShowOverviewModalRef?.current === null) {
-      setShowOverviewModalRef.current = setShowOverViewModal
+  }, [survey.sid, topbarConfig?.pageName])
+
+  useEffect(() => {
+    if (!canShowOverview) {
+      setShowOverViewModal(false)
+      return
     }
-  }, [
-    survey.sid,
-    setShowOverviewModalRef,
-    topbarConfig?.pageName,
-    setShowOverViewModal,
-  ])
+
+    if (survey.sid && overviewAutoOpenedForSurvey.current !== survey.sid) {
+      setShowOverViewModal(true)
+      overviewAutoOpenedForSurvey.current = survey.sid
+    }
+  }, [canShowOverview, survey.sid])
 
   return (
     <div id="topbar" className={`top-bar d-flex w-100 justify-content-between`}>
@@ -152,7 +166,6 @@ export const TopBar = ({
       <TopBarActions
         surveyId={surveyId}
         showPreviewButton={showPreviewButton}
-        showShareButton={showShareButton}
         isSurveyActive={isSurveyActive}
         survey={survey}
         operationsLength={operationsLength}
@@ -164,7 +177,6 @@ export const TopBar = ({
         showPublishSettings={showPublishSettings}
         triggerPublish={triggerPublish}
         isAddingQuestionOrGroup={isAddingQuestionOrGroup}
-        setShowOverviewModalRef={setShowOverviewModalRef}
       />
       <SurveyActivationHandler
         ref={surveyActivationHandlerRef}
