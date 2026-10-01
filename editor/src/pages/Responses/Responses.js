@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
@@ -75,8 +75,15 @@ export const Responses = () => {
   }, [responsesError])
 
   // A narrower filter can leave the current page past the end of the results,
-  // which would show an empty table on a page that no longer exists.
+  // which would show an empty table on a page that no longer exists. Only a
+  // filter the user changed counts: the page a shared link asks for is read
+  // once on mount, and resetting it here would always land on page 1.
+  const filterSetOnMount = useRef(filterSet)
   useEffect(() => {
+    if (filterSetOnMount.current === filterSet) {
+      return
+    }
+
     setPagination((current) =>
       current.pageIndex === 0 ? current : { ...current, pageIndex: 0 }
     )

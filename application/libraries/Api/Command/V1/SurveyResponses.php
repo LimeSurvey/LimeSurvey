@@ -57,6 +57,13 @@ class SurveyResponses implements CommandInterface
         'refurl',
     ];
 
+    /**
+     * What the responses table is called inside the query.
+     *
+     * @see \CDbCommandBuilder::createFindCommand()
+     */
+    private const RESPONSE_TABLE_ALIAS = 't';
+
     protected Survey $survey;
     protected Permission $permission;
     protected ResponseFactory $responseFactory;
@@ -287,14 +294,16 @@ class SurveyResponses implements CommandInterface
         $validColumns = array_keys($this->transformerOutputSurveyResponses->fieldMap);
         $sort = new \CSort();
         $criteria = new \LSDbCriteria();
+        $filterSet = ResponseFilterSet::fromRequestValue($request->getData('filterSet', null));
         $this->responseFilterPatcher->apply(
             $searchParams,
             $criteria,
             $sort,
             $dataMap,
-            $validColumns
+            $validColumns,
+            $filterSet->hasParticipantFilter() ? self::RESPONSE_TABLE_ALIAS : ''
         );
-        $this->applyFilterSet($criteria, $request);
+        $this->applyFilterSet($criteria, $filterSet, $request);
         $this->applyFieldSelection($criteria, $request);
 
         return [$criteria, $sort];
@@ -309,15 +318,19 @@ class SurveyResponses implements CommandInterface
      * condition.
      *
      * @param \LSDbCriteria $criteria
+     * @param ResponseFilterSet $filterSet Parsed by the caller, which needs to
+     *     know whether the participants are joined before this runs.
      * @param Request $request
      * @throws \InvalidArgumentException on a malformed or unresolvable filter,
      *     which the command turns into a bad request rather than a 500.
      * @throws PermissionDeniedException when a participant filter is sent by a
      *     caller who may not read the survey's participants.
      */
-    protected function applyFilterSet(\LSDbCriteria &$criteria, Request $request): void
-    {
-        $filterSet = ResponseFilterSet::fromRequestValue($request->getData('filterSet', null));
+    protected function applyFilterSet(
+        \LSDbCriteria &$criteria,
+        ResponseFilterSet $filterSet,
+        Request $request
+    ): void {
         if ($filterSet->isEmpty()) {
             return;
         }

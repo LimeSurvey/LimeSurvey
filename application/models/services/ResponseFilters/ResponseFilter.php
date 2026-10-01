@@ -86,6 +86,9 @@ class ResponseFilter
     /** Values compared as text, and so cast to string further down. */
     private const TEXT_KEYS = ['text', 'value', 'column', 'column2', 'attribute'];
 
+    /** Lists of codes, whose entries the getters flatten with strval(). */
+    private const LIST_KEYS = ['answerCodes', 'languages'];
+
     /**
      * Every key the contract accepts. Anything else is rejected rather than
      * ignored, so a client typo ("textValue" for "text") fails loudly instead
@@ -224,6 +227,19 @@ class ResponseFilter
             }
             if (!is_scalar($payload[$key])) {
                 throw new InvalidArgumentException("$at $key must be a single value.");
+            }
+        }
+
+        foreach (self::LIST_KEYS as $key) {
+            if (!isset($payload[$key]) || !is_array($payload[$key])) {
+                continue;
+            }
+            foreach ($payload[$key] as $element) {
+                if (!is_scalar($element)) {
+                    throw new InvalidArgumentException(
+                        "$at $key must be a list of single values."
+                    );
+                }
             }
         }
     }

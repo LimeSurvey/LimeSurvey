@@ -29,6 +29,7 @@ class FilterPatcher
      * @param array $validColumns Real response columns (system + nested
      *   question/subquestion columns) used to validate filter keys. When empty
      *   no validation is performed, preserving the previous behaviour.
+     * @param string $alias Table the filter keys belong to.
      * @param-out \CSort $sort
      */
     public function apply(
@@ -36,7 +37,8 @@ class FilterPatcher
         \LSDbCriteria &$criteria,
         \CSort &$sort,
         array $dataMap = array(),
-        array $validColumns = array()
+        array $validColumns = array(),
+        string $alias = ''
     ): void {
         $sort->defaultOrder = "id DESC";
         if (!empty($filterParams['sort'])) {
@@ -78,6 +80,8 @@ class FilterPatcher
                 if (!$this->isAllowedKey($key, $dataMap, $validColumns)) {
                     continue;
                 }
+
+                $key = $this->qualifyKey($key, $alias);
 
                 foreach ($this->handlers as $handler) {
                     $op = (new $handler());
@@ -125,6 +129,37 @@ class FilterPatcher
             }
         }
         return $targetValue;
+    }
+
+    /**
+     * Name the table a filter key belongs to.
+     *
+     * A participant filter joins the token table, and both it and the responses
+     * have a `token` column, so an unqualified one is ambiguous and the whole
+     * query fails. Keys that already carry a table are left alone.
+     *
+     * @param string|array $key
+     * @param string $alias
+     * @return string|array
+     */
+    private function qualifyKey($key, string $alias)
+    {
+        if ($alias === '') {
+            return $key;
+        }
+
+        if (is_array($key)) {
+            return array_map(
+                fn($singleKey) => $this->qualifyKey($singleKey, $alias),
+                $key
+            );
+        }
+
+        if (!is_string($key) || strpos($key, '.') !== false) {
+            return $key;
+        }
+
+        return $alias . '.' . $key;
     }
 
     /**

@@ -281,6 +281,16 @@ class ResponseFilterSetTest extends TestCase
                 ['source' => 'surveyData', 'field' => 'id', 'numberMin' => 'first'],
                 'numberMin must be a number',
             ],
+            // The list is a list, so the is_array check lets it past; what it
+            // holds reaches strval() and comes out as the literal 'Array'.
+            'answer code nested in another list' => [
+                $question + ['answerCodes' => [['A1']]],
+                'answerCodes must be a list of single values',
+            ],
+            'language nested in another list' => [
+                ['source' => 'surveyData', 'field' => 'startlanguage', 'languages' => [['en']]],
+                'languages must be a list of single values',
+            ],
         ];
     }
 
