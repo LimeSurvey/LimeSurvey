@@ -55,7 +55,7 @@
             )); ?>
             <div class="row row-cols-lg-auto g-1 align-items-center mb-3 float-end">
                 <div class="col-12">
-                    <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => 'text-nowrap col-sm-7 col-form-label col-form-label-sm')); ?>
+                    <?php echo CHtml::label(gT('Search by group name:'), CHtml::activeId($groupModel, 'group_name'), array('class' => 'text-nowrap col-sm-7 col-form-label col-form-label-sm')); ?>
                 </div>
                 <div class="col-12">
                     <?php echo $form->textField($groupModel, 'group_name', array('class' => 'form-control')); ?>
@@ -65,14 +65,14 @@
                 <div class="col-12">
                     <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-primary')); ?>
                     <a href="<?php echo Yii::app()->createUrl(
-                                    'questionAdministration/listQuestions',
-                                    [
-                                        'surveyid' => $oSurvey->primaryKey,
-                                        'activeTab' => 'groups'
-                                    ]
-                                ); ?>" class="btn btn-warning">
-                        <span class="ri-refresh-line"></span>
-                        <?php eT('Reset'); ?>
+                        'questionAdministration/listQuestions',
+                        [
+                            'surveyid' => $oSurvey->primaryKey,
+                            'activeTab' => 'groups'
+                        ]
+                    ); ?>" class="btn btn-warning" role="button" aria-label="<?= gT('Reset') ?>">
+                        <span class="ri-refresh-line" aria-hidden="true"></span>
+                        <?= gT('Reset') ?>
                     </a>
                 </div>
             </div>
@@ -86,21 +86,11 @@
         $this->widget(
             'ext.admin.grid.CLSGridView', //done
             [
-                'id'              => 'question-group-grid',
-                'dataProvider'    => $groupModel->search(),
-                'emptyText'       => gT('No question groups found.'),
-                'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSize',
-                        $pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        [
-                            'class' => 'changePageSize form-select',
-                            'style' => 'display: inline; width: auto'
-                        ]
-                    )
-                ),
+                'id'           => 'question-group-grid',
+                'lsCaption'      => gT("Question groups"),
+                'dataProvider' => $groupModel->search(),
+                'emptyText'    => gT('No question groups found.'),
+                'lsPageSizeCurrentValue' => $pageSize,
 
                 // Columns to dispplay
                 'columns'         => [
@@ -166,7 +156,7 @@ var bindPageSizeChange = function () {
   $(document).trigger("actions-updated");
 };
 
-const activeTabContent = () => {
+var activeTabContent = function () {
   const params = new URLSearchParams(window.location.search);
   const activeTab = params.get("activeTab");
   if (activeTab) {

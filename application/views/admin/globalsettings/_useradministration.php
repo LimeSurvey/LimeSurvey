@@ -18,6 +18,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'sendadmincreationemail',
+                        'ariaLabel' => gT('Send email to new user administrators:'),
                         'checkedOption' => $sSendAdminCreationEmail ?? 0,
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -39,7 +40,7 @@
             <div class="mb-3">
                 <label class=" form-label" for='admincreationemailtemplate'><?php eT("Admin creation email template"); ?>: </label>
                 <br/>
-                <small id="template help" class="form-text text-muted"><?php eT("Available placeholders") ?>: {SITENAME}, {SITEADMINEMAIL}, {USERNAME}, {FULLNAME}, {LOGINURL} </small>
+                <small id="template help" class="form-text text-muted"><?php eT("Available placeholders") ?>: {SITENAME}, {SITEADMINEMAIL}, {USERNAME}, {FULLNAME}, {LOGINURL}, @@LOGINURL@@ </small>
                 <div class="top-15">
                     <div class="htmleditor input-group">
                         <?php echo CHtml::textArea("admincreationemailtemplate", $sAdminCreationEmailTemplate, ['class' => 'form-control', 'cols' => '80', 'rows' => '20', 'id' => "admincreationemailtemplate"]); ?>

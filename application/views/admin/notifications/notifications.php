@@ -23,6 +23,7 @@ $alertTypes = ['success', 'primary', 'secondary', 'danger', 'error', 'warning', 
                     'showCloseButton' => true,
                     'htmlOptions' => [
                         'class' => 'non-ajax-alert',
+                        'tabindex' => '-1',
                     ],
                 ]);
             ?>

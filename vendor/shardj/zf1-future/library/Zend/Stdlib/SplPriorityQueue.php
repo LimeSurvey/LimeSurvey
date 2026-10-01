@@ -47,6 +47,7 @@ class Zend_Stdlib_SplPriorityQueue extends SplPriorityQueue implements Serializa
      * @param  mixed $priority
      * @return void
      */
+    #[ReturnTypeWillChange] // Inherited return type should be bool
     public function insert($datum, $priority)
     {
         // If using the native PHP SplPriorityQueue implementation, we need to

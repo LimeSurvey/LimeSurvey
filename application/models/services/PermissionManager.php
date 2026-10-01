@@ -108,7 +108,7 @@ class PermissionManager
     }
 
     /**
-     * @todo : Save Permission by POST value according to current user permssion
+     * @todo : Save Permission by POST value according to current user permission
      *
      * @see Permission::setPermissions
      * @param int $userId
@@ -140,7 +140,7 @@ class PermissionManager
                 }
             }
         }
-        /* remove uneeded Permission (user don't have any rights) */
+        /* remove unneeded Permission (user don't have any rights) */
         $aSetPermissions = array_filter($aSetPermissions);
         // Event
         $oEvent = $this->getNewEvent('beforePermissionSetSave');

@@ -12,11 +12,13 @@ echo viewHelper::getViewTestTag('addQuota');
             <h1 class="h3">
                 <?php eT("New quota");?>
             </h1>
-            <?php $this->renderPartial('/quotas/_form',
+            <?php $this->renderPartial(
+                '/quotas/_form',
                 array(
-                    'oQuota'=>$oQuota,
-                    'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
-                ))?>
+                    'oQuota' => $oQuota,
+                    'aQuotaLanguageSettings' => $aQuotaLanguageSettings,
+                )
+            )?>
         </div>
     </div>
 </div>

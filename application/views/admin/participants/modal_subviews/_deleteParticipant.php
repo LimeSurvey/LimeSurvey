@@ -1,21 +1,21 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('Delete participant')]
+    ['modalTitle' => gT('Delete participant'), 'modalTitleId' => 'participant_edit_modal']
+);
+?>
+<?php
+$form = $this->beginWidget(
+    'yiistrap_fork.widgets.TbActiveForm',
+    array(
+        'id' => 'deleteParticipantActiveForm',
+        'action' => array('admin/participants/sa/editValueParticipantPanel'),
+        'htmlOptions' => array('class' => ''), // for inset effect
+    )
 );
 ?>
 
 <div class="modal-body ">
-<?php
-    $form = $this->beginWidget(
-        'yiistrap_fork.widgets.TbActiveForm',
-        array(
-            'id' => 'deleteParticipantActiveForm',
-            'action' => array('admin/participants/sa/editValueParticipantPanel'),
-            'htmlOptions' => array('class' => ''), // for inset effect
-        )
-    );
-?>
     <input type="hidden" name="actionTarget" value="deleteParticipant" />
     <input type="hidden" name="participant_id" value="<?php echo $model->participant_id; ?>" />
     <p><?php eT("Please choose one option."); ?></p>

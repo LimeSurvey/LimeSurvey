@@ -54,6 +54,7 @@ class CopySurveyQuotas
                     foreach ($surveyQuotasLanguages as $quotaLanguage) {
                         $newQuotaLanguage = new QuotaLanguageSetting();
                         $newQuotaLanguage->attributes = $quotaLanguage->attributes;
+                        $newQuotaLanguage->quotals_language = $quotaLanguage->quotals_language;
                         if ($adaptLinks) {
                             $newQuotaLanguage->quotals_message = translateLinks(
                                 'survey',

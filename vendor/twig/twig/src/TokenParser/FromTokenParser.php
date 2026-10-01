@@ -11,7 +11,9 @@
 
 namespace Twig\TokenParser;
 
-use Twig\Node\Expression\AssignNameExpression;
+use Twig\Node\Expression\Variable\AssignContextVariable;
+use Twig\Node\Expression\Variable\AssignMacroVariable;
+use Twig\Node\Expression\Variable\MacroVariable;
 use Twig\Node\ImportNode;
 use Twig\Node\Node;
 use Twig\Token;
@@ -19,7 +21,7 @@ use Twig\Token;
 /**
  * Imports macros.
  *
- *   {% from 'forms.html' import forms %}
+ *   {% from 'forms.html.twig' import forms %}
  *
  * @internal
  */
@@ -27,33 +29,39 @@ final class FromTokenParser extends AbstractTokenParser
 {
     public function parse(Token $token): Node
     {
-        $macro = $this->parser->getExpressionParser()->parseExpression();
+        $macro = $this->parser->parseExpression();
         $stream = $this->parser->getStream();
-        $stream->expect(/* Token::NAME_TYPE */ 5, 'import');
+        $stream->expect(Token::NAME_TYPE, 'import');
 
         $targets = [];
         while (true) {
-            $name = $stream->expect(/* Token::NAME_TYPE */ 5)->getValue();
+            $name = $stream->expect(Token::NAME_TYPE)->getValue();
 
-            $alias = $name;
             if ($stream->nextIf('as')) {
-                $alias = $stream->expect(/* Token::NAME_TYPE */ 5)->getValue();
+                $alias = new AssignContextVariable($stream->expect(Token::NAME_TYPE)->getValue(), $token->getLine());
+            } else {
+                $alias = new AssignContextVariable($name, $token->getLine());
             }
 
             $targets[$name] = $alias;
 
-            if (!$stream->nextIf(/* Token::PUNCTUATION_TYPE */ 9, ',')) {
+            if (!$stream->nextIf(Token::PUNCTUATION_TYPE, ',')) {
                 break;
             }
         }
 
-        $stream->expect(/* Token::BLOCK_END_TYPE */ 3);
+        $stream->expect(Token::BLOCK_END_TYPE);
 
-        $var = new AssignNameExpression($this->parser->getVarName(), $token->getLine());
-        $node = new ImportNode($macro, $var, $token->getLine(), $this->getTag(), $this->parser->isMainScope());
+        $internalRef = new AssignMacroVariable(new MacroVariable(null, $token->getLine()), $this->parser->isMainScope());
+        $node = new ImportNode($macro, $internalRef, $token->getLine());
 
+        // Each alias is registered as a "function" imported symbol mapping the local name
+        // to the macro name and the internal macro variable: a bare call like "my_macro()"
+        // is syntactically a function call, so FunctionExpressionParser resolves it through
+        // this symbol into a MacroReferenceExpression. From there, "from" and "import" calls
+        // share the same runtime path (MacroNamespace::call()).
         foreach ($targets as $name => $alias) {
-            $this->parser->addImportedSymbol('function', $alias, 'macro_'.$name, $var);
+            $this->parser->addImportedSymbol('function', $alias->getAttribute('name'), $name, $internalRef);
         }
 
         return $node;

@@ -1,9 +1,11 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
     /*
     * LimeSurvey
-    * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+    * Copyright (C) 2007-2026 The LimeSurvey Project Team
     * All rights reserved.
     * License: GNU/GPL License v2 or later, see LICENSE.php
     * LimeSurvey is free software. This version may have been modified pursuant
@@ -36,7 +38,7 @@
     * ADD TRAILING SLASH!
     ***********************************************************/
 
-    $tcpdf['base_directory'] = APPPATH.'vendor'.DIRECTORY_SEPARATOR.'tcpdf'.DIRECTORY_SEPARATOR;
+    $tcpdf['base_directory'] = APPPATH . 'vendor' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR;
 
 
     /************************************************************
@@ -62,7 +64,7 @@
     * ADD TRAILING SLASH!
     ***********************************************************/
 
-    $tcpdf['fonts_directory'] = $tcpdf['base_directory'].'fonts'.DIRECTORY_SEPARATOR;
+    $tcpdf['fonts_directory'] = $tcpdf['base_directory'] . 'fonts' . DIRECTORY_SEPARATOR;
 
 
     /************************************************************
@@ -75,7 +77,7 @@
     ***********************************************************/
 
     $tcpdf['enable_disk_cache'] = false;
-    $tcpdf['cache_directory'] = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR;
+    $tcpdf['cache_directory'] = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR;
 
 
     /************************************************************
@@ -97,7 +99,7 @@
     * image.
     ***********************************************************/
 
-    $tcpdf['blank_image'] = $tcpdf['image_directory'].'_blank.png';
+    $tcpdf['blank_image'] = $tcpdf['image_directory'] . '_blank.png';
 
 
 
@@ -197,9 +199,9 @@
     * HTML <small> font size ratio
     ***********************************************************/
 
-    $tcpdf['page_font'] = 'freesans';
+    $tcpdf['page_font'] = 'dejavusans';
     $tcpdf['page_font_size'] = 9;
-    $tcpdf['data_font'] = 'freesans';
+    $tcpdf['data_font'] = 'dejavusans';
     $tcpdf['data_font_size'] = 8;
     $tcpdf['mono_font'] = 'freemono';
 

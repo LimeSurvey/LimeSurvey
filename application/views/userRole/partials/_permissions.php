@@ -60,11 +60,13 @@ Yii::app()->getController()->renderPartial(
                 <!-- Warning super admin -->
                 <td>
                     <?php
-                    if ($sPermissionKey == 'superadmin') { ?> <span class='warning'> <?php
-                                                                                    };
+                    if ($sPermissionKey == 'superadmin') {
+                        ?> <span class='warning'> <?php
+                    };
                                                                                     echo $aCRUDPermissions['title'];
-                                                                                    if ($sPermissionKey == 'superadmin') { ?> </span> <?php
-                                                                                                                                    }; ?>
+                    if ($sPermissionKey == 'superadmin') {
+                        ?> </span> <?php
+                    }; ?>
                 </td>
 
                 <!-- checkbox  -->
@@ -88,28 +90,31 @@ Yii::app()->getController()->renderPartial(
                         if ($CRUDValue) : ?>
                             <?php
                             if (!($sPermissionKey == 'survey' && $sCRUDKey == 'read')) : ?>
-
                                 <!-- checkbox -->
                                 <input type="checkbox" class="specific-permission-selector" name='Permission[<?php
                                                                                                                 echo $sPermissionKey . '][' . $sCRUDKey; ?>]' id='perm_<?php
                                                                                                                                                                         echo $sPermissionKey . '_' . $sCRUDKey; ?>' <?php
-                                                                                                                                                                                                                    if (Permission::model()->roleHasPermission(
-                                                                                                                                                                                                                        $oModel->ptid,
-                                                                                                                                                                                                                        $sPermissionKey,
-                                                                                                                                                                                                                        $sCRUDKey
-                                                                                                                                                                                                                    )) : ?> checked="checked" <?php
-                                                                                                                                                                                                                    endif; ?> <?php
-                                                                                                                                                    if (substr((string) $sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read') : ?> style="visibility:hidden" <?php
-                                                                                                                                                                                                endif; ?> />
-                            <?php
+if (
+    Permission::model()->roleHasPermission(
+        $oModel->ptid,
+        $sPermissionKey,
+        $sCRUDKey
+    )
+) :
+    ?> checked="checked" <?php
+endif; ?> <?php
+if (substr((string) $sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read') :
+    ?> style="visibility:hidden" <?php
+endif; ?> />
+                                <?php
                             endif; ?>
-                        <?php
+                            <?php
                         endif; ?>
                     </td>
-                <?php
+                    <?php
                 endforeach; ?>
             </tr>
-        <?php
+            <?php
         endforeach; ?>
 
     </table>

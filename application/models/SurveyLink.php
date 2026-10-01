@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -107,11 +107,12 @@ class SurveyLink extends LSActiveRecord
      */
     public function deleteTokenLink($aTokenIds, $surveyId)
     {
-        $query = "DELETE FROM " . SurveyLink::tableName()
-            . " WHERE token_id IN (" . implode(", ", $aTokenIds) . ") AND survey_id=:survey_id";
-        return Yii::app()->db->createCommand($query)
-                    ->bindParam(":survey_id", $surveyId)
-                    ->query();
+        $aTokenIds = array_map('intval', $aTokenIds);
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition('token_id', $aTokenIds);
+        $criteria->addCondition('survey_id=:survey_id');
+        $criteria->params[':survey_id'] = $surveyId;
+        return $this->deleteAll($criteria);
     }
 
     /**

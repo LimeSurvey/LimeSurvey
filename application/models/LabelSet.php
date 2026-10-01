@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey (tm)
- * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2011-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -101,23 +101,6 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
         }
     }
 
-    /**
-     * @param $data
-     * @return bool|int
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $lblset = new self();
-        foreach ($data as $k => $v) {
-                    $lblset->$k = $v;
-        }
-        if ($lblset->save()) {
-            return $lblset->lid;
-        }
-        return false;
-    }
-
     public function getLanguageArray()
     {
         return explode(' ', $this->languages);
@@ -147,7 +130,7 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
             'title'     => gT('View labels'),
             'iconClass' => 'ri-list-unordered',
             'url'       => App()->createUrl("admin/labels/sa/view/lid/$this->lid"),
-            'enabledCondition' => $permissions['read'] // Must not appear, filtered by seacrh criteria
+            'enabledCondition' => $permissions['read'] // Must not appear, filtered by search criteria
         ];
         $dropdownItems[] = [
             'title'            => gT('Export label set'),
@@ -199,6 +182,15 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
             'desc' => 'languages desc',
             ),
         );
+        $sort->defaultOrder = 'label_name';
+
+        // Persist the chosen sort order in session, the same way pageSize is persisted above,
+        // since CSort itself only reads from the current request's GET params.
+        if (isset($_GET[$sort->sortVar]) && is_string($_GET[$sort->sortVar])) {
+            Yii::app()->user->setState('labelSetsSort', $_GET[$sort->sortVar]);
+        } elseif (($sLabelSetsSort = Yii::app()->user->getState('labelSetsSort')) !== null) {
+            $_GET[$sort->sortVar] = $sLabelSetsSort;
+        }
 
         $dataProvider = new CActiveDataProvider('LabelSet', array(
             'criteria' => $criteria,
@@ -227,7 +219,7 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get criteria from Permission
-     * If currrent user didn't have global permission (read) : add Permission criteria, currentky only owner_id check
+     * If current user didn't have global permission (read) : add Permission criteria, currently only owner_id check
      * @param int|null $userid for this user id , if not set : get current one
      * @return CDbCriteria
      */

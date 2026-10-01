@@ -113,7 +113,7 @@ class Zend_Log_Writer_ZendMonitor extends Zend_Log_Writer_Abstract
         unset($event['priority'], $event['message']);
 
         if (!empty($event)) {
-            if ($this->_isZendServer) {
+            if ($this->_isZendServer && function_exists('zend_monitor_custom_event')) {
                 // On Zend Server; third argument should be the event
                 zend_monitor_custom_event($priority, $message, $event);
             } else {

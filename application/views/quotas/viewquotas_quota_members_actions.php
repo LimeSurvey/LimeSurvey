@@ -3,8 +3,8 @@
 /* @var Quota $oQuota */
 /* @var QuotaMember $oQuotaMember */
 ?>
-<?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','update')) { ?>
-    <?php echo CHtml::beginForm(array("quotas/deleteAnswer/surveyid/{$oSurvey->getPrimaryKey()}"), 'post',array('style'=>'display:inline-block')); ?>
+<?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'update')) { ?>
+    <?php echo CHtml::beginForm(array("quotas/deleteAnswer/surveyid/{$oSurvey->getPrimaryKey()}"), 'post', array('style' => 'display:inline-block')); ?>
     <input name="submit" type="submit" class="btn btn-outline-secondary" value="<?php eT("Remove");?>" />
     <input type="hidden" name="sid" value="<?php echo $oSurvey->getPrimaryKey();?>" />
     <input type="hidden" name="action" value="quotas" />

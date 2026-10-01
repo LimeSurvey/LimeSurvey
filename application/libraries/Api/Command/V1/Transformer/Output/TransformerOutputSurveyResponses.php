@@ -11,6 +11,9 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 {
     public array $fieldMap = [];
 
+    /** @var bool|null Pre-cached token table existence check */
+    public ?bool $hasTokenTable = null;
+
     /**
      * Construct
      */
@@ -33,6 +36,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
             'firstname'     => ['key' => 'firstName'],
             'lastname'      => ['key' => 'lastName'],
             'email'         => ['key' => 'email'],
+            'quota_exit'    => ['key' => 'quotaExit', 'type' => 'int'],
         ]);
     }
 
@@ -45,25 +49,26 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
      * @param ?mixed $options
      * @return array
      * @throws TransformerException
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function transform($data = [], $options = []): array
     {
         $responses = [];
-        if ($data !== null) {
-            foreach ($data as $surveyResponse) {
-                $responses[] = $this->transformerResponseItem($surveyResponse, $options ?? []);
-            }
+        $options ??= [];
+        $options['quotaNames'] = \CHtml::listData(
+            $options['survey']->quotas ?? [],
+            'id',
+            'name'
+        );
+        foreach ($data ?? [] as $surveyResponse) {
+            $responses[] = $this->transformerResponseItem($surveyResponse, $options);
         }
-
 
         return $responses;
     }
 
 
     /**
-     * Transforms survey menu items and puts them into the main survey menus,
-     * organized by their unique names.
+     * Transforms a single survey response item into a structured array.
      * @param SurveyDynamic $surveyResponse
      * @param array $options
      * @return array
@@ -71,13 +76,32 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
      */
     private function transformerResponseItem(SurveyDynamic $surveyResponse, array $options): array
     {
-        $surveyResponseAttributes = $surveyResponse->attributes;
-        $responses = [];
+        $surveyResponseArray = parent::transform($surveyResponse) ?? [];
+        $this->applyTokenData($surveyResponseArray, $surveyResponse, $options);
+        $quotaId = $surveyResponseArray['quotaExit'] ?? null;
+        $surveyResponseArray['quotaExitName'] = $options['quotaNames'][(int) $quotaId] ?? null;
+        $surveyResponseArray['completed'] = !empty($surveyResponseArray['submitDate']);
+        $surveyResponseArray['answers'] = $this->extractAnswers($surveyResponse->attributes);
+        $this->normalizeDateFields($surveyResponseArray);
+        return $surveyResponseArray;
+    }
 
-        foreach ($surveyResponseAttributes as $key => $value) {
+    /**
+     * Parses SGQA-keyed response attributes into structured answer entries.
+     * @param array $attributes
+     * @return array
+     */
+    private function extractAnswers(array $attributes): array
+    {
+        $answers = [];
+        foreach ($attributes as $key => $value) {
+            // N/K answers are stored as decimal, drop the zero padding
+            if (in_array($this->fieldMap[$key]['type'] ?? null, ['N', 'K'], true) && str_contains((string) $value, '.')) {
+                $value = rtrim(rtrim((string) $value, '0'), '.');
+            }
             if (str_contains($key, 'X')) {
                 [$survey, $group, $question] = explode("X", $key);
-                $responses[$key] = [
+                $answers[$key] = [
                     "key"   => $key,
                     "id"    => $question,
                     "gid"   => $group,
@@ -85,7 +109,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
                     "value" => $value
                 ];
             } elseif (!empty($this->fieldMap[$key]) && str_starts_with($key, "Q")) {
-                $responses[$key] = [
+                $answers[$key] = [
                     "key"   => $key,
                     "id"    => $this->fieldMap[$key]['qid'],
                     "gid"   => $this->fieldMap[$key]['gid'],
@@ -94,24 +118,50 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
                 ];
             }
         }
+        return $answers;
+    }
 
-        $surveyResponseArray = parent::transform($surveyResponse);
+    /**
+     * Appends token-related participant data if the survey is not anonymized.
+     * @param array &$responseArray
+     * @param SurveyDynamic $surveyResponse
+     * @param array $options
+     */
+    private function applyTokenData(array &$responseArray, SurveyDynamic $surveyResponse, array $options): void
+    {
         if (!empty($options['survey'])) {
             /** @var Survey $survey */
             $survey = $options['survey'];
+            // Use cached value if available, otherwise check (for backward compatibility)
+            $tokenTableExists = $this->hasTokenTable ?? tableExists('tokens_' . $survey->sid);
             $hasToken = $survey->anonymized === "N"
-                && tableExists('tokens_' . $survey->sid)
+                && $tokenTableExists
                 && isset($surveyResponse->tokens);
             if ($hasToken) {
-                $surveyResponseArray['firstName'] = $surveyResponse->getFirstNameForGrid();
-                $surveyResponseArray['lastName'] = $surveyResponse->getLastNameForGrid();
-                $surveyResponseArray['email'] = $surveyResponse->getEmailForGrid();
+                $responseArray['firstName'] = $surveyResponse->getFirstNameForGrid();
+                $responseArray['lastName'] = $surveyResponse->getLastNameForGrid();
+                $responseArray['email'] = $surveyResponse->getEmailForGrid();
             }
         }
+    }
 
-        $surveyResponseArray['completed'] = !empty($surveyResponseArray['submitDate']);
-        $surveyResponseArray['answers'] = $responses;
-
-        return $surveyResponseArray;
+    /**
+     * Converts placeholder dates to null for API consistency.
+     * @param array &$responseArray
+     */
+    private function normalizeDateFields(array &$responseArray): void
+    {
+        foreach (['submitDate', 'dateLastAction', 'startDate'] as $dateField) {
+            if (
+                in_array($responseArray[$dateField] ?? '', [
+                '1980-01-01T00:00:00.000Z',
+                '1980-01-01 00:00:00',
+                ])
+            ) {
+                $responseArray[$dateField] = null;
+            } else {
+                $responseArray[$dateField] = isset($responseArray[$dateField]) ? getDateOfUTC($responseArray[$dateField]) : null;
+            }
+        }
     }
 }

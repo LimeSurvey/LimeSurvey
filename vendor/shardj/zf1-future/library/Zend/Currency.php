@@ -138,8 +138,8 @@ class Zend_Currency
     /**
      * Returns a localized currency string
      *
-     * @param  integer|float $value   OPTIONAL Currency value
-     * @param  array         $options OPTIONAL options to set temporary
+     * @param  array|int|float|string $value   OPTIONAL Currency value
+     * @param  array                  $options OPTIONAL options to set temporary
      * @throws Zend_Currency_Exception When the value is not a number
      * @return string
      */

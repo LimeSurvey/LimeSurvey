@@ -65,16 +65,16 @@ class SearchBoxWidget extends CWidget
     }
 
     /**
-     * Registers the necessary JavaScript files for the widget.
+     * Registers the necessary JavaScript and CSS files for the widget if needed.
      */
     public function registerClientScript()
     {
+        // Register JavaScript file
         App()->getClientScript()->registerScriptFile(
             App()->getConfig("extensionsurl") . 'admin/SearchBoxWidget/assets/filters.js',
             CClientScript::POS_END
         );
     }
-
     /**
      * Generates and returns the form URL, handling URL formatting and GET parameters.
      *

@@ -193,7 +193,7 @@ abstract class Zend_Validate_Barcode_AdapterAbstract
      */
     public function setCheck($check)
     {
-        $this->_hasChecksum = (boolean) $check;
+        $this->_hasChecksum = (bool) $check;
         return $this;
     }
 

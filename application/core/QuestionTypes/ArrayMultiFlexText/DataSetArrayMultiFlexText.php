@@ -2,5 +2,4 @@
 
 class DataSetArrayMultiFlexText extends QuestionBaseDataSet
 {
-
 }

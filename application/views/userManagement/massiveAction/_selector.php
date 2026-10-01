@@ -2,7 +2,7 @@
 <?php
 
 $aActionsArray = array(
-    'pk'          => 'selectedUser',
+    'pk'          => 'uid',
     'gridid'      => 'usermanagement--identity-gridPanel',
     'dropupId'    => 'usermanagement--actions',
     'dropUpText'  => gT('Selected user(s)...'),
@@ -66,7 +66,7 @@ $aActionsArray = array(
             'action'            => 'batchStatus',
             'url'               => App()->createUrl('userManagement/batchStatus'),
             'iconClasses'       => 'ri-user-follow-fill',
-            'text'              => gT('Edit status'),
+            'text'              => gT('Set status'),
             'grid-reload'       => 'yes',
             //modal
             'actionType'        => 'modal',
@@ -75,9 +75,28 @@ $aActionsArray = array(
             'keepopen'          => 'yes',
             'showSelected'      => 'yes',
             'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),
-            'sModalTitle'       => gT('Edit status'),
+            'sModalTitle'       => gT('Set status'),
             //'htmlFooterButtons' => [],
             'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updatestatus', [], true)
+        ),
+        array(
+            'type'              => 'action',
+            'id'                => 'edit-expires',
+            'action'            => 'batchExpires',
+            'url'               => App()->createUrl('userManagement/batchExpires'),
+            'iconClasses'       => 'ri-user-follow-fill',
+            'text'              => gT('Set expiration date'),
+            'grid-reload'       => 'yes',
+            //modal
+            'actionType'        => 'modal',
+            'modalType'         => 'cancel-apply',
+            'largeModalView'    => true,
+            'keepopen'          => 'yes',
+            'showSelected'      => 'yes',
+            'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),
+            'sModalTitle'       => gT('Set expiration date'),
+            //'htmlFooterButtons' => [],
+            'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updateexpires', [], true)
         ),
     ),
 );

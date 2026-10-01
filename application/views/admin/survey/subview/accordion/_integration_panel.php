@@ -47,21 +47,11 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                 'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'urlparams',
+                    'lsCaption' => gT('URL parameters'),
                     'dataProvider'    => $model->search(),
                     'emptyText'       => gT('No parameters defined'),
                     'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
-                    'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
-                            [
-                                'class' => 'changePageSize form-control',
-                                'style' => 'display: inline; width: auto'
-                            ]
-                        )
-                    ),
+                    'lsPageSizeCurrentValue' => $pageSize,
 
                     // Columns to dispplay
                     'columns' => [
@@ -76,7 +66,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                             'header' => gT('Target question'),
                             'name'   => 'target_question',
                             'value'  => '$data->questionTitle',
-                            'type'=>'raw'
+                            'type' => 'raw'
                         ],
                         // Action buttons (defined in model)
                         [

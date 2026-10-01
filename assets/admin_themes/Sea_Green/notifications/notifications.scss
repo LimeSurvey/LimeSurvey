@@ -1,0 +1,53 @@
+#notification-outer-ul {
+    height: 400px;
+    width: 400px;
+}
+#notification-inner-ul {
+    height: 340px;
+    width: 390px;
+}
+.notification-list {
+    background-color: $white;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    list-style: none;
+    font-size: $font-size-sm;
+    border-radius: 4px;
+    background-clip: padding-box;
+    overflow-y: auto;
+    .divider {
+        background-color: $g-600;
+    }
+    > {
+        li > a {
+            color: $g-800;
+            font-weight: $font-weight-500;
+            display: block;
+            padding: 3px 20px;
+            clear: both;
+            line-height: 1.428571429;
+            white-space: nowrap;
+            @include state-border(1px, transparent);
+            &:hover {
+                background-color: $g-200;
+                text-decoration: none;
+            }
+            &:focus-visible, &:active {
+                background-color: $white;
+                text-decoration: none;
+                border-color: $grape;
+            }
+            &:focus-visible {
+                border-radius: 0;
+            }
+            .text-read {
+                color: $g-700;
+            }
+        }
+    }
+}

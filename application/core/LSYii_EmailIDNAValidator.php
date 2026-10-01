@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -18,7 +18,6 @@ if (!defined('BASEPATH')) {
 
 class LSYii_EmailIDNAValidator extends CValidator
 {
-
     public $allowEmpty = false;
     public $allowMultiple = false;
     public $allowInherit = false;
@@ -38,12 +37,12 @@ class LSYii_EmailIDNAValidator extends CValidator
         // If the attribute accepts multiple emails, split them into an array.
         // Otherwise, create an array with the single email.
         if ($this->allowMultiple) {
-            $aEmailAdresses = preg_split("/(,|;)/", (string) $object->$attribute);
+              $aEmailAddresses = preg_split("/(,|;)/", (string) $object->$attribute);
         } else {
-            $aEmailAdresses = array($object->$attribute);
+              $aEmailAddresses = array($object->$attribute);
         }
 
-        foreach ($aEmailAdresses as $sEmailAddress) {
+        foreach ($aEmailAddresses as $sEmailAddress) {
             if (!LimeMailer::validateAddress($sEmailAddress)) {
                 $this->addError($object, $attribute, gT('Invalid email address.'));
                 return;

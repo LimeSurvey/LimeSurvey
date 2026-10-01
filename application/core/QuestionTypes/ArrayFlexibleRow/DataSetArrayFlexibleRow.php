@@ -2,5 +2,4 @@
 
 class DataSetArrayFlexibleRow extends QuestionBaseDataSet
 {
-
 }

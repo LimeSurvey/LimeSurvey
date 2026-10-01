@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2019 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -51,8 +51,8 @@ class Saved extends SurveyCommonAction
         $aData['sSurveyName'] = $aThisSurvey['name'];
         $aData['iSurveyId'] = $iSurveyId;
         // Set page size
-        if (App()->request->getPost('savedResponsesPageSize')) {
-            App()->user->setState('savedResponsesPageSize', App()->request->getPost('savedResponsesPageSize'));
+        if (App()->request->getPost('pageSize')) {
+            App()->user->setState('savedResponsesPageSize', App()->request->getPost('pageSize'));
         }
         $aData['savedResponsesPageSize'] = App()->user->getState('savedResponsesPageSize', App()->params['defaultPageSize']);
         $aViewUrls[] = 'savedlist_view';

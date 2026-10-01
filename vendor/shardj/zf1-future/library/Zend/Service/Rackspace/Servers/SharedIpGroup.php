@@ -146,7 +146,7 @@ class Zend_Service_Rackspace_Servers_SharedIpGroup
      */
     public function createServer(array $data, $metadata=[],$files=[])
     {
-        $data['sharedIpGroupId']= (integer) $this->id;
+        $data['sharedIpGroupId']= (int) $this->id;
         return $this->service->createServer($data,$metadata,$files);
     }
     /**

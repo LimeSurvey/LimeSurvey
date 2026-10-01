@@ -1,4 +1,18 @@
 <p>{{ aSurveyInfo.optin_message }} </p>
-{% if aSurveyInfo.optin_link %}
-    <p><a href="{{ aSurveyInfo.optin_link }}" class="btn btn-outline-secondary btn-lg"> {{ gT("I confirm") }} </a><p>
+{% if aSurveyInfo.optin_post_link is defined and aSurveyInfo.optin_post_link %}
+    {% set htmlOptions = {
+        'id'    : 'form-optout',
+        'class' : 'ls-form',
+    } %}
+    {{
+        C.Html.form(
+            ( aSurveyInfo.optin_post_link ),
+            'post',
+            (htmlOptions)
+        )
+    }}
+        <p><button type="submit" class="btn btn-outline-secondary btn-lg"> {{ gT("I confirm") }} </button></p>
+    </form>
+{% elseif aSurveyInfo.optin_link %}
+    <p><a href="{{ aSurveyInfo.optin_link }}" class="btn btn-outline-secondary btn-lg"> {{ gT("I confirm") }} </a></p>
 {% endif %}
