@@ -52,6 +52,64 @@ class FreeTextMaxCharsTest extends TestBaseClass
             \QuestionBaseRenderer::MAX_CHARS_CAP,
             \QuestionBaseRenderer::getEffectiveMaxCharsForType(\Question::QT_U_HUGE_FREE_TEXT, \QuestionBaseRenderer::MAX_CHARS_CAP + 1)
         );
+        $this->assertSame(
+            \QuestionBaseRenderer::MAX_CHARS_ARRAY_TEXT,
+            \QuestionBaseRenderer::getEffectiveMaxCharsForType(\Question::QT_SEMICOLON_ARRAY_TEXT, '')
+        );
+        $this->assertSame(500, \QuestionBaseRenderer::getEffectiveMaxCharsForType(\Question::QT_SEMICOLON_ARRAY_TEXT, '500'));
+        $this->assertSame(
+            \QuestionBaseRenderer::MAX_CHARS_ARRAY_TEXT,
+            \QuestionBaseRenderer::getEffectiveMaxCharsForType(\Question::QT_SEMICOLON_ARRAY_TEXT, \QuestionBaseRenderer::MAX_CHARS_ARRAY_TEXT + 1)
+        );
+    }
+
+    /**
+     * A submitted Array (Texts) answer longer than the default maximum is shortened.
+     */
+    public function testTooLongArrayTextAnswerIsShortened()
+    {
+        $qid = 999999;
+        $sgqa = 'Q' . $qid . '_SQ001_SQ001';
+        $LEM = \LimeExpressionManager::singleton();
+        $qattr = new \ReflectionProperty(\LimeExpressionManager::class, 'qattr');
+        $qattr->setAccessible(true);
+        $originalQattr = $qattr->getValue($LEM);
+        $qattr->setValue($LEM, [$qid => []]);
+        $this->getInvalidAnswerStringProperty()->setValue($LEM, []);
+
+        $method = new \ReflectionMethod(\LimeExpressionManager::class, 'truncateTextAnswer');
+        $method->setAccessible(true);
+        $answer = str_repeat('a', \QuestionBaseRenderer::MAX_CHARS_ARRAY_TEXT);
+
+        $this->assertSame($answer, $method->invoke(null, \Question::QT_SEMICOLON_ARRAY_TEXT, $answer, $sgqa, $qid));
+        $this->assertArrayNotHasKey($sgqa, $this->getInvalidAnswerStrings());
+        $this->assertSame($answer, $method->invoke(null, \Question::QT_SEMICOLON_ARRAY_TEXT, $answer . 'b', $sgqa, $qid));
+        $this->assertArrayHasKey($sgqa, $this->getInvalidAnswerStrings());
+
+        $qattr->setValue($LEM, $originalQattr);
+        $this->getInvalidAnswerStringProperty()->setValue($LEM, []);
+    }
+
+    /**
+     * An Equation result that does not fit the TEXT column on MySQL is shortened without breaking a multibyte character.
+     */
+    public function testTooLongEquationResultIsShortenedOnMysql()
+    {
+        list($question, , $sgqa) = self::$testHelper->getSgqa('Q00', self::$surveyId);
+        $method = new \ReflectionMethod(\LimeExpressionManager::class, 'truncateEquationResult');
+        $method->setAccessible(true);
+        $shortResult = str_repeat('a', 40000);
+        // 'ä' is 2 bytes, so a cut at exactly 65535 bytes would split a character
+        $longResult = str_repeat('ä', 40000);
+
+        $this->assertSame($shortResult, $method->invoke(null, $shortResult, $sgqa, $question->qid));
+        $result = $method->invoke(null, $longResult, $sgqa, $question->qid);
+        if (\Yii::app()->db->driverName != 'mysql') {
+            $this->assertSame($longResult, $result);
+            return;
+        }
+        $this->assertSame(65534, strlen($result));
+        $this->assertTrue(mb_check_encoding($result, 'UTF-8'));
     }
 
     /**

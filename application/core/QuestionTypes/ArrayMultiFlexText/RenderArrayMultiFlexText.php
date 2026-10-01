@@ -224,13 +224,9 @@ class RenderArrayMultiFlexText extends QuestionBaseRenderer
             $this->repeatheadings = intval($this->getQuestionAttribute('repeat_headings'));
             $this->minrepeatheadings = 0;
         }
-        if (intval(trim((string) $this->getQuestionAttribute('maximum_chars'))) > 0) {
-            // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-            $this->maxlength = intval(trim((string) $this->getQuestionAttribute('maximum_chars')));
-            $this->extraclass .= " ls-input-maxchars";
-        } else {
-            $this->maxlength = "";
-        }
+        // Always apply a maxlength; when 'maximum_chars' is empty/null, fall back to the default of the question type.
+        $this->maxlength = $this->getEffectiveMaxChars();
+        $this->extraclass .= " ls-input-maxchars";
         if (ctype_digit(trim((string) $this->getQuestionAttribute('input_size')))) {
             $this->inputsize = trim((string) $this->getQuestionAttribute('input_size'));
             $this->extraclass .= " ls-input-sized";

@@ -32,6 +32,12 @@ abstract class QuestionBaseRenderer extends StaticModel
     /** @var int Default maximum characters for Huge free text questions (1M characters) */
     public const DEFAULT_MAX_CHARS_HUGE_TEXT = 1048576;
 
+    /**
+     * @var int Default and maximum characters for an Array (Texts) answer (10K characters).
+     * Fits the TEXT response column even for 4-byte UTF-8 characters with response encryption applied.
+     */
+    public const MAX_CHARS_ARRAY_TEXT = 10000;
+
     public $oQuestion;
     public $sSGQA;
     public $sHtml;
@@ -261,7 +267,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     }
 
     /**
-     * Compute the effective maximum characters of the current Long/Huge free text question.
+     * Compute the effective maximum characters of the current Long/Huge free text or Array (Texts) question.
      *
      * @return int
      */
@@ -274,24 +280,36 @@ abstract class QuestionBaseRenderer extends StaticModel
     }
 
     /**
-     * Compute the effective maximum characters for a Long (T) or Huge (U) free text question.
+     * Compute the effective maximum characters for a Long (T), Huge (U) free text or Array (Texts) (;) question.
      * Uses the 'maximum_chars' attribute value, falls back to the default of the question type
-     * if it is not set, and caps it at {@see self::MAX_CHARS_CAP}.
+     * if it is not set, and caps it at the maximum of the question type
+     * ({@see self::MAX_CHARS_CAP} or {@see self::MAX_CHARS_ARRAY_TEXT}).
      * Shared by the renderers (client side maxlength) and ExpressionManager (server side check).
      *
-     * @param string $type Question type (Question::QT_T_LONG_FREE_TEXT or Question::QT_U_HUGE_FREE_TEXT)
+     * @param string $type Question type (Question::QT_T_LONG_FREE_TEXT, Question::QT_U_HUGE_FREE_TEXT or Question::QT_SEMICOLON_ARRAY_TEXT)
      * @param mixed $maximumChars Value of the 'maximum_chars' question attribute
      * @return int
      */
     public static function getEffectiveMaxCharsForType($type, $maximumChars)
     {
+        switch ($type) {
+            case Question::QT_SEMICOLON_ARRAY_TEXT:
+                $default = self::MAX_CHARS_ARRAY_TEXT;
+                $cap = self::MAX_CHARS_ARRAY_TEXT;
+                break;
+            case Question::QT_U_HUGE_FREE_TEXT:
+                $default = self::DEFAULT_MAX_CHARS_HUGE_TEXT;
+                $cap = self::MAX_CHARS_CAP;
+                break;
+            default:
+                $default = self::DEFAULT_MAX_CHARS_LONG_TEXT;
+                $cap = self::MAX_CHARS_CAP;
+        }
         $maxChars = intval(trim((string) $maximumChars));
         if ($maxChars <= 0) {
-            $maxChars = $type === Question::QT_U_HUGE_FREE_TEXT
-                ? self::DEFAULT_MAX_CHARS_HUGE_TEXT
-                : self::DEFAULT_MAX_CHARS_LONG_TEXT;
+            $maxChars = $default;
         }
-        return min($maxChars, self::MAX_CHARS_CAP);
+        return min($maxChars, $cap);
     }
 
     protected function setSubquestions($scaleId = null)
