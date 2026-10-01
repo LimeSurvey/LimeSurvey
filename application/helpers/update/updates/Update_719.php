@@ -2,9 +2,9 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-
 class Update_719 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $db = \Yii::app()->db;
