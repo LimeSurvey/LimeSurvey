@@ -7,13 +7,18 @@ namespace ls\tests;
  */
 class LSETwigViewRendererTest extends TestBaseClass
 {
+    /**
+     * @inheritdoc
+     */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_QuestionAttributeTestSurvey.lss');
+    }
+
     public function testResolveI18nQuestionAttributesForLanguage()
     {
         $renderer = \Yii::app()->twigRenderer;
-
-        $reflection = new \ReflectionClass($renderer);
-        $method = $reflection->getMethod('resolveI18nQuestionAttributesForLanguage');
-        $method->setAccessible(true);
 
         $input = [
             'max_answers' => 2,
@@ -28,7 +33,7 @@ class LSETwigViewRendererTest extends TestBaseClass
             'emptyI18nMap' => [],
         ];
 
-        $resolved = $method->invoke($renderer, $input, 'en');
+        $resolved = $this->getAccessibleMethod('resolveI18nQuestionAttributesForLanguage')->invoke($renderer, $input, 'en');
 
         $this->assertSame(
             [
@@ -43,14 +48,8 @@ class LSETwigViewRendererTest extends TestBaseClass
 
     public function testResolveQuestionL10nLanguageFallsBackToSurveyLanguage()
     {
-        $renderer = \Yii::app()->twigRenderer;
-
-        $reflection = new \ReflectionClass($renderer);
-        $method = $reflection->getMethod('resolveQuestionL10nLanguage');
-        $method->setAccessible(true);
-
-        $resolved = $method->invoke(
-            $renderer,
+        $resolved = $this->getAccessibleMethod('resolveQuestionL10nLanguage')->invoke(
+            \Yii::app()->twigRenderer,
             ['en' => new \stdClass()],
             'de',
             'en',
@@ -62,15 +61,9 @@ class LSETwigViewRendererTest extends TestBaseClass
 
     public function testResolveQuestionL10nLanguageThrowsWhenNoTranslationExists()
     {
-        $renderer = \Yii::app()->twigRenderer;
-
-        $reflection = new \ReflectionClass($renderer);
-        $method = $reflection->getMethod('resolveQuestionL10nLanguage');
-        $method->setAccessible(true);
-
         try {
-            $method->invoke(
-                $renderer,
+            $this->getAccessibleMethod('resolveQuestionL10nLanguage')->invoke(
+                \Yii::app()->twigRenderer,
                 ['fr' => new \stdClass()],
                 'de',
                 'en',
@@ -83,31 +76,70 @@ class LSETwigViewRendererTest extends TestBaseClass
         }
     }
 
+    public function testGetQuestionTemplateDataResolvesCurrentLanguage()
+    {
+        $question = $this->getTestQuestion();
+        $originalLanguage = \Yii::app()->language;
+        \Yii::app()->setLanguage('es');
+
+        try {
+            $data = $this->getAccessibleMethod('getQuestionTemplateData')->invoke(\Yii::app()->twigRenderer, $question);
+        } finally {
+            \Yii::app()->setLanguage($originalLanguage);
+        }
+
+        $this->assertSame('es', $data['sCurrentLanguage']);
+        $this->assertSame($question->qid, $data['questionData']['qid']);
+        $this->assertSame('Texto de prueba', $data['questionAttributes']['em_validation_q_tip']);
+        $this->assertSame(['es' => 'Texto de prueba'], $data['questionAttributesI18n']['em_validation_q_tip']);
+        $this->assertSame('test-class', $data['questionAttributes']['cssclass']);
+        $this->assertSame($question->questionl10ns['es']->question, $data['question_text']);
+        $this->assertSame($question->questionl10ns['es']->help, $data['question_help']);
+    }
+
+    public function testGetQuestionTemplateDataIsCachedPerQuestionAndLanguage()
+    {
+        $question = $this->getTestQuestion();
+        $method = $this->getAccessibleMethod('getQuestionTemplateData');
+        // The renderer is an application singleton: drop what earlier tests cached.
+        (new \ReflectionProperty(\Yii::app()->twigRenderer, 'questionTemplateDataCache'))->setValue(\Yii::app()->twigRenderer, []);
+        $originalLanguage = \Yii::app()->language;
+        \Yii::app()->setLanguage('en');
+
+        try {
+            $firstData = $method->invoke(\Yii::app()->twigRenderer, $question);
+
+            // Change the attribute in the database: a cached result must not pick up the change.
+            \QuestionAttribute::model()->updateAll(
+                ['value' => 'changed-class'],
+                'qid = :qid AND attribute = :attribute',
+                [':qid' => $question->qid, ':attribute' => 'cssclass']
+            );
+            $secondData = $method->invoke(\Yii::app()->twigRenderer, $this->getTestQuestion());
+
+            \Yii::app()->setLanguage('es');
+            $otherLanguageData = $method->invoke(\Yii::app()->twigRenderer, $this->getTestQuestion());
+        } finally {
+            \Yii::app()->setLanguage($originalLanguage);
+            \QuestionAttribute::model()->updateAll(
+                ['value' => 'test-class'],
+                'qid = :qid AND attribute = :attribute',
+                [':qid' => $question->qid, ':attribute' => 'cssclass']
+            );
+        }
+
+        $this->assertSame($firstData, $secondData);
+        $this->assertSame('test-class', $secondData['questionAttributes']['cssclass']);
+        $this->assertSame('es', $otherLanguageData['sCurrentLanguage']);
+        $this->assertSame('changed-class', $otherLanguageData['questionAttributes']['cssclass']);
+    }
+
     public function testRenderQuestionThrowsClearExceptionWhenQuestionTemplateQuestionIsNull()
     {
         $questionTemplate = new \QuestionTemplate();
         $questionTemplate->oQuestion = null;
 
-        $reflection = new \ReflectionClass(\QuestionTemplate::class);
-        $instanceProperty = $reflection->getProperty('instance');
-        $instanceProperty->setAccessible(true);
-        $originalInstance = $instanceProperty->getValue();
-        $instanceProperty->setValue(null, $questionTemplate);
-
-        try {
-            try {
-                \Yii::app()->twigRenderer->renderQuestion(
-                    '/survey/questions/answer/longfreetext/answer',
-                    []
-                );
-                $this->fail('Expected InvalidArgumentException was not thrown.');
-            } catch (\InvalidArgumentException $e) {
-                $this->assertStringContainsString('QuestionTemplate has no valid Question model', $e->getMessage());
-                $this->assertStringContainsString('question template id', $e->getMessage());
-            }
-        } finally {
-            $instanceProperty->setValue(null, $originalInstance);
-        }
+        $this->assertRenderQuestionThrowsWithQuestionTemplate($questionTemplate, 'received: NULL');
     }
 
     public function testRenderQuestionThrowsClearExceptionWhenQuestionTemplateQuestionHasWrongType()
@@ -115,23 +147,54 @@ class LSETwigViewRendererTest extends TestBaseClass
         $questionTemplate = new \QuestionTemplate();
         $questionTemplate->oQuestion = new \stdClass();
 
-        $reflection = new \ReflectionClass(\QuestionTemplate::class);
-        $instanceProperty = $reflection->getProperty('instance');
-        $instanceProperty->setAccessible(true);
+        $this->assertRenderQuestionThrowsWithQuestionTemplate($questionTemplate, 'received: ' . \stdClass::class);
+    }
+
+    /**
+     * Returns a private method of the twig renderer, made accessible.
+     *
+     * @param string $methodName
+     * @return \ReflectionMethod
+     */
+    private function getAccessibleMethod($methodName)
+    {
+        $method = new \ReflectionMethod(\Yii::app()->twigRenderer, $methodName);
+        return $method;
+    }
+
+    /**
+     * Returns a freshly loaded instance of the only question of the test survey.
+     *
+     * @return \Question
+     */
+    private function getTestQuestion()
+    {
+        $question = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'parent_qid' => 0]);
+        $this->assertInstanceOf(\Question::class, $question);
+        return $question;
+    }
+
+    /**
+     * Renders a question view with the given question template as current instance and asserts that
+     * renderQuestion() fails with a clear message. The original instance is restored afterwards.
+     *
+     * @param \QuestionTemplate $questionTemplate
+     * @param string $expectedMessagePart
+     * @return void
+     */
+    private function assertRenderQuestionThrowsWithQuestionTemplate(\QuestionTemplate $questionTemplate, $expectedMessagePart)
+    {
+        $instanceProperty = new \ReflectionProperty(\QuestionTemplate::class, 'instance');
         $originalInstance = $instanceProperty->getValue();
         $instanceProperty->setValue(null, $questionTemplate);
 
         try {
-            try {
-                \Yii::app()->twigRenderer->renderQuestion(
-                    '/survey/questions/answer/longfreetext/answer',
-                    []
-                );
-                $this->fail('Expected InvalidArgumentException was not thrown.');
-            } catch (\InvalidArgumentException $e) {
-                $this->assertStringContainsString('QuestionTemplate has no valid Question model', $e->getMessage());
-                $this->assertStringContainsString(\stdClass::class, $e->getMessage());
-            }
+            \Yii::app()->twigRenderer->renderQuestion('/survey/questions/answer/longfreetext/answer', []);
+            $this->fail('Expected InvalidArgumentException was not thrown.');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertStringContainsString('QuestionTemplate has no valid Question model', $e->getMessage());
+            $this->assertStringContainsString($expectedMessagePart, $e->getMessage());
+            $this->assertStringContainsString('view: /survey/questions/answer/longfreetext/answer', $e->getMessage());
         } finally {
             $instanceProperty->setValue(null, $originalInstance);
         }
