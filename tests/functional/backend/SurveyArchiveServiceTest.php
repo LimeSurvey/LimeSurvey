@@ -9,7 +9,7 @@ use LimeSurvey\Models\Services\SurveyDeactivate;
 /**
  * Tests for the archive management service (list, read, alias, export and delete archived survey data).
  *
- * @group archive
+ * @group import-export
  */
 class SurveyArchiveServiceTest extends TestBaseClass
 {
