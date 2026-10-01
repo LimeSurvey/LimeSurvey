@@ -28,4 +28,4 @@ jobs:
           fetch-depth: 0
 
       - name: Run codespell
-        uses: codespell-project/actions-codespell@master
+        uses: codespell-project/actions-codespell@v2
