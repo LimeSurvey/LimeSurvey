@@ -343,15 +343,10 @@ class LSActiveRecord extends CActiveRecord
         $sodium = Yii::app()->sodium;
         $iSurveyId = 0;
         $class = get_class($this);
-        if ($class == 'ParticipantAttribute' || $class == 'Participant') {
-            $sodium->setEncryptionMethod(App()->getConfig('CPDB_encryption_method', 'B'));
-        } elseif (method_exists($this, 'getSurveyId')) {
+        if ($class != 'ParticipantAttribute' && $class != 'Participant' && method_exists($this, 'getSurveyId')) {
             $iSurveyId = $this->getSurveyId();
-            if ($iSurveyId && $oSurvey = Survey::model()->findByPk($iSurveyId)) {
-                /* Set encryption method according to survey */
-                $sodium->setEncryptionMethod($oSurvey->oOptions->encryption_method);
-            } // $iSurveyId === 0
         }
+        $this->setSodiumEncryptionMethod($sodium);
         $encryptedAttributes = $this->getAllEncryptedAttributes($iSurveyId, $class);
         foreach ($attributes as $key => $attribute) {
             if (in_array($key, $encryptedAttributes)) {
@@ -377,15 +372,7 @@ class LSActiveRecord extends CActiveRecord
         if (!empty($value)) {
             // load sodium library
             $sodium = Yii::app()->sodium;
-            if (get_class($this) === 'ParticipantAttribute' || get_class($this) === 'Participant') {
-                $sodium->setEncryptionMethod(App()->getConfig('CPDB_encryption_method', 'B'));
-            } elseif (method_exists($this, 'getSurveyId')) {
-                $iSurveyId = $this->getSurveyId();
-                /* Set encryption method according to survey */
-                if ($iSurveyId && $oSurvey = Survey::model()->findByPk($iSurveyId)) {
-                    $sodium->setEncryptionMethod($oSurvey->oOptions->encryption_method);
-                } // $iSurveyId === 0
-            }
+            $this->setSodiumEncryptionMethod($sodium);
             return $sodium->decrypt($value);
         } else {
             // decrypt (empty) value ?
@@ -506,20 +493,40 @@ class LSActiveRecord extends CActiveRecord
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
-        $class = get_class($this);
-        if ($class === 'Participant') {
-            $sodium->setEncryptionMethod(App()->getConfig('CPDB_encryption_method', 'B'));
-        } elseif (method_exists($this, 'getSurveyId')) {
-            $iSurveyId = $this->getSurveyId();
-            /* Set encryption method according to survey */
-            if ($iSurveyId && $oSurvey = Survey::model()->findByPk($iSurveyId)) {
-                $sodium->setEncryptionMethod($oSurvey->oOptions->encryption_method);
-            } // $iSurveyId  === 0
-        }
+        $this->setSodiumEncryptionMethod($sodium);
 
         $attributes = $this->encryptAttributeValues($this->getAttributes(), true, false);
         foreach ($attributes as $key => $attribute) {
             $this->$key = $sodium->$action($attribute);
+        }
+    }
+
+    /**
+     * Set the encryption method of the sodium component according to this model:
+     * the CPDB_encryption_method setting for central participant database models,
+     * the survey encryption_method for survey related models.
+     * Leave the current encryption method if the survey or its options can not be found.
+     * @param LSSodium $sodium
+     * @return void
+     */
+    private function setSodiumEncryptionMethod($sodium)
+    {
+        $class = get_class($this);
+        if ($class === 'ParticipantAttribute' || $class === 'Participant') {
+            $sodium->setEncryptionMethod(App()->getConfig('CPDB_encryption_method', 'B'));
+            return;
+        }
+        if (!method_exists($this, 'getSurveyId')) {
+            return;
+        }
+        $iSurveyId = $this->getSurveyId();
+        if (!$iSurveyId) {
+            return;
+        }
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        if ($oSurvey && $oSurvey->oOptions) {
+            /* Set encryption method according to survey (inheritance already resolved in oOptions) */
+            $sodium->setEncryptionMethod($oSurvey->oOptions->encryption_method);
         }
     }
 

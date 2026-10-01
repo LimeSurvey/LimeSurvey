@@ -490,9 +490,9 @@ class Participant extends LSActiveRecord
         $sort = new CSort();
         /* Can not sort by encryted attribute */
         if (in_array('lastname', $encryptedAttributesColums)) {
-            $sort->defaultOrder = 'participant_id';
+            $sort->defaultOrder = 't.participant_id ASC';
         } else {
-            $sort->defaultOrder = 'lastname';
+            $sort->defaultOrder = 't.lastname ASC';
         }
         $sortAttributes = array(
             'lastname' => array(
@@ -595,7 +595,6 @@ class Participant extends LSActiveRecord
             $criteria->mergeWith($this->extraCondition);
         }
         $sort->attributes = $sortAttributes;
-        $sort->defaultOrder = 't.lastname ASC';
 
         // Users can only see:
         // 1) Participants they own;
@@ -2251,18 +2250,20 @@ class Participant extends LSActiveRecord
 
                 // First check if token already has a participant_id in central database
                 // We don't check with permission, see issue #20704
-                $existing = self::getDuplicates($oTokenDynamic->attributes, false);
+                $existingParticipants = self::getDuplicates($oTokenDynamic->attributes, false) ?: [];
                 /* If there is already an existing entry, add to the duplicate count */
-                if ($existing != null) {
+                if (!empty($existingParticipants)) {
                     $duplicate++;
-                    if ($overwriteman && !empty($aMapped)) {
-                        foreach ($aMapped as $cpdbatt => $tatt) {
-                            Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
+                    foreach ($existingParticipants as $existing) {
+                        if ($overwriteman && !empty($aMapped)) {
+                            foreach ($aMapped as $cpdbatt => $tatt) {
+                                Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
+                            }
                         }
-                    }
-                    if ($overwriteauto && !empty($aAutoMapped)) {
-                        foreach ($aAutoMapped as $cpdbatt => $tatt) {
-                            Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
+                        if ($overwriteauto && !empty($aAutoMapped)) {
+                            foreach ($aAutoMapped as $cpdbatt => $tatt) {
+                                Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
+                            }
                         }
                     }
                 } /* If there isn't an existing entry, create one! */ else {
@@ -2613,7 +2614,7 @@ class Participant extends LSActiveRecord
      * Else duplicate are found using firstname, lastname, email and owner_uid
      * @param string[]
      * @param false|integer owner_id to use, if false : get in alll CPDB, never used if  participant_id is set
-     * @return null|self[]
+     * @return false|self[] false if duplicates can not be checked (duplicate finder disabled with encrypted core attributes)
      */
     public static function getDuplicates(array $participant, $ownerid = false)
     {
@@ -2680,7 +2681,7 @@ class Participant extends LSActiveRecord
                 return Participant::model()->findAll(
                     'LOWER(firstname) = LOWER(:firstname)
                      AND LOWER(lastname) = LOWER(:lastname)
-                     AND LOWER(email) ILIKE LOWER(:email)
+                     AND LOWER(email) = LOWER(:email)
                      AND owner_uid = :owner_uid',
                     [
                         ':firstname' => $duplicateCriteriaAttributes['firstname'],
@@ -2693,7 +2694,7 @@ class Participant extends LSActiveRecord
                 return Participant::model()->findAll(
                     'LOWER(firstname) = LOWER(:firstname)
                      AND LOWER(lastname) = LOWER(:lastname)
-                     AND LOWER(email) ILIKE LOWER(:email)',
+                     AND LOWER(email) = LOWER(:email)',
                     [
                         ':firstname' => $duplicateCriteriaAttributes['firstname'],
                         ':lastname' => $duplicateCriteriaAttributes['lastname'],

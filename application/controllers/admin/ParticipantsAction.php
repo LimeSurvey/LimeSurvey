@@ -49,14 +49,6 @@ class ParticipantsAction extends SurveyCommonAction
     /** @var AjaxHelper $ajaxHelper */
     protected $ajaxHelper;
 
-    /* @inheritdoc */
-    public function filters()
-    {
-        return array(
-            'postOnly + reencryptData, recalculateDuplicateFinder'
-        );
-    }
-
     /**********************************************BASIC SETTINGS AND METHODS***********************************************/
 
     public function runWithParams($params)
@@ -1067,7 +1059,12 @@ class ParticipantsAction extends SurveyCommonAction
                                 continue;
                             }
                             foreach ($writearray as $attribute => $value) {
-                                if (in_array($attribute, $allowedfieldnames)) {
+                                /* Only columns present in the CSV : the empty defaults added for duplicate control must not overwrite stored values */
+                                if (
+                                    in_array($attribute, $allowedfieldnames)
+                                    && in_array($attribute, $firstline)
+                                    && $existingParticipant->hasAttribute($attribute)
+                                ) {
                                     $existingParticipant->$attribute = $value;
                                 }
                             }
@@ -1077,11 +1074,16 @@ class ParticipantsAction extends SurveyCommonAction
                                 //The mapped array contains the attributes we are
                                 //saving in this import
                                 foreach ($mappedarray as $attid => $attname) {
-                                    if (!empty($attname)) {
+                                    if (!empty($attname) && array_key_exists(strtolower((string) $attname), $writearray)) {
+                                        $oParticipantAttribute = new ParticipantAttribute();
+                                        $oParticipantAttribute->participant_id = $existingParticipant->participant_id;
+                                        $oParticipantAttribute->attribute_id = $attid;
+                                        $oParticipantAttribute->value = $writearray[strtolower((string) $attname)];
+                                        $oParticipantAttribute->encrypt();
                                         $bData = array(
-                                            'participant_id' => $existingParticipant->participant_id,
-                                            'attribute_id' => $attid,
-                                            'value' => $writearray[strtolower((string) $attname)]
+                                            'participant_id' => $oParticipantAttribute->participant_id,
+                                            'attribute_id' => $oParticipantAttribute->attribute_id,
+                                            'value' => $oParticipantAttribute->value
                                         );
                                         ParticipantAttribute::model()->updateParticipantAttributeValue($bData);
                                     } else {
@@ -2905,6 +2907,9 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function reencryptParticipantData()
     {
+        if (!App()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             throw new \CHttpException(403, gT('Access denied'));
         }
@@ -2961,6 +2966,9 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function recalculateDuplicateFinder()
     {
+        if (!App()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             throw new \CHttpException(403, gT('Access denied'));
         }

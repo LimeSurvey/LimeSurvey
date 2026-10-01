@@ -59,18 +59,19 @@ class countFunctions
                 if ($surveyEncryptionmethod == 'H') {
                     return self::setErrorText($surveyId, sprintf(gT("Question code %s is crypted, unable to get statistics with hardened encryption method."), CHtml::encode($qCode)));
                 }
-                /* Unable to compare with <, > (and <=, >=), but allow <> */
-                if (str_starts_with($comparaison, '>') ||(str_starts_with($comparaison, '<') && !str_starts_with($comparaison, '<>'))) {
+                /* Get the operator with the same rules than CDbCriteria::compare */
+                $op = "";
+                $value = (string) $comparaison;
+                if (preg_match('/^(?:\s*(<>|<=|>=|<|>|=))?(.*)$/', $value, $matches)) {
+                    $op = $matches[1];
+                    $value = $matches[2];
+                }
+                /* Unable to compare with <, > (and <=, >=), but allow <> and = */
+                if (in_array($op, ['<', '>', '<=', '>='])) {
                     return self::setErrorText($surveyId, sprintf(gT("Question code %s is crypted, unable to get statistics with comparisons."), CHtml::encode($qCode)));
                 }
-                /* Encrypt the value and keep <> and = operator */
-                if (preg_match('/^\s*(<>|=)?(.*)$/', $comparaison, $matches)) {
-                    $op = $matches[1];
-                    $comparaison = $matches[2];
-                } else {
-                    $op = "";
-                }
-                $comparaison = $op . LSActiveRecord::encryptSingle($comparaison, $surveyEncryptionmethod); // $surveyEncryptionmethod is B currently
+                /* Encrypt only the value and keep the operator */
+                $comparaison = $op . LSActiveRecord::encryptSingle($value, $surveyEncryptionmethod); // $surveyEncryptionmethod is B currently
             }
         }
         $oCriteria->compare($sQuotedColumn, $comparaison);

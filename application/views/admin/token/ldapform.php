@@ -77,7 +77,7 @@
                                 if (count($aCoreEncryptedAttributes) > 0)  { // Construct the help string
                                     switch($surveyEncryptionmethod) {
                                         case 'B':
-                                            $help = gT("Duplicate check uses: First Name, Last Name, Email. Encryted columns use case-sensitive comparison");
+                                            $help = gT("Duplicate check uses: First Name, Last Name, Email. Encrypted columns use case-sensitive comparison");
                                             break;
                                         case 'H';
                                             switch(count($aCoreNoEncryptedAttributes)) {
