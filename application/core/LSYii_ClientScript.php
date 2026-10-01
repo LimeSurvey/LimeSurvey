@@ -47,6 +47,13 @@ class LSYii_ClientScript extends CClientScript
      */
     protected $packagesNotPublishedByAssetManager = ['ckeditor'];
     /**
+     * URLs of the custom.css files of the survey theme packages (survey-template-*).
+     * They are rendered at the end of the head section, so they override everything else,
+     * including the theme options inline styles.
+     * @var string[]
+     */
+    protected $templateCustomCssFiles = [];
+    /**
      * cssFiles is protected on CClientScript. It can be useful to access it for debugging purpose
      * @return array
      */
@@ -378,9 +385,13 @@ class LSYii_ClientScript extends CClientScript
 
     /**
      * Renders the specified core javascript library.
+     * Also collects the custom.css files of the survey theme packages, see $templateCustomCssFiles.
+     *
+     * @return void
      */
     public function renderCoreScripts()
     {
+        $this->templateCustomCssFiles = [];
         if ($this->coreScripts === null) {
                     return;
         }
@@ -403,6 +414,9 @@ class LSYii_ClientScript extends CClientScript
             if (!empty($package['css'])) {
                 foreach ($package['css'] as $css) {
                                     $cssFiles[$baseUrl . '/' . $css] = '';
+                    if (strpos((string) $name, 'survey-template-') === 0 && basename((string) $css) === 'custom.css') {
+                        $this->templateCustomCssFiles[] = $baseUrl . '/' . $css;
+                    }
                 }
             }
         }
@@ -435,11 +449,15 @@ class LSYii_ClientScript extends CClientScript
 
     /**
      * Inserts the scripts in the head section.
+     * The custom.css files of the survey theme are inserted at the end of the head section,
+     * after the theme options inline styles, so they can override any other property.
      * @param string $output the output to be inserted with scripts.
+     * @return void
      */
     public function renderHead(&$output)
     {
         $html = '';
+        $customCssHtml = '';
 
         foreach ($this->metaTags as $meta) {
                     $html .= CHtml::metaTag($meta['content'], null, null, $meta) . "\n";
@@ -448,7 +466,20 @@ class LSYii_ClientScript extends CClientScript
                     $html .= CHtml::linkTag(null, null, null, null, $link) . "\n";
         }
         foreach ($this->cssFiles as $url => $media) {
-                    $html .= CHtml::cssFile($url, $media) . "\n";
+            if (in_array($url, $this->templateCustomCssFiles, true)) {
+                $customCssHtml .= CHtml::cssFile($url, $media) . "\n";
+            } else {
+                $html .= CHtml::cssFile($url, $media) . "\n";
+            }
+        }
+        if ($customCssHtml !== '') {
+            $count = 0;
+            $output = preg_replace('/(<\\/head\s*>)/is', '<###customcss###>$1', $output, 1, $count);
+            if ($count) {
+                $output = str_replace('<###customcss###>', $customCssHtml, $output);
+            } else {
+                $html .= $customCssHtml;
+            }
         }
 
         //Propagate our debug settings into the javascript realm
