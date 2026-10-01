@@ -8,7 +8,7 @@ export const getSurveyAccessLink = ({
   const alias = survey.languageSettings[language]?.alias?.trim() || ''
   const link = alias || survey.sid
   const lang =
-    language && language !== survey.langauge ? `?lang=${language}&` : '' // codespell:ignore langauge
-  const params = isPreviewLink ? '' : `${lang}newtest=Y`
+    language && language !== survey.language ? `lang=${language}&` : ''
+  const params = isPreviewLink ? '' : `?${lang}newtest=Y`
   return getSiteUrl(`/${link}${params}`)
 }
