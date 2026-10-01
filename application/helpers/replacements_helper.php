@@ -286,7 +286,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['CHECKJAVASCRIPT'] = '';
     $coreReplacements['CLEARALL'] = $_clearall;
     $coreReplacements['QUEXMLPDF'] = $_quexmlpdf;
-    $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reaons
+    $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reasons
     $coreReplacements['COMPLETED'] = $redata['completed'] ?? ''; // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['ENDTEXT'] = $_endtext;

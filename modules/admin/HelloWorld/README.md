@@ -159,7 +159,7 @@ Notice 2 things:
 2. The survey title is reached via "currentLanguageSettings->surveyls_title". It's calling a the related table "surveys_languagesettings" and retrieves it's field "surveyls_title". In a simple use case, we could use the AR pattern following rules inside defined in the model. But LimeSurvey being complex, here we're calling the function Survey::getCurrentLanguageSettings(). See:
 https://github.com/LimeSurvey/LimeSurvey/blob/bdeeb8edc4eca6d15f219bb1642e6457c46d213b/application/models/Survey.php#L340-L353
 
-So, if you want to see what you could do with the current edited survey, we suggest you to have a look to the methods of the survey / question / question group / token / etc models. Most of the time, your modules will consist in writting data in the survey related tables.  
+So, if you want to see what you could do with the current edited survey, we suggest you to have a look to the methods of the survey / question / question group / token / etc models. Most of the time, your modules will consist in writing data in the survey related tables.  
 
 > Show the bread crumb
 
@@ -269,9 +269,9 @@ It says hello to the logged in user, shows unsafely the value of the URL variabl
 
 ## That's all for now !
 
-Hope that quick HelloWorld will help you to develop custom components for the LimeSurvey admin interface. For now it's very basic, but you can already do very advanced stuff. Most of the current LimeSurvey module could be moved here now. What's really missing is a way for you to create new tables and update them, a way to provide your own tranlsation files. Remember that you can already register javascript via the normal Yii methods.
+Hope that quick HelloWorld will help you to develop custom components for the LimeSurvey admin interface. For now it's very basic, but you can already do very advanced stuff. Most of the current LimeSurvey module could be moved here now. What's really missing is a way for you to create new tables and update them, a way to provide your own translation files. Remember that you can already register javascript via the normal Yii methods.
 
-## Comming soon
+## Coming soon
 
 
 Installer to read a manifest, to create menus, to create / update database tables, to add custom translation files (that will be added to limesurvey core translation files).

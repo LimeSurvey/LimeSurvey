@@ -778,7 +778,7 @@ class User extends LSActiveRecord
                     )
                 )
                 || (!$permission_superadmin_read
-                    && ($this->uid != App()->session['loginID'] // One cant delete onesself
+                    && ($this->uid != App()->session['loginID'] // One can't delete onesself
                         && (
                             $permission_users_delete // Global permission to delete users
                             && $this->parent_id == App()->session['loginID'] // User is owned by current admin

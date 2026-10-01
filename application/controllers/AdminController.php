@@ -378,7 +378,7 @@ class AdminController extends LSYii_Controller
     /**
      * This function returns an array similar to getActionClasses()
      * It will generate it by reading the directories names inside of lsadminmodulesrootdir
-     * So, by convention, admin module action class must be indentical to directory name
+     * So, by convention, admin module action class must be identical to directory name
      *
      */
     public function getAdminModulesActionClasses()

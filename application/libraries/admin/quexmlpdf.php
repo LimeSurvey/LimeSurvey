@@ -559,7 +559,7 @@ class quexmlpdf extends pdf
     protected $backgroundColourQuestion = array(241);
 
     /**
-     * The bacground colour of a section
+     * The background colour of a section
      *
      * @var bool  Defaults to array(200,200,200).
      * @since 2010-09-20
@@ -1730,7 +1730,7 @@ class quexmlpdf extends pdf
         }
 
         $this->setBackground('question');
-        return array($x + $linelength, $y, $x + $linelength + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the posistion for banding
+        return array($x + $linelength, $y, $x + $linelength + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the position for banding
     }
 
     /**
@@ -1801,7 +1801,7 @@ class quexmlpdf extends pdf
         }
 
         $this->setBackground('question');
-        return array($x, $y, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the posistion for banding
+        return array($x, $y, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the position for banding
     }
 
 

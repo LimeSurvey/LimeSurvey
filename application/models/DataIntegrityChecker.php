@@ -822,7 +822,7 @@ class DataIntegrityChecker
         // Fix subquestions
         fixSubquestions();
 
-        /*** Check for active survey tables with missing survey entry or where survey entry is inactivate and rename them ***/
+        /*** Check for active survey tables with missing survey entry or where survey entry is inactive and rename them ***/
         $sDBPrefix = Yii::app()->db->tablePrefix;
         $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{responses}}\_%'))->queryColumn();
         $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}} where active='Y'")->queryColumn();

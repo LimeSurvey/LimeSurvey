@@ -111,7 +111,7 @@ export const useSurvey = (id) => {
     // Return currentData if the buffer is not empty.
     // We are also checking if the data is defined because when the app first loads the data or the survey is not defined yet.
     if ((operationsBuffer?.length || isPatchSurveyRunning) && data) {
-      // we should schdule a refetch to update the survey data.
+      // we should schedule a refetch to update the survey data.
       setSurveyRefreshRequired(true)
       queryClient.cancelQueries({ queryKey: [STATES.SURVEY] })
       setLoadedSurveyId(id)

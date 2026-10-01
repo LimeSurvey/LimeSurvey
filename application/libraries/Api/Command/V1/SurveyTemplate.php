@@ -150,7 +150,7 @@ class SurveyTemplate implements CommandInterface
      */
     private function getTemplateData($surveyId, $language)
     {
-        // @todo This shouldnt require a HTTP request we should be able to
+        // @todo This shouldn't require a HTTP request we should be able to
         // - render survey content internally. To handle this correctly
         // - we should refactor the survey view functionality to make it
         // - reusable (move it out of the controllers).

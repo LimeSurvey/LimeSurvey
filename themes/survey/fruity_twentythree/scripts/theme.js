@@ -334,7 +334,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.TemplateCoreClass = void 0;
 var _old_template_core_pre = require("./old_template_core_pre.js");
 /**
- * @file Default template functionnality
+ * @file Default template functionality
  * @copyright LimeSurvey <http://www.limesurvey.org>
  * @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-v3-or-Later
  */
@@ -344,7 +344,7 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
     /**
      * Dialog and confirm
      */
-    /* showStartPopups : replace core function : allow HTML and use it. Unusuable with ajax */
+    /* showStartPopups : replace core function : allow HTML and use it. Unusable with ajax */
     showStartPopups: function showStartPopups() {
       if (LSvar.showpopup == 1 && $.isArray(LSvar.startPopups)) {
         var startPopups = LSvar.startPopups.map(function (text) {
@@ -417,7 +417,7 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
             parent.addClass('tip-was-hidden', 1);
           }
           var questionContainer = $(this).parents('div.question-container');
-          questionContainer.addClass('input-error'); /* No difference betwwen error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+          questionContainer.addClass('input-error'); /* No difference between error after submit and error before submit : think (Shnoulle) it's better to have a difference */
           $(this).find('span.fa-exclamation-circle').removeClass('d-none');
         });
         $(this).on('classChangeGood', function () {

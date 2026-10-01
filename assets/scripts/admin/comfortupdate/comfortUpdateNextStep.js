@@ -39,7 +39,7 @@ $.fn.comfortUpdateNextStep = function(options)
 
 
                 // The ajax request call an action to update controller. This action is defined inside the form.
-                // For example, the forms .launchUpdateForm inside the view _updatesavailable calls update/sa/getwelcome wich will itself calls the update server to get the welcome message.
+                // For example, the forms .launchUpdateForm inside the view _updatesavailable calls update/sa/getwelcome which will itself calls the update server to get the welcome message.
                 $.ajax({
                     url: $(this).attr('action'),
                     type: $(this).attr('method'),

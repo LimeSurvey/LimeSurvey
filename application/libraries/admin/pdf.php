@@ -135,7 +135,7 @@ require(APPPATH . 'config/tcpdf' . EXT);
 (!defined('HEAD_MAGNIFICATION')) ? (define('HEAD_MAGNIFICATION', 1.1)) : ''; // never used in TCPDF 6.
 
 /**
-* height of cell repect font height
+* height of cell respect font height
 */
 (!defined('K_CELL_HEIGHT_RATIO')) ? (define('K_CELL_HEIGHT_RATIO', $tcpdf['cell_height_ratio'] ?? 1.25)) : '';
 

@@ -12,7 +12,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-// Some function can be launch before document ready (and seems intersting)
+// Some function can be launch before document ready (and seems interesting)
 // But put it in ready : allowing update by template.js (before moving at end of HTML : best place */
 $(document).on('ready pjax:scriptcomplete',function()
 {
@@ -34,7 +34,7 @@ $(document).on('ready pjax:scriptcomplete',function()
 
 /**
  * setJsVar : Get all global used var
- * @deprecated in 3.0.0 not lauched under certain condition … …
+ * @deprecated in 3.0.0 not launched under certain condition … …
  */
 function setJsVar(){
     bFixNumAuto=LSvar.bFixNumAuto;
@@ -197,7 +197,7 @@ function show_hide_group(group_id)
 
     // First let's show the group description, otherwise, all its childs would have the hidden status
     $("#group-" + group_id).show();
-    // If all questions in this group are conditionnal
+    // If all questions in this group are conditional
     // Count visible questions in this group
         questionCount=$("div#group-" + group_id).find("div[id^='question']:visible").size();
 

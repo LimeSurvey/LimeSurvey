@@ -259,7 +259,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             ldap_close($ldapconn); // all done? close connection
             return null;
         }
-        // Now prepare the search fitler
+        // Now prepare the search filter
         if ($extrauserfilter != "") {
             $usersearchfilter = "(&($searchuserattribute=$ldapEscapedUsername)$extrauserfilter)";
         } else {
@@ -524,7 +524,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 ldap_close($ldapconn); // all done? close connection
                 return;
             }
-            // Now prepare the search fitler
+            // Now prepare the search filter
             if ($extrauserfilter != "") {
                 $usersearchfilter = "(&($searchuserattribute=$ldapEscapedUsername)$extrauserfilter)";
             } else {

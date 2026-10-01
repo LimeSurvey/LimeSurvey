@@ -104,7 +104,7 @@ class Save
         // - the "srid" for the responses_x row id
         // - "saved_thisstep" which is the step the user is up to in this survey
         // - "saved_ip" which is the ip address of the submitter
-        // - "saved_date" which is the date ofthe saved response
+        // - "saved_date" which is the date of the saved response
         // - an "identifier" which is like a username
         // - a "password"
         // - "fieldname" which is the fieldname of the saved response

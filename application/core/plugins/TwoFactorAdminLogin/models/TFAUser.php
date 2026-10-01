@@ -49,7 +49,7 @@ class TFAUser extends User
     }
 
     /**
-     * Returns the action columsn buttons
+     * Returns the action columns buttons
      *
      * @return string
      */

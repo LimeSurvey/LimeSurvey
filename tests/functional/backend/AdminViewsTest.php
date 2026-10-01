@@ -17,7 +17,7 @@ use ls\tests\TestBaseClassView;
 
 /**
  * Class AdminViewsTest
- * This test loops through all basic admin view pages and cheks if they open withour errors
+ * This test loops through all basic admin view pages and checks if they open withour errors
  *
  * @package ls\tests
  * @group adminviews

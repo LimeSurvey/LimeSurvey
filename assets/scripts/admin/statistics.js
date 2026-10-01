@@ -303,7 +303,7 @@ LS.Statistics2 = function () {
      */
     var loadBrowse = (function () {
 
-        // Static variable for function loadBrowse, catched through closure
+        // Static variable for function loadBrowse, caught through closure
         // Use this to track if we should hide/show responses
         var toggle = {};
 
