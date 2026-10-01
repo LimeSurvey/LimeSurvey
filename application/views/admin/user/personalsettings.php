@@ -401,10 +401,16 @@ echo $oQuestionSelector->getModal();
                                     'answeroptionprefix',
                                     ($aUserSettings['answeroptionprefix'] ?? 'AO'),
                                     [
-                                        'class'   => "form-control",
-                                        'pattern' => "[A-Za-z]{0,3}"
+                                        'class'            => "form-control",
+                                        'pattern'          => "[A-Za-z]{0,3}",
+                                        'placeholder'      => gT("e.g. ANS"),
+                                        'title'            => gT("Enter up to 3 letters (A-Z)."),
+                                        'aria-describedby' => 'answeroptionprefix-help'
                                     ]
                                 ); ?>
+                                <div id="answeroptionprefix-help" class="form-text">
+                                    <?php eT("Enter up to 3 letters (A-Z)."); ?>
+                                </div>
                             </div>
                         </div>
                         <!-- Basic non numerical part of subquestions -->
@@ -415,11 +421,17 @@ echo $oQuestionSelector->getModal();
                                     'subquestionprefix',
                                     ($aUserSettings['subquestionprefix'] ?? 'SQ'),
                                     [
-                                        'class'   => "form-control",
-                                        'pattern' => "[A-Za-z]{0,3}"
+                                        'class'            => "form-control",
+                                        'pattern'          => "[A-Za-z]{0,3}",
+                                        'placeholder'      => gT("e.g. SUB"),
+                                        'title'            => gT("Enter up to 3 letters (A-Z)."),
+                                        'aria-describedby' => 'subquestionprefix-help'
                                     ]
                                 );
 ?>
+                                <div id="subquestionprefix-help" class="form-text">
+                                    <?php eT("Enter up to 3 letters (A-Z)."); ?>
+                                </div>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6">

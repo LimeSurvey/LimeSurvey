@@ -34,9 +34,10 @@ Show the privacy message and the data security message will be available in a mo
     <div class="row row-cols-lg-auto align-items-center datasecurity-checkbox-container">
         <div class="col-12 checkbox-item">
             <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" {{ privacychecked }} type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" aria-describedby="{{ describedbyprivacy }}"/>
+            {% set dataSecurityNoticeLabel = include('./subviews/privacy/privacy_datasecurity_notice_label.twig') %}
             <label for="datasecurity_accepted"
                    class="control-label checkbox-label form-check-label datasecurity-checkbox-label {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">
-                {{ aSurveyInfo.datasecurity_notice_label }}
+                {{ dataSecurityNoticeLabel }}
             </label>
         </div>
     </div>

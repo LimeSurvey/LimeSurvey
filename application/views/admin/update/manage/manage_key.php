@@ -35,8 +35,11 @@
                 <td>
                     <?php if (!App()->getConfig('hide_update_key')) : ?>
                         <?php echo $updateKey; ?>
-                    <?php else : ?>
-                        <em>XXXXXXXXXXX</em>
+                    <?php else :
+                        $maskedKeyLength = max(mb_strlen($updateKey) - 2, 0);
+                        $maskedKey = mb_substr($updateKey, 0, 1) . str_repeat('*', $maskedKeyLength) . mb_substr($updateKey, -1);
+                    ?>
+                        <em><?= CHtml::encode($maskedKey) ?></em>
                     <?php endif; ?>
                 </td>
                 <td>

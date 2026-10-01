@@ -12,7 +12,7 @@
 <div class="container-center" id="selector--inputondemand-{{ basename }}">
     <div class="row">
         <div class="col-12">
-            <ul class="{{ coreClass }} list-unstyled form-horizontal selector--inputondemand-list" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+            <ul id="inputondemand-list-{{ basename }}" class="{{ coreClass }} list-unstyled form-horizontal selector--inputondemand-list" role="group" aria-labelledby="ls-question-text-{{ basename }}">
                 {% if aRows is empty %}
                     {% include 'survey/questions/answer/multipleshorttext/empty.twig' %}
                 {% else %}
@@ -24,7 +24,7 @@
             </ul>
         </div>
         <div class="col-12 text-end">
-            <button type="button" class="btn btn-outline-secondary selector--inputondemand-addlinebutton">
+            <button type="button" class="btn btn-outline-secondary selector--inputondemand-addlinebutton" aria-controls="inputondemand-list-{{ basename }}" aria-describedby="inputondemand-addline-description-{{ basename }}">
                 {% set riClass = '' %}
                 {% if question_template_attribute.addlineicon is same as("plus") %}
                     {% set riClass = 'ri-add-line' %}
@@ -37,9 +37,10 @@
                 {% elseif question_template_attribute.addlineicon is same as("arrow-down") %}
                     {% set riClass = 'ri-arrow-down-fill' %}
                 {% endif %}
-                <i class="fa fa-{{question_template_attribute.addlineicon}} {{ riClass }}"></i>
+                <i class="fa fa-{{question_template_attribute.addlineicon}} {{ riClass }}" aria-hidden="true"></i>
                 &nbsp;{{gT("Add line")}}
             </button>
+            <span id="inputondemand-addline-description-{{ basename }}" class="visually-hidden">{{ gT("Adds a new input line and moves the focus to it.") }}</span>
         </div>
     </div>
 </div>

@@ -171,8 +171,9 @@ class TemplateConfig extends CActiveRecord
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 if (!$force && App()->twigRenderer->getPathOfFile($sFile)) {
-                    // return dummy template , new self broke (No DB : TODO : must fix init of self)
-                    $templateConfig = new TemplateConfig();
+                    // File is provided by a plugin: return a dummy template.
+                    // A null scenario skips CActiveRecord init, which would look for a non-existent DB table.
+                    $templateConfig = new TemplateConfig(null);
                     $templateConfig->sTemplateName = null;
                     return $templateConfig;
                 }
@@ -663,7 +664,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['modalfooterlink']   = ' btn btn-outline-secondary ';
 
         $aClassAndAttributes['attr']['modalheader']       = ' style="min-height:40px;" '; // Todo: move to CSS
-        $aClassAndAttributes['attr']['modalclosebutton']  = ' type="button" data-bs-dismiss="modal" aria-hidden="true" ';
+        $aClassAndAttributes['attr']['modalclosebutton']  = ' type="button" data-bs-dismiss="modal" aria-label="' . gT("Close") . '" ';
         $aClassAndAttributes['attr']['modalfooterlink']   = ' href="#" data-bs-dismiss="modal" ';
 
         $aClassAndAttributes['attr']['alertmodal'] = $aClassAndAttributes['attr']['modaldialog'] = $aClassAndAttributes['attr']['modalcontent'] = $aClassAndAttributes['attr']['modaltitle'] = $aClassAndAttributes['attr']['modalbody'] = $aClassAndAttributes['attr']['modalfooter'] = '';

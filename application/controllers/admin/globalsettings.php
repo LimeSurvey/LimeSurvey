@@ -2,7 +2,6 @@
 
 use LimeSurvey\DI;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
-
 /*
 * LimeSurvey
 * Copyright (C) 2007-2026 The LimeSurvey Project Team

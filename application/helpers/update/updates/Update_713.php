@@ -2,49 +2,31 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use CException;
-
 class Update_713 extends DatabaseUpdateBase
 {
     /**
-     * Adds the encryption_method column to surveys and surveys_groupsettings tables.
-     * Sets the global default (gsid=0) to 'B' (Basic encryption method).
+     * Backfill plugin_type for rows left NULL on MSSQL installations that
+     * ran the addColumn('plugin_type', ...) migration before it was fixed
+     * to use uppercase DEFAULT/NULL keywords (see bug #19578). MSSQL only
+     * applies a column's DEFAULT to pre-existing rows when the ADD COLUMN
+     * statement includes WITH VALUES, so legacy user plugin rows were left
+     * with plugin_type = NULL, causing an unguarded pluginDirs[] lookup to
+     * fail in Plugin::getDir().
+     *
+     * The plugins table had no plugin_type column before Update_402, and
+     * every plugin registered before that point was a user plugin (core
+     * plugins are always inserted with an explicit plugin_type), so NULL
+     * rows can be safely backfilled to 'user'.
      *
      * @inheritDoc
-     * @throws CException
      */
+    #[\Override]
     public function up()
     {
-        /* Create or alter encryption_method column, handling cases where dev git users may already have it */
-        $surveysTable = $this->db->schema->getTable('{{surveys}}', true);
-        if (!isset($surveysTable->columns['encryption_method'])) {
-            addColumn('{{surveys}}', 'encryption_method', "string(1) DEFAULT 'I'");
-        } else {
-            alterColumn('{{surveys}}', 'encryption_method', "string(1) DEFAULT 'I'");
-        }
-
-        $groupSettingsTable = $this->db->schema->getTable('{{surveys_groupsettings}}', true);
-        if (!isset($groupSettingsTable->columns['encryption_method'])) {
-            addColumn('{{surveys_groupsettings}}', 'encryption_method', "string(1) DEFAULT 'I'");
-        } else {
-            alterColumn('{{surveys_groupsettings}}', 'encryption_method', "string(1) DEFAULT 'I'");
-        }
-        /* Set global one to B (basic) if it's not hardened (only if I), didn't update any response table */
-        $this->db->createCommand()->update("{{surveys_groupsettings}}", ["encryption_method" => "B"], "gsid = 0 AND (encryption_method IS NULL OR encryption_method <> 'H')");
-
-        /* Create the duplicatefinder in participants for checking duplicate */
-        $participantsTable = $this->db->schema->getTable('{{participants}}', true);
-        if (!isset($participantsTable->columns['duplicatefinder'])) {
-            addColumn('{{participants}}', 'duplicatefinder', "string(64) NOT NULL DEFAULT ''");
-        } else {
-            alterColumn('{{participants}}', 'duplicatefinder', "string(64) NOT NULL DEFAULT ''");
-        }
-        /* Add the index , do not break if it already exist */
-        try {
-            setTransactionBookmark();
-            $this->db->createCommand()->createIndex('{{participants_duplicatefinder}}', '{{participants}}', ['duplicatefinder'], false);
-        } catch (\Exception $e) {
-            rollBackToTransactionBookmark();
-        }
+        $this->db->createCommand()->update(
+            '{{plugins}}',
+            ['plugin_type' => 'user'],
+            'plugin_type IS NULL'
+        );
     }
 }

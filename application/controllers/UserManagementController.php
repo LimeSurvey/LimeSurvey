@@ -70,15 +70,9 @@ class UserManagementController extends LSBaseController
         $model->setAttributes(Yii::app()->getRequest()->getParam('User'), false);
         $aData['model'] = $model;
        // $aData['columnDefinition'] = $model->getManagementColums();
-        $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-        $aData['formUrl'] = $this->createUrl('userManagement/index');
+         $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+         $aData['formUrl'] = $this->createUrl('userManagement/index');
 
-        $aData['massiveAction'] = $this->renderPartial(
-            'massiveAction/_selector',
-            ['userid' => $model->uid],
-            true,
-            false
-        );
 
 
         $aData['topbar']['title'] = gT('User management');
@@ -93,7 +87,6 @@ class UserManagementController extends LSBaseController
             //'columnDefinition' => $aData['columnDefinition'],
             'pageSize' => $aData['pageSize'],
             'formUrl' => $aData['formUrl'],
-            'massiveAction' => $aData['massiveAction'],
         ]);
     }
 
@@ -953,10 +946,12 @@ class UserManagementController extends LSBaseController
                             $oUser->setAttribute($attribute, $value);
                         }
                     }
+                    $saveAttributes = array_keys($aNewUser);
                     if (!empty($aNewUser['password']) && $aNewUser['password'] != ' ') {
                         $oUser->setPassword($aNewUser['password'], false);
+                        $saveAttributes[] = 'session_token';
                     }
-                    $save = $oUser->save(true, array_keys($aNewUser));
+                    $save = $oUser->save(true, $saveAttributes);
                     if ($save) {
                         $updated[] = $aNewUser;
                     }
@@ -1618,7 +1613,7 @@ class UserManagementController extends LSBaseController
         $oUser->setAttributes($aUser);
 
         if (isset($aUser['password']) && $aUser['password']) {
-            $oUser->password = password_hash((string) $aUser['password'], PASSWORD_DEFAULT);
+            $oUser->setPassword((string) $aUser['password']);
         }
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->save();

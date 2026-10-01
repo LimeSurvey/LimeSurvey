@@ -46,12 +46,9 @@ export const getSurveyPanelConfig = () => {
       panel: 'translations',
       defaultMenu: SURVEY_MENU_TITLES.quickTranslations,
       disabled: (survey) => survey?.languages?.length <= 1,
-      disabledMessage:
-        t('Translations') +
-        ': ' +
-        t(
-          'Currently there are no additional languages configured for this survey.'
-        ),
+      disabledMessage: t(
+        'Translations: Currently there are no additional languages configured for this survey.'
+      ),
       icon: SurveyTranslationIcon,
       getRedirectUrl: (surveyId) =>
         getSiteUrl(`/quickTranslation/index?surveyid=${surveyId}`),

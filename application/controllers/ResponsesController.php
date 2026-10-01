@@ -547,8 +547,8 @@ class ResponsesController extends LSBaseController
                 $oSavedControlModel->setAttributes($aFilters, false);
             }
             $aData['savedModel'] = $oSavedControlModel;
-            if (App()->request->getPost('savedResponsesPageSize')) {
-                App()->user->setState('savedResponsesPageSize', App()->request->getPost('savedResponsesPageSize'));
+            if (App()->request->getParam('savedResponsesPageSize')) {
+                App()->user->setState('savedResponsesPageSize', (int)App()->request->getParam('savedResponsesPageSize'));
             }
             $aData['savedResponsesPageSize'] = App()->user->getState('savedResponsesPageSize', App()->params['defaultPageSize']);
             $aViewUrls[] = 'savedlist_view';
@@ -647,7 +647,7 @@ class ResponsesController extends LSBaseController
 
         // "Select all" posts an explicit flag: act on every response matching the grid filters
         if (empty($aResponseId) && App()->request->getPost('selectAll')) {
-            $aResponseId = $this->getAllResponseIds($surveyId);
+            $aResponseId = $this->removeSelectAllExcludedIds($this->getAllResponseIds($surveyId));
         }
 
         $errors = 0;
@@ -870,7 +870,7 @@ class ResponsesController extends LSBaseController
 
         // "Select all" posts an explicit flag: act on every response matching the grid filters
         if ($responseId === null && empty($responseIds) && $request->getPost('selectAll')) {
-            $responseIds = $this->getAllResponseIds($surveyId);
+            $responseIds = $this->removeSelectAllExcludedIds($this->getAllResponseIds($surveyId));
         }
 
         Yii::import('application.helpers.admin.ajax_helper', true);
@@ -1218,6 +1218,19 @@ class ResponsesController extends LSBaseController
         return $model->getCommandBuilder()
             ->createFindCommand($model->tableSchema, $criteria)
             ->queryColumn();
+    }
+
+    private function removeSelectAllExcludedIds(array $responseIds): array
+    {
+        $excludedIds = json_decode(App()->request->getPost('excludedItems', '[]'), true);
+        if (!is_array($excludedIds) || empty($excludedIds)) {
+            return $responseIds;
+        }
+
+        $excludedIds = array_flip(array_map('strval', $excludedIds));
+        return array_values(array_filter($responseIds, function ($responseId) use ($excludedIds) {
+            return !isset($excludedIds[(string) $responseId]);
+        }));
     }
 
     /**

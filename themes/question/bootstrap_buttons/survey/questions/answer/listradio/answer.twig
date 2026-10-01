@@ -14,8 +14,8 @@
 <!-- List Radio -->
 <!-- answer -->
 {{ sTimer }}
-<div class="container-fluid">
-    <ul class="row {{coreClass}} list-unstyled" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{name }}">
+<div>
+    <ul class="{{coreClass}} list-unstyled bootstrap-buttons-list" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{name }}">
     {# rows/answer_row.php #}
     {{ sRows }}
     </ul>
@@ -43,9 +43,9 @@
             >
         </div>
         {% if otherTextRight is defined and otherTextRight|length > 0 %}
-            <div class="othertext-suffix-label button-suffix col-auto">
+            <label class="othertext-suffix-label button-suffix col-auto" for="answer{{ name }}othertext">
                 {{ processString(otherTextRight) }}
-            </div>
+            </label>
         {% endif %}
     </div>
 </div>

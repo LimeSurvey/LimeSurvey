@@ -888,6 +888,33 @@ class TemplateManifest extends TemplateConfiguration
         self::changeNameInDOM($oNewManifest, $sNewName);
         self::changeDateInDOM($oNewManifest);
         $oNewManifest->save($sConfigPath . "/config.xml");
+        self::updateChildrenExtends($sOldName, $sNewName);
+    }
+
+    /**
+     * Update the <extends> node in the manifest of every custom theme (installed or not)
+     * that references $sOldName, so child themes keep resolving their renamed parent.
+     *
+     * @param string $sOldName The previous name of the parent template
+     * @param string $sNewName The new name of the parent template
+     */
+    public static function updateChildrenExtends($sOldName, $sNewName)
+    {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $aUserThemes = SurveyThemeHelper::getTemplateInFolder(Yii::app()->getConfig('userthemerootdir'));
+        foreach ($aUserThemes as $sThemeName => $sThemePath) {
+            if ($sThemeName === $sNewName || !file_exists($sThemePath . '/config.xml')) {
+                continue;
+            }
+            $oManifest = self::getManifestDOM($sThemePath);
+            $oConfig = $oManifest->getElementsByTagName('config')->item(0);
+            $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
+            $oExtendsNode = $ometadata->getElementsByTagName('extends')->item(0);
+            if ($oExtendsNode !== null && $oExtendsNode->nodeValue === $sOldName) {
+                self::changeExtendsInDom($oManifest, $sNewName);
+                $oManifest->save($sThemePath . '/config.xml');
+            }
+        }
     }
 
     /**

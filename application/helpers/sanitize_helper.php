@@ -574,6 +574,21 @@ function check_absolute_url($string)
 }
 
 /**
+ * Returns true if the argument looks like a path/URL to an image file (absolute or relative).
+ * @param string $string
+ * @return boolean
+ */
+function check_image_url($string)
+{
+    if (!is_string($string) || $string === '') {
+        return false;
+    }
+    // Strip query string/fragment before checking the file extension.
+    $path = strtok($string, '?#');
+    return (bool) preg_match('/\.(jpe?g|png|gif|bmp|webp|svg)$/i', (string) $path);
+}
+
+/**
  * Remove all chars from $value that are not alphanumeric or dash or underscore
  *
  * @param string $value

@@ -97,15 +97,14 @@ $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->encrypti
         } ?>
 
         <?php
-        // the massive actions dropup button
-        $massiveAction = App()->getController()->renderPartial(
-            '/responses/massive_actions/_selector',
-            [
-                'selectAllMaxCount' => $selectAllMaxCount,
-                'numTotalAnswers'   => $numTotalAnswers,
-            ],
-            true
-        );
+        // Render the floating action bar (cross-page selection, fixed at bottom)
+        require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.ResponseListMassiveActions') . '.php';
+        $floatingActions = \actions\ResponseListMassiveActions::getActions($surveyid);
+        $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+            'pk'       => 'id',
+            'gridId'   => 'responses-grid',
+            'aActions' => $floatingActions,
+        ]);
 
         /* @var string notice text for encryption */
         $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
@@ -114,6 +113,7 @@ $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->encrypti
         }
         /* @var string notice HTML for encryption */
         $encryptionHtmlNotice = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
+
         // The first few columns are fixed.
         // Specific columns at start
         $aColumns = [
@@ -322,19 +322,10 @@ $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->encrypti
                     "afterAjaxResponsesReload();",
                     "onUpdateTokenGrid();",
                     '$("#responses-grid [data-bs-toggle=\'popover\']").popover();',
-                    'bindListItemclick();',
-                    'switchStatusOfListActions();'
                 ],
-                'massiveActionTemplate' => $massiveAction . $filterColumns,
-                'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSize',
-                        $pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                    )
-                ),
+                'massiveActionTemplate'  => $filterColumns,
+                'lsShowSelectionBar'     => false,
+                'lsPageSizeCurrentValue' => $pageSize,
             ]
         );
 

@@ -392,7 +392,7 @@ function buildSelects($allfields, $surveyid, $language)
             if (
                 $pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
                     $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
-                    $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp"
+                    $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp" && substr($pv, 0, 10) != "quota_exit"
             ) {
                 //pull out just the fieldnames
                 //put together some SQL here
@@ -653,7 +653,7 @@ class statistics_helper
         //M - Multiple choice, therefore multiple fields - one for each answer
         if ($sQuestionType == "M" || $sQuestionType == "P") {
             //get SGQ data
-            $qqid = substr($rt, 2);
+            $qqid = (int) substr($rt, 2);
 
             //select details for this question
             $nresult = Question::model()->find('parent_qid=0 AND qid=:qid', array(':qid' => $qqid));
@@ -671,13 +671,19 @@ class statistics_helper
                 'condition' => 'parent_qid=:qid AND scale_id=0',
                 'params' => array(':qid' => $qqid)
             ));
+            // Security (mantis #20744): $rt comes from the request, so only keep columns that
+            // exist in this survey's response table before they are used in any query.
+            $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
             foreach ($rows as $row) {
                 $mfield = substr($rt, 1) . "_S" . $row['qid'];
+                if (!in_array($mfield, $validColumns, true)) {
+                    continue;
+                }
                 $alist[] = array($row['title'], flattenText($row->questionl10ns[$language]->question), $mfield);
             }
 
             //Add the "other" answer if it exists
-            if ($qother == "Y") {
+            if ($qother == "Y" && in_array(substr($rt, 1) . "_C" . "other", $validColumns, true)) {
                 $mfield = substr($rt, 1) . "_C" . "other";
                 $alist[] = array(gT("Other"), gT("Other"), $mfield);
             }
@@ -737,8 +743,11 @@ class statistics_helper
             //add this to the question title
             $qtitle .= " [$atext]";
 
-            //even more substrings...
-            $mfield = $rt;
+            // Use the validated fieldmap key ($key) as the actual response-table column name.
+            // $rt carries a leading question-type letter (e.g. "QQ2412_S2419" for a "Q" question),
+            // while the real column is "Q2412_S2419", so using $rt directly would reference a
+            // non-existent column (mantis #20684).
+            $mfield = $key;
 
             //Text questions either have an answer, or they don't. There's no other way of quantising the results.
             // So, instead of building an array of predefined answers like we do with lists & other types,
@@ -4333,10 +4342,24 @@ class statistics_helper
     }
 
     /**
-     *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
+     * Returns a simple list of values in a particular column, that meet the requirements of the SQL
+     *
+     * @param int    $surveyid   Survey ID
+     * @param string $column     Response table column to list
+     * @param string $sortby     Response table column to sort by (optional)
+     * @param string $sortmethod Sort direction, ASC or DESC (optional)
+     * @param string $sorttype   N for numerical sorting (optional)
+     * @return array[] List of ['id' => response ID, 'value' => column value]
+     * @throws InvalidArgumentException if $column or $sortby is not a response table column
      */
     function _listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
+        // Security (mantis #20741): quoteColumnName() does not escape identifier quoting
+        // characters, so only real response table columns may be passed to it.
+        $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
+        if (!in_array($column, $validColumns, true) || ($sortby != '' && !in_array($sortby, $validColumns, true))) {
+            throw new InvalidArgumentException('Statistics column listing references an unknown column.');
+        }
         $search['condition'] = Yii::app()->db->quoteColumnName($column) . " != ''";
         $sDBDriverName = Yii::app()->db->getDriverName();
         if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') {

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Select } from '../Select/Select'
 
 export default {
-  title: 'UIComponents/Select',
+  title: 'imageWrapper/Select',
   component: Select,
 }
 

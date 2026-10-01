@@ -350,7 +350,7 @@ class SurveymenuEntries extends LSActiveRecord
                 'class'               => 'CCheckBoxColumn',
                 'selectableRows'      => 2,
                 'name'                => 'id',
-                'checkBoxHtmlOptions' => ['name' => 'id[]', 'class' => 'action_selectthisentry'],
+                'checkBoxHtmlOptions' => ['name' => 'id[]', 'class' => 'massiveActionsCheckbox action_selectthisentry'],
                 'headerHtmlOptions'   => ['class' => 'ls-sticky-column'],
                 'filterHtmlOptions'   => ['class' => 'ls-sticky-column'],
                 'htmlOptions'         => ['class' => 'ls-sticky-column'],
@@ -378,9 +378,6 @@ class SurveymenuEntries extends LSActiveRecord
                 'filter' => false,
             ],
             [
-                'name' => 'menu_class',
-            ],
-            [
                 'name'  => 'menu_link',
                 'value' => 'SurveymenuEntries::returnCombinedMenuLink($data)',
                 'type'  => 'text'
@@ -397,13 +394,6 @@ class SurveymenuEntries extends LSActiveRecord
                 'name'              => 'classes',
                 'htmlOptions'       => ['style' => 'white-space: prewrap;'],
                 'headerHtmlOptions' => ['style' => 'white-space: prewrap;'],
-            ],
-            [
-                'name'   => 'data',
-                'value'  => '$data->data ? CHtml::tag("i", array("class" => "ri-information-fill bigIcons", "title" => $data->data), "")
-                : ( $data->getdatamethod ? gT("GET data method:")."<br/>".CHtml::encode($data->getdatamethod) : "")',
-                'type'   => 'raw',
-                'filter' => false,
             ],
             [
                 'name'   => 'menu_id',

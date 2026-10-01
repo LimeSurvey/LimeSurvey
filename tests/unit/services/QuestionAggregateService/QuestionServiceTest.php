@@ -25,6 +25,65 @@ use LimeSurvey\Models\Services\Exception\{
 class QuestionServiceTest extends TestBaseClass
 {
     /**
+     * @testdox getDefaultAttributeValues() delegates to QuestionAttributeHelper
+     */
+    public function testGetDefaultAttributeValuesReturnsFlattenedDefaults()
+    {
+        $questionAttributeHelper = Mockery::mock(
+            \LimeSurvey\Models\Services\QuestionAttributeHelper::class
+        );
+        $questionAttributeHelper->shouldReceive('getUserDefaultsForQuestionType')
+            ->with('L')
+            ->once()
+            ->andReturn([
+                'random_order' => ['' => '1'],
+                'min_answers' => ['' => '2'],
+            ]);
+
+        $mockSetInit = new QuestionMockSet();
+        $mockSetInit->questionAttributeHelper = $questionAttributeHelper;
+        $questionService = (new QuestionFactory())->make($mockSetInit);
+
+        $this->assertSame(
+            [
+                'random_order' => ['' => '1'],
+                'min_answers' => ['' => '2'],
+            ],
+            $questionService->getDefaultAttributeValues('L')
+        );
+    }
+
+    /**
+     * @testdox getDefaultAttributeValuesByQuestionType() delegates to QuestionAttributeHelper
+     */
+    public function testGetDefaultAttributeValuesByQuestionTypeDelegatesToHelper()
+    {
+        $questionAttributeHelper = Mockery::mock(
+            \LimeSurvey\Models\Services\QuestionAttributeHelper::class
+        );
+        $questionAttributeHelper->shouldReceive('getUserDefaultsByQuestionType')
+            ->once()
+            ->andReturn([
+                'L' => [
+                    'random_order' => ['' => '1'],
+                ],
+            ]);
+
+        $mockSetInit = new QuestionMockSet();
+        $mockSetInit->questionAttributeHelper = $questionAttributeHelper;
+        $questionService = (new QuestionFactory())->make($mockSetInit);
+
+        $this->assertSame(
+            [
+                'L' => [
+                    'random_order' => ['' => '1'],
+                ],
+            ],
+            $questionService->getDefaultAttributeValuesByQuestionType()
+        );
+    }
+
+    /**
      * @testdox save() throws PersistErrorException on create failure
      */
     public function testSaveThrowsExceptionPersistErrorOnCreateFailure()

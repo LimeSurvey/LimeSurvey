@@ -51,13 +51,13 @@
                     {% if leftheader != '' or rightheader !='' %}
                         <td class="d-none"></td>
                     {% endif %}
-                    <th colspan="{{ labelans0|length }}" class="dsheader">{{ processString(leftheader) }}</th>
+                    <th colspan="{{ labelans0|length }}" class="dsheader" id="left-header-{{ basename }}">{{ processString(leftheader) }}</th>
                     {% if labelans1|length > 0 %}
                         <td class="header_separator"></td>  <!-- // Separator -->
                         {% if leftheader != '' or rightheader !='' %}
                             <td class="d-none"></td>
                         {% endif %}
-                        <th colspan="{{ labelans1|length }}" class="dsheader">{{ processString(rightheader) }}</th>
+                        <th colspan="{{ labelans1|length }}" class="dsheader" id="right-header-{{ basename }}">{{ processString(rightheader) }}</th>
                     {% endif %}
 
                     {% if shownoanswer or rightexists %}
@@ -139,7 +139,7 @@
                             name="{{ ansrow.myfname0 }}"
                             value="{{ ld }}"
                             id="answer{{ ansrow.myfid0 }}-{{ ld }}"
-                            labelledby="answer{{ basename }}_0-{{ ld }}"
+                            aria-labelledby="answer{{ basename }}_0-{{ ld }}{% if leftheader != '' %} left-header-{{ basename }}{% endif %}"
                             {{ labelcode0_checked[ansrow.title][ld] }}
                         />
                         <label for="answer{{ ansrow.myfid0 }}-{{ ld }}" class="ls-label-xs-visibility" aria-hidden="true">
@@ -157,10 +157,10 @@
                                 name='{{ ansrow.myfname0 }}'
                                 value=''
                                 id='answer{{ ansrow.myfid0 }}-'
-                                labelledby="answer{{ basename }}-"
+                                aria-labelledby="answer{{ basename }}-"
                                 {{ ansrow.myfname0_notset }}
                             />
-                            <label for='answer{{ ansrow.myfid0 }}-' class='ls-label-xs-visibility'>
+                            <label for='answer{{ ansrow.myfid0 }}-' class='ls-label-xs-visibility' aria-hidden="true">
                                 {{ gT("No answer") }}
                             </label>
                         </div>
@@ -179,10 +179,10 @@
                                 name="{{ ansrow.myfname1 }}"
                                 value="{{ ld }}"
                                 id="answer{{ ansrow.myfid1 }}-{{ ld }}"
-                                labelledby="answer{{ basename }}_1-{{ ld }}"
+                                aria-labelledby="answer{{ basename }}_1-{{ ld }}{% if rightheader != '' %} right-header-{{ basename }}{% endif %}"
                                 {{ labelcode1_checked[ansrow.title][ld] }}
                             />
-                            <label for="answer{{ ansrow.myfid1 }}-{{ ld }}" class="ls-label-xs-visibility">
+                            <label for="answer{{ ansrow.myfid1 }}-{{ ld }}" class="ls-label-xs-visibility" aria-hidden="true">
                                 {{ processString(labelans1[k]) }}
                             </label>
                         </td>
@@ -203,10 +203,10 @@
                                     name='{{ ansrow.myfname1 }}'
                                     value=''
                                     id='answer{{ ansrow.myfid1 }}-'
-                                    labelledby="answer{{ basename }}-"
+                                    aria-labelledby="answer{{ basename }}-"
                                     {{ ansrow.myfname1_notset }}
                                 />
-                            <label for='answer{{ ansrow.myfid1 }}-' class="ls-label-xs-visibility">
+                            <label for='answer{{ ansrow.myfid1 }}-' class="ls-label-xs-visibility" aria-hidden="true">
                                 {{ gT("No answer") }}
                             </label>
                         {% else %}
@@ -215,10 +215,10 @@
                                     name='{{ ansrow.myfname0 }}'
                                     value=''
                                     id='answer{{ ansrow.myfid0 }}-'
-                                    labelledby="answer{{ basename }}-"
+                                    aria-labelledby="answer{{ basename }}-"
                                     {{ ansrow.myfname0_notset }}
                                 />
-                            <label for='answer{{ ansrow.myfid0 }}-' class="ls-label-xs-visibility">
+                            <label for='answer{{ ansrow.myfid0 }}-' class="ls-label-xs-visibility" aria-hidden="true">
                                 {{ gT("No answer") }}
                             </label>
                         {% endif %}
