@@ -71,10 +71,6 @@ class SurveyArchiveDetails implements CommandInterface
             SurveyArchiveService::$Tokens_archive   => 'getTokenArchiveData',
         ];
 
-        if (!isset($archiveTypeMap[$archiveType])) {
-            throw new \InvalidArgumentException("Unsupported archive type: $archiveType");
-        }
-
         $method = $archiveTypeMap[$archiveType];
         try {
             $data = $this->surveyArchiveService->$method($surveyId, $timestamp, $searchParams);

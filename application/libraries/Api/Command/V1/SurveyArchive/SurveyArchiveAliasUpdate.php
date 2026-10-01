@@ -48,10 +48,12 @@ class SurveyArchiveAliasUpdate implements CommandInterface
             throw new \InvalidArgumentException("Missing required parameter: timestamp");
         }
 
-        $alias = (string) $request->getData('alias', null);
-        if (!$alias) {
+        // An empty alias is allowed and clears the alias
+        $alias = $request->getData('alias', null);
+        if ($alias === null) {
             throw new \InvalidArgumentException("Missing required parameter: alias");
         }
+        $alias = (string) $alias;
 
         $surveyId = (int) $request->getData('_id');
         if ($response = $this->ensurePermissions($surveyId)) {

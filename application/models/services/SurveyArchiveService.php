@@ -379,7 +379,7 @@ class SurveyArchiveService
         foreach ($archivedResponsesData['data'] as $response) {
             $fieldDetails = [];
 
-            foreach ($response as $fieldName => $value) {
+            foreach (array_keys($response) as $fieldName) {
                 if (!isset($fieldMap[$fieldName])) {
                     continue;
                 }
@@ -390,19 +390,10 @@ class SurveyArchiveService
                     continue;
                 }
 
-                $subQuestionTitle = '';
-                if (!empty($fieldMeta['sqid'])) {
-                    $sub1 = $fieldMeta['subquestion1'] ?? '';
-                    $sub2 = $fieldMeta['subquestion2'] ?? '';
-                    if (!empty($sub1) && !empty($sub2)) {
-                        $subQuestionTitle =  "{$sub1} - {$sub2}";
-                    }
-                }
-
                 $fieldDetails[$fieldName] = [
                     'groupTitle' => $fieldMeta['group_name'] ?? '',
                     'questionTitle' => $fieldMeta['question'] ?? '',
-                    'subQuestionTitle' => $subQuestionTitle,
+                    'subQuestionTitle' => self::buildSubQuestionTitle($fieldMeta),
                     'questionCode' => $fieldMeta['title'] ?? '',
                 ];
             }
@@ -411,6 +402,24 @@ class SurveyArchiveService
         }
 
         $archivedResponsesData['data'] = $dataWithTitles;
+    }
+
+    /**
+     * Builds the subquestion title of a field map entry
+     *
+     * 'subquestion' is set for single-scale subquestions and other/comment fields,
+     * 'subquestion1'/'subquestion2' for dual-scale arrays and comment fields.
+     *
+     * @param array $fieldMeta field map entry
+     * @return string the subquestion parts joined by ' - ', or '' if there are none
+     */
+    public static function buildSubQuestionTitle(array $fieldMeta): string
+    {
+        return implode(' - ', array_filter([
+            (string) ($fieldMeta['subquestion'] ?? ''),
+            (string) ($fieldMeta['subquestion1'] ?? ''),
+            (string) ($fieldMeta['subquestion2'] ?? ''),
+        ], 'strlen'));
     }
 
     /**

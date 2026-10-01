@@ -177,6 +177,32 @@ class SurveyArchiveServiceTest extends TestBaseClass
     }
 
     /**
+     * An alias can be cleared by setting it to an empty string.
+     *
+     * @return void
+     */
+    public function testArchiveAliasCanBeCleared()
+    {
+        $this->service->updateArchiveAlias(self::$surveyId, self::$archiveTimestamp, 'Second wave');
+        $this->assertTrue($this->service->updateArchiveAlias(self::$surveyId, self::$archiveTimestamp, ''));
+        $this->assertSame('', $this->service->getArchiveAlias(self::$surveyId, self::$archiveTimestamp));
+    }
+
+    /**
+     * Subquestion titles are built for single-scale, dual-scale and comment fields.
+     *
+     * @return void
+     */
+    public function testBuildSubQuestionTitle()
+    {
+        $this->assertSame('', SurveyArchiveService::buildSubQuestionTitle([]));
+        $this->assertSame('Row 1', SurveyArchiveService::buildSubQuestionTitle(['subquestion' => 'Row 1']));
+        $this->assertSame('Row 1 - Column A', SurveyArchiveService::buildSubQuestionTitle(['subquestion1' => 'Row 1', 'subquestion2' => 'Column A']));
+        $this->assertSame('Option 1 - Comment', SurveyArchiveService::buildSubQuestionTitle(['subquestion' => 'Option 1', 'subquestion1' => 'Comment']));
+        $this->assertSame('0', SurveyArchiveService::buildSubQuestionTitle(['subquestion' => '0']));
+    }
+
+    /**
      * Exported CSV values are quoted, embedded quotes are doubled and leading formula characters are masked.
      *
      * @return void
