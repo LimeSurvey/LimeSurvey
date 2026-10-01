@@ -54,6 +54,8 @@ export const handleAxiosError = (error, options = {}) => {
       if (data.error.message) {
         normalizedError.message = data.error.message
       }
+    } else if (typeof data === 'string' && data.trim() !== '') {
+      normalizedError.message = data
     }
   } else if (error.request) {
     // Request was made but no response received
