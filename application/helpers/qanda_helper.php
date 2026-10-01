@@ -208,7 +208,7 @@ function retrieveAnswers($ia)
         $find    = [];
         foreach ($question_text as $key => $value) {
             $find[] = '{QUESTION_' . strtoupper($key) . '}'; // Match key words from template
-            $replace[] = $value; // substitue text
+            $replace[] = $value; // substitute text
         };
 
         if (!defined('QUESTION_START')) {

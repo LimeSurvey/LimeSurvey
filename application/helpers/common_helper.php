@@ -681,7 +681,7 @@ function getUserList($outputformat = 'fullinfoarray')
             $criteria->with = 'groups';
             /* users in usergroup */
             $criteria->addInCondition('groups.ugid', $userGroupList);
-            /* childs of this user */
+            /* children of this user */
             $criteria->compare('parent_id', $myuid, false, 'OR');
             /* himself */
             $criteria->compare('t.uid', $myuid, false, 'OR');

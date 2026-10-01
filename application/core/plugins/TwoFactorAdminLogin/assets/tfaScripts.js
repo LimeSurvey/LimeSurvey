@@ -1,4 +1,4 @@
-// Creating a limesurvey option activated loggin facility
+// Creating a limesurvey option activated logging facility
 var TFALOG = new ConsoleShim('TFA', !window.debugState.backend);
 
 // Spinner to indicate loading on ajax requests
