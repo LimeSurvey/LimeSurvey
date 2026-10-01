@@ -1316,7 +1316,7 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'read', $managerId)) {
             return true;
         }
-        /* Finally : simple user can update only childs users */
+        /* Finally : simple user can update only child users */
         return Permission::model()->hasGlobalPermission('users', 'update', $managerId)
                 && $this->parent_id == $managerId;
     }

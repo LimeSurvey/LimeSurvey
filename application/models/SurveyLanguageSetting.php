@@ -383,7 +383,7 @@ class SurveyLanguageSetting extends LSActiveRecord
 
     /**
      * Get valid attachments in array
-     * @param string $attachement the attahcment string to be filtered
+     * @param string $string the attachment string to be filtered
      * @param boolean $exist check if file exist in a valid directory
      * @return string[][][] : array of attachments array by template, sample by key [template][][url,size,relevance]
      **/

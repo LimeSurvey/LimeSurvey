@@ -3224,7 +3224,7 @@ class quexmlpdf extends pdf
     }
 
     /**
-     * Draw a horizontal table of respones including "eye guides"
+     * Draw a horizontal table of responses including "eye guides"
      *
      * @param array $categories The response categories
      * @param array $subquestions The subquestions if any

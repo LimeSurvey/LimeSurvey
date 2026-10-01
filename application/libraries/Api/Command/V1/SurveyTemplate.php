@@ -52,7 +52,7 @@ class SurveyTemplate implements CommandInterface
      * Run survey template command
      *
      * Supports GET and POST, with the sid at the end of the endpoint,
-     * lookin like rest/v1/survey-template/571271
+     * looking like rest/v1/survey-template/571271
      *
      * If it's a GET request, then language is not specified, so it is inferred from the survey's default language and falling back to en if not found
      *

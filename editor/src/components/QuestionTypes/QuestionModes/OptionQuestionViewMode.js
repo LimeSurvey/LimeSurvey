@@ -281,8 +281,8 @@ export const OptionQuestionViewMode = ({
     })
 
     if (isMultipleChoiceNumerical && hasSliderLayout) {
-      const seperator = getAttributeValue(slider_separator) || '|'
-      const { value } = getStringPartsUsingSeperator(text, seperator)
+      const separator = getAttributeValue(slider_separator) || '|'
+      const { value } = getStringPartsUsingSeperator(text, separator)
       return value
     }
 

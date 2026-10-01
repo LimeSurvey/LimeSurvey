@@ -1613,7 +1613,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         if (data.responseJSON) {
           LS.LsGlobalNotifier.createAlert(data.responseJSON.message, 'danger', {showCloseButton: true});
         } else {
-          alert('Internal eror from Ajax call');
+          alert('Internal error from Ajax call');
           throw 'abort';
         }
       }

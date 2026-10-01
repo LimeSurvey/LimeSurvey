@@ -1555,12 +1555,12 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
         $where = [];
     }
     $whereClause = "";
-    $criterias = [];
+    $criteria = [];
     if (count($where)) {
         foreach ($where as $field => $value) {
-            $criterias[] = Yii::app()->db->quoteColumnName($field) . " = " . Yii::app()->db->quoteValue($value);
+            $criteria[] = Yii::app()->db->quoteColumnName($field) . " = " . Yii::app()->db->quoteValue($value);
         }
-        $whereClause = " WHERE " . implode(" AND ", $criterias);
+        $whereClause = " WHERE " . implode(" AND ", $criteria);
     }
     if (count($columns)) {
         foreach ($columns as $index => $column) {

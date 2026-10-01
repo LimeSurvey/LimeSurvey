@@ -406,7 +406,7 @@ function getStandardsReplacementFields($thissurvey)
     $_assessment_current_total = '';
     if (!empty($thissurvey['assessments']) && $thissurvey['assessments'] == "Y") {
         $assessmentdata = doAssessment($surveyid);
-        $_assessment_current_total = $assessmentdata['datas']['total_score'] ?? gT("Unkown");
+        $_assessment_current_total = $assessmentdata['datas']['total_score'] ?? gT("Unknown");
     }
 
     $oSurvey = Survey::model()->findByPk($surveyid);

@@ -900,7 +900,7 @@ function triggerEmClassChange() {
  *  Ask confirmation on click on .needconfirm
  */
 function activateConfirmButton() {
-  /* With ajax mode : using $(document).on attache X times the same event */
+  /* With ajax mode : using $(document).on attaches X times the same event */
   $("button[data-confirmedby]").on('click', function (event) {
     var btnConfirm = $(this);
     var cbConfirm = $(this).parent().find("[name='" + $(this).data('confirmedby') + "']");

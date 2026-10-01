@@ -99,7 +99,7 @@ class TwigCommand extends CConsoleCommand
 
     /**
     * Generate twig cache files for each question type.
-    * NOTE 1: It's a recursive function, since some directories are the question type itself (it has an answer.twig file) but other containes various question types as subdirectories.
+    * NOTE 1: It's a recursive function, since some directories are the question type itself (it has an answer.twig file) but others contain various question types as subdirectories.
     * NOTE 2: Currently arrays are skipped. We need to set default data, so it will be done in LS4, at the same time than Question Theme Editor.
     *
     * @param string $sQuestionDir the directory to parse, where to find the answer.twig file.

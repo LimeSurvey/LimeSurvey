@@ -83,7 +83,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         ),
         'bindpwd' => array(
             'type' => 'password',
-            'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previoulsy set.'
+            'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previously set.'
         ),
         'mailattribute' => array(
             'type' => 'string',

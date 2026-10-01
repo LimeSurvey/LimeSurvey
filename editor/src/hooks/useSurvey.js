@@ -73,7 +73,7 @@ export const useSurvey = (id) => {
 
     if (!isSameSurvey) {
       setSurvey({}) // triggers the loading UI state.
-      lastRequestedAt = null // Reset last requestedAt if survey ID changes to skipp timestamp in getSurveyDetail
+      lastRequestedAt = null // Reset last requestedAt if survey ID changes to skip timestamp in getSurveyDetail
     }
 
     if (isStorybook || isDemoMode) {

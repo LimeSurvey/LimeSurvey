@@ -286,9 +286,9 @@ function getQuestionMapData($sField, $qsid)
 
     //loop through question data
     foreach ($aresult as $arow) {
-        $alocation = explode(";", (string) $arow->$sField);
-        if (count($alocation) >= 2) {
-            $d[] = "{$alocation[0]} {$alocation[1]}";
+        $location = explode(";", (string) $arow->$sField);
+        if (count($location) >= 2) {
+            $d[] = "{$location[0]} {$location[1]}";
         }
     }
     return $d;

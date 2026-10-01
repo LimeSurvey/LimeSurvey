@@ -23,7 +23,7 @@ Then, inside **modules/admin/globalsettings/controller/** we create a file with 
 
 ### The directory path determines the name space
 
-LimeSurvey is based on yii1, and yii1 doesn't really use name space, but rather aliases for path. This is for historical reasons: PHP prior to 5.3.0 does not support namespace intrinsically. So yii1 rather uses a prefix for all their core classes, and uses path aliases extensively. But, for those who want to use namespace, all the Yii import methods accepts path, alias, or namespace. So ideally, in yii1, it must be possible to easily translate your namespace to aliase so we can easily translate your namespace to aliases. To be clear:
+LimeSurvey is based on yii1, and yii1 doesn't really use name space, but rather aliases for path. This is for historical reasons: PHP prior to 5.3.0 does not support namespace intrinsically. So yii1 rather uses a prefix for all their core classes, and uses path aliases extensively. But, for those who want to use namespace, all the Yii import methods accepts path, alias, or namespace. So ideally, in yii1, it must be possible to easily translate your namespace to aliases so we can easily translate your namespace to aliases. To be clear:
 
 So first, in **modules/admin/globalsettings/controller/globalsettings.php** we define a namespace:
 
@@ -72,7 +72,7 @@ Then, inside **modules/admin/globalsettings/controller/** we create a file with 
 
 ### The directory path determines the name space
 
-LimeSurvey is based on yii1, and yii1 doesn't really use name space, but rather aliases for path. This is for historical reasons: PHP prior to 5.3.0 does not support namespace intrinsically. So yii1 rather uses a prefix for all their core classes, and uses path aliases extensively. But, for those who want to use namespace, all the Yii import methods accepts path, alias, or namespace. So ideally, in yii1, it must be possible to easily translate your namespace to aliase so we can easily translate your namespace to aliases. To be clear:
+LimeSurvey is based on yii1, and yii1 doesn't really use name space, but rather aliases for path. This is for historical reasons: PHP prior to 5.3.0 does not support namespace intrinsically. So yii1 rather uses a prefix for all their core classes, and uses path aliases extensively. But, for those who want to use namespace, all the Yii import methods accepts path, alias, or namespace. So ideally, in yii1, it must be possible to easily translate your namespace to aliases so we can easily translate your namespace to aliases. To be clear:
 
 So first, in **modules/admin/globalsettings/controller/globalsettings.php** we define a namespace:
 

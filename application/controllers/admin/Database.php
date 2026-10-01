@@ -212,7 +212,7 @@ class Database extends SurveyCommonAction
         }
         if ($questionThemeMetaData['settings']->answerscales == 0 && $questionThemeMetaData['settings']->subquestions == 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
-                // Qick and dirty insert for yes/no default value
+                // Quick and dirty insert for yes/no default value
                 // write the selectbox option, or if "EM" is selected, this value to table
                 if ($sQuestionType == 'Y') {
                     /// value for all langs

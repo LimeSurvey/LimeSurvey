@@ -195,7 +195,7 @@ function show_hide_group(group_id)
 {
     var questionCount;
 
-    // First let's show the group description, otherwise, all its childs would have the hidden status
+    // First let's show the group description, otherwise, all its children would have the hidden status
     $("#group-" + group_id).show();
     // If all questions in this group are conditional
     // Count visible questions in this group

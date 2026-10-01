@@ -246,7 +246,7 @@ class ThemeControllerTest extends TestBaseClassWeb
         $_POST['newname'] = 'vanilla_version_1';
         // NB: Must run as web user to get correct permissions here.
         $contr->templatecopy();
-        exec('sudo chmod -R 777 ./upload'); // Add permissions to ./upload directory, neede for CI pipeline
+        exec('sudo chmod -R 777 ./upload'); // Add permissions to ./upload directory, needed for CI pipeline
         //$dummy->lastAction;
         //$flashes = \Yii::app()->session['aFlashMessage'];
 

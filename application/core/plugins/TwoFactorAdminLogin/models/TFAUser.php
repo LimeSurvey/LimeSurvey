@@ -2,7 +2,7 @@
 
 /**
  * Abstracted user model for TFA admin view.
- * Incorporating an alternative seach method.
+ * Incorporating an alternative search method.
  *
  * @inheritDoc
  */

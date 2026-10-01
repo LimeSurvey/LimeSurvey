@@ -127,7 +127,7 @@ The function first instantiate the Survey Model:
 $oSurvey = Survey::model()->findByPk($surveyid);
 ```
 
-This will provide you a typical AR instance of row "surveyid" of the table Survey, plus all the methos in Survey Model. To know more about that, see:
+This will provide you a typical AR instance of row "surveyid" of the table Survey, plus all the methods in Survey Model. To know more about that, see:
 https://www.yiiframework.com/doc/guide/1.1/en/database.ar
 
 Then, we build the array of data that will be parsed to the view. In LS architecture, this array of data is first parsed by Survey Common Action. It will look into it for specific data to know what to show or not in the layout.
@@ -219,7 +219,7 @@ The function is very similar to HelloWorld::HelloWorldSurvey(). So will just see
 > Add a subaction in the breadcrumb
 
 
-If the array of data passed to the view contains a field "module_current_action" inside the field "title_bar", Survey Common Helper will show an additional acction in the breadcrumb.
+If the array of data passed to the view contains a field "module_current_action" inside the field "title_bar", Survey Common Helper will show an additional action in the breadcrumb.
 
 ```php
 $aData['title_bar']['module_current_action'] = 'sayHelloUser';
