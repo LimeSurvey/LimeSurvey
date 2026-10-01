@@ -1,6 +1,10 @@
 import { AlignButtons, Input, ToggleButtons } from 'components/UIComponents'
 import { getYesNoOptions } from 'helpers/options'
 
+/**
+ * Returns the location (map) attribute definitions.
+ * @returns {Object<string, Object>} Attribute definitions.
+ */
 export const getLocationAttributes = () => ({
   USE_MAPPING_SERVICE: {
     component: ToggleButtons,
@@ -12,7 +16,6 @@ export const getLocationAttributes = () => ({
       toggleOptions: [
         { name: t('Google Maps'), value: '1' },
         { name: t('OpenStreetMap via MapQuest'), value: '100' },
-        { name: t('Off'), value: '0' },
       ],
       defaultValue: '100',
     },

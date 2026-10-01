@@ -296,7 +296,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
    * @returns {Object} Built-in attribute defaults.
    */
   const getDefaultAttributes = (questionThemeName) => {
-    if (questionThemeName === getQuestionTypeInfo().BROWSER_DETECTION.theme) {
+    if (questionThemeName === getQuestionTypeInfo().MAP.theme) {
       return { location_mapservice: { '': '100' } }
     }
 

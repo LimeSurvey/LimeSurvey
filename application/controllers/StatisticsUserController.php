@@ -270,8 +270,9 @@ class StatisticsUserController extends SurveyController
                         $allfields[] = $SGQidentifier . "_S" . $row->qid;
                     }
                     break;
-                // all "free text" types (T, U, S)  get the same prefix ("T")
+                // all "free text" types (T, U, S, J)  get the same prefix ("T")
                 case Question::QT_S_SHORT_FREE_TEXT: // Short free text
+                case Question::QT_J_MAP:
                 case Question::QT_T_LONG_FREE_TEXT: // Long free text
                 case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
                     $allfields[] = "T" . $SGQidentifier;

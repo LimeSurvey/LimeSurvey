@@ -458,6 +458,7 @@ class QuestionTemplate extends CFormModel
             "G" => 'gender',
             "H" => 'arrays/column',
             "I" => 'language',
+            "J" => 'map',
             "K" => 'multiplenumeric',
             "L" => 'listradio',
             "M" => 'multiplechoice',
