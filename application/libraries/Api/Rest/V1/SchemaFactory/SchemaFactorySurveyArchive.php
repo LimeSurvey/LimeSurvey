@@ -24,6 +24,7 @@ class SchemaFactorySurveyArchive
                 Schema::boolean('newformat'),
                 Schema::array('types'),
                 Schema::boolean('hastokens'),
+                Schema::string('alias'),
                 ...$properties
             );
     }

@@ -17,6 +17,7 @@ use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
 };
 use LimeSurvey\Models\Services\SurveyActivate;
+use LimeSurvey\Models\Services\SurveyArchiveService;
 use Permission;
 
 class OpHandlerImport implements OpHandlerInterface
@@ -57,7 +58,9 @@ class OpHandlerImport implements OpHandlerInterface
      *             "id": 809,
      *             "props": {
      *                 "timestamp": 20250303173908,
-     *                 "preserveIDs": true
+     *                 "preserveIDs": true,
+     *                 "archiveType": "all",
+     *                 "useFallback": true
      *             }
      *         }
      *     ]
@@ -66,7 +69,18 @@ class OpHandlerImport implements OpHandlerInterface
      */
     public function handle(OpInterface $op)
     {
-        $this->surveyActivate->restoreData((int)$op->getEntityId(), $op->getProps()['timestamp'] ? intval($op->getProps()['timestamp']) : null, ($op->getProps()['preserveIDs'] ?? false) == "true");
+        $entityId = (int)$op->getEntityId();
+        $props = $op->getProps();
+
+        $timestamp = isset($props['timestamp']) ? (int)$props['timestamp'] : null;
+        $preserveIDs = ($props['preserveIDs'] ?? false) == "true";
+        $archiveType = $props['archiveType'] ?? 'all';
+        if (!in_array($archiveType, ['all', SurveyArchiveService::$Response_archive, SurveyArchiveService::$Tokens_archive], true)) {
+            throw new \InvalidArgumentException("Unsupported archive type: $archiveType");
+        }
+        $useFallback = filter_var($props['useFallback'] ?? true, FILTER_VALIDATE_BOOLEAN);
+
+        $this->surveyActivate->restoreData($entityId, $timestamp, $preserveIDs, $archiveType, $useFallback);
     }
 
     /**

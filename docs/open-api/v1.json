@@ -33,14 +33,21 @@
                         }
                     },
                     {
-                        "name": "pageSize",
+                        "name": "page",
                         "in": "query",
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "page",
+                        "name": "language",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fields",
                         "in": "query",
                         "schema": {
                             "type": "string"
@@ -96,6 +103,16 @@
                                                     "completed": {
                                                         "type": "boolean",
                                                         "example": true
+                                                    },
+                                                    "quotaExit": {
+                                                        "type": "integer",
+                                                        "nullable": true,
+                                                        "example": 12
+                                                    },
+                                                    "quotaExitName": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "example": "Young respondents"
                                                     },
                                                     "answers": {
                                                         "type": "object",
@@ -708,6 +725,16 @@
                                                                 "type": "boolean",
                                                                 "example": true
                                                             },
+                                                            "quotaExit": {
+                                                                "type": "integer",
+                                                                "nullable": true,
+                                                                "example": 12
+                                                            },
+                                                            "quotaExitName": {
+                                                                "type": "string",
+                                                                "nullable": true,
+                                                                "example": "Young respondents"
+                                                            },
                                                             "answers": {
                                                                 "type": "object",
                                                                 "additionalProperties": {
@@ -956,6 +983,34 @@
                     },
                     {
                         "name": "completed",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pageSize",
                         "in": "query",
                         "schema": {
                             "type": "string"
@@ -1877,6 +1932,9 @@
                                                             "refUrl": {
                                                                 "type": "boolean"
                                                             },
+                                                            "saveQuotaExit": {
+                                                                "type": "boolean"
+                                                            },
                                                             "dateCreated": {
                                                                 "format": "date-time",
                                                                 "type": "string"
@@ -2162,6 +2220,9 @@
                                                             "type": "boolean"
                                                         },
                                                         "refUrl": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "saveQuotaExit": {
                                                             "type": "boolean"
                                                         },
                                                         "dateCreated": {
@@ -2940,6 +3001,9 @@
                                                         "refUrl": {
                                                             "type": "boolean"
                                                         },
+                                                        "saveQuotaExit": {
+                                                            "type": "boolean"
+                                                        },
                                                         "dateCreated": {
                                                             "format": "date-time",
                                                             "type": "string"
@@ -3712,6 +3776,9 @@
                                                         "refUrl": {
                                                             "type": "boolean"
                                                         },
+                                                        "saveQuotaExit": {
+                                                            "type": "boolean"
+                                                        },
                                                         "dateCreated": {
                                                             "format": "date-time",
                                                             "type": "string"
@@ -4227,6 +4294,9 @@
                                                     "refUrl": {
                                                         "type": "boolean"
                                                     },
+                                                    "saveQuotaExit": {
+                                                        "type": "boolean"
+                                                    },
                                                     "dateCreated": {
                                                         "format": "date-time",
                                                         "type": "string"
@@ -4704,6 +4774,9 @@
                                                         "refUrl": {
                                                             "type": "boolean"
                                                         },
+                                                        "saveQuotaExit": {
+                                                            "type": "boolean"
+                                                        },
                                                         "dateCreated": {
                                                             "format": "date-time",
                                                             "type": "string"
@@ -5134,86 +5207,6 @@
                 ]
             }
         },
-        "\/rest\/v1\/survey-archives\/{_id}": {
-            "get": {
-                "tags": [
-                    "Survey"
-                ],
-                "summary": "Survey archives",
-                "operationId": "get.survey-archives.id",
-                "parameters": [
-                    {
-                        "name": "_id",
-                        "in": "path"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "title": "Survey",
-                                    "description": "Survey",
-                                    "type": "object",
-                                    "properties": {
-                                        "timestamp": {
-                                            "type": "integer"
-                                        },
-                                        "count": {
-                                            "default": 0,
-                                            "type": "integer"
-                                        },
-                                        "newformat": {
-                                            "type": "boolean"
-                                        },
-                                        "types": {
-                                            "type": "array"
-                                        },
-                                        "hastokens": {
-                                            "type": "boolean"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "title": "Error",
-                                    "description": "Error",
-                                    "type": "object",
-                                    "properties": {
-                                        "error": {
-                                            "type": "object",
-                                            "properties": {
-                                                "code": {
-                                                    "type": "string"
-                                                },
-                                                "message": {
-                                                    "type": "string"
-                                                },
-                                                "data": {
-                                                    "type": "object"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
         "\/rest\/v1\/survey-logic\/{_id}": {
             "get": {
                 "tags": [
@@ -5276,6 +5269,146 @@
                                                     "description": "Total number of logic errors found",
                                                     "default": 0,
                                                     "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "\/rest\/v1\/expression-script-validation\/{_id}": {
+            "post": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Validate an ExpressionScript expression",
+                "operationId": "post.expression-script-validation.id",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "title": "Expression Script validation request",
+                                "description": "Expression and question context to validate",
+                                "type": "object",
+                                "required": [
+                                    "expression",
+                                    "questionId"
+                                ],
+                                "properties": {
+                                    "expression": {
+                                        "type": "string"
+                                    },
+                                    "questionId": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Expression Script validation",
+                                    "description": "Expression Manager validation diagnostics",
+                                    "type": "object",
+                                    "properties": {
+                                        "valid": {
+                                            "type": "boolean"
+                                        },
+                                        "diagnostics": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "from": {
+                                                        "default": 0,
+                                                        "type": "integer"
+                                                    },
+                                                    "to": {
+                                                        "default": 0,
+                                                        "type": "integer"
+                                                    },
+                                                    "severity": {
+                                                        "type": "string"
+                                                    },
+                                                    "message": {
+                                                        "type": "string"
+                                                    }
                                                 }
                                             }
                                         }
@@ -6972,6 +7105,387 @@
                         }
                     }
                 }
+            }
+        },
+        "\/rest\/v1\/survey-archives\/{_id}": {
+            "get": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Survey archives",
+                "operationId": "get.survey-archives.id",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Survey",
+                                    "description": "Survey",
+                                    "type": "object",
+                                    "properties": {
+                                        "timestamp": {
+                                            "type": "integer"
+                                        },
+                                        "count": {
+                                            "default": 0,
+                                            "type": "integer"
+                                        },
+                                        "newformat": {
+                                            "type": "boolean"
+                                        },
+                                        "types": {
+                                            "type": "array"
+                                        },
+                                        "hastokens": {
+                                            "type": "boolean"
+                                        },
+                                        "alias": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "\/rest\/v1\/survey-archive-details\/{_id}": {
+            "get": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Get token and\/or response archive data",
+                "operationId": "get.survey-archive-details.id",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path"
+                    },
+                    {
+                        "name": "timestamp",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "archiveType",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Archive data returned successfully",
+                        "content": {
+                            "application\/json": {
+                                "schema": []
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Archive not found",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Delete one or more archive tables by type for a given survey ID and timestamp",
+                "operationId": "delete.survey-archive-details.id",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path"
+                    },
+                    {
+                        "name": "timestamp",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "archiveTypes",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Archive deleted successfully",
+                        "content": {
+                            "application\/json": {
+                                "schema": []
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Archive not found",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Update archive alias for a given survey ID and timestamp",
+                "operationId": "patch.survey-archive-details.id",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Archive alias updated successfully",
+                        "content": {
+                            "application\/json": {
+                                "schema": []
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Archive not found",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "\/rest\/v1\/survey-archive-export\/{_id}": {
+            "get": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Export token or response archive data",
+                "operationId": "get.survey-archive-export.id",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path"
+                    },
+                    {
+                        "name": "timestamp",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "archiveType",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Archive exported successfully",
+                        "content": {
+                            "application\/json": {
+                                "schema": []
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Archive not found",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },

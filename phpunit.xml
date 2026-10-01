@@ -94,6 +94,7 @@
     <testsuite name="import-export">
       <file>tests/functional/backend/ImportExportIrrelevantTest.php</file>
       <file>tests/functional/backend/ImportResponsesTest.php</file>
+      <file>tests/functional/backend/SurveyArchiveServiceTest.php</file>
       <file>tests/functional/backend/SaveEditedResponseTest.php</file>
     </testsuite>
     <testsuite name="theme">

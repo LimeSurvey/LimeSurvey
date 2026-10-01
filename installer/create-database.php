@@ -1148,6 +1148,7 @@ function populateDatabase($oDB)
             'created' => "datetime NOT NULL",
             'properties' => "text NOT NULL",
             'attributes' => "text NULL",
+            'archive_alias' => "string(255) DEFAULT ''"
         ], $options);
 
         // language tables: sourcemessage + message and constraint

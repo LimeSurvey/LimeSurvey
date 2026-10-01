@@ -9,6 +9,7 @@ use Permission;
 use Survey;
 use SurveyActivator;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
+use LimeSurvey\Models\Services\SurveyArchiveService;
 
 class SurveyActivate
 {
@@ -106,10 +107,12 @@ class SurveyActivate
      * @param int $surveyId
      * @param int|null $timestamp
      * @param bool $preserveIDs
+     * @param string $archiveType 'all' | 'response' | 'token'
+     * @param bool $useFallback
      * @return bool
      * @throws CException
      */
-    public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false): bool
+    public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false, $archiveType = 'all', $useFallback = true): bool
     {
         if (in_array(\Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
             $preserveIDs = true;
@@ -132,30 +135,35 @@ class SurveyActivate
                     }
                 }
             }
-            if (!$found) {
+            if (!$found && $useFallback) {
                 $archives[$key] = $candidates[count($candidates) - 1];
             }
         }
         if (is_array($archives) && isset($archives['responses']) && isset($archives['questions'])) {
-            //Recover survey
-            $qParts = explode("_", $archives['questions']);
-            $qTimestamp = $qParts[count($qParts) - 1];
-            $sParts = explode("_", $archives['responses']);
-            $sTimestamp = $sParts[count($sParts) - 1];
-            $dynamicColumns = getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
-            recoverSurveyResponses($surveyId, $archives["responses"], $preserveIDs, $dynamicColumns);
+            $shouldImportResponses = $archiveType === 'all' || $archiveType === SurveyArchiveService::$Response_archive;
+            if ($shouldImportResponses) {
+                //Recover survey
+                $qParts = explode("_", $archives['questions']);
+                $qTimestamp = $qParts[count($qParts) - 1];
+                $sParts = explode("_", $archives['responses']);
+                $sTimestamp = $sParts[count($sParts) - 1];
+                $dynamicColumns = getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
+                recoverSurveyResponses($surveyId, $archives["responses"], $preserveIDs, $dynamicColumns);
+                if (isset($archives["timings"])) {
+                    $timingsTable = $this->app->db->tablePrefix . "timings_" . $surveyId;
+                    copyFromOneTableToTheOther($archives["timings"], $timingsTable, $preserveIDs);
+                }
+            }
+
+            $shouldImportTokens = $archiveType === 'all' || $archiveType === SurveyArchiveService::$Tokens_archive;
             //If it's not open access mode, then we import the surveys from the archive if they exist
-            if (isset($archives["tokens"])) {
+            if (isset($archives["tokens"]) && $shouldImportTokens) {
                 $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
                 try {
                     createTableFromPattern($tokenTable, $archives["tokens"]);
                 } catch (\CDbException $ex) {
                 }
                 copyFromOneTableToTheOther($archives["tokens"], $tokenTable, $preserveIDs);
-            }
-            if (isset($archives["timings"])) {
-                $timingsTable = $this->app->db->tablePrefix . "timings_" . $surveyId;
-                copyFromOneTableToTheOther($archives["timings"], $timingsTable, $preserveIDs);
             }
             return true;
         } else {

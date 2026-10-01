@@ -5,7 +5,6 @@ use LimeSurvey\Api\Command\V1\{
     SurveyDetail,
     SurveyPatch,
     SurveyTemplate,
-    SurveyArchive,
     SurveyLogic,
     SurveyQuestionsFieldname,
     ExpressionScriptValidate
@@ -16,7 +15,6 @@ use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactorySurveyDetail,
     SchemaFactorySurveyPatch,
     SchemaFactorySurveyTemplate,
-    SchemaFactorySurveyArchive,
     SchemaFactorySurveyLogic,
     SchemaFactorySurveyQuestionsFieldname,
     SchemaFactoryExpressionScriptValidation,
@@ -151,28 +149,6 @@ $rest['v1/survey-template/$id'] = [
             ]
         ]
     ],
-];
-
-$rest['v1/survey-archives/$id'] = [
-    'GET' => [
-        'tag' => 'survey',
-        'description' => 'Survey archives',
-        'commandClass' => SurveyArchive::class,
-        'auth' => true,
-        'responses' => [
-            'success' => [
-                'code' => 200,
-                'description' => 'Success',
-                'content' => null,
-                'schema' => (new SchemaFactorySurveyArchive())->make()
-            ],
-            'not-found' => [
-                'code' => 404,
-                'description' => 'Not Found',
-                'schema' => $errorSchema
-            ]
-        ]
-    ]
 ];
 
 $rest['v1/survey-logic/$id'] = [
