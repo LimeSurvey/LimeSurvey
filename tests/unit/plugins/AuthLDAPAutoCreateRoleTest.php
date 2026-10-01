@@ -29,8 +29,9 @@ class AuthLDAPAutoCreateRoleTest extends TestBaseClass
         parent::setUpBeforeClass();
         $plugin = \Plugin::model()->findByAttributes(['name' => 'AuthLDAP']);
         self::$wasActive = $plugin && $plugin->active;
-        self::installAndActivatePlugin('AuthLDAP');
-        self::$plugin = App()->getPluginManager()->loadPlugin('AuthLDAP');
+        $plugin = self::installAndActivatePlugin('AuthLDAP');
+        // Pass the plugin id: without it, loadPlugin() only returns an already instantiated plugin
+        self::$plugin = App()->getPluginManager()->loadPlugin('AuthLDAP', $plugin->id);
     }
 
     /**
