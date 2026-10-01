@@ -23,15 +23,15 @@ class ComfortUpdateChecker extends PluginBase
 
     protected $settings = [
         'only_security_update' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Notification only for security updates',
-            'default' => false,
+            'default' => '0',
         ),
 
         'animate_icon' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Animate update icon',
-            'default' => false,
+            'default' => '0',
         ),
 
     ];

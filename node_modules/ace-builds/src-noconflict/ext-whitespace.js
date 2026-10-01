@@ -1,4 +1,13 @@
-ace.define("ace/ext/whitespace",["require","exports","module","ace/lib/lang"], function(require, exports, module){"use strict";
+ace.define("ace/ext/whitespace",["require","exports","module","ace/lib/lang"], function(require, exports, module){/**
+ * ## Whitespace management and indentation utilities extension
+ *
+ * Provides whitespace handling capabilities including automatic indentation detection, trailing whitespace trimming,
+ * and indentation format conversion. Analyzes code patterns to determine optimal tab settings and offers commands for
+ * maintaining consistent code formatting across different indentation styles (spaces vs. tabs) and sizes.
+ *
+ * @module
+ */
+"use strict";
 var lang = require("../lib/lang");
 exports.$detectIndentation = function (lines, fallback) {
     var stats = [];

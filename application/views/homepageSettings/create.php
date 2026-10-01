@@ -7,7 +7,8 @@
 echo viewHelper::getViewTestTag('createNewBox');
 ?>
 <div class="col-12 list-surveys">
-    <?php $this->renderPartial('_form',
+    <?php $this->renderPartial(
+        '_form',
         [
             'model' => $model,
             'icons_length' => $model->icons_length,

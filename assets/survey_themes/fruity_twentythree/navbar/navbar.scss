@@ -24,20 +24,18 @@ Responsive navbar-brand image CSS
 ***********************************/
 
 .logo-container {
-    padding: 0px;
+    padding: 0;
     float: left;
-
+    flex-shrink: 0;
     font-size: 18px;
     line-height: 20px;
 }
 
 .logo-container > img {
-  max-height: 90px;
-  padding: 15px;
+  display: block;
+  max-height: 84px;
+  padding: 8px 0;
   width: auto;
-  @media(max-width: 768px) {
-    max-height: 60px;
-  }
 }
 
 /* text overflows, ellipsis and hyphens */

@@ -10,14 +10,14 @@ $labelAttr .= CHtml::getIdByName($inputBaseName) . '"';
                 <?= gT($this->setting['caption']) ?>
             </label>
         <!-- TODO: Object method $setting->isLocalized(). -->
-        <?php if ($this->setting['i18n']): ?>
+        <?php if ($this->setting['i18n']) : ?>
             <i
                 class="ri-earth-fil"
                 data-bs-toggle="tooltip"
                 title="<?= gT("This setting is localized") ?>"
             ></i>
         <?php endif; ?>
-        <?php if ($this->setting['help']): ?>
+        <?php if ($this->setting['help']) : ?>
             <a
                 role="button"
                 data-bs-toggle="collapse"
@@ -26,12 +26,18 @@ $labelAttr .= CHtml::getIdByName($inputBaseName) . '"';
                 class="ri-information-fill"
                 data-bs-toggle="tooltip"
                 data-bs-html="true"
-                title="<?= $this->setting['help'] ?>"
+                title="<?= CHtml::encode($this->setting['help']) ?>"
             > </i><span class="visually-hidden"><?= gT("Show help"); ?></span> </a>
             <div class="help-block collapse" id="help-<?= CHtml::getIdByName($inputBaseName); ?>" aria-expanded="false"><?= $this->setting['help']; ?></div>
         <?php endif; ?>
         </div>
-        <?= $content ?>
+        <?php if (!empty($disabled)) : ?>
+            <fieldset disabled class="w-100 border-0 p-0 m-0">
+                <?= $content ?>
+            </fieldset>
+        <?php else : ?>
+            <?= $content ?>
+        <?php endif; ?>
     </div>
 </div>
 <script>

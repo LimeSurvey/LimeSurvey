@@ -95,6 +95,10 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'refurl',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
+            'saveQuotaExit' => [
+                'key' => 'savequotaexit',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'dateCreated' => [
                 'key' => 'datecreated',
                 'date',
@@ -162,6 +166,10 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'shownoanswer',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
+            'preselectNoAnswer' => [
+                'key' => 'preselectnoanswer',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'showQNumCode' => 'showqnumcode',
             'bounceTime' => [
                 'key' => 'bouncetime', 'type' => 'int', 'numerical'
@@ -190,10 +198,6 @@ class TransformerInputSurvey extends Transformer
             'navigationDelay' => [
                 'key' => 'navigationdelay', 'type' => 'int', 'numerical'
             ],
-            'noKeyboard' => [
-                'key' => 'nokeyboard',
-                'formatter' => ['ynToBool' => ['revert' => true]]
-            ],
             'allowedItAfterCompletion' => [
                 'key' => 'alloweditaftercompletion',
                 'formatter' => ['ynToBool' => ['revert' => true]]
@@ -213,7 +217,8 @@ class TransformerInputSurvey extends Transformer
                 'range' => [0, 1, 2]
             ],
             'template' => true,
-            'format' => ['range' => ['G', 'S', 'A', 'I']]
+            'format' => ['range' => ['G', 'S', 'A', 'I']],
+            'welcomeImage' => ['key' => 'welcome_image', 'json' => true]
         ]);
     }
 

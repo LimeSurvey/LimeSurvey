@@ -55,6 +55,12 @@ $(document).on('submit', '#editresponse', function (event) {
 
     if (hasInconsistentUnseenStatus) {
         event.preventDefault();
+        // Save is handled by the global SaveController, which shows the loading indicator on
+        // displayLoadingState, but never hides it. So we need to hide it here to avoid the
+        // loading indicator being shown indefinitely.
+        // Note that the button is re-enabled by the 'invalid' event handler in SaveController,
+        // so we don't need to re-enable it here.
+        $('#ls-loading').hide();
         return false;
     }
 });

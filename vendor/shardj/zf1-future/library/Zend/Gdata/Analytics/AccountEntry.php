@@ -79,17 +79,17 @@ class Zend_Gdata_Analytics_AccountEntry extends Zend_Gdata_Entry
     {
         $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
         switch ($absoluteNodeName){
-            case $this->lookupNamespace('analytics') . ':' . 'property';
+            case $this->lookupNamespace('analytics') . ':' . 'property':
                 $property = new Zend_Gdata_Analytics_Extension_Property();
                 $property->transferFromDOM($child);
                 $this->{$property->getName()} = $property;
                 break;
-            case $this->lookupNamespace('analytics') . ':' . 'tableId';
+            case $this->lookupNamespace('analytics') . ':' . 'tableId':
                 $tableId = new Zend_Gdata_Analytics_Extension_TableId();
                 $tableId->transferFromDOM($child);
                 $this->_tableId = $tableId;
                 break;
-            case $this->lookupNamespace('ga') . ':' . 'goal';
+            case $this->lookupNamespace('ga') . ':' . 'goal':
                 $goal = new Zend_Gdata_Analytics_Extension_Goal();
                 $goal->transferFromDOM($child);
                 $this->_goal = $goal;

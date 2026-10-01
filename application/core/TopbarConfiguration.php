@@ -62,12 +62,14 @@ class TopbarConfiguration
         }
         if (isset($config['rightSideView'])) {
             $this->rightSideView = $config['rightSideView'];
-        } elseif (!empty($config['showSaveButton'])   ||
+        } elseif (
+            !empty($config['showSaveButton'])   ||
                   !empty($config['showCloseButton'])  ||
                   !empty($config['showImportButton']) ||
                   !empty($config['showExportButton']) ||
                   !empty($config['showBackButton'])   ||
-                  !empty($config['showWhiteCloseButton'])) {
+                  !empty($config['showWhiteCloseButton'])
+        ) {
             // If no right side view has been specified, and one of the default buttons must be shown, use the default right side view.
             $this->rightSideView = "surveyTopbarRight_view";
         }
@@ -165,16 +167,8 @@ class TopbarConfiguration
         $sumcount = Question::model()->countByAttributes($condition);
         $hasAdditionalLanguages = (count($oSurvey->additionalLanguages) > 0);
         $canactivate = $sumcount > 0 && $hasSurveyActivationPermission;
-        $expired = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(
-            date("Y-m-d H:i:s"),
-            "Y-m-d H:i",
-            Yii::app()->getConfig('timeadjust')
-        ));
-        $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(
-            date("Y-m-d H:i:s"),
-            "Y-m-d H:i",
-            Yii::app()->getConfig('timeadjust')
-        ));
+        $expired = $oSurvey->expires != '' && ($oSurvey->expires < gmdate("Y-m-d H:i:s"));
+        $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > gmdate("Y-m-d H:i:s"));
 
         if (!$isActive) {
             $context = gT("Preview survey");
@@ -204,15 +198,6 @@ class TopbarConfiguration
             || $hasSurveyContentPermission
             || !is_null($extraToolsMenuItems);
 
-        $editorEnabled = $oSurvey->hasNewEditor;
-        $enableEditorButton = $oSurvey->hasNewEditor;
-
-        $editorUrl = Yii::app()->request->getUrlReferrer(
-            Yii::app()->createUrl(
-                'editorLink/index',
-                ['route' => 'survey/' . $sid]
-            )
-        );
         App()->getClientScript()->registerScriptFile(
             App()->getConfig('adminscripts') . 'newQuestionEditor.js',
             CClientScript::POS_END
@@ -248,9 +233,7 @@ class TopbarConfiguration
             'beforeSurveyBarRender' => $beforeSurveyBarRender ?? [],
             'showToolsMenu' => $showToolsMenu,
             'surveyLanguages' => self::getSurveyLanguagesArray($oSurvey),
-            'editorEnabled' => $editorEnabled,
-            'editorUrl' => $editorUrl,
-            'enableEditorButton' => $enableEditorButton,
+            'editorEnabled' => App()->getConfig('editorEnabled') ?? false,
         );
     }
 

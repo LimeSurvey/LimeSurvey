@@ -1,7 +1,6 @@
 <?php
 
 Yii::import('application.helpers.common_helper', true);
-Yii::import('application.helpers.globalsettings_helper', true);
 
 
 $aData = Yii::app()->getController()->aData;

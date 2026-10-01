@@ -210,7 +210,7 @@ class FailedEmail extends LSActiveRecord
 
         $dropdownItems = [];
         $dropdownItems[] = [
-            'title'            => gT('Resend email'),
+            'title'            => gT('Resend'),
             'linkClass'        => 'failedemail-action-modal-open',
             'iconClass'        => 'ri-mail-line',
             'linkAttributes'   => [

@@ -11,6 +11,10 @@ $(document).on('ready  pjax:scriptcomplete',  function(){
     $('#translationtabs').show();
     $('#translationloading').hide();
 
+    // Tab ARIA state is handled globally: Bootstrap maintains aria-selected and
+    // adminbasics' tabsControl handles the roving tabindex plus arrow/Home/End
+    // navigation for any [role="tablist"], so nothing tab-specific is needed here.
+
     $('input.auto-trans').click(function(ui)
     {
         var sTarget_id = $(ui.target).attr('id');
@@ -28,7 +32,7 @@ $(document).on('ready  pjax:scriptcomplete',  function(){
 
             if ($("textarea[name="+sId+"]").val()){
 
-                // fallback if the FCKEditor is not avaliable
+                // fallback if the FCKEditor is not available
                 sTargetInnerText = strip($("textarea[name="+sId+"]").val());
 
 

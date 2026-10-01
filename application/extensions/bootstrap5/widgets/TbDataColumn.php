@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbDataColumn class file.
  * @author Antonio Ramirez <ramirez.cobos@gmail.com>
@@ -22,8 +23,49 @@ class TbDataColumn extends CDataColumn
     public $filterInputOptions;
 
     /**
+     * Renders the header cell.
+     * Adds the aria-sort attribute to the header cell of the currently sorted column,
+     * so assistive technologies can announce the sort state (WCAG 4.1.2).
+     *
+     * @return void
+     */
+    public function renderHeaderCell()
+    {
+        $ariaSort = $this->getAriaSortValue();
+        if ($ariaSort !== null) {
+            $this->headerHtmlOptions['aria-sort'] = $ariaSort;
+        } else {
+            unset($this->headerHtmlOptions['aria-sort']);
+        }
+        parent::renderHeaderCell();
+    }
+
+    /**
+     * Returns the aria-sort value for this column's header cell.
+     *
+     * @return string|null 'ascending' or 'descending' if the grid is currently sorted by this column, null otherwise
+     */
+    protected function getAriaSortValue()
+    {
+        if (!$this->grid->enableSorting || !$this->sortable || $this->name === null) {
+            return null;
+        }
+        $sort = $this->grid->dataProvider->getSort();
+        if ($sort === false || $sort->resolveAttribute($this->name) === false) {
+            return null;
+        }
+        $isDescending = $sort->getDirection($this->name);
+        if ($isDescending === null) {
+            return null;
+        }
+        return $isDescending ? 'descending' : 'ascending';
+    }
+
+    /**
      * Renders the header cell content.
      * This method will render a link that can trigger the sorting if the column is sortable.
+     *
+     * @return void
      */
     protected function renderHeaderCellContent()
     {
@@ -34,24 +76,26 @@ class TbDataColumn extends CDataColumn
             if ($sort->resolveAttribute($this->name) !== false) {
                 $isAscending = $sort->getDirection($this->name);
                 if ($isAscending) {
-                    $label .= '<i class="ri-sort-asc ms-2"></i>';
+                    $label .= '<i class="ri-sort-asc ms-2" aria-hidden="true"></i>';
                 }
                 if (!$isAscending) {
-                    $label .= '<i class="ri-sort-desc ms-2"></i>';
+                    $label .= '<i class="ri-sort-desc ms-2" aria-hidden="true"></i>';
                 }
             }
 
-            echo $sort->link($this->name, $label, array('class' => 'sort-link'));
-        } else {
-            if ($this->name !== null && $this->header === null) {
-                if ($this->grid->dataProvider instanceof CActiveDataProvider) {
-                    echo CHtml::encode($this->grid->dataProvider->model->getAttributeLabel($this->name));
-                } else {
-                    echo CHtml::encode($this->name);
-                }
+            echo $sort->link($this->name, $label, [
+                'class'               => 'sort-link',
+                'role'                => 'button',
+                'data-sort-attribute' => $this->name,
+            ]);
+        } elseif ($this->name !== null && $this->header === null) {
+            if ($this->grid->dataProvider instanceof CActiveDataProvider) {
+                echo CHtml::encode($this->grid->dataProvider->model->getAttributeLabel($this->name));
             } else {
-                parent::renderHeaderCellContent();
+                echo CHtml::encode($this->name);
             }
+        } else {
+            parent::renderHeaderCellContent();
         }
     }
 
@@ -75,7 +119,8 @@ class TbDataColumn extends CDataColumn
         if (is_string($this->filter)) {
             echo $this->filter;
         } else {
-            if ($this->filter !== false && $this->grid->filter !== null && $this->name !== null && strpos(
+            if (
+                $this->filter !== false && $this->grid->filter !== null && $this->name !== null && strpos(
                     (string) $this->name,
                     '.'
                 ) === false
@@ -88,6 +133,7 @@ class TbDataColumn extends CDataColumn
                 } else {
                     $filterInputOptions = array();
                 }
+                $this->applyDefaultFilterAriaLabel($filterInputOptions);
                 if (is_array($this->filter)) {
                     $filterInputOptions['class'] = ' form-select ';
                     $filterInputOptions['prompt'] = '';
@@ -106,5 +152,22 @@ class TbDataColumn extends CDataColumn
                 parent::renderFilterCellContent();
             }
         }
+    }
+
+    /**
+     * Adds an aria-label to filter controls when none is provided, for accessibility (e.g. WCAG / axe).
+     *
+     * @param array $filterInputOptions
+     * @return void
+     */
+    protected function applyDefaultFilterAriaLabel(array &$filterInputOptions)
+    {
+        if (!empty($filterInputOptions['aria-label']) || !empty($filterInputOptions['aria-labelledby'])) {
+            return;
+        }
+        if (!($this->grid->filter instanceof CModel) || $this->name === null) {
+            return;
+        }
+        $filterInputOptions['aria-label'] = $this->grid->filter->getAttributeLabel($this->name);
     }
 }

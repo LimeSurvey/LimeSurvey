@@ -43,8 +43,7 @@ class PdfWriter extends Writer
         $values,
         FormattingOptions $oOptions,
         $fieldNames = []
-    )
-    {
+    ) {
         $this->rowCounter++;
         if ($oOptions->answerFormat == 'short') {
             $pdfstring = '';

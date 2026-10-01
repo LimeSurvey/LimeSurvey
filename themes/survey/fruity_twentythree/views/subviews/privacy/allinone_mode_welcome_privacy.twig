@@ -1,6 +1,6 @@
 {#
     LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v2 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -19,8 +19,9 @@
 #}
 {% if aSurveyInfo.format == 'A' %}
     {% if not aSurveyInfo.showwelcome is defined or not aSurveyInfo.showwelcome != 'N' %}
+        {# welcome.twig also renders the privacy message, so the welcome image (if set) wraps it too #}
         {{ include('./subviews/messages/welcome.twig') }}
+    {% else %}
+        {{ include('./subviews/privacy/privacy.twig') }}
     {% endif %}
-
-    {{ include('./subviews/privacy/privacy.twig') }}
 {% endif %}

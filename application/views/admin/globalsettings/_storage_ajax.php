@@ -48,7 +48,7 @@
                 <?php if ($survey['deleted']) : ?>
                     (<?php echo $survey['sid']; ?>)
                 <?php else : ?>
-                    (<a href="<?php echo $this->createUrl('surveyAdministration/view', array('surveyid' => $survey['sid'])); ?>"><?php echo $survey['sid']; ?></a>)
+                    (<a class="ls-link" href="<?php echo $this->createUrl('surveyAdministration/view', array('surveyid' => $survey['sid'])); ?>"><?php echo $survey['sid']; ?></a>)
                 <?php endif; ?>
             </td>
             <td>

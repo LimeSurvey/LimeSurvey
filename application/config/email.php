@@ -1,9 +1,11 @@
-<?php  if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -27,9 +29,9 @@
 // Email Settings
 // These settings determine how LimeSurvey will send emails
 $config = array();
-$config['siteadminemail']     = 'your-email@example.net'; // The default email address of the site administrator
-$config['siteadminbounce']    = 'your-email@example.net'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
-$config['siteadminname']      = 'Your Name'; // The name of the site administrator
+$config['siteadminemail']     = ''; // The default email address of the site administrator
+$config['siteadminbounce']    = ''; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
+$config['siteadminname']      = 'Site admin'; // The name of the site administrator
 
 $config['emailmethod']        = 'mail'; // The following values can be used:
 $config['protocol'] = $config['emailmethod'];

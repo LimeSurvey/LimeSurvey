@@ -55,7 +55,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param string $sLayout the name of the layout to render
      * @param array $aData the datas needed to fill the layout
      * @param boolean $bReturn if true, it will return the html string without
-     *                         rendering the whole page. Usefull for debuging, and used for Print Answers
+     *                         rendering the whole page. Useful for debugging, and used for Print Answers
      * @return mixed|string
      * @throws CException
      * @throws Throwable
@@ -115,7 +115,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param array $aData the datas needed to fill the layout
      * @param bool $root
      * @param boolean $bReturn if true, it will return the html string without
-     *                         rendering the whole page. Usefull for debuging, and used for Print Answers
+     *                         rendering the whole page. Useful for debugging, and used for Print Answers
      * @return mixed|string
      * @throws CException
      * @throws Throwable
@@ -165,7 +165,7 @@ window.addEventListener('message', function(event) {
             $line .= file_get_contents($oLayoutTemplate->viewPath . $sLayout);
             $line .= '</div>';
             if ($root === true) {
-                $line = '<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>'
+                $line = '<html lang="{{ aSurveyInfo.htmllanguagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>'
                     . file_get_contents($oLayoutTemplate->viewPath . '/subviews/header/head.twig')
                     . '<body style="padding-top: 0px !important;" class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >'
                     . $line;
@@ -217,11 +217,11 @@ window.addEventListener('message', function(event) {
 
     /**
      * Main method to render an admin page or block.
-     * Extendable to use admin templates in the future currently running on pathes, like the yii render methods go.
+     * Extendable to use admin templates in the future currently running on paths, like the yii render methods go.
      * @param $sLayoutFilePath
      * @param array $aData the datas needed to fill the layout
      * @param boolean $bReturn if true, it will return the html string without rendering the whole page.
-     *                         Usefull for debuging, and used for Print Answers
+     *                         Useful for debugging, and used for Print Answers
      * @param boolean $bUseRootDir Prepend application root dir to sLayoutFilePath if true.
      * @return string HTML
      * @throws CException
@@ -285,7 +285,7 @@ window.addEventListener('message', function(event) {
             $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName();
         }
         // Check if question use a custom template and that it provides its own twig view
-        $sDirName = null; // Extra dir name to readed from template before question template
+        $sDirName = null; // Extra dir name to read from template before question template
         if ($sTemplateFolderName) {
             // A template can change only one of the view of the question type.
             // So other views should be rendered by core.
@@ -630,7 +630,7 @@ window.addEventListener('message', function(event) {
             // button won't be rendered on welcome and final page because 'srid' key doesn't exist on those pages
             // additionally checks for submit page to compensate when srid is needed to render other views
             if (
-                isset($_SESSION['survey_' . $surveyid]['srid'])
+                isset($_SESSION['responses_' . $surveyid]['srid'])
                 && isset($aData['aSurveyInfo']['active']) && $aData['aSurveyInfo']['active'] == 'Y'
                 && isset($aData['aSurveyInfo']['include_content']) && $aData['aSurveyInfo']['include_content'] !== 'submit'
                 && isset($aData['aSurveyInfo']['include_content']) && $aData['aSurveyInfo']['include_content'] !== 'submit_preview'
@@ -686,6 +686,8 @@ window.addEventListener('message', function(event) {
         }
 
         $aData["aSurveyInfo"]['languagecode']     = $languagecode;
+        /* Separate from 'languagecode' since some codes (e.g. 'nl-informal') are not valid values for the HTML lang attribute */
+        $aData["aSurveyInfo"]['htmllanguagecode'] = getHtmlLangAttributeValue($languagecode);
         $aData["aSurveyInfo"]['dir']              = (getLanguageRTL($languagecode)) ? "rtl" : "ltr";
 
         if (!empty($aData['aSurveyInfo']['sid'])) {
@@ -694,35 +696,26 @@ window.addEventListener('message', function(event) {
                 ($showxquestions == 'choose' && !isset($aData['aSurveyInfo']['showxquestions'])) ||
                 ($showxquestions == 'choose' && $aData['aSurveyInfo']['showxquestions'] == 'Y'));
 
+            // Welcome screen image and its display settings (see Survey::getWelcomeImageSettings())
+            $oSurvey = $aData['aSurveyInfo']['oSurvey'] ?? Survey::model()->findByPk($aData['aSurveyInfo']['sid']);
+            $aData["aSurveyInfo"]['welcomeimage'] = $oSurvey ? ($oSurvey->welcomeImageSettings ?: []) : [];
 
             // NB: Session is flushed at submit, so sid is not defined here.
             if (
-                isset($_SESSION['survey_' . $aData['aSurveyInfo']['sid']]) &&
-                isset($_SESSION['survey_' . $aData['aSurveyInfo']['sid']]['totalquestions'])
+                isset($_SESSION['responses_' . $aData['aSurveyInfo']['sid']]) &&
+                isset($_SESSION['responses_' . $aData['aSurveyInfo']['sid']]['totalquestions'])
             ) {
-                $aData["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_' .
+                $aData["aSurveyInfo"]['iTotalquestions'] = $_SESSION['responses_' .
                 $aData['aSurveyInfo']['sid']]['totalVisibleQuestions'];
             }
 
             // Add the survey theme options
-            if ($oTemplate->oOptions) {
-                foreach ($oTemplate->oOptions as $key => $value) {
-                    // TODO: Same issue as commit 2972aea41c51c74db95bfe40c337ae839471152c
-                    // Options are not loaded the same way in all places.
-                    if ($value instanceof stdClass) {
-                        $value = 'N/A';
-                    }
-                    // Note that $value can also be a SimpleXMLElement
-                    // if force_xmlsettings_for_survey_rendering is activated
-                    $aData["aSurveyInfo"]["options"][$key] = (string)$value;
-                }
-            }
+            $aData["aSurveyInfo"]["options"] = $this->convertOptionsToArray($oTemplate->oOptions);
+            $aData["aSurveyInfo"] = $this->setDefaultPrivacyText($aData["aSurveyInfo"]);
         } else {
-            // Add the global theme options
+            // Add the global theme options (fully inheritance-resolved, same as the survey branch above)
             $oTemplateConfigurationCurrent = Template::getInstance($oTemplate->sTemplateName);
-            $aData["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])
-                ? json_decode((string) $oTemplateConfigurationCurrent['options'], true)
-                : $oTemplateConfigurationCurrent['options'];
+            $aData["aSurveyInfo"]["options"] = $this->convertOptionsToArray($oTemplateConfigurationCurrent->oOptions);
         }
 
         $aData = $this->fixDataCoherence($aData);
@@ -730,15 +723,64 @@ window.addEventListener('message', function(event) {
         return $aData;
     }
 
+    /**
+     * Convert a template's resolved options (stdClass, from TemplateConfiguration::oOptions)
+     * into a flat associative array suitable for twig, stringifying each value.
+     *
+     * TODO: Same issue as commit 2972aea41c51c74db95bfe40c337ae839471152c
+     * Options are not loaded the same way in all places.
+     *
+     * @param stdClass|null $oOptions The resolved template options (already inheritance-resolved).
+     * @return array<string, string> Associative array of option key to string value.
+     */
+    private function convertOptionsToArray($oOptions)
+    {
+        $aOptions = array();
+        if ($oOptions) {
+            foreach ($oOptions as $key => $value) {
+                if ($value instanceof stdClass) {
+                    $value = 'N/A';
+                }
+                // Note that $value can also be a SimpleXMLElement
+                // if force_xmlsettings_for_survey_rendering is activated
+                $aOptions[$key] = (string)$value;
+            }
+        }
+        return $aOptions;
+    }
 
     /**
-     * It can happen that user set incoherent values for options (like background is on, but no image file is selected)
-     * With some server configuration, it can lead to critical errors : empty values in image src or url()
-     * can block submition
-     * This function will check thoses cases. It can be used in the future for further checks
-     * @param array $aData
-     * @return array
+     * Ensure privacy text strings exist.
      *
+     * If specific privacy strings are empty, sets sensible defaults. The theme
+     * renders `datasecurity_notice_label` through its privacy subview.
+     *
+     * @param array $aSurveyInfo Survey rendering data; must contain at least `sid` when available.
+     * @return array The updated `$aSurveyInfo` array with `datasecurity_notice_label` and `datasecurity_error` ensured.
+     */
+    private function setDefaultPrivacyText($aSurveyInfo)
+    {
+        if (empty($aSurveyInfo['datasecurity_notice_label'])) {
+            $aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
+        }
+        if (empty($aSurveyInfo['datasecurity_error'])) {
+            $aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey privacy policy.");
+        }
+        /* @var string[] for automatic translation */
+        $translation = [
+            "Show policy" => gT("Show policy")
+        ];
+        return $aSurveyInfo;
+    }
+
+    /**
+     * Ensure option flags that depend on files are coherent.
+     *
+     * If a file-related option (e.g., `brandlogofile`, `backgroundimagefile`) is empty,
+     * the corresponding boolean-like option (`brandlogo`, `backgroundimage`) is set to `"false"`.
+     *
+     * @param array $aData Rendering data (expects `aSurveyInfo['options']` when present).
+     * @return array The input `$aData` with corrected option flags where applicable.
      */
     private function fixDataCoherence($aData)
     {
@@ -746,7 +788,7 @@ window.addEventListener('message', function(event) {
         $aFilesOptions = array( 'brandlogo' => 'brandlogofile'  , 'backgroundimage' => 'backgroundimagefile' );
 
         foreach ($aFilesOptions as $sOption => $sFileOption) {
-            if (is_array($aData["aSurveyInfo"]["options"])) {
+            if (isset($aData["aSurveyInfo"]["options"]) && is_array($aData["aSurveyInfo"]["options"])) {
                 if (array_key_exists($sFileOption, $aData["aSurveyInfo"]["options"])) {
                     if (empty($aData["aSurveyInfo"]["options"][$sFileOption])) {
                         $aData["aSurveyInfo"]["options"][$sOption] = "false";

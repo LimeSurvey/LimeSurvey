@@ -27,6 +27,7 @@
     </metadata>
 
     <compatibility>
+        <version>7.0</version>
         <version>6.0</version>
     </compatibility>
 
@@ -35,7 +36,7 @@
         About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
 
         NOTE: The "add" tag also count as a "replace" tag.
-              Eg: You can't add a file with the same name as a file in the mother theme. It will always replace it. You must use a diffrent file name.
+              Eg: You can't add a file with the same name as a file in the mother theme. It will always replace it. You must use a different file name.
               Eg: Vanilla manifest already has "<add>css/theme.css</add>". So here, if you use "<add>css/theme.css</add>" it will replace the vanilla css/theme.css
 
         NOTE: If a file in a mother theme, you don't need to add it here again.
@@ -125,7 +126,7 @@
         <optionspage>core</optionspage>
 
         <!--
-            List of pages/files for tempalte editor
+            List of pages/files for template editor
             When a user select a page, the related files will be offer in the editable files
         -->
         <template_editor>
@@ -356,7 +357,7 @@
                 <message type="data" twig="on"><![CDATA[ {{ gT("You got {TOTAL} points out of 3 possible points.") }} ]]></message>
               </assessments>
 
-              <!-- This is an exemple to show you how to add your custom screen in the theme editor with custom values -->
+              <!-- This is an example to show you how to add your custom screen in the theme editor with custom values -->
               <!-- The name of the array inside aSurveyInfo that feed your twig view is specified as "array-name". If you check quotas.twig, you'll notice the main variable is aSurveyInfo.aQuotas -->
               <!-- Notice that the data you pass here are simple. You can't pass complex arrays inside the array, only key => value pairs.-->
               <quotas type="custom" arrayName="aQuotas">

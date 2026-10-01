@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -70,13 +70,13 @@ function emailTokens($iSurveyID, $aResultTokens, $sType, $continueOnError = fals
             $warnings = null;
             $oToken = Token::model($iSurveyID)->findByPk($aTokenRow['tid']);
             if ($sType == 'invite' || $sType == 'register') {
-                $oToken->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                $oToken->sent = gmdate("Y-m-d H:i");
                 if (!$oToken->save(true, ['sent'])) {
                     $warnings = $oToken->getErrors();
                 }
             }
             if ($sType == 'remind') {
-                $oToken->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                $oToken->remindersent = gmdate("Y-m-d H:i");
                 $oToken->remindercount++;
                 if (!$oToken->save(true, ['remindersent', 'remindercount'])) {
                     $warnings = $oToken->getErrors();

@@ -4,7 +4,7 @@ use LimeSurvey\PluginManager\AuthPluginBase;
 
 /*
 * LimeSurvey
-* Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2013-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -37,6 +37,16 @@ class UserAction extends SurveyCommonAction
     }
 
     /**
+     * Default subaction: there is no user overview page, so redirect to the personal settings
+     *
+     * @return void
+     */
+    public function index()
+    {
+        $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+    }
+
+    /**
      * Manage user personal settings
      */
     public function personalsettings()
@@ -64,7 +74,7 @@ class UserAction extends SurveyCommonAction
                 $newPassword = Yii::app()->request->getPost('password');
                 $repeatPassword = Yii::app()->request->getPost('repeatpassword');
 
-                if ($newPassword !== '' && $repeatPassword !== '') {
+                if ($newPassword !== '' || $repeatPassword !== '') {
                     $error = $oUserModel->validateNewPassword($newPassword, $oldPassword ?? '', $repeatPassword);
 
                     if ($error !== '') {
@@ -79,7 +89,7 @@ class UserAction extends SurveyCommonAction
 
             if (Yii::app()->request->getPost('newemailshown') == "1") {
                 if (Yii::app()->getConfig('demoMode')) {
-                    Yii::app()->setFlashMessage(gT("You can't change your email adress if demo mode is active."), 'error');
+                    Yii::app()->setFlashMessage(gT("You can't change your email address if demo mode is active."), 'error');
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 }
 
@@ -104,6 +114,11 @@ class UserAction extends SurveyCommonAction
             $oUserModel->full_name            = Yii::app()->request->getPost('fullname');
             $uresult = $uresult && $oUserModel->save();
             if ($uresult) {
+                // Keep this session valid: it just rotated its own session
+                // token (see User::setPassword()), so the cached value used
+                // by LSApplicationTrait::getCurrentUserId() must be refreshed
+                // or this same session would be logged out on its next request.
+                Yii::app()->session['session_token'] = $oUserModel->session_token;
                 if (Yii::app()->request->getPost('lang') == 'auto') {
                     $sLanguage = getBrowserLanguage();
                 } else {
@@ -126,6 +141,14 @@ class UserAction extends SurveyCommonAction
                 SettingsUser::setUserSetting('lock_organizer', Yii::app()->request->getPost('lock_organizer'));
                 SettingsUser::setUserSetting('createsample', Yii::app()->request->getPost('createsample'));
                 SettingsUser::setUserSetting('breadcrumbMode', Yii::app()->request->getPost('breadcrumbMode'));
+                
+                // Validate and save displayTimezone: accept empty string or valid timezone identifier
+                $postTimezone = Yii::app()->request->getPost('displayTimezone', '');
+                $displayTimezone = is_string($postTimezone) ? trim($postTimezone) : '';
+                if ($displayTimezone === '' || in_array($displayTimezone, timezone_identifiers_list(), true)) {
+                    SettingsUser::setUserSetting('displayTimezone', $displayTimezone);
+                }
+                // If invalid timezone, silently skip saving (preserves existing setting)
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {
@@ -156,7 +179,7 @@ class UserAction extends SurveyCommonAction
         $aData['sSavedLanguage'] = $oUser->lang;
         $aData['sUsername'] = $oUser->users_name;
         $aData['sFullname'] = $oUser->full_name;
-        $aData['sEmailAdress'] = $oUser->email;
+        $aData['sEmailAddress'] = $oUser->email;
         $aData['passwordHelpText'] = $oUser->getPasswordHelpText();
 
         $aData['topbar']['title'] = gT('Account');
@@ -186,6 +209,9 @@ class UserAction extends SurveyCommonAction
 
         $currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : App()->getConfig('preselectquestiontype');
         $currentPreselectedQuestionTheme = array_key_exists('preselectquestiontheme', $aUserSettings) ? $aUserSettings['preselectquestiontheme'] : App()->getConfig('preselectquestiontheme');
+
+        $globalDisplayTimezone = SettingGlobal::model()->findByPk('displayTimezone');
+        $aData['globalDisplayTimezone'] = ($globalDisplayTimezone && !empty($globalDisplayTimezone->stg_value)) ? $globalDisplayTimezone->stg_value : 'UTC';
 
         $aData['currentPreselectedQuestiontype'] = $currentPreselectedQuestiontype;
         $aData['currentPreselectedQuestionTheme'] = $currentPreselectedQuestionTheme;

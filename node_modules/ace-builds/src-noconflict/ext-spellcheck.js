@@ -1,4 +1,16 @@
-ace.define("ace/ext/spellcheck",["require","exports","module","ace/lib/event","ace/editor","ace/config"], function(require, exports, module){"use strict";
+ace.define("ace/ext/spellcheck",["require","exports","module","ace/lib/event","ace/editor","ace/config"], function(require, exports, module){/**
+ * ## Browser spellcheck integration extension for native spelling correction
+ *
+ * Provides seamless integration with browser's native spellcheck functionality through context menu interactions.
+ * Enables right-click spelling suggestions on misspelled words while preserving editor functionality and text input
+ * handling. The extension bridges browser spellcheck capabilities with the editor's text manipulation system.
+ *
+ * **Enable:** `editor.setOption("spellcheck", true)` (enabled by default)
+ * or configure it during editor initialization in the options object.
+ *
+ * @module
+ */
+"use strict";
 var event = require("../lib/event");
 exports.contextMenuHandler = function (e) {
     var host = e.target;

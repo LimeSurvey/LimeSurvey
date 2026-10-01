@@ -1,4 +1,15 @@
-ace.define("ace/ext/elastic_tabstops_lite",["require","exports","module","ace/editor","ace/config"], function(require, exports, module){"use strict";
+ace.define("ace/ext/elastic_tabstops_lite",["require","exports","module","ace/editor","ace/config"], function(require, exports, module){/**
+ * ## Elastic Tabstops Lite extension.
+ *
+ * Automatically adjusts tab spacing to align content in tabular format by calculating optimal column widths
+ * and maintaining consistent vertical alignment across multiple lines. Tracks content changes and dynamically
+ * reprocesses affected rows to ensure proper formatting without manual intervention.
+ *
+ * **Enable:** `editor.setOption("useElasticTabstops", true)`
+ *  or configure it during editor initialization in the options object.
+ * @module
+ */
+"use strict";
 var ElasticTabstopsLite = /** @class */ (function () {
     function ElasticTabstopsLite(editor) {
         this.$editor = editor;

@@ -1,12 +1,18 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="2"
-    resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     autoloader="tests/phpstan/phpstan_bootstrap.php"
 >
+    <issueHandlers>
+        <!-- Issues raised by psalm error level restructuring after upgrade -->
+        <RiskyTruthyFalsyComparison errorLevel="suppress" />
+        <UnsupportedReferenceUsage errorLevel="suppress" />
+        <UnsupportedPropertyReferenceUsage errorLevel="suppress" />
+        <UndefinedMagicPropertyAssignment errorLevel="suppress" />
+        <MissingClassConstType errorLevel="suppress" />
+    </issueHandlers>
     <projectFiles>
         <file name="application/models/FailedEmail.php" />
         <file name="application/controllers/FailedEmailController.php" />

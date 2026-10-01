@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -69,7 +69,7 @@ class LSYii_ShortUrlValidator extends CValidator
 
         $route .= '/';
         $controllerID = '';
-        while (($pos=strpos($route, '/')) !== false) {
+        while (($pos = strpos($route, '/')) !== false) {
             $id = substr($route, 0, $pos);
             if (!preg_match('/^\w+$/', $id)) {
                 return null;
@@ -77,7 +77,7 @@ class LSYii_ShortUrlValidator extends CValidator
             if (!$caseSensitive) {
                 $id = strtolower($id);
             }
-            $route = (string)substr($route, $pos+1);
+            $route = (string)substr($route, $pos + 1);
             if (!isset($basePath)) { // first segment
                 if (
                     ($module = $owner->getModule($id)) !== null
@@ -148,5 +148,4 @@ class LSYii_ShortUrlValidator extends CValidator
         ];
         return in_array($alias, $reserved);
     }
-
 }

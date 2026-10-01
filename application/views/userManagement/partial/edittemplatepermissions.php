@@ -23,6 +23,7 @@ Yii::app()->getController()->renderPartial(
             </button>
         </div>
         <table class="table">
+            <caption class="visually-hidden"><?php eT('Theme permissions'); ?></caption>
             <tr>
                 <th><?php eT('Theme name'); ?></th>
                 <th><?php eT('Access'); ?></th>
@@ -34,6 +35,7 @@ Yii::app()->getController()->renderPartial(
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'TemplatePermissions[' . $aTemplate['folder'] . ']',
                             'id'            => $aTemplate['folder'] . '_use',
+                            'ariaLabel'     => sprintf(gT('%s access'), $aTemplate['folder']),
                             'checkedOption' => $aTemplate['value'],
                             'selectOptions' => [
                                 '1' => gT('On'),

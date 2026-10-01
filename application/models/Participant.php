@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -182,7 +182,7 @@ class Participant extends LSActiveRecord
      */
     public function getCheckbox()
     {
-        return "<input type='checkbox' class='selector_participantCheckbox' name='selectedParticipant[]' value='" . $this->id . "' >";
+        return "<input type='checkbox' class='selector_participantCheckbox massiveActionsCheckbox' name='selectedParticipant[]' value='" . $this->id . "' >";
     }
 
     /**
@@ -202,19 +202,35 @@ class Participant extends LSActiveRecord
             'created' => gT('Created on') . $this->setEncryptedAttributeLabel(0, 'Participant', 'created')
         );
         foreach ($this->allExtraAttributes as $name => $attribute) {
-            $returnArray[$name] = $attribute['defaultname'];
+            $returnArray[$name] = $attribute['localizedname'];
         }
         return $returnArray;
     }
 
     /**
-     * @return array
+     * Get all non-core CPDB attributes, keyed by their column name (ea_<attribute_id>).
+     *
+     * Each attribute additionally gets a 'localizedname' entry holding the attribute name
+     * in the current admin language, falling back to the default name if no translation exists.
+     *
+     * @return array<string, array<string, mixed>>
      */
     public function getAllExtraAttributes()
     {
         $allAttributes = ParticipantAttributeName::model()->getAllAttributes();
+        $localizedNames = CHtml::listData(
+            ParticipantAttributeNameLang::model()->findAll(
+                'lang = :lang',
+                [':lang' => Yii::app()->session['adminlang']]
+            ),
+            'attribute_id',
+            'attribute_name'
+        );
         $extraAttributes = array();
         foreach ($allAttributes as $attribute) {
+            $attribute['localizedname'] = !empty($localizedNames[$attribute['attribute_id']])
+                ? $localizedNames[$attribute['attribute_id']]
+                : $attribute['defaultname'];
             $extraAttributes["ea_" . $attribute['attribute_id']] = $attribute;
         }
         return $extraAttributes;
@@ -384,7 +400,7 @@ class Participant extends LSActiveRecord
             $col_array = [
                 "value"  => '$data->getParticipantAttribute($this->id)',
                 "id"     => $name,
-                "header" => $attribute['defaultname'] . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
+                "header" => CHtml::encode($attribute['localizedname']) . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
                 "type"   => "html",
             ];
             //textbox
@@ -838,7 +854,7 @@ class Participant extends LSActiveRecord
             array_push($joinValue, "LEFT JOIN {{participant_attribute}} attribute" . $iAttributeID . " ON attribute" . $iAttributeID . ".participant_id=p.participant_id AND attribute" . $iAttributeID . ".attribute_id=" . $iAttributeID);
         }
 
-        $aConditions = array(); // this wil hold all conditions
+        $aConditions = array(); // this will hold all conditions
         $aParams = array();
         if (!is_null($userid)) {
             // We are not superadmin so we need to limit to our own or shared with us
@@ -1104,7 +1120,7 @@ class Participant extends LSActiveRecord
      *
      * @param array $condition an array containing the search string exploded using || so that "firstname||equal||jason" is $condition(1=>'firstname', 2=>'equal', 3=>'jason')
      * @param int $page Which page number to display
-     * @param int $limit The limit/number of reords to return
+     * @param int $limit The limit/number of records to return
      *
      * @return array $output
      */
@@ -2015,7 +2031,12 @@ class Participant extends LSActiveRecord
             $data = array($tokenFieldname => $value['value']);
             Yii::app()->db
                 ->createCommand()
-                ->update("{{tokens_$surveyId}}", $data, "participant_id = '$participantId'");
+                ->update(
+                    "{{tokens_" . intval($surveyId) . "}}",
+                    $data,
+                    'participant_id = :participant_id',
+                    array(':participant_id' => $participantId)
+                );
         }
         return true;
     }
@@ -2033,6 +2054,20 @@ class Participant extends LSActiveRecord
     public function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname)
     {
         $survey = Survey::model()->findByPk($surveyId);
+        if (empty($survey)) {
+            return false;
+        }
+        if (!self::isValidTokenAttributeFieldname($survey, $tokenFieldname)) {
+            return false;
+        }
+        if (!preg_match('/^[1-9][0-9]*$/', (string) $participantAttributeId)) {
+            return false;
+        }
+        $participantAttributeId = (int) $participantAttributeId;
+        if (ParticipantAttributeName::model()->findByPk($participantAttributeId) === null) {
+            return false;
+        }
+
         $val = Yii::app()->db
             ->createCommand()
             ->select($tokenFieldname)
@@ -2059,13 +2094,35 @@ class Participant extends LSActiveRecord
             if ($test['count'] > 0) {
                 Yii::app()->db
                     ->createCommand()
-                    ->update('{{participant_attribute}}', array("value" => $value2[$tokenFieldname]), "participant_id='$participantId' AND attribute_id=$participantAttributeId");
+                    ->update(
+                        '{{participant_attribute}}',
+                        array("value" => $value2[$tokenFieldname]),
+                        'participant_id = :participant_id AND attribute_id = :attribute_id',
+                        array(':participant_id' => $participantId, ':attribute_id' => $participantAttributeId)
+                    );
             } else {
                 Yii::app()->db
                     ->createCommand()
                     ->insert('{{participant_attribute}}', $data);
             }
         }
+        return true;
+    }
+
+    /**
+     * Checks that the given fieldname is a real custom attribute column of the survey
+     * participant table. Used to keep user supplied mappings out of SQL clauses.
+     *
+     * @param Survey $survey
+     * @param mixed $tokenFieldname
+     * @return boolean
+     */
+    protected static function isValidTokenAttributeFieldname($survey, $tokenFieldname)
+    {
+        if (!is_string($tokenFieldname) || !preg_match('/^attribute_[0-9]+$/', $tokenFieldname)) {
+            return false;
+        }
+        return array_key_exists($tokenFieldname, $survey->getTokenAttributes());
     }
 
     /**
@@ -2082,13 +2139,23 @@ class Participant extends LSActiveRecord
      * @param bool $overwriteauto If true, overwrites existing automatically mapped attribute values
      * @param bool $overwriteman If true, overwrites manually mapped attribute values (where token fieldname=attribute_n)
      * @param bool $createautomap If true, updates tokendescription field with new mapping
-     * @return array An array contaning list of successful and list of failed ids
+     * @return array An array containing list of successful and list of failed ids
      */
     public function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto = false, $overwriteman = false, $createautomap = true)
     {
         $survey = Survey::model()->findByPk($surveyid);
         $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participant list
-        $tokenids = json_decode((string) $tokenid_string, true);
+        // The id list may reach the session in different shapes depending on the grid widget used:
+        // a JSON-encoded array ("[1,2]"), a separator-joined string ("1,2,3") from the floating
+        // actions widget, or an actual PHP array. Normalise all of them to an array of ids.
+        if (is_array($tokenid_string)) {
+            $tokenids = $tokenid_string;
+        } else {
+            $tokenids = json_decode((string) $tokenid_string, true);
+            if (!is_array($tokenids)) {
+                $tokenids = ((string) $tokenid_string === '') ? [] : explode(',', (string) $tokenid_string);
+            }
+        }
         $duplicate = 0;
         $sucessfull = 0;
         $attid = []; //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
@@ -2104,6 +2171,10 @@ class Participant extends LSActiveRecord
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
             foreach ($aAttributesToBeCreated as $key => $value) {
+                if (!isset($aTokenAttributes[$key]) || !self::isValidTokenAttributeFieldname($survey, $key)) {
+                    unset($aAttributesToBeCreated[$key]);
+                    continue;
+                }
                 $attid[$key] = $attributeService->saveParticipantAttribute($aTokenAttributes[$key], urldecode((string) $value));
             }
         }
@@ -2203,11 +2274,12 @@ class Participant extends LSActiveRecord
                     ];
                     $oParticipant = new Participant();
                     $oParticipant->setAttributes($writearray, false);
-                    $oParticipant->encryptSave();
+                    $oParticipant->encryptSave(false);
 
                     //Update survey participant list and insert the new UUID
                     $oTokenDynamic->participant_id = $pid;
-                    $oTokenDynamic->encryptSave();
+                    /* No rules for participant_id, no need to validate */
+                    $oTokenDynamic->encryptSave(false, ['participant_id']);
 
                     /* Now add any new attribute values */
                     if (!empty($aAttributesToBeCreated)) {

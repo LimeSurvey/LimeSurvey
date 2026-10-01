@@ -9,13 +9,13 @@ Yii::app()->getController()->renderPartial(
 <?php $form = $this->beginWidget('TbActiveForm', array(
     'id' => 'UserManagement--modalform',
     'action' => App()->createUrl('userManagement/SaveRole'),
-    'enableAjaxValidation'=>false,
-    'enableClientValidation'=>false,
+    'enableAjaxValidation' => false,
+    'enableClientValidation' => false,
 ));?>
 
 <div class="modal-body selector--edit-role-container">
     <div class="form">
-        <div class="row ls-space margin top-5 bottom-5 hidden" id="UserManagement--errors">
+        <div class="row ls-space margin top-5 bottom-5 d-none" id="UserManagement--errors" role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1">
         </div>
         <input type="hidden" name="userid" value="<?= $oUser->uid ?>"/>
         <?php

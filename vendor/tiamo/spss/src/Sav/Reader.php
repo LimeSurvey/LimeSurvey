@@ -11,7 +11,7 @@ use SPSS\Utils;
 class Reader
 {
     /**
-     * @var Header
+     * @var Record\Header
      */
     public $header;
 
@@ -21,24 +21,24 @@ class Reader
     public $variables = [];
 
     /**
-     * @var ValueLabel[]
+     * @var Record\ValueLabel[]
      */
     public $valueLabels = [];
 
     /**
-     * @var array
+     * @var Record\Document
      */
-    public $documents = [];
+    public $document;
 
     /**
-     * @var Info[]
+     * @var Record\Info[]
      */
     public $info = [];
 
     /**
-     * @var array
+     * @var Record\Data
      */
-    public $data = [];
+    public $data;
 
     /**
      * @var int
@@ -51,14 +51,9 @@ class Reader
     public $dataPosition = -1;
 
     /**
-     * @var record
-     */
-    public $record;
-
-    /**
      * @var Buffer
      */
-    protected $_buffer;
+    protected $buffer;
 
     /**
      * Reader constructor.
@@ -67,8 +62,45 @@ class Reader
      */
     private function __construct(Buffer $buffer)
     {
-        $this->_buffer          = $buffer;
-        $this->_buffer->context = $this;
+        $this->buffer          = $buffer;
+        $this->buffer->context = $this;
+    }
+
+    private function readBodyInternal()
+    {
+        $infoCollection = new Record\InfoCollection();
+        $posVar         = 0;
+        do {
+            $recType = $this->buffer->readInt();
+            switch ($recType) {
+                case Record\Variable::TYPE:
+                    $variable               = Record\Variable::fill($this->buffer);
+                    $variable->realPosition = $posVar;
+                    $this->variables[]      = $variable;
+                    $posVar++;
+                    break;
+                case Record\ValueLabel::TYPE:
+                    $this->valueLabels[] = Record\ValueLabel::fill($this->buffer, [
+                        'variables' => $this->variables,
+                    ]);
+                    break;
+                case Record\Info::TYPE:
+                    $this->info = $infoCollection->fill($this->buffer);
+                    break;
+                case Record\Document::TYPE:
+                    $this->document = Record\Document::fill($this->buffer);
+                    break;
+            }
+        } while (Record\Data::TYPE !== $recType);
+    }
+    
+    private function haveVar($valueLabel, $variable) {
+        foreach ($valueLabel->indexes as $index) {
+            if ($index == $variable->realPosition) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -92,6 +124,22 @@ class Reader
     }
 
     /**
+     * @param int $index
+     *
+     * @return string|null
+     */
+    public function getVariableName($index)
+    {
+        $subType = Record\Info\LongVariableNames::SUBTYPE;
+        if (isset($this->info) && isset($this->info[$subType])) {
+            $names = $this->info[$subType]->data;
+            $shortName = (isset($this->variables[$index])) ? $this->variables[$index]->name : "";
+            return (isset($names) && \is_array($names) && isset($names[$shortName])) ? $names[$shortName] : $shortName;
+        }
+        return null;
+    }
+
+    /**
      * @return self
      */
     public function readMetaData()
@@ -112,7 +160,7 @@ class Reader
      */
     public function readHeader()
     {
-        $this->header = Record\Header::fill($this->_buffer);
+        $this->header = Record\Header::fill($this->buffer);
 
         return $this;
     }
@@ -126,34 +174,27 @@ class Reader
             $this->readHeader();
         }
 
-        // TODO: refactory
-        $infoCollection = new Record\InfoCollection();
-        $tempVars       = [];
-        $posVar         = 0;
+        // TODO: We need to find a better way to decode the body, because the CharacterEncoding
+        // data is not necessary set at the beginning of the body and any string that is set
+        // before it is then not decode. So, we need to read twice the body, once to find the
+        // encode and another to decode it.
+        $headerPosition = $this->buffer->position();
+        $this->readBodyInternal();
+        if (isset($this->info) && isset($this->info[Record\Info\CharacterEncoding::SUBTYPE])) {
+            $encode = $this->info[Record\Info\CharacterEncoding::SUBTYPE]->value;
+            // If is not set assume the UTF-8 encode.
+            $encode = (isset($encode) && !empty($encode)) ? $encode : "UTF-8";
+            $this->buffer->charset = $encode;
 
-        do {
-            $recType = $this->_buffer->readInt();
-            switch ($recType) {
-                case Record\Variable::TYPE:
-                    $variable               = Record\Variable::fill($this->_buffer);
-                    $variable->realPosition = $posVar;
-                    $tempVars[]             = $variable;
-                    $posVar++;
-                    break;
-                case Record\ValueLabel::TYPE:
-                    $this->valueLabels[] = Record\ValueLabel::fill($this->_buffer, [
-                        // TODO: refactory
-                        'variables' => $tempVars,
-                    ]);
-                    break;
-                case Record\Info::TYPE:
-                    $this->info = $infoCollection->fill($this->_buffer);
-                    break;
-                case Record\Document::TYPE:
-                    $this->documents = Record\Document::fill($this->_buffer)->toArray();
-                    break;
+            if ($this->buffer->seek($headerPosition) === 0) {
+                $this->valueLabels = [];
+                $this->info        = [];
+                $this->document    = null;
+                $this->data        = null;
+                $this->variables   = [];
+                $this->readBodyInternal();
             }
-        } while (Record\Data::TYPE !== $recType);
+        }
 
         // Excluding the records that are creating only as a consequence of very long string records
         // from the variables computation.
@@ -163,20 +204,42 @@ class Reader
         }
 
         $segmentsCount = 0;
+        $tempVars = $this->variables;
+        $this->variables = [];
         foreach ($tempVars as $index => $var) {
             // Skip blank records from the variables computation
-            if (-1 !== $var->width) {
+            if ($var->width !== -1) {
                 if ($segmentsCount <= 0) {
                     $segmentsCount = Utils::widthToSegments(
                         isset($veryLongStrings[$var->name]) ?
                             $veryLongStrings[$var->name] : $var->width
                     );
+                    //Read the ValueLabels and set it to $var->values.
+                    if (Record\Variable::isVeryLong($var->width) !== false) {
+                        $longName = $this->getVariableName($newIndex);
+                        $subType = Record\Info\LongStringValueLabels::SUBTYPE;
+                        if (isset($this->info[$subType]) && isset($this->info[$subType][$longName]) && 
+                            isset($this->info[$subType][$longName]["values"])) {
+                            $var->values = $this->info[Record\Info\LongStringValueLabels::SUBTYPE][$longName]["values"];
+                        }
+                    } else {
+                        foreach ($this->valueLabels as $pos => $valueLabel) {
+                            if ($this->haveVar($valueLabel, $var) && isset($valueLabel->labels)) {
+                                foreach($valueLabel->labels as $posV => $valueLabelData) {
+                                    $label = $valueLabelData["label"];
+                                    $var->values[$valueLabelData["value"]] = $label;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
                     $this->variables[] = $var;
                 }
                 $segmentsCount--;
             }
         }
-        $this->dataPosition = $this->_buffer->position();
+        $this->dataPosition = $this->buffer->position();
 
         return $this;
     }
@@ -186,11 +249,29 @@ class Reader
      */
     public function readData()
     {
-        $this->data = Record\Data::fill($this->_buffer)->toArray();
+        $this->rewindCaseIterator();
+        $this->dataPosition = $this->buffer->position();
+        $this->data = Record\Data::fill($this->buffer);
 
         return $this;
     }
-    
+
+    /**
+     * @return []
+     */
+    public function getDataArray()
+    {
+        return (isset($this->data)) ? $this->data->toArray() : [];
+    }
+
+    /**
+     * @return []
+     */
+    public function getDocumentArray()
+    {
+        return (isset($this->document)) ? $this->document->toArray() : [];
+    }
+
     /**
      * @return booleam
      */
@@ -198,8 +279,8 @@ class Reader
     {
         if ($this->dataPosition !== -1) {
             $this->lastCase = -1;
-            $this->record = null;
-            if ($this->_buffer->seek($this->dataPosition) === 0) {
+            $this->data = null;
+            if ($this->buffer->seek($this->dataPosition) === 0) {
                 return true;
             }
         }
@@ -211,19 +292,24 @@ class Reader
      */
     public function readCase()
     {
-        if (!isset($this->record)) {
-            $this->record = Record\Data::create();
-        }
-
-        $this->lastCase++;
-
-        if (($this->lastCase >= 0) && ($this->lastCase < $this->_buffer->context->header->casesCount)) {
-            $this->record->readCase($this->_buffer, $this->lastCase);
-
+        if (($this->lastCase + 1 >= 0) && ($this->lastCase + 1 < $this->buffer->context->header->casesCount)) {
+            if (!isset($this->data)) {
+                $this->data = Record\Data::create();
+            }
+            $this->data->readCase($this->buffer, $this->lastCase + 1);
+            $this->lastCase++;
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfCases()
+    {
+        return $this->buffer->context->header->casesCount;
     }
 
     /**
@@ -239,6 +325,6 @@ class Reader
      */
     public function getCase()
     {
-        return $this->record->getRow();
+        return (isset($this->data)) ? $this->data->getRow() : [];
     }
 }
