@@ -39,6 +39,7 @@ class SurveyLastModifiedTest extends TestBaseClass
         parent::setUp();
         (new \ReflectionProperty(SurveyDetailService::class, 'lastTouched'))->setValue(null, []);
         Survey::model()->updateByPk(self::$surveyId, ['lastmodified' => self::OLD_TIMESTAMP]);
+        Survey::model()->resetCache();
     }
 
     /**
@@ -116,7 +117,6 @@ class SurveyLastModifiedTest extends TestBaseClass
      */
     private function assertSurveyLastModifiedUpdated(): void
     {
-        Survey::model()->resetCache();
         $survey = Survey::model()->findByPk(self::$surveyId);
         $this->assertNotSame(self::OLD_TIMESTAMP, $survey->lastmodified, 'The survey lastmodified timestamp was not updated.');
     }

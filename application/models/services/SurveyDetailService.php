@@ -109,6 +109,8 @@ class SurveyDetailService
             return;
         }
         Survey::model()->updateByPk($surveyId, ['lastmodified' => $now]);
+        // updateByPk() bypasses the model, so evict the now stale findByPk() cache
+        Survey::model()->resetCache();
         $this->removeCache($surveyId);
         self::$lastTouched[$surveyId] = $now;
     }
