@@ -48,25 +48,9 @@ class SurveyArchiveExport implements CommandInterface
             throw new \InvalidArgumentException("Missing required parameter: timestamp");
         }
 
-        $surveyId = (int) $request->getData('_id');
-        if ($response = $this->ensurePermissions($surveyId)) {
-            return $response;
-        }
-
         $archiveType = $request->getData('archiveType') ?? null;
         if ($archiveType === null) {
             throw new \InvalidArgumentException("Missing required parameter: archiveType");
-        }
-
-        $archiveExists = $this->surveyArchiveService->doesArchiveExists($surveyId, $timestamp, $archiveType);
-        if (!$archiveExists) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'ARCHIVE_NOT_FOUND',
-                    'Archive not found'
-                )
-                )->toArray()
-            );
         }
 
         $typePartMap = [
@@ -81,6 +65,22 @@ class SurveyArchiveExport implements CommandInterface
 
         if (!isset($typePartMap[$archiveType], $streamHandlerMap[$archiveType])) {
             throw new \InvalidArgumentException("Unsupported archive type: $archiveType");
+        }
+
+        $surveyId = (int) $request->getData('_id');
+        if ($response = $this->ensurePermissions($surveyId, $archiveType)) {
+            return $response;
+        }
+
+        $archiveExists = $this->surveyArchiveService->doesArchiveExists($surveyId, $timestamp, $archiveType);
+        if (!$archiveExists) {
+            return $this->responseFactory->makeErrorNotFound(
+                (new ResponseDataError(
+                    'ARCHIVE_NOT_FOUND',
+                    'Archive not found'
+                )
+                )->toArray()
+            );
         }
 
         $typePart = $typePartMap[$archiveType];
@@ -102,10 +102,14 @@ class SurveyArchiveExport implements CommandInterface
     /**
      * Ensure Permissions
      *
+     * Exporting archived data requires export permission on the archived data itself
+     * (responses or participants), not only on the survey content.
+     *
      * @param int $surveyId
+     * @param string $archiveType
      * @return Response|false
      */
-    private function ensurePermissions($surveyId)
+    private function ensurePermissions($surveyId, string $archiveType)
     {
         if (!$surveyId) {
             return $this->responseFactory->makeErrorNotFound(
@@ -120,8 +124,8 @@ class SurveyArchiveExport implements CommandInterface
         if (
             !$this->permission->hasSurveyPermission(
                 $surveyId,
-                'surveycontent',
-                'read'
+                $archiveType === SurveyArchiveService::$Tokens_archive ? 'tokens' : 'responses',
+                'export'
             )
         ) {
             return $this->responseFactory

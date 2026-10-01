@@ -53,11 +53,15 @@ class SurveyArchiveService
      * @param string $archiveType
      * @param int $sid
      * @param int $timestamp
+     * @throws \InvalidArgumentException if the archive type is unknown
      *
      * @return string
      */
     public static function buildArchiveTableName(string $archiveType, int $sid, int $timestamp): string
     {
+        if (!isset(self::$tableNameMap[$archiveType])) {
+            throw new \InvalidArgumentException("Unknown archive type: $archiveType");
+        }
         return sprintf(self::$tableNameMap[$archiveType], $sid, $timestamp);
     }
 
@@ -201,14 +205,28 @@ class SurveyArchiveService
         foreach ($ArchivesToDelete as $archiveType) {
             $archive = ArchivedTableSettings::getArchiveForTimestamp($iSurveyID, $iTimestamp, $archiveType);
             if ($archive) {
-                $archiveTableName = self::buildArchiveTableName($archiveType, $iSurveyID, $iTimestamp);
-                $this->app->db->createCommand()->dropTable("{{" . $archiveTableName . "}}");
+                $this->dropArchiveTable($archiveType, $iSurveyID, $iTimestamp);
                 if ($archiveType === self::$Response_archive) { // delete question types table when deleting responses
-                    $questionTypesTableName = self::buildArchiveTableName(self::$Questions_archive, $iSurveyID, $iTimestamp);
-                    $this->app->db->createCommand()->dropTable("{{" . $questionTypesTableName . "}}");
+                    $this->dropArchiveTable(self::$Questions_archive, $iSurveyID, $iTimestamp);
                 }
                 $archive->delete();
             }
+        }
+    }
+
+    /**
+     * Drops an archive table if it exists
+     *
+     * @param string $archiveType
+     * @param int $iSurveyID
+     * @param int $iTimestamp
+     * @return void
+     */
+    private function dropArchiveTable(string $archiveType, int $iSurveyID, int $iTimestamp): void
+    {
+        $tableName = "{{" . self::buildArchiveTableName($archiveType, $iSurveyID, $iTimestamp) . "}}";
+        if (tableExists($tableName)) {
+            $this->app->db->createCommand()->dropTable($tableName);
         }
     }
 
@@ -254,15 +272,22 @@ class SurveyArchiveService
         $sort     = new \CSort();
         $filters = $searchParams['filters'] ?? [];
         $sortBy = $searchParams['sort'] ?? null;
-        $page = (int)($searchParams['page'] ?? 1);
-        $pageSize = (int)($searchParams['pageSize'] ?? 10);
+        $page = max(1, (int)($searchParams['page'] ?? 1));
+        $pageSize = max(1, (int)($searchParams['pageSize'] ?? 10));
 
+        $columnNames = $model->getTableSchema()->getColumnNames();
         foreach ($filters as $field => $value) {
-            $criteria->addSearchCondition($field, $value, true, 'AND');
+            if (!in_array($field, $columnNames, true)) {
+                throw new \InvalidArgumentException("Unknown filter field: $field");
+            }
+            $criteria->addSearchCondition($this->app->db->quoteColumnName($field), (string) $value, true, 'AND');
         }
 
         if ($sortBy && isset($sortBy['attribute'], $sortBy['direction'])) {
-            $direction = strtolower($sortBy['direction']) === 'desc' ? false : true;
+            if (!in_array($sortBy['attribute'], $columnNames, true)) {
+                throw new \InvalidArgumentException("Unknown sort field: {$sortBy['attribute']}");
+            }
+            $direction = strtolower((string) $sortBy['direction']) === 'desc' ? \CSort::SORT_DESC : \CSort::SORT_ASC;
             $sort->defaultOrder = [$sortBy['attribute'] => $direction];
         }
 
@@ -316,9 +341,11 @@ class SurveyArchiveService
             return;
         }
 
-        $idList = implode(',', $responseIds);
-        $query = "SELECT * FROM {{{$timingsTableName}}} WHERE id IN ($idList)";
-        $timingsData = $this->app->db->createCommand($query)->queryAll();
+        $timingsData = $this->app->db->createCommand()
+            ->select('*')
+            ->from("{{{$timingsTableName}}}")
+            ->where(['in', 'id', array_map('intval', $responseIds)])
+            ->queryAll();
 
         $timings = [];
         foreach ($timingsData as $timingRecord) {
@@ -410,7 +437,7 @@ class SurveyArchiveService
         $oRecordSet->select('*');
         $oRecordSet->order('tid');
 
-        echo implode(',', $headerColumns) . "\n";
+        echo $this->buildCsvRow($headerColumns) . "\n";
         flush();
 
         $countQuery = clone $oRecordSet;
@@ -451,17 +478,24 @@ class SurveyArchiveService
 
                 $csvRow = [];
                 foreach ($headerColumns as $column) {
-                    $value = isset($decryptedRow[$column]) ? $decryptedRow[$column] : '';
-                    $escapedValue = str_replace('"', '""', trim((string) $value));
-                    $csvRow[] = '"' . $escapedValue . '"';
+                    $csvRow[] = isset($decryptedRow[$column]) ? trim((string) $decryptedRow[$column]) : '';
                 }
 
-                echo implode(',', $csvRow) . "\n";
+                echo $this->buildCsvRow($csvRow) . "\n";
             }
             flush();
         }
     }
 
+    /**
+     * Exports responses archive as a stream
+     *
+     * @param int $iSurveyID
+     * @param int $iTimestamp
+     * @param int $maxRows number of rows fetched per batch
+     *
+     * @return void
+     */
     public function exportResponsesAsStream(int $iSurveyID, int $iTimestamp = 0, int $maxRows = 1000)
     {
         echo chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF'));
@@ -479,10 +513,13 @@ class SurveyArchiveService
         $totalRows = $countQuery->queryScalar();
 
         $oRecordSet->order('id');
-        echo implode(',', $headerColumns) . "\n";
+        echo $this->buildCsvRow($headerColumns) . "\n";
         flush();
 
         $maxPages = ceil($totalRows / $maxRows);
+
+        SurveyDynamicArchive::setTimestamp($iTimestamp);
+        $response = SurveyDynamicArchive::model($iSurveyID);
 
         for ($i = 0; $i < $maxPages; $i++) {
             $offset = $i * $maxRows;
@@ -491,15 +528,40 @@ class SurveyArchiveService
             $results = $batchQuery->queryAll();
 
             foreach ($results as $record) {
+                $decryptedRow = $response->populateRecord($record, false)->decrypt()->attributes;
                 $csvRow = [];
                 foreach ($headerColumns as $headerColumn) {
-                    $csvRow[] = '"' . $record[$headerColumn] . '"';
+                    $csvRow[] = $decryptedRow[$headerColumn] ?? '';
                 }
-                echo implode(',', $csvRow) . "\n";
+                echo $this->buildCsvRow($csvRow) . "\n";
             }
 
             flush();
         }
+    }
+
+    /**
+     * Builds one CSV line, quoting every value and masking spreadsheet formulas
+     *
+     * Numeric values are not formula-masked so negative numbers stay intact.
+     *
+     * @param array $values
+     * @return string
+     */
+    private function buildCsvRow(array $values): string
+    {
+        $escaped = [];
+        foreach ($values as $value) {
+            $value = (string) $value;
+            if ($value === '') {
+                $escaped[] = '""';
+            } elseif (is_numeric($value)) {
+                $escaped[] = '"' . $value . '"';
+            } else {
+                $escaped[] = csvEscape($value);
+            }
+        }
+        return implode(',', $escaped);
     }
 
     /**

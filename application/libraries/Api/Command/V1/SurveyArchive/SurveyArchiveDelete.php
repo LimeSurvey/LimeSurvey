@@ -54,11 +54,18 @@ class SurveyArchiveDelete implements CommandInterface
         }
 
         $archiveTypes = $request->getData('archiveTypes') ?? [];
+        if (is_string($archiveTypes)) {
+            $decoded = json_decode($archiveTypes, true);
+            $archiveTypes = is_array($decoded) ? $decoded : array_filter(array_map('trim', explode(',', $archiveTypes)));
+        }
+        if (!is_array($archiveTypes)) {
+            $archiveTypes = [];
+        }
 
         try {
             $this->surveyArchiveService->deleteArchiveData($surveyId, $timestamp, $archiveTypes);
         } catch (\Exception $e) {
-            $this->responseFactory->makeException($e);
+            return $this->responseFactory->makeException($e);
         }
 
         return $this->responseFactory->makeSuccess();
