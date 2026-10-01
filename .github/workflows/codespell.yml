@@ -32,4 +32,4 @@ jobs:
         with:
           # The action always passes --skip (default './.git'), which overrides
           # the skip list in .codespellrc, so it has to be repeated here.
-          skip: vendor,node_modules,./.git,*.min.js,*.min.css,build,dist,./upload,.gitignore,.DS_Store,*.lock,*.lss,./assets/packages,./application/extensions/yiiwheels,./application/extensions/yii-jsoneditor,./application/extensions/captchaExtended,./docs/swagger/swagger-ui*
+          skip: vendor,node_modules,./.git,*.min.js,*.min.css,build,dist,./upload,.gitignore,.DS_Store,*.lock,*.lss,./assets/packages,./application/extensions/yiiwheels,./application/extensions/yii-jsoneditor,./application/extensions/captchaExtended,./docs/swagger/swagger-ui*,./docs/release_notes.txt,./locale,./editor/public/tinymce,./editor/public/remixicon,./assets/fonts,./assets/scripts/admin/bootstrap-switch.js,./application/extensions/bootstrap5/helpers/TbHtml.php,./themes/*/*/css,package-lock.json,./docs/credits.txt
