@@ -17,7 +17,13 @@ class Update_709 extends DatabaseUpdateBase
      * Alter TEXT columns to MEDIUMTEXT for Long free text (T) and Huge free text (U)
      * question types in existing MySQL/MariaDB response tables.
      *
+     * All columns of a table are changed in a single ALTER TABLE statement so the
+     * table is only rebuilt once. Columns that are not TEXT anymore are skipped, so
+     * the update can be safely re-run if it failed half-way (MySQL DDL is not transactional).
+     * Any failure is thrown so the DB version is not raised and the update is retried.
+     *
      * @return void
+     * @throws \CDbException
      */
     public function up()
     {
@@ -38,39 +44,38 @@ class Update_709 extends DatabaseUpdateBase
             }
 
             // Extract survey ID from table name (e.g. lime_responses_123456)
-            if (!preg_match('/responses_(\d+)/', $sTableName, $matches)) {
+            if (!preg_match('/responses_(\d+)$/', $sTableName, $matches)) {
                 continue;
             }
             $surveyId = (int) $matches[1];
 
             // Find Long free text (T) and Huge free text (U) questions for this survey.
-            // Field name format: {sid}X{gid}X{qid}
-            $rows = $this->db->createCommand()
-                ->select('q.qid, q.gid')
-                ->from('{{questions}} q')
+            // Response column name format: Q{qid}
+            $aQids = $this->db->createCommand()
+                ->select('qid')
+                ->from('{{questions}}')
                 ->where(
-                    'q.sid = :sid AND q.type IN (:typeT, :typeU) AND q.parent_qid = 0',
+                    'sid = :sid AND type IN (:typeT, :typeU) AND parent_qid = 0',
                     [
                         ':sid' => $surveyId,
                         ':typeT' => 'T',
                         ':typeU' => 'U',
                     ]
                 )
-                ->queryAll();
+                ->queryColumn();
 
-            foreach ($rows as $row) {
-                $columnName = $surveyId . 'X' . $row['gid'] . 'X' . $row['qid'];
-                if (in_array($columnName, $oTableSchema->columnNames)) {
-                    try {
-                        \alterColumn($sTableName, $columnName, 'mediumtext');
-                    } catch (\Exception $e) {
-                        \Yii::log(
-                            "Failed to alter column '$columnName' in table '$sTableName': " . $e->getMessage(),
-                            'error',
-                            'application.db.upgrade'
-                        );
-                    }
+            $aModifyClauses = [];
+            foreach ($aQids as $qid) {
+                $columnName = 'Q' . $qid;
+                $oColumn = $oTableSchema->getColumn($columnName);
+                if ($oColumn && in_array(strtolower((string) $oColumn->dbType), ['text', 'tinytext'])) {
+                    $aModifyClauses[] = 'MODIFY ' . $this->db->quoteColumnName($columnName) . ' MEDIUMTEXT';
                 }
+            }
+            if (!empty($aModifyClauses)) {
+                $this->db->createCommand(
+                    'ALTER TABLE ' . $this->db->quoteTableName($sTableName) . ' ' . implode(', ', $aModifyClauses)
+                )->execute();
             }
         }
     }

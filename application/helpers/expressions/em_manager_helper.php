@@ -8717,6 +8717,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 }
                             }
                             break;
+                        case Question::QT_T_LONG_FREE_TEXT:
+                        case Question::QT_U_HUGE_FREE_TEXT:
+                            $value = self::truncateFreeTextAnswer($type, $value, $sq, $qid);
+                            break;
                         case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                             if (!preg_match('/_Cfilecount$/', $sq)) {
                                 $json = $value;
@@ -9978,10 +9982,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      * @param boolean $set : update the invalid string or not. Used for #14649 (invalid default value)
      * @throw Exception
      *
-     * @return boolean true if value is valid and should be kept in session;
-     *                  false if value must be set to null (e.g. invalid choice).
-     *                  Note: for T/U text length violations, returns true (value preserved)
-     *                  while still setting an invalidAnswerString to block persistence.
+     * @return boolean true : if question is OK to be put in session, false if must be set to null
      */
     private static function checkValidityAnswer($type, $value, $sgq, $qinfo, $set = true)
     {
@@ -10131,17 +10132,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 break;
             case 'U': // Huge text
             case 'T': // Long text
-                // Enforce maximum_chars limit (default 100KB for T, 1MB for U, cap 10MB) - see bug #18275
-                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->getLEMsurveyId(), $qid, isset($_SESSION['LEMlang']) ? $_SESSION['LEMlang'] : '');
-                $maxChars = isset($aAttributes[$qid]['maximum_chars']) ? intval(trim((string) $aAttributes[$qid]['maximum_chars'])) : 0;
-                if ($maxChars <= 0) {
-                    $maxChars = ($type === 'U') ? 1048576 : 102400; // 1MB for Huge, 100KB for Long
-                }
-                $maxChars = min($maxChars, \QuestionBaseRenderer::MAX_CHARS_CAP);
-                $valueLength = mb_strlen($value, 'UTF-8');
-                if ($valueLength > $maxChars) {
-                    $displayValue = mb_substr($value, 0, 50, 'UTF-8') . '... [truncated, ' . $valueLength . ' chars total]';
-                    $LEM->addValidityString($sgq, $displayValue, sprintf(gT("Text exceeds the maximum allowed length of %s characters"), $maxChars), $set);
+                // Submitted answers are already shortened in ProcessCurrentResponses, this catches prefilled and default values - see #18275
+                $maxChars = self::getFreeTextMaxChars($type, $qid);
+                if (self::getFreeTextLength($value) > $maxChars) {
+                    $LEM->addValidityString($sgq, '', sprintf(gT("Text exceeds the maximum allowed length of %s characters"), $maxChars), $set);
+                    return false;
                 }
                 break;
             case 'Q': // Multiple text
@@ -10171,6 +10166,63 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 break;
         }
         return true;
+    }
+
+    /**
+     * Get the effective maximum characters of a Long (T) or Huge (U) free text question.
+     *
+     * @param string $type Question type
+     * @param integer $qid Question ID
+     * @return integer
+     */
+    private static function getFreeTextMaxChars($type, $qid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return QuestionBaseRenderer::getEffectiveMaxCharsForType(
+            $type,
+            $LEM->qattr[$qid]['maximum_chars'] ?? null
+        );
+    }
+
+    /**
+     * Get the length of a free text answer the same way the browser counts it for the textarea maxlength:
+     * a line break (submitted as CRLF) counts as one character.
+     *
+     * @param string $value The answer
+     * @return integer
+     */
+    private static function getFreeTextLength($value)
+    {
+        return mb_strlen(str_replace("\r\n", "\n", (string) $value), 'UTF-8');
+    }
+
+    /**
+     * Shorten a submitted Long (T) or Huge (U) free text answer to the maximum characters of the question.
+     * When shortened, an invalid answer string is set so the question is invalid and the respondent
+     * has to review the answer before moving on.
+     *
+     * @param string $type Question type
+     * @param mixed $value The submitted answer
+     * @param string $sgqa The answer column
+     * @param integer $qid Question ID
+     * @return mixed The answer, shortened if needed
+     */
+    private static function truncateFreeTextAnswer($type, $value, $sgqa, $qid)
+    {
+        if (!is_string($value)) {
+            return $value;
+        }
+        $maxChars = self::getFreeTextMaxChars($type, $qid);
+        if (self::getFreeTextLength($value) <= $maxChars) {
+            return $value;
+        }
+        $LEM =& LimeExpressionManager::singleton();
+        $LEM->addValidityString(
+            $sgqa,
+            '',
+            sprintf(gT("Your answer exceeded the maximum allowed length of %s characters and has been shortened. Please review your answer."), $maxChars)
+        );
+        return mb_substr(str_replace("\r\n", "\n", $value), 0, $maxChars, 'UTF-8');
     }
 
     /**
