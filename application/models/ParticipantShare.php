@@ -345,8 +345,14 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
-     * @param array $data
-     * @param array $permission
+     * Creates or updates a participant share, after verifying the current user is
+     * allowed to grant it (the participant's owner, a superadmin, or a user with the
+     * participant panel update permission). Merely holding an editable share of the
+     * participant is not enough: a sharee may edit the participant, but may not
+     * reshare it or grant edit rights to further accounts.
+     *
+     * @param array $data Share attributes: participant_id, share_uid, date_added, can_edit
+     * @param array $permission Caller's permission flags: hasUpdatePermission, isSuperAdmin
      *
      * @return void
      * @throws CException
@@ -360,10 +366,10 @@ class ParticipantShare extends LSActiveRecord
 
         // Check if share already exists
         $arShare = $this->findByPk(['participant_id' => $data['participant_id'], 'share_uid' => $data['share_uid']]);
-        $canEditShared = $this->canEditSharedParticipant($data['participant_id']);
         $isOwner = $ownerid['owner_uid'] == $userId;
 
-        if ($ownerid['owner_uid'] == $data['share_uid'] || (!$permission && !$canEditShared && !$isOwner && !$isSuperAdmin && !$hasUpdatePermission)) {
+        $isAllowedToShare = $isOwner || $isSuperAdmin || $hasUpdatePermission;
+        if ($ownerid['owner_uid'] == $data['share_uid'] || !$isAllowedToShare) {
             ls\ajax\AjaxHelper::outputNoPermission();
             return;
         }
@@ -375,6 +381,29 @@ class ParticipantShare extends LSActiveRecord
         } else {
             $this->updateShare($data);
         }
+    }
+
+    /**
+     * Returns whether the current user is allowed to create or modify a share of the
+     * given participant: true for the participant's owner, a superadmin, or a user
+     * with the participant panel update permission. Merely holding an editable share
+     * of the participant is not enough: a sharee may edit the participant (see
+     * canEditSharedParticipant()), but may not reshare it or grant edit rights to
+     * further accounts. Used to gate every mutation of a participant share, not just
+     * the initial creation in storeParticipantShare().
+     *
+     * @param string $participantId
+     * @return boolean
+     */
+    public function isAllowedToManageShare($participantId)
+    {
+        $userId = App()->user->getId();
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $hasUpdatePermission = Permission::model()->hasGlobalPermission('participantpanel', 'update');
+        $ownerid = App()->db->createCommand()->select('owner_uid')->from('{{participants}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $participantId, PDO::PARAM_STR)->queryRow();
+        $isOwner = $ownerid && $ownerid['owner_uid'] == $userId;
+
+        return $isOwner || $isSuperAdmin || $hasUpdatePermission;
     }
 
     /**

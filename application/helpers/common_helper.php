@@ -1191,6 +1191,15 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
                 $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate'] . ' H:i:s');
             }
             break;
+        case 'quota_exit':
+            // Try to get quota name
+            if (trim((string) $sValue) !== '') {
+                $quota = Quota::model()->findByAttributes(['sid' => $iSurveyID, 'id' => $sValue]);
+                if ($quota) {
+                    $this_answer = $quota->name;
+                }
+            }
+            break;
     }
     if (isset($this_answer)) {
         return $this_answer . " [$sValue]";
@@ -1655,6 +1664,14 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             $fieldmap["refurl"]['question'] = gT("Referrer URL");
             $fieldmap["refurl"]['group_name'] = "";
         }
+    }
+
+    // Add 'quota_exit' to fieldmap.
+    $fieldmap["quota_exit"] = array("fieldname" => "quota_exit", 'type' => "quota_exit", 'sid' => $surveyid, "gid" => "", "qid" => "", "aid" => "");
+    if ($style == "full") {
+        $fieldmap["quota_exit"]['title'] = "";
+        $fieldmap["quota_exit"]['question'] = gT("Quota exit");
+        $fieldmap["quota_exit"]['group_name'] = "";
     }
 
     $sOldLanguage = App()->language;
@@ -2272,7 +2289,7 @@ function hasFileUploadQuestion($iSurveyID)
 /**
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
-* @param string $surveyid The Survey ID
+* @param int $surveyid The Survey ID
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
 * @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int|false $questionid Limit to a certain qid only (for question preview) - default is false
@@ -2298,7 +2315,7 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
     //do something
     $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sLanguage);
     $fieldmap = [];
-    $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'suffix' => '', 'question' => gT('Total time'), 'title' => 'interviewtime');
+    $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'suffix' => '', 'question' => gT('Total time (in s)'), 'title' => 'interviewtime');
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
             // field for time spent on page
@@ -3511,7 +3528,8 @@ function cleanCacheTempDirectoryDaily()
 /**
  * Cleans the temporary directory by removing files older than 1 day.
  * It also cleans the 'upload' subdirectory within the temporary directory.
- * Additionally, it calls the 'cleanAssetCacheDirectory' function to clean the asset cache directory.
+ * Additionally, it calls the 'cleanAssetCacheDirectory' function to clean the asset cache directory
+ * and the 'cleanExtensionInstallTempDirectories' function to remove orphaned extension upload folders.
  *
  * @return void
  */
@@ -3537,6 +3555,25 @@ function cleanCacheTempDirectory()
 
     closedir($dp);
     cleanAssetCacheDirectory(60);
+    cleanExtensionInstallTempDirectories();
+}
+
+/**
+ * Removes orphaned extension upload folders (tempdir/install_*) older than 1 day.
+ * These are left behind when a plugin or theme ZIP was uploaded but the installation
+ * was never confirmed or aborted (e.g. the user navigated away or the session expired).
+ *
+ * @return void
+ */
+function cleanExtensionInstallTempDirectories()
+{
+    $threshold = strtotime('-1 days');
+    $installDirs = glob(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'install_*', GLOB_ONLYDIR);
+    foreach ($installDirs ?: [] as $path) {
+        if (!is_link($path) && filemtime($path) < $threshold) {
+            rmdirr($path);
+        }
+    }
 }
 /**
  * This function cleans the asset directory by removing directories that are older than a certain threshold.
@@ -3826,12 +3863,14 @@ function enforceSSLMode()
 /**
  * Creates an array with details on a particular response for display purposes
  * Used in Print answers, Detailed response view and Detailed admin notification email
+ * Ranking questions are rendered as a single row from their JSON column.
  *
- * @param mixed $iSurveyID
- * @param mixed $iResponseID
- * @param mixed $sLanguageCode
+ * @param int $iSurveyID Survey ID
+ * @param int $iResponseID Response ID
+ * @param string $sLanguageCode Language used for question and answer texts
  * @param boolean $bHonorConditions Apply conditions
- * @return array
+ * @return array<string, array> Rows keyed by 'gid_…', 'qid_…' or field name
+ * @throws CHttpException If the response does not exist
  */
 function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions = true)
 {
@@ -3850,6 +3889,10 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     $aRelevantFields = array();
 
     foreach ($aFieldMap as $sKey => $fname) {
+        // Ranking answers are stored as JSON in the base Q{qid} column; the per-rank _S fields are virtual
+        if (($fname['type'] ?? '') === Question::QT_R_RANKING && !empty($fname['suffix'])) {
+            continue;
+        }
         if (LimeExpressionManager::QuestionIsRelevant($fname['qid']) || $bHonorConditions === false) {
             $aRelevantFields[$sKey] = $fname;
         }

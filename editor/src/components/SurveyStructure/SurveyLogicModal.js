@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import Tooltip from 'bootstrap/js/dist/tooltip'
 
 import { useSurveyLogic } from 'hooks'
 import { ComponentModal } from 'components/Modals'
+
+const TOOLTIP_TEMPLATE =
+  '<div class="tooltip expression-tooltip" role="tooltip">' +
+  '<div class="tooltip-arrow"></div>' +
+  '<div class="tooltip-inner"></div>' +
+  '</div>'
 
 /**
  * Modal that shows the survey logic overview for a question or question group.
@@ -26,6 +33,31 @@ export const SurveyLogicModal = ({
     enabled: show,
   })
 
+  const contentRef = useRef(null)
+
+  // The title attribute only gives a native browser tooltip, so we turn them into Bootstrap tooltips here,
+  // just like the old admin page already does.
+  useEffect(() => {
+    const root = contentRef.current
+    if (!root) {
+      return undefined
+    }
+
+    const instances = Array.from(
+      root.querySelectorAll('.em-var[title], .em-expression [title]')
+    ).map(
+      (el) =>
+        new Tooltip(el, {
+          placement: 'top',
+          // Append to <body> so the tooltip is not clipped by the modal.
+          container: 'body',
+          template: TOOLTIP_TEMPLATE,
+        })
+    )
+
+    return () => instances.forEach((instance) => instance.dispose())
+  }, [surveyLogic])
+
   const renderBody = () => {
     if (isFetching) {
       return (
@@ -45,6 +77,7 @@ export const SurveyLogicModal = ({
 
     return (
       <div
+        ref={contentRef}
         className="survey-logic-modal-content"
         // Trusted server-rendered HTML (scripts are already stripped by the
         // API endpoint), rendered as-is just like the legacy admin page.

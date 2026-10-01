@@ -158,7 +158,8 @@
 }
 
 .select-option,
-.choice {
+.choice,
+.other-suffix {
   @include choice;
   outline: none;
 

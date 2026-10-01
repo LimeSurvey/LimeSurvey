@@ -305,17 +305,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     "onUpdateTokenGrid();",
                     '$("#responses-grid [data-bs-toggle=\'popover\']").popover();',
                 ],
-                'massiveActionTemplate' => $filterColumns,
-                'showSelectionBar'     => false,
-                'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSize',
-                        $pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                    )
-                ),
+                'massiveActionTemplate'  => $filterColumns,
+                'lsShowSelectionBar'     => false,
+                'lsPageSizeCurrentValue' => $pageSize,
             ]
         );
 

@@ -68,6 +68,7 @@ EOD;
         'deletenonvalues' => $deletenonvalues,
         'hyperlinkSyntaxHighlighting' => true,
         'ipaddr' => true,
+        'savequotaexit' => true,
         'rooturl' => '../../..',
     );
 

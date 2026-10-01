@@ -1,35 +1,32 @@
-<?php
-
-return array (
-  'root' =>
-  array (
-    'pretty_version' => 'dev-master',
-    'version' => 'dev-master',
-    'aliases' =>
-    array (
+<?php return array(
+    'root' => array(
+        'name' => '__root__',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'db17eb9990bdb8c62e20ecf90c239ba50eb9cf37',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
     ),
-    'reference' => '13ac2b2471485be6155d0e48e4d1f0ca5c6911eb',
-    'name' => '__root__',
-  ),
-  'versions' =>
-  array (
-    '__root__' =>
-    array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
-      'aliases' =>
-      array (
-      ),
-      'reference' => '13ac2b2471485be6155d0e48e4d1f0ca5c6911eb',
+    'versions' => array(
+        '__root__' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'db17eb9990bdb8c62e20ecf90c239ba50eb9cf37',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'robthree/twofactorauth' => array(
+            'pretty_version' => 'v2.1.0',
+            'version' => '2.1.0.0',
+            'reference' => 'ab93dd41ced7818ecda83a37c2741ee38bb72fb7',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../robthree/twofactorauth',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
     ),
-    'robthree/twofactorauth' =>
-    array (
-      'pretty_version' => '1.6.5',
-      'version' => '1.6.5.0',
-      'aliases' =>
-      array (
-      ),
-      'reference' => 'f5f58a4c62d0336a0e6175856894a51f3565dad2',
-    ),
-  ),
 );

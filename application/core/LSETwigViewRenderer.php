@@ -165,7 +165,7 @@ window.addEventListener('message', function(event) {
             $line .= file_get_contents($oLayoutTemplate->viewPath . $sLayout);
             $line .= '</div>';
             if ($root === true) {
-                $line = '<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>'
+                $line = '<html lang="{{ aSurveyInfo.htmllanguagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>'
                     . file_get_contents($oLayoutTemplate->viewPath . '/subviews/header/head.twig')
                     . '<body style="padding-top: 0px !important;" class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >'
                     . $line;
@@ -686,6 +686,8 @@ window.addEventListener('message', function(event) {
         }
 
         $aData["aSurveyInfo"]['languagecode']     = $languagecode;
+        /* Separate from 'languagecode' since some codes (e.g. 'nl-informal') are not valid values for the HTML lang attribute */
+        $aData["aSurveyInfo"]['htmllanguagecode'] = getHtmlLangAttributeValue($languagecode);
         $aData["aSurveyInfo"]['dir']              = (getLanguageRTL($languagecode)) ? "rtl" : "ltr";
 
         if (!empty($aData['aSurveyInfo']['sid'])) {
