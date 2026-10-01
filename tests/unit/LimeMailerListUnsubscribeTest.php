@@ -58,6 +58,8 @@ class LimeMailerListUnsubscribeTest extends TestBaseClass
 
         $this->assertCount(1, $headers['List-Unsubscribe']);
         $this->assertStringStartsWith('<https://example.org', $headers['List-Unsubscribe'][0]);
+        $this->assertStringContainsString('optout/oneclick', $headers['List-Unsubscribe'][0]);
+        $this->assertStringNotContainsString('optout/tokens', $headers['List-Unsubscribe'][0]);
         $this->assertStringContainsString(self::$token, $headers['List-Unsubscribe'][0]);
         $this->assertSame(['List-Unsubscribe=One-Click'], $headers['List-Unsubscribe-Post']);
     }

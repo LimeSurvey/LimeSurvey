@@ -29,13 +29,18 @@
     which POSTs to an endpoint intead. the automated filters will
     not perform the POST request. this prevents the above problem.
 
-    POST optout/actiontokens
+    POST optout/oneclick
 
-    this is one click unsubscribe, a special post request is sent
-    to the list unsubscribe url (the same url a user would visit
-    to manually opt out, first flow above) when mail clients have
-    this available, if a user reports a message as spam, the client
-    can then offer to unsubscribe the user instead.
+    this is one click unsubscribe (rfc8058), a special post request is
+    sent by the mail client to the List-Unsubscribe url, for example when
+    the user clicks the unsubscribe button of the client or reports a
+    message as spam. this url is separate from the optouturl, so that
+    the manual flows above always require a confirmation.
+
+    GET optout/oneclick
+
+    mail clients without one click support open the List-Unsubscribe url
+    in the browser, this shows the same confirmation page as optout/tokens.
 
     GET optout/participants -> GET optout/removetokens
 
@@ -70,19 +75,6 @@ class OptoutController extends LSYii_Controller
      */
     public function actiontokens()
     {
-        // handle a one click unsubscribe post request
-        // this is distinct from the "secure POST link"
-        // mentioned above which is a different endpoint
-        // per rfc8058
-        // "The target of
-        // the POST action is the same as the one in the GET action for a manual
-        // unsubscription, so this is intended to allow the same server code to
-        // handle both."
-        if(Yii::app()->request->isPostRequest) {
-            $this->oneClickUnsubscribe();
-            return;
-        }
-
         $iSurveyID     = Yii::app()->request->getQuery('surveyid');
         $sLanguageCode = Yii::app()->request->getQuery('langcode');
         $sToken        = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
@@ -127,28 +119,27 @@ class OptoutController extends LSYii_Controller
     }
 
     /**
-     * Handle post request for one click unsubcribe
-     * See: https://datatracker.ietf.org/doc/html/rfc8058
+     * One click unsubscribe endpoint used as List-Unsubscribe url in token emails.
+     * A POST with the body "List-Unsubscribe=One-Click" opts out without confirmation and returns an empty response,
+     * any other POST is rejected. A GET (mail client without one click support) shows the confirmation page.
+     * The route is excluded from CSRF validation, since the POST is sent by the mail client.
+     * Per rfc8058 the response MUST NOT be a redirect.
+     * @see https://datatracker.ietf.org/doc/html/rfc8058
      *
-     * Note the following explicit requirement:
-     * The mail sender MUST NOT return an HTTPS redirect, since redirected
-     * POST actions have historically not worked reliably, and many browsers
-     * have turned redirected HTTP POSTs into GETs.
+     * @return void
+     * @throws CHttpException
      */
-    public function oneClickUnsubscribe()
+    public function actiononeclick()
     {
-        // per rfc8058
-        // "A mail receiver can do a one-click unsubscription by performing an
-        // HTTPS POST to the HTTPS URI in the List-Unsubscribe header.  It sends
-        // the key/value pair in the List-Unsubscribe-Post header as the request
-        // body."
-        // and
-        // "The List-Unsubscribe-Post header MUST contain the single
-        // key/value pair "List-Unsubscribe=One-Click"."
-        if (Yii::app()->request->getPost('List-Unsubscribe') !== "One-Click") {
+        if (!Yii::app()->request->isPostRequest) {
+            $this->actiontokens();
+            return;
+        }
+        // "The List-Unsubscribe-Post header MUST contain the single key/value pair "List-Unsubscribe=One-Click"."
+        // the mail client sends this key/value pair as the request body
+        if (Yii::app()->request->getPost('List-Unsubscribe') !== 'One-Click') {
             throw new CHttpException(400, gT('Invalid request.'));
         }
-
         $this->handleOptout();
     }
 
@@ -244,7 +235,7 @@ class OptoutController extends LSYii_Controller
     }
 
     /**
-     * Common opt-out logic shared by actionremovetokens() and actionremovetoken().
+     * Common opt-out logic shared by actionremovetokens(), actionremovetoken() and actiononeclick().
      * Validates the survey, resolves the language, loads the token, sets emailstatus
      * to 'OptOut', and optionally blacklists the participant globally.
      *

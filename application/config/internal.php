@@ -154,7 +154,7 @@ $internalConfig = array(
                 'rest',
                 'admin/remotecontrol',
                 'plugins/unsecure',
-                'optout/tokens',
+                'optout/oneclick',
             ),
             'csrfCookie' => array(
                 'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)),

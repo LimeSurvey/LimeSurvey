@@ -359,16 +359,16 @@ class LimeMailer extends PHPMailer
         if (empty($this->oToken)) {
             return;
         }
-        $optoutBaseUrl = App()->getController()->createAbsoluteUrl("/optout/tokens");
+        $optoutBaseUrl = $this->createListUnsubscribeUrl("/optout/tokens");
         if (
             strpos((string) $this->Body, $optoutBaseUrl) === false
             && strpos((string) $this->rawBody, 'OPTOUTURL') === false
         ) {
             return;
         }
-        // the url is the same as OPTOUTURL replacement field
-        $unsubscribeUrl = App()->getController()->createAbsoluteUrl(
-            "/optout/tokens",
+        // separate one click url, so that the OPTOUTURL replacement field always requires a confirmation
+        $unsubscribeUrl = $this->createListUnsubscribeUrl(
+            "/optout/oneclick",
             [
                 "surveyid" => $this->surveyId,
                 "token" => $this->oToken->token,
@@ -383,6 +383,22 @@ class LimeMailer extends PHPMailer
         if (strtolower((string) parse_url($unsubscribeUrl, PHP_URL_SCHEME)) === 'https') {
             $this->addCustomHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click");
         }
+    }
+
+    /**
+     * Create an absolute url for the List-Unsubscribe headers the same way as the token replacement urls:
+     * validated against the allowed hosts to prevent host header injection, with a fallback to the request host
+     * @param string $route
+     * @param array<string, mixed> $params
+     * @return string
+     */
+    private function createListUnsubscribeUrl($route, $params = [])
+    {
+        $url = App()->createValidatedAbsoluteUrl($route, $params);
+        if ($url === false) {
+            $url = App()->getController()->createAbsoluteUrl($route, $params);
+        }
+        return $url;
     }
 
     /**
