@@ -91,9 +91,7 @@ export const ArrayColumnTitle = ({
                   assessmentValue={assessmentValue}
                   answerCode={code}
                   scaleNumber={assessmentScaleNumber}
-                  onChange={(e) =>
-                    handleAssessmentValueUpdate(e.target.value)
-                  }
+                  onChange={(e) => handleAssessmentValueUpdate(e.target.value)}
                 />
               )}
             </div>

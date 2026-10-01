@@ -180,9 +180,7 @@ export const ArrayQuestion = ({
               handleChildAssessmentValueUpdate={
                 handleChildAssessmentValueUpdate
               }
-              showAssessmentValue={
-                isFocused && question.showAssessmentValue
-              }
+              showAssessmentValue={isFocused && question.showAssessmentValue}
               istitleFocused={isTitleFocused}
             />
             <ArrayRows
@@ -211,9 +209,7 @@ export const ArrayQuestion = ({
               handleChildAssessmentValueUpdate={
                 handleChildAssessmentValueUpdate
               }
-              showAssessmentValue={
-                isFocused && question.showAssessmentValue
-              }
+              showAssessmentValue={isFocused && question.showAssessmentValue}
               istitleFocused={isTitleFocused}
             />
           </div>
@@ -274,9 +270,7 @@ export const ArrayQuestion = ({
                 handleChildAssessmentValueUpdate={
                   handleChildAssessmentValueUpdate
                 }
-                showAssessmentValue={
-                  isFocused && question.showAssessmentValue
-                }
+                showAssessmentValue={isFocused && question.showAssessmentValue}
                 istitleFocused={isTitleFocused}
               />
               <ArrayRows

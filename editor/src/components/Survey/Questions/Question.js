@@ -166,12 +166,11 @@ export const Question = ({
                   setIsTitleFocused={setIsTitleFocused}
                 />
               </div>
-              {focused.qid === question.qid &&
-                question.showAssessmentValue && (
-                  <div className="assessment-value-label-row">
-                    <AssessmentValueBadge />
-                  </div>
-                )}
+              {focused.qid === question.qid && question.showAssessmentValue && (
+                <div className="assessment-value-label-row">
+                  <AssessmentValueBadge />
+                </div>
+              )}
               <div className="question-body-container">
                 <QuestionBody
                   language={language}
