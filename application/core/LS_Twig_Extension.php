@@ -312,7 +312,7 @@ class LS_Twig_Extension extends AbstractExtension
 
     /**
      * @var $sImagePath  string                 the image path relative to the template root
-     * @var $default     string|false                 an alternative image if the provided one cant be found
+     * @var $default     string|false                 an alternative image if the provided one can't be found
      * @return string|false
      */
     public static function imageSrc($sImagePath, $default = false)

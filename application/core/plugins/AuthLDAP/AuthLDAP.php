@@ -83,7 +83,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         ),
         'bindpwd' => array(
             'type' => 'password',
-            'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previoulsy set.'
+            'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previously set.'
         ),
         'readattributesasuser' => array(
             'type' => 'boolean',
@@ -113,6 +113,14 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             'type' => 'boolean',
             'label' => 'Grant survey creation permission to automatically created users',
             'default' => '0',
+        ),
+        'autocreaterole' => array(
+            'type' => 'select',
+            'label' => 'Role assigned to automatically created users',
+            'help' => 'Only roles with the "Use LDAP authentication" permission are listed. Users with a role only get the global permissions of their roles, so the survey creation permission above has no effect for them.',
+            // Roles are added at runtime in getPluginSettings()
+            'options' => array('' => 'None'),
+            'default' => '',
         ),
         'groupsearchbase' => array(
             'type' => 'string',
@@ -272,7 +280,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 return null;
             }
         }
-        // Now prepare the search fitler
+        // Now prepare the search filter
         if ($extrauserfilter != "") {
             $usersearchfilter = "(&($searchuserattribute=$ldapEscapedUsername)$extrauserfilter)";
         } else {
@@ -342,6 +350,52 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $oEvent->set('newFullName', $new_full_name);
         $oEvent->set('errorCode', self::ERROR_NONE);
         return $iNewUID;
+    }
+
+    /**
+     * Get the roles that grant the "Use LDAP authentication" permission
+     *
+     * A user with a role only gets the global permissions of their roles,
+     * so any other role would lock the user out of LDAP login.
+     *
+     * @return Permissiontemplates[]
+     */
+    private function getLdapRoles()
+    {
+        $criteria = new CDbCriteria();
+        $criteria->compare('entity', 'role');
+        $criteria->compare('permission', 'auth_ldap');
+        $criteria->compare('read_p', 1);
+        $roleIds = CHtml::listData(Permission::model()->findAll($criteria), 'entity_id', 'entity_id');
+        if (empty($roleIds)) {
+            return array();
+        }
+        return Permissiontemplates::model()->findAllByPk(array_values($roleIds), array('order' => 'name'));
+    }
+
+    /**
+     * Assign the role set in the plugin settings to an automatically created user
+     *
+     * The role is not assigned if it was deleted or no longer grants the
+     * "Use LDAP authentication" permission since the settings were saved.
+     *
+     * @param integer $iUserId
+     * @return void
+     */
+    private function assignAutoCreateRole($iUserId)
+    {
+        $roleId = (int) $this->get('autocreaterole');
+        if (empty($roleId)) {
+            return;
+        }
+        if (
+            Permissiontemplates::model()->findByPk($roleId) === null
+            || !Permission::model()->roleHasPermission($roleId, 'auth_ldap')
+        ) {
+            $this->log("Role {$roleId} for automatically created users does not exist or does not have the \"Use LDAP authentication\" permission. No role was assigned to user {$iUserId}.", \CLogger::LEVEL_WARNING);
+            return;
+        }
+        Permissiontemplates::model()->applyToUser((int) $iUserId, $roleId);
     }
 
     /**
@@ -416,6 +470,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     /**
      * Modified getPluginSettings since we have a select box that autosubmits
      * and we only want to show the relevant options.
+     * Also adds the existing roles as options for the role of automatically created users.
      *
      * @param boolean $getValues
      * @return array
@@ -423,6 +478,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     public function getPluginSettings($getValues = true)
     {
         $aPluginSettings = parent::getPluginSettings($getValues);
+        $aPluginSettings['autocreaterole']['options'] = array('' => 'None') + CHtml::listData($this->getLdapRoles(), 'ptid', 'name');
         if ($getValues) {
             $ldapmode = $aPluginSettings['ldapmode']['current'];
             $ldapver = $aPluginSettings['ldapversion']['current'];
@@ -540,7 +596,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 ldap_close($ldapconn); // all done? close connection
                 return;
             }
-            // Now prepare the search fitler
+            // Now prepare the search filter
             if ($extrauserfilter != "") {
                 $usersearchfilter = "(&($searchuserattribute=$ldapEscapedUsername)$extrauserfilter)";
             } else {
@@ -609,6 +665,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             }
             if ($iNewUID && $this->get('automaticsurveycreation', null, null, false)) {
                 Permission::model()->setGlobalPermission($iNewUID, 'surveys', array('create_p'));
+            }
+            if ($iNewUID) {
+                $this->assignAutoCreateRole($iNewUID);
             }
             $user = $this->api->getUserByName($username);
             if ($user === null) {

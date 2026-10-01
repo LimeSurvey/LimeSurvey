@@ -11,7 +11,7 @@ class XmlTranslationCommand extends CConsoleCommand
     public function actionIndex()
     {
         echo "This command will take all config.xml files \n";
-        echo "in the followin directories:\n \n";
+        echo "in the following directories:\n \n";
         echo " * " . realpath(dirname(__FILE__) . "/../views/survey/questions/answer") . "\n";
         echo " * " . realpath(dirname(__FILE__) . '/../../themes/question') . "\n \n";
         echo "And it will generate php files with the strings to be translated \n";

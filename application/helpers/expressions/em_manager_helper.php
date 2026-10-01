@@ -514,7 +514,7 @@ class LimeExpressionManager
      * 'qid' => 702 // the question id
      * 'qseq' => 6 // the question sequence
      * 'gseq' => 0 // the group sequence
-     * 'sgqa' => '26626X34X702' // the root of the SGQA code (reallly just the SGQ)
+     * 'sgqa' => '26626X34X702' // the root of the SGQA code (really just the SGQ)
      * 'varName' => 'afSrcFilter_sq1' // the full qcode variable name - note, if there are subquestions, don't use this one.
      * 'type' => 'M' // the one-letter question type
      * 'fieldname' => '26626X34X702sq1' // the fieldname (used as JavaScript variable name, and also as database column name
@@ -1619,12 +1619,14 @@ class LimeExpressionManager
                             case Question::QT_D_DATE: //DATE QUESTION TYPE
                                 // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_min']) != '') {
-                                    $mindate = $qattr['date_min'];
-                                    if ((strlen((string)$mindate) == 4)) {
+                                    $mindate = trim((string) $qattr['date_min']);
+                                    if (ctype_digit($mindate) && strlen($mindate) == 4) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_min = '\'' . $mindate . '-01-01' . ' 00:00\'';
-                                    } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $mindate)) {
-                                        $date_min = '\'' . $mindate . ' 00:00\'';
+                                    } elseif (preg_match(QuestionAttribute::DATE_LIMIT_PATTERN, $mindate)) {
+                                        // a date, optionally followed by a time: the pattern ensures it can't break out of the quotes
+                                        $mindate = str_replace('T', ' ', $mindate);
+                                        $date_min = '\'' . (strlen($mindate) == 10 ? $mindate . ' 00:00' : $mindate) . '\'';
                                     } elseif (array_key_exists($date_min, $this->qcode2sgqa)) {  // refers to another question
                                         $date_min = $date_min . '.NAOK';
                                     }
@@ -1694,12 +1696,14 @@ class LimeExpressionManager
                             case Question::QT_D_DATE: //DATE QUESTION TYPE
                                 // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_max']) != '') {
-                                    $maxdate = $qattr['date_max'];
-                                    if ((strlen((string)$maxdate) == 4)) {
+                                    $maxdate = trim((string) $qattr['date_max']);
+                                    if (ctype_digit($maxdate) && strlen($maxdate) == 4) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_max = '\'' . $maxdate . '-12-31 23:59' . '\'';
-                                    } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $maxdate)) {
-                                        $date_max = '\'' . $maxdate . ' 23:59\'';
+                                    } elseif (preg_match(QuestionAttribute::DATE_LIMIT_PATTERN, $maxdate)) {
+                                        // a date, optionally followed by a time: the pattern ensures it can't break out of the quotes
+                                        $maxdate = str_replace('T', ' ', $maxdate);
+                                        $date_max = '\'' . (strlen($maxdate) == 10 ? $maxdate . ' 23:59' : $maxdate) . '\'';
                                     } elseif (array_key_exists($date_max, $this->qcode2sgqa)) {  // refers to another question
                                         $date_max = $date_max . '.NAOK';
                                     }
@@ -4696,13 +4700,17 @@ class LimeExpressionManager
     }
 
     /**
-     * Initialize a survey so can use EM to manage navigation
+     * Initialize a survey so can use EM to manage navigation.
+     * Timing storage is enabled only when Save timings is enabled and its table exists.
+     * Applies valid session starting values and attempts to persist them to the response table.
+     *
      * @param int $surveyid
-     * @param string $surveyMode
-     * @param array $aSurveyOptions
-     * @param bool $forceRefresh
+     * @param string $surveyMode 'survey', 'question', or 'group'; unrecognized values use 'group'.
+     * @param array|null $aSurveyOptions Runtime options; null uses the defaults.
+     * @param bool $forceRefresh Whether to rebuild cached variable and token mappings.
      * @param int $debugLevel
-     * @return array
+     * @return array Initial navigation state: hasNext is true and hasPrevious is false.
+     * @throws CDbException If an uncaught database operation fails.
      */
     public static function StartSurvey($surveyid, $surveyMode = 'group', $aSurveyOptions = null, $forceRefresh = false, $debugLevel = 0)
     {
@@ -4715,7 +4723,7 @@ class LimeExpressionManager
             $aSurveyOptions = [];
         }
         $LEM->surveyOptions['active'] = (isset($aSurveyOptions['active']) ? $aSurveyOptions['active'] : false);
-        // make sure to get the previewmode set by aSurveyOptions because LEM reset happens inbetween
+        // make sure to get the previewmode set by aSurveyOptions because LEM reset happens in between
         self::SetPreviewMode($aSurveyOptions['previewmode'] ?? false);
         $LEM->surveyOptions['allowsave'] = (isset($aSurveyOptions['allowsave']) ? $aSurveyOptions['allowsave'] : false);
         $LEM->surveyOptions['alloweditaftercompletion'] = (isset($aSurveyOptions['alloweditaftercompletion']) ? $aSurveyOptions['alloweditaftercompletion'] : false);
@@ -4728,12 +4736,13 @@ class LimeExpressionManager
         $LEM->surveyOptions['ipAnonymize'] = $survey->isIpAnonymize;
         $LEM->surveyOptions['radix'] = (isset($aSurveyOptions['radix']) ? $aSurveyOptions['radix'] : '.');
         $LEM->surveyOptions['refurl'] = (isset($aSurveyOptions['refurl']) ? $aSurveyOptions['refurl'] : null);
-        $LEM->surveyOptions['savetimings'] = $survey->isSaveTimings;
+        $canSaveTimings = $survey->isSaveTimings && $survey->hasTimingsTable;
+        $LEM->surveyOptions['savetimings'] = $canSaveTimings;
         $LEM->sgqaNaming = (isset($aSurveyOptions['sgqaNaming']) ? ($aSurveyOptions['sgqaNaming'] == "Y") : true); // TODO default should eventually be false
         $LEM->surveyOptions['startlanguage'] = (isset($aSurveyOptions['startlanguage']) ? $aSurveyOptions['startlanguage'] : 'en');
         $LEM->surveyOptions['surveyls_dateformat'] = (isset($aSurveyOptions['surveyls_dateformat']) ? $aSurveyOptions['surveyls_dateformat'] : 1);
         $LEM->surveyOptions['tablename'] = (isset($aSurveyOptions['tablename']) ? $aSurveyOptions['tablename'] : $survey->responsesTableName);
-        $LEM->surveyOptions['tablename_timings'] = ($survey->isSaveTimings ? $survey->timingsTableName : '');
+        $LEM->surveyOptions['tablename_timings'] = ($canSaveTimings ? $survey->timingsTableName : '');
         $LEM->surveyOptions['target'] = (isset($aSurveyOptions['target']) ? $aSurveyOptions['target'] : '/temp/files/');
         $LEM->surveyOptions['timeadjust'] = (isset($aSurveyOptions['timeadjust']) ? $aSurveyOptions['timeadjust'] : 0);
         $LEM->surveyOptions['displayTimezone'] = Yii::app()->getConfig('displayTimezone') ?: date_default_timezone_get();
@@ -4741,7 +4750,7 @@ class LimeExpressionManager
         $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : null);
         $LEM->surveyOptions['savequotaexit'] = (isset($aSurveyOptions['savequotaexit']) ? $aSurveyOptions['savequotaexit'] : false);
         $LEM->debugLevel = $debugLevel;
-        $_SESSION[$LEM->sessid]['LEMdebugLevel'] = $debugLevel; // need acces to SESSSION to decide whether to cache serialized instance of $LEM
+        $_SESSION[$LEM->sessid]['LEMdebugLevel'] = $debugLevel; // need access to SESSION to decide whether to cache serialized instance of $LEM
         switch ($surveyMode) {
             case 'survey':
                 $LEM->allOnOnePage = true;
@@ -7391,7 +7400,7 @@ class LimeExpressionManager
     /*
     * Generate JavaScript needed to do dynamic relevance and tailoring
     * Also create list of variables that need to be declared
-    * @return string|array : line to be added to content Javacript line + hidden input (can't use register script...)
+    * @return string|array : line to be added to content Javascript line + hidden input (can't use register script...)
     */
     public static function GetRelevanceAndTailoringJavaScript($bReturnArray = false)
     {
@@ -9053,7 +9062,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $updatedValues[$sq] = $_update;
                     $LEM->updatedValues[$sq] = $_update;
                 } else {  // irrelevant, so database will be NULLed separately
-                    // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
+                    // Must unset the value, rather than setting to '', so that EM can reuse the default value as needed.
                     unset($_SESSION[$LEM->sessid][$sq]);
                     $_update = [
                         'type'  => $type,

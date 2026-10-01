@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Subview: Error messsage in the usermanagement panel
+ * Subview: Error message in the usermanagement panel
  *
  * @package UserManagement
  * @author LimeSurvey GmbH <info@limesurvey.org>
