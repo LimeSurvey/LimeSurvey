@@ -18,6 +18,18 @@ var RankingQuestion = function (options) {
     var relevancename = "relevance" + rankingName,
         rankingID = "javatbd" + rankingName;
 
+    // Build a map from data-value (title) to element id from the DOM
+    var buildValueToIdMap = function () {
+        var map = {};
+        $('#sortable-choice-' + questionId + ' li.sortable-item').each(function () {
+            var val = $(this).data('value');
+            if (val) {
+                map[val] = $(this).attr('id');
+            }
+        });
+        return map;
+    };
+
     //define HTML snippets
     var screenReader = "<div class='visually-hidden'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankhelp + "</div>"
 
@@ -164,10 +176,14 @@ var RankingQuestion = function (options) {
             $('#sortable-rank-' + questionId + ' li').each(function () {
                 $(this).appendTo('#sortable-choice-' + questionId);
             });
+            var valueToId = buildValueToIdMap();
             $('#question' + questionId + ' .select-item select :selected').each(function (index) {
                 if ($(this).val() != '') {
                     $("#" + relevancename + (index + 1)).val("1");
-                    $('#sortable-choice-' + questionId + ' li#' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
+                    var elId = valueToId[$(this).val()];
+                    if (elId) {
+                        $('#sortable-choice-' + questionId + ' li#' + elId).appendTo('#sortable-rank-' + questionId);
+                    }
                 }
                 /* set old-val for updateDragDropRank see #14425 */
                 $(this).closest("select").data("old-val", $(this).closest("select").val());

@@ -3,5 +3,6 @@
  * This file render the asterisk for mandatory questions
  */
 #}
-<!-- Add a visual information + just Mandatory string for aria : can be improved -->
-<i class="asterisk ri-asterisk" title="{{ gT("(This question is mandatory)") }}"></i>
+<!-- The asterisk alone would convey "mandatory" by symbol only, so the word is shown too -->
+<i class="asterisk ri-asterisk" aria-hidden="true"></i>
+<span class="ls-question-mandatory small">{{ gT("Required") }}</span>

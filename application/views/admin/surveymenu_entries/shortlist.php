@@ -15,18 +15,10 @@ $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPa
                 [
                     'dataProvider' => $model->search(),
                     'id'           => 'surveymenu-entries-shortlist-grid',
-                    'caption'      => gT('Menu entries'),
+                    'lsCaption'      => gT('Menu entries'),
                     'columns'      => $model->getShortListColumns(),
                     'emptyText'    => gT('No customizable entries found.'),
-                    'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'surveymenuentriesshortlistPageSize',
-                            $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
-                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                        )
-                    ),
+                    'lsPageSizeCurrentValue' => $pageSize,
                     'ajaxUpdate' => 'surveymenu-entries-shortlist-grid'
                 ]
             );
@@ -34,14 +26,5 @@ $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPa
         </div>
     </div>
 </div>
-
-<!-- update rows with pagination -->
-<script type="text/javascript">
-    jQuery(function ($) {
-        $(document).on("change", '#surveymenuentriesshortlistPageSize', function () {
-            $.fn.yiiGridView.update('surveymenu-entries-shortlist-grid', {data: {pageSize: $(this).val()}});
-        });
-    });
-</script>
 
 

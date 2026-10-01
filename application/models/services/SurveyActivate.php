@@ -66,10 +66,13 @@ class SurveyActivate
                 'ipaddr',
                 'ipanonymize',
                 'refurl',
-                'savetimings'
+                'savetimings',
+                'savequotaexit'
             ];
             foreach ($fields as $field) {
-                $survey->{$field} = $survey->aOptions[$field];
+                if (array_key_exists($field, $survey->aOptions)) {
+                    $survey->{$field} = $survey->aOptions[$field];
+                }
                 $postfieldvalue = $this->app->request->getPost($field, null);
                 if ($postfieldvalue !== null) {
                     $survey->{$field} = $this->app->request->getPost($field, $params[$field] ?? null);
@@ -98,16 +101,23 @@ class SurveyActivate
     }
 
     /**
-     * Restores all archived data tables
+     * Restore archived responses and any archived participants into the survey.
+     * Archived timings are copied only when the survey's savetimings setting is
+     * 'Y' and its timings table exists.
      *
      * @param int $surveyId
-     * @param int|null $timestamp
-     * @param bool $preserveIDs
-     * @return bool
-     * @throws CException
+     * @param int|null $timestamp Archive suffix in YmdHis format, not Unix time.
+     *     Each table type falls back to its latest archive if no match is found or no suffix is supplied.
+     * @param bool $preserveIDs Whether to retain archived IDs; forced to true for SQL Server drivers.
+     * @return bool False if response or question archives are missing; true after restoration runs.
+     * @throws CException If restoration fails. Database errors propagate, except errors
+     *     creating the participant table, which are ignored before attempting the copy.
      */
     public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false): bool
     {
+        if (in_array(\Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
+            $preserveIDs = true;
+        }
         require_once "application/helpers/admin/import_helper.php";
         $deactivatedArchives = getDeactivatedArchives($surveyId);
         $archives = [];
@@ -147,7 +157,14 @@ class SurveyActivate
                 }
                 copyFromOneTableToTheOther($archives["tokens"], $tokenTable, $preserveIDs);
             }
-            if (isset($archives["timings"])) {
+            $survey = $this->survey->findByPk($surveyId);
+            $this->app->db->schema->refresh();
+            if (
+                isset($archives["timings"])
+                && $survey !== null
+                && $survey->isSaveTimings
+                && $survey->hasTimingsTable
+            ) {
                 $timingsTable = $this->app->db->tablePrefix . "timings_" . $surveyId;
                 copyFromOneTableToTheOther($archives["timings"], $timingsTable, $preserveIDs);
             }

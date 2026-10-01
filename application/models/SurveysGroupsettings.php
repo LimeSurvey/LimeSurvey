@@ -44,6 +44,7 @@
  * @property string $showxquestions
  * @property string $showgroupinfo
  * @property string $shownoanswer
+ * @property string $preselectnoanswer
  * @property string $showqnumcode
  * @property string $showwelcome
  * @property string $showprogress
@@ -51,6 +52,7 @@
  * @property integer $navigationdelay
  * @property string $alloweditaftercompletion
  * @property string $ipanonymize
+ * @property string $savequotaexit
  */
 class SurveysGroupsettings extends LSActiveRecord
 {
@@ -67,8 +69,8 @@ class SurveysGroupsettings extends LSActiveRecord
     protected $optionAttributesInteger  = array('owner_id', 'tokenlength', 'questionindex', 'navigationdelay');
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
                                                 'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
-                                                'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress',
-                                                'alloweditaftercompletion', 'showregisterpolicy', 'showtokenpolicy');
+                                                'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showqnumcode', 'showwelcome', 'showprogress',
+                                                'alloweditaftercompletion', 'savequotaexit', 'showregisterpolicy', 'showtokenpolicy');
     protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');
 
     public $showInherited = 1;
@@ -101,7 +103,7 @@ class SurveysGroupsettings extends LSActiveRecord
             array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('admin', 'length', 'max' => 50),
-            array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, alloweditaftercompletion, ipanonymize', 'length', 'max' => 1),
+            array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, preselectnoanswer, showqnumcode, showwelcome, showprogress, alloweditaftercompletion, ipanonymize, savequotaexit', 'length', 'max' => 1),
             array('adminemail, bounce_email', 'length', 'max' => 255),
             array('template', 'length', 'max' => 100),
             array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
@@ -112,8 +114,8 @@ class SurveysGroupsettings extends LSActiveRecord
 			autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice,
 			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
 			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
-			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
-			questionindex, showregisterpolicy, showtokenpolicy, navigationdelay, alloweditaftercompletion', 'safe', 'on' => 'search'),
+			tokenlength, showxquestions, showgroupinfo, shownoanswer, preselectnoanswer, showqnumcode, showwelcome, showprogress,
+			questionindex, showregisterpolicy, showtokenpolicy, navigationdelay, alloweditaftercompletion, savequotaexit', 'safe', 'on' => 'search'),
         );
     }
 
@@ -165,6 +167,7 @@ class SurveysGroupsettings extends LSActiveRecord
             'printanswers' => 'Printanswers',
             'ipaddr' => 'Ipaddr',
             'refurl' => 'Refurl',
+            'savequotaexit' => 'Savequotaexit',
             'datecreated' => 'Datecreated',
             'showsurveypolicynotice' => 'Showsurveypolicynotice',
             'publicstatistics' => 'Publicstatistics',
@@ -183,6 +186,7 @@ class SurveysGroupsettings extends LSActiveRecord
             'showxquestions' => 'Showxquestions',
             'showgroupinfo' => 'Showgroupinfo',
             'shownoanswer' => 'Shownoanswer',
+            'preselectnoanswer' => 'Preselectnoanswer',
             'showqnumcode' => 'Showqnumcode',
             'showwelcome' => 'Showwelcome',
             'showprogress' => 'Showprogress',
@@ -232,6 +236,7 @@ class SurveysGroupsettings extends LSActiveRecord
         $criteria->compare('printanswers', $this->printanswers, true);
         $criteria->compare('ipaddr', $this->ipaddr, true);
         $criteria->compare('refurl', $this->refurl, true);
+        $criteria->compare('savequotaexit', $this->savequotaexit, true);
         $criteria->compare('datecreated', $this->datecreated, true);
         $criteria->compare('showsurveypolicynotice', $this->showsurveypolicynotice);
         $criteria->compare('publicstatistics', $this->publicstatistics, true);
@@ -250,6 +255,7 @@ class SurveysGroupsettings extends LSActiveRecord
         $criteria->compare('showxquestions', $this->showxquestions, true);
         $criteria->compare('showgroupinfo', $this->showgroupinfo, true);
         $criteria->compare('shownoanswer', $this->shownoanswer, true);
+        $criteria->compare('preselectnoanswer', $this->preselectnoanswer, true);
         $criteria->compare('showqnumcode', $this->showqnumcode, true);
         $criteria->compare('showwelcome', $this->showwelcome, true);
         $criteria->compare('showprogress', $this->showprogress, true);
@@ -315,6 +321,7 @@ class SurveysGroupsettings extends LSActiveRecord
      */
     public static function getInstance($iSurveyGroupId = 0, $oSurvey = null, $instance = null, $iStep = 1, $bRealValues = false)
     {
+        $iSurveyGroupId = (int) $iSurveyGroupId;
         if (!array_key_exists($iSurveyGroupId, self::$aSurveysGroupSettings)) {
             if ($iSurveyGroupId > 0) {
                 self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
@@ -483,6 +490,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 !($attribute === 'ipanonymize' && $dbversion < 412)
                 && !($attribute === 'showregisterpolicy' && $dbversion < 649)
                 && !($attribute === 'showtokenpolicy' && $dbversion < 649)
+                && !($attribute === 'preselectnoanswer' && $dbversion < 712)
             ) {
                 $this->$attribute = 'I';
             }

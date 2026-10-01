@@ -392,7 +392,7 @@ class Surveymenu extends LSActiveRecord
                 'class'               => 'CCheckBoxColumn',
                 'selectableRows'      => 2,
                 'name'                => 'id',
-                'checkBoxHtmlOptions' => ['name' => 'id[]', 'class' => 'action_selectthismenu'],
+                'checkBoxHtmlOptions' => ['name' => 'id[]', 'class' => 'massiveActionsCheckbox action_selectthismenu'],
                 'headerHtmlOptions'   => ['class' => 'ls-sticky-column'],
                 'filterHtmlOptions'   => ['class' => 'ls-sticky-column'],
                 'htmlOptions'         => ['class' => 'ls-sticky-column'],

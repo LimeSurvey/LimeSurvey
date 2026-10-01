@@ -125,6 +125,7 @@ return [
     'ckeditor'          => [
         'devBaseUrl' => 'assets/packages/ckeditor',
         'basePath'   => 'core.ckeditor',
+        'position'   => CClientScript::POS_BEGIN,
         'js'         => [
             'ckeditor.js',
             'config.js',
@@ -136,6 +137,7 @@ return [
     'ckeditoradditions' => [
         'devBaseUrl' => 'assets/packages/ckeditoradditions/',
         'basePath'   => 'core.ckeditoradditions',
+        'position'   => CClientScript::POS_BEGIN,
         'js'         => [
             'ckeditoradditions.js',
         ],
@@ -249,21 +251,6 @@ return [
         ]
     ],
 
-    'lstutorial' => [
-        'devBaseUrl' => 'assets/packages/lstutorial/',
-        'basePath'   => 'core.lstutorial',
-        'position'   => CClientScript::POS_END,
-        'js'         => [
-            'build/lstutorial' . $minVersion . '.js',
-        ],
-        'css'        => [
-            'build/lstutorial.css'
-        ],
-        'depends'    => [
-//            'bootstrap',
-            'adminbasics',
-        ]
-    ],
     'lslog'      => [
         'devBaseUrl' => 'assets/packages/lslog/',
         'basePath'   => 'core.lslog',

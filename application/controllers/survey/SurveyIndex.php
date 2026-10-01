@@ -47,6 +47,10 @@ class SurveyIndex extends CAction
         }
         /* Get client token by POST or GET value */
         $clienttoken = trim((string)$param['token']);
+        /* A token longer than the column limit can never match a real token: ignore it to avoid a DB truncation error on save (see issue #20479) */
+        if (mb_strlen($clienttoken) > Token::MAX_LENGTH) {
+            $clienttoken = '';
+        }
         /* If not set : get by SESSION to avoid multiple submit of same token in different navigator */
         if (empty($clienttoken) && !empty($_SESSION['responses_' . $surveyid]['token'])) {
             $clienttoken = $_SESSION['responses_' . $surveyid]['token'];
@@ -95,7 +99,8 @@ class SurveyIndex extends CAction
         $canPreviewSurvey = $this->canUserPreviewSurvey($surveyid);
         $previewmode = false;
         $popuppreview = (bool)Yii::app()->request->getParam('popuppreview', false);
-        if ($popuppreview
+        if (
+            $popuppreview
             || (
                 isset($param['action'])
                 && (in_array($param['action'], ['previewgroup', 'previewquestion']))
@@ -110,11 +115,13 @@ class SurveyIndex extends CAction
                 throw new CHttpException(401, $message);
             } else {
                 killSurveySession($surveyid);
-                if ($popuppreview){
+                if ($popuppreview) {
                     $previewmode = true;
                 }
-                if ($param['action'] === 'previewquestion'
-                    || $param['action'] === 'previewgroup'){
+                if (
+                    $param['action'] === 'previewquestion'
+                    || $param['action'] === 'previewgroup'
+                ) {
                     // Check if group exists in this survey
                     $arGroup = QuestionGroup::model()->find("sid = :sid and gid = :gid", [":sid" => $surveyid, ":gid" => (int)$param['gid']]);
                     if (empty($arGroup)) {
@@ -149,6 +156,10 @@ class SurveyIndex extends CAction
         if ($oSurvey->hasTokensTable) {
             $tokensexist = 1;
         }
+
+        // Set the application language to the survey's base language before any
+        // early exit (e.g. maintenance mode) so those pages are translated too.
+        $this->loadLimesurveyLang($surveyid);
 
         // maintenance mode
         $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
@@ -194,8 +205,6 @@ class SurveyIndex extends CAction
             $_SESSION['responses_' . $surveyid]['token'] = $token;
         }
 
-        $this->loadLimesurveyLang($surveyid);
-
         // Set the language of the survey, either from POST, GET parameter of session var
         // Keep the old value, because SetSurveyLanguage update $_SESSION
         $sOldLang = $_SESSION['responses_' . $surveyid]['s_lang'] ?? ""; // Keep the old value, because SetSurveyLanguage update $_SESSION
@@ -223,15 +232,22 @@ class SurveyIndex extends CAction
         if ($this->isClientTokenDifferentFromSessionToken($clienttoken, $surveyid)) {
             $sReloadUrl = $this->getController()->createUrl("/survey/index/sid/{$surveyid}", ['token' => $clienttoken, 'lang' => App()->language, 'newtest' => 'Y']);
             $aErrors = [gT('Access code mismatch')];
-            $asMessage = [gT('The access code you provided doesn\'t match the one in your session.')];
-            $aUrl = [
-                'url'         => $sReloadUrl,
-                'type'        => 'restart-survey',
-                'description' => gT("Click here to start the survey.")
+            $asMessage = [
+                gT('The access code you provided doesn\'t match the one used in the session already open in this browser.'),
+                gT('This can happen when you open survey links with different access codes in several browser tabs. Your current progress has been preserved.'),
+                gT('To start a new session with the new access code, use the link below. Please note that this will discard the existing session currently open in this browser.'),
             ];
+            $aUrl       = [
+                            'url' => $sReloadUrl,
+                            'type' => 'restart-survey',
+                            'description' => gT("Click here to start the survey with the new access code.")
+                          ];
 
-            killSurveySession($surveyid);
-
+            // Do NOT kill the existing session here: opening the survey with a different
+            // access code (e.g. in another browser tab) must not silently overwrite or
+            // discard the session that is already in progress (see issue #20598).
+            // The session is only reset when the participant explicitly clicks the link
+            // above, which carries "newtest=Y" and triggers killSurveySession() on entry.
             App()->getController()->renderExitMessage(
                 $surveyid,
                 'restart-survey',
@@ -239,8 +255,6 @@ class SurveyIndex extends CAction
                 $aUrl,
                 $aErrors
             );
-
-            $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         } elseif (!$clienttoken) {
             $clienttoken = $_SESSION['responses_' . $surveyid]['token'] ?? ""; // Fix for #12003
         }
@@ -739,8 +753,8 @@ class SurveyIndex extends CAction
     {
         $bSurveyPreviewRequireAuth = Yii::app()->getConfig('surveyPreview_require_Auth');
         return $surveyid && $bIsSurveyActive === false && $bSurveyExists && isset($bSurveyPreviewRequireAuth) && $bSurveyPreviewRequireAuth == true && !$this->canUserPreviewSurvey(
-                $surveyid
-            );
+            $surveyid
+        );
     }
 
     private function didSessionTimeout($surveyid)

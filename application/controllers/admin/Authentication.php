@@ -61,7 +61,7 @@ class Authentication extends SurveyCommonAction
                 ls\ajax\AjaxHelper::outputSuccess(gT('Successful login'));
                 return;
             } elseif ($failed) {
-                ls\ajax\AjaxHelper::outputError(gT('Incorrect username and/or password!'));
+                ls\ajax\AjaxHelper::outputError(gT('Incorrect or expired username and/or password!'));
                 return;
             }
         } else {
@@ -205,7 +205,7 @@ class Authentication extends SurveyCommonAction
                 $message = $identity->errorMessage;
                 if (empty($message)) {
                     // If no message, return a default message
-                    $message = gT('Incorrect username and/or password!');
+                    $message = gT('Incorrect or expired username and/or password!');
                 }
                 return array('failed', $message);
             }
@@ -218,10 +218,14 @@ class Authentication extends SurveyCommonAction
      * This action sets a password for new user or resets a password for an existing user.
      * If validation time is expired, no password will be changed.
      * After password has been changed successfully it redirects to LogIn-Page.
+     * If the current user is already logged in, it shows a warning and redirects to the
+     * administration page instead of showing the form.
      *
+     * @return void
      */
     public function newPassword()
     {
+        $this->redirectIfLoggedIn(gT('You cannot reset the password for a user while being logged in as someone else.'));
 
         //validation key could be a GET- or a POST-PARAM
         $validation_key = Yii::app()->request->getParam('param'); //as link from email
@@ -382,10 +386,16 @@ class Authentication extends SurveyCommonAction
 
     /**
      * Redirects a logged in user to the administration page
+     *
+     * @param string|null $flashMessage optional warning message to show after redirecting
+     * @return void
      */
-    private function redirectIfLoggedIn()
+    private function redirectIfLoggedIn(?string $flashMessage = null)
     {
         if (!Yii::app()->user->getIsGuest()) {
+            if ($flashMessage !== null) {
+                Yii::app()->setFlashMessage($flashMessage, 'warning');
+            }
             $this->runDbUpgrade();
             Yii::app()->getController()->redirect(array('/admin'));
         }

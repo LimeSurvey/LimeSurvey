@@ -4,6 +4,8 @@ namespace GuzzleHttp\Handler;
 
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
+use GuzzleHttp\Multiplexing;
 use GuzzleHttp\Promise as P;
 use GuzzleHttp\Promise\FulfilledPromise;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -23,6 +25,12 @@ use Psr\Http\Message\UriInterface;
  */
 class StreamHandler
 {
+    private const KNOWN_CONSTRUCTOR_OPTIONS = [
+        'max_host_connections' => true,
+        'max_total_connections' => true,
+        'transport_sharing' => true,
+    ];
+
     private const CONNECTION_ERRORS = [
         'php_network_getaddresses:',
         'getaddrinfo',
@@ -52,18 +60,53 @@ class StreamHandler
     private $transportSharingMode;
 
     /**
+     * @var bool
+     */
+    private $connectionCapsConfigured = false;
+
+    /**
      * Accepts an associative array of options:
      *
+     * - max_host_connections: Optional positive integer or null. A non-null
+     *   value marks the handler as incompatible with enabled response
+     *   streaming; the number is not used for stream-handler admission.
+     * - max_total_connections: Optional positive integer or null. A non-null
+     *   value marks the handler as incompatible with enabled response
+     *   streaming; the number is not used for stream-handler admission.
      * - transport_sharing: Optional transport sharing mode.
      *
-     * @param array{transport_sharing?: mixed} $options Array of options to use with the handler
+     * The stream handler cannot cap streamed connections, so a configured cap
+     * marker rejects enabled response streaming ("stream" => true). Accepted
+     * transfers are buffered and hold at most one connection per in-flight
+     * call, but overlapping buffered calls are not collectively limited.
+     *
+     * @param array{max_host_connections?: mixed, max_total_connections?: mixed, transport_sharing?: mixed} $options Array of options to use with the handler
      */
     public function __construct(array $options = [])
     {
+        foreach ($options as $name => $_) {
+            if (!isset(self::KNOWN_CONSTRUCTOR_OPTIONS[$name])) {
+                \trigger_deprecation('guzzlehttp/guzzle', '7.14', \sprintf('The "%s" StreamHandler constructor option is unknown; guzzlehttp/guzzle 8.0 will reject unknown constructor options.', (string) $name));
+            }
+        }
+
         $this->transportSharingMode = CurlShareHandleState::normalizeMode(
             $options['transport_sharing'] ?? null,
             'transport_sharing'
         );
+
+        foreach (['max_host_connections', 'max_total_connections'] as $capOption) {
+            $value = $options[$capOption] ?? null;
+            if ($value === null) {
+                continue;
+            }
+
+            if (!\is_int($value) || $value < 1) {
+                throw new \InvalidArgumentException(\sprintf('%s must be a positive integer.', $capOption));
+            }
+
+            $this->connectionCapsConfigured = true;
+        }
     }
 
     /**
@@ -77,6 +120,29 @@ class StreamHandler
         // Sleep if there is a delay specified.
         if (isset($options['delay'])) {
             \usleep($options['delay'] * 1000);
+        }
+
+        $multiplex = $options['multiplex'] ?? null;
+
+        // Multiplexing::NONE is trivially satisfied: the stream handler sends
+        // one HTTP/1.x request per connection and never multiplexes.
+        if (null !== $multiplex && !\in_array($multiplex, [Multiplexing::NONE, Multiplexing::EAGER, Multiplexing::WAIT, Multiplexing::REQUIRE_EAGER, Multiplexing::REQUIRE_WAIT], true)) {
+            throw new \InvalidArgumentException(\sprintf(
+                'The "multiplex" option must be null or a GuzzleHttp\\Multiplexing::* constant; received %s.',
+                \get_debug_type($multiplex)
+            ));
+        }
+
+        if (\in_array($multiplex, [Multiplexing::REQUIRE_EAGER, Multiplexing::REQUIRE_WAIT], true)) {
+            throw new ConnectException('The stream handler cannot guarantee a multiplexed protocol; required multiplexing needs a cURL handler.', $request);
+        }
+
+        if ($this->connectionCapsConfigured && !empty($options['stream'])) {
+            throw new \InvalidArgumentException('Enabling the "stream" request option on a stream handler configured with the "max_host_connections" or "max_total_connections" option is not supported because streamed connections cannot be capped.');
+        }
+
+        if (isset($options['on_trailers'])) {
+            throw new \InvalidArgumentException('Passing the "on_trailers" request option to the stream handler is not supported because the stream handler cannot observe trailers.');
         }
 
         $protocolVersion = $request->getProtocolVersion();
@@ -105,8 +171,8 @@ class StreamHandler
             // the behavior of `CurlHandler`
             if (
                 (
-                    0 === \strcasecmp('PUT', $request->getMethod())
-                    || 0 === \strcasecmp('POST', $request->getMethod())
+                    Psr7\Utils::caselessEquals('PUT', $request->getMethod())
+                    || Psr7\Utils::caselessEquals('POST', $request->getMethod())
                 )
                 && 0 === $request->getBody()->getSize()
             ) {
@@ -122,11 +188,10 @@ class StreamHandler
         } catch (\InvalidArgumentException $e) {
             throw $e;
         } catch (\Exception $e) {
-            // Determine if the error was a networking error.
-            if (self::isConnectionError($e->getMessage())) {
-                $e = new ConnectException($e->getMessage(), $request, $e);
-            } else {
-                $e = $e instanceof RequestException ? $e : new RequestException($e->getMessage(), $request, null, $e);
+            if (!$e instanceof TransferException) {
+                $e = self::isConnectionError($e->getMessage())
+                    ? new ConnectException($e->getMessage(), $request, $e)
+                    : new RequestException($e->getMessage(), $request, null, $e);
             }
             $this->invokeStats($options, $request, $startTime, null, $e);
 
@@ -176,7 +241,7 @@ class StreamHandler
         $stream = Psr7\Utils::streamFor($stream);
         $sink = $stream;
 
-        if (\strcasecmp('HEAD', $request->getMethod())) {
+        if (!Psr7\Utils::caselessEquals('HEAD', $request->getMethod())) {
             $sink = $this->createSink($stream, $options);
         }
 
@@ -242,7 +307,7 @@ class StreamHandler
     private function checkDecode(array $options, array $headers, $stream): array
     {
         // Automatically decode responses when instructed.
-        if (!empty($options['decode_content'])) {
+        if (isset($options['decode_content']) && $options['decode_content'] !== false) {
             $normalizedKeys = Utils::normalizeHeaderKeys($headers);
             if (isset($normalizedKeys['content-encoding'])) {
                 $encoding = $headers[$normalizedKeys['content-encoding']];
@@ -328,7 +393,7 @@ class StreamHandler
                     $message .= "[$key] $value".\PHP_EOL;
                 }
             }
-            throw new \RuntimeException(\trim($message));
+            throw new \RuntimeException(\trim($message, " \n\r\t\0\x0B"));
         }
 
         return $resource;
@@ -344,7 +409,12 @@ class StreamHandler
             $methods = \array_flip(\get_class_methods(__CLASS__));
         }
 
-        $scheme = $request->getUri()->getScheme();
+        $uri = $request->getUri();
+        $scheme = $uri->getScheme();
+        if ($scheme === '') {
+            throw new RequestException('URI must include a scheme and host. Use an absolute URI, a network-path reference starting with //, or configure a base_uri.', $request);
+        }
+
         if (!\in_array($scheme, ['http', 'https'], true)) {
             throw new RequestException(\sprintf("The scheme '%s' is not supported.", $scheme), $request);
         }
@@ -353,6 +423,12 @@ class StreamHandler
         if (!\in_array($scheme, $protocols, true)) {
             throw new RequestException(\sprintf('The scheme "%s" is not allowed by the protocols request option.', $scheme), $request);
         }
+
+        if ($uri->getHost() === '') {
+            throw new RequestException('URI must include a scheme and host. Use an absolute URI, a network-path reference starting with //, or configure a base_uri.', $request);
+        }
+
+        HostValidator::assertRequestHost($request);
 
         // HTTP/1.1 streams using the PHP stream wrapper require a
         // Connection: close header
@@ -374,10 +450,19 @@ class StreamHandler
             throw new \InvalidArgumentException('on_headers must be callable');
         }
 
+        self::assertTlsVersionRangeForOptions($options);
+
+        $proxyAuthorizationAdded = false;
         if (!empty($options)) {
             foreach ($options as $key => $value) {
                 $method = "add_{$key}";
                 if (isset($methods[$method])) {
+                    if ($method === 'add_proxy') {
+                        $proxyAuthorizationAdded = $this->add_proxy($request, $context, $value, $params);
+
+                        continue;
+                    }
+
                     $this->{$method}($request, $context, $value, $params);
                 }
             }
@@ -387,6 +472,16 @@ class StreamHandler
             if (!\is_array($options['stream_context'])) {
                 throw new \InvalidArgumentException('stream_context must be an array');
             }
+            if (
+                $proxyAuthorizationAdded
+                && isset($options['stream_context']['http'])
+                && \is_array($options['stream_context']['http'])
+                && \array_key_exists('proxy', $options['stream_context']['http'])
+            ) {
+                throw new \InvalidArgumentException('stream_context.http.proxy cannot override a proxy after the stream handler has generated a Proxy-Authorization header; configure the final proxy with the "proxy" request option.');
+            }
+            self::triggerConflictingStreamContextOptionDeprecations($options['stream_context']);
+            self::triggerUnsupportedStreamContextOptionDeprecations($options['stream_context']);
             $context = \array_replace_recursive($context, $options['stream_context']);
         }
 
@@ -415,7 +510,7 @@ class StreamHandler
                 $this->lastHeaders = $http_response_header ?? [];
 
                 if (false === $resource) {
-                    throw new ConnectException(sprintf('Connection refused for URI %s', $uri), $request, null, $context);
+                    throw new ConnectException(sprintf('Connection refused for URI %s', Psr7\Utils::redactUserInfo($uri)), $request, null, $context);
                 }
 
                 if (isset($options['read_timeout'])) {
@@ -434,7 +529,23 @@ class StreamHandler
     {
         $uri = $request->getUri();
 
-        if (isset($options['force_ip_resolve']) && !\filter_var($uri->getHost(), \FILTER_VALIDATE_IP)) {
+        $host = $uri->getHost();
+
+        // Fold a numeric IPv4 spelling to the dotted quad libcurl connects
+        // to, rather than leaving it to the platform resolver: macOS reads
+        // the zero-padded 0177 as decimal 177 where glibc, musl and FreeBSD
+        // read octal 127. The Host header is serialized from the request and
+        // stays as written; the TLS peer name follows the same fold.
+        $canonicalHost = self::canonicalConnectionHost($host);
+        if ($canonicalHost !== $host) {
+            $uri = $uri->withHost($canonicalHost);
+            $host = $canonicalHost;
+        }
+
+        $hostForIpCheck = $host !== '' && $host[0] === '[' && \substr($host, -1) === ']'
+            ? \substr($host, 1, -1)
+            : $host;
+        if (isset($options['force_ip_resolve']) && !\filter_var($hostForIpCheck, \FILTER_VALIDATE_IP)) {
             if ('v4' === $options['force_ip_resolve']) {
                 $records = \dns_get_record($uri->getHost(), \DNS_A);
                 if (false === $records || !isset($records[0]['ip'])) {
@@ -456,10 +567,99 @@ class StreamHandler
         return $uri;
     }
 
+    /**
+     * Returns a numeric IPv4 spelling folded to the dotted quad libcurl's
+     * ipv4_normalize() produces, and every other host unchanged.
+     */
+    private static function canonicalConnectionHost(string $host): string
+    {
+        $binary = self::numericIpv4ToBinary($host);
+        if ($binary === null) {
+            return $host;
+        }
+
+        return (string) \inet_ntop($binary);
+    }
+
+    /**
+     * Returns the four-byte binary form of a host that a transport reads as a
+     * numeric IPv4 address, or null when it reads it as a name.
+     *
+     * The shape test is HostValidator::isNumericIpv4Host(); this method adds
+     * the range checks that predicate omits: every part but the last must fit
+     * one octet, and the last must fit the octets the earlier parts left. A
+     * trailing root dot is not swallowed, unlike libcurl 8.21.0 and later,
+     * because assertRequestHost() rejects that spelling first.
+     */
+    private static function numericIpv4ToBinary(string $host): ?string
+    {
+        if (!HostValidator::isNumericIpv4Host($host)) {
+            return null;
+        }
+
+        $values = [];
+        foreach (\explode('.', $host) as $part) {
+            $values[] = self::numericIpv4PartValue($part);
+        }
+
+        // Every accepted value is a whole number no larger than 0xFFFFFFFF,
+        // which a float holds exactly, so the arithmetic below is correct on a
+        // 32-bit build too, where the widest part overflows an integer.
+        $address = (float) \array_pop($values);
+
+        $packed = '';
+        foreach ($values as $value) {
+            if ($value > 255.0) {
+                return null;
+            }
+
+            $packed .= \chr((int) $value);
+        }
+
+        $width = 4 - \count($values);
+        if ($address >= 256.0 ** $width) {
+            return null;
+        }
+
+        for ($shift = $width - 1; $shift >= 0; --$shift) {
+            $packed .= \chr((int) \fmod(\floor($address / 256.0 ** $shift), 256.0));
+        }
+
+        return $packed;
+    }
+
+    /**
+     * Returns the value of one accepted part as a float, so a part filling
+     * all four octets such as 2130706433 stays exact on every integer width.
+     */
+    private static function numericIpv4PartValue(string $part): float
+    {
+        if ($part[0] === '0' && isset($part[1]) && ($part[1] === 'x' || $part[1] === 'X')) {
+            return (float) \hexdec((string) \substr($part, 2));
+        }
+
+        if ($part[0] === '0') {
+            return (float) \octdec($part);
+        }
+
+        return (float) $part;
+    }
+
     private function getDefaultContext(RequestInterface $request): array
     {
         $headers = '';
         foreach ($request->getHeaders() as $name => $value) {
+            // A first-class Proxy-Authorization header is proxy-scoped. Keep
+            // it out of the origin context; add_proxy() adds one
+            // validated canonical line only when Guzzle selects a proxy; PHP
+            // extracts that line for CONNECT and removes it before sending the
+            // tunneled origin request. The caselessEquals() helper is
+            // locale-independent, unlike strcasecmp(), so a locale cannot
+            // make this match miss and re-leak the credential.
+            if (Psr7\Utils::caselessEquals((string) $name, 'Proxy-Authorization')) {
+                continue;
+            }
+
             foreach ($value as $val) {
                 $headers .= "$name: $val\r\n";
             }
@@ -474,7 +674,7 @@ class StreamHandler
                 'follow_location' => 0,
             ],
             'ssl' => [
-                'peer_name' => $request->getUri()->getHost(),
+                'peer_name' => self::canonicalConnectionHost($request->getUri()->getHost()),
             ],
         ];
 
@@ -488,7 +688,7 @@ class StreamHandler
             }
         }
 
-        $context['http']['header'] = \rtrim($context['http']['header']);
+        $context['http']['header'] = \rtrim($context['http']['header'], " \n\r\t\0\x0B");
 
         return $context;
     }
@@ -504,13 +704,161 @@ class StreamHandler
             \trigger_deprecation('guzzlehttp/guzzle', '7.11', 'Passing the "curl" request option to the stream handler is deprecated; guzzlehttp/guzzle 8.0 will reject this option because the stream handler ignores cURL options.');
         }
 
-        if (self::usesDigestAuth($options)) {
-            \trigger_deprecation('guzzlehttp/guzzle', '7.11', 'Passing digest authentication to the stream handler is deprecated; guzzlehttp/guzzle 8.0 will reject digest authentication with the stream handler because it is only supported by cURL handlers.');
-        }
-
         if (\array_key_exists('expect', $options) && $options['expect'] !== false && $request->hasHeader('Expect')) {
             \trigger_deprecation('guzzlehttp/guzzle', '7.11', 'Passing the "expect" request option to the stream handler is deprecated when it adds an Expect header; guzzlehttp/guzzle 8.0 will reject this option because the stream handler does not support Expect: 100-Continue.');
         }
+    }
+
+    private static function triggerConflictingStreamContextOptionDeprecations(array $streamContext): void
+    {
+        $conflictingOptions = self::conflictingStreamContextOptions();
+
+        foreach ($streamContext as $wrapper => $contextOptions) {
+            if (!\is_string($wrapper) || !isset($conflictingOptions[$wrapper]) || !\is_array($contextOptions)) {
+                continue;
+            }
+
+            foreach ($contextOptions as $option => $_) {
+                if (!\is_string($option) || !\array_key_exists($option, $conflictingOptions[$wrapper])) {
+                    continue;
+                }
+
+                \trigger_deprecation(
+                    'guzzlehttp/guzzle',
+                    '7.12',
+                    \sprintf(
+                        'Passing stream_context.%s.%s in the "stream_context" request option is deprecated; guzzlehttp/guzzle 8.0 will reject this option because it conflicts with Guzzle-managed request handling. Use %s instead.',
+                        $wrapper,
+                        $option,
+                        $conflictingOptions[$wrapper][$option]
+                    )
+                );
+            }
+        }
+    }
+
+    private static function triggerUnsupportedStreamContextOptionDeprecations(array $streamContext): void
+    {
+        $unsupportedOptions = self::unsupportedStreamContextOptions($streamContext);
+        if ($unsupportedOptions === []) {
+            return;
+        }
+
+        \trigger_deprecation(
+            'guzzlehttp/guzzle',
+            '7.12',
+            \sprintf(
+                'Passing PHP stream context options outside the built-in stream handler allow-list to the "stream_context" request option is deprecated; guzzlehttp/guzzle 8.0 will reject stream context options outside the allow-list. Deprecated option%s: %s.',
+                \count($unsupportedOptions) === 1 ? '' : 's',
+                \implode(', ', $unsupportedOptions)
+            )
+        );
+    }
+
+    /**
+     * @return string[]
+     */
+    private static function unsupportedStreamContextOptions(array $streamContext): array
+    {
+        $supportedOptions = self::supportedStreamContextOptions();
+        $conflictingOptions = self::conflictingStreamContextOptions();
+        $unsupportedOptions = [];
+
+        foreach ($streamContext as $wrapper => $contextOptions) {
+            if (!\is_string($wrapper) || !isset($supportedOptions[$wrapper])) {
+                if (\is_array($contextOptions)) {
+                    foreach ($contextOptions as $option => $_) {
+                        if (\is_string($wrapper) && \is_string($option) && isset($conflictingOptions[$wrapper]) && \array_key_exists($option, $conflictingOptions[$wrapper])) {
+                            continue;
+                        }
+
+                        $unsupportedOptions[] = \sprintf('stream_context.%s.%s', (string) $wrapper, (string) $option);
+                    }
+                } else {
+                    $unsupportedOptions[] = \sprintf('stream_context.%s', (string) $wrapper);
+                }
+
+                continue;
+            }
+
+            if (!\is_array($contextOptions)) {
+                $unsupportedOptions[] = \sprintf('stream_context.%s', $wrapper);
+
+                continue;
+            }
+
+            foreach ($contextOptions as $option => $_) {
+                if (\is_string($option) && isset($conflictingOptions[$wrapper]) && \array_key_exists($option, $conflictingOptions[$wrapper])) {
+                    continue;
+                }
+
+                if (!\is_string($option) || !\array_key_exists($option, $supportedOptions[$wrapper])) {
+                    $unsupportedOptions[] = \sprintf('stream_context.%s.%s', $wrapper, (string) $option);
+                }
+            }
+        }
+
+        return $unsupportedOptions;
+    }
+
+    /**
+     * @return array<string, array<string, true>>
+     */
+    private static function supportedStreamContextOptions(): array
+    {
+        return [
+            'http' => [
+                'request_fulluri' => true,
+            ],
+            'socket' => [
+                'bindto' => true,
+                'tcp_nodelay' => true,
+            ],
+            'ssl' => [
+                'SNI_enabled' => true,
+                'capture_peer_cert' => true,
+                'capture_peer_cert_chain' => true,
+                'ciphers' => true,
+                'disable_compression' => true,
+                'no_ticket' => true,
+                'peer_fingerprint' => true,
+                'security_level' => true,
+                'verify_depth' => true,
+            ],
+        ];
+    }
+
+    /**
+     * @return array<string, array<string, string>>
+     */
+    private static function conflictingStreamContextOptions(): array
+    {
+        return [
+            'http' => [
+                'content' => 'the request body',
+                'follow_location' => 'the "allow_redirects" request option',
+                'header' => 'the request headers',
+                'max_redirects' => 'the "allow_redirects" request option',
+                'method' => 'the request method',
+                'protocol_version' => 'the request protocol version',
+                'proxy' => 'the "proxy" request option',
+                'timeout' => 'the "timeout" request option',
+            ],
+            'ssl' => [
+                'allow_self_signed' => 'the "verify" request option',
+                'cafile' => 'the "verify" request option',
+                'capath' => 'the "verify" request option',
+                'crypto_method' => 'the "crypto_method" request option',
+                'local_cert' => 'the "cert" request option',
+                'local_pk' => 'the "ssl_key" request option',
+                'max_proto_version' => 'the "crypto_method_max" request option',
+                'min_proto_version' => 'the "crypto_method" request option',
+                'passphrase' => 'the "cert" or "ssl_key" request option',
+                'peer_name' => 'the request URI',
+                'verify_peer' => 'the "verify" request option',
+                'verify_peer_name' => 'the "verify" request option',
+            ],
+        ];
     }
 
     private function assertTransportSharingSupported(): void
@@ -530,7 +878,7 @@ class StreamHandler
             return false;
         }
 
-        $type = \strtolower($options['auth'][2]);
+        $type = Psr7\Utils::asciiToLower($options['auth'][2]);
         if ($type === 'digest') {
             $httpAuth = \defined('CURLAUTH_DIGEST') ? \constant('CURLAUTH_DIGEST') : null;
         } elseif ($type === 'ntlm') {
@@ -543,13 +891,6 @@ class StreamHandler
             && \count($options['curl']) === 2
             && isset($options['curl'][\CURLOPT_HTTPAUTH], $options['curl'][\CURLOPT_USERPWD])
             && $options['curl'][\CURLOPT_HTTPAUTH] === $httpAuth;
-    }
-
-    private static function usesDigestAuth(array $options): bool
-    {
-        return isset($options['auth'][2])
-            && \is_string($options['auth'][2])
-            && \strtolower($options['auth'][2]) === 'digest';
     }
 
     /**
@@ -603,7 +944,7 @@ class StreamHandler
             throw new \InvalidArgumentException(\sprintf('%s must be a non-empty string', $option));
         }
 
-        if (\strtoupper($value) !== 'PEM') {
+        if (Psr7\Utils::asciiToUpper($value) !== 'PEM') {
             throw new \InvalidArgumentException(\sprintf('The stream handler only supports "PEM" for the %s request option.', $option));
         }
     }
@@ -611,7 +952,7 @@ class StreamHandler
     /**
      * @param mixed $value as passed via Request transfer options.
      */
-    private function add_proxy(RequestInterface $request, array &$options, $value, array &$params): void
+    private function add_proxy(RequestInterface $request, array &$options, $value, array &$params): bool
     {
         $uri = null;
 
@@ -630,18 +971,40 @@ class StreamHandler
         }
 
         if (!$uri) {
-            return;
+            return false;
         }
 
         $parsed = $this->parse_proxy($uri);
+
+        // PHP extracts and removes only one Proxy-Authorization line for a
+        // CONNECT tunnel. Serialize exactly one validated first-class value;
+        // more than one could leave a credential in the tunneled origin
+        // request. A first-class value, including an empty one, is
+        // authoritative over Basic credentials embedded in the proxy URI.
+        $managed = $request->getHeader('Proxy-Authorization');
+        if (\count($managed) > 1) {
+            throw new \InvalidArgumentException('The stream handler supports exactly one Proxy-Authorization request header value when a proxy is selected.');
+        }
+        if ($managed !== [] && \strpbrk($managed[0], "\r\n") !== false) {
+            throw new \InvalidArgumentException('Proxy-Authorization request header values must not contain a carriage return or line feed.');
+        }
+
         $options['http']['proxy'] = $parsed['proxy'];
 
-        if ($parsed['auth']) {
-            if (!isset($options['http']['header'])) {
-                $options['http']['header'] = [];
-            }
-            $options['http']['header'] .= "\r\nProxy-Authorization: {$parsed['auth']}";
+        if (($managed !== [] || $parsed['auth']) && !isset($options['http']['header'])) {
+            $options['http']['header'] = '';
         }
+        if ($managed !== []) {
+            $options['http']['header'] .= "\r\nProxy-Authorization: {$managed[0]}";
+
+            return true;
+        } elseif ($parsed['auth']) {
+            $options['http']['header'] .= "\r\nProxy-Authorization: {$parsed['auth']}";
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -651,16 +1014,29 @@ class StreamHandler
     {
         $parsed = \parse_url($url);
 
-        if ($parsed !== false && isset($parsed['scheme']) && $parsed['scheme'] === 'http') {
-            if (isset($parsed['host']) && isset($parsed['port'])) {
-                $auth = null;
-                if (isset($parsed['user']) && isset($parsed['pass'])) {
-                    $auth = \base64_encode("{$parsed['user']}:{$parsed['pass']}");
-                }
+        // parse_url() misreads scheme-less proxy authorities like
+        // "user:pass@host"; re-parse only those forms as HTTP.
+        $schemeLessAuthority = \strpos($url, '://') === false && \strncmp($url, '//', 2) !== 0;
+        if ($schemeLessAuthority) {
+            if (\is_array($parsed) && !isset($parsed['scheme']) && isset($parsed['host'], $parsed['port'])) {
+                $parsed['scheme'] = 'http';
+            } elseif (
+                (!\is_array($parsed) || !isset($parsed['host']))
+                && (\strpos($url, '@') !== false || \strncmp($url, '[', 1) === 0)
+            ) {
+                $parsed = \parse_url('http://'.$url);
+            }
+        }
+
+        if (\is_array($parsed) && isset($parsed['scheme']) && Psr7\Utils::caselessEquals($parsed['scheme'], 'http')) {
+            if (isset($parsed['host'], $parsed['port'])) {
+                $user = $parsed['user'] ?? '';
+                $pass = $parsed['pass'] ?? '';
+                $auth = ($user !== '' || $pass !== '') ? 'Basic '.\base64_encode("{$user}:{$pass}") : null;
 
                 return [
                     'proxy' => "tcp://{$parsed['host']}:{$parsed['port']}",
-                    'auth' => $auth ? "Basic {$auth}" : null,
+                    'auth' => $auth,
                 ];
             }
         }
@@ -699,6 +1075,26 @@ class StreamHandler
         }
 
         throw new \InvalidArgumentException('Invalid crypto_method request option: unknown version provided');
+    }
+
+    /**
+     * @param mixed $value as passed via Request transfer options.
+     */
+    private function add_crypto_method_max(RequestInterface $request, array &$options, $value, array &$params): void
+    {
+        $options['ssl']['max_proto_version'] = TlsVersion::streamProtocolVersion('crypto_method_max', $value);
+    }
+
+    private static function assertTlsVersionRangeForOptions(array $options): void
+    {
+        if (!isset($options['crypto_method_max'])) {
+            return;
+        }
+
+        TlsVersion::assertRange(
+            $options['crypto_method'] ?? null,
+            $options['crypto_method_max']
+        );
     }
 
     /**

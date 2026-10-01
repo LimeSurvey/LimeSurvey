@@ -3,9 +3,7 @@ import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
 import { useFocused } from 'hooks'
-import { RemoveHTMLTagsInString } from 'helpers'
 import { SideBarRow } from 'components/SideBar/SideBarRow'
-import { MeatballMenu } from 'components/MeatballMenu/MeatballMenu'
 import { QuestionListIcon } from 'components/icons'
 
 import { SurveyLogicModal } from './SurveyLogicModal'
@@ -20,17 +18,11 @@ export const RowQuestion = ({
   questionIndex,
   snapshot,
   focused,
+  isSurveyActive,
 }) => {
   const { setFocused } = useFocused()
   const { surveyId } = useParams()
   const [showLogicModal, setShowLogicModal] = useState(false)
-  const questionTitleWithoutHtmlTags = RemoveHTMLTagsInString(
-    question.l10ns[language]?.question
-  )
-
-  const handleDuplicate = () => {
-    duplicateQuestion()
-  }
 
   return (
     <div
@@ -44,22 +36,38 @@ export const RowQuestion = ({
       <SideBarRow
         titlePlaceholder={t("What's your question?")}
         provided={provided}
-        title={questionTitleWithoutHtmlTags}
-        meatballButton={
-          <MeatballMenu
-            deleteText={t('Delete question')}
-            duplicateText={t('Duplicate question')}
-            handleDelete={deleteQuestion}
-            handleDuplicate={handleDuplicate}
-            additionalItems={[
-              {
-                label: t('Check Logic'),
-                testId: 'show-logic-button',
-                onClick: () => setShowLogicModal(true),
-              },
-            ]}
-          />
-        }
+        menuToggleId="meatball-menu-button"
+        title={question.l10ns[language]?.question}
+        isFocused={focused?.qid === question?.qid}
+        menuItems={[
+          {
+            type: 'header',
+            label: t('Question actions'),
+          },
+          {
+            type: 'item',
+            label: t('Duplicate question'),
+            icon: 'ri-file-copy-line',
+            onClick: duplicateQuestion,
+            testId: 'duplicate-button',
+            disabled: { state: isSurveyActive },
+          },
+          {
+            type: 'item',
+            label: t('Delete question'),
+            icon: 'ri-delete-bin-line',
+            onClick: deleteQuestion,
+            className: 'text-danger',
+            testId: 'delete-button',
+            disabled: { state: isSurveyActive },
+          },
+          {
+            type: 'item',
+            label: t('Check logic'),
+            onClick: () => setShowLogicModal(true),
+            testId: 'show-logic-button',
+          },
+        ]}
         icon={<QuestionListIcon />}
         code={question.title}
         testId={`sidebar-row-question`}

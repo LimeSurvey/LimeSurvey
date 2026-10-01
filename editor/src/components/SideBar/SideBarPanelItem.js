@@ -5,7 +5,7 @@ import { Form } from 'react-bootstrap'
 import { TooltipContainer } from 'components'
 import { useNavigate, useParams } from 'react-router-dom'
 
-export const SideBarPanelItem = ({ key, options, page }) => {
+export const SideBarPanelItem = ({ options, page }) => {
   const { panel, menu, surveyId } = useParams()
   const navigate = useNavigate()
 
@@ -29,7 +29,6 @@ export const SideBarPanelItem = ({ key, options, page }) => {
 
   return (
     <TooltipContainer
-      key={key}
       tip={options.disabledTip}
       showTip={options.disabled}
       placement="right"

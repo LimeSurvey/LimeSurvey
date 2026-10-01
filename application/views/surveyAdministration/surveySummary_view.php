@@ -43,7 +43,7 @@ if (isset($surveyActivationFeedback)) {
     $this->renderPartial('/surveyAdministration/surveyActivation/_feedbackOpenAccess', ['surveyId' => $iSurveyID]);
 }
 ?>
-<div class="row survey-summary mt-4">
+<div class="row survey-summary mt-0">
         <?php
         $possiblePanelFolder = realpath(Yii::app()->getConfig('rootdir') . '/application/views/admin/survey/subview/surveydashboard/');
         $possiblePanels = scandir($possiblePanelFolder);
@@ -55,7 +55,7 @@ if (isset($surveyActivationFeedback)) {
         //every two entries close it up
             if ($i % 2 === 0) { ?>
     </div>
-<div class="row survey-summary mt-4">
+<div class="row survey-summary mt-0">
             <?php } ?>
         <div class="col-12 col-xl-6 mb-4">
             <?php $surveyTextContent = $oSurvey->currentLanguageSettings->attributes; ?>

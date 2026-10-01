@@ -107,11 +107,11 @@ export var TemplateCoreClass = function () {
                 });
 
                 $(this).on('classChangeGood', function () {
-                    /* If user choose hide-tip : leave it */
-                    let parent = $(this).parents('div.hide-tip');
+                    /* If user choose hide-tip : hide it again once no other tip in the same block is still in error */
+                    let parent = $(this).parent('div.ls-questionhelp');
                     parent.removeClass('text-danger');
                     parent.addClass('text-info');
-                    if (parent.hasClass('tip-was-hidden')) {
+                    if (parent.hasClass('tip-was-hidden') && parent.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
                         parent.removeClass('tip-was-hidden').addClass('hide-tip');
                     }
                     let questionContainer = $(this).parents('div.question-container');
@@ -159,7 +159,7 @@ export var TemplateCoreClass = function () {
          * Must be before ready (event happen before ready)
          */
         hideMultipleColumn: function () {
-            $("[id^='question']").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
+            $("[id^='question'].question-container").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
                 if (event.target != this) return;
                 data = $.extend({
                     style: 'hidden'
@@ -168,7 +168,7 @@ export var TemplateCoreClass = function () {
                     $(this).closest(".list-unstyled").removeClass("ls-hidden")
                 }
             });
-            $("[id^='question']").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
+            $("[id^='question'].question-container").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
                 if (event.target != this) return;
                 data = $.extend({
                     style: 'hidden'

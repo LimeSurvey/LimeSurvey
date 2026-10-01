@@ -4,7 +4,7 @@
   *
   *      @desc Base configuration file
   *   @package KCFinder
-  *   @version 3.12
+  *   @version 3.13.0-limesurvey
   *    @author Pavel Tzonkov <sunhater@sunhater.com>
   * @copyright 2010-2014 KCFinder Project
   *   @license http://opensource.org/licenses/GPL-3.0 GPLv3
@@ -30,7 +30,6 @@ $_CONFIG = array(
 
     // (F)CKEditor types
         'files'   =>  "",
-        'flash'   =>  "swf",
         'images'  =>  "*img",
 
     // TinyMCE types

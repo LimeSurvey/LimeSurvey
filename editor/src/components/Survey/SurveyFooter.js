@@ -145,9 +145,9 @@ export const SurveyFooter = ({
                       update={(value) => handleUpdate({ endText: value })}
                       placeholder={t('Enter your end message here.')}
                       style={{ marginLeft: '-4px' }}
-                      useRichTextEditor={false}
                       noPermissionDisabled={true}
                       showToolTip={false}
+                      showToolbar={true}
                       testId="survey-footer-end-text-content-editor"
                     />
                   </h6>
@@ -164,7 +164,11 @@ export const SurveyFooter = ({
                         testId="survey-footer-finish-button"
                       >
                         {finishButtonForwardingUrl ? (
-                          <a href={finishButtonForwardingUrl}>
+                          <a
+                            href={finishButtonForwardingUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             {finishButtonTitle}
                           </a>
                         ) : (

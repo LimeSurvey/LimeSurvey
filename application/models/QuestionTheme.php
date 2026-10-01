@@ -264,7 +264,7 @@ class QuestionTheme extends LSActiveRecord
 
         // convert Question Theme
         if ($bSkipConversion === false) {
-            $aConvertSuccess = self::convertLS3toLS5($sXMLDirectoryPath);
+            $aConvertSuccess = self::convertLegacyQuestionTheme($sXMLDirectoryPath);
             if (!$aConvertSuccess['success']) {
                 if ($bThrowConversionException) {
                     throw new Exception($aConvertSuccess['message']);
@@ -807,6 +807,9 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns the Config Path for the selected Question Type base definition
      *
+     * The path is memoized per question type for the current request, because this
+     * is called for every question when loading question attributes.
+     *
      * @param string $type
      *
      * @return string Path to config XML
@@ -814,6 +817,11 @@ class QuestionTheme extends LSActiveRecord
      */
     public static function getQuestionXMLPathForBaseType($type)
     {
+        static $cacheMemo = [];
+        if (isset($cacheMemo[$type])) {
+            return $cacheMemo[$type];
+        }
+
         /** @var QuestionTheme|null */
         $questionTheme = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
         if (empty($questionTheme)) {
@@ -821,17 +829,24 @@ class QuestionTheme extends LSActiveRecord
         }
         $configXMLPath = App()->getConfig('rootdir') . '/' . $questionTheme->getXmlPath() . '/config.xml';
 
+        $cacheMemo[$type] = $configXMLPath;
         return $configXMLPath;
     }
 
     /**
-     * Converts LS3 Question Theme to LS5
+     * Upgrades a legacy question theme config.xml to the current LimeSurvey format.
      *
-     * @param string $sXMLDirectoryPath
+     * Handles themes from any older version: renames <custom_attributes> to
+     * <attributes> (or removes it when <attributes> already exists), ensures a
+     * <compatibility> block is present, and backfills metadata tags that are
+     * missing from the uploaded theme by copying them from the matching core theme.
+     * Used by importManifest() and Update_425.
      *
-     * @return array $success Returns an array with the conversion status
+     * @param string $sXMLDirectoryPath Absolute path to the directory containing config.xml
+     *
+     * @return array{success: bool, message: string} Conversion result
      */
-    public static function convertLS3toLS5($sXMLDirectoryPath)
+    public static function convertLegacyQuestionTheme($sXMLDirectoryPath)
     {
         $sXMLDirectoryPath = str_replace('\\', '/', $sXMLDirectoryPath);
         $sConfigPath = $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml';
@@ -854,8 +869,14 @@ class QuestionTheme extends LSActiveRecord
 
         // replace custom_attributes with attributes
         if (preg_match('/<custom_attributes>/', $sQuestionConfigFile)) {
-            $sQuestionConfigFile = preg_replace('/<custom_attributes>/', '<attributes>', $sQuestionConfigFile);
-            $sQuestionConfigFile = preg_replace('/<\/custom_attributes>/', '</attributes>', $sQuestionConfigFile);
+            if (preg_match('/<attributes>/', $sQuestionConfigFile)) {
+                // Both sections exist: remove the (old) custom_attributes block entirely
+                // to avoid creating a duplicate <attributes> block after the rename.
+                $sQuestionConfigFile = preg_replace('/<custom_attributes>.*?<\/custom_attributes>/s', '', $sQuestionConfigFile);
+            } else {
+                $sQuestionConfigFile = preg_replace('/<custom_attributes>/', '<attributes>', $sQuestionConfigFile);
+                $sQuestionConfigFile = preg_replace('/<\/custom_attributes>/', '</attributes>', $sQuestionConfigFile);
+            }
         };
         $oThemeConfig = simplexml_load_string($sQuestionConfigFile);
 
@@ -866,24 +887,9 @@ class QuestionTheme extends LSActiveRecord
             $oThemeConfig->metadata->addChild('type', 'question_theme');
         };
 
-        // set compatibility version
-        if (
-            $oThemeConfig->compatibility->version
-            && count($oThemeConfig->compatibility->version) > 1
-        ) {
-            $length = count($oThemeConfig->compatibility->version);
-            $compatibility = $oThemeConfig->addChild('compatibility');
-            $compatibility->addChild('version');
-            $oThemeConfig->compatibility->version[$length] = '5.0';
-        } elseif (
-            $oThemeConfig->compatibility->version
-            && count($oThemeConfig->compatibility->version) === 1
-        ) {
-            $oThemeConfig->compatibility->version = '5.0';
-        } else {
-            $compatibility = $oThemeConfig->addChild('compatibility');
-            $compatibility->addChild('version');
-            $oThemeConfig->compatibility->version = '5.0';
+        // Only add a <compatibility> block if none exists at all.
+        if (!isset($oThemeConfig->compatibility)) {
+            $oThemeConfig->addChild('compatibility')->addChild('version', '5.0');
         }
 
         $sThemeDirectoryName = self::getThemeDirectoryPath($sQuestionConfigFilePath);

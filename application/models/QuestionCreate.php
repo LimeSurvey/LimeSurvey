@@ -6,9 +6,18 @@
 class QuestionCreate extends Question
 {
     /**
-     * @todo This is a factory method, not a singleton. Rename to make() or create().
+     * Builds a new, unsaved Question instance prefilled with defaults for the question create form.
+     *
+     * The target group is resolved in this order: the 'gid' request parameter, then the user's
+     * last used group for this survey (stored via SettingsUser), falling back to the survey's
+     * first group if neither is set or the resolved group no longer belongs to the survey.
+     *
+     * @param int $iSurveyId Survey ID the new question belongs to.
+     * @param string|null $type Question type code, defaults to the user's/system's preselected type.
+     * @param string|null $themeName Question theme name, defaults to the user's/system's preselected theme.
+     * @return QuestionCreate
      */
-    public static function getInstance($iSurveyId, $type = null, $themeName = null)
+    public static function create($iSurveyId, $type = null, $themeName = null)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (empty($oSurvey)) {
@@ -16,6 +25,12 @@ class QuestionCreate extends Question
         }
         $gid = (int)Yii::app()->request->getParam('gid', 0);
         if ($gid == 0) {
+            $gid = (int) SettingsUser::getUserSettingValue('last_question_gid', null, 'Survey', $iSurveyId, 0);
+        }
+        $groupIds = array_map(function ($group) {
+            return $group->gid;
+        }, $oSurvey->groups);
+        if ($gid == 0 || !in_array($gid, $groupIds)) {
             $gid = array_values($oSurvey->groups)[0]->gid;
         }
         if (isset($type) && !empty($type)) {
