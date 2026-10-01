@@ -137,13 +137,12 @@ class FreeTextMaxCharsTest extends TestBaseClass
 
     /**
      * Activating a survey creates a MEDIUMTEXT response column for Long free text questions on MySQL.
+     * MEDIUMTEXT is only different from TEXT on MySQL/MariaDB.
+     * @group mysql
      */
     public function testActivationCreatesMediumtextColumn()
     {
         $db = \Yii::app()->db;
-        if ($db->driverName != 'mysql') {
-            $this->markTestSkipped('MEDIUMTEXT is only different from TEXT on MySQL/MariaDB');
-        }
         list(, , $sgqa) = self::$testHelper->getSgqa('Q00', self::$surveyId);
         self::$testHelper->activateSurvey(self::$surveyId);
         $tableName = $db->tablePrefix . 'responses_' . self::$surveyId;
