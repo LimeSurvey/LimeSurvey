@@ -47,6 +47,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     'cols'          => '40',
                     'data-filetype' => $sEditorFileType,
                     'class'         => 'ace ' . $sTemplateEditorMode . ($isGlobalFile ? ' global-file-readonly' : ''),
+                    'readonly'      => $isGlobalFile,
                     'style'         => 'width:100%'
                 ]);
             ?>
