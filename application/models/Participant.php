@@ -2621,9 +2621,14 @@ class Participant extends LSActiveRecord
         
         /* If participant_id is in $participant : directly use it */
         if (!empty($participant['participant_id'])) {
-            return Participant::model()->findAllByAttributes([
+            $duplicates = Participant::model()->findAllByAttributes([
                 'participant_id' => $participant['participant_id'],
             ]);
+            /* Return decrypted participants, like the duplicatefinder system */
+            foreach ($duplicates as $duplicate) {
+                $duplicate->decrypt();
+            }
+            return $duplicates;
         }
 
         $duplicateCriteriaAttributes = [

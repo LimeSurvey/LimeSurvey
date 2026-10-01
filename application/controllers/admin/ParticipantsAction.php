@@ -1034,6 +1034,18 @@ class ParticipantsAction extends SurveyCommonAction
                         $writearray[$sFilterDuplicateField] = "";
                     }
                 }
+                //Checking the email address is in a valid format
+                $invalidemail = false;
+                $writearray['email'] = trim($writearray['email']);
+                if ($writearray['email'] != '') {
+                    $aEmailAddresses = explode(';', $writearray['email']);
+                    // Ignore additional email addresses
+                    $sEmailaddress = $aEmailAddresses[0];
+                    if (!LimeMailer::validateAddress($sEmailaddress)) {
+                        $invalidemail = true;
+                        $invalidemaillist[] = CHtml::encode($line[0] . " " . $line[1] . " (" . $line[2] . ")");
+                    }
+                }
                 $dupfound = false;
                 //Check for duplicate participants
                 if (in_array('participant_id', $firstline) && !empty($writearray['participant_id'])) {
@@ -1044,7 +1056,9 @@ class ParticipantsAction extends SurveyCommonAction
                 $existingParticipants = Participant::getDuplicates($writearray, Yii::app()->session['loginID']);
                 if (!empty($existingParticipants)) {
                     $dupfound = true;
-                    if ($overwrite == "true") {
+                    if ($overwrite == "true" && $invalidemail) {
+                        // Invalid email address : already reported in $invalidemaillist, existing participant is not overwritten
+                    } elseif ($overwrite == "true") {
                         foreach ($existingParticipants as $existingParticipant) {
                             /* Check permission */
                             if (
@@ -1068,7 +1082,10 @@ class ParticipantsAction extends SurveyCommonAction
                                     $existingParticipant->$attribute = $value;
                                 }
                             }
-                            $existingParticipant->encryptSave(false);
+                            if (!$existingParticipant->encryptSave()) {
+                                $invalidattribute[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                                continue;
+                            }
                             //Although this person already exists, we want to update the mapped attribute values
                             if (!empty($mappedarray)) {
                                 //The mapped array contains the attributes we are
@@ -1102,18 +1119,6 @@ class ParticipantsAction extends SurveyCommonAction
                     }
                 }
 
-                //Checking the email address is in a valid format
-                $invalidemail = false;
-                $writearray['email'] = trim($writearray['email']);
-                if ($writearray['email'] != '') {
-                    $aEmailAddresses = explode(';', $writearray['email']);
-                    // Ignore additional email addresses
-                    $sEmailaddress = $aEmailAddresses[0];
-                    if (!LimeMailer::validateAddress($sEmailaddress)) {
-                        $invalidemail = true;
-                        $invalidemaillist[] = CHtml::encode($line[0] . " " . $line[1] . " (" . $line[2] . ")");
-                    }
-                }
                 if (!$dupfound && !$invalidemail) {
                     //If it isn't a duplicate value or an invalid email, process the entry as a new participant
 
