@@ -141,7 +141,7 @@ As you can see, it's using its own view, so it's rendered in its own page like i
 
 ## Extending a method from the GlobalSettings controller
 
-Of course, most of the time, when you extend a class, what you want is to override one of its method to add some specific logic to it. Here, we did a very simple example.
+Of course, most of the time, when you extend a class, what you want is to override one of its methods to add some specific logic to it. Here, we did a very simple example.
 
 ### New class parameter
 First, we added a new parameter to the GlobalSetting class:

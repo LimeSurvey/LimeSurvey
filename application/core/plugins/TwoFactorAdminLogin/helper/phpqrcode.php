@@ -114,14 +114,14 @@ class qrstr
 /*
  * PHP QR Code encoder
  *
- * Config file, tuned-up for merged version
+ * Config file, tuned-up for merged verion
  */
 
     define('QR_CACHEABLE', false);       // use cache - more disk reads but less CPU power, masks and format templates are stored there
     define('QR_CACHE_DIR', false);       // used when QR_CACHEABLE === true
     define('QR_LOG_DIR', false);         // default error logs dir
 
-    define('QR_FIND_BEST_MASK', true);                                                          // if true, estimates best mask (spec. default, but extremally slow; set to false to significant performance boost but (probably) worst quality code
+    define('QR_FIND_BEST_MASK', true);                                                          // if true, estimates best mask (spec. default, but extremally slow; set to false to significant performance boost but (propably) worst quality code
     define('QR_FIND_FROM_RANDOM', 2);                                                       // if false, checks all masks available, otherwise value tells count of masks need to be checked, mask id are got randomly
     define('QR_DEFAULT_MASK', 2);                                                               // when QR_FIND_BEST_MASK === false
 
@@ -138,7 +138,7 @@ class qrstr
 /*
  * PHP QR Code encoder
  *
- * Toolset, handy and debug utilities.
+ * Toolset, handy and debug utilites.
  *
  * PHP QR Code is distributed under LGPL 3
  * Copyright (C) 2010 Dominik Dzienia <deltalab at poczta dot fm>
@@ -695,7 +695,7 @@ class QRspec
     }
 
     // Format information --------------------------------------------------
-    // See calcFormatInfo in tests/test_qrspec.c (original qrencode c lib)
+    // See calcFormatInfo in tests/test_qrspec.c (orginal qrencode c lib)
 
     public static $formatInfo = array(
         array(0x77c4, 0x72f3, 0x7daa, 0x789d, 0x662f, 0x6318, 0x6c41, 0x6976),
@@ -2420,7 +2420,7 @@ class QRrsItem
     //----------------------------------------------------------------------
     public static function init_rs_char($symsize, $gfpoly, $fcr, $prim, $nroots, $pad)
     {
-        // Common code for initializing a Reed-Solomon control block (char or int symbols)
+        // Common code for intializing a Reed-Solomon control block (char or int symbols)
         // Copyright 2004 Phil Karn, KA9Q
         // May be used under the terms of the GNU Lesser General Public License (LGPL)
 
