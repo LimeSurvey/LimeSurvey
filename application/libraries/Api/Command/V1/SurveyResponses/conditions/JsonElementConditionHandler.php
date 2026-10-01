@@ -8,15 +8,6 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
 /**
  * One element of a JSON array column equals a value.
- *
- * Rankings keep the whole answer as a single array of item codes in rank order,
- * so "who put this item second" is a test on element 1 of that array rather
- * than a comparison of a column.
- *
- * Reading inside JSON is the one thing SQL spells differently everywhere, so
- * this branches per driver — the same branching
- * ResponseAggregateBatch::jsonElement() already does for the statistics counts.
- * The value is bound; only the position, an integer, is written into the SQL.
  */
 class JsonElementConditionHandler implements HandlerInterface, SurveyContextAwareInterface
 {

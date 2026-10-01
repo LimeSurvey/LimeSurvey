@@ -23,16 +23,10 @@ use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
  * The resolvers say *what* to compare; this says how those comparisons combine.
  * Two levels of combining:
  *
- * - Inside a row, by its own inner join. Usually AND, because the conditions
- *   are parts of one answer the user described; OR when they are options
- *   picked from a single list.
+ * - Inside a row, by its own inner join.
  * - Between rows, by each row's join, folded left to right. So `A OR B AND C`
  *   means `(A OR B) AND C` — the modal is a list read top to bottom, and that
- *   is how it reads. SQL's own precedence would give `A OR (B AND C)` and
- *   surprise the person who built the filter.
- *
- * CDbCriteria::mergeWith() parenthesises both sides, so the grouping the fold
- * produces survives into the SQL exactly as built.
+ *   is how it reads.
  */
 class ResponseFilterCriteriaBuilder
 {

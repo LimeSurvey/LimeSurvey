@@ -8,15 +8,6 @@ use InvalidArgumentException;
  * Resolves `source: "participant"` rows — filters on who answered rather than
  * on what they answered.
  *
- * Participant details live in the survey's own participant table, not in the
- * responses, so these conditions carry the relation that links the two and are
- * joined in when the query is built.
- *
- * The modal sends the attribute as an expression placeholder, `{TOKEN:EMAIL}`,
- * because that is the spelling the rest of LimeSurvey uses for participant
- * fields. Lowercasing the name inside the braces gives the column, for the
- * built-in fields and the custom `attribute_1`, `attribute_2`, ... alike.
- *
  * Which attributes exist depends on the survey, so the caller passes them in —
  * the same arrangement as {@see QuestionColumnMap}, and for the same reason: a
  * filter must never reach a column the survey does not have.

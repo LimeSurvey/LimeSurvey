@@ -5,7 +5,6 @@ namespace ls\tests\unit\api\opHandlers;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\DateRangeConditionHandler;
 use ls\tests\TestCondition;
 
-
 class OpHandlerResponseDateRangeConditionTest extends TestCondition
 {
     public function testCanHandleDateRange(): void

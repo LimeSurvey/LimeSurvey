@@ -2,18 +2,6 @@
 
 namespace LimeSurvey\Models\Services\ResponseFilters;
 
-/**
- * How a question is filtered, derived from its type code.
- *
- * This is the server-side half of a rule the client also needs: the modal has
- * to know which controls to show, and the resolver has to know which columns to
- * search. The mapping itself is the same, and mirrors
- * `buildQuestionOptions.js:86-95` — keep the two in step.
- *
- * The client never sends the kind. It sends the qid and what the user picked;
- * the kind is read from the question's stored type, so a stale or forged value
- * can not redirect a filter onto columns the user never chose.
- */
 class QuestionKind
 {
     public const ANSWERS = 'answers';

@@ -4,16 +4,6 @@ namespace LimeSurvey\Models\Services\ResponseFilters;
 
 /**
  * One filterSet row, resolved: its join plus the conditions it produced.
- *
- * A row can produce more than one condition — a dual-scale question with both
- * scales answered resolves to two columns that must both match. Those combine
- * *inside* the row, and the row's own join applies to the group as a whole.
- * Flattening them would break that: with a row joined by OR,
- * `A OR (B1 AND B2)` is not `(A OR B1) AND B2`.
- *
- * Inside a row the conditions normally AND, because they are parts of one
- * answer the user described. The exception is a set of options picked from a
- * single list, where the user means "any of these" — see $innerJoin.
  */
 class ResolvedFilter
 {

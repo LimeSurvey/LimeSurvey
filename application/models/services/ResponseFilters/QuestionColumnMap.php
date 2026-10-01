@@ -6,16 +6,6 @@ use InvalidArgumentException;
 
 /**
  * Question id -> the response columns that store its answers.
- *
- * A question is one thing to the user and one row in the filter modal, but in
- * storage it can be one column, or one per option, or one per row-and-column
- * pair. This turns the survey's field map into the lookups the resolvers need,
- * so they can ask "which column holds this" instead of re-deriving column
- * naming rules.
- *
- * Built from `ResponseMappingTrait::getQuestionFieldMap()`, which already
- * carries the per-column `qid`, `sqid`, `aid`, `scaleid` and `type`. Taking a
- * plain array rather than a survey keeps this testable without a database.
  */
 class QuestionColumnMap
 {

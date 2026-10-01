@@ -4,13 +4,6 @@ namespace LimeSurvey\Models\Services\ResponseFilters;
 
 /**
  * One comparison against one or more real response columns.
- *
- * This is the resolver's output: the point where a question-shaped filter
- * ("question 42, answer Y") has become storage-shaped ("column 132241X130X2110
- * equals Y"). Nothing past here needs to know about questions.
- *
- * The operators are the vocabulary the existing condition handlers already
- * speak, so a resolved condition maps onto one handler call.
  */
 class ResolvedCondition
 {
@@ -28,10 +21,7 @@ class ResolvedCondition
     public const OPERATOR_NULL = 'null';
 
     /**
-     * "The respondent put something here." Needed for the free-text column
-     * behind a multiple-choice "Other" option, which is the only record that
-     * the box was ticked — there is no 'Y' column for it. Distinct from
-     * OPERATOR_NULL because an untouched column can be stored as '' rather
+     * "The respondent put something here." An untouched column can be stored as '' rather
      * than NULL, and IS NOT NULL would count that as an answer.
      */
     public const OPERATOR_NOT_EMPTY = 'not-empty';
@@ -87,13 +77,6 @@ class ResolvedCondition
 
     /**
      * The related table holding these columns, or null for the response table.
-     *
-     * Participant attributes are kept beside the responses rather than in them,
-     * so filtering on one means joining. The name is the relation declared on
-     * SurveyDynamic, which is also the alias the joined table gets — so the
-     * query builder needs it twice: once to add the join, once to qualify the
-     * column as `<relation>`.`<key>` rather than quoting the pair as a single
-     * strange identifier.
      */
     public function getRelation(): ?string
     {

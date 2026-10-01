@@ -25,18 +25,10 @@ trait ConditionHandlerHelperTrait
      * what is left.
      *
      * '#' is allowed because dual-scale questions store one column per scale
-     * and separate them with it: Q42_S101#0 and Q42_S101#1
-     * (common_helper.php:1930). Dropping it produced Q42_S1010 — a column that
-     * does not exist — so those questions could not be filtered at all, even
-     * though the key had already been validated against the field map. The
-     * character is harmless here: the name is quoted, and inside an identifier
-     * quote '#' is literal rather than a comment marker.
+     * and separate them with it.
      *
      * '.' is allowed so a column can name the table it belongs to, which
-     * participant filters need: their values live in the participant table
-     * joined to the responses, not in the responses themselves.
-     * CDbSchema::quoteColumnName splits on it and quotes each half, giving
-     * `tokens`.`email` rather than one odd identifier named `tokens.email`.
+     * participant filters need.
      *
      * @param string $key
      * @return string

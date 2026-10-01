@@ -55,9 +55,6 @@ export const handleAxiosError = (error, options = {}) => {
         normalizedError.message = data.error.message
       }
     } else if (typeof data === 'string' && data.trim() !== '') {
-      // Some endpoints answer with the reason as a bare string rather than an
-      // error object. Without this the caller only ever sees "An unknown error
-      // occurred", when the server has already said exactly what was wrong.
       normalizedError.message = data
     }
   } else if (error.request) {
