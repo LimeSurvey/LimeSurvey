@@ -2244,9 +2244,10 @@ class Participant extends LSActiveRecord
             if (is_numeric($tid) && $tid != "") {
                 /* Get the data for this participant from the tokens table */
                 $oTokenDynamic = TokenDynamic::model($survey->sid)->findByPk($tid);
-                if (isset($oTokenDynamic) && $oTokenDynamic) {
-                    $oTokenDynamic->decrypt();
+                if (empty($oTokenDynamic)) {
+                    continue;
                 }
+                $oTokenDynamic->decrypt();
 
                 // First check if token already has a participant_id in central database
                 // We don't check with permission, see issue #20704
