@@ -11,7 +11,7 @@ namespace LimeSurvey\Helpers\Update;
  *
  * @see https://bugs.limesurvey.org/view.php?id=18275
  */
-class Update_709 extends DatabaseUpdateBase
+class Update_719 extends DatabaseUpdateBase
 {
     /**
      * Alter TEXT columns to MEDIUMTEXT for Long free text (T) and Huge free text (U)

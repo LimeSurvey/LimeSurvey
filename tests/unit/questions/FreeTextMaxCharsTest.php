@@ -78,13 +78,13 @@ class FreeTextMaxCharsTest extends TestBaseClass
     }
 
     /**
-     * Update_709 changes TEXT response columns of Long free text questions to MEDIUMTEXT on MySQL.
+     * Update_719 changes TEXT response columns of Long free text questions to MEDIUMTEXT on MySQL.
      */
     public function testUpdate709ChangesColumnToMediumtext()
     {
         $db = \Yii::app()->db;
         if ($db->driverName != 'mysql') {
-            $this->markTestSkipped('Only MySQL/MariaDB is changed by Update_709');
+            $this->markTestSkipped('Only MySQL/MariaDB is changed by Update_719');
         }
         list($question, , $sgqa) = self::$testHelper->getSgqa('Q00', self::$surveyId);
         self::$testHelper->activateSurvey(self::$surveyId);
@@ -92,7 +92,7 @@ class FreeTextMaxCharsTest extends TestBaseClass
         $db->createCommand()->alterColumn($tableName, $sgqa, 'text');
         $db->schema->refresh();
 
-        $update = new \LimeSurvey\Helpers\Update\Update_709($db, []);
+        $update = new \LimeSurvey\Helpers\Update\Update_719($db, []);
         $update->up();
         // Running it again must not fail
         $db->schema->refresh();
