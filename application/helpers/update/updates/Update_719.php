@@ -25,6 +25,7 @@ class Update_719 extends DatabaseUpdateBase
      * @return void
      * @throws \CDbException
      */
+    #[\Override]
     public function up()
     {
         // Only MySQL/MariaDB needs this change.
