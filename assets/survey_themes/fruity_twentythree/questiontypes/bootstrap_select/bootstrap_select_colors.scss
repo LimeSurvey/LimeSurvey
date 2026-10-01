@@ -57,18 +57,11 @@
     > .btn.dropdown-toggle {
         background-color : $white;
         border-color     : $input-border-color;
-        color            : $input-color;
+        color            : $g-700;
 
         &:focus, &:focus-visible {
             border-color : $input-focus-border-color;
             box-shadow   : $input-box-shadow;
-        }
-
-        &.bs-placeholder,
-        &.bs-placeholder:hover,
-        &.bs-placeholder:focus,
-        &.bs-placeholder:active {
-            color : $g-700;
         }
     }
 

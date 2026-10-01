@@ -16,13 +16,15 @@ $bs-select-item-padding-x : 12px;
     }
 
     > .btn.dropdown-toggle {
-        padding       : $input-padding-y $input-padding-x;
-        border-style  : solid;
-        border-width  : $input-border-width;
-        border-radius : $border-radius;
-        font-size     : $dropdown-font-size;
-        font-weight   : $font-weight-normal;
-        line-height   : $line-height-20;
+        padding        : $input-padding-y $input-padding-x;
+        border-style   : solid;
+        border-width   : $border-width;
+        border-radius  : $border-radius;
+        font-family    : $ibm-sans-font-family;
+        font-size      : $input-font-size;
+        font-weight    : $font-weight-500;
+        line-height    : $line-height-20;
+        letter-spacing : -0.21px;
 
         .filter-option {
             text-align : left;
