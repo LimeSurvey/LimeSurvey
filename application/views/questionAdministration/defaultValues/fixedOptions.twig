@@ -1,0 +1,30 @@
+{#
+/**
+ * Default Value for question types with fixed options (eg. 5 point choice)
+ *
+ * @var Question $question
+ * @var string $lang
+ * @var array<mixed> $defaultValues
+ * @var array<mixed> $options
+ */
+#}
+{% set currentDefault = defaultValues[lang][question.type][0] ?? null %}
+<div class="mb-3">
+    <label class="form-label" for='defaultvalues[{{ lang }}][0]'>
+        {{ gT("Default answer value:") }}
+    </label>
+    <select
+        class='form-select'
+        name='defaultvalues[{{ lang }}][0]'
+        id='defaultvalues[{{ lang }}][0]'
+    >
+        <option value='' {{ (currentDefault is null) ? 'selected="selected"' : '' }}>
+            {{ gT('<No default value>') }}
+        </option>
+        {% for optionValue, optionText in options %}
+            <option {{ (optionValue == currentDefault) ? 'selected="selected"' : '' }} value="{{ optionValue }}">
+                {{ optionText }}
+            </option>
+        {% endfor %}
+    </select>
+</div>

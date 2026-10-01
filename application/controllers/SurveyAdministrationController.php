@@ -1153,7 +1153,6 @@ class SurveyAdministrationController extends LSBaseController
                             : '';
                         // We have to limit the question text length here, otherwise the whole question is loaded into the navigation tree
                         $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true, 150);
-                        $hasdefaultvalues = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
                         $curQuestion['questionDropdown'] = [];
                         if ($configData['hasSurveyContentUpdatePermission']) {
                             $curQuestion['questionDropdown']['conditionDesigner'] =
@@ -1164,15 +1163,6 @@ class SurveyAdministrationController extends LSBaseController
                                     'url' => Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
                                 ];
                         }
-                        $curQuestion['questionDropdown']['editDefault'] =
-                            [
-                                'id' => 'default_value_button',
-                                'label' => gT("Edit default answers"),
-                                'icon' => 'ri-grid-line ',
-                                'url' => Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid"),
-                                'active' => $configData['hasSurveyContentUpdatePermission'] && $hasdefaultvalues > 0 ? 1 : 0
-                            ];
-
                         if ($configData['hasSurveyContentExportPermission']) {
                             $curQuestion['questionDropdown']['export'] =
                                 [

@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\QuestionAggregateService;
+use LimeSurvey\Models\Services\QuestionAggregateService\DefaultValuesService;
 use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     PermissionDeniedException,
@@ -275,8 +276,6 @@ class QuestionAdministrationController extends LSBaseController
         $this->aData['gid'] = $question->gid;
         $this->aData['qid'] = $question->qid;
 
-        $this->aData['hasdefaultvalues'] = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
-
         $generalSettings = $this->getGeneralOptions(
             $question->qid,
             $question->type,
@@ -285,6 +284,9 @@ class QuestionAdministrationController extends LSBaseController
         );
 
         $selectormodeclass = $this->getSelectorModeClass();
+
+        $hasDefaultValuesTab = $this->hasDefaultValuesTab($question);
+        $defaultValues = $hasDefaultValuesTab ? $this->getDefaultValuesForEditor($question) : [];
 
         $viewData = [
             'oSurvey'                => $question->survey,
@@ -296,6 +298,8 @@ class QuestionAdministrationController extends LSBaseController
             'jsVariablesHtml'       => $jsVariablesHtml,
             'modalsHtml'            => $modalsHtml,
             'selectormodeclass'     => $selectormodeclass,
+            'hasDefaultValuesTab'   => $hasDefaultValuesTab,
+            'defaultValues'         => $defaultValues,
         ];
 
         $this->aData = array_merge($this->aData, $viewData);
@@ -323,11 +327,14 @@ class QuestionAdministrationController extends LSBaseController
         App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
+        $hasDefaultValuesTab = $this->hasDefaultValuesTab($question);
         $this->renderPartial(
             'extraOptions',
             [
                 'question' => $question,
                 'survey' => $question->survey,
+                'hasDefaultValuesTab' => $hasDefaultValuesTab,
+                'defaultValues' => $hasDefaultValuesTab ? $this->getDefaultValuesForEditor($question) : [],
             ]
         );
     }
@@ -1272,7 +1279,8 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Load edit default values of a question screen
+     * Former "Edit default answers" screen.
+     * Default answers are now edited in the question editor, so old links are redirected there.
      *
      * @access public
      * @param int $surveyid
@@ -1282,85 +1290,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionEditdefaultvalues($surveyid, $gid, $qid)
     {
-        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
-            App()->user->setFlash('error', gT("Access denied!"));
-            $this->redirect(App()->request->urlReferrer);
-        }
-        $iSurveyID = (int)$surveyid;
-        $gid = (int)$gid;
-        $qid = (int)$qid;
-        $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid,]);
-        // $aQuestionTypeMetadata = QuestionType::modelsAttributes();  this is old!
-        // TODO: $questionMetaData should be $questionThemeSettings
-        $questionMetaData = QuestionTheme::findQuestionMetaData($oQuestion->type)['settings'];
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-
-        $oDefaultValues = self::getDefaultValues($iSurveyID, $gid, $qid);
-
-        $aData = [
-            'oQuestion'    => $oQuestion,
-            'qid'          => $qid,
-            'sid'          => $iSurveyID,
-            'surveyid'     => $iSurveyID, // todo needed in beforeRender
-            'langopts'     => $oDefaultValues,
-            'questionrow'  => $oQuestion->attributes,
-            'gid'          => $gid,
-            'questionMetaData' => $questionMetaData
-            //'qtproperties' => $aQuestionTypeMetadata,
-        ];
-        $aData['oSurvey'] = $oSurvey;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
-        $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
-        $this->createUrl(
-            "questionAdministration/view",
-            ["surveyid" => $iSurveyID, "gid" => $gid, "qid" => $qid]
-        );
-        $aData['questiongroupbar']['closebutton']['url'] = $this->createUrl(
-            "questionAdministration/view",
-            ["surveyid" => $iSurveyID, "gid" => $gid, "qid" => $qid]
-        );
-        $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
-        $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
-        $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
-        $aData['sidemenu']['state'] = false;
-        $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = $gid ?? false;
-        $aData['sidemenu']['explorer']['qid'] = $qid ?? false;
-        $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
-
-        $aData['showSaveButton'] = true;
-        $aData['showSaveAndCloseButton'] = true;
-        $aData['showWhiteCloseButton'] = true;
-        $aData['closeUrl'] = Yii::app()->createUrl(
-            'questionAdministration/view/',
-            [
-                'surveyid' => $oQuestion->sid,
-                'gid' => $oQuestion->gid,
-                'qid' => $oQuestion->qid,
-                'landOnSideMenuTab' => 'structure'
-            ]
-        );
-        $aData['hasUpdatePermission'] = Permission::model()->hasSurveyPermission(
-            $iSurveyID,
-            'surveycontent',
-            'update'
-        ) ? '' : 'disabled="disabled" readonly="readonly"';
-
-        $topbarData = TopbarConfiguration::getQuestionTopbarData($iSurveyID);
-        $topbarData = array_merge($topbarData, $aData);
-        $aData['topbar']['middleButtons'] = $this->renderPartial(
-            'partial/topbarBtns/editQuestionTopbarLeft_view',
-            $topbarData,
-            true
-        );
-        $aData['topbar']['rightButtons'] = $this->renderPartial(
-            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
-            $topbarData,
-            true
-        );
-
-        $this->aData = $aData;
-        $this->render('editdefaultvalues', $aData);
+        $this->redirect(['questionAdministration/edit', 'questionId' => (int)$qid, 'tabOverviewEditor' => 'editor']);
     }
 
     /**
@@ -1908,9 +1838,11 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $surveyId
      * @param string $questionType One-char string
      * @param int $questionId Null or 0 if new question is being created.
+     * @param ?string $questionTheme The selected question theme
      * @return void
+     * @throws CHttpException
      */
-    public function actionGetExtraOptionsHTML(int $surveyId, string $questionType, $questionId = null)
+    public function actionGetExtraOptionsHTML(int $surveyId, string $questionType, $questionId = null, ?string $questionTheme = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1921,18 +1853,22 @@ class QuestionAdministrationController extends LSBaseController
         }
         Yii::app()->loadHelper("admin.htmleditor");
         // NB: This works even when $questionId is null (get default question values).
-        $question = $this->getQuestionObject($questionId, $questionType);
+        $question = $this->getQuestionObject($questionId, $questionType, null, $questionTheme);
         if ($questionId) {
             // NB: Could happen if user manipulates request.
             if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
                 throw new CHttpException(403, gT('No permission'));
             }
         }
+
+        $hasDefaultValuesTab = $this->hasDefaultValuesTab($question);
         $this->renderPartial(
             "extraOptions",
             [
-                'question'         => $question,
-                'survey'           => $question->survey,
+                'question'            => $question,
+                'survey'              => $question->survey,
+                'hasDefaultValuesTab' => $hasDefaultValuesTab,
+                'defaultValues'       => $hasDefaultValuesTab ? $this->getDefaultValuesForEditor($question) : [],
             ]
         );
     }
@@ -2172,154 +2108,164 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
+     * Whether the question editor shows the "Default answers" tab for the question.
+     *
+     * Like the survey structure sidebar, this follows the question theme metadata,
+     * so custom question themes can switch default answers off. The tab is also
+     * limited to the question types it can render.
+     *
+     * @param Question $question The question, with the question type and theme currently selected in the editor
+     * @return bool
+     */
+    private function hasDefaultValuesTab(Question $question): bool
+    {
+        if (!in_array($question->type, DefaultValuesService::SUPPORTED_QUESTION_TYPES, true)) {
+            return false;
+        }
+        $themeSettings = QuestionTheme::findQuestionMetaData($question->type, $question->question_theme_name)['settings'];
+        return !empty($themeSettings->hasdefaultvalues);
+    }
+
+    /**
+     * Get the stored default values of a question for the "Default answers" tab.
+     *
+     * @param Question $question The question, with the question type currently selected in the editor
+     * @return array See getDefaultValues()
+     */
+    private function getDefaultValuesForEditor(Question $question): array
+    {
+        // A new question has no qid yet, so it has no stored default values
+        if (empty($question->qid)) {
+            return [];
+        }
+        // The question type may have been changed in the editor but not saved yet
+        return self::getDefaultValues($question->sid, $question->gid, $question->qid, $question->type);
+    }
+
+    /**
      * Gets default value(s) for a question or subquestion from table defaultvalue_l10ns
+     *
+     * Loads the stored default values, answer options and subquestions of the
+     * question once for all languages, so the number of queries does not grow
+     * with the number of languages or subquestions.
      *
      * @param int $iSurveyID
      * @param int $gid
      * @param int $qid
-     * @return array Array with defaultValues
+     * @param ?string $questionType Question type to structure the result for, instead of the stored question type.
+     *                              Used when the type has been changed in the question editor but not saved yet.
+     * @return array Array with defaultValues, indexed by language and question type
      */
-    public static function getDefaultValues(int $iSurveyID, int $gid, int $qid)
+    public static function getDefaultValues(int $iSurveyID, int $gid, int $qid, ?string $questionType = null)
     {
         $aDefaultValues = [];
         $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid,]);
-        $aQuestionAttributes = $oQuestion->attributes;
-        $aQuestionTypeMetadata = QuestionType::modelsAttributes();
+
+        if (empty($oQuestion)) {
+            return $aDefaultValues;
+        }
+
+        $sType = !empty($questionType) ? $questionType : $oQuestion->type;
+        $aTypeMetadata = QuestionType::modelsAttributes()[$sType];
         $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $aStoredDefaults = self::getStoredDefaultValues($qid);
+
+        $aAnswers = [];
+        $aSubquestions = [];
+        if ($aTypeMetadata['answerscales'] > 0) {
+            // Ordered by Answer::defaultScope(). NB: Another order by sortorder fails on MSSQL (duplicate order column).
+            $aAnswers = Answer::model()->with('answerl10ns')->findAll([
+                'condition' => 't.qid = :qid',
+                'params'    => [':qid' => $qid],
+            ]);
+        } elseif ($aTypeMetadata['subquestions'] > 0) {
+            $aSubquestions = Question::model()->with('questionl10ns')->findAll([
+                'condition' => 't.sid = :sid AND t.gid = :gid AND t.parent_qid = :parent_qid AND t.scale_id = 0',
+                'params'    => [':sid' => $iSurveyID, ':gid' => $gid, ':parent_qid' => $qid],
+                'order'     => 't.question_order ASC',
+            ]);
+        }
 
         foreach ($oSurvey->allLanguages as $language) {
             $aDefaultValues[$language] = [];
-            $aDefaultValues[$language][$aQuestionAttributes['type']] = [];
+            $aDefaultValues[$language][$sType] = [];
 
             // If there are answerscales
-            if ($aQuestionTypeMetadata[$aQuestionAttributes['type']]['answerscales'] > 0) {
-                for ($scale_id = 0; $scale_id < $aQuestionTypeMetadata[$aQuestionAttributes['type']]['answerscales']; $scale_id++) {
-                    $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id] = [];
-
-                    $defaultvalue = DefaultValue::model()->with('defaultvaluel10ns')->find(
-                        'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
-                        [
-                            ':specialtype' => '',
-                            ':qid'         => $qid,
-                            ':scale_id'    => $scale_id,
-                            ':language'    => $language,
-                        ]
-                    );
-                    $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists(
-                        $language,
-                        $defaultvalue->defaultvaluel10ns
-                    ) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
-                    $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id]['defaultvalue'] = $defaultvalue;
-
-                    $answerresult = Answer::model()->with('answerl10ns')->findAll(
-                        'qid = :qid AND answerl10ns.language = :language',
-                        [
-                            ':qid'      => $qid,
-                            ':language' => $language
-                        ]
-                    );
-                    $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id]['answers'] = $answerresult;
-
-                    if ($aQuestionAttributes['other'] === 'Y') {
-                        $defaultvalue = DefaultValue::model()->with('defaultvaluel10ns')->find(
-                            'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
-                            [
-                                ':specialtype' => 'other',
-                                ':qid'         => $qid,
-                                ':scale_id'    => $scale_id,
-                                ':language'    => $language,
-                            ]
-                        );
-                        $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists(
-                            $language,
-                            $defaultvalue->defaultvaluel10ns
-                        ) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
-                        $aDefaultValues[$language][$aQuestionAttributes['type']]['Ydefaultvalue'] = $defaultvalue;
+            if ($aTypeMetadata['answerscales'] > 0) {
+                for ($scale_id = 0; $scale_id < $aTypeMetadata['answerscales']; $scale_id++) {
+                    $aDefaultValues[$language][$sType][$scale_id] = [
+                        'defaultvalue' => $aStoredDefaults[0][$scale_id][''][$language] ?? null,
+                        // Only answer options of this scale that are translated into this language
+                        'answers' => array_values(array_filter(
+                            $aAnswers,
+                            function ($oAnswer) use ($scale_id, $language) {
+                                return (int)$oAnswer->scale_id === $scale_id && isset($oAnswer->answerl10ns[$language]);
+                            }
+                        )),
+                    ];
+                    if ($oQuestion->other === 'Y') {
+                        $aDefaultValues[$language][$sType]['Ydefaultvalue'] =
+                            $aStoredDefaults[0][$scale_id]['other'][$language] ?? null;
                     }
                 }
             }
 
             // If there are subquestions and no answerscales
-            if (
-                $aQuestionTypeMetadata[$aQuestionAttributes['type']]['answerscales'] == 0 &&
-                $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions'] > 0
-            ) {
-                for ($scale_id = 0; $scale_id < $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions']; $scale_id++) {
-                    $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id] = [];
-
-                    $criteria = new CDbCriteria();
-                    $criteria->condition = 'sid = :sid AND gid = :gid AND parent_qid = :parent_qid AND scale_id = :scale_id AND questionl10ns.language = :language';
-                    $criteria->params = [
-                        ':sid'        => $iSurveyID,
-                        ':gid'        => $gid,
-                        ':parent_qid' => $qid,
-                        ':scale_id'   => 0,
-                        ':language'   => $language
-                    ];
-                    $criteria->order = 'question_order ASC';
-
-                    $sqresult = Question::model()
-                        ->with('questionl10ns')
-                        ->findAll($criteria);
-
-                    $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id]['sqresult'] = [];
-
-                    $options = [];
-                    if ($aQuestionAttributes['type'] == Question::QT_M_MULTIPLE_CHOICE || $aQuestionAttributes['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                        $options = ['' => gT('(No default value)'), 'Y' => gT('Checked')];
-                    }
-
-                    foreach ($sqresult as $aSubquestion) {
-                        $defaultvalue = DefaultValue::model()
-                            ->with('defaultvaluel10ns')
-                            ->find(
-                                'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
-                                [
-                                    ':specialtype' => '',
-                                    ':qid'         => $qid,
-                                    ':sqid'        => $aSubquestion['qid'],
-                                    ':scale_id'    => $scale_id,
-                                    ':language'    => $language
-                                ]
-                            );
-                        $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists(
-                            $language,
-                            $defaultvalue->defaultvaluel10ns
-                        ) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
-
-                        $question = $aSubquestion->questionl10ns[$language]->question;
-                        $aSubquestion = $aSubquestion->attributes;
-                        $aSubquestion['question'] = $question;
-                        $aSubquestion['defaultvalue'] = $defaultvalue;
+            if ($aTypeMetadata['answerscales'] == 0 && $aTypeMetadata['subquestions'] > 0) {
+                $options = [];
+                if (in_array($sType, [Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS])) {
+                    $options = ['' => gT('(No default value)'), 'Y' => gT('Checked')];
+                }
+                for ($scale_id = 0; $scale_id < $aTypeMetadata['subquestions']; $scale_id++) {
+                    $aDefaultValues[$language][$sType][$scale_id] = ['sqresult' => []];
+                    foreach ($aSubquestions as $oSubquestion) {
+                        // Only subquestions that are translated into this language
+                        if (!isset($oSubquestion->questionl10ns[$language])) {
+                            continue;
+                        }
+                        $aSubquestion = $oSubquestion->attributes;
+                        $aSubquestion['question'] = $oSubquestion->questionl10ns[$language]->question;
+                        $aSubquestion['defaultvalue'] =
+                            $aStoredDefaults[$oSubquestion->qid][$scale_id][''][$language] ?? null;
                         $aSubquestion['options'] = $options;
-
-                        $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id]['sqresult'][] = $aSubquestion;
+                        $aDefaultValues[$language][$sType][$scale_id]['sqresult'][] = $aSubquestion;
                     }
+                    $aDefaultValues[$language][$sType][$scale_id]['template']['options'] = $options;
                 }
             }
-            if (
-                $aQuestionTypeMetadata[$aQuestionAttributes['type']]['answerscales'] == 0 &&
-                $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions'] == 0
-            ) {
-                $defaultvalue = DefaultValue::model()
-                    ->with('defaultvaluel10ns')
-                    ->find(
-                        'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
-                        [
-                            ':specialtype' => '',
-                            ':qid'         => $qid,
-                            ':scale_id'    => 0,
-                            ':language'    => $language,
-                        ]
-                    );
-                $aDefaultValues[$language][$aQuestionAttributes['type']][0] = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists(
-                    $language,
-                    $defaultvalue->defaultvaluel10ns
-                ) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
+
+            if ($aTypeMetadata['answerscales'] == 0 && $aTypeMetadata['subquestions'] == 0) {
+                $aDefaultValues[$language][$sType][0] = $aStoredDefaults[0][0][''][$language] ?? null;
             }
         }
 
         return $aDefaultValues;
+    }
+
+    /**
+     * Get all stored default values of a question with a single query.
+     *
+     * @param int $qid Question ID
+     * @return array<int, array<int, array<string, array<string, string>>>> Default values indexed by
+     *         subquestion ID (0 if none), scale ID, special type ('' if none) and language
+     */
+    private static function getStoredDefaultValues(int $qid): array
+    {
+        $aStoredDefaults = [];
+        $aDefaultValueModels = DefaultValue::model()->with('defaultvaluel10ns')->findAll([
+            'condition' => 't.qid = :qid',
+            'params'    => [':qid' => $qid],
+        ]);
+        foreach ($aDefaultValueModels as $oDefaultValue) {
+            // defaultvaluel10ns is indexed by language, see DefaultValueL10n::defaultScope()
+            $sqid = (int)$oDefaultValue->sqid;
+            $scaleId = (int)$oDefaultValue->scale_id;
+            $specialType = (string)$oDefaultValue->specialtype;
+            foreach ($oDefaultValue->defaultvaluel10ns as $language => $oDefaultValueL10n) {
+                $aStoredDefaults[$sqid][$scaleId][$specialType][$language] = $oDefaultValueL10n->defaultvalue;
+            }
+        }
+        return $aStoredDefaults;
     }
 
     /**

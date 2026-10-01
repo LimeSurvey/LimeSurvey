@@ -9,6 +9,7 @@ use LimeSurvey\Models\Services\{
     QuestionAggregateService\AttributesService,
     QuestionAggregateService\AnswersService,
     QuestionAggregateService\SubQuestionsService,
+    QuestionAggregateService\DefaultValuesService,
     Proxy\ProxyExpressionManager,
     Exception\PersistErrorException,
     Exception\NotFoundException,
@@ -25,6 +26,7 @@ class SaveService
     private AttributesService $attributesService;
     private AnswersService $answersService;
     private SubQuestionsService $subQuestionsService;
+    private DefaultValuesService $defaultValuesService;
     private ProxyExpressionManager $proxyExpressionManager;
 
     public function __construct(
@@ -33,6 +35,7 @@ class SaveService
         AttributesService $attributesService,
         AnswersService $answersService,
         SubQuestionsService $subQuestionsService,
+        DefaultValuesService $defaultValuesService,
         ProxyExpressionManager $proxyExpressionManager
     ) {
         $this->questionService = $questionService;
@@ -40,6 +43,7 @@ class SaveService
         $this->attributesService = $attributesService;
         $this->answersService = $answersService;
         $this->subQuestionsService = $subQuestionsService;
+        $this->defaultValuesService = $defaultValuesService;
         $this->proxyExpressionManager = $proxyExpressionManager;
     }
 
@@ -103,7 +107,17 @@ class SaveService
      *          ...<array-key, mixed>
      *      },
      *      ...<array-key, mixed>
-     *  }
+     *  },
+     *  ?defaultvalues: array{
+     *      ...<array-key, mixed>
+     *  },
+     *  ?other: array{
+     *      ...<array-key, array<int, string>>
+     *  },
+     *  ?defaultvalues_em: array{
+     *      ...<array-key, string>
+     *  },
+     *  ?samedefault: string
      * } $input
      * @throws PersistErrorException
      * @throws NotFoundException
@@ -162,15 +176,22 @@ class SaveService
             );
         }
 
+        // Must run after the subquestions are saved
+        $this->defaultValuesService->save(
+            $question,
+            $data['defaultValues']
+        );
+
         $this->proxyExpressionManager->setDirtyFlag();
 
         return $question;
     }
 
     /**
-     * Normalise input
+     * Normalise the raw POST input into the structure save() works with
      *
-     * @param array
+     * @param int $surveyId
+     * @param array|null $input
      * @return array
      */
     public function normaliseInput($surveyId, $input)
@@ -188,6 +209,12 @@ class SaveService
             $input['loadCurrentAdvancedSettings'] ?? false;
         $data['answeroptions']    = $input['answeroptions'] ?? null;
         $data['subquestions']     = $input['subquestions'] ?? null;
+        $data['defaultValues']    = [
+            'defaultvalues'    => $input['defaultvalues'] ?? null,
+            'other'            => $input['other'] ?? null,
+            'defaultvalues_em' => $input['defaultvalues_em'] ?? null,
+            'samedefault'      => $input['samedefault'] ?? null,
+        ];
 
         return $data;
     }

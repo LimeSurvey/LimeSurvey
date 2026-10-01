@@ -12,7 +12,7 @@
      * DEV MEMO:
      * Validation could be difficult cause if you using tokens and you don't had setup a working token dataset
      *
-     * For this feature you need editDefaultvalues.php, database.php, adminstyle.css
+     * Used by the "Default answers" tab of the question editor (questionAdministration/defaultValues/yesNo.twig)
      */
 
 class yesNo_defaultvalue_widget extends CWidget
@@ -27,13 +27,25 @@ class yesNo_defaultvalue_widget extends CWidget
          * widget may need. */
     }
 
+    /**
+     * Render the default value select of a Yes/No question and the field for an expression.
+     *
+     * Widget options: language, questionrow (Question or its attributes), langopts (see
+     * QuestionAdministrationController::getDefaultValues()), and optionally elementId and
+     * emElementId as the input names of the select and the expression field.
+     *
+     * @return void
+     */
     public function run()
     {
 
         $questionrow = $this->widgetOptions['questionrow'];
         $langopts = $this->widgetOptions['langopts'];
         $language = $this->widgetOptions['language'];
-        $defaultValues =  $this->widgetOptions['langopts'][$language][$questionrow['type']][0];
+        $defaultValues =  $this->widgetOptions['langopts'][$language][$questionrow['type']][0] ?? null;
+
+        $elementId = $this->widgetOptions['elementId'] ?? null;
+        $emElementId = $this->widgetOptions['emElementId'] ?? null;
 
         $emfield_css = '';
         $emValue = '';
@@ -52,7 +64,13 @@ class yesNo_defaultvalue_widget extends CWidget
         }
 
         if ($questionrow['type'] == Question::QT_Y_YES_NO_RADIO) { // do we need this?
-            $sElement_id = 'defaultanswerscale_0_' . $language;
+            if (empty($elementId)) {
+                $elementId = 'defaultanswerscale_0_' . $language;
+            }
+
+            if (empty($emElementId)) {
+                $emElementId = $elementId . '_EM';
+            }
 
             $aList = array(
                 'N'    => gT('No', 'unescaped'),
@@ -62,7 +80,7 @@ class yesNo_defaultvalue_widget extends CWidget
 
             $aHtmlOptions = array(
                 'empty'    => gT('(No default value)'),
-                'class'    => $sElement_id . ' form-control',
+                'class'    => $elementId . ' form-control',
                 'onchange' => '// show EM Value Field
                                    if ($(this).val() == "EM"){
                                        $("#"+$(this).closest("select").attr("id")+ "_EM").removeClass("d-none");
@@ -70,15 +88,17 @@ class yesNo_defaultvalue_widget extends CWidget
                                        $("#"+$(this).closest("select").attr("id")+ "_EM").addClass("d-none");} '
             );
 
-            echo CHtml::dropDownList($sElement_id, $select, $aList, $aHtmlOptions);
+            echo CHtml::dropDownList($elementId, $select, $aList, $aHtmlOptions);
 
-            // textfield preparation
-            if (empty($defaultValues) ||  $defaultValues == 'Y') {
+            // The expression field is only needed while "EM value" is selected
+            if ($select !== 'EM') {
                 $sEmfield_css_class = 'd-none';
             }
-            echo CHtml::textField($sElement_id . '_EM', $emValue, array(
-                    'id'    => $sElement_id . '_EM',
-                    'class' => $sEmfield_css_class,
+            // The onchange handler above finds the EM field by the select's id + "_EM"
+            echo CHtml::textField($emElementId, $emValue, array(
+                    'id'    => CHtml::getIdByName($elementId) . '_EM',
+                    'class' => 'form-control ' . $sEmfield_css_class,
+                    'aria-label' => gT('EM value'),
                     'width' => 100
                 ));
         }

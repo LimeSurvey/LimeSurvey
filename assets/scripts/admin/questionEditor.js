@@ -1835,7 +1835,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.ajax({
           url: extraOptionsUrl,
           method: 'GET',
-          data: { questionType },
+          data: { questionType, questionTheme },
           dataType: 'html',
           success: (data) => {
             resolve(data);
@@ -1870,6 +1870,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#advanced-options-container').replaceWith(advancedSettingsHtml);
         $('#extra-options-container').replaceWith(extraOptionsHtml);
         makeAnswersTableSortable();
+        applySameDefaultValues();
         $('.question-option-help').hide();
         $('#ls-loading').hide();
 
@@ -2033,6 +2034,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
         }
       }
 
+      // Synchronize default answers with subquestions/answer options before saving
+      synchronizeDefaultAnswers();
+
       const updateQuestionSummary = () => {
         $('#ls-loading').show();
         $.ajax({
@@ -2079,6 +2083,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               bindSubQuestionEvents();
               bindAnswerEvents();
               makeAnswersTableSortable();
+              applySameDefaultValues();
               toggleLanguageElements();
               // Hide loading gif.
               $('#ls-loading').hide();
@@ -2211,6 +2216,179 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showSubquestionCodeUniqueError: createCheckUniqueFunction(languageJson.subquestions.duplicatesubquestioncode),
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
+
+  /**
+   * Keep the "Default Answers" tab in sync with "Answer Options" and "Subquestions".
+   */
+  function synchronizeDefaultAnswers() {
+    const tabpane = $("#defaultanswers");
+    if (tabpane.length == 0) {
+      return;
+    }
+
+    const languages = languageJson.langs.split(';');
+
+    const subquestionScales = tabpane.data('subquestions');
+    const answerScales = tabpane.data('answerscales');
+
+    if (answerScales == 1 && subquestionScales == 0) {
+      _.forEach(languages, (curLanguage, x) => {
+        const defaultAnswerInput = $(`#defaultvalues\\[${curLanguage}\\]\\[0\\]`);
+        // Get the currently selected default option.
+        // It is matched by the answer option's stable id (data-common-id), so a changed answer code keeps its default.
+        const currentDefault = defaultAnswerInput.val();
+        const currentDefaultCommonId = defaultAnswerInput.find('option:selected').attr('data-common-id');
+        // Clear current options, except the 'empty' one
+        defaultAnswerInput.find('option:not([value=""])').remove();
+
+        var newDefault = '';
+        // Loop through all the answer options table rows
+        const rows = $(`#answeroptions_${curLanguage}_0 tbody tr`);
+        rows.each(function () {
+          var code = '';
+          if ($(this).find('.code-title input.code').length) {
+            code = $(this).find('.code-title input.code').val();
+          } else {
+            code = $(this).find('.code-title').text().trim();
+          }
+          const text = $(this).find('.answeroption-text input.answer').val();
+          const commonId = $(this).attr('data-common-id') ?? '';
+          // Answer text may contain HTML from the editor: show it as plain text, like flattenText() does server side
+          const plainText = new DOMParser().parseFromString(text || '', 'text/html').body.textContent;
+          $('<option></option>').attr('value', code).attr('data-common-id', commonId).text(plainText).appendTo(defaultAnswerInput);
+          const isCurrentDefault = currentDefaultCommonId
+            ? commonId === currentDefaultCommonId
+            : code == currentDefault;
+          if (currentDefault !== '' && isCurrentDefault) {
+            newDefault = code;
+          }
+        });
+        defaultAnswerInput.val(newDefault);
+      });
+    } else if (answerScales == 0 && subquestionScales == 1) {
+      _.forEach(languages, (curLanguage, x) => {
+        const languageTab = tabpane.find(`.lang-${curLanguage}`);
+        const template = languageTab.find('.defaultvalues-template');
+        const defaultAnswerRowsContainer = languageTab.find('.default-answer-rows');
+        // Get the currently selected default options before clearing the rows.
+        // They are keyed by the subquestion's stable id (data-common-id), so a changed subquestion code keeps its default.
+        var currentDefaults = {};
+        defaultAnswerRowsContainer.find(`[id^="defaultvalues\\[${curLanguage}\\]"]`).each(function () {
+          const commonId = $(this).closest('[data-common-id]').data('common-id');
+          currentDefaults[commonId ? `common:${commonId}` : $(this).attr('id')] = $(this).val();
+        });
+        // Clear current default answer rows
+        defaultAnswerRowsContainer.html("");
+        // Loop through all the subquestions table rows
+        const rows = $(`#subquestions_${curLanguage}_0 tbody tr`);
+        rows.each(function () {
+          var code = '';
+          if ($(this).find('.code-title input.code').length) {
+            code = $(this).find('.code-title input.code').val();
+          } else {
+            code = $(this).find('.code-title').text().trim();
+          }
+          const text = $(this).find('.subquestion-text input.answer').val();
+          const commonId = $(this).data('common-id');
+          const newRowId = `defaultvalues[${curLanguage}][${code}][0]`;
+          const currentDefault = (commonId && currentDefaults[`common:${commonId}`] !== undefined)
+            ? currentDefaults[`common:${commonId}`]
+            : currentDefaults[newRowId];
+          const templateId = `defaultvalues\\[${curLanguage}\\]\\[\\{\\{title_placeholder\\}\\}\\]\\[0\\]`;
+          const newDefaultAnswerRow = template.clone();
+          newDefaultAnswerRow.find('#' + templateId).removeAttr('disabled').attr('id', newRowId).attr('name', newRowId).val(currentDefault ?? '');
+          const label = newDefaultAnswerRow.find(`label[for="${templateId}"]`);
+          label.attr('for', newRowId);
+          // Subquestion text may contain HTML from the editor: show it as plain text, like flattenText() does server side
+          const plainText = new DOMParser().parseFromString(text || '', 'text/html').body.textContent;
+          label.text(`${code}: ${plainText}`);
+          newDefaultAnswerRow.attr('data-common-id', commonId ?? '');
+          newDefaultAnswerRow.removeClass('defaultvalues-template').show().appendTo(defaultAnswerRowsContainer);
+        });
+      });
+    }
+    applySameDefaultValues();
+  }
+
+  /**
+   * "Use same default value across languages": the survey then uses the default answer of the base
+   * language for all languages. The inputs of the other languages are disabled and show the base
+   * language value. Their own values are kept and restored when the option is unticked.
+   * Disabled inputs are not posted, so the stored values of the other languages are left untouched.
+   */
+  function applySameDefaultValues() {
+    const tabpane = $('#defaultanswers');
+    const checkbox = tabpane.find('#samedefault');
+    if (checkbox.length === 0) {
+      return;
+    }
+    const baseLanguage = checkbox.data('base-language');
+    const sameDefault = checkbox.is(':checked');
+    // Own values of the other languages by input name. Stored on the tab, so they are reset whenever the tab is rendered again.
+    if (!tabpane.data('ownValues')) {
+      tabpane.data('ownValues', {});
+    }
+    const ownValues = tabpane.data('ownValues');
+
+    tabpane.find('.lang-hide[data-lang]').each(function () {
+      const language = $(this).data('lang');
+      if (language === baseLanguage) {
+        return;
+      }
+      $(this).find('.same-default-hint').toggleClass('d-none', !sameDefault);
+      $(this)
+        .find('[name^="defaultvalues\\["], [name^="defaultvalues_em\\["], [name^="other\\["]')
+        .not('.defaultvalues-template *')
+        .each(function () {
+          const input = $(this);
+          const name = input.attr('name');
+          if (sameDefault) {
+            if (!(name in ownValues)) {
+              ownValues[name] = input.val();
+            }
+            // The language is the first bracket in the name, e.g. defaultvalues[de][SQ001][0]
+            const baseName = name.replace(`[${language}]`, `[${baseLanguage}]`);
+            const baseInput = tabpane.find(`[name="${$.escapeSelector(baseName)}"]`);
+            input.val(baseInput.length ? baseInput.val() : '');
+            if (!input.prop('disabled')) {
+              input.prop('disabled', true).attr('data-same-default-disabled', '1');
+            }
+          } else {
+            if (name in ownValues) {
+              input.val(ownValues[name]);
+              delete ownValues[name];
+            }
+            // Only enable what was disabled here, not inputs disabled for lack of permission
+            if (input.attr('data-same-default-disabled')) {
+              input.prop('disabled', false).removeAttr('data-same-default-disabled');
+            }
+          }
+          // Yes/No: the expression field is only shown while "EM value" is selected
+          const expressionField = input.is('select') ? document.getElementById(`${input.attr('id')}_EM`) : null;
+          if (expressionField) {
+            $(expressionField).toggleClass('d-none', input.val() !== 'EM');
+          }
+        });
+    });
+  }
+
+  /**
+   * Refresh the "Default answers" tab whenever it is shown, and keep the other languages in sync
+   * with the base language while "Use same default value across languages" is ticked.
+   * Delegated from document, so it survives #extra-options-container being replaced.
+   */
+  function bindExtraOptionsEvents() {
+    $(document)
+      .off('show.bs.tab.defaultanswers')
+      .on('show.bs.tab.defaultanswers', '[data-bs-toggle="tab"][href="#defaultanswers"]', synchronizeDefaultAnswers)
+      .off('change.samedefault input.samedefault')
+      .on('change.samedefault input.samedefault', '#defaultanswers #samedefault, #defaultanswers .lang-hide :input', function () {
+        const baseLanguage = $('#defaultanswers #samedefault').data('base-language');
+        if (this.id === 'samedefault' || $(this).closest('.lang-hide').data('lang') === baseLanguage) {
+          applySameDefaultValues();
+        }
+      });
+  }
 
   /**
    * questionCode need specific ajax validation
@@ -2388,4 +2566,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     $(document).on('focusout', '#subquestions table.subquestions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
     $(document).on('focusout', '#answeroptions table.answeroptions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
+
+    bindExtraOptionsEvents();
+    applySameDefaultValues();
 });

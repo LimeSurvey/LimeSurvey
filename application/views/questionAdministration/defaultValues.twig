@@ -1,0 +1,79 @@
+{#
+/**
+ * Default Values panels
+ *
+ * @var int $subquestions
+ * @var int $answerScales
+ * @var array<mixed> $answers Like [0 => Answer[]] or [0 => Answer[], 1 => Answer[]]
+ * @var Question $question
+ * @var string[] $allLanguages
+ * @var string $language
+ * @var array<mixed> $defaultValues
+ * @var bool $hasUpdatePermission
+ * @var bool $sameDefault "Use same default value across languages" (Question::$same_default is not allowed in the Twig sandbox)
+ *
+ * Supported combinations of answerscales and subquestions:
+ *   - Case 1: answerscales = 1 and subquestions = 0
+ *   - Case 2: answerscales = 0 and subquestions = 1
+ *   - Case 3: answerscales = 0 and subquestions = 0
+ *
+ * See QuestionAggregateService\DefaultValuesService::save() for details.
+ */
+#}
+{% set first=true %}
+
+<!-- Loop all language, and then hide all but the current selected one with JS. -->
+{% for lang in allLanguages %}
+    <div class="lang-hide lang-{{ lang }}" data-lang="{{ lang }}">
+        {% if not first %}
+            {# Shown while "Use same default value across languages" is ticked, see questionEditor.js #}
+            <p class="form-text same-default-hint {{ sameDefault ? '' : 'd-none' }}">
+                {{ gT('The default answer of the base language (%s) is used for all languages.')|format(getLanguageNameFromCode(language, false)) }}
+            </p>
+        {% endif %}
+        {% if question.type in ['L', 'O', '!'] %}
+            {% include 'defaultValues/singleAnswerScale.twig' with {
+                'question': question,
+                'lang': lang
+            } %}
+        {% elseif question.type in ['K', 'M', 'P', 'Q'] %}
+            {% include 'defaultValues/singleSubquestion.twig' with {
+                'question': question,
+                'lang': lang
+            } %}
+        {% elseif question.type == 'Y' %}
+            {% include 'defaultValues/yesNo.twig' with {
+                'question': question,
+                'lang': lang
+            } %}
+        {% elseif question.type == '5' %}
+            {% include 'defaultValues/fixedOptions.twig' with {
+                'question': question,
+                'lang': lang,
+                'options': {
+                    '1': '1',
+                    '2': '2',
+                    '3': '3',
+                    '4': '4',
+                    '5': '5',
+                },
+            } %}
+        {% elseif question.type in ['S', 'T', 'U', 'N', 'D'] %}
+            {% include 'defaultValues/text.twig' with {
+                'question': question,
+                'lang': lang,
+                'hasUpdatePermission': hasUpdatePermission
+            } %}
+        {% endif %}
+
+        {% if first and allLanguages|length > 1 %}
+            <div class="form-check mb-3">
+                <input type='checkbox' class="form-check-input" name='samedefault' id='samedefault' value='1' data-base-language="{{ lang }}" {{ sameDefault ? 'checked="checked"' : '' }} />
+                <label class="form-check-label" for='samedefault'>
+                    {{ gT('Use same default value across languages') }}
+                </label>
+            </div>
+        {% endif %}
+    </div>
+    {% set first=false %}
+{% endfor %}

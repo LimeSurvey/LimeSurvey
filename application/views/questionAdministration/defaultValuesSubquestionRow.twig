@@ -1,0 +1,25 @@
+<div class="mb-3 {{ is_template ? 'defaultvalues-template' : '' }}" {{ is_template ? 'style="display: none;"' : '' }} data-common-id="{{ subquestion_id is defined ? subquestion_id ~ '_' ~ scale_id : '' }}">
+    <label class="form-label" for='defaultvalues[{{ lang }}][{{ subquestion_title }}][{{ scale_id }}]'>
+        {{ subquestion_title }}: {{ flattenText(subquestion_text) }}
+    </label>
+    {% if inputStyle == 'enum' %}
+        <select
+            class='form-select'
+            {{ is_template ? 'disabled="disabled"' : '' }}
+            name='defaultvalues[{{ lang }}][{{ subquestion_title }}][{{ scale_id }}]'
+            id='defaultvalues[{{ lang }}][{{ subquestion_title }}][{{ scale_id }}]'>
+            {% for value, label in options %}
+                <option value="{{ value }}" {{ (value == defaultvalue) ? 'selected="selected"' : '' }}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+    {% elseif inputStyle == 'text' %}
+        <textarea
+            class='form-control'
+            cols='50'
+            {{ is_template ? 'disabled="disabled"' : '' }}
+            name='defaultvalues[{{ lang }}][{{ subquestion_title }}][{{ scale_id }}]'
+            id='defaultvalues[{{ lang }}][{{ subquestion_title }}][{{ scale_id }}]'>{{ defaultvalue }}</textarea>
+    {% endif %}
+</div>

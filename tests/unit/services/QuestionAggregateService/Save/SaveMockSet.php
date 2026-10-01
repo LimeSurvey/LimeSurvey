@@ -7,7 +7,8 @@ use LimeSurvey\Models\Services\QuestionAggregateService\{
     L10nService,
     AttributesService,
     AnswersService,
-    SubQuestionsService
+    SubQuestionsService,
+    DefaultValuesService
 };
 
 use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
@@ -19,5 +20,6 @@ class SaveMockSet
     public AttributesService $attributesService;
     public AnswersService $answersService;
     public SubQuestionsService $subQuestionsService;
+    public DefaultValuesService $defaultValuesService;
     public ProxyExpressionManager $proxyExpressionManager;
 }

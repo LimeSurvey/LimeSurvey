@@ -1,3 +1,9 @@
+<?php
+/** @var Question $question */
+/** @var Survey $survey */
+/** @var bool $hasDefaultValuesTab Whether to show the "Default answers" tab */
+/** @var array $defaultValues see QuestionAdministrationController::getDefaultValues() */
+?>
 <div class="col-12" id="extra-options-container">
     <?php $tabCount = 0; ?>
     <!-- Subquestions and Answers tabs -->
@@ -23,6 +29,18 @@
                     data-bs-toggle="tab"
                 >
                     <?= gT('Answer options'); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+        <?php if (!empty($hasDefaultValuesTab)) : ?>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link <?= (++$tabCount == 1) ? "active" : "" ?>"
+                    href="#defaultanswers"
+                    aria-controls="defaultanswers"
+                    role="tab"
+                    data-bs-toggle="tab"
+                >
+                    <?= gT('Default answers'); ?>
                 </a>
             </li>
         <?php endif; ?>
@@ -65,6 +83,30 @@
                         'allLanguages' => $survey->allLanguages,
                         'language'   => $survey->language,
                         'hasLabelSetPermission' => Permission::model()->hasGlobalPermission('labelsets', 'create'),
+                    ],
+                    true
+                ); ?>
+            </div>
+        <?php endif; ?>
+        <?php if (!empty($hasDefaultValuesTab)) : ?>
+            <div role="tabpanel"
+                class="tab-pane<?php echo (++$tabCount == 1 ? ' active' : ''); ?>"
+                data-subquestions="<?= $question->questionType->subquestions ?>"
+                data-answerscales="<?= $question->questionType->answerscales ?>"
+                id="defaultanswers">
+                <?php Yii::app()->twigRenderer->getLoader()->addPath(__DIR__, '__main__'); ?>
+                <?= Yii::app()->twigRenderer->renderViewFromFile(
+                    '/application/views/questionAdministration/defaultValues.twig',
+                    [
+                        'subquestions' => $question->questionType->subquestions,
+                        'answerScales' => $question->questionType->answerscales,
+                        'answers' => $question->getScaledAnswerOptions(),
+                        'question' => $question,
+                        'allLanguages' => $survey->allLanguages,
+                        'language' => $survey->language,
+                        'defaultValues' => $defaultValues,
+                        'sameDefault' => (bool)$question->same_default,
+                        'hasUpdatePermission' => Permission::model()->hasSurveyPermission($survey->sid, 'surveycontent', 'update'),
                     ],
                     true
                 ); ?>

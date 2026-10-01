@@ -1,0 +1,42 @@
+{#
+/**
+ * Default Value for question types with a single subquestion scale
+ *
+ * @var Question $question
+ * @var string $lang
+ * @var array<mixed> $defaultValues
+ */
+#}
+{% set opts = defaultValues[lang][question.type][0] ?? {} %}
+{% if opts['template']['options'] is defined %}
+    {% set templateOptions = opts['template']['options'] %}
+{% elseif question.type in ['M', 'P'] %}
+    {% set templateOptions = {'': gT('(No default value)'), 'Y': gT('Checked')} %}
+{% else %}
+    {% set templateOptions = {} %}
+{% endif %}
+{# Only included for K, M, P and Q (see defaultValues.twig) #}
+{% set inputStyle = question.type in ['M', 'P'] ? 'enum' : 'text' %}
+<div class="default-answer-rows">
+    {% for subquestion in opts['sqresult'] ?? [] %}
+        {% include 'defaultValuesSubquestionRow.twig' with {
+            'lang': lang,
+            'scale_id': 0,
+            'subquestion_id': subquestion['qid'],
+            'subquestion_title': subquestion['title'],
+            'subquestion_text': subquestion['question'],
+            'options': subquestion['options'],
+            'defaultvalue': subquestion['defaultvalue']
+        } %}
+    {% endfor %}
+</div>
+<!-- Template for JS -->
+{% include 'defaultValuesSubquestionRow.twig' with {
+    'lang': lang,
+    'scale_id': 0,
+    'subquestion_title': '{{title_placeholder}}',
+    'subquestion_text': '{{text_placeholder}}',
+    'options': templateOptions,
+    'defaultvalue': '',
+    'is_template': true
+} %}

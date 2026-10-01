@@ -1,0 +1,38 @@
+{#
+/**
+ * Default Value for question types with a single answer scale
+ *
+ * @var Question $question
+ * @var string $lang
+ * @var array<mixed> $defaultValues
+ */
+#}
+{% set opts = defaultValues[lang][question.type][0] %}
+<div class="mb-3">
+    <label class="form-label" for='defaultvalues[{{ lang }}][0]'>
+        {{ gT("Default answer value:") }}
+    </label>
+    <select
+        class='form-select'
+        name='defaultvalues[{{ lang }}][0]'
+        id='defaultvalues[{{ lang }}][0]'
+    >
+        <option value='' {{ (opts['defaultvalue'] is null) ? 'selected="selected"' : '' }}>
+            {{ gT('<No default value>') }}
+        </option>
+        {% for answer in opts['answers'] %}
+            {# data-common-id matches the answer option row, so the default survives a code change (see questionEditor.js) #}
+            <option {{ (answer.code == opts['defaultvalue']) ? 'selected="selected"' : '' }} value="{{ answer.code }}" data-common-id="{{ answer.aid }}_0">
+                {{ flattenText(answer.answerl10ns[lang].answer) }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+{%  if question.other == 'Y' %}
+    <div class="mb-3">
+        <label class="form-label" for='other[{{ lang }}][0]'>
+            {{ gT("Default value for option 'Other':") }}
+        </label>
+        <input type='text' class='form-control' name='other[{{ lang }}][0]' id='other[{{ lang }}][0]' value='{{ defaultValues[lang][question.type]['Ydefaultvalue'] }}'>
+    </div>
+{% endif %}

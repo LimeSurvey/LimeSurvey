@@ -14,7 +14,8 @@ use LimeSurvey\Models\Services\QuestionAggregateService\{
     L10nService,
     AttributesService,
     AnswersService,
-    SubQuestionsService
+    SubQuestionsService,
+    DefaultValuesService
 };
 
 /**
@@ -48,6 +49,10 @@ class SaveMockSetFactory
         $mockSet->subQuestionsService = ($init && isset($init->subQuestionsService))
             ? $init->subQuestionsService
             : $this->getMockSubQuestionsService();
+
+        $mockSet->defaultValuesService = ($init && isset($init->defaultValuesService))
+            ? $init->defaultValuesService
+            : $this->getMockDefaultValuesService();
 
         $mockSet->proxyExpressionManager = ($init && isset($init->proxyExpressionManager))
             ? $init->proxyExpressionManager
@@ -90,6 +95,12 @@ class SaveMockSetFactory
     private function getMockSubQuestionsService(): SubQuestionsService
     {
         return  Mockery::mock(SubQuestionsService::class)
+            ->makePartial();
+    }
+
+    private function getMockDefaultValuesService(): DefaultValuesService
+    {
+        return Mockery::mock(DefaultValuesService::class)
             ->makePartial();
     }
 
