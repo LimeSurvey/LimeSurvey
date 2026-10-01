@@ -1071,7 +1071,7 @@ class ParticipantsAction extends SurveyCommonAction
                                     $existingParticipant->$attribute = $value;
                                 }
                             }
-                            $existingParticipant->encryptSave();
+                            $existingParticipant->encryptSave(false);
                             //Although this person already exists, we want to update the mapped attribute values
                             if (!empty($mappedarray)) {
                                 //The mapped array contains the attributes we are
@@ -2929,7 +2929,7 @@ class ParticipantsAction extends SurveyCommonAction
         $oParticipants = Participant::model()->findAll($criteria);
         foreach ($oParticipants as $oParticipant) {
             $oParticipant->decrypt();
-            if ($oParticipant->encryptSave()) {
+            if ($oParticipant->encryptSave(false)) {
                 $processed++;
                 $lastParticipantId = $oParticipant->participant_id;
                 App()->user->setState($stateId, $lastParticipantId);
@@ -2985,7 +2985,7 @@ class ParticipantsAction extends SurveyCommonAction
         $oParticipants = Participant::model()->invaliduplicatefinder()->findAll($criteria);
         foreach ($oParticipants as $oParticipant) {
             $oParticipant->decrypt();
-            if ($oParticipant->encryptSave()) {
+            if ($oParticipant->encryptSave(false)) {
                 $processed++;
                 $lastParticipantId = $oParticipant->participant_id;
                 App()->user->setState($stateId, $lastParticipantId);

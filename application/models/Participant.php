@@ -2799,9 +2799,11 @@ class Participant extends LSActiveRecord
     /**
      * @inheritdoc
      * Set the value of duplicatefinder before encrypt
-     * @return boolean
+     * @param boolean $runValidation whether to perform validation before saving the record.
+     * @param array|null $attributes list of attributes that need to be saved. Defaults to null for all attributes.
+     * @return boolean whether the saving succeeds
      */
-    public function encryptSave($runValidation = false)
+    public function encryptSave($runValidation = true, $attributes = null)
     {
         $this->duplicatefinder = strval($this->getDuplicateFinderValue(
             [
@@ -2810,7 +2812,11 @@ class Participant extends LSActiveRecord
                 'email' => $this->getAttribute('email'),
             ]
         ));
-        return parent::encryptSave($runValidation);
+        /* duplicatefinder depends on firstname, lastname and email : save it too if one of them is saved */
+        if (is_array($attributes) && array_intersect(['firstname', 'lastname', 'email'], $attributes)) {
+            $attributes[] = 'duplicatefinder';
+        }
+        return parent::encryptSave($runValidation, $attributes);
     }
 
     /**
