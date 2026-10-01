@@ -184,11 +184,11 @@ class Themes extends SurveyCommonAction
             App()->end();
         }
         $sTemplateName = trim(App()->request->getPost('templatename', ''));
-        // This controller has several actions. Even actions that manage multiple subactions.
-        // In case you are uploading a template, the templatename does not exist in the POST.
-        // It's not going to fail, but it's checking for a permission with an empty templatename.
-        // Surely it works as expected, but it would be nice if the code was clearer.
-        if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
+        // Theme upload and the import form require import permission; only image upload is allowed per theme.
+        if (
+            Permission::model()->hasGlobalPermission('templates', 'import')
+            || ($action == 'templateuploadimagefile' && Permission::model()->hasTemplatePermission($sTemplateName))
+        ) {
             App()->loadHelper('admin.template');
             // NB: lid = label id
             $lid = returnGlobal('lid');
