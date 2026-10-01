@@ -1024,7 +1024,7 @@ JAVASCRIPT
 
             App()->getClientScript()->registerScript("activateActionLink", "activateActionLink();", LSYii_ClientScript::POS_POSTSCRIPT); /* show the button if needed */
 
-            /* Must remove all exitsing scripts / css and js */
+            /* Must remove all existing scripts / css and js */
             App()->getClientScript()->unregisterPackage('admin-theme'); // We remove the admin package
 
             App()->getClientScript()->render($myoutput);

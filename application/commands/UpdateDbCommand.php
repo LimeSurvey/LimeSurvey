@@ -75,7 +75,7 @@ class UpdateDBCommand extends CConsoleCommand
                 throw new CException("Please fix this error in your database and try again");
             }
         } else {
-            echo "no need update : DB is uptodate\n";
+            echo "no need update : DB is up-to-date\n";
             return 0;
         }
     }

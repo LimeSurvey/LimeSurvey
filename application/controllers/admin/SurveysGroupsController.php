@@ -248,8 +248,8 @@ class SurveysGroupsController extends SurveyCommonAction
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         /* Cannot call the globalsettings controller function since __construct checks access… */
-        $menues = Surveymenu::model()->getMenuesForGlobalSettings();
-        Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
+        $menus = Surveymenu::model()->getMenuesForGlobalSettings();
+        Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menus[0]]);
     }
 
     /**
@@ -286,7 +286,7 @@ class SurveysGroupsController extends SurveyCommonAction
         // Name of sidemenulink   => name of input field
         // "General settings"     => 'template'
         // "Presentation"         => 'showxquestions'
-        // "Pariticipant setting" => 'anonymized'
+        // "Participant setting" => 'anonymized'
         // "Notification & data"  => 'datestamp'
         // "Publication & access" => 'listpublic'
         if (
