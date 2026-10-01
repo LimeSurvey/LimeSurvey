@@ -15,7 +15,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   codespell:
@@ -30,3 +29,7 @@ jobs:
 
       - name: Run codespell
         uses: codespell-project/actions-codespell@v2
+        with:
+          # The action always passes --skip (default './.git'), which overrides
+          # the skip list in .codespellrc, so it has to be repeated here.
+          skip: vendor,node_modules,./.git,*.min.js,*.min.css,build,dist,./upload,.gitignore,.DS_Store,*.lock,*.lss,./assets/packages,./application/extensions/yiiwheels,./application/extensions/yii-jsoneditor,./application/extensions/captchaExtended,./docs/swagger/swagger-ui*
