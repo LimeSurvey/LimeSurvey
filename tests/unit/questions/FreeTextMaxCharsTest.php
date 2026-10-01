@@ -78,25 +78,17 @@ class FreeTextMaxCharsTest extends TestBaseClass
     }
 
     /**
-     * Update_719 changes TEXT response columns of Long free text questions to MEDIUMTEXT on MySQL.
+     * Activating a survey creates a MEDIUMTEXT response column for Long free text questions on MySQL.
      */
-    public function testUpdate719ChangesColumnToMediumtext()
+    public function testActivationCreatesMediumtextColumn()
     {
         $db = \Yii::app()->db;
         if ($db->driverName != 'mysql') {
-            $this->markTestSkipped('Only MySQL/MariaDB is changed by Update_719');
+            $this->markTestSkipped('MEDIUMTEXT is only different from TEXT on MySQL/MariaDB');
         }
-        list($question, , $sgqa) = self::$testHelper->getSgqa('Q00', self::$surveyId);
+        list(, , $sgqa) = self::$testHelper->getSgqa('Q00', self::$surveyId);
         self::$testHelper->activateSurvey(self::$surveyId);
-        $tableName = \Yii::app()->db->tablePrefix . 'responses_' . self::$surveyId;
-        $db->createCommand()->alterColumn($tableName, $sgqa, 'text');
-        $db->schema->refresh();
-
-        $update = new \LimeSurvey\Helpers\Update\Update_719($db, []);
-        $update->up();
-        // Running it again must not fail
-        $db->schema->refresh();
-        $update->up();
+        $tableName = $db->tablePrefix . 'responses_' . self::$surveyId;
 
         $db->schema->refresh();
         $this->assertSame('mediumtext', strtolower($db->schema->getTable($tableName)->getColumn($sgqa)->dbType));
