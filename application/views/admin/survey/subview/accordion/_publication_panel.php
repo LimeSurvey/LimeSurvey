@@ -67,106 +67,106 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
     </div>
     <?php } ?>
     <div>
-            <!-- List survey publicly -->
-            <div class="mb-3 mt-4">
-                <h2 class="h1"><?php eT("Access control"); ?></h2>
-                <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a class='ls-link' href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
-                <div>
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'listpublic',
-                        'checkedOption' => $oSurvey->listpublic,
-                        'ariaLabel' => gT('Link survey on public index page:'),
-                        'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->listpublic . " ᴵ" ])
-                            : $optionsOnOff,
-                    ]); ?>
-                </div>
+        <!-- List survey publicly -->
+        <div class="mb-3 mt-4">
+            <h2 class="h1"><?php eT("Access control"); ?></h2>
+            <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a class='ls-link' href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'listpublic',
+                    'checkedOption' => $oSurvey->listpublic,
+                    'ariaLabel' => gT('Link survey on public index page:'),
+                    'selectOptions' => ($bShowInherited)
+                        ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->listpublic . " ᴵ" ])
+                        : $optionsOnOff,
+                ]); ?>
             </div>
-            <!-- Set cookie to prevent repeated participation -->
-            <div class="mb-3">
-                <label class=" form-label" for='usecookie'><?php eT("Set cookie to prevent repeated participation:"); ?></label>
-                <div>
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'usecookie',
-                        'checkedOption' => $oSurvey->usecookie,
-                        'ariaLabel' => gT('Set cookie to prevent repeated participation:'),
-                        'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->usecookie . " ᴵ" ])
-                            : $optionsOnOff,
-                    ]); ?>
-                </div>
+        </div>
+        <!-- Set cookie to prevent repeated participation -->
+        <div class="mb-3">
+            <label class=" form-label" for='usecookie'><?php eT("Set cookie to prevent repeated participation:"); ?></label>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'usecookie',
+                    'checkedOption' => $oSurvey->usecookie,
+                    'ariaLabel' => gT('Set cookie to prevent repeated participation:'),
+                    'selectOptions' => ($bShowInherited)
+                        ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->usecookie . " ᴵ" ])
+                        : $optionsOnOff,
+                ]); ?>
             </div>
+        </div>
 
-            <!-- Use CAPTCHA for survey access -->
-            <?php $usecap = $oSurvey->usecaptcha; // Just a short-hand 
-            $aCaptchaSurveyAccessYes        = array('A', 'B', 'C', 'X', 'F', 'H', 'K', 'O', 'T');
-            $aCaptchaSurveyAccessInherit    = array('E', 'G', 'I', 'J', 'L', 'M', '1', '2', '4');
-            $aCaptchaRegistrationYes        = array('A', 'B', 'D', 'R', 'F', 'G', 'I', 'M', 'U');
-            $aCaptchaRegistrationInherit    = array('E', 'H', 'J', 'K', 'O', 'P', '1', '3', '6');
-            $aCaptchaLoadSaveYes            = array('A', 'C', 'D', 'S', 'G', 'H', 'J', 'L', 'P');
-            $aCaptchaLoadSaveInherit        = array('E', 'F', 'I', 'K', 'T', 'U', '2', '3', '5');
-            
+        <!-- Use CAPTCHA for survey access -->
+        <?php $usecap = $oSurvey->usecaptcha; // Just a short-hand
+        $aCaptchaSurveyAccessYes        = array('A', 'B', 'C', 'X', 'F', 'H', 'K', 'O', 'T');
+        $aCaptchaSurveyAccessInherit    = array('E', 'G', 'I', 'J', 'L', 'M', '1', '2', '4');
+        $aCaptchaRegistrationYes        = array('A', 'B', 'D', 'R', 'F', 'G', 'I', 'M', 'U');
+        $aCaptchaRegistrationInherit    = array('E', 'H', 'J', 'K', 'O', 'P', '1', '3', '6');
+        $aCaptchaLoadSaveYes            = array('A', 'C', 'D', 'S', 'G', 'H', 'J', 'L', 'P');
+        $aCaptchaLoadSaveInherit        = array('E', 'F', 'I', 'K', 'T', 'U', '2', '3', '5');
+
+        ?>
+        <div class="mb-3 mt-4">
+            <h2 class="h1"><?php eT("CAPTCHA"); ?></h2>
+            <label class=" form-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'usecaptcha_surveyaccess',
+                    'ariaLabel' => gT('Use CAPTCHA for survey access:'),
+                    'checkedOption'         => (in_array($usecap, $aCaptchaSurveyAccessYes))
+                        ? 'Y'
+                        : ((in_array($usecap, $aCaptchaSurveyAccessInherit)) ? ('I') : ('N')),
+                    'selectOptions' => ($bShowInherited)
+                        ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaSurveyAccess . " ᴵ" ])
+                        : $optionsOnOff,
+                ]); ?>
+            </div>
+        </div>
+
+        <!-- Use CAPTCHA for registration -->
+        <div class="mb-3">
+            <label class=" form-label" for='usecaptcha_registration'><?php  eT("Use CAPTCHA for registration:"); ?></label>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'usecaptcha_registration',
+                    'ariaLabel' => gT('Use CAPTCHA for registration:'),
+                    'checkedOption' => (in_array($usecap, $aCaptchaRegistrationYes))
+                        ? 'Y'
+                        : ((in_array($usecap, $aCaptchaRegistrationInherit))
+                            ? ('I')
+                            : ('N')),
+                    'selectOptions' => ($bShowInherited)
+                        ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaRegistration . " ᴵ"])
+                        : $optionsOnOff,
+                ]); ?>
+            </div>
+        </div>
+
+        <!-- Use CAPTCHA for save and load -->
+        <div class="mb-3">
+            <label class=" form-label" for='usecaptcha_saveandload'><?php  eT("Use CAPTCHA for save and load:"); ?></label>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'usecaptcha_saveandload',
+                    'ariaLabel' => gT('Use CAPTCHA for save and load:'),
+                    'checkedOption' => (in_array($usecap, $aCaptchaLoadSaveYes))
+                        ? 'Y'
+                        : ((in_array($usecap, $aCaptchaLoadSaveInherit)) ? ('I') : ('N')),
+                    'selectOptions' => ($bShowInherited)
+                        ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaSaveAndLoad . " ᴵ" ])
+                        : $optionsOnOff,
+                ]); ?>
+            </div>
+        </div>
+        <?php if (!extension_loaded('gd')) { ?>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => '<strong>' . gT('Warning!') . '</strong> ' . gT("The CAPTCHA settings won't have any effect because you don't have the required GD library activated in your PHP configuration."),
+                'type' => 'warning',
+            ]);
             ?>
-            <div class="mb-3 mt-4">
-                <h2 class="h1"><?php eT("CAPTCHA"); ?></h2>
-                <label class=" form-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
-                <div>
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'usecaptcha_surveyaccess',
-                        'ariaLabel' => gT('Use CAPTCHA for survey access:'),
-                        'checkedOption'         => (in_array($usecap, $aCaptchaSurveyAccessYes))
-                            ? 'Y'
-                            : ((in_array($usecap, $aCaptchaSurveyAccessInherit)) ? ('I') : ('N')),
-                        'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaSurveyAccess . " ᴵ" ])
-                            : $optionsOnOff,
-                    ]); ?>
-                </div>
-            </div>
-
-            <!-- Use CAPTCHA for registration -->
-            <div class="mb-3">
-                <label class=" form-label" for='usecaptcha_registration'><?php  eT("Use CAPTCHA for registration:"); ?></label>
-                <div>
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'usecaptcha_registration',
-                        'ariaLabel' => gT('Use CAPTCHA for registration:'),
-                        'checkedOption' => (in_array($usecap, $aCaptchaRegistrationYes))
-                            ? 'Y'
-                            : ((in_array($usecap, $aCaptchaRegistrationInherit))
-                                ? ('I')
-                                : ('N')),
-                        'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaRegistration . " ᴵ"])
-                            : $optionsOnOff,
-                    ]); ?>
-                </div>
-            </div>
-
-            <!-- Use CAPTCHA for save and load -->
-            <div class="mb-3">
-                <label class=" form-label" for='usecaptcha_saveandload'><?php  eT("Use CAPTCHA for save and load:"); ?></label>
-                <div>
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'usecaptcha_saveandload',
-                        'ariaLabel' => gT('Use CAPTCHA for save and load:'),
-                        'checkedOption' => (in_array($usecap, $aCaptchaLoadSaveYes))
-                            ? 'Y'
-                            : ((in_array($usecap, $aCaptchaLoadSaveInherit)) ? ('I') : ('N')),
-                        'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaSaveAndLoad . " ᴵ" ])
-                            : $optionsOnOff,
-                    ]); ?>
-                </div>
-            </div>
-            <?php if (!extension_loaded('gd')) { ?>
-                <?php
-                $this->widget('ext.AlertWidget.AlertWidget', [
-                    'text' => '<strong>' . gT('Warning!') . '</strong> ' . gT("The CAPTCHA settings won't have any effect because you don't have the required GD library activated in your PHP configuration."),
-                    'type' => 'warning',
-                ]);
-                ?>
-            <?php }?>
+        <?php }?>
     </div>
 </div>
 <?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
