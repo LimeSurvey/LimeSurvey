@@ -428,6 +428,8 @@ class SurveyAdministrationController extends LSBaseController
             $iQuestionNumber++;
             $iGroupNumber = $oQuestion->gid;
         }
+        // updateAll() bypasses Question::afterSave(), so update the survey's lastmodified timestamp here
+        (new SurveyDetailService())->touchSurveyLastModified((int) $iSurveyID);
         /* Expression text need to be update from condition */
         LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);

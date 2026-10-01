@@ -69,6 +69,48 @@ class SurveyLastModifiedTest extends TestBaseClass
     }
 
     /**
+     * Moving questions to another group/position with the question list mass action updates the survey's
+     * lastmodified timestamp.
+     *
+     * @return void
+     */
+    public function testMovingMultipleQuestionsUpdatesSurveyLastModified(): void
+    {
+        \Yii::import('application.controllers.QuestionAdministrationController', true);
+        $question = Question::model()->findByAttributes(['sid' => self::$surveyId, 'parent_qid' => 0]);
+        $questionGroup = QuestionGroup::model()->find(
+            'sid=:sid AND gid<>:gid',
+            [':sid' => self::$surveyId, ':gid' => $question->gid]
+        );
+
+        \QuestionAdministrationController::changeMultipleQuestionPositionAndGroup([$question->qid], 1, $questionGroup);
+
+        $this->assertSurveyLastModifiedUpdated();
+    }
+
+    /**
+     * Reordering only the question groups updates the survey's lastmodified timestamp.
+     *
+     * @return void
+     */
+    public function testReorderingGroupsUpdatesSurveyLastModified(): void
+    {
+        $questionGroups = QuestionGroup::model()->findAllByAttributes(
+            ['sid' => self::$surveyId],
+            ['order' => 'group_order DESC']
+        );
+        $orgdata = [];
+        foreach ($questionGroups as $questionGroup) {
+            $orgdata['g' . $questionGroup->gid] = 'root';
+        }
+
+        $result = (new \LimeSurvey\Models\Services\GroupHelper())->reorderGroup(self::$surveyId, $orgdata);
+
+        $this->assertSame('success', $result['type']);
+        $this->assertSurveyLastModifiedUpdated();
+    }
+
+    /**
      * Deleting a question updates the survey's lastmodified timestamp.
      *
      * @return void
@@ -95,18 +137,60 @@ class SurveyLastModifiedTest extends TestBaseClass
     }
 
     /**
-     * The survey list can be sorted by the last modified column.
+     * The survey list is ordered by the last modified date when sorting by the last modified column.
      *
      * @return void
      */
     public function testSurveyListIsSortableByLastModified(): void
     {
-        $survey = new Survey('search');
-        $sort = $survey->search()->getSort();
+        $title = 'lastModifiedSortTest' . mt_rand();
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_594264_getGroupDescription.lss';
+        $olderSurveyId = (int) \importSurveyFile($surveyFile, false, $title, null)['newsid'];
+        $newerSurveyId = (int) \importSurveyFile($surveyFile, false, $title, null)['newsid'];
+        $previousSort = $_GET['sort'] ?? null;
+        try {
+            Survey::model()->updateByPk($olderSurveyId, ['lastmodified' => '2001-01-01 00:00:00']);
+            Survey::model()->updateByPk($newerSurveyId, ['lastmodified' => '2002-01-01 00:00:00']);
+            Survey::model()->resetCache();
 
-        $this->assertSame(
-            ['asc' => 't.lastmodified asc', 'desc' => 't.lastmodified desc'],
-            $sort->resolveAttribute('lastModified')
+            $this->assertSame(
+                [$olderSurveyId, $newerSurveyId],
+                $this->getSurveyIdsSortedBy('lastModified', $title),
+                'Surveys are not sorted by ascending last modified date.'
+            );
+            $this->assertSame(
+                [$newerSurveyId, $olderSurveyId],
+                $this->getSurveyIdsSortedBy('lastModified.desc', $title),
+                'Surveys are not sorted by descending last modified date.'
+            );
+        } finally {
+            if ($previousSort === null) {
+                unset($_GET['sort']);
+            } else {
+                $_GET['sort'] = $previousSort;
+            }
+            Survey::model()->deleteSurvey($olderSurveyId);
+            Survey::model()->deleteSurvey($newerSurveyId);
+        }
+    }
+
+    /**
+     * Search the survey list for the given title with the given sort parameter.
+     *
+     * @param string $sort Value of the sort request parameter, e.g. 'lastModified' or 'lastModified.desc'
+     * @param string $title Survey title to filter by
+     * @return int[] Survey IDs in the order returned by the search
+     */
+    private function getSurveyIdsSortedBy(string $sort, string $title): array
+    {
+        $_GET['sort'] = $sort;
+        $survey = new Survey('search');
+        $survey->searched_value = $title;
+        return array_map(
+            function ($survey) {
+                return (int) $survey->sid;
+            },
+            $survey->search()->getData()
         );
     }
 
