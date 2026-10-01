@@ -1619,12 +1619,14 @@ class LimeExpressionManager
                             case Question::QT_D_DATE: //DATE QUESTION TYPE
                                 // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_min']) != '') {
-                                    $mindate = $qattr['date_min'];
-                                    if ((strlen((string)$mindate) == 4)) {
+                                    $mindate = trim((string) $qattr['date_min']);
+                                    if (ctype_digit($mindate) && strlen($mindate) == 4) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_min = '\'' . $mindate . '-01-01' . ' 00:00\'';
-                                    } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $mindate)) {
-                                        $date_min = '\'' . $mindate . ' 00:00\'';
+                                    } elseif (preg_match(QuestionAttribute::DATE_LIMIT_PATTERN, $mindate)) {
+                                        // a date, optionally followed by a time: the pattern ensures it can't break out of the quotes
+                                        $mindate = str_replace('T', ' ', $mindate);
+                                        $date_min = '\'' . (strlen($mindate) == 10 ? $mindate . ' 00:00' : $mindate) . '\'';
                                     } elseif (array_key_exists($date_min, $this->qcode2sgqa)) {  // refers to another question
                                         $date_min = $date_min . '.NAOK';
                                     }
@@ -1694,12 +1696,14 @@ class LimeExpressionManager
                             case Question::QT_D_DATE: //DATE QUESTION TYPE
                                 // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_max']) != '') {
-                                    $maxdate = $qattr['date_max'];
-                                    if ((strlen((string)$maxdate) == 4)) {
+                                    $maxdate = trim((string) $qattr['date_max']);
+                                    if (ctype_digit($maxdate) && strlen($maxdate) == 4) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_max = '\'' . $maxdate . '-12-31 23:59' . '\'';
-                                    } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $maxdate)) {
-                                        $date_max = '\'' . $maxdate . ' 23:59\'';
+                                    } elseif (preg_match(QuestionAttribute::DATE_LIMIT_PATTERN, $maxdate)) {
+                                        // a date, optionally followed by a time: the pattern ensures it can't break out of the quotes
+                                        $maxdate = str_replace('T', ' ', $maxdate);
+                                        $date_max = '\'' . (strlen($maxdate) == 10 ? $maxdate . ' 23:59' : $maxdate) . '\'';
                                     } elseif (array_key_exists($date_max, $this->qcode2sgqa)) {  // refers to another question
                                         $date_max = $date_max . '.NAOK';
                                     }
@@ -4138,6 +4142,26 @@ class LimeExpressionManager
     }
 
     /**
+     * Return whether a subquestion is relevant, using its own array_filter/relevance
+     * status when the ExpressionManager tracks it individually (i.e. $sgqa is a known
+     * variable), and falling back to the parent question's relevance otherwise (e.g.
+     * pseudo subquestions such as the "other" field, which are not tracked under their
+     * own SGQA/fieldname).
+     *
+     * @param string $sgqa The subquestion's SGQA/fieldname
+     * @param int $qid The (parent) question id to fall back to
+     * @return boolean
+     */
+    public static function SubQuestionOrQuestionIsRelevant($sgqa, $qid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if (!isset($LEM->knownVars[$sgqa])) {
+            return self::QuestionIsRelevant($qid);
+        }
+        return self::SubQuestionIsRelevant($sgqa);
+    }
+
+    /**
      * Return whether question $qid is relevanct
      * @param int $qid
      * @return boolean
@@ -5400,6 +5424,8 @@ class LimeExpressionManager
                     return $message;
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
+                    // Decrypt the stored values before setting the new plain ones: encryptSave() encrypts all of them again
+                    $oResponse->decrypt();
                     try {
                         $questions = $survey->questions;
                         $empty = ['', false, null];
@@ -5431,7 +5457,6 @@ class LimeExpressionManager
                         }
                         $this->throwFatalError();
                     }
-                    $oResponse->decrypt();
                     // Save only needed value, no validation
                     if (!$oResponse->encryptSave(false, array_keys($aResponseAttributes))) {
                         $message = submitfailed('', print_r($oResponse->getErrors(), true)); // $response->getErrors() is array[string[]], then can not join
@@ -5632,10 +5657,17 @@ class LimeExpressionManager
                 while (true) {
                     $LEM->currentQset = [];    // reset active list of questions
                     if (++$LEM->currentGroupSeq >= $LEM->numGroups) {
+                        if ($seq < $LEM->numGroups) {
+                            // Jumped to an existing step, but no relevant group from there on: never submit without an explicit submit (see #11833)
+                            $moveResult = $LEM->jumpToLastRelevantGroup($message, $now);
+                            if (!is_null($moveResult)) {
+                                return $moveResult;
+                            }
+                        }
                         $message .= $LEM->_UpdateValuesInDatabase(true);
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
                         $LEM->lastMoveResult = [
-                            'finished'      => true, /* Maybe is better to NEVER set finished to true when use JumpTo, but only when NavigateForwards */
+                            'finished'      => true,
                             'message'       => $message,
                             'gseq'          => $LEM->currentGroupSeq,
                             'seq'           => $LEM->currentGroupSeq,
@@ -5728,6 +5760,13 @@ class LimeExpressionManager
                 while (true) {
                     $LEM->currentQset = [];    // reset active list of questions
                     if (++$LEM->currentQuestionSeq >= $LEM->numQuestions) {
+                        if ($seq < $LEM->numQuestions) {
+                            // Jumped to an existing step, but no relevant question from there on: never submit without an explicit submit (see #11833)
+                            $moveResult = $LEM->jumpToLastRelevantQuestion($message, $now, $notRelevantSteps, $hiddenSteps);
+                            if (!is_null($moveResult)) {
+                                return $moveResult;
+                            }
+                        }
                         $message .= $LEM->_UpdateValuesInDatabase(true);
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
                         $LEM->lastMoveResult = [
@@ -5805,6 +5844,102 @@ class LimeExpressionManager
                 }
                 break;
         }
+    }
+
+    /**
+     * Display the last relevant group of the survey in group by group mode.
+     * Used when a jump reached the end of the survey without an explicit submit, to not finalize the response.
+     * @param string $message messages collected during the move so far
+     * @param float $now microtime when the move started, for runtime timings
+     * @return array|null the move result, null if there is no relevant group at all
+     */
+    private function jumpToLastRelevantGroup($message, $now)
+    {
+        for ($gseq = $this->numGroups - 1; $gseq >= 0; $gseq--) {
+            $this->currentQset = [];    // reset active list of questions
+            $result = $this->_ValidateGroup($gseq);
+            if (is_null($result)) {
+                continue;   // this is an invalid group - skip it
+            }
+            $message .= $result['message'];
+            if (!$result['relevant'] || $result['hidden']) {
+                continue;
+            }
+            $this->currentGroupSeq = $gseq;
+            $message .= $this->_UpdateValuesInDatabase();
+            $this->runtimeTimings[] = [__CLASS__ . '::JumpTo', (microtime(true) - $now)];
+            $this->lastMoveResult = [
+                'finished'      => false,
+                'message'       => $message,
+                'gseq'          => $this->currentGroupSeq,
+                'seq'           => $this->currentGroupSeq,
+                'mandViolation' => (($this->maxGroupSeq > $this->currentGroupSeq) ? $result['mandViolation'] : false),
+                'mandSoft'      => (isset($result['mandSoft'])) ? $result['mandSoft'] : false,
+                'mandNonSoft'   => (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
+                'valid'         => (($this->maxGroupSeq > $this->currentGroupSeq) ? $result['valid'] : false),
+                'unansweredSQs' => $result['unansweredSQs'],
+                'invalidSQs'    => $result['invalidSQs'],
+            ];
+            return $this->lastMoveResult;
+        }
+        return null;
+    }
+
+    /**
+     * Display the last relevant question of the survey in question by question mode.
+     * Used when a jump reached the end of the survey without an explicit submit, to not finalize the response.
+     * @param string $message messages collected during the move so far
+     * @param float $now microtime when the move started, for runtime timings
+     * @param integer $notRelevantSteps number of not relevant steps counted during the move so far
+     * @param integer $hiddenSteps number of hidden steps counted during the move so far
+     * @return array|null the move result, null if there is no relevant question at all
+     */
+    private function jumpToLastRelevantQuestion($message, $now, $notRelevantSteps, $hiddenSteps)
+    {
+        for ($qseq = $this->numQuestions - 1; $qseq >= 0; $qseq--) {
+            $this->currentQset = [];    // reset active list of questions
+            $this->groupRelevanceInfo = [];
+            if (!isset($this->questionSeq2relevance[$qseq])) {
+                continue;
+            }
+            $qInfo = $this->questionSeq2relevance[$qseq];
+            $this->currentQuestionSeq = $qseq;
+            $this->currentQID = $qInfo['qid'];
+            $this->currentGroupSeq = $qInfo['gseq'];
+            $this->ProcessAllNeededRelevance($qseq);
+            $this->_CreateSubQLevelRelevanceAndValidationEqns($qseq);
+            $result = $this->_ValidateQuestion($qseq);
+            $message .= $result['message'];
+            $grel = $this->gRelInfo[$this->currentGroupSeq]['result'];
+            if (!$grel || !$result['relevant'] || $result['hidden']) {
+                if (!$grel || !$result['relevant']) {
+                    $notRelevantSteps--;
+                }
+                if ($result['hidden']) {
+                    $hiddenSteps--;
+                }
+                continue;
+            }
+            $message .= $this->_UpdateValuesInDatabase();
+            $this->runtimeTimings[] = [__CLASS__ . '::JumpTo', (microtime(true) - $now)];
+            $this->lastMoveResult = [
+                'finished'      => false,
+                'message'       => $message,
+                'qseq'          => $this->currentQuestionSeq,
+                'gseq'          => $this->currentGroupSeq,
+                'seq'           => $this->currentQuestionSeq,
+                'mandViolation' => (($this->maxQuestionSeq > $this->currentQuestionSeq) ? $result['mandViolation'] : false),
+                'mandSoft'      => (isset($result['mandSoft'])) ? $result['mandSoft'] : false,
+                'mandNonSoft'   => (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
+                'valid'         => (($this->maxQuestionSeq > $this->currentQuestionSeq) ? $result['valid'] : true),
+                'unansweredSQs' => $result['unansweredSQs'],
+                'invalidSQs'    => $result['invalidSQs'],
+                'notRelevantSteps'   => $notRelevantSteps,
+                'hiddenSteps'   => $hiddenSteps
+            ];
+            return $this->lastMoveResult;
+        }
+        return null;
     }
 
     /**

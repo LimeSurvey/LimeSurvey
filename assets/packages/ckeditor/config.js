@@ -268,10 +268,8 @@ CKEDITOR.editorConfig = function (a) {
     
         a.filebrowserBrowseUrl = CKEDITOR.basePath + "../kcfinder/browse.php?type\x3dfiles";
         a.filebrowserImageBrowseUrl = CKEDITOR.basePath + "../kcfinder/browse.php?type\x3dimages";
-        a.filebrowserFlashBrowseUrl = CKEDITOR.basePath + "../kcfinder/browse.php?type\x3dflash";
         a.filebrowserUploadUrl = CKEDITOR.basePath + "../kcfinder/upload.php?type\x3dfiles";
         a.filebrowserImageUploadUrl = CKEDITOR.basePath + "../kcfinder/upload.php?type\x3dimages";
-        a.filebrowserFlashUploadUrl = CKEDITOR.basePath + "../kcfinder/upload.php?type\x3dflash";
         a.removeDialogTabs = "link:upload;image:Upload";
         a.image_prefillDimensions = !1;
         a.image2_prefillDimensions = !1;

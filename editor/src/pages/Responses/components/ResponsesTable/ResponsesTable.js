@@ -438,6 +438,7 @@ export const ResponsesTable = ({
               sid={survey.sid}
               sortedColumnId={sortedColumnId}
               table={table}
+              baseLanguage={survey.language}
             />
           </table>
         </div>
@@ -507,6 +508,7 @@ export const ResponsesTable = ({
           isBulkActionRef.current = false
         }}
         table={table}
+        saveTimings={survey.saveTimings}
         QuestionComponent={
           <QuestionPreview
             surveySettings={{
