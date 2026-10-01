@@ -843,7 +843,7 @@ class Export extends SurveyCommonAction
             if ($zip->open($zipfilepath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
                 throw new Exception("Error : " . $zip->getStatusString());
             }
-            foreach (array('files', 'flash', 'images') as $zipdir) {
+            foreach (array('files', 'images') as $zipdir) {
                 if (is_dir($resourcesdir . $zipdir)) {
                     $dirPath = $resourcesdir . $zipdir;
                     $files = new RecursiveIteratorIterator(

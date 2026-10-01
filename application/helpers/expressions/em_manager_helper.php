@@ -1619,12 +1619,14 @@ class LimeExpressionManager
                             case Question::QT_D_DATE: //DATE QUESTION TYPE
                                 // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_min']) != '') {
-                                    $mindate = $qattr['date_min'];
-                                    if ((strlen((string)$mindate) == 4)) {
+                                    $mindate = trim((string) $qattr['date_min']);
+                                    if (ctype_digit($mindate) && strlen($mindate) == 4) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_min = '\'' . $mindate . '-01-01' . ' 00:00\'';
-                                    } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $mindate)) {
-                                        $date_min = '\'' . $mindate . ' 00:00\'';
+                                    } elseif (preg_match(QuestionAttribute::DATE_LIMIT_PATTERN, $mindate)) {
+                                        // a date, optionally followed by a time: the pattern ensures it can't break out of the quotes
+                                        $mindate = str_replace('T', ' ', $mindate);
+                                        $date_min = '\'' . (strlen($mindate) == 10 ? $mindate . ' 00:00' : $mindate) . '\'';
                                     } elseif (array_key_exists($date_min, $this->qcode2sgqa)) {  // refers to another question
                                         $date_min = $date_min . '.NAOK';
                                     }
@@ -1694,12 +1696,14 @@ class LimeExpressionManager
                             case Question::QT_D_DATE: //DATE QUESTION TYPE
                                 // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_max']) != '') {
-                                    $maxdate = $qattr['date_max'];
-                                    if ((strlen((string)$maxdate) == 4)) {
+                                    $maxdate = trim((string) $qattr['date_max']);
+                                    if (ctype_digit($maxdate) && strlen($maxdate) == 4) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_max = '\'' . $maxdate . '-12-31 23:59' . '\'';
-                                    } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $maxdate)) {
-                                        $date_max = '\'' . $maxdate . ' 23:59\'';
+                                    } elseif (preg_match(QuestionAttribute::DATE_LIMIT_PATTERN, $maxdate)) {
+                                        // a date, optionally followed by a time: the pattern ensures it can't break out of the quotes
+                                        $maxdate = str_replace('T', ' ', $maxdate);
+                                        $date_max = '\'' . (strlen($maxdate) == 10 ? $maxdate . ' 23:59' : $maxdate) . '\'';
                                     } elseif (array_key_exists($date_max, $this->qcode2sgqa)) {  // refers to another question
                                         $date_max = $date_max . '.NAOK';
                                     }

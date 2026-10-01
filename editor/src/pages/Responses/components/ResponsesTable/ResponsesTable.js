@@ -508,6 +508,7 @@ export const ResponsesTable = ({
               sid={survey.sid}
               sortedColumnId={sortedColumnId}
               table={table}
+              baseLanguage={survey.language}
             />
           </table>
         </div>
