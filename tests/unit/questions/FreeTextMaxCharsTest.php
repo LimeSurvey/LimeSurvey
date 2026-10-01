@@ -80,7 +80,7 @@ class FreeTextMaxCharsTest extends TestBaseClass
     /**
      * Update_719 changes TEXT response columns of Long free text questions to MEDIUMTEXT on MySQL.
      */
-    public function testUpdate709ChangesColumnToMediumtext()
+    public function testUpdate719ChangesColumnToMediumtext()
     {
         $db = \Yii::app()->db;
         if ($db->driverName != 'mysql') {
