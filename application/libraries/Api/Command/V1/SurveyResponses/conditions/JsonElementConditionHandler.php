@@ -103,9 +103,7 @@ class JsonElementConditionHandler implements HandlerInterface, SurveyContextAwar
     protected function isJsonColumn(string $field): bool
     {
         if ($this->surveyId === null) {
-            throw new InvalidArgumentException(
-                'A json element condition needs the survey it belongs to.'
-            );
+            return false;
         }
 
         $column = \SurveyDynamic::model($this->surveyId)->getTableSchema()->getColumn($field);

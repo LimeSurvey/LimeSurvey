@@ -23,7 +23,7 @@ class OpHandlerResponseJsonElementConditionTest extends TestCondition
 
     public function testReadsTheGivenPositionAndBindsTheValue(): void
     {
-        $handler = new JsonElementConditionHandler();
+        $handler = $this->handlerFor('mysql');
 
         $criteria = $handler->execute('Q140', ['position' => 1, 'value' => 'SQ006']);
 
@@ -36,7 +36,7 @@ class OpHandlerResponseJsonElementConditionTest extends TestCondition
     /** First place is element zero, and must not be mistaken for "no position". */
     public function testPositionZeroIsHonoured(): void
     {
-        $handler = new JsonElementConditionHandler();
+        $handler = $this->handlerFor('mysql');
 
         $criteria = $handler->execute('Q140', ['position' => 0, 'value' => 'SQ001']);
 
@@ -49,7 +49,7 @@ class OpHandlerResponseJsonElementConditionTest extends TestCondition
      */
     public function testTheReadIsGuardedAgainstNonJsonRows(): void
     {
-        $handler = new JsonElementConditionHandler();
+        $handler = $this->handlerFor('mysql');
 
         $criteria = $handler->execute('Q140', ['position' => 0, 'value' => 'SQ001']);
 
@@ -59,7 +59,7 @@ class OpHandlerResponseJsonElementConditionTest extends TestCondition
     /** The item code is bound, never written into the SQL. */
     public function testTheValueIsNeverInlined(): void
     {
-        $handler = new JsonElementConditionHandler();
+        $handler = $this->handlerFor('mysql');
 
         $criteria = $handler->execute('Q140', ['position' => 0, 'value' => "SQ001' OR '1'='1"]);
 
@@ -73,7 +73,7 @@ class OpHandlerResponseJsonElementConditionTest extends TestCondition
      */
     public function testTwoMergedRankingFiltersKeepBothValues(): void
     {
-        $handler = new JsonElementConditionHandler();
+        $handler = $this->handlerFor('mysql');
 
         $merged = new \CDbCriteria();
         $merged->mergeWith($handler->execute('Q140', ['position' => 0, 'value' => 'SQ001']));
@@ -140,8 +140,11 @@ class OpHandlerResponseJsonElementConditionTest extends TestCondition
         $this->assertSame([], $criteria->params);
     }
 
-    /** Without the survey there is no way to tell how the column is stored. */
-    public function testPostgresRefusesWithoutTheSurveyItBelongsTo(): void
+    /**
+     * Without the survey the column's storage cannot be read, so Postgres must
+     * not get the operator — matching nothing is the safe answer.
+     */
+    public function testPostgresMatchesNothingWithoutTheSurveyItBelongsTo(): void
     {
         $handler = new class extends JsonElementConditionHandler {
             protected function driverName(): string
@@ -150,9 +153,10 @@ class OpHandlerResponseJsonElementConditionTest extends TestCondition
             }
         };
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('needs the survey it belongs to');
-        $handler->execute('Q140', ['position' => 0, 'value' => 'SQ001']);
+        $criteria = $handler->execute('Q140', ['position' => 0, 'value' => 'SQ001']);
+
+        $this->assertSame('1=0', $criteria->condition);
+        $this->assertSame([], $criteria->params);
     }
 
     /**
@@ -177,6 +181,27 @@ class OpHandlerResponseJsonElementConditionTest extends TestCondition
             protected function isJsonColumn(string $field): bool
             {
                 return $this->isJson;
+            }
+        };
+    }
+
+    /**
+     * The SQL differs per driver and CI runs this suite against all three, so
+     * a test that asserts on the SQL has to say which one it means.
+     */
+    private function handlerFor(string $driver): JsonElementConditionHandler
+    {
+        return new class ($driver) extends JsonElementConditionHandler {
+            private string $driver;
+
+            public function __construct(string $driver)
+            {
+                $this->driver = $driver;
+            }
+
+            protected function driverName(): string
+            {
+                return $this->driver;
             }
         };
     }

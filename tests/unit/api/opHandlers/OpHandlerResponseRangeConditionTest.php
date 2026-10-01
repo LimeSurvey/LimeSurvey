@@ -164,9 +164,7 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
      */
     public function testNonNumericCellsAreExcluded(): void
     {
-        $handler = new RangeConditionHandler();
-
-        $criteria = $handler->execute('numeric_field', ['-1', '1']);
+        $criteria = $this->handlerFor('mysql')->execute('numeric_field', ['-1', '1']);
 
         $this->assertStringContainsString('CASE WHEN', $criteria->condition);
         $this->assertStringContainsString('REGEXP', $criteria->condition);
