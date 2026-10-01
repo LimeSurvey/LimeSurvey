@@ -253,7 +253,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
             $question['conditiontext'] = $this->surveyCondition->getConditionText($questionModel);
 
-            $question['showAssessmentValue'] = $questionModel->survey->assessments === 'Y'
+            $question['showAssessmentValue'] = $questionModel->survey->isAssessments
                 && $questionModel->getAllowAnswerOptions();
 
             if ($questionModel->subquestions) {

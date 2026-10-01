@@ -14,6 +14,7 @@ import {
   getQuestionExample,
   getNextQuestionCode,
   getNextSubQuestionCode,
+  isTrue,
 } from 'helpers'
 import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
 
@@ -285,7 +286,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       ),
       languages: survey.languages,
       showAssessmentValue:
-        survey.assessments === 'Y' &&
+        isTrue(survey.assessments) &&
         questionWithAnswersTheme.includes(questionThemeName),
     })
 
