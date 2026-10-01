@@ -914,7 +914,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/variations/theme_apple.css","css/base.css","css/custom.css"], "remove":["survey.css", "template-core.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/custom.js"], "remove":["survey.js", "template-core.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png","brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans", "bodybackgroundcolor":"#ffffff","fontcolor":"#444444", "questionbackgroundcolor":"#ffffff", "checkicon":"EB7A","cornerradius":"2","cssframework":"Apple", "notables":"1"}',
+            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png","brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans", "bodybackgroundcolor":"#ffffff","fontcolor":"#444444", "questionbackgroundcolor":"#ffffff", "checkicon":"EB7A","cornerradius":"2", "deselectsinglechoice":"off", "cssframework":"apple", "notables":"1"}',
             'cssframework_name' => '',
             'cssframework_css'  => '',
             'cssframework_js'   => '',
@@ -2717,19 +2717,13 @@ class LsDefaultDataSets
     /**
      * All translations that are used in files that can or should not be searched by the translation script.
      * This function has no functionality except for being searchable by the translation script.
+     *
+     * @return void
      */
     public static function mockTranslateArrayContainer()
     {
         $translationArray = [
-            // Question themes
-            gT("Bootstrap dropdown"),
-            gT("Bootstrap buttons"),
-            gT("Image select list (Radio)"),
-            gT("Image select multiple choice"),
-            gT("Browser detection"),
-            gT("Input on demand"),
-            gT("Ranking advanced"),
-            // Other
+            // Survey theme option titles, categories and button labels from themes/survey/*/config.xml attributes
             gT("Survey container"),
             gT("Hide privacy info"),
             gT("Show popups"),
@@ -2737,17 +2731,11 @@ class LsDefaultDataSets
             gT("On page"),
             gT("Fix automatically numeric value"),
             gT("For expression"),
-            gT("Brandlogo"),
-            gT("Brandlogo file"),
-            gT('Preview image'),
-            gT("Bootstrap theme"),
-            gT("Bootswatch theme"),
             gT("Question borders"),
             gT("Question shadow"),
             gT("Zebra-striped questions"),
             gT("Sticky array headers"),
             gT("Dim answered array rows"),
-            gT("Hide privacy info"),
             gT("Cross-hover in matrix questions"),
             gT("Background color"),
             gT("Font color"),
@@ -2765,28 +2753,22 @@ class LsDefaultDataSets
             gT("Animate alert"),
             gT("Alert animation"),
             gT("Animate checkbox"),
-            gT("Alert animation"),
             gT("Animate radio buttons"),
             gT("Radio button animation"),
-            gT("Select font:"),
-            gT("Select variation:"),
-            gT("Fruity fonts"),
-            gT("Fruity variations"),
-            gT("I confirm"), // Used in optin/optout and not picked up due to bug #19411,
-            gT("Show link to legal notice in survey:"),
-            gT("Show link to data policy in survey:"),
-            gT("Survey legal notice:"),
-            gT("Legal notice"),
             gT("Show 'Clear all' button"),
             gT("Wrap tables"),
+            gT("Always on"),
+            gT("Small screens"),
+            gT("Question help text position"),
+            gT("Top"),
+            gT("Bottom"),
+            gT("Deselect single-choice option by click"),
+            gT("Corner radius"),
+            gT("Theme color"),
             gT("Variations"),
             gT("Colors"),
             gT("Animations"),
-            gT("Fonts"),
-            // Template descriptions
-            gT("A clean and simple base that can be used by developers to create their own Bootstrap based theme."),
-            gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."),
-            gT("Our default theme for a fruity and flexible use. This theme offers single color variations")
+            gT("Fonts")
         ];
     }
 

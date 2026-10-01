@@ -152,21 +152,100 @@ class Plugin extends LSActiveRecord
     }
 
     /**
-     * Plugin status as shown in plugin list.
-     * @return string HTML
+     * Plugin status as shown in plugin list, as a status icon (no text
+     * label). When the plugin has no load error, the icon is a clickable
+     * control that immediately activates/deactivates it, without a
+     * confirmation prompt; its accessible name and tooltip carry the label.
+     *
+     * @param bool $returnToDetail Whether clicking the toggle should return to this
+     *   plugin's detail/configure page instead of the plugin list. Pass true when
+     *   rendering on the plugin detail page (overview.php).
+     * @param string $iconSizeClass Extra CSS class(es) for the icon size, e.g. 'fs-3'.
+     *   Left empty by default so the icon matches surrounding text (used on the
+     *   plugin detail page); the plugin list grid passes a larger size explicitly.
+     * @return string HTML markup for the status column
      */
-    public function getStatus()
+    public function getStatus(bool $returnToDetail = false, string $iconSizeClass = '')
     {
         if ($this->getLoadError()) {
+            $message = CHtml::encode(sprintf(gT('Plugin load error: %s'), $this->load_error_message));
             return sprintf(
-                "<span data-bs-toggle='tooltip' title='%s' class='btntooltip ri-close-fill text-danger'></span>",
-                CHtml::encode(sprintf(gT('Plugin load error: %s'), $this->load_error_message))
+                "<span role='img' aria-label='%s' data-bs-toggle='tooltip' title='%s' "
+                    . "class='btntooltip ri-close-fill text-danger align-middle %s'></span>",
+                $message,
+                $message,
+                CHtml::encode($iconSizeClass)
             );
         } elseif ($this->active == 1) {
-            return "<span class='ri-checkbox-blank-circle-fill'></span>";
+            return $this->getStatusToggleButton(
+                gT('Active'),
+                'ri-play-fill text-primary',
+                'deactivate',
+                gT('Click to deactivate'),
+                true,
+                $returnToDetail,
+                $iconSizeClass
+            );
         } else {
-            return "<span class='ri-checkbox-blank-circle-line'></span>";
+            return $this->getStatusToggleButton(
+                gT('Inactive'),
+                'ri-stop-fill text-secondary',
+                'activate',
+                gT('Click to activate'),
+                false,
+                $returnToDetail,
+                $iconSizeClass
+            );
         }
+    }
+
+    /**
+     * Builds the clickable status icon used in the plugin list. Clicking it
+     * immediately posts to the plugin manager's activate/deactivate action
+     * via the shared LS.sendPost() helper, without a confirmation prompt.
+     * No text label is shown; the current status and resulting action are
+     * exposed via the tooltip, accessible name and `aria-pressed` state,
+     * e.g. "Active - click to deactivate".
+     *
+     * @param string $statusLabel Current status, e.g. "Active" or "Inactive", used in the tooltip
+     * @param string $iconClass CSS classes for the status icon
+     * @param string $action Plugin manager action, 'activate' or 'deactivate'
+     * @param string $actionHint Tooltip/accessible hint describing the resulting action, e.g. "click to deactivate"
+     * @param bool $isActive Current plugin active state, exposed as the button's aria-pressed value
+     * @param bool $returnToDetail Whether the controller should redirect back to this
+     *   plugin's detail/configure page afterwards instead of the plugin list
+     * @param string $iconSizeClass Extra CSS class(es) for the icon size, e.g. 'fs-3'
+     * @return string HTML markup for the clickable status control
+     */
+    private function getStatusToggleButton(
+        string $statusLabel,
+        string $iconClass,
+        string $action,
+        string $actionHint,
+        bool $isActive,
+        bool $returnToDetail,
+        string $iconSizeClass = ''
+    ): string {
+        $url = App()->getController()->createUrl('/admin/pluginmanager', ['sa' => $action]);
+        $tooltip = sprintf('%s - %s', $statusLabel, $actionHint);
+        $postDatas = ['pluginId' => $this->id];
+        if ($returnToDetail) {
+            $postDatas['returnTo'] = 'configure';
+        }
+        return sprintf(
+            "<button type='button' class='btn btn-outline-secondary btn-sm d-inline-flex align-items-center "
+                . "justify-content-center p-1 lh-1 btntooltip' "
+                . "onclick='LS.sendPost(%s, \"\", %s)' aria-label='%s' aria-pressed='%s' "
+                . "data-bs-toggle='tooltip' title='%s'>"
+                . "<span class='%s %s' aria-hidden='true'></span></button>",
+            CHtml::encode(json_encode($url)),
+            CHtml::encode(json_encode($postDatas)),
+            CHtml::encode($tooltip),
+            $isActive ? 'true' : 'false',
+            CHtml::encode($tooltip),
+            $iconClass,
+            CHtml::encode($iconSizeClass)
+        );
     }
 
     /**
@@ -279,6 +358,16 @@ class Plugin extends LSActiveRecord
         return $output;
     }
 
+    /**
+     * Builds the row-actions dropdown shown in the plugin list ("..." menu).
+     * Depending on plugin state, it offers reloading a failed plugin, or
+     * activating/deactivating and uninstalling it. Activate and Deactivate
+     * post immediately via LS.sendPost() without a confirmation prompt;
+     * Uninstall still confirms via the shared confirmation modal since it
+     * is destructive.
+     *
+     * @return string HTML markup of the rendered dropdown widget
+     */
     public function getButtons(): string
     {
 
@@ -325,18 +414,14 @@ class Plugin extends LSActiveRecord
             $dropdownItems[] = [
                 'title'            => gT('Activate'),
                 'url'              => $activateUrl,
-                'iconClass'        => "ri-play-fill text-success",
+                'iconClass'        => 'ri-play-fill text-primary',
                 'enabledCondition' => $this->active == 0,
                 'linkAttributes'   => [
-                    'data-bs-toggle'  => 'modal',
-                    'data-bs-target'  => '#confirmation-modal',
-                    'data-btnclass'   => 'btn-success',
-                    'type'            => 'submit',
-                    'data-btntext'    => gT("Activate"),
-                    'data-title'      => gT('Activate plugin'),
-                    'data-message'    => gT("Are you sure you want to activate this plugin?"),
-                    'data-post-url'   => $activateUrl,
-                    'data-post-datas' => json_encode(['pluginId' => $this->id]),
+                    'onclick' => sprintf(
+                        'LS.sendPost(%s, "", %s); return false;',
+                        json_encode($activateUrl),
+                        json_encode(['pluginId' => $this->id])
+                    ),
                 ],
 
             ];
@@ -346,15 +431,11 @@ class Plugin extends LSActiveRecord
                 'iconClass'        => 'ri-stop-fill text-danger',
                 'enabledCondition' => $this->active == 1,
                 'linkAttributes'   => [
-                    'data-bs-toggle'  => 'modal',
-                    'data-bs-target'  => '#confirmation-modal',
-                    'data-btnclass'   => 'btn-danger',
-                    'type'            => 'submit',
-                    'data-btntext'    => gT("Deactivate"),
-                    'data-title'      => gT('Deactivate plugin'),
-                    'data-message'    => gT("Are you sure you want to deactivate this plugin?"),
-                    'data-post-url'   => $deactivateUrl,
-                    'data-post-datas' => json_encode(['pluginId' => $this->id]),
+                    'onclick' => sprintf(
+                        'LS.sendPost(%s, "", %s); return false;',
+                        json_encode($deactivateUrl),
+                        json_encode(['pluginId' => $this->id])
+                    ),
                 ],
 
             ];
@@ -434,13 +515,14 @@ class Plugin extends LSActiveRecord
      * Get installation folder of this plugin.
      * Installation folder is different for core and
      * user plugins.
-     * @return string
-     * @throws Exception
+     *
+     * @return string Absolute path to the plugin folder
+     * @throws Exception if the plugin type is unknown or empty, or its alias has no folder
      */
     protected function getDir()
     {
         $pluginManager = App()->getPluginManager();
-        $alias = $pluginManager->pluginDirs[$this->plugin_type];
+        $alias = $pluginManager->pluginDirs[(string) $this->plugin_type] ?? null;
 
         if (empty($alias)) {
             throw new \Exception('Unknown plugin type: ' . json_encode($this->plugin_type));

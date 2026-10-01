@@ -748,7 +748,14 @@ class SurveyAdministrationController extends LSBaseController
                 $zip->close();
 
                 // now read tempdir and copy authorized files only
-                $folders = array('flash', 'files', 'images');
+                $folders = array('files', 'images');
+                $hasResourceFolders = false;
+                foreach ($folders as $folder) {
+                    if (is_dir($extractdir . "/" . $folder)) {
+                        $hasResourceFolders = true;
+                        break;
+                    }
+                }
 
                 $filteredImportedResources = new FilterImportedResources();
 
@@ -770,7 +777,9 @@ class SurveyAdministrationController extends LSBaseController
                 if (empty($aErrorFilesInfo) && empty($aImportedFilesInfo)) {
                     Yii::app()->user->setFlash(
                         'error',
-                        gT("This ZIP archive contains no valid Resources files. Import failed.")
+                        $hasResourceFolders
+                            ? gT("This ZIP archive contains no valid Resources files. Import failed.")
+                            : gT("The ZIP archive must contain a 'files' and/or an 'images' folder at its top level, with the resource files placed inside. Import failed.")
                     );
                     $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'resources'));
                 }
@@ -1375,6 +1384,7 @@ class SurveyAdministrationController extends LSBaseController
         $iSurveyId = (int)$sid;
         $changes = Yii::app()->request->getPost('changes');
         $aSuccess = [];
+        $aErrors = [];
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
             return $this->renderPartial(
@@ -1409,7 +1419,12 @@ class SurveyAdministrationController extends LSBaseController
             $oSurveyLanguageSetting->surveyls_urldescription = $contentChange['endUrlDescription'];
             $oSurveyLanguageSetting->surveyls_dateformat = $contentChange['dateFormat'];
             $oSurveyLanguageSetting->surveyls_numberformat = $contentChange['decimalDivider'];
-            $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
+            $aSuccess[$sLanguage] = LSYii_Validators::refuseChangedExpressionsDuring(function () use ($oSurveyLanguageSetting) {
+                return $oSurveyLanguageSetting->save();
+            });
+            foreach ($oSurveyLanguageSetting->getErrors() as $aAttributeErrors) {
+                $aErrors = array_merge($aErrors, $aAttributeErrors);
+            }
             unset($oSurveyLanguageSetting);
         }
 
@@ -1426,7 +1441,8 @@ class SurveyAdministrationController extends LSBaseController
             [
                 'data' => [
                     "success" => $success,
-                    "message" => ($success ? gT("Survey texts were saved successfully.") : gT("Error saving survey texts"))
+                    "message" => ($success ? gT("Survey texts were saved successfully.") : gT("Error saving survey texts")),
+                    "errors" => array_values(array_unique($aErrors))
                 ]
             ],
             false,
@@ -2401,23 +2417,6 @@ class SurveyAdministrationController extends LSBaseController
         if ($copiedSurvey !== null) {
             $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $copiedSurvey->sid]);
             $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $copiedSurvey->sid;
-            $questionGroupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
-
-            // Make the link point to the first group/question if available
-            if (!empty($questionGroupList)) {
-                $oFirstGroup = $questionGroupList[0];
-                $oFirstQuestion = Question::model()->primary()->findByAttributes(
-                    ['gid' => $oFirstGroup->gid],
-                    ['order' => 'question_order ASC']
-                );
-
-                $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
-                    $copiedSurvey->sid,
-                    $oFirstGroup->gid,
-                    !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
-                    'structure'
-                );
-            }
         }
 
         $this->aData = $aData;
@@ -2457,6 +2456,9 @@ class SurveyAdministrationController extends LSBaseController
 
         $option = $request->getPost('resetResponseStartId');
         $optionsDataContainer->setResetResponseStartId(isset($option) && $option == "1");
+
+        $option = $request->getPost('copySurveyUrlParameters');
+        $optionsDataContainer->setUrlParameters(isset($option) && $option == "1");
 
         $newTitle = $request->getPost('copysurveytitle');
         if (is_string($newTitle) && trim($newTitle) !== '') {
@@ -2540,7 +2542,7 @@ class SurveyAdministrationController extends LSBaseController
         if (!$aData['bFailed'] && isset($aImportResults)) {
             $aData['aImportResults'] = $aImportResults;
             if (isset($aImportResults['newsid'])) {
-                // Set link pointing to survey administration overview. This link will be updated if the survey has groups
+                // Set link pointing to survey administration overview
                 $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $aImportResults['newsid']]);
                 $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $aImportResults['newsid'];
             }
@@ -2551,22 +2553,6 @@ class SurveyAdministrationController extends LSBaseController
             $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $aImportResults['newsid']]);
 
             $this->resetExpressionManager($oSurvey, $aGrouplist);
-
-            // Make the link point to the first group/question if available
-            if (!empty($aGrouplist)) {
-                $oFirstGroup = $aGrouplist[0];
-                $oFirstQuestion = Question::model()->primary()->findByAttributes(
-                    ['gid' => $oFirstGroup->gid],
-                    ['order' => 'question_order ASC']
-                );
-
-                $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
-                    $aImportResults['newsid'],
-                    $oFirstGroup->gid,
-                    !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
-                    'structure'
-                );
-            }
         }
 
         $this->aData = $aData;
@@ -3162,6 +3148,9 @@ class SurveyAdministrationController extends LSBaseController
         if ($oSurvey->emailresponseto != '') {
             $surveysummary2[] = gT("Detailed email notification with response data is sent to:") . ' ' . htmlspecialchars((string)$aSurveyInfo['emailresponseto']);
         }
+        if ($oSurvey->isSaveQuotaExit) {
+            $surveysummary2[] = gT("Matched quota ID will be saved.");
+        }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if (trim((string)$oSurvey->startdate) != '') {
@@ -3587,14 +3576,7 @@ class SurveyAdministrationController extends LSBaseController
 
         // Based on Database::actionUpdateSurveyLocaleSettings()
         $paramData['parameter'] = trim($paramData['parameter'] ?? '');
-        if (
-            $paramData['parameter'] == ''
-            || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $paramData['parameter'])
-            || $paramData['parameter'] == 'sid'
-            || $paramData['parameter'] == 'newtest'
-            || $paramData['parameter'] == 'token'
-            || $paramData['parameter'] == 'lang'
-        ) {
+        if (!SurveyURLParameter::isValidParameterName($paramData['parameter'])) {
             return $this->renderPartial(
                 '/admin/super/_renderJson',
                 ['data' => ['success' => false, 'message' => gT("Invalid URL parameter")]]

@@ -156,7 +156,7 @@ var bindPageSizeChange = function () {
   $(document).trigger("actions-updated");
 };
 
-const activeTabContent = () => {
+var activeTabContent = function () {
   const params = new URLSearchParams(window.location.search);
   const activeTab = params.get("activeTab");
   if (activeTab) {
