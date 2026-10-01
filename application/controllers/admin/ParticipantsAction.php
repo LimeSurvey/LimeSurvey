@@ -1053,7 +1053,7 @@ class ParticipantsAction extends SurveyCommonAction
                 if (!empty($existingParticipants)) {
                     $dupfound = true;
                     if ($overwrite == "true") {
-                        foreach($existingParticipants as $existingParticipant) {
+                        foreach ($existingParticipants as $existingParticipant) {
                             /* Check permission */
                             if (
                                 $existingParticipant->owner_uid != App()->getCurrentUserId()
@@ -2911,7 +2911,7 @@ class ParticipantsAction extends SurveyCommonAction
         $stateId = 'currentReencryptLastParticipantId';
         if (App()->getRequest()->getPost('rencrypt') == 'reset') {
             $lastParticipantId = '';
-            App()->user->setState($stateId, NULL);
+            App()->user->setState($stateId, null);
         } else {
             $lastParticipantId = strval(App()->user->getState($stateId, ''));
         }
@@ -2927,7 +2927,7 @@ class ParticipantsAction extends SurveyCommonAction
             $criteria->compare('participant_id', '>' . $lastParticipantId);
         }
         $oParticipants = Participant::model()->findAll($criteria);
-        foreach($oParticipants as $oParticipant) {
+        foreach ($oParticipants as $oParticipant) {
             $oParticipant->decrypt();
             if ($oParticipant->encryptSave()) {
                 $processed++;
@@ -2944,9 +2944,9 @@ class ParticipantsAction extends SurveyCommonAction
             );
         }
         if ($stilltoProcess == 0) {
-            App()->user->setState($stateId, NULL);
+            App()->user->setState($stateId, null);
             App()->setFlashMessage(gT("All particpant data are reencrypted"));
-        } else  {
+        } else {
             App()->setFlashMessage(sprintf(
                 gT("%s participants data are reencrypted, still %s to reencrypt"),
                 $processed,
@@ -2967,7 +2967,7 @@ class ParticipantsAction extends SurveyCommonAction
         $stateId = 'currentDuplicateFinderInvalidParticipantId';
         if (App()->getRequest()->getPost('rencrypt') == 'reset') {
             $lastParticipantId = '';
-            App()->user->setState($stateId, NULL);
+            App()->user->setState($stateId, null);
         } else {
             $lastParticipantId = strval(App()->user->getState($stateId, ''));
         }
@@ -2983,7 +2983,7 @@ class ParticipantsAction extends SurveyCommonAction
             $criteria->compare('participant_id', '>' . $lastParticipantId);
         }
         $oParticipants = Participant::model()->invaliduplicatefinder()->findAll($criteria);
-        foreach($oParticipants as $oParticipant) {
+        foreach ($oParticipants as $oParticipant) {
             $oParticipant->decrypt();
             if ($oParticipant->encryptSave()) {
                 $processed++;
@@ -2999,9 +2999,9 @@ class ParticipantsAction extends SurveyCommonAction
             $stilltoProcess = Participant::model()->getDuplicateFinderInvalidCount($criteria);
         }
         if ($stilltoProcess == 0) {
-            App()->user->setState($stateId, NULL);
+            App()->user->setState($stateId, null);
             App()->setFlashMessage(gT("All participant duplicate indexes are up to date."));
-        } else  {
+        } else {
             App()->setFlashMessage(sprintf(
                 gT("%s duplicate finder entries saved, %s remaining."),
                 $processed,

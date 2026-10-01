@@ -2211,25 +2211,25 @@ class Tokens extends SurveyCommonAction
                                     if ($surveyEncryptionmethod != 'H' || count($aCoreEncryptedAttributes) < 3) { // No duplicate count if H and all core attribute are encryoted
                                         $criteria = new CDbCriteria();
                                         if (in_array('firstname', $aCoreEncryptedAttributes)) {
-                                            if($surveyEncryptionmethod == 'B') {
+                                            if ($surveyEncryptionmethod == 'B') {
                                                 $criteria->compare('firstname', LSActiveRecord::encryptSingle($myfirstname, 'B'));
                                             }
                                         } else {
-                                           $criteria->compare('firstname', $myfirstname);
+                                            $criteria->compare('firstname', $myfirstname);
                                         }
                                         if (in_array('lastname', $aCoreEncryptedAttributes)) {
-                                            if($surveyEncryptionmethod == 'B') {
+                                            if ($surveyEncryptionmethod == 'B') {
                                                 $criteria->compare('lastname', LSActiveRecord::encryptSingle($mylastname, 'B'));
                                             }
                                         } else {
-                                           $criteria->compare('lastname', $mylastname);
+                                            $criteria->compare('lastname', $mylastname);
                                         }
                                         if (in_array('email', $aCoreEncryptedAttributes)) {
-                                            if($surveyEncryptionmethod == 'B') {
+                                            if ($surveyEncryptionmethod == 'B') {
                                                 $criteria->compare('email', LSActiveRecord::encryptSingle($myemail, 'B'));
                                             }
                                         } else {
-                                           $criteria->compare('email', $myemail);
+                                            $criteria->compare('email', $myemail);
                                         }
                                         $dupresult = TokenDynamic::model($iSurveyId)->count($criteria);
                                     } else {
