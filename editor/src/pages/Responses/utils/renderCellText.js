@@ -3,6 +3,7 @@ import {
   isArrayQuestion,
   isRankingQuestion,
   isSingleChoiceQuestion,
+  OTHER_CODE,
 } from 'helpers'
 
 export const renderCellText = ({
@@ -17,14 +18,23 @@ export const renderCellText = ({
   question = {},
   baseLanguage,
 }) => {
-  const isOtherKey = key.endsWith('_Cother')
+  const isOtherKey = key.endsWith('_Cother') || subquestionTitle == OTHER_CODE
+
+  const otherReplaceText =
+    (question.attributes?.other_replace_text?.[baseLanguage] || t('Other')) +
+    ': '
 
   if (!value && !answerTitle && !comment?.value) {
     return <></>
   }
 
   if (!subquestionTitle && !answerTitle && !comment?.value) {
-    return <span> {value} </span>
+    return (
+      <span>
+        {' '}
+        {isOtherKey ? otherReplaceText : ''} {value}
+      </span>
+    )
   }
 
   if (
@@ -53,10 +63,6 @@ export const renderCellText = ({
       </>
     )
   }
-
-  const otherReplaceText =
-    (question.attributes?.other_replace_text?.[baseLanguage] || t('Other')) +
-    ': '
 
   return (
     <span>
