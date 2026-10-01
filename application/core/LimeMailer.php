@@ -343,22 +343,41 @@ class LimeMailer extends PHPMailer
             $this->addAddress($sEmailaddress, $oToken->firstname . " " . $oToken->lastname);
         }
         $this->addCustomHeader("X-tokenid", $oToken->token);
+    }
 
-        // add list unsubscribe header
-        // see: https://datatracker.ietf.org/doc/html/rfc2369
+    /**
+     * Add the List-Unsubscribe headers if the message offers an opt-out link
+     * Only token emails whose raw template uses OPTOUTURL or whose body contains the opt-out url get the headers,
+     * so that one click unsubscribe is not offered on emails without an opt-out link (e.g. registration or confirmation)
+     * @see https://datatracker.ietf.org/doc/html/rfc2369
+     * @see https://datatracker.ietf.org/doc/html/rfc8058
+     * @return void
+     */
+    private function addListUnsubscribeHeaders()
+    {
+        if (empty($this->oToken)) {
+            return;
+        }
+        $optoutBaseUrl = App()->getController()->createAbsoluteUrl("/optout/tokens");
+        if (
+            strpos((string) $this->Body, $optoutBaseUrl) === false
+            && strpos((string) $this->rawBody, 'OPTOUTURL') === false
+        ) {
+            return;
+        }
         // the url is the same as OPTOUTURL replacement field
-        $oneClickURL = App()->getController()->createAbsoluteUrl(
+        $unsubscribeUrl = App()->getController()->createAbsoluteUrl(
             "/optout/tokens",
             [
                 "surveyid" => $this->surveyId,
-                "token" => $oToken->token,
+                "token" => $this->oToken->token,
                 "langcode" => $this->mailLanguage,
-            ],
+            ]
         );
-        $this->addCustomHeader("List-Unsubscribe", "<$oneClickURL>");
-
-        // add one click unsubscribe header
-        // see: https://datatracker.ietf.org/doc/html/rfc8058
+        // avoid duplicate headers if the same instance sends the message more than once
+        $this->clearCustomHeader("List-Unsubscribe");
+        $this->clearCustomHeader("List-Unsubscribe-Post");
+        $this->addCustomHeader("List-Unsubscribe", "<$unsubscribeUrl>");
         $this->addCustomHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click");
     }
 
@@ -647,6 +666,7 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent. One or more attachments did not exist.'));
             return false;
         }
+        $this->addListUnsubscribeHeaders();
         /* All core done, next are done for all survey */
         $eventResult = $this->manageEvent();
         if (!is_null($eventResult)) {
