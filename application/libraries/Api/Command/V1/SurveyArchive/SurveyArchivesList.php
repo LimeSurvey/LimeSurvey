@@ -74,7 +74,7 @@ class SurveyArchivesList implements CommandInterface
                     $types[] = 'timings';
                 } elseif (strpos($tbl, 'tokens') !== false) {
                     $types[] = 'tokens';
-                } elseif (strpos($tbl, 'survey') !== false) {
+                } elseif (strpos($tbl, 'responses') !== false || strpos($tbl, 'survey') !== false) {
                     $types[] = 'survey';
                 }
             }
@@ -111,15 +111,6 @@ class SurveyArchivesList implements CommandInterface
         if (!$surveyId) {
             $surveyId = intval($_GET['id']);
         }
-        $rawBaseTable = $_GET['basetable'] ?? 'survey';
-        if (!in_array($rawBaseTable, ['survey', 'tokens', 'all'])) {
-            throw new \Exception("Incorrect base table");
-        }
-        if ($rawBaseTable !== 'all') {
-            $baseTable = "old_{$rawBaseTable}";
-        } else {
-            $baseTable = 'all';
-        }
         if ($response = $this->ensurePermissions($surveyId)) {
             return $response;
         }
@@ -134,23 +125,7 @@ class SurveyArchivesList implements CommandInterface
             );
         }
         require_once "application/helpers/admin/import_helper.php";
-        if ($baseTable !== 'all') {
-            $result = getTableArchivesAndTimestamps($surveyId, $baseTable);
-        } else {
-            $result = getTableArchivesAndTimestamps($surveyId);
-            $tokenResult = getTableArchivesAndTimestamps($surveyId, 'old_tokens');
-            foreach ($tokenResult as $item) {
-                $found = false;
-                for ($index = 0; (!$found) && ($index < count($result)); $index++) {
-                    if ($result[$index]['timestamp'] === $item['timestamp']) {
-                        $found = true;
-                    }
-                }
-                if (!$found) {
-                    $result[] = $item;
-                }
-            }
-        }
+        $result = getTableArchivesAndTimestamps($surveyId);
         return $this->responseFactory->makeSuccess($this->processData($survey, $result));
     }
 

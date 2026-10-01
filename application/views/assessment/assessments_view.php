@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Assesments view
 */
@@ -11,15 +12,15 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
 ?>
   <div class="side-body">
     <?=viewHelper::getViewTestTag('surveyAssessments');?>
-      <h3 class="page-title"><?=gT("Assessments")?></h3>
+      <h1 class="page-title h3" ><?=gT("Assessments")?></h1>
         <?php
-            $messageLink = gT("Assessment mode for this survey is not activated.").'<br/>'
-                . gT("If you want to activate it, click here:").'<br/>'
+            $messageLink = gT("Assessment mode for this survey is not activated.") . '<br/>'
+                . gT("If you want to activate it, click here:") . '<br/>'
                 . '<a role="button" class="btn btn-primary" href="'
-                . $this->createUrl('/assessment/activate', ['surveyid'=> $surveyid])
-                .'">'.gT('Activate assessements').'</a>';
-        if(!Assessment::isAssessmentActive($surveyid)) {
-        ?>
+                . $this->createUrl('/assessment/activate', ['surveyid' => $surveyid])
+                . '">' . gT('Activate assessements') . '</a>';
+        if (!Assessment::isAssessmentActive($surveyid)) {
+            ?>
           <div class="row text-center">
             <div class="jumbotron message-box warningheader col-md-12 col-lg-6 offset-lg-3">
               <h2><?= gT("Assessment mode not activated"); ?></h2>
@@ -27,10 +28,10 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             </div>
           </div>
 
-        <?php
+            <?php
         } else {
-        ?>
-            <h4><?php eT("Assessment rules");?></h4>
+            ?>
+            <h2><?php eT("Assessment rules");?></h2>
             <div class="row">
                 <a href="#" id="loadEditUrl_forModalView" data-editurl="<?=$this->createUrl("assessment/edit/", ["surveyid" => $surveyid]);?>"></a>
                 <?php
@@ -40,15 +41,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                         'columns' => $model->getColumns(),
                         'filter' => $model,
                         'emptyText' => gT('No customizable entries found.'),
-                        'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                        . sprintf(gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSize',
-                                $pageSize,
-                                Yii::app()->params['pageSizeOptions'],
-                                array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
-                            )
-                        ),
+                        'lsPageSizeCurrentValue' => $pageSize,
                         'rowHtmlOptionsExpression' => '["data-assessment-id" => $data->id]',
                         'ajaxType'                 => 'POST',
                         'ajaxUpdate'               => 'assessments-grid',
@@ -56,7 +49,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                     ));
                 ?>
             </div>
-            <?php if ( Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'create') ) { ?>
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'create')) { ?>
               <div class="row">
                 <div class="col-12">
                   <button class="btn btn-primary" type="button" id="selector__assessment-add-new">
@@ -66,9 +59,9 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
               </div>
             <?php } ?>
             <!-- Edition - Modal -->
-            <?php if ((Permission::model()->hasSurveyPermission($surveyid, 'assessments','update'))  || (Permission::model()->hasSurveyPermission($surveyid, 'assessments','create')) ) { ?>
+            <?php if ((Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'update'))  || (Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'create'))) { ?>
                 <?php $this->renderPartial('assessments_delete', ['surveyid' => $surveyid]); ?>
-                <?php 
+                <?php
                     $this->renderPartial('assessments_edit', [
                             'surveyid' => $surveyid,
                             'editId' => $editId,
@@ -76,14 +69,13 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                             'baselang' => $baselang,
                             'groups' => $groups ?? [],
                             'gid' => $groupId,
-                        ]
-                    );
+                        ]);
                 ?>
             <?php } ?>
   <!-- opened in controller -->
-    <?php 
-    };
-    ?>
+            <?php
+        };
+        ?>
 </div>
 
 <script type="text/javascript">

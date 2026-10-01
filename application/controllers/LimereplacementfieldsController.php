@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -258,6 +258,7 @@ class LimeReplacementFieldsController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyid);
         $replFields = array();
 
+        $fieldtype = str_replace('_', '-', $fieldtype);
         if ($fieldtype === 'globalSurveySettings') {
             $replFields['TOKEN:FIRSTNAME'] = gT("First name of the participant");
             $replFields['TOKEN:LASTNAME'] = gT("Last name of the participant");
@@ -304,8 +305,8 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
             return array($replFields, false);
         } elseif (
-            strpos($fieldtype, 'email_admin_notification') !== false
-            || strpos($fieldtype, 'email_admin_detailed_notification') !== false
+            strpos($fieldtype, 'email-admin-notification') !== false
+            || strpos($fieldtype, 'email-admin-detailed-notification') !== false
         ) {
             $replFields['VIEWRESPONSEURL'] = gT("View response URL");
             $replFields['EDITRESPONSEURL'] = gT("Edit response URL");
@@ -346,8 +347,8 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
             return array($replFields, false);
         } elseif (
-            strpos($fieldtype, 'email_invitation') !== false
-            || strpos($fieldtype, 'email_reminder') !== false
+            strpos($fieldtype, 'email-invitation') !== false
+            || strpos($fieldtype, 'email-reminder') !== false
         ) {
             // these 2 fields are supported by email-inv and email-rem
             // but not email-reg for the moment
@@ -378,7 +379,7 @@ class LimeReplacementFieldsController extends LSBaseController
             return array($replFields, false);
 
             // $replFields['SID']= gT("Survey ID");
-        } elseif (strpos($fieldtype, 'email_registration') !== false) {
+        } elseif (strpos($fieldtype, 'email-registration') !== false) {
             $replFields['FIRSTNAME'] = gT("Participant - First name");
             $replFields['LASTNAME'] = gT("Participant - Last name");
             $replFields['SURVEYNAME'] = gT("Survey title");
@@ -396,7 +397,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['SURVEYIDURL'] = gT("Survey URL based on survey ID");
             $replFields['EXPIRY'] = gT("Survey expiration date");
             return array($replFields, false);
-        } elseif (strpos($fieldtype, 'email_confirmation') !== false) {
+        } elseif (strpos($fieldtype, 'email-confirmation') !== false) {
             $replFields['TOKEN'] = gT("Participant - Access code");
             $replFields['FIRSTNAME'] = gT("Participant - First name");
             $replFields['LASTNAME'] = gT("Participant - Last name");
@@ -428,9 +429,9 @@ class LimeReplacementFieldsController extends LSBaseController
             || strpos($fieldtype, 'question-text') !== false
             || strpos($fieldtype, 'question-help') !== false
             || strpos($fieldtype, 'editgroup') !== false                // for translation
-            || strpos($fieldtype, 'editgroup_desc') !== false           // for translation
+            || strpos($fieldtype, 'editgroup-desc') !== false           // for translation
             || strpos($fieldtype, 'editquestion') !== false             // for translation
-            || strpos($fieldtype, 'editquestion_help') !== false        // for translation
+            || strpos($fieldtype, 'editquestion-help') !== false        // for translation
         ) {
             $replFields['TOKEN:FIRSTNAME'] = gT("Participant - First name");
             $replFields['TOKEN:LASTNAME'] = gT("Participant - Last name");

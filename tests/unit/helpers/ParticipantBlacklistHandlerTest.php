@@ -1,6 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers;
+
+use ls\tests\TestBaseClass;
 
 use Participant;
 use LimeSurvey\Models\Services\ParticipantBlacklistHandler;
@@ -23,7 +25,7 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         self::importSurvey($filename);
 
         // Create participant in CPDB
-        \Yii::app()->session['participantid'] = 1;
+        \Yii::app()->session['participantid'] = '["1"]';
         $copyResult = Participant::model()->copyToCentral(self::$surveyId, [], []);
         if (empty($copyResult['success'])) {
             throw new \Exception('Failed to copy participants to the CPDB.');
@@ -37,7 +39,12 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
 
         $this->assertTrue($blacklistResult->isBlacklisted());
 
-        // Cleanup
+        // Cleanup: Delete the participant from CPDB so it can be re-added in other tests
+        $token->decrypt();
+        if (!empty($token->participant_id)) {
+            Participant::model()->deleteByPk($token->participant_id);
+        }
+
         self::$testSurvey->delete();
         self::$testSurvey = null;
         Survey::model()->resetCache();
@@ -55,7 +62,7 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         self::importSurvey($filename);
 
         // Create participant in CPDB
-        \Yii::app()->session['participantid'] = 1;
+        \Yii::app()->session['participantid'] = '["1"]';
         $copyResult = Participant::model()->copyToCentral(self::$surveyId, [], []);
         if (empty($copyResult['success'])) {
             throw new \Exception('Failed to copy participants to the CPDB.');
@@ -72,7 +79,12 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
 
         $this->assertFalse($blacklistResult->isBlacklisted());
 
-        // Cleanup
+        // Cleanup: Delete the participant from CPDB so it can be re-added in other tests
+        $token->decrypt();
+        if (!empty($token->participant_id)) {
+            Participant::model()->deleteByPk($token->participant_id);
+        }
+
         self::$testSurvey->delete();
         self::$testSurvey = null;
         Survey::model()->resetCache();

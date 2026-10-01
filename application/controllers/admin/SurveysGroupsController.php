@@ -1,8 +1,10 @@
 <?php
 
+use LimeSurvey\DI;
+use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -147,7 +149,7 @@ class SurveysGroupsController extends SurveyCommonAction
                 /* Check permission */
                 $aAvailableParents = $model->getParentGroupOptions($model->gsid);
                 if (!array_key_exists($parentId, $aAvailableParents)) {
-                    Yii::app()->setFlashMessage(sprintf(gT("You don't have rights on Survey group"), CHtml::encode($parentId)), 'error');
+                    Yii::app()->setFlashMessage(sprintf(gT("You don't have permissions for this survey group"), CHtml::encode($parentId)), 'error');
                     $postSurveysGroups['parent_id'] = $model->parent_id;
                 }
                 /* avoid loop */
@@ -236,7 +238,7 @@ class SurveysGroupsController extends SurveyCommonAction
     }
 
     /**
-     * Show the survey settings menue for a particular group
+     * Show the survey settings menu for a particular group
      * @param integer $id group id, used for permission control
      * @return void
      */
@@ -245,7 +247,7 @@ class SurveysGroupsController extends SurveyCommonAction
         if (!$this->loadModel($id)->hasPermission('surveysettings', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        /* Can not call gloalsettings contoller fuinction sice _construct check access … */
+        /* Cannot call the globalsettings controller function since __construct checks access… */
         $menues = Surveymenu::model()->getMenuesForGlobalSettings();
         Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
     }
@@ -291,22 +293,6 @@ class SurveysGroupsController extends SurveyCommonAction
             isset($_POST['template']) || isset($_POST['showxquestions']) || isset($_POST['anonymized'])
             || isset($_POST['datestamp']) || isset($_POST['listpublic'])
         ) {
-            // Get the current othersettings
-            $currentOtherSettings = $oSurvey->othersettings ? json_decode($oSurvey->othersettings, true) : [];
-
-            // Add the new attributes to othersettings
-            $newOtherSettings = [
-                'question_code_prefix' => Yii::app()->request->getPost('question_code_prefix', ''),
-                'subquestion_code_prefix' => Yii::app()->request->getPost('subquestion_code_prefix', ''),
-                'answer_code_prefix' => Yii::app()->request->getPost('answer_code_prefix', '')
-            ];
-
-            // Merge with existing settings (preserving other values that might be there)
-            $mergedOtherSettings = array_merge($currentOtherSettings, $newOtherSettings);
-
-            // Convert back to JSON
-            $_POST['othersettings'] = json_encode($mergedOtherSettings);
-
             $oSurvey->attributes = $_POST;
 
             if (isset($_POST['listpublic'])) {
@@ -332,6 +318,10 @@ class SurveysGroupsController extends SurveyCommonAction
 
         $aData['oSurvey'] = $oSurvey;
 
+        // Prepare theme configuration data for the view
+        $themeService = DI::getContainer()->get(SurveyThemeConfiguration::class);
+        $aData = array_merge($aData, $themeService->getThemeViewData($oSurvey->template, $oSurvey->oOptions ?? null));
+
         if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
             $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#" => 'surveygroups')));
         }
@@ -342,7 +332,6 @@ class SurveysGroupsController extends SurveyCommonAction
         }
         $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
 
-        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         Yii::app()->clientScript->registerPackage('globalsidepanel');
 
         $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);

@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -40,7 +40,7 @@ class InstallerConfigForm extends CFormModel
     public const DB_TYPE_ODBC = 'odbc';
 
     public const MINIMUM_MEMORY_LIMIT = 128;
-    public const MINIMUM_PHP_VERSION = '7.4.0';
+    public const MINIMUM_PHP_VERSION = '8.1.29';
 
     // Database
     /** @var string $dbtype */
@@ -63,6 +63,8 @@ class InstallerConfigForm extends CFormModel
     public $dbprefix = 'lime_';
     /** @var string $dbengine Database Engine type if DB type is MySQL */
     public $dbengine;
+    /** @var bool $mssqlTrustServerCertificate Whether to trust the SQL Server certificate without validating it, needed to connect to servers using a self-signed certificate */
+    public $mssqlTrustServerCertificate = false;
 
     /** @var array $db_names */
     public $db_names = array(
@@ -85,7 +87,7 @@ class InstallerConfigForm extends CFormModel
     /** @var string $adminName */
     public $adminName = 'Administrator';
     /** @var string $adminEmail */
-    public $adminEmail = 'your-email@example.net';
+    public $adminEmail = '';
     /** @var string $siteName */
     public $siteName = 'LimeSurvey';
     /** @var string $surveylang */
@@ -122,6 +124,9 @@ class InstallerConfigForm extends CFormModel
     public $phpGdHasJpegSupport = false;
 
     /** @var bool */
+    public $phpGdHasFreeTypeSupport = false;
+
+    /** @var bool */
     public $isPhpLdapPresent = false;
 
     /** @var bool */
@@ -129,6 +134,9 @@ class InstallerConfigForm extends CFormModel
 
     /** @var bool */
     public $isPhpImapPresent = false;
+
+    /** @var bool */
+    public $isPhpCurlPresent = false;
 
     /** @var bool */
     public $isPhpVersionOK = false;
@@ -164,8 +172,10 @@ class InstallerConfigForm extends CFormModel
             array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
             array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
             array('dbtype', 'in', 'range' => array_keys($this->supportedDbTypes), 'on' => 'database'),
+            array('dbtype', 'validateDBVersion', 'on' => 'database'),
             array('dbengine', 'validateDBEngine', 'on' => 'database'),
             array('dbengine', 'in', 'range' => array_keys($this->dbEngines), 'on' => 'database'),
+            array('mssqlTrustServerCertificate', 'safe', 'on' => 'database'),
             //Optional
             array('adminLoginName, adminLoginPwd, confirmPwd, adminEmail', 'required', 'on' => 'optional', 'message' => gT('Either admin login name, password or email is empty')),
             array('adminLoginName, adminName, siteName, confirmPwd', 'safe', 'on' => 'optional'),
@@ -185,7 +195,8 @@ class InstallerConfigForm extends CFormModel
             'dbuser' => gT('Database user'),
             'dbpwd' => gT('Database password'),
             'dbprefix' => gT('Table prefix'),
-            'dbengine' => gT('MySQL database engine type'),
+            'dbengine' => gT('MariaDB/MySQL database engine type'),
+            'mssqlTrustServerCertificate' => gT('Trust server certificate'),
         );
     }
 
@@ -198,6 +209,7 @@ class InstallerConfigForm extends CFormModel
             'dbuser' => gT('Your database server user name. In most cases "root" will work.'),
             'dbpwd' => gT("Your database server password."),
             'dbprefix' => gT('If your database is shared, recommended prefix is "lime_" else you can leave this setting blank.'),
+            'mssqlTrustServerCertificate' => gT('Enable this if a MSSQL connection fails due to a certificate verification error. This skips validation of the server certificate, so only enable it if you trust the network path to your database server.'),
         ];
     }
 
@@ -218,19 +230,21 @@ class InstallerConfigForm extends CFormModel
         $this->isPhpLdapPresent = extension_loaded('ldap');
         $this->isPhpImapPresent = extension_loaded('imap');
         $this->isPhpZipPresent = extension_loaded('zip');
+        $this->isPhpCurlPresent = extension_loaded('curl');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
         $this->isCollatorPresent = class_exists('Collator');
 
         if (function_exists('gd_info')) {
             $gdInfo = gd_info();
             $this->phpGdHasJpegSupport = !empty($gdInfo['JPEG Support']);
+            $this->phpGdHasFreeTypeSupport = !empty($gdInfo['FreeType Support']);
             $this->isPhpGdPresent = true;
         }
         $this->isPhpVersionOK = version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '>=');
     }
 
     /**
-     * Chek whether system meets minimum requirements
+     * Check whether system meets minimum requirements
      * @return bool
      */
     public function getHasMinimumRequirements()
@@ -248,6 +262,7 @@ class InstallerConfigForm extends CFormModel
             or !$this->isPhpGdPresent
             or !$this->isPhpZipPresent
             or !$this->isPhpJsonPresent
+            or !$this->isPhpCurlPresent
         ) {
             return false;
         }
@@ -282,13 +297,46 @@ class InstallerConfigForm extends CFormModel
         return convertPHPSizeToBytes(ini_get('memory_limit')) / 1024 / 1024;
     }
 
+    /**
+     * Verifies that the connected database server meets the documented minimum
+     * version requirements. Adds a validation error if it does not.
+     * @param string $attribute
+     * @return void
+     */
+    public function validateDBVersion($attribute)
+    {
+        // Skip if the connection could not be established (a connection error is
+        // already reported in that case).
+        if (empty($this->db)) {
+            return;
+        }
+        try {
+            $driverName = $this->db->getDriverName();
+            $serverVersion = $this->db->getServerVersion();
+        } catch (\Exception $e) {
+            return;
+        }
+        $requirement = \LimeSurvey\Helpers\DbVersionHelper::getRequirement($driverName, $serverVersion);
+        if (!$requirement['supported']) {
+            $this->addError(
+                $attribute,
+                sprintf(
+                    gT('Your database server does not meet the minimum requirements. %s %s or newer is required, but the server reports version %s.'),
+                    $requirement['type'],
+                    $requirement['minimumLabel'],
+                    $requirement['current']
+                )
+            );
+        }
+    }
+
     public function validateDBEngine($attribute)
     {
         if (
             $this->isMysql
             && ($this->dbengine === null or !in_array($this->dbengine, array_keys($this->dbEngines)))
         ) {
-            $this->addError($attribute, gT('The database engine type must be set for MySQL'));
+            $this->addError($attribute, gT('The database engine type must be set to MariaDB/MySQL'));
         }
 
         if ($this->isMysql && $this->dbengine === self::ENGINE_TYPE_INNODB) {
@@ -517,7 +565,10 @@ class InstallerConfigForm extends CFormModel
                 $sDSN = $this->getPgsqlDsn();
                 break;
             case self::DB_TYPE_DBLIB:
-                $sDSN = $this->dbtype . ":host={$this->dblocation};dbname={$this->dbname}";
+                $sDSN = $this->dbtype . ":host={$this->dblocation}";
+                if ($this->useDbName) {
+                    $sDSN .= ";dbname={$this->dbname}";
+                }
                 break;
             case self::DB_TYPE_MSSQL:
             case self::DB_TYPE_SQLSRV:
@@ -557,13 +608,12 @@ class InstallerConfigForm extends CFormModel
     private function getPgsqlDsn()
     {
         $port = $this->getDbPort();
-        if (empty($this->dbpwd)) {
-            // If there's no password, we need to write password=""; instead of password=;,
-            // or PostgreSQL's libpq will consider the DSN string part after "password="
-            // (including the ";" and the potential dbname) as part of the password definition.
-            $this->dbpwd = '""';
-        }
-        $sDSN = "pgsql:host={$this->dblocation};port={$port};user={$this->dbuser};password={$this->dbpwd};";
+        // Do not embed user/password in the DSN string: PDO_PGSQL only escapes/quotes
+        // credentials that are passed as separate constructor arguments (see dbConnect()/dbTest()).
+        // Once "user=" or "password=" is present in the DSN itself, PDO passes it to libpq
+        // as-is, so special characters such as ";" or "'" in the password break the connection
+        // (see bug #15061).
+        $sDSN = "pgsql:host={$this->dblocation};port={$port};";
         if ($this->useDbName) {
             $sDSN .= "dbname={$this->dbname};";
         }
@@ -582,7 +632,10 @@ class InstallerConfigForm extends CFormModel
         }
         $sDSN = $this->dbtype . ":Server={$sDatabaseLocation};";
         if ($this->useDbName) {
-            $sDSN .= "Database={$this->dbname}";
+            $sDSN .= "Database={$this->dbname};";
+        }
+        if ($this->mssqlTrustServerCertificate) {
+            $sDSN .= "TrustServerCertificate=1;";
         }
         return $sDSN;
     }

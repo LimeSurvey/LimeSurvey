@@ -10,8 +10,23 @@ namespace LimeSurvey\Helpers;
 
 use Yii;
 
-// Can not use Collator class, must work without
-
+/**
+ * Language-aware string sorting
+ *
+ * PHP's native sort functions compare strings byte by byte, so text with accented or other
+ * non-ASCII characters is ordered incorrectly (e.g. "États-Unis" sorts after "Zambie").
+ * This helper was introduced to fix that for alphabetically ordered answer options and
+ * subquestions (issue #19206, used by QuestionOrderingService).
+ *
+ * When the php-intl extension is available, sorting is done by \Collator using the locale
+ * (CLDR code) of the given LimeSurvey language, which gives correct, language-specific
+ * alphabetical order. php-intl is not a hard requirement of LimeSurvey, so without it the
+ * helper falls back to PHP's native sort functions (case-insensitive for strings) and logs
+ * a warning; accented characters are then not ordered correctly.
+ *
+ * Usage: SortHelper::getInstance($language)->asort($array, SortHelper::SORT_STRING);
+ * The instance is a singleton that is recreated whenever a different language is requested.
+ */
 class SortHelper
 {
     /** @var integer flag for regular sort */
@@ -57,9 +72,15 @@ class SortHelper
         }
     }
 
+    /**
+     * Get the sort helper for a language, (re)creating it when the language changes
+     *
+     * @param string $language LimeSurvey language code used to pick the collation locale
+     * @return self
+     */
     public static function getInstance($language)
     {
-        if (empty(self::$instance) || $language === self::$language) {
+        if (empty(self::$instance) || $language !== self::$language) {
             self::$instance = new self($language);
         }
 
@@ -82,16 +103,40 @@ class SortHelper
     }
 
     /**
-     * Return flag tupe depend on functoion sed
-     * @param integer
-     * @return integer
+     * Sort array maintaining index association in reverse order
+     * @param string[] $array to sort
+     * @param integer $flags in self::SORT_REGULAR (default or invalid), self::SORT_NUMERIC, self::SORT_STRING
+     * @return boolean, see Collator::asort
+     * @see arsort and Collator::asort
+     */
+    public function arsort(array &$array, int $flags = self::SORT_REGULAR): bool
+    {
+        if (is_null(self::$collator)) {
+            return arsort($array, self::getFlag($flags));
+        }
+
+        // Use our own asort method and then reverse the array
+        $result = $this->asort($array, $flags);
+        if ($result) {
+            $array = array_reverse($array, true); // true preserves keys
+        }
+        return $result;
+    }
+
+    /**
+     * Returns the sort flag for the sort function in use (Collator or PHP fallback)
+     *
+     * String sorting in the PHP fallback is case-insensitive.
+     *
+     * @param integer $type One of self::SORT_REGULAR, self::SORT_NUMERIC, self::SORT_STRING
+     * @return integer Collator::SORT_* flag when Collator is available, else PHP SORT_* flag(s)
      */
     private static function getFlag($type)
     {
         if (is_null(self::$collator)) {
             switch ($type) {
                 case self::SORT_STRING:
-                    return SORT_STRING;
+                    return SORT_STRING | SORT_FLAG_CASE;
                 case self::SORT_NUMERIC:
                     return SORT_NUMERIC;
                 case self::SORT_REGULAR:

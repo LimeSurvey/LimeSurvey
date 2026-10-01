@@ -4,34 +4,17 @@
  * @var $oSurveyTheme TemplateConfiguration
  */
 
-$massiveAction = App()->getController()->renderPartial(
-    '/themeOptions/_selector',
-    [
-        'oSurveyTheme' => $oSurveyTheme,
-        'gridID' => 'themeoptions-grid',
-        'dropupID' => 'themeoptions-dropup',
-        'pk' => 'id'
-    ],
-    true,
-    false
-);
-$this->widget('application.extensions.admin.grid.CLSGridView',
+require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.SurveyThemeMassiveActions') . '.php';
+
+$aFloatingActions = \actions\SurveyThemeMassiveActions::getActions();
+$this->widget(
+    'application.extensions.admin.grid.CLSGridView',
     [
         'dataProvider' => $oSurveyTheme->searchGrid(),
         'filter' => $oSurveyTheme,
         'id' => 'themeoptions-grid',
-        'pager' => [
-            'class' => 'application.extensions.admin.grid.CLSYiiPager',
-        ],
-        'massiveActionTemplate' => $massiveAction,
-        'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
-                CHtml::dropDownList(
-                    'pageSize',
-                    $pageSize,
-                    Yii::app()->params['pageSizeOptions'],
-                    array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
-                )
-            ),
+        'lsCaption' => gT('Survey themes'),
+        'lsPageSizeCurrentValue'  => $pageSize,
         'columns' => [
             [
                 'id' => 'id',
@@ -59,7 +42,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
                 'header' => gT('Description'),
                 'name' => 'template_description',
                 'value' => '$data->description',
-                'htmlOptions' => ['class' => 'col-lg-3'],
+                'htmlOptions' => ['class' => 'col-lg-3 can-contain-link'],
                 'type' => 'raw',
             ],
 
@@ -89,20 +72,33 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
             ],
 
         ],
+        'lsShowSelectionBar' => false,
         'ajaxUpdate' => true,
         'ajaxType' => 'POST',
-        'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();LS.actionDropdown.create();}',
+        'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();}',
     ]
 );
+
+if (!empty($aFloatingActions)) {
+    $this->widget(
+        'ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget',
+        [
+            'pk'       => 'id',
+            'gridId'   => 'themeoptions-grid',
+            'aActions' => $aFloatingActions,
+        ]
+    );
+}
 ?>
 
 <!-- To update rows per page via ajax setSession-->
 <?php
 $script = '
-                jQuery(document).on("change", "#pageSize", function(){
+                jQuery(document).on("change", "#themeoptions-pageSize", function(){
                     $.fn.yiiGridView.update("themeoptions-grid",{ data:{ pageSize: $(this).val() }});
                 });
                 ';
 App()->getClientScript()->registerScript('themeoptions-grid', $script, LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
+
 

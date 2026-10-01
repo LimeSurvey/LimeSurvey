@@ -130,10 +130,13 @@ class LanguageSettings
             }
 
             $surveyLanguageSetting->setAttributes($data);
-            if (!$surveyLanguageSetting->save()) {
+            $saved = \LSYii_Validators::refuseChangedExpressionsDuring(function () use ($surveyLanguageSetting) {
+                return $surveyLanguageSetting->save();
+            });
+            if (!$saved) {
                 $e = new PersistErrorException(
                     sprintf(
-                        'Failed saving language settings for survey #%s and language "%s"',
+                        gT('Failed saving language settings for survey ID %s and language %s'),
                         $survey->sid,
                         $languageCode
                     )

@@ -78,7 +78,7 @@ class GoogleOAuthSMTP extends SmtpOAuthPluginBase
             gT("Redirect URI:"),
             gT("You can find more details %shere%s."),
             gT("Activate the plugin."),
-            gT("Set the 'Client ID' and 'Client Secret' below and save the settings."),
+            gT("Set the 'Client ID' and 'Client secret' below and save the settings."),
             gT("Click the 'Get Token' button to open Google's consent screen in a new window."),
             gT("Follow the steps in the consent screen and check the requested permissions."),
             gT("Switch the 'Enabled' setting to 'On' and save."),

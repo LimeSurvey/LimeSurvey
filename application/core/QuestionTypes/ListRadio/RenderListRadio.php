@@ -19,15 +19,11 @@
 class RenderListRadio extends QuestionBaseRenderer
 {
     public $sCoreClass = "ls-answers answers-list radio-list";
-    
+
     protected $sOthertext;
     protected $iNbCols;
-    protected $iColumnWidth;
     protected $iCountAnswers;
 
-    private $iMaxRowsByColumn;
-    private $iRowCount = 0;
-    private $bColumnIsOpen = false;
     private $inputnames = [];
 
     /** @var boolean indicates if the question has the 'Other' option enabled */
@@ -43,12 +39,12 @@ class RenderListRadio extends QuestionBaseRenderer
     const OTHER_POS_START = 'beginning';
     const OTHER_POS_END = 'end';
     const OTHER_POS_AFTER_OPTION = 'specific';
-    
+
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->sOthertext = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:')); // text for 'other'
-        $this->iNbCols   = @$this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1); // number of columns
+        $this->iNbCols   = $this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), ""); // number of columns
         $this->hasOther = $this->oQuestion->other == 'Y';
         $this->otherPosition = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_position'), self::OTHER_POS_BEFORE_NOANSWER);
         $this->answerBeforeOther = '';
@@ -57,18 +53,8 @@ class RenderListRadio extends QuestionBaseRenderer
         }
         $this->setAnsweroptions();
 
-        if ($this->iNbCols > 1) {
-            // Add a class on the wrapper
+        if ($this->iNbCols) {
             $this->sCoreClass .= " multiple-list nbcol-{$this->iNbCols}";
-            // First we calculate the width of each column
-            // Max number of column is 12 http://getbootstrap.com/css/#grid
-            $this->iColumnWidth = round(12 / $this->iNbCols);
-            $this->iColumnWidth = ($this->iColumnWidth >= 1) ? $this->iColumnWidth : 1;
-            $this->iColumnWidth = ($this->iColumnWidth <= 12) ? $this->iColumnWidth : 12;
-            $this->iMaxRowsByColumn = ceil($this->getAnswerCount() / $this->iNbCols);
-        } else {
-            $this->iColumnWidth = 12;
-            $this->iMaxRowsByColumn = $this->getAnswerCount() + 3; // No max : anscount + no answer + other + 1 by security
         }
     }
 
@@ -82,7 +68,6 @@ class RenderListRadio extends QuestionBaseRenderer
         $otherRendered = false;
 
         $aRows = [];
-
         if ($this->hasOther && $this->otherPosition == self::OTHER_POS_START) {
             $aRows[] = $this->addOtherRow();
             $otherRendered = true;
@@ -94,7 +79,12 @@ class RenderListRadio extends QuestionBaseRenderer
                 'code'          => $oAnswer->code,
                 'answer'        => $oAnswer->answerl10ns[$this->sLanguage]->answer,
                 'checkedState'  => ($this->mSessionValue == $oAnswer->code ? 'CHECKED' : ''),
-                'myfname'       => $this->sSGQA . $oAnswer->code,
+                'myfname'       => $this->sSGQA . '_S' . $oAnswer->aid,
+                'iNbCols' => $this->iNbCols,
+                'iCountAnswers' => $this->iCountAnswers,
+                'hasOther' => $this->hasOther,
+                'otherPosition' => $this->otherPosition,
+                'answerBeforeOther' => $this->answerBeforeOther,
                 ), true);
             if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION && $this->answerBeforeOther == $oAnswer->code) {
                 $aRows[] = $this->addOtherRow();
@@ -120,62 +110,20 @@ class RenderListRadio extends QuestionBaseRenderer
     public function getRows()
     {
         $sRows = "";
-        
+
         foreach ($this->renderRowsArray() as $iterator => $sRow) {
-            // counter of number of row by column. Is reset to zero each time a column is full.
-            $this->iRowCount++;
-                
-            ////
-            // Open Column
-            // The column is opened if user set more than one column in question attribute
-            // and if this is the first answer row, or if the column has been closed and the row count reset before.
-            if ($this->iRowCount == 1) {
-                $sRows  .= Yii::app()->twigRenderer->renderQuestion(
-                    $this->getMainView() . '/columns/column_header',
-                    array('iColumnWidth' => $this->iColumnWidth),
-                    true
-                );
-                $this->bColumnIsOpen  = true; // If a column is not closed, it will be closed at the end of the process
-            }
-        
-            ////
             // Insert row
-            // Display the answer row
             $sRows .= $sRow;
-
-            ////
-            // Close column
-            // The column is closed if the user set more than one column in question attribute
-            // and if the max answer rows by column is reached.
-            // If max answer rows by column is not reached while there is no more answer,
-            // the column will remain opened, and it will be closed by 'other' answer row if set or at the end of the process
-            if ($this->iRowCount == $this->iMaxRowsByColumn) {
-                $last      = ($iterator == $this->getAnswerCount()) ? true : false; // If this loop count equal to the number of answers, then this answer is the last one.
-                $sRows  .= Yii::app()->twigRenderer->renderQuestion(
-                    $this->getMainView() . '/columns/column_footer',
-                    array('last' => $last),
-                    true
-                );
-                $this->iRowCount = 0;
-                $this->bColumnIsOpen    = false;
-            }
         }
-
-        if ($this->bColumnIsOpen) {
-            $sRows  .= Yii::app()->twigRenderer->renderQuestion(
-                $this->getMainView() . '/columns/column_footer',
-                array('last' => true),
-                true
-            );
-            $this->bColumnIsOpen = false;
-        }
-
         return $sRows;
     }
 
     public function addNoAnswerRow()
     {
-        if (!isset($this->mSessionValue) || $this->mSessionValue == '' || $this->mSessionValue == ' ') {
+        if (
+            PRESELECT_NO_ANSWER
+            && (!isset($this->mSessionValue) || $this->mSessionValue == '' || $this->mSessionValue == ' ')
+        ) {
             $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.
         } else {
             $check_ans = '';
@@ -185,21 +133,54 @@ class RenderListRadio extends QuestionBaseRenderer
             'name' => $this->sSGQA,
             'check_ans' => $check_ans,
             'checkconditionFunction' => $this->checkconditionFunction,
+            'iNbCols' => $this->iNbCols,
+            'iCountAnswers' => $this->iCountAnswers,
+            'hasOther' => $this->hasOther,
+            'otherPosition' => $this->otherPosition,
+            'answerBeforeOther' => $this->answerBeforeOther,
             ), true);
     }
 
-    public function addOtherRow()
+    /**
+     * Returns shared "Other" text parts and input constraints used by both
+     * addOtherRow() and render().
+     *
+     * @return array{otherTextLeft: string, otherTextRight: string, otherInputSize: string|null, otherMaxLength: int|null}
+     */
+    private function getOtherSizeConstraints(): array
+    {
+        $otherParts = $this->splitOtherText($this->sOthertext);
+
+        $otherInputSize = null;
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('other_input_size')))) {
+            $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
+        }
+
+        $otherMaxLength = null;
+        if (intval(trim((string) $this->getQuestionAttribute('other_maximum_chars'))) > 0) {
+            $otherMaxLength = intval(trim((string) $this->getQuestionAttribute('other_maximum_chars')));
+        }
+
+        return [
+            'otherTextLeft'  => $otherParts['left'],
+            'otherTextRight' => $otherParts['right'],
+            'otherInputSize' => $otherInputSize,
+            'otherMaxLength' => $otherMaxLength,
+        ];
+    }
+
+        public function addOtherRow()
     {
         $sSeparator = getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat);
         $sSeparator = $sSeparator['separator'];
-        
+
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? 'fixnum_checkconditions' : 'checkconditions';
         $checkedState = ($this->mSessionValue == '-oth-') ? CHECKED : '';
 
-        $myfname = $thisfieldname = $this->sSGQA . 'other';
+        $myfname = $thisfieldname = $this->sSGQA . '_Cother';
 
-        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) {
-            $dispVal = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname];
+        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) {
+            $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname];
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
                 $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
@@ -209,15 +190,38 @@ class RenderListRadio extends QuestionBaseRenderer
         }
 
         $this->inputnames[] = $thisfieldname;
-        
+
+        $otherConstraints = $this->getOtherSizeConstraints();
+        $otherTextLeft    = $otherConstraints['otherTextLeft'];
+        $otherTextRight   = $otherConstraints['otherTextRight'];
+        $otherInputSize   = $otherConstraints['otherInputSize'];
+        $otherMaxLength   = $otherConstraints['otherMaxLength'];
+
+        $otherItemExtraClass = "";
+        if (empty($otherTextLeft)) {
+            $otherItemExtraClass = "no-prefix-othertext";
+        }
+        if ($otherInputSize !== null) {
+            $otherItemExtraClass .= " ls-input-sized";
+        }
+
         return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/answer_row_other', array(
             'name' => $this->sSGQA,
             'answer_other' => $answer_other,
             'myfname' => $myfname,
-            'othertext' => $this->sOthertext,
+            'othertext' => $otherTextLeft,
+            'otherTextRight' => $otherTextRight,
+            'otherItemExtraClass' => $otherItemExtraClass,
             'checkedState' => $checkedState,
             'oth_checkconditionFunction' => $oth_checkconditionFunction . '(this.value, this.name, this.type)',
             'checkconditionFunction' => $this->checkconditionFunction,
+            'iNbCols' => $this->iNbCols,
+            'iCountAnswers' => $this->iCountAnswers,
+            'hasOther' => $this->hasOther,
+            'otherPosition' => $this->otherPosition,
+            'answerBeforeOther' => $this->answerBeforeOther,
+            'otherInputSize' => $otherInputSize,
+            'otherMaxLength' => $otherMaxLength,
             ), true);
     }
 
@@ -232,13 +236,29 @@ class RenderListRadio extends QuestionBaseRenderer
             $answer .= $this->getTimeSettingRender();
         }
 
+        $otherConstraints = $this->getOtherSizeConstraints();
+        $otherTextLeft    = $otherConstraints['otherTextLeft'];
+        $otherTextRight   = $otherConstraints['otherTextRight'];
+        $otherInputSize   = $otherConstraints['otherInputSize'];
+        $otherMaxLength   = $otherConstraints['otherMaxLength'];
+
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'sRows'     => $this->getRows(),
             'name'      => $this->sSGQA,
             'basename'  => $this->sSGQA,
             'value'     => $this->mSessionValue,
             'coreClass' => $this->sCoreClass,
-            'othertext' => $this->sOthertext
+            'othertext' => $otherTextLeft,
+            'otherTextRight' => $otherTextRight,
+            'otherInputSize' => $otherInputSize,
+            'otherMaxLength' => $otherMaxLength,
+            'iNbCols' => $this->iNbCols,
+            /* @deprecated since 6.3.3 : Leave it for old question theme compatibility, be sure to don't add columns */
+            'iMaxRowsByColumn' => $this->getAnswerCount() + 3,
+            'iCountAnswers' => $this->iCountAnswers,
+            'hasOther' => $this->hasOther,
+            'otherPosition' => $this->otherPosition,
+            'answerBeforeOther' => $this->answerBeforeOther,
         ), true);
 
         $this->registerAssets();

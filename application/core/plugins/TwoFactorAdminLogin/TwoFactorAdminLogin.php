@@ -28,10 +28,44 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     private $o2FA = null;
 
+
     /** @inheritdoc **/
     public $allowedPublicMethods = [
         'userindex',
         'index'
+    ];
+
+    /**
+     * Methods invokable through the public web 'newDirectRequest' event
+     * (plugins/direct endpoint). Each performs its own permission check.
+     * Any method not listed here must never be dispatchable from an
+     * attacker-controlled 'function' parameter.
+     * @var string[]
+     */
+    private $allowedDirectMethods = [
+        'directCallCreateNewKey',
+        'directCallConfirmKey',
+        'directCallDeleteKey',
+    ];
+
+    /**
+     * Web direct methods that mutate data and therefore must only be reachable
+     * through an safe HTTP method (POST/PATCH), never GET.
+     * @var string[]
+     */
+    private $writeDirectMethods = [
+        'directCallConfirmKey',
+        'directCallDeleteKey',
+    ];
+
+    /**
+     * Methods invokable through the CLI-only 'direct' event
+     * (console command "plugin index --target=... --function=...").
+     * @var string[]
+     */
+    private $allowedCliMethods = [
+        'deleteKeyForUserId',
+        'deleteKeyForUserName',
     ];
 
     protected $storage = 'DbStorage';
@@ -86,6 +120,16 @@ class TwoFactorAdminLogin extends AuthPluginBase
             ],
             'help' => 'Please keep in mind, that most tools only work with SHA1 hashing.'
         ),
+        'SecretLength' => array(
+            'type' => 'int',
+            'label' => 'Secret length',
+            'default' => '',
+            'htmlOptions' => [
+                'min' => 128,
+                'placeholder' => 128
+            ],
+            'help' => 'Length of the secret in bits. Minimum and default are 128.'
+        ),
         'separatorYubi' => array(
             'type' => 'separator',
             'title' => 'YubiKey Settings',
@@ -136,9 +180,14 @@ class TwoFactorAdminLogin extends AuthPluginBase
         }
 
         $action = $oEvent->get('function');
-        if (method_exists($this, $action)) {
-            call_user_func([$this, $action], $oEvent, $request);
+        if (!in_array($action, $this->allowedDirectMethods, true) || !method_exists($this, $action)) {
+            return;
         }
+        // Data-modifying actions must never run on a safe (GET) request.
+        if (in_array($action, $this->writeDirectMethods, true) && !$request->getIsPostRequest()) {
+            throw new CHttpException(405, 'This action requires a POST request.');
+        }
+        call_user_func([$this, $action], $oEvent, $request);
     }
 
     /**
@@ -154,7 +203,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         }
         $option = $this->event->get("option");
         $action = $oEvent->get('function');
-        if (method_exists($this, $action)) {
+        if (in_array($action, $this->allowedCliMethods, true) && method_exists($this, $action)) {
             call_user_func([$this, $action], $oEvent, $option);
         }
     }
@@ -206,7 +255,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $oEvent = $this->getEvent();
         $onepass = App()->request->getParam('onepass');
 
-        // skip 2fa when theres an active and verified onetimepassword used (verification is allready done before getting here)
+        // skip 2fa when there's an active and verified one-time password used (verification is already done before getting here)
         if (App()->getConfig('use_one_time_passwords') && isset($onepass)) {
             return;
         }
@@ -377,11 +426,13 @@ class TwoFactorAdminLogin extends AuthPluginBase
     //################ Direct access methods ###############
 
     /**
-     * Renders the content of the modal to create a 2FA key registration
+     * Renders modal content for creating a new 2FA key for a user.
      *
-     * @param PluginEvent $oEvent
-     * @param CHttpRequest $oRequest
-     * @return string
+     * Generates a secret (respecting the SecretLength setting, minimum 128 bits), builds a QR code data URI for the secret, and returns the rendered partial HTML. If the caller lacks permission to create keys for the target user, renders an error partial.
+     *
+     * @param PluginEvent $oEvent The plugin event that triggered this call.
+     * @param CHttpRequest $oRequest The current HTTP request.
+     * @return string Rendered HTML of the modal content or an error partial.
      */
     public function directCallCreateNewKey($oEvent, $oRequest)
     {
@@ -402,7 +453,11 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $o2FA = $this->get2FAObject();
 
         $oTFAModel->uid = $iUserId;
-        $oTFAModel->secretKey = $o2FA->createSecret();
+        $SecretLength = intval($this->get('SecretLength', null, null, ''));
+        if ($SecretLength < 128) {
+            $SecretLength = 128;
+        }
+        $oTFAModel->secretKey = $o2FA->createSecret($SecretLength);
         $sQRCodeContent = '<img src="' . $o2FA->getQRCodeImageAsDataUri('LimeSurvey - User ID: ' . Yii::app()->user->id, $oTFAModel->secretKey) . '">';
 
         return $this->renderPartial('_partial/create', [
@@ -603,7 +658,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
                 $this->get('issuer', null, null, 'LimeSurvey - survey software'),
                 ((int) $this->get('digits', null, null, 6)),
                 ((int) $this->get('period', null, null, 30)),
-                $this->get('algorithm', null, null, 'sha1'),
+                RobThree\Auth\Algorithm::from((string) $this->get('algorithm', null, null, 'sha1')),
                 $mp
             );
         }

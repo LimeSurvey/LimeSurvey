@@ -29,10 +29,12 @@ class Box extends CActiveRecord
         return array(
             array('url, title, ico, position, desc, page', 'required'),
             array('url', 'match', 'pattern' => '/(http:\/\/)?[a-zA-Z]([a-zA-Z0-9-_?&"\'=]\/?)*/'),
+            array('url', 'LSYii_Validators', 'isUrl' => true),
             array('position', 'numerical', 'integerOnly' => true),
             array('position', 'unique', 'message' => gT('Position {value} already exists.')),
             array('usergroup', 'numerical', 'integerOnly' => true, 'min' => -3),
             array('ico', 'match', 'pattern' => '/^[A-Za-z0-9_ \-]+$/u','message' => gT('Icon name must be a simple class name (alphanumeric, space, minus and underscore).')),
+            array('title', 'LSYii_Validators'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, position, url, title, ico, desc, page, usergroup', 'safe', 'on' => 'search'),
@@ -99,6 +101,20 @@ class Box extends CActiveRecord
     }
 
     /**
+     * Returns the box title translated to the current UI language via gT().
+     * Default box titles are stored in English (see
+     * LsDefaultDataSets::getBoxesData()) and get translated normally; a
+     * custom title without a matching translation is returned unchanged,
+     * since gT() falls back to the original string when no translation exists.
+     *
+     * @return string
+     */
+    public function getLocalizedTitle()
+    {
+        return gT($this->title, 'unescaped');
+    }
+
+    /**
      * @return string
      */
     public function getSpanIcon()
@@ -116,7 +132,7 @@ class Box extends CActiveRecord
 
         // Can't use switch because of empty case
         if (empty($usergroupid) || $usergroupid == '-2') {
-            return gT('Only Superadmin');
+            return gT('Superadmin only');
         } elseif ($usergroupid == '-1') {
             return gT('Everybody');
         } elseif ($usergroupid == '-3') {

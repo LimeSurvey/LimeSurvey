@@ -104,6 +104,15 @@ table.ls-answers .radio-item .ls-label-xs-visibility {
     position: relative;
     padding-left: 8px;
 }
+
+.radio-item .othertext-label-checkox-container {
+  align-self: center ;
+  label {
+    vertical-align: unset;
+    margin-bottom: 0;
+  }
+}
+
 .radio-item label::before {
     content: "";
     display: inline-block;
@@ -202,4 +211,8 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     .radio-item label.ls-label-xs-visibility > * {
         left : auto;
     }
+}
+
+li.radio-text-item .other-text-item {
+    min-width: 9em;
 }

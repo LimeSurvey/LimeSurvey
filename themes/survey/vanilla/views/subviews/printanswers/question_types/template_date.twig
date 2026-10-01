@@ -5,7 +5,9 @@
         <div class="col-lg-4 text-end">
         </div>
         <div class="col-lg-8 text-start">
-            {{question.answervalue|date(question.dateformat.phpdate)}}
+            {% if question.answervalue %}
+                {{question.answervalue|date(question.dateformat.phpdate)}}
+            {% endif %}
         </div>
     </div>
 </div>

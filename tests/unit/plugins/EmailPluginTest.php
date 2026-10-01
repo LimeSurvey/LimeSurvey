@@ -58,11 +58,17 @@ class EmailPluginTest extends TestBaseClass
         );
 
         $valid = self::$plugin->validateTestPluginCredentials($credentials);
-        $this->assertTrue($valid, $credentials . ' is a valid credentials array.');
+        $this->assertTrue($valid, json_encode($credentials) . ' is a valid credentials array.');
     }
 
     public function testGetCredentials()
     {
+        // Clear any previous settings to ensure test starts with clean state
+        self::$plugin->saveTestPluginSettings([
+            'clientId' => null,
+            'clientSecret' => null,
+        ]);
+
         $credentials = self::$plugin->getTestPluginCredentials();
         $nullSettings = array(
             'clientId' => null,
@@ -102,11 +108,14 @@ class EmailPluginTest extends TestBaseClass
 
     public function testSaveRefreshToken()
     {
+        // Clear any previous settings to ensure test starts with clean state
+        self::$plugin->saveTestPluginRefreshToken(null, null);
+        
         $setToken = self::$plugin->getPluginProperty('refreshToken');
-        $this->assertNull($token, 'No refresh token was set.');
+        $this->assertNull($setToken, 'No refresh token was set.');
 
         $setCredentials = self::$plugin->getPluginProperty('refreshTokenMetadata');
-        $this->assertNull($credentials, 'No credentials were set.');
+        $this->assertNull($setCredentials, 'No credentials were set.');
 
         $credentials = array(
             'clientId' => 'N3WCL13NT1D',
@@ -132,10 +141,10 @@ class EmailPluginTest extends TestBaseClass
         self::$plugin->saveTestPluginSettings($settings);
 
         $setToken = self::$plugin->getPluginProperty('refreshToken');
-        $this->assertNull($token, 'The token was not cleared.');
+        $this->assertNull($setToken, 'The token was not cleared.');
 
         $setCredentials = self::$plugin->getPluginProperty('refreshTokenMetadata');
-        $this->assertEmpty($credentials, 'The credentials were not cleared.');
+        $this->assertEmpty($setCredentials, 'The credentials were not cleared.');
     }
 
     public function testListPluginEmailsEvent()

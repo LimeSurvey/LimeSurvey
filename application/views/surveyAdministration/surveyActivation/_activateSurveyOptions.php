@@ -15,7 +15,7 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
     </div>
 </div>
 
-<?php if ($oSurvey->getIsDateExpired()): ?>
+<?php if ($oSurvey->getIsDateExpired()) : ?>
     <div class="row">
         <div class='col-md-12'>
             <?php
@@ -48,6 +48,7 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'anonymized',
+                    'id' => 'activate_anonymized',
                     'checkedOption' => $aSurveysettings['anonymized'],
                     'selectOptions' => $optionsOnOff
                 ]);
@@ -154,26 +155,46 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
         </div>
     </div>
 </div>
+<div class="row">
+    <div class='col-md-6'>
+        <div class="ex-form-group mb-3">
+            <label class="form-label" for='savequotaexit'><?php eT("Save quota exit"); ?></label>
+            <i class="ri-information-line"
+               data-bs-toggle="tooltip"
+               title="<?= gT("If enabled, the ID of the matched quota will be stored together with the response."); ?>"
+            ></i>
+            <div class="">
+                <?php
+                $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name' => 'savequotaexit',
+                    'checkedOption' => $aSurveysettings['savequotaexit'],
+                    'selectOptions' => $optionsOnOff
+                ]);
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
 
-<?php
-if (!$closeAccessMode) {
-    ?>
     <div class="row sub_footer">
         <div class="col-12 mt-5 mb-3">
             <div class="sub_footer_border"></div>
         </div>
         <h3><?php eT("Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)?"); ?></h3>
-        <div class='col-md-10'>
-            <div class="mb-5">
+        <div class='col-md-10' style="width: 100%;">
+            <div class="mb-5" style="width: 100%;">
                 <?php
 
                 //only allow here to switch to close-access-mode (and to open-access-mode)
                 //close-access-mode means that 'N' should be selected
                 $optionsOnOff = ['Y' => gT('Open-access mode'), 'N' => gT('Closed-access mode')];
+                $icons = ['Y' => 'ri-global-line', 'N' => 'ri-lock-2-line'];
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'openAccessMode',
                     'checkedOption' => $closeAccessMode ? 'N' : 'Y',
-                    'selectOptions' => $optionsOnOff
+                    'selectOptions' => $optionsOnOff,
+                    'htmlOptions' => ['icon' => $icons,
+                    'style' => 'width: 100%']
                 ]);
 
                 ?>
@@ -181,10 +202,7 @@ if (!$closeAccessMode) {
         </div>
     </div>
     <?php
-} else {  //transmit input value for "openAccessMode", it's needed to take further steps in action ?>
-    <input type="hidden" name="openAccessMode" value="N">
-<?php }
-?>
+    ?>
 
 <input type="hidden" name="surveyId" value="<?php echo $aSurveysettings['sid']; ?>">
 <input type="submit" class="d-none" id="submitActivateSurvey">

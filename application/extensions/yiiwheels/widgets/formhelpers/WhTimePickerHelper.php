@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * WhCountries.php
@@ -9,16 +10,15 @@
  * @link http://www.ramirezcobos.com/
  * @link http://www.2amigos.us/
  */
+
 Yii::import('yiiwheels.widgets.formhelpers.WhInputWidget');
 
 class WhTimePickerHelper extends WhInputWidget
 {
-
     public function init()
     {
         parent::init();
         TbHtml::addCssClass('bfh-timepicker', $this->htmlOptions);
-
     }
 
     public function run()

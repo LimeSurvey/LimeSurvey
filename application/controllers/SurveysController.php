@@ -23,15 +23,15 @@ class SurveysController extends LSYii_Controller
             // Validate if languages exists and fall back to default lang if needed
             $aLanguages = getLanguageDataRestricted(false, 'short');
             if (!isset($aLanguages[ $lang ])) {
-                $lang = App()->getConfig('defaultlang');
+                $lang = Yii::app()->getConfig('defaultlang');
             }
         } else {
-            $lang = App()->getConfig('defaultlang');
+            $lang = Yii::app()->getConfig('defaultlang');
         }
-            App()->setLanguage($lang);
+        App()->setLanguage($lang);
+        LimeExpressionManager::SetSurveyId(0);
 
-
-        $oTemplate       = Template::model()->getInstance(getGlobalSetting('defaulttheme'));
+        $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
         $this->sTemplate = $oTemplate->sTemplateName;
 
         $aData = array(
@@ -56,7 +56,7 @@ class SurveysController extends LSYii_Controller
         Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'nojs.js', CClientScript::POS_HEAD);
 
         // maintenance mode
-        $sMaintenanceMode = getGlobalSetting('maintenancemode');
+        $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
         if ($sMaintenanceMode == 'hard' || $sMaintenanceMode == 'soft') {
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('aSurveyInfo' => $aData), false);
         } else {
@@ -86,7 +86,7 @@ class SurveysController extends LSYii_Controller
             // TODO: Remove? It seems this can never happen because it's already caught by LSYii_Application::onException() (see commit c792c2e).
             $this->spitOutJsonError($error, $oException);
         } elseif ($error) {
-            $this->spitOutHtmlError($error, (int) $request->getParam('sid', $request->getParam('surveyid')));
+            $this->spitOutHtmlError($error);
         } else {
             throw new CHttpException(404, 'Page not found.');
         }
@@ -96,7 +96,6 @@ class SurveysController extends LSYii_Controller
      * Echo $error as HTML and end execution.
      *
      * @param array $error
-     * @param string|null $surveyId
      *
      * @return void
      *
@@ -106,19 +105,25 @@ class SurveysController extends LSYii_Controller
      * @throws Twig_Error_Syntax
      * @throws WrongTemplateVersionException
      */
-    public function spitOutHtmlError(array $error, $surveyId)
+    public function spitOutHtmlError(array $error)
     {
+        $surveyId = LSYii_Application::getSurveyId(false);
         if ($surveyId) {
-            $oTemplate = Template::model()->getInstance('', $surveyId);
+            $oTemplate = Template::model()->getInstance(null, $surveyId);
         } else {
-            $oTemplate = Template::getLastInstance();
+            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
+        }
+        $aSurveyInfo = array();
+        if ($surveyId) {
+            // Needed so the twig renderer resolves the survey's own (not just the global) theme options.
+            $aSurveyInfo['sid'] = $surveyId;
         }
         $this->sTemplate = $oTemplate->sTemplateName;
 
-        $admin = App()->getConfig('siteadminname');
-        if (App()->getConfig('showEmailInError')) {
+        $admin = Yii::app()->getConfig('siteadminname');
+        if (Yii::app()->getConfig('showEmailInError')) {
             // Never show email by default
-            $admin = CHtml::mailto(App()->getConfig('siteadminname'), App()->getConfig('siteadminemail'));
+            $admin = CHtml::mailto(Yii::app()->getConfig('siteadminname'), Yii::app()->getConfig('siteadminemail'));
         }
         $contact = sprintf(gT('If you think this is a server error, please contact %s.'), $admin);
         switch ($error['code']) {
@@ -170,7 +175,7 @@ class SurveysController extends LSYii_Controller
         $aError['message'] = $message;
         $aError['contact'] = $contact;
 
-        if (App()->getConfig('debug') != 0) {
+        if (Yii::app()->getConfig('debug') != 0) {
             $aError['trace'] = $error['trace'];
         }
 

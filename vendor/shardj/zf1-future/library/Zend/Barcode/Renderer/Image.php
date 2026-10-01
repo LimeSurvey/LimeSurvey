@@ -348,7 +348,9 @@ class Zend_Barcode_Renderer_Image extends Zend_Barcode_Renderer_RendererAbstract
         header("Content-Type: image/" . $this->_imageType);
         $functionName = 'image' . $this->_imageType;
         call_user_func($functionName, $this->_resource);
-        @imagedestroy($this->_resource);
+        if (PHP_VERSION_ID < 80000) {
+            @imagedestroy($this->_resource);
+        }
     }
 
     /**
@@ -442,6 +444,8 @@ class Zend_Barcode_Renderer_Image extends Zend_Barcode_Renderer_RendererAbstract
                 case 'right':
                     $positionX = $position[0] - ($fontWidth * strlen($text));
                     break;
+                default:
+                    $positionX = $position[0];
             }
             imagestring($this->_resource, $font, $positionX, $positionY, $text, $color);
         } else {
@@ -464,6 +468,8 @@ class Zend_Barcode_Renderer_Image extends Zend_Barcode_Renderer_RendererAbstract
                 case 'right':
                     $width = ($box[2] - $box[0]);
                     break;
+                default:
+                    $width = 0;
             }
             imagettftext(
                 $this->_resource,

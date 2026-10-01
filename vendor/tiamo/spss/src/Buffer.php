@@ -17,12 +17,7 @@ class Buffer
     /**
      * @var string
      */
-    public $streamCharset = 'UTF-8';
-
-    /**
-     * @var string
-     */
-    public $systemCharset = 'UTF-8';
+    public $charset;
 
     /**
      * @var resource
@@ -161,20 +156,24 @@ class Buffer
     }
 
     /**
-     * @param int  $length
-     * @param int  $round
+     * @param int         $length
+     * @param int         $round
+     * @param null|string $charset
      *
      * @return false|string
      */
-    public function readString($length, $round = 0)
+    public function readString($length, $round = 0, $charset = null)
     {
         if ($bytes = $this->readBytes($length)) {
             if ($round !== 0) {
                 $this->skip(Utils::roundUp($length, $round) - $length);
             }
             $str = Utils::bytesToString($bytes);
-            if (isset($str) && (strtolower($this->streamCharset) != strtolower($this->systemCharset))) {
-                $str = mb_convert_encoding($str, $this->systemCharset, $this->streamCharset);
+            
+            $charsetFrom = isset($this->charset) ? $this->charset : mb_internal_encoding();
+            $charsetTo = isset($charset) ? $charset : mb_internal_encoding();
+            if (isset($str) && (strtolower($charsetFrom) != strtolower($charsetTo))) {
+                $str = mb_convert_encoding($str, $charsetTo, $charsetFrom);
             }
 
             return $str;
@@ -214,17 +213,42 @@ class Buffer
     }
 
     /**
-     * @param $data
-     * @param int|string $length
+     * @param string      $data
+     * @param int         $maxLength
+     * @param null|string $charset
+     *
+     * @return int
+     */
+    public function lengthBytes($data, $maxLength = null, $charset = null)
+    {
+        $charsetTo = isset($this->charset) ? $this->charset : mb_internal_encoding();
+        $charsetFrom = isset($charset) ? $charset : mb_internal_encoding();
+        if (isset($data) && (strtolower($charsetTo) != strtolower($charsetFrom))) {
+            $data = mb_convert_encoding($data, $charsetTo, $charsetFrom);
+        }
+        if (isset($data) && isset($maxLength)) {
+            $data = mb_strcut($data, 0, $maxLength, $charsetTo);
+        }
+        return \strlen($data);
+    }
+
+    /**
+     * @param string      $data
+     * @param int|string  $length
+     * @param null|string $charset
      *
      * @return false|int
      */
-    public function writeString($data, $length = '*')
+    public function writeString($data, $length = '*', $charset = null)
     {
-        if (strtolower($this->streamCharset) != strtolower($this->systemCharset)) {
-            $data = mb_convert_encoding($data, $this->streamCharset, $this->systemCharset);
+        $charsetTo = isset($this->charset) ? $this->charset : mb_internal_encoding();
+        $charsetFrom = isset($charset) ? $charset : mb_internal_encoding();
+        if (isset($data) && (strtolower($charsetFrom) != strtolower($charsetTo))) {
+            $data = mb_convert_encoding($data, $charsetTo, $charsetFrom);
         }
-
+        if (isset($length) && ($length != '*')) {
+            $data = mb_strcut($data, 0, $length, $charsetTo);
+        }
         return $this->write(pack('A' . $length, $data));
     }
 
@@ -402,13 +426,14 @@ class Buffer
     private function readNumeric($length, $format)
     {
         $bytes = $this->read($length);
-        if (false !== $bytes) {
+        if ((false !== $bytes) && (strlen($bytes) > 0)) {
             if ($this->isBigEndian) {
                 $bytes = strrev($bytes);
             }
             $data = unpack($format, $bytes);
-
-            return $data[1];
+            if (false !== $data) {
+                return $data[1];
+            }
         }
 
         return false;

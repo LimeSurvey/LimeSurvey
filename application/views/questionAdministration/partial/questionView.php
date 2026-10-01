@@ -1,17 +1,22 @@
-<?php $pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']); ?>
+<?php
+
+require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.QuestionListMassiveActions') . '.php';
+
+$pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);
+?>
 
 
 
 <div class="col-12 content-right">
     <?php echo $this->renderPartial(
-                'partial/topbarBtns/listquestionsTopbarLeft_view',
-                [
+        'partial/topbarBtns/listquestionsTopbarLeft_view',
+        [
                     'oSurvey' => $oSurvey,
                     'hasSurveyContentCreatePermission' => $hasSurveyContentCreatePermission
                 ],
-                true
-            );
-         ?>
+        true
+    );
+?>
 
     <!-- Search Box -->
     <div class="row mt-4">
@@ -45,7 +50,7 @@
                     <?php
                     echo $form->label(
                         $questionModel,
-                        'search',
+                        'title',
                         array('label' => gT('Search:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm')
                     ); ?>
                 </div>
@@ -64,12 +69,12 @@
                     ); ?>
                 </div>
                 <div class="col-12">
-                    <select name="gid" class="form-select">
+                    <select name="gid" id="<?php echo CHtml::getIdByName(CHtml::activeName($questionModel, 'group')); ?>" class="form-select">
                         <option value=""><?php eT('(Any group)'); ?></option>
                         <?php foreach ($oSurvey->groups as $group) : ?>
                             <option value="<?php echo $group->gid; ?>" <?php if ($group->gid == $questionModel->gid) {
                                                                             echo 'selected';
-                                                                        } ?>>
+                                           } ?>>
                                 <?php echo flattenText($group->questiongroupl10ns[$oSurvey->language]->group_name); ?>
                             </option>
                         <?php endforeach ?>
@@ -77,19 +82,11 @@
                 </div>
 
                 <div class="col-12">
-                    <?php
-                    echo CHtml::submitButton(
-                        gT('Search', 'unescaped'),
-                        ['class' => 'btn btn-primary']
-                    ); ?>
-                    <a href="<?php
-                                echo App()->createUrl(
-                                    'questionAdministration/listquestions',
-                                    ['surveyid' => $oSurvey->primaryKey]
-                                ); ?>" class="btn btn-warning">
+                    <?= CHtml::submitButton(gT('Search', 'unescaped'), ['class' => 'btn btn-primary']) ?>
+                    <a href="<?= App()->createUrl('questionAdministration/listquestions', ['surveyid' => $oSurvey->primaryKey]) ?>"
+                       class="btn btn-warning" role="button" aria-label="<?= gT('Reset') ?>">
                         <span class="ri-refresh-line"></span>
-                        <?php
-                        eT('Reset'); ?>
+                        <?= gT('Reset') ?>
                     </a>
                 </div>
             </div>
@@ -103,34 +100,24 @@
     <div class="row ls-space margin top-10">
         <div class="col-12">
             <?php
-            $massiveAction = Yii::app()->getController()->renderPartial(
-                '/admin/survey/Question/massive_actions/_selector',
-                array('model' => $questionModel, 'oSurvey' => $oSurvey),
-                true,
-                false
-            );
-            $this->widget('ext.admin.grid.CLSGridView', array( //done
+            $floatingActions = \actions\QuestionListMassiveActions::getActions($questionModel, $oSurvey);
+            $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                'pk'       => 'id',
+                'gridId'   => 'question-grid',
+                'aActions' => $floatingActions,
+            ]);
+
+            $this->widget('ext.admin.grid.CLSGridView', [ //done
                 'dataProvider' => $questionModel->search(),
                 'id' => 'question-grid',
+                'lsCaption'      => gT("Questions"),
                 'emptyText' => gT('No questions found.'),
-                'massiveActionTemplate' => $massiveAction,
-                'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                    . sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            App()->params['pageSizeOptions'],
-                            array(
-                                'class' => 'changePageSize form-select',
-                                'style' => 'display: inline; width: auto'
-                            )
-                        )
-                    ),
-                'columns' => $questionModel->questionListColumns,
-                'ajaxUpdate' => 'question-grid',
-                'afterAjaxUpdate' => "bindPageSizeChange"
-            ));
+                'lsShowSelectionBar'      => false,
+                'lsPageSizeCurrentValue' => $pageSize,
+                'columns'               => $questionModel->questionListColumns,
+                'ajaxUpdate'            => 'question-grid',
+                'afterAjaxUpdate'       => "bindPageSizeChange"
+            ]);
             ?>
         </div>
     </div>

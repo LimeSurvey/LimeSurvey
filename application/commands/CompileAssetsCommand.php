@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey (tm)
- * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2011-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -14,11 +14,11 @@
  */
 class CompileAssetsCommand extends CConsoleCommand
 {
-
     /**
      * @param array $args
      * @return int
      */
+    #[\Override]
     public function run($args)
     {
         if (isset($args) && count($args) < 2) {
@@ -84,18 +84,17 @@ class CompileAssetsCommand extends CConsoleCommand
 
     private function liveExecuteCommand($cmd, $logfile = false)
     {
-    
+
         while (@ ob_end_flush()); // end all output buffers if any
-    
+
         if ($logfile !== false) {
             $proc = popen("$cmd >{$logfile} 2>&1; echo Exit status : $?", 'r');
         } else {
             $proc = popen("$cmd 2>&1 ; echo Exit status : $?", 'r');
         }
 
-        $live_output     = "";
         $complete_output = "";
-    
+
         while (!feof($proc)) {
             $live_output     = fread($proc, 4096);
             $complete_output = $complete_output . $live_output;
@@ -103,12 +102,12 @@ class CompileAssetsCommand extends CConsoleCommand
             echo "$live_output";
             @ flush();
         }
-    
+
         pclose($proc);
-    
+
         // get exit status
         preg_match('/[0-9]+$/', $complete_output, $matches);
-    
+
         // return exit status and intended output
         return array(
                         'exit_status'  => intval($matches[0]),

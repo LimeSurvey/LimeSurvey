@@ -2,7 +2,7 @@
 
 /**
  * LimeSurvey
- * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -30,8 +30,14 @@ class PluginManagerController extends SurveyCommonAction
     }
 
     /**
-     * Overview for plugins
+     * Overview for plugins. Renders the plugin list grid and the topbar,
+     * whose middle buttons include the upload/scan-files actions plus any
+     * extra menu items (such as the update checker's "Find updates" button)
+     * contributed via the beforePluginManagerMenuRender event, so they all
+     * appear in the same topbar row.
      * Copied from PluginsController 2015-10-02
+     *
+     * @return void
      */
     public function index()
     {
@@ -57,7 +63,6 @@ class PluginManagerController extends SurveyCommonAction
 
         $aData['data'] = $data;
         $aData['plugins'] = $aoPlugins;
-        $aData['extraMenus'] = $this->getExtraMenus();
 
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
@@ -79,6 +84,7 @@ class PluginManagerController extends SurveyCommonAction
             [
                 'showUpload' => !Yii::app()->getConfig('demoMode') && !Yii::app()->getConfig('disablePluginUpload'),
                 'scanFilesUrl' => $scanFilesUrl,
+                'extraMenus' => $this->getExtraMenus(),
             ],
             true
         );
@@ -147,7 +153,7 @@ class PluginManagerController extends SurveyCommonAction
             ]
         );
 
-        $data['topbar']['title'] = gT('Plugins - scanned files');
+        $data['topbar']['title'] = gT('Plugins - Scanned files');
         $data['topbar']['backLink'] = $this->getController()->createUrl('/admin/pluginmanager');
         $data['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/pluginmanager/partial/topbarBtns/leftSideButtons',
@@ -212,11 +218,13 @@ class PluginManagerController extends SurveyCommonAction
 
         $request = Yii::app()->request;
         $pluginId = (int) $request->getPost('pluginId');
+        $redirectUrl = $this->getStatusToggleRedirectUrl($pluginId);
 
         $oPlugin = Plugin::model()->findByPk($pluginId);
         if ($oPlugin && $oPlugin->active == 0) {
             if (!$oPlugin->isCompatible()) {
-                $this->errorAndRedirect(gT('The plugin is not compatible with your version of LimeSurvey.'));
+                Yii::app()->user->setFlash('error', gT('The plugin is not compatible with your version of LimeSurvey.'));
+                $this->getController()->redirect($redirectUrl);
             }
 
             // Load the plugin:
@@ -236,12 +244,12 @@ class PluginManagerController extends SurveyCommonAction
                 } else {
                     Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
                 }
-                $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
+                $this->getController()->redirect($redirectUrl);
             }
         } else {
             Yii::app()->user->setFlash('error', gT('Found no plugin, or plugin already active.'));
         }
-        $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
+        $this->getController()->redirect($redirectUrl);
     }
 
     /**
@@ -255,6 +263,7 @@ class PluginManagerController extends SurveyCommonAction
             $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
         }
         $pluginId = (int) Yii::app()->request->getPost('pluginId');
+        $redirectUrl = $this->getStatusToggleRedirectUrl($pluginId);
         $plugin = Plugin::model()->findByPk($pluginId);
         if ($plugin && $plugin->active) {
             $result = App()->getPluginManager()->dispatchEvent(
@@ -272,13 +281,13 @@ class PluginManagerController extends SurveyCommonAction
                 } else {
                     Yii::app()->user->setFlash('error', gT('Failed to deactivate the plugin.'));
                 }
-                $this->getController()->redirect($this->getPluginManagerUrl());
+                $this->getController()->redirect($redirectUrl);
             }
         } else {
             Yii::app()->user->setFlash('error', gT('Found no plugin, or plugin not active.'));
         }
 
-        $this->getController()->redirect($this->getPluginManagerUrl());
+        $this->getController()->redirect($redirectUrl);
     }
 
     /**
@@ -315,6 +324,12 @@ class PluginManagerController extends SurveyCommonAction
             Yii::app()->user->setFlash('error', gT('The plugin was not found.'));
             $this->getController()->redirect($url);
         }
+
+        // Stay on the Settings tab when re-rendering after a settings save
+        // (a plain "Save" click re-renders this same action instead of
+        // redirecting, so without this the tab markup would default back to
+        // "Overview").
+        $activeTab = App()->request->isPostRequest ? 'settings' : 'overview';
 
         // If post handle data, yt0 seems to be the submit button
         // TODO: Break out to separate method.
@@ -362,11 +377,12 @@ class PluginManagerController extends SurveyCommonAction
                 ),
             );
         }
-        // Send to view plugin porperties: name and description
+        // Send to view plugin properties: name and description
         $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
-        $topbar['title'] = gT('Plugins') . ' ' . $plugin['name'];
         $topbar['backLink'] = $this->getController()->createUrl('/admin/pluginmanager', ['sa' => 'index']);
+        $topbar['title'] = '<a class="ls-link" href="' . CHtml::encode($topbar['backLink']) . '">' . CHtml::encode(gT('Plugins')) . '</a>'
+            . ' <span class="text-muted mx-1">/</span> ' . CHtml::encode($plugin['name']);
 
         $this->renderWrappedTemplate(
             'pluginmanager',
@@ -377,7 +393,8 @@ class PluginManagerController extends SurveyCommonAction
                 'plugin'       => $plugin,
                 'pluginObject' => $oPluginObject,
                 'properties'   => $aPluginProp,
-                'topbar' => $topbar
+                'topbar' => $topbar,
+                'activeTab' => $activeTab,
             ]
         );
     }
@@ -417,7 +434,7 @@ class PluginManagerController extends SurveyCommonAction
             }
             $this->getController()->redirect($url);
         } else {
-            Yii::app()->user->setFlash('error', sprintf(gT('Found no plugin with id %d'), $pluginId));
+            Yii::app()->user->setFlash('error', sprintf(gT('Found no plugin with ID %d'), $pluginId));
             $this->getController()->redirect($url);
         }
     }
@@ -485,7 +502,7 @@ class PluginManagerController extends SurveyCommonAction
         if (empty($plugin)) {
             Yii::app()->setFlashMessage(
                 sprintf(
-                    gT('Found no plugin with id %d.'),
+                    gT('Found no plugin with ID %d'),
                     $pluginId
                 ),
                 'error'
@@ -566,6 +583,12 @@ class PluginManagerController extends SurveyCommonAction
             if (!$config->isCompatible()) {
                 $installer->abort();
                 $this->errorAndRedirect(gT('The plugin is not compatible with your version of LimeSurvey.'));
+            }
+
+            $pluginManager = App()->getPluginManager();
+            if (!$pluginManager->validatePluginName($config->getName())) {
+                $installer->abort();
+                $this->errorAndRedirect(gT('Invalid plugin name in config.xml.'));
             }
 
             // Show confirmation page.
@@ -728,6 +751,24 @@ class PluginManagerController extends SurveyCommonAction
             '/admin/pluginmanager',
             $params
         );
+    }
+
+    /**
+     * Resolves where activate()/deactivate() should redirect to afterwards.
+     * The plugin list's and plugin detail page's status toggle both post a
+     * 'returnTo' flag (never a raw URL, to avoid an open-redirect); when it is
+     * 'configure', the user is sent back to that plugin's detail page instead
+     * of the plugin list.
+     *
+     * @param int $pluginId Plugin id to return to when returning to the detail page
+     * @return string Redirect URL
+     */
+    protected function getStatusToggleRedirectUrl($pluginId)
+    {
+        if (Yii::app()->request->getPost('returnTo') === 'configure') {
+            return $this->getPluginManagerUrl('configure', ['id' => $pluginId]);
+        }
+        return $this->getPluginManagerUrl();
     }
 
     /**

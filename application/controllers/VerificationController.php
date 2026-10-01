@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -39,7 +39,7 @@ class VerificationController extends LSYii_Controller
         $grey_shade = ImageColorAllocate($im, 204, 204, 204);
 
         // Create the random numberes
-        srand((double) microtime() * 1000000);
+        srand((float) microtime() * 1000000);
 
         $num1 = rand(1, 5);
         $found = false;
@@ -102,6 +102,6 @@ class VerificationController extends LSYii_Controller
         ImageDestroy($im);
 
         // Add the answer to the session
-        $_SESSION['survey_' . $iSurveyID]['secanswer'] = $num1 + $num2;
+        $_SESSION['responses_' . $iSurveyID]['secanswer'] = $num1 + $num2;
     }
 }

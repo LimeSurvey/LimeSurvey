@@ -36,7 +36,7 @@
                         </button>
                     </div>
                     <div class="mb-3 responses-multiselect-checkboxes">
-                        <?php foreach ($filterableColumns as $columnName => $columnTitle): ?>
+                        <?php foreach ($filterableColumns as $columnName => $columnTitle) : ?>
                             <div class="checkbox">
                                 <label>
                                     <input name="columns[]" type="checkbox" value="<?php echo $columnName ?>"<?php echo !isset($filteredColumns) || in_array($columnName, $filteredColumns) ? 'checked' : '' ?>>
@@ -45,7 +45,7 @@
                             </div>
                         <?php endforeach; ?>
                         <input type="hidden" name="surveyid" value="<?= $surveyId ?>"/>
-                        <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= App()->request->csrfToken ?>"/>
+                        <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= CHtml::encode(App()->request->csrfToken) ?>"/>
                     </div>
                 </div>
                 <div class="modal-footer">

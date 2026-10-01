@@ -1,0 +1,29 @@
+#ls-loading {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    opacity: 0.7;
+    background-color: #fff;
+    z-index: 3501;
+    text-align: center;
+    display: none; /* hidden by default */
+}
+
+#ls-loading-spinner {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: ls-spinner-spin 2s linear infinite;
+}
+
+@keyframes ls-spinner-spin {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}

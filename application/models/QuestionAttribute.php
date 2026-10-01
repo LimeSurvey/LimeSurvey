@@ -2,7 +2,7 @@
 
 /**
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -40,6 +40,7 @@ class QuestionAttribute extends LSActiveRecord
     /**
      * @return static
      */
+    #[\Override]
     public static function model($className = __CLASS__)
     {
         /** @var self $model */
@@ -48,12 +49,14 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /** @inheritdoc */
+    #[\Override]
     public function tableName()
     {
         return '{{question_attributes}}';
     }
 
     /** @inheritdoc */
+    #[\Override]
     public function primaryKey()
     {
         return 'qaid';
@@ -63,6 +66,7 @@ class QuestionAttribute extends LSActiveRecord
      * @inheritdoc
      * @todo Remove?
      */
+    #[\Override]
     public function relations()
     {
         return array(
@@ -77,12 +81,14 @@ class QuestionAttribute extends LSActiveRecord
      * In that case disable the defaultScope by using MyModel::model()->resetScope()->findAll();
      * @return array Scope that indexes the records by their attribute bane
      */
+    #[\Override]
     public function defaultScope()
     {
         return array('index' => 'attribute');
     }
 
     /** @inheritdoc */
+    #[\Override]
     public function rules()
     {
         return array(
@@ -158,50 +164,55 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
-     * Set attributes for multiple questions
+     * Set attributes for multiple questions simultaneously
      *
-     * NOTE: We can't use self::setQuestionAttribute() because it doesn't check for question types first.
-     * TODO: the question type check should be done via rules, or via a call to a question method
+     * This function updates specified attributes for multiple questions at once.
+     * It first checks if the user has permission to update survey content,
+     * then handles special case for random order attributes, and finally
+     * applies the requested attribute updates to all specified questions.
      *
-     * @param integer $iSid                   the sid to update  (only to check permission)
-     * @param array $aQids                    an array containing the list of primary keys for questions
-     * @param array $aAttributesToUpdate    array containing the list of attributes to update
-     * @param array $aValidQuestionTypes    the question types we can update for those attributes
-     * @todo Missign noun in function name - set multiple what?
+     * @param integer $surveyId The survey ID
+     * @param array $questionIds Array of question IDs to update
+     * @param array $attributesWithValue Array of attribute names and the new value
+     * @param array $validQuestionTypes Array of question types that are valid for these attributes
+     *
+     * @return void No direct return value, updates are applied to the database
      */
-    public function setMultiple($iSid, $aQids, $aAttributesToUpdate, $aValidQuestionTypes)
-    {
+    public function setMultipleAttributes(
+        $surveyId,
+        $questionIds,
+        $attributesWithValue,
+        $validQuestionTypes
+    ) {
         // Permissions check
-        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
-            // For each question
-            foreach ($aQids as $sQid) {
-                $iQid = (int)$sQid;
-                // We need to generate a question object to check for the question type
-                // So, we can also force the sid: we don't allow to update questions on different surveys at the same time (permission check is by survey)
-                $oQuestion = Question::model()->find('qid=:qid AND sid=:sid', [":qid" => $iQid, ":sid" => $iSid]);
-
-                // For each attribute
-                foreach ($aAttributesToUpdate as $sAttribute) {
-                    // TODO: use an array like for a form submit, so we can parse it from the controller instead of using $_POST directly here
-                    $sValue = Yii::app()->request->getPost($sAttribute);
-                    $questionAttributes = QuestionAttribute::model()->findAllByAttributes(['attribute' => $sAttribute, 'qid' => $iQid]);
-
-                    // We check if we can update this attribute for this question type
-                    // TODO: if (in_array($oQuestion->attributes, $sAttribute))
-                    if (in_array($oQuestion->type, $aValidQuestionTypes)) {
-                        if (count($questionAttributes) > 0) {
-                            // Update
-                            foreach ($questionAttributes as $questionAttribute) {
-                                $questionAttribute->value = $sValue;
-                                $questionAttribute->save();
-                            }
-                        } else {
-                            // Create
-                            $oAttribute = new QuestionAttribute();
-                            $oAttribute->qid = $iQid;
-                            $oAttribute->value = $sValue;
-                            $oAttribute->attribute = $sAttribute;
-                            $oAttribute->save();
+        if (
+            Permission::model()->hasSurveyPermission(
+                $surveyId,
+                'surveycontent',
+                'update'
+            )
+        ) {
+            $attributesWithValue = $this->setRandomOrderAttributes(
+                $surveyId,
+                $questionIds,
+                $attributesWithValue,
+                $validQuestionTypes
+            );
+            if (!empty($attributesWithValue)) {
+                foreach ($questionIds as $questionId) {
+                    $questionId = (int)$questionId;
+                    $question = Question::model()->find(
+                        'qid=:qid AND sid=:sid',
+                        [":qid" => $questionId, ":sid" => $surveyId]
+                    );
+                    // For each attribute
+                    foreach ($attributesWithValue as $attribute => $value) {
+                        if (in_array($question->type, $validQuestionTypes)) {
+                            $this->setQuestionAttribute(
+                                $questionId,
+                                $attribute,
+                                $value
+                            );
                         }
                     }
                 }
@@ -236,7 +247,7 @@ class QuestionAttribute extends LSActiveRecord
         static $survey = '';
         // Limit the size of the attribute cache due to memory usage
         $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
-        if (EmCacheHelper::useCache()) {
+        if (class_exists('EmCacheHelper', false) && EmCacheHelper::useCache()) {
             $value = EmCacheHelper::get($cacheKey);
             if ($value !== false) {
                 return $value;
@@ -270,7 +281,7 @@ class QuestionAttribute extends LSActiveRecord
             }
         }
 
-        if (EmCacheHelper::useCache()) {
+        if (class_exists('EmCacheHelper', false) && EmCacheHelper::useCache()) {
             EmCacheHelper::set($cacheKey, $aAttributeValues);
         }
 
@@ -439,29 +450,6 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
-     * Returns the value for attribute 'question_template'.
-     * Fetches the question_template from a question model.
-     *
-     * Be carefull this attribute is not present in all questions.
-     * Even more, standard question types where question theme are not used (or custom question theme are not used),
-     * the attribute is missing. In those cases, the deault "core" is used.
-     *
-     * @return string question_template or 'core' if it not exists
-     *
-     * @deprecated use $question->question_theme_name instead (Question model)
-     */
-    public static function getQuestionTemplateValue($questionID)
-    {
-        /**
-         * TODO: This method was modified to get the theme name from the proper place, but it should be deprecated,
-         *       as it no longer makes sense (question theme is not a QuestionAttribute anymore).
-         */
-        $question = Question::model()->findByPk($questionID);
-        $value = !empty($question) && !empty($question->question_theme_name) ? $question->question_theme_name : 'core';
-        return $value;
-    }
-
-    /**
      * Read question attributes from XML file and convert it to array
      *
      * @param string $sXmlFilePath Path to XML
@@ -475,9 +463,6 @@ class QuestionAttribute extends LSActiveRecord
 
         if (file_exists($sXmlFilePath)) {
             // load xml file
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(false);
-            }
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), true);
             // if only one attribute, then it doesn't return numeric index
@@ -485,9 +470,6 @@ class QuestionAttribute extends LSActiveRecord
                 $aTemp = $aXmlAttributes['attribute'];
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
-            }
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
             }
         } else {
             return null;
@@ -539,9 +521,6 @@ class QuestionAttribute extends LSActiveRecord
 
         if (file_exists($sXmlFilePath)) {
             // load xml file
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(false);
-            }
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
             // if only one attribute, then it doesn't return numeric index
@@ -549,9 +528,6 @@ class QuestionAttribute extends LSActiveRecord
                 $aTemp = $aXmlAttributes['attribute'];
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
-            }
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
             }
         } else {
             return null;
@@ -585,7 +561,7 @@ class QuestionAttribute extends LSActiveRecord
      *      'category' : Where to put it
      *      'sortorder' : Qort order in this category
      *      'inputtype' : type of input
-     *      'expression' : 2 to force Expression Manager when see the survey logic file (add { } and validate, 1 : allow it : validate in survey logic file
+     *      'expression' : 2 to force Expression Manager when see the survey logic overview (add { } and validate, 1 : allow it : validate in survey logic overview
      *      'options' : optional options if input type need it
      *      'default' : the default value
      *      'caption' : the label
@@ -635,5 +611,55 @@ class QuestionAttribute extends LSActiveRecord
         $validator = new LSYii_Validators();
         $validator->attributes = [$attribute];
         $validator->validate($this, [$attribute]);
+    }
+
+    /**
+     * Massive action "Present subquestions/answer options in random order"
+     * has to update random_order, answer_order and/or subquestion_order
+     * depending on question type.
+     * This function checks for random_order attribute and updates the corresponding fields instead if necessary.
+     * $attributesToUpdate will be returned with the random_order attr removed
+     * @param int $surveyId the survey ID
+     * @param array $questionIds the question IDs
+     * @param array $attributesWithValue the attributes to update
+     * @param array $validQuestionTypes the valid question types
+     *
+     * @return array $attributesToUpdate with random_order attr removed
+     */
+    public function setRandomOrderAttributes(
+        int $surveyId,
+        array $questionIds,
+        array $attributesWithValue,
+        array $validQuestionTypes
+    ) {
+        if (array_key_exists('random_order', $attributesWithValue)) {
+            $value = $attributesWithValue['random_order'];
+            $stringValue = $value === '1' ? 'random' : 'normal';
+            foreach ($questionIds as $questionId) {
+                $questionModel = Question::model()->find(
+                    'qid=:qid AND sid=:sid',
+                    [":qid" => $questionId, ":sid" => $surveyId]
+                );
+                if (in_array($questionModel->type, $validQuestionTypes)) {
+                    if (
+                        in_array($questionModel->type, Question::ORDER_TYPES_SUBQUESTION)
+                    ) {
+                        $updateAttribute = 'subquestion_order';
+                        $updateValue = $stringValue;
+                    } elseif (
+                        in_array($questionModel->type, Question::ORDER_TYPES_ANSWER)
+                    ) {
+                        $updateAttribute = 'answer_order';
+                        $updateValue = $stringValue;
+                    } else {
+                        $updateAttribute = 'random_order';
+                        $updateValue = $value;
+                    }
+                    $this->setQuestionAttribute($questionId, $updateAttribute, $updateValue);
+                }
+            }
+            unset($attributesWithValue['random_order']);
+        }
+        return $attributesWithValue;
     }
 }

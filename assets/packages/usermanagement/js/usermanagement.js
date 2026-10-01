@@ -37,7 +37,7 @@ var UserManagement = function () {
         form.append('<input type="hidden" name="userid" value="' + userid + '" />');
         form.append('<input type="hidden" name="action" value="' + action + '" />');
         form.append('<input type="hidden" name="user" value="' + user + '" />');
-        form.append('<input type="hidden" name="YII_CSRF_TOKEN" value="' + LS.data.csrfToken + '" />');
+        form.append($("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken));
         form.appendTo('body');
         form.submit();
     };
@@ -98,8 +98,15 @@ var UserManagement = function () {
                         $('#UserManagement--modalform').off('submit.USERMANAGERMODAL');
                         $('#UserManagement-action-modal').find('.modal-content').html(result.html);
                         if (!result.hasOwnProperty('html')) {
+                            var isDelete = /\/deleteUser/.test($('#UserManagement--modalform').attr('action'));
+                            if (isDelete) {
+                                var userId = data.find(function(f) { return f.name === 'userid'; });
+                                if (userId) {
+                                    LS.gridSelection.markRowDeleted('usermanagement--identity-gridPanel', userId.value);
+                                }
+                            }
                             triggerModalClose();
-                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
+                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true, useHtml: true, showIcon: true});
                             if (result.hasOwnProperty('href')) {
                                 setTimeout(function() {
                                     const modalSize = result.hasOwnProperty('modalsize') ? result.modalsize : '';
@@ -116,7 +123,7 @@ var UserManagement = function () {
                         return;
                     }
                     $("#usermanagement-modal-doalog").offset({ top: 10 });
-                    $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger');
+                    $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger').focus();
                 },
                 error: function (request, status, error) {
                     if (request && request.responseJSON && request.responseJSON.message) {
@@ -126,7 +133,7 @@ var UserManagement = function () {
                                 'danger',
                                 {showCloseButton: true, timeout: 10000}
                             )
-                        ).removeClass('d-none');
+                        ).removeClass('d-none').focus();
                     } else {
                         alert('An error occured while trying to save, please reload the page Code:1571926261195');
                     }
@@ -262,6 +269,12 @@ var UserManagement = function () {
 
     var wireDatePicker = function () {
         const expires = document.getElementById('expires');
+
+        // This function is used with multiple modals, and not all modals have an expiration date
+        if (!expires) {
+            return;
+        }
+
         let cleared = false;
         initDatePicker(expires);
 
@@ -312,9 +325,6 @@ var UserManagement = function () {
                 $(this).prop('checked', toggled);
             })
         });
-        //$('input[name="alltemplates"]').on('switchChange.bootstrapSwitch', function (event, state) {
-            //$('input[id$="_use"]').prop('checked', state).trigger('change');
-        //});
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
             var modalSize = $(this).data('modalsize');

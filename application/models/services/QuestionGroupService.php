@@ -269,7 +269,7 @@ class QuestionGroupService
             $importResults['fatalerror'] = $fatalerror;
         } else {
             try {
-                $this->yiiApp->loadHelper('admin/import');
+                $this->yiiApp->loadHelper('admin.import');
                 $importResults = XMLImportGroup(
                     $sFullFilepath,
                     $surveyId,
@@ -451,7 +451,7 @@ class QuestionGroupService
      * @throws NotFoundException
      * @throws PersistErrorException
      */
-    public function newQuestionGroup(int $surveyId, array $aQuestionGroupData = null)
+    public function newQuestionGroup(int $surveyId, ?array $aQuestionGroupData = null)
     {
         $survey = $this->getSurvey($surveyId);
         $this->refreshModels();
@@ -577,7 +577,7 @@ class QuestionGroupService
             )
         ) {
             throw new PermissionDeniedException(
-                gT('Access denied')
+                'Access denied!'
             );
         }
     }

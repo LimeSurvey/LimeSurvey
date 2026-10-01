@@ -1,3 +1,6 @@
+/**
+ * Registers change behavior for Bootstrap radio groups with an “other” option.
+ */
 function doBootstrapRadioOther() {
     $("input:radio.button-item.btn-check").on('change', function () {
         var name = $(this).attr('name');
@@ -9,6 +12,7 @@ function doBootstrapRadioOther() {
             copyOtherInputToHiddenField(name);
         } else {
             $("#div" + name + "other").addClass('ls-js-hidden');
+            $("#answer" + name + "othertext").val("");
             $("#answer" + name + "othertextaux").val('');
         }
     });

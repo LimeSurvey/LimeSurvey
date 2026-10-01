@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tabs for survey
  *
@@ -6,40 +7,35 @@
  * It doesn't render the tab content
  */
 
-$active = $_GET['tab'] ?? 'create';
-
 App()->getClientScript()->registerScript("tab-survey-view-variables", "
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
+    var sAdminEmailAddressNeeded = '" . gT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js') . "'
     var sURLParameters = '';
     var sAddParam = '';
 ", LSYii_ClientScript::POS_BEGIN);
 $activeTab = Yii::app()->request->getParam('tab', 'create');
 
-switch($activeTab) {
+
+switch ($activeTab) {
     case 'create':
-        $activeForm = 'addnewsurvey'; 
+        $activeForm = 'addnewsurvey';
         // $label = '<i class="ri-check-fill"></i>&nbsp;'.gT("Save");
-        $label = '<i class="ri-check-fill"></i>&nbsp;'.gT("Save");
-        
-        break;
-    case 'import':
-        $activeForm = 'importsurvey'; 
-        $label = '<i class="ri-download-fill"></i>&nbsp;'.gT('Import');
+        $label = '<i class="ri-check-fill"></i>&nbsp;' . gT("Save");
+
         break;
     case 'copy':
-        $activeForm = 'copysurveyform'; 
-        $label = '<i class="ri-file-copy-line"></i>&nbsp;'.gT('Copy');
+        $activeForm = 'copysurveyform';
+        $label = '<i class="ri-file-copy-line"></i>&nbsp;' . gT('Copy');
         break;
 }
 
 App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions", "
-    $('#save-form-button').attr('data-form-id', '".$activeForm."');
-    $('#save-form-button').html('".$label."');
+    $('#save-form-button').attr('data-form-id', '" . $activeForm . "');
+    $('#save-form-button').html('" . $label . "');
     $('#create-import-copy-survey>li>a').on('show.bs.tab', function(e){
         $('#save-form-button').attr('data-form-id', e.target.getAttribute('data-form-id'));
         // NB: button-title is equal to tab title except for 'Create' -> 'Save'
@@ -50,33 +46,16 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
 
 
 <!-- Tabs -->
-<ul class="nav nav-tabs" id="create-import-copy-survey">
+<ul class="nav nav-tabs" id="create-import-copy-survey" role="tablist">
 
     <!-- Create -->
     <li class="nav-item" role="presentation">
-        <a class="nav-link <?= $active === 'create' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-check-fill'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
+        <a class="nav-link <?= $activeTab === 'create' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-check-fill'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
             <?php  eT("Create"); ?>
         </a>
     </li>
 
-
-    <?php if ($action === "newsurvey"): ?>
-        <!-- Import -->
-        <li class="nav-item" role="presentation">
-            <a class="nav-link <?= $active === 'import' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title=" <span class='ri-download-2-fill '></span>&nbsp;<?= gT('Import'); ?>" data-form-id="importsurvey" href="#import">
-                <?php  eT("Import"); ?>
-            </a>
-        </li>
-
-        <!-- Copy -->
-        <li class="nav-item" role="presentation">
-            <a class="nav-link <?= $active === 'copy' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-file-copy-line'></i>&nbsp;<?= gT('Copy'); ?>" data-form-id="copysurveyform" href="#copy">
-                <?php  eT("Copy"); ?>
-            </a>
-        </li>
-
-    <?php elseif($action === "editsurveysettings"): ?>
-
+    <?php if ($action === "editsurveysettings") : ?>
         <!-- Panel integration -->
         <li class="nav-item" role="presentation">
             <a role="tab" data-bs-toggle="tab" href="#panelintegration">
@@ -92,7 +71,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
         </li>
 
         <!-- Plugins -->
-        <?php if(isset($pluginSettings)): ?>
+        <?php if (isset($pluginSettings)) : ?>
             <li class="nav-item" role="presentation">
                 <a role="tab" data-bs-toggle="tab" href="#pluginsettings">
                     <?php  eT("Plugins"); ?>

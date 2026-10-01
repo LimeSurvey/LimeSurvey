@@ -3,14 +3,37 @@
 <div class="summary-table">
 
     <!-- Summary Table -->
+        <!-- Question -->
+        <div class="row">
+            <div class="col-2">
+                <strong>
+                    <?php eT("Question:"); ?>
+                </strong>
+            </div>
+            <div class="col-10"><strong>
+                <?php
+                    templatereplace(
+                        $question->questionl10ns[$question->survey->language]->question,
+                        array('QID' => $question->qid),
+                        $aReplacementData,
+                        'Unspecified',
+                        false,
+                        $question->qid
+                    );
+                    echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                    ?></strong>
+            </div>
+        </div>     
         <!-- Question Group -->
+         
         <div class="row">
             <div class="col-2">
                 <strong>
                     <?php eT('Question group:');?>&nbsp;&nbsp;&nbsp;
                 </strong>
             </div>
-            <div class="col-10"><em><?php echo flattenText($question->group->group_name);?></em> (ID:<?php echo $question->group->gid;?>)</div>
+            <div class="col-10"><em><?php
+            echo flattenText($question->group->questiongroupl10ns[$question->survey->language]->group_name);?></em> (ID:<?php echo $question->group->gid;?>)</div>
         </div>
 
         <!-- Code -->
@@ -25,33 +48,11 @@
                <?= $question->title; ?>
                 <?php if ($question->type != "X") : ?>
                     <?php if ($question->mandatory == "Y") :?>
-                        : (<i><?php eT("Mandatory Question"); ?></i>)
+                        : (<i><?php eT("Mandatory question"); ?></i>)
                     <?php else : ?>
-                            : (<i><?php eT("Optional Question"); ?></i>)
+                            : (<i><?php eT("Optional question"); ?></i>)
                     <?php endif; ?>
                 <?php endif; ?>
-            </div>
-        </div>
-
-        <!-- Question -->
-        <div class="row">
-            <div class="col-2">
-                <strong>
-                    <?php eT("Question:"); ?>
-                </strong>
-            </div>
-            <div class="col-10">
-                <?php
-                    templatereplace(
-                        $question->questionl10ns[$question->survey->language]->question,
-                        array('QID' => $question->qid),
-                        $aReplacementData,
-                        'Unspecified',
-                        false,
-                        $question->qid
-                    );
-                    echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
-                ?>
             </div>
         </div>
 
@@ -65,24 +66,23 @@
             <div class="col-10">
 
                 <?php
-                    if (trim((string) $question->questionl10ns[$question->survey->language]->help) != '')
-                    {
-                        templatereplace(
-                            $question->questionl10ns[$question->survey->language]->help,
-                            array('QID' => $question->qid),
-                            $aReplacementData,
-                            'Unspecified',
-                            false,
-                            $question->qid
-                        );
-                        echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
-                    }
+                if (trim((string) $question->questionl10ns[$question->survey->language]->help) != '') {
+                    templatereplace(
+                        $question->questionl10ns[$question->survey->language]->help,
+                        array('QID' => $question->qid),
+                        $aReplacementData,
+                        'Unspecified',
+                        false,
+                        $question->qid
+                    );
+                    echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                }
                 ?>
             </div>
         </div>
 
         <!-- Validation -->
-        <?php if ($question->preg):?>
+        <?php if ($question->preg) :?>
             <div class="row">
                 <div class="col-2">
                     <strong>
@@ -110,7 +110,7 @@
         </div>
 
         <!-- Warning : You need to add answer -->
-        <?php if ($answersCount == 0 && (int) ($questionTheme->getDecodedSettings()->answerscales) > 0):?>
+        <?php if ($answersCount == 0 && (int) ($questionTheme->getDecodedSettings()->answerscales) > 0) :?>
         <div class="row">
             <div class="col-2">
             </div>
@@ -124,7 +124,7 @@
         <?php endif; ?>
 
         <!--  Warning : You need to add subquestions to this question -->
-        <?php  if ($subquestionsCount == 0 && (int) ($questionTheme->getDecodedSettings()->subquestions) > 0): ?>
+        <?php  if ($subquestionsCount == 0 && (int) ($questionTheme->getDecodedSettings()->subquestions) > 0) : ?>
             <div class="row">
                 <div class="col-2"></div>
                 <div class="col-10">
@@ -137,7 +137,7 @@
         <?php endif; ?>
 
         <!-- Option 'Other' -->
-        <?php if ($question->type == "M" or $question->type == "P"):?>
+        <?php if ($question->type == "M" or $question->type == "P") :?>
             <div class="row">
                 <div class="col-2">
                     <strong>
@@ -145,9 +145,9 @@
                     </strong>
                 </div>
                 <div class="col-10">
-                    <?php if ($question->other == "Y"):?>
+                    <?php if ($question->other == "Y") :?>
                         <?php eT("Yes"); ?>
-                    <?php else:?>
+                    <?php else :?>
                         <?php eT("No"); ?>
                     <?php endif; ?>
                 </div>
@@ -155,7 +155,7 @@
         <?php endif; ?>
 
         <!-- Mandatory -->
-        <?php if (isset($question->mandatory) and ($question->type != "X") and ($question->type != "|")):?>
+        <?php if (isset($question->mandatory) and ($question->type != "X") and ($question->type != "|")) :?>
             <div class="row">
                 <div class="col-2">
                     <strong>
@@ -176,7 +176,7 @@
 
 
         <!-- Encrypted -->
-        <?php if (isset($question->encrypted)):?>
+        <?php if (isset($question->encrypted)) :?>
             <div class="row">
                 <div class="col-2">
                     <strong>
@@ -186,7 +186,7 @@
                 <div class="col-10">
                     <?php if ($question->encrypted == "Y") : ?>
                         <?php eT("Yes"); ?>
-                    <?php else:?>
+                    <?php else :?>
                         <?php eT("No"); ?>
                     <?php endif;  ?>
                 </div>
@@ -230,13 +230,13 @@
         <?php endif; ?>
 
         <!-- Advanced Settings -->
-        <?php foreach ($advancedSettings as $settings){ ?>
-            <?php foreach ($settings as $setting){
+        <?php foreach ($advancedSettings as $settings) { ?>
+            <?php foreach ($settings as $setting) {
                 $value = $setting['value'];
                 if (!empty($setting['i18n'])) {
                     $value = $setting[$question->survey->language]['value'];
                 }
-                if($setting['default'] != $value){ ?>
+                if ($setting['default'] != $value) { ?>
                 <div class="row">
                     <div class="col-2">
                         <strong>
@@ -246,20 +246,20 @@
                     <div class="col-10">
                         <?php
 
-                            if (isset($setting['expression']) && $setting['expression'] > 0) {
-                                if ($setting['expression'] == 1) {
-                                    LimeExpressionManager::ProcessString($value, $question->qid);
-                                } else {
-                                    LimeExpressionManager::ProcessString('{' . $value . '}', $question->qid);
-                                }
-                                echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                        if (isset($setting['expression']) && $setting['expression'] > 0) {
+                            if ($setting['expression'] == 1) {
+                                LimeExpressionManager::ProcessString($value, $question->qid);
                             } else {
-                                echo htmlspecialchars((string) $value);
+                                LimeExpressionManager::ProcessString('{' . $value . '}', $question->qid);
                             }
+                            echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                        } else {
+                            echo htmlspecialchars((string) $value);
+                        }
                         ?>
                     </div>
                 </div>
-            <?php
+                    <?php
                 }
             }
         } ?>

@@ -22,7 +22,7 @@ class SurveyDynamicArchive extends SurveyDynamic
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{old_survey_' . self::$sid . '_' . self::$timestamp . '}}';
+        return '{{old_responses_' . self::$sid . '_' . self::$timestamp . '}}';
     }
 
     /** @inheritdoc */

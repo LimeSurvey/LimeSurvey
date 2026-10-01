@@ -1,11 +1,19 @@
+// run "yarn install" first
+//
 // for bootstrap 5:
-// gulp build / gulp watch
+// yarn gulp build_bootstrap
+//
 // for admintheme:
-// gulp build_theme / gulp watch_theme
+// yarn gulp build_admintheme
+//
 // for survey_theme_fruity:
-// gulp build_survey_theme_fruity / gulp watch_survey_theme_fruity
-// for survey_theme_ls6:
-// gulp build_survey_theme_ls6 / gulp watch_survey_theme_ls6
+// yarn gulp build_survey_theme_fruity
+//
+// for survey_theme_fruity_twentythree:
+// yarn gulp build_survey_theme_fruity_twentythree
+//
+// you can also use watch instead of build for every command
+// e.g. yarn gulp watch_bootstrap
 
 const {watch, series, parallel} = require('gulp');
 const {src, dest} = require('gulp');
@@ -15,13 +23,9 @@ const sass = require('gulp-sass')(require('sass'));
 const gulppostcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
-const concat = require('gulp-concat');
 const rtlcss = require('gulp-rtlcss');
-const gulpIf = require('gulp-if');
-const useref = require('gulp-useref');
 const replace = require('gulp-replace');
 const merge = require('merge-stream');
-const sourcemaps = require('gulp-sourcemaps');
 const babelify = require('babelify');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
@@ -30,30 +34,31 @@ const fs = require('fs');
 
 function js_minify() {
     // browserify package handler
-    return browserify({
-        entries: ['assets/bootstrap_5/js/bootstrap_5.js']
-    })
-        // transform babelify ES6 to ES5 [@babel/preset-env]
-        .transform(babelify, {
-            presets: ['@babel/preset-env'],
-            retainLines: false,
-            compact: false,
-            global: true
-
+    return (
+        browserify({
+            entries: ["assets/bootstrap_5/js/bootstrap_5.js"],
         })
-        // bundle the transformed code
-        .bundle()
-        // sourcemap
-        .pipe(source('assets/bootstrap_5/js/bootstrap_5.js'))
-        // rename
-        .pipe(rename('bootstrap_5.js'))
-        // buffer
-        .pipe(buffer())
-        // distination
-        .pipe(dest('assets/bootstrap_5/build/js/'))
-        .pipe(uglify())
-        .pipe(rename({extname: '.min.js'}))
-        .pipe(dest('assets/bootstrap_5/build/js/'));
+            // transform babelify ES6 to ES5 [@babel/preset-env]
+            .transform(babelify, {
+                presets: ["@babel/preset-env"],
+                retainLines: false,
+                compact: false,
+                global: true,
+            })
+            // bundle the transformed code
+            .bundle()
+            // sourcemap
+            .pipe(source("assets/bootstrap_5/js/bootstrap_5.js"))
+            // rename
+            .pipe(rename("bootstrap_5.js"))
+            // buffer
+            .pipe(buffer())
+            // distination
+            .pipe(dest("assets/bootstrap_5/build/js/"))
+            .pipe(uglify())
+            .pipe(rename({ extname: ".min.js" }))
+            .pipe(dest("assets/bootstrap_5/build/js/"))
+    );
 }
 
 function scss_transpile() {
@@ -64,7 +69,11 @@ function scss_transpile() {
 function scss_minify() {
     let plugins = [
         autoprefixer(),
-        cssnano()
+        cssnano({
+        preset: ['default', {
+            colormin: false
+        }]
+    })
     ];
     return scss_transpile()
         .pipe(dest('assets/bootstrap_5/build/css'))
@@ -76,7 +85,11 @@ function scss_minify() {
 function scss_minify_rtl() {
     let plugins = [
         autoprefixer(),
-        cssnano()
+        cssnano({
+        preset: ['default', {
+            colormin: false
+        }]
+    })
     ];
     return scss_transpile()
         .pipe(rtlcss())
@@ -87,12 +100,12 @@ function scss_minify_rtl() {
         .pipe(dest('assets/bootstrap_5/build/css'));
 }
 
-exports.watch = function () {
+exports.watch_bootstrap = function () {
     watch('assets/bootstrap_5/js/**/*.js', js_minify);
     watch('assets/bootstrap_5/scss/**/*.scss', parallel(scss_minify, scss_minify_rtl));
 };
 
-exports.build = parallel(
+exports.build_bootstrap = parallel(
     js_minify,
     scss_minify,
     scss_minify_rtl
@@ -101,7 +114,11 @@ exports.build = parallel(
 function theme() {
     let plugins = [
         autoprefixer(),
-        cssnano()
+        cssnano({
+        preset: ['default', {
+            colormin: false
+        }]
+    })
     ];
     return src(['assets/admin_themes/Sea_Green/sea_green.scss'])
         .pipe(sass())
@@ -114,7 +131,11 @@ function theme() {
 function theme_rtl() {
     let plugins = [
         autoprefixer(),
-        cssnano()
+        cssnano({
+        preset: ['default', {
+            colormin: false
+        }]
+    })
     ];
     return src(['assets/admin_themes/Sea_Green/sea_green.scss'])
         .pipe(sass())
@@ -126,12 +147,12 @@ function theme_rtl() {
         .pipe(dest('themes/admin/Sea_Green/css'));
 }
 
-exports.watch_theme = function () {
+exports.watch_admintheme = function () {
     watch('assets/admin_themes/**/*.scss', theme);
     watch('assets/admin_themes/**/*.scss', theme_rtl);
 };
 
-exports.build_theme = parallel(
+exports.build_admintheme = parallel(
     theme,
     theme_rtl
 );
@@ -149,7 +170,11 @@ function survey_theme_fruity() {
     ];
     let plugins = [
         autoprefixer(),
-        cssnano()
+        cssnano({
+        preset: ['default', {
+            colormin: false
+        }]
+    })
     ];
     let variationsFiles = variations.map(variation => {
         let variationName = variation[0];
@@ -174,14 +199,18 @@ exports.watch_survey_theme_fruity = function () {
 
 function survey_theme_ls6() {
     let variations = [
-        ["apple", "#14AE5C"],
-        ["blueberry", "#5076FF"],
+        ["apple", "#0F8545"],
+        ["blueberry", "#3D67FF"],
         ["grape", "#8146F6"],
-        ["mango", "#ED5046"],
+        ["mango", "#E32416"],
     ];
     let plugins = [
         autoprefixer(),
-        // cssnano()
+        // cssnano({
+    //     preset: ['default', {
+    //         colormin: false
+    //     }]
+    // })
     ];
 
     let variationsFiles = variations.map(variation => {
@@ -206,7 +235,11 @@ function survey_theme_ls6_rtl() {
     ];
     let plugins = [
         autoprefixer(),
-        // cssnano()
+        // cssnano({
+    //     preset: ['default', {
+    //         colormin: false
+    //     }]
+    // })
     ];
 
     let variationsFiles = variations.map(variation => {
@@ -248,13 +281,13 @@ function survey_theme_ls6_js() {
         .pipe(dest('themes/survey/fruity_twentythree/scripts/'));
 }
 
-exports.build_survey_theme_ls6 = parallel(
+exports.build_survey_theme_fruity_twentythree = parallel(
     survey_theme_ls6,
     survey_theme_ls6_rtl,
     survey_theme_ls6_js
 );
 
-exports.watch_survey_theme_ls6 = function () {
+exports.watch_survey_theme_fruity_twentythree = function () {
     watch('assets/survey_themes/fruity_twentythree/**/*.scss', survey_theme_ls6);
     watch('assets/survey_themes/fruity_twentythree/**/*.scss', survey_theme_ls6_rtl);
     watch('assets/survey_themes/fruity_twentythree/**/*.js', survey_theme_ls6_js);

@@ -27,6 +27,7 @@ use LimeSurvey\ObjectPatch\{
 };
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use Question;
+use Condition;
 
 class OpHandlerQuestionCreate implements OpHandlerInterface
 {
@@ -235,7 +236,46 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 true
             )
         );
+        $cids = [];
+        if ($data['question']['scenarios'] ?? false) {
+            foreach ($data['question']['scenarios'] as $scenario) {
+                foreach ($scenario['conditions'] as $rawCondition) {
+                    $cids[] = $rawCondition['cid'];
+                }
+            }
+            $cids = $this->filterConditionIdsBySurvey($cids, $surveyId);
+            if (!empty($cids)) {
+                Condition::model()->copyConditions($cids, $question->qid);
+            }
+        }
         return ['tempIdMapping' => $mapping];
+    }
+
+    /**
+     * Returns only the condition IDs that belong to questions of the given
+     * survey, so conditions of other surveys cannot be copied.
+     *
+     * @param array $cids Condition IDs to filter
+     * @param int $surveyId ID of the survey the conditions must belong to
+     * @return int[]
+     */
+    private function filterConditionIdsBySurvey(array $cids, int $surveyId): array
+    {
+        $cids = array_map('intval', $cids);
+        if (empty($cids)) {
+            return [];
+        }
+        $criteria = new \CDbCriteria();
+        $criteria->select = 't.cid';
+        $criteria->join = 'INNER JOIN {{questions}} q ON q.qid = t.qid';
+        $criteria->compare('q.sid', $surveyId);
+        $criteria->addInCondition('t.cid', $cids);
+        return array_map(
+            function ($condition) {
+                return (int)$condition->cid;
+            },
+            Condition::model()->findAll($criteria)
+        );
     }
 
     /**

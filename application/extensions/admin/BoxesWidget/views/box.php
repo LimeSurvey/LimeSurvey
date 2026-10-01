@@ -37,11 +37,20 @@
     <?php foreach ($items as $item) : ?>
         <?php if ($item['type'] == BoxesWidget::TYPE_PRODUCT) : ?>
             <div class="box-widget-card align-middle d-inline-block"
-                 data-url="<?php echo $item['link'] ?>">
+                 data-url="<?php echo $item['link'] ?>"
+                 role="link"
+                 tabindex="0">
                 <div class="box-widget-card-body">
                     <div class="box-widget-card-header">
                         <div class="box-widget-card-title">
-                            <?php echo viewHelper::filterScript(gT($item['survey']->defaultlanguage->surveyls_title)); ?>
+                            <?php
+                            $surveyls_title = "";
+                            $defaultlanguage = $item['survey']->defaultlanguage;
+                            if (isset($defaultlanguage)) {
+                                $surveyls_title = $defaultlanguage->surveyls_title;
+                            }
+                            ?>
+                            <?php echo viewHelper::filterScript($surveyls_title); ?>
                         </div>
                     </div>
                     <div class="box-widget-card-text">
@@ -72,8 +81,8 @@
                                     ($item['survey']->active === "N")
                                     && ($item['survey']->groupsCount > 0)
                                     && ($item['survey']->getQuestionsCount() > 0)
-    ) :
-                                    ?>
+) :
+    ?>
                                     <a href="<?= App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $item['survey']->sid) ?? '#' ?>"
                                        class="active"
                                        data-bs-toggle="tooltip"

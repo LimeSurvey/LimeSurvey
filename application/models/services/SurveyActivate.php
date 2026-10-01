@@ -67,11 +67,15 @@ class SurveyActivate
                 'ipaddr',
                 'ipanonymize',
                 'refurl',
-                'savetimings'
+                'savetimings',
+                'savequotaexit'
             ];
             foreach ($fields as $field) {
-                $fieldvalue = $this->app->request->getPost($field, $params[$field] ?? null);
-                if ($fieldvalue !== null) {
+                if (array_key_exists($field, $survey->aOptions)) {
+                    $survey->{$field} = $survey->aOptions[$field];
+                }
+                $postfieldvalue = $this->app->request->getPost($field, null);
+                if ($postfieldvalue !== null) {
                     $survey->{$field} = $this->app->request->getPost($field, $params[$field] ?? null);
                 }
             }
@@ -86,10 +90,13 @@ class SurveyActivate
         if ($params['restore'] ?? false) {
             $result['restored'] = $this->restoreData($surveyId);
         }
-        if ($survey->access_mode !== SurveyAccessModeService::$ACCESS_TYPE_OPEN) {
-            if (!$survey->hasTokensTable) {
-                $this->surveyAccessModeService->newParticipantTable($survey, true);
-            }
+
+        $publicRegistrationAllowed = $survey->getIsAllowRegister();
+        $isOpenAccessMode = $survey->access_mode === SurveyAccessModeService::$ACCESS_TYPE_OPEN;
+        $shouldEnsureTokensTable = $publicRegistrationAllowed || !$isOpenAccessMode;
+
+        if ($shouldEnsureTokensTable && !$survey->hasTokensTable) {
+            $this->surveyAccessModeService->newParticipantTable($survey, true);
         }
         return $result;
     }
@@ -107,6 +114,9 @@ class SurveyActivate
      */
     public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false, $archiveType = 'all', $useFallback = true): bool
     {
+        if (in_array(\Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
+            $preserveIDs = true;
+        }
         require_once "application/helpers/admin/import_helper.php";
         $deactivatedArchives = getDeactivatedArchives($surveyId);
         $archives = [];
@@ -129,34 +139,31 @@ class SurveyActivate
                 $archives[$key] = $candidates[count($candidates) - 1];
             }
         }
-        if (is_array($archives) && isset($archives['survey']) && isset($archives['questions'])) {
+        if (is_array($archives) && isset($archives['responses']) && isset($archives['questions'])) {
             $shouldImportResponses = $archiveType === 'all' || $archiveType === SurveyArchiveService::$Response_archive;
             if ($shouldImportResponses) {
                 //Recover survey
                 $qParts = explode("_", $archives['questions']);
                 $qTimestamp = $qParts[count($qParts) - 1];
-                $sParts = explode("_", $archives['survey']);
+                $sParts = explode("_", $archives['responses']);
                 $sTimestamp = $sParts[count($sParts) - 1];
                 $dynamicColumns = getUnchangedColumns($surveyId, $sTimestamp, $qTimestamp);
-                recoverSurveyResponses($surveyId, $archives["survey"], $preserveIDs, $dynamicColumns);
+                recoverSurveyResponses($surveyId, $archives["responses"], $preserveIDs, $dynamicColumns);
+                if (isset($archives["timings"])) {
+                    $timingsTable = $this->app->db->tablePrefix . "timings_" . $surveyId;
+                    copyFromOneTableToTheOther($archives["timings"], $timingsTable, $preserveIDs);
+                }
             }
 
             $shouldImportTokens = $archiveType === 'all' || $archiveType === SurveyArchiveService::$Tokens_archive;
+            //If it's not open access mode, then we import the surveys from the archive if they exist
             if (isset($archives["tokens"]) && $shouldImportTokens) {
-                //If it's not open access mode, then we import the surveys from the archive if they exist
                 $tokenTable = $this->app->db->tablePrefix . "tokens_" . $surveyId;
                 try {
                     createTableFromPattern($tokenTable, $archives["tokens"]);
                 } catch (\CDbException $ex) {
-                    if (strpos($ex->getMessage(), "Base table or view already exists") === false) {
-                        throw $ex;
-                    }
                 }
                 copyFromOneTableToTheOther($archives["tokens"], $tokenTable, $preserveIDs);
-            }
-            if (isset($archives["timings"])) {
-                $timingsTable = $this->app->db->tablePrefix . "survey_" . $surveyId . "_timings";
-                copyFromOneTableToTheOther($archives["timings"], $timingsTable, $preserveIDs);
             }
             return true;
         } else {

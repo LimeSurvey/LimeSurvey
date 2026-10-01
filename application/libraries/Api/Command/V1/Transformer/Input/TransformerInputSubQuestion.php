@@ -42,8 +42,8 @@ class TransformerInputSubQuestion extends Transformer
     private function prepareSubQuestions($data)
     {
         $preparedSubQuestions = [];
-        foreach ($data as $index => $subQuestion) {
-            $qid = $this->getQidFromData($index, $subQuestion);
+        foreach ($data as $subQuestion) {
+            $qid = $this->getQidFromData($subQuestion);
             $scaleId = $this->getScaleIdFromData($subQuestion);
             $preparedSubQuestions[$qid][$scaleId] = $subQuestion;
         }
@@ -51,16 +51,15 @@ class TransformerInputSubQuestion extends Transformer
     }
 
     /**
-     * @param int $index
      * @param array $questionData
-     * @return int
+     * @return mixed
      */
-    private function getQidFromData(int $index, array $questionData)
+    private function getQidFromData(array $questionData)
     {
         return array_key_exists(
             'qid',
             $questionData
-        ) && (int)$questionData['qid'] > 0 ? (int)$questionData['qid'] : $index;
+        ) ? $questionData['qid'] : 'notFound';
     }
 
     /**

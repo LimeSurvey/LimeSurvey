@@ -8,35 +8,16 @@ use LimeSurvey\Api\Command\V1\SurveyArchive\{
     SurveyArchiveExport
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
+    SchemaFactoryError,
     SchemaFactorySurveyArchive
 };
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
+$errorSchema = (new SchemaFactoryError())->make();
+
 $rest = [];
 
 $rest['v1/survey-archives/$id'] = [
-    'GET' => [
-        'tag' => 'survey',
-        'description' => 'Survey archives',
-        'commandClass' => SurveyArchivesList::class,
-        'auth' => true,
-        'responses' => [
-            'success' => [
-                'code' => 200,
-                'description' => 'Success',
-                'content' => null,
-                'schema' => (new SchemaFactorySurveyArchive())->make()
-            ],
-            'not-found' => [
-                'code' => 404,
-                'description' => 'Not Found',
-                'schema' => $errorSchema
-            ]
-        ]
-    ]
-];
-
-$rest['v1/action/survey-archives/id/$id/basetable/$basetable'] = [
     'GET' => [
         'tag' => 'survey',
         'description' => 'Survey archives',

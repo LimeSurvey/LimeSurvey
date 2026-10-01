@@ -19,6 +19,7 @@ class ArchivedTableSettings extends LSActiveRecord
     /**
      * @return string the associated database table name
      */
+    #[\Override]
     public function tableName(): string
     {
         return '{{archived_table_settings}}';
@@ -27,6 +28,7 @@ class ArchivedTableSettings extends LSActiveRecord
     /**
      * @return array validation rules for model attributes.
      */
+    #[\Override]
     public function rules(): array
     {
         // NOTE: you should only define rules for those attributes that
@@ -45,6 +47,7 @@ class ArchivedTableSettings extends LSActiveRecord
     /**
      * @return array relational rules.
      */
+    #[\Override]
     public function relations(): array
     {
         // NOTE: you may need to adjust the relation name and the related
@@ -56,6 +59,7 @@ class ArchivedTableSettings extends LSActiveRecord
     /**
      * @return array customized attribute labels (name=>label)
      */
+    #[\Override]
     public function attributeLabels(): array
     {
         return [
@@ -109,6 +113,7 @@ class ArchivedTableSettings extends LSActiveRecord
      * @param string $className active record class name.
      * @return static the static model class
      */
+    #[\Override]
     public static function model($className = __CLASS__): ArchivedTableSettings
     {
         return parent::model($className);

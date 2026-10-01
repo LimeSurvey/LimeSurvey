@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -49,7 +49,7 @@ class TemplateConfiguration extends TemplateConfig
     public $oParentTemplate;
 
     /**@var boolean
-     * Should the magic getters automatically retreives the parent value when field is set to inherit. Only turn to
+     * Should the magic getters automatically retrieves the parent value when field is set to inherit. Only turn to
      * on for template rendering. There is no option inheritance on Manifest mode: values from XML are always used.
      */
     public $bUseMagicInherit = false;
@@ -224,10 +224,15 @@ class TemplateConfiguration extends TemplateConfig
         // No specific template configuration for this surveygroup => create one
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName(
+            // Clone the (possibly cached) generic instance so it is not mutated in place,
+            // which would corrupt the cached base template configuration for later calls.
+            $oTemplateConfigurationModel = clone TemplateConfiguration::getInstanceFromTemplateName(
                 $sTemplateName,
                 $abstractInstance
             );
+            // Clear the parent-template cache copied by clone(): it was resolved for the generic
+            // instance's own context and must be recomputed for this new survey group's context.
+            $oTemplateConfigurationModel->oParentTemplate = null;
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
@@ -271,10 +276,15 @@ class TemplateConfiguration extends TemplateConfig
 
         // If the TemplateConfiguration could not be found go up the inheritance hierarchy
         if (empty($oTemplateConfigurationModel)) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName(
+            // Clone the (possibly cached) generic instance so it is not mutated in place,
+            // which would corrupt the cached base template configuration for later calls.
+            $oTemplateConfigurationModel = clone TemplateConfiguration::getInstanceFromTemplateName(
                 $sTemplateName,
                 $abstractInstance
             );
+            // Clear the parent-template cache copied by clone(): it was resolved for the generic
+            // instance's own context and must be recomputed for this new survey's context.
+            $oTemplateConfigurationModel->oParentTemplate = null;
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
@@ -355,7 +365,7 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Get an instance of a fitting TemplateConfiguration
-     * NOTE: for rendering prupose, you should never call this function directly, but rather Template::getInstance.
+     * NOTE: for rendering purpose, you should never call this function directly, but rather Template::getInstance.
      * if force_xmlsettings_for_survey_rendering is on, then the configuration from the XML file should be loaded,
      * not the one from database
      *
@@ -516,7 +526,7 @@ class TemplateConfiguration extends TemplateConfig
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->template->description);
             $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
-          // It should never happen, but let's avoid to anoy final user in production mode :)
+          // It should never happen, but let's avoid to annoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
                     "Twig error in template " .
@@ -577,7 +587,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Sets all available inheritance fields of the class::TemplateConfiguration to the value inherit as string
      */
     public function setToInherit()
     {
@@ -789,7 +799,10 @@ class TemplateConfiguration extends TemplateConfig
                 'data-button-yes'  => gT('Reset'),
                 'data-text'        => gT('This will reload the configuration file of this theme.') . '<br>' . gT('Do you want to continue?'),
                 'data-post'        => json_encode([ "templatename" => $templateName ]),
-                'data-button-type' => "btn-warning"
+                'data-button-type' => "btn-warning",
+                'data-use-ajax'    => 'true',
+                'data-grid-reload' => 'true',
+                'data-grid-id'     => 'themeoptions-grid',
             ]
         ];
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
@@ -947,7 +960,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Fetches the imageFileList and the maxFileSize for the current theme and adds them to a new array which includes all TemplateConfiguration attributes
      *
      * @return array
      */
@@ -994,6 +1007,89 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * Returns the image dropdown entry (group, filename, filepath, preview) for a given file name,
+     * matching the format used in the theme options image selectors. Used to update the selectors
+     * client-side right after an image upload, without a full page reload.
+     *
+     * The same filename can exist in several categories (theme, generalfiles, survey), so when the
+     * uploaded file's destination path is known, the entry whose real path matches it is preferred,
+     * falling back to the first filename match otherwise.
+     *
+     * @param string $fileName
+     * @param string|null $destinationFilePath absolute path where the uploaded file was stored
+     * @return array|null the dropdown entry, or null if the file is not found in the image file list.
+     */
+    public function getImageFileListEntry($fileName, $destinationFilePath = null)
+    {
+        $attributes = $this->getOptionPageAttributes();
+        $targetRealPath = empty($destinationFilePath) ? false : realpath($destinationFilePath);
+        $matchedImage = null;
+        foreach ($attributes['imageFileList'] as $image) {
+            if ($image['filename'] !== $fileName) {
+                continue;
+            }
+            if ($targetRealPath !== false) {
+                $imageRealPath = realpath(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $image['filepathOptions']);
+                if ($imageRealPath === $targetRealPath) {
+                    $matchedImage = $image;
+                    break;
+                }
+                if ($matchedImage === null) {
+                    $matchedImage = $image;
+                }
+                continue;
+            }
+            $matchedImage = $image;
+            break;
+        }
+        if ($matchedImage === null) {
+            return null;
+        }
+        return [
+            'group' => $matchedImage['group'],
+            'filename' => $matchedImage['filename'],
+            'filepath' => $matchedImage['filepath'],
+            'preview' => $matchedImage['preview'],
+        ];
+    }
+
+    /**
+     * Resolves the file path for an option image by walking up the theme inheritance chain.
+     *
+     * @param string $imageFileName The image file name (e.g. 'cornerradius_0.svg')
+     * @return string The resolved absolute file path, or empty string if not found.
+     */
+    public function resolveOptionImagePath(string $imageFileName): string
+    {
+        // First check in the current theme's files directory
+        $imageFilePath = $this->path . 'files' . DIRECTORY_SEPARATOR . $imageFileName;
+        if (file_exists($imageFilePath)) {
+            return $imageFilePath;
+        }
+
+        // Walk up the theme extension chain (template->extends)
+        $motherName = $this->template->extends ?? '';
+        $visited = [];
+        $motherConfig = $this;
+        while (!empty($motherName)) {
+            if (isset($visited[$motherName])) {
+                break;
+            }
+            $visited[$motherName] = true;
+
+            $motherConfig = $motherConfig->oMotherTemplate;
+            $motherConfig->setBasics();
+            $motherPath = $motherConfig->path . 'files' . DIRECTORY_SEPARATOR . $imageFileName;
+            if (file_exists($motherPath)) {
+                return $motherPath;
+            }
+            $motherName = $motherConfig->template->extends ?? '';
+        }
+
+        return '';
+    }
+
+    /**
      * Prepares the rendering of the custom options.js and options.twig that can be used in every theme
      *
      * @return mixed
@@ -1004,8 +1100,6 @@ class TemplateConfiguration extends TemplateConfig
         $oSimpleInheritance->options = 'inherit';
         $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($this->template->name);
 
-        // TODO: It's not clear which class prepareTemplateRendering() returns or should return.
-        /** @var Template */
         $oTemplate = $this->prepareTemplateRendering($this->template->name);
 
         $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());
@@ -1085,7 +1179,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Get the json files (to load/replace/remove) from  a theme, and checks if its correctly formated
+     * Get the json files (to load/replace/remove) from  a theme, and checks if its correctly formatted
      *
      * @param $oTemplate the theme to check
      * @param $sField name of the DB field to get (file_css, file_js, file_print_css)
@@ -1106,12 +1200,13 @@ class TemplateConfiguration extends TemplateConfig
 
         $files = $oTemplate->$sField;
         $oFiles = [];
-        if (!empty($files)) {
+        if (!empty($files) && $files !== 'inherit') {
             $oFiles = json_decode((string) $files, true);
             if ($oFiles === null) {
                 App()->setFlashMessage(
                     sprintf(
-                        gT('Error: Malformed JSON - field %s must be either a JSON array or the string "inherit". Found "null".'),
+                        gT('Error: Malformed JSON in template "%s" - field %s must be either a JSON array or the string "inherit". Found "null".'),
+                        $oTemplate->template->name,
                         $sField
                     ),
                     'error'
@@ -1179,14 +1274,24 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function uninstallIncorectTheme($sTemplateName)
     {
-        TemplateConfiguration::uninstall($sTemplateName);
-        App()->setFlashMessage(
-            sprintf(
-                gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
-                $sTemplateName
-            ),
-            'error'
-        );
+        if (TemplateConfiguration::uninstall($sTemplateName)) {
+            App()->setFlashMessage(
+                sprintf(
+                    gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
+                    $sTemplateName
+                ),
+                'error'
+            );
+        } else {
+            App()->setFlashMessage(
+                sprintf(
+                    gT("The “%s” theme is not compatible with this LimeSurvey version. It could not be uninstalled. Please contact %s regarding this issue."),
+                    $sTemplateName,
+                    App()->getConfig('siteadminname'),
+                ),
+                'error'
+            );
+        }
         App()->getController()->redirect(array("themeOptions/index", "#" => "surveythemes"));
         App()->end();
     }
@@ -1206,7 +1311,7 @@ class TemplateConfiguration extends TemplateConfig
         // Options are optional
         $this->setOptions();
 
-        // Not mandatory (use package dependances)
+        // Not mandatory (use package dependencies)
         $this->setCssFramework();
         $this->packages = $this->getDependsPackages($this);
         if (!empty($this->packages_to_load)) {
@@ -1244,7 +1349,7 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Decodes json string from the database field "options" and stores it inside $this->oOptions
-     * Also triggers inheritence checks
+     * Also triggers inheritance checks
      * @return void
      */
     public function setOptions()
@@ -1275,7 +1380,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Search through the inheritence chain and find the inherited value for theme option
+     * Search through the inheritance chain and find the inherited value for theme option
      * @param string $key
      * @return mixed
      */
@@ -1427,11 +1532,14 @@ class TemplateConfiguration extends TemplateConfig
 
 
     /**
-     * Change the template name inside the configuration entries (called from template editor)
-     * NOTE: all tests (like template exist, etc) are done from template controller.
+     * Update stored configuration records to replace one template name with another.
      *
-     * @param string $sOldName The old name of the template
-     * @param string $sNewName The newname of the template
+     * This performs a direct bulk update of the `template_name` column for all rows
+     * matching the old name. Validations (existence, permissions, etc.) are handled
+     * by the caller (template controller).
+     *
+     * @param string $sOldName The current template name to replace.
+     * @param string $sNewName The new template name to set.
      */
     public static function rename($sOldName, $sNewName)
     {
@@ -1443,13 +1551,16 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Proxy for the AR method to manage the inheritance
-     * If one of the field that can be inherited is set to "inherit", then it will return the value of its parent
-     * NOTE: this is recursive, if the parent field itself is set to inherit, then it will
-     * the value of the parent of the parent, etc
+     * Retrieve an attribute value, resolving template inheritance for inheritable fields.
      *
-     * @param string $name the name of the attribute
-     * @return mixed
+     * When magic inheritance is enabled, inheritable attributes return the nearest ancestor's
+     * non-"inherit" value by walking the parent-configuration chain. If a cycle is detected,
+     * the parent's raw stored value is used. When magic inheritance is disabled, inheritable
+     * attributes return the stored value. Non-inheritable attributes are delegated to the
+     * parent getter.
+     *
+     * @param string $name The attribute name to retrieve.
+     * @return mixed The resolved attribute value (may be a scalar, array, object, or null).
      */
     public function __get($name)
     {
@@ -1465,22 +1576,25 @@ class TemplateConfiguration extends TemplateConfig
 
         if (in_array($name, $aAttributesThatCanBeInherited) && $this->bUseMagicInherit) {
             // Full inheritance of the whole field
-            $sAttribute = parent::__get($name);
+            $sAttribute = $this->getAttribute($name);
             if ($sAttribute === 'inherit') {
-                // NOTE: this is object recursive (if parent configuration field is set to inherit,
-                // then it will lead to this method again.)
-                $oParentConfiguration = $this->getParentConfiguration();
-                /**
-                 * We check if $oParentConfiguration is the same as $this because if it is, $oParentConfiguration->$name will
-                 * try to directly access the property instead of calling the magic method, and it will fail for dynamic properties.
-                 * @todo: Review the behavior of getParentConfiguration(). Returning the same object seems to be a bug.
-                 */
-                if ($oParentConfiguration !== $this) {
-                    $sAttribute = $oParentConfiguration->$name;
-                } else {
+                // Walk the parent chain until we find a non-'inherit' value or run out of parents.
+                $oCurrentConfig = $this;
+                $visited = [spl_object_id($this) => true];
+                while ($sAttribute === 'inherit') {
+                    $oParentConfiguration = $oCurrentConfig->getParentConfiguration();
+                    if ($oParentConfiguration === $oCurrentConfig || isset($visited[spl_object_id($oParentConfiguration)])) {
+                        // Cycle detected — use raw value from this node
+                        $sAttribute = $oParentConfiguration->getAttribute($name);
+                        break;
+                    }
+                    $visited[spl_object_id($oParentConfiguration)] = true;
                     $sAttribute = $oParentConfiguration->getAttribute($name);
+                    $oCurrentConfig = $oParentConfiguration;
                 }
             }
+        } elseif (in_array($name, $aAttributesThatCanBeInherited)) {
+            $sAttribute = $this->getAttribute($name);
         } else {
             $sAttribute = parent::__get($name);
         }
@@ -1586,7 +1700,7 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Returns the related Template.
      * The template can only be accessed as a relation when this model is stored in the DB. Before
-     * saving, $this->template is null. In that case, this method will load the approriate Template.
+     * saving, $this->template is null. In that case, this method will load the appropriate Template.
      * @return Template|null
      */
     private function getRelatedTemplate()

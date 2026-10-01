@@ -1,6 +1,9 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers;
+
+use ls\tests\DummyController;
+use ls\tests\TestBaseClass;
 
 use Yii;
 
@@ -11,9 +14,17 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
 {
     private static $questions = array();
 
+    protected function loadHtmlWithoutWarnings(\DOMDocument $doc, string $html): void
+    {
+        $previous = libxml_use_internal_errors(true);
+        $doc->loadHtml($html);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+    }
+
     public static function setUpBeforeClass(): void
     {
-        Yii::app()->loadHelper('admin/statistics');
+        Yii::app()->loadHelper('admin.statistics');
         Yii::app()->loadHelper('common');
 
         parent::setUpBeforeClass();
@@ -42,7 +53,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
 
         $doc = new \DOMDocument();
-        $doc->loadHtml($statistics);
+        $this->loadHtmlWithoutWarnings($doc, $statistics);
 
         // Get the script string based on the question id and order the data by title.
         $assertions = array();
@@ -50,7 +61,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
 
         foreach ($questions as $question) {
             foreach ($scripts as $script) {
-                if (str_contains($script->nodeValue, "['quid'+'" . $question->qid . "']")) {
+                if (str_contains($script->nodeValue, "['quid'+'Q" . $question->qid . "']")) {
                     $assertions[$question->title]['script'] = trim($script->nodeValue);
                     break;
                 }
@@ -79,7 +90,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
 
         $doc = new \DOMDocument();
-        $doc->loadHtml($statistics);
+        $this->loadHtmlWithoutWarnings($doc, $statistics);
 
         // Get the script string based on the question id and order the data by title.
         $assertions = array();
@@ -87,7 +98,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
 
         foreach ($questions as $question) {
             foreach ($scripts as $script) {
-                if (str_contains($script->nodeValue, "['quid'+'" . $question->qid . "']")) {
+                if (str_contains($script->nodeValue, "['quid'+'Q" . $question->qid . "']")) {
                     $assertions[$question->title]['script'] = trim($script->nodeValue);
                     break;
                 }
@@ -100,7 +111,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $this->assertArrayHasKey('MCCQ', $assertions, 'Apparently the multiple choice checkbox question was not set.');
 
         // Asserting the data for the multiple choice bootstrap button question is correct.
-        $this->assertRegExp('/^.+grawdata : \[3,3,2,\"?1\"?\]/m', $assertions['MCBQ']['script'], 'The statistics values are not correct.');
+        $this->assertMatchesRegularExpression('/^.+grawdata : \[3,3,2,\"?1\"?\]/m', $assertions['MCBQ']['script'], 'The statistics values are not correct.');
         // Asserting the data for the multiple choice checkbox question is correct.
         $this->assertStringContainsString('[4,3,2]', $assertions['MCCQ']['script'], 'The statistics values are not correct.');
     }
@@ -116,7 +127,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
 
         $doc = new \DOMDocument();
-        $doc->loadHtml($statistics);
+        $this->loadHtmlWithoutWarnings($doc, $statistics);
 
         // Get the script string based on the question id and order the data by title.
         $assertions = array();
@@ -137,7 +148,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
 
             foreach ($subquestions as $subquestion) {
                 foreach ($scripts as $script) {
-                    if (str_contains($script->nodeValue, "['quid'+'" . $question->qid . $subquestion->title . "']")) {
+                    if (str_contains($script->nodeValue, "['quid'+'Q" . $question->qid . "_S" . $subquestion->qid . "']")) {
                         $assertions[$question->qid . $subquestion->title]['script'] = trim($script->nodeValue);
                         break;
                     }

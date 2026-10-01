@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - 7.2
+  - 7.3
+  - 7.4
+  - 8.0
+
+before_install:
+  - composer self-update
+  - composer clear-cache
+
+install:
+  - composer install --prefer-source --no-interaction
+
+script:
+  - vendor/bin/phpcs
+  - vendor/bin/phpunit --coverage-text

@@ -1,7 +1,7 @@
 <?php
 /**
  *  LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -59,12 +59,12 @@ class TestBaseClassView extends TestBaseClassWeb
                 )
             );
         } catch (\Exception $e) {
-            echo "Error: " . $e->getMessage() . PHP_EOL;
+            //throw new Exception($e->getMessage());
             $screenshot = self::$webDriver->takeScreenshot();
             file_put_contents(self::$screenshotsFolder. '/'.$name.'.png', $screenshot);
         }
-        // $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
-        // var_dump($body->getText());
+        //$body = $this->webDriver->findElement(WebDriverBy::tagName('body'));
+        //var_dump($body->getText());
         $this->assertNotEmpty(
             $element,
             'Possible screenshot at ' . $filename . PHP_EOL .

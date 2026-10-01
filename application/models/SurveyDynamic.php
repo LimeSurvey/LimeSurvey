@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -80,7 +80,7 @@ class SurveyDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{survey_' . self::$sid . '}}';
+        return '{{responses_' . self::$sid . '}}';
     }
 
     /** @inheritdoc */
@@ -108,11 +108,12 @@ class SurveyDynamic extends LSActiveRecord
 
     /**
      * Insert records from $data array
+     * Still used in em_manager_helper when create response in _UpdateValuesInDatabase function (2026-04-20)
      *
      * @access public
-     * @param array $data
-     * @return boolean
      * @deprecated Use setAttributes() and encryptSave()
+     * @param array $data
+     * @return integer|false
      */
     public function insertRecords($data)
     {
@@ -123,9 +124,11 @@ class SurveyDynamic extends LSActiveRecord
             $v = $v == null ? null : str_replace($search, '', (string) $v);
             $record->$k = $v;
         }
-
-        $res = $record->encryptSave();
-        return $res ? $record->id : $res;
+        if ($record->encryptSave()) {
+            return $record->id;
+        }
+        /* If error : return false */
+        return false;
     }
 
     /**
@@ -167,8 +170,8 @@ class SurveyDynamic extends LSActiveRecord
         }
         $alias = $this->getTableAlias();
 
-        $newCriteria->join = "LEFT JOIN " . $this->survey->tokensTableName . " survey_timings ON $alias.id = survey_timings.id";
-        $newCriteria->select = 'survey_timings.*'; // Otherwise we don't get records from the survey participant list
+        $newCriteria->join = "LEFT JOIN " . $this->survey->tokensTableName . " timings ON $alias.id = timings.id";
+        $newCriteria->select = 'timings.*'; // Otherwise we don't get records from the survey participants list
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
@@ -222,7 +225,7 @@ class SurveyDynamic extends LSActiveRecord
                           ELSE 0
                  END) AS cntpartial',
             );
-        $result = Yii::app()->db->createCommand()->select($select)->from('{{survey_' . $sid . '}}')->queryRow();
+        $result = Yii::app()->db->createCommand()->select($select)->from('{{responses_' . $sid . '}}')->queryRow();
         return $result;
     }
 
@@ -277,7 +280,7 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getGridButtons()
     {
-        $sBrowseLanguage = sanitize_languagecode(Yii::app()->request->getParam('browseLang', ''));
+        $sBrowseLanguage = \LSYii_Validators::languageCodeFilter(Yii::app()->request->getParam('browseLang', ''));
 
         $permissionReponseUpdate = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update');
         $permissionReponseDelete = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete');
@@ -618,6 +621,18 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * @return string
      */
+    public function getEmailForGrid()
+    {
+        // decrypt token information ( if needed )
+        $tokens = $this->tokens;
+        if (is_object($tokens)) {
+            return $tokens->email;
+        }
+    }
+
+    /**
+     * @return string
+     */
     public function getTokenForGrid()
     {
         if (is_object($this->tokens) && !is_null($this->tokens->tid)) {
@@ -787,25 +802,42 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     /**
-     * Get an array to find question data responsively
+     * Builds the display/print data for a single question (and its subquestions), used to
+     * render the print-answers page. Returns false when the question must not be shown,
+     * i.e. it is not relevant while conditions are honored, or it carries the "hidden"
+     * question attribute ("Always hide this question").
      * This should be part of the question object.
      * And in future development this should be part of the specific question type object
      *
-     * @param Question $oQuestion
-     * @param SurveyDynamic $oResponses
-     * @param boolean $bHonorConditions
-     * @param boolean $subquestion
+     * @param Question $oQuestion The question (or subquestion) to build data for
+     * @param SurveyDynamic $oResponses The response row the answers are read from
+     * @param boolean $bHonorConditions Whether relevance/conditions should be honored; if false, relevance is not checked
+     * @param boolean $subquestion Whether $oQuestion is a subquestion of another question; when true, its own (array_filter) relevance is checked instead of only its parent's
      * @param boolean $getCommentOnly If should only returns the "comments" or "other" response.
-     * @return array | boolean
+     * @param string|null $sLanguage Language to use; defaults to the survey's language when null
+     * @return array|false Question display data, or false if the question must be hidden
      */
     public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion = false, $getCommentOnly = false, $sLanguage = null)
     {
 
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
 
+        $fieldname = $oQuestion->basicFieldName;
+        //If question is of any Array-Type  or a subquestion
         if (
-            !(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) && $bHonorConditions == true)
-            || (is_array($attributes) && $attributes['hidden'] === 1)
+            in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"])
+            || ($oQuestion->type == 'T' && $oQuestion->parent_qid != 0)
+        ) {
+            $fieldname .= "_S{$oQuestion->qid}";
+        }
+
+        $isRelevant = $subquestion
+            ? LimeExpressionManager::SubQuestionOrQuestionIsRelevant($fieldname, $oQuestion->qid)
+            : LimeExpressionManager::QuestionIsRelevant($oQuestion->qid);
+
+        if (
+            !($isRelevant && $bHonorConditions == true)
+            || (is_array($attributes) && $attributes['hidden'] == 1)
         ) {
             return false;
         }
@@ -844,6 +876,9 @@ class SurveyDynamic extends LSActiveRecord
                 }
 
                 $subQuestionArray = $this->getQuestionArray($oSubquestion, $oResponses, $bHonorConditions, true, false, $sLanguage);
+                if ($subQuestionArray === false) {
+                    continue;
+                }
                 if ($oQuestion->type == "P") {
                     $subQuestionArray['comment'] = $this->getQuestionArray($oSubquestion, $oResponses, $bHonorConditions, true, true, $sLanguage);
                 }
@@ -875,18 +910,8 @@ class SurveyDynamic extends LSActiveRecord
             }
         }
 
-        $fieldname = $oQuestion->basicFieldName;
-        //If question is of any Array-Type  or a subquestion
-        if (
-            in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"])
-            || ($oQuestion->type == 'T' && $oQuestion->parent_qid != 0)
-        ) {
-            $fieldname .= $oQuestion->title;
-        }
-
-
         if ($getCommentOnly) {
-            $fieldname .= 'comment';
+            $fieldname .= '_Ccomment';
         }
 
         $aQuestionAttributes['fieldname'] = $fieldname;
@@ -926,7 +951,7 @@ class SurveyDynamic extends LSActiveRecord
                 );
             } elseif ($oQuestion->other == 'Y') {
                 $aQuestionAttributes['answervalue'] = !empty($attributes['other_replace_text'][$sLanguage]) ? $attributes['other_replace_text'][$sLanguage] : gT("Other");
-                $aQuestionAttributes['answeroption']['answer'] = $oResponses[$fieldname . 'other'] ?? null;
+                $aQuestionAttributes['answeroption']['answer'] = $oResponses[$fieldname . '_Cother'] ?? null;
             }
         }
 
@@ -952,12 +977,12 @@ class SurveyDynamic extends LSActiveRecord
 
             $tempFieldname = $fieldname . '#0';
             $sAnswerCode = $oResponses[$tempFieldname] ?? null;
-            $sAnswerText = isset($aAnswerText[0][$oResponses[$tempFieldname]]) ? $aAnswerText[0][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $sAnswerText = isset($aAnswerText[0][$sAnswerCode]) ? $aAnswerText[0][$sAnswerCode] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][0] = $sAnswerText;
 
             $tempFieldname = $fieldname . '#1';
             $sAnswerCode = $oResponses[$tempFieldname] ?? null;
-            $sAnswerText = isset($aAnswerText[1][$oResponses[$tempFieldname]]) ? $aAnswerText[1][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $sAnswerText = isset($aAnswerText[1][$sAnswerCode]) ? $aAnswerText[1][$sAnswerCode] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][1] = $sAnswerText;
         }
 
@@ -971,25 +996,30 @@ class SurveyDynamic extends LSActiveRecord
 
         if ($aQuestionAttributes['questionclass'] === 'ranking') {
             $aQuestionAttributes['answervalues'] = array();
-            $iterator = 1;
-            do {
-                $currentResponse = $oResponses[$fieldname . $iterator];
-
-                $oSelectedAnswerOption = array_reduce($oQuestion->answers, function ($carry, $oAnswer) use ($currentResponse) {
-                    return $currentResponse == $oAnswer->code ? $oAnswer : $carry;
-                });
-
-                $option = '';
-                if ($oSelectedAnswerOption !== null) {
-                    $option = array_merge(
-                        $oSelectedAnswerOption->attributes,
-                        $oSelectedAnswerOption->answerl10ns[$sLanguage]->attributes
-                    );
+            // Ranking is stored as a JSON list of subquestion codes in the Q{qid} column, ordered by rank
+            $rankedCodes = json_decode((string) $aQuestionAttributes['answervalue'], true);
+            if (is_array($rankedCodes)) {
+                $subQuestions = Question::model()->with('questionl10ns')->findAllByAttributes(
+                    array('parent_qid' => $oQuestion->qid),
+                    array('order' => 'question_order')
+                );
+                $subQuestionTexts = [];
+                foreach ($subQuestions as $oSubQuestion) {
+                    $subQuestionTexts[$oSubQuestion->title] = $oSubQuestion->questionl10ns[$sLanguage]->question ?? $oSubQuestion->title;
                 }
-                $aQuestionAttributes['answervalues'][] = ['value' => $currentResponse, 'option' => $option];
-
-                $iterator++;
-            } while (isset($oResponses[$fieldname . $iterator]));
+                foreach ($rankedCodes as $rankedCode) {
+                    if (!is_scalar($rankedCode) || (string) $rankedCode === '') {
+                        continue;
+                    }
+                    $rankedCode = (string) $rankedCode;
+                    $answerText = $subQuestionTexts[$rankedCode] ?? $rankedCode;
+                    $aQuestionAttributes['answervalues'][] = [
+                        'value' => $rankedCode,
+                        'subquestion' => $answerText,
+                        'answertext' => $answerText
+                    ];
+                }
+            }
         }
 
         /* Second (X) scale for array text and array number */
@@ -1000,7 +1030,7 @@ class SurveyDynamic extends LSActiveRecord
                 'params' => array(':parent_qid' => $aQuestionAttributes['parent_qid'], ':scale_id' => 1),
             ));
             foreach ($oScaleXSubquestions as $oScaleSubquestion) {
-                $tempFieldname = $fieldname . '_' . $oScaleSubquestion->title;
+                $tempFieldname = $fieldname . '_S' . $oScaleSubquestion->qid;
                 $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = $oResponses[$tempFieldname] ?? null;
                 /* Isue with language, need #15907 fixed */
                 $aQuestionAttributes['answervalueslabels'][$oScaleSubquestion->title] = $oScaleSubquestion->questionl10ns[$sLanguage]->question ?? null;

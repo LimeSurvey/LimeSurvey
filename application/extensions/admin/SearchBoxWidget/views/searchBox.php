@@ -15,11 +15,11 @@
         <div class="d-flex align-items-baseline">
 
             <!-- select state -->
-            <p class="survey-actionbar-title"><?php eT('All surveys'); ?></p>
+            <p id="survey_search_all_surveys" class="survey-actionbar-title"><?php eT('All surveys'); ?></p>
             <?php if ($this->onlyfilter) : ?>
                 <div class="survey-actionbar-filters">
                     <div class="survey-actionbar-item">
-                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield">
+                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield" aria-labelledby="survey_search_all_surveys">
                             <option value="" <?= empty(App()->request->getQuery('active')) ? "selected" : '' ?>>
                                 <?= gT('Status') ?>
                             </option>
@@ -40,36 +40,17 @@
                             </option>
                         </select>
                     </div>
-                </div>
-
-                <div class="survey-actionbar-actions ms-auto">
-                    <div class="survey-actionbar-item">
-                        <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')) : ?>
-                            <a href="<?= Yii::app()->createUrl('surveyAdministration/newSurvey') ?>" id="createSurvey" class="btn btn-outline-info survey-actionbar-button">
-                                <i class="ri-add-line"></i>
-                                <?= gT('Create survey') ?>
-                            </a>
-                        <?php endif; ?>
-                    </div>
-                    <!--<div class="survey-actionbar-item">
-                        <?php if (\Permission::model()->hasGlobalPermission('surveysgroups', 'create')) : ?>
-                            <a href="<?= Yii::app()->createUrl('admin/surveysgroups/sa/create') ?>" id="createSurveyGroup" class="btn btn-outline-g-700 survey-actionbar-button">
-                                <i class="ri-add-line"></i>
-                                <?= gT('Create survey group') ?>
-                            </a>
-                        <?php endif; ?>
-                    </div>-->
                 </div>
 
             <?php else : ?>
                 <!-- select group -->
                 <div class="survey-actionbar-filters">
                     <div class="survey-actionbar-item search-bar">
-                        <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control survey-actionbar-formfield', 'placeholder' => 'Search', 'value' => App()->request->getQuery('Survey')['searched_value'] ?? '']) ?>
+                        <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control survey-actionbar-formfield', 'placeholder' => 'Search', 'value' => App()->request->getQuery('Survey')['searched_value'] ?? '', 'aria-labelledby' => 'survey_search_all_surveys', 'id' => 'survey_searched_value']) ?>
                         <i class="ri-search-line"></i>
                     </div>
                     <div class="survey-actionbar-item">
-                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield">
+                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield" aria-labelledby="survey_search_all_surveys">
                             <option value="" <?= empty(App()->request->getQuery('active')) ? "selected" : '' ?>>
                                 <?= gT('Status') ?>
                             </option>
@@ -91,7 +72,7 @@
                         </select>
                     </div>
                     <div class="survey-actionbar-item">
-                        <select name="gsid" id='survey_gsid' class="form-select survey-actionbar-formfield">
+                        <select name="gsid" id='survey_gsid' class="form-select survey-actionbar-formfield" aria-labelledby="survey_search_all_surveys">
                             <option value=""><?= gT('Group') ?></option>
                             <?php foreach (SurveysGroups::getSurveyGroupsList() as $gsid => $group_title) : ?>
                                 <option value="<?= $gsid ?>" <?= (App()->request->getQuery('gsid') == $gsid) ? "selected" : "" ?>><?= CHtml::encode($group_title) ?></option>
@@ -106,33 +87,32 @@
                         </button>
                     </div>
                 </div>
-
-                <div class="survey-actionbar-actions ms-auto">
-                    <div class="survey-actionbar-item">
-                        <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')) : ?>
-                            <a href="<?= Yii::app()->createUrl('surveyAdministration/newSurvey') ?>" class="btn btn-outline-info survey-actionbar-button">
-                                <i class="ri-add-line"></i>
-                                <?= gT('Create survey') ?>
-                            </a>
-                        <?php endif; ?>
-                    </div>
-                    <!--<div class="survey-actionbar-item">
-                        <?php if (Permission::model()->hasGlobalPermission('surveysgroups', 'create')) : ?>
-                            <a href="<?= Yii::app()->createUrl('admin/surveysgroups/sa/create') ?>" class="btn btn-outline-g-700 survey-actionbar-button">
-                                <i class="ri-add-line"></i>
-                                <?= gT('Create survey group') ?>
-                            </a>
-                        <?php endif; ?>
-                    </div>-->
-                </div>
             <?php endif; ?>
 
-            <?php if ($this->switch) : ?>
+            <div class="survey-actionbar-actions ms-auto">
+                <div class="survey-actionbar-item">
+                    <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')) : ?>
+                        <a href="<?= Yii::app()->createUrl('surveyAdministration/newSurvey') ?>" class="btn btn-outline-info survey-actionbar-button">
+                            <i class="ri-add-line"></i>
+                            <?= gT('Create survey') ?>
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+  <?php if ($this->switch): ?>
                 <div class="survey-actionbar-switch">
-                    <i class="view-switch ri-grid-fill survey-actionbar-item" data-action="box-widget" <?= $this->viewtype === 'box-widget' ? 'active' : '' ?>></i>
-                    <i class="view-switch ri-menu-line survey-actionbar-item" data-action="list-widget" <?= $this->viewtype === 'list-widget' ? 'active' : '' ?>></i>
+                    <i class="view-switch ri-grid-fill survey-actionbar-item" data-action="box-widget" role="button"
+                       tabindex="0"
+                       aria-label="<?= gT('Box view') ?>"
+                       aria-pressed="<?= $this->viewtype === 'box-widget' ? 'true' : 'false' ?>" <?= $this->viewtype === 'box-widget' ? 'active' : '' ?>></i>
+                    <i class="view-switch ri-menu-line survey-actionbar-item" data-action="list-widget" role="button"
+                       tabindex="0"
+                       aria-label="<?= gT('List view') ?>"
+                       aria-pressed="<?= $this->viewtype === 'list-widget' ? 'true' : 'false' ?>" <?= $this->viewtype === 'list-widget' ? 'active' : '' ?>></i>
                 </div>
             <?php endif; ?>
+
 
         </div>
         <?php $this->endWidget(); ?>

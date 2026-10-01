@@ -6,7 +6,6 @@ use Survey;
 use Permission;
 use LSYii_Application;
 use PluginEvent;
-use Date_Time_Converter;
 use CHttpSession;
 use LimeSurvey\PluginManager\PluginManager;
 use LimeSurvey\Models\Services\Exception\{
@@ -15,6 +14,7 @@ use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
 };
 use User;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * Service GeneralSettings
@@ -33,6 +33,7 @@ class GeneralSettings
     private PluginManager $pluginManager;
     private LanguageConsistency $languageConsistency;
     private User $modelUser;
+    private SurveyAccessModeService $surveyAccessModeService;
     private $restMode = false;
 
     public const FIELD_TYPE_YN = 'yesorno';
@@ -49,7 +50,8 @@ class GeneralSettings
         CHttpSession $session,
         PluginManager $pluginManager,
         LanguageConsistency $languageConsistency,
-        User $modelUser
+        User $modelUser,
+        SurveyAccessModeService $surveyAccessModeService
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
@@ -58,12 +60,13 @@ class GeneralSettings
         $this->pluginManager = $pluginManager;
         $this->languageConsistency = $languageConsistency;
         $this->modelUser = $modelUser;
+        $this->surveyAccessModeService = $surveyAccessModeService;
     }
 
     /**
      * Set REST Mode
      *
-     * In rest mode we have different expecations about data formats.
+     * In rest mode we have different expectations about data formats.
      * For example datetime objects inputs/output
      * as UTC JSON format Y-m-d\TH:i:s.000\Z.
      *
@@ -102,6 +105,7 @@ class GeneralSettings
             );
         }
 
+        $this->modelSurvey->resetCache();
         $survey = $this->modelSurvey->findByPk(
             $surveyId
         );
@@ -133,6 +137,7 @@ class GeneralSettings
      *
      * @param Survey $survey
      * @param array $input
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @throws PersistErrorException
      * @throws NotFoundException
      * @throws PermissionDeniedException
@@ -176,7 +181,12 @@ class GeneralSettings
                 $survey
             );
 
-            if (!$survey->save()) {
+            $saved = $survey->save();
+            if (array_key_exists('allowregister', $input)) {
+                $this->ensureTokensTableExistence($survey);
+            }
+
+            if (!$saved) {
                 $e = new PersistErrorException(
                     sprintf(
                         'Failed saving general settings for survey #%s',
@@ -239,6 +249,10 @@ class GeneralSettings
                 'type' => static::FIELD_TYPE_YN,
                 'canUpdate' => $surveyNotActive
             ],
+            'savequotaexit' => [
+                'type' => static::FIELD_TYPE_YN,
+                'canUpdate' => $surveyNotActive
+            ],
             'publicgraphs' => ['type' => static::FIELD_TYPE_YN],
             'usecookie' => ['type' => static::FIELD_TYPE_YN],
             'allowregister' => ['type' => static::FIELD_TYPE_YN],
@@ -251,11 +265,13 @@ class GeneralSettings
             'showgroupinfo' => [],
             'showqnumcode' => [],
             'shownoanswer' => ['type' => static::FIELD_TYPE_YN],
+            'preselectnoanswer' => ['type' => static::FIELD_TYPE_YN],
             'showwelcome' => ['type' => static::FIELD_TYPE_YN],
             'showsurveypolicynotice' => ['default' => 0],
+            'showtokenpolicy' => ['type' => static::FIELD_TYPE_YN],
+            'showregisterpolicy' => ['type' => static::FIELD_TYPE_YN],
             'allowprev' => ['type' => static::FIELD_TYPE_YN],
             'questionindex' => [],
-            'nokeyboard' => ['type' => static::FIELD_TYPE_YN],
             'showprogress' => ['type' => static::FIELD_TYPE_YN],
             'listpublic' => ['type' => static::FIELD_TYPE_YN],
             'htmlemail' => ['type' => static::FIELD_TYPE_YN],
@@ -286,7 +302,7 @@ class GeneralSettings
             'gsid' => ['default' => 1],
             'format' => [],
             'template' => [],
-            'othersettings' => ['canUpdate' => $surveyNotActive]
+            'welcome_image' => []
         ];
     }
 
@@ -326,13 +342,6 @@ class GeneralSettings
                     break;
                 }
             }
-        }
-
-        // Other settins doesn't have it's own key in the array input
-        // Must be updated earlier
-        if ($field == 'othersettings') {
-            // Update othersettings
-            $this->updateOtherSettings($input, $survey);
         }
 
         if (
@@ -444,14 +453,6 @@ class GeneralSettings
         return $meta;
     }
 
-    private function updateOtherSettings($input, Survey $survey)
-    {
-        // Update other settings, only two for now
-        $survey->setOtherSetting("question_code_prefix", $input['question_code_prefix'] ?? '');
-        $survey->setOtherSetting("subquestion_code_prefix", $input['subquestion_code_prefix'] ?? '');
-        $survey->setOtherSetting("answer_code_prefix", $input['answer_code_prefix'] ?? '');
-    }
-
     private function getAdditionalLanguagesArray($input, Survey $survey)
     {
         $languages  = isset($input['additional_languages'])
@@ -526,25 +527,18 @@ class GeneralSettings
 
     /**
      * Format date time input
-     *
      * Converts date time string from user local format to internal database format.
      *
+     * The input (in the user's locale format, e.g. 'd.m.Y H:i') is parsed to an
+     * unambiguous 'Y-m-d H:i:s' string via convertFromGlobalSettingFormat() and then
+     * shifted from the user's display timezone to UTC via getUTCOfDate() for storage.
+     *
      * @param string $inputDateTimeString
-     * @return string
+     * @return string|null
      */
     private function formatDateTimeInput($inputDateTimeString)
     {
-        $this->yiiApp->loadHelper('surveytranslator');
-        $this->yiiApp->loadLibrary('Date_Time_Converter');
-        $dateFormat = !empty($this->session['dateformat'])
-            ? $this->session['dateformat']
-            : 1;
-        $formatData = getDateFormatData($dateFormat);
-        $dateTimeObj = new Date_Time_Converter(
-            $inputDateTimeString,
-            $formatData['phpdate'] . ' H:i'
-        );
-        return $dateTimeObj->convert('Y-m-d H:i:s');
+        return getUTCOfDate(convertFromGlobalSettingFormat($inputDateTimeString, true));
     }
 
     /**
@@ -648,5 +642,25 @@ class GeneralSettings
         }
 
         return $result;
+    }
+
+    /**
+     * Ensure the tokens table exists for a survey.
+     *
+     * @param Survey $survey
+     *
+     * @return void
+     */
+    private function ensureTokensTableExistence(Survey $survey): void
+    {
+        $survey->setOptions($survey->gsid);
+        $isSurveyActive = $survey->getIsActive();
+        $isOpenAccessMode = $survey->access_mode === SurveyAccessModeService::$ACCESS_TYPE_OPEN;
+        $publicRegistrationAllowed = $survey->getIsAllowRegister();
+        $hasTokensTable = $survey->hasTokensTable;
+
+        if ($isSurveyActive && $isOpenAccessMode && $publicRegistrationAllowed && !$hasTokensTable) {
+            $this->surveyAccessModeService->newParticipantTable($survey, true);
+        }
     }
 }

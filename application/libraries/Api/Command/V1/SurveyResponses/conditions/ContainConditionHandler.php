@@ -1,0 +1,54 @@
+<?php
+
+namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions;
+
+use CDbCriteria;
+use InvalidArgumentException;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
+
+class ContainConditionHandler implements HandlerInterface
+{
+    use ConditionHandlerHelperTrait;
+
+    public function canHandle(string $operation): bool
+    {
+        if (strtolower($operation) == 'contain') {
+            return true;
+        }
+        return false;
+    }
+
+    public function execute($key, $value): object
+    {
+        if (is_array($value)) {
+            throw new InvalidArgumentException('Multiple values are not supported for contain conditions.');
+        }
+        $value = trim($value);
+        $criteria = new CDbCriteria();
+
+        if (is_array($key)) {
+            $conditions = [];
+            $params = [];
+
+            foreach ($key as $rawKey) {
+                $quotedKey = $this->sanitizeKey($rawKey);
+                $paramName = CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount++;
+
+                $conditions[] = "$quotedKey LIKE $paramName";
+                $params[$paramName] = "%$value%";
+            }
+
+            $criteria->condition = '(' . implode(' OR ', $conditions) . ')';
+            $criteria->params = $params;
+
+            return $criteria;
+        }
+        $quotedKey = $this->sanitizeKey($key);
+        $paramName = CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount++;
+
+        $criteria->condition = "$quotedKey LIKE $paramName";
+        $criteria->params = [$paramName => "%$value%"];
+
+        return $criteria;
+    }
+}

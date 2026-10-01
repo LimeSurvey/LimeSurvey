@@ -110,7 +110,8 @@ class Zend_CodeGenerator_Php_Method extends Zend_CodeGenerator_Php_Member_Abstra
      */
     public function setFinal($isFinal)
     {
-        $this->_isFinal = ($isFinal) ? true : false;
+        $this->_isFinal = (bool)$isFinal;
+        return $this;
     }
 
     /**

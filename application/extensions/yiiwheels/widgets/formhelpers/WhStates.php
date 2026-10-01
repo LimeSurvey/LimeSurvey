@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * WhCountries.php
@@ -9,6 +10,7 @@
  * @link http://www.ramirezcobos.com/
  * @link http://www.2amigos.us/
  */
+
 Yii::import('yiiwheels.widgets.formhelpers.WhDropDownInputWidget');
 
 class WhStates extends WhDropDownInputWidget
@@ -30,7 +32,7 @@ class WhStates extends WhDropDownInputWidget
 
         TbHtml::addCssClass('bfh-states', $this->htmlOptions);
 
-        if(!isset($this->htmlOptions['data-state'])) {
+        if (!isset($this->htmlOptions['data-state'])) {
             $this->htmlOptions['data-state'] = TbArray::popValue('data-value', $this->htmlOptions);
         }
         unset($this->htmlOptions['data-name'], $this->htmlOptions['data-value']);
@@ -38,10 +40,9 @@ class WhStates extends WhDropDownInputWidget
 
     public function run()
     {
-        if(!$this->readOnly) {
+        if (!$this->readOnly) {
             echo $this->dropDownList();
-        } else
-        {
+        } else {
             echo CHtml::tag('span', $this->htmlOptions, '');
         }
 

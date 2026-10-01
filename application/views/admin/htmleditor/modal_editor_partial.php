@@ -1,10 +1,10 @@
-<div id="htmleditor-modal" class="modal fade" role="dialog">
+<div id="htmleditor-modal" class="modal fade" role="dialog" aria-labelledby="htmleditor-modal-title" aria-modal="true" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <?php
             Yii::app()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
-                ['modalTitle' => gT('Editor')]
+                ['modalTitle' => gT('Editor'), 'modalTitleId' => 'htmleditor-modal-title']
             );
             ?>
             <div class="modal-body">

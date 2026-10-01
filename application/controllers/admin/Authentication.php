@@ -5,7 +5,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -35,7 +35,7 @@ class Authentication extends SurveyCommonAction
      */
     public function index()
     {
-        // if the session is not readeable clear browser cookies
+        // if the session is not readable clear browser cookies
         if (!session_id()) {
             App()->request->cookies->clear();
         }
@@ -61,7 +61,7 @@ class Authentication extends SurveyCommonAction
                 ls\ajax\AjaxHelper::outputSuccess(gT('Successful login'));
                 return;
             } elseif ($failed) {
-                ls\ajax\AjaxHelper::outputError(gT('Incorrect username and/or password!'));
+                ls\ajax\AjaxHelper::outputError(gT('Incorrect or expired username and/or password!'));
                 return;
             }
         } else {
@@ -142,11 +142,11 @@ class Authentication extends SurveyCommonAction
             // Call the plugin method newLoginForm
             // For Authdb:  @see: application/core/plugins/Authdb/Authdb.php: function newLoginForm()
             $newLoginForm = new PluginEvent('newLoginForm');
-            App()->getPluginManager()->dispatchEvent($newLoginForm); // inject the HTML of the form inside the private varibale "_content" of the plugin
+            App()->getPluginManager()->dispatchEvent($newLoginForm); // inject the HTML of the form inside the private variable "_content" of the plugin
             $aData['summary'] = self::getSummary('logout');
-            $aData['pluginContent'] = $newLoginForm->getAllContent(); // Retreives the private varibale "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
+            $aData['pluginContent'] = $newLoginForm->getAllContent(); // Retrieves the private variable "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
         } else {
-            // The form has been submitted, or the plugin has been stoped (so normally, the value of login/password are available)
+            // The form has been submitted, or the plugin has been stopped (so normally, the value of login/password are available)
 
                 // Handle getting the post and populating the identity there
             $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin); // If form has been submitted, $_POST['authMethod'] is set, else  $identity->plugin should be set, ELSE: TODO error
@@ -175,6 +175,26 @@ class Authentication extends SurveyCommonAction
                 $event->set('identity', $identity);
                 App()->getPluginManager()->dispatchEvent($event);
 
+                // If allowed_hosts.php does not exist, write the current host as valid
+                $allowedHosts = App()->loadAllowedHosts();
+                if (empty($allowedHosts)) {
+                    $currentHost = App()->request->getServerName();
+                    if (App()->writeAllowedHosts([$currentHost])) {
+                        Yii::app()->setFlashMessage(
+                            sprintf(
+                                gT('The allowed hosts file (application/config/allowed_hosts.php) has been created with "%s" as trusted host. For security reasons, LimeSurvey can only be accessed through that domain. If you need additional hosts, please edit the allowed hosts file directly.'),
+                                htmlspecialchars($currentHost)
+                            ),
+                            'info'
+                        );
+                    } else {
+                        Yii::app()->setFlashMessage(
+                            gT('The allowed hosts file (application/config/allowed_hosts.php) could not be created because the application/config directory is not writable. No trusted host restriction is currently enforced. Please make the directory writable, then login again, to enable host header protection.'),
+                            'warning'
+                        );
+                    }
+                }
+
                 return array('success');
             } else {
                 // Failed
@@ -185,7 +205,7 @@ class Authentication extends SurveyCommonAction
                 $message = $identity->errorMessage;
                 if (empty($message)) {
                     // If no message, return a default message
-                    $message = gT('Incorrect username and/or password!');
+                    $message = gT('Incorrect or expired username and/or password!');
                 }
                 return array('failed', $message);
             }
@@ -198,10 +218,14 @@ class Authentication extends SurveyCommonAction
      * This action sets a password for new user or resets a password for an existing user.
      * If validation time is expired, no password will be changed.
      * After password has been changed successfully it redirects to LogIn-Page.
+     * If the current user is already logged in, it shows a warning and redirects to the
+     * administration page instead of showing the form.
      *
+     * @return void
      */
     public function newPassword()
     {
+        $this->redirectIfLoggedIn(gT('You cannot reset the password for a user while being logged in as someone else.'));
 
         //validation key could be a GET- or a POST-PARAM
         $validation_key = Yii::app()->request->getParam('param'); //as link from email
@@ -317,10 +341,10 @@ class Authentication extends SurveyCommonAction
     {
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}')) {
-            $sDBVersion = getGlobalSetting('DBVersion');
+            $sDBVersion = Yii::app()->getConfig('DBVersion');
             if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber')) {
                 // Try a silent update first
-                Yii::app()->loadHelper('update/updatedb');
+                Yii::app()->loadHelper('update.updatedb');
                 if (!db_upgrade_all(intval($sDBVersion), true)) {
                     Yii::app()->getController()->redirect(array('/admin/databaseupdate/sa/db'));
                 }
@@ -362,10 +386,16 @@ class Authentication extends SurveyCommonAction
 
     /**
      * Redirects a logged in user to the administration page
+     *
+     * @param string|null $flashMessage optional warning message to show after redirecting
+     * @return void
      */
-    private function redirectIfLoggedIn()
+    private function redirectIfLoggedIn(?string $flashMessage = null)
     {
         if (!Yii::app()->user->getIsGuest()) {
+            if ($flashMessage !== null) {
+                Yii::app()->setFlashMessage($flashMessage, 'warning');
+            }
             $this->runDbUpgrade();
             Yii::app()->getController()->redirect(array('/admin'));
         }

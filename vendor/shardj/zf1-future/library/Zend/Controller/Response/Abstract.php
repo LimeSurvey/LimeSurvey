@@ -454,7 +454,7 @@ abstract class Zend_Controller_Response_Abstract
      * $spec is a string and matches a named segment, returns the contents of
      * that segment; otherwise, returns null.
      *
-     * @param boolean $spec
+     * @param bool|string $spec
      * @return string|array|null
      */
     public function getBody($spec = false)

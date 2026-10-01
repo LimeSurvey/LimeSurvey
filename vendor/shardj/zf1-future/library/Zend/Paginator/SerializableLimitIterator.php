@@ -27,7 +27,6 @@
  */
 class Zend_Paginator_SerializableLimitIterator extends LimitIterator implements Serializable, ArrayAccess
 {
-
     /**
      * Offset to first element
      *
@@ -125,8 +124,8 @@ class Zend_Paginator_SerializableLimitIterator extends LimitIterator implements 
     public function offsetExists($offset): bool
     {
         if ($offset > 0 && $offset < $this->_count) {
+            $currentOffset = $this->key();
             try {
-                $currentOffset = $this->key();
                 $this->seek($offset);
                 $current = $this->current();
                 $this->seek($currentOffset);

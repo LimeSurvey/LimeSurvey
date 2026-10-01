@@ -227,7 +227,7 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
      * Defined by Zend_Auth_Adapter_Interface.
      *
      * @throws Zend_Auth_Adapter_Exception If answering the authentication query is impossible
-     * @return Zend_Auth_Result
+     * @return Zend_Auth_Result|void
      */
     public function authenticate() {
         $id = $this->_id;
@@ -279,5 +279,4 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
             }
         }
     }
-
 }

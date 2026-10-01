@@ -28,10 +28,13 @@ class SurveyArchiveService
 
     public static $Timings_archive = 'timings';
 
+    public static $Questions_archive = 'questions';
+
     private static $tableNameMap = [
-        'response' => 'old_survey_%d_%d',
-        'token'    => 'old_tokens_%d_%d',
-        'timings'  => 'old_survey_%d_timings_%d',
+        'response'  => 'old_responses_%d_%d',
+        'token'     => 'old_tokens_%d_%d',
+        'timings'   => 'old_timings_%d_%d',
+        'questions' => 'old_questions_%d_%d',
     ];
 
     public function __construct(
@@ -201,7 +204,7 @@ class SurveyArchiveService
                 $archiveTableName = self::buildArchiveTableName($archiveType, $iSurveyID, $iTimestamp);
                 $this->app->db->createCommand()->dropTable("{{" . $archiveTableName . "}}");
                 if ($archiveType === self::$Response_archive) { // delete question types table when deleting responses
-                    $questionTypesTableName = str_replace('survey', 'questions', $archiveTableName);
+                    $questionTypesTableName = self::buildArchiveTableName(self::$Questions_archive, $iSurveyID, $iTimestamp);
                     $this->app->db->createCommand()->dropTable("{{" . $questionTypesTableName . "}}");
                 }
                 $archive->delete();

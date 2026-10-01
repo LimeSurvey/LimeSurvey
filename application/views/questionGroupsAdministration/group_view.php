@@ -13,7 +13,9 @@
                     <?php
                     eT("Title"); ?>:</strong></div>
             <div class="col-10">
+                <strong>
                 <?= $grow['group_name']; ?> (<?= $grow['gid']; ?>)
+                </strong>
             </div>
         </div>
         <div class="row">
@@ -42,7 +44,7 @@
                     ?>
                 </div>
             </div>
-        <?php
+            <?php
         } ?>
         <?php
         if (trim((string) $grow['randomization_group']) != '') {
@@ -67,12 +69,12 @@
                             <a href='<?php echo $this->createUrl("admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$depgid/qid/$depqid", array('markcid' => implode("-", $depcid))); ?>'>
                                 [QID: <?= $depqid; ?>]
                             </a>
-                        <?php
+                            <?php
                         }
                     } ?>
                 </div>
             </div>
-        <?php
+            <?php
         } ?>
     </div>
 </div>

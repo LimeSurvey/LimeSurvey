@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-md-6">
                         <?php
-                            echo CHtml::dropDownList('installerLang', 'en', $languages, array('id' => 'installerLang', 'class'=>'form-select', 'encode' => false));
+                            echo CHtml::dropDownList('installerLang', 'en', $languages, array('id' => 'installerLang', 'class' => 'form-select', 'encode' => false));
                         ?>
                         <br/><br/>
                     </div>

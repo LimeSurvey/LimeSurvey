@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -32,7 +32,6 @@ if (!defined('BASEPATH')) {
 
 class LSYii_ClientScript extends CClientScript
 {
-
     /**
      * The script is rendered at the end of the body section.
      * only for scripts not script files
@@ -40,7 +39,15 @@ class LSYii_ClientScript extends CClientScript
     const POS_POSTSCRIPT = 5;
     const POS_PREBEGIN = 6;
     /**
-     * cssFiles is protected on CClientScript. It can be useful to access it for debugin purpose
+     * Packages that must never be published through the asset manager.
+     * These packages reference sibling packages using runtime-relative paths
+     * (e.g. CKEditor builds the KCFinder URL as `CKEDITOR.basePath + "../kcfinder/..."`),
+     * which only resolves correctly when served directly from assets/packages.
+     * @var string[]
+     */
+    protected $packagesNotPublishedByAssetManager = ['ckeditor'];
+    /**
+     * cssFiles is protected on CClientScript. It can be useful to access it for debugging purpose
      * @return array
      */
     public function getCssFiles()
@@ -168,7 +175,7 @@ class LSYii_ClientScript extends CClientScript
 
     /**
      * In LimeSurvey, if debug mode is OFF we use the asset manager (so participants never needs to update their webbrowser cache).
-     * If debug mode is ON, we don't use the asset manager, so developpers just have to refresh their browser cache to reload the new scripts.
+     * If debug mode is ON, we don't use the asset manager, so developers just have to refresh their browser cache to reload the new scripts.
      * To make developer life easier, if they want to register a single script file, they can use App()->getClientScript()->registerScriptFile({url to script file})
      * if the file exist in local file system and debug mode is off, it will find the path to the file, and it will publish it via the asset manager
      * @param string $url
@@ -204,12 +211,24 @@ class LSYii_ClientScript extends CClientScript
 
     /**
      * The method will first check if a devbaseUrl parameter is provided,
-     * so when debug mode is on, it doens't use the asset manager
+     * so when debug mode is on, it doesn't use the asset manager
      * @param string $name
      * @return void|static
      */
     public function registerPackage($name)
     {
+        // Some packages must never be published through the asset manager because they
+        // reference sibling packages using runtime-relative paths. For example, CKEditor's
+        // config.js builds the KCFinder file browser URLs as `CKEDITOR.basePath + "../kcfinder/..."`.
+        // If CKEditor is copied into the hashed tmp/assets/<hash>/ folder, that relative path
+        // resolves to a non-existent location (e.g. /tmp/assets/kcfinder/...). Serving it
+        // directly from assets/packages keeps the `../kcfinder/` sibling path valid.
+        if (in_array($name, $this->packagesNotPublishedByAssetManager)) {
+            $this->convertDevBaseUrl($name);
+            parent::registerPackage($name);
+            return;
+        }
+
         if (!YII_DEBUG || Yii::app()->getConfig('use_asset_manager')) {
             parent::registerPackage($name);
         } else {
@@ -433,13 +452,8 @@ class LSYii_ClientScript extends CClientScript
         }
 
         //Propagate our debug settings into the javascript realm
-        if (function_exists('getGlobalSetting')) {
-            $debugFrontend = (int) getGlobalSetting('javascriptdebugfrntnd');
-            $debugBackend  = (int) getGlobalSetting('javascriptdebugbcknd');
-        } else {
-            $debugFrontend = 0;
-            $debugBackend  = 0;
-        }
+        $debugFrontend = (int) Yii::app()->getConfig('javascriptdebugfrntnd');
+        $debugBackend  = (int) Yii::app()->getConfig('javascriptdebugbcknd');
 
         $html .= "<script type='text/javascript'>window.debugState = {frontend : (" . $debugFrontend . " === 1), backend : (" . $debugBackend . " === 1)};</script>";
 
@@ -582,7 +596,7 @@ class LSYii_ClientScript extends CClientScript
                 $scripts[] = implode("\n", $this->scripts[self::POS_POSTSCRIPT]);
             }
         }
-        if (App()->getConfig('debug') > 0) {
+        if (Yii::app()->getConfig('debug') > 0) {
             $scripts[] = "jQuery(document).off('pjax:scriptsuccess.debugger').on('pjax:scriptsuccess.debugger',function(e) { console.ls.log('PJAX scriptsuccess', e); });";
             $scripts[] = "jQuery(document).off('pjax:scripterror.debugger').on('pjax:scripterror.debugger',function(e) { console.ls.log('PJAX scripterror', e); });";
             $scripts[] = "jQuery(document).off('pjax:scripttimeout.debugger').on('pjax:scripttimeout.debugger',function(e) { console.ls.log('PJAX scripttimeout', e); });";

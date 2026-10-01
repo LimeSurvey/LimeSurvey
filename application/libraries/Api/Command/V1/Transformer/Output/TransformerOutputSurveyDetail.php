@@ -8,6 +8,7 @@ use LimeSurvey\Models\Services\SurveyCondition;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 use SurveysGroups;
+use TemplateConfiguration;
 
 /**
  * TransformerOutputSurveyDetail
@@ -21,9 +22,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         'admin', 'adminemail', 'alloweditaftercompletion', 'allowprev', 'allowsave', 'allowregister','anonymized',
         'assessments', 'autoredirect', 'bounce_email', 'datestamp', 'emailnotificationto', 'emailresponseto',
         'format', 'googleanalyticsapikey', 'htmlemail', 'ipaddr', 'ipanonymize', 'listpublic', 'navigationdelay',
-        'nokeyboard', 'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl',
-        'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'showprogress', 'showqnumcode',
-        'showwelcome', 'showxquestions', 'template', 'tokenanswerspersistence', 'tokenlength', 'usecookie', 'othersettings',
+        'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl',
+        'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showprogress', 'showqnumcode',
+        'showwelcome', 'showxquestions', 'template', 'tokenanswerspersistence', 'tokenlength', 'usecookie',
+        'savequotaexit'
     ];
 
     private TransformerOutputSurvey $transformerSurvey;
@@ -102,6 +104,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey = $this->transformerSurvey->transform($data);
         $survey['templateInherited'] = $data->oOptions->template;
         $survey['formatInherited'] = $data->oOptions->format;
+        $survey['isEditorCompatible'] = $data->getIsEditorCompatible();
         $survey['languages'] = $data->allLanguages;
         $survey['hasTokens'] = $data->hasTokensTable;
         $survey['previewLink'] = App()->createUrl(
@@ -121,6 +124,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['ownerInherited'] = $this->transformerSurveyOwner->transform(
             $data->oOptions->owner
         );
+        $survey['questionTypeDefaultAttributeValues'] = $this->questionService
+            ->getDefaultAttributeValuesByQuestionType();
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
@@ -186,31 +191,25 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         );
         $survey['googleAnalyticsApiKeySetting'] = $data->getGoogleanalyticsapikeysetting();
         $survey['ownersList'] = array_map(function ($user) {
-            return ['value' => $user['uid'], 'label' => $user['user'] . ' - ' . $user['full_name']];
+            return ['value' => $user['uid'], 'label' => $user['user'] . ($user['full_name'] ? ' - ' . $user['full_name'] : '')];
         }, getUserList());
+        $survey['availableThemes'] = array_map(function ($template) {
+            $themeConf = TemplateConfiguration::getInstanceFromTemplateName($template['name']);
+            return [
+                'value' => $template['name'],
+                'label' => $template['name'],
+                'preview' => $themeConf->getPreview(true),
+            ];
+        }, $this->surveyThemeConfiguration->getAvailableTemplates('fruity_twentythree', $data->template));
 
         //todo: later this should be done with an separate endpoint or service
         $survey['groupsList'] = SurveysGroups::getSurveyGroupsList();
-        if ($survey['active']) {
-            $survey['responsesTotal'] = (int)\SurveyDynamic::model(
-                $data->sid
-            )->count();
-            $survey['responsesCompleted'] = (int)\SurveyDynamic::model(
-                $data->sid
-            )->count('submitdate IS NOT NULL');
-            $survey['responsesIncomplete'] = $survey['responsesTotal']
-                - $survey['responsesCompleted'];
-        } else {
-            $survey['responsesTotal'] = 0;
-            $survey['responsesCompleted'] = 0;
-            $survey['responsesIncomplete'] = 0;
-        }
+
         $survey['attributeDescriptions'] = $data->getDecodedAttributedescriptions();
 
         $survey['themesettings'] = [];
-        $survey['themesettingattributes'] = [];
         $survey['templatePreview'] = '';
-        $this->tranformThemeSettings($survey['themesettings'], $survey['themesettingattributes'], $survey['templatePreview'], $data['template'], $data->sid);
+        $this->transformThemeSettings($survey['themesettings'], $survey['templatePreview'], $data);
 
         return $survey;
     }
@@ -250,7 +249,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 ),
                 $options
             );
-
             $question['scenarios'] = $this->surveyCondition->getScenariosAndConditionsOfQuestion($questionModel->qid);
 
             $question['conditiontext'] = $this->surveyCondition->getConditionText($questionModel);
@@ -345,7 +343,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     {
         foreach (TransformerOutputSurveyDetail::AFFECTED_INHERITED_SETTINGS as $setting) {
             $intBasedSettings = ['questionindex', 'navigationdelay'];
-            $otherSetting = 'othersettings';
             if (
                 isset($survey->$setting)
                 && (
@@ -363,54 +360,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 if (property_exists($survey->oOptions, $setting)) {
                     $survey->$setting = $survey->oOptions->$setting;
                 }
-            } elseif ($setting === $otherSetting) {
-                // convert other settings to array and check each one for 'I'
-                $survey = $this->setInheritedOtherSettings(
-                    $survey,
-                    $otherSetting
-                );
             }
         }
-        return $survey;
-    }
-
-    /**
-     * Processes inherited settings in the 'othersettings' property of a Survey
-     *
-     * This function handles the inheritance of settings from parent survey groups.
-     * It replaces any setting with value 'I' (indicating inheritance) with the
-     * corresponding value from the parent survey group's settings.
-     *
-     * @param Survey $survey The survey object to process
-     * @param string $otherSetting The name of the setting property to process (typically 'othersettings')
-     * @return Survey The modified survey object with inherited settings resolved
-     */
-    private function setInheritedOtherSettings(
-        Survey $survey,
-        string $otherSetting
-    ) {
-        $otherSettingsArray = $survey->getOtherSettingsPrefixArray();
-        $decodedParentSettings = new \stdClass();
-        if (property_exists($survey->oOptions, $otherSetting)) {
-            $decodedParentSettings = json_decode(
-                $survey->oOptions->$otherSetting
-            );
-        }
-        foreach ($otherSettingsArray as $otherSettingKey => $otherSettingValue) {
-            if ($otherSettingValue === 'I') {
-                if (
-                    is_object($decodedParentSettings)
-                    && property_exists(
-                        $decodedParentSettings,
-                        $otherSettingKey
-                    )
-                ) {
-                    $otherSettingsArray[$otherSettingKey] = $decodedParentSettings->$otherSettingKey;
-                }
-            }
-        }
-        $survey->$otherSetting = json_encode($otherSettingsArray);
-
         return $survey;
     }
 
@@ -442,24 +393,22 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     }
 
     /**
-     * Prepares theme settings necessary values,
+     * Prepares theme settings necessary values, including inheritance
      * @param-out array<array-key, mixed> $aThemeSettings
-     * @param-out array<mixed> $aThemesettingattributes
      * @param-out string $sTemplatePreview
-     * @param string $sTemplateName
-     * @param integer $iSurveyId
+     * @param Survey $survey
      * @return void
      */
-    private function tranformThemeSettings(array &$aThemeSettings, array &$aThemesettingattributes, string &$sTemplatePreview, $sTemplateName, $iSurveyId = 0)
+    private function transformThemeSettings(array &$aThemeSettings, string &$sTemplatePreview, $survey)
     {
-        $aThemeSettings = $this->surveyThemeConfiguration->getSurveyThemeOptions($iSurveyId, $sTemplateName);
-        $aThemeSettings = &$aThemeSettings;
-
-        $aThemesettingattributes = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($iSurveyId, $sTemplateName);
-        $aThemesettingattributes = &$aThemesettingattributes;
-
-        $templateConf = \TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
-        $sTemplatePreview = $templateConf->getPreview(true);
-        $sTemplatePreview = &$sTemplatePreview;
+        $themeConfiguration = TemplateConfiguration::getInstance(null, null, $survey->sid);
+        // loads all information available for the theme including inheritance
+        $themeData = $this->surveyThemeConfiguration->updateCommon($themeConfiguration, $survey->sid, $survey->gsid);
+        // parse themeOptions to object
+        if (is_string($themeData['aTemplateConfiguration']['options'])) {
+            $themeData['aTemplateConfiguration']['options'] = json_decode($themeData['aTemplateConfiguration']['options']);
+        }
+        $aThemeSettings = $this->surveyThemeConfiguration->getSurveyThemeOptionsAttributes($themeData);
+        $sTemplatePreview = $themeConfiguration->getPreview(true);
     }
 }

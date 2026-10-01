@@ -121,7 +121,7 @@ class RendererBasic implements RendererInterface
     protected function sendStandardHeaders(int $responseCode = 200): void
     {
         header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Headers: Authorization, *');
+        header('Access-Control-Allow-Headers: Authorization, X-Auth-Token, *');
         header('Access-Control-Allow-Methods: *');
         http_response_code($responseCode);
     }

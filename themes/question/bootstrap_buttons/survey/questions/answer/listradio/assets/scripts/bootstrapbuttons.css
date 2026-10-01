@@ -1,1 +1,50 @@
-.bootstrap-buttons-div{margin-bottom:0.2em} /* Usage of em since we don't know size set by theme */
+/*
+ * Keep in sync with the multiple choice buttons theme:
+ * themes/question/bootstrap_buttons_multi/survey/questions/answer/multiplechoice/assets/scripts/bootstrapbuttons.css
+ * Both themes share the .bootstrap-buttons-div markup and can be rendered on the same page.
+ *
+ * Selectors carry an extra element or class on purpose: the question theme css is loaded
+ * before the survey theme one, so an equally specific selector would lose the cascade.
+ */
+
+ul.bootstrap-buttons-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 20px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+ul.bootstrap-buttons-list:has(> .bootstrap-buttons-div:nth-child(-n+2):last-child) {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 200px));
+    justify-content: start;
+}
+
+ul.bootstrap-buttons-list > .bootstrap-buttons-div {
+    width: auto;
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 0;
+}
+
+ul.bootstrap-buttons-list > .bootstrap-buttons-div > .form-check,
+ul.bootstrap-buttons-list .btn {
+    height: 100%;
+}
+
+.bootstrap-buttons-div .form-check {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.bootstrap-buttons-div .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bootstrap-buttons-div .btn > :last-child {
+    margin-bottom: 0;
+}

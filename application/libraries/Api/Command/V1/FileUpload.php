@@ -10,6 +10,7 @@ use LimeSurvey\Api\Command\{
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use LimeSurvey\Models\Services\FileUploadService;
+use LimeSurvey\Models\Services\SurveyDetailService;
 
 class FileUpload implements CommandInterface
 {
@@ -17,6 +18,7 @@ class FileUpload implements CommandInterface
 
     protected ResponseFactory $responseFactory;
     protected FileUploadService $fileUploadService;
+    protected SurveyDetailService $surveyDetailService;
 
     /**
      * Constructor
@@ -26,10 +28,12 @@ class FileUpload implements CommandInterface
      */
     public function __construct(
         ResponseFactory $responseFactory,
-        FileUploadService $fileUploadService
+        FileUploadService $fileUploadService,
+        SurveyDetailService $surveyDetailService
     ) {
         $this->responseFactory = $responseFactory;
         $this->fileUploadService = $fileUploadService;
+        $this->surveyDetailService = $surveyDetailService;
     }
 
     /**
@@ -45,6 +49,7 @@ class FileUpload implements CommandInterface
                 $surveyId,
                 $request->getData('filesGlobal', [])
             );
+            $this->surveyDetailService->removeCache($surveyId);
         } catch (\Exception $e) {
             return $this->responseFactory->makeErrorBadRequest(
                 $e->getMessage()

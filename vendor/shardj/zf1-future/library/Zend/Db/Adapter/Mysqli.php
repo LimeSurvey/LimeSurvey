@@ -292,7 +292,7 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
         }
 
         if (isset($this->_config['port'])) {
-            $port = (integer) $this->_config['port'];
+            $port = (int) $this->_config['port'];
         } else {
             $port = null;
         }

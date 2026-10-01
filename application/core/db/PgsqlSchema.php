@@ -2,7 +2,6 @@
 
 class PgsqlSchema extends CPgsqlSchema
 {
-
     public function __construct($conn)
     {
         parent::__construct($conn);
@@ -14,6 +13,10 @@ class PgsqlSchema extends CPgsqlSchema
         $this->columnTypes['decimal'] = 'numeric (10,0)'; // Same default than MySql (not used)
         $this->columnTypes['mediumtext'] = 'text';
         $this->columnTypes['longtext'] = 'text';
+        /**
+         * JSON.
+         */
+        $this->columnTypes['json'] = 'json';
     }
 
     /**
@@ -74,5 +77,41 @@ class PgsqlSchema extends CPgsqlSchema
             $table,
             implode(', ', $columns)
         );
+    }
+
+    /**
+     * Quotes a table name for use in a query.
+     * Unlike the Yii parent, any embedded double quote is escaped by doubling it, so a
+     * name cannot break out of the quoted identifier (mantis #20741).
+     *
+     * @param string $name table name
+     * @return string the properly quoted table name
+     */
+    public function quoteSimpleTableName($name)
+    {
+        return '"' . str_replace('"', '""', (string) $name) . '"';
+    }
+
+    /**
+     * Quotes a column name for use in a query.
+     * Unlike the Yii parent, any embedded double quote is escaped by doubling it, so a
+     * name cannot break out of the quoted identifier (mantis #20741).
+     *
+     * @param string $name column name
+     * @return string the properly quoted column name
+     */
+    public function quoteSimpleColumnName($name)
+    {
+        return '"' . str_replace('"', '""', (string) $name) . '"';
+    }
+
+    /**
+     * Creates a command builder for the database.
+     * This method may be overridden by child classes to create a DBMS-specific command builder.
+     * @return LSPgsqlDbCommandBuilder command builder instance
+     */
+    protected function createCommandBuilder()
+    {
+        return new LSPgsqlDbCommandBuilder($this);
     }
 }

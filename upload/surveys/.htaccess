@@ -1,4 +1,4 @@
-<FilesMatch "^fu_[a-z0-9]*$">
+<FilesMatch "^fu_[a-z0-9_]*$">
     <IfModule mod_version.c>
         <IfVersion < 2.4>
             Order deny,allow

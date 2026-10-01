@@ -15,7 +15,6 @@ namespace LimeSurvey\Datavalueobjects;
  */
 class SimpleSurveyValues
 {
-
     /** @var string language selected by user */
     public $baseLanguage;
 
@@ -30,7 +29,4 @@ class SimpleSurveyValues
 
     /** @var string administrator email */
     public $adminEmail = 'inherit';
-
-    /** @var array other settings */
-    public $othersettings = [];
 }

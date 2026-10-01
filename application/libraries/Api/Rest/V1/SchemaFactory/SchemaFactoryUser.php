@@ -26,7 +26,6 @@ class SchemaFactoryUser
                 Schema::string('templateEditorMode')->default(null),
                 Schema::string('questionSelectorMode')->default(null),
                 Schema::integer('dateFormat')->default(null),
-                Schema::boolean('showQuestionCodes')->default(false),
                 Schema::string('lastLogin')->default(null),
                 Schema::string('created')->default(null),
                 Schema::string('modified')->default(null),

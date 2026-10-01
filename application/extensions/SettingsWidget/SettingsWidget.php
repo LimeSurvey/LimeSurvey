@@ -28,6 +28,13 @@ class SettingsWidget extends CWidget
     public $controlWidth = 6;
     /** @var string - Raw HTML to output last */
     public $additionalHtml = "";
+    /**
+     * Where to render the button row: 'bottom' (default, below the settings
+     * list, offset to align under the controls) or 'top' (above the settings
+     * list, right-aligned).
+     * @var string
+     */
+    public $buttonsPosition = 'bottom';
 
     public function beginForm()
     {
@@ -119,6 +126,9 @@ class SettingsWidget extends CWidget
             if (!empty($metaData['name']) && is_string($metaData['name'])) {
                 $htmlOptions['name'] = $metaData['name'];
             }
+            if (isset($metaData['value']) && !isset($htmlOptions['value'])) {
+                $htmlOptions['value'] = $metaData['value'];
+            }
             if (!empty($metaData['label'])) {
                 if (empty($metaData['name'])) {
                     $htmlOptions['name'] = $label;
@@ -145,10 +155,13 @@ class SettingsWidget extends CWidget
                 }
                 $aHtmlButtons[] = $this->renderButton($label, $htmlOptions);
             }
+            $wrapperClass = $this->buttonsPosition === 'top'
+                ? 'd-flex justify-content-end gap-2 mb-3'
+                : "clearfix offset-lg-{$this->labelWidth} mb-3 px-2";
             echo CHtml::tag(
                 'div',
                 [
-                    'class' => "clearfix offset-lg-{$this->labelWidth} mb-3 px-2"
+                    'class' => $wrapperClass
                 ],
                 implode(" ", $aHtmlButtons)
             );
@@ -156,11 +169,15 @@ class SettingsWidget extends CWidget
     }
 
     /**
-     * @param string $name
-     * @param array $metaData
-     * @param array $form
-     * @param boolean $return
-     * @param string $wrapper
+     * Render a single setting (label, input and help).
+     * If the setting is localized and 'language' is an array of language codes,
+     * one input is rendered per language, posted as {$name}[$language].
+     *
+     * @param string $name Setting name
+     * @param array $metaData Setting definition
+     * @param array|null $form Unused form configuration
+     * @param boolean $return Whether to return the HTML instead of echoing it
+     * @param string $wrapper HTML tag used to wrap the setting
      * @return string|void
      * @throws CHttpException
      */
@@ -169,6 +186,24 @@ class SettingsWidget extends CWidget
         // No type : invalid setting
         if (!isset($metaData['type'])) {
             throw new CHttpException(405, 'invalid settings type');
+        }
+        // Localized setting with multiple languages : render one setting per language
+        if (!empty($metaData['localized']) && isset($metaData['language']) && is_array($metaData['language'])) {
+            App()->loadHelper('surveytranslator');
+            $result = '';
+            foreach ($metaData['language'] as $language) {
+                $languageMetaData = $metaData;
+                $languageMetaData['language'] = $language;
+                if (isset($languageMetaData['label'])) {
+                    $languageMetaData['label'] .= ' (' . getLanguageNameFromCode($language, false) . ')';
+                }
+                $result .= $this->renderSetting($name, $languageMetaData, $form, true, $wrapper);
+            }
+            if ($return) {
+                return $result;
+            }
+            echo $result;
+            return;
         }
         $wrapperCss = '';
         if ($metaData['type'] === 'radio') {
@@ -227,10 +262,15 @@ class SettingsWidget extends CWidget
     public function run()
     {
         parent::run();
+        if ($this->buttonsPosition === 'top') {
+            $this->renderButtons();
+        }
         // Render settings
         $this->renderSettings();
-        // Render buttons
-        $this->renderButtons();
+        if ($this->buttonsPosition !== 'top') {
+            // Render buttons
+            $this->renderButtons();
+        }
         // Render additional HTML
         $this->renderAdditionalHtml();
         // End form
@@ -645,17 +685,30 @@ class SettingsWidget extends CWidget
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                     'allowInputToggle' => true,
                     'showClear' => true,
+                    'theme' => 'light',
                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 )
             ), true);
     }
 
+    /**
+     * Renders a visual section separator for grouping related settings, with
+     * an optional title. The title is a heading one level below the page's
+     * own <h1> (a settings form is always rendered inside a page that already
+     * has its own top-level heading), so multiple separators never produce
+     * more than one <h1> per page.
+     *
+     * @param string $name Setting key (unused, kept for the renderX() signature)
+     * @param array $metaData Setting metadata; only 'title' is used
+     * @param mixed $form Unused, kept for the renderX() signature
+     * @return string HTML markup for the separator
+     */
     public function renderSeparator($name, array $metaData, $form = null)
     {
         $value = CHtml::tag('hr');
         $title = $metaData['title'] ?? '';
         if (!empty($title)) {
-            $value .= CHtml::tag('h1', ['class' => 'col-md-4 text-end'], $title);
+            $value .= CHtml::tag('h2', ['class' => 'h5 mb-3'], $title);
         }
         $htmlOptions = $this->htmlOptions($metaData);
         return CHtml::tag('div', $htmlOptions, $value);

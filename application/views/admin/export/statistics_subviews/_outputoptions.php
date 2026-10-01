@@ -25,16 +25,17 @@
             $sNoncompleted = (int)Yii::app()->request->getPost('noncompleted'); ?>
             <label class="form-label" id='noncompletedlbl' for='noncompleted' title='<?php
             eT(
-                "Count stats for each question based only on the total number of responses for which the question was displayed"
+                "Count stats for each question based only on the total number of responses for which the question was displayed or answered"
             ); ?>'><?php
-                eT("Subtotals based on displayed questions:"); ?></label>
+                eT("Subtotals based on displayed or answered questions:"); ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'noncompleted',
                     'checkedOption' => $sNoncompleted,
                     'selectOptions' => [
-                        '1' => gT('On', 'unescaped'),
                         '0' => gT('Off', 'unescaped'),
+                        '1' => gT('Displayed', 'unescaped'),
+                        '2' => gT('Answered', 'unescaped'),
                     ],
                     'htmlOptions'   => [
                         'class' => 'text-option-inherit'

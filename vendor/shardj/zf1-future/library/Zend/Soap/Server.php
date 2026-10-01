@@ -545,7 +545,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
     public function addFunction($function, $namespace = '')
     {
         // Bail early if set to SOAP_FUNCTIONS_ALL
-        if ($this->_functions == SOAP_FUNCTIONS_ALL) {
+        if ($this->_functions == @SOAP_FUNCTIONS_ALL) {
             return $this;
         }
 
@@ -561,8 +561,8 @@ class Zend_Soap_Server implements Zend_Server_Interface
             $this->_functions = array_merge($this->_functions, $function);
         } elseif (is_string($function) && function_exists($function)) {
             $this->_functions[] = $function;
-        } elseif ($function == SOAP_FUNCTIONS_ALL) {
-            $this->_functions = SOAP_FUNCTIONS_ALL;
+        } elseif ($function == @SOAP_FUNCTIONS_ALL) {
+            $this->_functions = @SOAP_FUNCTIONS_ALL;
         } else {
             require_once 'Zend/Soap/Server/Exception.php';
             throw new Zend_Soap_Server_Exception('Invalid function specified');

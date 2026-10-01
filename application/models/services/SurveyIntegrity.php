@@ -27,7 +27,7 @@ class SurveyIntegrity
     }
     /**
      * Add needed language if needed in related SurveyLanguageSetting
-     * Remove uneeded language if needed in related SurveyLanguageSetting
+     * Remove unneeded language if needed in related SurveyLanguageSetting
      * @return void
      */
     public function fixSurveyLanguageSetting()

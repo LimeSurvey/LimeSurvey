@@ -5,24 +5,24 @@
 
 <?php
     $allLanguageOptions = [];
-    foreach ($surveyLanguages as $languageCode => $languageName) {
-        switch ($type) {
-            case 'questionGroup':
-                $link = Yii::App()->createUrl("survey/index/action/previewgroup/sid/{$sid}/gid/{$gid}/lang/" . $languageCode);
-                break;
-            case 'question':
-                $link = Yii::App()->createUrl("survey/index/action/previewquestion/sid/{$sid}/gid/{$gid}/qid/{$qid}/lang/{$languageCode}");
-                break;
-            default:
-                $link = Yii::App()->createUrl("survey/index",array('sid'=>$sid,'newtest'=>"Y",'lang'=>$languageCode));
-        }
-
-        $allLanguageOptions[$languageCode] = [
-            'href' => $link,
-            'text' => $languageName,
-            'target' => '_blank'
-        ];
+foreach ($surveyLanguages as $languageCode => $languageName) {
+    switch ($type) {
+        case 'questionGroup':
+            $link = Yii::App()->createUrl("survey/index/action/previewgroup/sid/{$sid}/gid/{$gid}/lang/" . $languageCode);
+            break;
+        case 'question':
+            $link = Yii::App()->createUrl("survey/index/action/previewquestion/sid/{$sid}/gid/{$gid}/qid/{$qid}/lang/{$languageCode}");
+            break;
+        default:
+            $link = Yii::App()->createUrl("survey/index", array('sid' => $sid,'newtest' => "Y",'lang' => $languageCode));
     }
+
+    $allLanguageOptions[$languageCode] = [
+        'href' => $link,
+        'text' => $languageName,
+        'target' => '_blank'
+    ];
+}
 ?>
 
 <?php if (count($allLanguageOptions) <= 5) : ?>
@@ -33,7 +33,7 @@
             </a>
         </li>
     <?php endforeach; ?>
-<?php else: ?>
+<?php else : ?>
     <?php
         $firstLanguage = array_shift($allLanguageOptions);
     ?>

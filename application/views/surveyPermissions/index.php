@@ -10,7 +10,7 @@
 ?>
 <div id='edit-permission' class='side-body position-relative  ls-settings-wrapper"'>
     <?php echo viewHelper::getViewTestTag('surveyPermissions'); ?>
-    <h1> <?= gT("Survey permissions") ?> </h1>
+    <h1><?= gT("Survey permissions") ?></h1>
     <div class="row pt-2 pb-2 align-items-center">
         <div class="col-12 align-items-center">
             <?php
@@ -73,7 +73,7 @@
                         </select>
                     </div>
                     <div class="col-3">
-                    <button id="SurveyPermissions-addusergroup-submit" class='btn btn-outline-secondary w-100' type='submit'><?= gT("Add group users") ?></button>
+                    <button id="SurveyPermissions-addusergroup-submit" class='btn btn-outline-secondary w-100' type='button'><?= gT("Add group users") ?></button>
                     <input type='hidden' name='action' value='addusergroupsurveysecurity'/>
                     </div>
                 </div>
@@ -120,6 +120,7 @@
             'application.extensions.admin.grid.CLSGridView',
             [
                 'id'           => 'gridPanel',
+                'lsCaption'      => gT("Survey permissions"),
                 'dataProvider' => $dataProvider,
                 'columns'      => array_merge([
                     [
@@ -134,8 +135,10 @@
                         'header' => gT('User group'),
                         'type'   => 'raw',
                         'value'  => function ($data) use ($oSurveyPermissions) {
-                            $groupsStr = $oSurveyPermissions->getUserGroupNames($data->uid,
-                                App()->getConfig('usercontrolSameGroupPolicy'));
+                            $groupsStr = $oSurveyPermissions->getUserGroupNames(
+                                $data->uid,
+                                App()->getConfig('usercontrolSameGroupPolicy')
+                            );
                             return implode(", ", $groupsStr);
                         },
 

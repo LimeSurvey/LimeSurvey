@@ -26,6 +26,8 @@
  * @property string $refurl
  * @property string $datecreated
  * @property integer $showsurveypolicynotice
+ * @property string $showregisterpolicy
+ * @property string $showtokenpolicy
  * @property string $publicstatistics
  * @property string $publicgraphs
  * @property string $listpublic
@@ -42,15 +44,15 @@
  * @property string $showxquestions
  * @property string $showgroupinfo
  * @property string $shownoanswer
+ * @property string $preselectnoanswer
  * @property string $showqnumcode
  * @property string $showwelcome
  * @property string $showprogress
  * @property integer $questionindex
  * @property integer $navigationdelay
- * @property string $nokeyboard
  * @property string $alloweditaftercompletion
  * @property string $ipanonymize
- * @property string $othersettings
+ * @property string $savequotaexit
  */
 class SurveysGroupsettings extends LSActiveRecord
 {
@@ -67,8 +69,8 @@ class SurveysGroupsettings extends LSActiveRecord
     protected $optionAttributesInteger  = array('owner_id', 'tokenlength', 'questionindex', 'navigationdelay');
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
                                                 'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
-                                                'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'nokeyboard',
-                                                'alloweditaftercompletion', 'othersettings');
+                                                'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showqnumcode', 'showwelcome', 'showprogress',
+                                                'alloweditaftercompletion', 'savequotaexit', 'showregisterpolicy', 'showtokenpolicy');
     protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');
 
     public $showInherited = 1;
@@ -98,12 +100,13 @@ class SurveysGroupsettings extends LSActiveRecord
         $validator = new LSYii_Validators();
         return array(
             array('autonumber_start, showsurveypolicynotice, tokenlength, questionindex, navigationdelay, owner_id', 'numerical', 'integerOnly' => true),
+            array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
+            array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('admin', 'length', 'max' => 50),
-            array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion, ipanonymize', 'length', 'max' => 1),
+            array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, preselectnoanswer, showqnumcode, showwelcome, showprogress, alloweditaftercompletion, ipanonymize, savequotaexit', 'length', 'max' => 1),
             array('adminemail, bounce_email', 'length', 'max' => 255),
             array('template', 'length', 'max' => 100),
-            array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto, othersettings', 'safe'),
-            array('othersettings', 'LSYii_OtherSettingsValidator'),
+            array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format,
@@ -111,8 +114,8 @@ class SurveysGroupsettings extends LSActiveRecord
 			autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice,
 			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
 			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
-			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
-			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion, othersettings', 'safe', 'on' => 'search'),
+			tokenlength, showxquestions, showgroupinfo, shownoanswer, preselectnoanswer, showqnumcode, showwelcome, showprogress,
+			questionindex, showregisterpolicy, showtokenpolicy, navigationdelay, alloweditaftercompletion, savequotaexit', 'safe', 'on' => 'search'),
         );
     }
 
@@ -164,6 +167,7 @@ class SurveysGroupsettings extends LSActiveRecord
             'printanswers' => 'Printanswers',
             'ipaddr' => 'Ipaddr',
             'refurl' => 'Refurl',
+            'savequotaexit' => 'Savequotaexit',
             'datecreated' => 'Datecreated',
             'showsurveypolicynotice' => 'Showsurveypolicynotice',
             'publicstatistics' => 'Publicstatistics',
@@ -182,15 +186,15 @@ class SurveysGroupsettings extends LSActiveRecord
             'showxquestions' => 'Showxquestions',
             'showgroupinfo' => 'Showgroupinfo',
             'shownoanswer' => 'Shownoanswer',
+            'preselectnoanswer' => 'Preselectnoanswer',
             'showqnumcode' => 'Showqnumcode',
             'showwelcome' => 'Showwelcome',
             'showprogress' => 'Showprogress',
             'questionindex' => 'Questionindex',
             'navigationdelay' => 'Navigationdelay',
-            'nokeyboard' => 'Nokeyboard',
             'alloweditaftercompletion' => 'Alloweditaftercompletion',
-            'ipanonymize' => 'Ipanonymize',
-            'othersettings' => 'Other settings',
+            'showregisterpolicy' => gT("Show privacy policy on register form"),
+            'showtokenpolicy' => gT("Show privacy policy on access code form"),
         );
     }
 
@@ -232,6 +236,7 @@ class SurveysGroupsettings extends LSActiveRecord
         $criteria->compare('printanswers', $this->printanswers, true);
         $criteria->compare('ipaddr', $this->ipaddr, true);
         $criteria->compare('refurl', $this->refurl, true);
+        $criteria->compare('savequotaexit', $this->savequotaexit, true);
         $criteria->compare('datecreated', $this->datecreated, true);
         $criteria->compare('showsurveypolicynotice', $this->showsurveypolicynotice);
         $criteria->compare('publicstatistics', $this->publicstatistics, true);
@@ -250,15 +255,15 @@ class SurveysGroupsettings extends LSActiveRecord
         $criteria->compare('showxquestions', $this->showxquestions, true);
         $criteria->compare('showgroupinfo', $this->showgroupinfo, true);
         $criteria->compare('shownoanswer', $this->shownoanswer, true);
+        $criteria->compare('preselectnoanswer', $this->preselectnoanswer, true);
         $criteria->compare('showqnumcode', $this->showqnumcode, true);
         $criteria->compare('showwelcome', $this->showwelcome, true);
         $criteria->compare('showprogress', $this->showprogress, true);
         $criteria->compare('questionindex', $this->questionindex);
         $criteria->compare('navigationdelay', $this->navigationdelay);
-        $criteria->compare('nokeyboard', $this->nokeyboard, true);
         $criteria->compare('alloweditaftercompletion', $this->alloweditaftercompletion, true);
-        $criteria->compare('ipanonymize', $this->ipanonymize, true);
-        $criteria->compare('othersettings', $this->othersettings, true);
+        $criteria->compare('showregisterpolicy', $this->showregisterpolicy, true);
+        $criteria->compare('showtokenpolicy', $this->showtokenpolicy, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -316,12 +321,13 @@ class SurveysGroupsettings extends LSActiveRecord
      */
     public static function getInstance($iSurveyGroupId = 0, $oSurvey = null, $instance = null, $iStep = 1, $bRealValues = false)
     {
+        $iSurveyGroupId = (int) $iSurveyGroupId;
         if (!array_key_exists($iSurveyGroupId, self::$aSurveysGroupSettings)) {
             if ($iSurveyGroupId > 0) {
                 self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
             } else {
-                //this is the default group setting with gsid=0 !!!
-                self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
+                // SurveysGroupsettings with gsid=0 is how "Global survey settings" are stored.
+                self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->findByPk(0);
             }
         }
         $model = self::$aSurveysGroupSettings[$iSurveyGroupId];
@@ -333,7 +339,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 $instance->optionAttributes = new stdClass();
             } else {
                 $instance = $model;
-                $instance->optionAttributes = array_keys($model->attributes);
+                $instance->optionAttributes = $model->attributeNames();
                 // unset gsid
                 unset($instance->optionAttributes[array_search('gsid', $instance->optionAttributes)]);
             }
@@ -367,14 +373,13 @@ class SurveysGroupsettings extends LSActiveRecord
         // set instance options only if option needs to be inherited
         if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)) {
             foreach ($instance->optionAttributes as $key => $attribute) {
+                if ($attribute === 'usecaptcha') {
+                    $instance->setCaptchaOptions($model);
+                    continue;
+                }
                 if ($instance->shouldInherit($attribute)) {
-                    if ($attribute === 'othersettings') {
-                        $attribute_value = $instance->getOtherSettingsInheritance($model->$attribute);
-                    } else {
-                        $attribute_value = $model->$attribute;
-                    }
-                    $instance->oOptions->{$attribute} = $attribute_value;
-                    $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $attribute_value);
+                    $instance->oOptions->{$attribute} = $model->$attribute;
+                    $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);
                 }
             }
         }
@@ -422,22 +427,10 @@ class SurveysGroupsettings extends LSActiveRecord
         }
         // replace option labels on forms
         if ($attribute == 'usecaptcha') {
-            $usecap = $value;
-            if ($usecap === 'A' || $usecap === 'B' || $usecap === 'C' || $usecap === 'X' || $usecap === 'F' || $usecap === 'H' || $usecap === 'K' || $usecap === '0') {
-                $instance->oOptionLabels->useCaptchaSurveyAccess = gT("On");
-            } else {
-                $instance->oOptionLabels->useCaptchaSurveyAccess = gT("Off");
-            }
-            if ($usecap === 'A' || $usecap === 'B' || $usecap === 'D' || $usecap === 'R' || $usecap === 'F' || $usecap === 'G' || $usecap === 'I' || $usecap === 'M') {
-                $instance->oOptionLabels->useCaptchaRegistration = gT("On");
-            } else {
-                $instance->oOptionLabels->useCaptchaRegistration = gT("Off");
-            }
-            if ($usecap === 'A' || $usecap === 'C' || $usecap === 'D' || $usecap === 'S' || $usecap === 'G' || $usecap === 'H' || $usecap === 'J' || $usecap === 'L') {
-                $instance->oOptionLabels->useCaptchaSaveAndLoad = gT("On");
-            } else {
-                $instance->oOptionLabels->useCaptchaSaveAndLoad = gT("Off");
-            }
+            $parts = (new \LimeSurvey\Models\Services\SurveyUseCaptcha())->convertUseCaptchaFromDB((string) $value);
+            $instance->oOptionLabels->useCaptchaSurveyAccess = $parts['surveyAccess'] === 'Y' ? gT("On") : gT("Off");
+            $instance->oOptionLabels->useCaptchaRegistration = $parts['registration'] === 'Y' ? gT("On") : gT("Off");
+            $instance->oOptionLabels->useCaptchaSaveAndLoad = $parts['saveAndLoad'] === 'Y' ? gT("On") : gT("Off");
         } elseif ($attribute == 'owner_id' && $value != -1) {
             $instance->oOptions->owner = "";
             $instance->oOptions->ownerLabel = "";
@@ -491,13 +484,15 @@ class SurveysGroupsettings extends LSActiveRecord
             $this->$attribute = -1;
         }
         foreach ($this->optionAttributesChar as $attribute) {
-            //fix for 16179
+            //Some attribute created at specifc DBVersion
             $dbversion = App()->getConfig('DBVersion');
-            if (!($attribute === 'ipanonymize' && ( $dbversion < 412 ))) {
+            if (
+                !($attribute === 'ipanonymize' && $dbversion < 412)
+                && !($attribute === 'showregisterpolicy' && $dbversion < 649)
+                && !($attribute === 'showtokenpolicy' && $dbversion < 649)
+                && !($attribute === 'preselectnoanswer' && $dbversion < 712)
+            ) {
                 $this->$attribute = 'I';
-            }
-            if ($attribute === 'othersettings') {
-                $this->$attribute = '{"question_code_prefix":"I","subquestion_code_prefix":"I","answer_code_prefix":"I"}';
             }
         }
         foreach ($this->optionAttributesText as $attribute) {
@@ -514,7 +509,6 @@ class SurveysGroupsettings extends LSActiveRecord
         $this->admin = substr((string) App()->getConfig('siteadminname'), 0, 50);
         $this->adminemail = substr((string) App()->getConfig('siteadminemail'), 0, 254);
         $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
-        $this->othersettings = '';
     }
 
     /**
@@ -545,94 +539,47 @@ class SurveysGroupsettings extends LSActiveRecord
         // Since survey settings inheritance have been introduced, empty
         // attributes have always been inherited. But for some attributes,
         // an empty value is actually a valid attribute.
-        $attributesAllowedToBeEmpty = ['emailnotificationto', 'emailresponseto'];
-        if (empty($this->oOptions->{$attribute}) && !in_array($attribute, $attributesAllowedToBeEmpty)) {
-            return true;
-        }
 
-        if ($attribute === 'othersettings') {
-            $othersettings = json_decode($this->oOptions->{$attribute}, true);
-            if (in_array('I', $othersettings, true)) {
-                return true;
-            }
+        // this needs the zero check because empty considers int(0) true
+        // so int based attributes where zero is a valid value will be
+        // always forced to inherit here
+        $attributesAllowedToBeEmpty = ['emailnotificationto', 'emailresponseto'];
+        if (
+            empty($this->oOptions->{$attribute}) &&
+            $this->oOptions->{$attribute} !== 0 &&
+            !in_array($attribute, $attributesAllowedToBeEmpty)
+        ) {
+            return true;
         }
 
         return false;
     }
 
     /**
-     * Get other settings as array
-     * @return array
-     */
-    public function getOtherSettings()
-    {
-        /**
-         *  Check othersettings state
-         *  Empty string means no prefixies shoulld be used.
-         *  Null means default config value should be used.
-         * */
-        if ($this->othersettings === null) {
-            return [
-                'question_code_prefix' => Yii::app()->getConfig('question_code_prefix', ''),
-                'subquestion_code_prefix' => Yii::app()->getConfig('subquestion_code_prefix', ''),
-                'answer_code_prefix' => Yii::app()->getConfig('answer_code_prefix', '')
-            ];
-        }
-        return json_decode($this->othersettings, true) ?? [];
-    }
-
-    /**
-     * Set other settings as array
-     * @param array $settings
-     */
-    public function setOtherSettings($settings)
-    {
-        $this->othersettings = json_encode($settings);
-    }
-
-    /**
-     * Get a value from othersettings
+     * Resolve and set usecaptcha options and labels on this instance, merging any inherited
+     * components from $model (the parent group/global settings).
      *
-     * @param string $key The setting key to retrieve
-     * @param mixed $default Default value if setting doesn't exist
-     * @return mixed The setting value or default
-     */
-    public function getOtherSetting($key, $default = '')
-    {
-        $settings = $this->getOtherSettings();
-        return isset($settings[$key]) ? $settings[$key] : $default;
-    }
-
-    /**
-     * Sets a specific attribute in the survey's other settings.
-     *
-     * This function updates or adds a single attribute in the survey's othersettings field.
-     * The othersettings field is a JSON-encoded string that stores various additional settings.
-     *
-     * @param string $attribute The name of the attribute to set
-     * @param mixed $value The value to set for the attribute
+     * @param self $model The parent settings model whose usecaptcha value supplies inherited components.
      * @return void
      */
-    public function setOtherSetting($attribute, $value)
+    private function setCaptchaOptions($model)
     {
-        $othersettings = json_decode($this->othersettings, true) ?? [];
-        $othersettings[$attribute] = $value;
-        $this->othersettings = json_encode($othersettings);
-    }
-
-    public function getOtherSettingsInheritance(?string $inherited)
-    {
-        $inherited = ($inherited !== null) ? json_decode($inherited, true) : [];
-        if (!isset($this->oOptions->{'othersettings'})) {
-            $othersettings = json_decode($this->othersettings, true) ?: [];
-        } else {
-            $othersettings = json_decode($this->oOptions->{'othersettings'}, true) ?: [];
-        }
-        foreach ($othersettings as $key => $value) {
-            if ($value === 'I') {
-                $othersettings[$key] = $inherited[$key] ?? $value;
-            }
-        }
-        return json_encode($othersettings);
+        // Mirror shouldInherit's oOptions-or-raw-attribute pattern:
+        // if oOptions was seeded (bRealValues=true) use it; otherwise fall back
+        // to the raw model value, exactly as shouldInherit() does for scalars.
+        $currentUseCaptcha = property_exists($this->oOptions, 'usecaptcha')
+            ? $this->oOptions->usecaptcha
+            : $this->usecaptcha;
+        $captchaService = new \LimeSurvey\Models\Services\SurveyUseCaptcha();
+        $mergedUseCaptcha = $captchaService->mergeUseCaptchaValues(
+            (string) $currentUseCaptcha,
+            (string) $model->usecaptcha
+        );
+        $this->oOptions->usecaptcha = $mergedUseCaptcha;
+        $this->oOptionLabels->usecaptcha = self::translateOptionLabels(
+            $this,
+            'usecaptcha',
+            $mergedUseCaptcha
+        );
     }
 }
