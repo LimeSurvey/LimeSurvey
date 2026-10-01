@@ -1265,7 +1265,9 @@ class ExpressionManager
             $this->jsExpression[$cacheKey] = '';
             return '';
         }
+        /* Static values are evaluated with this instance (see sProcessStringContainingExpressions), keep the current expression state to restore it */
         $tokens = $this->RDP_tokens;
+        $varsUsed = $this->varsUsed;
         /* @var string|null used for ASSIGN expression */
         $idToSet = null;
         /* @var string[] the final expression line by line (to be join at end) */
@@ -1333,6 +1335,7 @@ class ExpressionManager
                                 $stringParts[] = $funcInfo[1]; // the PHP function name
                             }
                         } elseif ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'ASSIGN') {
+                            $naCheckedVars[] = $token[0];
                             $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
                             /* Value is in the page : can not set */
                             if (!empty($jsName)) {
@@ -1420,6 +1423,8 @@ class ExpressionManager
                 }
             }
         }
+        $this->RDP_tokens = $tokens;
+        $this->varsUsed = $varsUsed;
         // for each variable that does not have a default value, add clause to throw error if any of them are NA
         $nonNAvarsUsed = array();
         $naIgnoredVars = $naTolerant ? array_diff($naTolerantVars, $naCheckedVars) : array();

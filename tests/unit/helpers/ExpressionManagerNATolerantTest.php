@@ -28,6 +28,7 @@ class ExpressionManagerNATolerantTest extends TestBaseClass
                     'sgqa' => '563168X136X5376',
                     'type' => 'N',
                     'jsName' => 'java563168X136X5376',
+                    'readWrite' => 'Y',
                 ],
                 '563168X136X5377' => [
                     'sgqa' => '563168X136X5377',
@@ -57,6 +58,9 @@ class ExpressionManagerNATolerantTest extends TestBaseClass
             'argument of an inner function' => ["count(if($a == 1, $b, 1))", [$a, $b], [$a, $b]],
             'countif is not NA tolerant' => ["countif(1, $a, $b)", [$a, $b], [$a, $b]],
             'no function' => ["$a + $b", [$a, $b], [$a, $b]],
+            'assignment target' => ["$a = count($a, $b)", [$a, $b], [$a]],
+            'static attribute' => ["$a + $b + $a.type", [$a, $b], [$a, $b]],
+            'count with static attribute' => ["count($a, $b) + $a.type", [$a, $b], []],
         ];
     }
 
@@ -71,10 +75,14 @@ class ExpressionManagerNATolerantTest extends TestBaseClass
     {
         $em = new \ExpressionManager();
         $this->assertTrue($em->RDP_Evaluate($expression), print_r($em->RDP_GetErrors(), true));
-        $this->assertSame($expectedDefault, $this->getNACheckedVariables($em->GetJavaScriptEquivalentOfExpression()));
-        $this->assertSame($expectedNATolerant, $this->getNACheckedVariables($em->GetJavaScriptEquivalentOfExpression(true)));
+        $default = $em->GetJavaScriptEquivalentOfExpression();
+        $this->assertSame($expectedDefault, $this->getNACheckedVariables($default));
+        $naTolerant = $em->GetJavaScriptEquivalentOfExpression(true);
+        $this->assertSame($expectedNATolerant, $this->getNACheckedVariables($naTolerant));
+        /* Both modes generate the same expression, only the NA check differs */
+        $this->assertSame($this->getMainClause($default), $this->getMainClause($naTolerant));
         /* Cache of one mode must not be used for the other one */
-        $this->assertSame($expectedDefault, $this->getNACheckedVariables($em->GetJavaScriptEquivalentOfExpression()));
+        $this->assertSame($default, $em->GetJavaScriptEquivalentOfExpression());
     }
 
     /**
@@ -88,6 +96,16 @@ class ExpressionManagerNATolerantTest extends TestBaseClass
         $js = $em->GetJavaScriptFunctionForReplacement(0, 'LEMtailor_Q_0_1', '');
         $this->assertStringNotContainsString('LEManyNA', $js);
         $this->assertStringContainsString("LEMcount(LEMval('563168X136X5376') , LEMval('563168X136X5377') )", $js);
+    }
+
+    /**
+     * Get the generated JavaScript expression without the LEManyNA check.
+     * @param string $js
+     * @return string
+     */
+    private function getMainClause(string $js): string
+    {
+        return preg_replace("/^LEMif\(LEManyNA\('.*?'\),'',(.*)\)$/s", '$1', $js);
     }
 
     /**
