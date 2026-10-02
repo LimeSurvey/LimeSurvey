@@ -294,7 +294,12 @@ class SurveyResponsesExport implements CommandInterface
             return '';
         }
 
-        $condition = $criteria->condition;
+        // Prefix columns with the responses table to avoid ambiguity with joined tables.
+        $condition = preg_replace(
+            '/[`"\[][\w-]+[`"\]]/',
+            $this->surveyModel->responsesTableName . '.$0',
+            $criteria->condition
+        );
         $params = $criteria->params;
         $position = 0;
 
