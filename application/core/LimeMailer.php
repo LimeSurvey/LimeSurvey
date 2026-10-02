@@ -359,6 +359,7 @@ class LimeMailer extends PHPMailer
         if (empty($this->oToken)) {
             return;
         }
+        /* Do not add unsubscribe URL if not OPTOUTURL in body */
         $optoutBaseUrl = $this->createListUnsubscribeUrl("/optout/tokens");
         if (
             strpos((string) $this->Body, $optoutBaseUrl) === false
