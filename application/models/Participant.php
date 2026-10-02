@@ -488,7 +488,7 @@ class Participant extends LSActiveRecord
     {
         $encryptedAttributesColums = $this->getencryptedAttributesColums();
         $sort = new CSort();
-        /* Can not sort by encryted attribute */
+        /* Can not sort by encrypted attribute : use participant_id */
         if (in_array('lastname', $encryptedAttributesColums)) {
             $sort->defaultOrder = 't.participant_id ASC';
         } else {
@@ -2610,11 +2610,11 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Find duplicates particpant and return the array using default core system
+     * Find duplicates participant and return the array using default core system
      * If participant_id is is set and not empty : use it
      * Else duplicate are found using firstname, lastname, email and owner_uid
      * @param string[]
-     * @param false|integer owner_id to use, if false : get in alll CPDB, never used if  participant_id is set
+     * @param false|integer owner_id to use, if false : get in all CPDB, never used if  participant_id is set
      * @return false|self[] false if duplicates can not be checked (duplicate finder disabled with encrypted core attributes)
      */
     public static function getDuplicates(array $participant, $ownerid = false)
@@ -2640,7 +2640,7 @@ class Participant extends LSActiveRecord
         if (self::countCoreAttributeCrypted() == 0) {
             return self::findDuplicateNotCryted($duplicateCriteriaAttributes, $ownerid);
         }
-        /* One of core attribute are crypted : use duplicatefinder */
+        /* One or more core attributes are encrypted: use the duplicate finder */
         $duplicatefindervalue = self::getDuplicateFinderValue($participant);
         if ($duplicatefindervalue === false || $duplicatefindervalue === '') {
             return false;
@@ -2769,7 +2769,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Get the number of attributes crypted in array
+     * Get the number of encrypted attributes
      * @return integer
      */
     public static function countCoreAttributeCrypted()

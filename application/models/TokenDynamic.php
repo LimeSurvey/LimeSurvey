@@ -693,7 +693,7 @@ class TokenDynamic extends LSActiveRecord
                     /* can not filter if hardened */
                     $standardColsForGrid[$standardColToCheck]['filter'] = false;
                 }
-                /* can not sort if crypted */
+                /* can not sort if encrypted (hardened or soft) */
                 $standardColsForGrid[$standardColToCheck]['sortable'] = false;
             }
         }
@@ -852,7 +852,7 @@ class TokenDynamic extends LSActiveRecord
                     /* can not filter if hardened */
                     $attributesForGrid[$encryptedAttribute]['filter'] = false;
                 }
-                /* can not sort if crypted */
+                /* can not sort if encrypted (hardened or soft) */
                 $attributesForGrid[$encryptedAttribute]['sortable'] = false;
             }
         }

@@ -45,12 +45,12 @@ class SettingGlobal extends LSActiveRecord
     );
 
     /**
-     * @var null|string[] crypted settings
+     * @var null|string[] encrypted settings
      */
     private static $cryptedSettings = null;
 
     /**
-     * Return the crypted settings list
+     * Return the encrypted settings list
      * @return string[]
      */
     public static function getCryptedSettings()

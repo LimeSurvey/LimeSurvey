@@ -14,7 +14,7 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
-/* @var boolean hide crypted filter columns */
+/* @var boolean hide encrypted filter columns */
 $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->encryption_method == 'H';
 ?>
 <!-- for filter columns with datepicker-->
