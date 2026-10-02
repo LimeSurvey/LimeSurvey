@@ -3,17 +3,7 @@
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
 
 use CDbCriteria;
-use InvalidArgumentException;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\ContainConditionHandler;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\DateRangeConditionHandler;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\EmptyConditionHandler;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\EqualConditionHandler;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\JsonElementConditionHandler;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\MultiSelectConditionHandler;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\NotEmptyConditionHandler;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\NullConditionHandler;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\RangeConditionHandler;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\SurveyContextAwareInterface;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\ConditionHandlerFactory;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedCondition;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 
@@ -30,18 +20,7 @@ use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
  */
 class ResponseFilterCriteriaBuilder
 {
-    /** Handler class per resolved operator. */
-    private const HANDLERS = [
-        ResolvedCondition::OPERATOR_EQUAL => EqualConditionHandler::class,
-        ResolvedCondition::OPERATOR_CONTAIN => ContainConditionHandler::class,
-        ResolvedCondition::OPERATOR_RANGE => RangeConditionHandler::class,
-        ResolvedCondition::OPERATOR_DATE_RANGE => DateRangeConditionHandler::class,
-        ResolvedCondition::OPERATOR_MULTI_SELECT => MultiSelectConditionHandler::class,
-        ResolvedCondition::OPERATOR_NOT_EMPTY => NotEmptyConditionHandler::class,
-        ResolvedCondition::OPERATOR_EMPTY => EmptyConditionHandler::class,
-        ResolvedCondition::OPERATOR_JSON_ELEMENT => JsonElementConditionHandler::class,
-        ResolvedCondition::OPERATOR_NULL => NullConditionHandler::class,
-    ];
+    private ConditionHandlerFactory $handlers;
 
     /**
      * Relations that had to be joined in for the conditions to be readable.
@@ -56,6 +35,7 @@ class ResponseFilterCriteriaBuilder
     public function __construct(?int $surveyId = null)
     {
         $this->surveyId = $surveyId;
+        $this->handlers = new ConditionHandlerFactory();
     }
 
     /**
@@ -123,19 +103,8 @@ class ResponseFilterCriteriaBuilder
 
     private function buildCondition(ResolvedCondition $condition): CDbCriteria
     {
-        $operator = $condition->getOperator();
-        if (!isset(self::HANDLERS[$operator])) {
-            throw new InvalidArgumentException("No handler for filter operator: $operator.");
-        }
-
         $keys = $this->qualify($condition);
-
-        $handlerClass = self::HANDLERS[$operator];
-        $handler = new $handlerClass();
-
-        if ($handler instanceof SurveyContextAwareInterface) {
-            $handler->setSurveyId($this->surveyId);
-        }
+        $handler = $this->handlers->make($condition->getOperator(), $this->surveyId);
 
         // Handlers that take one key are given one; the rest read an array and
         // OR across it themselves.
