@@ -302,7 +302,7 @@ class GeneralSettings
             'gsid' => ['default' => 1],
             'format' => [],
             'template' => [],
-            'code' => []
+            'code' => [],
             'welcome_image' => []
         ];
     }
