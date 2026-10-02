@@ -2664,7 +2664,7 @@ class Tokens extends SurveyCommonAction
             }
             $aNewTokenTableFields[$sKey] = $sValue['description'];
         }
-        /* Removed crypted field for hardened survey */
+        /* Remove encrypted fields if the survey encryption method is hardened */
         if ($aData['surveyEncryptionmethod'] == "H") {
             $aEncryptedAttributes = TokenDynamic::model($iSurveyId)->getAllEncryptedAttributes($iSurveyId, 'Token');
             $aNewTokenTableFields = array_diff_key($aNewTokenTableFields, array_flip($aEncryptedAttributes));

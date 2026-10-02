@@ -181,8 +181,8 @@ $config['CPDB_duplicatefinder_bits'] = '128';
 
 // CPDB_reencrypt_limit
 // When using reencryptParticipantData or recalculateParticipantDuplicateFinder,
-// number of participant to get at each batch
-// Set to 0 to get all particpant by batch.
+// the number of participants to retrieve in each batch.
+// Set to 0 to retrieve all participants in a single batch.
 $config['CPDB_reencrypt_limit'] = 10000;
 
 

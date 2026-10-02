@@ -2854,7 +2854,6 @@ class ParticipantsAction extends SurveyCommonAction
             'duplicateControlDisable' => $duplicateControlDisable
         );
 
-        
         $aData['subaction'] = gT('Add participants to central database');
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
@@ -2868,8 +2867,8 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Display Encryption data form action 
-     * 
+     * Display Encryption data form action
+     *
      */
     public function encryptionMaintenance()
     {
@@ -2907,7 +2906,8 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Action to update whole Particpant DB to a new encryt method
+     * Action to re-encrypt the entire Participant DB using a new encryption method.
+     *
      * @return void
      */
     public function reencryptParticipantData()
@@ -2955,10 +2955,10 @@ class ParticipantsAction extends SurveyCommonAction
         }
         if ($stilltoProcess == 0) {
             App()->user->setState($stateId, null);
-            App()->setFlashMessage(gT("All particpant data are reencrypted"));
+            App()->setFlashMessage(gT("All participant data have been re-encrypted."));
         } else {
             App()->setFlashMessage(sprintf(
-                gT("%s participants data are reencrypted, still %s to reencrypt"),
+                gT("%s participant data have been re-encrypted; %s still need to be re-encrypted."),
                 $processed,
                 $stilltoProcess
             ));
@@ -2967,7 +2967,10 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Action to update whole Particpant DB to a new encryot method
+     * Action to recalculate the duplicate finder for the entire Participant DB.
+     * Only participants with an invalid duplicate finder are re-encrypted.
+     * Participants with a valid duplicate finder are not processed.
+     * @return void
      */
     public function recalculateDuplicateFinder()
     {

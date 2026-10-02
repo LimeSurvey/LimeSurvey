@@ -118,7 +118,7 @@ class Statistics extends SurveyCommonAction
             Yii::app()->setFlashMessage(gT("This survey is not active and has no responses."), 'error');
             $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$surveyid}"));
         }
-        /* Crypt method allow statitics here */
+        /* @var boolean true if the crypt method disallows statistics */
         $hardenedCryptMethod = $oSurvey->oOptions->encryption_method == 'H';
         $aData['warningCryptedQuestionHidden'] = false;
         // Set language for questions and answers to base language of this survey
@@ -171,7 +171,7 @@ class Statistics extends SurveyCommonAction
         $filters = array();
         $aGroups = array();
         $keyone = 0;
-        /* Keep crypted row information */
+        /* @var integer[] questions qids encrypted  */
         $cryptedQuestions = array_keys(CHtml::listData($rows, 'qid', 'encrypted'), 'Y', true);
         foreach ($rows as $row) {
             if ($hardenedCryptMethod && $row['encrypted'] == 'Y') {
@@ -278,7 +278,7 @@ class Statistics extends SurveyCommonAction
         $counter = 0;
 
         foreach ($filters as $key1 => $flt) {
-            /* If qid is crypted : co,ntinue */
+            /* Skip encrypted question QIDs if the encryption method is hardened */
             if ($hardenedCryptMethod && in_array($flt[0], $cryptedQuestions)) {
                 continue;
             }
@@ -709,7 +709,7 @@ class Statistics extends SurveyCommonAction
             Yii::app()->setFlashMessage(gT("This survey is not active and has no responses."), 'error');
             $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
-        /* Crypt method allow statitics here */
+        /* @var boolean true if the crypt method disallows statistics */
         $hardenedCryptMethod = $oSurvey->oOptions->encryption_method == 'H';
 
         // Set language for questions and answers to base language of this survey
