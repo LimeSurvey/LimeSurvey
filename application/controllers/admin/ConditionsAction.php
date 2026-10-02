@@ -886,7 +886,7 @@ class ConditionsAction extends SurveyCommonAction
     }
 
     /**
-     * @return string Predfined, constant, questions, token field or regexp; defaults to predefined
+     * @return string Predefined, constant, questions, token field or regexp; defaults to predefined
      */
     protected function getEditTargetTab()
     {

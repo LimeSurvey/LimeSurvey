@@ -241,7 +241,7 @@ $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->encrypti
         // An array to control unicity of $code (EM code)
         foreach ($model->metaData->columns as $column) {
             if (!in_array($column->name, $model->defaultColumns)) {
-                /* Add encryption symbole to question title for table header (if question is encrypted) */
+                /* Add encryption symbol to question title for table header (if question is encrypted) */
                 $encryptedColumn = (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] === 'Y');
                 $encryptionSymbol = $encryptedColumn ? $encryptionHtmlNotice : "";
 

@@ -286,7 +286,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['CHECKJAVASCRIPT'] = '';
     $coreReplacements['CLEARALL'] = $_clearall;
     $coreReplacements['QUEXMLPDF'] = $_quexmlpdf;
-    $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reaons
+    $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reasons
     $coreReplacements['COMPLETED'] = $redata['completed'] ?? ''; // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['ENDTEXT'] = $_endtext;
@@ -406,7 +406,7 @@ function getStandardsReplacementFields($thissurvey)
     $_assessment_current_total = '';
     if (!empty($thissurvey['assessments']) && $thissurvey['assessments'] == "Y") {
         $assessmentdata = doAssessment($surveyid);
-        $_assessment_current_total = $assessmentdata['datas']['total_score'] ?? gT("Unkown");
+        $_assessment_current_total = $assessmentdata['datas']['total_score'] ?? gT("Unknown");
     }
 
     $oSurvey = Survey::model()->findByPk($surveyid);

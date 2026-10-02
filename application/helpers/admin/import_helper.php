@@ -1456,10 +1456,11 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                 if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lss') {
                     //Import the LSS file
                     $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, null, $sNewSurveyName, null, true, false, $targetSurveyGroup);
-                    if ($aImportResults && $aImportResults['newsid']) {
-                        $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
-                        $SurveyIntegrity->fixSurveyIntegrity();
+                    if (empty($aImportResults['newsid'])) {
+                        break;
                     }
+                    $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
+                    $SurveyIntegrity->fixSurveyIntegrity();
                     // Activate the survey
                     Yii::app()->loadHelper("admin.activate");
                     $survey = Survey::model()->findByPk($aImportResults['newsid']);
@@ -1468,6 +1469,19 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                     unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
                     break;
                 }
+            }
+            if (empty($aImportResults['newsid'])) {
+                // No survey structure could be imported (missing or invalid LSS file): remove the extracted files and stop here
+                foreach ($files as $filename) {
+                    $extractedFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename;
+                    if (is_file($extractedFilePath)) {
+                        unlink($extractedFilePath);
+                    }
+                }
+                if (empty($aImportResults['error'])) {
+                    $aImportResults['error'] = gT("This is not a valid LimeSurvey LSA file.");
+                }
+                return $aImportResults;
             }
 
             // Step 2 - import the responses file
@@ -1541,12 +1555,12 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
         $where = [];
     }
     $whereClause = "";
-    $criterias = [];
+    $criteria = [];
     if (count($where)) {
         foreach ($where as $field => $value) {
-            $criterias[] = Yii::app()->db->quoteColumnName($field) . " = " . Yii::app()->db->quoteValue($value);
+            $criteria[] = Yii::app()->db->quoteColumnName($field) . " = " . Yii::app()->db->quoteValue($value);
         }
-        $whereClause = " WHERE " . implode(" AND ", $criterias);
+        $whereClause = " WHERE " . implode(" AND ", $criteria);
     }
     if (count($columns)) {
         foreach ($columns as $index => $column) {
@@ -2032,9 +2046,9 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
     $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
     $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
     if ((App()->db->tablePrefix) && (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0)) {
-        $tbl_name = str_replace('old_responses', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
+        $tbl_name = substr($archivedResponseTableName, strlen(App()->db->tablePrefix));
     } else {
-        $tbl_name = str_replace('old_responses', 'old_tokens', $archivedResponseTableName);
+        $tbl_name = $archivedResponseTableName;
     }
     $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name, 'tbl_type' => 'response']);
     $archivedEncryptedAttributes = [];

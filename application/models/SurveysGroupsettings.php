@@ -494,7 +494,7 @@ class SurveysGroupsettings extends LSActiveRecord
             $this->$attribute = -1;
         }
         foreach ($this->optionAttributesChar as $attribute) {
-            //Some attribute created at specifc DBVersion
+            //Some attribute created at specific DBVersion
             $dbversion = App()->getConfig('DBVersion');
             if (
                 !($attribute === 'ipanonymize' && $dbversion < 412)

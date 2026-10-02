@@ -894,16 +894,16 @@ class SurveyCondition
 
                 $acount = count($aresult);
 
-                $quicky = [];
+                $quickList = [];
                 foreach ($aresult as $arow) {
                     $thesubquestion = $arow->questionl10ns[$this->language]->question;
-                    $quicky[] = array($arow['title'], $thesubquestion);
+                    $quickList[] = array($arow['title'], $thesubquestion);
                 }
 
                 for ($i = 1; $i <= $acount; $i++) {
                     $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], (string)$i);
                     $cquestions[] = array("{$rows['title']}: [RANK $i] " . strip_tags((string) $rows['question']), $rows['qid'], $rows['type'], $fieldName);
-                    foreach ($quicky as $qck) {
+                    foreach ($quickList as $qck) {
                         $canswers[] = array($fieldName, $qck[0], $qck[1]);
                     }
                     // Only Show No-Answer if question is not mandatory
@@ -911,7 +911,7 @@ class SurveyCondition
                         $canswers[] = array($fieldName, " ", gT("No answer"));
                     }
                 }
-                unset($quicky);
+                unset($quickList);
                 // End if type R
             } elseif ($rows['type'] == \Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == \Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                 $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid']);

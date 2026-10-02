@@ -303,7 +303,7 @@ LS.Statistics2 = function () {
      */
     var loadBrowse = (function () {
 
-        // Static variable for function loadBrowse, catched through closure
+        // Static variable for function loadBrowse, caught through closure
         // Use this to track if we should hide/show responses
         var toggle = {};
 
@@ -635,7 +635,7 @@ function graphQuery(id, cmd, success) {
 
 function ajaxError() {
     // TODO: Use NotifyFader?
-    alert("An error occured! Please reload the page!");
+    alert("An error occurred! Please reload the page!");
 }
 
 function selectCheckboxes(Div, CheckBoxName, Button) {

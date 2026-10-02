@@ -2214,7 +2214,7 @@ class Participant extends LSActiveRecord
             }
         }
         $duplicate = 0;
-        $sucessfull = 0;
+        $successful = 0;
         $attid = []; //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
 
         $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions ?? '');
@@ -2310,7 +2310,7 @@ class Participant extends LSActiveRecord
                             Participant::model()->updateAttributeValueToken($surveyid, $pid, $cpdbatt, $tatt);
                         }
                     }
-                    $sucessfull++;
+                    $successful++;
 
                     /* Create a survey_link */
                     $oSurveyLink = new SurveyLink();
@@ -2347,7 +2347,7 @@ class Participant extends LSActiveRecord
                     ->update('{{surveys}}', ["attributedescriptions" => json_encode($aAttributes)], 'sid = ' . $surveyid);
             }
         }
-        $returndata = ['success' => $sucessfull, 'duplicate' => $duplicate, 'overwriteauto' => $overwriteauto, 'overwriteman' => $overwriteman];
+        $returndata = ['success' => $successful, 'duplicate' => $duplicate, 'overwriteauto' => $overwriteauto, 'overwriteman' => $overwriteman];
         return $returndata;
     }
 
