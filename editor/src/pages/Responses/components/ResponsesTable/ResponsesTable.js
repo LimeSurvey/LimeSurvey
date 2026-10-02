@@ -339,6 +339,20 @@ export const ResponsesTable = ({
       }
     })
     setRowSelection(restoredSelection)
+
+    // Reconcile hasFiles for already-selected responses against the latest
+    // data, in case it changed (e.g. attachments deleted) without the
+    // selection itself changing.
+    setPersistentSelectionHasFiles((prev) => {
+      const updated = { ...prev }
+      data.forEach((row) => {
+        const id = row?.id === undefined ? '' : String(row.id)
+        if (persistentSelection[id]) {
+          updated[id] = !!row.hasFiles
+        }
+      })
+      return updated
+    })
   }, [data])
 
   const handleResponseDelete = () => {
