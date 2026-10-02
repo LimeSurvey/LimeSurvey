@@ -1121,6 +1121,61 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     }
 }
 
+/**
+ * Creates a survey archive (LSA) in the temporary directory
+ *
+ * The archive contains the survey structure (LSS) and, if they exist, the responses (LSR),
+ * the survey participants (LST) and the timings (LSI).
+ * No permission check is done here: the caller must check the permissions before
+ * (the archive contains response and participant data).
+ *
+ * @param integer $iSurveyID The survey ID
+ * @return string|false Full path of the created archive file, false if the archive could not be created
+ */
+function createSurveyArchive($iSurveyID)
+{
+    $survey = Survey::model()->findByPk($iSurveyID);
+    $sTempDir = Yii::app()->getConfig("tempdir");
+
+    $aZIPFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
+    $sLSSFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
+    $sLSRFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
+    $sLSTFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
+    $sLSIFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
+
+    $zip = new LimeSurvey\Zip();
+    $zip->open($aZIPFileName, ZipArchive::CREATE);
+
+    file_put_contents($sLSSFileName, surveyGetXMLData($iSurveyID));
+    $zip->addFromString('survey_' . $iSurveyID . '.lss', file_get_contents($sLSSFileName));
+    unlink($sLSSFileName);
+
+    if ($survey->isActive) {
+        getXMLDataSingleTable($iSurveyID, 'responses_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
+        $zip->addFromString('survey_' . $iSurveyID . '_responses.lsr', file_get_contents($sLSRFileName));
+        unlink($sLSRFileName);
+    }
+
+    if ($survey->hasTokensTable) {
+        getXMLDataSingleTable($iSurveyID, 'tokens_' . $iSurveyID, 'Tokens', 'tokens', $sLSTFileName);
+        $zip->addFromString('survey_' . $iSurveyID . '_tokens.lst', file_get_contents($sLSTFileName));
+        unlink($sLSTFileName);
+    }
+
+    if (isset($survey->hasTimingsTable) && $survey->hasTimingsTable == 'Y') {
+        getXMLDataSingleTable($iSurveyID, 'timings_' . $iSurveyID, 'Timings', 'timings', $sLSIFileName);
+        $zip->addFromString('survey_' . $iSurveyID . '_timings.lsi', file_get_contents($sLSIFileName));
+        unlink($sLSIFileName);
+    }
+
+    $zip->close();
+
+    if (!is_file($aZIPFileName)) {
+        return false;
+    }
+    return $aZIPFileName;
+}
+
 
 /**
  * from export_structure_quexml.php
