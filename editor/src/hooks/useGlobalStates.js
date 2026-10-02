@@ -13,7 +13,7 @@ export const useGlobalStates = (operationsBuffer, surveyHash) => {
       const key = state[0]
       const value = state[1]
 
-      // incase of an appState the key is stored in the second index.
+      // in case of an appState the key is stored in the second index.
       return {
         [key[1] ? key[1] : key[0]]: value,
       }

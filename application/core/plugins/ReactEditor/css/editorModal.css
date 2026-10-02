@@ -105,12 +105,12 @@
   align-items: center;
   justify-content: center;
   width: 32px;
-  height: 32px;
+  height: 24px;
   border: none;
-  background: transparent;
-  border-radius: 50%;
-  color: #6e748c;
-  font-size: 1.25rem;
+  background: white;
+  border-radius: 4px;
+  color: var(--bs-gray-900);
+  font-size: 1.5rem;
   cursor: pointer;
   transition:
     background 150ms ease,
@@ -119,8 +119,7 @@
 }
 
 .editor-slider-arrow:hover {
-  background: #f0f0f5;
-  color: #2c3055;
+  color: var(--bs-gray-700);
 }
 
 .editor-slider-arrow.invisible {
@@ -129,9 +128,12 @@
 }
 
 .editor-slider-dots {
+  padding: 8px 12px;
+  background-color: white;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  border-radius: 4px;
 }
 
 .editor-slider-dot {
@@ -139,7 +141,7 @@
   height: 8px;
   border-radius: 50%;
   border: none;
-  background: #fff;
+  background: var(--bs-gray-600);
   padding: 0;
   cursor: pointer;
   transition:
@@ -148,7 +150,7 @@
 }
 
 .editor-slider-dot--active {
-  background: #333641;
+  background: var(--bs-dark);
   transform: scale(1.25);
 }
 

@@ -84,13 +84,13 @@ class RenderDate extends QuestionBaseRenderer
 
             if (ctype_digit($date_min) && (strlen($date_min) == 4)) {
                 $this->minDate = $date_min . '-01-01'; // backward compatibility: if only a year is given, add month and day
-            } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min)) {
-                // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
+            } elseif (preg_match(QuestionAttribute::DATE_LIMIT_PATTERN, $date_min)) {
                 $this->minDate = $date_min;
             } elseif ($date_time_em !== false) {
                 $this->minDate = (string) date("Y-m-d", $date_time_em);
             } else {
-                $this->minDate = '{' . $this->getQuestionAttribute('date_min') . '}';
+                // an expression: escape its result, on the server and when EM updates it in the browser
+                $this->minDate = '{htmlspecialchars(' . $this->getQuestionAttribute('date_min') . ')}';
             }
         } else {
             $this->minDate = '1900-01-01'; // We need some default value
@@ -106,19 +106,20 @@ class RenderDate extends QuestionBaseRenderer
 
             if (ctype_digit($date_max) && (strlen($date_max) == 4)) {
                 $this->maxDate = $date_max . '-12-31'; // backward compatibility: if only a year is given, add month and day
-            } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max)) {
-        // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
+            } elseif (preg_match(QuestionAttribute::DATE_LIMIT_PATTERN, $date_max)) {
+                // it's a YYYY-MM-DD date, optionally followed by a time
                 $this->maxDate = $date_max;
             } elseif ($date_time_em !== false) {
                 $this->maxDate = (string) date("Y-m-d", $date_time_em);
             } else {
-                $this->maxDate = '{' . $this->getQuestionAttribute('date_max') . '}';
+                // an expression: escape its result, on the server and when EM updates it in the browser
+                $this->maxDate = '{htmlspecialchars(' . $this->getQuestionAttribute('date_max') . ')}';
             }
         } else {
             $this->maxDate = '2187-12-31'; // Why 2187 ?
         }
 
-        if (!empty($this->maxDate)) {
+        if (!empty($this->maxDate) && !preg_match('/[ T][0-9]{2}:[0-9]{2}(:[0-9]{2})?$/', $this->maxDate)) {
             $this->maxDate .= " 23:59:59.999";
         }
     }
@@ -390,7 +391,7 @@ class RenderDate extends QuestionBaseRenderer
         // Format the date  for output
         $dateoutput = trim((string) $this->mSessionValue);
         if ($dateoutput != '' && $dateoutput != 'INVALID') {
-            $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', fillDate(trim($dateoutput)));
+            $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', $this->fillDate(trim($dateoutput)));
             if ($datetimeobj) {
                 $dateoutput = $datetimeobj->format($this->aDateformatDetails['phpdate']);
             } else {
@@ -409,5 +410,50 @@ class RenderDate extends QuestionBaseRenderer
         $inputnames[] = $this->sSGQA;
 
         return array($answer, $inputnames);
+    }
+
+    /**
+     * Take a date string and fill out missing parts, like day, hour, minutes
+     * (not seconds).
+     * If string is NOT in standard date format (Y-m-d H:i), this methods makes no
+     * sense.
+     * Used when fetching answer for the date question, where answer can come from a default
+     * answer expression like date('Y').
+     * Will also truncate date('c') to format Y-m-d H:i.
+     * @param string $dateString
+     * @return string
+     */
+    private function fillDate($dateString)
+    {
+        switch (strlen($dateString)) {
+            // Only year
+            case 4:
+                return $dateString . '-01-01 00:00';
+            // Year and month
+            case 7:
+                return $dateString . '-01 00:00';
+            // Year, month and day
+            case 10:
+                return $dateString . ' 00:00';
+            // Year, month day and hour
+            case 13:
+                return $dateString . ':00';
+            // Complete, return as is.
+            case 16:
+                return $dateString;
+            case 19:
+            case 21: // Y-m-d H:i.s.n (n==1)
+            case 22: // Y-m-d H:i.s.n (n==2)
+            case 23: // mssql Y-m-d H:i.s.n (n==3)
+            case 24: // Y-m-d H:i.s.n (n==4)
+            case 25: // Assume date('c')
+                $date = new DateTime($dateString);
+                if ($date) {
+                    return $date->format('Y-m-d H:i');
+                }
+            // no break
+            default:
+                return '';
+        }
     }
 }

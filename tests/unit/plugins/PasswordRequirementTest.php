@@ -65,7 +65,7 @@ class PasswordRequirementTest extends TestBaseClass
     }
 
     /**
-     * Evalutes if a password matches requirements
+     * Evaluates if a password matches requirements
      *
      * @param string $password Password to be evaluated
      * @param array $variation Requirement Details [$needsNumber, $needsUppercase, $needsNonAlphanumeric, $length, $msg]

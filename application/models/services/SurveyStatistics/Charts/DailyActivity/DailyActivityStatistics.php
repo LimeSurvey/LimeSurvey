@@ -27,6 +27,7 @@ class DailyActivityStatistics implements StatisticsChartInterface
      * @param string $language Language code (not used here, included for consistency)
      * @return StatisticsChartDTO
      */
+    #[\Override]
     public function run(int $surveyId, string $language = 'en'): StatisticsChartDTO
     {
         [$startDate, $endDate] = $this->getDateRange();
@@ -48,6 +49,7 @@ class DailyActivityStatistics implements StatisticsChartInterface
      * @param StatisticsResponseFilters $filters
      * @return void
      */
+    #[\Override]
     public function setFilters(StatisticsResponseFilters $filters): void
     {
         $this->filters = $filters;

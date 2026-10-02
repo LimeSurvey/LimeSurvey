@@ -38,7 +38,7 @@ class TbWidget extends CBehavior
     }
 
     /**
-     * Copies the id to the widget HTML attributes or vise versa.
+     * Copies the id to the widget HTML attributes or vice versa.
      * @deprecated by TbWidget::resolveId
      */
     public function copyId()

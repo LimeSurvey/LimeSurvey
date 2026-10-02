@@ -76,7 +76,14 @@ class Labels extends SurveyCommonAction
             $zip->close();
 
             // now read tempdir and copy authorized files only
-            $folders = array('flash', 'files', 'images');
+            $folders = array('files', 'images');
+            $hasResourceFolders = false;
+            foreach ($folders as $folder) {
+                if (is_dir($extractdir . "/" . $folder)) {
+                    $hasResourceFolders = true;
+                    break;
+                }
+            }
             foreach ($folders as $folder) {
                 $filterImportedService = new \LimeSurvey\Models\Services\FilterImportedResources();
                 list($_aImportedFilesInfo, $_aErrorFilesInfo) = $filterImportedService->filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
@@ -90,8 +97,11 @@ class Labels extends SurveyCommonAction
             // Delete the temporary file
             unlink($zipfilename);
 
-            if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo)) {
-                $this->getController()->error(gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+            if (empty($aErrorFilesInfo) && empty($aImportedFilesInfo)) {
+                $sError = $hasResourceFolders
+                    ? gT("This ZIP archive contains no valid Resources files. Import failed.")
+                    : gT("The ZIP archive must contain a 'files' and/or an 'images' folder at its top level, with the resource files placed inside. Import failed.");
+                $this->getController()->error($sError, $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
         } else {
             $this->getController()->error(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
@@ -653,7 +663,7 @@ class Labels extends SurveyCommonAction
      * @param string       $sAction     Current action, the folder to fetch views from
      * @param string|array $aViewUrls   View url(s)
      * @param array        $aData       Data to be passed on. Optional.
-     * @parm  bool         $sRenderFile
+     * @param bool         $sRenderFile
      * @return void
      */
     protected function renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array(), $sRenderFile = false)

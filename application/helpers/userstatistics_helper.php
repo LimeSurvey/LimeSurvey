@@ -286,9 +286,9 @@ function getQuestionMapData($sField, $qsid)
 
     //loop through question data
     foreach ($aresult as $arow) {
-        $alocation = explode(";", (string) $arow->$sField);
-        if (count($alocation) >= 2) {
-            $d[] = "{$alocation[0]} {$alocation[1]}";
+        $location = explode(";", (string) $arow->$sField);
+        if (count($location) >= 2) {
+            $d[] = "{$location[0]} {$location[1]}";
         }
     }
     return $d;
@@ -424,7 +424,7 @@ function buildSelects($allfields, $surveyid, $language)
                         $mselects[] = $quoteColumn(substr($pv, 1, strlen($pv)) . "_S" . $arow['qid']) . " = 'Y'";
                     }
                 }
-                /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
+                /* If there are multiple conditions generated from this multiple choice question, join them using the boolean "OR" */
                 if ($mselects) {
                     $thismulti = implode(" OR ", $mselects);
                     $selects[] = "($thismulti)";
@@ -474,7 +474,7 @@ function buildSelects($allfields, $surveyid, $language)
             elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
                 $selectSubs = array();
                 $postValue = is_array($_POST[$pv]) ? implode(' OR ', $_POST[$pv]) : (string) $_POST[$pv];
-                //We intepret and * and % as wildcard matches, and use ' OR ' and , as the separators
+                //We interpret and * and % as wildcard matches, and use ' OR ' and , as the separators
                 $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $postValue)));
                 $columnName = ($pv[1] === 'Q') ? substr($pv, 1) : $pv;
                 if (is_array($pvParts) and count($pvParts)) {
@@ -627,7 +627,7 @@ class userstatistics_helper
         //M - Multiple choice, therefore multiple fields - one for each answer
         if ($firstletter == "M" || $firstletter == "P") {
             //get SGQ data
-            $qqid = substr($rt, 2);
+            $qqid = (int) substr($rt, 2);
 
             //select details for this question
             $nresult = Question::model()->with('questionl10ns')->find('language=:language AND parent_qid=0 AND t.qid=:qid', array(':language' => $language, ':qid' => $qqid));
@@ -642,13 +642,19 @@ class userstatistics_helper
                 'condition' => 'language=:language AND parent_qid=:qid AND scale_id=0',
                 'params'    => array(':language' => $language, ':qid' => $qqid)
             ));
+            // Security (mantis #20744): $rt comes from the request, so only keep columns that
+            // exist in this survey's response table before they are used in any query.
+            $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
             foreach ($result as $row) {
                 $mfield = substr($rt, 1) . "_S" . $row['qid'];
+                if (!in_array($mfield, $validColumns, true)) {
+                    continue;
+                }
                 $alist[] = array($row->title, flattenText($row->questionl10ns[$language]->question), $mfield);
             }
 
             //Add the "other" answer if it exists
-            if ($qother == "Y") {
+            if ($qother == "Y" && in_array(substr($rt, 1) . "_Cother", $validColumns, true)) {
                 $mfield = substr($rt, 1) . "_Cother";
                 $alist[] = array(gT("Other"), gT("Other"), $mfield);
             }
@@ -2067,7 +2073,7 @@ class userstatistics_helper
                         $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
                         $gdata[$i] = 0;
 
-                        //check if we have to adjust ouput due to Yii::app()->getConfig('showaggregateddata') setting
+                        //check if we have to adjust output due to Yii::app()->getConfig('showaggregateddata') setting
                         if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) {
                             $statisticsoutput .= "\t\t</td>";
                         } elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
@@ -2312,7 +2318,7 @@ class userstatistics_helper
                     /*
                     * four steps to calculate the standard deviation
                     * 1 = calculate difference between item and arithmetic mean and multiply with the number of elements
-                    * 2 = create sqaure value of difference
+                    * 2 = create square value of difference
                     * 3 = sum up square values
                     * 4 = multiply result with 1 / (number of items)
                     * 5 = get root
@@ -2490,7 +2496,7 @@ class userstatistics_helper
 
         //close table/output
         if ($outputType == 'html') {
-            // show this block only when we show graphs and are not in the public statics controller
+            // show this block only when we show graphs and are not in the public statistics controller
             // this is because the links don't work from that controller
             if ($usegraph == 1 && get_class(Yii::app()->getController()) !== 'StatisticsUserController') {
                 $sImgUrl = Yii::app()->getConfig('adminimageurl');
@@ -2993,10 +2999,24 @@ class userstatistics_helper
     }
 
     /**
-     *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
+     * Returns a simple list of values in a particular column, that meet the requirements of the SQL
+     *
+     * @param int    $surveyid   Survey ID
+     * @param string $column     Response table column to list
+     * @param string $sortby     Response table column to sort by (optional)
+     * @param string $sortmethod Sort direction, ASC or DESC (optional)
+     * @param string $sorttype   N for numerical sorting (optional)
+     * @return array[] List of ['id' => response ID, 'value' => column value]
+     * @throws InvalidArgumentException if $column or $sortby is not a response table column
      */
     function _listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
+        // Security (mantis #20741): quoteColumnName() does not escape identifier quoting
+        // characters, so only real response table columns may be passed to it.
+        $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
+        if (!in_array($column, $validColumns, true) || ($sortby != '' && !in_array($sortby, $validColumns, true))) {
+            throw new InvalidArgumentException('Statistics column listing references an unknown column.');
+        }
         $search['condition'] = Yii::app()->db->quoteColumnName($column) . " != ''";
         $sDBDriverName = Yii::app()->db->getDriverName();
         if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') {
@@ -3027,6 +3047,11 @@ class userstatistics_helper
             if ($sorttype == 'N') {
                 $sortby = "($sortby * 1)";
             } //Converts text sorting into numerical sorting
+            // Avoid bad sortmethod parameter (mantis #20145)
+            $sortmethod = strtoupper($sortmethod);
+            if ($sortmethod && !in_array($sortmethod, ['ASC', 'DESC'])) {
+                $sortmethod = "";
+            }
             $search['order'] = $sortby . ' ' . $sortmethod;
         }
         $results = SurveyDynamic::model($surveyid)->findAll($search);

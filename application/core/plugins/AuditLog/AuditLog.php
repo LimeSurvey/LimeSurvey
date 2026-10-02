@@ -142,7 +142,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     private function checkSetting($settingName)
     {
         $pluginsettings = $this->getPluginSettings(true);
-        // Logging will done if setted to true
+        // Logging will done if set to true
         return $pluginsettings[$settingName]['current'] == 1;
     }
 
@@ -169,7 +169,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-    * Successfull login to the audit log
+    * Successful login to the audit log
     * @return unknown_type
     */
     public function afterSuccessfulLogin()
@@ -184,6 +184,12 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $oAutoLog->entity = 'user';
         $oAutoLog->entityid = $iUserID;
         $oAutoLog->action = 'afterSuccessfulLogin';
+
+        $identity = $this->getEvent()->get('identity');
+        if (!empty($identity->oneTimePasswordActorId)) {
+            $oAutoLog->newvalues = json_encode(['oneTimePasswordActor' => $identity->oneTimePasswordActorId]);
+        }
+
         $oAutoLog->save();
     }
 

@@ -108,6 +108,7 @@ class SurveyResponses implements CommandInterface
      * @param Request $request
      * @return array
      * @throws TransformerException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function process(Request $request): array
     {
@@ -119,12 +120,10 @@ class SurveyResponses implements CommandInterface
         $this->getSurvey($request);
         $model = $this->getSurveyDynamicModel($request);
         $language = $this->getLanguage($request);
-
         $this->transformerOutputSurveyResponses->fieldMap =
             createFieldMap($this->survey, 'full', true, false, $language);
 
         [$criteria, $sort] = $this->buildCriteria($request);
-
         $pagination = $this->buildPagination($request);
         $dataProvider = new \LSCActiveDataProvider(
             $model,
@@ -145,22 +144,12 @@ class SurveyResponses implements CommandInterface
 
         $responses = $this->transformerOutputSurveyResponses->transform(
             $surveyResponses,
-            [
-                'survey' => $this->survey,
-                'quotaNames' => \CHtml::listData(
-                    $this->survey->quotas,
-                    'id',
-                    'name'
-                ),
-            ]
+            ['survey' => $this->survey]
         );
-
         $surveyQuestions = $this->getQuestionFieldMap();
-
         $this->answerCache->load((int) $surveyId, $language);
         $responses = $this->mapResponsesToQuestions($responses, $surveyQuestions);
         $timingFields = $this->appendTimingData($responses);
-
         $totalItems = $dataProvider->getTotalItemCount();
         $pageSize = max(1, $pagination['pageSize'] ?? 1);
 
@@ -188,12 +177,17 @@ class SurveyResponses implements CommandInterface
      * Timings are stored in a separate table, so fetching them after response
      * pagination keeps the response count and pagination unchanged.
      *
-     * @param array $responses
-     * @return array
+     * Returns an empty array without changing responses when Save timings is
+     * disabled or the timings table is missing. Otherwise, each response gains
+     * a timings entry, which is empty when no matching timing data is found.
+     *
+     * @param array $responses Response rows updated in place.
+     * @return array Timing field metadata, or an empty array when timings are unavailable.
+     * @throws CDbException If a database query fails.
      */
     protected function appendTimingData(array &$responses): array
     {
-        if (!$this->survey->hasTimingsTable) {
+        if (!$this->survey->isSaveTimings || !$this->survey->hasTimingsTable) {
             return [];
         }
 
@@ -256,7 +250,7 @@ class SurveyResponses implements CommandInterface
         $timings = [];
 
         foreach ($records as $record) {
-            $timings[(int)$record->id] = array_map(
+            $timings[(int)$record->getAttribute('id')] = array_map(
                 static fn($value) => is_numeric($value) ? (float)$value : null,
                 $record->getAttributes($fieldNames)
             );
