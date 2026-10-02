@@ -1710,6 +1710,9 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     /* Added in 715 update */
     unset($attributes['savequotaexit']);
 
+    /* Added in 719 update */
+    unset($attributes['encryption_method']);
+
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
     //this will fail because of using model in updatedb_helper ...

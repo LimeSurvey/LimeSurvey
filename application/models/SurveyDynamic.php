@@ -74,7 +74,11 @@ class SurveyDynamic extends LSActiveRecord
      */
     public static function sid($sid)
     {
-        self::$sid = (int) $sid;
+        $sid = (int) $sid;
+        if (self::$survey && self::$sid !== $sid) {
+            self::$survey = null;
+        }
+        self::$sid = $sid;
     }
 
     /** @inheritdoc */
@@ -1063,6 +1067,10 @@ class SurveyDynamic extends LSActiveRecord
         $encryptedAttr = Response::getEncryptedAttributes($this->getSurveyId());
         $attributes = $this->attributes;
         $sodium = Yii::app()->sodium;
+        $survey = $this->survey;
+        if ($survey) {
+            $sodium->setEncryptionMethod($survey->oOptions->encryption_method);
+        }
         foreach ($encryptedAttr as $key) {
             $this->setAttribute($key, $sodium->decrypt($attributes[$key]));
         }

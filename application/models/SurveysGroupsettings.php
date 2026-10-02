@@ -28,6 +28,7 @@
  * @property integer $showsurveypolicynotice
  * @property string $showregisterpolicy
  * @property string $showtokenpolicy
+ * @property string $encryption_method
  * @property string $publicstatistics
  * @property string $publicgraphs
  * @property string $listpublic
@@ -70,7 +71,7 @@ class SurveysGroupsettings extends LSActiveRecord
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
                                                 'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
                                                 'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showqnumcode', 'showwelcome', 'showprogress',
-                                                'alloweditaftercompletion', 'savequotaexit', 'showregisterpolicy', 'showtokenpolicy');
+                                                'alloweditaftercompletion', 'savequotaexit', 'showregisterpolicy', 'showtokenpolicy', 'encryption_method');
     protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');
 
     public $showInherited = 1;
@@ -102,6 +103,7 @@ class SurveysGroupsettings extends LSActiveRecord
             array('autonumber_start, showsurveypolicynotice, tokenlength, questionindex, navigationdelay, owner_id', 'numerical', 'integerOnly' => true),
             array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
+            array('encryption_method', 'in', 'range' => array('B', 'H', 'I'), 'allowEmpty' => false),
             array('admin', 'length', 'max' => 50),
             array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, preselectnoanswer, showqnumcode, showwelcome, showprogress, alloweditaftercompletion, ipanonymize, savequotaexit', 'length', 'max' => 1),
             array('adminemail, bounce_email', 'length', 'max' => 255),
@@ -193,6 +195,7 @@ class SurveysGroupsettings extends LSActiveRecord
             'questionindex' => 'Questionindex',
             'navigationdelay' => 'Navigationdelay',
             'alloweditaftercompletion' => 'Alloweditaftercompletion',
+            'encryption_method' => 'Encryption method',
             'showregisterpolicy' => gT("Show privacy policy on register form"),
             'showtokenpolicy' => gT("Show privacy policy on access code form"),
         );
@@ -262,6 +265,7 @@ class SurveysGroupsettings extends LSActiveRecord
         $criteria->compare('questionindex', $this->questionindex);
         $criteria->compare('navigationdelay', $this->navigationdelay);
         $criteria->compare('alloweditaftercompletion', $this->alloweditaftercompletion, true);
+        $criteria->compare('encryption_method', $this->encryption_method, true);
         $criteria->compare('showregisterpolicy', $this->showregisterpolicy, true);
         $criteria->compare('showtokenpolicy', $this->showtokenpolicy, true);
 
@@ -452,6 +456,12 @@ class SurveysGroupsettings extends LSActiveRecord
             return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show group description only"), gT("Show group name only"), gT("Hide both")), (string) $value);
         } elseif ($attribute == 'showqnumcode') {
             return str_replace(array('B', 'C', 'N', 'X'), array(gT("Show both"), gT("Show question code only"), gT("Show question number only"), gT("Hide both")), (string) $value);
+        } elseif ($attribute == 'encryption_method') {
+            return str_replace(
+                array('B', 'H'),
+                array(gT("Basic"), gT("Hardened")),
+                (string) $value
+            );
         } elseif ($value == 'N' || $value == 'Y') {
             return str_replace(array('Y', 'N'), array(gT("On"), gT("Off")), (string) $value);
         }
@@ -491,6 +501,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 && !($attribute === 'showregisterpolicy' && $dbversion < 649)
                 && !($attribute === 'showtokenpolicy' && $dbversion < 649)
                 && !($attribute === 'preselectnoanswer' && $dbversion < 712)
+                && !($attribute === 'encryption_method' && $dbversion < 719)
             ) {
                 $this->$attribute = 'I';
             }

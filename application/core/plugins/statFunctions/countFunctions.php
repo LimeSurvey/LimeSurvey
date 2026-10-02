@@ -2,13 +2,14 @@
 
 /**
  * This file is part of statFunctions plugin
- * @version 0.2.1
+ * @version 0.3.0
  */
 
 namespace statFunctions;
 
 use Yii;
 use CHtml;
+use LSActiveRecord;
 use LimeExpressionManager;
 use Survey;
 use SurveyDynamic;
@@ -36,10 +37,7 @@ class countFunctions
         $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
         $column = $questionCodeHelper->getColumnByQCode($qCode);
         if (is_null($column)) {
-            if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) { // update ???
-                return sprintf(gT("Invalid question code %s"), CHtml::encode($qCode));
-            }
-            return "";
+            return self::setErrorText($surveyId, sprintf(gT("Invalid question code %s."), CHtml::encode($qCode)));
         }
         $sQuotedColumn = Yii::app()->db->quoteColumnName($column);
         $oCriteria = new CDbCriteria();
@@ -51,8 +49,47 @@ class countFunctions
             $srid = $_SESSION['responses_' . $surveyId]['srid'];
             $oCriteria->compare("id", "<>" . $srid);
         }
+        /* Check if question is encrypted */
+        $encrypted = false;
+        if (isset($_SESSION['responses_' . $surveyId]['fieldmap'])) {
+            $fieldmap = $_SESSION['responses_' . $surveyId]['fieldmap'];
+            $encrypted = isset($fieldmap[$column]['encrypted']) && $fieldmap[$column]['encrypted'] == 'Y';
+            if ($encrypted) {
+                $surveyEncryptionmethod = Survey::model()->findByPk($surveyId)->oOptions->encryption_method;
+                if ($surveyEncryptionmethod == 'H') {
+                    return self::setErrorText($surveyId, sprintf(gT("Question code %s is encrypted, unable to get statistics with hardened encryption method."), CHtml::encode($qCode)));
+                }
+                /* Get the operator with the same rules than CDbCriteria::compare */
+                $op = "";
+                $value = (string) $comparison;
+                if (preg_match('/^(?:\s*(<>|<=|>=|<|>|=))?(.*)$/', $value, $matches)) {
+                    $op = $matches[1];
+                    $value = $matches[2];
+                }
+                /* Unable to compare with <, > (and <=, >=), but allow <> and = */
+                if (in_array($op, ['<', '>', '<=', '>='])) {
+                    return self::setErrorText($surveyId, sprintf(gT("Question code %s is encrypted, unable to get statistics with comparisons."), CHtml::encode($qCode)));
+                }
+                /* Encrypt only the value and keep the operator */
+                $comparison = $op . LSActiveRecord::encryptSingle($value, $surveyEncryptionmethod); // $surveyEncryptionmethod is B currently
+            }
+        }
         $oCriteria->compare($sQuotedColumn, $comparison);
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
+    }
+
+    /**
+     * Return the text of user have suretycontent permission, else empty string
+     * @param integer $surveyId
+     * @param string $string
+     * @return string
+     */
+    private static function setErrorText($surveyId, $string)
+    {
+        if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) {
+            return $string;
+        }
+        return "";
     }
 
     /**
