@@ -215,7 +215,7 @@ class LSSodium
     /**
      * Decrypt encrypted string using Hardened method
      * @param string $sEncryptedString Encrypted string to decrypt
-     * @return string|false Return decrypted value (string or unserialized object) if succeeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
+     * @return string|false Return decrypted value (string or unserialized object), false if an error occurs (bad password/salt given) or input encryptedString
     */
     private function decryptHardened($sEncryptedString)
     {
@@ -240,9 +240,9 @@ class LSSodium
     }
 
     /**
-     * Decrypt encrypted string using Basic methos
+     * Decrypt encrypted string using Basic method
      * @param string $sEncryptedString Encrypted string to decrypt
-     * @return string|false Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
+     * @return string|false Return decrypted value (string or unsezialized object), false if an error occurs (bad password/salt given) or input encryptedString
     */
     private function decryptBasic($sEncryptedString)
     {

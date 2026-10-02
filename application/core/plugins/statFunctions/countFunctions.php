@@ -57,7 +57,7 @@ class countFunctions
             if ($encrypted) {
                 $surveyEncryptionmethod = Survey::model()->findByPk($surveyId)->oOptions->encryption_method;
                 if ($surveyEncryptionmethod == 'H') {
-                    return self::setErrorText($surveyId, sprintf(gT("Question code %s is crypted, unable to get statistics with hardened encryption method."), CHtml::encode($qCode)));
+                    return self::setErrorText($surveyId, sprintf(gT("Question code %s is encrypted, unable to get statistics with hardened encryption method."), CHtml::encode($qCode)));
                 }
                 /* Get the operator with the same rules than CDbCriteria::compare */
                 $op = "";
@@ -68,7 +68,7 @@ class countFunctions
                 }
                 /* Unable to compare with <, > (and <=, >=), but allow <> and = */
                 if (in_array($op, ['<', '>', '<=', '>='])) {
-                    return self::setErrorText($surveyId, sprintf(gT("Question code %s is crypted, unable to get statistics with comparisons."), CHtml::encode($qCode)));
+                    return self::setErrorText($surveyId, sprintf(gT("Question code %s is encrypted, unable to get statistics with comparisons."), CHtml::encode($qCode)));
                 }
                 /* Encrypt only the value and keep the operator */
                 $comparison = $op . LSActiveRecord::encryptSingle($value, $surveyEncryptionmethod); // $surveyEncryptionmethod is B currently
