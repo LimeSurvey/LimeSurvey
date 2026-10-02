@@ -31,15 +31,12 @@ export const RankingQuestionSubquestion = ({
   return (
     <div className="d-flex align-items-center position-relative remove-option-button-parent">
       <div
-        style={{ left: '-20px' }}
-        className="cursor-pointer remove-option-button position-absolute"
+        className={classNames('cursor-pointer remove-option-button me-1', {
+          'd-none': !isFocused,
+        })}
         onClick={() => handleRemovingSubquestions(qid)}
       >
-        <CloseCircleFillIcon
-          className={classNames('text-danger fill-current', {
-            'd-none': !isFocused,
-          })}
-        />
+        <CloseCircleFillIcon className="text-danger fill-current" />
       </div>
       <div
         {...provided.dragHandleProps}
@@ -47,14 +44,13 @@ export const RankingQuestionSubquestion = ({
           'disabled opacity-0': !provided.dragHandleProps,
         })}
       >
-        <DragIcon className="text-secondary fill-current me-2" />
+        <DragIcon className="text-secondary fill-current me-3" />
       </div>
       <div className="d-flex align-items-center ">
         {!subquestion?.preview && isString(subquestion) && (
           <div className="d-flex align-items-center gap-3">
             {isFocused && survey.showQNumCode?.showNumber && (
               <SubquestionCodeInput
-                className="ms-2"
                 isSurveyActive={isSurveyActive}
                 code={title}
                 onChange={(e) => handleCodeUpdate(e.target.value, index)}

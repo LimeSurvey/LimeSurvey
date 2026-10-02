@@ -17,6 +17,7 @@ import { TooltipContainer } from 'components'
 
 import { getQuestionTypeInfo } from '../getQuestionTypeInfo'
 import { ArrayColumnsTitles, ArrayRows } from './'
+import { ARRAY_ROW_LABEL_INSET } from './arrayLayout'
 
 const DRAG_ICON_SIZE = 22
 
@@ -152,7 +153,7 @@ export const ArrayQuestion = ({
   }
 
   return (
-    <div>
+    <div className={classNames('array-question-wrapper', { 'edit-mode': isFocused })}>
       <div className="array-question d-flex gap-5" data-testid="array-question">
         <div className="d-flex">
           <div>
@@ -324,7 +325,7 @@ export const ArrayQuestion = ({
         )}
       </div>
       <div
-        style={{ marginLeft: highestSubquestionWidth + DRAG_ICON_SIZE }}
+        style={{ marginLeft: highestSubquestionWidth + ARRAY_ROW_LABEL_INSET }}
         className={classNames('mt-2 array-question array-question-footer', {
           'd-none': !isFocused,
         })}

@@ -17,6 +17,7 @@ import { useAppState, useSurvey } from 'hooks'
 import { ContentEditor, DragAndDrop } from 'components'
 import { getDisplayAttributes } from 'components/QuestionSettings/attributes'
 import { getQuestionTypeInfo } from 'components/QuestionTypes/getQuestionTypeInfo'
+import { ARRAY_ROW_LABEL_INSET } from '../arrayLayout'
 
 import { ArrayColumnTitle } from './ArrayColumnTitle'
 
@@ -221,7 +222,7 @@ export const ArrayColumnsTitles = ({
             minWidth:
               scaleId === SCALE_1
                 ? highestSubquestionWidth +
-                  dragIconSize +
+                  ARRAY_ROW_LABEL_INSET +
                   (isFocused && showQNumCode?.showNumber ? 90 : 0)
                 : 0,
           }}

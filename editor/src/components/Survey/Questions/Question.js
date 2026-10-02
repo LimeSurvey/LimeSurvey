@@ -151,7 +151,7 @@ export const Question = ({
         {isInView || isInTestMode ? (
           <QuestionContainer questionImageObject={questionImageObject}>
             <div
-              className="w-100"
+              className="question-content w-100"
               data-testid="question-container"
               ref={questionBodyRef}
             >
