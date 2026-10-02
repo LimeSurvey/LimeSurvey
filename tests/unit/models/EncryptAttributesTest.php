@@ -110,7 +110,7 @@ class EncryptAttributesTest extends TestBaseClass
         $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
-        /* "" is not crypted */
+        /* "" is not encrypted */
         $this->assertEquals('', $token->attribute_1);
     }
 
@@ -292,7 +292,7 @@ class EncryptAttributesTest extends TestBaseClass
         $decryptedAnswer = $response->$sgqa;
 
         $this->assertEquals('', $decryptedAnswer);
-        /* "" is not crypted */
+        /* "" is not encrypted */
         $this->assertEquals('', $answer);
     }
 

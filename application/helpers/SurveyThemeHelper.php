@@ -169,7 +169,7 @@ class SurveyThemeHelper
      * isStandardTemplate returns true if a template is a standard template.
      * This function does not check if a template actually exists.
      * Scans standard themes folder and looks for folder matching the $themeName.
-     * Important: here is asumed that theme name = folder name
+     * Important: here is assumed that theme name = folder name
      *
      * @param mixed $themeName template name to look for
      * @return bool True if standard template, otherwise false

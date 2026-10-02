@@ -83,7 +83,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         ),
         'bindpwd' => array(
             'type' => 'password',
-            'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previoulsy set.'
+            'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previously set.'
         ),
         'readattributesasuser' => array(
             'type' => 'boolean',
@@ -280,7 +280,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 return null;
             }
         }
-        // Now prepare the search fitler
+        // Now prepare the search filter
         if ($extrauserfilter != "") {
             $usersearchfilter = "(&($searchuserattribute=$ldapEscapedUsername)$extrauserfilter)";
         } else {
@@ -596,7 +596,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 ldap_close($ldapconn); // all done? close connection
                 return;
             }
-            // Now prepare the search fitler
+            // Now prepare the search filter
             if ($extrauserfilter != "") {
                 $usersearchfilter = "(&($searchuserattribute=$ldapEscapedUsername)$extrauserfilter)";
             } else {

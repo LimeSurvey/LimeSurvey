@@ -53,7 +53,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                     'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
                     'lsPageSizeCurrentValue' => $pageSize,
 
-                    // Columns to dispplay
+                    // Columns to display
                     'columns' => [
                         // Parameter
                         [

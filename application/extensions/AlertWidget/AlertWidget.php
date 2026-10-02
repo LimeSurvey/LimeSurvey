@@ -194,7 +194,7 @@ class AlertWidget extends CWidget
     }
 
     /**
-     * Sets default timout value if it is not set by the widget call
+     * Sets default timeout value if it is not set by the widget call
      * @return void
      */
     private function setTimeout()

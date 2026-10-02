@@ -663,7 +663,7 @@ class Labels extends SurveyCommonAction
      * @param string       $sAction     Current action, the folder to fetch views from
      * @param string|array $aViewUrls   View url(s)
      * @param array        $aData       Data to be passed on. Optional.
-     * @parm  bool         $sRenderFile
+     * @param bool         $sRenderFile
      * @return void
      */
     protected function renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array(), $sRenderFile = false)

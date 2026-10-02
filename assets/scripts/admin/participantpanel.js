@@ -12,7 +12,7 @@ LS.CPDB = (function() {
      * @param {object} data
      * @param {string} actionButtonClass
      * @param {string} formId
-     * @oaram {string} gridViewId
+     * @param {string} gridViewId
      * @return
      */
     runBaseModal = function(url, data, actionButtonClass, formId, gridViewId, callback){
