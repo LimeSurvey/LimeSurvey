@@ -70,6 +70,72 @@ class RemoteControlListResponseExportsTest extends BaseTest
     }
 
     /**
+     * Export labels stay in English without changing the application's current language.
+     */
+    public function testListResponseExportsUsesEnglish()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $this->assertIsString($sessionKey);
+
+        $app = App();
+        $originalLanguage = $app->getLanguage();
+        $originalMessages = $app->getMessages();
+        // Keep the test independent of installed translation files.
+        $messages = $this->getMockBuilder(\CMessageSource::class)
+            ->onlyMethods(array('loadMessages'))
+            ->getMock();
+        $messages->language = 'en';
+        $messages->method('loadMessages')->willReturn(array('CSV' => 'CSV auf Deutsch'));
+
+        try {
+            $app->setComponent('messages', $messages);
+            $app->setLanguage('de');
+            $this->assertSame('CSV auf Deutsch', gT('CSV'));
+
+            $result = $this->handler->list_response_exports($sessionKey);
+            $formats = array_column($result, null, 'type');
+            $this->assertSame('CSV', $formats['csv']['label']);
+            $this->assertSame('de', $app->getLanguage());
+        } finally {
+            $app->setLanguage($originalLanguage);
+            $app->setComponent('messages', $originalMessages);
+        }
+    }
+
+    /**
+     * A failing export plugin must not leave the application language set to English.
+     */
+    public function testListResponseExportsRestoresLanguageOnException()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $this->assertIsString($sessionKey);
+
+        $app = App();
+        $originalLanguage = $app->getLanguage();
+        $originalPluginManager = $app->getPluginManager();
+        $pluginManager = $this->createMock(\LimeSurvey\PluginManager\PluginManager::class);
+        $pluginManager->expects($this->once())->method('dispatchEvent')->willReturnCallback(function () {
+            $this->assertSame('en', App()->getLanguage());
+            throw new \RuntimeException('Export discovery failed');
+        });
+
+        try {
+            $app->setComponent('pluginManager', $pluginManager);
+            $app->setLanguage('de');
+            $this->expectException(\RuntimeException::class);
+            $this->expectExceptionMessage('Export discovery failed');
+            try {
+                $this->handler->list_response_exports($sessionKey);
+            } finally {
+                $this->assertSame('de', $app->getLanguage());
+            }
+        } finally {
+            $app->setLanguage($originalLanguage);
+            $app->setComponent('pluginManager', $originalPluginManager);
+        }
+    }
+
+    /**
      * HTML meant for the admin GUI is converted to plain text without gluing words together.
      */
     public function testHtmlToPlainText()

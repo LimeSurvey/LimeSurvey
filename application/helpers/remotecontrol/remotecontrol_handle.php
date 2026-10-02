@@ -3701,7 +3701,13 @@ class remotecontrol_handle
 
         Yii::app()->loadHelper('admin.exportresults');
         $oExport = new ExportSurveyResultsService();
-        $aExportOptions = $oExport->getExportOptions();
+        $sOriginalLanguage = Yii::app()->getLanguage();
+        try {
+            Yii::app()->setLanguage('en');
+            $aExportOptions = $oExport->getExportOptions();
+        } finally {
+            Yii::app()->setLanguage($sOriginalLanguage);
+        }
 
         if (empty($aExportOptions)) {
             return array('status' => 'No export formats found');
