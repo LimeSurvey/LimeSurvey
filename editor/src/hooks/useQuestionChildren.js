@@ -345,11 +345,20 @@ export const useQuestionChildren = ({
       assessmentValue: newAssessmentValue,
     }
 
-    const operation = createBufferOperation(question.qid)
-      .answer()
-      .update([...updatedChildren])
+    // Mirrors backend rule: numerical, integerOnly, allowEmpty (Yii CNumberValidator)
+    const assessmentValueString = String(newAssessmentValue ?? '')
+    const isValidAssessmentValue =
+      assessmentValueString.trim() === '' ||
+      /^\s*[+-]?\d+\s*$/.test(assessmentValueString)
 
-    addToBuffer(operation)
+    if (isValidAssessmentValue) {
+      const operation = createBufferOperation(question.qid)
+        .answer()
+        .update([...updatedChildren])
+
+      addToBuffer(operation)
+    }
+
     handleUpdate({ answers: updatedChildren })
   }
 
