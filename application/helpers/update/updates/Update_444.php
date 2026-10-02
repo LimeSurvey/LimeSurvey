@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_444 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             // Delete duplicate template configurations

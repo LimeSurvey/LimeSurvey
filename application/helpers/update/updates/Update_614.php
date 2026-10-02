@@ -10,6 +10,7 @@ class Update_614 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up()
     {
         $templateConfigurations = $this->getThemes();

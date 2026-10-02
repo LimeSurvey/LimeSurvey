@@ -7,6 +7,7 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_407 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         // defaultvalues

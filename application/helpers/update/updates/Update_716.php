@@ -19,6 +19,7 @@ class Update_716 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->addColumn('{{users}}', 'session_token', 'string(64) NULL');

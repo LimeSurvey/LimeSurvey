@@ -34,10 +34,151 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.4.0 (build 260928) to 7.5.0 (build 261001) October 1, 2026
++New feature: Automate data fixing in consistency check & add CLI command (#5324) (Carsten Schmitz)
++New feature #JD-150: Timing columns visible when disabled (#5355) (Adil Moumni Abdou)
+-Fixed issue: Typos in question type config.xml files (#5344) (Richard Aljaste)
+-Fixed issue: Question attributes loaded slowly on network file systems because config.xml was parsed again for every question (Carsten Schmitz)
+-Fixed issue: Placeholder field popup group styling is confusing (Carsten Schmitz)
+-Fixed issue: Better error reporting at survey archive import (Carsten Schmitz)
+-Fixed issue #JD-135: Too many decimals in grid view statistics (#5346) (Stefan K)
+-Fixed issue #CT-652: System slowness when saving survey settings (Carsten Schmitz)
+-Fixed issue #20748: Survey-specific theme options are not copied when duplicating a survey (Carsten Schmitz)
+-Fixed issue #20746: [security] Stored cross-site scripting vulnerability in the Date/Time question date picker. Severity: High (CVSS 8.7,AV:N/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:N). An attacker with an authenticated account holding only the global "Surveys: create" permission could store JavaScript in a Date/Time question's minimum or maximum date that runs in the browser of any respondent or administrator who views the question. Affects all versions up to 7.4.0. (#5382) (Stefan K)
+-Fixed issue #20743: [security] Stored cross-site scripting vulnerability in the survey text HTML filter. Severity: Medium (CVSS 5.4, AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N). An authenticated user holding survey content update permission on a single survey, such as the survey's owner, could bypass the HTML filter and store script that runs in the browser of participants and administrators who open or preview the survey. Affects all versions up to 7.3.0. (#5383) (Carsten Schmitz)
+-Fixed issue #20742: [security] Arbitrary file read vulnerability in survey theme options. Severity: Medium (CVSS 6.5, AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N). An attacker with an authenticated account holding only the global "Themes: read" permission could read any file readable by the web server process, including other surveys' uploaded response files and system files, by injecting a template expression into a survey theme description. Affects versions 3.19.0 to 7.4.0.(#5381) (Stefan K)
+-Fixed issue #20745: [security] Improper authorization vulnerability in survey theme import. Severity: Medium (CVSS 4.3,AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N). An attacker with an authenticated account holding only the global "templates" view permission could upload and install a survey theme, writing attacker-controlled files into the web-served theme directory. Affects versions all version up to 7.4.0. (#5381) (Stefan K)
+-Fixed issue #20741: [security] SQL injection vulnerability in statistics column browsing. Severity: Medium (CVSS 6.5, AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N). An authenticated user holding statistics read permission on a single survey, such as the survey's owner, could read arbitrary database contents. Affects all versions up to 7.3.0.(#5380) (Carsten Schmitz)
+-Fixed issue #20744: [security] SQL injection vulnerability in statistics output for multiple-choice questions. Severity: Medium (CVSS 6.5, AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N). An authenticated user holding statistics read permission on a single survey, such as the survey's owner, could read arbitrary database contents. Affects all versions up to 7.3.0. (#5380) (Carsten Schmitz)
+-Fixed issue #20740: Input on demand theme: lack of information about context change before action (Carsten Schmitz)
+-Fixed issue #20739: Copying survey from admin ui doesnt copy the survey url parameters from panel integration (#5377) (haythem chibani)
+-Fixed issue #20738: New editor denies access to users whose permissions come from survey group level (#5378) (Stefan K)
+-Fixed issue #20735: Incorrect tooltip for question settings when survey is deactivated (#5372) (haythem chibani)
+-Fixed issue #20733: Vanilla theme Information and Relationships 1.3.1 rules broken (#5371) (Denis Chenu)
+-Fixed issue #20728: Answers show encrypted in response view when going to the next page (#5360) (Carsten Schmitz)
+-Fixed issue #20720: Twitter X button is outdated (#5343) (Richard Aljaste)
+-Fixed issue #20397: Export has missing answer labels at multilingual surveys (#5282) (Carsten Schmitz)
+-Fixed issue #20213: Dual scale array answer options of the first scale have no accessible name (Carsten Schmitz)
+-Fixed issue #19883: PHP8.3 + debug - potential home page broken (#4111) (Denis Chenu)
+-Fixed issue #19242: Confusing message "This ZIP archive contains no valid resources files." when trying to upload a file without the correct folders (Carsten Schmitz)
+-Fixed issue #18844: Uploaded file name is URL-encoded in survey preview (Carsten Schmitz)
+-Fixed issue #18829: Orphaned temporary files remain after an unfinished plugin upload (Carsten Schmitz)
+-Fixed issue #18828: Temporary files not removed after successful plugin installation (Carsten Schmitz)
+-Fixed issue #18777: Chosen editor type not applied to email templates when HTML emails are disabled (Carsten Schmitz)
+-Fixed issue #18699: Exporting responses from several surveys in the same request (e.g. via RemoteControl) could miss responses of the later surveys (Carsten Schmitz)
+-Fixed issue #18156: Survey menu toggle button not accessible in survey themes (Carsten Schmitz)
+-Fixed issue #16908: Importing question with multiple languages can leave garbage in the DB (Carsten Schmitz)
+-Fixed issue #15983: Hidden array subquestions still shown when printing answers with "Print answers respects conditions" enabled (Carsten Schmitz)
+-Fixed issue #11833: Survey is submitted without clicking submit when jumping to an irrelevant last group via the question index (Carsten Schmitz)
+-Fixed issue #11666: Hard to use 'localized' plugins setting option (Carsten Schmitz)
+#Updated translation: Slovak by jelen1
+#Updated translation: Slovak by c_schmitz, jelen1
+#Updated translation: Portuguese (Portugal) by ricardo.santos, xastrefernando
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz
+#Updated translation: Galician by Gronnd
+#Updated translation: French (France) by c_schmitz, DenisChenu, fgervais
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by c_schmitz, jelen1, slansky
+#Updated translation: Czech by c_schmitz, jelen1, VBraun
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 7.3.0 (build 260922) to 7.4.0 (build 260928) September 28, 2026
++New feature #JD-106: Add ExpressionScript highlighting and validation in react editor (#5258) (Adil Moumni Abdou)
+-Fixed issue: Unecessary JS console noise though debug mode is off (Carsten Schmitz)
+-Fixed issue: Tooltip JS error (this._config is null) when switching pages via the side menu (Carsten Schmitz)
+-Fixed issue: Sync XHR and quirks mode console warnings when uploading a file in a file upload question (Carsten Schmitz)
+-Fixed issue: Survey menu entries list too wide (Carsten Schmitz)
+-Fixed issue: Some username special chars were double encoded when adding to user group (Carsten Schmitz)
+-Fixed issue: Notifications with redirect are never marked as read, firing again on next display (Carsten Schmitz)
+-Fixed issue: LS.gridView is undefined when a grid page is opened via the side menu (Carsten Schmitz)
+-Fixed issue: JS error on statistics page because jsPDF ES module was loaded as classic script (Carsten Schmitz)
+-Fixed issue: JS error 'activeTabContent has already been declared' when reopening the question list (Carsten Schmitz)
+-Fixed issue: Global side panel logs to console though debug mode is off (Carsten Schmitz)
+-Fixed issue: File manager styles not loaded when LimeSurvey is installed in a subdirectory (Carsten Schmitz)
+-Fixed issue: Duplicated query string in file upload question modal URL (Carsten Schmitz)
+-Fixed issue: CKEditor is not defined when an editor page is opened via the side menu (Carsten Schmitz)
+-Fixed issue #JD-132: Fix active survey overview modal behavior (#5266) (Adil Moumni Abdou)
+-Fixed issue #LB-159: Array question table header shown in addition to mobile labels in mobile view (Carsten Schmitz)
+-Fixed issue #20732: [security] Broken access control vulnerability in survey question and answer editing. Severity: Medium (CVSS 6.5, AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N). An authenticated user holding only the global permission to create surveys could use a survey of its own to change the question texts of any other user's survey and to delete or take over its answer options, including in active surveys. Affects versions 6.4.0 through 7.3.0. Reported by: Fluid Attacks. (#5364) (Carsten Schmitz)
+-Fixed issue #20727: Survey tokens export language filter only has German as a static option. (#5356) (Richard Aljaste)
+-Fixed issue #20721: Error 500 on admin notification email or print answers with ranking question (#5349) (Carsten Schmitz)
+-Fixed issue #20216: Survey structure and question reordering are not operable by keyboard (Carsten Schmitz)
+-Fixed issue #20211: Sortable tables are missing accessible sort indicators (Carsten Schmitz)
+-Fixed issue #20205: Two grouped radio fields are missing their relationship description (Carsten Schmitz)
+-Fixed issue #19747: Theme configuration hierarchy loading is not correct (#5308) (Carsten Schmitz)
+-Fixed issue #19726: Default theme setting in global configuration has misleading label (Carsten Schmitz)
+-Fixed issue #19533: Some index URLs are showing error 500 instead of 404 (Carsten Schmitz)
+-Fixed issue #19483: Users in survey permissions user select are not sorted alphabetically (Carsten Schmitz)
+-Fixed issue #19475: OSM map not shown if under condition on the same page at first (Carsten Schmitz)
+-Fixed issue #19413: Ace editor fails to load in debug mode when use_asset_manager is enabled (Carsten Schmitz)
+-Fixed issue #19402: Panel integration does not allow variable name with '-' (Carsten Schmitz)
+-Fixed issue #19291: Hidden tip is not hidden after validation passes (Carsten Schmitz)
+-Fixed issue #19097: Vertical slider handle in the structure gets in the way (Carsten Schmitz)
+-Fixed issue #19077: Survey group count and group-assignment filtering for non-superadmins (Carsten Schmitz)
+-Fixed issue #18962: Insert video (youtube) breaks when changing editor views (Carsten Schmitz)
+-Fixed issue #18930: Alphabetical answer/subquestion order ignores accents, HTML and survey language (Carsten Schmitz)
+-Fixed issue #18807: Admin creation email does not support Expression Manager, barebone URL or plugin replacements (#5350) (Carsten Schmitz)
+-Fixed issue #18806: After import/copy its better to go to general settings/overview of the new survey (Carsten Schmitz)
+-Fixed issue #18700: When importing, translatelinks is used even though the option has not been checked (Carsten Schmitz)
+-Fixed issue #18700: Undefined array key when importing a question without the translinkfields option (Carsten Schmitz)
+-Fixed issue #18611: Email attachments with missing files are not warned about and removed without notice (Carsten Schmitz)
+-Fixed issue #18589: Unable to use getValidScreenFiles event (Carsten Schmitz)
+-Fixed issue #18325: Missing translations (Carsten Schmitz)
+-Fixed issue #18293: Language specific attribute names are not used in CPDB user list (Carsten Schmitz)
+-Fixed issue #18143: Participant uploaded files are included in survey resources export (Carsten Schmitz)
+-Fixed issue #18029: Removed html tags in emails (Carsten Schmitz)
+-Fixed issue #17365: Problem with emjois in slider with emoji 5 point choise (Carsten Schmitz)
+-Fixed issue #17324: file upload button only working with a mouse (Carsten Schmitz)
+-Fixed issue #16572: LSActiveRecord::encryptSave() doesn't run validations by default, while the standard 'save' method does (#3596) (Denis Chenu)
+-Fixed issue: Social cards layout in sharing overview miss-aligned (#5351) (haythem chibani)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by dusanm, jelen1
+#Updated translation: Portuguese (Portugal) by ricardo.santos, xastrefernando
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Galician by Gronnd, xastrefernando
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech by c_schmitz, jelen1, VBraun
+#Updated translation: Czech by c_schmitz, jelen1
+
+
+Changes from 7.2.0 (build 260921) to 7.3.0 (build 260922) September 22, 2026
++New feature #LX-4: Enhance “Other” field behavior for single- and multiple-choice questions (#4644) (Gabriel Jenik)
++New feature #LE-776: Feature announcement modal v2 (#5152) (haythem chibani)
++New feature #AT-2104: Option to deselect radio buttons by click (#5131) (Tim Willig)
+-Fixed issue: Added deselectsinglechoice theme option to validation schema (#5232) (Tim Willig)
+-Fixed issue: New theme options for fruity twentythree missing in config table  on fresh install (#5230) (Tim Willig)
+-Fixed issue: ComfortUpdate falsely reports writable files as read-only (Carsten Schmitz)
+-Fixed issue #LB-158: SurveyDetail API command exhausting memory on large surveys (#5319) (Rami S. Zaki)
+-Fixed issue #CT-1768: Increased image quality of branded qr-code (#5048) (Ahmed Abd El-Azeem)
+-Fixed issue #AT-2115: Create table when adding first participants from CPDB (#5091) (SaraDimoska)
+-Fixed issue #AT-2114: Create new participant table when clicked on participants tab in survey (#5085) (SaraDimoska)
+-Fixed issue #AT-2109: Allow checking other option before entering text for multiple choice question type (#5216) (SaraDimoska)
+-Fixed issue #AT-1782: Overview modal information design inconsistent (#5078) (SaraDimoska)
+-Fixed issue #20690: Condition not properly converted when importing legacy LSS files from version 3 or earlier (Carsten Schmitz)
+-Fixed issue #2066: Added Total time attributable to EM and bigger tooltips (#5079) (SaraDimoska)
+#Updated translation: Polish by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+
+
 Changes from 7.1.2 (build 260917) to 7.2.0 (build 260921) September 21, 2026
 New feature: Display timings in response table (#5249)
 New feature #LX-8: Add Quota Exit field to responses table to record the matched quota (#5317)
-Fixed issue #20697: [security] Reflected XSS through unescaped LSS survey-import warnings (#5330)
+Fixed issue #20697: [security] Reflected XSS vulnerability in survey structure import warnings. Severity: High (CVSS 8.0, AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N). An attacker with no LimeSurvey account could, via social engineering, get a user holding the "Create survey" permission to import a crafted .lss/.lsg/.lsq survey file, executing JavaScript in that user's administrative session. Affects all versions up to 7.1.2.
 Fixed issue #20699: [security] Broken access control vulnerability in participant sharing. Severity: High (CVSS 7.1, AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:H/A:N). An authenticated user holding only participant-panel read permission and a read-only share of a participant could grant itself, or any other account of its choosing, edit rights on that participant, allowing it to modify and redistribute data it had no relationship to. Affects versions 3.17.4 through 7.1.2. Reported by: Ada Logics.
 Fixed issue #20706: [security] Broken access control vulnerability in central participant attribute deletion. Severity: High (CVSS 8.1, AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:H). An authenticated user holding only a read-only share of a single participant, with no participantpanel permission of any kind, could delete any central participant attribute. Affects all versions up to 7.1.2. Fixed in 7.1.3. Reported by: Google / Ada Logics. (#5329)
 Fixed issue #20700: [security] Missing permission and POST checks on Expression Manager maintenance actions. Severity: Medium (CVSS 6.5, AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N). An authenticated user with no permissions over other users' surveys could rewrite or reset the branching/skip logic of every survey in the installation. Affects all versions up to 7.1.2. Reported by: Ada Logics. (#5328)

@@ -30,6 +30,11 @@ import { ResponseModals } from '../'
 import { ResponsesTableHeader } from './ResponsesTableHeader'
 import { ResponsesTableBody } from './ResponsesTableBody'
 
+/**
+ * Render survey responses with column management, selection, and detail actions.
+ * Rebuild columns when timing definitions change, retaining visibility for
+ * surviving columns and placing new timing columns before question columns.
+ */
 export const ResponsesTable = ({
   survey,
   showFilters,
@@ -184,15 +189,49 @@ export const ResponsesTable = ({
       onDeleteResponseFilesClick: () => handleOnActionFilesDeleteClick(),
     })
 
+    /**
+     * Extract the timing column identity and labels used to detect definition changes.
+     */
+    const timingColumnDefinition = ({ id, header, meta = {} }) => ({
+      id,
+      header,
+      qid: meta.qid,
+      timingType: meta.timingType,
+      questionLabel: meta.questionLabel,
+      title: meta.title,
+    })
+    const generatedResponseColumns = generateColumns(
+      responsesData.surveyQuestions || surveyQuestions,
+      survey,
+      responsesData.timingFields
+    )
+    const generatedTimingColumns = generatedResponseColumns.filter(
+      (column) => column.meta?.columnCategory === 'timing'
+    )
+    const currentTimingColumns = columns.filter(
+      (column) => column.meta?.columnCategory === 'timing'
+    )
+    const timingFieldsChanged =
+      JSON.stringify(generatedTimingColumns.map(timingColumnDefinition)) !==
+      JSON.stringify(currentTimingColumns.map(timingColumnDefinition))
+    const nonTimingColumnIds = (items) =>
+      items
+        .filter(
+          ({ id, meta }) =>
+            id !== SelectColumnId &&
+            id !== ActionsColumnId &&
+            meta?.columnCategory !== 'timing'
+        )
+        .map(({ id }) => id)
+    const nonTimingColumnsChanged =
+      JSON.stringify(nonTimingColumnIds(generatedResponseColumns)) !==
+      JSON.stringify(nonTimingColumnIds(columns))
+
     let generatedColumns = columns
 
-    // if the columns are not generated yet, generate them
-    if (!columns.length) {
-      generatedColumns = generateColumns(
-        responsesData.surveyQuestions || surveyQuestions,
-        survey,
-        responsesData.timingFields
-      )
+    // Regenerate columns when their generated definitions change.
+    if (!columns.length || timingFieldsChanged || nonTimingColumnsChanged) {
+      generatedColumns = generatedResponseColumns
 
       if (!hideSelect) {
         generatedColumns = [defaultColumns.SELECT, ...generatedColumns]
@@ -203,13 +242,44 @@ export const ResponsesTable = ({
       }
 
       setColumns(generatedColumns)
-      setColumnVisibility(
-        applyStoredColumnVisibility(
+      setColumnVisibility((currentVisibility) => {
+        const initialVisibility = applyStoredColumnVisibility(
           generatedColumns,
           getInitialColumnVisibility(generatedColumns),
           readColumnVisibility(survey.sid)
         )
-      )
+        return Object.fromEntries(
+          generatedColumns.map(({ id }) => [
+            id,
+            currentVisibility[id] ?? initialVisibility[id],
+          ])
+        )
+      })
+      setColumnsOrder((currentOrder) => {
+        if (!currentOrder.length) {
+          return currentOrder
+        }
+
+        const newTimingColumnIds = generatedColumns
+          .filter(
+            ({ id, meta }) =>
+              meta?.columnCategory === 'timing' && !currentOrder.includes(id)
+          )
+          .map(({ id }) => id)
+        const firstQuestionIndex = currentOrder.findIndex((id) =>
+          generatedColumns.some(
+            ({ id: columnId, meta }) =>
+              columnId === id && meta && 'questionNumber' in meta
+          )
+        )
+        const timingInsertIndex =
+          firstQuestionIndex === -1 ? currentOrder.length : firstQuestionIndex
+        return [
+          ...currentOrder.slice(0, timingInsertIndex),
+          ...newTimingColumnIds,
+          ...currentOrder.slice(timingInsertIndex),
+        ]
+      })
       // else if we have columns, then we pop the actions column and readd it to update the columns ref
     } else if (!hideActions && columns.length) {
       columns.pop()
@@ -220,7 +290,7 @@ export const ResponsesTable = ({
     setData(
       generateData(responsesData.responses, survey.language, generatedColumns)
     )
-  }, [responsesData, survey.sid])
+  }, [responsesData, survey])
 
   useEffect(() => {
     // set the columns order only once after the columns are generated and then control it with the columns manager.
@@ -438,6 +508,7 @@ export const ResponsesTable = ({
               sid={survey.sid}
               sortedColumnId={sortedColumnId}
               table={table}
+              baseLanguage={survey.language}
             />
           </table>
         </div>
@@ -507,6 +578,7 @@ export const ResponsesTable = ({
           isBulkActionRef.current = false
         }}
         table={table}
+        saveTimings={survey.saveTimings}
         QuestionComponent={
           <QuestionPreview
             surveySettings={{

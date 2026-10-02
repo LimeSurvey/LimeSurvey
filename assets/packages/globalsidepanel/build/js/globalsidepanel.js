@@ -544,7 +544,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
  */
 
 ;
-var LOG = new _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_11__["default"]('globalsidepanel');
+var LOG = new _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_11__["default"]('globalsidepanel', !(window.debugState && window.debugState.backend));
 var Actions = /*#__PURE__*/function () {
   function Actions(StateManager) {
     _classCallCheck(this, Actions);
@@ -687,7 +687,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
  */
 
 ;
-var LOG = new _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_12__["default"]('globalsidepanel');
+var LOG = new _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_12__["default"]('globalsidepanel', !(window.debugState && window.debugState.backend));
 var GlobalSidemenu = /*#__PURE__*/function () {
   function GlobalSidemenu(container, store, actions, components) {
     _classCallCheck(this, GlobalSidemenu);
@@ -1007,7 +1007,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
  */
 
 ;
-var LOG = new _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_19__["default"]('globalsidepanel');
+var LOG = new _meta_lib_ConsoleShim_js__WEBPACK_IMPORTED_MODULE_19__["default"]('globalsidepanel', !(window.debugState && window.debugState.backend));
 var Sidemenu = /*#__PURE__*/function () {
   function Sidemenu(container, store, menu) {
     _classCallCheck(this, Sidemenu);

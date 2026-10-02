@@ -97,6 +97,8 @@ node_modules/**/src
 !/node_modules/jspdf/
 !/node_modules/jszip/
 !/node_modules/nestedSortable/
+!/node_modules/jquery/
+/node_modules/jquery/*
 !/node_modules/jquery/dist/
 !/node_modules/jquery-ui-dist/
 !/node_modules/jquery.actual/
@@ -184,9 +186,16 @@ vendor/**/gulpfile.js
 /vendor/symfony/filesystem/
 /vendor/symfony/polyfill-intl-grapheme/
 /vendor/symfony/polyfill-intl-normalizer/
+/vendor/symfony/polyfill-php84/
 /vendor/symfony/process/
 /vendor/psr/log/
 /vendor/spatie/
+/vendor/danog/
+/vendor/daverandom/
+/vendor/kelunik/
+/vendor/league/uri/
+/vendor/league/uri-interfaces/
+/vendor/revolt/
 yarn-error.log
 
 # Test stuff

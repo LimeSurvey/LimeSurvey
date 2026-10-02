@@ -41,7 +41,8 @@ class SurveyCommonAction extends CAction
      * requests with subactions.
      *
      * @param array $params URL Parameters
-     * @return bool
+     * @return bool Whether the request parameters are valid
+     * @throws CHttpException 404 if neither the subaction nor a default index() method exists
      */
     public function runWithParams($params)
     {
@@ -78,6 +79,10 @@ class SurveyCommonAction extends CAction
         if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower((string) $aActions[$this->getId()]) || !$oMethod->isPublic()) {
             // Either action doesn't exist in our allowlist, or the method class doesn't equal the action class or the method isn't public
             // So let us get the last possible default method, ie. index
+            if (!$oClass->hasMethod($sDefault)) {
+                // Not every action class has a default method (eg. UserAction)
+                throw new CHttpException(404, gT("The requested page does not exist."));
+            }
             $oMethod = new ReflectionMethod($this, $sDefault);
         }
 

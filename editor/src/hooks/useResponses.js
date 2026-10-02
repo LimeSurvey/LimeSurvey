@@ -10,6 +10,20 @@ import useAuth from './useAuth'
 const isApiError = (payload) =>
   typeof payload === 'object' && payload !== null && 'httpStatus' in payload
 
+/**
+ * Fetch survey responses for the requested page, filters, and sorting, refetching
+ * on every mount and retaining the previous result while the query changes.
+ *
+ * @param {string|number} surveyId Survey to query.
+ * @param {Object} pagination Page selection with a zero-based pageIndex and pageSize.
+ * @param {Object} filters Response filters sent to the API.
+ * @param {Array} sorting Sort descriptors sent to the API.
+ * @param {Array} filterSet Condition designer filter, in the shape the API accepts.
+ * @returns {Object} Responses, the error a rejected filter came back with, fetch
+ *   status, refetch, and mutateOperations. A rejected filter keeps the rows this
+ *   survey already had rather than emptying the table.
+ *   Mutations invalidate response queries on success and refetch after success or failure.
+ */
 export function useResponses(
   surveyId,
   pagination,
@@ -47,6 +61,7 @@ export function useResponses(
         sorting,
         filterSet,
       }),
+    refetchOnMount: 'always',
     select: (data) => data,
     placeholderData: keepPreviousData,
   })
