@@ -18,15 +18,15 @@
 
     GET optout/actiontokens -> GET optout/removetokens
 
-    user vists optouturl and for older themes there is a button
+    user visits optouturl and for older themes there is a button
     that actually opts out via a GET request when clicked. the
     problem with this is that some mail filters crawl the optout url
     and perform that GET request, causing participants to be opted out
 
     GET optout/actiontokens -> POST optout/removetoken
 
-    user vists optouturl and for newer themes there is a form
-    which POSTs to an endpoint intead. the automated filters will
+    user visits optouturl and for newer themes there is a form
+    which POSTs to an endpoint instead. the automated filters will
     not perform the POST request. this prevents the above problem.
 
     POST optout/oneclick
