@@ -136,9 +136,9 @@ class ResponseFilter
 
         $unknown = array_diff(array_keys($raw), self::ALLOWED_KEYS);
         if ($unknown !== []) {
+            $label = count($unknown) > 1 ? 'properties' : 'property';
             throw new InvalidArgumentException(
-                "$at has unknown propert" . (count($unknown) > 1 ? 'ies' : 'y')
-                . ': ' . implode(', ', $unknown) . '.'
+                "$at has unknown $label: " . implode(', ', $unknown) . '.'
             );
         }
 
