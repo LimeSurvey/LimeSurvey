@@ -11,7 +11,7 @@ class Update_719 extends DatabaseUpdateBase
         $columnNames = $db->schema->getTable('{{surveys}}')->columnNames;
 
         if (!in_array('code', $columnNames, true)) {
-            addColumn('{{surveys}}', 'code', 'string');
+            addColumn('{{surveys}}', 'code', 'string(255) NULL');
         }
     }
 }
