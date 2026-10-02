@@ -112,7 +112,10 @@
 
   // Disabled ContentEditors used as the row label (e.g. multiple short
   // texts) must start at the content inset like radios/checkboxes do.
-  .children-parent .child > .content-editor.child-ui-component .content-editable {
+  .children-parent
+    .child
+    > .content-editor.child-ui-component
+    .content-editable {
     padding-left: 0;
   }
 }

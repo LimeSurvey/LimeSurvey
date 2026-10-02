@@ -153,7 +153,11 @@ export const ArrayQuestion = ({
   }
 
   return (
-    <div className={classNames('array-question-wrapper', { 'edit-mode': isFocused })}>
+    <div
+      className={classNames('array-question-wrapper', {
+        'edit-mode': isFocused,
+      })}
+    >
       <div className="array-question d-flex gap-5" data-testid="array-question">
         <div className="d-flex">
           <div>
