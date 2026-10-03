@@ -30,6 +30,7 @@ export const TopBarActions = ({
   showShareActionButton,
   showExportResponsesButton,
   showExportStatisticsButton,
+  onExportResponsesClick,
   showPublishSettings,
   triggerPublish,
   isAddingQuestionOrGroup,
@@ -247,6 +248,7 @@ export const TopBarActions = ({
       <ActionButton
         className="me-2"
         survey={survey}
+        onExportResponsesClick={onExportResponsesClick}
         operationsLength={operationsLength}
         triggerPublish={triggerPublish}
         showShareActionButton={showShareActionButton}

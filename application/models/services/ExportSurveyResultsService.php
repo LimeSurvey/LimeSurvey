@@ -80,6 +80,12 @@ class ExportSurveyResultsService
     /** @var string 'long' for full translated answers, 'short' for raw answer codes. */
     protected $answerFormat = 'long';
 
+    /** @var string CSV field separator character. */
+    protected $csvSeparator = ',';
+
+    /** @var array Filters used to scope which responses get exported. */
+    protected $filters = [];
+
     /**
      * ExportSurveyResultsService constructor.
      *
@@ -179,6 +185,34 @@ class ExportSurveyResultsService
     }
 
     /**
+     * @param string $csvSeparator
+     * @return $this
+     */
+    public function setCsvSeparator($csvSeparator)
+    {
+        $this->csvSeparator = $csvSeparator;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCsvSeparator()
+    {
+        return $this->csvSeparator;
+    }
+
+    /**
+     * @param array $filters Same filter format as the responses list endpoint
+     * @return $this
+     */
+    public function setFilters(array $filters)
+    {
+        $this->filters = $filters;
+        return $this;
+    }
+
+    /**
      * Export survey responses to the specified format.
      *
      * @param int $surveyId The survey ID
@@ -211,6 +245,7 @@ class ExportSurveyResultsService
             'language' => $language,
             'exportType' => $exportType,
             'outputMode' => $this->outputMode,
+            'csvSeparator' => $this->csvSeparator,
         ];
 
         // Export responses using chunked writing
@@ -267,11 +302,12 @@ class ExportSurveyResultsService
         $writer = $this->getExportWriter($exportType);
         $writer->init($surveyQuestions, $metadata);
 
-        $totalCount = $this->getTotalResponseCount($surveyId);
+        $filterCriteria = $this->buildFilterCriteria();
+        $totalCount = $this->getTotalResponseCount($surveyId, $filterCriteria);
         $model = SurveyDynamic::model($surveyId);
 
         for ($offset = 0; $offset < $totalCount; $offset += $this->chunkSize) {
-            $chunk = $this->fetchResponseChunkDirect($model, $offset, $this->chunkSize);
+            $chunk = $this->fetchResponseChunkDirect($model, $offset, $this->chunkSize, $filterCriteria);
 
             $timingsData = [];
             if ($hasTimings) {
@@ -292,17 +328,42 @@ class ExportSurveyResultsService
     }
 
     /**
+     * Builds the filter criteria using the same FilterPatcher the responses list uses.
+     *
+     * @return \LSDbCriteria|null Null when there are no filters
+     */
+    public function buildFilterCriteria()
+    {
+        if (empty($this->filters)) {
+            return null;
+        }
+
+        $dataMap = $this->transformerOutputSurveyResponses->getDataMap();
+        $sort = new \CSort();
+        $criteria = new \LSDbCriteria();
+        $this->responseFilterPatcher->apply(
+            ['filters' => $this->filters],
+            $criteria,
+            $sort,
+            $dataMap
+        );
+
+        return $criteria;
+    }
+
+    /**
      * Get the total number of responses for a survey.
      *
      * @param int $surveyId
+     * @param \CDbCriteria|null $filterCriteria
      * @return int
      * @throws RuntimeException
      */
-    protected function getTotalResponseCount($surveyId)
+    protected function getTotalResponseCount($surveyId, $filterCriteria = null)
     {
         $model = SurveyDynamic::model($surveyId);
         try {
-            return (int) $model->count();
+            return (int) $model->count($filterCriteria);
         } catch (CDbException $e) {
             throw new RuntimeException("Unable to get response count: " . $e->getMessage());
         }
@@ -314,15 +375,20 @@ class ExportSurveyResultsService
      * @param SurveyDynamic $model
      * @param int $offset
      * @param int $limit
+     * @param \CDbCriteria|null $filterCriteria
      * @return SurveyDynamic[]
      * @throws RuntimeException
      */
-    protected function fetchResponseChunkDirect($model, $offset, $limit)
+    protected function fetchResponseChunkDirect($model, $offset, $limit, $filterCriteria = null)
     {
         $criteria = new \CDbCriteria();
         $criteria->order = $model->primaryKey() . ' ASC';
         $criteria->limit = $limit;
         $criteria->offset = $offset;
+
+        if ($filterCriteria !== null) {
+            $criteria->mergeWith($filterCriteria);
+        }
 
         try {
             return $model->findAll($criteria);

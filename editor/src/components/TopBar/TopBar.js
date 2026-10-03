@@ -27,6 +27,7 @@ export const TopBar = ({
   showShareActionButton = false,
   showExportResponsesButton = false,
   showExportStatisticsButton = false,
+  onExportResponsesClick,
 }) => {
   const { survey, update, surveyList } = useSurvey(surveyId)
   const { getError } = useErrors()
@@ -156,6 +157,7 @@ export const TopBar = ({
         showShareActionButton={showShareActionButton}
         showExportResponsesButton={showExportResponsesButton}
         showExportStatisticsButton={showExportStatisticsButton}
+        onExportResponsesClick={onExportResponsesClick}
         showPublishSettings={showPublishSettings}
         triggerPublish={triggerPublish}
         isAddingQuestionOrGroup={isAddingQuestionOrGroup}
