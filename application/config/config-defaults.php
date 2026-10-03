@@ -98,18 +98,6 @@ $config['customassetversionnumber']  = 1;        // Used to generate the path of
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
 $config['allowedthemeimageformats'] = 'gif,ico,jpg,jpeg,png'; // Image file types allowed to be uploaded in the themes section.
 $config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
-$config['allowedfileuploads'] = [
-    //Documents
-    'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',
-    //Images - as mentioned above be very careful if you want to allow SVG files
-    'png', 'bmp', 'gif', 'jpg', 'jpeg', 'tif',
-    // Iphone file extensions (version 11 and above)
-    'heif', 'heic', 'heifs', 'heics', 'avci', 'avcs', 'avif', 'avifs',
-    //soundfiles
-    'wav', 'mp3', 'flac', 'aac', 'm4a', 'opus', 'ogg', 'wma', 'mka',
-    //videos
-    'mp4', 'avi', 'mkv', 'mpeg', 'mpg', 'wmv', 'h264', 'h265', 'mov', 'webm', 'divx', 'xvid',
-];
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,dotx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 $config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
