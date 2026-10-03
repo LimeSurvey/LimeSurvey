@@ -116,6 +116,8 @@ $config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,w
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
+$config['showserverconfigurationcheck'] = true; // Show the server configuration check (memory_limit, max_input_vars, post_max_size, upload_max_filesize) on the 'Check data integrity' page. Set to false to hide it, e.g. if your hosting does not allow you to change these PHP settings.
+
 $config['maximum_unzipped_size'] = '500000000'; // Max size after zip unarchiving in bytes.
 
 $config['showpopups']         = 2; // Show popup messages if mandatory or conditional questions have not been answered correctly.

@@ -60,6 +60,7 @@ class CheckIntegrity extends SurveyCommonAction
 
         $aData = $this->integrityChecker->checkintegrity();
         $aData['consistencyCheckRan'] = false;
+        $aData = array_merge($aData, $this->getServerConfigurationData());
 
         $aData['topbar']['title'] = gT('Check data integrity');
         $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
@@ -136,11 +137,74 @@ class CheckIntegrity extends SurveyCommonAction
         $aData['consistencyCheckRan'] = true;
         $aData['consistencyCheckMessages'] = $aFixResult['messages'];
         $aData['consistencyCheckWarnings'] = $aFixResult['warnings'];
+        $aData = array_merge($aData, $this->getServerConfigurationData());
 
         $aData['topbar']['title'] = gT('Check data integrity');
         $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         $this->renderWrappedTemplate('checkintegrity', 'check_view', $aData);
+    }
+
+    /**
+     * Data for the server configuration check section of check_view.php
+     *
+     * PHP settings below the recommendation can silently truncate (max_input_vars)
+     * or completely drop (post_max_size) the POST data of large forms and uploads,
+     * reject uploaded files (upload_max_filesize) or make memory intensive actions
+     * fail (memory_limit). The memory_limit shown
+     * is the effective one, after LSYii_Controller tried to raise it to the
+     * configured value.
+     *
+     * The section can be hidden with the config setting 'showserverconfigurationcheck',
+     * then no checks are returned.
+     *
+     * @return array{serverSettingChecks: array<int, array{setting: string, current: string, recommended: string, ok: bool, hint: string}>}
+     */
+    private function getServerConfigurationData()
+    {
+        if (!App()->getConfig('showserverconfigurationcheck')) {
+            return ['serverSettingChecks' => []];
+        }
+        $maxInputVars = (int) ini_get('max_input_vars');
+        $postMaxSize = convertPHPSizeToBytes(ini_get('post_max_size')) / 1024 / 1024;
+        $uploadMaxFilesize = convertPHPSizeToBytes(ini_get('upload_max_filesize')) / 1024 / 1024;
+        $memoryLimit = convertPHPSizeToBytes(ini_get('memory_limit')) / 1024 / 1024;
+        $recommendedMemoryLimit = (int) App()->getConfig('memory_limit');
+        return [
+            'serverSettingChecks' => [
+                [
+                    'setting' => 'memory_limit',
+                    'current' => (string) ini_get('memory_limit'),
+                    'recommended' => $recommendedMemoryLimit . 'M',
+                    // -1 means unlimited
+                    'ok' => $memoryLimit == -1 || $memoryLimit >= $recommendedMemoryLimit,
+                    'hint' => gT("Imports, exports and statistics of large surveys may fail."),
+                ],
+                [
+                    'setting' => 'max_input_vars',
+                    'current' => (string) $maxInputVars,
+                    'recommended' => (string) InstallerConfigForm::RECOMMENDED_MAX_INPUT_VARS,
+                    'ok' => $maxInputVars >= InstallerConfigForm::RECOMMENDED_MAX_INPUT_VARS,
+                    'hint' => gT("Large surveys may lose data when saving or exporting."),
+                ],
+                [
+                    'setting' => 'post_max_size',
+                    'current' => (string) ini_get('post_max_size'),
+                    'recommended' => InstallerConfigForm::RECOMMENDED_POST_MAX_SIZE . 'M',
+                    // 0 means unlimited
+                    'ok' => $postMaxSize == 0 || $postMaxSize >= InstallerConfigForm::RECOMMENDED_POST_MAX_SIZE,
+                    'hint' => gT("Saving large forms or uploading files may fail."),
+                ],
+                [
+                    'setting' => 'upload_max_filesize',
+                    'current' => (string) ini_get('upload_max_filesize'),
+                    'recommended' => InstallerConfigForm::RECOMMENDED_UPLOAD_MAX_FILESIZE . 'M',
+                    // 0 means unlimited
+                    'ok' => $uploadMaxFilesize == 0 || $uploadMaxFilesize >= InstallerConfigForm::RECOMMENDED_UPLOAD_MAX_FILESIZE,
+                    'hint' => gT("Importing surveys or uploading files may fail."),
+                ],
+            ],
+        ];
     }
 
     /**
