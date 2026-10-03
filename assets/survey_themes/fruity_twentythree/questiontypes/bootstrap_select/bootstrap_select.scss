@@ -1,7 +1,9 @@
 $bs-select-item-padding-y : 8px;
 $bs-select-item-padding-x : 12px;
 
-.answer-container .bootstrap-select {
+// `body > .bootstrap-select` is the off-screen probe bootstrap-select uses to measure item heights.
+.answer-container .bootstrap-select,
+body > .bootstrap-select {
     .bs-searchbox .form-control {
         padding       : 0.375rem 0.75rem;
         margin-bottom : 4px;
