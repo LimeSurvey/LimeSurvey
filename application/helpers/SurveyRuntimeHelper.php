@@ -896,17 +896,23 @@ class SurveyRuntimeHelper
     }
 
     /**
-     * Check quotas
+     * Handle the moves sent from the quota page: confirm (end survey) or return to the survey.
+     * When a quota is confirmed and still matched, the quota page is rendered and the application ends.
+     *
+     * @return void
      */
     private function checkQuotas()
     {
-        /* quota submitted */
+        /* quota confirmed: close the survey (checkCompletedQuota renders the page and ends the application) */
         if ($this->sMove == 'confirmquota') {
             Quotas::checkCompletedQuota($this->iSurveyid);
+            /* quota not matched: show the current page again (initMove skips the move for confirmquota) */
+            $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false);
+            $this->setStep();
         }
-        /* quota submitted */
+        /* return to the survey from the quota page: without processing POST, the re-posted quota fields would trigger the quota again */
         if ($this->sMove == 'returnfromquota') {
-            LimeExpressionManager::JumpTo($this->param['thisstep']);
+            LimeExpressionManager::JumpTo($this->param['thisstep'], false, false);
         }
     }
 
