@@ -168,52 +168,79 @@ var UserManagement = function () {
         });
     };
 
-    var wirePermissions = function () {
-        var tableObject = $('#UserManagement--userpermissions-table');
+    var wirePermissions = function (root) {
+        // Multiple modals on the User Management page (single-user edit and the
+        // massive-action batch edit) reuse the same ids, so everything must be
+        // scoped to the modal actually being wired instead of matching whichever
+        // one of the duplicate-id elements happens to be first/visible in the DOM.
+        var rootObject = root ? $(root) : $('#UserManagement-action-modal');
+        var tableObject = rootObject.find('#UserManagement--userpermissions-table');
 
-        $(".general-row-selector").on('click', function () {
-            $(this).removeClass('incomplete-selection');
-            bChecked = this.checked;
-            $(this).closest('tr').find('input').prop('checked', bChecked);
-        });
-
-        $('.specific-permission-selector').on('click', function () {
-            var thisRow = $(this).closest('tr');
-            if (thisRow.find('.specific-settings-block input:checked').size() == thisRow.find('.specific-settings-block input').size()) {
-                thisRow.find('.general-row-selector').prop('checked', true);
-                thisRow.find('.general-row-selector').removeClass('incomplete-selection');
-            } else if (thisRow.find('.specific-settings-block input:checked').size() == 0) {
-                thisRow.find('.general-row-selector').prop('checked', false);
+        var updateRowGeneralState = function (row) {
+            var specificInputs = row.find('.specific-settings-block input:checkbox');
+            var checkedCount = specificInputs.filter(':checked').length;
+            var generalSelector = row.find('.general-row-selector');
+            if (checkedCount === 0) {
+                generalSelector.prop('checked', false).prop('indeterminate', false).removeClass('incomplete-selection');
+            } else if (checkedCount === specificInputs.length) {
+                generalSelector.prop('checked', true).prop('indeterminate', false).removeClass('incomplete-selection');
             } else {
-                thisRow.find('.general-row-selector').prop('checked', true);
-                thisRow.find('.general-row-selector').addClass('incomplete-selection');
+                generalSelector.prop('checked', true).prop('indeterminate', true).addClass('incomplete-selection');
             }
+        };
+
+        var updateSelectAllState = function () {
+            var selectAllCheckbox = rootObject.find('.selector--select-all-permissions');
+            if (!selectAllCheckbox.length) {
+                return;
+            }
+            var enabledInputs = tableObject.find('.specific-settings-block input:checkbox:not(:disabled)');
+            var checkedCount = enabledInputs.filter(':checked').length;
+            if (checkedCount === 0) {
+                selectAllCheckbox.prop('checked', false).prop('indeterminate', false);
+            } else if (checkedCount === enabledInputs.length) {
+                selectAllCheckbox.prop('checked', true).prop('indeterminate', false);
+            } else {
+                selectAllCheckbox.prop('checked', false).prop('indeterminate', true);
+            }
+        };
+
+        tableObject.on('click', '.general-row-selector', function () {
+            var bChecked = this.checked;
+            $(this).prop('indeterminate', false).removeClass('incomplete-selection');
+            $(this).closest('tr').find('input').prop('checked', bChecked);
+            updateSelectAllState();
         });
 
-        $('#perm_superadmin_read').on(' click', function () {
+        tableObject.on('change', '.specific-settings-block input:checkbox', function () {
+            updateRowGeneralState($(this).closest('tr'));
+            updateSelectAllState();
+        });
+
+        rootObject.find('#perm_superadmin_read').on(' click', function () {
             tableObject.find('input').prop('checked', this.checked).fadeTo(1, 1);
         })
 
-        $('#UserManagement--userpermissions-table tr').each(function () {
-            if ($(this).find('.specific-settings-block input:checked').size() == $(this).closest('tr').find('.specific-settings-block input').size()) {
-                $(this).find('.general-row-selector').prop('checked', true);
-                $(this).find('.general-row-selector').removeClass('incomplete-selection');
-            } else if ($(this).find('.specific-settings-block input:checked').size() == 0) {
-                $(this).find('.general-row-selector').prop('checked', false);
-            } else {
-                $(this).find('.general-row-selector').prop('checked', true);
-                $(this).find('.general-row-selector').addClass('incomplete-selection');
-            }
+        rootObject.find('.selector--select-all-permissions').on('click', function () {
+            var bChecked = this.checked;
+            tableObject.find('input:checkbox:not(:disabled)').prop('checked', bChecked).prop('indeterminate', false);
+            tableObject.find('.general-row-selector').removeClass('incomplete-selection');
+            updateSelectAllState();
         });
 
-        $('#permission-modal-exitForm').on('click', function(e){
+        tableObject.find('tbody tr').each(function () {
+            updateRowGeneralState($(this));
+        });
+        updateSelectAllState();
+
+        rootObject.find('#permission-modal-exitForm').on('click', function(e){
             e.preventDefault();
             triggerModalClose();
         });
     };
 
     var wireMassPermissions = function () {
-        wirePermissions();
+        wirePermissions('#massive-actions-modal-usermanagement--identity-gridPanel-batchPermissions-2');
 
         var oCheckedItems = $('#usermanagement--identity-gridPanel').yiiGridView('getChecked', $('.listActions').data('pk'));
         $('#hereBeUserIds').html('');
@@ -312,6 +339,9 @@ var UserManagement = function () {
         wireRoleSet();
         wireForm();
         wireDatePicker();
+        if (window.LS && typeof window.LS.doToolTip === 'function') {
+            window.LS.doToolTip();
+        }
     }
 
 

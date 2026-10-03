@@ -1,7 +1,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT("Edit permissions")]
+    ['modalTitle' => gT("Edit user permissions")]
 );
 ?>
 
@@ -30,23 +30,46 @@ Yii::app()->getController()->renderPartial(
             <tr>
                 <!-- Icon -->
                 <td>
-                    <div><i class="<?php echo $aCRUDPermissions['img']; ?> text-success"></i>
-                    <?php echo $aCRUDPermissions['description']; ?></div>
-                    <?php if (!empty($aCRUDPermissions['warning'])) : ?>
-                        <div class="text-danger"><i class="ri-error-warning-fill" aria-hidden="true"></i>
-                        <?php echo $aCRUDPermissions['warning']; ?></div>
-                    <?php endif; ?>
+                    <div>
+                        <i
+                            class="<?php echo $aCRUDPermissions['img']; ?> text-success"
+                            tabindex="0"
+                            role="img"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="<?= CHtml::encode($aCRUDPermissions['description']) ?>"
+                            aria-label="<?= CHtml::encode($aCRUDPermissions['description']) ?>"
+                        ></i>
+                    </div>
                 </td>
 
                 <!-- Warning super admin -->
                 <td>
-                    <?php if ($sPermissionKey == 'superadmin') {
-                        ?> <span class='warning'> <?php
-                    };
-                                                                                    echo $aCRUDPermissions['title'];
-                    if ($sPermissionKey == 'superadmin') {
-                        ?> </span> <?php
-                    }; ?>
+                    <span
+                        tabindex="0"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        title="<?= CHtml::encode($aCRUDPermissions['description']) ?>"
+                    >
+                        <?php if ($sPermissionKey == 'superadmin') {
+                            ?> <span class='warning'> <?php
+                        };
+                                                                                        echo $aCRUDPermissions['title'];
+                        if ($sPermissionKey == 'superadmin') {
+                            ?> </span> <?php
+                        }; ?>
+                    </span>
+                    <?php if (!empty($aCRUDPermissions['warning'])) : ?>
+                        <i
+                            class="ri-error-warning-fill text-danger"
+                            tabindex="0"
+                            role="img"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="<?= CHtml::encode($aCRUDPermissions['warning']) ?>"
+                            aria-label="<?= CHtml::encode($aCRUDPermissions['warning']) ?>"
+                        ></i>
+                    <?php endif; ?>
                 </td>
 
                 <!-- checkbox  -->
@@ -78,6 +101,10 @@ Yii::app()->getController()->renderPartial(
         <?php endforeach; ?>
 
     </table>
+    <p class="text-muted small mb-0">
+        <i class="ri-information-line" aria-hidden="true"></i>
+        <?php eT("Hover over a permission title to see a detailed explanation."); ?>
+    </p>
     <div class="row ls-space margin top-25">
        <?php if (safecount(Permission::model()->getUserRole($oUser->uid)) > 0) : ?>
             <?php
