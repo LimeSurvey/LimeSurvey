@@ -41,6 +41,20 @@
 class TemplateConfiguration extends TemplateConfig
 {
     /**
+     * Configuration attributes whose complete value can be inherited.
+     * Options are handled separately because each option can inherit independently.
+     */
+    private const INHERITABLE_RENDERING_ATTRIBUTES = [
+        'files_css',
+        'files_js',
+        'files_print_css',
+        'cssframework_name',
+        'cssframework_css',
+        'cssframework_js',
+        'packages_to_load',
+    ];
+
+    /**
      * @var TemplateConfiguration $oParentTemplate The parent template name
      * A template configuration, in the database, can inherit from another one.
      * This used to manage the different configuration levels for a very same template: global, survey group, survey
@@ -1329,6 +1343,39 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * Resolve complete-field inheritance into the prepared model attributes.
+     *
+     * Database-backed configuration objects retain the literal "inherit" value until
+     * rendering is prepared. Once prepared, consumers such as getAttributes() and
+     * serializers must see the same resolved values as regular property access.
+     *
+     * @return void
+     */
+    protected function resolveInheritedRenderingAttributes()
+    {
+        foreach (self::INHERITABLE_RENDERING_ATTRIBUTES as $attribute) {
+            $configuration = $this;
+            $value = $configuration->getAttribute($attribute);
+            $visited = [spl_object_id($configuration) => true];
+
+            while ($value === 'inherit') {
+                $parent = $configuration->getParentConfiguration();
+                $parentId = spl_object_id($parent);
+
+                if ($parent === $configuration || isset($visited[$parentId])) {
+                    break;
+                }
+
+                $visited[$parentId] = true;
+                $configuration = $parent;
+                $value = $configuration->getAttribute($attribute);
+            }
+
+            $this->setAttribute($attribute, $value);
+        }
+    }
+
+    /**
      * @todo document me
      * @return void
      */
@@ -1773,6 +1820,7 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
+        $this->resolveInheritedRenderingAttributes();
         $this->setMotherTemplates(); // Recursive mother templates configuration
         $this->setThisTemplate(); // Set the main config values of this template
         $this->createTemplatePackage($this); // Create an asset package ready to be loaded
