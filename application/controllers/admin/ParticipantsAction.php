@@ -900,10 +900,16 @@ class ParticipantsAction extends SurveyCommonAction
     /**
      * Uploads the file to the server and process it for valid entries and import them into database
      * Also creates attributes from the mapping drag-n-drop form.
+     * Existing participants the current user is not allowed to update (no global 'update' permission,
+     * or no ownership/share on that specific participant) are reported separately instead of being
+     * silently skipped or silently overwritten.
+     *
+     * @return void
      */
     public function uploadCSV()
     {
         $this->checkPermission('import');
+        $hasUpdatePermission = Permission::model()->hasGlobalPermission('participantpanel', 'update');
 
         unset(Yii::app()->session['summary']);
         $mappedarray = Yii::app()->request->getPost('mappedarray', false);
@@ -919,6 +925,7 @@ class ParticipantsAction extends SurveyCommonAction
         $overwritten = 0;
         $dupreason = "nameemail"; //Default duplicate comparison method
         $duplicatelist = array();
+        $noPermissionList = array();
         $invalidemaillist = array();
         $invalidformatlist = array();
         $invalidattribute = array();
@@ -1042,10 +1049,15 @@ class ParticipantsAction extends SurveyCommonAction
                     ];
                 }
                 $existingParticipant = Participant::model()->findByAttributes($duplicateCriteriaAttributes);
+                $noPermissionForExisting = false;
                 if (!empty($existingParticipant)) {
                     $thisduplicate = 1;
                     $dupcount++;
-                    if ($overwrite == "true") {
+                    $canUpdateExisting = $hasUpdatePermission && Participant::model()->isOwner($existingParticipant->participant_id);
+                    if ($overwrite == "true" && !$canUpdateExisting) {
+                        // The user requested an overwrite but has no update permission on this particular participant
+                        $noPermissionForExisting = true;
+                    } elseif ($overwrite == "true") {
                         // We want all the non filtering internal attributes to be updated,too
                         foreach ($writearray as $attribute => $value) {
                             if (in_array($attribute, ['firstname', 'lastname', 'email'])) {
@@ -1076,7 +1088,12 @@ class ParticipantsAction extends SurveyCommonAction
                 }
                 if ($thisduplicate == 1) {
                     $dupfound = true;
-                    $duplicatelist[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                    $duplicateLabel = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                    if ($noPermissionForExisting) {
+                        $noPermissionList[] = $duplicateLabel;
+                    } else {
+                        $duplicatelist[] = $duplicateLabel;
+                    }
                 }
 
                 //Checking the email address is in a valid format
@@ -1166,6 +1183,7 @@ class ParticipantsAction extends SurveyCommonAction
         $aData = array();
         $aData['recordcount'] = $recordcount - 1;
         $aData['duplicatelist'] = $duplicatelist;
+        $aData['noPermissionList'] = $noPermissionList;
         $aData['mincriteria'] = $mincriteria;
         $aData['imported'] = $imported;
         $aData['errorinupload'] = $errorinupload;
