@@ -654,6 +654,14 @@ $config['restrictToLanguages'] = '';
 * @var string
 */
 $config['RPCInterface'] = 'off';
+
+/**
+* This parameter enables/disables the 'Access-Control-Allow-Origin: *' header on the RPC interface
+* Set to 1 to allow browser-based applications on other domains to use the RPC interface (CORS)
+* Set to 0 if the RPC interface is only used by server-side scripts or from the same domain
+* Can be changed in Global settings > Interfaces
+* @var integer
+*/
 $config['add_access_control_header'] = 1;
 
 /**
