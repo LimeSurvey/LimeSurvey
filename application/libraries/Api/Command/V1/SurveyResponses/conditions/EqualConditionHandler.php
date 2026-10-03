@@ -29,10 +29,9 @@ class EqualConditionHandler implements HandlerInterface
 
         foreach ($key as $rawKey) {
             $quotedKey = $this->sanitizeKey($rawKey);
-            $strippedKey = $this->stripKey($quotedKey);
-
-            $conditions[] = "$quotedKey = :{$strippedKey}Value";
-            $params[":{$strippedKey}Value"] = $value;
+            $paramName = $this->nextParamName();
+            $conditions[] = "$quotedKey = $paramName";
+            $params[$paramName] = $value;
         }
 
         $criteria->condition = implode(' OR ', $conditions);

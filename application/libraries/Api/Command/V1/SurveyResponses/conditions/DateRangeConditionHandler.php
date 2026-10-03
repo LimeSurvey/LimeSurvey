@@ -35,17 +35,18 @@ class DateRangeConditionHandler implements HandlerInterface
 
         $criteria = new \CDbCriteria();
 
-        $keyStripped = $this->stripKey($key);
+        $minParam = $this->nextParamName();
+        $maxParam = $this->nextParamName();
 
         if ($min === false) {
-            $criteria->condition = "$key <= :{$keyStripped}Max";
-            $criteria->params = [":{$keyStripped}Max" => $max];
+            $criteria->condition = "$key <= $maxParam";
+            $criteria->params = [$maxParam => $max];
         } elseif ($max === false) {
-            $criteria->condition = "$key >= :{$keyStripped}Min";
-            $criteria->params = [":{$keyStripped}Min" => $min];
+            $criteria->condition = "$key >= $minParam";
+            $criteria->params = [$minParam => $min];
         } else {
-            $criteria->condition = "$key BETWEEN :{$keyStripped}Min AND :{$keyStripped}Max";
-            $criteria->params = [":{$keyStripped}Min" => $min, ":{$keyStripped}Max" => $max];
+            $criteria->condition = "$key BETWEEN $minParam AND $maxParam";
+            $criteria->params = [$minParam => $min, $maxParam => $max];
         }
 
         return $criteria;
