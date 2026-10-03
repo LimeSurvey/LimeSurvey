@@ -2,6 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 import { SubquestionCodeInput } from '../../subquestionCodeComponents'
+import { AssessmentValueInput } from '../../AssessmentValueInput'
 import { DragIcon, CloseCircleFillIcon } from 'components/icons'
 import { useAppState, useSurvey } from 'hooks'
 import {
@@ -14,6 +15,7 @@ import { getTooltipMessages } from 'helpers/options'
 import { ArraySubQuestionRadioAnswers } from './ArraySubQuestionRadioAnswers'
 import { ArraySubQuestionTextAnswers } from './ArraySubQuestionTextAnswers'
 import { ArraySubQuestionNumberAnswers } from './ArraySubQuestionNumberAnswers'
+import { ARRAY_ROW_GAP, ARRAY_ROW_LABEL_INSET } from '../arrayLayout'
 
 export const ArrayRow = ({
   questionThemeName,
@@ -37,6 +39,9 @@ export const ArrayRow = ({
   isNoAnswer = false,
   code,
   scaleId,
+  showAssessmentValue = false,
+  assessmentValue,
+  handleAssessmentValueUpdate = () => {},
   isTitleFocused,
   id = '',
 }) => {
@@ -47,6 +52,8 @@ export const ArrayRow = ({
   const showQNumCode = survey.showQNumCode
   const isArrayByColumn =
     questionThemeName === getQuestionTypeInfo().ARRAY_COLUMN.theme
+  const showCode =
+    isFocused && showQuestionCode && showQNumCode?.showNumber && scaleId < 1
 
   return (
     <div>
@@ -72,17 +79,14 @@ export const ArrayRow = ({
             />
           </div>
         )}
-        <div>
-          {isFocused &&
-            showQuestionCode &&
-            showQNumCode?.showNumber &&
-            scaleId < 1 && (
-              <SubquestionCodeInput
-                isSurveyActive={isSurveyActive}
-                code={code}
-                onChange={(e) => handleCodeUpdate(e.target.value, index)}
-              />
-            )}
+        <div className="array-question-code">
+          {showCode && (
+            <SubquestionCodeInput
+              isSurveyActive={isSurveyActive}
+              code={code}
+              onChange={(e) => handleCodeUpdate(e.target.value, index)}
+            />
+          )}
         </div>
 
         <TooltipContainer
@@ -109,13 +113,15 @@ export const ArrayRow = ({
           style={{
             minWidth: showContentEditor
               ? highestWidth +
-                dragIconSize +
-                (isNoAnswer && isFocused && showQNumCode?.showNumber ? 80 : 0)
+                ARRAY_ROW_LABEL_INSET +
+                (isNoAnswer && isFocused && showQNumCode?.showNumber ? 90 : 0)
               : '100px',
             maxWidth: !showContentEditor && '100px',
             display: showContentEditor ? 'flex' : 'none',
+            // The code tag (when shown) already reserves the drag handle.
+            paddingLeft: showCode ? ARRAY_ROW_GAP : ARRAY_ROW_LABEL_INSET,
           }}
-          className="ps-3 flex-row justify-content-start"
+          className="flex-row justify-content-start"
         >
           <ContentEditor
             placeholder={placeholder}
@@ -200,6 +206,15 @@ export const ArrayRow = ({
               </React.Fragment>
             ))}
         </div>
+        {showAssessmentValue && !isNoAnswer && (
+          <div className="array-row-assessment-value">
+            <AssessmentValueInput
+              assessmentValue={assessmentValue}
+              answerCode={code}
+              onChange={(e) => handleAssessmentValueUpdate(e.target.value)}
+            />
+          </div>
+        )}
       </div>
     </div>
   )
