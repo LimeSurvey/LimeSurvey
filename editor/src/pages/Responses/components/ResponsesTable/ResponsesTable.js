@@ -65,6 +65,8 @@ export const ResponsesTable = ({
   const [columns, setColumns] = useState([])
   const [rowSelection, setRowSelection] = useState({})
   const [persistentSelection, setPersistentSelection] = useState({})
+  const [persistentSelectionHasFiles, setPersistentSelectionHasFiles] =
+    useState({})
   const clickedRowRef = useRef({})
   const isBulkActionRef = useRef(false)
   const openedDeepLinkRef = useRef(null)
@@ -112,6 +114,24 @@ export const ResponsesTable = ({
       Object.keys(newSelection).forEach((id) => {
         if (newSelection[id]) {
           updated[id] = true
+        }
+      })
+
+      return updated
+    })
+
+    // Track, per response id, whether it has files, so bulk actions (like
+    // "Download files") can be evaluated against the whole selection
+    // instead of only the last clicked row.
+    setPersistentSelectionHasFiles((prev) => {
+      const updated = { ...prev }
+
+      data.forEach((row) => {
+        const id = row?.id === undefined ? '' : String(row.id)
+        if (!newSelection[id]) {
+          delete updated[id]
+        } else {
+          updated[id] = !!row.hasFiles
         }
       })
 
@@ -305,6 +325,7 @@ export const ResponsesTable = ({
   useEffect(() => {
     setRowSelection({})
     setPersistentSelection({})
+    setPersistentSelectionHasFiles({})
   }, [sorting, columnsFilters])
 
   // Restore checkboxes from persistentSelection when page data changes
@@ -318,6 +339,20 @@ export const ResponsesTable = ({
       }
     })
     setRowSelection(restoredSelection)
+
+    // Reconcile hasFiles for already-selected responses against the latest
+    // data, in case it changed (e.g. attachments deleted) without the
+    // selection itself changing.
+    setPersistentSelectionHasFiles((prev) => {
+      const updated = { ...prev }
+      data.forEach((row) => {
+        const id = row?.id === undefined ? '' : String(row.id)
+        if (persistentSelection[id]) {
+          updated[id] = !!row.hasFiles
+        }
+      })
+      return updated
+    })
   }, [data])
 
   const handleResponseDelete = () => {
@@ -328,11 +363,13 @@ export const ResponsesTable = ({
   const handleDownloadAllFiles = (isBulkActions = true) => {
     const row = clickedRowRef.current
     const currentSelectedRowId = row.original?.id
-    const hasFiles = row.original?.hasFiles
     const selectedRowsIds = Object.keys(persistentSelection)
     const responseIdsToDownload = isBulkActions
       ? selectedRowsIds
       : [currentSelectedRowId]
+    const hasFiles = isBulkActions
+      ? selectedRowsIds.some((id) => persistentSelectionHasFiles[id])
+      : row.original?.hasFiles
 
     if (hasFiles) {
       window.open(
