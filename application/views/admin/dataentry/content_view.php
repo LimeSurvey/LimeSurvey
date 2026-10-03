@@ -421,7 +421,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         </script>
 
         <table border='0'>
-                <?php if ($qidattributes['show_title'] && $qidattributes['show_title']) { ?>
+                <?php if ($qidattributes['show_title'] && $qidattributes['show_comment']) { ?>
                 <tr><th>Title</th><th>Comment</th>
                 <?php } elseif ($qidattributes['show_title']) { ?>
                     <tr><th>Title</th>
@@ -433,15 +433,13 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
                 <?php for ($i = 0; $i < $maxfiles; $i++) { ?>
                 <tr>
-                    <?php if ($qidattributes['show_title']) {
-                        ;
-                    }  ?>
+                    <?php if ($qidattributes['show_title']) { ?>
                     <td align='center'><input type='text' id='<?php echo $fieldname; ?>_title_<?php echo $i; ?>' maxlength='100' onChange='updateJSON<?php echo $fieldname; ?>()' /></td>
+                    <?php } ?>
 
-                    <?php if ($qidattributes['show_comment']) {
-                        ;
-                    } ?>
+                    <?php if ($qidattributes['show_comment']) { ?>
                     <td align='center'><input type='text' id='<?php echo $fieldname; ?>_comment_<?php echo $i; ?>' maxlength='100' onChange='updateJSON<?php echo $fieldname; ?>()' /></td>
+                    <?php } ?>
 
                     <td align='center'><input type='file' name='<?php echo $fieldname; ?>_file_<?php echo $i; ?>' id='<?php echo $fieldname; ?>_file_<?php echo $i; ?>' onChange='updateJSON<?php echo $fieldname; ?>()' /></td></tr>
                 <?php } ?>
