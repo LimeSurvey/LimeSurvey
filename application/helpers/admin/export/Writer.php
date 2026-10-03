@@ -245,6 +245,65 @@ abstract class Writer implements IWriter
     }
 
     /**
+     * Extracts the raw value for a single export column from a response row.
+     *
+     * Per-rank-position ranking fields (registered dynamically by
+     * ExportSurveyResultsService::expandRankingColumns(), with their own
+     * 'qid'/'aid' but no column of their own) have no matching key in
+     * $aResponse: the response row only carries the base "Q{qid}" JSON column
+     * (the ranked list of subquestion codes, ordered by rank). For those
+     * fields, this decodes that JSON and returns the code at the field's rank
+     * position ('aid', 1-based) instead.
+     *
+     * @param SurveyObj $oSurvey
+     * @param array $aResponse
+     * @param string $column
+     * @return mixed
+     */
+    protected function extractColumnValue(SurveyObj $oSurvey, array $aResponse, $column)
+    {
+        $field = $oSurvey->fieldMap[$column] ?? null;
+        if ($field !== null && $field['type'] === Question::QT_R_RANKING && $field['suffix'] !== '') {
+            $rankedCodes = $this->decodeRankedCodes($aResponse['Q' . $field['qid']] ?? null);
+            return ($rankedCodes !== null && isset($rankedCodes[$field['aid'] - 1])) ? $rankedCodes[$field['aid'] - 1] : null;
+        }
+        return $aResponse[$column] ?? null;
+    }
+
+    /**
+     * Decodes a ranking question's raw JSON-array column value into a plain
+     * list of subquestion codes, or null if it isn't one.
+     *
+     * Decodes without the "assoc" flag so a JSON object (e.g. "{...}") always
+     * comes back as a stdClass and fails the is_array() check below, rather
+     * than risking being coerced into something that looks like a sequential
+     * array. Only a non-empty array whose every element is a string is
+     * accepted; anything else (a non-string/empty raw value, invalid JSON, an
+     * object, an empty array, or an array containing a non-string element,
+     * including nested arrays/objects) returns null so it can never reach
+     * ranking or question-title resolution downstream.
+     *
+     * @param mixed $rawValue
+     * @return string[]|null
+     */
+    private function decodeRankedCodes($rawValue)
+    {
+        if (!is_string($rawValue) || $rawValue === '') {
+            return null;
+        }
+        $decoded = json_decode($rawValue);
+        if (!is_array($decoded) || $decoded === []) {
+            return null;
+        }
+        foreach ($decoded as $code) {
+            if (!is_string($code)) {
+                return null;
+            }
+        }
+        return $decoded;
+    }
+
+    /**
      * This method is made final to prevent extending code from circumventing the
      * initialization process that must take place prior to any of the translation
      * infrastructure to work.
@@ -319,7 +378,7 @@ abstract class Writer implements IWriter
             $elementArray = [];
 
             foreach ($oOptions->selectedColumns as $column) {
-                $value = $aResponse[$column];
+                $value = $this->extractColumnValue($oSurvey, $aResponse, $column);
                 if (isset($oSurvey->fieldMap[$column]) && $oSurvey->fieldMap[$column]['type'] != 'answer_time' && $oSurvey->fieldMap[$column]['type'] != 'page_time' && $oSurvey->fieldMap[$column]['type'] != 'interview_time') {
                     switch ($oOptions->answerFormat) {
                         case 'long':
