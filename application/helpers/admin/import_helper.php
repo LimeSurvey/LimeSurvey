@@ -591,6 +591,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
         }
     }
 
+    convertLegacyMapQuestions($importedQuestions);
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $importlanguages, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
@@ -1196,6 +1197,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
         $results['question_attributes']++;
     }
+
+    convertLegacyMapQuestions($importedQuestions);
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
@@ -3175,6 +3178,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
+    convertLegacyMapQuestions($importedQuestions);
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
@@ -5399,4 +5403,47 @@ function convertRankingSubquestionType(array &$insertdata, array $importedQuesti
     ) {
         $insertdata['type'] = Question::QT_R_RANKING;
     }
+}
+
+/**
+ * Convert imported legacy map questions (Short text with a map service enabled) to the Map question type.
+ * Mirrors the Update_719 database migration.
+ *
+ * @param Question[] $importedQuestions Imported parent questions keyed by new qid (updated in place)
+ * @return int[] The converted question ids
+ */
+function convertLegacyMapQuestions(array $importedQuestions): array
+{
+    if (empty($importedQuestions)) {
+        return [];
+    }
+    $mapQuestionIds = App()->db->createCommand()
+        ->select('q.qid')
+        ->from('{{questions}} q')
+        ->join('{{question_attributes}} qa', 'qa.qid = q.qid')
+        ->where(['in', 'q.qid', array_map('intval', array_keys($importedQuestions))])
+        ->andWhere('q.parent_qid = 0')
+        ->andWhere('q.type = :type', [':type' => Question::QT_S_SHORT_FREE_TEXT])
+        ->andWhere('qa.attribute = :attribute', [':attribute' => 'location_mapservice'])
+        ->andWhere("qa.value IN ('1', '100')")
+        ->group('q.qid')
+        ->queryColumn();
+
+    if (empty($mapQuestionIds)) {
+        return [];
+    }
+
+    $criteria = new CDbCriteria();
+    $criteria->addInCondition('qid', $mapQuestionIds);
+    Question::model()->updateAll(
+        ['type' => Question::QT_J_MAP, 'question_theme_name' => 'map'],
+        $criteria
+    );
+    foreach ($mapQuestionIds as $qid) {
+        if (isset($importedQuestions[$qid])) {
+            $importedQuestions[$qid]->type = Question::QT_J_MAP;
+            $importedQuestions[$qid]->question_theme_name = 'map';
+        }
+    }
+    return array_map('intval', $mapQuestionIds);
 }
