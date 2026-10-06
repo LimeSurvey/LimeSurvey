@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch\Response;
 
+use LimeSurvey\Models\Services\Exception as ServiceException;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 
@@ -48,6 +49,11 @@ class SurveyResponse
     }
 
     /**
+     * Adds the error message of an exception thrown during an operation
+     * to the response, together with the full operation info.
+     * If the exception carries a model with validation errors, those
+     * validation messages are used instead of the generic exception message.
+     *
      * @param \Exception $e
      * @param OpInterface $patchOpData
      * @return void
@@ -56,13 +62,35 @@ class SurveyResponse
     {
         // add error message and full operation info to ErrorItemList
         $exceptionErrorItem = new ExceptionErrorItem(
-            $e->getMessage(),
+            $this->getExceptionMessage($e),
             (int)$e->getCode(),
             $patchOpData
         );
         $this->exceptionErrors->addExceptionErrorItem(
             $exceptionErrorItem
         );
+    }
+
+    /**
+     * Returns the validation messages of the model attached to the exception,
+     * or the exception message if there are none.
+     *
+     * @param \Exception $e
+     * @return string
+     */
+    private function getExceptionMessage(\Exception $e): string
+    {
+        if ($e instanceof ServiceException) {
+            $errorModel = $e->getErrorModel();
+            if ($errorModel && $errorModel->hasErrors()) {
+                $messages = [];
+                foreach ($errorModel->getErrors() as $attributeErrors) {
+                    $messages = array_merge($messages, $attributeErrors);
+                }
+                return implode(' ', array_unique($messages));
+            }
+        }
+        return $e->getMessage();
     }
 
     public function incrementOperationsApplied(): void
