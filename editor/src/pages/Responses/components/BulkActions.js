@@ -46,7 +46,7 @@ export const BulkActions = ({
         <UploadIcon className="bulk-icon primary" />
         {t('Export')}
       </Button> */}
-      <Button onClick={onDownloadFilesClick} variant="none">
+      <Button onClick={() => onDownloadFilesClick(true)} variant="none">
         <DownloadIcon fill="currentColor" className="bulk-icon" />
         {t('Download files')}
       </Button>
