@@ -25,7 +25,7 @@
         <div class='mb-3'>
             <label class='form-label col-12'><?php eT('Scenario'); ?></label>
             <div class='add-scenario-column col-12  ls-space padding bottom-15'>
-                <input class='form-control' type='number' name='scenario' id='scenario' value='<?php echo ($addConditionToScenarioNr ? $addConditionToScenarioNr : '1'); ?>' <?php if ($showScenario) :
+                <input class='form-control' type='number' name='scenario' id='scenario' value='<?php echo CHtml::encode($addConditionToScenarioNr ? $addConditionToScenarioNr : '1'); ?>' <?php if ($showScenario) :
                     ?> style='display: none;' <?php
                                                                                                endif;?>/>
                 <?php if ($showScenario) :?>
