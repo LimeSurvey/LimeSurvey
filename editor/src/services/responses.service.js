@@ -21,12 +21,14 @@ export class ResponseService {
       pagination: { pageIndex: 0, pageSize: 10 },
       filters: [],
       sorting: [],
+      filterSet: [],
     }
   ) => {
     const {
       pagination = { pageIndex: 0, pageSize: 10 },
       filters = [],
       sorting = [],
+      filterSet = [],
     } = options
 
     const body = {
@@ -36,6 +38,13 @@ export class ResponseService {
       },
       sort: {},
       filters: [],
+    }
+
+    // The condition-designer filter. Sent only when there is one, so requests
+    // without it stay exactly as they were. It combines with the column
+    // filters above rather than replacing them.
+    if (filterSet.length > 0) {
+      body.filterSet = filterSet
     }
 
     if (sorting.length > 0 && sorting[0].id) {
