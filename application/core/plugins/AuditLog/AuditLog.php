@@ -89,7 +89,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         // Whether non-superadmin survey admins may disable per-survey auditing
         'AuditLog_AllowNonSuperadminDisable' => array(
             'type' => 'checkbox',
-            'label' => 'Allow survey admins to disable the audit log for their surveys',
+            'label' => 'Allow non survey admins to disable the audit log for their surveys',
             'default' => '0',
             'help' => 'If enabled, any user with survey settings update permission may disable auditing for that survey; otherwise only superadmins can.'
         ),
@@ -684,14 +684,32 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $pluginsettings = $this->getPluginSettings(true);
 
         foreach ($event->get('settings') as $name => $value) {
-            // If an attempt is made to disable auditing, enforce plugin policy
-            if ($name === 'auditing' && (int)$value === 0) {
-                // If global setting forbids non-superadmin disabling, only superadmins may disable
-                $allowNonSuperDisable = isset($pluginsettings['AuditLog_AllowNonSuperadminDisable']['current']) && $pluginsettings['AuditLog_AllowNonSuperadminDisable']['current'] == 1;
-                if (!$allowNonSuperDisable && !Permission::model()->hasGlobalPermission('superadmin')) {
-                    App()->setFlashMessage(gT('You are not allowed to disable the audit log for this survey.'), 'error');
-                    continue; // skip applying this setting
+            if ($name === 'auditing') {
+                $currentAuditingSetting = $this->get('auditing', 'Survey', $iSurveyID, 1);
+
+                // If an attempt is made to disable auditing, enforce plugin policy
+                if ((int)$value === 0) {
+                    if ($currentAuditingSetting == 1) {
+                        // If global setting forbids non-superadmin disabling, only superadmins may disable
+                        $allowNonSuperDisable = isset($pluginsettings['AuditLog_AllowNonSuperadminDisable']['current']) && $pluginsettings['AuditLog_AllowNonSuperadminDisable']['current'] == 1;
+                        if (!$allowNonSuperDisable && !Permission::model()->hasGlobalPermission('superadmin')) {
+                            App()->setFlashMessage(gT('You are not allowed to disable the audit log for this survey.'), 'error');
+                            continue; // skip applying (and logging) this setting
+                        }
+                    }
                 }
+
+                // If the security check passes, log any change in the auditing setting
+                $oCurrentUser = $this->api->getCurrentUser();
+                $oAutoLog = $this->api->newModel($this, 'log');
+                $oAutoLog->uid = $oCurrentUser->uid;
+                $oAutoLog->entity = 'survey';
+                $oAutoLog->entityid = $iSurveyID;
+                $oAutoLog->action = 'update';
+                $oAutoLog->oldvalues = json_encode(['auditing' => $currentAuditingSetting]);
+                $oAutoLog->newvalues = json_encode(['auditing' => $value]);
+                $oAutoLog->fields = "auditing";
+                $oAutoLog->save();
             }
 
             $this->set($name, $value, 'Survey', $iSurveyID);
@@ -706,7 +724,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         if (!is_null($oModifiedSurvey)) {
             $iSurveyID = $oModifiedSurvey->sid;
 
-            if (!$this->checkSetting('AuditLog_Log_SurveySettings') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+            if (!$this->checkSetting('AuditLog_Log_SurveySettings')) {
                 return;
             }
 
@@ -716,6 +734,14 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
 
             $oldAttributes = $oldSurvey->getAttributes();
             $diff = array_diff_assoc($newAttributes, $oldAttributes);
+
+            // check whether 'auditing' is currently enabled for the survey
+            $auditingEnabled = (bool) $this->get('auditing', 'Survey', $iSurveyID, true);
+
+            if (!$auditingEnabled) {
+                return;
+            }
+
             if (count($diff) > 0) {
                 $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid = $oCurrentUser->uid;
@@ -724,10 +750,9 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
                 $oAutoLog->action = 'update';
                 $oAutoLog->oldvalues = json_encode(array_diff_assoc($oldAttributes, $newAttributes));
                 $oAutoLog->newvalues = json_encode($diff);
-                #$oAutoLog->fields=json_encode($diff);
                 $oAutoLog->fields = implode(',', array_keys($diff));
                 $oAutoLog->save();
             }
-        }        
+        }
     }
 }
