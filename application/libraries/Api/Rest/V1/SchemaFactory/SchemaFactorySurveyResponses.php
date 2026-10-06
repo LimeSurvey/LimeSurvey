@@ -37,7 +37,10 @@ class SchemaFactorySurveyResponses
             ->properties(
                 $paginationSchema,
                 Schema::array('filters')->items(Schema::object()),
-                Schema::array('sort')->items(Schema::object())
+                Schema::array('sort')->items(Schema::object()),
+                Schema::integer('fileCount')
+                    ->description('Uploaded files matching the filters; only sent when requested with countFiles')
+                    ->example(6)
             );
 
         // Define the responses schema with examples

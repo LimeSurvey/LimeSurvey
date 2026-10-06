@@ -151,7 +151,8 @@ export class StatisticsService {
     language,
     fields,
     sort,
-    filters
+    filters,
+    countFiles = false
   ) => {
     const body = { page: { currentPage, pageSize } }
     if (language) {
@@ -166,12 +167,16 @@ export class StatisticsService {
     if (Array.isArray(filters) && filters.length) {
       body.filters = filters
     }
+    if (countFiles) {
+      body.countFiles = true
+    }
 
     const data = await this.restClient.post(`survey-responses/${sid}`, body)
 
     return {
       answers: flattenAnswers(data?.responses),
       pagination: data?._meta?.pagination || null,
+      fileCount: data?._meta?.fileCount ?? null,
     }
   }
 
@@ -282,9 +287,10 @@ export class StatisticsService {
     fields,
     statisticsFilters,
     search,
-    expandTerm
+    expandTerm,
+    countFiles = false
   ) => {
-    const { answers, pagination } = await this.fetchQuestionAnswers(
+    const { answers, pagination, fileCount } = await this.fetchQuestionAnswers(
       sid,
       questionCode,
       currentPage,
@@ -304,7 +310,8 @@ export class StatisticsService {
           fields,
           expandTerm
         ),
-      ]
+      ],
+      countFiles
     )
 
     // Columns in first-seen (field map) order; rows grouped by response.
@@ -346,6 +353,7 @@ export class StatisticsService {
       columns: columnOrder.map((key) => columnByKey[key]),
       rows: rowOrder.map((id) => rowByResponse[id]),
       pagination,
+      fileCount,
     }
   }
 }

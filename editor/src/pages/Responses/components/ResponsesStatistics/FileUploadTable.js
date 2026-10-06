@@ -53,6 +53,21 @@ const formatFileSize = (sizeKb) => {
 const fileUrl = (surveyId, responseId, questionId, index, inline = false) =>
   `${location.origin}/responses/downloadfile?surveyId=${surveyId}&responseId=${responseId}&qid=${questionId}&index=${index}${inline ? '&inline=1' : ''}`
 
+// Mirrors HighlightedText: a file is listed only when a term is highlighted in it.
+const matchesTerms = (file, terms) => {
+  if (!terms.length) {
+    return true
+  }
+  const haystacks = [
+    file.name,
+    htmlToPlainText(file.title),
+    htmlToPlainText(file.comment),
+  ].map((text) => String(text ?? '').toLowerCase())
+  return terms.some((term) =>
+    haystacks.some((text) => text.includes(term.toLowerCase()))
+  )
+}
+
 const parseFiles = (value) => {
   if (!value || typeof value !== 'string') {
     return []
@@ -135,6 +150,7 @@ export const FileUploadTable = ({
     filters,
     search,
     expandTerm: searchAlternatives,
+    countFiles: true,
   })
 
   const answerKey = columns[0]?.key
@@ -159,8 +175,9 @@ export const FileUploadTable = ({
               size: file.size,
             }
           })
+          .filter((file) => matchesTerms(file, highlightTerms))
       ),
-    [rows, answerKey]
+    [rows, answerKey, highlightTerms]
   )
 
   const tableColumns = useMemo(

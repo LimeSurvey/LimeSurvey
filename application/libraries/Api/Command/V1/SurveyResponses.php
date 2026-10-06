@@ -153,21 +153,127 @@ class SurveyResponses implements CommandInterface
         $totalItems = $dataProvider->getTotalItemCount();
         $pageSize = max(1, $pagination['pageSize'] ?? 1);
 
+        $meta = [
+            'pagination' => [
+                'pageSize' => $pageSize,
+                'currentPage' => $pagination['currentPage'],
+                'totalItems' => $totalItems,
+                'totalPages' => (int) ceil($totalItems / $pageSize),
+            ],
+            'filters' => $request->getData('filters', []),
+            'sort' => $request->getData('sort', []),
+        ];
+        if ($request->getData('countFiles')) {
+            $meta['fileCount'] = $this->countUploadedFiles($model, $criteria, $request);
+        }
+
         return [
             'responses' => $responses,
             'surveyQuestions' => $surveyQuestions,
             'timingFields' => $timingFields,
-            '_meta' => [
-                'pagination' => [
-                    'pageSize' => $pageSize,
-                    'currentPage' => $pagination['currentPage'],
-                    'totalItems' => $totalItems,
-                    'totalPages' => (int) ceil($totalItems / $pageSize),
-                ],
-                'filters' => $request->getData('filters', []),
-                'sort' => $request->getData('sort', []),
-            ],
+            '_meta' => $meta,
         ];
+    }
+
+    /**
+     * Number of (non-deleted) uploaded files in the requested file upload
+     * columns across every matching response, not only the current page.
+     * With `contain` filters on those columns, only files whose name, title
+     * or comment contains one of the terms are counted.
+     *
+     * @param \SurveyDynamic $model
+     * @param \LSDbCriteria $criteria
+     * @param Request $request
+     * @return int
+     */
+    protected function countUploadedFiles(\SurveyDynamic $model, \LSDbCriteria $criteria, Request $request): int
+    {
+        $fileColumns = array_keys(array_filter(
+            array_intersect_key(
+                $this->transformerOutputSurveyResponses->fieldMap,
+                array_flip((array) $request->getData('fields', []))
+            ),
+            static fn($field) => ($field['type'] ?? '') === \Question::QT_VERTICAL_FILE_UPLOAD
+                && ($field['aid'] ?? '') !== 'filecount'
+        ));
+        if ($fileColumns === []) {
+            return 0;
+        }
+
+        $terms = $this->getContainTerms($request, $fileColumns);
+        $countCriteria = clone $criteria;
+        $countCriteria->select = array_map([\Yii::app()->db, 'quoteColumnName'], $fileColumns);
+        $rows = $model->getCommandBuilder()
+            ->createFindCommand($model->tableName(), $countCriteria)
+            ->query();
+
+        $count = 0;
+        foreach ($rows as $row) {
+            foreach ($fileColumns as $column) {
+                $files = json_decode((string) ($row[$column] ?? ''), true);
+                if (!is_array($files)) {
+                    continue;
+                }
+                foreach ($files as $file) {
+                    if (empty($file['isDeleted']) && $this->fileMatchesTerms($file, $terms)) {
+                        $count++;
+                    }
+                }
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param Request $request
+     * @param string[] $fileColumns
+     * @return string[]
+     */
+    private function getContainTerms(Request $request, array $fileColumns): array
+    {
+        $terms = [];
+        foreach ((array) $request->getData('filters', []) as $filter) {
+            if (
+                strtolower((string) ($filter['filterMethod'] ?? '')) !== 'contain'
+                || !array_intersect((array) ($filter['key'] ?? []), $fileColumns)
+            ) {
+                continue;
+            }
+            foreach ((array) ($filter['value'] ?? []) as $value) {
+                $value = trim((string) $value);
+                if ($value !== '') {
+                    $terms[] = $value;
+                }
+            }
+        }
+
+        return $terms;
+    }
+
+    /**
+     * @param array $file
+     * @param string[] $terms
+     * @return bool
+     */
+    private function fileMatchesTerms(array $file, array $terms): bool
+    {
+        if ($terms === []) {
+            return true;
+        }
+        $haystacks = array_map(
+            static fn($text) => html_entity_decode(strip_tags((string) $text), ENT_QUOTES),
+            [rawurldecode((string) ($file['name'] ?? '')), $file['title'] ?? '', $file['comment'] ?? '']
+        );
+        foreach ($terms as $term) {
+            foreach ($haystacks as $haystack) {
+                if (mb_stripos($haystack, $term) !== false) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
