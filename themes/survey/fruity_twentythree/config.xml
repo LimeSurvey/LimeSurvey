@@ -157,10 +157,10 @@
         <cssframework type="dropdown" colorSwatch="true" category="Simple options" width="12" title="Theme color">Apple
             <dropdownoptions>
                 <optgroup>
-                    <option data-value="css/variations/theme_apple.css" value="apple" hexValue="#14AE5C">Apple</option>
-                    <option data-value="css/variations/theme_blueberry.css" value="blueberry" hexValue="#5076FF">Blueberry</option>
+                    <option data-value="css/variations/theme_apple.css" value="apple" hexValue="#0F8545">Apple</option>
+                    <option data-value="css/variations/theme_blueberry.css" value="blueberry" hexValue="#3D67FF">Blueberry</option>
                     <option data-value="css/variations/theme_grape.css" value="grape" hexValue="#8146F6">Grape</option>
-                    <option data-value="css/variations/theme_mango.css" value="mango" hexValue="#ED5046">Mango</option>
+                    <option data-value="css/variations/theme_mango.css" value="mango" hexValue="#E32416">Mango</option>
                 </optgroup>
             </dropdownoptions>
         </cssframework>

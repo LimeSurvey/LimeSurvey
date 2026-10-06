@@ -231,10 +231,10 @@ function survey_theme_ls6() {
 
 function survey_theme_ls6_rtl() {
     let variations = [
-        ["apple", "#14AE5C"],
-        ["blueberry", "#5076FF"],
+        ["apple", "#0F8545"],
+        ["blueberry", "#3D67FF"],
         ["grape", "#8146F6"],
-        ["mango", "#ED5046"],
+        ["mango", "#E32416"],
     ];
     let plugins = [
         autoprefixer(),
