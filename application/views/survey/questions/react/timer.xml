@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Editor UI overlay: merged by attribute name into the config.xml attributes of every question theme. -->
+<react>
+    <tab>Timer</tab>
+    <attributes>
+        <attribute>
+            <name>time_limit_timer_style</name>
+            <component>Input</component>
+            <caption>Time limit timer CSS style</caption>
+            <props>
+                <dataTestId>minimum-value</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_message_delay</name>
+            <component>Input</component>
+            <caption>Expiry message display time</caption>
+            <props>
+                <dataTestId>time-limit-expiry-message-display-time</dataTestId>
+                <rightInputText>sec</rightInputText>
+                <type>number</type>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_message</name>
+            <component>Input</component>
+            <caption>Expiry message</caption>
+            <props>
+                <as>textarea</as>
+                <type>textarea</type>
+                <role>textarea</role>
+                <rows>4</rows>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_message_style</name>
+            <component>Input</component>
+            <caption>Time limit message CSS style</caption>
+        </attribute>
+        <attribute>
+            <name>use_first_limit_warning</name>
+            <virtual>1</virtual>
+            <requires>
+                <name>time_limit_warning</name>
+            </requires>
+            <sortorder>107</sortorder>
+            <component>ToggleButtons</component>
+            <caption>1st time limit warning</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>1st-time-limit</id>
+                <dataTestId>1st-time-limit</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_warning</name>
+            <component>Input</component>
+            <caption>1st time limit warning timer</caption>
+            <dependsOn>
+                <attribute>use_first_limit_warning</attribute>
+            </dependsOn>
+            <onDependsToggle>
+                <onFalse></onFalse>
+            </onDependsToggle>
+            <props>
+                <rightInputText>sec</rightInputText>
+                <type>number</type>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_warning_display_time</name>
+            <component>Input</component>
+            <caption>1st time limit display timer</caption>
+            <dependsOn>
+                <attribute>use_first_limit_warning</attribute>
+            </dependsOn>
+            <onDependsToggle>
+                <onFalse></onFalse>
+            </onDependsToggle>
+            <props>
+                <dataTestId>first-time-limit-warning-timer</dataTestId>
+                <rightInputText>sec</rightInputText>
+                <type>number</type>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_warning_message</name>
+            <component>Input</component>
+            <caption>1st time limit message</caption>
+            <dependsOn>
+                <attribute>use_first_limit_warning</attribute>
+            </dependsOn>
+            <onDependsToggle>
+                <onFalse></onFalse>
+            </onDependsToggle>
+        </attribute>
+        <attribute>
+            <name>time_limit_warning_style</name>
+            <component>Input</component>
+            <caption>1st time limit message CSS style</caption>
+            <dependsOn>
+                <attribute>use_first_limit_warning</attribute>
+            </dependsOn>
+            <onDependsToggle>
+                <onFalse></onFalse>
+            </onDependsToggle>
+        </attribute>
+        <attribute>
+            <name>use_second_limit_warning</name>
+            <virtual>1</virtual>
+            <requires>
+                <name>time_limit_warning_2</name>
+            </requires>
+            <sortorder>115</sortorder>
+            <component>ToggleButtons</component>
+            <caption>2nd time limit warning</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>second-time-limit-warning</id>
+                <dataTestId>second-time-limit-warning</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_warning_2</name>
+            <component>Input</component>
+            <caption>2nd time limit warning timer</caption>
+            <dependsOn>
+                <attribute>use_second_limit_warning</attribute>
+            </dependsOn>
+            <onDependsToggle>
+                <onFalse></onFalse>
+            </onDependsToggle>
+            <props>
+                <dataTestId>second-time-limit-warning-timer</dataTestId>
+                <rightInputText>sec</rightInputText>
+                <type>number</type>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_warning_2_display_time</name>
+            <component>Input</component>
+            <caption>2nd time limit display timer</caption>
+            <dependsOn>
+                <attribute>use_second_limit_warning</attribute>
+            </dependsOn>
+            <onDependsToggle>
+                <onFalse></onFalse>
+            </onDependsToggle>
+            <props>
+                <dataTestId>second-time-limit-warning-timer</dataTestId>
+                <rightInputText>sec</rightInputText>
+                <type>number</type>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_warning_2_message</name>
+            <component>Input</component>
+            <caption>2nd time limit message</caption>
+            <dependsOn>
+                <attribute>use_second_limit_warning</attribute>
+            </dependsOn>
+            <onDependsToggle>
+                <onFalse></onFalse>
+            </onDependsToggle>
+            <props>
+                <as>textarea</as>
+                <type>textarea</type>
+                <role>textarea</role>
+                <rows>4</rows>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_warning_2_style</name>
+            <component>Input</component>
+            <caption>2nd time limit message CSS style</caption>
+            <dependsOn>
+                <attribute>use_second_limit_warning</attribute>
+            </dependsOn>
+            <onDependsToggle>
+                <onFalse></onFalse>
+            </onDependsToggle>
+        </attribute>
+        <attribute>
+            <name>time_limit</name>
+            <component>Input</component>
+            <caption>Time limit</caption>
+            <props>
+                <dataTestId>time-limit</dataTestId>
+                <rightInputText>sec</rightInputText>
+                <type>number</type>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_action</name>
+            <component>Select</component>
+            <caption>Time limit action</caption>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Warn and move on</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Move on without warning</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>Disable only</text>
+                </option>
+            </options>
+        </attribute>
+        <attribute>
+            <name>time_limit_disable_next</name>
+            <component>ToggleButtons</component>
+            <caption>Time limit disable next</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>time-limit-disable-next</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_disable_prev</name>
+            <component>ToggleButtons</component>
+            <caption>Time limit disable prev</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>time-limit-disable-prev</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>time_limit_countdown_message</name>
+            <component>Input</component>
+            <caption>Time limit countdown message</caption>
+            <props>
+                <as>textarea</as>
+                <type>textarea</type>
+                <role>textarea</role>
+                <rows>4</rows>
+            </props>
+        </attribute>
+    </attributes>
+</react>

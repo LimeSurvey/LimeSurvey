@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Editor UI overlay: merged by attribute name into the config.xml attributes of every question theme. -->
+<react>
+    <tab>Display</tab>
+    <attributes>
+        <attribute>
+            <name>image</name>
+            <virtual>1</virtual>
+            <always>1</always>
+            <sortorder>1</sortorder>
+            <component>ImageAttributes</component>
+        </attribute>
+        <attribute>
+            <name>page_break</name>
+            <component>ToggleButtons</component>
+            <caption>Page break in printable view</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>insert-page-break-in-printable-view</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>input_on_demand</name>
+            <component>ToggleButtons</component>
+            <caption>Input on demand</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <devOnly>1</devOnly>
+            <props>
+                <id>input-on-demand</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>slider_rating</name>
+            <component>Select</component>
+            <caption>Use slider layout</caption>
+            <optionsPreset>sliderLayout</optionsPreset>
+            <props>
+                <dataTestId>use_slider_layout</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>display_type</name>
+            <component>ToggleButtons</component>
+            <caption>Display type</caption>
+            <optionsPreset>displayButtonType</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>display-type</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>date_max</name>
+            <component>Input</component>
+            <caption>Maximum date</caption>
+            <props>
+                <type>date</type>
+                <id>maximum-date</id>
+                <inputClass>selected</inputClass>
+                <showClassWhenValue>1</showClassWhenValue>
+            </props>
+        </attribute>
+        <attribute>
+            <name>date_min</name>
+            <component>Input</component>
+            <caption>Minimum date</caption>
+            <props>
+                <type>date</type>
+                <id>minimum-date</id>
+                <inputClass>selected</inputClass>
+                <showClassWhenValue>1</showClassWhenValue>
+            </props>
+        </attribute>
+        <attribute>
+            <name>dropdown_dates_month_style</name>
+            <component>ToggleButtons</component>
+            <caption>Month display style</caption>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Short</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Full</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Numbers</text>
+                </option>
+            </options>
+            <default>0</default>
+            <props>
+                <id>month-display-style</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>dropdown_dates</name>
+            <component>ToggleButtons</component>
+            <caption>Display dropdown boxes</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>display-dropdown-boxes</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>add_platform_info</name>
+            <component>ToggleButtons</component>
+            <caption>Show platform information</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <optionsVariant>longString</optionsVariant>
+            <default>no</default>
+            <props>
+                <id>show-platform-information</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>multiflexible_min</name>
+            <component>Input</component>
+            <caption>Minimum value</caption>
+            <props>
+                <id>minimum-value</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>multiflexible_max</name>
+            <component>Input</component>
+            <caption>Maximum value</caption>
+            <props>
+                <id>maximum-value</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>answer_order</name>
+            <component>Select</component>
+            <caption>Answer options order</caption>
+            <optionsPreset>order</optionsPreset>
+            <props>
+                <dataTestId>answer-options-order</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>subquestion_order</name>
+            <component>Select</component>
+            <caption>Subquestions order</caption>
+            <optionsPreset>order</optionsPreset>
+            <props>
+                <dataTestId>subquestions-order</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>keep_codes_order</name>
+            <component>Input</component>
+            <caption>Keep codes at original positions</caption>
+            <props>
+                <dataTestId>keep-code-order</dataTestId>
+                <helpText>Semicolon-separated list of codes that keep their original database position when items are randomized.</helpText>
+            </props>
+        </attribute>
+        <attribute>
+            <name>visualize</name>
+            <component>Select</component>
+            <caption>Visualization</caption>
+            <optionsPreset>visualization</optionsPreset>
+            <devOnly>1</devOnly>
+            <props>
+                <dataTestId>visualization</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>samechoiceheight</name>
+            <component>ToggleButtons</component>
+            <caption>Same height for all answer options</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <default>1</default>
+            <props>
+                <id>same-height-for-all-answer-options</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>samelistheight</name>
+            <component>ToggleButtons</component>
+            <caption>Same height for lists</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <default>1</default>
+            <props>
+                <id>same-height-for-lists</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>prefix</name>
+            <component>Input</component>
+            <caption>Answer prefix</caption>
+            <props>
+                <dataTestId>answer-prefix</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>suffix</name>
+            <component>Input</component>
+            <caption>Answer suffix</caption>
+            <props>
+                <dataTestId>answer-suffix</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>choice_input_columns</name>
+            <component>Select</component>
+            <caption>Choice column width</caption>
+            <optionsPreset>columnWidth</optionsPreset>
+            <props>
+                <dataTestId>choice-column-width</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>reverse</name>
+            <component>ToggleButtons</component>
+            <caption>Reverse answer order</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>reverse-answer-order</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>showpopups</name>
+            <component>ToggleButtons</component>
+            <caption>Show javascript alert</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>1</default>
+            <props>
+                <id>show-javascript-alert</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>show_handle</name>
+            <component>ToggleButtons</component>
+            <caption>Show handle</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <optionsVariant>longString</optionsVariant>
+            <default>no</default>
+            <props>
+                <id>show-handle</id>
+                <name>show-handle</name>
+            </props>
+        </attribute>
+        <attribute>
+            <name>show_number</name>
+            <component>ToggleButtons</component>
+            <caption>Show number</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <optionsVariant>longString</optionsVariant>
+            <default>no</default>
+            <props>
+                <id>show-number</id>
+                <name>show-number</name>
+            </props>
+        </attribute>
+        <attribute>
+            <name>only_pull</name>
+            <component>ToggleButtons</component>
+            <caption>Without reorder</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <optionsVariant>longString</optionsVariant>
+            <default>no</default>
+            <props>
+                <id>without-reorder</id>
+                <name>without-reorder</name>
+            </props>
+        </attribute>
+        <attribute>
+            <name>fix_width</name>
+            <component>Input</component>
+            <caption>Fix width</caption>
+            <props>
+                <type>number</type>
+                <dataTestId>fix-width</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>fix_height</name>
+            <component>Input</component>
+            <caption>Fix height</caption>
+            <props>
+                <type>number</type>
+                <dataTestId>fix-height</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>crop_or_resize</name>
+            <component>ToggleButtons</component>
+            <caption>Crop or resize</caption>
+            <options>
+                <option>
+                    <value>crop</value>
+                    <text>Crop</text>
+                </option>
+                <option>
+                    <value>resize</value>
+                    <text>Resize</text>
+                </option>
+            </options>
+            <default>resize</default>
+            <props>
+                <id>crop-or-resize</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>keep_aspect</name>
+            <component>ToggleButtons</component>
+            <caption>Keep aspect ratio</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <optionsVariant>longString</optionsVariant>
+            <default>no</default>
+            <props>
+                <id>keep-aspect-ratio</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>horizontal_scroll</name>
+            <component>ToggleButtons</component>
+            <caption>Horizontal scroll</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <optionsVariant>longString</optionsVariant>
+            <default>no</default>
+            <props>
+                <id>horizontal-scroll</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>category_separator</name>
+            <component>Input</component>
+            <caption>Category separator</caption>
+            <props>
+                <id>category-separator</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>dropdown_prefix</name>
+            <component>ToggleButtons</component>
+            <caption>Prefix for list items</caption>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>None</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Order - like 3)</text>
+                </option>
+            </options>
+            <default>0</default>
+            <props>
+                <id>prefix-for-list-items</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>dropdown_size</name>
+            <component>Input</component>
+            <caption>Height of dropdown</caption>
+            <props>
+                <id>height-of-dropdown</id>
+                <dataTestId>height-of-dropdown</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>other_replace_text</name>
+            <component>Input</component>
+            <caption>Label for 'Other:' option</caption>
+            <props>
+                <id>label-for-other-option</id>
+                <dataTestId>label-for-other-option</dataTestId>
+                <labelTooltip>Replaces the label of the 'Other:' answer option with a custom text. To also show a suffix label after the text input, separate prefix and suffix with a pipe (|), e.g. 'From|to 100'. To show only a suffix with no prefix label, use a leading pipe: '|°C'. To show no label at all, use a single pipe: '|'.</labelTooltip>
+            </props>
+        </attribute>
+        <attribute>
+            <name>other_input_size</name>
+            <component>Input</component>
+            <caption>'Other:' text input box size</caption>
+            <props>
+                <type>number</type>
+                <dataTestId>other-input-size</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>other_maximum_chars</name>
+            <component>Input</component>
+            <caption>'Other:' option maximum characters</caption>
+            <props>
+                <type>number</type>
+                <dataTestId>other-maximum-chars</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>other_position</name>
+            <component>Select</component>
+            <caption>Position for 'Other:' option</caption>
+            <options>
+                <option>
+                    <value>beginning</value>
+                    <text>At beginning</text>
+                </option>
+                <option>
+                    <value>end</value>
+                    <text>At end</text>
+                </option>
+                <option>
+                    <value>specific</value>
+                    <text>After specific option</text>
+                </option>
+            </options>
+            <props>
+                <dataTestId>position-for-other-option</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>other_position_code</name>
+            <component>Select</component>
+            <caption>Option for 'After specific option'</caption>
+            <optionsSource>answersOrSubquestions</optionsSource>
+            <dependsOn>
+                <condition>
+                    <attribute>other</attribute>
+                </condition>
+                <condition>
+                    <attribute>other_position</attribute>
+                    <value>specific</value>
+                </condition>
+            </dependsOn>
+            <onDependsToggle>
+                <onFalse></onFalse>
+            </onDependsToggle>
+            <props>
+                <dataTestId>other-position-code</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>random_order</name>
+            <component>Select</component>
+            <caption>Answer order</caption>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Normal</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Random</text>
+                </option>
+            </options>
+            <props>
+                <id>random-order</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>answer_width</name>
+            <component>Input</component>
+            <caption>(Sub-)question width</caption>
+            <props>
+                <type>number</type>
+                <dataTestId>sub-question-width</dataTestId>
+                <max>100</max>
+                <min>0</min>
+            </props>
+        </attribute>
+        <attribute>
+            <name>repeat_headings</name>
+            <component>Input</component>
+            <caption>Repeat headers</caption>
+            <props>
+                <type>number</type>
+                <dataTestId>repeat-headers</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>parent_order</name>
+            <component>Input</component>
+            <caption>Get order from previous question</caption>
+            <props>
+                <dataTestId>get-order-from-preview-question</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>hide_tip</name>
+            <component>ToggleButtons</component>
+            <caption>Hide tip</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>hide-tip</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>dualscale_headerA</name>
+            <component>Input</component>
+            <caption>Header A</caption>
+            <props>
+                <dataTestId>header-a-attribute-input</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>dualscale_headerB</name>
+            <component>Input</component>
+            <caption>Header B</caption>
+            <props>
+                <dataTestId>header-B-attribute-input</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>hidden</name>
+            <component>ToggleButtons</component>
+            <caption>Always hide this question</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>always-hide-this-question</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>cssclass</name>
+            <component>Input</component>
+            <caption>CSS class(es)</caption>
+            <props>
+                <dataTestId>css-classes-attribute-input</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>printable_help</name>
+            <component>Input</component>
+            <caption>Condition help for printable survey</caption>
+            <props>
+                <dataTestId>condition-help-for-printable-survey</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>text_input_width</name>
+            <component>Select</component>
+            <caption>Text input box width</caption>
+            <optionsPreset>columnWidth</optionsPreset>
+            <props>
+                <dataTestId>text-input-width</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>text_input_columns</name>
+            <component>Select</component>
+            <caption>Text input box width</caption>
+            <optionsPreset>columnWidth</optionsPreset>
+            <props>
+                <dataTestId>text-input-columns</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>input_size</name>
+            <component>Input</component>
+            <caption>Text input box size</caption>
+            <props>
+                <type>number</type>
+                <dataTestId>text-input-box-size</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>display_rows</name>
+            <component>Input</component>
+            <caption>Display rows</caption>
+            <props>
+                <type>number</type>
+                <dataTestId>display-rows</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>label_input_columns</name>
+            <component>Select</component>
+            <caption>Label wrapper width</caption>
+            <optionsPreset>labelWrapperWidth</optionsPreset>
+        </attribute>
+        <attribute>
+            <name>answer_column_width</name>
+            <component>Input</component>
+            <caption>Answer column width</caption>
+            <props>
+                <dataTestId>answer-column-width</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>use_dropdown</name>
+            <component>ToggleButtons</component>
+            <caption>Use dropdown presentation</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>use-dropdown-presentation</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>display_columns</name>
+            <component>Input</component>
+            <caption>Display columns</caption>
+            <props>
+                <type>number</type>
+                <dataTestId>display-columns</dataTestId>
+                <min>1</min>
+            </props>
+        </attribute>
+        <attribute>
+            <name>input_boxes</name>
+            <component>ToggleButtons</component>
+            <caption>Text inputs</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>text-inputs</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>multiflexible_step</name>
+            <component>Input</component>
+            <caption>Step value</caption>
+            <props>
+                <type>number</type>
+                <dataTestId>step-value</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>placeholder</name>
+            <component>Input</component>
+            <caption>Placeholder answer</caption>
+            <props>
+                <dataTestId>placeholder-answer</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>multiflexible_checkbox</name>
+            <component>ToggleButtons</component>
+            <caption>Checkbox layout</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>checkbox-layout</id>
+                <name>checkbox-layout</name>
+            </props>
+        </attribute>
+        <attribute>
+            <name>dropdown_prepostfix</name>
+            <component>Input</component>
+            <caption>Dropdown prefix/suffix</caption>
+            <props>
+                <dataTestId>dropdown-prefix-suffix</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>dropdown_separators</name>
+            <component>Input</component>
+            <caption>Dropdown separator</caption>
+            <props>
+                <dataTestId>dropdown-separator</dataTestId>
+            </props>
+        </attribute>
+    </attributes>
+</react>

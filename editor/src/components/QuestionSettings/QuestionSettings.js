@@ -26,7 +26,7 @@ import { ExpressionScript } from '../ConditionDesigner/ExpressionScript'
 
 import { ExpressionScriptInputBox } from '../ConditionDesigner/ExpressionScript/ExpressionScriptInputBox'
 
-export const QuestionSettings = ({ surveyId }) => {
+export const QuestionSettings = ({ surveyId, settings }) => {
   const [questionSettingsOptions, setQuestionSettingsOptions] = useAppState(
     STATES.QUESTION_SETTINGS_OPTIONS,
     { isAdvanced: false }
@@ -64,8 +64,18 @@ export const QuestionSettings = ({ surveyId }) => {
       return []
     }
 
+    if (settings?.length) {
+      console.log(settings)
+      return settings
+    }
+
     return getQuestionSettings()[focused.questionThemeName]
-  }, [focused?.questionThemeName])
+  }, [focused?.questionThemeName, settings])
+
+  const allQuestionAttributes = useMemo(
+    () => (questionSettings || []).flatMap((setting) => setting.attributes),
+    [questionSettings]
+  )
 
   const advancedQuestionSettings = useMemo(() => {
     const simpleSettingsTitle = getQuestionAttributesTitles().SIMPLE
@@ -338,6 +348,7 @@ export const QuestionSettings = ({ surveyId }) => {
                 handleUpdate={updateAttribute}
                 title={setting.title}
                 attributes={setting.attributes}
+                allAttributes={allQuestionAttributes}
                 language={activeLanguage}
                 hasDefaultAttributeValues={
                   Object.keys(

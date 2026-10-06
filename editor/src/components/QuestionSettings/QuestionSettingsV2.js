@@ -1,19 +1,22 @@
-import { useQuestionAttributes, useSurvey } from 'hooks'
+import { useMemo } from 'react'
+
+import { useQuestionAttributes } from 'hooks'
 import { QuestionSettings } from './QuestionSettings'
+import { buildSettingsFromAttributes } from './dynamic'
 
 export const QuestionSettingsv2 = ({ surveyId, focused = {} }) => {
-  const { survey, update } = useSurvey(surveyId)
-
   const {
     attributes: { attributesDetails = {} },
   } = useQuestionAttributes()
 
-  const attributes =
-    attributesDetails[focused.questionThemeName]?.attributes || {}
+  const themeAttributes =
+    attributesDetails[focused.questionThemeName]?.attributes
 
-  Object.keys(attributes).map((key) => {
-    console.log(key, attributes[key])
-  })
+  // An empty result makes QuestionSettings fall back to the hardcoded settings.
+  const settings = useMemo(
+    () => buildSettingsFromAttributes(themeAttributes),
+    [themeAttributes]
+  )
 
-  return <QuestionSettings surveyId={surveyId} />
+  return <QuestionSettings surveyId={surveyId} settings={settings} />
 }

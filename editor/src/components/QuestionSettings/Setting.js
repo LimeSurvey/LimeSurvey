@@ -13,6 +13,7 @@ export const Setting = ({
   language = 'en',
   title = '',
   attributes = [],
+  allAttributes = [],
   simpleSettings = false,
   hasDefaultAttributeValues = false,
   sectionExpanded,
@@ -40,9 +41,42 @@ export const Setting = ({
     return isTrue(dependsOnValue)
   }
 
+  const getConditions = (dependsOn) =>
+    Array.isArray(dependsOn) ? dependsOn : dependsOn ? [dependsOn] : []
+
+  const isConditionSatisfied = (condition, value) => {
+    if (condition.notEmpty) {
+      return Array.isArray(value)
+        ? value.length > 0
+        : value !== '' && value !== null && value !== undefined
+    }
+
+    return isDependsOnSatisfied(condition, value)
+  }
+
+  // `overrides` holds values that were just changed but are not in `question` yet.
+  const areConditionsSatisfied = (dependsOn, overrides = {}) =>
+    getConditions(dependsOn).every((condition) => {
+      const value = Object.prototype.hasOwnProperty.call(
+        overrides,
+        condition.attributePath
+      )
+        ? overrides[condition.attributePath]
+        : condition.notEmpty
+          ? getRawValueFromPath(condition.attributePath)
+          : getAttributeValueFromPath(
+              condition.attributePath,
+              condition.languageBased
+            )
+
+      return isConditionSatisfied(condition, value)
+    })
+
+  const getRawValueFromPath = (attributePath) =>
+    attributePath.split('.').reduce((acc, key) => acc?.[key], question)
+
   const getAttributeValueFromPath = (attributePath, languageBased) => {
-    const path = attributePath.split('.')
-    const attribute = path.reduce((acc, key) => acc[key], question)
+    const attribute = getRawValueFromPath(attributePath)
 
     if (!attribute) {
       return ''
@@ -62,8 +96,7 @@ export const Setting = ({
   }
 
   const getFullAttributeValueFromPath = (attributePath) => {
-    const path = attributePath.split('.')
-    return path.reduce((acc, key) => acc[key], question) || ''
+    return getRawValueFromPath(attributePath) || ''
   }
 
   const getUpdateValueFromPath = (value, attribute) => {
@@ -112,22 +145,34 @@ export const Setting = ({
     const updateValue = getUpdateValueFromPath(value, attribute)
     handleUpdate(updateValue, isAdvancedAttribute)
 
-    // update other attributes that depends on this attribute
-    attributes.map((dependsOnAttribute) => {
+    // update other attributes that depends on this attribute (in any section)
+    const candidates = allAttributes.length ? allAttributes : attributes
+    const handledPaths = new Set()
+    candidates.forEach((dependsOnAttribute) => {
+      const conditions = getConditions(dependsOnAttribute.dependsOn)
       if (
-        dependsOnAttribute.dependsOn &&
-        dependsOnAttribute.dependsOn.attributePath === attribute.attributePath
+        handledPaths.has(dependsOnAttribute.attributePath) ||
+        !conditions.some(
+          (condition) => condition.attributePath === attribute.attributePath
+        )
       ) {
-        if (!isDependsOnSatisfied(dependsOnAttribute.dependsOn, value)) {
-          const isAdvancedAttribute =
-            dependsOnAttribute.attributePath.includes('attributes.')
+        return
+      }
+      handledPaths.add(dependsOnAttribute.attributePath)
 
-          const updateValue = getUpdateValueFromPath(
-            dependsOnAttribute.onDependsToggle.onFalse,
-            dependsOnAttribute
-          )
-          handleUpdate(updateValue, isAdvancedAttribute)
-        }
+      if (
+        !areConditionsSatisfied(dependsOnAttribute.dependsOn, {
+          [attribute.attributePath]: value,
+        })
+      ) {
+        const isAdvancedAttribute =
+          dependsOnAttribute.attributePath.includes('attributes.')
+
+        const updateValue = getUpdateValueFromPath(
+          dependsOnAttribute.onDependsToggle?.onFalse ?? '',
+          dependsOnAttribute
+        )
+        handleUpdate(updateValue, isAdvancedAttribute)
       }
     })
   }
@@ -153,21 +198,16 @@ export const Setting = ({
           )
         }
 
-        // if the attribute depends on another attribute and it's not true, skip this attribute
-        if (attribute.dependsOn) {
-          const dependsOn = attribute.dependsOn
-          const dependsOnValue = getAttributeValueFromPath(
-            dependsOn.attributePath,
-            dependsOn.languageBased
+        // if the attribute depends on other attributes/question data that aren't satisfied, skip this attribute
+        if (
+          attribute.dependsOn &&
+          !areConditionsSatisfied(attribute.dependsOn)
+        ) {
+          return (
+            <React.Fragment
+              key={`${title}-settings-${attribute.attributePath}`}
+            ></React.Fragment>
           )
-
-          if (!isDependsOnSatisfied(dependsOn, dependsOnValue)) {
-            return (
-              <React.Fragment
-                key={`${title}-settings-${attribute.attributePath}`}
-              ></React.Fragment>
-            )
-          }
         }
 
         const value = getAttributeValueFromPath(

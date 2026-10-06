@@ -10,6 +10,7 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+use LimeSurvey\Models\Services\ReactQuestionAttributeConfig;
 
 class QuestionAttributesDetail implements CommandInterface
 {
@@ -17,17 +18,21 @@ class QuestionAttributesDetail implements CommandInterface
 
     protected ResponseFactory $responseFactory;
     protected Permission $permission;
+    protected ReactQuestionAttributeConfig $reactQuestionAttributeConfig;
 
     /**
      * @param ResponseFactory $responseFactory
      * @param Permission $permission
+     * @param ReactQuestionAttributeConfig $reactQuestionAttributeConfig
      */
     public function __construct(
         ResponseFactory $responseFactory,
-        Permission $permission
+        Permission $permission,
+        ReactQuestionAttributeConfig $reactQuestionAttributeConfig
     ) {
         $this->responseFactory = $responseFactory;
         $this->permission = $permission;
+        $this->reactQuestionAttributeConfig = $reactQuestionAttributeConfig;
     }
 
     /**
@@ -75,6 +80,11 @@ class QuestionAttributesDetail implements CommandInterface
             $attributes = array_merge($attributes, $additionalAttributes);
         }
 
+        $attributes = $this->reactQuestionAttributeConfig->apply(
+            $attributes,
+            (string) ($theme ?: \Question::DEFAULT_QUESTION_THEME)
+        );
+
         return $this->responseFactory->makeSuccess([
             'success' => true,
             'type' => $type,
@@ -89,6 +99,7 @@ class QuestionAttributesDetail implements CommandInterface
     protected function getAllXmlQuestionAttributes(): array
     {
         $result = [];
+        $coreAttributesByType = [];
         $questionThemeDirectories = \QuestionTheme::getQuestionThemeDirectories();
 
         foreach ($questionThemeDirectories as $themeType => $baseDirectory) {
@@ -133,6 +144,13 @@ class QuestionAttributesDetail implements CommandInterface
                     }
 
                     foreach ($attributes as $attribute) {
+                        // <generalattributes> only lists attribute names
+                        if (is_string($attribute)) {
+                            if ($attribute === 'other' && empty($metadata['other'])) {
+                                continue;
+                            }
+                            $attribute = ['name' => $attribute, 'general' => true];
+                        }
                         if (empty($attribute['name'])) {
                             continue;
                         }
@@ -144,10 +162,27 @@ class QuestionAttributesDetail implements CommandInterface
                     continue;
                 }
 
+                if ($themeType === \QuestionTheme::THEME_TYPE_CORE && !isset($coreAttributesByType[$questionType])) {
+                    $coreAttributesByType[$questionType] = $attributeDefinitions;
+                }
+
                 $result[$questionType][$name] = [
                     'xml_path' => str_replace(\App()->getConfig('rootdir') . DIRECTORY_SEPARATOR, '', $file->getPathname()),
+                    'core' => $themeType === \QuestionTheme::THEME_TYPE_CORE,
                     'attributes' => $attributeDefinitions,
                 ];
+            }
+        }
+
+        // Extended themes only declare their additional attributes
+        foreach ($result as $questionType => $themes) {
+            foreach ($themes as $name => $definition) {
+                $baseAttributes = $definition['core'] ? [] : ($coreAttributesByType[$questionType] ?? []);
+                $result[$questionType][$name]['attributes'] = $this->reactQuestionAttributeConfig->apply(
+                    array_merge($baseAttributes, $definition['attributes']),
+                    (string) $name
+                );
+                unset($result[$questionType][$name]['core']);
             }
         }
 

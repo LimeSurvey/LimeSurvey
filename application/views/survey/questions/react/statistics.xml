@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Editor UI overlay: merged by attribute name into the config.xml attributes of every question theme. -->
+<react>
+    <tab>Statistics</tab>
+    <attributes>
+        <attribute>
+            <name>statistics_graphtype</name>
+            <component>Select</component>
+            <caption>Show in statistics</caption>
+            <optionsPreset>statisticsGraph</optionsPreset>
+            <props>
+                <dataTestId>display-chart</dataTestId>
+                <value>0</value>
+            </props>
+        </attribute>
+        <attribute>
+            <!-- Covered by the "Don't show" option of statistics_graphtype -->
+            <name>statistics_showgraph</name>
+            <hidden>1</hidden>
+        </attribute>
+        <attribute>
+            <name>public_statistics</name>
+            <component>ToggleButtons</component>
+            <caption>Show in public statistics</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>show-in-pubic-statistics</id>
+            </props>
+        </attribute>
+    </attributes>
+</react>
