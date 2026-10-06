@@ -182,21 +182,16 @@ class Export extends SurveyCommonAction
             $data['thissurvey'] = $thissurvey;
             $data['display']['menu_bars']['browse'] = gT("Export results");
             $data['topBar']['type'] = 'responses';
-            // Export plugins, leave out all entries that are not plugin
-            $exports = array_filter($exports);
+            // Export plugins
             $exportData = array();
-            foreach ($exports as $key => $plugin) {
-                $event = new PluginEvent('listExportOptions');
-                $event->set('type', $key);
-                $oPluginManager = App()->getPluginManager();
-                $oPluginManager->dispatchEvent($event, $plugin);
+            foreach ($resultsService->getExportOptions() as $key => $exportOption) {
                 $exportData[$key] = array(
-                    'onclick' => $event->get('onclick'),
-                    'label'   => $event->get('label'),
-                    'tooltip' => $event->get('tooltip', null)
+                    'onclick' => $exportOption['onclick'],
+                    'label'   => $exportOption['label'],
+                    'tooltip' => $exportOption['tooltip']
                 );
-                if ($event->get('default', false)) {
-                    $default = $event->get('label');
+                if ($exportOption['default']) {
+                    $default = $exportOption['label'];
                 }
             }
             $data['exports'] = $exportData; // Pass available exports
@@ -524,7 +519,7 @@ class Export extends SurveyCommonAction
             foreach ($fields as $field) {
                 if (!$field['hide']) {
                     $label_parts = strSplitUnicode(str_replace('"', '""', (string) stripTagsFull($field['VariableLabel'])), $length_varlabel - strlen((string) $field['id']));
-                    //if replaced quotes are splitted by, we need to mve the first quote to the next row
+                    //if replaced quotes are split by, we need to mve the first quote to the next row
                     foreach ($label_parts as $idx => $label_part) {
                         if ($idx != count($label_parts) && substr((string) $label_part, -1) == '"' && substr((string) $label_part, -2) != '"') {
                             $label_parts[$idx] = rtrim((string) $label_part, '"');
@@ -805,7 +800,13 @@ class Export extends SurveyCommonAction
     }
 
     /**
-     * Resources Export
+     * Exports the resources of a survey or label set as a ZIP file and sends it to the browser.
+     *
+     * Participant uploads (fu_ files) are left out, since they belong to responses.
+     *
+     * @return void
+     * @throws CHttpException If the user lacks export permission
+     * @throws Exception If the ZIP file cannot be created
      */
     public function resources()
     {
@@ -837,7 +838,7 @@ class Export extends SurveyCommonAction
             if ($zip->open($zipfilepath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
                 throw new Exception("Error : " . $zip->getStatusString());
             }
-            foreach (array('files', 'flash', 'images') as $zipdir) {
+            foreach (array('files', 'images') as $zipdir) {
                 if (is_dir($resourcesdir . $zipdir)) {
                     $dirPath = $resourcesdir . $zipdir;
                     $files = new RecursiveIteratorIterator(
@@ -845,7 +846,7 @@ class Export extends SurveyCommonAction
                         RecursiveIteratorIterator::LEAVES_ONLY
                     );
                     foreach ($files as $file) {
-                        if (!$file->isDir()) {
+                        if (!$file->isDir() && !$this->isResponseUploadFile($file, $dirPath)) {
                             $filePath = $file->getRealPath();
                             $relativePath = substr($filePath, strlen($resourcesdir));
                             $zip->addFile($filePath, $relativePath);
@@ -865,6 +866,23 @@ class Export extends SurveyCommonAction
                 throw new Exception(gT("Error: There are no files to download."));
             }
         }
+    }
+
+    /**
+     * Checks whether a file is a participant upload (fu_ file) stored in the survey's files directory.
+     *
+     * Participant uploads belong to responses, not to survey resources, so they must not be
+     * part of the resources export.
+     *
+     * @param SplFileInfo $file    The file found while walking the resources directory
+     * @param string      $dirPath The resources subdirectory currently being exported
+     * @return bool True if the file is a participant upload
+     */
+    private function isResponseUploadFile(SplFileInfo $file, string $dirPath): bool
+    {
+        return basename($dirPath) === 'files'
+            && realpath($file->getPath()) === realpath($dirPath)
+            && preg_match('/^fu_[a-z0-9]+$/', $file->getFilename()) === 1;
     }
 
     /**
@@ -1357,7 +1375,7 @@ class Export extends SurveyCommonAction
             $zip->addFromString($relativePath, file_get_contents($file));
             unlink($file);
         }
-        // set language back (get's changed in loop above)
+        // set language back (gets changed in loop above)
         Yii::app()->language = $siteLanguage;
 
         $zip->close();

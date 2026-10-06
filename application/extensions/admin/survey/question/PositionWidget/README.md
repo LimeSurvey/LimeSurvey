@@ -24,7 +24,7 @@ $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
 ```
 
 
-## Paramaters
+## Parameters
 
 | Parameter  |  accepted value | default value | comment |
 | ---------  | --------------- | ------------- | ------- |

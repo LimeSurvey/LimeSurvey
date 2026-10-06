@@ -1926,7 +1926,7 @@ class Tokens extends SurveyCommonAction
             }
 
             $oTokenLanguages = Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
-            $aFilterByLanguage = array('' => gT('All'));
+            $aFilterByLanguage = array();
             foreach ($oTokenLanguages as $oTokenLanguage) {
                 $sLanguageCode = \LSYii_Validators::languageCodeFilter($oTokenLanguage->language);
                 if ($sLanguageCode !== '') {
@@ -3234,7 +3234,7 @@ class Tokens extends SurveyCommonAction
         if ($request->getPost('bypassbademails') == '1') {
             return "emailstatus = 'OK'";
         } else {
-            return "emailstatus <> 'OptOut' OR emailstatus IS NULL";
+            return "emailstatus NOT LIKE 'OptOut%' OR emailstatus IS NULL";
         }
     }
 

@@ -7,6 +7,7 @@ class Update_718 extends DatabaseUpdateBase
     /**
      * Add a new column welcome_image to table surveys
      */
+    #[\Override]
     public function up()
     {
         $db = \Yii::app()->db;

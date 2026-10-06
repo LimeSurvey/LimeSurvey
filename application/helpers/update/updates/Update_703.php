@@ -8,6 +8,7 @@ class Update_703 extends DatabaseUpdateBase
      * Update question_themes settings for ranking question type ('R'):
      * set subquestions=1 and answerscales=0 in the settings JSON column.
      */
+    #[\Override]
     public function up()
     {
         $db = \Yii::app()->db;

@@ -2,7 +2,6 @@
 
 use LimeSurvey\DI;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
-
 /*
 * LimeSurvey
 * Copyright (C) 2007-2026 The LimeSurvey Project Team
@@ -640,8 +639,8 @@ class GlobalSettings extends SurveyCommonAction
      */
     public function surveysettingmenues()
     {
-        $menues = Surveymenu::model()->getMenuesForGlobalSettings();
-        Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
+        $menus = Surveymenu::model()->getMenuesForGlobalSettings();
+        Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menus[0]]);
     }
 
     /**

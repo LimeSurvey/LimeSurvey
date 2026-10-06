@@ -182,7 +182,7 @@ class FailedEmailTest extends TestBaseClassWeb
         $web->findElement(WebDriverBy::cssSelector('#floating-actions-bar-failedemail-grid [data-action="resend"]'))->click();
         $web->wait(15)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#floating-actions-modal-failedemail-grid-resend-0 .btn-ok')));
         $web->findElement(WebDriverBy::cssSelector('#floating-actions-modal-failedemail-grid-resend-0 .btn-ok'))->click();
-        // this can take up around 20 seconds per mail if the email server cant be reached
+        // this can take up around 20 seconds per mail if the email server can't be reached
         $web->wait(50)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#floating-actions-modal-failedemail-grid-resend-0 #failedemail-action-modal--resendresult')));
         $this->assertTrue($web->findElement(WebDriverBy::cssSelector('#floating-actions-modal-failedemail-grid-resend-0 #failedemail-action-modal--resendresult'))->isDisplayed());
 

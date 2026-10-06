@@ -2401,7 +2401,7 @@ class remotecontrol_handle
      * @param bool $bUnused If you want unused tokens, set true
      * @param bool|array $aAttributes The extended attributes that we want
      * @param array $aConditions Optional conditions to limit the list, either as a
-     *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
+     *              key => value if key is an integer : value is used as comparison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']
@@ -3118,7 +3118,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey that participants belong
      * @param array $overrideAllConditions replace the default conditions, either as a
-     *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
+     *              key => value if key is an integer : value is used as comparison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']
@@ -3420,9 +3420,8 @@ class remotecontrol_handle
             $aBasicDestinationFields = $survey_dynamic->tableSchema->columnNames;
             $aResponseData = array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
             $survey_dynamic->setAttributes($aResponseData, false);
-            $survey_dynamic->encryptSave();
 
-            if ($survey_dynamic->id) {
+            if ($survey_dynamic->encryptSave()) {
                 $result_id = $survey_dynamic->id;
                 $oResponse = Response::model($iSurveyID)->findByAttributes(array('id' => $result_id))->decrypt();
                 foreach ($oResponse->getFiles() as $aFile) {
@@ -3444,7 +3443,6 @@ class remotecontrol_handle
                         }
                     }
                 }
-
                 return $result_id;
             } else {
                 return array('status' => 'Unable to add response', 'error_code' => self::ERR_CREATION_FAILED);
@@ -3684,6 +3682,68 @@ class remotecontrol_handle
     }
 
     /**
+     * List available response export formats.
+     *
+     * Each entry contains the 'type' to use as document type in export_responses
+     * and export_responses_by_token, a plain-text 'label' and 'tooltip' (tooltip can be null)
+     * and 'isDefault', which flags the default export format.
+     * Labels and tooltips are always in English.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @return array On success: list of export formats. On failure: array with status information
+     */
+    public function list_response_exports($sSessionKey)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => self::INVALID_SESSION_KEY);
+        }
+
+        Yii::app()->loadHelper('admin.exportresults');
+        $oExport = new ExportSurveyResultsService();
+        $sOriginalLanguage = Yii::app()->getLanguage();
+        try {
+            Yii::app()->setLanguage('en');
+            $aExportOptions = $oExport->getExportOptions();
+        } finally {
+            Yii::app()->setLanguage($sOriginalLanguage);
+        }
+
+        if (empty($aExportOptions)) {
+            return array('status' => 'No export formats found');
+        }
+
+        ksort($aExportOptions, SORT_STRING);
+        $aExportFormats = array();
+        foreach ($aExportOptions as $sType => $aExportOption) {
+            $aExportFormats[] = array(
+                'type' => (string) $sType,
+                'label' => $this->htmlToPlainText($aExportOption['label']),
+                'tooltip' => $this->htmlToPlainText($aExportOption['tooltip']),
+                'isDefault' => $aExportOption['default'],
+            );
+        }
+
+        return $aExportFormats;
+    }
+
+    /**
+     * Convert an HTML fragment meant for the admin GUI to plain text,
+     * keeping words on both sides of a tag apart
+     *
+     * @param string|null $sHtml The HTML fragment
+     * @return string|null The plain text, or null if no or an empty fragment was given
+     */
+    protected function htmlToPlainText($sHtml)
+    {
+        if ($sHtml === null || $sHtml === '') {
+            return null;
+        }
+        $sText = flattenText(str_replace('<', ' <', (string) $sHtml), false, true);
+        return trim(preg_replace('~\s+~u', ' ', $sText));
+    }
+
+    /**
      * Export responses in base64 encoded string
      *
      * @access public
@@ -3720,7 +3780,7 @@ class remotecontrol_handle
         if (!tableExists($survey->responsesTableName)) {
             return array('status' => 'No Data, survey table does not exist.', 'error_code' => self::ERR_NO_RESPONSE_TABLE);
         }
-        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId(null, true))) {
+        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) {
             return array('status' => 'No Data, could not get max id.', 'error_code' => self::ERR_NO_DATA);
         }
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
@@ -4176,7 +4236,7 @@ class remotecontrol_handle
      * @param model $oModel : can be \Token or \Survey or anything else
      * @param \LSDbCriteria $oCriteria
      * @param array $aConditions conditions to limit the list, either as a
-     *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
+     *              key => value if key is an integer : value is used as comparison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']

@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_492 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         // Handle questions with random_order = 1
