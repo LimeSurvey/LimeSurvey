@@ -82,7 +82,6 @@ $config['maxDatabaseSizeForDump']    = 256; // Maximum database size in megabyte
 
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numerical order for comparison operators in conditions. If you need string comparison operators, set this parameter to 1
-$config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
 $config['blacklistallsurveys']       = 'N'; // Blocklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']       = 'N'; // Blocklist participant for any new added survey once the global field is set
 $config['blockaddingtosurveys']      = 'Y'; // Don't allow blocklisted participants to be added to new survey
@@ -486,42 +485,6 @@ $config['chartfontsize'] = 10;
 * Recommended: 7
 */
 $config['updatecheckperiod'] = 7;
-
-
-/**
-* @var $showxquestions string allows you to control whether or not
-* {THEREAREXQUESTIONS} is displayed (if it is included in a theme)
-*   hide = always hide {THEREAREXQUESTIONS}
-*   show = always show {THEREAREXQUESTIONS}
-*   choose = allow survey admins to choose
-*/
-$config['showxquestions'] = 'choose';
-
-
-/**
-* @var $showgroupinfo string allows you to control whether or not
-* {GROUPNAME} and/or {GROUPDESCRIPTION} are displayed (if they are
-* included in a theme)
-*   none = always hide both title and description
-*   name = always {GROUPNAME} only
-*   description = always show {GROUPDESCRIPTION} only
-*   both = always show both {GROUPNAME} and {GROUPDESCRIPTION}
-*   choose = allow survey admins to choose
-*/
-$config['showgroupinfo'] = 'choose';
-
-
-/**
-* @var $showqnumcode string allows you to control whether or not
-* {QUESTION_NUMBER} and/or {QUESTION_CODE} are displayed (if they
-* are included in a theme)
-*   none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
-*   code = always show {QUESTION_CODE} only
-*   number = always show {QUESTION_NUMBER} only
-*   both = always show both {QUESTION_NUMBER} and {QUESTION_CODE}
-*   choose = allow survey admins to choose
-*/
-$config['showqnumcode'] = 'choose';
 
 
 /**
