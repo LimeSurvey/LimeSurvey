@@ -14,8 +14,7 @@ function initColumnFilter() {
             handle: '.organize-columns-handle',
             draggable: '.organize-columns-item',
             ghostClass: 'organize-columns-ghost',
-            animation: 150,
-            onEnd: updateMoveButtons
+            animation: 150
         });
     }
 
@@ -27,32 +26,6 @@ function initColumnFilter() {
     $('#' + modalId + '-clear').off('click.organize').on('click.organize', function (e) {
         e.preventDefault();
         $checkboxes().prop('checked', false);
-    });
-
-    var updateMoveButtons = function () {
-        var items = $list.children('.organize-columns-item');
-        items.each(function (index) {
-            $(this).find('.organize-columns-up').prop('disabled', index === 0);
-            $(this).find('.organize-columns-down').prop('disabled', index === items.length - 1);
-        });
-    };
-    updateMoveButtons();
-
-    $list.off('click.organize').on('click.organize', '.organize-columns-move', function (e) {
-        e.preventDefault();
-        var $btn = $(this);
-        var $item = $btn.closest('.organize-columns-item');
-        if ($btn.hasClass('organize-columns-up')) {
-            $item.prev('.organize-columns-item').before($item);
-        } else {
-            $item.next('.organize-columns-item').after($item);
-        }
-        updateMoveButtons();
-        if ($btn.prop('disabled')) {
-            $item.find('.organize-columns-move:not(:disabled)').first().trigger('focus');
-        } else {
-            $btn.trigger('focus');
-        }
     });
 
     var snapshot = [];
@@ -72,7 +45,6 @@ function initColumnFilter() {
                 $list.append(state.item);
                 $(state.item).find('input[type=checkbox]').prop('checked', state.checked);
             });
-            updateMoveButtons();
         });
 
     $('#' + modalId + '-submit').off('click.organize').on('click.organize', function (e) {

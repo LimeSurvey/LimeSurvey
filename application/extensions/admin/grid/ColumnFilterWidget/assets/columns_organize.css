@@ -108,10 +108,8 @@
 .organize-columns-modal .organize-columns-locked input[type="checkbox"]:checked {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='%236e748c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 7.5l3 3 6-6.5'/%3E%3C/svg%3E");
 }
+.organize-columns-modal .organize-columns-item input[type="checkbox"]::before,
 .organize-columns-modal .organize-columns-item input[type="checkbox"]::after {
     content: none;
-}
-.organize-columns-modal .organize-columns-move {
-    padding: 0 4px;
-    line-height: 1;
+    display: none;
 }

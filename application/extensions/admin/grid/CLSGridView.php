@@ -442,14 +442,19 @@ class CLSGridView extends TbGridView
         /* Updating the columns to be added */
         if (App()->request->getParam('selectColumns') && $this->ajaxUpdate === $ajaxUpdate) {
             $columnsSelected = (array) App()->request->getQuery('columnsSelected');
-            // If there are no columns selected, we delete the user setting.
             if ($this->lsOrganizeColumns) {
-                SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode(array_values($columnsSelected)));
+                App()->session['gridview_columns_' . $this->ajaxUpdate] = array_values(array_filter($columnsSelected, 'is_string'));
             } elseif (empty($columnsSelected)) {
+                // If there are no columns selected, we delete the user setting.
                 SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
             } else {
                 SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
             }
+        }
+        if ($this->lsOrganizeColumns) {
+            $sessionColumns = App()->session['gridview_columns_' . $this->ajaxUpdate];
+            $this->addColumns(is_array($sessionColumns) ? $sessionColumns : $this->lsAdditionalColumnsDefault);
+            return;
         }
         /* get the columns to be added */
         $userColumns = SettingsUser::getUserSettingValue('gridview_columns_' . $this->ajaxUpdate);
@@ -458,8 +463,6 @@ class CLSGridView extends TbGridView
             if (is_array($columnsSelected)) {
                 $this->addColumns($columnsSelected);
             }
-        } elseif ($this->lsOrganizeColumns) {
-            $this->addColumns($this->lsAdditionalColumnsDefault);
         }
     }
 
