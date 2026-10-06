@@ -3,9 +3,11 @@
 namespace ls\tests\unit\objectpatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionCreate;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\ExceptionErrors;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\SurveyResponse;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapping;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\ValidationErrors;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
 use LimeSurvey\DI;
@@ -75,6 +77,29 @@ class SurveyResponseTest extends TestBaseClass
         $exceptionErrorItem = $responseObject['exceptionErrors'][0];
         $this->assertEquals('Exception message', $exceptionErrorItem->error);
         $this->assertEquals('create', $exceptionErrorItem->op);
+    }
+
+    /**
+     * @testdox exception errors contain the validation errors of the error model
+     */
+    public function testExceptionErrorsWithErrorModel()
+    {
+        $errorModel = new \SurveyLanguageSetting();
+        $errorModel->addError('surveyls_alias', 'Alias must be unique');
+        $exception = new PersistErrorException('Generic message');
+        $exception->setErrorModel($errorModel);
+
+        $surveyResponse = new SurveyResponse(
+            new TempIdMapping(),
+            new ValidationErrors(),
+            new ExceptionErrors()
+        );
+        $surveyResponse->handleException($exception, self::getOp());
+        $responseObject = $surveyResponse->buildResponseObject();
+
+        $this->assertArrayHasKey('exceptionErrors', $responseObject);
+        $exceptionErrorItem = $responseObject['exceptionErrors'][0];
+        $this->assertEquals('Alias must be unique', $exceptionErrorItem->error);
     }
 
     private static function getResponse()

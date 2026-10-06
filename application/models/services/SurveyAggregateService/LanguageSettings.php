@@ -136,7 +136,7 @@ class LanguageSettings
             if (!$saved) {
                 $e = new PersistErrorException(
                     sprintf(
-                        gT('Failed saving language settings for survey ID %s and language %s'),
+                        gT('Failed saving language settings for survey ID %s and language %s', 'unescaped'),
                         $survey->sid,
                         $languageCode
                     )

@@ -192,9 +192,16 @@ export const SurveyLogicProvider = ({ children }) => {
         queryKey: [STATES.SURVEY_RESPONSES, surveyId],
       })
 
-      if (!result.operationsApplied) {
+      // Only show the generic message if the API did not return a specific error.
+      if (
+        !result.operationsApplied &&
+        !validationErrors?.length &&
+        !exceptionErrors?.length
+      ) {
         errorToast(
-          'Sorry, we encountered an issue while saving the changes. Please try refreshing the page!'
+          t(
+            'Sorry, we encountered an issue while saving the changes. Please try refreshing the page!'
+          )
         )
       }
     }

@@ -334,7 +334,7 @@ class SurveyLanguageSetting extends LSActiveRecord
                 [$this->surveyls_alias, $this->surveyls_survey_id]
             );
             if ($model != null) {
-                $this->addError('surveyls_alias', gT('Alias must be unique'));
+                $this->addError('surveyls_alias', gT('Alias must be unique', 'unescaped'));
             }
         }
     }
