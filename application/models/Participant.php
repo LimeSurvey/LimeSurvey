@@ -2449,13 +2449,16 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Reduces a list of participant IDs to the participants the logged in user may see
-     * (same rules as userHasPermissionToRead()). Empty IDs are dropped.
+     * Reduces a list of participant IDs to the participants the logged in user may edit
+     * (same rules as userHasPermissionToEdit()). Empty IDs are dropped.
+     * Superadmins and users with the global participant panel update permission get all IDs back,
+     * other users only the participants they own or that are shared with them or with all users
+     * (share_uid -1) with editing allowed.
      *
      * @param string[] $participantIds
      * @return string[]
      */
-    public function filterReadableParticipantIds(array $participantIds)
+    public function filterEditableParticipantIds(array $participantIds)
     {
         $participantIds = array_values(array_filter($participantIds, function ($participantId) {
             return is_scalar($participantId) && (string) $participantId !== '';
@@ -2463,7 +2466,7 @@ class Participant extends LSActiveRecord
         if (
             empty($participantIds)
             || Permission::model()->hasGlobalPermission('superadmin', 'read')
-            || Permission::model()->hasGlobalPermission('participantpanel', 'read')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'update')
         ) {
             return $participantIds;
         }
@@ -2473,7 +2476,7 @@ class Participant extends LSActiveRecord
             ->from('{{participants}} p')
             ->leftJoin(
                 '{{participant_shares}} ps',
-                'ps.participant_id = p.participant_id AND (ps.share_uid = :shareuid OR ps.share_uid = -1)',
+                "ps.participant_id = p.participant_id AND (ps.share_uid = :shareuid OR ps.share_uid = -1) AND ps.can_edit = '1'",
                 [':shareuid' => $userId]
             )
             ->where(

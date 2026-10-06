@@ -2662,14 +2662,15 @@ class ParticipantsAction extends SurveyCommonAction
      * Requires global 'surveys' 'update' or 'tokens' 'update' permission on the survey (same as attributeMap()),
      * creating a missing participant table additionally requires global 'surveys' 'update',
      * 'surveysettings' 'update' or 'tokens' 'create' on the survey.
-     * Only participants the user may see (Participant::filterReadableParticipantIds()) are copied.
+     * Only participants the user may edit (Participant::filterEditableParticipantIds()) are copied,
+     * same as the "Add participant to survey" action.
      *
      * @return void
      */
     public function addToTokenattmap()
     {
         $participantIdsString = Yii::app()->request->getPost('participant_id'); // TODO: This is a comma separated string of ids
-        $participantIds = Participant::model()->filterReadableParticipantIds(explode(",", (string) $participantIdsString));
+        $participantIds = Participant::model()->filterEditableParticipantIds(explode(",", (string) $participantIdsString));
 
         $surveyId = (int)Yii::app()->request->getPost('surveyid');
 
