@@ -5,6 +5,7 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions;
 use CDbCommand;
 use Exception;
 use InvalidArgumentException;
+use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
@@ -35,6 +36,9 @@ class QuestionStatistics implements StatisticsChartInterface
     private array $output = [];
 
     private $filters = null;
+
+    /** @var ResolvedFilter[] The filter the user built in the modal, resolved */
+    private array $resolvedFilters = [];
 
     /** @var int Zero-based page index, used when a page size is set */
     private int $page = 0;
@@ -106,7 +110,7 @@ class QuestionStatistics implements StatisticsChartInterface
         $surveyQuestions = $survey['questions'];
         $this->questionFields = $this->buildQuestionFields();
 
-        $batch = new ResponseAggregateBatch($surveyId, $this->filters);
+        $batch = new ResponseAggregateBatch($surveyId, $this->filters, $this->resolvedFilters);
 
         // Pair each chart-producing question with its processor; types without
         // a processor (equations, dates, text display, ...) produce no chart
@@ -146,6 +150,14 @@ class QuestionStatistics implements StatisticsChartInterface
     public function setFilters(StatisticsResponseFilters $filters): void
     {
         $this->filters = $filters;
+    }
+
+    /**
+     * @param ResolvedFilter[] $filters
+     */
+    public function setResolvedFilters(array $filters): void
+    {
+        $this->resolvedFilters = $filters;
     }
 
     public function setSurveyModel(\Survey $survey): void

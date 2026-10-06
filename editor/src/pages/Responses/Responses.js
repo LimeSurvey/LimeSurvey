@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
@@ -63,16 +63,20 @@ export const Responses = () => {
 
   // A filter the server cannot honour — an attribute this survey does not
   // have, a question from another survey — comes back as a bad request with
-  // the reason. Show it, and leave the table on the rows it already had.
+  // the reason. Show it, and leave the tab on what it already had.
+  const showFilterError = useCallback((error) => {
+    Toast({
+      message: error.message,
+      className: 'generic-toast error-left-mark',
+      id: 'responses-filter-error',
+    })
+  }, [])
+
   useEffect(() => {
     if (responsesError) {
-      Toast({
-        message: responsesError.message,
-        className: 'generic-toast error-left-mark',
-        id: 'responses-filter-error',
-      })
+      showFilterError(responsesError)
     }
-  }, [responsesError])
+  }, [responsesError, showFilterError])
 
   // A narrower filter can leave the current page past the end of the results,
   // which would show an empty table on a page that no longer exists. Only a
@@ -245,6 +249,8 @@ export const Responses = () => {
             questionOptions={questionOptions}
             appliedFilters={appliedFilters}
             setAppliedFilters={setAppliedFilters}
+            filterSet={filterSet}
+            onFilterError={showFilterError}
           />
         )
       case panelItemsKeys.list:

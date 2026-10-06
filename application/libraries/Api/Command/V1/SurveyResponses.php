@@ -338,7 +338,7 @@ class SurveyResponses implements CommandInterface
 
         $resolver = new ResponseFilterResolver(
             QuestionColumnMap::fromQuestionFieldMap($this->getQuestionFieldMap()),
-            new ParticipantResolver($this->getParticipantAttributes())
+            ParticipantResolver::fromSurvey($this->survey)
         );
 
         $builder = new ResponseFilterCriteriaBuilder((int) $this->getSurveyId($request));
@@ -356,26 +356,6 @@ class SurveyResponses implements CommandInterface
             );
             $criteria->together = true;
         }
-    }
-
-    /**
-     * The participant columns of this survey, or none when it has no
-     * participant table — in which case a participant filter cannot be
-     * honoured and is refused rather than ignored.
-     *
-     * Read from the table itself so custom attributes need no separate lookup.
-     *
-     * @return array<int,string>
-     */
-    protected function getParticipantAttributes(): array
-    {
-        if (empty($this->survey) || !$this->survey->hasTokensTable) {
-            return [];
-        }
-
-        $table = App()->db->schema->getTable($this->survey->tokensTableName);
-
-        return $table === null ? [] : array_keys($table->columns);
     }
 
     /**
