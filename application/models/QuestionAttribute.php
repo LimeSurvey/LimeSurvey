@@ -209,6 +209,10 @@ class QuestionAttribute extends LSActiveRecord
                         'qid=:qid AND sid=:sid',
                         [":qid" => $questionId, ":sid" => $surveyId]
                     );
+                    // Skip questions that don't belong to the survey
+                    if (empty($question)) {
+                        continue;
+                    }
                     // For each attribute
                     foreach ($attributesWithValue as $attribute => $value) {
                         if (in_array($question->type, $validQuestionTypes)) {
