@@ -28,6 +28,15 @@
  */
 class Authentication extends SurveyCommonAction
 {
+    /** Session key holding a login that waits for its second authentication step */
+    const SECOND_FACTOR_SESSION_KEY = 'pendingSecondFactorLogin';
+
+    /** Seconds the user has to complete the second authentication step */
+    const SECOND_FACTOR_TIMEOUT = 300;
+
+    /** Wrong second-factor keys allowed before the user has to log in again */
+    const SECOND_FACTOR_MAX_ATTEMPTS = 5;
+
     /**
      * Show login screen and parse login data
      * Will redirect or echo json depending on ajax call
@@ -53,6 +62,7 @@ class Authentication extends SurveyCommonAction
         $isAjax = isset($_GET['ajax']) && $_GET['ajax'] == 1;
         $succeeded = isset($result[0]) && $result[0] == 'success';
         $failed = isset($result[0]) && $result[0] == 'failed';
+        $needsSecondFactor = isset($result[0]) && $result[0] == 'secondfactor';
 
         // If Ajax, echo success or failure json
         if ($isAjax) {
@@ -63,11 +73,18 @@ class Authentication extends SurveyCommonAction
             } elseif ($failed) {
                 ls\ajax\AjaxHelper::outputError(gT('Incorrect or expired username and/or password!'));
                 return;
+            } elseif ($needsSecondFactor) {
+                // The login modal can't show the second step
+                self::clearPendingSecondFactor();
+                ls\ajax\AjaxHelper::outputError(gT('This account uses two-factor authentication. Please reload the page and log in again.'));
+                return;
             }
         } else {
             // If not ajax, redirect to admin startpage or again to login form
             if ($succeeded) {
                 self::doRedirect();
+            } elseif ($needsSecondFactor) {
+                App()->getController()->redirect(array('/admin/authentication/sa/secondfactor'));
             } elseif ($failed) {
                 $message = $result[1];
                 App()->user->setFlash('error', $message);
@@ -85,7 +102,7 @@ class Authentication extends SurveyCommonAction
     /**
      * Prepare login and return result
      * It checks if the authdb plugin is registered and active
-     * @return array Either success, failure or plugin data (used in login form)
+     * @return array Either success, failure, second factor needed or plugin data (used in login form)
      */
     public static function prepareLogin()
     {
@@ -119,6 +136,9 @@ class Authentication extends SurveyCommonAction
 
         // If the plugin private parameter "_stop" is false and the login form has not been submitted: render the login form
         if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit'))) {
+            // Showing the login form again abandons a login waiting for its second step
+            self::clearPendingSecondFactor();
+
             // First step: set the value of $aData['defaultAuth']
             // This variable will be used to select the default value of the Authentication method selector
             // which is shown only if there is more than one plugin auth on...
@@ -159,43 +179,18 @@ class Authentication extends SurveyCommonAction
             $event->set('identity', $identity);
             App()->getPluginManager()->dispatchEvent($event, array($authMethod));
             $identity = $event->get('identity');
+            // The login form can show a second authentication step (e.g. 2FA) if a plugin requires it
+            $identity->secondFactorSupported = true;
 
             // Now authenticate
             // This call LSUserIdentity::authenticate() (application/core/LSUserIdentity.php))
             // which will call the plugin function newUserSession() (eg: Authdb::newUserSession() )
             // TODO: for sake of clarity, the plugin function should be renamed to authenticate().
             if ($identity->authenticate()) {
-                FailedLoginAttempt::model()->deleteAttempts(FailedLoginAttempt::TYPE_LOGIN);
-                App()->user->setState('plugin', $authMethod);
-
-                Yii::app()->session['just_logged_in'] = true;
-                Yii::app()->session['loginsummary'] = self::getSummary();
-
-                $event = new PluginEvent('afterSuccessfulLogin');
-                $event->set('identity', $identity);
-                App()->getPluginManager()->dispatchEvent($event);
-
-                // If allowed_hosts.php does not exist, write the current host as valid
-                $allowedHosts = App()->loadAllowedHosts();
-                if (empty($allowedHosts)) {
-                    $currentHost = App()->request->getServerName();
-                    if (App()->writeAllowedHosts([$currentHost])) {
-                        Yii::app()->setFlashMessage(
-                            sprintf(
-                                gT('The allowed hosts file (application/config/allowed_hosts.php) has been created with "%s" as trusted host. For security reasons, LimeSurvey can only be accessed through that domain. If you need additional hosts, please edit the allowed hosts file directly.'),
-                                htmlspecialchars($currentHost)
-                            ),
-                            'info'
-                        );
-                    } else {
-                        Yii::app()->setFlashMessage(
-                            gT('The allowed hosts file (application/config/allowed_hosts.php) could not be created because the application/config directory is not writable. No trusted host restriction is currently enforced. Please make the directory writable, then login again, to enable host header protection.'),
-                            'warning'
-                        );
-                    }
-                }
-
-                return array('success');
+                return self::finishLogin($identity, $authMethod);
+            } elseif ($identity->errorCode == LSUserIdentity::ERROR_SECOND_FACTOR_REQUIRED) {
+                self::startSecondFactor($identity, $authMethod);
+                return array('secondfactor');
             } else {
                 // Failed
                 $event = new PluginEvent('afterFailedLoginAttempt');
@@ -212,6 +207,166 @@ class Authentication extends SurveyCommonAction
         }
 
         return $aData;
+    }
+
+    /**
+     * Last steps of a successful login, after the session was created
+     *
+     * @param LSUserIdentity $identity The logged in identity
+     * @param string $authMethod The auth plugin used for the login
+     * @return array
+     */
+    private static function finishLogin($identity, $authMethod)
+    {
+        FailedLoginAttempt::model()->deleteAttempts(FailedLoginAttempt::TYPE_LOGIN);
+        App()->user->setState('plugin', $authMethod);
+
+        Yii::app()->session['just_logged_in'] = true;
+        Yii::app()->session['loginsummary'] = self::getSummary();
+
+        $event = new PluginEvent('afterSuccessfulLogin');
+        $event->set('identity', $identity);
+        App()->getPluginManager()->dispatchEvent($event);
+
+        // If allowed_hosts.php does not exist, write the current host as valid
+        $allowedHosts = App()->loadAllowedHosts();
+        if (empty($allowedHosts)) {
+            $currentHost = App()->request->getServerName();
+            if (App()->writeAllowedHosts([$currentHost])) {
+                Yii::app()->setFlashMessage(
+                    sprintf(
+                        gT('The allowed hosts file (application/config/allowed_hosts.php) has been created with "%s" as trusted host. For security reasons, LimeSurvey can only be accessed through that domain. If you need additional hosts, please edit the allowed hosts file directly.'),
+                        htmlspecialchars($currentHost)
+                    ),
+                    'info'
+                );
+            } else {
+                Yii::app()->setFlashMessage(
+                    gT('The allowed hosts file (application/config/allowed_hosts.php) could not be created because the application/config directory is not writable. No trusted host restriction is currently enforced. Please make the directory writable, then login again, to enable host header protection.'),
+                    'warning'
+                );
+            }
+        }
+
+        return array('success');
+    }
+
+    /**
+     * Remember a login whose credentials were accepted but which needs a second authentication step
+     *
+     * @param LSUserIdentity $identity The identity returned by authenticate()
+     * @param string $authMethod The auth plugin used for the login
+     * @return void
+     */
+    private static function startSecondFactor($identity, $authMethod)
+    {
+        // New session id: the pending login must not be reachable through a session id known before
+        App()->session->regenerateID(true);
+        App()->session[self::SECOND_FACTOR_SESSION_KEY] = array(
+            'uid' => (int) $identity->id,
+            'authMethod' => $authMethod,
+            'plugin' => $identity->secondFactorPlugin,
+            'expires' => time() + self::SECOND_FACTOR_TIMEOUT,
+            'attempts' => 0,
+            // Language chosen on the login form, saved by LSUserIdentity::postLogin() once logged in
+            'loginlang' => App()->getRequest()->getPost('loginlang', 'default'),
+        );
+    }
+
+    /**
+     * Returns the login waiting for its second authentication step, if not expired
+     *
+     * @return array|null
+     */
+    private static function getPendingSecondFactor()
+    {
+        $pending = App()->session[self::SECOND_FACTOR_SESSION_KEY];
+        if (!is_array($pending)) {
+            return null;
+        }
+        if ($pending['expires'] < time()) {
+            self::clearPendingSecondFactor();
+            return null;
+        }
+        return $pending;
+    }
+
+    /**
+     * Forget the login waiting for its second authentication step
+     *
+     * @return void
+     */
+    private static function clearPendingSecondFactor()
+    {
+        unset(App()->session[self::SECOND_FACTOR_SESSION_KEY]);
+    }
+
+    /**
+     * Second login step: show and check the form of the plugin requiring a second factor (e.g. 2FA key)
+     * The user's credentials were already accepted by prepareLogin().
+     * This function is called while accessing: index.php/admin/authentication/sa/secondfactor
+     *
+     * @return void
+     */
+    public function secondFactor()
+    {
+        $this->redirectIfLoggedIn();
+
+        $pending = self::getPendingSecondFactor();
+        $user = $pending ? User::model()->findByPk($pending['uid']) : null;
+        if (!$user || !$user->canLogin() || !App()->getPluginManager()->isPluginActive($pending['plugin'])) {
+            self::clearPendingSecondFactor();
+            App()->user->setFlash('error', gT('Your login session has expired. Please log in again.'));
+            App()->getController()->redirect(array('/admin/authentication/sa/login'));
+        }
+
+        if (!is_null(App()->getRequest()->getPost('login_submit'))) {
+            if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_LOGIN)) {
+                self::clearPendingSecondFactor();
+                App()->user->setFlash('error', sprintf(gT('You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60));
+                App()->getController()->redirect(array('/admin/authentication/sa/login'));
+            }
+
+            $event = new PluginEvent('verifySecondFactor');
+            $event->set('user', $user);
+            App()->getPluginManager()->dispatchEvent($event, array($pending['plugin']));
+            $result = $event->get('result');
+
+            $identity = new LSUserIdentity($user->users_name, '');
+            $identity->plugin = $pending['authMethod'];
+            if ($result instanceof LSAuthResult && $result->isValid()) {
+                self::clearPendingSecondFactor();
+                $identity->id = $user->uid;
+                $identity->user = $user;
+                $identity->completeLogin();
+                self::finishLogin($identity, $pending['authMethod']);
+                self::doRedirect();
+            }
+
+            FailedLoginAttempt::model()->addAttempt(FailedLoginAttempt::TYPE_LOGIN);
+            $event = new PluginEvent('afterFailedLoginAttempt');
+            $event->set('identity', $identity);
+            App()->getPluginManager()->dispatchEvent($event);
+
+            $pending['attempts']++;
+            if ($pending['attempts'] >= self::SECOND_FACTOR_MAX_ATTEMPTS) {
+                self::clearPendingSecondFactor();
+                App()->user->setFlash('error', gT('Too many failed attempts. Please log in again.'));
+                App()->getController()->redirect(array('/admin/authentication/sa/login'));
+            }
+            App()->session[self::SECOND_FACTOR_SESSION_KEY] = $pending;
+            $message = $result instanceof LSAuthResult ? $result->getMessage() : '';
+            App()->user->setFlash('error', !empty($message) ? $message : gT('Incorrect 2FA key'));
+            App()->getController()->redirect(array('/admin/authentication/sa/secondfactor'));
+        }
+
+        $newSecondFactorForm = new PluginEvent('newSecondFactorForm');
+        $newSecondFactorForm->set('user', $user);
+        App()->getPluginManager()->dispatchEvent($newSecondFactorForm, array($pending['plugin']));
+        $aData = array();
+        $aData['pluginContent'] = $newSecondFactorForm->getContent($pending['plugin']);
+        $aData['loginlang'] = $pending['loginlang'];
+        $this->renderWrappedTemplate('authentication', 'secondFactor', $aData);
     }
 
     /**
