@@ -331,12 +331,25 @@ class Export extends SurveyCommonAction
     *
     * Optimization opportunities remain in the VALUE LABELS section, which runs a query / column
     *
+    * Note: Requires responses export or survey content export permission on the survey.
+    *
+    * @return void
+    * @throws CHttpException
     */
     public function exportspss()
     {
         global $length_vallabel;
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (empty($oSurvey)) {
+            throw new CHttpException(404, gT("Invalid survey ID"));
+        }
+        if (
+            !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')
+            && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')
+        ) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
 
         $filterstate = incompleteAnsFilterState();
         if (!Yii::app()->session['spssversion']) {
