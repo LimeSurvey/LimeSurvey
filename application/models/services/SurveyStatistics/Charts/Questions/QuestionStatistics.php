@@ -370,6 +370,11 @@ class QuestionStatistics implements StatisticsChartInterface
                 // views fetch only this question's columns.
                 'fields' => $this->questionFields[(int) ($question['qid'] ?? 0)] ?? [],
             ];
+            // Short text with a mapping service stores "lat;lng" answers; the
+            // client shows those on a map (0 = off, 1 = Google, 100 = OSM).
+            if (($question['type'] ?? null) === Question::QT_S_SHORT_FREE_TEXT) {
+                $meta['question']['mapService'] = (int) ($question['attributes']['location_mapservice'] ?? 0);
+            }
             // Dual-scale column headers by scale id, same source and defaults
             // as the chart's per-scale titles (DualScaleProcessor).
             if (($question['type'] ?? null) === Question::QT_1_ARRAY_DUAL) {
