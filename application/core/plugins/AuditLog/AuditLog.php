@@ -86,10 +86,10 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             'label' => 'Log if a user changes survey settings',
             'default' => '1',
         ),
-        // Whether non-superadmin survey admins may disable per-survey auditing
+        // Whether non-superadmins with survey settings update permission may disable per-survey auditing
         'AuditLog_AllowNonSuperadminDisable' => array(
             'type' => 'checkbox',
-            'label' => 'Allow non survey admins to disable the audit log for their surveys',
+            'label' => 'Allow non superadmins to disable the audit log for their surveys',
             'default' => '0',
             'help' => 'If enabled, any user with survey settings update permission may disable auditing for that survey; otherwise only superadmins can.'
         ),
@@ -648,7 +648,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             'current' => $currentAuditingSetting
         );
 
-        // If auditing is currrently enabled for this survey
+        // If auditing is currently enabled for this survey
         if ($currentAuditingSetting == 1) {
             // Disable the control for non-superadmin users to prevent them from disabling it
             $allowNonSuperDisable = isset($pluginsettings['AuditLog_AllowNonSuperadminDisable']['current']) && $pluginsettings['AuditLog_AllowNonSuperadminDisable']['current'] == 1;
