@@ -14,7 +14,8 @@ function initColumnFilter() {
             handle: '.organize-columns-handle',
             draggable: '.organize-columns-item',
             ghostClass: 'organize-columns-ghost',
-            animation: 150
+            animation: 150,
+            onEnd: updateMoveButtons
         });
     }
 
@@ -28,25 +29,51 @@ function initColumnFilter() {
         $checkboxes().prop('checked', false);
     });
 
-    $('#' + modalId + '-cancel').off('click.organize').on('click.organize', function (e) {
-        e.preventDefault();
-        var form = $modal.find('form');
-        var selected = form.data('filtered-columns') || [];
+    var updateMoveButtons = function () {
         var items = $list.children('.organize-columns-item');
-        $checkboxes().each(function () {
-            $(this).prop('checked', selected.indexOf($(this).val()) !== -1);
+        items.each(function (index) {
+            $(this).find('.organize-columns-up').prop('disabled', index === 0);
+            $(this).find('.organize-columns-down').prop('disabled', index === items.length - 1);
         });
-        var ordered = items.toArray().sort(function (a, b) {
-            var ia = selected.indexOf($(a).data('column'));
-            var ib = selected.indexOf($(b).data('column'));
-            if (ia === -1 && ib === -1) { return items.index(a) - items.index(b); }
-            if (ia === -1) { return 1; }
-            if (ib === -1) { return -1; }
-            return ia - ib;
-        });
-        $list.append(ordered);
-        $modal.modal('hide');
+    };
+    updateMoveButtons();
+
+    $list.off('click.organize').on('click.organize', '.organize-columns-move', function (e) {
+        e.preventDefault();
+        var $btn = $(this);
+        var $item = $btn.closest('.organize-columns-item');
+        if ($btn.hasClass('organize-columns-up')) {
+            $item.prev('.organize-columns-item').before($item);
+        } else {
+            $item.next('.organize-columns-item').after($item);
+        }
+        updateMoveButtons();
+        if ($btn.prop('disabled')) {
+            $item.find('.organize-columns-move:not(:disabled)').first().trigger('focus');
+        } else {
+            $btn.trigger('focus');
+        }
     });
+
+    var snapshot = [];
+    var confirmed = false;
+    $modal.off('show.bs.modal.organize hidden.bs.modal.organize')
+        .on('show.bs.modal.organize', function () {
+            confirmed = false;
+            snapshot = $list.children('.organize-columns-item').toArray().map(function (item) {
+                return {item: item, checked: $(item).find('input[type=checkbox]').prop('checked')};
+            });
+        })
+        .on('hidden.bs.modal.organize', function () {
+            if (confirmed) {
+                return;
+            }
+            snapshot.forEach(function (state) {
+                $list.append(state.item);
+                $(state.item).find('input[type=checkbox]').prop('checked', state.checked);
+            });
+            updateMoveButtons();
+        });
 
     $('#' + modalId + '-submit').off('click.organize').on('click.organize', function (e) {
         e.preventDefault();
@@ -54,6 +81,7 @@ function initColumnFilter() {
         var columns = $checkboxes().filter(':checked').map(function () {
             return $(this).val();
         }).get();
+        confirmed = true;
         $modal.modal('hide');
         $.fn.yiiGridView.update(target, {
             data: {selectColumns: 'select', columnsSelected: columns}
@@ -61,6 +89,9 @@ function initColumnFilter() {
     });
 }
 
-$(document).on('ready pjax:scriptcomplete', function () {
+$(function () {
+    initColumnFilter();
+});
+$(document).on('pjax:scriptcomplete', function () {
     initColumnFilter();
 });

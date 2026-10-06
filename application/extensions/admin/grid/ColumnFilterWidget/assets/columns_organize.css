@@ -111,3 +111,7 @@
 .organize-columns-modal .organize-columns-item input[type="checkbox"]::after {
     content: none;
 }
+.organize-columns-modal .organize-columns-move {
+    padding: 0 4px;
+    line-height: 1;
+}

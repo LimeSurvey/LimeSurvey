@@ -62,6 +62,12 @@ foreach ($filterableColumns as $key => $column) {
                                         <input type="checkbox" value="<?= CHtml::encode($key) ?>" <?= in_array($key, $filteredColumns, true) ? 'checked' : '' ?>>
                                         <?= $column['modalLabel'] ?? $column['header'] ?>
                                     </label>
+                                    <button type="button" class="btn btn-link btn-sm organize-columns-move organize-columns-up" aria-label="<?= CHtml::encode(gT('Move up')) ?>" title="<?= CHtml::encode(gT('Move up')) ?>">
+                                        <span class="ri-arrow-up-s-line" aria-hidden="true"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-link btn-sm organize-columns-move organize-columns-down" aria-label="<?= CHtml::encode(gT('Move down')) ?>" title="<?= CHtml::encode(gT('Move down')) ?>">
+                                        <span class="ri-arrow-down-s-line" aria-hidden="true"></span>
+                                    </button>
                                 </div>
                             <?php endforeach; ?>
                         </div>
