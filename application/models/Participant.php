@@ -2391,35 +2391,25 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Returns true if logged in user has edit rights to this participant
+     * Returns true if logged in user has edit rights to this participant:
+     * superadmins, users with the global participant panel update permission, the owner,
+     * and users holding an editable share of the participant (shared with them or with
+     * all users, share_uid -1).
+     * Note: Same rules as filterEditableParticipantIds() and ParticipantShare::canEditSharedParticipant().
+     *
      * @return boolean
      */
     public function userHasPermissionToEdit()
     {
-        $userId = Yii::app()->user->id;
-
-        $shared = ParticipantShare::model()->findByAttributes(
-            ['participant_id' => $this->participant_id],
-            'share_uid = :userid AND can_edit = :can_edit',
-            [':userid' => $userId, ':can_edit' => '1']
-        );
-        $owner = $this->owner_uid == $userId;
-
-        if (Permission::model()->hasGlobalPermission('superadmin') || (Permission::model()->hasGlobalPermission('participantpanel', 'update'))) {
+        if (Permission::model()->hasGlobalPermission('superadmin') || Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
             // Superadmins can do anything and users with global edit permission can to edit all participants
             return true;
-        } elseif ($shared && $shared->share_uid == -1 && $shared->can_edit) {
-            // -1 = shared with everyone
-            return true;
-        } elseif ($shared && $shared->exists('share_uid = :userid', [':userid' => $userId]) && $shared->can_edit) {
-            // Shared with this particular user
-            return true;
-        } elseif ($owner) {
+        }
+        if ($this->owner_uid == Yii::app()->user->id) {
             // User owns this participant
             return true;
-        } else {
-            return false;
         }
+        return ParticipantShare::model()->canEditSharedParticipant($this->participant_id);
     }
 
     /**

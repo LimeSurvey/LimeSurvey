@@ -466,9 +466,10 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
-     * Returns true if the user is allowed to edit the participant
+     * Returns true if the participant is shared with the logged in user or with all users
+     * (share_uid -1) and the share allows editing.
      *
-     * @param $participent_id
+     * @param string $participent_id
      *
      * @return boolean
      */
@@ -476,7 +477,7 @@ class ParticipantShare extends LSActiveRecord
     {
         $participent = $this->findByAttributes(
             ['participant_id' => $participent_id],
-            'can_edit = :can_edit AND share_uid = :userid',
+            'can_edit = :can_edit AND (share_uid = :userid OR share_uid = -1)',
             [
                 ':userid' => App()->user->id,
                 ':can_edit' => '1'
