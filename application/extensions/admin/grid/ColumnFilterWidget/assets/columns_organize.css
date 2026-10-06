@@ -1,0 +1,113 @@
+.organize-columns-modal .organize-columns-buttons .btn {
+    padding: 2px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1e1e1e;
+    background: #fff;
+    border: 1px solid #1e1e1e;
+    border-radius: 4px;
+}
+.organize-columns-modal .organize-columns-list {
+    max-height: 55vh;
+    overflow-y: auto;
+    padding: 11px;
+    border: 1px solid #d3d5da;
+    border-radius: 4px;
+    background: #fff;
+}
+.organize-columns-modal .organize-columns-sortable {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.organize-columns-modal .organize-columns-list > .organize-columns-locked {
+    margin-bottom: 4px;
+}
+.organize-columns-modal .organize-columns-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 28px;
+    padding: 0 8px;
+    border: 1px solid #d3d5da;
+    border-radius: 2px;
+    background: #fff;
+}
+.organize-columns-modal .organize-columns-item label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    flex: 1;
+    cursor: pointer;
+    color: #1e1e1e;
+    font-weight: 400;
+}
+.organize-columns-modal .organize-columns-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    border: 1px solid #1e1e1e;
+    border-radius: 2.5px;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px 14px;
+}
+.organize-columns-modal .organize-columns-item input[type="checkbox"]:checked {
+    background: #333641;
+}
+.organize-columns-modal .organize-columns-handle {
+    cursor: grab;
+    color: #9094a7;
+    width: 16px;
+    flex: none;
+}
+.organize-columns-modal .organize-columns-locked .organize-columns-handle {
+    visibility: hidden;
+    cursor: default;
+}
+.organize-columns-modal .organize-columns-locked label {
+    color: #b8bbc5;
+    cursor: default;
+}
+.organize-columns-modal .organize-columns-locked input[type="checkbox"] {
+    background: #d3d5da;
+    border-color: #9094a7;
+    cursor: default;
+}
+.organize-columns-modal .organize-columns-locked input[type="checkbox"]:checked {
+    background: #d3d5da;
+}
+.organize-columns-modal .organize-columns-ghost {
+    opacity: 0.4;
+}
+.organize-columns-modal .modal-footer .btn {
+    height: 36px;
+    min-width: 67px;
+    border-radius: 4px;
+    border: 0;
+    color: #fff;
+}
+.organize-columns-modal .modal-footer .btn-cancel {
+    background: #6e748c;
+}
+.organize-columns-modal .modal-footer .btn-primary {
+    background: #8146f6;
+    min-width: 134px;
+}
+
+.organize-columns-modal .organize-columns-item input[type="checkbox"]:checked {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='%23fff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 7.5l3 3 6-6.5'/%3E%3C/svg%3E");
+}
+.organize-columns-modal .organize-columns-locked input[type="checkbox"]:checked {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='%236e748c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 7.5l3 3 6-6.5'/%3E%3C/svg%3E");
+}
+.organize-columns-modal .organize-columns-item input[type="checkbox"]::after {
+    content: none;
+}

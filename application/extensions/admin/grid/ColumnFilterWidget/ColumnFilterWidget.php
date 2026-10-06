@@ -39,6 +39,9 @@ class ColumnFilterWidget extends CWidget
      */
     public $ajaxUpdate;
 
+    /** @var bool Render the "Organize columns" modal instead of the plain selector */
+    public $organize = false;
+
     /**
      * Initializes the widget by registering necessary client-side scripts.
      */
@@ -64,7 +67,7 @@ class ColumnFilterWidget extends CWidget
      */
     public function renderActions(): void
     {
-        $this->render('columns_filter', [
+        $this->render($this->organize ? 'columns_organize' : 'columns_filter', [
             'model' => $this->model,
             'modalId' => $this->modalId,
             'filterableColumns' => $this->filterableColumns,
@@ -80,6 +83,18 @@ class ColumnFilterWidget extends CWidget
     {
         $sNeededScriptVar = "modalId = '" . $this->modalId . "';";
         App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, CClientScript::POS_BEGIN);
+
+        if ($this->organize) {
+            App()->getClientScript()->registerPackage('sortablejs');
+            App()->getClientScript()->registerCssFile(
+                App()->getConfig("extensionsurl") . 'admin/grid/ColumnFilterWidget/assets/columns_organize.css'
+            );
+            App()->getClientScript()->registerScriptFile(
+                App()->getConfig("extensionsurl") . 'admin/grid/ColumnFilterWidget/assets/columns_organize.js',
+                CClientScript::POS_END
+            );
+            return;
+        }
 
         App()->getClientScript()->registerScriptFile(
             App()->getConfig("extensionsurl") . 'admin/grid/ColumnFilterWidget/assets/columns_filter.js',
