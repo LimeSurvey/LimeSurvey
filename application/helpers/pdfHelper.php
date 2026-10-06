@@ -185,15 +185,19 @@ class pdfHelper
                 continue;
             }
             $imageInfo = @getimagesize($file);
-            if ($imageInfo) {
-                return 'data:' . $imageInfo['mime'] . ';base64,' . base64_encode((string) file_get_contents($file));
-            }
-            if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'svg') {
+            // Since PHP 8.5, getimagesize() recognizes SVG images too
+            $isSvg = ($imageInfo && $imageInfo['mime'] === 'image/svg+xml')
+                || strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'svg';
+            if ($isSvg) {
                 $content = (string) file_get_contents($file);
                 if (preg_match('/<svg[\s>]/i', $content)) {
-                    // TCPDF reads SVG images from an "@" data stream
+                    // TCPDF reads SVG images from an "@" data stream, not from a data URI
                     return '@' . base64_encode($content);
                 }
+                continue;
+            }
+            if ($imageInfo) {
+                return 'data:' . $imageInfo['mime'] . ';base64,' . base64_encode((string) file_get_contents($file));
             }
         }
         return null;
