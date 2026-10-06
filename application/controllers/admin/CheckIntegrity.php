@@ -48,8 +48,8 @@ class CheckIntegrity extends SurveyCommonAction
      *
      * The data consistency check itself only runs when the "Run data consistency
      * check" button is submitted (see fixintegrity()), not on every page load, so
-     * this GET request never deletes anything for that section - it only fetches
-     * the (separate) data redundancy check's current state.
+     * this GET request never changes any data - it only fetches the (separate)
+     * data redundancy check's current state.
      *
      * @return void
      * @throws Exception
