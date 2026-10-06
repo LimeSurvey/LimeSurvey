@@ -3,7 +3,7 @@
 
 /*
  * LimeSurvey (tm)
- * Copyright (C) 2012-2016 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2012-2016 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v3 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -552,7 +552,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   function deleteSubquestionInput(e) {
     e.preventDefault();
     const target = e.target;
-    // 1.) Check if there is at least one answe
+    // 1.) Check if there is at least one answer
     const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
     if (countanswers > 1) {
       // NB: Only answer options use position. Subquestions use id.
@@ -601,7 +601,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   function deleteAnswerOptionInput(e) {
     e.preventDefault();
     const target = e.target;
-    // 1.) Check if there is at least one answe
+    // 1.) Check if there is at least one answer
     const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
     if (countanswers > 1) {
       // NB: Only answer options use position. Subquestions use id.
@@ -770,44 +770,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
   //}
 
   /**
-   * @param {any} mixedVar
-   * @return {boolean}
-   */
-  function isNumeric(mixedVar /*: mixed */) {
-    return (typeof (mixedVar) === 'number' || typeof (mixedVar) === 'string') && mixedVar !== '' &&
-      (typeof mixedVar === 'number' && !isNaN(mixedVar));
-  }
-
-  /**
-   * @param {string} sSourceCode
-   * @return {string}
-   * @todo Used in label sets? But not in question editor?
-   * @todo Remove
-   */
-  function getNextCode(sSourceCode) {  // jshint ignore: line
-    const sourcecode = sSourceCode;
-    let i = 1;
-    let found = true;
-    let foundnumber = -1;
-    const sclength = sourcecode.length;
-    while (i <= sclength && found === true) {
-      found = isNumeric(sourcecode.substr(sclength - i, i));
-      if (found) {
-        foundnumber = parseInt(sourcecode.substr(sclength - i, i));
-        i++;
-      }
-    }
-    if (foundnumber === -1) {
-      return sourcecode;
-    }
-
-    foundnumber++;
-    const foundnumberString = foundnumber.toString();
-    const result = sourcecode.substr(0, sclength - foundnumberString.length) + foundnumberString;
-    return (result);
-  }
-
-  /**
    * @return {void}
    */
   //function popupeditor() {
@@ -884,10 +846,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
             if (labelSet.labels) {
               isEmpty = false;
+              const assessmentVisible = source === 'answeroptions' &&
+                $('#add-answer-option-input-javascript-datas').data('assessmentvisible') == 1;
               labelSet.labels.forEach((label) => {
                 // Label title is not concatenated directly because it may have non-encoded HTML
                 const $labelTitleDiv = $('<div class="col-lg-9"></div>');
-                $labelTitleDiv.text(label.title);
+                const assessmentValue = parseInt(label.assessment_value, 10) || 0;
+                $labelTitleDiv.text(assessmentVisible ? `[${assessmentValue}] ${label.title}` : label.title);
                 const $listItem = $listItemTemplate.clone();
                 $listItem.append(`<div class="col-lg-3 text-end" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
                 $listItem.append($labelTitleDiv);
@@ -1146,6 +1111,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
             }
 
             $tr.find('td.subquestion-text, td.answeroption-text').find('input[type=text]').val(label.title);
+            if (source === 'answeroptions') {
+              $tr.find('td.assessment-value').find('input').val(label.assessment_value ?? 0);
+            }
             $table.find('tbody').append($tr);
 
             if (source === 'subquestions') {
@@ -1252,7 +1220,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           numericSuffix = `${currentCharacter}${numericSuffix}`; // store it in a string
           n++;
         } else {
-          numeric = false; // At first non numeric character found, the loop is stoped
+          numeric = false; // At first non numeric character found, the loop is stopped
         }
     }
     // Sometimes "0" is interpreted as NaN so test if it's just a missing Zero
@@ -1495,7 +1463,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {Promise}
    */
   function ajaxcheckdup() {
-    check = true; // set check to true everytime on call
+    check = true; // set check to true every time on call
     return $.getJSON(languageJson.lanameurl, (data) => {
       $.each(data, (key, val) => {
         $('#saveaslabelModal').modal('hide');
@@ -1645,7 +1613,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         if (data.responseJSON) {
           LS.LsGlobalNotifier.createAlert(data.responseJSON.message, 'danger', {showCloseButton: true});
         } else {
-          alert('Internal eror from Ajax call');
+          alert('Internal error from Ajax call');
           throw 'abort';
         }
       }

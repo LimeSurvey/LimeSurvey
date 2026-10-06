@@ -1,7 +1,7 @@
 <?php
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -67,7 +67,7 @@ class HelloWorld extends SurveyCommonAction
         // Then, we build the data array that will be passed to the view.
         $aData = array();
 
-        // Those datas will controll the behaviour of the survey "layout"
+        // Those datas will control the behaviour of the survey "layout"
 
         // By providing a surveyid, we launch the survey "layout".
         // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/SurveyCommonAction.php#L328-L338
@@ -103,7 +103,7 @@ class HelloWorld extends SurveyCommonAction
         // Then, we build the data array that will be passed to the view.
         $aData = array();
 
-        // Those datas will controll the behaviour of the survey "layout"
+        // Those datas will control the behaviour of the survey "layout"
 
         // By providing a surveyid, we launch the survey "layout".
         // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/SurveyCommonAction.php#L328-L338
@@ -134,7 +134,7 @@ class HelloWorld extends SurveyCommonAction
      */
     protected function renderCentralContents($sAction, $aViewUrls, $aData = [])
     {
-      // Use alias to render a view outisde of application directory.
+      // Use alias to render a view outside of application directory.
       return Yii::app()->getController()->renderPartial('lsadminmodules.' . $sAction. '.views.' . $aViewUrls, $aData, true);
     }
 

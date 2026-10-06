@@ -27,5 +27,5 @@ Note: the files will be deleted from your filesystem, but will be re-installed o
 
 ## Home page & Copyright
 - HomePage [Tools for Research](https://www.toolsforresearch.com)
-- Copyright © 2019 [Tools for Research](https://www.toolsforresearch.com)
+- Copyright Â© 2019 [Tools for Research](https://www.toolsforresearch.com)
 - Licence : MIT <https://en.wikipedia.org/wiki/MIT_License>

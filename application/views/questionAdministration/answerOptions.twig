@@ -41,7 +41,7 @@
                                     {{ gT("Assessment value") }} <i
                 class="ri-information-fill"
                 data-bs-toggle="tooltip"
-                title="{{ gT("A positive or negative integer number as assement value if this option is selected") }}"
+                title="{{ gT("A positive or negative integer number as assessment value if this option is selected") }}"
             > </i>     
                                 </th>
                             {% else %}
@@ -143,7 +143,7 @@
         })
     ) }}"
     data-assessmentvisible="{% if assessmentvisible==true %}1{% else %}0{% endif %}"
-    data-errormessage="An error occured while processing the ajax request."
+    data-errormessage="An error occurred while processing the ajax request."
     data-languages='{{ json_encode(allLanguages) }}'
     data-surveyid="{{ question.sid }}"
     data-gid="{{ question.gid }}"

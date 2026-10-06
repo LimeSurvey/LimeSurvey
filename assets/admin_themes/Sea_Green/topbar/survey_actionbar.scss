@@ -40,6 +40,7 @@
         align-items : center;
         margin-left : 16px;
         i {
+            @include state-border(1px, transparent);
             cursor         : pointer;
             display        : inline-block;
             vertical-align : middle;
@@ -52,6 +53,13 @@
             }
             &:not(:first-child) {
                 margin-left : 16px;
+            }
+            &:hover {
+                @include state-border(1px, $grape75);
+            }
+            &:focus-visible, &:active {
+                @include state-border(1px, $grape90);
+                @include inset-border(1px, $grape90);
             }
         }
     }

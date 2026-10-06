@@ -1,7 +1,7 @@
 /*
     LimeSurvey
     Copyright (C) 2007-2023
-    The LimeSurvey Project Team / Patrick Teichmann
+    The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v3 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -36,7 +36,7 @@ function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r
 // register to global scope
 window.bootstrap = Bootstrap;
 
-},{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":12}],2:[function(require,module,exports){
+},{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":14}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -125,7 +125,8 @@ var ThemeScripts = exports.ThemeScripts = function ThemeScripts() {
    * in endpage and in $(window).resize
    */
   var fixBodyPadding = function fixBodyPadding() {
-    $('body').css('padding-top', Math.round($('#survey-nav').outerHeight()) + 'px');
+    var navHeight = Math.round($('#survey-nav.fixed-top').outerHeight() || 0);
+    $('body').css('padding-top', navHeight + 'px');
   };
 
   /**
@@ -333,7 +334,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.TemplateCoreClass = void 0;
 var _old_template_core_pre = require("./old_template_core_pre.js");
 /**
- * @file Default template functionnality
+ * @file Default template functionality
  * @copyright LimeSurvey <http://www.limesurvey.org>
  * @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-v3-or-Later
  */
@@ -343,7 +344,7 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
     /**
      * Dialog and confirm
      */
-    /* showStartPopups : replace core function : allow HTML and use it. Unusuable with ajax */
+    /* showStartPopups : replace core function : allow HTML and use it. Unusable with ajax */
     showStartPopups: function showStartPopups() {
       if (LSvar.showpopup == 1 && $.isArray(LSvar.startPopups)) {
         var startPopups = LSvar.startPopups.map(function (text) {
@@ -416,15 +417,15 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
             parent.addClass('tip-was-hidden', 1);
           }
           var questionContainer = $(this).parents('div.question-container');
-          questionContainer.addClass('input-error'); /* No difference betwwen error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+          questionContainer.addClass('input-error'); /* No difference between error after submit and error before submit : think (Shnoulle) it's better to have a difference */
           $(this).find('span.fa-exclamation-circle').removeClass('d-none');
         });
         $(this).on('classChangeGood', function () {
-          /* If user choose hide-tip : leave it */
-          var parent = $(this).parents('div.hide-tip');
+          /* If user choose hide-tip : hide it again once no other tip in the same block is still in error */
+          var parent = $(this).parent('div.ls-questionhelp');
           parent.removeClass('text-danger');
           parent.addClass('text-info');
-          if (parent.hasClass('tip-was-hidden')) {
+          if (parent.hasClass('tip-was-hidden') && parent.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
             parent.removeClass('tip-was-hidden').addClass('hide-tip');
           }
           var questionContainer = $(this).parents('div.question-container');
@@ -470,7 +471,7 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
      * Must be before ready (event happen before ready)
      */
     hideMultipleColumn: function hideMultipleColumn() {
-      $("[id^='question']").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
+      $("[id^='question'].question-container").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
         if (event.target != this) return;
         data = $.extend({
           style: 'hidden'
@@ -479,7 +480,7 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
           $(this).closest(".list-unstyled").removeClass("ls-hidden");
         }
       });
-      $("[id^='question']").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
+      $("[id^='question'].question-container").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
         if (event.target != this) return;
         data = $.extend({
           style: 'hidden'
@@ -550,24 +551,24 @@ function triggerEmRelevance() {
 /* On question */
 function triggerEmRelevanceQuestion() {
   /* Action on this question */
-  $("[id^='question']").on('relevance:on', function (event, data) {
+  $("[id^='question'].question-container").on('relevance:on', function (event, data) {
     /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. 
     Don't want to stop propagation. */
     if (event.target != this) return;
     $(this).removeClass("ls-irrelevant ls-hidden");
   });
-  $("[id^='question']").on('relevance:off', function (event, data) {
+  $("[id^='question'].question-container").on('relevance:off', function (event, data) {
     if (event.target != this) return;
     $(this).addClass("ls-irrelevant ls-hidden");
   });
   /* In all in one mode : need updating group too */
-  $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:on', function (event, data) {
+  $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question'].question-container").on('relevance:on', function (event, data) {
     if (event.target != this) return;
     $(this).closest("[id^='group-']").removeClass("ls-hidden");
   });
-  $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:off', function (event, data) {
+  $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question'].question-container").on('relevance:off', function (event, data) {
     if (event.target != this) return;
-    if ($(this).closest("[id^='group-']").find("[id^='question']").length == $(this).closest("[id^='group-']").find("[id^='question'].ls-hidden").length) {
+    if ($(this).closest("[id^='group-']").find("[id^='question'].question-container").length == $(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length) {
       $(this).closest("[id^='group-']").addClass("ls-hidden");
     }
   });
@@ -585,7 +586,7 @@ function triggerEmRelevanceGroup() {
 }
 /* On subquestion and answers-list */
 function triggerEmRelevanceSubQuestion() {
-  $("[id^='question']").on('relevance:on', "[id^='javatbd']", function (event, data) {
+  $("[id^='question'].question-container").on('relevance:on', "[id^='javatbd']", function (event, data) {
     if (event.target != this) return; // not needed now, but after (2016-11-07)
     data = $.extend({
       style: 'hidden'
@@ -603,11 +604,13 @@ function triggerEmRelevanceSubQuestion() {
       }
     }
     if (data.style == 'hidden') {
+      /* In all in one mode : need updating group too */
+      $(this).closest("[id^='group-']").removeClass("ls-hidden");
       updateLineClass($(this));
       updateRepeatHeading($(this).closest(".ls-answers"));
     }
   });
-  $("[id^='question']").on('relevance:off', "[id^='javatbd']", function (event, data) {
+  $("[id^='question'].question-container").on('relevance:off', "[id^='javatbd']", function (event, data) {
     if (event.target != this) return; // not needed now, but after (2016-11-07)
     data = $.extend({
       style: 'hidden'
@@ -622,6 +625,10 @@ function triggerEmRelevanceSubQuestion() {
       });
     }
     if (data.style == 'hidden') {
+      /* In all in one mode : need updating group too */
+      if ($(this).closest("[id^='group-']").find("[id^='question'].question-container").length == $(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length) {
+        $(this).closest("[id^='group-']").addClass("ls-hidden");
+      }
       updateLineClass($(this));
       updateRepeatHeading($(this).closest(".ls-answers"));
     }
@@ -893,7 +900,7 @@ function triggerEmClassChange() {
  *  Ask confirmation on click on .needconfirm
  */
 function activateConfirmButton() {
-  /* With ajax mode : using $(document).on attache X times the same event */
+  /* With ajax mode : using $(document).on attaches X times the same event */
   $("button[data-confirmedby]").on('click', function (event) {
     var btnConfirm = $(this);
     var cbConfirm = $(this).parent().find("[name='" + $(this).data('confirmedby') + "']");
@@ -910,7 +917,7 @@ function activateConfirmButton() {
 /**
  * has-error management for ls-error-mandatory
  * Only add ls-error-mandatory in PHP currently, not in js : different behaviour after try next and don't try next
- * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no boostrap, for before submit : use only css in template
+ * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no bootstrap, for before submit : use only css in template
  */
 function updateMandatoryErrorClass() {
   $(".ls-error-mandatory .has-error,.ls-error-mandatory.has-error").on("blur", ":text,textarea", function (event) {
@@ -1072,10 +1079,210 @@ var ArrayScripts = exports.ArrayScripts = function ArrayScripts() {
 window.ArrayScripts = ArrayScripts;
 
 },{}],8:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+/**
+ * LimeSurvey
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ *
+ * Deselect single-choice radio buttons
+ *
+ * Enables deselection of an already-selected radio button by clicking it again
+ * (pointer) or pressing Space while it is focused (keyboard / AT).
+ * Applies to single-choice question containers that also carry the CSS class
+ * "deselect-singlechoice", added by the fruity_twentythree theme when the
+ * "deselectsinglechoice" theme option is enabled.
+ *
+ * Supported question types (matched by their container CSS class):
+ *   - list-radio        (type L)
+ *   - list-with-comment (type O)
+ *
+ * When a radio is deselected, a custom "ls:singlechoiceDeselected" event is
+ * dispatched on the question container with detail { name, value }, allowing
+ * other modules to react (e.g. clearing the "other" text field).
+ *
+ * Pointer path: uses mousedown to capture pre-click checked state, then a
+ * native capture click listener (so stopPropagation in inline onclick handlers
+ * such as cancelBubbleThis cannot block it). The actual deselect is deferred
+ * via setTimeout so our checkconditions('') wins over any inline checkconditions
+ * call with the previous value.
+ *
+ * Keyboard path: handled entirely in keydown. preventDefault suppresses the
+ * synthetic click so the capture listener does not also fire, and checkconditions
+ * can be called directly without deferral.
+ */
+
+var DeselectSinglechoiceScripts = function () {
+  var initialized = false;
+  var previouslyCheckedRadio = null;
+  var CONTAINER_SELECTOR = '.deselect-singlechoice.list-radio, .deselect-singlechoice.list-with-comment';
+  var RADIO_SELECTOR = '.deselect-singlechoice.list-radio input[type="radio"], .deselect-singlechoice.list-with-comment input[type="radio"]';
+  var LABEL_SELECTOR = '.deselect-singlechoice.list-radio label, .deselect-singlechoice.list-with-comment label';
+  var recordCheckedState = function recordCheckedState(radio) {
+    previouslyCheckedRadio = radio && radio.checked ? radio : null;
+  };
+  var deselect = function deselect(radio) {
+    var name = radio.name;
+    var value = radio.value;
+    var container = radio.closest('.deselect-singlechoice');
+    radio.checked = false;
+    var javaField = document.getElementById('java' + name);
+    if (javaField) {
+      javaField.value = '';
+    }
+    if (container) {
+      container.dispatchEvent(new CustomEvent('ls:singlechoiceDeselected', {
+        bubbles: true,
+        detail: {
+          name: name,
+          value: value
+        }
+      }));
+    }
+    if (typeof checkconditions === 'function') {
+      checkconditions('', name, 'radio');
+    }
+  };
+  var init = function init() {
+    if (initialized) {
+      return;
+    }
+    initialized = true;
+
+    // Pointer: direct click on the radio input circle
+    $(document).on('mousedown', RADIO_SELECTOR, function () {
+      recordCheckedState(this);
+    });
+
+    // Pointer: click via an associated label (label may be a sibling, not a parent).
+    // mousedown fires on the label; the browser then synthesises a click on the input.
+    $(document).on('mousedown', LABEL_SELECTOR, function () {
+      var forId = this.getAttribute('for');
+      recordCheckedState(forId ? document.getElementById(forId) : null);
+    });
+
+    // Keyboard / AT: Space on an already-checked radio.
+    // Handled entirely in keydown; preventDefault suppresses the synthetic click
+    // so the capture listener below does not also fire.
+    $(document).on('keydown', RADIO_SELECTOR, function (e) {
+      if (e.key !== ' ' || !this.checked) {
+        return;
+      }
+      e.preventDefault();
+      deselect(this);
+    });
+
+    // Pointer: native capture listener fires top-down before stopPropagation()
+    // in inline onclick handlers (e.g. cancelBubbleThis in image-select questions).
+    document.addEventListener('click', function (e) {
+      var radio = e.target;
+      if (radio.tagName !== 'INPUT' || radio.type !== 'radio') {
+        return;
+      }
+      if (!radio.closest(CONTAINER_SELECTOR)) {
+        return;
+      }
+      if (radio !== previouslyCheckedRadio) {
+        previouslyCheckedRadio = null;
+        return;
+      }
+      previouslyCheckedRadio = null;
+
+      // Defer so our checkconditions('') runs after any inline onclick
+      // handler that calls checkconditions with the previous value.
+      setTimeout(function () {
+        return deselect(radio);
+      }, 0);
+    }, true); // capture phase
+  };
+  return {
+    init: init
+  };
+}();
+$(document).on('ready pjax:scriptcomplete', function () {
+  DeselectSinglechoiceScripts.init();
+});
+var _default = exports["default"] = DeselectSinglechoiceScripts;
+
+},{}],9:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+/**
+ * LimeSurvey
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ *
+ * ListRadio - Clear "other" text field on deselect
+ *
+ * Listens for the "ls:singlechoiceDeselected" custom event dispatched by
+ * deselect-singlechoice.js. When the deselected radio was the "other" option ("-oth-"),
+ * performs all cleanup needed across question types:
+ *
+ * - Standard list-radio: clears the other text input (#answer{name}othertext)
+ * - Bootstrap buttons:   hides #div{name}other (adds ls-js-hidden) and clears
+ *                        the auxiliary hidden field (#answer{name}othertextaux)
+ *
+ * Without this, LimeSurvey core would immediately re-select the "other" radio
+ * because its keyup handler fires whenever the text field is non-empty.
+ */
+
+var DeselectSinglechoiceOtherScripts = function () {
+  var initialized = false;
+  var init = function init() {
+    if (initialized) {
+      return;
+    }
+    initialized = true;
+    $(document).on('ls:singlechoiceDeselected', '.deselect-singlechoice.list-radio, .deselect-singlechoice.list-with-comment', function (e) {
+      var _e$originalEvent$deta = e.originalEvent.detail,
+        name = _e$originalEvent$deta.name,
+        value = _e$originalEvent$deta.value;
+      if (value !== '-oth-') {
+        return;
+      }
+
+      // Standard list-radio: clear the visible other text input
+      var otherTextField = document.getElementById('answer' + name + 'othertext');
+      if (otherTextField) {
+        otherTextField.value = '';
+      }
+
+      // Bootstrap buttons: hide the other text container and clear the aux field
+      var otherContainer = document.getElementById('div' + name + 'other');
+      if (otherContainer) {
+        otherContainer.classList.add('ls-js-hidden');
+        var otherTextAux = document.getElementById('answer' + name + 'othertextaux');
+        if (otherTextAux) {
+          otherTextAux.value = '';
+        }
+      }
+    });
+  };
+  return {
+    init: init
+  };
+}();
+$(document).on('ready pjax:scriptcomplete', function () {
+  DeselectSinglechoiceOtherScripts.init();
+});
+var _default = exports["default"] = DeselectSinglechoiceOtherScripts;
+
+},{}],10:[function(require,module,exports){
 /*
     LimeSurvey
     Copyright (C) 2007-2023
-    The LimeSurvey Project Team / Patrick Teichmann
+    The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v3 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -1103,7 +1310,7 @@ window.ArrayScripts = ArrayScripts;
 */
 "use strict";
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -1114,10 +1321,12 @@ var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
 var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));
 var _video = _interopRequireDefault(require("./video/video.js"));
 var _a11yHandles = require("./a11y-handles/a11y-handles.js");
+var _deselectSinglechoice = _interopRequireDefault(require("./questiontypes/deselect-singlechoice/deselect-singlechoice.js"));
+var _deselectSinglechoice_other = _interopRequireDefault(require("./questiontypes/deselect-singlechoice/deselect-singlechoice_other.js"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r = new WeakMap(), n = new WeakMap(); return (_interopRequireWildcard = function _interopRequireWildcard(e, t) { if (!t && e && e.__esModule) return e; var o, i, f = { __proto__: null, "default": e }; if (null === e || "object" != _typeof(e) && "function" != typeof e) return f; if (o = t ? n : r) { if (o.has(e)) return o.get(e); o.set(e, f); } for (var _t in e) "default" !== _t && {}.hasOwnProperty.call(e, _t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, _t)) && (i.get || i.set) ? o(f, _t, i) : f[_t] = e[_t]); return f; })(e, t); }
 
-},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./a11y-handles/a11y-handles.js":2,"./core/old_core_theme.js":3,"./navbar/navbar.js":6,"./questiontypes/array/array.js":7,"./theme_js_disclaimer.js":8,"./video/video.js":10}],10:[function(require,module,exports){
+},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./a11y-handles/a11y-handles.js":2,"./core/old_core_theme.js":3,"./navbar/navbar.js":6,"./questiontypes/array/array.js":7,"./questiontypes/deselect-singlechoice/deselect-singlechoice.js":8,"./questiontypes/deselect-singlechoice/deselect-singlechoice_other.js":9,"./theme_js_disclaimer.js":10,"./video/video.js":12}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1154,7 +1363,7 @@ var Video = exports.Video = function Video() {
 window.video = new Video();
 video.fixVideoHeight();
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * @popperjs/core v2.11.8 - MIT License
  */
@@ -2752,7 +2961,7 @@ exports.popperGenerator = popperGenerator;
 exports.popperOffsets = popperOffsets$1;
 exports.preventOverflow = preventOverflow$1;
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7457,4 +7666,4 @@ enableDismissTrigger(Toast);
 
 defineJQueryPlugin(Toast);
 
-},{"@popperjs/core":11}]},{},[9]);
+},{"@popperjs/core":13}]},{},[11]);

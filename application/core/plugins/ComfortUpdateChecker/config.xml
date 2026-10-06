@@ -8,12 +8,13 @@
         <author>LimeSurvey GmbH</author>
         <authorUrl>https://limesurvey.org</authorUrl>
         <email>support@limesurvey.org</email>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Checks if a new update is available in ComfortUpdate]]></description>
         <supportUrl>https://www.limesurvey.org</supportUrl>
     </metadata>
     <compatibility>
+        <version>7.0</version>
         <version>6.0</version>
         <version>5.0</version>
         <version>4.0</version>

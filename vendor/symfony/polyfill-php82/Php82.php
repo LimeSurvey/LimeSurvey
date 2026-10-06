@@ -43,7 +43,7 @@ class Php82
             }
 
             if ('}' !== $str[++$i]) {
-                return $i === $length;
+                return false;
             }
         }
 
@@ -65,7 +65,7 @@ class Php82
      */
     public static function odbc_connection_string_should_quote(string $str): bool
     {
-        return false !== strpbrk($str, '[]{}(),;?*=!@');
+        return false !== strpbrk($str, '[]{}(),;?*=!@ ');
     }
 
     public static function odbc_connection_string_quote(string $str): string
@@ -112,8 +112,8 @@ class Php82
             ++$digits;
         }
 
-        if ($value[$digits] < '0' || $value[$digits] > 9) {
-            $message = sprintf(
+        if ($digits === $str_end || $value[$digits] < '0' || $value[$digits] > '9') {
+            $message = \sprintf(
                 'Invalid quantity "%s": no valid leading digits, interpreting as "0" for backwards compatibility',
                 self::escapeString($value)
             );
@@ -155,7 +155,7 @@ class Php82
                     $allowed_digits = '01';
                     break;
                 default:
-                    $message = sprintf(
+                    $message = \sprintf(
                         'Invalid prefix "0%s", interpreting as "0" for backwards compatibility',
                         $value[$digits + 1]
                     );
@@ -166,7 +166,7 @@ class Php82
 
             $digits += 2;
             if ($digits === $str_end) {
-                $message = sprintf(
+                $message = \sprintf(
                     'Invalid quantity "%s": no digits after base prefix, interpreting as "0" for backwards compatibility',
                     self::escapeString($value)
                 );
@@ -184,25 +184,26 @@ class Php82
                 ++$digits_consumed;
             }
 
-            if ('0' === $value[$digits_consumed]) {
-                /* Value is just 0 */
-                if ($digits_consumed + 1 === $str_end) {
-                    goto evaluation;
-                }
+            if ($digits_consumed + 1 < $str_end && '0' === $value[$digits_consumed]) {
                 switch ($value[$digits_consumed + 1]) {
                     case 'x':
                     case 'X':
                     case 'o':
                     case 'O':
+                        $digits_consumed += 2;
+                        break;
                     case 'b':
                     case 'B':
-                        $digits_consumed += 2;
+                        // 0b is a valid pair of digits in base 16
+                        if (16 !== $base) {
+                            $digits_consumed += 2;
+                        }
                         break;
                 }
             }
 
             if ($digits !== $digits_consumed) {
-                $message = sprintf(
+                $message = \sprintf(
                     'Invalid quantity "%s": no digits after base prefix, interpreting as "0" for backwards compatibility',
                     self::escapeString($value)
                 );
@@ -237,36 +238,40 @@ class Php82
             ++$digits_end;
         }
 
-        $retval = base_convert(substr($value, $digits, $digits_end - $digits), $base, 10);
+        // Mimic strtoul() on a zend_ulong using two half-width limbs, as PHP has no unsigned integers
+        $bits = \PHP_INT_SIZE << 2;
+        $mask = (1 << $bits) - 1;
+        $high = $low = 0;
 
-        if ($is_negative && '0' === $retval) {
-            $is_negative = false;
-            $overflow = false;
+        for ($i = $digits; $i < $digits_end; ++$i) {
+            $low = $low * $base + hexdec($value[$i]);
+            $high = $high * $base + ($low >> $bits);
+            $low &= $mask;
+
+            if ($high > $mask) {
+                break;
+            }
         }
 
-        // Check for overflow - remember that -PHP_INT_MIN = 1 + PHP_INT_MAX
-        if ($is_negative) {
-            $signed_max = strtr((string) \PHP_INT_MIN, ['-' => '']);
-        } else {
-            $signed_max = (string) \PHP_INT_MAX;
-        }
-
-        $max_length = max(\strlen($retval), \strlen($signed_max));
-
-        $tmp1 = str_pad($retval, $max_length, '0', \STR_PAD_LEFT);
-        $tmp2 = str_pad($signed_max, $max_length, '0', \STR_PAD_LEFT);
-
-        if ($tmp1 > $tmp2) {
+        if ($high > $mask) {
             $retval = -1;
             $overflow = true;
-        } elseif ($is_negative) {
-            $retval = '-'.$retval;
+        } else {
+            $retval = ($high << $bits) | $low;
+
+            if ($is_negative && 0 === $retval) {
+                $is_negative = false;
+                $overflow = false;
+            } elseif (0 > $retval) {
+                // -PHP_INT_MIN is PHP_INT_MIN itself
+                $overflow = $overflow || !$is_negative || \PHP_INT_MIN !== $retval;
+            } elseif ($is_negative) {
+                $retval = -$retval;
+            }
         }
 
-        $retval = (int) $retval;
-
         if ($digits_end === $digits) {
-            $message = sprintf(
+            $message = \sprintf(
                 'Invalid quantity "%s": no valid leading digits, interpreting as "0" for backwards compatibility',
                 self::escapeString($value)
             );
@@ -304,7 +309,7 @@ class Php82
                 $interpreted = self::escapeString(substr($value, $str, $digits_end - $str));
                 $chr = self::escapeString($value[$str_end - 1]);
 
-                $message = sprintf(
+                $message = \sprintf(
                     'Invalid quantity "%s": unknown multiplier "%s", interpreting as "%s" for backwards compatibility',
                     $invalid,
                     $chr,
@@ -335,7 +340,7 @@ class Php82
 
         if ($digits_end !== $str_end - 1) {
             /* More than one character in suffix */
-            $message = sprintf(
+            $message = \sprintf(
                 'Invalid quantity "%s", interpreting as "%s%s" for backwards compatibility',
                 self::escapeString($value),
                 self::escapeString(substr($value, $str, $digits_end - $str)),
@@ -352,7 +357,7 @@ class Php82
             /* Not specifying the resulting value here because the caller may make
              * additional conversions. Not specifying the allowed range
              * because the caller may do narrower range checks. */
-            $message = sprintf(
+            $message = \sprintf(
                 'Invalid quantity "%s": value is out of range, using overflow result for backwards compatibility',
                 self::escapeString($value)
             );
@@ -382,7 +387,7 @@ class Php82
                     case '\\': $escaped .= '\\\\'; break;
                     case "\x1B": $escaped .= '\\e'; break;
                     default:
-                        $escaped .= '\\x'.strtoupper(sprintf('%02x', $c));
+                        $escaped .= '\\x'.strtoupper(\sprintf('%02x', $c));
                 }
             } else {
                 $escaped .= $string[$n];

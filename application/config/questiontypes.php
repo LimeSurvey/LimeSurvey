@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /**
@@ -22,14 +24,14 @@ if (isset($_GET['isAjax'])) {
 }
 return array(
     /* Ranking question type */
-    'question-ranking'=>array(
+    'question-ranking' => array(
         'devBaseUrl'  => 'assets/packages/questions/ranking/',
         'basePath' => 'core.questions.ranking',
         'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
+        'css' => array(
             'css/ranking.css',
         ),
-        'js'=>array(
+        'js' => array(
             'scripts/ranking.js',
         ),
         'depends' => array(
@@ -37,14 +39,14 @@ return array(
         )
     ),
     /* numeric slider question : numerci question type with slider */
-    'question-numeric-slider'=>array(
+    'question-numeric-slider' => array(
         'devBaseUrl'  => 'assets/packages/questions/numeric-slider/',
         'basePath' => 'core.questions.numeric-slider',
         'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
+        'css' => array(
             'css/numeric-slider.css',
         ),
-        'js'=>array(
+        'js' => array(
             'scripts/numeric-slider.js',
         ),
         'depends' => array(
@@ -52,64 +54,64 @@ return array(
         )
     ),
     /* five point singlechoice slider rating question */
-    'question-5pointchoice-slider'=>array(
+    'question-5pointchoice-slider' => array(
         'devBaseUrl'  => 'assets/packages/questions/5pointchoice/',
         'basePath' => 'core.questions.5pointchoice',
         'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
+        'css' => array(
             'css/slider-rating.css',
             'css/emoji.css',
             'css/ss-emoji.css'
         ),
-        'js'=>array(
+        'js' => array(
             'scripts/slider-rating.js',
         )
     ),
     /* five point singlechoice star rating question */
-    'question-5pointchoice-star'=>array(
+    'question-5pointchoice-star' => array(
         'devBaseUrl'  => 'assets/packages/questions/5pointchoice/',
         'basePath' => 'core.questions.5pointchoice',
         'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
+        'css' => array(
             'css/star-rating.css',
         ),
-        'js'=>array(
+        'js' => array(
             'scripts/star-rating.js',
         )
     ),
     /* file upload question */
-    'question-file-upload'=>array(
+    'question-file-upload' => array(
         'devBaseUrl'  => 'assets/packages/questions/upload/',
         'basePath' => 'core.questions.upload',
         'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
+        'css' => array(
             'styles/uploader-files.css',
             'styles/uploader.css',
         ),
-        'js'=>array(
-            'build/uploadquestion'.$minVersion.'.js',
+        'js' => array(
+            'build/uploadquestion' . $minVersion . '.js',
         )
     ),
     /* array-numeric question */
-    'question-array-numeric'=>array(
+    'question-array-numeric' => array(
         'devBaseUrl'  => 'assets/packages/questions/arraynumeric/',
         'basePath' => 'core.questions.arraynumeric',
         'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
+        'css' => array(
         ),
-        'js'=>array(
-            'scripts/array-totalsum'.$minVersion.'.js',
+        'js' => array(
+            'scripts/array-totalsum' . $minVersion . '.js',
         ),
     ),
     /* array-numeric question */
-    'timer-addition'=>array(
+    'timer-addition' => array(
         'devBaseUrl'  => 'assets/packages/questions/timer/',
         'basePath' => 'core.questions.timer',
         'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
+        'css' => array(
         ),
-        'js'=>array(
-            'timer'.$minVersion.'.js',
+        'js' => array(
+            'timer' . $minVersion . '.js',
         ),
     ),
 );

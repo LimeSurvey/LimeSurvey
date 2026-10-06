@@ -6,6 +6,7 @@ use User;
 
 class Update_180 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $aUsers = User::model()->findAll();

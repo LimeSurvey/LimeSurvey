@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -43,10 +43,10 @@ class LSHttpRequest extends CHttpRequest
     private $queryParams;
 
     /**
-     * Return the referal url,
+     * Return the referral url,
      * it's used for the "close" buttons, and the "save and close" buttons
      * So it checks if the referrer url is the same than the current url to avoid looping.
-     * If it the case, a paramater can be set to tell what referrer to return.
+     * If it the case, a parameter can be set to tell what referrer to return.
      * If the referrer is an external url, Yii return by default the current url.
      *
      * DEPRECATED
@@ -298,19 +298,26 @@ class LSHttpRequest extends CHttpRequest
     }
 
     /**
-     * Check if an url are in allowed host (if exist)
-     * @var string $hostInfo
-     * @throw Exception
+     * Check if a URL's host is in the allowed hosts list.
+     * Delegates to App()->isHostAllowed() which is lenient when
+     * allowed_hosts.php does not exist yet, and strict once configured.
+     *
+     * @param string $hostInfo The URL or host info to validate.
+     * @throws CHttpException if the host is not allowed.
      * @return void
      */
     public static function checkIsAllowedHost($hostInfo)
     {
-        $allowedHosts = App()->getConfig('allowedHosts');
-        if (!empty($allowedHosts) && is_array($allowedHosts)) {
-            $host = parse_url($hostInfo, PHP_URL_HOST);
-            if ($host && !in_array($host, $allowedHosts)) {
-                 throw new CHttpException(400, gT("The requested hostname is invalid.", 'unescaped'));
+        $host = parse_url($hostInfo, PHP_URL_HOST);
+        if ($host && !App()->isHostAllowed($host)) {
+            $message = gT("The requested hostname is invalid.", 'unescaped');
+            if (Yii::app()->getConfig('debug') > 0) {
+                $message .= ' ' . sprintf(
+                    gT("Host '%s' is not in the allowed hosts file (application/config/allowed_hosts.php). Add it there, or check the publicurl setting, then try again.", 'unescaped'),
+                    $host
+                );
             }
+            throw new CHttpException(400, $message);
         }
     }
 }

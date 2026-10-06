@@ -1,7 +1,7 @@
 <?php
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -56,7 +56,7 @@ class GlobalSettings extends \GlobalSettings
      */
     protected function renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        // We add ou new paramater to the data to parse to the view
+        // We add ou new parameter to the data to parse to the view
         $aData["myNewParam"] = $this->myNewParam;
 
         // Then we just call the parent method
@@ -75,7 +75,7 @@ class GlobalSettings extends \GlobalSettings
     protected function renderCentralContents($sAction, $aViewUrls, $aData = [])
     {
       if ( file_exists ( \Yii::getPathOfAlias('lsadminmodules.'.$sAction.'.views.' . $aViewUrls) . '.php' )  ){
-        // Use alias to render a view outisde of application directory.
+        // Use alias to render a view outside of application directory.
         return \Yii::app()->getController()->renderPartial('lsadminmodules.'.$sAction.'.views.' . $aViewUrls, $aData, true);
       }else{
         //  var_dump( \Yii::getPathOfAlias('lsadminmodules.' . $sAction. '.views.' . $aViewUrls) );  die();

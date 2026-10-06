@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
 
 /**
  * Tests for the LimeSurvey remote API.
@@ -132,5 +132,73 @@ class RemoteControlImportQuestionTest extends BaseTest
         $this->assertEquals('QNewText', $oQuestionL10n->question);
         $this->assertEquals('QNewHelp', $oQuestionL10n->help);
 
+    }
+
+    /**
+     * Importing a question with a group that doesn't belong to the survey.
+     * The group lookup is survey-scoped, so a group from another survey is treated as invalid.
+     */
+    public function testImportQuestionWithMismatchedGroupId()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $mismatchedSurveyId = $this->handler->add_survey($sessionKey, 0, 'Test Survey for Group Mismatch', 'en');
+
+        try {
+            $this->assertIsInt($mismatchedSurveyId, 'Failed to create mismatched survey');
+
+            // Create a group in the mismatched survey
+            $mismatchedGroupId = $this->handler->add_group($sessionKey, $mismatchedSurveyId, 'Test Group');
+            $this->assertIsInt($mismatchedGroupId, 'Failed to create group in mismatched survey');
+
+            // Attempt to import a question from our test survey into the group from the mismatched survey
+            $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test_II.lsq';
+            $question = base64_encode(file_get_contents($questionFile));
+            $result = $this->handler->import_question($sessionKey, self::$surveyId, $mismatchedGroupId, $question, 'lsq');
+
+            // Verify the error response - group not found in this survey returns generic invalid group error
+            $this->assertIsArray($result, 'Response should be an array for mismatch error');
+            $this->assertArrayHasKey('status', $result, 'Error response should have a status field');
+            $this->assertStringContainsString('Invalid group ID', $result['status']);
+            $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
+            $this->assertEquals('ERR_INVALID_GROUP', $result['error_code'], 'Should return generic invalid group error, not leak cross-survey existence');
+        } finally {
+            if (is_int($mismatchedSurveyId)) {
+                $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
+            }
+            $this->handler->release_session_key($sessionKey);
+        }
+    }
+
+    /**
+     * Testing list_questions with a group that doesn't belong to the survey.
+     * The group lookup is survey-scoped, so a group from another survey is treated as not found.
+     */
+    public function testListQuestionsWithMismatchedGroupId()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $mismatchedSurveyId = $this->handler->add_survey($sessionKey, 0, 'Test Survey for List Questions Mismatch', 'en');
+
+        try {
+            $this->assertIsInt($mismatchedSurveyId, 'Failed to create mismatched survey');
+
+            // Create a group in the mismatched survey
+            $mismatchedGroupId = $this->handler->add_group($sessionKey, $mismatchedSurveyId, 'Test Group for List');
+            $this->assertIsInt($mismatchedGroupId, 'Failed to create group in mismatched survey');
+
+            // Attempt to list questions from our test survey using the group from the mismatched survey
+            $result = $this->handler->list_questions($sessionKey, self::$surveyId, $mismatchedGroupId);
+
+            // Verify the error response - group not found in this survey returns generic not-found error
+            $this->assertIsArray($result, 'Response should be an array for mismatch error');
+            $this->assertArrayHasKey('status', $result, 'Error response should have a status field');
+            $this->assertStringContainsString('group not found', $result['status']);
+            $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
+            $this->assertEquals('ERR_INVALID_GROUP', $result['error_code'], 'Should return generic invalid group error, not leak cross-survey existence');
+        } finally {
+            if (is_int($mismatchedSurveyId)) {
+                $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
+            }
+            $this->handler->release_session_key($sessionKey);
+        }
     }
 }

@@ -157,21 +157,29 @@ if (file_exists(APPPATH . 'config' . DIRECTORY_SEPARATOR . 'config.php')) {
 } else {
     $aSettings = array();
 }
-// Set debug : if not set : set to default from PHP 5.3
-if (isset($aSettings['config']['debug'])) {
-    if ($aSettings['config']['debug'] > 0) {
-        define('YII_DEBUG', true);
-        if ($aSettings['config']['debug'] > 1) {
-            error_reporting(E_ALL);
-        } else {
-            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
-        }
-    } else {
-        define('YII_DEBUG', false);
-        error_reporting(0);
-    }
+// Set debug: env var LIMESURVEY_DEBUG overrides config.php when set.
+// Use LIMESURVEY_DEBUG=2 in CI to surface warnings hidden by debug=0.
+$envDebug = getenv('LIMESURVEY_DEBUG');
+if ($envDebug !== false) {
+    $debugLevel = (int) $envDebug;
+} elseif (isset($aSettings['config']['debug'])) {
+    $debugLevel = (int) $aSettings['config']['debug'];
 } else {
-    error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);// Not needed if user doesn't remove their 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
+    $debugLevel = -1; // no setting
+}
+
+if ($debugLevel > 0) {
+    define('YII_DEBUG', true);
+    if ($debugLevel > 1) {
+        error_reporting(E_ALL);
+    } else {
+        error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+    }
+} elseif ($debugLevel === 0) {
+    define('YII_DEBUG', false);
+    error_reporting(0);
+} else {
+    error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 }
 
 if (version_compare(PHP_VERSION, '5.3.3', '<')) {
@@ -227,6 +235,7 @@ if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../tests/tmp/')), -4) !=
 $_SERVER['SCRIPT_FILENAME'] = 'index-test.php';
 $_SERVER['SCRIPT_NAME'] =  '/index-test.php';
 $_SERVER['REQUEST_URI'] = 'index-test.php';
+$_SERVER['SERVER_NAME'] = 'localhost';
 
 Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config);
@@ -243,7 +252,7 @@ require_once __DIR__ . '/unit/helpers/remotecontrol/BaseTest.php';
 require_once __DIR__ . '/unit/models/BaseModelTestCase.php';
 
 define('PHP_ENV', 'test');
-// TODO: Move this logic to installater test.
+// TODO: Move this logic to installer test.
 $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 

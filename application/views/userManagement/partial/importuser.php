@@ -7,6 +7,7 @@
  * @author LimeSurvey GmbH <info@limesurvey.org>
  * @license GPL3.0
  */
+
 ?>
 
 <?php
@@ -30,13 +31,12 @@ Yii::app()->getController()->renderPartial(
         'type' => 'info',
     ]);
     ?>
-    <div class="md-3" id="UserManagement--errors">
-    </div>
-    <div class="mb-3 ">
+    <div class="mb-3">
         <input type="checkbox" name="overwrite" value="overwrite" id="overwrite">
         <label class="form-check-label" for="overwrite">
             <?= eT("Overwrite existing users"); ?>
         </label>
+        <small id="overwrite-help" class="form-text"><?= eT("Duplicates are identified by username and/or email"); ?></small>
     </div>
 
     <div class="mb-3">

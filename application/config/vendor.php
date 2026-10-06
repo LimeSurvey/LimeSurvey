@@ -9,12 +9,14 @@ if (!defined('BASEPATH')) {
  * This file contains package definition for third party libraries.
  * Defining them here allows for easy inclusion in views.
  */
-/* Tag if debug is set : debug is set in user config file and this file is directly required in internal.php where $userConfig var arry is set */
+/* Tag if debug is set : debug is set in user config file and this file is directly required in internal.php where $userConfig var array is set */
 /* This allow us to use minified version according to debug */
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
 $minVersion = ($debug > 0) ? "" : ".min";
 $minFolder = ($debug > 0) ? "/dev" : "/min";
+/* The asset manager excludes "src" folders (see assetManager in internal.php), so unminified sources in /src/ can't be published */
+$useAssetManager = !empty($userConfig['config']['use_asset_manager']);
 
 /* Please : comment the reason, mantis bug link: ajax don't need any package if i don't make error */
 /* Ajax must renderPartial (better : always return json) and never render and don't registerScript (IMHO) / Shnoulle on 2016-11-16 */
@@ -213,20 +215,10 @@ return array(
         )
     ),
 
-    // jQuery json
-    'jquery-json' => array(
-        'basePath' => 'vendor.jquery-json',
-        'js' => array(
-            'jquery.json-2.4.min.js'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
-
     // jQuery Table Sorter
     'jquery-tablesorter' => array(
         'basePath' => 'node_modules.tablesorter.dist.js',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.tablesorter' . $minVersion . '.js'
         ),
@@ -253,7 +245,7 @@ return array(
         'devBaseUrl' => 'node_modules/ace-builds',
         'basePath' => 'node_modules.ace-builds',
         'position' => CClientScript::POS_BEGIN,
-        'js' => ($debug > 0) ? array("/src/ace.js") : array("/src-min/ace.js"),
+        'js' => ($debug > 0 && !$useAssetManager) ? array("/src/ace.js") : array("/src-min/ace.js"),
         'depends' => array(
             'jquery-ace'
         )
@@ -330,13 +322,6 @@ return array(
         )
     ),
 
-    'es6promise' => array(
-        'basePath' => 'vendor.es6promise',
-        'js' => array(
-            'es6-promise.auto.min.js'
-        )
-    ),
-
     'dom2image' => array(
         'basePath' => 'node_modules.dom-to-image',
         'js' => array(
@@ -348,11 +333,9 @@ return array(
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jspdf.umd.min.js',
-            'jspdf.es.min.js'
         ),
         'depends' => array(
             'dom2image',
-            'es6promise',
             'jquery',
             'jszip'
         )

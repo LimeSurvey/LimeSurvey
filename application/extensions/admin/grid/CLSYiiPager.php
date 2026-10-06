@@ -46,7 +46,7 @@ class CLSYiiPager extends CLinkPager
             return array();
         }
 
-        list($beginPage,$endPage) = $this->getPageRange();
+        list($beginPage, $endPage) = $this->getPageRange();
         $currentPage = $this->getCurrentPage(false); // currentPage is calculated in getPageRange()
         $buttons = array();
 
@@ -93,10 +93,44 @@ class CLSYiiPager extends CLinkPager
      */
     protected function createPageButton($label, $page, $class, $hidden, $selected)
     {
-        if ($hidden || $selected) {
-            $class .= ' ' . ($hidden ? $this->hiddenPageCssClass : 'active');
+        $ariaLabel = '';
+        if (is_numeric($label)) {
+            if ($selected) {
+                $ariaLabel = sprintf(gT('Page %s, current page'), $label);
+            } else {
+                $ariaLabel = sprintf(gT('Go to page %s'), $label);
+            }
+        } elseif ($label === $this->firstPageLabel) {
+            $ariaLabel = $selected ? gT('First page, current page') : gT('Go to first page');
+        } elseif ($label === $this->prevPageLabel) {
+            $ariaLabel = gT('Go to previous page');
+        } elseif ($label === $this->nextPageLabel) {
+            $ariaLabel = gT('Go to next page');
+        } elseif ($label === $this->lastPageLabel) {
+            $ariaLabel = $selected ? gT('Last page, current page') : gT('Go to last page');
         }
 
-        return '<li class="page-item ' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), ['class' => 'page-link']) . '</li>';
+        if ($hidden || $selected) {
+            $class .= ' ' . ($hidden ? $this->hiddenPageCssClass : 'active');
+            $attrs = ['class' => 'page-link'];
+            if ($selected) {
+                $attrs['aria-current'] = 'page';
+            }
+            if ($hidden) {
+                $attrs['aria-disabled'] = 'true';
+                $attrs['tabindex'] = '-1';
+            }
+            if ($ariaLabel !== '') {
+                $attrs['aria-label'] = $ariaLabel;
+            }
+            return '<li class="page-item ' . $class . '">' . CHtml::tag('span', $attrs, $label) . '</li>';
+        } else {
+            $linkOptions = ['class' => 'page-link'];
+            if ($ariaLabel !== '') {
+                $linkOptions['aria-label'] = $ariaLabel;
+            }
+            return '<li class="page-item ' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), $linkOptions) . '</li>';
+        }
     }
-}
+} 
+

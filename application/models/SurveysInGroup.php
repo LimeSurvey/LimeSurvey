@@ -70,24 +70,13 @@ class SurveysInGroup extends SurveysGroups implements PermissionInterface
 
     /**
      * @inheritdoc
+     * Act like Surveys Global permission but at Survey Group level. Only manage 'surveys' permission.
      */
     public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
     {
         /* If have global for surveys : return true */
-        $sGlobalCRUD = $sCRUD;
-        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, response , question content …) need only allow update surveys
-            $sGlobalCRUD = 'update';
-        }
-        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, response , question content …) need only allow update surveys
-            $sGlobalCRUD = 'update';
-        }
-        /* Have surveys permission */
-        if (Permission::model()->hasPermission(0, 'global', 'surveys', $sGlobalCRUD, $iUserID)) {
+        if (Permission::model()->hasPermission(0, 'global', 'surveys', $sCRUD, $iUserID)) {
             return true;
-        }
-        /* Specific need gsid */
-        if (!$this->gsid) {
-            return false;
         }
         /* Finally : return specific one */
         return Permission::model()->hasPermission($this->gsid, 'surveysingroup', $sPermission, $sCRUD, $iUserID);

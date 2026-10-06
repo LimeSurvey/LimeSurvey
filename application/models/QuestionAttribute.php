@@ -2,7 +2,7 @@
 
 /**
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -33,6 +33,9 @@ use LimeSurvey\Models\Services\QuestionAttributeHelper;
  */
 class QuestionAttribute extends LSActiveRecord
 {
+    /** @var string A date limit (date_min/date_max) given as YYYY-MM-DD date, optionally followed by HH:MM or HH:MM:SS */
+    public const DATE_LIMIT_PATTERN = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])([ T]([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?)?$/D';
+
     protected static $questionAttributesSettings = array();
 
     protected $xssFilterAttributes = ['value'];
@@ -40,6 +43,7 @@ class QuestionAttribute extends LSActiveRecord
     /**
      * @return static
      */
+    #[\Override]
     public static function model($className = __CLASS__)
     {
         /** @var self $model */
@@ -48,12 +52,14 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /** @inheritdoc */
+    #[\Override]
     public function tableName()
     {
         return '{{question_attributes}}';
     }
 
     /** @inheritdoc */
+    #[\Override]
     public function primaryKey()
     {
         return 'qaid';
@@ -63,6 +69,7 @@ class QuestionAttribute extends LSActiveRecord
      * @inheritdoc
      * @todo Remove?
      */
+    #[\Override]
     public function relations()
     {
         return array(
@@ -77,17 +84,20 @@ class QuestionAttribute extends LSActiveRecord
      * In that case disable the defaultScope by using MyModel::model()->resetScope()->findAll();
      * @return array Scope that indexes the records by their attribute bane
      */
+    #[\Override]
     public function defaultScope()
     {
         return array('index' => 'attribute');
     }
 
     /** @inheritdoc */
+    #[\Override]
     public function rules()
     {
         return array(
             array('qid,attribute', 'required'),
             array('value', 'filterXss'),
+            array('value', 'validateDateLimit'),
             array('language', 'LSYii_Validators', 'isLanguage' => true)
         );
     }
@@ -241,7 +251,7 @@ class QuestionAttribute extends LSActiveRecord
         static $survey = '';
         // Limit the size of the attribute cache due to memory usage
         $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
-        if (EmCacheHelper::useCache()) {
+        if (class_exists('EmCacheHelper', false) && EmCacheHelper::useCache()) {
             $value = EmCacheHelper::get($cacheKey);
             if ($value !== false) {
                 return $value;
@@ -275,7 +285,7 @@ class QuestionAttribute extends LSActiveRecord
             }
         }
 
-        if (EmCacheHelper::useCache()) {
+        if (class_exists('EmCacheHelper', false) && EmCacheHelper::useCache()) {
             EmCacheHelper::set($cacheKey, $aAttributeValues);
         }
 
@@ -444,29 +454,6 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
-     * Returns the value for attribute 'question_template'.
-     * Fetches the question_template from a question model.
-     *
-     * Be carefull this attribute is not present in all questions.
-     * Even more, standard question types where question theme are not used (or custom question theme are not used),
-     * the attribute is missing. In those cases, the deault "core" is used.
-     *
-     * @return string question_template or 'core' if it not exists
-     *
-     * @deprecated use $question->question_theme_name instead (Question model)
-     */
-    public static function getQuestionTemplateValue($questionID)
-    {
-        /**
-         * TODO: This method was modified to get the theme name from the proper place, but it should be deprecated,
-         *       as it no longer makes sense (question theme is not a QuestionAttribute anymore).
-         */
-        $question = Question::model()->findByPk($questionID);
-        $value = !empty($question) && !empty($question->question_theme_name) ? $question->question_theme_name : 'core';
-        return $value;
-    }
-
-    /**
      * Read question attributes from XML file and convert it to array
      *
      * @param string $sXmlFilePath Path to XML
@@ -480,9 +467,6 @@ class QuestionAttribute extends LSActiveRecord
 
         if (file_exists($sXmlFilePath)) {
             // load xml file
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(false);
-            }
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), true);
             // if only one attribute, then it doesn't return numeric index
@@ -490,9 +474,6 @@ class QuestionAttribute extends LSActiveRecord
                 $aTemp = $aXmlAttributes['attribute'];
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
-            }
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
             }
         } else {
             return null;
@@ -544,9 +525,6 @@ class QuestionAttribute extends LSActiveRecord
 
         if (file_exists($sXmlFilePath)) {
             // load xml file
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(false);
-            }
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
             // if only one attribute, then it doesn't return numeric index
@@ -554,9 +532,6 @@ class QuestionAttribute extends LSActiveRecord
                 $aTemp = $aXmlAttributes['attribute'];
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
-            }
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
             }
         } else {
             return null;
@@ -590,7 +565,7 @@ class QuestionAttribute extends LSActiveRecord
      *      'category' : Where to put it
      *      'sortorder' : Qort order in this category
      *      'inputtype' : type of input
-     *      'expression' : 2 to force Expression Manager when see the survey logic file (add { } and validate, 1 : allow it : validate in survey logic file
+     *      'expression' : 2 to force Expression Manager when see the survey logic overview (add { } and validate, 1 : allow it : validate in survey logic overview
      *      'options' : optional options if input type need it
      *      'default' : the default value
      *      'caption' : the label
@@ -640,6 +615,24 @@ class QuestionAttribute extends LSActiveRecord
         $validator = new LSYii_Validators();
         $validator->attributes = [$attribute];
         $validator->validate($this, [$attribute]);
+    }
+
+    /**
+     * Date limits may be a date, an English date description or an expression; a value starting like a
+     * YYYY-MM-DD date must parse as a date/time as a whole.
+     * @param string $attribute the name of the attribute to be validated.
+     * @param array<mixed> $params additional parameters passed with rule when being executed.
+     * @return void
+     */
+    public function validateDateLimit($attribute, $params)
+    {
+        if (!in_array($this->attribute, ['date_min', 'date_max'], true)) {
+            return;
+        }
+        $value = trim((string) $this->$attribute);
+        if (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}/', $value) && strtotime($value) === false) {
+            $this->addError($attribute, gT('Invalid date.'));
+        }
     }
 
     /**

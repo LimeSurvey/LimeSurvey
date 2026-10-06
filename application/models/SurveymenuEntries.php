@@ -347,12 +347,13 @@ class SurveymenuEntries extends LSActiveRecord
     {
         $cols = [
             [
-                'value'             => '\'<input type="checkbox" name="id[]" class="action_selectthisentry" value="\'.$data->id.\'" />\'',
-                'type'              => 'raw',
-                'filter'            => false,
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column']
+                'class'               => 'CCheckBoxColumn',
+                'selectableRows'      => 2,
+                'name'                => 'id',
+                'checkBoxHtmlOptions' => ['name' => 'id[]', 'class' => 'massiveActionsCheckbox action_selectthisentry'],
+                'headerHtmlOptions'   => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions'   => ['class' => 'ls-sticky-column'],
+                'htmlOptions'         => ['class' => 'ls-sticky-column'],
             ],
             [
                 'name' => 'title',
@@ -377,9 +378,6 @@ class SurveymenuEntries extends LSActiveRecord
                 'filter' => false,
             ],
             [
-                'name' => 'menu_class',
-            ],
-            [
                 'name'  => 'menu_link',
                 'value' => 'SurveymenuEntries::returnCombinedMenuLink($data)',
                 'type'  => 'text'
@@ -396,13 +394,6 @@ class SurveymenuEntries extends LSActiveRecord
                 'name'              => 'classes',
                 'htmlOptions'       => ['style' => 'white-space: prewrap;'],
                 'headerHtmlOptions' => ['style' => 'white-space: prewrap;'],
-            ],
-            [
-                'name'   => 'data',
-                'value'  => '$data->data ? "<i class=\'ri-information-fill bigIcons\' title=\'".$data->data."\'></i>"
-                : ( $data->getdatamethod ? gT("GET data method:")."<br/>".CHtml::encode($data->getdatamethod) : "")',
-                'type'   => 'raw',
-                'filter' => false,
             ],
             [
                 'name'   => 'menu_id',
@@ -582,7 +573,7 @@ class SurveymenuEntries extends LSActiveRecord
             $this->menu_title = empty($this->menu_title) ? $this->title : $this->menu_title;
             $this->menu_description = empty($this->menu_description) ? $this->title : $this->menu_title;
         }
-        parent::save($runValidation, $attributes);
+        return parent::save($runValidation, $attributes);
     }
 
     /**

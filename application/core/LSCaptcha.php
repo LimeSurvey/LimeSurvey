@@ -11,7 +11,6 @@
 
 class LSCaptcha extends CCaptcha
 {
-
     public function renderOut()
     {
         $html = $this->renderImage();

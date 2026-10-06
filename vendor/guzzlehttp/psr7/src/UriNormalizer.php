@@ -116,6 +116,11 @@ final class UriNormalizer
      * treated equivalent which is not necessarily true according to RFC 3986. But that difference
      * is highly uncommon in reality. So this potential normalization is implied in PSR-7 as well.
      *
+     * When a normalization rewrites the path of a relative-path reference so that its first
+     * segment contains a colon, which would be mistaken for a scheme name (RFC 3986 Section 4.2),
+     * the path is prefixed with "./" instead of throwing, e.g. "a%41:" becomes "./aA:" as "aA:"
+     * would be an absolute URI with the scheme "aa".
+     *
      * @param UriInterface $uri   The URI to normalize
      * @param int          $flags A bitmask of normalizations to apply, see constants
      *
@@ -150,7 +155,13 @@ final class UriNormalizer
         }
 
         if ($flags & self::REMOVE_DUPLICATE_SLASHES) {
-            $uri = $uri->withPath(preg_replace('#//++#', '/', $uri->getPath()));
+            $path = preg_replace('#//++#', '/', $uri->getPath());
+
+            if ($path === null) {
+                throw new \RuntimeException('Unable to remove duplicate slashes from URI path: '.preg_last_error_msg());
+            }
+
+            $uri = self::withGuardedPath($uri, $path);
         }
 
         if ($flags & self::SORT_QUERY_PARAMETERS && $uri->getQuery() !== '') {
@@ -186,15 +197,12 @@ final class UriNormalizer
         $regex = '/(?:%[A-Fa-f0-9]{2})++/';
 
         $callback = function (array $match): string {
-            return strtoupper($match[0]);
+            return Utils::asciiToUpper($match[0]);
         };
 
-        return
-            $uri->withPath(
-                preg_replace_callback($regex, $callback, $uri->getPath())
-            )->withQuery(
-                preg_replace_callback($regex, $callback, $uri->getQuery())
-            );
+        return self::withGuardedPath($uri, self::normalizePercentEncodingInComponent($uri->getPath(), $regex, $callback))
+            ->withQuery(self::normalizePercentEncodingInComponent($uri->getQuery(), $regex, $callback))
+            ->withFragment(self::normalizePercentEncodingInComponent($uri->getFragment(), $regex, $callback));
     }
 
     private static function decodeUnreservedCharacters(UriInterface $uri): UriInterface
@@ -205,12 +213,35 @@ final class UriNormalizer
             return rawurldecode($match[0]);
         };
 
-        return
-            $uri->withPath(
-                preg_replace_callback($regex, $callback, $uri->getPath())
-            )->withQuery(
-                preg_replace_callback($regex, $callback, $uri->getQuery())
-            );
+        return self::withGuardedPath($uri, self::normalizePercentEncodingInComponent($uri->getPath(), $regex, $callback))
+            ->withQuery(self::normalizePercentEncodingInComponent($uri->getQuery(), $regex, $callback))
+            ->withFragment(self::normalizePercentEncodingInComponent($uri->getFragment(), $regex, $callback));
+    }
+
+    /**
+     * Writes the given path only when it differs from the current one, guarded so the write cannot throw.
+     */
+    private static function withGuardedPath(UriInterface $uri, string $path): UriInterface
+    {
+        if ($path === $uri->getPath()) {
+            return $uri;
+        }
+
+        return $uri->withPath(UriResolver::guardedPath($uri, $path));
+    }
+
+    /**
+     * @param callable(array): string $callback
+     */
+    private static function normalizePercentEncodingInComponent(string $component, string $regex, callable $callback): string
+    {
+        $normalized = preg_replace_callback($regex, $callback, $component);
+
+        if ($normalized === null) {
+            throw new \RuntimeException('Unable to normalize URI component percent-encoding: '.preg_last_error_msg());
+        }
+
+        return $normalized;
     }
 
     private function __construct()

@@ -65,14 +65,14 @@
                 <div class="col-12">
                     <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-primary')); ?>
                     <a href="<?php echo Yii::app()->createUrl(
-                                    'questionAdministration/listQuestions',
-                                    [
-                                        'surveyid' => $oSurvey->primaryKey,
-                                        'activeTab' => 'groups'
-                                    ]
-                                ); ?>" class="btn btn-warning" role="button" aria-label="<?php echo CHtml::encode(gT('Reset')); ?>">
+                        'questionAdministration/listQuestions',
+                        [
+                            'surveyid' => $oSurvey->primaryKey,
+                            'activeTab' => 'groups'
+                        ]
+                    ); ?>" class="btn btn-warning" role="button" aria-label="<?= gT('Reset') ?>">
                         <span class="ri-refresh-line" aria-hidden="true"></span>
-                        <?php eT('Reset'); ?>
+                        <?= gT('Reset') ?>
                     </a>
                 </div>
             </div>
@@ -86,28 +86,13 @@
         $this->widget(
             'ext.admin.grid.CLSGridView', //done
             [
-                'id'              => 'question-group-grid',
-                'dataProvider'    => $groupModel->search(),
-                'emptyText'       => gT('No question groups found.'),
-                'summaryText' => html_entity_decode(
-                    gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
-                    sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
-                            [
-                                'class' => 'changePageSize form-select',
-                                'style' => 'display: inline; width: auto',
-                                'aria-labelledby' => 'question-group-rows-per-page-label',
-                            ]
-                        ) . '<span id="question-group-rows-per-page-label">'
-                    ) .
-                    '</span>'
-                ),
+                'id'           => 'question-group-grid',
+                'lsCaption'      => gT("Question groups"),
+                'dataProvider' => $groupModel->search(),
+                'emptyText'    => gT('No question groups found.'),
+                'lsPageSizeCurrentValue' => $pageSize,
 
-                // Columns to dispplay
+                // Columns to display
                 'columns'         => [
                     // Group Id
                     [
@@ -171,7 +156,7 @@ var bindPageSizeChange = function () {
   $(document).trigger("actions-updated");
 };
 
-const activeTabContent = () => {
+var activeTabContent = function () {
   const params = new URLSearchParams(window.location.search);
   const activeTab = params.get("activeTab");
   if (activeTab) {

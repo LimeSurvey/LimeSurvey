@@ -2,7 +2,7 @@
  * JavaScript functions in survey taking
  *
  * This file is part of LimeSurvey
- * Copyright (C) 2007-2013 The LimeSurvey Project Team
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -12,7 +12,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-// Some function can be launch before document ready (and seems intersting)
+// Some function can be launch before document ready (and seems interesting)
 // But put it in ready : allowing update by template.js (before moving at end of HTML : best place */
 $(document).on('ready pjax:scriptcomplete',function()
 {
@@ -27,39 +27,6 @@ $(document).on('ready pjax:scriptcomplete',function()
         $(focus_element).focus();
     }
 
-    // Keypad functions
-    var kp = $("input.num-keypad");
-    if(kp.length)
-    {
-        kp.keypad({
-            showAnim: 'fadeIn', keypadOnly: false,
-            onKeypress: function(key, value, inst) {
-                $(this).trigger('keyup');
-            }
-        });
-    }
-    kp = $(".text-keypad");
-    if(kp.length)
-    {
-        var spacer = $.keypad.HALF_SPACE;
-        for(var i = 0; i != 8; ++i) spacer += $.keypad.SPACE;
-        kp.keypad({
-            showAnim: 'fadeIn',
-            keypadOnly: false,
-            layout: [
-                spacer + $.keypad.CLEAR + $.keypad.CLOSE, $.keypad.SPACE,
-                '!@#$%^&*()_=' + $.keypad.HALF_SPACE + $.keypad.BACK,
-                $.keypad.HALF_SPACE + '`~[]{}<>\\|/' + $.keypad.SPACE + $.keypad.SPACE + '789',
-                'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
-                $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
-                $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
-                $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER],
-                onKeypress: function(key, value, inst) {
-                    $(this).trigger('keyup');
-                }
-            });
-    }
-
     // Maxlength for textareas TODO limit to not CSS3 compatible browser
     maxlengthtextarea();
 
@@ -67,7 +34,7 @@ $(document).on('ready pjax:scriptcomplete',function()
 
 /**
  * setJsVar : Get all global used var
- * @deprecated in 3.0.0 not lauched under certain condition … …
+ * @deprecated in 3.0.0 not launched under certain condition … …
  */
 function setJsVar(){
     bFixNumAuto=LSvar.bFixNumAuto;
@@ -228,9 +195,9 @@ function show_hide_group(group_id)
 {
     var questionCount;
 
-    // First let's show the group description, otherwise, all its childs would have the hidden status
+    // First let's show the group description, otherwise, all its children would have the hidden status
     $("#group-" + group_id).show();
-    // If all questions in this group are conditionnal
+    // If all questions in this group are conditional
     // Count visible questions in this group
         questionCount=$("div#group-" + group_id).find("div[id^='question']:visible").size();
 

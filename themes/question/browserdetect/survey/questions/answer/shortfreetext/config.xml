@@ -30,6 +30,8 @@
     <compatibility>
         <version>4.0</version>
         <version>5.0</version>
+        <version>6.0</version>
+        <version>7.0</version>
     </compatibility>
 
     <!--
@@ -60,7 +62,7 @@
             </options>
             <default>no</default>
             <help>Show also the platform information of the participant</help>
-            <caption>Show Platform information: </caption>
+            <caption>Show platform information:</caption>
         </attribute>
     </attributes>
 
