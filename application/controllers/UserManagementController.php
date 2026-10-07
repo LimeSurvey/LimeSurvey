@@ -1152,12 +1152,20 @@ class UserManagementController extends LSBaseController
     /**
      * render selected items for massive action modal
      *
-     * @return void
+     * Note: Needs the global users read permission, the same as the user list grid it is used by.
+     *
+     * @return string|void
      * @throws CHttpException
      * @throws CException
      */
     public function actionRenderSelectedItems()
     {
+        if (!Permission::model()->hasGlobalPermission('users', 'read')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
         $aUsers = json_decode(App()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');

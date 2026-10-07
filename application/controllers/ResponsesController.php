@@ -61,11 +61,21 @@ class ResponsesController extends LSBaseController
     }
 
     /**
+     * Redirect to the response of the given access code
+     *
+     * Note: Needs the responses read permission, otherwise it would disclose whether
+     * an access code has a response and its ID.
+     *
      * @param int $surveyId
      * @param string $token
+     * @return void
      */
     public function actionViewbytoken(int $surveyId, string $token): void
     {
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
+            App()->user->setFlash('error', gT("You do not have permission to access this page."));
+            $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
+        }
         // Get Response ID from token
         $oResponse = SurveyDynamic::model($surveyId)->findByAttributes(['token' => $token]);
         if (!$oResponse) {
