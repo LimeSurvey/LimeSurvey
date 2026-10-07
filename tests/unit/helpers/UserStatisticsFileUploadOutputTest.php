@@ -56,14 +56,15 @@ class UserStatisticsFileUploadOutputTest extends TestBaseClass
      * Calls the protected userstatistics_helper::buildOutputList() for a summary entry.
      *
      * @param string $rt Summary entry, as sent in the summary[] request parameter
+     * @param string $sql Filter condition on the response table, as built from the statistics filters
      * @return array
      */
-    private function buildOutputList(string $rt): array
+    private function buildOutputList(string $rt, string $sql = ''): array
     {
         $language = self::$testSurvey->language;
         $method = new \ReflectionMethod(\userstatistics_helper::class, 'buildOutputList');
 
-        return $method->invoke(new \userstatistics_helper(), $rt, $language, self::$surveyId, 'html', '', $language);
+        return $method->invoke(new \userstatistics_helper(), $rt, $language, self::$surveyId, 'html', $sql, $language);
     }
 
     /**
@@ -82,7 +83,8 @@ class UserStatisticsFileUploadOutputTest extends TestBaseClass
 
     /**
      * A regular file upload summary entry outputs the file statistics of the question, both
-     * without responses and with one response with uploaded files and one without.
+     * without responses and with one response with uploaded files and one without, and only
+     * counts the responses that match the statistics filters.
      */
     public function testFileUploadSummary()
     {
@@ -120,6 +122,13 @@ class UserStatisticsFileUploadOutputTest extends TestBaseClass
         $this->assertSame('300 KB', $this->resultCell($output, 'Total size of files'));
         $this->assertSame('150 KB', $this->resultCell($output, 'Average file size'));
         $this->assertSame('150 KB', $this->resultCell($output, 'Average size per respondent'));
+
+        // Only the response with uploaded files matches this filter.
+        $filter = Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ' > 0';
+        $output = $this->buildOutputList('|' . $fieldname, $filter);
+
+        $this->assertEquals(2, $this->resultCell($output, 'Total number of files'));
+        $this->assertSame('300 KB', $this->resultCell($output, 'Average size per respondent'));
     }
 
     /**

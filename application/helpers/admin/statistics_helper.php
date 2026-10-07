@@ -372,7 +372,7 @@ function buildSelects($allfields, $surveyid, $language)
             in_array($pv, $allfields) || in_array(substr($pv, 1), $aQuestionMap) || in_array($pv, $aQuestionMap)
             || (
                 (
-                    $pv[0] == 'D' || $pv[0] == 'N' || $pv[0] == 'K'
+                    $pv[0] == 'D' || $pv[0] == 'N' || $pv[0] == 'K' || $pv[0] == '|'
                 )
                 && (in_array(substr($pv, 1, strlen($pv) - 2), $aQuestionMap) || in_array(substr($pv, 1, strlen($pv) - 3), $aQuestionMap) || in_array(substr($pv, 1, strlen($pv) - 5), $aQuestionMap))
             )
@@ -817,9 +817,22 @@ class statistics_helper
             10)     min file size
             */
 
+            // Only include the responses that match the selected filters
+            $conditions = array();
+            if (incompleteAnsFilterState() === "incomplete") {
+                $conditions[] = "submitdate is null";
+            } elseif (incompleteAnsFilterState() === "complete") {
+                $conditions[] = "submitdate is not null";
+            }
+            //$sql was set somewhere before
+            if (!empty($sql)) {
+                $conditions[] = $sql;
+            }
+            $where = $conditions ? " WHERE " . implode(" AND ", $conditions) : "";
+
             // 1) Total number of files uploaded
             // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
-            $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as avg FROM {{responses_$surveyid}}";
+            $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as avg FROM {{responses_$surveyid}}" . $where;
             $rows = Yii::app()->db->createCommand($query)->query();
 
             $showem = array();
@@ -829,7 +842,7 @@ class statistics_helper
                 $showem[] = array(gT("Average no. of files per respondent"), $row['avg']);
             }
 
-            $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{responses_$surveyid}}";
+            $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{responses_$surveyid}}" . $where;
             $rows = Yii::app()->db->createCommand($query)->query();
 
             $responsecount = 0;
