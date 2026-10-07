@@ -160,6 +160,9 @@ class SurveyResponsesExport implements CommandInterface
             return $this->responseFactory->makeErrorUnauthorised();
         } catch (Exception $e) {
             return $this->responseFactory->makeError($e->getMessage());
+        } catch (\Throwable $e) {
+            Yii::log($e->getMessage(), 'error', 'application.api.export');
+            return $this->responseFactory->makeError('Unable to export responses');
         }
     }
 
@@ -326,6 +329,9 @@ class SurveyResponsesExport implements CommandInterface
         }
 
         $language = $request->getData('language', $this->surveyModel ? $this->surveyModel->language : null);
+        if (!is_string($language) || !in_array($language, $this->surveyModel->getAllLanguages(), true)) {
+            throw new InvalidArgumentException('Invalid language specified');
+        }
 
         // Optional answer format (long/short)
         $answerFormat = $request->getData('answerFormat', null);
@@ -344,6 +350,10 @@ class SurveyResponsesExport implements CommandInterface
         if (!is_array($filters)) {
             throw new InvalidArgumentException('Invalid filters specified');
         }
+        $this->exportSurvey->validateFilters(
+            $filters,
+            \SurveyDynamic::model($this->surveyModel->sid)->getTableSchema()->getColumnNames()
+        );
 
         return [$type, $language, $answerFormat, $csvSeparator, $filters];
     }

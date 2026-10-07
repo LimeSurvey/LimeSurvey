@@ -15,6 +15,7 @@ use LimeSurvey\Models\Services\SurveyAnswerCache;
 use RuntimeException;
 use Survey;
 use SurveyDynamic;
+use Yii;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -328,6 +329,20 @@ class ExportSurveyResultsService
     }
 
     /**
+     * @param array $filters
+     * @param array $validColumns Real response table columns
+     * @throws InvalidArgumentException If a filter is malformed or unsupported
+     */
+    public function validateFilters(array $filters, array $validColumns)
+    {
+        $this->responseFilterPatcher->validate(
+            $filters,
+            $this->transformerOutputSurveyResponses->getDataMap(),
+            $validColumns
+        );
+    }
+
+    /**
      * Builds the filter criteria using the same FilterPatcher the responses list uses.
      *
      * @return \LSDbCriteria|null Null when there are no filters
@@ -365,7 +380,8 @@ class ExportSurveyResultsService
         try {
             return (int) $model->count($filterCriteria);
         } catch (CDbException $e) {
-            throw new RuntimeException("Unable to get response count: " . $e->getMessage());
+            Yii::log($e->getMessage(), 'error', 'application.api.export');
+            throw new RuntimeException('Unable to get response count');
         }
     }
 
@@ -393,7 +409,8 @@ class ExportSurveyResultsService
         try {
             return $model->findAll($criteria);
         } catch (CDbException $e) {
-            throw new RuntimeException("Unable to fetch survey responses: " . $e->getMessage());
+            Yii::log($e->getMessage(), 'error', 'application.api.export');
+            throw new RuntimeException('Unable to fetch survey responses');
         }
     }
 
