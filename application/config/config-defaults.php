@@ -618,6 +618,9 @@ $config['add_access_control_header'] = 1;
 /**
 * This parameter sets the default session expiration time in seconds
 * Default is 2 hours
+* Note: If you use table-based sessions (see config.php) with MySQL/MariaDB, make sure the server setting
+* max_allowed_packet is big enough: The session of a participant taking a very large survey can grow to 15 MB
+* and more, and a session bigger than max_allowed_packet is silently not saved. We recommend at least 64M.
 * @var integer
 */
 $config['iSessionExpirationTime'] = 7200;
