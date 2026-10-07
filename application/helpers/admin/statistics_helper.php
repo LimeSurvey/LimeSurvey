@@ -1556,6 +1556,14 @@ class statistics_helper
             $alist[] = array("", gT("No answer"), false, 'is_no_answer');
         }
 
+        // Put the summary (numerical and file upload questions) into the same grid column
+        // as the statistics of the other question types, see _statisticsoutput_header.php
+        if ($outputType == 'html' && $statisticsoutput !== '') {
+            $statisticsoutput = "<div class='col-xl-" . $this->getColumnWidth() . " col-md-12 ps-0 pe-3'>\n"
+                . $statisticsoutput
+                . "</div>\n";
+        }
+
         return [
             "alist" => $alist,
             "qtitle" => $qtitle,
@@ -1565,6 +1573,24 @@ class statistics_helper
             "parentqid" => (int)$qqid,
             "subquestionText" => $subquestionText,
         ];
+    }
+
+    /**
+     * Returns the Bootstrap grid width of one question in the HTML statistics output,
+     * as set by the "Number of columns" output option.
+     *
+     * @return string Number of grid columns out of 12
+     */
+    protected function getColumnWidth()
+    {
+        switch ($_POST['stats_columns'] ?? '2') {
+            case "1":
+                return "12";
+            case "3":
+                return "4";
+            default:
+                return "6";
+        }
     }
 
     /**
@@ -2925,23 +2951,19 @@ class statistics_helper
             }
         }
         // Columns
-        $statsColumns = $_POST['stats_columns'] ?? '2';
-
-        switch ($statsColumns) {
-            case "1":
-                $nbcols      = "12";
+        $nbcols = $this->getColumnWidth();
+        switch ($nbcols) {
+            case "12":
                 $canvaWidth  = "1150";
                 $canvaHeight = "800";
                 break;
 
-            case "3":
-                $nbcols = "4";
+            case "4":
                 $canvaWidth = "333";
                 $canvaHeight = "500";
                 break;
 
             default:
-                $nbcols = "6";
                 $canvaWidth = "500";
                 $canvaHeight = "500";
                 break;

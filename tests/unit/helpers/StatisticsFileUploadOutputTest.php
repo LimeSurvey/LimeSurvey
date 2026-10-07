@@ -84,8 +84,10 @@ class StatisticsFileUploadOutputTest extends TestBaseClass
         $output = $this->buildOutputList('|' . $fieldname);
 
         $this->assertSame((int) self::$question->qid, $output['parentqid']);
-        // The summary table must be closed, otherwise it swallows the output of the following questions.
-        $this->assertStringEndsWith("</tbody></table>\n", $output['statisticsoutput']);
+        // The summary table must be closed, otherwise it swallows the output of the following questions,
+        // and it is in a grid column like the statistics of the other question types.
+        $this->assertStringStartsWith("<div class='col-xl-6 ", $output['statisticsoutput']);
+        $this->assertStringEndsWith("</tbody></table>\n</div>\n", $output['statisticsoutput']);
         $this->assertSame('0 KB', $this->resultCell($output, 'Total size of files'));
         $this->assertSame('0 KB', $this->resultCell($output, 'Average file size'));
         $this->assertSame('0 KB', $this->resultCell($output, 'Average size per respondent'));
