@@ -792,14 +792,20 @@ class statistics_helper
         } elseif ($sQuestionType == "|") {
             // File Upload
 
-            //get SGQ data
-            $qqid = substr(explode("_", $rt)[0], 1);
-
-            //select details for this question
-            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => substr($qqid, 0)));
-            $qtitle = $nresult->title;
-            $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->question);
+            // Security (mantis #20755): $rt comes from the request, so only accept the column of a
+            // file upload question of this survey before it is used in any query.
+            $fieldname = substr($rt, 1);
+            if (
+                !isset($fieldmap[$fieldname], $fieldmap[$fieldname . '_Cfilecount'])
+                || $fieldmap[$fieldname]['type'] !== Question::QT_VERTICAL_FILE_UPLOAD
+            ) {
+                return [];
+            }
+            $fielddata = $fieldmap[$fieldname];
+            $qqid = $fielddata['qid'];
+            $qtitle = flattenText($fielddata['title']);
+            $qtype = $fielddata['type'];
+            $qquestion = flattenText($fielddata['question']);
             /*
             4)      Average size of file per respondent
             5)      Average no. of files
@@ -813,7 +819,6 @@ class statistics_helper
 
             // 1) Total number of files uploaded
             // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
-            $fieldname = substr($rt, 1, strlen($rt));
             $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as avg FROM {{responses_$surveyid}}";
             $rows = Yii::app()->db->createCommand($query)->query();
 
@@ -835,15 +840,15 @@ class statistics_helper
                 $json = $row['json'];
                 $phparray = json_decode((string) $json);
 
-                foreach ($phparray as $metadata) {
-                    $size += (int) $metadata->size;
+                foreach ((array) $phparray as $metadata) {
+                    $size += (int) ($metadata->size ?? 0);
                     $filecount++;
                 }
                 $responsecount++;
             }
             $showem[] = array(gT("Total size of files"), $size . " KB");
-            $showem[] = array(gT("Average file size"), $size / $filecount . " KB");
-            $showem[] = array(gT("Average size per respondent"), $size / $responsecount . " KB");
+            $showem[] = array(gT("Average file size"), ($filecount ? $size / $filecount : 0) . " KB");
+            $showem[] = array(gT("Average size per respondent"), ($responsecount ? $size / $responsecount : 0) . " KB");
 
             /*              $query="SELECT title, question FROM {{questions}} WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
             $result=db_execute_num($query) or safeDie("Couldn't get list of subquestions for multitype<br />$query<br />");
@@ -1216,10 +1221,10 @@ class statistics_helper
         }*/
         else {
             //search for key
-            $fielddata = $fieldmap[$rt];
             if (!isset($fieldmap[$rt])) {
                 return [];
             }
+            $fielddata = $fieldmap[$rt];
 
             //get SGQA IDs
             $qqid = $fielddata['qid'];
@@ -3863,7 +3868,7 @@ class statistics_helper
             foreach ($runthrough as $rt) {
                 //Step 1: Get information about this response field (SGQA) for the summary
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
-                $sOutputHTML .= $outputs['statisticsoutput'];
+                $sOutputHTML .= $outputs['statisticsoutput'] ?? '';
                 //2. Collect and Display results #######################################################################
                 if (isset($outputs['alist']) && $outputs['alist']) {
                     //Make sure there really is an answerlist, and if so:
@@ -4160,7 +4165,7 @@ class statistics_helper
             foreach ($runthrough as $rt) {
                 //Step 1: Get information about this response field (SGQA) for the summary
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
-                $sOutputHTML .= $outputs['statisticsoutput'];
+                $sOutputHTML .= $outputs['statisticsoutput'] ?? '';
                 //2. Collect and Display results #######################################################################
                 if (isset($outputs['alist']) && $outputs['alist']) {
                     //Make sure there really is an answerlist, and if so:
