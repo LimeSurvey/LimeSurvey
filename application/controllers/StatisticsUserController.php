@@ -156,7 +156,7 @@ class StatisticsUserController extends SurveyController
         // check if there are any question with public statistics
         if (isset($questions)) {
             $allfields = $this->createSGQA($questions);
-        }// end if -> for removing the error message in case there are no filters
+        } // end if -> for removing the error message in case there are no filters
         $summary = $allfields;
 
         //number of records for this survey
