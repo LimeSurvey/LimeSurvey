@@ -797,8 +797,8 @@ class userstatistics_helper
                 $showem = array();
 
                 foreach ($result->readAll() as $row) {
-                    $showem[] = array(gT("Total number of files"), $row['sum']);
-                    $showem[] = array(gT("Average no. of files per respondent"), $row['avg']);
+                    $showem[] = array(gT("Total number of files"), $row['sum'] ?? 0);
+                    $showem[] = array(gT("Average no. of files per respondent"), $row['avg'] ?? 0);
                 }
 
                 $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{responses_$surveyid}}" . $where;
@@ -849,12 +849,26 @@ class userstatistics_helper
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow, 0, gT("Calculation"));
                         $this->sheet->write($this->xlsRow, 1, gT("Result"));
+                        foreach ($showem as $shw) {
+                            $this->xlsRow++;
+                            $this->sheet->write($this->xlsRow, 0, html_entity_decode($shw[0], ENT_QUOTES, 'UTF-8'));
+                            $this->sheet->write($this->xlsRow, 1, html_entity_decode((string) $shw[1], ENT_QUOTES, 'UTF-8'));
+                        }
                         break;
 
                     case 'pdf':
                         $headPDF = array();
                         $headPDF[] = array(gT("Calculation"), gT("Result"));
-
+                        $tablePDF = array();
+                        foreach ($showem as $shw) {
+                            $tablePDF[] = array(html_entity_decode($shw[0], ENT_QUOTES, 'UTF-8'), html_entity_decode((string) $shw[1], ENT_QUOTES, 'UTF-8'));
+                        }
+                        $pdfTitle = sprintf(gT("Summary for %s"), html_entity_decode((string) $qtitle, ENT_QUOTES, 'UTF-8'));
+                        $titleDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
+                        $this->pdf->AddPage('P', 'A4');
+                        $this->pdf->Bookmark($this->pdf->delete_html($qquestion), 1, 0);
+                        $this->pdf->titleintopdf($pdfTitle, $titleDesc);
+                        $this->pdf->headTable($headPDF, $tablePDF);
                         break;
 
                     case 'html':
@@ -866,11 +880,13 @@ class userstatistics_helper
                             . gT("Calculation") . "</strong></th>\n"
                             . "\t\t<th width='50%' class='text-end'><strong>"
                             . gT("Result") . "</strong></th>\n"
-                            . "\t</tr></thead>\n";
+                            . "\t</tr></thead>\n"
+                            . "<tbody>\n";
 
                         foreach ($showem as $res) {
                             $statisticsoutput .= "<tr><td>" . $res[0] . "</td><td>" . $res[1] . "</td></tr>";
                         }
+                        $statisticsoutput .= "</tbody></table>\n";
                         break;
 
                     default:

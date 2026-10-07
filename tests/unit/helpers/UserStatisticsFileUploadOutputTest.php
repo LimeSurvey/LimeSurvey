@@ -95,6 +95,8 @@ class UserStatisticsFileUploadOutputTest extends TestBaseClass
 
         // Not cast to int by this helper, so it is a string on some databases.
         $this->assertEquals(self::$question->qid, $output['parentqid']);
+        // The summary table must be closed, otherwise it swallows the output of the following questions.
+        $this->assertStringEndsWith("</tbody></table>\n", $output['statisticsoutput']);
         $this->assertSame('0 KB', $this->resultCell($output, 'Total size of files'));
         $this->assertSame('0 KB', $this->resultCell($output, 'Average file size'));
         $this->assertSame('0 KB', $this->resultCell($output, 'Average size per respondent'));
