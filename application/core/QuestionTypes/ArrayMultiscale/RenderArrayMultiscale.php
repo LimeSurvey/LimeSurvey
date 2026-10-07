@@ -36,7 +36,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $this->useDropdownLayout = true;
             $this->sCoreClass .= " dropdown-array";
             $this->answertypeclass .= " dropdown";
-            $this->doDualScaleFunction = "doDualScaleDropDown"; // javascript function to lauch at end of answers
+            $this->doDualScaleFunction = "doDualScaleDropDown"; // javascript function to launch at end of answers
         } else {
             $this->useDropdownLayout = false;
             $this->sCoreClass .= " radio-array";

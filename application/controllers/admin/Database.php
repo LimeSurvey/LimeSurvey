@@ -212,7 +212,7 @@ class Database extends SurveyCommonAction
         }
         if ($questionThemeMetaData['settings']->answerscales == 0 && $questionThemeMetaData['settings']->subquestions == 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
-                // Qick and dirty insert for yes/no defaul value
+                // Quick and dirty insert for yes/no default value
                 // write the selectbox option, or if "EM" is selected, this value to table
                 if ($sQuestionType == 'Y') {
                     /// value for all langs
@@ -318,7 +318,12 @@ class Database extends SurveyCommonAction
             // @todo: Should we be catching only this kind of exceptions or all Throwable?
             // BUt that could show sensitive information
             Yii::app()->setFlashMessage(
-                $e->getMessage(),
+                $e->getErrorModel()
+                    ? CHtml::errorSummary(
+                        $e->getErrorModel(),
+                        CHtml::tag('p', array('class' => 'strong'), CHtml::encode($e->getMessage()))
+                    )
+                    : $e->getMessage(),
                 'error'
             );
         }

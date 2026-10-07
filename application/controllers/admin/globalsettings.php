@@ -639,8 +639,8 @@ class GlobalSettings extends SurveyCommonAction
      */
     public function surveysettingmenues()
     {
-        $menues = Surveymenu::model()->getMenuesForGlobalSettings();
-        Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
+        $menus = Surveymenu::model()->getMenuesForGlobalSettings();
+        Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menus[0]]);
     }
 
     /**

@@ -24,7 +24,6 @@ function initKcfinder()
     $sAllowedExtensions = implode(' ', array_map('trim', explode(',', (string) Yii::app()->getConfig('allowedresourcesuploads'))));
     $_SESSION['KCFINDER']['types'] = array(
         'files' => $sAllowedExtensions,
-        'flash' => $sAllowedExtensions,
         'images' => $sAllowedExtensions
     );
     if (!empty(App()->getSession()->cookieParams['domain'])) {
