@@ -3764,9 +3764,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
-    if (\PHP_VERSION_ID < 80000) {
-        libxml_disable_entity_loader(true);
-    }
+ 
     $rankings = [];
     foreach ($survey->questions as $q) {
         if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
