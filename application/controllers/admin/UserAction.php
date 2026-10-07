@@ -195,7 +195,7 @@ class UserAction extends SurveyCommonAction
             true
         );
 
-        //Get data for personal menues
+        //Get data for personal menus
         $oSurveymenu = Surveymenu::model();
         $oSurveymenu->user_id = $oUser->uid;
         $oSurveymenuEntries = SurveymenuEntries::model();

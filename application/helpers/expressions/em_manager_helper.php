@@ -514,7 +514,7 @@ class LimeExpressionManager
      * 'qid' => 702 // the question id
      * 'qseq' => 6 // the question sequence
      * 'gseq' => 0 // the group sequence
-     * 'sgqa' => '26626X34X702' // the root of the SGQA code (reallly just the SGQ)
+     * 'sgqa' => '26626X34X702' // the root of the SGQA code (really just the SGQ)
      * 'varName' => 'afSrcFilter_sq1' // the full qcode variable name - note, if there are subquestions, don't use this one.
      * 'type' => 'M' // the one-letter question type
      * 'fieldname' => '26626X34X702sq1' // the fieldname (used as JavaScript variable name, and also as database column name
@@ -4700,13 +4700,18 @@ class LimeExpressionManager
     }
 
     /**
-     * Initialize a survey so can use EM to manage navigation
+     * Initialize a survey so can use EM to manage navigation.
+     * Timing storage is enabled only when Save timings is enabled and its table exists.
+     * Applies valid session starting values. They are persisted right away only if the response already exists,
+     * otherwise they are saved when the response is created (after the welcome page and survey policy).
+     *
      * @param int $surveyid
-     * @param string $surveyMode
-     * @param array $aSurveyOptions
-     * @param bool $forceRefresh
+     * @param string $surveyMode 'survey', 'question', or 'group'; unrecognized values use 'group'.
+     * @param array|null $aSurveyOptions Runtime options; null uses the defaults.
+     * @param bool $forceRefresh Whether to rebuild cached variable and token mappings.
      * @param int $debugLevel
-     * @return array
+     * @return array Initial navigation state: hasNext is true and hasPrevious is false.
+     * @throws CDbException If an uncaught database operation fails.
      */
     public static function StartSurvey($surveyid, $surveyMode = 'group', $aSurveyOptions = null, $forceRefresh = false, $debugLevel = 0)
     {
@@ -4719,7 +4724,7 @@ class LimeExpressionManager
             $aSurveyOptions = [];
         }
         $LEM->surveyOptions['active'] = (isset($aSurveyOptions['active']) ? $aSurveyOptions['active'] : false);
-        // make sure to get the previewmode set by aSurveyOptions because LEM reset happens inbetween
+        // make sure to get the previewmode set by aSurveyOptions because LEM reset happens in between
         self::SetPreviewMode($aSurveyOptions['previewmode'] ?? false);
         $LEM->surveyOptions['allowsave'] = (isset($aSurveyOptions['allowsave']) ? $aSurveyOptions['allowsave'] : false);
         $LEM->surveyOptions['alloweditaftercompletion'] = (isset($aSurveyOptions['alloweditaftercompletion']) ? $aSurveyOptions['alloweditaftercompletion'] : false);
@@ -4732,12 +4737,13 @@ class LimeExpressionManager
         $LEM->surveyOptions['ipAnonymize'] = $survey->isIpAnonymize;
         $LEM->surveyOptions['radix'] = (isset($aSurveyOptions['radix']) ? $aSurveyOptions['radix'] : '.');
         $LEM->surveyOptions['refurl'] = (isset($aSurveyOptions['refurl']) ? $aSurveyOptions['refurl'] : null);
-        $LEM->surveyOptions['savetimings'] = $survey->isSaveTimings;
+        $canSaveTimings = $survey->isSaveTimings && $survey->hasTimingsTable;
+        $LEM->surveyOptions['savetimings'] = $canSaveTimings;
         $LEM->sgqaNaming = (isset($aSurveyOptions['sgqaNaming']) ? ($aSurveyOptions['sgqaNaming'] == "Y") : true); // TODO default should eventually be false
         $LEM->surveyOptions['startlanguage'] = (isset($aSurveyOptions['startlanguage']) ? $aSurveyOptions['startlanguage'] : 'en');
         $LEM->surveyOptions['surveyls_dateformat'] = (isset($aSurveyOptions['surveyls_dateformat']) ? $aSurveyOptions['surveyls_dateformat'] : 1);
         $LEM->surveyOptions['tablename'] = (isset($aSurveyOptions['tablename']) ? $aSurveyOptions['tablename'] : $survey->responsesTableName);
-        $LEM->surveyOptions['tablename_timings'] = ($survey->isSaveTimings ? $survey->timingsTableName : '');
+        $LEM->surveyOptions['tablename_timings'] = ($canSaveTimings ? $survey->timingsTableName : '');
         $LEM->surveyOptions['target'] = (isset($aSurveyOptions['target']) ? $aSurveyOptions['target'] : '/temp/files/');
         $LEM->surveyOptions['timeadjust'] = (isset($aSurveyOptions['timeadjust']) ? $aSurveyOptions['timeadjust'] : 0);
         $LEM->surveyOptions['displayTimezone'] = Yii::app()->getConfig('displayTimezone') ?: date_default_timezone_get();
@@ -4745,7 +4751,7 @@ class LimeExpressionManager
         $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : null);
         $LEM->surveyOptions['savequotaexit'] = (isset($aSurveyOptions['savequotaexit']) ? $aSurveyOptions['savequotaexit'] : false);
         $LEM->debugLevel = $debugLevel;
-        $_SESSION[$LEM->sessid]['LEMdebugLevel'] = $debugLevel; // need acces to SESSSION to decide whether to cache serialized instance of $LEM
+        $_SESSION[$LEM->sessid]['LEMdebugLevel'] = $debugLevel; // need access to SESSION to decide whether to cache serialized instance of $LEM
         switch ($surveyMode) {
             case 'survey':
                 $LEM->allOnOnePage = true;
@@ -4823,7 +4829,10 @@ class LimeExpressionManager
                     unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                 }
             }
-            $LEM->_UpdateValuesInDatabase();
+            // Don't create the response before the survey is actually started (welcome page, survey policy): Prefilled values are saved on creation
+            if (isset($_SESSION[$LEM->sessid]['srid'])) {
+                $LEM->_UpdateValuesInDatabase();
+            }
         }
 
         return [
@@ -5238,6 +5247,35 @@ class LimeExpressionManager
     }
 
     /**
+     * Get the prefilled (starting) values currently set in session, to be saved when the response is created.
+     * @return array[] Values indexed by SGQA, each with 'type' and 'value' (same format as updatedValues)
+     */
+    private function getStartingValuesToSave()
+    {
+        $startingValues = [];
+        if (empty($_SESSION[$this->sessid]['startingValues']) || !is_array($_SESSION[$this->sessid]['startingValues'])) {
+            return $startingValues;
+        }
+        foreach (array_keys($_SESSION[$this->sessid]['startingValues']) as $k) {
+            if (isset($this->knownVars[$k])) {
+                $sgqa = $k;
+            } elseif (isset($this->qcode2sgqa[$k])) {
+                $sgqa = $this->qcode2sgqa[$k];
+            } else {
+                continue;
+            }
+            if (!isset($this->knownVars[$sgqa]['jsName']) || !isset($_SESSION[$this->sessid][$sgqa])) {
+                continue;
+            }
+            $startingValues[$sgqa] = [
+                'type'  => $this->knownVars[$sgqa]['type'],
+                'value' => $_SESSION[$this->sessid][$sgqa],
+            ];
+        }
+        return $startingValues;
+    }
+
+    /**
      * Write values to database.
      * @param boolean $finished - true if the survey needs to be finalized
      * @return string
@@ -5303,6 +5341,8 @@ class LimeExpressionManager
                 }
                 $srid = $iNewID;
                 $_SESSION[$this->sessid]['srid'] = $iNewID;
+                // Prefilled values were not saved before the response was created: Add them, values from the current page take precedence
+                $updatedValues = $updatedValues + $this->getStartingValuesToSave();
             } catch (Exception $e) {
                 $srid = null;
                 $query = $e->getMessage();
@@ -7395,7 +7435,7 @@ class LimeExpressionManager
     /*
     * Generate JavaScript needed to do dynamic relevance and tailoring
     * Also create list of variables that need to be declared
-    * @return string|array : line to be added to content Javacript line + hidden input (can't use register script...)
+    * @return string|array : line to be added to content Javascript line + hidden input (can't use register script...)
     */
     public static function GetRelevanceAndTailoringJavaScript($bReturnArray = false)
     {
@@ -9057,7 +9097,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $updatedValues[$sq] = $_update;
                     $LEM->updatedValues[$sq] = $_update;
                 } else {  // irrelevant, so database will be NULLed separately
-                    // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
+                    // Must unset the value, rather than setting to '', so that EM can reuse the default value as needed.
                     unset($_SESSION[$LEM->sessid][$sq]);
                     $_update = [
                         'type'  => $type,
@@ -10392,7 +10432,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 break;
             case 'D': // Date + time
-                /*  @todo : but are already partially in EM and in old function ? */
+                /* INVALID is set by EM for unparsable user input and checked in validation equation: Keep it */
+                if ($value !== "INVALID" && !self::isValidDateTimeValue($value)) {
+                    $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
+                    return false;
+                }
                 break;
             case '*': // Equation
                 /* No validity control ? size ? */
@@ -10463,6 +10507,24 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 break;
         }
         return true;
+    }
+
+    /**
+     * Check if a value is a real date in the format stored in the response table (Y-m-d with optional H:i or H:i:s)
+     * Out of range values (for example a 5 digits year or 2020-02-31) are rejected: The database can not store them
+     *
+     * @param string $value the value to check
+     * @return boolean
+     */
+    private static function isValidDateTimeValue($value)
+    {
+        if (!preg_match('/^(\d{4})-(\d{2})-(\d{2})(?: (\d{2}):(\d{2})(?::(\d{2}))?)?$/', (string) $value, $matches)) {
+            return false;
+        }
+        if (!checkdate((int) $matches[2], (int) $matches[3], (int) $matches[1])) {
+            return false;
+        }
+        return (!isset($matches[4]) || ($matches[4] < 24 && $matches[5] < 60 && (!isset($matches[6]) || $matches[6] < 60)));
     }
 
     /**

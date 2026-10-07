@@ -54,7 +54,7 @@ function isNumericExtended(string $value)
 }
 
 /**
- * Returns splitted unicode string correctly
+ * Returns split unicode string correctly
  * source: http://www.php.net/manual/en/function.str-split.php#107658
  *
  * @param string $str

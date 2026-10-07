@@ -108,7 +108,8 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * View a single response in detail
+     * View a single response in detail.
+     * Redirects to the response detail view of the new editor when the editor is enabled.
      *
      * @param int $surveyId
      * @param int $id
@@ -132,6 +133,13 @@ class ResponsesController extends LSBaseController
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
             App()->end(); // More clear, unneeded.
+        }
+        // Existing links (e.g. admin notification emails) open the response in the new editor when it is enabled
+        if (App()->getConfig('editorEnabled')) {
+            $this->redirect([
+                'editorLink/index',
+                'route' => 'responses/' . $surveyId . '/results/responses?id=' . $id
+            ]);
         }
         /* TODO : Check if response still exist, after checking survey */
         $aData = $this->getData($surveyId, $id, $browseLang);

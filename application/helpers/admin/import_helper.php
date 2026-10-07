@@ -1555,12 +1555,12 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
         $where = [];
     }
     $whereClause = "";
-    $criterias = [];
+    $criteria = [];
     if (count($where)) {
         foreach ($where as $field => $value) {
-            $criterias[] = Yii::app()->db->quoteColumnName($field) . " = " . Yii::app()->db->quoteValue($value);
+            $criteria[] = Yii::app()->db->quoteColumnName($field) . " = " . Yii::app()->db->quoteValue($value);
         }
-        $whereClause = " WHERE " . implode(" AND ", $criterias);
+        $whereClause = " WHERE " . implode(" AND ", $criteria);
     }
     if (count($columns)) {
         foreach ($columns as $index => $column) {
@@ -2046,9 +2046,9 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
     $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
     $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
     if ((App()->db->tablePrefix) && (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0)) {
-        $tbl_name = str_replace('old_responses', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
+        $tbl_name = substr($archivedResponseTableName, strlen(App()->db->tablePrefix));
     } else {
-        $tbl_name = str_replace('old_responses', 'old_tokens', $archivedResponseTableName);
+        $tbl_name = $archivedResponseTableName;
     }
     $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name, 'tbl_type' => 'response']);
     $archivedEncryptedAttributes = [];

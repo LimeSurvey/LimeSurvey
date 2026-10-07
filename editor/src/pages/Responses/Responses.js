@@ -11,6 +11,7 @@ import {
   getFilenameFromContentDisposition,
   PAGES,
   STATES,
+  Toast,
   toastComponent,
 } from 'helpers'
 import { ComponentModal } from 'components'
@@ -62,7 +63,9 @@ export const Responses = () => {
     mutateOperations,
     exportResponses,
     isExporting,
+    findResponsePageIndex,
   } = useResponses(surveyId, pagination, filters, sorting)
+  const locatedDeepLinkRef = useRef(null)
 
   // Responses page isn't wrapped by EditorContextController, so fetch languages here
   // to show full language names (not just codes) in the export modal.
@@ -177,6 +180,53 @@ export const Responses = () => {
     next.delete('id')
     setSearchParams(next)
   }
+
+  const showDeepLinkNotFound = () => {
+    Toast({ message: t('Sorry, this response was not found.') })
+    handleResponseModalClose()
+  }
+
+  // A shared link only carries the response id, so the response may be on
+  // another page than the one loaded: jump to the page listing it.
+  useEffect(() => {
+    if (
+      !deepLinkResponseId ||
+      isFetching ||
+      !responses?.responses ||
+      tabKey !== TAB_KEYS.RESPONSES
+    ) {
+      return
+    }
+
+    const isOnPage = responses.responses.some(
+      (response) => String(response?.id) === String(deepLinkResponseId)
+    )
+    if (isOnPage) {
+      return
+    }
+
+    // Already on the page that should list it: the response does not exist.
+    if (locatedDeepLinkRef.current === deepLinkResponseId) {
+      showDeepLinkNotFound()
+      return
+    }
+
+    // The page can only be computed for the default "id DESC" sort.
+    if (sorting.length) {
+      return
+    }
+
+    locatedDeepLinkRef.current = deepLinkResponseId
+    findResponsePageIndex(deepLinkResponseId)
+      .then((pageIndex) => {
+        if (pageIndex === pagination.pageIndex) {
+          showDeepLinkNotFound()
+          return
+        }
+        setPagination((previous) => ({ ...previous, pageIndex }))
+      })
+      .catch(() => showDeepLinkNotFound())
+  }, [responses, isFetching, deepLinkResponseId, tabKey])
 
   const onFiltersChange = (filters) => {
     setFilters(filters)

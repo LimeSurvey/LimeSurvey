@@ -252,7 +252,7 @@ require_once __DIR__ . '/unit/helpers/remotecontrol/BaseTest.php';
 require_once __DIR__ . '/unit/models/BaseModelTestCase.php';
 
 define('PHP_ENV', 'test');
-// TODO: Move this logic to installater test.
+// TODO: Move this logic to installer test.
 $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 

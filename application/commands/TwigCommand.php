@@ -16,7 +16,7 @@ class TwigCommand extends CConsoleCommand
     public $aLogs; // Array of logs
 
     /**
-     * Load the needed helpers, set default vaules, etc
+     * Load the needed helpers, set default values, etc
      */
     #[\Override]
     public function init()
@@ -99,8 +99,8 @@ class TwigCommand extends CConsoleCommand
 
     /**
     * Generate twig cache files for each question type.
-    * NOTE 1: It's a recursive function, since some directories are the question type itself (it has an answer.twig file) but other containes various question types as subdirectories.
-    * NOTE 2: Currenlty arrays are skipped. We need to set default data, so it will be done in LS4, at the same time than Question Theme Editor.
+    * NOTE 1: It's a recursive function, since some directories are the question type itself (it has an answer.twig file) but others contain various question types as subdirectories.
+    * NOTE 2: Currently arrays are skipped. We need to set default data, so it will be done in LS4, at the same time than Question Theme Editor.
     *
     * @param string $sQuestionDir the directory to parse, where to find the answer.twig file.
     */
@@ -126,10 +126,10 @@ class TwigCommand extends CConsoleCommand
                *
                * NOTE 1: as long as this is not done, it's highly probable that some twig files will never be reached (Ex: Conditionally included twig files).
                *
-               * NOTE 2: It should be possible to parse the XML to get the different values for the attributes, and then to generate a cache file for each attribue possible value.
+               * NOTE 2: It should be possible to parse the XML to get the different values for the attributes, and then to generate a cache file for each attribute possible value.
                *         Doing this could allow to test easily the rendering for all question type, with all question attribute variations.
                *         Since we're very far to get this with Unit Test (it will imlpy to write around 1000 tests in a row), it could be a first step.
-               *         One way to do: for a stable version, save the rendered HTML somwhere, then in unitest, call this function, compare the rendered HTML to the saved one.
+               *         One way to do: for a stable version, save the rendered HTML somewhere, then in unitest, call this function, compare the rendered HTML to the saved one.
                *         Enjoy the 1000 test in a single one :) (sadly, only for HTML rendering, not for JS or DB saving)
                */
                 $sTwigFile = $sQuestionDirectory . DIRECTORY_SEPARATOR . "answer.twig";
