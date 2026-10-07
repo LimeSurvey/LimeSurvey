@@ -187,13 +187,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 unset($insertdata['language']);
             }
 
-            if (!$bTranslateLinksFields) {
-                $sScenario = 'archiveimport';
-            } else {
-                $sScenario = 'import';
-            }
-
-            $oQuestion = new Question($sScenario);
+            // The group is added to an existing survey, so question codes must always be checked for uniqueness
+            $oQuestion = new Question('import');
             $oQuestion->setAttributes($insertdata, false);
 
             if (!isset($aQIDReplacements[$iOldQID])) {
