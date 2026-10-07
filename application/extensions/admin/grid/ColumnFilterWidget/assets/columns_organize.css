@@ -113,3 +113,10 @@
     content: none;
     display: none;
 }
+.organize-columns-modal .modal-dialog {
+    max-width: min(584px, calc(100% - 1rem));
+}
+.organize-columns-modal .modal-content {
+    border-radius: 4px;
+    overflow: hidden;
+}
