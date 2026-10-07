@@ -913,16 +913,7 @@ class statistics_helper
                     break;
 
                 case 'html':
-                    $statisticsoutput .= "\n<table class='statisticstable table table-bordered' >\n"
-                    . "\t<thead><tr><th colspan='2' align='right'><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
-                    . "</th></tr>\n"
-                    . "\t<tr><th colspan='2' align='right'><strong>$qquestion</strong></th></tr>\n"
-                    . "\t<tr>\n\t\t<th width='50%' align='right' ><strong>"
-                    . gT("Calculation") . "</strong></th>\n"
-                    . "\t\t<th width='50%' align='right' ><strong>"
-                    . gT("Result") . "</strong></th>\n"
-                    . "\t</tr></thead>\n"
-                    . "<tbody>\n";
+                    $statisticsoutput .= $this->getSummaryTableHeader($qqid, $qtitle, $qquestion);
 
                     foreach ($showem as $res) {
                         $statisticsoutput .= "<tr><td>" . $res[0] . "</td><td>" . $res[1] . "</td></tr>";
@@ -998,16 +989,7 @@ class statistics_helper
 
                         break;
                     case 'html':
-                        $statisticsoutput .= "\n<table class='statisticstable table table-bordered' >\n"
-                        . "\t<thead><tr><th colspan='2' align='right'><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
-                        . "</th></tr>\n"
-                        . "\t<tr><th colspan='2' align='right'><strong>$qquestion</strong></th></tr>\n"
-                        . "\t<tr>\n\t\t<th width='50%' align='right' ><strong>"
-                        . gT("Calculation") . "</strong></th>\n"
-                        . "\t\t<th width='50%' align='right' ><strong>"
-                        . gT("Result") . "</strong></th>\n"
-                        . "\t</tr></thead>\n"
-                        . "<tbody>\n";
+                        $statisticsoutput .= $this->getSummaryTableHeader($fielddata['qid'], $qtitle, $qquestion);
 
                         break;
                     default:
@@ -1573,6 +1555,36 @@ class statistics_helper
             "parentqid" => (int)$qqid,
             "subquestionText" => $subquestionText,
         ];
+    }
+
+    /**
+     * Returns the opening HTML of the calculation summary table of a numerical or file upload
+     * question, with the same header as the statistics of the other question types
+     * (see _statisticsoutput_header.php), including the button to export the question to PDF.
+     *
+     * @param int|string $qid Question ID
+     * @param string $qtitle Question code
+     * @param string $qquestion Question text
+     * @return string
+     */
+    protected function getSummaryTableHeader($qid, $qtitle, $qquestion)
+    {
+        $tableId = 'quid_' . (int) $qid;
+        $exportLabel = CHtml::encode(gT("Export this question to PDF.", 'unescaped'));
+
+        return "\n<table class='statisticstable table table-bordered printable' id='" . $tableId . "'>\n"
+            . "\t<thead><tr class='active'><th colspan='2' class='text-center'><strong>" . sprintf(gT("Summary for %s"), $qtitle) . "</strong>"
+            . "<button type='button' class='float-end action_js_export_to_pdf btn btn-outline-secondary btn-sm d-print-none'"
+            . " data-question-id='" . $tableId . "' data-bs-toggle='tooltip' title='" . $exportLabel . "' aria-label='" . $exportLabel . "'"
+            . " onclick='return false;'><i class='ri-file-pdf-line' aria-hidden='true'></i></button>"
+            . "</th></tr>\n"
+            . "\t<tr><td colspan='2' class='text-center'>$qquestion</td></tr>\n"
+            . "\t<tr>\n\t\t<th width='50%'><strong>"
+            . gT("Calculation") . "</strong></th>\n"
+            . "\t\t<th width='50%'><strong>"
+            . gT("Result") . "</strong></th>\n"
+            . "\t</tr></thead>\n"
+            . "<tbody>\n";
     }
 
     /**
