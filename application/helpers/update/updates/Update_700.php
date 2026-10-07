@@ -72,6 +72,20 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
+     * Determines whether the given table name refers to an "orphaned_" backup table
+     * created by this update (a snapshot of a legacy response table that had
+     * orphaned columns). Such tables are left in place for the administrator and
+     * must never be migrated themselves - otherwise every re-run of a failed update
+     * would back them up again, nesting the prefix until the name gets too long.
+     * @param string $tableName
+     * @return bool
+     */
+    protected function isOrphanedBackupTableName(string $tableName): bool
+    {
+        return strpos($tableName, 'orphaned_') === 0;
+    }
+
+    /**
      * equivalent of getSubQuestions
      * Returns all subquestions for a survey+question in the given language.
      *
@@ -2010,6 +2024,9 @@ class Update_700 extends DatabaseUpdateBase
         $scripts = [];
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
         foreach ($responsesTables as $responsesTable) {
+            if ($this->isOrphanedBackupTableName($responsesTable['old_name'])) {
+                continue;
+            }
             $scripts[$responsesTable['old_name']] = [
                 'new_name' => $responsesTable['new_name'],
                 'old_name' => $responsesTable['old_name'],
@@ -2022,6 +2039,9 @@ class Update_700 extends DatabaseUpdateBase
         }
         $timingsTables = $this->db->createCommand($this->scriptMapping['timings'])->queryAll();
         foreach ($timingsTables as $timingsTable) {
+            if ($this->isOrphanedBackupTableName($timingsTable['old_name'])) {
+                continue;
+            }
             $scripts[$timingsTable['old_name']] = [
                 'new_name' => $timingsTable['new_name'],
                 'old_name' => $timingsTable['old_name'],
@@ -2046,6 +2066,9 @@ class Update_700 extends DatabaseUpdateBase
                 }
             }
             $tableName = $field['TABLE_NAME'];
+            if ($this->isOrphanedBackupTableName($tableName)) {
+                continue;
+            }
             if (!isset($fieldMap[$field['TABLE_NAME']])) {
                 $fieldMap[$field['TABLE_NAME']] = [];
             }
@@ -2138,8 +2161,10 @@ class Update_700 extends DatabaseUpdateBase
             // If there are orphaned columns, snapshot the legacy table as-is (full structure +
             // data, untouched) *before* compactLegacyRankingValues() gets a chance to mutate it
             $scripts[$TABLE_NAME]['BACKUP_ORPHANED'] = null;
-            if (count($orphanedColumns)) {
-                $orphanedTableName = 'orphaned_' . $TABLE_NAME;
+            // A backup left behind by an earlier, failed run of this update already holds the
+            // untouched legacy data (this run's copy may meanwhile have been compacted), so keep it.
+            $orphanedTableName = 'orphaned_' . $TABLE_NAME;
+            if (count($orphanedColumns) && $this->db->schema->getTable($orphanedTableName, true) === null) {
                 $scripts[$TABLE_NAME]['BACKUP_ORPHANED'] = in_array(Yii::app()->db->getDriverName(), [
                     'mssql',
                     'sqlsrv',
