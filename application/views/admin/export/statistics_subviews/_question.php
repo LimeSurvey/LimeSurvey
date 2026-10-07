@@ -8,7 +8,7 @@
     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($flt[0]);
 
     //$specialQuestionTypes = array("M","P","T","S","Q","|","","N","K","D");
-    $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS);
+    $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS, Question::QT_VERTICAL_FILE_UPLOAD);
     if ( in_array( $flt[2], $specialQuestionTypes))
     {
         $myfield = $flt[2].$myfield;
@@ -38,7 +38,8 @@
                     if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
                     || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
                     || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+                    || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+                    || array_search("|{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
                     { echo " checked='checked'"; }
                     ?>
                     />
@@ -235,7 +236,7 @@
                 ."</div>
                 </div>
                 <div class='mb-3 row'>
-                <label for='N".$myfield3."' class='col-md-4 form-label'>".gT("Number of files less than:")."</label>
+                <label for='".$myfield3."' class='col-md-4 form-label'>".gT("Number of files less than:")."</label>
                 <div class='col-md-6'>"
                 .CHtml::numberField($myfield3,$_POST[$myfield3] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>

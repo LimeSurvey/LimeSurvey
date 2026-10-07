@@ -747,17 +747,21 @@ class userstatistics_helper
         } else {
             if ($firstletter == "|") {
                 // File Upload
-                //get SGQ data
-                list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
-                //select details for this question
-                /**
-                 * FIXME $iQuestionIDlength not defined!!
-                 */
-                $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => substr($qqid, 0, $iQuestionIDlength)));
-                $qtitle = $nresult->title;
-                $qtype = $nresult->type;
-                $qquestion = flattenText($nresult->question);
+                // Security (mantis #20755): $rt comes from the request, so only accept the column of a
+                // file upload question of this survey before it is used in any query.
+                $fieldname = substr($rt, 1);
+                if (
+                    !isset($fieldmap[$fieldname], $fieldmap[$fieldname . '_filecount'])
+                    || $fieldmap[$fieldname]['type'] !== Question::QT_VERTICAL_FILE_UPLOAD
+                ) {
+                    return [];
+                }
+                $fielddata = $fieldmap[$fieldname];
+                $qqid = $fielddata['qid'];
+                $qtitle = flattenText($fielddata['title']);
+                $qtype = $fielddata['type'];
+                $qquestion = flattenText($fielddata['question']);
                 /*
                 4)      Average size of file per respondent
                 5)      Average no. of files
@@ -769,20 +773,32 @@ class userstatistics_helper
                 10)     min file size
                 */
 
+                // Only include the responses that match the selected filters
+                $conditions = array();
+                if (incompleteAnsFilterState() === "incomplete") {
+                    $conditions[] = "submitdate is null";
+                } elseif (incompleteAnsFilterState() === "complete") {
+                    $conditions[] = "submitdate is not null";
+                }
+                //$sql was set somewhere before
+                if (!empty($sql)) {
+                    $conditions[] = $sql;
+                }
+                $where = $conditions ? " WHERE " . implode(" AND ", $conditions) : "";
+
                 // 1) Total number of files uploaded
                 // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
-                $fieldname = substr($rt, 1, strlen($rt));
-                $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as avg FROM {{survey_$surveyid}}";
+                $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as avg FROM {{survey_$surveyid}}" . $where;
                 $result = Yii::app()->db->createCommand($query)->query();
 
                 $showem = array();
 
                 foreach ($result->readAll() as $row) {
-                    $showem[] = array(gT("Total number of files"), $row['sum']);
-                    $showem[] = array(gT("Average no. of files per respondent"), $row['avg']);
+                    $showem[] = array(gT("Total number of files"), $row['sum'] ?? 0);
+                    $showem[] = array(gT("Average no. of files per respondent"), $row['avg'] ?? 0);
                 }
 
-                $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{survey_$surveyid}}";
+                $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{survey_$surveyid}}" . $where;
                 $result = Yii::app()->db->createCommand($query)->query();
 
                 $responsecount = 0;
@@ -793,15 +809,15 @@ class userstatistics_helper
                     $json = $row['json'];
                     $phparray = json_decode((string) $json);
 
-                    foreach ($phparray as $metadata) {
-                        $size += (int)$metadata->size;
+                    foreach ((array) $phparray as $metadata) {
+                        $size += (int) ($metadata->size ?? 0);
                         $filecount++;
                     }
                     $responsecount++;
                 }
                 $showem[] = array(gT("Total size of files"), $size . " KB");
-                $showem[] = array(gT("Average file size"), $size / $filecount . " KB");
-                $showem[] = array(gT("Average size per respondent"), $size / $responsecount . " KB");
+                $showem[] = array(gT("Average file size"), ($filecount ? $size / $filecount : 0) . " KB");
+                $showem[] = array(gT("Average size per respondent"), ($responsecount ? $size / $responsecount : 0) . " KB");
 
                 /*              $query="SELECT title, question FROM {{questions}} WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
                 $result=db_execute_num($query) or safeDie("Couldn't get list of subquestions for multitype<br />$query<br />");
@@ -830,12 +846,26 @@ class userstatistics_helper
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow, 0, gT("Calculation"));
                         $this->sheet->write($this->xlsRow, 1, gT("Result"));
+                        foreach ($showem as $shw) {
+                            $this->xlsRow++;
+                            $this->sheet->write($this->xlsRow, 0, html_entity_decode($shw[0], ENT_QUOTES, 'UTF-8'));
+                            $this->sheet->write($this->xlsRow, 1, html_entity_decode((string) $shw[1], ENT_QUOTES, 'UTF-8'));
+                        }
                         break;
 
                     case 'pdf':
                         $headPDF = array();
                         $headPDF[] = array(gT("Calculation"), gT("Result"));
-
+                        $tablePDF = array();
+                        foreach ($showem as $shw) {
+                            $tablePDF[] = array(html_entity_decode($shw[0], ENT_QUOTES, 'UTF-8'), html_entity_decode((string) $shw[1], ENT_QUOTES, 'UTF-8'));
+                        }
+                        $pdfTitle = sprintf(gT("Summary for %s"), html_entity_decode((string) $qtitle, ENT_QUOTES, 'UTF-8'));
+                        $titleDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
+                        $this->pdf->AddPage('P', 'A4');
+                        $this->pdf->Bookmark($this->pdf->delete_html($qquestion), 1, 0);
+                        $this->pdf->titleintopdf($pdfTitle, $titleDesc);
+                        $this->pdf->headTable($headPDF, $tablePDF);
                         break;
 
                     case 'html':
@@ -847,11 +877,13 @@ class userstatistics_helper
                             . gT("Calculation") . "</strong></th>\n"
                             . "\t\t<th width='50%' class='text-end'><strong>"
                             . gT("Result") . "</strong></th>\n"
-                            . "\t</tr></thead>\n";
+                            . "\t</tr></thead>\n"
+                            . "<tbody>\n";
 
                         foreach ($showem as $res) {
                             $statisticsoutput .= "<tr><td>" . $res[0] . "</td><td>" . $res[1] . "</td></tr>";
                         }
+                        $statisticsoutput .= "</tbody></table>\n";
                         break;
 
                     default:
@@ -1139,6 +1171,9 @@ class userstatistics_helper
             } // NICE SIMPLE SINGLE OPTION ANSWERS
             else {
                 //search for key
+                if (!isset($fieldmap[$rt])) {
+                    return [];
+                }
                 $fielddata = $fieldmap[$rt];
                 //get SGQA IDs
                 $qqid = $fielddata['qid'];
@@ -2788,7 +2823,7 @@ class userstatistics_helper
             foreach ($runthrough as $rt) {
                 //Step 1: Get information about this response field (SGQA) for the summary
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
-                $sOutputHTML .= $outputs['statisticsoutput'];
+                $sOutputHTML .= $outputs['statisticsoutput'] ?? '';
                 //2. Collect and Display results #######################################################################
                 if (isset($outputs['alist']) && $outputs['alist']) {
                     //Make sure there really is an answerlist, and if so:

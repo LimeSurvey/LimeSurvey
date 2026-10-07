@@ -17,8 +17,8 @@
                 <strong>
                     <?php echo sprintf(gT("Summary for %s"), $outputs['qtitle']); ?>
                 </strong>
-                <button class="float-end action_js_export_to_pdf btn btn-outline-secondary btn-sm d-print-none" data-question-id="quid_<?php echo $outputs['parentqid'];?>" data-bs-toggle="tooltip" title="<?php eT('Export this question to PDF.'); ?>" onclick="return false;">
-                    <i class="ri-file-pdf-line"></i>
+                <button class="float-end action_js_export_to_pdf btn btn-outline-secondary btn-sm d-print-none" data-question-id="quid_<?php echo $outputs['parentqid'];?>" data-bs-toggle="tooltip" title="<?php eT('Export this question to PDF.'); ?>" aria-label="<?php eT('Export this question to PDF.'); ?>" onclick="return false;">
+                    <i class="ri-file-pdf-line" aria-hidden="true"></i>
                 </button>
             </th>
         </tr>
