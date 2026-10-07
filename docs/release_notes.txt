@@ -34,6 +34,48 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.5.0 (build 261001) to 7.5.1 (build 261007) October 7, 2026
+-Fixed issue: Retrying a failed database update to version 7 could fail with an 'Incorrect table name orphaned_orphaned_...' error (Carsten Schmitz)
+-Fixed issue: Remove on screen keyboard from presentation settings in new editor (haythem chibani)
+-Fixed issue: New editor survey links for the base language always included a language parameter (Carsten Schmitz)
+-Fixed issue: Exclusive option position on randomized subquestions ignored keep_codes_order and used question_order for reinsertion (#5393) (Tim Willig)
+-Fixed issue: Database update to 7.0 could fail with 'Too many columns' error when a survey response table had orphaned columns (Carsten Schmitz)
+-Fixed issue: Data integrity check silently fixed some problems (e.g. missing survey language texts) and then reported that no errors were found (Carsten Schmitz)
+-Fixed issue #JD-149: Save timings toggle does not update response timings correctly (#5352) (Adil Moumni Abdou)
+-Fixed issue #AT-2264: Incorrect alignment of dropdown items (#5267) (SaraDimoska)
+-Fixed issue #20757: Source code editor in the HTML editor showed code without syntax highlighting and in a proportional font (Carsten Schmitz)
+-Fixed issue #20756: [security] Reflected cross-site scripting (XSS) vulnerability in the survey preview popup of survey administration. Severity: Medium (CVSS 6.1, AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N). An unauthenticated attacker who gets a logged-in administrator with survey content read permission to open a crafted link could run arbitrary JavaScript in that administrator's session. Affects versions 6.4.0 to 7.5.0. (Stefan K)
+-Fixed issue #20755: [security] Unvalidated field name in statistics summary for file upload questions. A tampered summary[] entry for a file upload question was used as a response table column name without validation and caused an error page. Not exploitable for SQL injection: column names are escaped since #20741, and the query on the removed questions.language column failed before the column was used. (Carsten Schmitz)
+-Fixed issue #20754: [security] Reflected cross-site scripting (XSS) vulnerability in the conditions designer. Severity: Medium (CVSS 6.1, AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N). An attacker could craft a link that, when opened by an administrator with read access to the referenced survey's conditions, executes arbitrary JavaScript in that administrator's session. Affects versions up to and including 7.4.0. (Carsten Schmitz)
+-Fixed issue #20752: Extending the Vanilla theme logged a false 'No "dropdownoptions" nodes were found' error (Carsten Schmitz)
+-Fixed issue #20750: [security] Missing authorization vulnerability in several admin pages and AJAX endpoints (participant panel, survey/question/group editing, label sets, global settings, mass actions). Severity: High (CVSS 8.1, AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N). An authenticated administration user with limited or unrelated permissions could read or change participant data, survey content and settings of surveys they have no access to. Affects versions up to and including 7.4.0. (Carsten Schmitz)
+-Fixed issue #20750: [security] Missing authorization checks in admin pages and AJAX endpoints (#5394) (Carsten Schmitz)
+-Fixed issue #20749: [security] Missing authorization vulnerability in the SPSS export page. Severity: Medium (CVSS 4.3, AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N). An authenticated administration user without export permission on a survey could open its SPSS export page and see the survey title and languages. Affects versions up to and including 7.4.0. (Carsten Schmitz)
+-Fixed issue #20589: Shared links and notification email links to a single response did not open that response in the new responses view (Carsten Schmitz)
+-Fixed issue #20447: [security] User can set any existing theme when saving survey (#4779) (Gabriel Jenik)
+-Fixed issue #20447: [security] Missing permission enforcement when saving a survey's theme. Severity: Medium (CVSS 4.3, AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N). An authenticated user with permission to edit their own survey's general settings, but no permission for a specific theme, could still apply that theme to their survey, Affects versions since 2015 (2.0x) through 7.1.2. Fixed in 7.1.3 (Gabriel Jenik)
+-Fixed issue #18450: Presentation settings (question count, group info, question number/code, 'No answer') could be ignored after updating from LimeSurvey 3.x (Carsten Schmitz)
+-Fixed issue #16937: Prefilling a date question by URL with an invalid date caused a database error (Carsten Schmitz)
+-Fixed issue #16696: The 'Set Access-Control-Allow-Origin header' global setting was not explained (Carsten Schmitz)
+-Fixed issue #16622: Survey menu entries with an external link did not work (Carsten Schmitz)
+-Fixed issue #16482: Opening a survey link with prefilled values created a response before the survey policy was accepted (#5392) (Carsten Schmitz)
+-Fixed issue #16342: Exporting a subquestion's statistics to PDF always exported the first subquestion (Carsten Schmitz)
+-Fixed issue #16272: The allowedfileuploads setting had no effect but was still offered as a config option (Carsten Schmitz)
+-Fixed issue #15485: JSON plugin settings were corrupted or the editor broke on save/reload (Carsten Schmitz)
+-Fixed issue #15339: PHP limits that were too low (e.g. max_input_vars) caused data loss with large surveys without any warning (Carsten Schmitz)
+-Fixed issue #15157: Question index dropdown could not be scrolled when a survey has many groups (Carsten Schmitz)
+-Fixed issue #14434: Twig dump() showed a Twig vendor file location instead of the theme file and line (Carsten Schmitz)
+-Fixed issue #13716: Conditions designer showed answer codes instead of answer labels for dual scale array questions (Carsten Schmitz)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Portuguese (Portugal) by algarvio, ricardo.santos, xastrefernando
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Galician by Gronnd, xastrefernando
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 7.4.0 (build 260928) to 7.5.0 (build 261001) October 1, 2026
 +New feature: Automate data fixing in consistency check & add CLI command (#5324) (Carsten Schmitz)
 +New feature #JD-150: Timing columns visible when disabled (#5355) (Adil Moumni Abdou)
