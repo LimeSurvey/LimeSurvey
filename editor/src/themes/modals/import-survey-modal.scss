@@ -42,8 +42,12 @@
   }
 
   .modal-footer {
-    gap: 16px;
+    gap: 12px;
     padding-top: 20px;
+
+    > * {
+      margin: 0;
+    }
 
     .btn {
       font-size: 16px;
@@ -191,6 +195,11 @@
 
   &--success {
     border-left-color: $success;
+
+    svg {
+      height: 18px;
+      width: 18px;
+    }
   }
 
   &--error {
