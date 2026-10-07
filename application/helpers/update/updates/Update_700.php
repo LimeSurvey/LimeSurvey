@@ -2173,10 +2173,25 @@ class Update_700 extends DatabaseUpdateBase
                     ? "SELECT * INTO {$orphanedTableName} FROM {$TABLE_NAME}"
                     : "CREATE TABLE {$orphanedTableName} AS SELECT * FROM {$TABLE_NAME}";
             }
-            try {
-                if ($scripts[$TABLE_NAME]['BACKUP_ORPHANED'] !== null) {
+            if ($scripts[$TABLE_NAME]['BACKUP_ORPHANED'] !== null) {
+                // The backup is a convenience only: If it cannot be created (e.g. MySQL/MariaDB
+                // refusing a table with too many columns), skip it instead of failing the update
+                setTransactionBookmark('orphanedbackup');
+                try {
                     $this->db->createCommand($scripts[$TABLE_NAME]['BACKUP_ORPHANED'])->execute();
+                } catch (\Exception $ex) {
+                    rollBackToTransactionBookmark('orphanedbackup');
+                    if ($this->db->schema->getTable($orphanedTableName, true) !== null) {
+                        $this->db->createCommand()->dropTable($orphanedTableName);
+                    }
+                    Yii::log(
+                        "Could not create backup table {$orphanedTableName}, skipping it: " . $ex->getMessage(),
+                        \CLogger::LEVEL_WARNING,
+                        'application.update'
+                    );
                 }
+            }
+            try {
                 // The INSERT below copies the legacy rows one-to-one, so ranking answers that
                 // can no longer be mapped to a subquestion title have to be removed - and the
                 // following ranks shifted one column to the left - while the legacy table is
@@ -2189,7 +2204,7 @@ class Update_700 extends DatabaseUpdateBase
                 }
                 $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
                 // The legacy working copy has now been fully migrated into the new table (its
-                // untouched twin, if orphaned columns existed, was preserved separately above),
+                // untouched twin, if orphaned columns existed, was preserved above where possible),
                 // so it is always safe to drop here.
                 $this->db->createCommand()->dropTable($TABLE_NAME);
             } catch (\Exception $ex) {
