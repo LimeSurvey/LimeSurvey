@@ -8,10 +8,11 @@ echo viewHelper::getViewTestTag('expressionsNavigationTest');
 
 <?php
 if (count($_POST) == 0) {
-    $aSurveys = Survey::model()->with('defaultlanguage')->findAll();
-    $surveyList='';
-    foreach($aSurveys as $row) {
-        $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . flattenText($row->defaultlanguage->surveyls_title) . "</option>\n";
+    // Only list the surveys the current user is allowed to see
+    $aSurveys = Survey::model()->permission(App()->user->getId())->with('defaultlanguage')->findAll();
+    $surveyList = '';
+    foreach ($aSurveys as $row) {
+        $surveyList .= "<option value='" . $row['sid'] . '|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . flattenText($row->defaultlanguage->surveyls_title) . "</option>\n";
     }
     $sFormTag= CHtml::form(array('admin/expressions/sa/navigation_test'), 'post');
 

@@ -205,7 +205,7 @@ class Labels extends SurveyCommonAction
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
             [
-                'hasPermissionExport' => $lid && LabelSet::model()->findByPk($lid)->haspermission('export')
+                'hasPermissionExport' => $lid && LabelSet::model()->findByPk($lid)->hasPermission('labelset', 'export')
             ],
             true
         );
@@ -215,7 +215,7 @@ class Labels extends SurveyCommonAction
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
             [
-                'hasPermissionExport' => $lid && LabelSet::model()->findByPk($lid)->haspermission('export')
+                'hasPermissionExport' => $lid && LabelSet::model()->findByPk($lid)->hasPermission('labelset', 'export')
             ],
             true
         );
@@ -309,8 +309,8 @@ class Labels extends SurveyCommonAction
             $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns_singlelabelset/leftSideButtons',
                 [
-                    'hasUpdatePermission' => $model->hasPermission('update'),
-                    'hasDeletePermission' => $model->hasPermission('delete'),
+                    'hasUpdatePermission' => $model->hasPermission('labelset', 'update'),
+                    'hasDeletePermission' => $model->hasPermission('labelset', 'delete'),
                     'lid' => $lid
                 ],
                 true
@@ -415,10 +415,16 @@ class Labels extends SurveyCommonAction
     /**
      * Multi label export
      *
+     * Note: Requires the global labelsets export permission, matching admin/export/sa/dumplabel.
+     *
      * @return void
+     * @throws CHttpException
      */
     public function exportmulti()
     {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'export')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $aData = [];
 
         $aData['topbar']['title'] = gT('Export multiple label sets');
@@ -778,9 +784,13 @@ class Labels extends SurveyCommonAction
 
     /**
      * Sanitize existence and permission of LabelSet->pk, throw exception if there are an issue.
-     * @param $lid mixed, sanitized to intreger
-     * @param $permisson to check
-     * @return integer : the label id
+     *
+     * Note: The permission is checked as the CRUD part of the 'labelset' entity permission,
+     * global labelsets permission or ownership grant it (see LabelSet::hasPermission()).
+     *
+     * @param mixed $lid The label set id, sanitized to integer
+     * @param string $permission The CRUD permission to check (read, update, delete, export)
+     * @return integer The label set id
      * @throws CHttpException
      */
     private function validateLabelSetId($lid, $permission = 'read')
@@ -792,7 +802,7 @@ class Labels extends SurveyCommonAction
         if (empty(LabelSet::model()->findByPk($lid))) {
             throw new CHttpException(404, gT("Label set not found"));
         }
-        if (!LabelSet::model()->findByPk($lid)->hasPermission($permission)) {
+        if (!LabelSet::model()->findByPk($lid)->hasPermission('labelset', $permission)) {
             throw new CHttpException(403);
         }
         return $lid;

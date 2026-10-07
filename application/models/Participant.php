@@ -1433,7 +1433,8 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Returns true if participant_id has ownership or shared rights over this participant false if not
+     * Returns true if the logged in user owns the given participant or the participant is shared
+     * with them or with all users (share_uid -1), false if not. Superadmins always get true.
      *
      * @param string $participant_id
      * @return bool
@@ -1461,7 +1462,7 @@ class Participant extends LSActiveRecord
             ->db
             ->createCommand()
             ->select('count(*)')
-            ->where('participant_id = :participant_id AND ( share_uid = :userid OR share_uid = 0)')
+            ->where('participant_id = :participant_id AND ( share_uid = :userid OR share_uid = -1)')
             ->from('{{participant_shares}}')
             ->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)
             ->bindParam(":userid", $userid, PDO::PARAM_INT)
@@ -2113,6 +2114,9 @@ class Participant extends LSActiveRecord
      * Copies token participants to the central participant list, and also copies
      * token attribute values where applicable. It checks for matching entries using
      * firstname/lastname/email combination.
+     * Attribute values of an existing central participant are only overwritten if the
+     * current user may edit that participant (see userHasPermissionToEdit()).
+     * Note: Permission checks on the survey are the caller's responsibility.
      *
      * TODO: Most of this belongs in the participantsaction.php controller file, not
      *       here in the model file. Portions of this should be moved out at some stage.
@@ -2220,12 +2224,14 @@ class Participant extends LSActiveRecord
                 /* If there is already an existing entry, add to the duplicate count */
                 if ($existing != null) {
                     $duplicate++;
-                    if ($overwriteman && !empty($aMapped)) {
+                    // Only overwrite attribute values of central participants the user is allowed to edit
+                    $canOverwrite = $existing->userHasPermissionToEdit();
+                    if ($canOverwrite && $overwriteman && !empty($aMapped)) {
                         foreach ($aMapped as $cpdbatt => $tatt) {
                             Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
                         }
                     }
-                    if ($overwriteauto && !empty($aAutoMapped)) {
+                    if ($canOverwrite && $overwriteauto && !empty($aAutoMapped)) {
                         foreach ($aAutoMapped as $cpdbatt => $tatt) {
                             Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
                         }
@@ -2358,35 +2364,89 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Returns true if logged in user has edit rights to this participant
+     * Returns true if logged in user has edit rights to this participant:
+     * superadmins, users with the global participant panel update permission, the owner,
+     * and users holding an editable share of the participant (shared with them or with
+     * all users, share_uid -1).
+     * Note: Same rules as filterEditableParticipantIds() and ParticipantShare::canEditSharedParticipant().
+     *
      * @return boolean
      */
     public function userHasPermissionToEdit()
     {
-        $userId = Yii::app()->user->id;
-
-        $shared = ParticipantShare::model()->findByAttributes(
-            ['participant_id' => $this->participant_id],
-            'share_uid = :userid AND can_edit = :can_edit',
-            [':userid' => $userId, ':can_edit' => '1']
-        );
-        $owner = $this->owner_uid == $userId;
-
-        if (Permission::model()->hasGlobalPermission('superadmin') || (Permission::model()->hasGlobalPermission('participantpanel', 'update'))) {
+        if (Permission::model()->hasGlobalPermission('superadmin') || Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
             // Superadmins can do anything and users with global edit permission can to edit all participants
             return true;
-        } elseif ($shared && $shared->share_uid == -1 && $shared->can_edit) {
-            // -1 = shared with everyone
-            return true;
-        } elseif ($shared && $shared->exists('share_uid = :userid', [':userid' => $userId]) && $shared->can_edit) {
-            // Shared with this particular user
-            return true;
-        } elseif ($owner) {
+        }
+        if ($this->owner_uid == Yii::app()->user->id) {
             // User owns this participant
             return true;
-        } else {
-            return false;
         }
+        return ParticipantShare::model()->canEditSharedParticipant($this->participant_id);
+    }
+
+    /**
+     * Returns true if the logged in user may see this participant.
+     * Superadmins and users with the global participant panel read permission see all participants,
+     * other users only the ones they own or that are shared with them or with all users (share_uid -1).
+     * Note: Mirrors the visibility rules of search().
+     *
+     * @return boolean
+     */
+    public function userHasPermissionToRead()
+    {
+        if (
+            Permission::model()->hasGlobalPermission('superadmin', 'read')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'read')
+        ) {
+            return true;
+        }
+        $userId = Yii::app()->user->id;
+        if ($this->owner_uid == $userId) {
+            return true;
+        }
+        return ParticipantShare::model()->exists(
+            'participant_id = :participant_id AND (share_uid = :userid OR share_uid = -1)',
+            [':participant_id' => $this->participant_id, ':userid' => $userId]
+        );
+    }
+
+    /**
+     * Reduces a list of participant IDs to the participants the logged in user may edit
+     * (same rules as userHasPermissionToEdit()). Empty IDs are dropped.
+     * Superadmins and users with the global participant panel update permission get all IDs back,
+     * other users only the participants they own or that are shared with them or with all users
+     * (share_uid -1) with editing allowed.
+     *
+     * @param string[] $participantIds
+     * @return string[]
+     */
+    public function filterEditableParticipantIds(array $participantIds)
+    {
+        $participantIds = array_values(array_filter($participantIds, function ($participantId) {
+            return is_scalar($participantId) && (string) $participantId !== '';
+        }));
+        if (
+            empty($participantIds)
+            || Permission::model()->hasGlobalPermission('superadmin', 'read')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'update')
+        ) {
+            return $participantIds;
+        }
+        $userId = (int) Yii::app()->user->id;
+        return Yii::app()->db->createCommand()
+            ->selectDistinct('p.participant_id')
+            ->from('{{participants}} p')
+            ->leftJoin(
+                '{{participant_shares}} ps',
+                "ps.participant_id = p.participant_id AND (ps.share_uid = :shareuid OR ps.share_uid = -1) AND ps.can_edit = '1'",
+                [':shareuid' => $userId]
+            )
+            ->where(
+                ['and', 'p.owner_uid = :owneruid OR ps.participant_id IS NOT NULL', ['in', 'p.participant_id', $participantIds]],
+                [':owneruid' => $userId]
+            )
+            ->queryColumn();
     }
 
     /**

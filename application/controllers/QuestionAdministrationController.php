@@ -471,16 +471,26 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Returns all languages in a specific survey as a JSON document
      *
+     * Note: Requires survey read permission on the survey.
+     *
      * @todo is this action still in use?? where in the frontend?
      *
      * @param int $iSurveyId
      *
      * @return void
+     * @throws CHttpException
      */
     public function actionGetPossibleLanguages($iSurveyId)
     {
         $iSurveyId = (int)$iSurveyId;
-        $aLanguages = Survey::model()->findByPk($iSurveyId)->allLanguages;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        if (empty($oSurvey)) {
+            throw new CHttpException(404, gT("Invalid survey ID"));
+        }
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'survey', 'read')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
+        $aLanguages = $oSurvey->allLanguages;
         $this->renderJSON($aLanguages);
     }
 
@@ -656,7 +666,10 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * @todo document me
+     * Returns the general options of a question (or of a new question) as JSON.
+     *
+     * Note: Requires surveycontent read permission on the question's survey and on the
+     * survey passed in the request, and the question must belong to that survey.
      *
      * @param int $iQuestionId
      * @param string $sQuestionType
@@ -666,6 +679,7 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @return void|array
      * @throws CException
+     * @throws CHttpException
      */
     public function actionGetGeneralOptions(
         $iQuestionId = null,
@@ -674,6 +688,20 @@ class QuestionAdministrationController extends LSBaseController
         $returnArray = false,  //todo see were this ajaxrequest is done and take out the parameter there and here
         $questionThemeName = null
     ) {
+        // Same survey ID lookup as in getQuestionObject()
+        $iSurveyId = App()->request->getParam('sid') ??
+            App()->request->getParam('surveyid') ??
+            App()->request->getParam('surveyId');
+        $oQuestion = !empty($iQuestionId) ? Question::model()->findByPk((int)$iQuestionId) : null;
+        if (!empty($oQuestion)) {
+            if (!empty($iSurveyId) && (int)$iSurveyId !== (int)$oQuestion->sid) {
+                throw new CHttpException(404, gT("Invalid question ID"));
+            }
+            $iSurveyId = $oQuestion->sid;
+        }
+        if (empty($iSurveyId) || !Permission::model()->hasSurveyPermission((int)$iSurveyId, 'surveycontent', 'read')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
         $aGeneralOptionsArray = $this->getGeneralOptions($iQuestionId, $sQuestionType, $gid, $questionThemeName);
 
         $this->renderJSON($aGeneralOptionsArray);
@@ -769,12 +797,24 @@ class QuestionAdministrationController extends LSBaseController
 
     /**
      * AJAX Method to QuickAdd multiple Rows AJAX-based
-     * @todo Permission
+     *
+     * Note: Requires surveycontent update permission, like getSubquestionRowForAllLanguages.
+     *
      * @todo Should be GET, not POST
+     * @param int $surveyid
+     * @param int $gid
      * @return void
+     * @throws CHttpException
      */
     public function actionGetSubquestionRowQuickAdd($surveyid, $gid)
     {
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if (empty($oSurvey)) {
+            throw new CHttpException(404, gT("Invalid survey ID"));
+        }
+        if (!Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
         $qid               = '-QUIDPLACEHOLDER-';
         $request           = Yii::app()->request;
         $codes             = $request->getPost('codes');
@@ -788,12 +828,25 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * @todo Permission
+     * AJAX Method to QuickAdd multiple answer option rows
+     *
+     * Note: Requires surveycontent update permission, like getAnswerOptionRowForAllLanguages.
+     *
      * @todo Should be GET, not POST
+     * @param int $surveyid
+     * @param int $gid
      * @return void
+     * @throws CHttpException
      */
     public function actionGetAnswerOptionRowQuickAdd($surveyid, $gid)
     {
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if (empty($oSurvey)) {
+            throw new CHttpException(404, gT("Invalid survey ID"));
+        }
+        if (!Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
         $qid               = '-QUIDPLACEHOLDER-';
         $request           = Yii::app()->request;
         $codes             = $request->getPost('codes');
@@ -1056,13 +1109,19 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Renders the top bar definition for questions as JSON document
      *
+     * Note: Requires surveycontent read permission on the question's survey.
+     *
      * @param int $qid
      * @return false|null|string|string[]
      * @throws CException
+     * @throws CHttpException
      */
     public function actionGetQuestionTopbar($qid = null)
     {
         $oQuestion = $this->getQuestionObject($qid);
+        if (!Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'read')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
         $sid = $oQuestion->sid;
         $gid = $oQuestion->gid;
         $qid = $oQuestion->qid;
@@ -1267,11 +1326,14 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Load edit default values of a question screen
      *
+     * Note: The question must belong to the given survey and group.
+     *
      * @access public
      * @param int $surveyid
      * @param int $gid
      * @param int $qid
      * @return void
+     * @throws CHttpException
      */
     public function actionEditdefaultvalues($surveyid, $gid, $qid)
     {
@@ -1282,7 +1344,10 @@ class QuestionAdministrationController extends LSBaseController
         $iSurveyID = (int)$surveyid;
         $gid = (int)$gid;
         $qid = (int)$qid;
-        $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid,]);
+        $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID]);
+        if (empty($oQuestion)) {
+            throw new CHttpException(404, gT("Invalid question ID"));
+        }
         // $aQuestionTypeMetadata = QuestionType::modelsAttributes();  this is old!
         // TODO: $questionMetaData should be $questionThemeSettings
         $questionMetaData = QuestionTheme::findQuestionMetaData($oQuestion->type)['settings'];
@@ -1361,6 +1426,8 @@ class QuestionAdministrationController extends LSBaseController
      * Called by ajax from question list.
      * Permission check is done by questions::delete()
      *
+     * Note: The question text is only shown for questions the user may read.
+     *
      * @return void
      * @throws CException
      */
@@ -1371,12 +1438,10 @@ class QuestionAdministrationController extends LSBaseController
 
         foreach ($aQids as $iQid) {
             $oQuestion = Question::model()->with('questionl10ns')->findByPk($iQid);
-            $oSurvey = Survey::model()->findByPk($oQuestion->sid);
-            $sBaseLanguage = $oSurvey->language;
 
             if (is_object($oQuestion)) {
                 $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText(
-                    $oQuestion->questionl10ns[$sBaseLanguage]->question,
+                    $this->getMassActionQuestionText($oQuestion),
                     true,
                     0
                 );
@@ -1489,6 +1554,9 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Change the question group/order position of multiple questions
      *
+     * Note: Only questions of the target group's survey are moved.
+     *
+     * @return void
      * @throws CException
      */
     public function actionSetMultipleQuestionGroup()
@@ -1499,6 +1567,9 @@ class QuestionAdministrationController extends LSBaseController
         $iQuestionOrder = Yii::app()->request->getPost('questionposition'); // Wanted position
 
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', [':gid' => $iGid]); // The New Group object
+        if (empty($oQuestionGroup)) {
+            throw new CHttpException(404, gT("Invalid group ID"));
+        }
         $oSurvey = $oQuestionGroup->survey; // The Survey associated with this group
 
         if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) {
@@ -1606,9 +1677,12 @@ class QuestionAdministrationController extends LSBaseController
 
     /**
      * render selected items for massive action widget
+     *
+     * Note: The question text is only shown for questions the user may read.
+     *
+     * @return void
      * @throws CException
      */
-
     public function actionRenderItemsSelected()
     {
         $aQids = json_decode(Yii::app()->request->getPost('$oCheckedItems', ''));
@@ -1618,13 +1692,11 @@ class QuestionAdministrationController extends LSBaseController
         foreach ($aQids as $sQid) {
             $iQid        = (int)$sQid;
             $oQuestion      = Question::model()->with('questionl10ns')->findByPk($iQid);
-            $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
-            $sBaseLanguage  = $oSurvey->language;
 
             if (is_object($oQuestion)) {
                 $aResults[$iQid]['title'] = substr(
                     viewHelper::flatEllipsizeText(
-                        $oQuestion->questionl10ns[$sBaseLanguage]->question,
+                        $this->getMassActionQuestionText($oQuestion),
                         true,
                         0
                     ),
@@ -1694,7 +1766,10 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Copies a question
      *
+     * Note: The target group must belong to the same survey as the copied question.
+     *
      * @return void
+     * @throws CHttpException
      */
     public function actionCopyQuestion()
     {
@@ -1758,6 +1833,9 @@ class QuestionAdministrationController extends LSBaseController
         //save the copy ...savecopy (submitbtn pressed ...)
         $savePressed = Yii::app()->request->getParam('savecopy');
         if (isset($savePressed) && $savePressed !== null) {
+            if (!QuestionGroup::model()->countByAttributes(['gid' => $newGroupId, 'sid' => $surveyId])) {
+                throw new CHttpException(404, gT("Invalid group ID"));
+            }
             $newTitle = Yii::app()->request->getParam('question')['title'];
 
             $newQuestionL10n = Yii::app()->request->getParam('questionI10N');
@@ -2063,6 +2141,8 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Set the other state for selected Questions
      *
+     * Note: Questions not belonging to the survey are skipped.
+     *
      * @param array $aQids All question id's affected
      * @param string $sOther the "other" value 'Y' or 'N'
      * @param int $iSid survey ID
@@ -2072,6 +2152,9 @@ class QuestionAdministrationController extends LSBaseController
         foreach ($aQids as $sQid) {
             $iQid = (int)$sQid;
             $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
+            if (empty($oQuestion)) {
+                continue;
+            }
             // Only set the other state for question types that have this attribute (and no parent_qid)
             if ($oQuestion->getAllowOther()) {
                 $oQuestion->other = $sOther;
@@ -2083,6 +2166,8 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Set the mandatory state for selected Questions
      *
+     * Note: Questions not belonging to the survey are skipped.
+     *
      * @param array $aQids All question id's affected
      * @param string $sMandatory The mandatory va
      * @param int $iSid survey ID
@@ -2092,6 +2177,9 @@ class QuestionAdministrationController extends LSBaseController
         foreach ($aQids as $sQid) {
             $iQid = (int)$sQid;
             $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
+            if (empty($oQuestion)) {
+                continue;
+            }
             // These are the questions types that have no mandatory property - so ignore them
             if ($oQuestion->type != Question::QT_X_TEXT_DISPLAY && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
                 $oQuestion->mandatory = $sMandatory;
@@ -2102,6 +2190,8 @@ class QuestionAdministrationController extends LSBaseController
 
     /**
      * Change the question group/order position of multiple questions
+     *
+     * Note: Questions that do not belong to the survey of the target group are skipped.
      *
      * @param array $aQids all question id's affected
      * @param int $iQuestionOrder the desired position
@@ -2117,7 +2207,10 @@ class QuestionAdministrationController extends LSBaseController
             foreach ($aQids as $sQid) {
                 // Question basic infos
                 $iQid = (int)$sQid;
-                $oQuestion = Question::model()->findByAttributes(['qid' => $iQid]); // Question object
+                $oQuestion = Question::model()->findByAttributes(['qid' => $iQid, 'sid' => $oQuestionGroup->sid]); // Question object
+                if (empty($oQuestion)) {
+                    continue;
+                }
                 $oldGid = $oQuestion->gid; // The current GID of the question
                 $oldOrder = $oQuestion->question_order; // Its current order
 
@@ -2723,5 +2816,24 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         return $selectorModeClass;
+    }
+
+    /**
+     * Returns the question text (base language) to show in a mass action result table.
+     *
+     * Note: Returns an empty string if the current user has no surveycontent read permission
+     * on the question's survey, so mass actions do not reveal question texts of foreign surveys.
+     *
+     * @param Question $question The question
+     *
+     * @return string
+     */
+    private function getMassActionQuestionText(Question $question): string
+    {
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'read')) {
+            return '';
+        }
+        $baseLanguage = $question->survey->language;
+        return (string) ($question->questionl10ns[$baseLanguage]->question ?? '');
     }
 }

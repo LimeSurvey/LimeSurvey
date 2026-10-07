@@ -203,6 +203,10 @@ class QuestionAttribute extends LSActiveRecord
                         'qid=:qid AND sid=:sid',
                         [":qid" => $questionId, ":sid" => $surveyId]
                     );
+                    // Skip questions that don't belong to the survey
+                    if (empty($question)) {
+                        continue;
+                    }
                     // For each attribute
                     foreach ($attributesWithValue as $attribute => $value) {
                         if (in_array($question->type, $validQuestionTypes)) {
@@ -691,6 +695,10 @@ class QuestionAttribute extends LSActiveRecord
                     'qid=:qid AND sid=:sid',
                     [":qid" => $questionId, ":sid" => $surveyId]
                 );
+                // Skip questions that don't belong to the survey
+                if (empty($questionModel)) {
+                    continue;
+                }
                 if (in_array($questionModel->type, $validQuestionTypes)) {
                     if (
                         in_array($questionModel->type, Question::ORDER_TYPES_SUBQUESTION)

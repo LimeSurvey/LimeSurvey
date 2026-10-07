@@ -113,8 +113,13 @@ class DataEntry extends SurveyCommonAction
 
     /**
      * Iterate Survey Method.
+     *
+     * Note: Resetting the responses and participants (unfinalizeanswers) is destructive, so it
+     * needs a POST request and the responses update permission on top of the survey activation one.
+     *
      * @param int $surveyid Given Survey ID
      * @return void
+     * @throws CHttpException
      */
     public function iteratesurvey($surveyid)
     {
@@ -125,6 +130,12 @@ class DataEntry extends SurveyCommonAction
         $aData['success'] = false;
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveyactivation', 'update')) {
             if (Yii::app()->request->getParam('unfinalizeanswers') == 'true') {
+                if (!Yii::app()->getRequest()->isPostRequest) {
+                    throw new CHttpException(405, gT("Invalid action"));
+                }
+                if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
+                    throw new CHttpException(403, gT("You do not have permission to access this page."));
+                }
                 SurveyDynamic::sid($surveyid);
                 Yii::app()->db->createCommand("DELETE from {{survey_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{survey_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
                 // Then set all remaining answers to incomplete state
