@@ -52,22 +52,63 @@ class StatisticsFileUploadOutputTest extends TestBaseClass
     {
         $language = \Survey::model()->findByPk(self::$surveyId)->language;
         $method = new \ReflectionMethod(\statistics_helper::class, 'buildOutputList');
-        $method->setAccessible(true);
 
         return $method->invoke(new \statistics_helper(), $rt, $language, self::$surveyId, 'html', '', $language);
     }
 
     /**
-     * A regular file upload summary entry outputs the file statistics of the question.
+     * Returns the result shown for a calculation in the file upload summary table.
+     *
+     * @param array $output Output of buildOutputList()
+     * @param string $label Untranslated calculation label
+     * @return string|null Null if the calculation is not in the output
+     */
+    private function resultCell(array $output, string $label): ?string
+    {
+        $pattern = '#<tr><td>' . preg_quote(gT($label), '#') . '</td><td>([^<]*)</td></tr>#';
+
+        return preg_match($pattern, $output['statisticsoutput'], $matches) ? $matches[1] : null;
+    }
+
+    /**
+     * A regular file upload summary entry outputs the file statistics of the question, both
+     * without responses and with one response with uploaded files and one without.
      */
     public function testFileUploadSummary()
     {
         $this->assertNotNull(self::$question, 'The test survey has no file upload question.');
+        $fieldname = 'Q' . self::$question->qid;
 
-        $output = $this->buildOutputList('|Q' . self::$question->qid);
+        $output = $this->buildOutputList('|' . $fieldname);
 
         $this->assertSame((int) self::$question->qid, $output['parentqid']);
-        $this->assertStringContainsString(gT("Total number of files"), $output['statisticsoutput']);
+        $this->assertSame('0 KB', $this->resultCell($output, 'Total size of files'));
+        $this->assertSame('0 KB', $this->resultCell($output, 'Average file size'));
+        $this->assertSame('0 KB', $this->resultCell($output, 'Average size per respondent'));
+
+        $dateStamp = date('Y-m-d H:i:s');
+        $files = [['name' => 'a.txt', 'size' => '100'], ['name' => 'b.txt', 'size' => '200']];
+        \SurveyDynamic::model(self::$surveyId)->insertRecords([
+            'startlanguage' => self::$testSurvey->language,
+            'startdate' => $dateStamp,
+            'datestamp' => $dateStamp,
+            $fieldname => json_encode($files),
+            $fieldname . '_Cfilecount' => 2,
+        ]);
+        \SurveyDynamic::model(self::$surveyId)->insertRecords([
+            'startlanguage' => self::$testSurvey->language,
+            'startdate' => $dateStamp,
+            'datestamp' => $dateStamp,
+            $fieldname . '_Cfilecount' => 0,
+        ]);
+
+        $output = $this->buildOutputList('|' . $fieldname);
+
+        // The sum comes from the database, so its number format depends on the database.
+        $this->assertEquals(2, $this->resultCell($output, 'Total number of files'));
+        $this->assertSame('300 KB', $this->resultCell($output, 'Total size of files'));
+        $this->assertSame('150 KB', $this->resultCell($output, 'Average file size'));
+        $this->assertSame('150 KB', $this->resultCell($output, 'Average size per respondent'));
     }
 
     /**
