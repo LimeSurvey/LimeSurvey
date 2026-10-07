@@ -82,6 +82,8 @@ class Participant extends LSActiveRecord
             array('language', 'length', 'max' => 40),
             array('firstname, lastname, language', 'LSYii_Validators'),
             array('email', 'length', 'max' => 254),
+            array('email', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true, 'except' => 'search'),
+            array('email', 'LSYii_EmailIDNAValidator', 'allowEmpty' => true, 'allowMultiple' => true, 'except' => 'search'),
             array('blacklisted', 'length', 'max' => 1),
             // Please remove those attributes that should not be searched.
             array('participant_id, firstname, lastname, email, language, countActiveSurveys, blacklisted, owner.full_name', 'safe', 'on' => 'search'),

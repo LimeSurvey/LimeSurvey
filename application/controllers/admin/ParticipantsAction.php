@@ -690,7 +690,8 @@ class ParticipantsAction extends SurveyCommonAction
                     || $oParticipant->isOwnerOrSuperAdmin()
                     || $hasUpdatePermission
                 ) {
-                    $bUpdateSuccess = $oParticipant->save();
+                    // Only validate and save the edited fields, so existing invalid data in other fields does not block the update
+                    $bUpdateSuccess = $oParticipant->save(true, array_keys($aData));
                 } else {
                     $bUpdateSuccess = '';
                 };
@@ -700,7 +701,7 @@ class ParticipantsAction extends SurveyCommonAction
                     $aResults[$sParticipantId]['message']   = gT('Updated');
                 } else {
                     $aResults[$sParticipantId]['status']    = false;
-                    $aResults[$sParticipantId]['message']   = $oParticipant->getError('participant_id');
+                    $aResults[$sParticipantId]['message']   = $oParticipant->hasErrors() ? CHtml::encode(implode(' ', array_merge(...array_values($oParticipant->getErrors())))) : gT('Access denied!');
                 }
             }
         } else {
@@ -742,7 +743,11 @@ class ParticipantsAction extends SurveyCommonAction
         }
 
         $participant->attributes = $aData;
-        $participant->encryptSave(true);
+        if (!$participant->encryptSave(true)) {
+            $errors = array_merge(...array_values($participant->getErrors()));
+            $this->ajaxHelper::outputError(gT('Could not update participant:') . ' ' . implode(' ', $errors));
+            return;
+        }
 
         foreach ($extraAttributes as $htmlName => $attributeValue) {
             list(, $attribute_id) = explode('_', $htmlName);
