@@ -24,8 +24,9 @@ class PrintAnswersArrayTest extends TestBaseClass
         $activator = new \SurveyActivator(self::$testSurvey);
         $activator->activate();
 
-        self::$q1Qid = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'q1'])->qid;
-        self::$nameQid = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'name'])->qid;
+        // Cast to int: some drivers (e.g. MSSQL) return IDs as strings, while answerArray keys are integers
+        self::$q1Qid = (int) \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'q1'])->qid;
+        self::$nameQid = (int) \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'name'])->qid;
         self::$responseId = \SurveyDynamic::model(self::$surveyId)->insertRecords([
             'startlanguage' => 'en',
             'startdate' => date('Y-m-d H:i:s'),
