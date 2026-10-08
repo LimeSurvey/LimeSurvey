@@ -850,10 +850,8 @@ window.addEventListener('message', function(event) {
         $aData["aSurveyInfo"]['dir']              = (getLanguageRTL($languagecode)) ? "rtl" : "ltr";
 
         if (!empty($aData['aSurveyInfo']['sid'])) {
-            $showxquestions                            = App()->getConfig('showxquestions');
-            $aData["aSurveyInfo"]['bShowxquestions']  = ($showxquestions == 'show' ||
-                ($showxquestions == 'choose' && !isset($aData['aSurveyInfo']['showxquestions'])) ||
-                ($showxquestions == 'choose' && $aData['aSurveyInfo']['showxquestions'] == 'Y'));
+            $aData["aSurveyInfo"]['bShowxquestions']  = (!isset($aData['aSurveyInfo']['showxquestions']) ||
+                $aData['aSurveyInfo']['showxquestions'] == 'Y');
 
             // Welcome screen image and its display settings (see Survey::getWelcomeImageSettings())
             $oSurvey = $aData['aSurveyInfo']['oSurvey'] ?? Survey::model()->findByPk($aData['aSurveyInfo']['sid']);

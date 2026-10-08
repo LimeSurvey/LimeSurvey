@@ -547,6 +547,258 @@ class CheckIntegrityTest extends TestBaseClass
     }
 
     /**
+     * Missing survey language settings caused a "texts for one or more survey languages
+     * could not be found" error pointing to this tool, which then claimed no errors were
+     * found: they were silently restored while merely loading the check page.
+     */
+    public function testMissingSurveyLanguageSettingsAreOnlyRestoredAndReportedByTheConsistencyCheck()
+    {
+        $language = self::$testSurvey->language;
+        $condition = 'surveyls_survey_id = :sid AND surveyls_language = :language';
+        $params = array(':sid' => self::$surveyId, ':language' => $language);
+        $original = \Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}')->where($condition, $params)->queryRow();
+        $this->assertNotEmpty($original, 'The survey fixture has no language settings for its base language.');
+        \Yii::app()->db->createCommand()->delete('{{surveys_languagesettings}}', $condition, $params);
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertFalse(
+                \Yii::app()->db->createCommand()->select('count(*)')->from('{{surveys_languagesettings}}')->where($condition, $params)->queryScalar() > 0,
+                'Merely loading the check page (GET) restored the missing survey language settings.'
+            );
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertTrue(
+                \Yii::app()->db->createCommand()->select('count(*)')->from('{{surveys_languagesettings}}')->where($condition, $params)->queryScalar() > 0,
+                'The consistency check did not restore the missing survey language settings.'
+            );
+            $this->assertStringContainsString(
+                sprintf('Restored missing survey texts for language %s in survey %s', $language, self::$surveyId),
+                $logOfFixes,
+                'Restoring the missing survey language settings was not reported in the log of fixes.'
+            );
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{surveys_languagesettings}}', $condition, $params);
+            \Yii::app()->db->createCommand()->insert('{{surveys_languagesettings}}', $original);
+        }
+    }
+
+    /** Verifies that permissions of deleted users are only deleted, and reported, by the consistency check. */
+    public function testOrphanUserPermissionsAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $bogusUid = 999999911;
+        \Yii::app()->db->createCommand()->insert('{{permissions}}', array(
+            'entity' => 'global',
+            'entity_id' => 0,
+            'uid' => $bogusUid,
+            'permission' => 'surveys',
+            'create_p' => 0,
+            'read_p' => 1,
+            'update_p' => 0,
+            'delete_p' => 0,
+            'import_p' => 0,
+            'export_p' => 0,
+        ));
+        $countPermissions = function () use ($bogusUid) {
+            return (int) \Yii::app()->db->createCommand()->select('count(*)')->from('{{permissions}}')->where('uid = :uid', array(':uid' => $bogusUid))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame(1, $countPermissions(), 'Merely loading the check page (GET) deleted the permission of a deleted user.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(0, $countPermissions(), 'The consistency check did not delete the permission of a deleted user.');
+            $this->assertStringContainsString('permission(s) of users that no longer exist', $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{permissions}}', 'uid = :uid', array(':uid' => $bogusUid));
+        }
+    }
+
+    /** Verifies that an active survey without a response table is only deactivated, and reported, by the consistency check. */
+    public function testActiveSurveyWithoutResponseTableIsOnlyDeactivatedAndReportedByTheConsistencyCheck()
+    {
+        $this->assertFalse($this->tableExistsRaw(\Yii::app()->db->tablePrefix . 'responses_' . self::$surveyId), 'The survey fixture unexpectedly has a response table.');
+        \Yii::app()->db->createCommand()->update('{{surveys}}', array('active' => 'Y'), 'sid = :sid', array(':sid' => self::$surveyId));
+        $getActive = function () {
+            return \Yii::app()->db->createCommand()->select('active')->from('{{surveys}}')->where('sid = :sid', array(':sid' => self::$surveyId))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame('Y', $getActive(), 'Merely loading the check page (GET) deactivated the survey.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame('N', $getActive(), 'The consistency check did not deactivate the survey without a response table.');
+            $this->assertStringContainsString(sprintf('Deactivated survey %s because its response table is missing', self::$surveyId), $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->update('{{surveys}}', array('active' => 'N'), 'sid = :sid', array(':sid' => self::$surveyId));
+        }
+    }
+
+    /** Verifies that a participant list of a deleted survey is only archived, and reported, by the consistency check. */
+    public function testOrphanParticipantListIsOnlyArchivedAndReportedByTheConsistencyCheck()
+    {
+        $dbPrefix = \Yii::app()->db->tablePrefix;
+        $bogusSid = 999999912;
+        $tokensTable = $dbPrefix . 'tokens_' . $bogusSid;
+        \Yii::app()->db->createCommand()->createTable($tokensTable, array('tid' => 'pk'));
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertTrue($this->tableExistsRaw($tokensTable), 'Merely loading the check page (GET) archived the participant list of a deleted survey.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertFalse($this->tableExistsRaw($tokensTable), 'The consistency check did not archive the participant list of a deleted survey.');
+            $this->assertStringContainsString(sprintf('Archived survey participant list of missing survey %s', $bogusSid), $logOfFixes);
+        } finally {
+            $this->dropTableIfPresent($tokensTable);
+            $archivedTables = \Yii::app()->db->createCommand(\dbSelectTablesLike('{{old_tokens_' . $bogusSid . '}}%'))->queryColumn();
+            foreach ($archivedTables as $archivedTable) {
+                \Yii::app()->db->createCommand()->dropTable($archivedTable);
+            }
+        }
+    }
+
+    /** Verifies that archived table settings without their table are only deleted, and reported, by the consistency check. */
+    public function testOrphanArchivedTableSettingsAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $tableName = 'old_responses_999999913_20200101120000';
+        \Yii::app()->db->createCommand()->insert('{{archived_table_settings}}', array(
+            'survey_id' => 999999913,
+            'user_id' => 1,
+            'tbl_name' => $tableName,
+            'tbl_type' => 'response',
+            'created' => '2020-01-01 12:00:00',
+            'properties' => '',
+        ));
+        $countSettings = function () use ($tableName) {
+            return (int) \Yii::app()->db->createCommand()->select('count(*)')->from('{{archived_table_settings}}')->where('tbl_name = :name', array(':name' => $tableName))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame(1, $countSettings(), 'Merely loading the check page (GET) deleted the archived table settings.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(0, $countSettings(), 'The consistency check did not delete archived table settings without their table.');
+            $this->assertStringContainsString('archived table setting(s) whose archived table no longer exists', $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{archived_table_settings}}', 'tbl_name = :name', array(':name' => $tableName));
+        }
+    }
+
+    /** Verifies that a survey of a deleted survey group is only moved to the default survey group, and reported, by the consistency check. */
+    public function testSurveyOfADeletedSurveyGroupIsOnlyMovedToTheDefaultGroupAndReportedByTheConsistencyCheck()
+    {
+        $bogusGsid = 999999915;
+        $originalGsid = \Yii::app()->db->createCommand()->select('gsid')->from('{{surveys}}')->where('sid = :sid', array(':sid' => self::$surveyId))->queryScalar();
+        \Yii::app()->db->createCommand()->update('{{surveys}}', array('gsid' => $bogusGsid), 'sid = :sid', array(':sid' => self::$surveyId));
+        $getGsid = function () {
+            return (int) \Yii::app()->db->createCommand()->select('gsid')->from('{{surveys}}')->where('sid = :sid', array(':sid' => self::$surveyId))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame($bogusGsid, $getGsid(), 'Merely loading the check page (GET) moved the survey of a deleted survey group.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(1, $getGsid(), 'The consistency check did not move the survey of a deleted survey group to the default survey group.');
+            $this->assertStringContainsString(sprintf('Moved survey %s to the default survey group because its survey group %s no longer exists', self::$surveyId, $bogusGsid), $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->update('{{surveys}}', array('gsid' => $originalGsid), 'sid = :sid', array(':sid' => self::$surveyId));
+        }
+    }
+
+    /** Verifies that survey group settings of a deleted survey group are only deleted, and reported, by the consistency check. */
+    public function testOrphanSurveyGroupSettingsAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $bogusGsid = 999999916;
+        $settings = new \SurveysGroupsettings();
+        $settings->gsid = $bogusGsid;
+        $settings->setToInherit();
+        $this->assertTrue($settings->save(), 'Could not save survey group settings: ' . json_encode($settings->getErrors()));
+        $countSettings = function () use ($bogusGsid) {
+            return (int) \Yii::app()->db->createCommand()->select('count(*)')->from('{{surveys_groupsettings}}')->where('gsid = :gsid', array(':gsid' => $bogusGsid))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame(1, $countSettings(), 'Merely loading the check page (GET) deleted the survey group settings of a deleted survey group.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(0, $countSettings(), 'The consistency check did not delete the survey group settings of a deleted survey group.');
+            $this->assertStringContainsString('survey group setting(s) of survey groups that no longer exist', $logOfFixes);
+            $this->assertNotNull(\SurveysGroupsettings::model()->findByPk(0), 'The consistency check deleted the global survey settings.');
+            $this->assertNotNull(\SurveysGroupsettings::model()->findByPk(1), 'The consistency check deleted the default survey group settings.');
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{surveys_groupsettings}}', 'gsid = :gsid', array(':gsid' => $bogusGsid));
+        }
+    }
+
+    /**
+     * A subquestion whose group does not exist (but whose parent question is fine) must
+     * get its parent's group back instead of being deleted as a question without group.
+     */
+    public function testSubquestionWithAMissingGroupIsRepairedAndReportedInsteadOfDeleted()
+    {
+        $group = self::$testSurvey->groups[0];
+        $parentQid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99991, 'CISQPARENT');
+        \Yii::app()->db->createCommand()->update('{{questions}}', array('type' => \QuestionType::QT_F_ARRAY), 'qid = :qid', array(':qid' => $parentQid));
+        $subquestionQid = $this->createOrderedQuestionFixture($group->gid, $parentQid, 0, 1, 'SQ001');
+        \Yii::app()->db->createCommand()->update(
+            '{{questions}}',
+            array('gid' => 999999914, 'type' => \QuestionType::QT_F_ARRAY),
+            'qid = :qid',
+            array(':qid' => $subquestionQid)
+        );
+        $getSubquestionGid = function () use ($subquestionQid) {
+            return \Yii::app()->db->createCommand()->select('gid')->from('{{questions}}')->where('qid = :qid', array(':qid' => $subquestionQid))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertEquals(999999914, $getSubquestionGid(), 'Merely loading the check page (GET) changed the subquestion.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertEquals($group->gid, $getSubquestionGid(), 'The consistency check did not give the subquestion its parent question\'s group back.');
+            $this->assertStringContainsString(sprintf('Fixed group and question type of subquestion %s', $subquestionQid), $logOfFixes);
+        } finally {
+            $parentQuestion = \Question::model()->findByPk($parentQid);
+            if ($parentQuestion) {
+                $parentQuestion->delete();
+            }
+            \Yii::app()->db->createCommand()->delete('{{questions}}', 'qid = :qid', array(':qid' => $subquestionQid));
+        }
+    }
+
+    /**
+     * Submits the "Run data consistency check" button.
+     *
+     * @return string[] The log of fixes.
+     */
+    private function runFixIntegrity()
+    {
+        $noRenderController = $this->newNoRenderController();
+        $_POST['ok'] = 'Y';
+        try {
+            $noRenderController->fixintegrity();
+        } finally {
+            unset($_POST['ok']);
+        }
+        $this->assertEmpty($noRenderController->capturedData['consistencyCheckWarnings'], 'The consistency check reported warnings: ' . implode(' ', $noRenderController->capturedData['consistencyCheckWarnings']));
+        return $noRenderController->capturedData['consistencyCheckMessages'];
+    }
+
+    /**
      * Checks whether a table exists, querying the database directly.
      *
      * @param string $tableName Full (prefixed) table name.

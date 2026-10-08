@@ -187,13 +187,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 unset($insertdata['language']);
             }
 
-            if (!$bTranslateLinksFields) {
-                $sScenario = 'archiveimport';
-            } else {
-                $sScenario = 'import';
-            }
-
-            $oQuestion = new Question($sScenario);
+            // The group is added to an existing survey, so question codes must always be checked for uniqueness
+            $oQuestion = new Question('import');
             $oQuestion->setAttributes($insertdata, false);
 
             if (!isset($aQIDReplacements[$iOldQID])) {
@@ -3768,9 +3763,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
-    if (\PHP_VERSION_ID < 80000) {
-        libxml_disable_entity_loader(true);
-    }
+ 
     $rankings = [];
     foreach ($survey->questions as $q) {
         if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {

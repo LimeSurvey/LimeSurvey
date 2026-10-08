@@ -161,9 +161,16 @@
         'currentSelected' => gT("Export"),
         'iconPosition' => "front",
         'itemsArray' => $aExportItemsArray,
-        'value' => '',
+        // Preselect the first export format so the Export button works right away
+        'value' => array_key_first($aExportItemsArray),
         'debug' => YII_DEBUG,
         'optionArray' => [
+            'onModalOpen' => [
+                // Show title and details of the preselected format
+                "
+                $('.selector__Item--select-exportTypeSelector.mark-as-selected').first().trigger('click');
+                "
+            ],
             'onModalClose' => [
                 "
                 $('#selector__exportTypeSelector--buttonText').html('" . gT("Export") . "');
