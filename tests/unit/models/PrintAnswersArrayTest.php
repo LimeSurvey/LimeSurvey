@@ -24,7 +24,7 @@ class PrintAnswersArrayTest extends TestBaseClass
         $activator = new \SurveyActivator(self::$testSurvey);
         $activator->activate();
 
-        // Cast to int: some drivers (e.g. MSSQL) return IDs as strings, while answerArray keys are integers
+        // Cast to int: some PDO drivers (e.g. sqlsrv) return numeric columns as strings, while array keys are ints
         self::$q1Qid = (int) \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'q1'])->qid;
         self::$nameQid = (int) \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'name'])->qid;
         self::$responseId = \SurveyDynamic::model(self::$surveyId)->insertRecords([
