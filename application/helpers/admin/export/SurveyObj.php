@@ -69,18 +69,15 @@ class SurveyObj
 
 
     /**
-     * Returns the full answer for the question that matches $fieldName
-     * and the answer that matches the $answerCode.  If a match cannot
-     * be made then false is returned.
+     * Returns the display value used by full-answer exports for a survey field.
+     * Ranking codes are resolved to subquestion text in the requested language
+     * and remain unchanged when no matching text is available.
      *
-     * The name of the variable $answerCode is not strictly an answerCode
-     * but could also be a comment entered by a participant.
-     *
-     * @param string $fieldName
-     * @param string|null $answerCode
-     * @param Translator $translator
-     * @param string $sLanguageCode
-     * @return string|null
+     * @param string $fieldName Field map key
+     * @param string|null $answerCode Stored answer code or response text
+     * @param Translator $translator Translator for built-in answer labels
+     * @param string $sLanguageCode Language used for translated labels
+     * @return string|null Display value for export
      */
     public function getFullAnswer($fieldName, $answerCode, Translator $translator, $sLanguageCode)
     {
@@ -117,7 +114,19 @@ class SurveyObj
                 break;
 
             case Question::QT_R_RANKING:   // Ranking TYPE
-                $fullAnswer = $answer;
+                // Ranking options are subquestions, not rows in the answers table
+                // (hence not resolved by the generic $answers lookup above), and by
+                // this point $answerCode is expected to be a single subquestion
+                // code for one rank position: the export layer decodes the
+                // question's raw JSON-array storage into one column per rank
+                // before this is called. Non-string values (including one that
+                // slipped through as invalid/malformed JSON) are returned
+                // unchanged rather than passed to the title lookup.
+                if (!is_string($answerCode) || $answerCode === "") {
+                    $fullAnswer = $answerCode;
+                } else {
+                    $fullAnswer = Question::model()->getQuestionFromTitle($questionId, $answerCode, $sLanguageCode) ?? $answerCode;
+                }
                 break;
 
             case Question::QT_1_ARRAY_DUAL:   // Array dual scale
