@@ -1229,11 +1229,7 @@ class Question extends LSActiveRecord
                 $oRenderer = new RenderNumerical($aFieldArray);
                 break;
             case Question::QT_S_SHORT_FREE_TEXT:
-                if (($this->question_theme_name ?? '') === 'browserdetect') {
-                    $oRenderer = new RenderBrowserDetect($aFieldArray);
-                } else {
-                    $oRenderer = new RenderShortFreeText($aFieldArray);
-                }
+                $oRenderer = new RenderShortFreeText($aFieldArray);
                 break;
             case Question::QT_J_MAP:
                 $oRenderer = new RenderMap($aFieldArray);
@@ -1319,9 +1315,6 @@ class Question extends LSActiveRecord
             case Question::QT_N_NUMERICAL:
                 return new DataSetNumerical($this->qid);
             case Question::QT_S_SHORT_FREE_TEXT:
-                if (($this->question_theme_name ?? '') === 'browserdetect') {
-                    return new DataSetBrowserDetect($this->qid);
-                }
                 return new DataSetShortFreeText($this->qid);
             case Question::QT_J_MAP:
                 return new DataSetMap($this->qid);

@@ -1,4 +1,4 @@
-import { AlignButtons, Input, ToggleButtons } from 'components/UIComponents'
+import { Input, ToggleButtons } from 'components/UIComponents'
 import { getYesNoOptions } from 'helpers/options'
 
 /**
@@ -20,24 +20,18 @@ export const getLocationAttributes = () => ({
       defaultValue: '100',
     },
   },
-  MAP_POSITION: {
-    component: AlignButtons,
-    attributePath: 'attributes.location_mapposition',
-    props: {
-      id: 'map-position',
-      labelText: t('Map position'),
-      dataTestId: 'map-position',
-      value: 'center',
-    },
-  },
   IP_AS_DEFAULT_LOCATION: {
     component: ToggleButtons,
     attributePath: 'attributes.location_nodefaultfromip',
     props: {
       id: 'ip-as-default-location',
       labelText: t('IP as default location'),
-      toggleOptions: getYesNoOptions(),
-      defaultValue: '1',
+      // location_nodefaultfromip is inverted: 0 means "use IP", 1 means "don't"
+      toggleOptions: [
+        { name: t('Yes'), value: '0' },
+        { name: t('No'), value: '1' },
+      ],
+      defaultValue: '0',
     },
   },
   SAVE_COUNTRY: {

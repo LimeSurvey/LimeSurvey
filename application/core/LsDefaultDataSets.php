@@ -2501,7 +2501,7 @@ class LsDefaultDataSets
             array(
                 "name" => "map",
                 "visible" => "Y",
-                "xml_path" => "themes/question/map/survey/questions/answer/map",
+                "xml_path" => "application/views/survey/questions/answer/map",
                 "image_path" => "/assets/images/screenshots/J.png",
                 "title" => "Map",
                 "creation_date" => "2026-09-25 00:00:00",

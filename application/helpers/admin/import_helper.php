@@ -5467,8 +5467,12 @@ function convertLegacyMapQuestions(array $importedQuestions): array
         ->where(['in', 'q.qid', array_map('intval', array_keys($importedQuestions))])
         ->andWhere('q.parent_qid = 0')
         ->andWhere('q.type = :type', [':type' => Question::QT_S_SHORT_FREE_TEXT])
+        // Questions on a custom Short Text theme stay untouched to keep their theme views and settings.
+        ->andWhere("q.question_theme_name IS NULL OR q.question_theme_name IN ('', 'core', 'shortfreetext', 'browserdetect')")
         ->andWhere('qa.attribute = :attribute', [':attribute' => 'location_mapservice'])
         ->andWhere("qa.value IN ('1', '100')")
+        // Short Text rendered a textarea, not a map, when display_rows was set.
+        ->andWhere("NOT EXISTS (SELECT 1 FROM {{question_attributes}} dr WHERE dr.qid = q.qid AND dr.attribute = 'display_rows' AND dr.value <> '')")
         ->group('q.qid')
         ->queryColumn();
 

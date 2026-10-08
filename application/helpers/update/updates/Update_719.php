@@ -12,37 +12,6 @@ class Update_719 extends DatabaseUpdateBase
     #[\Override]
     public function up()
     {
-        // Keep custom themes and their questions together while reserving "map" for type J.
-        $conflicts = $this->db->createCommand()
-            ->select('id, question_type')
-            ->from('{{question_themes}}')
-            ->where('name = :name AND question_type <> :type', [':name' => 'map', ':type' => 'J'])
-            ->queryAll();
-        foreach ($conflicts as $conflict) {
-            $themeName = 'map_legacy_' . $conflict['id'];
-            while (
-                $this->db->createCommand()
-                ->select('id')
-                ->from('{{question_themes}}')
-                ->where('name = :name', [':name' => $themeName])
-                ->queryScalar()
-            ) {
-                $themeName .= '_';
-            }
-            $this->db->createCommand()->update(
-                '{{question_themes}}',
-                ['name' => $themeName],
-                'id = :id',
-                [':id' => $conflict['id']]
-            );
-            $this->db->createCommand()->update(
-                '{{questions}}',
-                ['question_theme_name' => $themeName],
-                'question_theme_name = :name AND type = :type',
-                [':name' => 'map', ':type' => $conflict['question_type']]
-            );
-        }
-
         $existing = $this->db->createCommand()
             ->select('id')
             ->from('{{question_themes}}')
@@ -64,7 +33,7 @@ class Update_719 extends DatabaseUpdateBase
 
         $this->db->createCommand()->update(
             '{{question_themes}}',
-            ['group' => 'Mask questions'],
+            ['group' => 'Mask questions', 'xml_path' => 'application/views/survey/questions/answer/map'],
             'name = :name AND question_type = :type',
             [':name' => 'map', ':type' => 'J']
         );
@@ -75,8 +44,12 @@ class Update_719 extends DatabaseUpdateBase
             ->join('{{question_attributes}} qa', 'qa.qid = q.qid')
             ->where("q.parent_qid = 0")
             ->andWhere("q.type = :type", [':type' => 'S'])
+            // Questions on a custom Short Text theme stay untouched to keep their theme views and settings.
+            ->andWhere("q.question_theme_name IS NULL OR q.question_theme_name IN ('', 'core', 'shortfreetext', 'browserdetect')")
             ->andWhere("qa.attribute = :attribute", [':attribute' => 'location_mapservice'])
             ->andWhere("qa.value IN ('1', '100')")
+            // Short Text rendered a textarea, not a map, when display_rows was set.
+            ->andWhere("NOT EXISTS (SELECT 1 FROM {{question_attributes}} dr WHERE dr.qid = q.qid AND dr.attribute = 'display_rows' AND dr.value <> '')")
             ->group('q.qid')
             ->queryColumn();
 
@@ -84,16 +57,13 @@ class Update_719 extends DatabaseUpdateBase
             return;
         }
 
-        foreach ($mapQuestionIds as $qid) {
-            $this->db->createCommand()->update(
-                '{{questions}}',
-                [
-                    'type' => 'J',
-                    'question_theme_name' => 'map',
-                ],
-                'qid = :qid',
-                [':qid' => $qid]
-            );
-        }
+        $this->db->createCommand()->update(
+            '{{questions}}',
+            [
+                'type' => 'J',
+                'question_theme_name' => 'map',
+            ],
+            ['in', 'qid', array_map('intval', $mapQuestionIds)]
+        );
     }
 }
