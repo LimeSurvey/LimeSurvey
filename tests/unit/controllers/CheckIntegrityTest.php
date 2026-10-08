@@ -693,6 +693,56 @@ class CheckIntegrityTest extends TestBaseClass
         }
     }
 
+    /** Verifies that a survey of a deleted survey group is only moved to the default survey group, and reported, by the consistency check. */
+    public function testSurveyOfADeletedSurveyGroupIsOnlyMovedToTheDefaultGroupAndReportedByTheConsistencyCheck()
+    {
+        $bogusGsid = 999999915;
+        $originalGsid = \Yii::app()->db->createCommand()->select('gsid')->from('{{surveys}}')->where('sid = :sid', array(':sid' => self::$surveyId))->queryScalar();
+        \Yii::app()->db->createCommand()->update('{{surveys}}', array('gsid' => $bogusGsid), 'sid = :sid', array(':sid' => self::$surveyId));
+        $getGsid = function () {
+            return (int) \Yii::app()->db->createCommand()->select('gsid')->from('{{surveys}}')->where('sid = :sid', array(':sid' => self::$surveyId))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame($bogusGsid, $getGsid(), 'Merely loading the check page (GET) moved the survey of a deleted survey group.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(1, $getGsid(), 'The consistency check did not move the survey of a deleted survey group to the default survey group.');
+            $this->assertStringContainsString(sprintf('Moved survey %s to the default survey group because its survey group %s no longer exists', self::$surveyId, $bogusGsid), $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->update('{{surveys}}', array('gsid' => $originalGsid), 'sid = :sid', array(':sid' => self::$surveyId));
+        }
+    }
+
+    /** Verifies that survey group settings of a deleted survey group are only deleted, and reported, by the consistency check. */
+    public function testOrphanSurveyGroupSettingsAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $bogusGsid = 999999916;
+        $settings = new \SurveysGroupsettings();
+        $settings->gsid = $bogusGsid;
+        $settings->setToInherit();
+        $this->assertTrue($settings->save(), 'Could not save survey group settings: ' . json_encode($settings->getErrors()));
+        $countSettings = function () use ($bogusGsid) {
+            return (int) \Yii::app()->db->createCommand()->select('count(*)')->from('{{surveys_groupsettings}}')->where('gsid = :gsid', array(':gsid' => $bogusGsid))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame(1, $countSettings(), 'Merely loading the check page (GET) deleted the survey group settings of a deleted survey group.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(0, $countSettings(), 'The consistency check did not delete the survey group settings of a deleted survey group.');
+            $this->assertStringContainsString('survey group setting(s) of survey groups that no longer exist', $logOfFixes);
+            $this->assertNotNull(\SurveysGroupsettings::model()->findByPk(0), 'The consistency check deleted the global survey settings.');
+            $this->assertNotNull(\SurveysGroupsettings::model()->findByPk(1), 'The consistency check deleted the default survey group settings.');
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{surveys_groupsettings}}', 'gsid = :gsid', array(':gsid' => $bogusGsid));
+        }
+    }
+
     /**
      * A subquestion whose group does not exist (but whose parent question is fine) must
      * get its parent's group back instead of being deleted as a question without group.
