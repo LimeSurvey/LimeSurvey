@@ -11741,7 +11741,7 @@ body .answer-item label::after {
 
 /**
  * Except for really little screen : show ls-input-group in same line
- * ls-input-group used for suffix/preffix (a lot of time : very little and reset button
+ * ls-input-group used for suffix/prefix (a lot of time : very little and reset button
  */
 @media (min-width: 481px) {
   .ls-input-group {
@@ -15648,10 +15648,6 @@ body .imageselect-listitem label::after {
   border: none;
   margin-left: 8px;
   vertical-align: 0;
-}
-.dropdown-menu .dropdown-item {
-  font-weight: 500;
-  font-size: 1.14rem;
   line-height: 20px;
   font-size: 1.425rem;
 }
@@ -15730,25 +15726,25 @@ body .imageselect-listitem label::after {
 
 .answer-container .bootstrap-select > .btn.dropdown-toggle {
   background-color: #ffffff;
-  border-color: #6E748C;
-  color: #6E748C;
+  border-color: #6e748c;
+  color: #6e748c;
 }
 .answer-container .bootstrap-select > .btn.dropdown-toggle:focus, .answer-container .bootstrap-select > .btn.dropdown-toggle:focus-visible {
-  border-color: #1E1E1E;
+  border-color: #1e1e1e;
   box-shadow: 4px 4px 0 rgba(66, 0, 255, 0.2);
 }
 .answer-container .bootstrap-select .dropdown-menu {
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
 .answer-container .bootstrap-select .dropdown-item {
-  color: #1E1E1E;
+  color: #1e1e1e;
 }
 .answer-container .bootstrap-select .dropdown-item:hover,
 .answer-container .bootstrap-select .dropdown-item:focus,
 .answer-container .bootstrap-select .dropdown-item.active,
 .answer-container .bootstrap-select li.active > .dropdown-item {
-  color: #1E1E1E;
-  background-color: #EEEFF7;
+  color: #1e1e1e;
+  background-color: #eeeff7;
 }
 .answer-container .bootstrap-select li.selected > .dropdown-item, .answer-container .bootstrap-select li.selected > .dropdown-item:hover, .answer-container .bootstrap-select li.selected > .dropdown-item:focus, .answer-container .bootstrap-select li.selected > .dropdown-item.active {
   color: #ffffff;
@@ -15757,7 +15753,7 @@ body .imageselect-listitem label::after {
 .answer-container .bootstrap-select .dropdown-item.disabled,
 .answer-container .bootstrap-select .dropdown-item:disabled,
 .answer-container .bootstrap-select li.disabled > .dropdown-item {
-  color: #9094A7;
+  color: #9094a7;
   background-color: transparent;
 }
 
