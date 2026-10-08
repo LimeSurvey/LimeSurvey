@@ -265,6 +265,8 @@ class ExportSurveyResultsService
     protected function exportResponsesInChunks($surveyId, $exportType, array $metadata)
     {
         $language = $metadata['language'] ?? $this->loadedSurvey->language;
+        // gT() calls (headers, Yes/No labels) follow the app language
+        App()->setLanguage($language);
 
         // Generate field map for questions (do this once)
         // force_refresh = true to bypass stale session-cached field maps
@@ -295,6 +297,7 @@ class ExportSurveyResultsService
         $metaColumns = [];
         foreach (self::META_COLUMN_MAP as $fieldMapKey => $meta) {
             if (isset($this->transformerOutputSurveyResponses->fieldMap[$fieldMapKey])) {
+                $meta['header'] = gT($meta['header']);
                 $metaColumns[] = $meta;
             }
         }
