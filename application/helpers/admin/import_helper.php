@@ -1451,7 +1451,9 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                 $aImportResults['error'] = gT("This is not a valid LimeSurvey LSA file.");
                 return $aImportResults;
             }
-            // Step 1 - import the LSS file and activate the survey
+            // Archives of inactive surveys contain no responses file, so the survey is only activated if there is one
+            $bHasResponsesFile = !empty(array_filter($files, fn($filename) => pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lsr'));
+            // Step 1 - import the LSS file and activate the survey if needed
             foreach ($files as $filename) {
                 if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lss') {
                     //Import the LSS file
@@ -1461,11 +1463,13 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                     }
                     $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                     $SurveyIntegrity->fixSurveyIntegrity();
-                    // Activate the survey
-                    Yii::app()->loadHelper("admin.activate");
-                    $survey = Survey::model()->findByPk($aImportResults['newsid']);
-                    $surveyActivator = new SurveyActivator($survey);
-                    $surveyActivator->activate();
+                    if ($bHasResponsesFile) {
+                        // Activate the survey
+                        Yii::app()->loadHelper("admin.activate");
+                        $survey = Survey::model()->findByPk($aImportResults['newsid']);
+                        $surveyActivator = new SurveyActivator($survey);
+                        $surveyActivator->activate();
+                    }
                     unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
                     break;
                 }

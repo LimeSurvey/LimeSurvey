@@ -1019,7 +1019,7 @@ class Export extends SurveyCommonAction
 
             // Specific to each kind of export
             switch ($sExportType) {
-                // Export archives for active surveys
+                // Export archives for active surveys and for inactive surveys with participants
                 case 'archive':
                     if (
                         ($oSurvey->hasTokensTable && !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export'))
@@ -1028,8 +1028,8 @@ class Export extends SurveyCommonAction
                         $aResults[$iSurveyID]['error'] = gT("We are sorry but you don't have permissions to do this.");
                         break;
                     }
-                    if (!$oSurvey->isActive) {
-                        $aResults[$iSurveyID]['error'] = gT("Not active.");
+                    if (!$oSurvey->isActive && !$oSurvey->hasTokens()) {
+                        $aResults[$iSurveyID]['error'] = gT("Not active and no participants.");
                         break;
                     }
                     $archiveName = $this->exportarchive($iSurveyID, false);
