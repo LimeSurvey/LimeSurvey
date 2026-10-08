@@ -2,7 +2,7 @@
 
 /**
  * Creates the breadcrumbs for the topbar
- * If the text legth of the full breadcrumbs are higher than the configured threshold,
+ * If the text length of the full breadcrumbs are higher than the configured threshold,
  * some elements will be replaced with an ellipsis
  *
  * @psalm-suppress PropertyNotSetInConstructor

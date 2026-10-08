@@ -448,7 +448,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             $criteriaPerm->compare('surveypermissions.read_p', '1', false, 'OR');
             /* default survey group is always available */
             $criteriaPerm->compare('t.gsid', '1', false, 'OR');
-            /* survey group set as avaiable */
+            /* survey group set as available */
             $criteriaPerm->compare('t.alwaysavailable', '1', false, 'OR'); // Is public
         }
         return $criteriaPerm;

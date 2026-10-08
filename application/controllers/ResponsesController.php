@@ -61,11 +61,21 @@ class ResponsesController extends LSBaseController
     }
 
     /**
+     * Redirect to the response of the given access code
+     *
+     * Note: Needs the responses read permission, otherwise it would disclose whether
+     * an access code has a response and its ID.
+     *
      * @param int $surveyId
      * @param string $token
+     * @return void
      */
     public function actionViewbytoken(int $surveyId, string $token): void
     {
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
+            App()->user->setFlash('error', gT("You do not have permission to access this page."));
+            $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
+        }
         // Get Response ID from token
         $oResponse = SurveyDynamic::model($surveyId)->findByAttributes(['token' => $token]);
         if (!$oResponse) {
@@ -108,7 +118,8 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * View a single response in detail
+     * View a single response in detail.
+     * Redirects to the response detail view of the new editor when the editor is enabled.
      *
      * @param int $surveyId
      * @param int $id
@@ -132,6 +143,13 @@ class ResponsesController extends LSBaseController
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
             App()->end(); // More clear, unneeded.
+        }
+        // Existing links (e.g. admin notification emails) open the response in the new editor when it is enabled
+        if (App()->getConfig('editorEnabled')) {
+            $this->redirect([
+                'editorLink/index',
+                'route' => 'responses/' . $surveyId . '/results/responses?id=' . $id
+            ]);
         }
         /* TODO : Check if response still exist, after checking survey */
         $aData = $this->getData($surveyId, $id, $browseLang);

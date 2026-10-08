@@ -5,10 +5,10 @@
 $.fn.comfortUpdateNextStep = function(options)
 {
     // Will be used later for animation params
-    var defauts={};
-    var params=$.extend(defauts, options);
+    var defaults={};
+    var params=$.extend(defaults, options);
 
-    // We defined the progress menu items to swich on using the number of the actual step
+    // We defined the progress menu items to switch on using the number of the actual step
     step = '#step'+params.step+'Updt';
     ps = ( parseInt(params.step) - 1 );
     precStep = '#step'+ ps +'Updt';
@@ -39,7 +39,7 @@ $.fn.comfortUpdateNextStep = function(options)
 
 
                 // The ajax request call an action to update controller. This action is defined inside the form.
-                // For example, the forms .launchUpdateForm inside the view _updatesavailable calls update/sa/getwelcome wich will itself calls the update server to get the welcome message.
+                // For example, the forms .launchUpdateForm inside the view _updatesavailable calls update/sa/getwelcome which will itself calls the update server to get the welcome message.
                 $.ajax({
                     url: $(this).attr('action'),
                     type: $(this).attr('method'),

@@ -72,7 +72,7 @@ const insertOtherByPosition = (
   items.push(otherItem)
 }
 
-// todo: add input fields for mutliple numerical/texts
+// todo: add input fields for multiple numerical/texts
 export const OptionQuestionViewMode = ({
   question: { questionThemeName, qid, gid, attributes, mandatory, other } = {},
   language,
@@ -226,7 +226,7 @@ export const OptionQuestionViewMode = ({
         )
       }
 
-      // incase of a dropdown question, we only need one select
+      // in case of a dropdown question, we only need one select
       return [{ options: selectOptions }]
     } else {
       if (!mandatory && isSingleChoiceTheme && surveySettings.showNoAnswer) {
@@ -281,8 +281,8 @@ export const OptionQuestionViewMode = ({
     })
 
     if (isMultipleChoiceNumerical && hasSliderLayout) {
-      const seperator = getAttributeValue(slider_separator) || '|'
-      const { value } = getStringPartsUsingSeperator(text, seperator)
+      const separator = getAttributeValue(slider_separator) || '|'
+      const { value } = getStringPartsUsingSeperator(text, separator)
       return value
     }
 

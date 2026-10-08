@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
 import { Container } from 'react-bootstrap'
 import { useAppState, useResponses, useSurvey } from 'hooks'
-import { createBufferOperation, htmlPopup, PAGES, STATES } from 'helpers'
+import { createBufferOperation, htmlPopup, PAGES, STATES, Toast } from 'helpers'
 
 import { LeftSideBar } from './Sidebars/LeftSideBar'
 import {
@@ -43,12 +43,9 @@ export const Responses = () => {
     fetchSurvey,
     refetchQuestionsFieldNamesMap,
   } = useSurvey(surveyId)
-  const { responses, isFetching, mutateOperations } = useResponses(
-    surveyId,
-    pagination,
-    filters,
-    sorting
-  )
+  const { responses, isFetching, mutateOperations, findResponsePageIndex } =
+    useResponses(surveyId, pagination, filters, sorting)
+  const locatedDeepLinkRef = useRef(null)
 
   useEffect(() => {
     if (menu === panelItemsKeys.statistics) {
@@ -135,6 +132,53 @@ export const Responses = () => {
     next.delete('id')
     setSearchParams(next)
   }
+
+  const showDeepLinkNotFound = () => {
+    Toast({ message: t('Sorry, this response was not found.') })
+    handleResponseModalClose()
+  }
+
+  // A shared link only carries the response id, so the response may be on
+  // another page than the one loaded: jump to the page listing it.
+  useEffect(() => {
+    if (
+      !deepLinkResponseId ||
+      isFetching ||
+      !responses?.responses ||
+      tabKey !== TAB_KEYS.RESPONSES
+    ) {
+      return
+    }
+
+    const isOnPage = responses.responses.some(
+      (response) => String(response?.id) === String(deepLinkResponseId)
+    )
+    if (isOnPage) {
+      return
+    }
+
+    // Already on the page that should list it: the response does not exist.
+    if (locatedDeepLinkRef.current === deepLinkResponseId) {
+      showDeepLinkNotFound()
+      return
+    }
+
+    // The page can only be computed for the default "id DESC" sort.
+    if (sorting.length) {
+      return
+    }
+
+    locatedDeepLinkRef.current = deepLinkResponseId
+    findResponsePageIndex(deepLinkResponseId)
+      .then((pageIndex) => {
+        if (pageIndex === pagination.pageIndex) {
+          showDeepLinkNotFound()
+          return
+        }
+        setPagination((previous) => ({ ...previous, pageIndex }))
+      })
+      .catch(() => showDeepLinkNotFound())
+  }, [responses, isFetching, deepLinkResponseId, tabKey])
 
   const onFiltersChange = (filters) => {
     setFilters(filters)

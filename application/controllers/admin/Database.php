@@ -107,13 +107,18 @@ class Database extends SurveyCommonAction
      * This is a convenience function to update/delete answer default values. If the given
      * $defaultvalue is empty then the entry is removed from table defaultvalues
      *
+     * Note: Private since it does no permission check of its own, it is only called by
+     * actionUpdateDefaultValues() after the surveycontent update permission was checked.
+     *
      * @param integer $qid   Question ID
+     * @param integer $sqid  Subquestion ID (0 if none)
      * @param integer $scale_id  Scale ID
      * @param string $specialtype  Special type (i.e. for  'Other')
      * @param string $language     Language (defaults are language specific)
      * @param mixed $defaultvalue    The default value itself
+     * @return void
      */
-    public function updateDefaultValues($qid, $sqid, $scale_id, $specialtype, $language, $defaultvalue)
+    private function updateDefaultValues($qid, $sqid, $scale_id, $specialtype, $language, $defaultvalue)
     {
         $arDefaultValue = DefaultValue::model()
             ->find(
@@ -170,8 +175,13 @@ class Database extends SurveyCommonAction
 
     /**
      * action to do when update default value
+     *
+     * Note: The question is looked up by qid and sid together, so the permission
+     * checked on the survey also covers the question being updated.
+     *
      * @param integer $iSurveyID
      * @return void (redirect)
+     * @throws CHttpException
      */
     private function actionUpdateDefaultValues($iSurveyID)
     {
@@ -179,9 +189,13 @@ class Database extends SurveyCommonAction
         $aSurveyLanguages = $oSurvey->allLanguages;
         $sBaseLanguage = $oSurvey->language;
 
+        $arQuestion = Question::model()->findByAttributes(array('qid' => $this->iQuestionID, 'sid' => $iSurveyID));
+        if (empty($arQuestion)) {
+            throw new CHttpException(404, gT("Question not found"));
+        }
+
         Question::model()->updateAll(array('same_default' => Yii::app()->request->getPost('samedefault') ? 1 : 0), 'sid=:sid ANd qid=:qid', array(':sid' => $iSurveyID, ':qid' => $this->iQuestionID));
 
-        $arQuestion = Question::model()->findByAttributes(array('qid' => $this->iQuestionID));
         $sQuestionType = $arQuestion['type'];
 
         $questionThemeMetaData = QuestionTheme::findQuestionMetaData($sQuestionType);
@@ -212,7 +226,7 @@ class Database extends SurveyCommonAction
         }
         if ($questionThemeMetaData['settings']->answerscales == 0 && $questionThemeMetaData['settings']->subquestions == 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
-                // Qick and dirty insert for yes/no defaul value
+                // Quick and dirty insert for yes/no default value
                 // write the selectbox option, or if "EM" is selected, this value to table
                 if ($sQuestionType == 'Y') {
                     /// value for all langs
