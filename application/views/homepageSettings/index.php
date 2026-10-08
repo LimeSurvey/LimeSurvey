@@ -36,19 +36,7 @@ App()->getClientScript()->registerScript(
                     [
                         'id' => 'boxes-grid',
                         'dataProvider' => $dataProviderBox->search(),
-                        'pager' => [
-                            'class' => 'application.extensions.admin.grid.CLSYiiPager',
-                        ],
-                        'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                            . sprintf(
-                                gT('%s rows per page'),
-                                CHtml::dropDownList(
-                                    'boxes-pageSize',
-                                    Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
-                                    Yii::app()->params['pageSizeOptions'],
-                                    array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
-                                )
-                            ),
+                        'lsPageSizeCurrentValue' => Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
                         'columns' => [
                             [
                                 'header' => gT('Position'),

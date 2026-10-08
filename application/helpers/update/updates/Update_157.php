@@ -9,6 +9,7 @@ use Exception;
  */
 class Update_157 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         // MySQL DB corrections

@@ -251,21 +251,6 @@ return [
         ]
     ],
 
-    'lstutorial' => [
-        'devBaseUrl' => 'assets/packages/lstutorial/',
-        'basePath'   => 'core.lstutorial',
-        'position'   => CClientScript::POS_END,
-        'js'         => [
-            'build/lstutorial' . $minVersion . '.js',
-        ],
-        'css'        => [
-            'build/lstutorial.css'
-        ],
-        'depends'    => [
-//            'bootstrap',
-            'adminbasics',
-        ]
-    ],
     'lslog'      => [
         'devBaseUrl' => 'assets/packages/lslog/',
         'basePath'   => 'core.lslog',

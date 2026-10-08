@@ -440,7 +440,7 @@ class PluginManager extends \CApplicationComponent
      * @param string $pluginName
      * @param int $id Identifier used for identifying a specific plugin instance.
      * @param boolean $init launch init function (if exist)
-     * If ommitted will return the first instantiated plugin with the given name.
+     * If omitted will return the first instantiated plugin with the given name.
      * @return iPlugin|null The plugin or null when missing
      */
     public function loadPlugin($pluginName, $id = null, $init = true)
@@ -531,7 +531,7 @@ class PluginManager extends \CApplicationComponent
         } else {
             // Log it?
         }
-        $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this)); // Alow plugins to do stuff after all plugins are loaded
+        $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this)); // Allow plugins to do stuff after all plugins are loaded
     }
 
     /**

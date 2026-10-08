@@ -77,7 +77,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $(".tab-content div:first .labelDatas").each(function(trindex,trelement){
 
             var tr_code = $(trelement).attr('id');
-            tr_code=tr_code.split('_');// first is row, second langage and last the row number
+            tr_code=tr_code.split('_');// first is row, second language and last the row number
             tr_code=tr_code[2];
             dataToSend['codelist'].push(tr_code);
             dataToSend[tr_code] = {
@@ -265,7 +265,7 @@ function sync_label(event)
 {
     event.preventDefault();
     var sRowID = $(event.target).parent().parent().attr('id');
-    aRowInfo=sRowID.split('_');// first is row, second langage and last the row number
+    aRowInfo=sRowID.split('_');// first is row, second language and last the row number
     $(".ui-tabs-panel").each(function(divindex,divelement){
         var div_language = $(".lslanguage",divelement).val();
         if (typeof(div_language)!="undefined" && div_language!=aRowInfo[1]){
@@ -380,7 +380,7 @@ function del_label(event) {
     var sRowID = $(event.target).closest('tr').attr('id');
     // tooltip remains after delete label after bootstrap 5 upgrade, so remove tooltip manually here until find better solution.
     $('.tooltip').tooltip('dispose');
-    var aRowInfo = sRowID.split('_');// first is row, second langage and last the row number
+    var aRowInfo = sRowID.split('_');// first is row, second language and last the row number
     $(".tab-pane").each(function(divindex,divelement){
         var div_language = $(".lslanguage",divelement).val();
 

@@ -366,10 +366,7 @@
             <category>Input</category>
             <sortorder>100</sortorder>
             <inputtype>text</inputtype>
-            <help>Specify a custom date/time format (the &amp;lt;i&amp;gt;d/dd m/mm yy/yyyy H/HH M/MM&amp;lt;/i&amp;gt;
-                formats and &amp;quot;-./: &amp;quot; characters are allowed for day/month/year/hour/minutes without or
-                with leading zero respectively. Defaults to survey&#039;s date format
-            </help>
+            <help>Specify a custom date/time format (the &lt;i&gt;d/dd m/mm yy/yyyy H/HH M/MM&lt;/i&gt; formats and &quot;-./: &quot; characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey&#039;s date format</help>
             <caption>Date/Time format</caption>
             <i18n></i18n>
             <readonly></readonly>

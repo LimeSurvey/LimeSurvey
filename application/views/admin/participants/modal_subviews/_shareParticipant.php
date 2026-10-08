@@ -17,10 +17,10 @@ $form = $this->beginWidget(
 <div class="modal-body ">
     <?php if (isset($participantIds)): ?>
         <?php foreach ($participantIds as $id): ?>
-            <input type="hidden" name="participant_id[]" value="<?php echo $id; ?>" />
+            <input type="hidden" name="participant_id[]" value="<?php echo CHtml::encode($id); ?>" />
         <?php endforeach;?>
     <?php else : ?>
-        <input type="hidden" name="participant_id" value="<?php echo $model->participant_id; ?>" />
+        <input type="hidden" name="participant_id" value="<?php echo CHtml::encode($model->participant_id); ?>" />
     <?php endif; ?>
     <div class="row">
         <div class="col-lg-6">
@@ -34,7 +34,7 @@ $form = $this->beginWidget(
                         <option value=''><?php eT('Share with all users'); ?></option>
                         <?php foreach ($users as $user) : ?>
                             <option value='<?php echo $user->uid; ?>'>
-                                <?php echo $user->full_name; ?>
+                                <?php echo CHtml::encode($user->full_name); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>

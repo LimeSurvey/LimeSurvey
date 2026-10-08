@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_637 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         // Fix serialized attribute_descriptions if they are not yet in JSON format

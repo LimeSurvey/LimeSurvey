@@ -2,7 +2,7 @@
 
 /**
  * Installer class for the TwoFactorAdminLogin Plugin
- * A collecton of static helpers to install the Plugin
+ * A collection of static helpers to install the Plugin
  */
 class TFAPluginInstaller
 {

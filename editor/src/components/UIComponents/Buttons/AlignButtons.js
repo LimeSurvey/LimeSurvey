@@ -12,12 +12,12 @@ export const AlignButtons = ({ value, update, labelText }) => {
           {labelText}
         </Form.Label>
       )}
-      <div className="lime-align-btn-group d-flex">
+      <div className="lime-svg-btn-group lime-align-btn-group d-flex">
         <div data-testid="option-3">
           <ToggleButton
             id="option-3"
             type="radio"
-            variant="outline-lime-alignment"
+            variant="outline-lime-svg"
             checked={value === 'right'}
             onChange={() => update('right')}
             className="d-flex me-2"
@@ -33,7 +33,7 @@ export const AlignButtons = ({ value, update, labelText }) => {
           <ToggleButton
             id="option-1"
             type="radio"
-            variant="outline-lime-alignment"
+            variant="outline-lime-svg"
             checked={value === 'left'}
             onChange={() => update('left')}
             className="d-flex me-2"
@@ -49,7 +49,7 @@ export const AlignButtons = ({ value, update, labelText }) => {
           <ToggleButton
             id="option-2"
             type="radio"
-            variant="outline-lime-alignment center-side"
+            variant="outline-lime-svg center-side"
             checked={value === 'center'}
             onChange={() => update('center')}
             className="d-flex"

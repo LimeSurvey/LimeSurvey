@@ -45,7 +45,7 @@ class UserDetail implements CommandInterface
         $userId = (int) $request->getData('_id');
         $hasPermission = $this->permission->hasGlobalPermission('users');
         //users should only be able to get their own data (when they don't have permission)
-        if (App()->user->getId() !== $userId && !$hasPermission) {
+        if ((int) App()->user->getId() !== $userId && !$hasPermission) {
             return $this->responseFactory
                 ->makeErrorForbidden();
         }

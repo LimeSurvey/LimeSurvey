@@ -132,7 +132,7 @@ Yii::app()->getController()->renderPartial(
                 </li>
                 <li class="list-group-item col-md-6">
                     <div class="form-check">
-                        <input id="load-with-pjax" type="checkbox" data-value="1" class="form-check-input checkbox selector__dataOptionModel" checked="true" data-priority="4" data-option='["render","link","pjax"]' />
+                        <input id="load-with-pjax" type="checkbox" data-value="true" data-unchecked-value="false" class="form-check-input checkbox selector__dataOptionModel" checked="true" data-priority="4" data-option='["render","link","pjaxed"]' />
                         <label class="form-check-label" for="load-with-pjax"><?=gT("Load with pjax")?></label>
                     </div>
                 </li>

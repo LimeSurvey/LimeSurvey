@@ -65,7 +65,7 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
                 <?php endif; ?>
             >
                 <i class="<?= CHtml::encode($action['iconClasses'] ?? '') ?>"></i>
-                <?= CHtml::encode($action['text'] ?? '') ?>
+                <?= $this->encodeLabel($action['text'] ?? '') ?>
             </button>
 
         <?php elseif ($action['type'] === 'dropdown' && !empty($action['items'])) : ?>
@@ -81,12 +81,12 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
                     <?php if ($iconClasses !== '') : ?>
                         <i class="<?= CHtml::encode($iconClasses) ?>"></i>
                     <?php endif; ?>
-                    <?= CHtml::encode($action['text'] ?? '') ?>
+                    <?= $this->encodeLabel($action['text'] ?? '') ?>
                 </button>
                 <ul class="dropdown-menu">
                     <?php foreach ($action['items'] as $subKey => $subAction) : ?>
                         <?php if (($subAction['type'] ?? '') === 'dropdown-header') : ?>
-                            <li><h6 class="dropdown-header"><?= CHtml::encode($subAction['text'] ?? '') ?></h6></li>
+                            <li><h6 class="dropdown-header"><?= $this->encodeLabel($subAction['text'] ?? '') ?></h6></li>
                         <?php elseif (($subAction['type'] ?? '') === 'separator') : ?>
                             <li><hr class="dropdown-divider"></li>
                         <?php else : ?>
@@ -109,7 +109,7 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
                                     <?php if (!empty($subAction['iconClasses'])) : ?>
                                         <i class="<?= CHtml::encode($subAction['iconClasses']) ?>"></i>
                                     <?php endif; ?>
-                                    <?= CHtml::encode($subAction['text'] ?? '') ?>
+                                    <?= $this->encodeLabel($subAction['text'] ?? '') ?>
                                 </a>
                             </li>
                         <?php endif; ?>

@@ -239,6 +239,7 @@ class Update_709 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up()
     {
         $this->updateRankingSubQuestionTypes();

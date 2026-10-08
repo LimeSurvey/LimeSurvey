@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_162 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             // Fix participant db types

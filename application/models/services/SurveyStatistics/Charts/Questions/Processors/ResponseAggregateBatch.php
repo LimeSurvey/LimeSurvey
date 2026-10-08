@@ -15,6 +15,8 @@ use SurveyDynamic;
  *     each return an alias for the requested aggregate (deduplicated).
  *  2. execute() runs the merged SELECT (chunked only when the expression
  *     list is very large), after which value($alias) returns the count.
+ * 
+ *  @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 final class ResponseAggregateBatch
 {
@@ -46,14 +48,14 @@ final class ResponseAggregateBatch
     /** @var StatisticsResponseFilters|null */
     private $filters;
 
-    /** @var array<string, array{kind: string, field: string, value: string}> alias => request */
+    /** @var array<string, array{kind: string, field: string, value: string, numeric?: bool}> alias => request */
     private array $requests = [];
 
     /**
      * Median cannot be expressed as a one-scan conditional aggregate, so these
      * run as one ordered LIMIT/OFFSET query per field after the main pass.
      *
-     * @var array<string, array{field: string, countAlias: string}> alias => request
+     * @var array<string, array{field: string, countAlias: string, numeric?: bool}> alias => request
      */
     private array $medianRequests = [];
 

@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_429 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         extendDatafields429($this->db); // Do it again for people already using 4.x before this was introduced

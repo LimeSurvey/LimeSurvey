@@ -162,7 +162,7 @@ class TransformerTest extends TestBaseClass
     public function testCastsViaCallable()
     {
         $castBoolean = function($value) {
-            return (boolean) $value;
+            return (bool) $value;
         };
         $castFloat = function ($value) {
             return (float) $value;

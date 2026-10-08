@@ -147,7 +147,7 @@ var AdvancedRankingQuestion = function (options) {
             }
         });
 
-        // Update #relevance and lauch checkconditions function
+        // Update #relevance and launch checkconditions function
         $("[id^=" + relevancename + "]").val('0');
 
         $('#question' + questionId + ' .select-item select:lt(' + max_answers + ')').each(function (index) {

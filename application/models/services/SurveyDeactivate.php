@@ -26,7 +26,6 @@ class SurveyDeactivate
     private ArchivedTableSettings $archivedResponseSettings;
     private SurveyLink $surveyLink;
     private SavedControl $savedControl;
-    protected array $siddates;
 
     public function setArchivedResponseSettings(ArchivedTableSettings $archivedResponseSettings)
     {
@@ -57,7 +56,6 @@ class SurveyDeactivate
         $this->app = $app;
         $this->surveyLink = $surveyLink;
         $this->savedControl = $savedControl;
-        $this->siddates = [];
     }
 
     /**
@@ -67,11 +65,13 @@ class SurveyDeactivate
      */
     protected function getSiddate(int $iSurveyID): string
     {
-        if (!isset($this->siddates[$iSurveyID])) {
-            $date = date('YmdHis', time());
-            $this->siddates[$iSurveyID] = "{$iSurveyID}_{$date}";
-        }
-        return $this->siddates[$iSurveyID];
+        $timestamp = time();
+        do {
+            $siddate = "{$iSurveyID}_" . date('YmdHis', $timestamp++);
+            $tableName = $this->app->db->tablePrefix . "old_responses_{$siddate}";
+        } while ($this->app->db->schema->getTable($tableName, true) !== null);
+
+        return $siddate;
     }
 
     /**
@@ -93,7 +93,7 @@ class SurveyDeactivate
         $datestamp = time();
         $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
         $DBDate = date('Y-m-d H:i:s', $datestamp);
-        $userID = $this->app->user->getId();
+        $userID = $this->app->user->getId() ?? 0;
         $aData = array();
         $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
         $aData['surveyid'] = $iSurveyID;
@@ -213,17 +213,18 @@ class SurveyDeactivate
     {
         switch ($tableType) {
             case 'token':
-                $model = $this->archivedTokenSettings;
+                $modelClass = get_class($this->archivedTokenSettings);
                 break;
             case 'timings':
-                $model = $this->archivedTimingsSettings;
+                $modelClass = get_class($this->archivedTimingsSettings);
                 break;
             case 'response':
-                $model = $this->archivedResponseSettings;
+                $modelClass = get_class($this->archivedResponseSettings);
                 break;
             default:
                 throw new \InvalidArgumentException('Unknown table type: ' . $tableType);
         }
+        $model = new $modelClass();
         $model->survey_id = $iSurveyID;
         $model->user_id = $userID;
         $model->tbl_name = $tableName;
@@ -286,25 +287,27 @@ class SurveyDeactivate
     }
 
     /**
-     * Handles survey table
+     * Rename an existing timings table and save its archive settings, even when
+     * Save timings is disabled. Does nothing when the table is missing.
      *
      * @param int $iSurveyID
      * @param string $surveyDate Archive suffix of the form <sid>_<timestamp>
-     * @param array &$aData
-     * @param int $userID
-     * @param string $DBDate
+     * @param array &$aData Receives sNewTimingsTableName with the prefixed archive table name.
+     * @param int $userID User recorded as the archive owner.
+     * @param string $DBDate Archive creation time in Y-m-d H:i:s format.
      *
      * @return void
+     * @throws \CDbException If a database lookup, table rename, or archive settings write fails.
      */
     protected function handleTimingTable($iSurveyID, $surveyDate, &$aData, $userID, $DBDate)
     {
         $prow = $this->survey->find('sid = :sid', array(':sid' => $iSurveyID));
-        if ($prow->savetimings == "Y") {
+        if ($prow->hasTimingsTable) {
             $sOldTimingsTableName = $this->app->db->tablePrefix . "timings_{$iSurveyID}";
             $sNewTimingsTableName = $this->app->db->tablePrefix . "old_timings_{$surveyDate}";
             $this->app->db->createCommand()->renameTable($sOldTimingsTableName, $sNewTimingsTableName);
             $aData['sNewTimingsTableName'] = $sNewTimingsTableName;
+            $this->archiveTable($iSurveyID, $userID, "old_timings_{$surveyDate}", "timings", $DBDate, '');
         }
-        $this->archiveTable($iSurveyID, $userID, "old_timings_{$surveyDate}", "timings", $DBDate, '');
     }
 }

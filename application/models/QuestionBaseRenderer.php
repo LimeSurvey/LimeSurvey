@@ -316,6 +316,25 @@ abstract class QuestionBaseRenderer extends StaticModel
         }
     }
 
+    /**
+     * Split an other-text string on the pipe separator into prefix and suffix parts.
+     *
+     * @param string $otherText  Raw other text, optionally containing a "|" separator (prefix|suffix).
+     * @return array{left: string, right: string}
+     */
+    protected function splitOtherText(string $otherText): array
+    {
+        $left  = $otherText;
+        $right = '';
+        if (!empty($otherText) && strpos($otherText, '|') !== false) {
+            [$left, $right] = explode('|', $otherText, 2);
+        }
+        return [
+            'left'  => $left,
+            'right' => $right,
+        ];
+    }
+
     protected function setDefaultIfEmpty($value, $default)
     {
         if (is_null($value)) {

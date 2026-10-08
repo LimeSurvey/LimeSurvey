@@ -2,7 +2,7 @@ import { flexRender } from '@tanstack/react-table'
 import { completedColumnKey, renderCellText } from '../../utils'
 import { Badge } from 'react-bootstrap'
 
-export const TableCell = ({ cell }) => {
+export const TableCell = ({ cell, question = {}, baseLanguage }) => {
   const cellValue = cell.getContext().getValue()
   let value = ''
 
@@ -16,9 +16,14 @@ export const TableCell = ({ cell }) => {
           answerTitle,
           questionThemeName,
           checked,
+          key,
         },
         index
       ) => {
+        if (value === '-oth-') {
+          return <></>
+        }
+
         return (
           <Badge key={`cell-value-${index}${cell.column.id}`}>
             {renderCellText({
@@ -29,6 +34,9 @@ export const TableCell = ({ cell }) => {
               questionThemeName,
               checked,
               index,
+              key,
+              question,
+              baseLanguage,
             })}
           </Badge>
         )

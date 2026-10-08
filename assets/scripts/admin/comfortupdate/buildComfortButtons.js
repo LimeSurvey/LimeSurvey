@@ -5,8 +5,8 @@
 $.fn.buildComfortButtons = function(options)
 {
 	// Will be used later for animation params
-	var defauts={};  
-	var params=$.extend(defauts, options); 
+	var defaults={};  
+	var params=$.extend(defaults, options); 
 	
 	return this.each(function(){
 		$(this).on('click', function(e){

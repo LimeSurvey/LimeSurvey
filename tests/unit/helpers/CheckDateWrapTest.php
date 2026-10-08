@@ -72,7 +72,7 @@ class CheckDateWrapTest extends TestBaseClass
         $this->assertTrue($check_numercic, 'Unexpected evaluation result, all parameters are correct.');
 
         $check_int = exprmgr_checkdate(06, 07, 2023);
-        $this->assertTrue($check_int, 'Unexpected evaluation result, all paramaters are correct.');
+        $this->assertTrue($check_int, 'Unexpected evaluation result, all parameters are correct.');
 
         $check_wrong_order = exprmgr_checkdate(15, 07, 2023);
         $this->assertFalse($check_wrong_order, 'Unexpected evaluation result, the parameter order is incorrect.');

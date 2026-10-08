@@ -10,6 +10,7 @@ class Update_489 extends DatabaseUpdateBase
     /**
      * This table is needed to collect failed emails.
      */
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->createTable(

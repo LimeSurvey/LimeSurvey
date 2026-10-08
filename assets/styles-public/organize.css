@@ -70,3 +70,14 @@ li.mjs-nestedSortable-collapsed > ol {
 .organizer .panel {
     margin-bottom: 10px;
 }
+
+/* Drop target while dragging: the sortable placeholder class collides with
+   Bootstrap's inline-block .placeholder, which shrinks the empty item to a
+   small square, so make it span the full width of the dragged item */
+.organizer li.placeholder {
+    display: block;
+    width: auto;
+    margin: 0 0 5px 0;
+    border: 2px dashed rgba(0, 0, 0, 0.5);
+    cursor: grabbing;
+}

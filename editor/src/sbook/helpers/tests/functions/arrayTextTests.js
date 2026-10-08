@@ -1,5 +1,5 @@
-import { expect } from '@storybook/test'
-import { userEvent, waitFor } from '@storybook/test'
+import { expect } from 'storybook/test'
+import { userEvent, waitFor } from 'storybook/test'
 import { sleep } from 'helpers/sleep'
 
 function random() {

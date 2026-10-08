@@ -9,6 +9,9 @@ use Template;
 use TemplateConfiguration;
 use TemplateManifest;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class SurveyThemeConfiguration
 {
     private const DEFAULT_CORNER_RADIUS = '2';
@@ -170,6 +173,7 @@ class SurveyThemeConfiguration
      *
      * @return array
      * @throws NotFoundException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function updateCommon(TemplateConfiguration $themeConfiguration, ?int $sid = null, ?int $gsid = null)
     {

@@ -31,7 +31,7 @@ class OpHandlerImport implements OpHandlerInterface
 
     /**
      * Constructor
-     * @param \LimeSurvey\Models\Services\SurveyActivate $surveyActivate the activation ojbect for the purpose of the import
+     * @param \LimeSurvey\Models\Services\SurveyActivate $surveyActivate the activation object for the purpose of the import
      */
     public function __construct(
         SurveyActivate $surveyActivate

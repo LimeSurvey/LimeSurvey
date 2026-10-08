@@ -23,6 +23,12 @@ class ExtensionConfig
     public $xml;
 
     /**
+     * Per-request cache used by loadFromFileCached(), keyed by file path.
+     * @var array<string, ExtensionConfig>
+     */
+    private static $loadedConfigs = [];
+
+    /**
      *
      */
     public function __construct(SimpleXMLElement $xml)
@@ -157,6 +163,38 @@ class ExtensionConfig
             $config = new self($xml);
             return $config;
         }
+    }
+
+    /**
+     * Same as loadFromFile(), but keeps the instance for the rest of the request,
+     * so a config.xml that is read for every question is only parsed once.
+     * Only use it for files that are not modified during the request (e.g. not in
+     * the extension installers), and don't modify the returned instance.
+     * Missing files are not cached.
+     *
+     * @param string $file Full file path.
+     * @return ExtensionConfig|null
+     */
+    public static function loadFromFileCached($file)
+    {
+        if (!isset(self::$loadedConfigs[$file])) {
+            $config = self::loadFromFile($file);
+            if ($config === null) {
+                return null;
+            }
+            self::$loadedConfigs[$file] = $config;
+        }
+        return self::$loadedConfigs[$file];
+    }
+
+    /**
+     * Empties the cache used by loadFromFileCached()
+     *
+     * @return void
+     */
+    public static function clearCache()
+    {
+        self::$loadedConfigs = [];
     }
 
     /**

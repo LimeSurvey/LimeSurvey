@@ -7,6 +7,7 @@ class Update_483 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         // Allow label sets to contain full subquestion codes

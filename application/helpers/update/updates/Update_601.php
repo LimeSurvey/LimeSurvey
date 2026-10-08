@@ -9,6 +9,7 @@ class Update_601 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         // Add button text column to boxes table

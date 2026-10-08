@@ -264,7 +264,13 @@ class QuotasController extends LSBaseController
 
 
     /**
+     * Show the forms to add a new answer to a quota (select question, then select answer)
+     *
+     * Note: The selected question is looked up together with the survey of the quota,
+     * and the answers are computed for the quota the permission was checked on.
+     *
      * @return void
+     * @throws CHttpException
      */
     public function actionNewAnswer()
     {
@@ -298,13 +304,17 @@ class QuotasController extends LSBaseController
             Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create')
         ) {
             $questionId = sanitize_int(Yii::app()->request->getPost('quota_qid'));
+            /* Question must belong to the survey of the quota the permission was checked on */
             $oQuestion = Question::model()
                 ->with('questionl10ns', array('language' => $oSurvey->language))
-                ->findByPk(array('qid' => $questionId));
+                ->findByAttributes(array('qid' => $questionId, 'sid' => $surveyid));
+            if (empty($oQuestion)) {
+                throw new CHttpException(404, gT("Question not found"));
+            }
 
             $aQuestionAnswers = $quotaService->getQuotaAnswers(
                 $questionId,
-                sanitize_int(Yii::app()->request->getPost('quota_id'))
+                (int) $quota->id
             );
 
             $isAllAnswersSelected = $quotaService->allAnswersSelected($oQuestion, $aQuestionAnswers);
@@ -400,7 +410,7 @@ class QuotasController extends LSBaseController
 
         $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);
-        if($oSurvey === null) {
+        if ($oSurvey === null) {
             $this->renderJSON(['success' => false, 'message' => gT('Survey not found')]);
             return;
         }
@@ -415,7 +425,7 @@ class QuotasController extends LSBaseController
         $aQuotaIds = json_decode($sItems, true);
         $aQuotaIds = is_array($aQuotaIds) ? $aQuotaIds : [];
 
-        if(empty($aQuotaIds)) {
+        if (empty($aQuotaIds)) {
             $this->renderJSON(['success' => false, 'message' => gT('No quotas selected!')]);
             return;
         }

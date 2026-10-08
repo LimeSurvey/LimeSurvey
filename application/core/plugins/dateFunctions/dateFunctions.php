@@ -5,6 +5,9 @@ class dateFunctions extends PluginBase
     protected static $description = 'Core: Date related Expression Manager functions';
     protected static $name = 'dateFunctions';
 
+    /** @inheritdoc this plugin doesn't have any public method */
+    public $allowedPublicMethods = array();
+
     public function init()
     {
         $this->subscribe('ExpressionManagerStart');

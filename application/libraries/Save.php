@@ -104,7 +104,7 @@ class Save
         // - the "srid" for the responses_x row id
         // - "saved_thisstep" which is the step the user is up to in this survey
         // - "saved_ip" which is the ip address of the submitter
-        // - "saved_date" which is the date ofthe saved response
+        // - "saved_date" which is the date of the saved response
         // - an "identifier" which is like a username
         // - a "password"
         // - "fieldname" which is the fieldname of the saved response
@@ -242,15 +242,26 @@ class Save
     }
 
     /**
-     * This functions saves the answer time for question/group and whole survey.
-     * [ It compares current time with the time in $_POST['start_time'] ]
-     * The times are saved in table: {prefix}_timings
+     * Add elapsed seconds since the posted start_time, rounded to two decimals,
+     * to the current session response in the survey's timings table.
+     * Updates interviewtime and, when supplied, the lastanswer or lastgroup timing
+     * column (lastanswer takes precedence).
+     *
+     * Does nothing if the survey is missing, Save timings is disabled, the timings
+     * table is missing, or start_time is absent. Terminates the request if the
+     * supplied question/group timing column does not exist.
+     *
      * @return void
+     * @throws CDbException If a database query or timing update fails.
      */
     function set_answer_time()
     {
         global $thissurvey;
         $survey = Survey::model()->findByPk($thissurvey['sid']);
+
+        if (!$survey || !$survey->isSaveTimings || !$survey->hasTimingsTable) {
+            return;
+        }
 
         if (!isset($_POST['start_time'])) {
             return; // means haven't passed welcome page yet.

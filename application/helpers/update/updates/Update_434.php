@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_434 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             $defaultSetting = \LsDefaultDataSets::getDefaultUserAdministrationSettings();

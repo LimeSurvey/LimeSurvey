@@ -1,0 +1,12 @@
+parameters:
+  level: 6
+
+  excludePaths:
+    - %currentWorkingDirectory%/lib/Providers/Qr/BaconQrCodeProvider.php
+    - %currentWorkingDirectory%/lib/Providers/Qr/EndroidQrCodeProvider.php
+    - %currentWorkingDirectory%/lib/Providers/Qr/EndroidQrCodeWithLogoProvider.php
+
+  paths:
+    - %currentWorkingDirectory%/lib
+    - %currentWorkingDirectory%/tests
+

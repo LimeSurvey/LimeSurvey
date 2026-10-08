@@ -8,6 +8,7 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_610 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $table = $this->db->getSchema()->getTable('{{labelsets}}');

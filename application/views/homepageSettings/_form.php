@@ -3,7 +3,7 @@
 
 /* @var $model Box */
 /* @var $form CActiveForm */
-/* @var $icons_length interger */
+/* @var $icons_length integer */
 /* @var $icons array */
 ?>
 <div class="container">

@@ -81,9 +81,13 @@ if ($activated || !$createPermission) {
                     "expandGroup" => gT("Expand group"),
                     "surveyLogicFile" => gT("Survey logic overview"),
                     "groupNumber" => gT("Group #%d"),
-                    "deactivateSurvey" => gT("Deactivate your survey to enable this setting"),
+                    "deactivateSurvey" => gT("Deactivate your survey to enable this functionality"),
                     "pageActionsMenu" => gT("Page actions menu"),
                     "questionActionsMenu" => gT("Question actions menu"),
+                    "moveUp" => gT("Move up"),
+                    "moveDown" => gT("Move down"),
+                    "movedToPosition" => gT('Moved to position %1$s of %2$s.', 'unescaped'),
+                    "movedToGroup" => gT('Moved to group "%1$s", position %2$s of %3$s.', 'unescaped'),
                 ]
             )
         . '};',

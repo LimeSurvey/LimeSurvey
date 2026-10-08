@@ -51,7 +51,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
     }
 
     /**
-     * Detemines whether the action can be handled
+     * Determines whether the action can be handled
      * @param \LimeSurvey\ObjectPatch\Op\OpInterface $op the operation
      * @return bool whether the action can be handled
      */
@@ -963,7 +963,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
     /**
      * Checks if patch is valid for this operation.
      * We support three kinds of patches:
-     * - general, where we do someting to all conditions related to a question or a survey
+     * - general, where we do something to all conditions related to a question or a survey
      * - scenario-based, where we do actions for scenarios inside the scenarios array
      * - condition-based, where we do actions for conditions in the condition arrays of the scenarios in the scenarios array
      * @param OpInterface $op the operation

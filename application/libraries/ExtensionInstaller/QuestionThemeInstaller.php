@@ -15,6 +15,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
      * @return ExtensionConfig
      * @todo Move to parent class?
      */
+    #[\Override]
     public function getConfig()
     {
         assert(!empty($this->fileFetcher), 'File fetcher must be set');
@@ -28,6 +29,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
      *
      * @return void
      */
+    #[\Override]
     public function install()
     {
         $extConfig = $this->getConfig();
@@ -91,6 +93,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
      *
      * @throws Exception
      */
+    #[\Override]
     public function update()
     {
         $extConfig = $this->getConfig();
@@ -119,6 +122,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
     /**
      * @todo
      */
+    #[\Override]
     public function uninstall()
     {
         throw new Exception('Not implemented');

@@ -37,7 +37,6 @@ var sAddParam = '';
                 'fileTypeShow',
                 array(
                     'files' => gT('Files', 'unescaped'),
-                    'flash' => gT('Flash', 'unescaped'),
                     'images' => gT('Images', 'unescaped')
                 ),
                 array(

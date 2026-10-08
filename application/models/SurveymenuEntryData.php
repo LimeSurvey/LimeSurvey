@@ -64,8 +64,21 @@ class SurveymenuEntryData extends CFormModel
         return json_encode(array('render' => $baseArray));
     }
 
+    /**
+     * Build the URL of the menu entry.
+     * A full URL (with scheme) set as an external link is used as is, with the link data appended as query parameters.
+     * Any other link is treated as a route.
+     * @return string
+     */
     public function linkCreator()
     {
+        if ($this->linkExternal && preg_match('#^([a-z][a-z0-9+.-]*:)?//#i', (string)$this->link)) {
+            if (empty($this->linkData)) {
+                return $this->link;
+            }
+            $separator = strpos((string)$this->link, '?') === false ? '?' : '&';
+            return $this->link . $separator . http_build_query($this->linkData);
+        }
         if ($this->linkExternal) {
             return  Yii::app()->getController()->createAbsoluteUrl($this->link, $this->linkData);
         }
@@ -76,8 +89,9 @@ class SurveymenuEntryData extends CFormModel
     {
 
         $this->isActive = $this->recursiveIssetWithDefault($this->rawData, array('render', 'isActive'), 0, $this->isActive);
-        $this->linkExternal = $this->recursiveIssetWithDefault($this->rawData, array('render', 'link', 'external'), 0, $this->linkExternal);
-        $this->pjaxed = $this->recursiveIssetWithDefault($this->rawData, array('render', 'link', 'pjaxed'), 0, $this->pjaxed);
+        $this->linkExternal = (bool)$this->recursiveIssetWithDefault($this->rawData, array('render', 'link', 'external'), 0, $this->linkExternal);
+        // External links open in a new window and can never be loaded with pjax
+        $this->pjaxed = !$this->linkExternal && (bool)$this->recursiveIssetWithDefault($this->rawData, array('render', 'link', 'pjaxed'), 0, $this->pjaxed);
         $alinkData = $this->recursiveIssetWithDefault($this->rawData, array('render', 'link', 'data'), 0, $this->linkData);
 
         foreach ($alinkData as $key => $value) {

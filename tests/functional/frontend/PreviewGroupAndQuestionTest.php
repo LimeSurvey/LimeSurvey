@@ -71,7 +71,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             $this->assertTrue(self::$webDriver->findById('question'.$questions['G2Q01']['qid'])->isDisplayed());
             /* Check if 2nd question in group is not visible */
             $this->assertFalse(self::$webDriver->findById('question'.$questions['G2Q02']['qid'])->isDisplayed());
-            /* Check if 3nd question in group is not visible */
+            /* Check if 3rd question in group is not visible */
             $this->assertFalse(self::$webDriver->findById('question'.$questions['G2Q03']['qid'])->isDisplayed());
             /* Check if 4th question in group is not visible */
             $this->assertFalse(self::$webDriver->findById('question'.$questions['G2Q04']['qid'])->isDisplayed());
@@ -108,7 +108,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
         try {
             self::$webDriver->get($url);
             sleep(1);
-            /* Check if 3nd question in group is not visible */
+            /* Check if 3rd question in group is not visible */
             $this->assertTrue(
                 self::$webDriver->findElement(WebDriverBy::id('question'.$questions['G2Q03']['qid']))->isDisplayed(),
                 "Prefilling url broken when preview group"
@@ -143,7 +143,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
         try {
             self::$webDriver->get($url);
             sleep(1);
-            /* Check question is visble */
+            /* Check question is visible */
             $this->assertTrue(
                 self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G3Q02']->qid))->isDisplayed(),
                 "Question preview force relevance broken"
@@ -207,7 +207,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
         try {
             self::$webDriver->get($url);
             sleep(1);
-            /* Check question is visble */
+            /* Check question is visible */
             $this->assertTrue(
                 self::$webDriver->findElement(WebDriverBy::id('question'.$questions['G3Q02']->qid))->isDisplayed(),
                 "Question preview force relevance broken"

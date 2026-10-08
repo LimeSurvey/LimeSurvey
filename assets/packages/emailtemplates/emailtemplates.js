@@ -108,7 +108,12 @@ var PrepEmailTemplates = function(){
             $(newrow).find('input.relevance').val(relevance).attr('name', 'attachments' + templatetype + '[' + index + '][relevance]');
             $(newrow).find('input.filename').attr('name', 'attachments' + templatetype + '[' + index + '][url]');
             if (error) {
-                $(newrow).find('input.filename').parent().append($("<span class='fa fa-exclamation-triangle text-danger' title='" + error + "'></span>"));
+                $(newrow).find('input.filename').parent().append(
+                    $('<span class="attachment-missing-marker text-danger small"></span>').append(
+                        $('<i class="ri-error-warning-fill" aria-hidden="true"></i>'),
+                        document.createTextNode(' ' + error)
+                    )
+                );
             }
             $(newrow).appendTo($(target).find('tbody'));
             const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('kc-modal-open'));
@@ -117,6 +122,8 @@ var PrepEmailTemplates = function(){
         else
         {
             var newrow = target;
+            // The file was replaced: it is no longer missing
+            $(newrow).find('.attachment-missing-marker').remove();
         }
     
     

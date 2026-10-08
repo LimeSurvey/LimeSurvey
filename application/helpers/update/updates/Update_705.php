@@ -7,6 +7,7 @@ use LimeSurvey\PluginManager\PluginManager;
 
 class Update_705 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         // Check if any plugin (excluding exceptions) has priority = 0

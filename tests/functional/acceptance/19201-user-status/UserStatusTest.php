@@ -20,7 +20,7 @@ use Facebook\WebDriver\WebDriverSelect;
 class UserStatusTest extends TestBaseClassWeb
 {
     // TODO: 
-    // Check that you cannot deactive yourself (even when not superadmin)
+    // Check that you cannot deactivate yourself (even when not superadmin)
     //   Create new user with permission to edit users
     //   Login as new user
     //   Go to user management

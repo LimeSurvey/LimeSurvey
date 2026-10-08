@@ -16,6 +16,7 @@ use Twig\Error\SyntaxError;
 use Twig\Node\BlockNode;
 use Twig\Node\BlockReferenceNode;
 use Twig\Node\ConfigNode;
+use Twig\Node\Expression\MacroReferenceExpression;
 use Twig\Node\MacroNode;
 use Twig\Node\ModuleNode;
 use Twig\Node\Node;
@@ -32,6 +33,10 @@ use Twig\Node\TextNode;
 final class CorrectnessNodeVisitor implements NodeVisitorInterface
 {
     private ?\WeakMap $rootNodes = null;
+    /**
+     * @var array<string, true>
+     */
+    private array $reportedMacroCallSites = [];
     /**
      * Stack of the output-wrapping tags ("if", "for", "set", ...) currently open;
      * the top one is the nearest tag a "block" definition would be nested under.
@@ -57,6 +62,10 @@ final class CorrectnessNodeVisitor implements NodeVisitorInterface
 
         if ($node instanceof ConfigNode) {
             $this->checkConfigTag($node);
+        }
+
+        if ($node instanceof MacroReferenceExpression) {
+            $this->checkMacroCallParentheses($node);
         }
 
         if ($node instanceof BlockReferenceNode) {
@@ -101,6 +110,7 @@ final class CorrectnessNodeVisitor implements NodeVisitorInterface
     private function resetState(): void
     {
         $this->rootNodes = null;
+        $this->reportedMacroCallSites = [];
         $this->tagStack = [];
         $this->hasParent = false;
         $this->blockDepth = 0;
@@ -152,6 +162,32 @@ final class CorrectnessNodeVisitor implements NodeVisitorInterface
         }
     }
 
+    private function checkMacroCallParentheses(MacroReferenceExpression $node): void
+    {
+        if ($node->hasCallParentheses() || $node->isDefinedTestEnabled()) {
+            return;
+        }
+
+        $sourceName = $node->getSourceContext()->getName();
+        $line = $node->getTemplateLine();
+        // A dynamic macro name is only known at runtime.
+        $name = $node->getAttribute('name');
+
+        // A single call site can be visited more than once: "??" reuses its left node,
+        // while "?:" and the "default" filter put a clone of it in the compiled tree.
+        $callSite = $sourceName."\0".$line."\0".$name;
+        if (isset($this->reportedMacroCallSites[$callSite])) {
+            return;
+        }
+        $this->reportedMacroCallSites[$callSite] = true;
+
+        if (null === $name) {
+            trigger_deprecation('twig/twig', '3.29', 'Omitting parentheses when calling a macro is deprecated and will throw a SyntaxError in Twig 4.0; add parentheses after the macro name in "%s" at line %d.', $sourceName, $line);
+        } else {
+            trigger_deprecation('twig/twig', '3.29', 'Omitting parentheses when calling the macro "%s" is deprecated and will throw a SyntaxError in Twig 4.0; add parentheses after the macro name in "%s" at line %d.', $name, $sourceName, $line);
+        }
+    }
+
     private function checkConfigTag(ConfigNode $node): void
     {
         if ('extends' === $node->getNodeTag()) {
@@ -159,7 +195,7 @@ final class CorrectnessNodeVisitor implements NodeVisitorInterface
         }
 
         if (!isset($this->rootNodes[$node])) {
-            trigger_deprecation('twig/twig', '3.27', 'Using the "%s" tag outside the root of a template is deprecated in %s at line %d.', $node->getNodeTag(), $node->getSourceContext()->getName(), $node->getTemplateLine());
+            trigger_deprecation('twig/twig', '3.28', 'Using the "%s" tag outside the root of a template is deprecated in %s at line %d.', $node->getNodeTag(), $node->getSourceContext()->getName(), $node->getTemplateLine());
         }
     }
 

@@ -66,7 +66,7 @@ class TestBaseClassWeb extends TestBaseClass
             throw new \Exception('Could not connect to remote web driver');
         }
 
-        // Implicit timout so we don't have to wait manually.
+        // Implicit timeout so we don't have to wait manually.
         self::$webDriver->manage()->timeouts()->implicitlyWait(5);
 
         // Anyone can preview surveys.
@@ -145,11 +145,11 @@ class TestBaseClassWeb extends TestBaseClass
      */
     public static function adminLogin($userName = null, $password = null, $wait = true)
     {
-        if (is_null($username)) {
-            $username = getenv('ADMINUSERNAME');
+        if (is_null($userName)) {
+            $userName = getenv('ADMINUSERNAME');
         }
-        if (is_null($username) || $username === false) {
-            $username = 'admin';
+        if (is_null($userName) || $userName === false) {
+            $userName = 'admin';
         }
         if (is_null($password)) {
             $password = getenv('PASSWORD');

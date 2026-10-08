@@ -17,6 +17,7 @@ class Update_710 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up()
     {
         if ($this->db->getDriverName() !== 'pgsql') {

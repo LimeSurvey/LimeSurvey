@@ -1,3 +1,4 @@
+import { format } from 'util'
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Input } from 'components/UIComponents'
@@ -57,14 +58,12 @@ export const FileUploadParticipantView = ({
               rel="noreferrer"
               variant={file.isDeleted ? 'outline-danger' : 'outline-info'}
             >
-              {file.isDeleted ? (
-                'File has been deleted'
-              ) : (
-                <>
-                  {t('Download file')} {Math.max(file.approxFileSizeInMB, 0.1)}
-                  {t('MB')}
-                </>
-              )}
+              {file.isDeleted
+                ? t('File has been deleted')
+                : format(
+                    t('Download file (%s MB)'),
+                    Math.max(file.approxFileSizeInMB, 0.1)
+                  )}
             </Button>
             {index !== files.length - 1 && <hr />}
           </div>

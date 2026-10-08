@@ -18,7 +18,7 @@ class OtherGeneralOption extends GeneralOption
         $this->formElement = new FormElement(
             'other',
             null,
-            gT('Activate the "other" option for your question'),
+            gT('Activate the "other" option for your question', 'unescaped'),
             $question->other,
             [
                 'classes' => [],

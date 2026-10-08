@@ -7,6 +7,7 @@ class Update_603 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         $this->changeAdminTheme();

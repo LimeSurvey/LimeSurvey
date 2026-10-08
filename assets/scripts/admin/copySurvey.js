@@ -95,11 +95,11 @@ $(document).ready(function () {
 });
 
 /**
- * Pre-selects a survey and title in the copy survey modal, then opens it.
+ * Preselects a survey and title in the copy survey modal, then opens it.
  *
  * @param surveyId
  * @param defaultTitle pre-formatted default title for the copy
- * @param surveyText  display text for the pre-selected survey (e.g. "123 - My Survey")
+ * @param surveyText  display text for the preselected survey (e.g. "123 - My Survey")
  */
 function copySurveyOptions(surveyId, defaultTitle, surveyText) {
         var $select = $('#surveyIdToCopy');

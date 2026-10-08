@@ -1,7 +1,7 @@
 <?php
 
     /**
-     * View which will appear, if the particpants table is deleted.
+     * View which will appear, if the participants table is deleted.
      */
 
 ?>

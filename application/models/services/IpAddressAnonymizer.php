@@ -88,7 +88,9 @@ class IpAddressAnonymizer
                 $anonymizedIp .= '.0';
             }
         } elseif ($this->isIpv6()) { //check if it is valid ipv6
-            $ipArray = explode(':', $this->ipAddress);
+            // Expand any "::" shorthand first: explode(':', ...) on a compressed
+            // address (e.g. "::1") does not yield the 8 groups the logic below assumes.
+            $ipArray = explode(':', $this->expandIpv6($this->ipAddress));
             //the last 5 blocks have to be set to 0 ...
             for ($i = 0; $i < 5; $i++) {
                 array_pop($ipArray);
@@ -102,5 +104,18 @@ class IpAddressAnonymizer
         }
 
         return $anonymizedIp;
+    }
+
+    /**
+     * Expands a (possibly "::"-compressed) IPv6 address into its 8 full hextet groups.
+     *
+     * @param string $ipAddress a valid IPv6 address, compressed or not
+     * @return string the address as 8 colon-separated 4-digit hex groups, e.g. "::1" becomes
+     *                 "0000:0000:0000:0000:0000:0000:0000:0001"
+     */
+    private function expandIpv6($ipAddress)
+    {
+        $hex = unpack('H*hex', inet_pton($ipAddress));
+        return implode(':', str_split($hex['hex'], 4));
     }
 }

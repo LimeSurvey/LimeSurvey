@@ -1,6 +1,11 @@
 import { useParams } from 'react-router-dom'
 
-import { useBuffer, useFocused, useSurvey } from 'hooks'
+import {
+  useBuffer,
+  useExpressionScriptValidation,
+  useFocused,
+  useSurvey,
+} from 'hooks'
 import {
   getQuestionById,
   htmlPopup,
@@ -20,6 +25,10 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
   const { addToBuffer } = useBuffer()
 
   const question = getQuestionById(focused.qid, survey).question
+  const validateExpression = useExpressionScriptValidation(
+    surveyId,
+    question.qid
+  )
   const hasConditions = (question?.scenarios ?? []).length > 0
 
   const maybeShowConditionsOverwriteWarning = () => {
@@ -69,6 +78,7 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
                 <ExpressionScriptEditorOverlay
                   question={question}
                   onApply={handleApply}
+                  validateExpression={validateExpression}
                 />
               ),
               title: '',

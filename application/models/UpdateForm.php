@@ -859,7 +859,7 @@ class UpdateForm extends CFormModel
             // 2. We're root (UID 0) - root can modify any file, OR
             // 3. File is writable (permissions allow modification)
             if ($currentUid !== false && $fileUid !== false) {
-                return ($currentUid === $fileUid) || ($currentUid === 0);
+                return ($currentUid === $fileUid) || ($currentUid === 0) || is_writable($path);
             }
         }
 
@@ -1085,7 +1085,6 @@ class UpdateForm extends CFormModel
         curl_setopt($ch, CURLOPT_FILE, $pFile);
         curl_exec($ch);
         $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE); // But we want the header to be returned to the controller so we can check if a file has been returned
-        curl_close($ch);
 
         $result = ($content_type == "application/zip") ? array("result" => true) : array('result' => false, 'error' => 'error_while_processing_download');
 
@@ -1124,7 +1123,6 @@ class UpdateForm extends CFormModel
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
             $content = curl_exec($ch);
-            curl_close($ch);
 
             $content_decoded = json_decode(base64_decode($content));
             if (!is_object($content_decoded)) {

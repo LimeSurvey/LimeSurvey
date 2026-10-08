@@ -38,6 +38,7 @@
         <?php if ($item['type'] == BoxesWidget::TYPE_PRODUCT) : ?>
             <div class="box-widget-card align-middle d-inline-block"
                  data-url="<?php echo $item['link'] ?>"
+                 role="link"
                  tabindex="0">
                 <div class="box-widget-card-body">
                     <div class="box-widget-card-header">

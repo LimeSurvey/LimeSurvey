@@ -6,6 +6,7 @@ use Exception;
 
 class Update_155 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         addColumn('{{surveys}}', 'googleanalyticsstyle', "string(1)");

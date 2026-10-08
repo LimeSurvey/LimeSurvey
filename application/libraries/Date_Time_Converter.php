@@ -9,7 +9,7 @@ if (!defined('BASEPATH')) {
  *      elacdude@gmail.com
  *      www.elacdude.com
  *
- *      You are free to use this code free of charge, modify it, and distrubute it,
+ *      You are free to use this code free of charge, modify it, and distribute it,
  *      just leave this comment block at the top of this file.
  *
  *
@@ -62,7 +62,7 @@ class Date_Time_Converter
     /** Constructor.  This is where you supply the date.  Accepts almost any format of
      *   date as long as you supply the correct mask.  DOES accept dates
      *  without leading zeros (n,j,g,G) as long as they aren't bunched together.
-     *   ie: ("1152008", "njY") wont work;   ("1/15/2008", "n/j/2008") will work.
+     *   ie: ("1152008", "njY") won't work;   ("1/15/2008", "n/j/2008") will work.
      *   Example: $obj = new Date_Time_Calc('12/30/2008 17:40:00', 'm/d/Y H:i:s');  */
     public function __construct($sDate, $sFormat)
     {
@@ -189,7 +189,7 @@ class Date_Time_Converter
      * Private Function. Converts a date into a timestamp.  Accepts almost any
      * format of date as long as you supply the correct mask.  DOES accept dates
      * without leading zeros (n,j,g,G) as long as they aren't bunched together.
-     * ie: ("1152008", "njY") wont work;   ("1/15/2008", "n/j/2008") will work
+     * ie: ("1152008", "njY") won't work;   ("1/15/2008", "n/j/2008") will work
      */
     private function _date_to_timestamp($thedate, $mask)
     {

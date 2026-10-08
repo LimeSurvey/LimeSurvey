@@ -11,6 +11,7 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
             $this->widget('ext.AlertWidget.AlertWidget', [
                     'header' => gT("Reordering"),
                     'text' => gT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.") . ' ' .
+                        gT("Alternatively, use the move up and move down buttons.") . ' ' .
                         ($surveyActivated ? gT("Survey is activated, you can not move a question to another group.") : "") . ' ' .
                         gT("After you are done, please click the 'Save' button to save your changes."),
                     'type' => 'info',
@@ -27,22 +28,33 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
         <ol class="organizer group-list list-unstyled" data-level='group' data-disableparentchange='<?= intval($surveyActivated) ?>'>
             <?php
             foreach ($aGroupsAndQuestions as $aGroupAndQuestions) { ?>
+                <?php $groupName = trim(strip_tags((string) $aGroupAndQuestions['group_text'])); ?>
                 <li id='list_g<?php echo $aGroupAndQuestions['gid']; ?>' class='card mjs-nestedSortable-expanded mt-2' data-level='group'>
-                    <div class="h2 card-header bg-white">
-                        <button type="button" class='btn btn-outline-secondary btn-xs ri-arrow-down-s-fill disclose' aria-label="<?= gT('Collapse all') ?>" data-label-expand="<?= gT('Expand all') ?>" data-label-collapse="<?= gT('Collapse all') ?>">
+                    <div class="h2 card-header bg-white d-flex align-items-center">
+                        <button type="button" class='btn btn-outline-secondary btn-xs ri-arrow-down-s-fill disclose' aria-expanded="true" aria-label="<?= gT('Collapse group') ?>" data-label-expand="<?= gT('Expand group') ?>" data-label-collapse="<?= gT('Collapse group') ?>">
                             <span class="caret"></span>
                         </button>
                         &nbsp;
-                        <?= ellipsize($aGroupAndQuestions['group_text'], 80) ?>
+                        <span class="flex-grow-1 organizer-group-name"><?= ellipsize($aGroupAndQuestions['group_text'], 80) ?></span>
+                        <span class="btn-group btn-group-sm ms-2">
+                            <button type="button" class="btn btn-outline-secondary organizer-move" data-direction="up" aria-label="<?= CHtml::encode(sprintf(gT('Move group "%s" up', 'unescaped'), $groupName)) ?>"><span class="ri-arrow-up-line" aria-hidden="true"></span></button>
+                            <button type="button" class="btn btn-outline-secondary organizer-move" data-direction="down" aria-label="<?= CHtml::encode(sprintf(gT('Move group "%s" down', 'unescaped'), $groupName)) ?>"><span class="ri-arrow-down-line" aria-hidden="true"></span></button>
+                        </span>
                     </div>
                     <?php if (isset($aGroupAndQuestions['questions'])) { ?>
                         <ol class='question-list list-unstyled card-body' data-level='question'>
                             <?php
                             foreach ($aGroupAndQuestions['questions'] as $aQuestion) { ?>
                                 <li id='list_q<?php echo $aQuestion['qid']; ?>' class='well well-sm no-nest' data-level='question'>
-                                    <div>
-                                        <b><a href='<?php echo Yii::app()->getController()->createUrl('questionAdministration/view/surveyid/' . $surveyid . '/gid/' . $aQuestion['gid'] . '/qid/' . $aQuestion['qid']); ?>'><?php echo $aQuestion['title']; ?></a></b>:
-                                        <?php echo ellipsize($aQuestion['question'], 80); ?>
+                                    <div class="d-flex align-items-center">
+                                        <span class="flex-grow-1">
+                                            <b><a href='<?php echo Yii::app()->getController()->createUrl('questionAdministration/view/surveyid/' . $surveyid . '/gid/' . $aQuestion['gid'] . '/qid/' . $aQuestion['qid']); ?>'><?php echo $aQuestion['title']; ?></a></b>:
+                                            <?php echo ellipsize($aQuestion['question'], 80); ?>
+                                        </span>
+                                        <span class="btn-group btn-group-sm ms-2">
+                                            <button type="button" class="btn btn-outline-secondary organizer-move" data-direction="up" aria-label="<?= CHtml::encode(sprintf(gT('Move question "%s" up', 'unescaped'), $aQuestion['title'])) ?>"><span class="ri-arrow-up-line" aria-hidden="true"></span></button>
+                                            <button type="button" class="btn btn-outline-secondary organizer-move" data-direction="down" aria-label="<?= CHtml::encode(sprintf(gT('Move question "%s" down', 'unescaped'), $aQuestion['title'])) ?>"><span class="ri-arrow-down-line" aria-hidden="true"></span></button>
+                                        </span>
                                     </div>
                                 </li>
                             <?php } ?>
@@ -53,6 +65,9 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
             } ?>
         </ol>
     </div>
+    <div id="organizer-live-region" class="visually-hidden" role="status" aria-live="polite"
+        data-moved-position="<?= CHtml::encode(gT('Moved to position %1$s of %2$s.', 'unescaped')) ?>"
+        data-moved-group="<?= CHtml::encode(gT('Moved to group "%1$s", position %2$s of %3$s.', 'unescaped')) ?>"></div>
 
     <?php echo CHtml::form(array("surveyAdministration/organize/surveyid/{$surveyid}"), 'post', array('id' => 'frmOrganize', 'style' => 'height:40px')); ?>
     <p>

@@ -160,11 +160,14 @@ class QuestionOrderingService
     /**
      * Apply alphabetical sorting to items
      *
-     * @param array $groupedItems
-     * @param Question $question
+     * Items are sorted by their visible text in the given language, using that language's
+     * collation. For 'random_alphabetical' the direction (A-Z or Z-A) is chosen randomly.
+     *
+     * @param array $groupedItems Items (Answer or Question models) grouped by scale_id
+     * @param Question $question The parent question model
      * @param string $context 'answers' or 'subquestions'
-     * @param string|null $language
-     * @return array
+     * @param string|null $language Language to sort by; falls back to the survey base language if empty or invalid
+     * @return array Sorted items grouped by scale_id
      */
     private function applyAlphabeticalSorting(
         array $groupedItems,
@@ -185,7 +188,7 @@ class QuestionOrderingService
             foreach ($scaleArray as $key => $item) {
                 $l10nCollection = $item->$l10nField;
                 /** @var array<string, \AnswerL10n|\QuestionL10n> $l10nCollection */
-                $sorted[$key] = $l10nCollection[$language]->$textField;
+                $sorted[$key] = $this->getSortableText((string) $l10nCollection[$language]->$textField);
             }
 
             $itemOrder = $question->getQuestionAttribute($orderAttribute);
@@ -206,6 +209,20 @@ class QuestionOrderingService
         }
 
         return $groupedItems;
+    }
+
+    /**
+     * Get the visible text of an item to be used as alphabetical sort key
+     *
+     * Removes HTML markup and decodes HTML entities, so that e.g. "<p>&Eacute;tats-Unis</p>"
+     * is sorted as "États-Unis".
+     *
+     * @param string $text Raw answer or subquestion text, possibly containing HTML
+     * @return string Plain text sort key
+     */
+    private function getSortableText(string $text): string
+    {
+        return trim(html_entity_decode(strip_tags($text), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
     }
 
     /**

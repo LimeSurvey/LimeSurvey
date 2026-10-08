@@ -43,6 +43,7 @@ class UpdateDBCommand extends CConsoleCommand
      * config.php whose database connection should be used instead of the default one.
      * @throws CException If the current database version is not found (application appears uninstalled) or if the upgrade process fails and requires manual intervention.
      */
+    #[\Override]
     public function run($args = null)
     {
         $usingCustomConfig = isset($args) && isset($args[0]) && $args[0];
@@ -74,7 +75,7 @@ class UpdateDBCommand extends CConsoleCommand
                 throw new CException("Please fix this error in your database and try again");
             }
         } else {
-            echo "no need update : DB is uptodate\n";
+            echo "no need update : DB is up-to-date\n";
             return 0;
         }
     }

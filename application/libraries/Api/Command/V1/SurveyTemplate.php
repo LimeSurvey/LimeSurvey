@@ -52,7 +52,7 @@ class SurveyTemplate implements CommandInterface
      * Run survey template command
      *
      * Supports GET and POST, with the sid at the end of the endpoint,
-     * lookin like rest/v1/survey-template/571271
+     * looking like rest/v1/survey-template/571271
      *
      * If it's a GET request, then language is not specified, so it is inferred from the survey's default language and falling back to en if not found
      *
@@ -150,7 +150,7 @@ class SurveyTemplate implements CommandInterface
      */
     private function getTemplateData($surveyId, $language)
     {
-        // @todo This shouldnt require a HTTP request we should be able to
+        // @todo This shouldn't require a HTTP request we should be able to
         // - render survey content internally. To handle this correctly
         // - we should refactor the survey view functionality to make it
         // - reusable (move it out of the controllers).
@@ -183,7 +183,6 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
-        curl_close(($ch));
         return $result;
     }
 }

@@ -2,11 +2,12 @@ import { useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import classNames from 'classnames'
 
-import { useBuffer, useFocused } from 'hooks'
+import { useAppState, useBuffer, useFocused } from 'hooks'
 import {
   arrayDeleteItem,
   DuplicateQuestion,
   createBufferOperation,
+  STATES,
 } from 'helpers'
 import { ConfirmModal } from 'components/Modals'
 
@@ -22,6 +23,7 @@ export const RowQuestionsList = ({
   const { addToBuffer } = useBuffer()
   const { focused = {}, setFocused, unFocus } = useFocused()
   const [deleteState, setDeleteState] = useState({ show: false, index: null })
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
 
   const getQuestionDragStyle = (draggableStyle) => ({
     userSelect: 'none',
@@ -138,6 +140,7 @@ export const RowQuestionsList = ({
                         questionIndex={index}
                         focused={focused}
                         snapshot={snapshot}
+                        isSurveyActive={isSurveyActive}
                       />
                     </div>
                   )}

@@ -53,8 +53,8 @@ class PrintanswersController extends LSYii_Controller
         } else {
             //die('Invalid survey/session');
         }
-        // Get the survey inforamtion
-        // Set the language for dispay
+        // Get the survey information
+        // Set the language for display
         if (isset($_SESSION['responses_' . $iSurveyID]['s_lang'])) {
             $sLanguage = $_SESSION['responses_' . $iSurveyID]['s_lang'];
         } elseif ($survey) {

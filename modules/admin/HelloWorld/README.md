@@ -127,7 +127,7 @@ The function first instantiate the Survey Model:
 $oSurvey = Survey::model()->findByPk($surveyid);
 ```
 
-This will provide you a typical AR instance of row "surveyid" of the table Survey, plus all the methos in Survey Model. To know more about that, see:
+This will provide you a typical AR instance of row "surveyid" of the table Survey, plus all the methods in Survey Model. To know more about that, see:
 https://www.yiiframework.com/doc/guide/1.1/en/database.ar
 
 Then, we build the array of data that will be parsed to the view. In LS architecture, this array of data is first parsed by Survey Common Action. It will look into it for specific data to know what to show or not in the layout.
@@ -159,7 +159,7 @@ Notice 2 things:
 2. The survey title is reached via "currentLanguageSettings->surveyls_title". It's calling a the related table "surveys_languagesettings" and retrieves it's field "surveyls_title". In a simple use case, we could use the AR pattern following rules inside defined in the model. But LimeSurvey being complex, here we're calling the function Survey::getCurrentLanguageSettings(). See:
 https://github.com/LimeSurvey/LimeSurvey/blob/bdeeb8edc4eca6d15f219bb1642e6457c46d213b/application/models/Survey.php#L340-L353
 
-So, if you want to see what you could do with the current edited survey, we suggest you to have a look to the methods of the survey / question / question group / token / etc models. Most of the time, your modules will consist in writting data in the survey related tables.  
+So, if you want to see what you could do with the current edited survey, we suggest you to have a look to the methods of the survey / question / question group / token / etc models. Most of the time, your modules will consist in writing data in the survey related tables.  
 
 > Show the bread crumb
 
@@ -219,7 +219,7 @@ The function is very similar to HelloWorld::HelloWorldSurvey(). So will just see
 > Add a subaction in the breadcrumb
 
 
-If the array of data passed to the view contains a field "module_current_action" inside the field "title_bar", Survey Common Helper will show an additional acction in the breadcrumb.
+If the array of data passed to the view contains a field "module_current_action" inside the field "title_bar", Survey Common Helper will show an additional action in the breadcrumb.
 
 ```php
 $aData['title_bar']['module_current_action'] = 'sayHelloUser';
@@ -269,9 +269,9 @@ It says hello to the logged in user, shows unsafely the value of the URL variabl
 
 ## That's all for now !
 
-Hope that quick HelloWorld will help you to develop custom components for the LimeSurvey admin interface. For now it's very basic, but you can already do very advanced stuff. Most of the current LimeSurvey module could be moved here now. What's really missing is a way for you to create new tables and update them, a way to provide your own tranlsation files. Remember that you can already register javascript via the normal Yii methods.
+Hope that quick HelloWorld will help you to develop custom components for the LimeSurvey admin interface. For now it's very basic, but you can already do very advanced stuff. Most of the current LimeSurvey module could be moved here now. What's really missing is a way for you to create new tables and update them, a way to provide your own translation files. Remember that you can already register javascript via the normal Yii methods.
 
-## Comming soon
+## Coming soon
 
 
 Installer to read a manifest, to create menus, to create / update database tables, to add custom translation files (that will be added to limesurvey core translation files).

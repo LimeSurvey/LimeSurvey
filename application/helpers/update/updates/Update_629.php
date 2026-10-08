@@ -7,6 +7,7 @@ class Update_629 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up(): void
     {
         if (!tableExists('{{twoFactorUsers}}') && !tableExists('{{twofactorusers}}')) {

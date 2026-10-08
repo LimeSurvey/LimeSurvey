@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_426 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
 
@@ -17,7 +18,7 @@ class Update_426 extends DatabaseUpdateBase
             //all groups (except default group gsid=0), must have inheritance value
             $this->db->createCommand()->update('{{surveys_groupsettings}}', array('ipanonymize' => 'I'), 'gsid<>0');
 
-            //change gsid=1 for inheritance logic ...(redundant, but for better understanding and securit)
+            //change gsid=1 for inheritance logic ...(redundant, but for better understanding and security)
             $this->db->createCommand()->update('{{surveys_groupsettings}}', array('ipanonymize' => 'I'), 'gsid=1');
 
             //for all non active surveys,the value must be "I" for inheritance ...

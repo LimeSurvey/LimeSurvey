@@ -19,6 +19,12 @@ if (!defined('BASEPATH')) {
 class LSYii_Validators extends CValidator
 {
     /**
+     * Expression functions that turn encoded text back into HTML markup, and are not allowed in a filtered expression
+     * @var string[]
+     */
+    const XSS_UNSAFE_EM_FUNCTIONS = array('html_entity_decode', 'htmlspecialchars_decode', 'quoted_printable_decode');
+
+    /**
      * Filter attribute for fixCKeditor
      * @var boolean
      */
@@ -48,6 +54,24 @@ class LSYii_Validators extends CValidator
      * @var boolean
      */
     public $allowDataUri = false;
+    /**
+     * Refuse the value (add a validation error) when the XSS filter had to change an expression.
+     * Off by default : the filter is always applied, but only editors that show the validation errors
+     * should refuse the save. Other callers (import, copy …) may ignore a failed save and lose the text.
+     * @var boolean
+     */
+    public static $refuseChangedExpressions = false;
+    /**
+     * Errors about expressions changed by the last xssFilter call, only for the value as submitted
+     * @var string[]
+     */
+    private $expressionErrors = array();
+    /**
+     * Notices about expressions disabled outside a refusing context (e.g. during import), for the current request.
+     * Bulk callers such as the survey import read these to warn the user, since they can not show a validation error.
+     * @var string[]
+     */
+    private static $disabledExpressionNotices = array();
 
     public function __construct()
     {
@@ -73,7 +97,14 @@ class LSYii_Validators extends CValidator
     protected function validateAttribute($object, $attribute)
     {
         if ($this->xssfilter) {
-            $object->$attribute = $this->xssFilter($object->$attribute);
+            /* Unchanged content is grandfathered : only newly added or modified content is refused/disabled */
+            $bModified = !($object instanceof LSActiveRecord) || $object->isAttributeModifiedFromStored($attribute);
+            $object->$attribute = $this->xssFilter($object->$attribute, $bModified);
+            if ($bModified && self::$refuseChangedExpressions) {
+                foreach ($this->getExpressionErrors() as $sError) {
+                    $this->addError($object, $attribute, '{attribute}: ' . $sError);
+                }
+            }
             if ($this->isUrl) {
                 if (self::isXssUrl($object->$attribute)) {
                     $object->$attribute = "";
@@ -127,22 +158,29 @@ class LSYii_Validators extends CValidator
     /**
      * Remove any script or dangerous HTML
      *
+     * The HTML outside and inside expressions is always purified, like before.
+     * In addition, expressions that could bypass the HTML filter at render time (functions that decode entities,
+     * sprintf with a non-literal or unsafe format, or an expression built inside a quoted string) are detected
+     * and, when $neutralizeUnsafeExpressions is true, disabled by encoding their curly braces so they render as
+     * inert text. The errors are collected in $expressionErrors so that editors can refuse the save instead.
+     *
      * @param null|string $value
+     * @param boolean $neutralizeUnsafeExpressions Whether to disable the unsafe expressions found (default true)
      * @return string
      */
-    public function xssFilter($value)
+    public function xssFilter($value, $neutralizeUnsafeExpressions = true)
     {
+        $this->expressionErrors = array();
         /* No need to filter empty $value */
         if (empty($value)) {
             return strval($value);
         }
         $filter = LSYii_HtmlPurifier::getXssPurifier();
-
+        Yii::import('application.helpers.expressions.em_core_helper', true); // Already imported in em_manager_helper.php ?
+        $oExpressionManager = new ExpressionManager();
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
         $sFiltered = $filter->purify($value);
         $sFiltered = preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#', '{$1}', (string) $sFiltered);
-        Yii::import('application.helpers.expressions.em_core_helper', true); // Already imported in em_manager_helper.php ?
-        $oExpressionManager = new ExpressionManager();
         /**  We get 2 array : one filtered, other unfiltered **/
         $aValues = $oExpressionManager->asSplitStringOnExpressions($value); // Return array of array : 0=>the string,1=>string length,2=>string type (STRING or EXPRESSION)
         $aFilteredValues = $oExpressionManager->asSplitStringOnExpressions($sFiltered); // Same but for the filtered string
@@ -154,24 +192,213 @@ class LSYii_Validators extends CValidator
                 $sNewValue .= $bCountIsOk ? $aFilteredValues[$key][0] : $filter->purify($aValue[0]); // If EM is broken : can throw invalid $key
             } else {
                 $sExpression = trim((string) $aValue[0], '{}');
-                $sNewValue .= "{";
-                $aParsedExpressions = $oExpressionManager->Tokenize($sExpression, true);
-                foreach ($aParsedExpressions as $aParsedExpression) {
-                    if ($aParsedExpression[2] == 'DQ_STRING') {
-                        $sNewValue .= "\"" . (string) $filter->purify($aParsedExpression[0]) . "\""; // This disallow complex HTML construction with XSS
-                    } elseif ($aParsedExpression[2] == 'SQ_STRING') {
-                        $sNewValue .= "'" . (string) $filter->purify($aParsedExpression[0]) . "'";
-                    } elseif ($aParsedExpression[2] == 'WORD') {
-                        $sNewValue .= str_replace("html_entity_decode", "", (string) $aParsedExpression[0]);
-                    } else {
-                        $sNewValue .= $aParsedExpression[0];
+                $bUnsafe = false;
+                $sExpression = $this->filterExpression($oExpressionManager->Tokenize($sExpression, true), $filter, $bUnsafe);
+                if ($bUnsafe && $neutralizeUnsafeExpressions) {
+                    // Disable the whole expression : it renders as inert text and can not be evaluated again
+                    $sNewValue .= str_replace(array('{', '}'), array('&#123;', '&#125;'), "{" . $sExpression . "}");
+                    // Record it for bulk callers (import …) that can not show a validation error, unless an editor refuses it
+                    if (!self::$refuseChangedExpressions) {
+                        foreach ($this->expressionErrors as $sError) {
+                            if (!in_array($sError, self::$disabledExpressionNotices, true)) {
+                                self::$disabledExpressionNotices[] = $sError;
+                            }
+                        }
                     }
+                } else {
+                    $sNewValue .= "{" . $sExpression . "}";
                 }
-                $sNewValue .= "}";
             }
         }
         gc_collect_cycles(); // To counter a high memory usage of HTML-Purifier
         return $sNewValue;
+    }
+
+    /**
+     * Run a callback with $refuseChangedExpressions enabled, for editors that show the validation errors to the user
+     *
+     * @param callable $callback
+     * @return mixed The return value of the callback
+     */
+    public static function refuseChangedExpressionsDuring(callable $callback)
+    {
+        $previous = self::$refuseChangedExpressions;
+        self::$refuseChangedExpressions = true;
+        try {
+            return $callback();
+        } finally {
+            self::$refuseChangedExpressions = $previous;
+        }
+    }
+
+    /**
+     * Get the errors about unsafe expressions found by the last xssFilter call
+     *
+     * @return string[]
+     */
+    public function getExpressionErrors()
+    {
+        return $this->expressionErrors;
+    }
+
+    /**
+     * Get the notices about expressions disabled outside a refusing context during the current request
+     *
+     * @return string[]
+     */
+    public static function getDisabledExpressionNotices()
+    {
+        return self::$disabledExpressionNotices;
+    }
+
+    /**
+     * Clear the collected notices about disabled expressions (call before a bulk operation such as an import)
+     *
+     * @return void
+     */
+    public static function clearDisabledExpressionNotices()
+    {
+        self::$disabledExpressionNotices = array();
+    }
+
+    /**
+     * Record an error about an unsafe expression (each distinct message only once)
+     *
+     * @param string $sError The translated error message
+     * @return void
+     */
+    private function addExpressionError($sError)
+    {
+        if (!in_array($sError, $this->expressionErrors, true)) {
+            $this->expressionErrors[] = $sError;
+        }
+    }
+
+    /**
+     * Rebuild an expression from its tokens, purifying the strings, and flag it when it contains an unsafe construct
+     *
+     * @param array $aTokens The tokens of the expression, from ExpressionManager::Tokenize with spaces
+     * @param CHtmlPurifier $filter The XSS purifier
+     * @param boolean $bUnsafe Set to true when the expression contains a construct that could bypass the HTML filter
+     * @return string The rebuilt expression, without the surrounding curly braces
+     */
+    private function filterExpression(array $aTokens, $filter, &$bUnsafe)
+    {
+        $aTokens = array_values($aTokens);
+        $sNewExpression = "";
+        foreach ($aTokens as $key => $aToken) {
+            if ($aToken[2] == 'DQ_STRING') {
+                // This disallow complex HTML construction with XSS, quotes are escaped again as Tokenize removed the escaping
+                $sNewExpression .= "\"" . str_replace("\"", "\\\"", $this->filterExpressionString($aTokens, $key, $filter, $bUnsafe)) . "\"";
+            } elseif ($aToken[2] == 'SQ_STRING') {
+                $sNewExpression .= "'" . str_replace("'", "\\'", $this->filterExpressionString($aTokens, $key, $filter, $bUnsafe)) . "'";
+            } else {
+                if ($aToken[2] == 'WORD' && !$this->isSafeExpressionFunction($aTokens, $key)) {
+                    $bUnsafe = true;
+                    if (strtolower((string) $aToken[0]) === 'sprintf') {
+                        $this->addExpressionError(gT("The function sprintf() is only allowed with a fixed format text that does not use %c.", "unescaped"));
+                    } else {
+                        $this->addExpressionError(sprintf(gT("The function %s() is not allowed in expressions.", "unescaped"), strtolower((string) $aToken[0])));
+                    }
+                }
+                $sNewExpression .= $aToken[0];
+            }
+        }
+        return $sNewExpression;
+    }
+
+    /**
+     * Purify a string of an expression and flag it when it contains an expression built inside the string.
+     * EM evaluates the result of an expression again (up to 3 times), so a string that contains curly braces
+     * could become a new expression that was never filtered. The pattern of regexMatch is kept as is : it is
+     * never shown and needs the curly braces for quantifiers.
+     *
+     * @param array $aTokens The tokens of the expression, indexed from 0
+     * @param integer $key The index of the string token
+     * @param CHtmlPurifier $filter The XSS purifier
+     * @param boolean $bUnsafe Set to true when the string contains an expression
+     * @return string The purified string, without quotes
+     */
+    private function filterExpressionString(array $aTokens, $key, $filter, &$bUnsafe)
+    {
+        $sString = (string) $filter->purify($aTokens[$key][0]);
+        $aPreviousTokens = self::getSignificantTokens(array_reverse(array_slice($aTokens, 0, $key)));
+        $bIsRegexPattern = count($aPreviousTokens) >= 2
+            && $aPreviousTokens[0][2] === 'LP'
+            && $aPreviousTokens[1][2] === 'WORD'
+            && strtolower((string) $aPreviousTokens[1][0]) === 'regexmatch';
+        if ($bIsRegexPattern) {
+            return $sString;
+        }
+        /* Any curly brace in a string could form a new expression at render time (also when split over several
+           string arguments and joined), which would never have been filtered. regexMatch is the only exception. */
+        if (strpos($sString, '{') !== false || strpos($sString, '}') !== false) {
+            $bUnsafe = true;
+            $this->addExpressionError(gT('Curly braces inside quoted text are not allowed. Join the text instead, for example "Hello " + NAME.', 'unescaped'));
+        }
+        return $sString;
+    }
+
+    /**
+     * Remove the SPACE tokens and the empty tokens that Tokenize with spaces returns between the real tokens
+     *
+     * @param array $aTokens Expression tokens
+     * @return array The remaining tokens, indexed from 0
+     */
+    private static function getSignificantTokens(array $aTokens)
+    {
+        $aSignificantTokens = array();
+        foreach ($aTokens as $aToken) {
+            if ($aToken[2] !== 'SPACE' && (string) $aToken[0] !== '') {
+                $aSignificantTokens[] = $aToken;
+            }
+        }
+        return $aSignificantTokens;
+    }
+
+    /**
+     * Check if a WORD token in an expression can be kept.
+     * Functions that decode entities are never allowed, sprintf is allowed only with a safe literal format.
+     *
+     * @param array $aTokens The tokens of the expression, indexed from 0
+     * @param integer $key The index of the WORD token to check
+     * @return boolean
+     */
+    private function isSafeExpressionFunction(array $aTokens, $key)
+    {
+        $sWord = strtolower((string) $aTokens[$key][0]);
+        if (in_array($sWord, self::XSS_UNSAFE_EM_FUNCTIONS, true)) {
+            return false;
+        }
+        if ($sWord !== 'sprintf') {
+            return true;
+        }
+        /* The format must be the literal string directly after the opening parenthesis, alone as first argument */
+        $aNextTokens = self::getSignificantTokens(array_slice($aTokens, $key + 1));
+        if (count($aNextTokens) < 3 || $aNextTokens[0][2] !== 'LP') {
+            return false;
+        }
+        if (!in_array($aNextTokens[1][2], array('DQ_STRING', 'SQ_STRING'), true)) {
+            return false;
+        }
+        if (!in_array($aNextTokens[2][2], array('COMMA', 'RP'), true)) {
+            return false;
+        }
+        return self::isSafeSprintfFormat((string) $aNextTokens[1][0]);
+    }
+
+    /**
+     * Check that a sprintf format only contains conversions that can not create characters from numbers.
+     * Every % must start a literal %% or a conversion with a safe specifier (no %c) ; the padding character
+     * can not be a letter so the PHP and JavaScript implementations of sprintf read the format the same way.
+     *
+     * @param string $format The sprintf format
+     * @return boolean
+     */
+    public static function isSafeSprintfFormat($format)
+    {
+        $sRemaining = preg_replace('/%%|%(?:\d+\$)?(?:[-+ 0]|\'[^a-zA-Z%])*\d*(?:\.\d+)?[bdeEfFgGhHosuxX]/', '', $format);
+        return $sRemaining !== null && strpos($sRemaining, '%') === false;
     }
 
     /**

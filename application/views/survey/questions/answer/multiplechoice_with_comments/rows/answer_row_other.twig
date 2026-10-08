@@ -20,28 +20,41 @@
  * @var $commentLabelText           gT('Make a comment on your choice here:') }}
  * @var $inputCommentName           $myfname2
  * @var $inputCOmmentValue          if (isset($_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
+ * @var $otherInputSize
+ * @var $otherMaxLength
  */
 #}
 <!-- answer_row -->
-<li id="javatbd{{ name }}" class='checkbox-text-item mb-1 other-item clearfix'>
-    <!-- Checkbox + label -->
-    <div class="row">
-        <div class="col-md-{{ sLabelWidth }} col-12 mb-2">
-            <div class="answer-item text-item other-text-item ls-input-group"><!-- input-group from BS seems OK too -->
-                <label for="{{ id }}" class="label-text control-label ls-input-group-extra" id="label-{{ id }}" >{{ processString(labeltext) }}</label>
+<li id="javatbd{{ name }}" class='checkbox-text-item mb-1 other-item clearfix {{ otherItemExtraClass }}'>
+    <div class="row multipleco-other-row">
+        <div class="col-md-{{ sLabelWidth }} col-12 multipleco-other-label-col">
+            <div class="answer-item text-item other-text-item d-flex flex-wrap align-items-baseline multipleco-other-inner">
+                {% if labeltext is not empty %}
+                    <label for="{{ id }}" class="label-text control-label" id="label-{{ id }}">{{ processString(labeltext) }}</label>
+                {% endif %}
                 <input
-                   class="other-text form-control input multipleco-other-topic {{ classes }}"
+                   class="other-text form-control input multipleco-other-topic mb-1 {{ classes }}"
                    type="text"
                    name="{{ name }}"
                    id="{{ id }}"
                    value="{{ value }}"
                    data-number={{ otherNumber }}
+                   {% if labeltext is empty %}
+                       {% if otherTextRight is defined and otherTextRight|length > 0 %}
+                           aria-labelledby="suffix-{{ id }}"
+                       {% else %}
+                           aria-label="Other"
+                       {% endif %}
+                   {% endif %}
+                   {% if otherInputSize %} size="{{ otherInputSize }}" {% endif %}
+                   {% if otherMaxLength %} maxlength="{{ otherMaxLength }}" {% endif %}
                 />
+                {% if otherTextRight is defined and otherTextRight|length > 0 %}
+                    <label class="othertext-suffix-label" id="suffix-{{ id }}">{{ processString(otherTextRight) }}</label>
+                {% endif %}
             </div>
         </div>
-
-        <!-- Comment -->
-        <div class="col-md-{{ sInputContainerWidth }} col-12 mb-2">
+        <div class="col-md-{{ sInputContainerWidth }} col-12 multipleco-other-comment-col">
             <div class="answer-item text-item comment-item">
                 <input
                     class='form-control'
@@ -49,7 +62,11 @@
                     id='{{ inputCommentId }}'
                     name='{{ inputCommentName }}'
                     value='{{ inputCOmmentValue }}'
+                    {% if labeltext is not empty %}
                     aria-labelledby='label-{{ id }} {{ id }}'
+                    {% else %}
+                    aria-labelledby='{{ id }}'
+                    {% endif %}
                 />
             </div>
         </div>

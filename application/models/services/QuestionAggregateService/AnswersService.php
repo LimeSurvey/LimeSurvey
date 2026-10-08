@@ -116,7 +116,14 @@ class AnswersService
             // We use the container to create a model instance
             // allowing us to mock the model instance via
             // container configuration in unit tests
-            $answer = $this->modelAnswer->findByPk($answerId);
+            // Only reuse an existing answer if it belongs to this question.
+            // Any other ID (temp ID or foreign answer) creates a new answer.
+            $answer = is_numeric($answerId)
+                ? $this->modelAnswer->findByAttributes([
+                    'aid' => (int)$answerId,
+                    'qid' => $question->qid
+                ])
+                : null;
             if (!$answer) {
                 $answer = DI::getContainer()
                     ->make(Answer::class);

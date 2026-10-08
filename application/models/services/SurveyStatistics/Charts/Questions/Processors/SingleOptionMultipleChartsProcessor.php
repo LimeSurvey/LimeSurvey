@@ -6,6 +6,7 @@ use Question;
 
 class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
 {
+    #[\Override]
     public function process()
     {
         return $this->buildChartDataByType();
@@ -15,10 +16,12 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
     {
         switch ($this->question['type']) {
             case Question::QT_A_ARRAY_5_POINT:
-                return $this->buildStackedChart(...$this->numericScale(5));
+                [$codes, $labels] = $this->numericScale(5);
+                return $this->buildStackedChart($codes, $labels);
 
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
-                return $this->buildStackedChart(...$this->numericScale(10));
+                [$codes, $labels] = $this->numericScale(10);
+                return $this->buildStackedChart($codes, $labels);
 
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                 return $this->buildStackedChart(['Y', 'U', 'N'], ['Yes', 'Uncertain', 'No']);
@@ -28,7 +31,8 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
 
             case Question::QT_F_ARRAY:
             case Question::QT_H_ARRAY_COLUMN:
-                return $this->buildStackedChart(...$this->answerScale());
+                [$codes, $labels] = $this->answerScale();
+                return $this->buildStackedChart($codes, $labels);
 
             default:
                 return [];

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card } from 'react-bootstrap'
 
-import { BrandedQRCode } from 'components'
+import { BrandedQRCode } from 'shared/BrandedQRCode'
 
 export const QRCodeCard = ({ link }) => {
   return (

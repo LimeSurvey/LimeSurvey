@@ -1,10 +1,8 @@
 import { foldGutter, foldService } from '@codemirror/language'
 import { autocompletion } from '@codemirror/autocomplete'
-import { EditorView } from '@codemirror/view'
 
-import { Button } from 'components/UIComponents'
+import { Button, ExpressionScriptEditor } from 'components/UIComponents'
 import { SwalAlert } from 'helpers'
-import { CodeEditor } from 'components/UIComponents/ContentEditor/CodeEditor/CodeEditor'
 
 import { makeExpressionReadable } from '../utils'
 
@@ -27,14 +25,14 @@ export const ConditionScriptOverwriteConfirmation = ({
         <p>{t('This script will be overwritten:')}</p>
 
         <div className="text-start condition-designer-overlay-textarea-container mt-1">
-          <CodeEditor
+          <ExpressionScriptEditor
             id="expression-script-editor"
             value={makeExpressionReadable(script)}
             height="150px"
             width="100%"
             className="text-start expression-script-codemirror"
+            readOnly
             extensions={[
-              EditorView.editable.of(false),
               foldService.of(() => null),
               autocompletion({ override: [] }),
               foldGutter({ openText: '', closedText: '' }),

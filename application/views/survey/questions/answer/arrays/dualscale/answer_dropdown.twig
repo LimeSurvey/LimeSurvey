@@ -70,7 +70,7 @@
                             class='form-select'
                             name="{{ ansrow.myfname0 }}"
                             id="answer{{ ansrow.myfid0 }}"
-                            aria-labelledby="answertext{{ ansrow.myfname }}"
+                            aria-labelledby="answertext{{ ansrow.myfname }}{% if leftheader != '' %} left-header-{{ basename }}{% endif %}"
                         >
                             <!-- Please choose... -->
                             {% if ansrow.sActualAnswer0 == '' %}
@@ -121,7 +121,7 @@
                         {% if ddprefix != '' %}
                             <div class="ddprefix ls-input-group-extra">{{ processString(ddprefix) }}</div>
                         {% endif %}
-                        <select class='form-select' name="{{ ansrow.myfname1 }}" id="answer{{ ansrow.myfid1 }}" aria-labelledby="answertext{{ ansrow.myfname }}">
+                        <select class='form-select' name="{{ ansrow.myfname1 }}" id="answer{{ ansrow.myfid1 }}" aria-labelledby="answertext{{ ansrow.myfname }}{% if rightheader != '' %} right-header-{{ basename }}{% endif %}">
                             <!-- Please choose... -->
                             {% if ansrow.sActualAnswer1 is empty %}
                                 <option value=""{% if not ansrow.showNoAnswer1 %} selected="selected"{% endif %}>{{ gT('Please choose...') }}</option>

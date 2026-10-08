@@ -39,6 +39,7 @@ function getSurveyDefaultSettings()
     'datestamp'                => 'N',
     'ipaddr'                   => 'N',
     'refurl'                   => 'N',
+    'savequotaexit'            => 'N',
     'tokenanswerspersistence'  => 'N',
     'alloweditaftercompletion' => 'N',
     'startdate'                => '',

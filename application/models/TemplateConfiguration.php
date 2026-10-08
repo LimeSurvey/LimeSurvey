@@ -224,10 +224,15 @@ class TemplateConfiguration extends TemplateConfig
         // No specific template configuration for this surveygroup => create one
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName(
+            // Clone the (possibly cached) generic instance so it is not mutated in place,
+            // which would corrupt the cached base template configuration for later calls.
+            $oTemplateConfigurationModel = clone TemplateConfiguration::getInstanceFromTemplateName(
                 $sTemplateName,
                 $abstractInstance
             );
+            // Clear the parent-template cache copied by clone(): it was resolved for the generic
+            // instance's own context and must be recomputed for this new survey group's context.
+            $oTemplateConfigurationModel->oParentTemplate = null;
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
@@ -271,10 +276,15 @@ class TemplateConfiguration extends TemplateConfig
 
         // If the TemplateConfiguration could not be found go up the inheritance hierarchy
         if (empty($oTemplateConfigurationModel)) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName(
+            // Clone the (possibly cached) generic instance so it is not mutated in place,
+            // which would corrupt the cached base template configuration for later calls.
+            $oTemplateConfigurationModel = clone TemplateConfiguration::getInstanceFromTemplateName(
                 $sTemplateName,
                 $abstractInstance
             );
+            // Clear the parent-template cache copied by clone(): it was resolved for the generic
+            // instance's own context and must be recomputed for this new survey's context.
+            $oTemplateConfigurationModel->oParentTemplate = null;
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;

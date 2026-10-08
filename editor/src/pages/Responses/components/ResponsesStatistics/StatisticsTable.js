@@ -6,6 +6,7 @@ import {
   getUnionSegments,
   ordinal,
   shouldRenderImage,
+  wrapTerm,
 } from './ChartsUtils'
 
 const AnswerCell = ({ row, isImage }) =>
@@ -33,6 +34,7 @@ export const StatisticsTable = ({
 
   if (statsItem) {
     const { stats } = statsItem
+    const statTip = (text) => wrapTerm(text, (term) => <strong>{term}</strong>)
     const statTerm = (label, tip) => (
       <span className="responses-statistics-stat-term">
         {label}{' '}
@@ -43,21 +45,19 @@ export const StatisticsTable = ({
     )
     const minTerm = statTerm(
       t('Min'),
-      <>
-        <strong>{t('Minimum')}</strong>{' '}
-        {t(
-          'shows the lowest value given by participants in the collected data.'
-        )}
-      </>
+      statTip(
+        t(
+          '%sMinimum%s shows the lowest value given by participants in the collected data.'
+        )
+      )
     )
     const maxTerm = statTerm(
       t('Max'),
-      <>
-        <strong>{t('Maximum')}</strong>{' '}
-        {t(
-          'shows the highest value given by participants in the collected data.'
-        )}
-      </>
+      statTip(
+        t(
+          '%sMaximum%s shows the highest value given by participants in the collected data.'
+        )
+      )
     )
     // One column per calculation, single row with the values; min/max share
     // a combined column.
@@ -69,8 +69,11 @@ export const StatisticsTable = ({
         title: statTerm(
           t('Standard deviation'),
           <>
-            <strong>{t('Standard deviation')}</strong>{' '}
-            {t('shows how much the values vary from the average.')}
+            {statTip(
+              t(
+                '%sStandard deviation%s shows how much the values vary from the average.'
+              )
+            )}
             <br />
             {t(
               'A low value means responses are similar, while a high value indicates greater differences between participants.'
@@ -84,8 +87,9 @@ export const StatisticsTable = ({
         title: statTerm(
           t('Average'),
           <>
-            <strong>{t('Arithmetic mean')}</strong>{' '}
-            {t('shows the average value of all responses.')}
+            {statTip(
+              t('%sArithmetic mean%s shows the average value of all responses.')
+            )}
             <br />
             {t(
               'It is calculated by adding all values together and dividing the result by the number of responses.'
@@ -111,8 +115,7 @@ export const StatisticsTable = ({
         title: statTerm(
           t('2nd quartile (median)'),
           <>
-            <strong>{t('Median')}</strong>{' '}
-            {t('shows the middle value of all responses.')}
+            {statTip(t('%sMedian%s shows the middle value of all responses.'))}
             <br />
             {t(
               'Half of the responses are below this value, and the other half are above it.'

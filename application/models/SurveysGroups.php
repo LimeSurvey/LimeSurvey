@@ -216,7 +216,12 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $criteria = new LSDbCriteria();
 
-        $criteria->select = array('DISTINCT t.*');
+        /* Permission-based joins (see getPermissionCriteria()) can fan out one row
+         * per survey/permission per group, so distinct must be a real criteria flag:
+         * a 'DISTINCT t.*' select string dedupes the fetched rows but is ignored by
+         * Yii's count-query builder, which then counts joined rows instead of groups. */
+        $criteria->select = 't.*';
+        $criteria->distinct = true;
 
         $criteria->compare('t.gsid', $this->gsid);
         $criteria->compare('t.name', $this->name, true);
@@ -443,7 +448,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             $criteriaPerm->compare('surveypermissions.read_p', '1', false, 'OR');
             /* default survey group is always available */
             $criteriaPerm->compare('t.gsid', '1', false, 'OR');
-            /* survey group set as avaiable */
+            /* survey group set as available */
             $criteriaPerm->compare('t.alwaysavailable', '1', false, 'OR'); // Is public
         }
         return $criteriaPerm;

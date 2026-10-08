@@ -16,7 +16,7 @@ use TemplateConfiguration;
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 {
     /**
-     * All these values are inherited values. For inherted values the output has to be different.
+     * All these values are inherited values. For inherited values the output has to be different.
      */
     const AFFECTED_INHERITED_SETTINGS = [
         'admin', 'adminemail', 'alloweditaftercompletion', 'allowprev', 'allowsave', 'allowregister','anonymized',
@@ -25,6 +25,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl',
         'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showprogress', 'showqnumcode',
         'showwelcome', 'showxquestions', 'template', 'tokenanswerspersistence', 'tokenlength', 'usecookie',
+        'savequotaexit'
     ];
 
     private TransformerOutputSurvey $transformerSurvey;
