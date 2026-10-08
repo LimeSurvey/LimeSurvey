@@ -861,9 +861,16 @@ class TemplateConfiguration extends TemplateConfig
     public function addOptionFromXMLToLiveTheme()
     {
         if ($this->options != 'inherit') {
-            $oOptions = get_object_vars(json_decode($this->options));
+            $decodedOptions = json_decode((string) $this->options);
+            if (!is_object($decodedOptions)) {
+                return;
+            }
+            $oOptions = get_object_vars($decodedOptions);
             $oTemplateConfigurationModel = new TemplateManifest();
-            $oTemplateConfigurationModel->setBasics();
+            $oTemplateConfigurationModel->setBasics($this->template_name);
+            if (!isset($oTemplateConfigurationModel->config->options)) {
+                return;
+            }
             $oXmlOptions = get_object_vars($oTemplateConfigurationModel->config->options);
 
             // compare template options to options from the XML and add if missing
