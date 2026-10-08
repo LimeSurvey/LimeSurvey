@@ -57,6 +57,7 @@
     "googleAnalyticsStyle": 0,
     "googleAnalyticsApiKey": null,
     "showSurveyPolicyNotice": 0,
+    "code": null,
     "access_mode": "O",
     "hasTokens": false,
     "languageSettings": {

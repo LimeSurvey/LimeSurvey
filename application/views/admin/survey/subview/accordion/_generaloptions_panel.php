@@ -324,6 +324,15 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 ]); ?>
             </div>
         </div>
+        <div class="mb-3" >
+            <label id="internal_title_label" class="form-label" for='code'><?php eT("Internal title:"); ?></label>
+            <div class="">
+                <input type='text' size='30' class="form-control" id='code' name='code' value='<?php echo htmlspecialchars((string) $oSurvey->code); ?>'/>
+            </div>
+            <div class="col-md-6 mt-4 w-100" id="preview-image-container">
+                <?php echo $themeConf->getPreview() ?>
+            </div>
+        </div>
         <!-- Theme -->
         <div class="mb-3" >
             <label id="template_label" class="form-label" for='template'><?php eT("Theme:"); ?></label>
