@@ -227,7 +227,7 @@ var onClickListAction =  function (e) {
             }
         }
 
-        // Custom datas comming from the modal (like sid)
+        // Custom datas coming from the modal (like sid)
         var $postDatas  = {sItems:$oCheckedItems};
         if (LS.gridSelection.isSelectAll($grididvalue)) {
             $postDatas['selectAll'] = 1;

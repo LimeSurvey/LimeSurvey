@@ -169,7 +169,7 @@ class SurveyThemeHelper
      * isStandardTemplate returns true if a template is a standard template.
      * This function does not check if a template actually exists.
      * Scans standard themes folder and looks for folder matching the $themeName.
-     * Important: here is asumed that theme name = folder name
+     * Important: here is assumed that theme name = folder name
      *
      * @param mixed $themeName template name to look for
      * @return bool True if standard template, otherwise false
@@ -521,10 +521,10 @@ class SurveyThemeHelper
     /**
      * Processes a DOMDocument object to check and potentially modify its structure.
      *
-     * This method specifically looks for 'cssframework' nodes within the given DOMDocument.
-     * If found, it examines child nodes for a default option and 'dropdownoptions'. It ensures that
-     * all 'option' nodes are wrapped within an 'optgroup' element. If any modifications are made,
-     * the DOMDocument is marked as changed.
+     * This method specifically looks for the 'cssframework' theme option (config/options/cssframework)
+     * within the given DOMDocument. If found, it examines child nodes for a default option and
+     * 'dropdownoptions'. It ensures that all 'option' nodes are wrapped within an 'optgroup' element.
+     * If any modifications are made, the DOMDocument is marked as changed.
      *
      * @param \DOMDocument $domDocument The DOMDocument object to be checked and potentially modified.
      *
@@ -532,18 +532,15 @@ class SurveyThemeHelper
      *                           Changes include ensuring 'option' nodes within 'cssframework' are properly
      *                           grouped under an 'optgroup' and setting a default option if not present.
      *
-     * @throws \Exception If an invalid node is found within 'dropdownoptions' or if no 'dropdownoptions'
-     *                    nodes are found when expected.
+     * @throws \Exception If an invalid node is found within 'dropdownoptions'.
      */
     private static function checkDomDocument($domDocument)
     {
         $isChangedDomDocument = false;
 
-        // Find first 'cssframework' nodes in the document
-        $cssFrameworkNodes = $domDocument->getElementsByTagName('cssframework');
-        if ($cssFrameworkNodes) {
-            $cssFrameworkNode = $cssFrameworkNodes->item(0);
-        }
+        // Only the 'cssframework' theme option has dropdown options: The one in 'engine' declares the CSS framework,
+        // the one in 'optionsOrderReact' only sets a category
+        $cssFrameworkNode = (new \DOMXPath($domDocument))->query('/config/options/cssframework')->item(0);
 
         if ($cssFrameworkNode) {
             $defaultOption = '';
@@ -590,8 +587,6 @@ class SurveyThemeHelper
                 } else {
                     $optGroupNode = $optGroupNodeList->item(0);
                 }
-            } else {
-                throw new \Exception('No "dropdownoptions" nodes were found.');
             }
 
             if ($defaultOption === '' && isset($optGroupNode->firstChild)) {

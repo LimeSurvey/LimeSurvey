@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { Form } from 'react-bootstrap'
 import ReactSelect from 'react-select'
 import classNames from 'classnames'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { useAppState } from '../../../hooks'
-import { STATES } from '../../../helpers'
+import { RemoveHTMLTagsInString, STATES } from '../../../helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
 
@@ -39,6 +39,15 @@ export const Select = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [canUseAppState, setCanUseAppState] = useState(false)
+
+  options = useMemo(
+    () =>
+      options.map((option) => ({
+        ...option,
+        label: RemoveHTMLTagsInString(option.label),
+      })),
+    [options]
+  )
 
   useEffect(() => {
     try {

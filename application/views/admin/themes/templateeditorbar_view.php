@@ -72,7 +72,7 @@ $importModal = false;
             <select class="col listboxtemplates form-select activate-search" id='templatedir' name='templatedir'
                     aria-labelledby="templatedir-label"
                     onchange="javascript: var uri = new Uri('<?php
-                    // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
+                    // Don't put 'sa' into the URL directly because Yii will then try to use filenames directly in the path because of the route
                     echo $this->createUrl(
                         "admin/themes",
                         [
