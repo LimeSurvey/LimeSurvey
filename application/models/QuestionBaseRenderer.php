@@ -19,6 +19,25 @@
  */
 abstract class QuestionBaseRenderer extends StaticModel
 {
+    /**
+     * @var int Maximum character cap for Long/Huge free text questions (2M characters).
+     * Keeps the stored value below the MySQL MEDIUMTEXT limit of 16MB even for 4-byte UTF-8
+     * characters with response encryption (base64) applied.
+     */
+    public const MAX_CHARS_CAP = 2097152;
+
+    /** @var int Default maximum characters for Long free text questions (100K characters) */
+    public const DEFAULT_MAX_CHARS_LONG_TEXT = 102400;
+
+    /** @var int Default maximum characters for Huge free text questions (1M characters) */
+    public const DEFAULT_MAX_CHARS_HUGE_TEXT = 1048576;
+
+    /**
+     * @var int Default and maximum characters for an Array (Texts) answer (10K characters).
+     * Fits the TEXT response column even for 4-byte UTF-8 characters with response encryption applied.
+     */
+    public const MAX_CHARS_ARRAY_TEXT = 10000;
+
     public $oQuestion;
     public $sSGQA;
     public $sHtml;
@@ -245,6 +264,52 @@ abstract class QuestionBaseRenderer extends StaticModel
             $result =  $result[$key2] ?? null;
         }
         return $result;
+    }
+
+    /**
+     * Compute the effective maximum characters of the current Long/Huge free text or Array (Texts) question.
+     *
+     * @return int
+     */
+    protected function getEffectiveMaxChars()
+    {
+        return self::getEffectiveMaxCharsForType(
+            $this->oQuestion->type,
+            $this->getQuestionAttribute('maximum_chars')
+        );
+    }
+
+    /**
+     * Compute the effective maximum characters for a Long (T), Huge (U) free text or Array (Texts) (;) question.
+     * Uses the 'maximum_chars' attribute value, falls back to the default of the question type
+     * if it is not set, and caps it at the maximum of the question type
+     * ({@see self::MAX_CHARS_CAP} or {@see self::MAX_CHARS_ARRAY_TEXT}).
+     * Shared by the renderers (client side maxlength) and ExpressionManager (server side check).
+     *
+     * @param string $type Question type (Question::QT_T_LONG_FREE_TEXT, Question::QT_U_HUGE_FREE_TEXT or Question::QT_SEMICOLON_ARRAY_TEXT)
+     * @param mixed $maximumChars Value of the 'maximum_chars' question attribute
+     * @return int
+     */
+    public static function getEffectiveMaxCharsForType($type, $maximumChars)
+    {
+        switch ($type) {
+            case Question::QT_SEMICOLON_ARRAY_TEXT:
+                $default = self::MAX_CHARS_ARRAY_TEXT;
+                $cap = self::MAX_CHARS_ARRAY_TEXT;
+                break;
+            case Question::QT_U_HUGE_FREE_TEXT:
+                $default = self::DEFAULT_MAX_CHARS_HUGE_TEXT;
+                $cap = self::MAX_CHARS_CAP;
+                break;
+            default:
+                $default = self::DEFAULT_MAX_CHARS_LONG_TEXT;
+                $cap = self::MAX_CHARS_CAP;
+        }
+        $maxChars = intval(trim((string) $maximumChars));
+        if ($maxChars <= 0) {
+            $maxChars = $default;
+        }
+        return min($maxChars, $cap);
     }
 
     protected function setSubquestions($scaleId = null)

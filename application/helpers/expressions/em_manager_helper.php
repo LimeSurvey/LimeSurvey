@@ -685,6 +685,13 @@ class LimeExpressionManager
      * @var string[]
      */
     private $invalidAnswerString = [];
+
+    /** @var int Maximum bytes of a TEXT column in MySQL/MariaDB */
+    private const MYSQL_TEXT_MAX_BYTES = 65535;
+
+    /** @var int Maximum bytes of a value that still fits a MySQL/MariaDB TEXT column when encrypted (base64 of the value plus a 16 byte MAC) */
+    private const MYSQL_TEXT_MAX_BYTES_ENCRYPTED = 49133;
+
     /**
      * Array of values to be updated
      * @var array
@@ -7021,6 +7028,7 @@ class LimeExpressionManager
             if ($LEM->knownVars[$sgqa]['onlynum']) {
                 $result = (is_numeric($result) ? $result : "");
             }
+            $result = self::truncateEquationResult($result, $sgqa, $qid);
             // Store the result of the Equation in the SESSION
             $_SESSION[$LEM->sessid][$sgqa] = $result;
             $_update = [
@@ -9017,6 +9025,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 }
                             }
                             break;
+                        case Question::QT_T_LONG_FREE_TEXT:
+                        case Question::QT_U_HUGE_FREE_TEXT:
+                        case Question::QT_SEMICOLON_ARRAY_TEXT:
+                            $value = self::truncateTextAnswer($type, $value, $sq, $qid);
+                            break;
+                        case Question::QT_ASTERISK_EQUATION:
+                            $value = self::truncateEquationResult($value, $sq, $qid);
+                            break;
                         case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                             if (!preg_match('/_Cfilecount$/', $sq)) {
                                 $json = $value;
@@ -10374,9 +10390,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case ":": // Array number
                 // @ todo Review if value is totally saved in DB, EM test if is numeric */
                 break;
-            case ";": // Array text
-                /* No validity control ? size ? */
-                break;
             case 'C': // Array (Yes/Uncertain/No)
                 if (!in_array($value, ["Y", "N", "U"])) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
@@ -10441,6 +10454,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 break;
             case 'U': // Huge text
             case 'T': // Long text
+            case ';': // Array text
+                // Submitted answers are already shortened in ProcessCurrentResponses, this catches prefilled and default values - see #18275
+                $maxChars = self::getTextMaxChars($type, $qid);
+                if (self::getTextLength($value) > $maxChars) {
+                    $LEM->addValidityString($sgq, '', sprintf(gT("Text exceeds the maximum allowed length of %s characters"), $maxChars), $set);
+                    return false;
+                }
+                break;
             case 'Q': // Multiple text
             case 'S': // Short text
                 /* No validity control ? size ? */
@@ -10468,6 +10489,96 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 break;
         }
         return true;
+    }
+
+    /**
+     * Get the effective maximum characters of a Long (T), Huge (U) free text or Array (Texts) (;) question.
+     *
+     * @param string $type Question type
+     * @param integer $qid Question ID
+     * @return integer
+     */
+    private static function getTextMaxChars($type, $qid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return QuestionBaseRenderer::getEffectiveMaxCharsForType(
+            $type,
+            $LEM->qattr[$qid]['maximum_chars'] ?? null
+        );
+    }
+
+    /**
+     * Get the length of a text answer the same way the browser counts it for the textarea maxlength:
+     * a line break (submitted as CRLF) counts as one character.
+     *
+     * @param string $value The answer
+     * @return integer
+     */
+    private static function getTextLength($value)
+    {
+        return mb_strlen(str_replace("\r\n", "\n", (string) $value), 'UTF-8');
+    }
+
+    /**
+     * Shorten a submitted Long (T), Huge (U) free text or Array (Texts) (;) answer to the maximum characters of the question.
+     * When shortened, an invalid answer string is set so the question is invalid and the respondent
+     * has to review the answer before moving on.
+     *
+     * @param string $type Question type
+     * @param mixed $value The submitted answer
+     * @param string $sgqa The answer column
+     * @param integer $qid Question ID
+     * @return mixed The answer, shortened if needed
+     */
+    private static function truncateTextAnswer($type, $value, $sgqa, $qid)
+    {
+        if (!is_string($value)) {
+            return $value;
+        }
+        $maxChars = self::getTextMaxChars($type, $qid);
+        if (self::getTextLength($value) <= $maxChars) {
+            return $value;
+        }
+        $LEM =& LimeExpressionManager::singleton();
+        $LEM->addValidityString(
+            $sgqa,
+            '',
+            sprintf(gT("Your answer exceeded the maximum allowed length of %s characters and has been shortened. Please review your answer."), $maxChars)
+        );
+        return mb_substr(str_replace("\r\n", "\n", $value), 0, $maxChars, 'UTF-8');
+    }
+
+    /**
+     * Shorten an Equation result that does not fit the TEXT response column on MySQL/MariaDB
+     * (65535 bytes, less when the question is encrypted) and log it for the administrator.
+     * The respondent can not change the result, so no error is shown.
+     * Other databases have no relevant limit, so the result is never shortened there.
+     *
+     * @param mixed $value The Equation result
+     * @param string $sgqa The answer column
+     * @param integer $qid Question ID
+     * @return mixed The result, shortened if needed
+     */
+    private static function truncateEquationResult($value, $sgqa, $qid)
+    {
+        if (!is_string($value) || strlen($value) <= self::MYSQL_TEXT_MAX_BYTES_ENCRYPTED || Yii::app()->db->driverName != 'mysql') {
+            return $value;
+        }
+        $maxBytes = self::MYSQL_TEXT_MAX_BYTES;
+        $question = Question::model()->findByPk($qid);
+        if ($question && $question->encrypted === 'Y') {
+            $maxBytes = self::MYSQL_TEXT_MAX_BYTES_ENCRYPTED;
+        }
+        if (strlen($value) <= $maxBytes) {
+            return $value;
+        }
+        $LEM =& LimeExpressionManager::singleton();
+        Yii::log(
+            sprintf("Survey %s: the result of the equation %s is %s bytes long and has been shortened to %s bytes to fit the response column", intval($LEM->sid), $sgqa, strlen($value), $maxBytes),
+            'error',
+            'application.LimeExpressionManager.truncateEquationResult'
+        );
+        return mb_strcut($value, 0, $maxBytes, 'UTF-8');
     }
 
     /**
