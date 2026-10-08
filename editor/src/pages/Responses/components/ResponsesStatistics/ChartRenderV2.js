@@ -285,6 +285,8 @@ const getStorageKey = (surveyId, chartId, index) =>
 
 const getDefaultView = (availableViews, viewContext) => {
   const preferredViews = [
+    // Ranking opens on the table; only the table breaks down the ranked places.
+    viewContext.isRanking && VIEW.TABLE,
     viewContext.isArrayText && VIEW.TABLE,
     viewContext.isArray && !viewContext.isArrayNumbers && VIEW.STACKED_BAR,
     viewContext.isNumerical && VIEW.TABLE,
@@ -313,6 +315,7 @@ export const ChartRendererV2 = ({
 }) => {
   const isNumerical = question?.type === QT_N_NUMERICAL
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
+  const isRanking = isRankingQuestion(question?.themeName)
   const isGridable =
     isNumerical ||
     [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
@@ -321,7 +324,6 @@ export const ChartRendererV2 = ({
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
-  const isRanking = isRankingQuestion(question?.themeName)
   const hasComments = isCommentQuestionType(question?.type)
   const isChoice = CHOICE_QUESTION_TYPES.includes(question?.type)
   const isArray = (data ?? []).some((item) => Array.isArray(item?.segments))
@@ -463,6 +465,23 @@ export const ChartRendererV2 = ({
                     </TooltipContainer>
                   )
                 )}
+              </div>
+            )}
+            {isRanking && activeView?.value === VIEW.BAR_CHART && (
+              <div className="responses-statistics-chart-subtitle">
+                <TooltipContainer
+                  tip={t(
+                    'The bar chart shows how often each answer option was ranked, regardless of the place it got'
+                  )}
+                >
+                  <span
+                    className="responses-statistics-chart-subtitle-term"
+                    role="img"
+                    aria-label={t('About this chart')}
+                  >
+                    <i className="ri-information-line"></i>
+                  </span>
+                </TooltipContainer>
               </div>
             )}
             <div>{activeView?.render(renderContext)}</div>
