@@ -23,6 +23,11 @@ LS.CPDB = (function() {
          * @todo
          */
         var secondSuccess = function(result) {
+            // Keep the modal open on validation errors, so the user can correct the input
+            if (result && result.error) {
+                window.LS.ajaxAlerts(result.error.message, 'danger', {showCloseButton: true});
+                return;
+            }
             $(baseModal).modal('hide');
             $.fn.yiiGridView.update(gridViewId,{});
             callback(result);

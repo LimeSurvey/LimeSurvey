@@ -9561,7 +9561,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $allQuestionsErrors = [];
         /* @var array[] questions with warnings : gid,qid and count to create a list (@todo) ? */
         $aQuestionWarnings = [];
-        $warnings = 0;
 
         /* Import needed helpers */
         Yii::import('application.helpers.replacements_helper', true);
@@ -9917,28 +9916,28 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $varNameError = null;
             if (isset($varNamesUsed[$rootVarName])) {
                 $varNameErrorMsg .= $LEM->gT('This variable name has already been used.');
+                // A duplicated variable name breaks Expression Manager logic, whatever the naming mode
+                ++$errorCount;
             } else {
                 $varNamesUsed[$rootVarName] = [
                     'gseq' => $gseq,
-                    'qid'  => $qid
+                    'qid'  => $qid,
+                    'gid'  => $gid,
                 ];
             }
 
             if (!preg_match('/^[a-zA-Z][0-9a-zA-Z]*$/', (string) $rootVarName)) {
-                $varNameErrorMsg .= $LEM->gT('Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated.');
+                $varNameErrorMsg = trim($varNameErrorMsg . ' ' . $LEM->gT('Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated.'));
+                // A deprecated variable name can't be used reliably in expressions, whatever the naming mode
+                ++$errorCount;
             }
             if ($varNameErrorMsg != '') {
                 $varNameError = [
                     'message' => $varNameErrorMsg,
                     'gseq'    => $varNamesUsed[$rootVarName]['gseq'],
                     'qid'     => $varNamesUsed[$rootVarName]['qid'],
-                    'gid'     => $gid,
+                    'gid'     => $varNamesUsed[$rootVarName]['gid'],
                 ];
-                if (!$LEM->sgqaNaming) {
-                    ++$errorCount;
-                } else {
-                    ++$warnings;
-                }
             }
 
             //////
@@ -10103,7 +10102,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $questionRow .= $rootVarName;
             } else {
                 $editlink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
-                $questionRow .= "<span class='highlighterror' title='" . $varNameError['message'] . "' "
+                $questionRow .= "<span class='highlighterror' title='" . CHtml::encode($varNameError['message']) . "' "
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";
             }

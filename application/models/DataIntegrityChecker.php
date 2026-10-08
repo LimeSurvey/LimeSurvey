@@ -64,6 +64,14 @@ class DataIntegrityChecker
             $aData = $this->deleteOrphanPermissions($aData);
         }
 
+        if (isset($aDelete['surveyswithoutsurveygroup'])) {
+            $aData = $this->moveSurveysToDefaultSurveyGroup($aDelete['surveyswithoutsurveygroup'], $aData);
+        }
+
+        if (isset($aDelete['orphansurveygroupsettings'])) {
+            $aData = $this->deleteOrphanSurveyGroupSettings($aData);
+        }
+
         if (isset($aDelete['surveyswithoutresponsetable'])) {
             $aData = $this->deactivateSurveysWithoutResponseTable($aDelete['surveyswithoutresponsetable'], $aData);
         }
@@ -763,6 +771,78 @@ class DataIntegrityChecker
     }
 
     /**
+     * Returns the surveys whose survey group no longer exists.
+     *
+     * Without its survey group a survey has no settings to inherit, so most of its
+     * inherited settings are missing when it is opened.
+     *
+     * @return array[] Each with a 'sid' and a 'gsid' key.
+     */
+    private function findSurveysWithoutSurveyGroup()
+    {
+        return Yii::app()->db->createCommand()
+            ->select('sid, gsid')
+            ->from('{{surveys}}')
+            ->where('gsid NOT IN (SELECT sg.gsid FROM {{surveys_groups}} sg)')
+            ->order('sid')
+            ->queryAll();
+    }
+
+    /**
+     * Moves surveys whose survey group no longer exists to the default survey group.
+     *
+     * @param array[] $surveys Surveys to move, each with a 'sid' and a 'gsid' key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per moved survey and a warning per failed one.
+     */
+    private function moveSurveysToDefaultSurveyGroup(array $surveys, array $aData)
+    {
+        if (SurveysGroups::model()->findByPk(1) === null) {
+            $aData['warnings'][] = gT('Unable to move surveys of missing survey groups because the default survey group is missing');
+            return $aData;
+        }
+        foreach ($surveys as $survey) {
+            if (Survey::model()->updateByPk($survey['sid'], array('gsid' => 1))) {
+                $aData['messages'][] = sprintf(gT('Moved survey %s to the default survey group because its survey group %s no longer exists'), $survey['sid'], $survey['gsid']);
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to move survey %s to the default survey group'), $survey['sid']);
+            }
+        }
+        return $aData;
+    }
+
+    /**
+     * Returns the criteria matching survey group settings of survey groups that no
+     * longer exist.
+     *
+     * The global survey settings (gsid 0) have no survey group and the settings of the
+     * default survey group (gsid 1) are never deleted.
+     *
+     * @return CDbCriteria
+     */
+    private function getOrphanSurveyGroupSettingsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = 'gsid > 1 AND gsid NOT IN (SELECT sg.gsid FROM {{surveys_groups}} sg)';
+        return $oCriteria;
+    }
+
+    /**
+     * Deletes survey group settings of survey groups that no longer exist.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message if any setting was deleted.
+     */
+    private function deleteOrphanSurveyGroupSettings(array $aData)
+    {
+        $count = SurveysGroupsettings::model()->deleteAll($this->getOrphanSurveyGroupSettingsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u survey group setting(s) of survey groups that no longer exist'), $count);
+        }
+        return $aData;
+    }
+
+    /**
      * Deactivates active surveys whose response table is missing.
      *
      * @param array[] $surveys Surveys to deactivate, each with a 'sid' key.
@@ -972,6 +1052,18 @@ class DataIntegrityChecker
         $iCount = Permission::model()->count($this->getOrphanSurveyPermissionsCriteria());
         if ($iCount > 0) {
             $aDelete['orphansurveypermissions'] = $iCount;
+        }
+
+        /**********************************************************************/
+        /*     Check surveys and survey group settings of deleted groups      */
+        /**********************************************************************/
+        $aSurveysWithoutSurveyGroup = $this->findSurveysWithoutSurveyGroup();
+        if (!empty($aSurveysWithoutSurveyGroup)) {
+            $aDelete['surveyswithoutsurveygroup'] = $aSurveysWithoutSurveyGroup;
+        }
+        $iCount = SurveysGroupsettings::model()->count($this->getOrphanSurveyGroupSettingsCriteria());
+        if ($iCount > 0) {
+            $aDelete['orphansurveygroupsettings'] = $iCount;
         }
 
         /**********************************************************************/

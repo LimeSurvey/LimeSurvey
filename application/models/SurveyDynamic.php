@@ -836,7 +836,7 @@ class SurveyDynamic extends LSActiveRecord
             : LimeExpressionManager::QuestionIsRelevant($oQuestion->qid);
 
         if (
-            !($isRelevant && $bHonorConditions == true)
+            ($bHonorConditions && !$isRelevant)
             || (is_array($attributes) && $attributes['hidden'] == 1)
         ) {
             return false;
@@ -1068,6 +1068,14 @@ class SurveyDynamic extends LSActiveRecord
         }
     }
 
+    /**
+     * Builds the grouped question/answer data for a response, used to render the print-answers page
+     *
+     * @param integer $sSRID Response ID
+     * @param string $sLanguage Language to use for group and question texts
+     * @param boolean $bHonorConditions Whether to skip groups and questions that are not relevant; if false, all are included
+     * @return array Group data keyed by group ID, each holding its questions in 'answerArray'
+     */
     public function getPrintAnswersArray($sSRID, $sLanguage, $bHonorConditions = false)
     {
 
@@ -1080,7 +1088,7 @@ class SurveyDynamic extends LSActiveRecord
         $oGroupList = $oSurvey->groups;
 
         foreach ($oGroupList as $oGroup) {
-            if (!(LimeExpressionManager::GroupIsRelevant($oGroup->gid) && $bHonorConditions == true)) {
+            if ($bHonorConditions && !LimeExpressionManager::GroupIsRelevant($oGroup->gid)) {
                 continue;
             }
 
