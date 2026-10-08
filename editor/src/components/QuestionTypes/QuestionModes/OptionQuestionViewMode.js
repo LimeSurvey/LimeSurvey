@@ -376,7 +376,11 @@ export const OptionQuestionViewMode = ({
   }
 
   return (
-    <div className="children-parent">
+    <div
+      className={`children-parent${
+        isMultipleShortTexts ? ' multiple-short-texts' : ''
+      }`}
+    >
       {children?.map((child, index) => {
         const ChildUiComponentToRender =
           child.isOther && UiComponentToRender === ImageChoice
