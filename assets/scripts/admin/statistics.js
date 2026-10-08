@@ -859,7 +859,8 @@ $(document).on('ready  pjax:scriptcomplete', function () {
 
         var $self = $(this),
             overlay = createOverlay(),
-            thisTable = $('#' + $self.data('questionId'));
+            // Subquestions of a question share the same table id, so use the table the button is in
+            thisTable = $self.closest('table');
 
         $self.css({ display: 'none' });
         thisTable.find('.chartjs-buttons').closest('tr').css({ display: 'none' });

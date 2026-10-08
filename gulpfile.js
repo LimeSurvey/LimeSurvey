@@ -34,10 +34,6 @@ const fs = require('fs');
 
 function js_minify() {
     // browserify package handler
-    return (
-        browserify({
-            entries: ["assets/bootstrap_5/js/bootstrap_5.js"],
-        })
     return browserify({
         entries: ['assets/bootstrap_5/js/bootstrap_5.js']
     })

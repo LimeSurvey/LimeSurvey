@@ -97,6 +97,9 @@ class QuestionGroupService
     /**
      * Checks permissions for updating, and returns a specific question group.
      * Throws an exception if no group can be found.
+     *
+     * Note: The group is only returned if it belongs to the given survey.
+     *
      * @param int $surveyId
      * @param int $questionGroupId
      * @return QuestionGroup
@@ -106,7 +109,11 @@ class QuestionGroupService
     public function getQuestionGroupForUpdate(int $surveyId, int $questionGroupId)
     {
         $this->checkUpdatePermission($surveyId);
-        $questionGroup = $this->modelQuestionGroup->findByPk($questionGroupId);
+        $questionGroup = $this->modelQuestionGroup->findByPk(
+            $questionGroupId,
+            'sid = :sid',
+            [':sid' => $surveyId]
+        );
         if (!$questionGroup) {
             throw new NotFoundException(
                 'Group not found'
@@ -181,6 +188,8 @@ class QuestionGroupService
     /**
      * Returns a QuestionGroup (existing one or new created one)
      *
+     * Note: An existing group is only returned if it belongs to the given survey.
+     *
      * @param int $surveyId
      * @param int | null $questionGroupId ID of group
      * @return QuestionGroup
@@ -188,7 +197,11 @@ class QuestionGroupService
      */
     public function getQuestionGroupObject(int $surveyId, ?int $questionGroupId = null)
     {
-        $oQuestionGroup = $this->modelQuestionGroup->findByPk($questionGroupId);
+        $oQuestionGroup = $this->modelQuestionGroup->findByPk(
+            $questionGroupId,
+            'sid = :sid',
+            [':sid' => $surveyId]
+        );
         if (is_int($questionGroupId) && $oQuestionGroup === null) {
             throw new NotFoundException(gT('Invalid ID'));
         } elseif ($oQuestionGroup == null) {
@@ -414,6 +427,9 @@ class QuestionGroupService
     /**
      * Method to store and filter questionGroupData for editing a questionGroup
      *
+     * Note: The sid and gid keys of the input are ignored, so a group can neither be
+     * moved to another survey nor take over another group's ID.
+     *
      * @param QuestionGroup $oQuestionGroup
      * @param array $aQuestionGroupData
      *
@@ -424,6 +440,7 @@ class QuestionGroupService
         QuestionGroup $oQuestionGroup,
         array $aQuestionGroupData
     ) {
+        unset($aQuestionGroupData['sid'], $aQuestionGroupData['gid']);
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
         if ($oQuestionGroup == null) {
             throw new PersistErrorException(
@@ -444,6 +461,8 @@ class QuestionGroupService
      * Creates a new question group, and also adds plain entries for the required
      * QuestionGroupL10n data
      *
+     * Note: The group is always created in the given survey, an sid in the input is ignored.
+     *
      * @param int $surveyId
      * @param array|null $aQuestionGroupData
      *
@@ -455,9 +474,9 @@ class QuestionGroupService
     {
         $survey = $this->getSurvey($surveyId);
         $this->refreshModels();
-        $aQuestionGroupData = array_merge([
+        $aQuestionGroupData = array_merge($aQuestionGroupData ?? [], [
             'sid' => $survey->sid,
-        ], $aQuestionGroupData);
+        ]);
         unset($aQuestionGroupData['gid']);
 
         $oQuestionGroup = $this->modelQuestionGroup;
