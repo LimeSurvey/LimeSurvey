@@ -292,6 +292,8 @@ var onClickListAction =  function (e) {
                     // This depend on keepopen
                     $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
                     syncMassiveActionResultsTableCaption($modal, $modalBody);
+                    // The clicked confirm button is hidden now: Keep keyboard focus inside the modal
+                    $modalClose.find('button').first().trigger('focus');
                 }
 
                 if (html.ajaxHelper) {

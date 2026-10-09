@@ -46,7 +46,7 @@
     "prosemirror-model": "^1.24.1",
     "prosemirror-schema-basic": "^1.2.3",
     "prosemirror-state": "^1.4.3",
-    "prosemirror-view": "^1.38.0",
+    "prosemirror-view": "^1.42.6",
     "react": "^18.2.0",
     "react-avatar-editor": "^13.0.0",
     "react-beautiful-dnd": "^13.1.1",

@@ -22,6 +22,7 @@ export const Select = ({
   onChange = () => {},
   update = () => {},
   value,
+  disabled = false,
   activeDisabled = false,
   noPermissionDisabled = false,
   noAccessDisabled = false,
@@ -64,7 +65,7 @@ export const Select = ({
     ? useAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION)
     : [true]
 
-  const disabled =
+  const permissionDisabled =
     (isSurveyActive && activeDisabled) ||
     (!hasSurveyUpdatePermission && noPermissionDisabled) ||
     noAccessDisabled
@@ -120,7 +121,7 @@ export const Select = ({
       data-testid={dataTestId}
     >
       {labelText && <Form.Label htmlFor="select">{labelText}</Form.Label>}
-      <TooltipContainer tip={toolTip} showTip={disabled}>
+      <TooltipContainer tip={toolTip} showTip={permissionDisabled}>
         <ReactSelect
           classNames={{
             control: () => 'select',
@@ -183,7 +184,7 @@ export const Select = ({
               wordWrap: 'break-word',
             }),
           }}
-          isDisabled={disabled}
+          isDisabled={disabled || permissionDisabled}
           isClearable={false}
           onMenuOpen={handleOnMenuOpen}
           onMenuClose={handleOnMenuClose}

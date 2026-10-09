@@ -1,10 +1,27 @@
 .question {
+  // Single source of truth for the question layout:
+  // title, description and body all start at the content inset,
+  // the question number hangs in the inset, right before the title.
+  --question-content-inset: 45px;
+  --question-number-gap: 8px;
+
   padding: 28px;
   padding-top: 38px;
+
+  .question-content {
+    padding-left: var(--question-content-inset);
+  }
 
   .question-header,
   .questoin-header-title-container {
     min-width: 100%;
+    .content-editor.question-title {
+      @include reg24;
+    }
+  }
+
+  .question-title-row {
+    position: relative;
   }
 
   .title-default-heading {
@@ -25,19 +42,27 @@
     }
   }
 
+  // Out of flow, so it never shifts the title. As an abspos child of a flex
+  // container it is still vertically centered by the row's align-items.
   .question-number {
     @include label-s;
     color: $grape;
-    min-width: 45px;
+    position: absolute;
+    right: 100%;
+    margin-right: var(--question-number-gap);
+    white-space: nowrap;
   }
 
   .question-description {
-    margin: 16px 0 16px 45px;
+    margin: 16px 0;
     padding-bottom: 8px;
 
     .question-description-content-editor {
       width: 100%;
       @include label-m;
+      .content-editable {
+        padding-left: 0;
+      }
     }
   }
 
@@ -52,8 +77,6 @@
     padding-bottom: 16px;
     overflow-x: visible;
 
-    margin-left: 43px; // Important must match with the question-number width
-
     .error-message {
       @include med14-c;
       @extend .text-danger;
@@ -64,16 +87,36 @@
     }
   }
 
+  // Edit-only controls (e.g. the remove button) are the first item of their
+  // row and sit inside the content area, so they start at the content inset.
   .remove-option-button-parent {
-    position: relative;
+    display: flex;
+    align-items: center;
 
     .remove-option-button {
-      position: absolute;
-      left: -16px;
-      top: 50%;
-      transform: translateY(-50%);
       cursor: pointer;
     }
+  }
+
+  // Bootstrap indents .form-check by 1.5em and pulls the input back by
+  // -1.5em, but em resolves against different font sizes (checkboxes use
+  // $font-size-xl), which shifts checkboxes 12px left. Our .form-check is
+  // a flex row with a gap, so neither offset is needed.
+  .form-check {
+    padding-left: 0;
+
+    .form-check-input {
+      margin-left: 0;
+    }
+  }
+
+  // Disabled ContentEditors used as the row label (e.g. multiple short
+  // texts) must start at the content inset like radios/checkboxes do.
+  .children-parent
+    .child
+    > .content-editor.child-ui-component
+    .content-editable {
+    padding-left: 0;
   }
 }
 
@@ -129,14 +172,40 @@
     width: max-content;
     max-width: 300px;
   }
+  &.edit-mode {
+    .child-ui-component {
+      max-width: none;
+      // Let only the text column shrink/wrap; min-width: 0 allows it to go
+      // below its max-content width instead of squeezing its siblings.
+      flex: 0 1 auto;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+  }
 
   .child {
     display: flex;
     flex-direction: row;
     justify-content: start;
     align-items: center;
-    gap: 8px;
+    gap: 16px;
     width: 100%;
+
+    // Fixed-size controls (remove button, drag handle, code tag, assessment
+    // value) must never shrink, otherwise their spacing varies per row.
+    > :not(.child-ui-component) {
+      flex-shrink: 0;
+    }
+
+    // Design: remove X -> 4px -> drag icon -> 16px -> content.
+    > .remove-option-button-parent {
+      margin-right: -12px;
+    }
+
+    // Keep the 28px hit/focus area, but lay it out as the 14px icon.
+    > .question-drag-handle {
+      margin-inline: -7px;
+    }
   }
 }
 
@@ -146,6 +215,20 @@
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
   outline: 2px solid $error;
   z-index: 10;
+}
+
+.question-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: $border-radius-xs;
+
+  &:focus-visible {
+    outline: 2px solid $g-700;
+    outline-offset: -2px;
+  }
 }
 
 .question-code {

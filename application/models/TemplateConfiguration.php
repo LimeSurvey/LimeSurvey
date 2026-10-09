@@ -744,47 +744,51 @@ class TemplateConfiguration extends TemplateConfig
         ];
 
 
-        $dropdownItems[] = [
-            'title'            => gT('Extend'),
-            'url'              => $sExtendUrl,
-            'linkId'           => 'extendthis_' . $this->id,
-            'linkClass'        => 'selector--ConfirmModal ',
-            'iconClass'        => 'ri-file-copy-line text-success',
-            'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
-            'linkAttributes'   => [
-                'title'            => sprintf(gT('Type in the new name to extend %s'), $templateName),
-                'data-button-no'   => gT('Cancel'),
-                'data-button-yes'  => gT('Extend'),
-                'data-text'        => gT('Please type in the new theme name above.'),
-                'data-post'        => json_encode([
-                    "copydir" => $templateName,
-                    "action"  => "templatecopy",
-                    "newname" => [ "value" => "extends_" . $templateName,
-                                    "type" => "text",
-                                    "class" => "form-control col-md-12" ]
-                    ]),
-            ]
-        ];
+        if (Permission::model()->hasGlobalPermission('templates', 'create')) {
+            $dropdownItems[] = [
+                'title'            => gT('Extend'),
+                'url'              => $sExtendUrl,
+                'linkId'           => 'extendthis_' . $this->id,
+                'linkClass'        => 'selector--ConfirmModal ',
+                'iconClass'        => 'ri-file-copy-line text-success',
+                'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
+                'linkAttributes'   => [
+                    'title'            => sprintf(gT('Type in the new name to extend %s'), $templateName),
+                    'data-button-no'   => gT('Cancel'),
+                    'data-button-yes'  => gT('Extend'),
+                    'data-text'        => gT('Please type in the new theme name above.'),
+                    'data-post'        => json_encode([
+                        "copydir" => $templateName,
+                        "action"  => "templatecopy",
+                        "newname" => [ "value" => "extends_" . $templateName,
+                                        "type" => "text",
+                                        "class" => "form-control col-md-12" ]
+                        ]),
+                ]
+            ];
+        }
 
 
-        $dropdownItems[] = [
-            'title'            => gT('Uninstall'),
-            'url'              => $sUninstallUrl,
-            'linkId'           => 'remove_fromdb_link_' . $this->id,
-            'linkClass'        => 'selector--ConfirmModal ',
-            'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => App()->getController()->action->id !== "surveysgroups" &&
-                                    $templateName != App()->getConfig('defaulttheme'),
-            'linkAttributes'   => [
-                'title'            => gT('Uninstall this theme'),
-                'data-button-no'   => gT('Cancel'),
-                'data-button-yes'  => gT('Uninstall'),
-                'data-text'        => gT('This will reset all the specific configurations of this theme.')
-                                         . '<br>' . gT('Do you want to continue?'),
-                'data-post'        => json_encode([ "templatename" => $templateName ]),
-                'data-button-type' => "btn-danger"
-            ]
-        ];
+        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
+            $dropdownItems[] = [
+                'title'            => gT('Uninstall'),
+                'url'              => $sUninstallUrl,
+                'linkId'           => 'remove_fromdb_link_' . $this->id,
+                'linkClass'        => 'selector--ConfirmModal ',
+                'iconClass'        => 'ri-delete-bin-fill text-danger',
+                'enabledCondition' => App()->getController()->action->id !== "surveysgroups" &&
+                                        $templateName != App()->getConfig('defaulttheme'),
+                'linkAttributes'   => [
+                    'title'            => gT('Uninstall this theme'),
+                    'data-button-no'   => gT('Cancel'),
+                    'data-button-yes'  => gT('Uninstall'),
+                    'data-text'        => gT('This will reset all the specific configurations of this theme.')
+                                             . '<br>' . gT('Do you want to continue?'),
+                    'data-post'        => json_encode([ "templatename" => $templateName ]),
+                    'data-button-type' => "btn-danger"
+                ]
+            ];
+        }
 
         $dropdownItems[] = [
             'title'            => gT('Reset'),

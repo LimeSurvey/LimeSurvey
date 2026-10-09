@@ -23,7 +23,16 @@ LS.CPDB = (function() {
          * @todo
          */
         var secondSuccess = function(result) {
+            // Keep the modal open on validation errors, so the user can correct the input
+            if (result && result.error) {
+                window.LS.ajaxAlerts(result.error.message, 'danger', {showCloseButton: true});
+                return;
+            }
             $(baseModal).modal('hide');
+            if (result && result.hasPermission === false) {
+                window.LS.ajaxAlerts(result.noPermissionText, 'danger', {showCloseButton: true});
+                return;
+            }
             $.fn.yiiGridView.update(gridViewId,{});
             callback(result);
         };
@@ -33,6 +42,10 @@ LS.CPDB = (function() {
          * @todo
          */
         var firstSuccess = function(json){
+            if (json && json.hasPermission === false) {
+                window.LS.ajaxAlerts(json.noPermissionText, 'danger', {showCloseButton: true});
+                return;
+            }
             $(baseModal).find('.modal-content').html(json.result);
             $(baseModal).modal('show');
             $(baseModal).find('.'+actionButtonClass).on('click', function(e) {

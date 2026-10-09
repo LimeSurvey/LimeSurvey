@@ -36,4 +36,30 @@ class PluginManagerTest extends TestBaseClass
             );
         }
     }
+
+    /**
+     * Getting the plugin manager from the application while the plugins are loaded
+     * (e.g. in afterPluginLoad) must return the plugin manager being initialized,
+     * not create a new one that loads the plugins again.
+     * @return void
+     */
+    public function testPluginManagerIsAvailableDuringPluginLoad()
+    {
+        require_once self::$dataFolder . '/plugins/AfterPluginLoadTestPlugin.php';
+        self::installAndActivatePlugin('AfterPluginLoadTestPlugin');
+        \AfterPluginLoadTestPlugin::$afterPluginLoadCount = 0;
+        \AfterPluginLoadTestPlugin::$applicationPluginManager = null;
+
+        try {
+            // Drop the current instance, so the next call creates and initializes a new plugin manager.
+            \Yii::app()->setComponent('pluginManager', null);
+            $pluginManager = \Yii::app()->getPluginManager();
+        } finally {
+            self::deActivatePlugin('AfterPluginLoadTestPlugin');
+        }
+
+        $this->assertSame(1, \AfterPluginLoadTestPlugin::$afterPluginLoadCount, 'Plugins were loaded more than once.');
+        $this->assertSame($pluginManager, \AfterPluginLoadTestPlugin::$applicationPluginManager);
+        $this->assertSame($pluginManager, \Yii::app()->getPluginManager());
+    }
 }
