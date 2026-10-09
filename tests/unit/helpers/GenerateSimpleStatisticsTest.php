@@ -47,7 +47,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $questions = self::$questions['Single choice'];
 
         // Form SGQA identifiers.
-        $summary = createCompleteSGQA(self::$surveyId, $questions, null);
+        $summary = getStatisticsFieldNames(self::$surveyId, $questions, null);
 
         $helper = new \statistics_helper();
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
@@ -84,7 +84,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $questions = self::$questions['Multiple choice'];
 
         // Form SGQA identifiers.
-        $summary = createCompleteSGQA(self::$surveyId, $questions, null);
+        $summary = getStatisticsFieldNames(self::$surveyId, $questions, null);
 
         $helper = new \statistics_helper();
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
@@ -121,7 +121,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $questions = self::$questions['Arrays'];
 
         // Form SGQA identifiers.
-        $summary = createCompleteSGQA(self::$surveyId, $questions, null);
+        $summary = getStatisticsFieldNames(self::$surveyId, $questions, null);
 
         $helper = new \statistics_helper();
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
