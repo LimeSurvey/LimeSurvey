@@ -89,8 +89,12 @@ export const renderCellText = ({
         <span className="array-subquestion">
           {subquestion1 ? subquestion1 : subquestionTitle}
         </span>
-        <span className="array-separator">-</span>
-        <span className="array-subquestion">{subquestion2}</span>
+        {subquestion2 && (
+          <>
+            <span className="array-separator">-</span>
+            <span className="array-subquestion">{subquestion2}</span>
+          </>
+        )}
         <span className="array-separator">:</span>
         <ArrayResponseAnswer answerTitle={answerTitle} comment={comment} />
       </span>
