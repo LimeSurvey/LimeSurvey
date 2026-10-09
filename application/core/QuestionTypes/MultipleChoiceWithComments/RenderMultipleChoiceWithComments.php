@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for MultipleChoiceWithComments Question
  *  * The ia Array contains the following
@@ -95,6 +97,11 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         return '/survey/questions/answer/multiplechoice_with_comments';
     }
 
+    /**
+     * Returns the template data of all subquestion rows, including the "Other" row.
+     *
+     * @return array[]
+     */
     public function getRows()
     {
         $otherAdded = false;
@@ -110,11 +117,12 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         }
 
         $checkconditionFunction = "checkconditions";
+        $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
         foreach ($this->aSubQuestions[0] as $oQuestion) {
             $myfname = $this->sSGQA . "_S" . $oQuestion->qid;
             $myfname2 = $myfname . "_Ccomment";
-            $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
-            $mSessionValue2 = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2], '');
+            $mSessionValue = $this->setDefaultIfEmpty($sessionState->getFieldValue($myfname), '');
+            $mSessionValue2 = $this->setDefaultIfEmpty($sessionState->getFieldValue($myfname2), '');
 
             if ($this->iLabelWidth < strlen(trim(strip_tags((string) $oQuestion->questionl10ns[$this->sLanguage]->question)))) {
                 $this->iLabelWidth = strlen(trim(strip_tags((string) $oQuestion->questionl10ns[$this->sLanguage]->question)));
@@ -159,6 +167,11 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         return $aRows;
     }
 
+    /**
+     * Returns the template data of the "Other" option row with its comment.
+     *
+     * @return array
+     */
     public function getOtherRow()
     {
 
@@ -167,8 +180,9 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         $myfname = $this->sSGQA . '_Cother';
         $myfname2 = $myfname . "comment";
 
-        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
-        $mSessionValue2 = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2], '');
+        $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
+        $mSessionValue = $this->setDefaultIfEmpty($sessionState->getFieldValue($myfname), '');
+        $mSessionValue2 = $this->setDefaultIfEmpty($sessionState->getFieldValue($myfname2), '');
 
         $this->inputnames[] = $myfname;
         $this->inputnames[] = $myfname2;

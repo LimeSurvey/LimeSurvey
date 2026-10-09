@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\PluginManager;
 
+use LimeSurvey\Models\Services\SurveySessionState;
 use Yii;
 use User;
 use PluginDynamic;
@@ -274,11 +275,11 @@ class LimesurveyApi
         if (empty($surveyId)) {
             return;
         }
-        $sessionSurvey = Yii::app()->session["responses_{$surveyId}"];
-        if (empty($sessionSurvey['srid'])) {
+        $responseId = SurveySessionState::forSurvey((int) $surveyId)->getResponseId();
+        if (empty($responseId)) {
             return;
         }
-        return \Response::model($surveyId)->findByPk($sessionSurvey['srid']);
+        return \Response::model($surveyId)->findByPk($responseId);
     }
 
     /**

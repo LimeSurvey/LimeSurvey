@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -2263,10 +2265,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     if ($questionid === false) {
         // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-        if (isset(Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
-            $masterFieldmap = Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
-            $mfieldmap = Yii::app()->session['responses_' . $surveyid][$masterFieldmap];
-
+        $mfieldmap = SurveySessionState::forSurvey((int) $surveyid)->getRandomizedFieldMap();
+        if ($mfieldmap !== null) {
             foreach ($mfieldmap as $fieldname => $mf) {
                 if (isset($fieldmap[$fieldname])) {
                     // This array holds the keys of translatable attributes
@@ -5142,7 +5142,7 @@ function getLabelSets($languages = null)
 
 /**
  * get the header
- * @param bool $meta : not used in any call (2016-10-18)
+ * @param bool $meta Not used in any call (2016-10-18)
  * @return string
  */
 function getHeader($meta = false)
@@ -5153,8 +5153,9 @@ function getHeader($meta = false)
     Yii::app()->loadHelper('surveytranslator');
 
     // Set Language // TODO remove one of the Yii::app()->session see bug #5901
-    if (Yii::app()->session['responses_' . $surveyid]['s_lang']) {
-        $languagecode = Yii::app()->session['responses_' . $surveyid]['s_lang'];
+    $sessionLanguage = SurveySessionState::forSurvey((int) $surveyid)->getLanguage();
+    if ($sessionLanguage) {
+        $languagecode = $sessionLanguage;
     } elseif (isset($surveyid) && $surveyid && $oSurvey) {
         $languagecode = $oSurvey->language;
     } else {

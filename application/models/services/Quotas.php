@@ -414,12 +414,13 @@ class Quotas
      */
     public static function checkCompletedQuota(int $surveyid, array $updatedValues = [], bool $return = false)
     {
+        $sessionState = SurveySessionState::forSurvey($surveyid);
         /* Check if session is set */
-        if (!isset(App()->session['responses_' . $surveyid]['srid'])) {
+        if ($sessionState->getResponseId() === null) {
             return;
         }
         /* Check if Response is already submitted : only when "do" the quota: allow to send information about quota */
-        $oResponse = Response::model($surveyid)->findByPk(App()->session['responses_' . $surveyid]['srid']);
+        $oResponse = Response::model($surveyid)->findByPk($sessionState->getResponseId());
         if (!$return && !$oResponse) {
             // Session points to a response row that no longer exists: bail out before it reaches updateResponseQuotaExit().
             killSurveySession($surveyid);
@@ -465,7 +466,7 @@ class Quotas
                 foreach ($oQuota->quotaMembers as $oQuotaMember) {
                     $aQuotaMember = $oQuotaMember->getMemberInfo();
                     $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
-                    $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']] = isset($_SESSION['responses_' . $surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['responses_' . $surveyid]['relevanceStatus'][$aQuotaMember['qid']];
+                    $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']] = $sessionState->hasRelevance($aQuotaMember['qid']) && $sessionState->getRelevance($aQuotaMember['qid']);
                     $aQuotaQid[] = $aQuotaMember['qid'];
                 }
                 $aQuotaQid = array_unique($aQuotaQid);
@@ -473,8 +474,8 @@ class Quotas
                 // Filter
                 // For each field : test if actual responses is in quota (and is relevant)
                 foreach ($aQuotaFields as $sFieldName => $aValues) {
-                    $bInQuota = isset($_SESSION['responses_' . $surveyid][$sFieldName])
-                        && in_array($_SESSION['responses_' . $surveyid][$sFieldName], $aValues);
+                    $bInQuota = $sessionState->hasFieldValue($sFieldName)
+                        && in_array($sessionState->getFieldValue($sFieldName), $aValues);
                     if ($bInQuota && $aQuotaRelevantFieldnames[$sFieldName]) {
                         $iMatchedAnswers++;
                     }
@@ -537,8 +538,8 @@ class Quotas
         }
         // Now we have all the information we need about the quotas and their status.
         // We need to construct the page and do all needed action
-        $aSurveyInfo = getSurveyInfo($surveyid, $_SESSION['responses_' . $surveyid]['s_lang']);
-        $sClientToken = $_SESSION['responses_' . $surveyid]['token'] ?? "";
+        $aSurveyInfo = getSurveyInfo($surveyid, $sessionState->getLanguage());
+        $sClientToken = $sessionState->getToken() ?? "";
         // $redata for templatereplace
         $aDataReplacement = [
             'thissurvey'  => $aSurveyInfo,
@@ -550,7 +551,7 @@ class Quotas
         // If a token is used then mark the token as completed, do it before event : this allow plugin to update token information
         $event = new PluginEvent('afterSurveyQuota');
         $event->set('surveyId', $surveyid);
-        $event->set('responseId', $_SESSION['responses_' . $surveyid]['srid']); // We always have a responseId
+        $event->set('responseId', $sessionState->get('srid')); // We always have a responseId
         $event->set('aMatchedQuotas', $aMatchedQuotas); // Give all the matched quota : the first is the active
         App()->getPluginManager()->dispatchEvent($event);
         $blocks = [];
@@ -638,7 +639,7 @@ class Quotas
         $thissurvey['active'] = 'Y';
         $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="' . $surveyid . '" />
                                               <input type="hidden" name="token"    value="' . $thissurvey['aQuotas']['sClientToken'] . '" />
-                                              <input type="hidden" name="thisstep" value="' . ($_SESSION['responses_' . $surveyid]['step'] ?? 0) . '" />';
+                                              <input type="hidden" name="thisstep" value="' . ($sessionState->getStep() ?? 0) . '" />';
         if (!empty($thissurvey['aQuotas']['aPostedQuotaFields'])) {
             foreach ($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post) {
                 $thissurvey['aQuotas']['hiddeninputs'] .= '<input type="hidden" name="' . $field . '"   value="' . $post . '" />';

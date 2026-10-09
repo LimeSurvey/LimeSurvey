@@ -15,6 +15,8 @@
  * And by soon I mean yesterday
  */
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 class UploaderController extends SurveyController
 {
     /**
@@ -23,6 +25,7 @@ class UploaderController extends SurveyController
      *
      * @param string $actionID
      * @return void
+     * @throws CHttpException
      */
     public function run($actionID)
     {
@@ -35,7 +38,8 @@ class UploaderController extends SurveyController
             throw new CHttpException(400);
         }
 
-        $sLanguage = Yii::app()->session['responses_' . $surveyid]['s_lang'] ?? "";
+        $sessionState = SurveySessionState::forSurvey((int) $surveyid);
+        $sLanguage = $sessionState->getLanguage() ?? "";
         Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -193,7 +197,7 @@ class UploaderController extends SurveyController
             $event = new PluginEvent('beforeProcessFileUpload');
             /* Current state */
             $event->set('surveyId', $surveyid);
-            $event->set('responseId', Yii::app()->session['responses_' . $surveyid]['srid'] ?? null); // NULL if not exist
+            $event->set('responseId', $sessionState->get('srid')); // NULL if not exist
             $event->set('qid', $oQuestion->qid);
             $event->set('preview', $preview);
             $event->set('fieldname', $sFieldName);
