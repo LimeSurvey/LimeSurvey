@@ -81,7 +81,7 @@ export const ArrayColumnTitle = ({
           )}
           <ContentEditor
             className={classNames(
-              'text-start choice array-answer-content-editor'
+              'text-center choice array-answer-content-editor'
             )}
             placeholder={placeholder}
             value={title}

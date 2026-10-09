@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef, useState } from 'react'
 import { getQuestionTypeInfo } from 'components'
 import {
   isArrayQuestion,
@@ -5,6 +6,31 @@ import {
   isSingleChoiceQuestion,
   OTHER_CODE,
 } from 'helpers'
+
+const ArrayResponseAnswer = ({ answerTitle, comment }) => {
+  const titleRef = useRef(null)
+  const [minimumWidth, setMinimumWidth] = useState(0)
+
+  useLayoutEffect(() => {
+    setMinimumWidth(
+      Math.min(40, titleRef.current?.getBoundingClientRect().width || 0)
+    )
+  }, [answerTitle])
+
+  return (
+    <span className="array-response-answer" style={{ minWidth: minimumWidth }}>
+      <span
+        ref={titleRef}
+        className="array-response-answer-measure"
+        aria-hidden="true"
+      >
+        {answerTitle}
+      </span>
+      {answerTitle}
+      {comment && <span>: {comment.value}</span>}
+    </span>
+  )
+}
 
 export const renderCellText = ({
   value,
@@ -17,6 +43,8 @@ export const renderCellText = ({
   key = '',
   question = {},
   baseLanguage,
+  subquestion1,
+  subquestion2,
 }) => {
   const isOtherKey = key.endsWith('_Cother') || subquestionTitle == OTHER_CODE
 
@@ -57,10 +85,19 @@ export const renderCellText = ({
 
   if (isArrayQuestion(questionThemeName)) {
     return (
-      <>
-        {subquestionTitle}: {answerTitle}
-        {comment && <span>: {comment.value}</span>}
-      </>
+      <span className="array-response-text">
+        <span className="array-subquestion">
+          {subquestion1 ? subquestion1 : subquestionTitle}
+        </span>
+        {subquestion2 && (
+          <>
+            <span className="array-separator">-</span>
+            <span className="array-subquestion">{subquestion2}</span>
+          </>
+        )}
+        <span className="array-separator">:</span>
+        <ArrayResponseAnswer answerTitle={answerTitle} comment={comment} />
+      </span>
     )
   }
 
