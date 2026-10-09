@@ -5268,7 +5268,7 @@ class LimeExpressionManager
             }
             if ($this->surveyOptions['datestamp'] == true) {
                 $sdata['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
-                $sdata['startdate'] = $_SESSION[$this->sessid]['datestamp'];
+                $sdata['startdate'] = $_SESSION[$this->sessid]['startdate'] ?? $_SESSION[$this->sessid]['datestamp'];
                 if($this->surveyOptions['anonymized']){
                     //all dates should be anonymized
                     $sdata['datestamp'] = $this->anonymizeDate();
@@ -5608,7 +5608,12 @@ class LimeExpressionManager
                 $result = $LEM->_ValidateSurvey($force);
                 $message .= $result['message'];
                 $finished = false;
-                $message .= $LEM->_UpdateValuesInDatabase($finished);// This happen too for $processPOST=false : need to fix it ?
+                if ($processPOST || isset($_SESSION[$LEM->sessid]['srid'])) {
+                    $message .= $LEM->_UpdateValuesInDatabase($finished);
+                } elseif (!isset($_SESSION[$LEM->sessid]['startdate'])) {
+                    // Only displaying the survey: Don't create the response yet, but remember when the participant started
+                    $_SESSION[$LEM->sessid]['startdate'] = gmdate("Y-m-d H:i:s");
+                }
                 $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
                 $LEM->lastMoveResult = [
                     'finished'      => $finished,
