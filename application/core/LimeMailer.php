@@ -398,16 +398,19 @@ class LimeMailer extends PHPMailer
     public function setFrom($from, $fromname = null, $auto = true)
     {
         $fromemail = $from;
-        if (strpos($from, '<') !== false) {
+        /* Email is always the last «<email>» part: use the last angle brackets so a name containing '<' is kept intact */
+        $ltPosition = strrpos($from, '<');
+        if ($ltPosition !== false) {
             if (is_null($fromname)) {
-                if (strpos($from, '<')) {
-                    $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
+                if ($ltPosition > 0) {
+                    $fromname = trim(substr($from, 0, $ltPosition));
                 } else {
                     /* Allow to force empty name in token email */
                     $fromname = '';
                 }
             }
-            $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
+            $gtPosition = strrpos($from, '>');
+            $fromemail = substr($from, $ltPosition + 1, $gtPosition - 1 - $ltPosition);
         }
         if (is_null($fromname)) {
             $fromname = $this->FromName;
@@ -435,10 +438,13 @@ class LimeMailer extends PHPMailer
     public function addAddress($addressTo, $name = '')
     {
         $address = $addressTo;
-        if (strpos($address, '<')) {
-            $address = substr($addressTo, strpos($addressTo, '<') + 1, strpos($addressTo, '>') - 1 - strpos($addressTo, '<'));
+        /* Email is always the last «<email>» part: use the last angle brackets so a name containing '<' is kept intact */
+        $ltPosition = strrpos($addressTo, '<');
+        if ($ltPosition !== false) {
+            $gtPosition = strrpos($addressTo, '>');
+            $address = substr($addressTo, $ltPosition + 1, $gtPosition - 1 - $ltPosition);
             if (empty($name)) {
-                $name = trim(substr($addressTo, 0, strpos($addressTo, '<') - 1));
+                $name = trim(substr($addressTo, 0, $ltPosition));
             }
         }
         return parent::addAddress($address, $name);
