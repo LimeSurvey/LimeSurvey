@@ -67,7 +67,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             return $combined;
         }, 0);
         // $right_exists is a flag to find out if there are any right hand answer parts.
-        // If there arent we can leave out the right td column
+        // If there aren't we can leave out the right td column
         $this->rightExists = ($iCount > 0);
 
         if (ctype_digit(trim((string) $this->getQuestionAttribute('answer_width')))) {
@@ -226,7 +226,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 $options[] = array(
                     'text' => gT('No answer'),
                     'value' => '',
-                    'selected' => ($value == '') ?  SELECTED : '',
+                    'selected' => (
+                        PRESELECT_NO_ANSWER && $value == ''
+                    ) ? SELECTED : '',
                 );
             }
             unset($showNoAnswer);
@@ -297,7 +299,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'ld'                     => '',
                     'code' => $oAnswer->code,
                     'label'                  => gT('No answer'),
-                    'checked'                => (is_null($value) || $value === '') ? 'checked' : '',
+                    'checked'                => (
+                        PRESELECT_NO_ANSWER && (is_null($value) || $value === '')
+                    ) ? 'checked' : '',
                 );
             }
 

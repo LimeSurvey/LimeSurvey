@@ -346,11 +346,22 @@ class User extends LSActiveRecord
      */
     public static function updatePassword($iUserID, $sPassword)
     {
-        return User::model()->updateByPk($iUserID, array('password' => password_hash($sPassword, PASSWORD_DEFAULT)));
+        return User::model()->updateByPk($iUserID, array(
+            'password' => password_hash($sPassword, PASSWORD_DEFAULT),
+            'session_token' => self::generateSessionToken(),
+        ));
     }
 
     /**
      * Set user password with hash
+     *
+     * Also rotates the user's session token, so any other already
+     * authenticated web session for this user (which still caches the
+     * previous token) gets logged out on its next request. See
+     * LSApplicationTrait::getCurrentUserId(). Additionally revokes any
+     * outstanding RemoteControl (JSON-RPC/REST) session tokens for this
+     * user, since those are a separate auth mechanism unaffected by the
+     * session_token rotation above.
      *
      * @param string $sPassword The clear text password
      * @return \User
@@ -358,10 +369,25 @@ class User extends LSActiveRecord
     public function setPassword($sPassword, $save = false)
     {
         $this->password = password_hash($sPassword, PASSWORD_DEFAULT);
+        $this->session_token = self::generateSessionToken();
+        if (!empty($this->users_name)) {
+            Session::model()->deleteAllByAttributes(['data' => $this->users_name]);
+        }
         if ($save) {
             $this->save();
         }
         return $this; // Return current object
+    }
+
+    /**
+     * Generates a new random per-user session token, used to invalidate
+     * other sessions when the password changes.
+     *
+     * @return string
+     */
+    public static function generateSessionToken()
+    {
+        return bin2hex(random_bytes(32));
     }
 
     /**
@@ -752,7 +778,7 @@ class User extends LSActiveRecord
                     )
                 )
                 || (!$permission_superadmin_read
-                    && ($this->uid != App()->session['loginID'] // One cant delete onesself
+                    && ($this->uid != App()->session['loginID'] // One can't delete onesself
                         && (
                             $permission_users_delete // Global permission to delete users
                             && $this->parent_id == App()->session['loginID'] // User is owned by current admin
@@ -1290,7 +1316,7 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'read', $managerId)) {
             return true;
         }
-        /* Finally : simple user can update only childs users */
+        /* Finally : simple user can update only child users */
         return Permission::model()->hasGlobalPermission('users', 'update', $managerId)
                 && $this->parent_id == $managerId;
     }

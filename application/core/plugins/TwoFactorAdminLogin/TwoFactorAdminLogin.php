@@ -278,7 +278,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
     }
 
     /**
-     * Add menue to the top bar
+     * Add menu to the top bar
      * @return void
      */
     public function beforeAdminMenuRender()
@@ -467,7 +467,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
     }
 
     /**
-     * Checks a submitted authentication code and stores the underlaying secret key into the Database.
+     * Checks a submitted authentication code and stores the underlying secret key into the Database.
      * Returns a JSON document
      *
      * @param PluginEvent $oEvent
@@ -658,7 +658,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
                 $this->get('issuer', null, null, 'LimeSurvey - survey software'),
                 ((int) $this->get('digits', null, null, 6)),
                 ((int) $this->get('period', null, null, 30)),
-                $this->get('algorithm', null, null, 'sha1'),
+                RobThree\Auth\Algorithm::from((string) $this->get('algorithm', null, null, 'sha1')),
                 $mp
             );
         }

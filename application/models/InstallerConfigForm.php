@@ -20,6 +20,9 @@
  * @property boolean $isMysql whether the db type is mysql or mysqli
  * @property boolean $isMSSql whether the db type is one of MS Sql types
  * @property float|integer $memoryLimit
+ * @property integer $maxInputVars
+ * @property float|integer $postMaxSize
+ * @property float|integer $uploadMaxFilesize
  * @property boolean $hasMinimumRequirements
  * @property boolean $isConfigDirWriteable
  * @property boolean $isUploadDirWriteable
@@ -40,6 +43,12 @@ class InstallerConfigForm extends CFormModel
     public const DB_TYPE_ODBC = 'odbc';
 
     public const MINIMUM_MEMORY_LIMIT = 128;
+    /** @var int Recommended value for the PHP setting max_input_vars, lower values can silently truncate large forms */
+    public const RECOMMENDED_MAX_INPUT_VARS = 5000;
+    /** @var int Recommended value in MB for the PHP setting post_max_size, if a request exceeds it all POST data is dropped */
+    public const RECOMMENDED_POST_MAX_SIZE = 32;
+    /** @var int Recommended value in MB for the PHP setting upload_max_filesize, it limits survey imports and file uploads */
+    public const RECOMMENDED_UPLOAD_MAX_FILESIZE = 32;
     public const MINIMUM_PHP_VERSION = '8.1.29';
 
     // Database
@@ -63,6 +72,8 @@ class InstallerConfigForm extends CFormModel
     public $dbprefix = 'lime_';
     /** @var string $dbengine Database Engine type if DB type is MySQL */
     public $dbengine;
+    /** @var bool $mssqlTrustServerCertificate Whether to trust the SQL Server certificate without validating it, needed to connect to servers using a self-signed certificate */
+    public $mssqlTrustServerCertificate = false;
 
     /** @var array $db_names */
     public $db_names = array(
@@ -134,6 +145,9 @@ class InstallerConfigForm extends CFormModel
     public $isPhpImapPresent = false;
 
     /** @var bool */
+    public $isPhpCurlPresent = false;
+
+    /** @var bool */
     public $isPhpVersionOK = false;
 
     /** @var bool */
@@ -144,6 +158,15 @@ class InstallerConfigForm extends CFormModel
 
     /** @var bool */
     public $isConfigPresent = false;
+
+    /** @var bool Whether the PHP setting max_input_vars is at least the recommended value */
+    public $isMaxInputVarsOK = false;
+
+    /** @var bool Whether the PHP setting post_max_size is at least the recommended value */
+    public $isPostMaxSizeOK = false;
+
+    /** @var bool Whether the PHP setting upload_max_filesize is at least the recommended value */
+    public $isUploadMaxFilesizeOK = false;
 
 
     /**
@@ -167,8 +190,10 @@ class InstallerConfigForm extends CFormModel
             array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
             array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
             array('dbtype', 'in', 'range' => array_keys($this->supportedDbTypes), 'on' => 'database'),
+            array('dbtype', 'validateDBVersion', 'on' => 'database'),
             array('dbengine', 'validateDBEngine', 'on' => 'database'),
             array('dbengine', 'in', 'range' => array_keys($this->dbEngines), 'on' => 'database'),
+            array('mssqlTrustServerCertificate', 'safe', 'on' => 'database'),
             //Optional
             array('adminLoginName, adminLoginPwd, confirmPwd, adminEmail', 'required', 'on' => 'optional', 'message' => gT('Either admin login name, password or email is empty')),
             array('adminLoginName, adminName, siteName, confirmPwd', 'safe', 'on' => 'optional'),
@@ -189,6 +214,7 @@ class InstallerConfigForm extends CFormModel
             'dbpwd' => gT('Database password'),
             'dbprefix' => gT('Table prefix'),
             'dbengine' => gT('MariaDB/MySQL database engine type'),
+            'mssqlTrustServerCertificate' => gT('Trust server certificate'),
         );
     }
 
@@ -201,6 +227,7 @@ class InstallerConfigForm extends CFormModel
             'dbuser' => gT('Your database server user name. In most cases "root" will work.'),
             'dbpwd' => gT("Your database server password."),
             'dbprefix' => gT('If your database is shared, recommended prefix is "lime_" else you can leave this setting blank.'),
+            'mssqlTrustServerCertificate' => gT('Enable this if a MSSQL connection fails due to a certificate verification error. This skips validation of the server certificate, so only enable it if you trust the network path to your database server.'),
         ];
     }
 
@@ -221,8 +248,12 @@ class InstallerConfigForm extends CFormModel
         $this->isPhpLdapPresent = extension_loaded('ldap');
         $this->isPhpImapPresent = extension_loaded('imap');
         $this->isPhpZipPresent = extension_loaded('zip');
+        $this->isPhpCurlPresent = extension_loaded('curl');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
         $this->isCollatorPresent = class_exists('Collator');
+        $this->isMaxInputVarsOK = $this->getMaxInputVars() >= self::RECOMMENDED_MAX_INPUT_VARS;
+        $this->isPostMaxSizeOK = $this->getPostMaxSize() == 0 || $this->getPostMaxSize() >= self::RECOMMENDED_POST_MAX_SIZE;
+        $this->isUploadMaxFilesizeOK = $this->getUploadMaxFilesize() == 0 || $this->getUploadMaxFilesize() >= self::RECOMMENDED_UPLOAD_MAX_FILESIZE;
 
         if (function_exists('gd_info')) {
             $gdInfo = gd_info();
@@ -252,6 +283,7 @@ class InstallerConfigForm extends CFormModel
             or !$this->isPhpGdPresent
             or !$this->isPhpZipPresent
             or !$this->isPhpJsonPresent
+            or !$this->isPhpCurlPresent
         ) {
             return false;
         }
@@ -284,6 +316,66 @@ class InstallerConfigForm extends CFormModel
     public function getMemoryLimit()
     {
         return convertPHPSizeToBytes(ini_get('memory_limit')) / 1024 / 1024;
+    }
+
+    /**
+     * Current value of the PHP setting max_input_vars
+     * @return int
+     */
+    public function getMaxInputVars()
+    {
+        return (int) ini_get('max_input_vars');
+    }
+
+    /**
+     * Current value of the PHP setting post_max_size in MB, 0 means unlimited
+     * @return float|int
+     */
+    public function getPostMaxSize()
+    {
+        return convertPHPSizeToBytes(ini_get('post_max_size')) / 1024 / 1024;
+    }
+
+    /**
+     * Current value of the PHP setting upload_max_filesize in MB, 0 means unlimited
+     * @return float|int
+     */
+    public function getUploadMaxFilesize()
+    {
+        return convertPHPSizeToBytes(ini_get('upload_max_filesize')) / 1024 / 1024;
+    }
+
+    /**
+     * Verifies that the connected database server meets the documented minimum
+     * version requirements. Adds a validation error if it does not.
+     * @param string $attribute
+     * @return void
+     */
+    public function validateDBVersion($attribute)
+    {
+        // Skip if the connection could not be established (a connection error is
+        // already reported in that case).
+        if (empty($this->db)) {
+            return;
+        }
+        try {
+            $driverName = $this->db->getDriverName();
+            $serverVersion = $this->db->getServerVersion();
+        } catch (\Exception $e) {
+            return;
+        }
+        $requirement = \LimeSurvey\Helpers\DbVersionHelper::getRequirement($driverName, $serverVersion);
+        if (!$requirement['supported']) {
+            $this->addError(
+                $attribute,
+                sprintf(
+                    gT('Your database server does not meet the minimum requirements. %s %s or newer is required, but the server reports version %s.'),
+                    $requirement['type'],
+                    $requirement['minimumLabel'],
+                    $requirement['current']
+                )
+            );
+        }
     }
 
     public function validateDBEngine($attribute)
@@ -521,7 +613,10 @@ class InstallerConfigForm extends CFormModel
                 $sDSN = $this->getPgsqlDsn();
                 break;
             case self::DB_TYPE_DBLIB:
-                $sDSN = $this->dbtype . ":host={$this->dblocation};dbname={$this->dbname}";
+                $sDSN = $this->dbtype . ":host={$this->dblocation}";
+                if ($this->useDbName) {
+                    $sDSN .= ";dbname={$this->dbname}";
+                }
                 break;
             case self::DB_TYPE_MSSQL:
             case self::DB_TYPE_SQLSRV:
@@ -561,13 +656,12 @@ class InstallerConfigForm extends CFormModel
     private function getPgsqlDsn()
     {
         $port = $this->getDbPort();
-        if (empty($this->dbpwd)) {
-            // If there's no password, we need to write password=""; instead of password=;,
-            // or PostgreSQL's libpq will consider the DSN string part after "password="
-            // (including the ";" and the potential dbname) as part of the password definition.
-            $this->dbpwd = '""';
-        }
-        $sDSN = "pgsql:host={$this->dblocation};port={$port};user={$this->dbuser};password={$this->dbpwd};";
+        // Do not embed user/password in the DSN string: PDO_PGSQL only escapes/quotes
+        // credentials that are passed as separate constructor arguments (see dbConnect()/dbTest()).
+        // Once "user=" or "password=" is present in the DSN itself, PDO passes it to libpq
+        // as-is, so special characters such as ";" or "'" in the password break the connection
+        // (see bug #15061).
+        $sDSN = "pgsql:host={$this->dblocation};port={$port};";
         if ($this->useDbName) {
             $sDSN .= "dbname={$this->dbname};";
         }
@@ -586,7 +680,10 @@ class InstallerConfigForm extends CFormModel
         }
         $sDSN = $this->dbtype . ":Server={$sDatabaseLocation};";
         if ($this->useDbName) {
-            $sDSN .= "Database={$this->dbname}";
+            $sDSN .= "Database={$this->dbname};";
+        }
+        if ($this->mssqlTrustServerCertificate) {
+            $sDSN .= "TrustServerCertificate=1;";
         }
         return $sDSN;
     }

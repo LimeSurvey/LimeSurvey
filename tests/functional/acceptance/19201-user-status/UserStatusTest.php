@@ -20,7 +20,7 @@ use Facebook\WebDriver\WebDriverSelect;
 class UserStatusTest extends TestBaseClassWeb
 {
     // TODO: 
-    // Check that you cannot deactive yourself (even when not superadmin)
+    // Check that you cannot deactivate yourself (even when not superadmin)
     //   Create new user with permission to edit users
     //   Login as new user
     //   Go to user management
@@ -191,7 +191,7 @@ class UserStatusTest extends TestBaseClassWeb
      * dropdown, confirms the modal, and asserts that user_status is 0 in the
      * database.
      */
-    public function testMassiveActionDeactivate()
+    public function testFloatingActionDeactivate()
     {
         // Delete all users but superadmin
         User::model()->deleteAll('uid NOT IN (1)');
@@ -225,14 +225,13 @@ class UserStatusTest extends TestBaseClassWeb
         $checkbox = $row->findElement(WebDriverBy::cssSelector('.usermanagement--selector-userCheckbox'));
         $checkbox->click();
 
-        // Open massive action menu
-        $web->findByCss('.massiveAction')->click();
+        // Use floating actions: open "More actions" and choose "Edit status"
+        $floatingBar = $web->findById('floating-actions-bar-usermanagement--identity-gridPanel');
+        $floatingBar->findElement(WebDriverBy::cssSelector('.dropdown-toggle'))->click();
+        $floatingBar->findElement(WebDriverBy::cssSelector('.floating-actions-item[data-action="batchStatus"]'))->click();
 
-        // Click "Set status"
-        $web->findByCss('a[data-action="batchStatus"]')->click();
-
-        // Wait for modal to show
-        $web->waitById('massive-actions-modal-usermanagement--identity-gridPanel-batchStatus-3');
+        // Wait for the floating-actions modal to show
+        $web->waitById('floating-actions-modal-usermanagement--identity-gridPanel-batchStatus-d3_1');
 
         // Choose "Deactivate" in dropdown
         (new WebDriverSelect($web->findByCss('select[name=status_selector]')))->selectByValue('deactivate');

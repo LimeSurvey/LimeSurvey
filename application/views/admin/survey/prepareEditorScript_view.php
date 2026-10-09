@@ -1,6 +1,13 @@
 <!--<script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL'); ?>/ckeditor.js"></script>-->
 <?php
-$script = "
+// Register the editor packages here (not globally) so they are only loaded on pages that use an editor. See bug #19391.
+Yii::app()->getClientScript()->registerPackage('ckeditor');
+Yii::app()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global scope
+Yii::app()->getClientScript()->registerPackage('modaleditor');
+
+// CKEDITOR event handlers. Under PJAX ckeditor.js is loaded asynchronously, so these are deferred
+// (see the guard at the end of this script) until CKEDITOR is available. See bug #19391.
+$ckeditorHandlers = "
     CKEDITOR.on('dialogDefinition', function (ev) {
         var dialogName = ev.data.name;
         var dialogDefinition = ev.data.definition;
@@ -27,12 +34,14 @@ $script = "
 * with LimeReplacementFields and in general use ProtectSource for ExpressionScript
 * See https://stackoverflow.com/questions/2851068/prevent-ckeditor-from-formatting-code-in-source-mode
 */
-$script .= "CKEDITOR.on('instanceReady', function(event) {
+$ckeditorHandlers .= "CKEDITOR.on('instanceReady', function(event) {
         var textareaId = event.editor.element.getId();
         $('#'+textareaId+'_htmleditor_loader').remove();
         event.editor.dataProcessor.writer.setRules( 'br', { breakAfterOpen: 0 } );
-    });    
+    });
+    ";
 
+$script = "
     var sReplacementFieldTitle = '" . gT('Placeholder fields', 'js') . "';
     var sReplacementFieldButton = '" . gT('Insert/edit placeholder field', 'js') . "';
     var sSwitchToolbarFullTitle = '" . gT('Show full toolbar', 'js') . "';
@@ -103,6 +112,17 @@ $script .= "CKEDITOR.on('instanceReady', function(event) {
         gid : '" . sanitize_int(App()->request->getQuery('gid', 0)) . "',
         qid : '" . sanitize_int(App()->request->getQuery('qid', 0)) . "',
         replacementFieldsPath : '" . $this->createUrl("/limereplacementfields/index") . "',
+    }
+
+    // CKEDITOR loads synchronously on a full page load but asynchronously under PJAX,
+    // so only register its event handlers once it is actually available. See bug #19391.
+    var lsRegisterCKEditorHandlers = function() {
+        $ckeditorHandlers
+    };
+    if (typeof CKEDITOR !== 'undefined') {
+        lsRegisterCKEditorHandlers();
+    } else {
+        jQuery(document).one('pjax:scriptcomplete', lsRegisterCKEditorHandlers);
     }
 ";
 

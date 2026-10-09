@@ -82,7 +82,6 @@ $config['maxDatabaseSizeForDump']    = 256; // Maximum database size in megabyte
 
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numerical order for comparison operators in conditions. If you need string comparison operators, set this parameter to 1
-$config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
 $config['blacklistallsurveys']       = 'N'; // Blocklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']       = 'N'; // Blocklist participant for any new added survey once the global field is set
 $config['blockaddingtosurveys']      = 'Y'; // Don't allow blocklisted participants to be added to new survey
@@ -98,23 +97,13 @@ $config['customassetversionnumber']  = 1;        // Used to generate the path of
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
 $config['allowedthemeimageformats'] = 'gif,ico,jpg,jpeg,png'; // Image file types allowed to be uploaded in the themes section.
 $config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
-$config['allowedfileuploads'] = [
-    //Documents
-    'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',
-    //Images - as mentioned above be very careful if you want to allow SVG files
-    'png', 'bmp', 'gif', 'jpg', 'jpeg', 'tif',
-    // Iphone file extensions (version 11 and above)
-    'heif', 'heic', 'heifs', 'heics', 'avci', 'avcs', 'avif', 'avifs',
-    //soundfiles
-    'wav', 'mp3', 'flac', 'aac', 'm4a', 'opus', 'ogg', 'wma', 'mka',
-    //videos
-    'mp4', 'avi', 'mkv', 'mpeg', 'mpg', 'wmv', 'h264', 'h265', 'mov', 'webm', 'divx', 'xvid',
-];
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,dotx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 $config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
+
+$config['showserverconfigurationcheck'] = true; // Show the server configuration check (memory_limit, max_input_vars, post_max_size, upload_max_filesize) on the 'Check data integrity' page. Set to false to hide it, e.g. if your hosting does not allow you to change these PHP settings.
 
 $config['maximum_unzipped_size'] = '500000000'; // Max size after zip unarchiving in bytes.
 
@@ -163,6 +152,15 @@ $config['surveyPreview_require_Auth'] = true;
 // The user can call the limesurvey login at /limesurvey/admin and pass username and
 // a one time password which was previously written into the users table (column one_time_pw) by
 // an external application.
+// The column value is a PHP password_hash() hash of the one time password (same algorithm as
+// the normal password field), optionally followed by a colon and an identifier of the actor
+// the password was issued to (e.g. a support agent id), as "<passwordHash>:<actorId>". When
+// present, the actor identifier is recorded in the audit log (plugin AuditLog) against the
+// resulting login, so third-party access can be told apart from a regular login. A value
+// without a colon is treated as a hash with no actor identifier.
+// For backward compatibility, a plain SHA-256 hex digest is still accepted instead of a
+// password_hash() hash, but this is OBSOLETE and will be removed in version 8.x; it
+// should not be used for new integrations.
 // This setting has to be turned on to enable the usage of one time passwords (default = off).
 $config['use_one_time_passwords'] = false;
 
@@ -490,42 +488,6 @@ $config['updatecheckperiod'] = 7;
 
 
 /**
-* @var $showxquestions string allows you to control whether or not
-* {THEREAREXQUESTIONS} is displayed (if it is included in a theme)
-*   hide = always hide {THEREAREXQUESTIONS}
-*   show = always show {THEREAREXQUESTIONS}
-*   choose = allow survey admins to choose
-*/
-$config['showxquestions'] = 'choose';
-
-
-/**
-* @var $showgroupinfo string allows you to control whether or not
-* {GROUPNAME} and/or {GROUPDESCRIPTION} are displayed (if they are
-* included in a theme)
-*   none = always hide both title and description
-*   name = always {GROUPNAME} only
-*   description = always show {GROUPDESCRIPTION} only
-*   both = always show both {GROUPNAME} and {GROUPDESCRIPTION}
-*   choose = allow survey admins to choose
-*/
-$config['showgroupinfo'] = 'choose';
-
-
-/**
-* @var $showqnumcode string allows you to control whether or not
-* {QUESTION_NUMBER} and/or {QUESTION_CODE} are displayed (if they
-* are included in a theme)
-*   none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
-*   code = always show {QUESTION_CODE} only
-*   number = always show {QUESTION_NUMBER} only
-*   both = always show both {QUESTION_NUMBER} and {QUESTION_CODE}
-*   choose = allow survey admins to choose
-*/
-$config['showqnumcode'] = 'choose';
-
-
-/**
 * @var $force_ssl string - forces LimeSurvey to run through HTTPS or to block HTTPS
 *   'on' =  force SSL/HTTPS to be on (This will cause LimeSurvey
 *       to fail in SSL is turned off)
@@ -643,11 +605,22 @@ $config['restrictToLanguages'] = '';
 * @var string
 */
 $config['RPCInterface'] = 'off';
+
+/**
+* This parameter enables/disables the 'Access-Control-Allow-Origin: *' header on the RPC interface
+* Set to 1 to allow browser-based applications on other domains to use the RPC interface (CORS)
+* Set to 0 if the RPC interface is only used by server-side scripts or from the same domain
+* Can be changed in Global settings > Interfaces
+* @var integer
+*/
 $config['add_access_control_header'] = 1;
 
 /**
 * This parameter sets the default session expiration time in seconds
 * Default is 2 hours
+* Note: If you use table-based sessions (see config.php) with MySQL/MariaDB, make sure the server setting
+* max_allowed_packet is big enough: The session of a participant taking a very large survey can grow to 15 MB
+* and more, and a session bigger than max_allowed_packet is silently not saved. We recommend at least 64M.
 * @var integer
 */
 $config['iSessionExpirationTime'] = 7200;
@@ -792,7 +765,7 @@ $config['defaultthemeteeditormode'] = 'default';
 // Side Menu behaviout
 $config['sideMenuBehaviour'] = 'adaptive';
 
-// Hide update key
+// Hide update key except for the first and last letters
 $config['hide_update_key'] = false;
 
 /**

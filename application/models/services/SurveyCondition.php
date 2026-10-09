@@ -818,6 +818,18 @@ class SurveyCondition
                                 'condition' => 'questionl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
                             )))->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order ASC, scale_id ASC'));
+                // Answer options of both scales, the same for every subquestion
+                $scaleAnswers = [];
+                foreach ([0, 1] as $scaleId) {
+                    $scaleAnswers[$scaleId] = \Answer::model()->with(array(
+                            'answerl10ns' => array(
+                                'condition' => 'answerl10ns.language = :lang',
+                                'params' => array(':lang' => $this->language)
+                            )))->findAllByAttributes(
+                                array('qid' => $rows['qid'], 'scale_id' => $scaleId),
+                                array('order' => 't.sortorder ASC')
+                            );
+                }
                 foreach ($aresult as $arows) {
                     $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], $arows['title']);
                     $sLanguage = $this->language;
@@ -832,28 +844,10 @@ class SurveyCondition
                     $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $arows->questionl10ns[$this->language]->question);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $fieldName . "#1");
 
-                    // first label
-                    $lresult = \Answer::model()->with(array(
-                            'answerl10ns' => array(
-                                'condition' => 'answerl10ns.language = :lang',
-                                'params' => array(':lang' => $this->language)
-                            )))->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0));
-                    foreach ($lresult as $lrows) {
-                        $canswers[] = array($fieldName . "#0", "{$lrows['code']}", "{$lrows['code']}");
-                    }
-
-                    // second label
-                    $lresult = \Answer::model()->with(array(
-                            'answerl10ns' => array(
-                                'condition' => 'answerl10ns.language = :lang',
-                                'params' => array(':lang' => $this->language)
-                            )))->findAllByAttributes(array(
-                                'qid' => $rows['qid'],
-                                'scale_id' => 1
-                            ));
-
-                    foreach ($lresult as $lrows) {
-                        $canswers[] = array($fieldName . "#1", "{$lrows['code']}", "{$lrows['code']}");
+                    foreach ($scaleAnswers as $scaleId => $lresult) {
+                        foreach ($lresult as $lrows) {
+                            $canswers[] = array($fieldName . "#" . $scaleId, $lrows['code'], $lrows->answerl10ns[$this->language]->answer);
+                        }
                     }
 
                     // Only Show No-Answer if question is not mandatory
@@ -894,16 +888,16 @@ class SurveyCondition
 
                 $acount = count($aresult);
 
-                $quicky = [];
+                $quickList = [];
                 foreach ($aresult as $arow) {
                     $thesubquestion = $arow->questionl10ns[$this->language]->question;
-                    $quicky[] = array($arow['title'], $thesubquestion);
+                    $quickList[] = array($arow['title'], $thesubquestion);
                 }
 
                 for ($i = 1; $i <= $acount; $i++) {
                     $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], (string)$i);
                     $cquestions[] = array("{$rows['title']}: [RANK $i] " . strip_tags((string) $rows['question']), $rows['qid'], $rows['type'], $fieldName);
-                    foreach ($quicky as $qck) {
+                    foreach ($quickList as $qck) {
                         $canswers[] = array($fieldName, $qck[0], $qck[1]);
                     }
                     // Only Show No-Answer if question is not mandatory
@@ -911,7 +905,7 @@ class SurveyCondition
                         $canswers[] = array($fieldName, " ", gT("No answer"));
                     }
                 }
-                unset($quicky);
+                unset($quickList);
                 // End if type R
             } elseif ($rows['type'] == \Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == \Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                 $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid']);
@@ -1040,8 +1034,6 @@ class SurveyCondition
      */
     protected function getQuestionNavOptions($gid, $qid, array $theserows, array $postrows, array $args, $caller): string
     {
-        /** @var integer $gid */
-        /** @var integer $qid */
         /** @var string $questiontitle */
         /** @var string $sCurrentFullQuestionText */
         extract($args);
@@ -1121,8 +1113,6 @@ class SurveyCondition
     protected function getQuickAddConditionForm(int $gid, int $qid, array $args, $caller)
     {
         /** @var integer $iSurveyID */
-        /** @var integer $gid */
-        /** @var integer $qid */
         /** @var string $subaction */
         /** @var string $method */
         /** @var string $p_csrctoken */

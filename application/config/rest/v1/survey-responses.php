@@ -26,8 +26,10 @@ $rest['v1/survey-responses/$id'] = [
         'params' => [
             'filters' => ['type' => 'array'],
             'sort' => ['type' => 'array'],
-            'pageSize' => ['type' => 'array'],
-            'page' => ['type' => 'array']
+            'page' => ['type' => 'array'],
+            'language' => ['type' => 'string'],
+            'fields' => ['type' => 'array'],
+            'unnestFiles' => ['type' => 'boolean']
         ],
         'responses' => [
             'success' => [

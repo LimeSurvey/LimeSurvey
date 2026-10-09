@@ -18,6 +18,10 @@
     NOTE: see views/subviews/survey/group.twig comments for more infos
 #}
 
+{% set sGroupName = processString(aGroup.name) %}
+{% set bShowGroupTitle = (aGroup.showgroupinfo == 'N' or aGroup.showgroupinfo == 'B')
+    and sGroupName|striptags|replace({'&nbsp;': ' '})|trim != '' %}
+
 <div class="{{ aSurveyInfo.class.groupcontainer }} space-col" {{ aSurveyInfo.attr.groupcontainer }}>
 
     {# Group Name #}

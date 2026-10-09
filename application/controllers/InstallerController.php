@@ -285,7 +285,7 @@ class InstallerController extends CController
             //run validation, if it fails, load the view again else proceed to next step.
             if ($oModel->validate()) {
                 //saving the form data to session
-                foreach (array('dblocation', 'dbport', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
+                foreach (array('dblocation', 'dbport', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix', 'mssqlTrustServerCertificate') as $sStatusKey) {
                     Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
                 }
 
@@ -1077,6 +1077,7 @@ class InstallerController extends CController
         isset(Yii::app()->session['dblocation']) ? $model->dblocation = Yii::app()->session['dblocation'] : null;
         isset(Yii::app()->session['dbport']) ? $model->dbport = Yii::app()->session['dbport'] : null;
         isset(Yii::app()->session['dbprefix']) ? $model->dbprefix = Yii::app()->session['dbprefix'] : null;
+        isset(Yii::app()->session['mssqlTrustServerCertificate']) ? $model->mssqlTrustServerCertificate = Yii::app()->session['mssqlTrustServerCertificate'] : null;
         isset(Yii::app()->session['dbExists']) ? $model->dbExists = Yii::app()->session['databaseexist'] : null;
         return $model;
     }
@@ -1094,6 +1095,7 @@ class InstallerController extends CController
         unset(Yii::app()->session['dblocation']);
         unset(Yii::app()->session['dbport']);
         unset(Yii::app()->session['dbprefix']);
+        unset(Yii::app()->session['mssqlTrustServerCertificate']);
         unset(Yii::app()->session['dbExists']);
     }
 

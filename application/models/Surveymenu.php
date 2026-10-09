@@ -133,7 +133,7 @@ class Surveymenu extends LSActiveRecord
     public function createSurveymenuArray($oSurveyMenuObjects, $collapsed = false, $oSurvey = null)
     {
         //Possibility to add more languages to the database is given, so it is possible to add a call by language
-        //Also for peripheral menues we may add submenus someday.
+        //Also for peripheral menus we may add submenus someday.
         $aResultCollected = [];
         foreach ($oSurveyMenuObjects as $oSurveyMenuObject) {
             $entries = [];
@@ -392,7 +392,7 @@ class Surveymenu extends LSActiveRecord
                 'class'               => 'CCheckBoxColumn',
                 'selectableRows'      => 2,
                 'name'                => 'id',
-                'checkBoxHtmlOptions' => ['name' => 'id[]', 'class' => 'action_selectthismenu'],
+                'checkBoxHtmlOptions' => ['name' => 'id[]', 'class' => 'massiveActionsCheckbox action_selectthismenu'],
                 'headerHtmlOptions'   => ['class' => 'ls-sticky-column'],
                 'filterHtmlOptions'   => ['class' => 'ls-sticky-column'],
                 'htmlOptions'         => ['class' => 'ls-sticky-column'],

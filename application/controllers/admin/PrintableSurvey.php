@@ -120,7 +120,7 @@ class PrintableSurvey extends SurveyCommonAction
 
             /* Get the HTML tag */
             Yii::app()->loadHelper('surveytranslator');
-            $lang = App()->getLanguage();
+            $lang = getHtmlLangAttributeValue(App()->getLanguage());
             $langDir = (getLanguageRTL(App()->getLanguage())) ? "rtl" : "ltr";
             $htmlTag = " lang='$lang' class='dir-$langDir' dir='$langDir'";
 
@@ -546,11 +546,10 @@ class PrintableSurvey extends SurveyCommonAction
                     }*/
                     /* Add a PRINT_QUESTION_CODE : same than used in "automatic system generation (with EM condition) */
                     $question['print_code'] = "{$question['number']} [{$question['code']}]";
-                    $showqnumcode = Yii::app()->getConfig('showqnumcode');
-                    if (($showqnumcode == 'choose' && ($aSurveyInfo['showqnumcode'] == 'N' || $aSurveyInfo['showqnumcode'] == 'X')) || $showqnumcode == 'number' || $showqnumcode == 'none') {
+                    if (in_array($aSurveyInfo['showqnumcode'], ['N', 'X'])) {
                         $question['code'] = '';
                     }
-                    if (($showqnumcode == 'choose' && ($aSurveyInfo['showqnumcode'] == 'C' || $aSurveyInfo['showqnumcode'] == 'X')) || $showqnumcode == 'code' || $showqnumcode == 'none') {
+                    if (in_array($aSurveyInfo['showqnumcode'], ['C', 'X'])) {
                         $question['number'] = '';
                     }
 
@@ -658,12 +657,8 @@ class PrintableSurvey extends SurveyCommonAction
                                 }
                             }
 
-                            if (($arQuestion['other'] == 'Y') && isset($qidattributes["printable_help"])) {
-                                /*echo '<pre>';
-                                print_r($qidattributes);
-                                echo '</pre>';
-                                die();*/
-                                if (trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
+                            if ($arQuestion['other'] == 'Y') {
+                                if (!isset($qidattributes["printable_help"][$sLanguageCode]) || trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
                                     $qidattributes["printable_help"][$sLanguageCode] = gT("Other");
                                 }
                                 //                    $printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".self::inputTypeImage('radio' , gT("Other"))."\n\t\t\t".gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
@@ -736,8 +731,8 @@ class PrintableSurvey extends SurveyCommonAction
                                     ++$colcounter;
                                 }
                             }
-                            if (($arQuestion['other'] == "Y") && (isset($qidattributes["printable_help"]))) {
-                                if (trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
+                            if ($arQuestion['other'] == "Y") {
+                                if (!isset($qidattributes["printable_help"][$sLanguageCode]) || trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
                                     $qidattributes["printable_help"][$sLanguageCode] = "Other";
                                 }
                                 $question['answer'] .= $wrapper['item-start-other'] . self::inputTypeImage('checkbox', '') . gT($qidattributes["printable_help"][$sLanguageCode]) . ":\n\t\t" . self::inputTypeImage('other') . self::addsgqacode(" (" . $fieldname . "other) ") . $wrapper['item-end'];

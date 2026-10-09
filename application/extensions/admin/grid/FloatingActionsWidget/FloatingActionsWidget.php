@@ -75,7 +75,7 @@ class FloatingActionsWidget extends CWidget
 
         // 3. Register the widget JavaScript
         Yii::app()->getClientScript()->registerScriptFile(
-            Yii::app()->getConfig('extensionsurl') . 'admin/grid/FloatingActionsWidget/assets/floatingActions.js',
+            Yii::app()->getAssetManager()->publish(dirname(__FILE__) . '/assets/floatingActions.js'),
             CClientScript::POS_END
         );
 
@@ -157,6 +157,18 @@ class FloatingActionsWidget extends CWidget
     // -------------------------------------------------------------------------
     // Public helpers (called from the view)
     // -------------------------------------------------------------------------
+
+    /**
+     * HTML-encode an action label without double-encoding existing entities.
+     * Labels usually come from gT(), which already HTML-escapes by default.
+     *
+     * @param string $text  Action label
+     * @return string
+     */
+    public function encodeLabel(string $text): string
+    {
+        return htmlspecialchars($text, ENT_QUOTES, Yii::app()->charset, false);
+    }
 
     /**
      * Build a unique modal DOM ID for the given action key and action name.

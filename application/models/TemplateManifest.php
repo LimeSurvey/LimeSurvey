@@ -378,6 +378,8 @@ class TemplateManifest extends TemplateConfiguration
 
         $thissurvey['aGroups'][1]["showdescription"] = true;
         $thissurvey['aGroups'][1]["aQuestions"][1]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["SGQ"]           = "1234X56X79";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["type"]          = "L";
         $thissurvey['aGroups'][1]["aQuestions"][1]["mandatory"]     = true;
 
         // If called from command line to generate Twig temp, renderPartial doesn't exist in ConsoleApplication
@@ -390,6 +392,8 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aGroups'][1]["aQuestions"][1]["attributes"]    = 'id="question42"';
 
         $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["SGQ"]           = "1234X56X78";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["type"]          = "T";
         $thissurvey['aGroups'][1]["aQuestions"][2]["mandatory"]     = false;
         if (method_exists(Yii::app()->getController(), 'renderPartial')) {
             $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = Yii::app()->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array('alt' => true), true);
@@ -884,6 +888,33 @@ class TemplateManifest extends TemplateConfiguration
         self::changeNameInDOM($oNewManifest, $sNewName);
         self::changeDateInDOM($oNewManifest);
         $oNewManifest->save($sConfigPath . "/config.xml");
+        self::updateChildrenExtends($sOldName, $sNewName);
+    }
+
+    /**
+     * Update the <extends> node in the manifest of every custom theme (installed or not)
+     * that references $sOldName, so child themes keep resolving their renamed parent.
+     *
+     * @param string $sOldName The previous name of the parent template
+     * @param string $sNewName The new name of the parent template
+     */
+    public static function updateChildrenExtends($sOldName, $sNewName)
+    {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $aUserThemes = SurveyThemeHelper::getTemplateInFolder(Yii::app()->getConfig('userthemerootdir'));
+        foreach ($aUserThemes as $sThemeName => $sThemePath) {
+            if ($sThemeName === $sNewName || !file_exists($sThemePath . '/config.xml')) {
+                continue;
+            }
+            $oManifest = self::getManifestDOM($sThemePath);
+            $oConfig = $oManifest->getElementsByTagName('config')->item(0);
+            $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
+            $oExtendsNode = $ometadata->getElementsByTagName('extends')->item(0);
+            if ($oExtendsNode !== null && $oExtendsNode->nodeValue === $sOldName) {
+                self::changeExtendsInDom($oManifest, $sNewName);
+                $oManifest->save($sThemePath . '/config.xml');
+            }
+        }
     }
 
     /**

@@ -4,8 +4,10 @@ import ReactContentEditable from 'react-contenteditable'
 import { useAppState } from 'hooks'
 import {
   RemoveHTMLTagsInString,
+  removePlaceholderBadges,
   ReplaceQuestionCodesWithAnswers,
   STATES,
+  wrapPlaceholdersInBadges,
 } from 'helpers'
 import { PluginSlot } from 'plugins/PluginSlot'
 import { PLUGIN_SLOTS } from 'plugins/slots'
@@ -28,13 +30,18 @@ export const ContentEditable = ({
   const inputRef = useRef(null)
 
   const onChange = (value) => {
-    const parsedValue = RemoveHTMLTagsInString(value, ['br', 'p'])
+    const parsedValue = RemoveHTMLTagsInString(removePlaceholderBadges(value), [
+      'br',
+      'p',
+    ])
     setQuestionTitle(parsedValue)
     handleOnChange(parsedValue)
   }
 
   const handleFocus = () => {
     setIsFocused(true)
+    // Show the raw placeholder text while editing, so the badges don't get in the way.
+    setQuestionTitle(removePlaceholderBadges(questionTitle?.toString() ?? ''))
     onFocus()
   }
 
@@ -52,7 +59,7 @@ export const ContentEditable = ({
       ? ReplaceQuestionCodesWithAnswers(value, codeToQuestion)
       : value
 
-    setQuestionTitle(title)
+    setQuestionTitle(wrapPlaceholdersInBadges(title?.toString() ?? ''))
   }, [value, codeToQuestion, isFocused])
 
   useEffect(() => {

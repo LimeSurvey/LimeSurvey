@@ -6,8 +6,10 @@ use LimeSurvey\Api\Command\V1\{
     SurveyPatch,
     SurveyTemplate,
     SurveyArchive,
+    SurveyImport,
     SurveyLogic,
-    SurveyQuestionsFieldname
+    SurveyQuestionsFieldname,
+    ExpressionScriptValidate
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
@@ -17,12 +19,15 @@ use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactorySurveyTemplate,
     SchemaFactorySurveyArchive,
     SchemaFactorySurveyLogic,
-    SchemaFactorySurveyQuestionsFieldname
+    SchemaFactorySurveyQuestionsFieldname,
+    SchemaFactoryExpressionScriptValidation,
+    SchemaFactoryExpressionScriptValidationRequest
 };
 
 $errorSchema = (new SchemaFactoryError())->make();
 $surveyPatchSchema = (new SchemaFactorySurveyPatch())->make();
 $surveyTemplateSchema = (new SchemaFactorySurveyTemplate())->make();
+$expressionScriptValidationRequestSchema = (new SchemaFactoryExpressionScriptValidationRequest())->make();
 
 $rest = [];
 
@@ -49,6 +54,39 @@ $rest['v1/survey'] = [
             ]
         ]
     ]
+];
+
+$rest['v1/survey-import'] = [
+    'POST' => [
+        'tag' => 'survey',
+        'multipart' => true,
+        'description' => 'Import a complete survey',
+        'commandClass' => SurveyImport::class,
+        'params' => [
+            'file' => ['src' => 'files'],
+            'surveysgroup' => ['type' => 'string'],
+            'translinksfields' => ['type' => 'string'],
+        ],
+        'auth' => true,
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Survey imported successfully',
+                'content' => null,
+                'schema' => null,
+            ],
+            'bad-request' => [
+                'code' => 400,
+                'description' => 'Invalid upload or import failure',
+                'schema' => $errorSchema,
+            ],
+            'forbidden' => [
+                'code' => 403,
+                'description' => 'Forbidden',
+                'schema' => $errorSchema,
+            ],
+        ],
+    ],
 ];
 
 $rest['v1/survey-detail/$id'] =
@@ -189,6 +227,34 @@ $rest['v1/survey-logic/$id'] = [
                 'description' => 'Success',
                 'content' => null,
                 'schema' => (new SchemaFactorySurveyLogic())->make()
+            ],
+            'forbidden' => [
+                'code' => 403,
+                'description' => 'Forbidden',
+                'schema' => $errorSchema
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Not Found',
+                'schema' => $errorSchema
+            ]
+        ]
+    ]
+];
+
+$rest['v1/expression-script-validation/$id'] = [
+    'POST' => [
+        'tag' => 'survey',
+        'description' => 'Validate an ExpressionScript expression',
+        'commandClass' => ExpressionScriptValidate::class,
+        'auth' => true,
+        'schema' => $expressionScriptValidationRequestSchema,
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+                'content' => null,
+                'schema' => (new SchemaFactoryExpressionScriptValidation())->make()
             ],
             'forbidden' => [
                 'code' => 403,

@@ -12,7 +12,7 @@ LS.CPDB = (function() {
      * @param {object} data
      * @param {string} actionButtonClass
      * @param {string} formId
-     * @oaram {string} gridViewId
+     * @param {string} gridViewId
      * @return
      */
     runBaseModal = function(url, data, actionButtonClass, formId, gridViewId, callback){
@@ -23,6 +23,11 @@ LS.CPDB = (function() {
          * @todo
          */
         var secondSuccess = function(result) {
+            // Keep the modal open on validation errors, so the user can correct the input
+            if (result && result.error) {
+                window.LS.ajaxAlerts(result.error.message, 'danger', {showCloseButton: true});
+                return;
+            }
             $(baseModal).modal('hide');
             $.fn.yiiGridView.update(gridViewId,{});
             callback(result);
@@ -316,7 +321,9 @@ LS.CPDB = (function() {
         $('#pageSizeParticipantView').on("change", function(){
             $.fn.yiiGridView.update('list_central_participants',{ data:{ pageSizeParticipantView: $(this).val() }});
         });
-        bindListItemclick();
+        if (typeof bindListItemclick === 'function') {
+            bindListItemclick();
+        }
 
         if($('#export').hasClass('d-none')){
             $('#export').removeClass('d-none');

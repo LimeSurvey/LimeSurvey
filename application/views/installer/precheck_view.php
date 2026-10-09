@@ -84,6 +84,11 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                     <td><span class='ri-check-fill text-success'></span></td>
                     <td><?= $model->isPhpZipPresent ? $iconOk : $iconFail ?></td>
                 </tr>
+                <tr>
+                    <td><?php eT("PHP curl library"); ?></td>
+                    <td><span class='ri-check-fill text-success'></span></td>
+                    <td><?= $model->isPhpCurlPresent ? $iconOk : $iconFail ?></td>
+                </tr>
 
                 <tr>
                        <td><?php eT("PHP/PECL JSON library"); ?></td>
@@ -152,13 +157,77 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                <td><?= $model->isPhpImapPresent ? $iconOk : $iconFail ?></td>
         </tr>
         <tr>
-                
+
                <td><?php eT("PHP Sodium library [data encryption]"); ?></td>
                <td><span class='ri-check-fill text-success' alt="Check"></span></td>
                <td><?= $model->isSodiumPresent ? $iconOk : $iconFail ?></td>
         </tr>
         </tbody>
 
+        </table>
+        <br/>
+        <legend><?php eT('Recommended PHP settings'); ?></legend>
+        <table class='table-striped table'>
+        <thead>
+            <tr>
+                   <th>&nbsp;</th>
+                   <th><?php eT('Recommended'); ?></th>
+                   <th><?php eT('Current'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+               <td>max_input_vars</td>
+               <td><?= $model::RECOMMENDED_MAX_INPUT_VARS ?></td>
+               <td>
+                   <?php if ($model->isMaxInputVarsOK) : ?>
+                       <?= $model->maxInputVars ?>
+                   <?php else : ?>
+                       <span class='ri-error-warning-fill text-warning' aria-hidden='true'></span>
+                       <span class='fw-bold'><?php eT("Too low"); ?>: <?= $model->maxInputVars ?></span>
+                       <br/>
+                       <?= sprintf(
+                           gT("Large surveys may lose data when saving or exporting. Please ask your system administrator to raise the PHP setting max_input_vars to at least %s."),
+                           $model::RECOMMENDED_MAX_INPUT_VARS
+                       ) ?>
+                   <?php endif; ?>
+               </td>
+        </tr>
+        <tr>
+               <td>post_max_size</td>
+               <td><?= $model::RECOMMENDED_POST_MAX_SIZE ?>M</td>
+               <td>
+                   <?php if ($model->isPostMaxSizeOK) : ?>
+                       <?= CHtml::encode(ini_get('post_max_size')) ?>
+                   <?php else : ?>
+                       <span class='ri-error-warning-fill text-warning' aria-hidden='true'></span>
+                       <span class='fw-bold'><?php eT("Too low"); ?>: <?= CHtml::encode(ini_get('post_max_size')) ?></span>
+                       <br/>
+                       <?= sprintf(
+                           gT("Saving large forms or uploading files may fail. Please ask your system administrator to raise the PHP setting post_max_size to at least %s."),
+                           $model::RECOMMENDED_POST_MAX_SIZE . 'M'
+                       ) ?>
+                   <?php endif; ?>
+               </td>
+        </tr>
+        <tr>
+               <td>upload_max_filesize</td>
+               <td><?= $model::RECOMMENDED_UPLOAD_MAX_FILESIZE ?>M</td>
+               <td>
+                   <?php if ($model->isUploadMaxFilesizeOK) : ?>
+                       <?= CHtml::encode(ini_get('upload_max_filesize')) ?>
+                   <?php else : ?>
+                       <span class='ri-error-warning-fill text-warning' aria-hidden='true'></span>
+                       <span class='fw-bold'><?php eT("Too low"); ?>: <?= CHtml::encode(ini_get('upload_max_filesize')) ?></span>
+                       <br/>
+                       <?= sprintf(
+                           gT("Importing surveys or uploading files may fail. Please ask your system administrator to raise the PHP setting upload_max_filesize to at least %s."),
+                           $model::RECOMMENDED_UPLOAD_MAX_FILESIZE . 'M'
+                       ) ?>
+                   <?php endif; ?>
+               </td>
+        </tr>
+        </tbody>
         </table>
         <div class="row navigator">
             <div class="col-lg-4" >
