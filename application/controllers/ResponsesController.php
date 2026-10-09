@@ -742,10 +742,11 @@ class ResponsesController extends LSBaseController
      * @param int $responseId
      * @param int $qid
      * @param int $index
+     * @param int $inline : 1 to display images in the browser instead of downloading
      * @return void
      * @throws CHttpException
      */
-    public function actionDownloadfile(int $surveyId, int $responseId, int $qid, int $index): void
+    public function actionDownloadfile(int $surveyId, int $responseId, int $qid, int $index, int $inline = 0): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
             throw new CHttpException(403, gT("Invalid survey ID"));
@@ -784,10 +785,14 @@ class ResponsesController extends LSBaseController
                     if (is_null($mimeType)) {
                         $mimeType = "application/octet-stream";
                     }
+                    // Only raster images are shown inline; SVG can carry script, so it stays a download.
+                    $canInline = $inline && strpos($mimeType, 'image/') === 0 && $mimeType !== 'image/svg+xml';
+                    $fileName = rawurldecode((string) $aFile['name']);
                     @ob_clean();
                     header('Content-Description: File Transfer');
                     header('Content-Type: ' . $mimeType);
-                    header('Content-Disposition: attachment; filename="' . sanitize_filename(rawurldecode((string) $aFile['name'])) . '"');
+                    header('X-Content-Type-Options: nosniff');
+                    header('Content-Disposition: ' . ($canInline ? 'inline' : 'attachment') . '; filename="' . sanitize_filename($fileName) . '"; filename*=UTF-8\'\'' . rawurlencode($fileName));
                     header('Content-Transfer-Encoding: binary');
                     header('Expires: 0');
                     header("Cache-Control: must-revalidate, no-store, no-cache");
