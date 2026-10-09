@@ -767,24 +767,26 @@ class TemplateConfiguration extends TemplateConfig
         ];
 
 
-        $dropdownItems[] = [
-            'title'            => gT('Uninstall'),
-            'url'              => $sUninstallUrl,
-            'linkId'           => 'remove_fromdb_link_' . $this->id,
-            'linkClass'        => 'selector--ConfirmModal ',
-            'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => App()->getController()->action->id !== "surveysgroups" &&
-                                    $templateName != App()->getConfig('defaulttheme'),
-            'linkAttributes'   => [
-                'title'            => gT('Uninstall this theme'),
-                'data-button-no'   => gT('Cancel'),
-                'data-button-yes'  => gT('Uninstall'),
-                'data-text'        => gT('This will reset all the specific configurations of this theme.')
-                                         . '<br>' . gT('Do you want to continue?'),
-                'data-post'        => json_encode([ "templatename" => $templateName ]),
-                'data-button-type' => "btn-danger"
-            ]
-        ];
+        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
+            $dropdownItems[] = [
+                'title'            => gT('Uninstall'),
+                'url'              => $sUninstallUrl,
+                'linkId'           => 'remove_fromdb_link_' . $this->id,
+                'linkClass'        => 'selector--ConfirmModal ',
+                'iconClass'        => 'ri-delete-bin-fill text-danger',
+                'enabledCondition' => App()->getController()->action->id !== "surveysgroups" &&
+                                        $templateName != App()->getConfig('defaulttheme'),
+                'linkAttributes'   => [
+                    'title'            => gT('Uninstall this theme'),
+                    'data-button-no'   => gT('Cancel'),
+                    'data-button-yes'  => gT('Uninstall'),
+                    'data-text'        => gT('This will reset all the specific configurations of this theme.')
+                                             . '<br>' . gT('Do you want to continue?'),
+                    'data-post'        => json_encode([ "templatename" => $templateName ]),
+                    'data-button-type' => "btn-danger"
+                ]
+            ];
+        }
 
         $dropdownItems[] = [
             'title'            => gT('Reset'),
