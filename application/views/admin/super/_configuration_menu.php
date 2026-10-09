@@ -294,7 +294,7 @@
                         <!-- Backup Entire Database -->
                         <li class="dropdown-item">
                             <a href="<?php echo $this->createUrl("admin/dumpdb"); ?>">
-                                <?php eT("Backup entire database"); ?>
+                                <?php eT("Database backup"); ?>
                             </a>
                         </li>
 
