@@ -12,8 +12,11 @@ class ParticipantActionTest extends TestBaseClass
     /** @var \User User with only the global participant panel create permission */
     private static $createOnlyUser;
 
+    /** @var \User User with only the global participant panel read permission */
+    private static $readOnlyUser;
+
     /**
-     * Creates a user with only the global participant panel create permission.
+     * Creates users with only the global participant panel create or read permission.
      *
      * @return void
      */
@@ -34,20 +37,49 @@ class ParticipantActionTest extends TestBaseClass
                 'participantpanel' => ['create' => 'on'],
             ]
         );
+        self::$readOnlyUser = self::createUserWithPermissions(
+            [
+                'users_name' => 'cpdb_read_only',
+                'full_name' => 'cpdb_read_only',
+                'email' => 'cpdb_read_only@example.com',
+                'lang' => 'auto',
+                'password' => 'cpdb_read_only',
+                'parent_id' => 1,
+            ],
+            [
+                'auth_db' => ['read' => 'on'],
+                'participantpanel' => ['read' => 'on'],
+            ]
+        );
     }
 
     /**
-     * Removes the test user and any participants left behind by failed tests.
+     * Removes the test users and any participants left behind by failed tests.
      *
      * @return void
      */
     public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
-        \Participant::model()->deleteAllByAttributes(['owner_uid' => self::$createOnlyUser->uid]);
-        \Permission::model()->deleteAllByAttributes(['uid' => self::$createOnlyUser->uid]);
-        self::$createOnlyUser->delete();
+        foreach ([self::$createOnlyUser, self::$readOnlyUser] as $user) {
+            \Participant::model()->deleteAllByAttributes(['owner_uid' => $user->uid]);
+            \Permission::model()->deleteAllByAttributes(['uid' => $user->uid]);
+            $user->delete();
+        }
         \Yii::app()->session['loginID'] = null;
+    }
+
+    /**
+     * Users without global create permission must not get the form to add a participant.
+     *
+     * @return void
+     */
+    public function testUserWithoutCreatePermissionCannotOpenAddParticipantModal()
+    {
+        \Yii::app()->session['loginID'] = self::$readOnlyUser->uid;
+        $called = $this->runParticipantsAction('openEditParticipant', []);
+
+        $this->assertEquals('outputNoPermission', $called);
     }
 
     /**
@@ -60,7 +92,7 @@ class ParticipantActionTest extends TestBaseClass
         $participant = $this->createParticipant(self::$createOnlyUser->uid);
 
         \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
-        $called = $this->runDeleteParticipant([
+        $called = $this->runParticipantsAction('deleteParticipant', [
             'selectedoption' => 'po',
             'participant_id' => $participant->participant_id,
         ]);
@@ -81,7 +113,7 @@ class ParticipantActionTest extends TestBaseClass
         $participant = $this->createParticipant(1);
 
         \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
-        $called = $this->runDeleteParticipant([
+        $called = $this->runParticipantsAction('deleteParticipant', [
             'selectedoption' => $selectedOption,
             'participant_id' => $participant->participant_id,
         ]);
@@ -116,7 +148,7 @@ class ParticipantActionTest extends TestBaseClass
         $foreignParticipant = $this->createParticipant(1);
 
         \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
-        $called = $this->runDeleteParticipant([
+        $called = $this->runParticipantsAction('deleteParticipant', [
             'selectedoption' => 'po',
             'sItems' => json_encode([$ownParticipant->participant_id, $foreignParticipant->participant_id]),
         ]);
@@ -179,12 +211,13 @@ class ParticipantActionTest extends TestBaseClass
     }
 
     /**
-     * Runs ParticipantsAction::deleteParticipant() with the given POST data.
+     * Runs a ParticipantsAction method with the given POST data.
      *
+     * @param string $action Name of the ParticipantsAction method
      * @param array<string, string> $post
      * @return string|null Name of the called AjaxHelper output method
      */
-    private function runDeleteParticipant(array $post)
+    private function runParticipantsAction($action, array $post)
     {
         \Yii::import('application.controllers.admin.ParticipantsAction', true);
         \Yii::import('application.helpers.admin.ajax_helper', true);
@@ -192,6 +225,10 @@ class ParticipantActionTest extends TestBaseClass
         $dummyAjaxHelper = new class () extends \ls\ajax\AjaxHelper
         {
             public static $called = null;
+            public static function output($msg)
+            {
+                self::$called = 'output';
+            }
             public static function outputSuccess($msg)
             {
                 self::$called = 'outputSuccess';
@@ -214,7 +251,7 @@ class ParticipantActionTest extends TestBaseClass
 
         $_POST = $post;
         try {
-            $participantController->deleteParticipant();
+            $participantController->$action();
         } catch (\CHttpException $e) {
             // Thrown by the dummy outputNoPermission()
         } finally {

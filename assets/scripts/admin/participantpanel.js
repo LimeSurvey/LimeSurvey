@@ -42,6 +42,10 @@ LS.CPDB = (function() {
          * @todo
          */
         var firstSuccess = function(json){
+            if (json && json.hasPermission === false) {
+                window.LS.ajaxAlerts(json.noPermissionText, 'danger', {showCloseButton: true});
+                return;
+            }
             $(baseModal).find('.modal-content').html(json.result);
             $(baseModal).modal('show');
             $(baseModal).find('.'+actionButtonClass).on('click', function(e) {

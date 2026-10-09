@@ -407,7 +407,8 @@ class ParticipantsAction extends SurveyCommonAction
             Yii::app()->user->setState('pageSizeParticipantView', $request->getPost('pageSize'));
         }
 
-        $aData['topbar'] = $this->getTopBarComponents($title, true, false);
+        $ownsAddParticipantsButton = Permission::model()->hasGlobalPermission('participantpanel', 'create');
+        $aData['topbar'] = $this->getTopBarComponents($title, $ownsAddParticipantsButton, false);
 
         // Loads the participant panel view and display participant view
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
@@ -463,7 +464,8 @@ class ParticipantsAction extends SurveyCommonAction
     /**
      * Method to open the participant edit/ new participant modal
      * Requires 'participant_id' (int|null)
-     * Editing an existing participant requires Participant::userHasPermissionToEdit()
+     * Editing an existing participant requires Participant::userHasPermissionToEdit(),
+     * adding a new participant requires the global participant panel create permission
      * @return void
      */
     public function openEditParticipant()
@@ -482,6 +484,10 @@ class ParticipantsAction extends SurveyCommonAction
             $model->decrypt();
             $operationType = "edit";
         } else {
+            if (!Permission::model()->hasGlobalPermission('participantpanel', 'create')) {
+                $this->ajaxHelper::outputNoPermission();
+                return;
+            }
             $model = new Participant();
             $operationType = "add";
         }
