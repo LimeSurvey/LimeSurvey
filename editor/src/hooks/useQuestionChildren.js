@@ -352,9 +352,17 @@ export const useQuestionChildren = ({
       /^\s*[+-]?\d+\s*$/.test(assessmentValueString)
 
     if (isValidAssessmentValue) {
+      // An empty field is stored as 0 (DB column is NOT NULL DEFAULT 0), so
+      // send that explicitly. The UI keeps "" while the user is still typing.
+      const childrenToSave = updatedChildren.map((child, index) =>
+        index === childIndex && assessmentValueString.trim() === ''
+          ? { ...child, assessmentValue: 0 }
+          : child
+      )
+
       const operation = createBufferOperation(question.qid)
         .answer()
-        .update([...updatedChildren])
+        .update([...childrenToSave])
 
       addToBuffer(operation)
     }
