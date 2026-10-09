@@ -5,7 +5,7 @@ import { RowQuestionGroup } from './RowQuestionGroup'
 import { waitFor, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import surveyData from 'helpers/data/survey-detail.json'
-import { DragDropContext } from 'react-beautiful-dnd'
+import { DragDropContext } from '@hello-pangea/dnd'
 import { renderWithProviders } from 'tests/testUtils'
 
 describe('RowQuestionGroup', () => {

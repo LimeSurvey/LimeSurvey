@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
 import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 import { max } from 'lodash'

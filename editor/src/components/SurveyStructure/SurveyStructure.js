@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 import Button from 'react-bootstrap/Button'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -64,7 +64,7 @@ export const SurveyStructure = () => {
 
   useEffect(() => {
     const allGroupsElement = document.querySelector(
-      '[data-rbd-droppable-id="all-groups"]'
+      '[data-rfd-droppable-id="all-groups"]'
     )
     if (allGroupsElement) {
       if (isDraggingOutOfGroup || !hasSurveyUpdatePermission) {

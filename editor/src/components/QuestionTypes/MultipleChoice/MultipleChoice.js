@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 
 import classNames from 'classnames'
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
 import { Button, Form } from 'react-bootstrap'
 import { PlusLg } from 'react-bootstrap-icons'
 
