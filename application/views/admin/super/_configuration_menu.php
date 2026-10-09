@@ -63,8 +63,8 @@
                     <?php endif; ?>
                 </div>
                 <!-- ExpressionScript Engine -->
+                <?php if (YII_DEBUG) : ?>
                 <div class="mega-dropdown__column col-md-3">
-                    <?php if (YII_DEBUG) : ?>
                         <ul>
 
                             <!-- ExpressionScript Engine -->
@@ -131,10 +131,10 @@
                                 </a>
                             </li>
                         </ul>
-                    <?php endif; ?>
                 </div>
+                <?php endif; ?>
                 <!-- Advanced -->
-                <div class="mega-dropdown__column col-md-2">
+                <div class="mega-dropdown__column col-md">
                     <span  id="list-heading-cn" class="sr-only" role="heading" aria-level="2"> <?php eT('Advanced'); ?></span>
                     <ul aria-labelledby="list-heading-cn">
 
@@ -161,36 +161,24 @@
                             </li>
                         <?php endif; ?>
 
-                        <!-- Data Integrity -->
-                        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
+                        <!-- Central participant management -->
+                        <?php if (
+                        Permission::model()->hasGlobalPermission('participantpanel', 'read')
+                            || Permission::model()->hasGlobalPermission('participantpanel', 'create')
+                            || Permission::model()->hasGlobalPermission('participantpanel', 'update')
+                            || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
+                            || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])
+) : ?>
                             <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>">
-                                    <?php eT("Data integrity"); ?>
-                                </a>
-                            </li>
-
-                            <!-- Backup Entire Database -->
-                            <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("admin/dumpdb"); ?>">
-                                    <?php eT("Backup entire database"); ?>
-                                </a>
-                            </li>
-
-                        <?php endif; ?>
-
-                        <!-- Comfort update -->
-                        <?php if (Permission::model()->hasGlobalPermission('superadmin')) : ?>
-                            <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("admin/update"); ?>">
-                                    <?php eT("ComfortUpdate"); ?>
+                                <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
+                                    <?php eT("Central participant database"); ?>
                                 </a>
                             </li>
                         <?php endif; ?>
                     </ul>
-
                 </div>
                 <!-- Users -->
-                <div class="mega-dropdown__column col-md-2">
+                <div class="mega-dropdown__column col-md">
 
                     <!-- Users -->
                    <h2 class="sr-only"> <?php eT('Users'); ?></h2>
@@ -230,25 +218,10 @@
                             </li>
 
                         <?php endif; ?>
-
-                        <!-- Central participant management -->
-                        <?php if (
-                        Permission::model()->hasGlobalPermission('participantpanel', 'read')
-                            || Permission::model()->hasGlobalPermission('participantpanel', 'create')
-                            || Permission::model()->hasGlobalPermission('participantpanel', 'update')
-                            || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
-                            || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])
-) : ?>
-                            <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
-                                    <?php eT("Central participant management"); ?>
-                                </a>
-                            </li>
-                        <?php endif; ?>
                     </ul>
                 </div>
                 <!-- Settings -->
-                <div class="mega-dropdown__column col-md-2">
+                <div class="mega-dropdown__column col-md">
                     <h2 class="sr-only">  <?php eT('Settings'); ?></h2>
                     <ul>
 
@@ -301,6 +274,39 @@
 
                     </ul>
                 </div>
+                <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
+                <!-- Tools -->
+                <div class="mega-dropdown__column col-md">
+                    <h2 class="sr-only"><?php eT('Tools'); ?></h2>
+                    <ul>
+                        <li class="dropdown-header" role="presentation">
+                            <span class="ri-hammer-fill" aria-hidden="true"></span>
+                            <span aria-hidden="true"><?php eT('Tools'); ?></span>
+                        </li>
+
+                        <!-- Data Integrity -->
+                        <li class="dropdown-item">
+                            <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>">
+                                <?php eT("Data integrity"); ?>
+                            </a>
+                        </li>
+
+                        <!-- Backup Entire Database -->
+                        <li class="dropdown-item">
+                            <a href="<?php echo $this->createUrl("admin/dumpdb"); ?>">
+                                <?php eT("Backup entire database"); ?>
+                            </a>
+                        </li>
+
+                        <!-- Comfort update -->
+                        <li class="dropdown-item">
+                            <a href="<?php echo $this->createUrl("admin/update"); ?>">
+                                <?php eT("ComfortUpdate"); ?>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
     </li>
