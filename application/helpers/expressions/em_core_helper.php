@@ -2150,11 +2150,12 @@ class ExpressionManager
 
 
     /**
-     * Run a registered function
+     * Run a registered function and push its result on the stack.
      * Some PHP functions require specific data types - those can be cast here.
-     * @param array $funcNameToken
-     * @param array $params
-     * @return boolean|null
+     * The result of the function is pushed as is, falsy results (0, '', false, null …) are not altered.
+     * @param array $funcNameToken the function token: [name, position, type]
+     * @param array $params the parameters to pass to the function
+     * @return boolean|null true if the function ran (or was parsed), false on error, null if the function is not callable
      */
     private function RDP_RunFunction($funcNameToken, $params)
     {
@@ -2249,18 +2250,7 @@ class ExpressionManager
                             break;
                         case 3:
                             if (!$this->RDP_onlyparse) {
-                                switch ($funcName) {
-                                    case 'substr':
-                                        // check if params1 and 2 are integer representations
-                                        if (filter_var($params[1], FILTER_VALIDATE_INT) && filter_var($params[2], FILTER_VALIDATE_INT)) {
-                                            $result = $funcName(floatval($params[0]), floatval($params[1]));
-                                        } else {
-                                            $result = false; // Not same than other
-                                        }
-                                        break;
-                                    default:
-                                        $result = call_user_func($funcName, $params[0], $params[1], $params[2]);
-                                }
+                                $result = call_user_func($funcName, $params[0], $params[1], $params[2]);
                             }
                             break;
                         case 4:
@@ -2850,14 +2840,18 @@ function exprmgr_strtoupper($string)
 }
 /**
  * Get part of unicode string
- * @param string $string
- * @param int $start
- * @param int $end
- * @return string
+ * Start and length must be numeric (truncated to integer), else return false (same as in JS).
+ * @param string|null $string
+ * @param int|float|string $start
+ * @param int|float|string|null $end length of the part
+ * @return string|false
  */
 function exprmgr_substr($string, $start, $end = null)
 {
-    return mb_substr(($string ?? ''), $start, $end, 'UTF-8');
+    if (!is_numeric($start) || (!is_null($end) && !is_numeric($end))) {
+        return false;
+    }
+    return mb_substr(($string ?? ''), (int) $start, is_null($end) ? null : (int) $end, 'UTF-8');
 }
 /**
  * Sum values from a list that satisfy a comparison against a reference value.
