@@ -64,7 +64,7 @@ export const SurveyStructure = () => {
 
   useEffect(() => {
     const allGroupsElement = document.querySelector(
-      '[data-rbd-droppable-id="all-groups"]'
+      '[data-rfd-droppable-id="all-groups"]'
     )
     if (allGroupsElement) {
       if (isDraggingOutOfGroup || !hasSurveyUpdatePermission) {
