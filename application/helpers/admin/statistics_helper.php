@@ -372,7 +372,7 @@ function buildSelects($allfields, $surveyid, $language)
             in_array($pv, $allfields) || in_array(substr($pv, 1), $aQuestionMap) || in_array($pv, $aQuestionMap)
             || (
                 (
-                    $pv[0] == 'D' || $pv[0] == 'N' || $pv[0] == 'K'
+                    $pv[0] == 'D' || $pv[0] == 'N' || $pv[0] == 'K' || $pv[0] == '|'
                 )
                 && (in_array(substr($pv, 1, strlen($pv) - 2), $aQuestionMap) || in_array(substr($pv, 1, strlen($pv) - 3), $aQuestionMap) || in_array(substr($pv, 1, strlen($pv) - 5), $aQuestionMap))
             )
@@ -792,14 +792,20 @@ class statistics_helper
         } elseif ($sQuestionType == "|") {
             // File Upload
 
-            //get SGQ data
-            $qqid = substr(explode("_", $rt)[0], 1);
-
-            //select details for this question
-            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => substr($qqid, 0)));
-            $qtitle = $nresult->title;
-            $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->question);
+            // Security (mantis #20755): $rt comes from the request, so only accept the column of a
+            // file upload question of this survey before it is used in any query.
+            $fieldname = substr($rt, 1);
+            if (
+                !isset($fieldmap[$fieldname], $fieldmap[$fieldname . '_Cfilecount'])
+                || $fieldmap[$fieldname]['type'] !== Question::QT_VERTICAL_FILE_UPLOAD
+            ) {
+                return [];
+            }
+            $fielddata = $fieldmap[$fieldname];
+            $qqid = $fielddata['qid'];
+            $qtitle = flattenText($fielddata['title']);
+            $qtype = $fielddata['type'];
+            $qquestion = flattenText($fielddata['question']);
             /*
             4)      Average size of file per respondent
             5)      Average no. of files
@@ -811,20 +817,32 @@ class statistics_helper
             10)     min file size
             */
 
+            // Only include the responses that match the selected filters
+            $conditions = array();
+            if (incompleteAnsFilterState() === "incomplete") {
+                $conditions[] = "submitdate is null";
+            } elseif (incompleteAnsFilterState() === "complete") {
+                $conditions[] = "submitdate is not null";
+            }
+            //$sql was set somewhere before
+            if (!empty($sql)) {
+                $conditions[] = $sql;
+            }
+            $where = $conditions ? " WHERE " . implode(" AND ", $conditions) : "";
+
             // 1) Total number of files uploaded
             // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
-            $fieldname = substr($rt, 1, strlen($rt));
-            $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as avg FROM {{responses_$surveyid}}";
+            $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as avg FROM {{responses_$surveyid}}" . $where;
             $rows = Yii::app()->db->createCommand($query)->query();
 
             $showem = array();
 
             foreach ($rows->readAll() as $row) {
-                $showem[] = array(gT("Total number of files"), $row['sum']);
-                $showem[] = array(gT("Average no. of files per respondent"), $row['avg']);
+                $showem[] = array(gT("Total number of files"), $row['sum'] ?? 0);
+                $showem[] = array(gT("Average no. of files per respondent"), $row['avg'] ?? 0);
             }
 
-            $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{responses_$surveyid}}";
+            $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{responses_$surveyid}}" . $where;
             $rows = Yii::app()->db->createCommand($query)->query();
 
             $responsecount = 0;
@@ -835,15 +853,15 @@ class statistics_helper
                 $json = $row['json'];
                 $phparray = json_decode((string) $json);
 
-                foreach ($phparray as $metadata) {
-                    $size += (int) $metadata->size;
+                foreach ((array) $phparray as $metadata) {
+                    $size += (int) ($metadata->size ?? 0);
                     $filecount++;
                 }
                 $responsecount++;
             }
             $showem[] = array(gT("Total size of files"), $size . " KB");
-            $showem[] = array(gT("Average file size"), $size / $filecount . " KB");
-            $showem[] = array(gT("Average size per respondent"), $size / $responsecount . " KB");
+            $showem[] = array(gT("Average file size"), ($filecount ? $size / $filecount : 0) . " KB");
+            $showem[] = array(gT("Average size per respondent"), ($responsecount ? $size / $responsecount : 0) . " KB");
 
             /*              $query="SELECT title, question FROM {{questions}} WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
             $result=db_execute_num($query) or safeDie("Couldn't get list of subquestions for multitype<br />$query<br />");
@@ -872,29 +890,35 @@ class statistics_helper
                     $this->xlsRow++;
                     $this->sheet->write($this->xlsRow, 0, gT("Calculation"));
                     $this->sheet->write($this->xlsRow, 1, gT("Result"));
+                    foreach ($showem as $shw) {
+                        $this->xlsRow++;
+                        $this->sheet->write($this->xlsRow, 0, html_entity_decode($shw[0], ENT_QUOTES, 'UTF-8'));
+                        $this->sheet->write($this->xlsRow, 1, html_entity_decode((string) $shw[1], ENT_QUOTES, 'UTF-8'));
+                    }
                     break;
 
                 case 'pdf':
                     $headPDF = array();
                     $headPDF[] = array(gT("Calculation"), gT("Result"));
-
+                    $tablePDF = array();
+                    foreach ($showem as $shw) {
+                        $tablePDF[] = array(html_entity_decode($shw[0], ENT_QUOTES, 'UTF-8'), html_entity_decode((string) $shw[1], ENT_QUOTES, 'UTF-8'));
+                    }
+                    $pdfTitle = sprintf(gT("Summary for %s"), html_entity_decode((string) $qtitle, ENT_QUOTES, 'UTF-8'));
+                    $titleDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
+                    $this->pdf->AddPage('P', 'A4');
+                    $this->pdf->Bookmark($this->pdf->delete_html($qquestion), 1, 0);
+                    $this->pdf->titleintopdf($pdfTitle, $titleDesc);
+                    $this->pdf->headTable($headPDF, $tablePDF);
                     break;
 
                 case 'html':
-                    $statisticsoutput .= "\n<table class='statisticstable table table-bordered >\n"
-                    . "\t<thead><tr><th style='text-align: center; '><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
-                    . "</th></tr>\n"
-                    . "\t<tr><th colspan='2' align='right'><strong>$qquestion</strong></th></tr>\n"
-                    . "\t<tr>\n\t\t<th width='50%' align='right' ><strong>"
-                    . gT("Calculation") . "</strong></th>\n"
-                    . "\t\t<th width='50%' align='right' ><strong>"
-                    . gT("Result") . "</strong></th>\n"
-                    . "\t</tr></thead>\n"
-                    . "<tbody>\n";
+                    $statisticsoutput .= $this->getSummaryTableHeader($qqid, $qtitle, $qquestion);
 
                     foreach ($showem as $res) {
                         $statisticsoutput .= "<tr><td>" . $res[0] . "</td><td>" . $res[1] . "</td></tr>";
                     }
+                    $statisticsoutput .= "</tbody></table>\n";
                     break;
 
                 default:
@@ -965,16 +989,7 @@ class statistics_helper
 
                         break;
                     case 'html':
-                        $statisticsoutput .= "\n<table class='statisticstable table table-bordered' >\n"
-                        . "\t<thead><tr><th colspan='2' align='right'><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
-                        . "</th></tr>\n"
-                        . "\t<tr><th colspan='2' align='right'><strong>$qquestion</strong></th></tr>\n"
-                        . "\t<tr>\n\t\t<th width='50%' align='right' ><strong>"
-                        . gT("Calculation") . "</strong></th>\n"
-                        . "\t\t<th width='50%' align='right' ><strong>"
-                        . gT("Result") . "</strong></th>\n"
-                        . "\t</tr></thead>\n"
-                        . "<tbody>\n";
+                        $statisticsoutput .= $this->getSummaryTableHeader($fielddata['qid'], $qtitle, $qquestion);
 
                         break;
                     default:
@@ -1216,10 +1231,10 @@ class statistics_helper
         }*/
         else {
             //search for key
-            $fielddata = $fieldmap[$rt];
             if (!isset($fieldmap[$rt])) {
                 return [];
             }
+            $fielddata = $fieldmap[$rt];
 
             //get SGQA IDs
             $qqid = $fielddata['qid'];
@@ -1523,6 +1538,14 @@ class statistics_helper
             $alist[] = array("", gT("No answer"), false, 'is_no_answer');
         }
 
+        // Put the summary (numerical and file upload questions) into the same grid column
+        // as the statistics of the other question types, see _statisticsoutput_header.php
+        if ($outputType == 'html' && $statisticsoutput !== '') {
+            $statisticsoutput = "<div class='col-xl-" . $this->getColumnWidth() . " col-md-12 ps-0 pe-3'>\n"
+                . $statisticsoutput
+                . "</div>\n";
+        }
+
         return [
             "alist" => $alist,
             "qtitle" => $qtitle,
@@ -1532,6 +1555,54 @@ class statistics_helper
             "parentqid" => (int)$qqid,
             "subquestionText" => $subquestionText,
         ];
+    }
+
+    /**
+     * Returns the opening HTML of the calculation summary table of a numerical or file upload
+     * question, with the same header as the statistics of the other question types
+     * (see _statisticsoutput_header.php), including the button to export the question to PDF.
+     *
+     * @param int|string $qid Question ID
+     * @param string $qtitle Question code
+     * @param string $qquestion Question text
+     * @return string
+     */
+    protected function getSummaryTableHeader($qid, $qtitle, $qquestion)
+    {
+        $tableId = 'quid_' . (int) $qid;
+        $exportLabel = CHtml::encode(gT("Export this question to PDF.", 'unescaped'));
+
+        return "\n<table class='statisticstable table table-bordered printable' id='" . $tableId . "'>\n"
+            . "\t<thead><tr class='active'><th colspan='2' class='text-center'><strong>" . sprintf(gT("Summary for %s"), $qtitle) . "</strong>"
+            . "<button type='button' class='float-end action_js_export_to_pdf btn btn-outline-secondary btn-sm d-print-none'"
+            . " data-question-id='" . $tableId . "' data-bs-toggle='tooltip' title='" . $exportLabel . "' aria-label='" . $exportLabel . "'"
+            . " onclick='return false;'><i class='ri-file-pdf-line' aria-hidden='true'></i></button>"
+            . "</th></tr>\n"
+            . "\t<tr><td colspan='2' class='text-center'>$qquestion</td></tr>\n"
+            . "\t<tr>\n\t\t<th width='50%'><strong>"
+            . gT("Calculation") . "</strong></th>\n"
+            . "\t\t<th width='50%'><strong>"
+            . gT("Result") . "</strong></th>\n"
+            . "\t</tr></thead>\n"
+            . "<tbody>\n";
+    }
+
+    /**
+     * Returns the Bootstrap grid width of one question in the HTML statistics output,
+     * as set by the "Number of columns" output option.
+     *
+     * @return string Number of grid columns out of 12
+     */
+    protected function getColumnWidth()
+    {
+        switch ($_POST['stats_columns'] ?? '2') {
+            case "1":
+                return "12";
+            case "3":
+                return "4";
+            default:
+                return "6";
+        }
     }
 
     /**
@@ -2895,23 +2966,19 @@ class statistics_helper
             }
         }
         // Columns
-        $statsColumns = $_POST['stats_columns'] ?? '2';
-
-        switch ($statsColumns) {
-            case "1":
-                $nbcols      = "12";
+        $nbcols = $this->getColumnWidth();
+        switch ($nbcols) {
+            case "12":
                 $canvaWidth  = "1150";
                 $canvaHeight = "800";
                 break;
 
-            case "3":
-                $nbcols = "4";
+            case "4":
                 $canvaWidth = "333";
                 $canvaHeight = "500";
                 break;
 
             default:
-                $nbcols = "6";
                 $canvaWidth = "500";
                 $canvaHeight = "500";
                 break;
@@ -3866,7 +3933,7 @@ class statistics_helper
             foreach ($runthrough as $rt) {
                 //Step 1: Get information about this response field (SGQA) for the summary
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
-                $sOutputHTML .= $outputs['statisticsoutput'];
+                $sOutputHTML .= $outputs['statisticsoutput'] ?? '';
                 //2. Collect and Display results #######################################################################
                 if (isset($outputs['alist']) && $outputs['alist']) {
                     //Make sure there really is an answerlist, and if so:
@@ -4163,7 +4230,7 @@ class statistics_helper
             foreach ($runthrough as $rt) {
                 //Step 1: Get information about this response field (SGQA) for the summary
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
-                $sOutputHTML .= $outputs['statisticsoutput'];
+                $sOutputHTML .= $outputs['statisticsoutput'] ?? '';
                 //2. Collect and Display results #######################################################################
                 if (isset($outputs['alist']) && $outputs['alist']) {
                     //Make sure there really is an answerlist, and if so:

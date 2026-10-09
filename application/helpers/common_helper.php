@@ -5808,20 +5808,6 @@ function switchMSSQLIdentityInsert($table, $state)
 }
 
 /**
- * Helper to filter the contents of a .zip file uploaded into the file manager
- */
-function resourceExtractFilter($p_event, &$p_header)
-{
-    $aAllowExtensions = Yii::app()->getConfig('allowedfileuploads');
-    $info = pathinfo((string) $p_header['filename']);
-    if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'], $aAllowExtensions)) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-/**
  * Applies preg_replace recursively until $recursion_limit is exceeded or no more replacements are done.
  * @param array|string $pattern
  * @param array|string $replacement

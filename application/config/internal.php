@@ -245,7 +245,7 @@ $internalConfig = array(
                 'LS_Twig_Extension',
                 '\Twig\Extension\SandboxExtension',
                 '\Twig\Extension\StringLoaderExtension',
-                '\Twig\Extension\DebugExtension',
+                'LS_Twig_Debug_Extension',
                 // 'Twig_Extension_Escaper' // In the future, this extension could be used to build a powerful XSS filter
             ),
             'globals' => array(

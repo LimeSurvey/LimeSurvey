@@ -555,7 +555,13 @@ class GlobalSettings extends SurveyCommonAction
     }
 
     /**
-     * Update global survey settings
+     * Show and update global survey settings
+     *
+     * Note: Viewing needs the global settings read permission (checked in the constructor),
+     * saving needs the global settings update permission.
+     *
+     * @return void
+     * @throws CHttpException
      */
     public function surveySettings()
     {
@@ -567,6 +573,9 @@ class GlobalSettings extends SurveyCommonAction
         $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
 
         if (!empty($_POST)) {
+            if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+                throw new CHttpException(403, gT("You do not have permission to access this page."));
+            }
             $oSurveyGroupSetting->attributes = $_POST;
             $oSurveyGroupSetting->gsid = 0;
             $oSurveyGroupSetting->usecaptcha = Survey::saveTranscribeCaptchaOptions();
@@ -718,10 +727,19 @@ class GlobalSettings extends SurveyCommonAction
     /**
      * Resets (deletes) failed login attempts for participants
      *
+     * Note: Needs the global settings update permission and a POST request.
+     *
      * @return void
+     * @throws CHttpException
      */
     public function resetFailedLoginParticipants()
     {
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        if (!Yii::app()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
         FailedLoginAttempt::model()->deleteAttempts(FailedLoginAttempt::TYPE_TOKEN);
         Yii::app()->setFlashMessage(gT("Failed login attempts of participants have been reset."), 'success');
         $this->getController()->redirect(array("admin/globalsettings"));

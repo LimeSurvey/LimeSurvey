@@ -11,7 +11,7 @@ if (in_array($flt[2], [Question::QT_X_TEXT_DISPLAY,Question::QT_ASTERISK_EQUATIO
     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($flt[0]);
 
     //$specialQuestionTypes = array("M","P","T","S","Q","|","","N","K","D");
-    $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS);
+    $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS, Question::QT_VERTICAL_FILE_UPLOAD);
 if (in_array($flt[2], $specialQuestionTypes)) {
     $myfield = $flt[2] . $myfield;
 }
@@ -41,7 +41,8 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
                         isset($summary) && (array_search("Q{$flt[0]}", $summary) !== false
                         || array_search("MQ{$flt[0]}", $summary) !== false
                         || array_search("PQ{$flt[0]}", $summary) !== false
-                        || array_search("NQ{$flt[0]}", $summary) !== false)
+                        || array_search("NQ{$flt[0]}", $summary) !== false
+                        || array_search("|Q{$flt[0]}", $summary) !== false)
                     ) {
                         echo " checked='checked'";
                     }
@@ -245,7 +246,7 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
                 . "</div>
                 </div>
                 <div class='mb-3 row'>
-                <label for='N" . $myfield3 . "' class='col-md-4 form-label'>" . gT("Number of files less than:") . "</label>
+                <label for='" . $myfield3 . "' class='col-md-4 form-label'>" . gT("Number of files less than:") . "</label>
                 <div class='col-md-6'>"
                 . CHtml::numberField($myfield3, $_POST[$myfield3] ?? '', array( 'class' => 'form-control', 'step' => 'any'))
                 . "</div>

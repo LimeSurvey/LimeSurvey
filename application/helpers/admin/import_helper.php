@@ -187,13 +187,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 unset($insertdata['language']);
             }
 
-            if (!$bTranslateLinksFields) {
-                $sScenario = 'archiveimport';
-            } else {
-                $sScenario = 'import';
-            }
-
-            $oQuestion = new Question($sScenario);
+            // The group is added to an existing survey, so question codes must always be checked for uniqueness
+            $oQuestion = new Question('import');
             $oQuestion->setAttributes($insertdata, false);
 
             if (!isset($aQIDReplacements[$iOldQID])) {
@@ -1454,7 +1449,9 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                 $aImportResults['error'] = gT("This is not a valid LimeSurvey LSA file.");
                 return $aImportResults;
             }
-            // Step 1 - import the LSS file and activate the survey
+            // Archives of inactive surveys contain no responses file, so the survey is only activated if there is one
+            $bHasResponsesFile = !empty(array_filter($files, fn($filename) => pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lsr'));
+            // Step 1 - import the LSS file and activate the survey if needed
             foreach ($files as $filename) {
                 if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lss') {
                     //Import the LSS file
@@ -1464,11 +1461,13 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                     }
                     $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                     $SurveyIntegrity->fixSurveyIntegrity();
-                    // Activate the survey
-                    Yii::app()->loadHelper("admin.activate");
-                    $survey = Survey::model()->findByPk($aImportResults['newsid']);
-                    $surveyActivator = new SurveyActivator($survey);
-                    $surveyActivator->activate();
+                    if ($bHasResponsesFile) {
+                        // Activate the survey
+                        Yii::app()->loadHelper("admin.activate");
+                        $survey = Survey::model()->findByPk($aImportResults['newsid']);
+                        $surveyActivator = new SurveyActivator($survey);
+                        $surveyActivator->activate();
+                    }
                     unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
                     break;
                 }
@@ -3768,9 +3767,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
-    if (\PHP_VERSION_ID < 80000) {
-        libxml_disable_entity_loader(true);
-    }
+ 
     $rankings = [];
     foreach ($survey->questions as $q) {
         if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {

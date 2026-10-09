@@ -65,10 +65,36 @@ export function useResponses(surveyId, pagination, filters, sorting) {
     patchMutation.mutate(operations)
   }
 
+  /**
+   * Find the zero-based page that lists a response under the current filters
+   * and the default "id DESC" sort, by counting the responses with a higher id.
+   *
+   * @param {string|number} responseId Response to locate.
+   * @returns {Promise<number>} Page index containing the response.
+   */
+  const findResponsePageIndex = async (responseId) => {
+    const result = await responseService.getSurveyResponses(surveyId, {
+      pagination: { pageIndex: 0, pageSize: 1 },
+      filters: {
+        ...filters,
+        locateResponse: {
+          keys: ['id'],
+          filterMethod: 'greaterThan',
+          value: responseId,
+        },
+      },
+      sorting: [],
+    })
+    const precedingCount = result?._meta?.pagination?.totalItems ?? 0
+
+    return Math.floor(precedingCount / pagination.pageSize)
+  }
+
   return {
     responses,
     isFetching,
     refetch,
     mutateOperations,
+    findResponsePageIndex,
   }
 }
