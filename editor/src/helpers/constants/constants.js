@@ -55,6 +55,7 @@ export const STATES = {
   START_EDITOR_TUTORIAL: 'start_editor_tutorial',
   SURVEY_RESPONSES: 'survey_responses',
   SURVEY_RESPONSE_ANSWERS: 'survey_response_answers',
+  SURVEY_RESPONSE_FILES: 'survey_response_files',
   SURVEY_RESPONSE_COMMENTS: 'survey_response_comments',
   SURVEY_STATISTICS: 'survey_statistics',
   EDITOR_HELP_APPEARED: 'editor_help_appeared',

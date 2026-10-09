@@ -342,4 +342,43 @@ export class StatisticsService {
       pagination,
     }
   }
+
+  /**
+   * Load the uploaded files of a file upload question, one entry per file.
+   * The backend searches each file's name, title and comment and paginates
+   * by file (`unnestFiles`).
+   */
+  getQuestionFiles = async (
+    sid,
+    currentPage = 0,
+    pageSize = 15,
+    language,
+    field,
+    statisticsFilters,
+    search
+  ) => {
+    const terms = [
+      ...new Set([...(statisticsFilters?.search ?? []), ...(search ?? [])]),
+    ]
+    const body = {
+      page: { currentPage, pageSize },
+      fields: [field],
+      sort: { submitDate: 'desc' },
+      filters: [
+        ...buildResponseFilters(statisticsFilters),
+        ...buildSearchFilters(terms, [field]),
+      ],
+      unnestFiles: true,
+    }
+    if (language) {
+      body.language = language
+    }
+
+    const data = await this.restClient.post(`survey-responses/${sid}`, body)
+
+    return {
+      files: data?.files ?? [],
+      pagination: data?._meta?.pagination || null,
+    }
+  }
 }

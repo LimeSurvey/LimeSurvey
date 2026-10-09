@@ -71,4 +71,38 @@ class SurveyLogicFileDuplicateCodeTest extends TestBaseClass
             );
         }
     }
+
+    /**
+     * A question code with characters other than letters and numbers must be counted as an error in the logic file.
+     */
+    public function testDeprecatedQuestionCodeIsReportedAsError()
+    {
+        $firstQuestion = Question::model()->find([
+            'condition' => 'parent_qid = 0 AND sid = :sid AND title = :title',
+            'params'    => [':sid' => self::$surveyId, ':title' => 'FixedQ01'],
+        ]);
+        // Legacy surveys can still contain such codes, so set it directly in the database
+        Question::model()->updateByPk($firstQuestion->qid, ['title' => 'Fixed_Q01']);
+
+        try {
+            SetSurveyLanguage(self::$surveyId, '');
+            killSurveySession(self::$surveyId);
+
+            $result = LimeExpressionManager::ShowSurveyLogicFile(
+                self::$surveyId,
+                null,
+                null,
+                LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL + LEM_PRETTY_PRINT_ALL_SYNTAX
+            );
+        } finally {
+            Question::model()->updateByPk($firstQuestion->qid, ['title' => 'FixedQ01']);
+        }
+
+        $this->assertCount(4, $result['errors']);
+        $this->assertStringContainsString('4 questions contain errors that need to be corrected.', $result['html']);
+        $this->assertMatchesRegularExpression(
+            "/<td class='danger'>Q-\d+<\/td><td><b><span class='highlighterror' title='Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated.' [^>]*>Fixed_Q01<\/span>/",
+            $result['html']
+        );
+    }
 }

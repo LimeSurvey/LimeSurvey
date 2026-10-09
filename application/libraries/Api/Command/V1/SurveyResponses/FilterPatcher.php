@@ -56,7 +56,11 @@ class FilterPatcher
          */
         if (!empty($filterParams['filters'])) {
             foreach ($filterParams['filters'] as $filterParam) {
-                if (!empty(array_diff_key(array_flip($this->filtersRequiredKeys), $filterParam))) {
+                if (
+                    !is_array($filterParam)
+                    || !empty(array_diff_key(array_flip($this->filtersRequiredKeys), $filterParam))
+                    || !is_string($filterParam['filterMethod'])
+                ) {
                     continue;
                 }
                 $key = is_string($filterParam['key'])
@@ -88,6 +92,44 @@ class FilterPatcher
                         $criteria->mergeWith($new_criteria);
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Strict check for callers that must not silently skip filters (e.g. exports).
+     *
+     * @param array $filters
+     * @param array $dataMap
+     * @param array $validColumns
+     * @throws \InvalidArgumentException
+     */
+    public function validate(array $filters, array $dataMap, array $validColumns): void
+    {
+        foreach ($filters as $filter) {
+            if (
+                !is_array($filter)
+                || !empty(array_diff_key(array_flip($this->filtersRequiredKeys), $filter))
+                || !is_string($filter['key'])
+                || !is_string($filter['filterMethod'])
+            ) {
+                throw new \InvalidArgumentException('Invalid filters specified');
+            }
+
+            $supported = false;
+            foreach ($this->handlers as $handler) {
+                $supported = $supported || (new $handler())->canHandle($filter['filterMethod']);
+            }
+            if (!$supported) {
+                throw new \InvalidArgumentException('Invalid filter method specified');
+            }
+
+            $key = $this->findMapKeyByValue($filter['key'], $dataMap);
+            if ($key === 'completed') {
+                $key = 'submitdate';
+            }
+            if (empty($validColumns) || !$this->isAllowedKey($key, $dataMap, $validColumns)) {
+                throw new \InvalidArgumentException('Invalid filter key specified');
             }
         }
     }

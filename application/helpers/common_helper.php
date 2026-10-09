@@ -2026,7 +2026,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                 $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                 $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
-                $fieldmap[$fieldname]['SQrelevance'] = $arow['relevance'];
+                // No SQrelevance: This is the question itself, not a subquestion
             }
             foreach ($abrows as $abrow) {
                 $i++;

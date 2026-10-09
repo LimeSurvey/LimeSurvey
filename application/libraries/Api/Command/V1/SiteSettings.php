@@ -44,6 +44,7 @@ class SiteSettings implements CommandInterface
                 'timezone' => date_default_timezone_get(),
                 'languages' => getLanguageData(),
                 'dateFormats' => getDateFormatData(),
+                'maximumFileUploadSize' => getMaximumFileUploadSize(),
             ]);
     }
 }
