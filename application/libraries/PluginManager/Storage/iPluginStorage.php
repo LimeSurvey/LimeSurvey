@@ -9,7 +9,7 @@ interface iPluginStorage
      * @param object $plugin The plugin object getting its data.
      * @param string | null $key The storage key, if null will return all data for the plugin.
      * @param string $model Name of a model in case its model specific plugin data, like for a specific question or survey.
-     * @param int $id Id of the model for which the data is retreived
+     * @param int $id Id of the model for which the data is retrieved
      * @param mixed $default The default value to use when none present
      * @param string $language The optional language to use
      * @return mixed The data stored.
@@ -22,7 +22,7 @@ interface iPluginStorage
      * @param string $key The storage key to identify the data.
      * @param mixed $data The data to be stored, serialized using serialize.
      * @param string $model Name of a model in case its model specific plugin data, like for a specific question or survey.
-     * @param int $id Id of the model for which the data is retreived
+     * @param int $id Id of the model for which the data is retrieved
      * @param string $language The optional language to use
      */
     public function set(iPlugin $plugin, $key, $data, $model = null, $id = null, $language = null);

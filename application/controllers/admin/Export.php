@@ -309,6 +309,10 @@ class Export extends SurveyCommonAction
                     $sFilter = "{{responses_{$iSurveyID}}}.id=" . (int) Yii::app()->request->getPost('response_id');
         } elseif (App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_' . $iSurveyID])) {
             $sFilter = Yii::app()->session['statistics_selects_' . $iSurveyID];
+        } elseif (Yii::app()->request->getPost('exportdata') === 'filtered') {
+            $rawFilters = Yii::app()->request->getPost('SurveyDynamic', array());
+            $filters = is_array($rawFilters) ? $rawFilters : array();
+            $sFilter = $this->getResponseBrowseFilter($survey, $filters);
         } else {
             $sFilter = '';
         }
@@ -317,6 +321,80 @@ class Export extends SurveyCommonAction
         $resultsService->exportResponses($iSurveyID, $explang, $sExportType, $options, $sFilter);
 
         Yii::app()->end();
+    }
+
+    /**
+     * @param Survey $survey
+     * @param array $aFilters
+     * @return array
+     */
+    private function getResponseBrowseFilter(Survey $survey, array $aFilters)
+    {
+        $aConditions = array();
+        $sResponseTable = $survey->responsesTableName;
+        $sTokenTable = 'tokentable';
+        $aResponseColumns = Yii::app()->db->schema->getTable($sResponseTable)->getColumnNames();
+        $bHasTokenJoin = tableExists($survey->tokensTableName)
+            && array_key_exists('token', SurveyDynamic::model($survey->primaryKey)->attributes)
+            && Permission::model()->hasSurveyPermission($survey->primaryKey, 'tokens', 'read');
+
+        $this->addExactFilter($aConditions, $sResponseTable . '.id', $aFilters['id'] ?? null, true);
+        $this->addExactFilter($aConditions, $sResponseTable . '.lastpage', $aFilters['lastpage'] ?? null, true);
+        $this->addLikeFilter($aConditions, $sResponseTable . '.submitdate', $aFilters['submitdate'] ?? null);
+        $this->addLikeFilter($aConditions, $sResponseTable . '.startlanguage', $aFilters['startlanguage'] ?? null);
+        if ($bHasTokenJoin) {
+            $this->addLikeFilter($aConditions, $sTokenTable . '.firstname', $aFilters['firstname_filter'] ?? null);
+            $this->addLikeFilter($aConditions, $sTokenTable . '.lastname', $aFilters['lastname_filter'] ?? null);
+            $this->addLikeFilter($aConditions, $sTokenTable . '.email', $aFilters['email_filter'] ?? null);
+        }
+
+        if (($aFilters['completed_filter'] ?? '') === 'Y') {
+            $aConditions[] = $sResponseTable . '.submitdate IS NOT NULL';
+        } elseif (($aFilters['completed_filter'] ?? '') === 'N') {
+            $aConditions[] = $sResponseTable . '.submitdate IS NULL';
+        }
+
+        foreach ($aFilters as $sColumn => $sValue) {
+            if (!is_scalar($sValue) || $sValue === '' || in_array($sColumn, array('id', 'lastpage', 'submitdate', 'startlanguage', 'completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter')) || !in_array($sColumn, $aResponseColumns)) {
+                continue;
+            }
+
+            $this->addLikeFilter($aConditions, $sResponseTable . '.' . Yii::app()->db->quoteColumnName($sColumn), $sValue);
+        }
+
+        return $aConditions;
+    }
+
+    /**
+     * @param array $aConditions
+     * @param string $sColumn
+     * @param mixed $mValue
+     * @param bool $bInteger
+     * @return void
+     */
+    private function addExactFilter(array &$aConditions, $sColumn, $mValue, $bInteger = false)
+    {
+        if ($mValue === null || $mValue === '') {
+            return;
+        }
+
+        $mValue = $bInteger ? (int) $mValue : Yii::app()->db->quoteValue($mValue);
+        $aConditions[] = $sColumn . ' = ' . $mValue;
+    }
+
+    /**
+     * @param array $aConditions
+     * @param string $sColumn
+     * @param mixed $mValue
+     * @return void
+     */
+    private function addLikeFilter(array &$aConditions, $sColumn, $mValue)
+    {
+        if ($mValue === null || $mValue === '') {
+            return;
+        }
+
+        $aConditions[] = $sColumn . ' LIKE ' . Yii::app()->db->quoteValue('%' . $mValue . '%');
     }
 
     /**
@@ -333,12 +411,25 @@ class Export extends SurveyCommonAction
     *
     * Optimization opportunities remain in the VALUE LABELS section, which runs a query / column
     *
+    * Note: Requires responses export or survey content export permission on the survey.
+    *
+    * @return void
+    * @throws CHttpException
     */
     public function exportspss()
     {
         global $length_vallabel;
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (empty($oSurvey)) {
+            throw new CHttpException(404, gT("Invalid survey ID"));
+        }
+        if (
+            !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')
+            && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')
+        ) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
 
         $filterstate = incompleteAnsFilterState();
         if (!Yii::app()->session['spssversion']) {
@@ -524,7 +615,7 @@ class Export extends SurveyCommonAction
             foreach ($fields as $field) {
                 if (!$field['hide']) {
                     $label_parts = strSplitUnicode(str_replace('"', '""', (string) stripTagsFull($field['VariableLabel'])), $length_varlabel - strlen((string) $field['id']));
-                    //if replaced quotes are splitted by, we need to mve the first quote to the next row
+                    //if replaced quotes are split by, we need to mve the first quote to the next row
                     foreach ($label_parts as $idx => $label_part) {
                         if ($idx != count($label_parts) && substr((string) $label_part, -1) == '"' && substr((string) $label_part, -2) != '"') {
                             $label_parts[$idx] = rtrim((string) $label_part, '"');
@@ -843,7 +934,7 @@ class Export extends SurveyCommonAction
             if ($zip->open($zipfilepath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
                 throw new Exception("Error : " . $zip->getStatusString());
             }
-            foreach (array('files', 'flash', 'images') as $zipdir) {
+            foreach (array('files', 'images') as $zipdir) {
                 if (is_dir($resourcesdir . $zipdir)) {
                     $dirPath = $resourcesdir . $zipdir;
                     $files = new RecursiveIteratorIterator(
@@ -993,8 +1084,10 @@ class Export extends SurveyCommonAction
     /**
      * Export Multiple Surveys
      *
-     * @param string $sSurveys
-     * @param string $sExportType
+     * Note: The survey title is only read after the surveycontent export permission was checked.
+     *
+     * @param string $sSurveys JSON encoded array of survey IDs
+     * @param string $sExportType Export type: 'archive', 'printable' or anything else for structure
      * @return array
      */
     public function exportMultipleSurveys(string $sSurveys, string $sExportType)
@@ -1014,13 +1107,15 @@ class Export extends SurveyCommonAction
                 continue;
             }
             $archiveName                    = "";
-            $oSurvey                        = Survey::model()->findByPk($iSurveyID);
-            $aResults[$iSurveyID]['title']  = ellipsize($oSurvey->correct_relation_defaultlanguage->surveyls_title, 30);
+            $aResults[$iSurveyID]['title']  = '';
             $aResults[$iSurveyID]['result'] = false;
+            /* Check permission before reading anything from the survey, to not disclose its title */
             if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
                 $aResults[$iSurveyID]['error'] = gT("We are sorry but you don't have permissions to do this.");
                 continue;
             }
+            $oSurvey                        = Survey::model()->findByPk($iSurveyID);
+            $aResults[$iSurveyID]['title']  = ellipsize($oSurvey->correct_relation_defaultlanguage->surveyls_title, 30);
 
             // Specific to each kind of export
             switch ($sExportType) {
@@ -1380,7 +1475,7 @@ class Export extends SurveyCommonAction
             $zip->addFromString($relativePath, file_get_contents($file));
             unlink($file);
         }
-        // set language back (get's changed in loop above)
+        // set language back (gets changed in loop above)
         Yii::app()->language = $siteLanguage;
 
         $zip->close();

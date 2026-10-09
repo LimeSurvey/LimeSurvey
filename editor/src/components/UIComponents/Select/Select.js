@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { Form } from 'react-bootstrap'
 import ReactSelect from 'react-select'
 import classNames from 'classnames'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { useAppState } from '../../../hooks'
-import { STATES } from '../../../helpers'
+import { RemoveHTMLTagsInString, STATES } from '../../../helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
 
@@ -22,6 +22,7 @@ export const Select = ({
   onChange = () => {},
   update = () => {},
   value,
+  disabled = false,
   activeDisabled = false,
   noPermissionDisabled = false,
   noAccessDisabled = false,
@@ -39,6 +40,15 @@ export const Select = ({
   const [isOpen, setIsOpen] = useState(false)
   const [canUseAppState, setCanUseAppState] = useState(false)
 
+  options = useMemo(
+    () =>
+      options.map((option) => ({
+        ...option,
+        label: RemoveHTMLTagsInString(option.label),
+      })),
+    [options]
+  )
+
   useEffect(() => {
     try {
       useQueryClient()
@@ -55,7 +65,7 @@ export const Select = ({
     ? useAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION)
     : [true]
 
-  const disabled =
+  const permissionDisabled =
     (isSurveyActive && activeDisabled) ||
     (!hasSurveyUpdatePermission && noPermissionDisabled) ||
     noAccessDisabled
@@ -111,7 +121,7 @@ export const Select = ({
       data-testid={dataTestId}
     >
       {labelText && <Form.Label htmlFor="select">{labelText}</Form.Label>}
-      <TooltipContainer tip={toolTip} showTip={disabled}>
+      <TooltipContainer tip={toolTip} showTip={permissionDisabled}>
         <ReactSelect
           classNames={{
             control: () => 'select',
@@ -174,7 +184,7 @@ export const Select = ({
               wordWrap: 'break-word',
             }),
           }}
-          isDisabled={disabled}
+          isDisabled={disabled || permissionDisabled}
           isClearable={false}
           onMenuOpen={handleOnMenuOpen}
           onMenuClose={handleOnMenuClose}

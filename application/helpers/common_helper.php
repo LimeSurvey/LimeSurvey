@@ -681,7 +681,7 @@ function getUserList($outputformat = 'fullinfoarray')
             $criteria->with = 'groups';
             /* users in usergroup */
             $criteria->addInCondition('groups.ugid', $userGroupList);
-            /* childs of this user */
+            /* children of this user */
             $criteria->compare('parent_id', $myuid, false, 'OR');
             /* himself */
             $criteria->compare('t.uid', $myuid, false, 'OR');
@@ -2026,7 +2026,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                 $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                 $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
-                $fieldmap[$fieldname]['SQrelevance'] = $arow['relevance'];
+                // No SQrelevance: This is the question itself, not a subquestion
             }
             foreach ($abrows as $abrow) {
                 $i++;
@@ -5802,20 +5802,6 @@ function switchMSSQLIdentityInsert($table, $state)
             // it won't have any effect
             Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT ' . Yii::app()->db->tablePrefix . $table . ' OFF');
         }
-    }
-}
-
-/**
- * Helper to filter the contents of a .zip file uploaded into the file manager
- */
-function resourceExtractFilter($p_event, &$p_header)
-{
-    $aAllowExtensions = Yii::app()->getConfig('allowedfileuploads');
-    $info = pathinfo((string) $p_header['filename']);
-    if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'], $aAllowExtensions)) {
-        return 1;
-    } else {
-        return 0;
     }
 }
 

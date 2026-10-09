@@ -53,23 +53,14 @@ define('CHECKED', ' checked="checked"');
 define('SELECTED', ' selected="selected"');
 
 /**
- * setNoAnswerMode
+ * Defines the SHOW_NO_ANSWER and PRESELECT_NO_ANSWER constants from the survey settings
+ *
+ * @param array $thissurvey Survey info as returned by getSurveyInfo()
+ * @return void
  */
 function setNoAnswerMode($thissurvey)
 {
-    if (Yii::app()->getConfig('shownoanswer') == 2) {
-        if ($thissurvey['shownoanswer'] == 'N') {
-            define('SHOW_NO_ANSWER', 0);
-        } else {
-            define('SHOW_NO_ANSWER', 1);
-        }
-    } elseif (Yii::app()->getConfig('shownoanswer') == 1) {
-        define('SHOW_NO_ANSWER', 1);
-    } elseif (Yii::app()->getConfig('shownoanswer') == 0) {
-        define('SHOW_NO_ANSWER', 0);
-    } else {
-        define('SHOW_NO_ANSWER', 1);
-    }
+    define('SHOW_NO_ANSWER', $thissurvey['shownoanswer'] == 'N' ? 0 : 1);
 
     // Default to the historic behaviour when rendering legacy/imported data
     // that does not contain the setting yet.
@@ -208,7 +199,7 @@ function retrieveAnswers($ia)
         $find    = [];
         foreach ($question_text as $key => $value) {
             $find[] = '{QUESTION_' . strtoupper($key) . '}'; // Match key words from template
-            $replace[] = $value; // substitue text
+            $replace[] = $value; // substitute text
         };
 
         if (!defined('QUESTION_START')) {

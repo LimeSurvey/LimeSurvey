@@ -33,6 +33,9 @@ use LimeSurvey\Models\Services\QuestionAttributeHelper;
  */
 class QuestionAttribute extends LSActiveRecord
 {
+    /** @var string A date limit (date_min/date_max) given as YYYY-MM-DD date, optionally followed by HH:MM or HH:MM:SS */
+    public const DATE_LIMIT_PATTERN = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])([ T]([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?)?$/D';
+
     protected static $questionAttributesSettings = array();
 
     protected $xssFilterAttributes = ['value'];
@@ -94,6 +97,7 @@ class QuestionAttribute extends LSActiveRecord
         return array(
             array('qid,attribute', 'required'),
             array('value', 'filterXss'),
+            array('value', 'validateDateLimit'),
             array('language', 'LSYii_Validators', 'isLanguage' => true)
         );
     }
@@ -205,6 +209,10 @@ class QuestionAttribute extends LSActiveRecord
                         'qid=:qid AND sid=:sid',
                         [":qid" => $questionId, ":sid" => $surveyId]
                     );
+                    // Skip questions that don't belong to the survey
+                    if (empty($question)) {
+                        continue;
+                    }
                     // For each attribute
                     foreach ($attributesWithValue as $attribute => $value) {
                         if (in_array($question->type, $validQuestionTypes)) {
@@ -614,6 +622,24 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
+     * Date limits may be a date, an English date description or an expression; a value starting like a
+     * YYYY-MM-DD date must parse as a date/time as a whole.
+     * @param string $attribute the name of the attribute to be validated.
+     * @param array<mixed> $params additional parameters passed with rule when being executed.
+     * @return void
+     */
+    public function validateDateLimit($attribute, $params)
+    {
+        if (!in_array($this->attribute, ['date_min', 'date_max'], true)) {
+            return;
+        }
+        $value = trim((string) $this->$attribute);
+        if (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}/', $value) && strtotime($value) === false) {
+            $this->addError($attribute, gT('Invalid date.'));
+        }
+    }
+
+    /**
      * Massive action "Present subquestions/answer options in random order"
      * has to update random_order, answer_order and/or subquestion_order
      * depending on question type.
@@ -640,6 +666,10 @@ class QuestionAttribute extends LSActiveRecord
                     'qid=:qid AND sid=:sid',
                     [":qid" => $questionId, ":sid" => $surveyId]
                 );
+                // Skip questions that don't belong to the survey
+                if (empty($questionModel)) {
+                    continue;
+                }
                 if (in_array($questionModel->type, $validQuestionTypes)) {
                     if (
                         in_array($questionModel->type, Question::ORDER_TYPES_SUBQUESTION)
