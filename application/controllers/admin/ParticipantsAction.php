@@ -58,6 +58,8 @@ class ParticipantsAction extends SurveyCommonAction
             || Permission::model()->hasGlobalPermission('participantpanel', 'create')
             || Permission::model()->hasGlobalPermission('participantpanel', 'update')
             || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'import')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'export')
             || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id]))
         ) {
             App()->setFlashMessage(gT('No permission'), 'error');

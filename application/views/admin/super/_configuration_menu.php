@@ -19,6 +19,8 @@
     || Permission::model()->hasGlobalPermission('participantpanel', 'create')
     || Permission::model()->hasGlobalPermission('participantpanel', 'update')
     || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
+    || Permission::model()->hasGlobalPermission('participantpanel', 'import')
+    || Permission::model()->hasGlobalPermission('participantpanel', 'export')
     || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])
     || Permission::model()->hasGlobalPermission('settings', 'read')
 ) : ?>
@@ -171,6 +173,8 @@
                             || Permission::model()->hasGlobalPermission('participantpanel', 'create')
                             || Permission::model()->hasGlobalPermission('participantpanel', 'update')
                             || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
+                            || Permission::model()->hasGlobalPermission('participantpanel', 'import')
+                            || Permission::model()->hasGlobalPermission('participantpanel', 'export')
                             || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])
 ) : ?>
                             <li class="dropdown-item">
