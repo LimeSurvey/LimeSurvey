@@ -1748,7 +1748,8 @@ class statistics_helper
                 } else {
                     //ranking question?
                     if (!$bRanking) {
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " = 'Y'";
+                        $encryptedValue = getEncryptedCondition($responseModel, $al[2], 'Y');
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " = '$encryptedValue'";
                     }
                 }
             }    //end if -> alist set
@@ -1756,11 +1757,12 @@ class statistics_helper
             else {
                 if ($al[0] != "") {
                     //get more data
+                    $encryptedValue = getEncryptedCondition($responseModel, $rt, $al[0]);
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
                         // mssql cannot compare text blobs so we have to cast here
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE cast(" . Yii::app()->db->quoteColumnName($rt) . " as varchar)= '$al[0]'";
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE cast(" . Yii::app()->db->quoteColumnName($rt) . " as varchar)= '$encryptedValue'";
                     } else {
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($rt) . " = '$al[0]'";
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($rt) . " = '$encryptedValue'";
                     }
                 } else {
                     // This is for the 'NoAnswer' case

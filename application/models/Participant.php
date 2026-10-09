@@ -1035,7 +1035,7 @@ class Participant extends LSActiveRecord
                             $token->delete();
                         }
                     }
-                    $iDeletedParticipants += $this->deleteParticipants($sParticipantsIDs, false);
+                    $iDeletedParticipants += $this->deleteParticipants(implode(",", $aParticipantsIDs), false);
                 }
             }
         }
@@ -1107,7 +1107,7 @@ class Participant extends LSActiveRecord
                                 $token->delete();
                             }
                         }
-                        $iDeletedParticipants = $this->deleteParticipants($sParticipantsIDs, false);
+                        $iDeletedParticipants = $this->deleteParticipants(implode(",", $aParticipantsIDs), false);
                     }
                 }
             }

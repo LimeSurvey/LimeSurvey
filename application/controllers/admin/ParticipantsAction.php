@@ -58,6 +58,8 @@ class ParticipantsAction extends SurveyCommonAction
             || Permission::model()->hasGlobalPermission('participantpanel', 'create')
             || Permission::model()->hasGlobalPermission('participantpanel', 'update')
             || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'import')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'export')
             || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id]))
         ) {
             App()->setFlashMessage(gT('No permission'), 'error');
@@ -407,7 +409,8 @@ class ParticipantsAction extends SurveyCommonAction
             Yii::app()->user->setState('pageSizeParticipantView', $request->getPost('pageSize'));
         }
 
-        $aData['topbar'] = $this->getTopBarComponents($title, true, false);
+        $ownsAddParticipantsButton = Permission::model()->hasGlobalPermission('participantpanel', 'create');
+        $aData['topbar'] = $this->getTopBarComponents($title, $ownsAddParticipantsButton, false);
 
         // Loads the participant panel view and display participant view
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
@@ -415,16 +418,11 @@ class ParticipantsAction extends SurveyCommonAction
 
     /**
      * Takes the delete call from the display participants and take appropriate action depending on the condition
+     * Users without global participant panel delete permission can only delete the participants they own.
      * @return void
      */
     public function deleteParticipant()
     {
-        // Abort if no permission
-        $deletePermission = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
-        if (!$deletePermission) {
-            $this->ajaxHelper::outputNoPermission();
-        }
-
         $selectoption = Yii::app()->request->getPost('selectedoption');
 
         // First for delete one, second for massive action
@@ -432,17 +430,21 @@ class ParticipantsAction extends SurveyCommonAction
         $participantIds = json_decode(Yii::app()->request->getPost('sItems', ''), true);
 
         if (empty($participantIds)) {
-            $participantIds = $participantId;
+            $participantIds = explode(',', (string) $participantId);
         }
 
-        if (is_array($participantIds)) {
-            $participantIds = implode(',', $participantIds);
+        // Without global delete permission, keep only the participants owned by the current user
+        $participantIds = Participant::model()->filterParticipantIDs((array) $participantIds);
+        if (empty($participantIds)) {
+            $this->ajaxHelper::outputNoPermission();
+            return;
         }
+        $participantIds = implode(',', $participantIds);
 
         // Deletes from participants only
         $deletedParticipants = null;
         if ($selectoption == 'po') {
-            $deletedParticipants = Participant::model()->deleteParticipants($participantIds, !$deletePermission);
+            $deletedParticipants = Participant::model()->deleteParticipants($participantIds, false);
         } elseif ($selectoption == 'ptt') {
             // Deletes from central and survey participant list
             $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);
@@ -464,7 +466,8 @@ class ParticipantsAction extends SurveyCommonAction
     /**
      * Method to open the participant edit/ new participant modal
      * Requires 'participant_id' (int|null)
-     * Editing an existing participant requires Participant::userHasPermissionToEdit()
+     * Editing an existing participant requires Participant::userHasPermissionToEdit(),
+     * adding a new participant requires the global participant panel create permission
      * @return void
      */
     public function openEditParticipant()
@@ -483,6 +486,10 @@ class ParticipantsAction extends SurveyCommonAction
             $model->decrypt();
             $operationType = "edit";
         } else {
+            if (!Permission::model()->hasGlobalPermission('participantpanel', 'create')) {
+                $this->ajaxHelper::outputNoPermission();
+                return;
+            }
             $model = new Participant();
             $operationType = "add";
         }

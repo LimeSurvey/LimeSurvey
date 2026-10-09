@@ -702,19 +702,23 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
 
     // We build the datas for the request
-    // TODO: Use object instead of string.
-    let datas = `surveyid=${data.surveyid}`;
-    datas += `&gid=${data.gid}`;
-    datas += `&qid=${data.qid}`;
-    datas += `&codes=${codesJson}`;
-    datas += `&scale_id=${scaleId}`;
-    datas += '&position=0';
-    datas += `&languages=${languages}`;
+    const params = $.param({
+      surveyid: data.surveyid,
+      gid: data.gid,
+      qid: data.qid,
+      scale_id: scaleId,  // jshint ignore:line
+      position: 0,
+      languages,
+    });
+    // Codes are posted: On long lists they would exceed the maximum URL length
+    const datas = {
+      codes: codesJson,
+    };
 
     // We get the HTML of the different rows to insert  (one by language)
     $.ajax({
-      type: 'GET',
-      url: url,
+      type: 'POST',
+      url: url + (url.indexOf('?') === -1 ? '?' : '&') + params,
       data: datas,
       success(arrayofhtml) {
         // arrayofhtml is a json object containing the different HTML row by language

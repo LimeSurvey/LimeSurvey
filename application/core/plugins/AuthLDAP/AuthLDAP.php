@@ -234,6 +234,13 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
      */
     private function ldapCreateNewUser($oEvent, $username, $password = null, $boundConnection = null)
     {
+        // LDAP user names are case-insensitive: Don't create a second user differing only by case
+        if ($this->getUserByNameCaseInsensitive($username) !== null) {
+            $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
+            $oEvent->set('errorMessageTitle', gT("Failed to add user"));
+            $oEvent->set('errorMessageBody', gT("A user with this username already exists."));
+            return null;
+        }
         // Get configuration settings:
         $ldapmode = $this->get('ldapmode');
         $searchuserattribute = $this->get('searchuserattribute');
@@ -528,7 +535,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         $ldapmode = $this->get('ldapmode');
         $autoCreateFlag = false;
-        $user = $this->api->getUserByName($username);
+        $user = $this->getUserByNameCaseInsensitive($username);
         // No user found!
         if ($user === null) {
             // If ldap mode is searchandbind and autocreation is enabled we can continue
@@ -691,5 +698,26 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         /* Set the username as found in LimeSurvey */
         $this->setUsername($user->users_name);
         $this->setAuthSuccess($user);
+    }
+
+    /**
+     * Find a LimeSurvey user by username ignoring case, like the LDAP server does
+     * An exact match is preferred, otherwise the oldest case-insensitive match is returned.
+     * Needed because username comparison is case-sensitive on PostgreSQL.
+     *
+     * @param string $username
+     * @return User|null
+     */
+    private function getUserByNameCaseInsensitive($username)
+    {
+        $user = $this->api->getUserByName($username);
+        if ($user !== null) {
+            return $user;
+        }
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('LOWER(users_name) = LOWER(:users_name)');
+        $criteria->params[':users_name'] = $username;
+        $criteria->order = 'uid ASC';
+        return User::model()->find($criteria);
     }
 }
