@@ -415,16 +415,11 @@ class ParticipantsAction extends SurveyCommonAction
 
     /**
      * Takes the delete call from the display participants and take appropriate action depending on the condition
+     * Users without global participant panel delete permission can only delete the participants they own.
      * @return void
      */
     public function deleteParticipant()
     {
-        // Abort if no permission
-        $deletePermission = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
-        if (!$deletePermission) {
-            $this->ajaxHelper::outputNoPermission();
-        }
-
         $selectoption = Yii::app()->request->getPost('selectedoption');
 
         // First for delete one, second for massive action
@@ -432,17 +427,21 @@ class ParticipantsAction extends SurveyCommonAction
         $participantIds = json_decode(Yii::app()->request->getPost('sItems', ''), true);
 
         if (empty($participantIds)) {
-            $participantIds = $participantId;
+            $participantIds = explode(',', (string) $participantId);
         }
 
-        if (is_array($participantIds)) {
-            $participantIds = implode(',', $participantIds);
+        // Without global delete permission, keep only the participants owned by the current user
+        $participantIds = Participant::model()->filterParticipantIDs((array) $participantIds);
+        if (empty($participantIds)) {
+            $this->ajaxHelper::outputNoPermission();
+            return;
         }
+        $participantIds = implode(',', $participantIds);
 
         // Deletes from participants only
         $deletedParticipants = null;
         if ($selectoption == 'po') {
-            $deletedParticipants = Participant::model()->deleteParticipants($participantIds, !$deletePermission);
+            $deletedParticipants = Participant::model()->deleteParticipants($participantIds, false);
         } elseif ($selectoption == 'ptt') {
             // Deletes from central and survey participant list
             $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);

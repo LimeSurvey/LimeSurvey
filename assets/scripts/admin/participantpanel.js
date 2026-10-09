@@ -29,6 +29,10 @@ LS.CPDB = (function() {
                 return;
             }
             $(baseModal).modal('hide');
+            if (result && result.hasPermission === false) {
+                window.LS.ajaxAlerts(result.noPermissionText, 'danger', {showCloseButton: true});
+                return;
+            }
             $.fn.yiiGridView.update(gridViewId,{});
             callback(result);
         };
