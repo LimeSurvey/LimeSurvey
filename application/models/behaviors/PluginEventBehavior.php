@@ -2,6 +2,19 @@
 
 use LimeSurvey\PluginManager\PluginEvent;
 
+/**
+ * Dispatches plugin events for model save and delete operations.
+ *
+ * Every event dispatched from the save/delete hooks carries the underlying Yii
+ * event in the 'modelEvent' parameter. In before* events this is a CModelEvent,
+ * so a plugin can cancel the operation by setting
+ * `$this->getEvent()->get('modelEvent')->isValid = false`. The model's save()
+ * or delete() then returns false; plugins should add an error to the model
+ * (e.g. `$model->addError(...)`) to tell the caller why. As with Yii's own
+ * event handlers, the remaining plugin events are still dispatched after a
+ * cancellation, so listeners can check `isValid` themselves.
+ * In after* events 'modelEvent' is a plain CEvent.
+ */
 class PluginEventBehavior extends CModelBehavior
 {
     public function events()
@@ -17,13 +30,24 @@ class PluginEventBehavior extends CModelBehavior
         );
     }
 
+    /**
+     * Dispatch the after*Delete plugin events
+     * @param CEvent $event
+     * @return void
+     */
     public function afterDelete(CEvent $event)
     {
-        $this->dispatchPluginModelEvent('after' . get_class($this->owner) . 'Delete');
-        $this->dispatchDynamic('after', 'Delete');
-        $this->dispatchPluginModelEvent('afterModelDelete');
+        $eventParams = array('modelEvent' => $event);
+        $this->dispatchPluginModelEvent('after' . get_class($this->owner) . 'Delete', null, $eventParams);
+        $this->dispatchDynamic('after', 'Delete', $eventParams);
+        $this->dispatchPluginModelEvent('afterModelDelete', null, $eventParams);
     }
 
+    /**
+     * Dispatch the after*Save plugin events
+     * @param CEvent $event
+     * @return void
+     */
     public function afterSave(CEvent $event)
     {
         $pluginManager = App()->getPluginManager();
@@ -31,20 +55,32 @@ class PluginEventBehavior extends CModelBehavior
         if ($pluginManager->shutdownObject->isEnabled()) {
             return;
         }
-        $this->dispatchPluginModelEvent('after' . get_class($this->owner) . 'Save');
-        $this->dispatchDynamic('after', 'Save');
-        $this->dispatchPluginModelEvent('afterModelSave');
+        $eventParams = array('modelEvent' => $event);
+        $this->dispatchPluginModelEvent('after' . get_class($this->owner) . 'Save', null, $eventParams);
+        $this->dispatchDynamic('after', 'Save', $eventParams);
+        $this->dispatchPluginModelEvent('afterModelSave', null, $eventParams);
     }
 
-
+    /**
+     * Dispatch the before*Delete plugin events
+     * A plugin can cancel the deletion by setting isValid of the 'modelEvent' parameter to false
+     * @param CModelEvent $event
+     * @return void
+     */
     public function beforeDelete(CModelEvent $event)
     {
-        $this->dispatchPluginModelEvent('before' . get_class($this->owner) . 'Delete');
-        $this->dispatchDynamic('before', 'Delete');
-        $this->dispatchPluginModelEvent('beforeModelDelete');
+        $eventParams = array('modelEvent' => $event);
+        $this->dispatchPluginModelEvent('before' . get_class($this->owner) . 'Delete', null, $eventParams);
+        $this->dispatchDynamic('before', 'Delete', $eventParams);
+        $this->dispatchPluginModelEvent('beforeModelDelete', null, $eventParams);
     }
 
-
+    /**
+     * Dispatch the before*Save plugin events
+     * A plugin can cancel the save by setting isValid of the 'modelEvent' parameter to false
+     * @param CModelEvent $event
+     * @return void
+     */
     public function beforeSave(CModelEvent $event)
     {
         $pluginManager = App()->getPluginManager();
@@ -52,9 +88,10 @@ class PluginEventBehavior extends CModelBehavior
         if ($pluginManager->shutdownObject->isEnabled()) {
             return;
         }
-        $this->dispatchPluginModelEvent('before' . get_class($this->owner) . 'Save');
-        $this->dispatchDynamic('before', 'Save');
-        $this->dispatchPluginModelEvent('beforeModelSave');
+        $eventParams = array('modelEvent' => $event);
+        $this->dispatchPluginModelEvent('before' . get_class($this->owner) . 'Save', null, $eventParams);
+        $this->dispatchDynamic('before', 'Save', $eventParams);
+        $this->dispatchPluginModelEvent('beforeModelSave', null, $eventParams);
     }
 
     /**
@@ -62,16 +99,16 @@ class PluginEventBehavior extends CModelBehavior
      * and related id
      * @param string $when
      * @param string $what
-     * @return PluginEvent the dispatched event
+     * @param array $eventParams additional params for the event
+     * @return PluginEvent|null the dispatched event, null if the owner is not a Dynamic model
      */
-    private function dispatchDynamic($when, $what)
+    private function dispatchDynamic($when, $what, $eventParams = array())
     {
         if (is_subclass_of($this->owner, 'Dynamic')) {
-            $params = array(
-                'dynamicId' => $this->owner->getDynamicId()
-            );
-            return $this->dispatchPluginModelEvent($when . get_parent_class($this->owner) . $what, null, $params);
+            $eventParams['dynamicId'] = $this->owner->getDynamicId();
+            return $this->dispatchPluginModelEvent($when . get_parent_class($this->owner) . $what, null, $eventParams);
         }
+        return null;
     }
     /**
      * method for dispatching plugin events
