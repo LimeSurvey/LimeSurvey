@@ -612,7 +612,7 @@ JAVASCRIPT
             [
                 'isExport' => (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')),
                 'templatename' => $templatename,
-                'isExtend' => true,
+                'isExtend' => Permission::model()->hasGlobalPermission('templates', 'create'),
             ],
             true
         );
