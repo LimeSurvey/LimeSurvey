@@ -1997,9 +1997,13 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
                         $question->appendChild($response);
                         break;
                     case "S": //Short free text
-                    case "J": //Map
                         // default is fieldlength of 24 characters.
                         $response->appendChild(QueXMLCreateFree("longtext", quexml_get_lengthth($qid, "maximum_chars", "24"), ""));
+                        quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
+                        $question->appendChild($response);
+                        break;
+                    case "J": //Map
+                        $response->appendChild(QueXMLCreateFree("longtext", quexml_get_lengthth($qid, "maximum_chars", "65535"), ""));
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         $question->appendChild($response);
                         break;
