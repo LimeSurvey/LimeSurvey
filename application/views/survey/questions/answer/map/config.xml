@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Default configuration for the Map question type.
+-->
 
 <config>
-    <!-- Metadata -->
     <metadata>
-        <name>shortfreetext</name>
+        <name>map</name>
         <type>question_theme</type>
-        <title>Short free text</title>
-        <creationDate>09/08/2018</creationDate>
+        <title>Map</title>
+        <creationDate>25/09/2026</creationDate>
         <author>LimeSurvey GmbH</author>
         <authorEmail>info@limesurvey.org</authorEmail>
         <authorUrl>http://www.limesurvey.org</authorUrl>
-        <copyright>Copyright (C) 2005 - 2018 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <copyright>Copyright (C) 2005 - 2026 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <apiVersion>1</apiVersion>
-        <description>Short free text question type configuration</description>
-        <questionType>S</questionType>
-        <group>Text questions</group>
+        <description>Map question type configuration</description>
+        <questionType>J</questionType>
+        <group>Mask questions</group>
         <subquestions>0</subquestions>
         <answerscales>0</answerscales>
         <hasdefaultvalues>1</hasdefaultvalues>
         <assessable>0</assessable>
-        <class>text-short</class>
+        <class>map</class>
     </metadata>
 
     <compatibility>
@@ -31,10 +33,6 @@
         <version>7.0</version>
     </compatibility>
 
-    <!--
-        List of the css/js files to load.
-        Any file here will be loaded via the asset manager (when in config.php debug = 0)
-    -->
     <files>
         <css>
             <filename></filename>
@@ -50,7 +48,6 @@
     <generalattributes>
         <attribute>question_template</attribute>
         <attribute>gid</attribute>
-<!--        <attribute>other</attribute>-->
         <attribute>mandatory</attribute>
         <attribute>relevance</attribute>
         <attribute>encrypted</attribute>
@@ -59,45 +56,7 @@
         <attribute>preg</attribute>
     </generalattributes>
 
-    <!-- Question attributes -->
     <attributes>
-        <!-- Display Attributes START -->
-        <attribute>
-            <name>prefix</name>
-            <category>Display</category>
-            <sortorder>10</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>Add a prefix to the answer field</help>
-            <caption>Answer prefix</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>suffix</name>
-            <category>Display</category>
-            <sortorder>11</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>Add a suffix to the answer field</help>
-            <caption>Answer suffix</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>placeholder</name>
-            <category>Display</category>
-            <sortorder>12</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>A placeholder answer to a question. This will appear in the answer field and disappear when real answer text is entered.</help>
-            <caption>Placeholder answer</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
         <attribute>
             <name>hide_tip</name>
             <category>Display</category>
@@ -157,100 +116,6 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
-            <name>text_input_width</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>singleselect</inputtype>
-            <default></default>
-            <options>
-                <option>
-                    <value></value>
-                    <text>Default</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>8%</text>
-                </option>
-                <option>
-                    <value>2</value>
-                    <text>17%</text>
-                </option>
-                <option>
-                    <value>3</value>
-                    <text>25%</text>
-                </option>
-                <option>
-                    <value>4</value>
-                    <text>33%</text>
-                </option>
-                <option>
-                    <value>5</value>
-                    <text>41%</text>
-                </option>
-                <option>
-                    <value>6</value>
-                    <text>50%</text>
-                </option>
-                <option>
-                    <value>7</value>
-                    <text>58%</text>
-                </option>
-                <option>
-                    <value>8</value>
-                    <text>67%</text>
-                </option>
-                <option>
-                    <value>9</value>
-                    <text>75%</text>
-                </option>
-                <option>
-                    <value>10</value>
-                    <text>83%</text>
-                </option>
-                <option>
-                    <value>11</value>
-                    <text>92%</text>
-                </option>
-                <option>
-                    <value>12</value>
-                    <text>100%</text>
-                </option>
-            </options>
-            <help>Relative width of the text input wrapper element</help>
-            <caption>Text input box width</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>input_size</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>integer</inputtype>
-            <default></default>
-            <help>Set the size to the input or textarea, the input will be displayed with approximately this size in width.</help>
-            <caption>Text input box size</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>display_rows</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>integer</inputtype>
-            <help>How many rows to display</help>
-            <caption>Display rows</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <!-- Display Attributes END -->
-        <!-- Logic Attributes START -->
-        <attribute>
             <name>random_group</name>
             <category>Logic</category>
             <sortorder>180</sortorder>
@@ -287,31 +152,6 @@
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
         </attribute>
-        <!-- Logic Attributes END -->
-        <!-- Other Attributes START -->
-        <attribute>
-            <name>numbers_only</name>
-            <category>Other</category>
-            <sortorder>150</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Allow only numerical input</help>
-            <caption>Numbers only</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
         <attribute>
             <name>page_break</name>
             <category>Other</category>
@@ -335,8 +175,6 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
-        <!-- Other Attributes END -->
-        <!-- Statistics Attributes START -->
         <attribute>
             <name>statistics_showgraph</name>
             <category>Statistics</category>
@@ -351,7 +189,6 @@
                     <value>1</value>
                     <text>Yes</text>
                 </option>
-
             </options>
             <help>Display a chart in the statistics?</help>
             <caption>Display chart</caption>
@@ -400,8 +237,218 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
-        <!-- Statistics Attributes END -->
-        <!-- Timer Attributes START -->
+        <attribute>
+            <name>statistics_showmap</name>
+            <category>Statistics</category>
+            <inputtype>switch</inputtype>
+            <sortorder>100</sortorder>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <help>Show a map in the statistics?</help>
+            <caption>Display map</caption>
+            <default>1</default>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_mapservice</name>
+            <category>Location</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>100</value>
+                    <text>OpenStreetMap via MapQuest</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Google Maps</text>
+                </option>
+            </options>
+            <default>100</default>
+            <help>Which map provider to show for this question</help>
+            <caption>Use mapping service</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_nodefaultfromip</name>
+            <category>Location</category>
+            <sortorder>91</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Get the default location using the user&#039;s IP address?</help>
+            <caption>IP as default location</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_postal</name>
+            <readonly_when_active>1</readonly_when_active>
+            <category>Location</category>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
+            <default>0</default>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <help>Store the postal code?</help>
+            <caption>Save postal code</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_city</name>
+            <readonly_when_active>1</readonly_when_active>
+            <category>Location</category>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
+            <default>0</default>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <help>Store the city?</help>
+            <caption>Save city</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_state</name>
+            <readonly_when_active>1</readonly_when_active>
+            <category>Location</category>
+            <sortorder>100</sortorder>
+            <default>0</default>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <help>Store the state?</help>
+            <caption>Save state</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_country</name>
+            <readonly_when_active>1</readonly_when_active>
+            <category>Location</category>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
+            <default>0</default>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <help>Store the country?</help>
+            <caption>Save country</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_mapzoom</name>
+            <category>Location</category>
+            <sortorder>101</sortorder>
+            <inputtype>text</inputtype>
+            <default>11</default>
+            <help>Map zoom level</help>
+            <caption>Zoom level</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_defaultcoordinates</name>
+            <category>Location</category>
+            <sortorder>101</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <help>Default coordinates of the map when the page first loads. Format: latitude [space] longitude</help>
+            <caption>Default position</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>location_mapwidth</name>
+            <category>Location</category>
+            <sortorder>102</sortorder>
+            <inputtype>text</inputtype>
+            <default>500</default>
+            <help>Width in pixels of the map shown in the statistics</help>
+            <caption>Map width</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>location_mapheight</name>
+            <category>Location</category>
+            <sortorder>103</sortorder>
+            <inputtype>text</inputtype>
+            <default>300</default>
+            <help>Map height in pixel</help>
+            <caption>Map height</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
         <attribute>
             <name>time_limit_timer_style</name>
             <category>Timer</category>
@@ -643,25 +690,8 @@
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
         </attribute>
-        <!-- Timer Attributes END -->
-        <!-- Input Attributes START -->
-        <attribute>
-            <name>maximum_chars</name>
-            <category>Input</category>
-            <sortorder>100</sortorder>
-            <inputtype>integer</inputtype>
-            <default></default>
-            <help>Maximum characters allowed</help>
-            <caption>Maximum characters</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <!-- Input Attributes END -->
     </attributes>
 
-    <!-- Core question js/css configuration -->
     <engine>
         <load_core_css>true</load_core_css>
         <load_core_js>true</load_core_js>

@@ -11,6 +11,7 @@ import {
   getBrowserDetectionSettings,
   getDateTimeSettings,
   getFileUploadSettings,
+  getMapSettings,
 } from './datesAndData'
 import {
   getEquationSettings,
@@ -46,6 +47,10 @@ import {
   getYesNoSettings,
 } from './rankingAndRating'
 
+/**
+ * Returns the settings sections per question theme.
+ * @returns {Object<string, Object[]>} Settings sections keyed by theme name.
+ */
 export const getQuestionSettings = () => {
   return {
     [getQuestionTypeInfo().ARRAY.theme]: getArrayPointChoiceSettings(),
@@ -71,6 +76,7 @@ export const getQuestionSettings = () => {
     [getQuestionTypeInfo().NUMERIC.theme]: getNumericSettings(),
     [getQuestionTypeInfo().SHORT_TEXT.theme]: getShortTextSettings(),
     [getQuestionTypeInfo().LONG_TEXT.theme]: getLongTextSettings(),
+    [getQuestionTypeInfo().MAP.theme]: getMapSettings(),
     [getQuestionTypeInfo().MULTIPLE_SHORT_TEXTS.theme]:
       getMultipleShortTextSettings(),
     [getQuestionTypeInfo().MULTIPLE_CHOICE.theme]: getMultipleChoiceSettings(),

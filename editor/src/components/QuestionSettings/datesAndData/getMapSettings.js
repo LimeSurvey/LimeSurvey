@@ -1,58 +1,67 @@
+import { Input } from 'components/UIComponents'
 import { getQuestionAttributesTitles } from 'helpers'
 
 import {
-  getTimerAttributes,
   getStatisticsAttributes,
   getOtherAttributes,
   getLogicAttributes,
   getDisplayAttributes,
   getGeneralAttributes,
+  getTimerAttributes,
+  getLocationAttributes,
 } from '../attributes'
 
+/**
+ * Attributes shown in the simple settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const simpleSettings = () => {
   const generalAttributes = getGeneralAttributes()
+  const displayAttributes = getDisplayAttributes()
   return [
     generalAttributes.QUESTION_CODE,
     generalAttributes.QUESTION_TYPE,
     generalAttributes.MANDATORY,
-    generalAttributes.NUMBERS_ONLY,
-    generalAttributes.MAX_CHARACTERS,
-    getStatisticsAttributes().SHOW_IN_STATISTICS,
+    displayAttributes.IMAGE_SETTINGS,
     generalAttributes.LOGIC,
-    getDisplayAttributes().IMAGE_SETTINGS,
+    getStatisticsAttributes().SHOW_IN_STATISTICS,
+    getLocationAttributes().USE_MAPPING_SERVICE,
   ]
 }
 
+/**
+ * Attributes shown in the general settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const generalSettings = () => {
   const generalAttributes = getGeneralAttributes()
   return [
     generalAttributes.QUESTION_CODE,
     generalAttributes.QUESTION_TYPE,
     generalAttributes.MANDATORY,
-    generalAttributes.NUMBERS_ONLY,
-    generalAttributes.MAX_CHARACTERS,
     generalAttributes.ENCRYPTED,
     generalAttributes.SAVE_AS_DEFAULT,
-    generalAttributes.INPUT_VALIDATION,
   ]
 }
 
+/**
+ * Attributes shown in the display settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const displaySettings = () => {
   const displayAttributes = getDisplayAttributes()
   return [
     displayAttributes.IMAGE_SETTINGS,
-    displayAttributes.ANSWER_PREFIX,
-    displayAttributes.ANSWER_SUFFIX,
     displayAttributes.HIDE_TIP,
     displayAttributes.ALWAYS_HIDE_THIS_QUESTION,
     displayAttributes.CSS_CLASSES,
-    displayAttributes.TEXT_INPUT_WIDTH,
-    displayAttributes.TEXT_INPUT_BOX_SIZE,
-    displayAttributes.DISPLAY_ROWS,
-    displayAttributes.PLACEHOLDER_ANSWER,
   ]
 }
 
+/**
+ * Attributes shown in the logic settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const logicSettings = () => {
   const logicAttributes = getLogicAttributes()
   return [
@@ -62,47 +71,100 @@ const logicSettings = () => {
   ]
 }
 
+/**
+ * Attributes shown in the other settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const otherSettings = () => {
-  const otherAttributes = getOtherAttributes()
-  return [
-    otherAttributes.INSERT_PAGE_BREAK_IN_PRINTABLE_VIEW,
-    otherAttributes.SPSS_EXPORT_SCALE_TYPE,
-  ]
+  return [getOtherAttributes().INSERT_PAGE_BREAK_IN_PRINTABLE_VIEW]
 }
 
+/**
+ * Map questions have no input settings.
+ * @returns {Object[]} Empty list.
+ */
 const inputSettings = () => {
   return []
 }
 
+/**
+ * Attributes shown in the statistics settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const statisticsSettings = () => {
-  return [getStatisticsAttributes().SHOW_IN_STATISTICS]
+  const statisticsAttributes = getStatisticsAttributes()
+  return [
+    statisticsAttributes.SHOW_IN_PUBLIC_STATISTICS,
+    statisticsAttributes.SHOW_IN_STATISTICS,
+    statisticsAttributes.DISPLAY_MAP,
+  ]
 }
 
+/**
+ * Attributes shown in the timer settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const timerSettings = () => {
   return Object.values(getTimerAttributes())
 }
 
+/**
+ * Map questions have no theme option settings.
+ * @returns {Object[]} Empty list.
+ */
 const themeOptionsSettings = () => {
   return []
 }
 
 /**
- * Short text questions have no file metadata settings.
+ * Map questions have no file metadata settings.
  * @returns {Object[]} Empty list.
  */
 const fileMetaDataSettings = () => {
   return []
 }
 
+/**
+ * Attributes shown in the location settings section of a map question.
+ * @returns {Object[]} Attribute definitions.
+ */
+const locationSettings = () => {
+  return [
+    ...Object.values(getLocationAttributes()),
+    {
+      component: Input,
+      attributePath: 'attributes.location_mapwidth',
+      props: {
+        id: 'map-width',
+        type: 'number',
+        labelText: t('Map width'),
+      },
+    },
+    {
+      component: Input,
+      attributePath: 'attributes.location_mapheight',
+      props: {
+        id: 'map-height',
+        type: 'number',
+        labelText: t('Map height'),
+      },
+    },
+  ]
+}
+
+/**
+ * Map questions have no slider settings.
+ * @returns {Object[]} Empty list.
+ */
 const sliderSettings = () => {
   return []
 }
 
 /**
- * Returns the settings sections of the short text question type.
+ * Returns the settings sections of the map question type.
  * @returns {{title: string, attributes: Object[]}[]} Settings sections.
  */
-export const getShortTextSettings = () => {
+export const getMapSettings = () => {
   return [
     {
       title: getQuestionAttributesTitles().SIMPLE,
@@ -131,6 +193,10 @@ export const getShortTextSettings = () => {
     {
       title: getQuestionAttributesTitles().FILE_META_DATA,
       attributes: fileMetaDataSettings(),
+    },
+    {
+      title: getQuestionAttributesTitles().LOCATION,
+      attributes: locationSettings(),
     },
     {
       title: getQuestionAttributesTitles().SLIDER,

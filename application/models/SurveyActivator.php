@@ -189,6 +189,7 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "decimal (30,10)");
                     break;
                 case Question::QT_S_SHORT_FREE_TEXT:
+                case Question::QT_J_MAP:
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_L_LIST:
