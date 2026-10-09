@@ -110,11 +110,15 @@
 
                             <!-- Bulk Convert Conditions to Relevance -->
                             <li class="dropdown-item">
-                                <?php echo CHtml::form(array('admin/expressions/sa/upgrade_conditions2relevance'), 'post', array('style' => 'display:inline;')); ?>
-                                <button type="submit" class="btn btn-link p-0 border-0 align-baseline">
+                                <a href="#" role="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmation-modal"
+                                    data-post-url="<?php echo $this->createUrl('admin/expressions/sa/upgrade_conditions2relevance'); ?>"
+                                    data-title="<?php eT("Bulk convert conditions to ExpressionScript"); ?>"
+                                    data-message="<?php eT("Are you sure?"); ?>"
+                                    data-btntext="<?php eT("Continue"); ?>">
                                     <?php eT("Bulk convert conditions to ExpressionScript"); ?>
-                                </button>
-                                <?php echo CHtml::endForm(); ?>
+                                </a>
                             </li>
 
                             <!-- Test Navigation -->
