@@ -6,107 +6,111 @@ import {
   HighlightedText,
   LSTable,
   SearchInput,
+  TooltipContainer,
   useSearchTerms,
 } from 'components'
-import { htmlToPlainText } from 'helpers'
-import { useQuestionResponses } from 'hooks'
+import { getSiteUrl, htmlToPlainText, STATES } from 'helpers'
+import { useAppState, useQuestionFiles } from 'hooks'
 import { useIsInViewport } from 'hooks/useInViewport'
 
 import { StatisticsDetailModal } from './StatisticsDetailModal.js'
 
-// The card shows a short preview; the full list lives in the modal.
-const INLINE_LIMIT = 5
+const FILES_PER_PAGE = 5
 
-const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg']
+const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp']
 
-const safeDecode = (value) => {
+const FILE_ICONS = {
+  'ri-image-line': ['svg', 'tif', 'tiff', 'heic', 'ico'],
+  'ri-file-pdf-2-line': ['pdf'],
+  'ri-file-word-line': ['doc', 'docx', 'odt', 'rtf'],
+  'ri-file-excel-line': ['xls', 'xlsx', 'ods', 'csv'],
+  'ri-file-ppt-line': ['ppt', 'pptx', 'odp'],
+  'ri-file-zip-line': ['zip', 'rar', '7z', 'gz', 'tar'],
+  'ri-file-music-line': ['mp3', 'wav', 'ogg', 'm4a', 'flac'],
+  'ri-file-video-line': ['mp4', 'mov', 'avi', 'webm', 'mkv'],
+  'ri-file-text-line': ['txt', 'md'],
+}
+
+const fileIcon = (extension) =>
+  Object.keys(FILE_ICONS).find((icon) =>
+    FILE_ICONS[icon].includes(extension)
+  ) ?? 'ri-file-line'
+
+const formatNumber = (value, locale) => {
+  const options = { maximumFractionDigits: 1 }
   try {
-    return decodeURIComponent(value)
+    return value.toLocaleString(locale, options)
   } catch {
-    return value
+    return value.toLocaleString(undefined, options)
   }
 }
 
-const extensionOf = (name) => name.split('.').pop()?.toLowerCase() ?? ''
-
-// File names are stored rawurlencode()d, so a term must also be matched in
-// that form; titles and comments are stored as typed.
-const searchAlternatives = (term) => [
-  term,
-  encodeURIComponent(term).replace(
-    /[!'()*]/g,
-    (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`
-  ),
-]
-
 // Sizes are stored in kilobytes by the uploader.
-const formatFileSize = (sizeKb) => {
+const formatFileSize = (sizeKb, locale) => {
   const kb = Number(sizeKb) || 0
-  if (kb < 1024) {
-    return `${Math.max(Math.round(kb), 1)} ${t('KB')}`
+  if (kb < 1) {
+    return `${formatNumber(Math.round(kb * 1024), locale)} ${t('B')}`
   }
-  return `${(kb / 1024).toLocaleString(undefined, {
-    maximumFractionDigits: 1,
-  })} ${t('MB')}`
+  if (kb < 1024) {
+    return `${formatNumber(kb, locale)} ${t('KB')}`
+  }
+  return `${formatNumber(kb / 1024, locale)} ${t('MB')}`
 }
 
 const fileUrl = (surveyId, responseId, questionId, index, inline = false) =>
-  `${location.origin}/responses/downloadfile?surveyId=${surveyId}&responseId=${responseId}&qid=${questionId}&index=${index}${inline ? '&inline=1' : ''}`
-
-// Mirrors HighlightedText: a file is listed only when a term is highlighted in it.
-const matchesTerms = (file, terms) => {
-  if (!terms.length) {
-    return true
-  }
-  const haystacks = [
-    file.name,
-    htmlToPlainText(file.title),
-    htmlToPlainText(file.comment),
-  ].map((text) => String(text ?? '').toLowerCase())
-  return terms.some((term) =>
-    haystacks.some((text) => text.includes(term.toLowerCase()))
+  getSiteUrl(
+    `/responses/downloadfile?surveyId=${surveyId}&responseId=${responseId}&qid=${questionId}&index=${index}${inline ? '&inline=1' : ''}`
   )
-}
 
-const parseFiles = (value) => {
-  if (!value || typeof value !== 'string') {
-    return []
-  }
-  try {
-    const files = JSON.parse(value)
-    return Array.isArray(files) ? files : []
-  } catch {
-    return []
-  }
-}
+const FileIcon = ({ extension }) => (
+  <span className="responses-statistics-files-thumb responses-statistics-files-thumb--icon">
+    <i className={fileIcon(extension)}></i>
+  </span>
+)
 
 const FileThumbnail = ({ file, previewUrl }) => {
-  if (file.isImage) {
-    return (
+  const [failed, setFailed] = useState(false)
+  if (!file.isImage || failed) {
+    return <FileIcon extension={file.extension} />
+  }
+  return (
+    <span className="responses-statistics-files-thumb">
       <img
-        className="responses-statistics-files-thumb"
         src={previewUrl}
         alt={file.name}
         loading="lazy"
+        onError={() => setFailed(true)}
       />
-    )
-  }
-  return (
-    <span className="responses-statistics-files-thumb responses-statistics-files-thumb--icon">
-      <i className="ri-file-text-line"></i>
     </span>
   )
 }
 
+const PreviewMedia = ({ file, src }) => {
+  const [failed, setFailed] = useState(!file.isImage)
+  if (failed) {
+    return (
+      <div className="responses-statistics-files-preview-fallback">
+        <i className={fileIcon(file.extension)}></i>
+        <span>{t('Preview not available for this file.')}</span>
+      </div>
+    )
+  }
+  return (
+    <div className="responses-statistics-files-preview-media">
+      <img src={src} alt={file.name} onError={() => setFailed(true)} />
+    </div>
+  )
+}
+
 /**
- * Uploaded files of a file upload question (|): one table row per file across
- * the loaded responses, with preview and download actions.
+ * Uploaded files of a file upload question (|): one table row per file, with
+ * preview and download actions. Search and pagination run per file in the
+ * backend.
  */
 export const FileUploadTable = ({
   surveyId,
   questionId,
   questionCode,
-  title = '',
   fields,
   filters,
 }) => {
@@ -114,8 +118,9 @@ export const FileUploadTable = ({
     initialInView: false,
   })
   const [shouldLoad, setShouldLoad] = useState(false)
-  const [showModal, setShowModal] = useState(false)
   const [previewFile, setPreviewFile] = useState(null)
+  const [userDetail] = useAppState(STATES.USER_DETAIL)
+  const locale = userDetail?.lang === 'auto' ? undefined : userDetail?.lang
   useEffect(() => {
     if (isInView) {
       setShouldLoad(true)
@@ -129,55 +134,33 @@ export const FileUploadTable = ({
     [filters, search]
   )
 
-  // Only the JSON column holds the files; the numeric Cfilecount column must
-  // stay out of the text search.
-  const fileFields = useMemo(
-    () => (fields ?? []).filter((field) => !field.endsWith('filecount')),
-    [fields]
-  )
+  // The numeric Cfilecount column sits next to the JSON column holding the files.
+  const fileField = (fields ?? []).find((field) => !field.endsWith('filecount'))
 
   const {
-    columns,
-    rows,
+    files: fileItems,
     totalResults,
     isLoading,
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useQuestionResponses(surveyId, questionCode, {
+  } = useQuestionFiles(surveyId, questionCode, {
     enabled: shouldLoad,
-    fields: fileFields,
+    field: fileField,
     filters,
     search,
-    expandTerm: searchAlternatives,
-    countFiles: true,
+    pageSize: FILES_PER_PAGE,
   })
 
-  const answerKey = columns[0]?.key
   const files = useMemo(
     () =>
-      rows.flatMap((row) =>
-        parseFiles(row.cells?.[answerKey])
-          .map((file, index) => ({ ...file, index }))
-          .filter((file) => !file.isDeleted)
-          .map((file) => {
-            const name = safeDecode(file.name ?? '')
-            const extension = extensionOf(name)
-            return {
-              id: `${row.responseId}-${file.index}`,
-              responseId: row.responseId,
-              index: file.index,
-              name,
-              extension,
-              isImage: IMAGE_EXTENSIONS.includes(extension),
-              title: file.title ?? '',
-              comment: file.comment ?? '',
-              size: file.size,
-            }
-          })
-          .filter((file) => matchesTerms(file, highlightTerms))
-      ),
-    [rows, answerKey, highlightTerms]
+      fileItems.map((file) => ({
+        ...file,
+        id: `${file.responseId}-${file.index}`,
+        extension: file.ext,
+        isImage: IMAGE_EXTENSIONS.includes(file.ext),
+      })),
+    [fileItems]
   )
 
   const tableColumns = useMemo(
@@ -199,9 +182,11 @@ export const FileUploadTable = ({
                   true
                 )}
               />
-              <span className="responses-statistics-files-name">
-                <HighlightedText text={file.name} terms={highlightTerms} />
-              </span>
+              <TooltipContainer tip={file.name}>
+                <span className="responses-statistics-files-name">
+                  <HighlightedText text={file.name} terms={highlightTerms} />
+                </span>
+              </TooltipContainer>
             </>
           )
           if (file.isImage) {
@@ -210,7 +195,7 @@ export const FileUploadTable = ({
                 type="button"
                 className="responses-statistics-files-file responses-statistics-files-file--clickable"
                 onClick={() => setPreviewFile(file)}
-                title={t('Preview')}
+                aria-label={t('Preview file')}
               >
                 {content}
               </button>
@@ -248,7 +233,7 @@ export const FileUploadTable = ({
       {
         id: 'size',
         header: t('Size'),
-        cell: ({ row }) => formatFileSize(row.original.size),
+        cell: ({ row }) => formatFileSize(row.original.size, locale),
       },
       {
         id: 'actions',
@@ -258,32 +243,38 @@ export const FileUploadTable = ({
           return (
             <div className="responses-statistics-files-actions">
               {file.isImage && (
-                <button
-                  type="button"
-                  onClick={() => setPreviewFile(file)}
-                  title={t('Preview file')}
-                >
-                  <i className="ri-eye-line"></i>
-                </button>
+                <TooltipContainer tip={t('Preview file')}>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewFile(file)}
+                    aria-label={t('Preview file')}
+                  >
+                    <i className="ri-eye-line"></i>
+                  </button>
+                </TooltipContainer>
               )}
-              <a
-                href={fileUrl(
-                  surveyId,
-                  file.responseId,
-                  questionId,
-                  file.index
-                )}
-                title={t('Download file')}
-              >
-                <i className="ri-download-line"></i>
-              </a>
+              <TooltipContainer tip={t('Download file')}>
+                <a
+                  href={fileUrl(
+                    surveyId,
+                    file.responseId,
+                    questionId,
+                    file.index
+                  )}
+                  aria-label={t('Download file')}
+                >
+                  <i className="ri-download-line"></i>
+                </a>
+              </TooltipContainer>
             </div>
           )
         },
       },
     ],
-    [surveyId, questionId, highlightTerms]
+    [surveyId, questionId, highlightTerms, locale]
   )
+
+  const previewTitle = htmlToPlainText(previewFile?.title ?? '')
 
   const previewModal = (
     <StatisticsDetailModal
@@ -294,18 +285,21 @@ export const FileUploadTable = ({
       {previewFile && (
         <div className="responses-statistics-files-preview-body">
           <h2 className="responses-statistics-modal-title">
-            {htmlToPlainText(previewFile.title) || previewFile.name}
+            {previewTitle || previewFile.name}
           </h2>
-          <span className="responses-statistics-files-preview-name">
-            {previewFile.name}
-          </span>
+          {previewTitle && (
+            <span className="responses-statistics-files-preview-name">
+              {previewFile.name}
+            </span>
+          )}
           {previewFile.comment && (
             <p className="responses-statistics-files-preview-comment">
               {htmlToPlainText(previewFile.comment)}
             </p>
           )}
-          <img
-            className="responses-statistics-files-preview-image"
+          <PreviewMedia
+            key={previewFile.id}
+            file={previewFile}
             src={fileUrl(
               surveyId,
               previewFile.responseId,
@@ -313,7 +307,6 @@ export const FileUploadTable = ({
               previewFile.index,
               true
             )}
-            alt={previewFile.name}
           />
           <div className="responses-statistics-files-preview-footer">
             <Button
@@ -334,45 +327,6 @@ export const FileUploadTable = ({
     </StatisticsDetailModal>
   )
 
-  const searchBlock = (
-    <div className="responses-statistics-array-text-search">
-      <SearchInput
-        terms={terms}
-        onChange={setTerms}
-        onTyping={setTyped}
-        placeholder={t('Search responses')}
-      />
-      {search.length > 0 && totalResults != null && (
-        <span className="responses-statistics-search-results">
-          {totalResults === 1
-            ? t('1 result found')
-            : format(t('%s results found'), totalResults)}
-        </span>
-      )}
-    </div>
-  )
-
-  const emptyState = (
-    <div className="responses-statistics-empty">
-      {search.length
-        ? t('No responses match your search.')
-        : t('There are no responses for this question yet.')}
-    </div>
-  )
-
-  const filesTable = (items) => (
-    <div className="responses-statistics-files">
-      <LSTable columns={tableColumns} data={items} />
-    </div>
-  )
-
-  const openModal = () => {
-    setShowModal(true)
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage()
-    }
-  }
-
   const renderContent = () => {
     if (!shouldLoad || isLoading) {
       return (
@@ -383,20 +337,29 @@ export const FileUploadTable = ({
     }
 
     if (!files.length) {
-      return emptyState
+      return (
+        <div className="responses-statistics-empty">
+          {search.length
+            ? t('No responses match your search.')
+            : t('There are no responses for this question yet.')}
+        </div>
+      )
     }
 
     return (
       <>
-        {filesTable(files.slice(0, INLINE_LIMIT))}
-        {(hasNextPage || files.length > INLINE_LIMIT) && (
+        <div className="responses-statistics-files">
+          <LSTable columns={tableColumns} data={files} resizable />
+        </div>
+        {hasNextPage && (
           <div className="responses-statistics-comments-more">
             <button
               type="button"
               className="responses-statistics-comments-more-btn"
-              onClick={openModal}
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage}
             >
-              {t('Load more')}
+              {isFetchingNextPage ? t('Loading...') : t('Load more')}
             </button>
           </div>
         )}
@@ -406,34 +369,25 @@ export const FileUploadTable = ({
 
   return (
     <div ref={containerRef}>
-      {shouldLoad && searchBlock}
-      {renderContent()}
-      {previewModal}
-      <StatisticsDetailModal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        modalClassname="responses-statistics-responses-modal"
-      >
-        <div className="responses-statistics-comments">
-          <h2 className="responses-statistics-modal-title">
-            {htmlToPlainText(title)}
-          </h2>
-          {searchBlock}
-          {files.length ? filesTable(files) : emptyState}
-          {hasNextPage && (
-            <div className="responses-statistics-comments-more">
-              <button
-                type="button"
-                className="responses-statistics-comments-more-btn"
-                onClick={() => fetchNextPage()}
-                disabled={isFetchingNextPage}
-              >
-                {isFetchingNextPage ? t('Loading...') : t('Load more')}
-              </button>
-            </div>
+      {shouldLoad && (
+        <div className="responses-statistics-array-text-search">
+          <SearchInput
+            terms={terms}
+            onChange={setTerms}
+            onTyping={setTyped}
+            placeholder={t('Search responses')}
+          />
+          {search.length > 0 && totalResults != null && (
+            <span className="responses-statistics-search-results">
+              {totalResults === 1
+                ? t('1 result found')
+                : format(t('%s results found'), totalResults)}
+            </span>
           )}
         </div>
-      </StatisticsDetailModal>
+      )}
+      {renderContent()}
+      {previewModal}
     </div>
   )
 }

@@ -37,10 +37,7 @@ class SchemaFactorySurveyResponses
             ->properties(
                 $paginationSchema,
                 Schema::array('filters')->items(Schema::object()),
-                Schema::array('sort')->items(Schema::object()),
-                Schema::integer('fileCount')
-                    ->description('Uploaded files matching the filters; only sent when requested with countFiles')
-                    ->example(6)
+                Schema::array('sort')->items(Schema::object())
             );
 
         // Define the responses schema with examples
@@ -50,6 +47,17 @@ class SchemaFactorySurveyResponses
             ->type(Schema::TYPE_OBJECT)
             ->properties(
                 Schema::array('responses')->items($responseSchema),
+                Schema::array('files')
+                    ->description('Sent instead of responses with unnestFiles: one entry per uploaded file')
+                    ->items(Schema::object()->properties(
+                        Schema::integer('responseId')->example(12),
+                        Schema::integer('index')->example(0),
+                        Schema::string('name')->example('invoice.pdf'),
+                        Schema::string('title')->example('Invoice'),
+                        Schema::string('comment')->example(''),
+                        Schema::number('size')->description('Kilobytes')->example(52.6),
+                        Schema::string('ext')->example('pdf')
+                    )),
                 Schema::object('surveyQuestions')
                     ->additionalProperties($surveyQuestionSchema)
                     ->example([

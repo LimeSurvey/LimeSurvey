@@ -5,14 +5,7 @@ import { PAGE_SIZE, useQuestionAnswers } from './useQuestionAnswers'
 export function useQuestionResponses(
   surveyId,
   questionCode,
-  {
-    enabled = true,
-    fields = [],
-    filters = {},
-    search = [],
-    expandTerm,
-    countFiles = false,
-  } = {}
+  { enabled = true, fields = [], filters = {}, search = [] } = {}
 ) {
   const {
     items: rows,
@@ -39,9 +32,7 @@ export function useQuestionResponses(
           activeLanguage,
           fields,
           filters,
-          search,
-          expandTerm,
-          countFiles
+          search
         ),
     }),
     { enabled, fields, pageItems: 'rows' }
@@ -49,10 +40,8 @@ export function useQuestionResponses(
 
   // Columns are identical across pages, so take them from the first page.
   const columns = data?.pages?.[0]?.columns ?? []
-  // Matching responses, or matching uploaded files when `countFiles` is set.
-  const totalResults = countFiles
-    ? (data?.pages?.[0]?.fileCount ?? null)
-    : (data?.pages?.[0]?.pagination?.totalItems ?? null)
+  // Total matching responses reported by the backend's pagination meta.
+  const totalResults = data?.pages?.[0]?.pagination?.totalItems ?? null
 
   return { columns, rows, totalResults, ...rest }
 }

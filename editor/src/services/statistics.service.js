@@ -69,19 +69,15 @@ const buildAnswerFilters = (
   return []
 }
 
-// `expandTerm` maps a term to the alternatives the backend ORs together.
-const buildSearchFilters = (search, fields, expandTerm = (term) => [term]) => {
+const buildSearchFilters = (search, fields) => {
   if (!Array.isArray(search) || !search.length || !fields?.length) {
     return []
   }
-  return search.map((term) => {
-    const alternatives = [...new Set(expandTerm(term))]
-    return {
-      key: fields,
-      filterMethod: 'contain',
-      value: alternatives.length > 1 ? alternatives : alternatives[0],
-    }
-  })
+  return search.map((term) => ({
+    key: fields,
+    filterMethod: 'contain',
+    value: term,
+  }))
 }
 
 // Flatten the per-response answers into a single list, tagging each answer with
@@ -151,8 +147,7 @@ export class StatisticsService {
     language,
     fields,
     sort,
-    filters,
-    countFiles = false
+    filters
   ) => {
     const body = { page: { currentPage, pageSize } }
     if (language) {
@@ -167,16 +162,12 @@ export class StatisticsService {
     if (Array.isArray(filters) && filters.length) {
       body.filters = filters
     }
-    if (countFiles) {
-      body.countFiles = true
-    }
 
     const data = await this.restClient.post(`survey-responses/${sid}`, body)
 
     return {
       answers: flattenAnswers(data?.responses),
       pagination: data?._meta?.pagination || null,
-      fileCount: data?._meta?.fileCount ?? null,
     }
   }
 
@@ -286,11 +277,9 @@ export class StatisticsService {
     language,
     fields,
     statisticsFilters,
-    search,
-    expandTerm,
-    countFiles = false
+    search
   ) => {
-    const { answers, pagination, fileCount } = await this.fetchQuestionAnswers(
+    const { answers, pagination } = await this.fetchQuestionAnswers(
       sid,
       questionCode,
       currentPage,
@@ -307,11 +296,9 @@ export class StatisticsService {
               ...(search ?? []),
             ]),
           ],
-          fields,
-          expandTerm
+          fields
         ),
-      ],
-      countFiles
+      ]
     )
 
     // Columns in first-seen (field map) order; rows grouped by response.
@@ -353,7 +340,45 @@ export class StatisticsService {
       columns: columnOrder.map((key) => columnByKey[key]),
       rows: rowOrder.map((id) => rowByResponse[id]),
       pagination,
-      fileCount,
+    }
+  }
+
+  /**
+   * Load the uploaded files of a file upload question, one entry per file.
+   * The backend searches each file's name, title and comment and paginates
+   * by file (`unnestFiles`).
+   */
+  getQuestionFiles = async (
+    sid,
+    currentPage = 0,
+    pageSize = 15,
+    language,
+    field,
+    statisticsFilters,
+    search
+  ) => {
+    const terms = [
+      ...new Set([...(statisticsFilters?.search ?? []), ...(search ?? [])]),
+    ]
+    const body = {
+      page: { currentPage, pageSize },
+      fields: [field],
+      sort: { submitDate: 'desc' },
+      filters: [
+        ...buildResponseFilters(statisticsFilters),
+        ...buildSearchFilters(terms, [field]),
+      ],
+      unnestFiles: true,
+    }
+    if (language) {
+      body.language = language
+    }
+
+    const data = await this.restClient.post(`survey-responses/${sid}`, body)
+
+    return {
+      files: data?.files ?? [],
+      pagination: data?._meta?.pagination || null,
     }
   }
 }

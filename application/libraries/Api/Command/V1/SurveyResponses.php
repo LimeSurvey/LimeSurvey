@@ -6,6 +6,7 @@ use CDbException;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyResponseFiles;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyRequestTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\SurveyAnswerCache;
@@ -27,6 +28,8 @@ use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurv
  * (equal, contain, multi-select, …) can target nested question/subquestion
  * columns. A `fields` param additionally restricts the SELECT to a caller-chosen
  * subset of response columns; when it is omitted every column is returned.
+ * With `unnestFiles`, a single file upload column is listed one row per file
+ * instead (see {@see SurveyResponseFiles}).
  */
 class SurveyResponses implements CommandInterface
 {
@@ -58,6 +61,7 @@ class SurveyResponses implements CommandInterface
     protected FilterPatcher $responseFilterPatcher;
     protected TransformerOutputSurveyResponses $transformerOutputSurveyResponses;
     protected SurveyAnswerCache $answerCache;
+    protected SurveyResponseFiles $surveyResponseFiles;
 
     /**
      * Constructor
@@ -68,6 +72,7 @@ class SurveyResponses implements CommandInterface
      * @param ResponseFactory $responseFactory
      * @param TransformerOutputSurveyResponses $transformerOutputSurveyResponses
      * @param SurveyAnswerCache $answerCache
+     * @param SurveyResponseFiles $surveyResponseFiles
      */
     public function __construct(
         Survey $survey,
@@ -75,7 +80,8 @@ class SurveyResponses implements CommandInterface
         FilterPatcher $responseFilterPatcher,
         ResponseFactory $responseFactory,
         TransformerOutputSurveyResponses $transformerOutputSurveyResponses,
-        SurveyAnswerCache $answerCache
+        SurveyAnswerCache $answerCache,
+        SurveyResponseFiles $surveyResponseFiles
     ) {
         $this->survey = $survey;
         $this->permission = $permission;
@@ -83,6 +89,7 @@ class SurveyResponses implements CommandInterface
         $this->responseFilterPatcher = $responseFilterPatcher;
         $this->transformerOutputSurveyResponses = $transformerOutputSurveyResponses;
         $this->answerCache = $answerCache;
+        $this->surveyResponseFiles = $surveyResponseFiles;
     }
 
     /**
@@ -123,6 +130,10 @@ class SurveyResponses implements CommandInterface
         $this->transformerOutputSurveyResponses->fieldMap =
             createFieldMap($this->survey, 'full', true, false, $language);
 
+        if ($request->getData('unnestFiles')) {
+            return $this->processFiles($request, $model);
+        }
+
         [$criteria, $sort] = $this->buildCriteria($request);
         $pagination = $this->buildPagination($request);
         $dataProvider = new \LSCActiveDataProvider(
@@ -153,40 +164,34 @@ class SurveyResponses implements CommandInterface
         $totalItems = $dataProvider->getTotalItemCount();
         $pageSize = max(1, $pagination['pageSize'] ?? 1);
 
-        $meta = [
-            'pagination' => [
-                'pageSize' => $pageSize,
-                'currentPage' => $pagination['currentPage'],
-                'totalItems' => $totalItems,
-                'totalPages' => (int) ceil($totalItems / $pageSize),
-            ],
-            'filters' => $request->getData('filters', []),
-            'sort' => $request->getData('sort', []),
-        ];
-        if ($request->getData('countFiles')) {
-            $meta['fileCount'] = $this->countUploadedFiles($model, $criteria, $request);
-        }
-
         return [
             'responses' => $responses,
             'surveyQuestions' => $surveyQuestions,
             'timingFields' => $timingFields,
-            '_meta' => $meta,
+            '_meta' => [
+                'pagination' => [
+                    'pageSize' => $pageSize,
+                    'currentPage' => $pagination['currentPage'],
+                    'totalItems' => $totalItems,
+                    'totalPages' => (int) ceil($totalItems / $pageSize),
+                ],
+                'filters' => $request->getData('filters', []),
+                'sort' => $request->getData('sort', []),
+            ],
         ];
     }
 
     /**
-     * Number of (non-deleted) uploaded files in the requested file upload
-     * columns across every matching response, not only the current page.
-     * With `contain` filters on those columns, only files whose name, title
-     * or comment contains one of the terms are counted.
+     * Lists the uploaded files of the single file upload column in `fields`,
+     * paginated by file. `contain` filters on that column become search terms
+     * matched per file; every other filter narrows the responses as usual.
      *
-     * @param \SurveyDynamic $model
-     * @param \LSDbCriteria $criteria
      * @param Request $request
-     * @return int
+     * @param \SurveyDynamic $model
+     * @return array
+     * @throws \InvalidArgumentException
      */
-    protected function countUploadedFiles(\SurveyDynamic $model, \LSDbCriteria $criteria, Request $request): int
+    protected function processFiles(Request $request, \SurveyDynamic $model): array
     {
         $fileColumns = array_keys(array_filter(
             array_intersect_key(
@@ -196,84 +201,57 @@ class SurveyResponses implements CommandInterface
             static fn($field) => ($field['type'] ?? '') === \Question::QT_VERTICAL_FILE_UPLOAD
                 && ($field['aid'] ?? '') !== 'filecount'
         ));
-        if ($fileColumns === []) {
-            return 0;
+        if (count($fileColumns) !== 1) {
+            throw new \InvalidArgumentException('unnestFiles requires exactly one file upload field.');
         }
+        $column = $fileColumns[0];
 
-        $terms = $this->getContainTerms($request, $fileColumns);
-        $countCriteria = clone $criteria;
-        $countCriteria->select = array_map([\Yii::app()->db, 'quoteColumnName'], $fileColumns);
-        $rows = $model->getCommandBuilder()
-            ->createFindCommand($model->tableName(), $countCriteria)
-            ->query();
-
-        $count = 0;
-        foreach ($rows as $row) {
-            foreach ($fileColumns as $column) {
-                $files = json_decode((string) ($row[$column] ?? ''), true);
-                if (!is_array($files)) {
-                    continue;
-                }
-                foreach ($files as $file) {
-                    if (empty($file['isDeleted']) && $this->fileMatchesTerms($file, $terms)) {
-                        $count++;
-                    }
-                }
-            }
-        }
-
-        return $count;
-    }
-
-    /**
-     * @param Request $request
-     * @param string[] $fileColumns
-     * @return string[]
-     */
-    private function getContainTerms(Request $request, array $fileColumns): array
-    {
         $terms = [];
+        $filters = [];
         foreach ((array) $request->getData('filters', []) as $filter) {
-            if (
-                strtolower((string) ($filter['filterMethod'] ?? '')) !== 'contain'
-                || !array_intersect((array) ($filter['key'] ?? []), $fileColumns)
-            ) {
+            $isFileSearch = strtolower((string) ($filter['filterMethod'] ?? '')) === 'contain'
+                && in_array($column, (array) ($filter['key'] ?? []), true);
+            if (!$isFileSearch) {
+                $filters[] = $filter;
                 continue;
             }
             foreach ((array) ($filter['value'] ?? []) as $value) {
-                $value = trim((string) $value);
+                $value = is_scalar($value) ? trim((string) $value) : '';
                 if ($value !== '') {
                     $terms[] = $value;
                 }
             }
         }
 
-        return $terms;
-    }
+        [$criteria, $sort] = $this->buildCriteria($request, $filters);
+        $criteria->order = $sort->defaultOrder;
+        $pagination = $this->buildPagination($request);
+        $pageSize = max(1, (int) ($pagination['pageSize'] ?? 1));
+        $currentPage = max(0, (int) ($pagination['currentPage'] ?? 0));
 
-    /**
-     * @param array $file
-     * @param string[] $terms
-     * @return bool
-     */
-    private function fileMatchesTerms(array $file, array $terms): bool
-    {
-        if ($terms === []) {
-            return true;
-        }
-        $haystacks = array_map(
-            static fn($text) => html_entity_decode(strip_tags((string) $text), ENT_QUOTES),
-            [rawurldecode((string) ($file['name'] ?? '')), $file['title'] ?? '', $file['comment'] ?? '']
+        $result = $this->surveyResponseFiles->list(
+            $model,
+            $criteria,
+            $column,
+            ($this->transformerOutputSurveyResponses->fieldMap[$column]['encrypted'] ?? 'N') === 'Y',
+            array_values(array_unique($terms)),
+            $currentPage,
+            $pageSize
         );
-        foreach ($terms as $term) {
-            foreach ($haystacks as $haystack) {
-                if (mb_stripos($haystack, $term) !== false) {
-                    return true;
-                }
-            }
-        }
 
-        return false;
+        return [
+            'files' => $result['files'],
+            '_meta' => [
+                'pagination' => [
+                    'pageSize' => $pageSize,
+                    'currentPage' => $currentPage,
+                    'totalItems' => $result['totalItems'],
+                    'totalPages' => (int) ceil($result['totalItems'] / $pageSize),
+                ],
+                'filters' => $request->getData('filters', []),
+                'sort' => $request->getData('sort', []),
+            ],
+        ];
     }
 
     /**
@@ -366,12 +344,13 @@ class SurveyResponses implements CommandInterface
      * them (and nested question/subquestion columns filtered at query level).
      *
      * @param Request $request
+     * @param array|null $filters Overrides the request's filters
      * @return array{0: \LSDbCriteria, 1: \CSort}
      */
-    protected function buildCriteria(Request $request): array
+    protected function buildCriteria(Request $request, ?array $filters = null): array
     {
         $searchParams = [];
-        $searchParams['filters'] = $request->getData('filters', null);
+        $searchParams['filters'] = $filters ?? $request->getData('filters', null);
         $searchParams['sort'] = $request->getData('sort', null);
         $dataMap = $this->transformerOutputSurveyResponses->getDataMap();
         $validColumns = array_keys($this->transformerOutputSurveyResponses->fieldMap);

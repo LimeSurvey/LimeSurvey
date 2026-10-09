@@ -767,12 +767,14 @@ class ResponsesController extends LSBaseController
                     if (is_null($mimeType)) {
                         $mimeType = "application/octet-stream";
                     }
-                    // Only images are ever shown inline; anything else stays a download.
-                    $canInline = $inline && strpos($mimeType, 'image/') === 0;
+                    // Only raster images are shown inline; SVG can carry script, so it stays a download.
+                    $canInline = $inline && strpos($mimeType, 'image/') === 0 && $mimeType !== 'image/svg+xml';
+                    $fileName = rawurldecode((string) $aFile['name']);
                     @ob_clean();
                     header('Content-Description: File Transfer');
                     header('Content-Type: ' . $mimeType);
-                    header('Content-Disposition: ' . ($canInline ? 'inline' : 'attachment') . '; filename="' . sanitize_filename(rawurldecode((string) $aFile['name'])) . '"');
+                    header('X-Content-Type-Options: nosniff');
+                    header('Content-Disposition: ' . ($canInline ? 'inline' : 'attachment') . '; filename="' . sanitize_filename($fileName) . '"; filename*=UTF-8\'\'' . rawurlencode($fileName));
                     header('Content-Transfer-Encoding: binary');
                     header('Expires: 0');
                     header("Cache-Control: must-revalidate, no-store, no-cache");

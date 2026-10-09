@@ -252,7 +252,6 @@ const VIEWS = [
           surveyId={surveyId}
           questionId={question?.qid}
           questionCode={question?.code}
-          title={question?.title}
           fields={question?.fields}
           filters={filters}
         />
