@@ -150,6 +150,11 @@ class DataIntegrityChecker
             $aData = $this->deleteQuestionL10ns($aDelete['question_l10ns'], $aData);
         }
 
+        // After deleteQuestions(), so no texts are created for questions deleted in this pass
+        if (isset($aDelete['missingquestionl10ns'])) {
+            $aData = $this->createMissingQuestionL10ns($aDelete['missingquestionl10ns'], $aData);
+        }
+
         if (isset($aDelete['groups'])) {
             $aData = $this->deleteGroups($aDelete['groups'], $aData);
         }
@@ -957,6 +962,95 @@ class DataIntegrityChecker
     }
 
     /**
+     * Finds questions and subquestions that have no texts (question_l10ns row) in one
+     * of their survey's languages. Such questions can't be edited (500 error).
+     *
+     * Runs one query per language used by any survey, instead of one per survey.
+     *
+     * @return array[] Missing texts, each with a 'qid', 'title', 'sid' and 'language' key.
+     */
+    private function findMissingQuestionL10ns()
+    {
+        $aSurveyLanguages = array();
+        $aSurveys = Yii::app()->db->createCommand()
+            ->select('sid, language, additional_languages')
+            ->from('{{surveys}}')
+            ->queryAll();
+        foreach ($aSurveys as $aSurvey) {
+            $aLanguages = explode(' ', trim((string) $aSurvey['additional_languages']));
+            $aLanguages[] = $aSurvey['language'];
+            $aSurveyLanguages[$aSurvey['sid']] = array_filter($aLanguages);
+        }
+        if (empty($aSurveyLanguages)) {
+            return array();
+        }
+
+        $aMissing = array();
+        foreach (array_unique(array_merge(...array_values($aSurveyLanguages))) as $sLanguage) {
+            // The LIKE condition only narrows the result down, the exact match is done below
+            $aQuestions = Yii::app()->db->createCommand()
+                ->select('q.qid, q.title, q.sid')
+                ->from('{{questions}} q')
+                ->join('{{surveys}} s', 's.sid = q.sid')
+                ->leftJoin('{{question_l10ns}} l', 'l.qid = q.qid AND l.language = :l10nlanguage', array(':l10nlanguage' => $sLanguage))
+                ->where(
+                    'l.id IS NULL AND (s.language = :surveylanguage OR s.additional_languages LIKE :languagepattern)',
+                    array(':surveylanguage' => $sLanguage, ':languagepattern' => '%' . $sLanguage . '%')
+                )
+                ->queryAll();
+            foreach ($aQuestions as $aQuestion) {
+                if (in_array($sLanguage, $aSurveyLanguages[$aQuestion['sid']])) {
+                    $aMissing[] = array(
+                        'qid' => $aQuestion['qid'],
+                        'title' => $aQuestion['title'],
+                        'sid' => $aQuestion['sid'],
+                        'language' => $sLanguage,
+                    );
+                }
+            }
+        }
+        return $aMissing;
+    }
+
+    /**
+     * Creates empty texts for questions and subquestions that have none in one of
+     * their survey's languages.
+     *
+     * @param array[] $questionL10ns Missing texts, each with a 'qid', 'title', 'sid' and 'language' key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per created text.
+     */
+    private function createMissingQuestionL10ns(array $questionL10ns, array $aData)
+    {
+        foreach ($questionL10ns as $questionL10n) {
+            // Skip questions deleted earlier in this pass, e.g. subquestions of a deleted question
+            $exists = Yii::app()->db->createCommand()
+                ->select('count(*)')
+                ->from('{{questions}}')
+                ->where('qid = :qid', array(':qid' => $questionL10n['qid']))
+                ->queryScalar();
+            if (!$exists) {
+                continue;
+            }
+            // Raw insert: QuestionL10n's validation rules need a web user, which the console command has not
+            Yii::app()->db->createCommand()->insert('{{question_l10ns}}', array(
+                'qid' => $questionL10n['qid'],
+                'question' => '',
+                'help' => '',
+                'language' => $questionL10n['language'],
+            ));
+            $aData['messages'][] = sprintf(
+                gT('Created empty texts for language %s of question %s (ID %s) in survey %s'),
+                $questionL10n['language'],
+                CHtml::encode($questionL10n['title']),
+                $questionL10n['qid'],
+                $questionL10n['sid']
+            );
+        }
+        return $aData;
+    }
+
+    /**
      * Sets the group and question type of subquestions to their parent question's.
      *
      * @param array[] $subquestions Subquestions to fix, each with a 'qid' key and the
@@ -1314,6 +1408,14 @@ class DataIntegrityChecker
         $questions = QuestionL10n::model()->resetScope()->findAll($oCriteria);
         foreach ($questions as $question) {
             $aDelete['question_l10ns'][] = array('id' => $question['id'], 'qid' => $question['qid'], 'reason' => gT('No parent question'));
+        }
+
+        /**********************************************************************/
+        /*     Check questions without texts in a survey language             */
+        /**********************************************************************/
+        $aMissingQuestionL10ns = $this->findMissingQuestionL10ns();
+        if (!empty($aMissingQuestionL10ns)) {
+            $aDelete['missingquestionl10ns'] = $aMissingQuestionL10ns;
         }
 
         /**********************************************************************/
