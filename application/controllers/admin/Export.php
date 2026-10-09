@@ -1222,7 +1222,8 @@ class Export extends SurveyCommonAction
      *
      * @param integer $iSurveyID      The ID of the survey to export
      * @param boolean $bSendToBrowser If TRUE (default) then the ZIP file is sent to the browser
-     * @return string Full path of the ZIP filename if $bSendToBrowser is set to TRUE, otherwise no return value
+     * @return string|null Full path of the ZIP filename if $bSendToBrowser is set to FALSE, otherwise no return value
+     * @throws CHttpException If the user has no permission to export the responses or the survey participants
      */
     private function exportarchive(int $iSurveyID, bool $bSendToBrowser = true)
     {
@@ -1235,44 +1236,9 @@ class Export extends SurveyCommonAction
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 
-        $aSurveyInfo = getSurveyInfo($iSurveyID); // TODO: $aSurveyInfo is not used anymore. Remove it.
+        $aZIPFileName = createSurveyArchive($iSurveyID);
 
-        $sTempDir = Yii::app()->getConfig("tempdir");
-
-        $aZIPFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
-        $sLSSFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
-        $sLSRFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
-        $sLSTFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
-        $sLSIFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
-
-        $zip = new LimeSurvey\Zip();
-        $zip->open($aZIPFileName, ZipArchive::CREATE);
-
-        file_put_contents($sLSSFileName, surveyGetXMLData($iSurveyID));
-        $zip->addFromString('survey_' . $iSurveyID . '.lss', file_get_contents($sLSSFileName));
-        unlink($sLSSFileName);
-
-        if ($survey->isActive) {
-            getXMLDataSingleTable($iSurveyID, 'responses_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
-            $zip->addFromString('survey_' . $iSurveyID . '_responses.lsr', file_get_contents($sLSRFileName));
-            unlink($sLSRFileName);
-        }
-
-        if ($survey->hasTokensTable) {
-            getXMLDataSingleTable($iSurveyID, 'tokens_' . $iSurveyID, 'Tokens', 'tokens', $sLSTFileName);
-            $zip->addFromString('survey_' . $iSurveyID . '_tokens.lst', file_get_contents($sLSTFileName));
-            unlink($sLSTFileName);
-        }
-
-        if (isset($survey->hasTimingsTable) && $survey->hasTimingsTable == 'Y') {
-            getXMLDataSingleTable($iSurveyID, 'timings_' . $iSurveyID, 'Timings', 'timings', $sLSIFileName);
-            $zip->addFromString('survey_' . $iSurveyID . '_timings.lsi', file_get_contents($sLSIFileName));
-            unlink($sLSIFileName);
-        }
-
-        $zip->close();
-
-        if (is_file($aZIPFileName)) {
+        if ($aZIPFileName) {
             if ($bSendToBrowser) {
                 $fn = "survey_archive_{$iSurveyID}.lsa";
 
