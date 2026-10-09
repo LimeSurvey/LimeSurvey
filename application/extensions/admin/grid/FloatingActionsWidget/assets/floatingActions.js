@@ -331,6 +331,8 @@ LS.floatingActions = (function () {
                         if (typeof syncMassiveActionResultsTableCaption === 'function') {
                             syncMassiveActionResultsTableCaption($modal, $modalBody);
                         }
+                        // The clicked confirm button is hidden now: Keep keyboard focus inside the modal
+                        $modalClose.find('button').first().trigger('focus');
                     }
                     if (onSuccess) {
                         var func = _resolveActionCallback(onSuccess);
