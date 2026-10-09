@@ -1,6 +1,9 @@
+{# Questions with several answer rows show the question above the answers, using the full width #}
+{% set questionOnTop = question.subquestions is not empty or question.questionclass in ['ranking', 'upload-files'] %}
+{% set answerColumnClass = questionOnTop ? 'col-12' : 'col-lg-8' %}
 <div class="row question-container-printanswers" style="page-break-inside:avoid;"> 
     {% block question_name %}
-    <div class="col-md-4">
+    <div class="{{ questionOnTop ? 'col-12' : 'col-md-4' }}">
         <b>{{question.question}} ({{question.qid}})</b><br/>
         <small>{{ gT("Type:") }} ({{question.type}}/{{question.questionclass}})</small>
     </div>

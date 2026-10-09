@@ -32,6 +32,22 @@
         line-height: 125%;
     }
 </style> 
+{% else %}
+<style>
+    @media print {
+        /* The fixed navbar would cover the top of each printed page */
+        .navbar.fixed-top {
+            display: none;
+        }
+        /* Each question group starts on a new page */
+        .groupSection {
+            display: block;
+        }
+        .groupSection + .groupSection {
+            break-before: page;
+        }
+    }
+</style>
 {% endif %}
 {# {{dump(aSurveyInfo.groupArray)}} #}
 <div class="printanswers-container container">

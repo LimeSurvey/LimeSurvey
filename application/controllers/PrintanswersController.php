@@ -172,7 +172,14 @@ class PrintanswersController extends LSYii_Controller
             $html = preg_replace('/<i class="ri-checkbox-blank-circle-fill"><\/i>/', '|', $html);
             $html = preg_replace('/<i class="ri-subtract-fill"><\/i>/', '-', $html);
 
-            $oPDF->writeHTML($html, true, false, true, false, '');
+            // TCPDF draws transparent backgrounds in gray
+            $html = pdfHelper::removeTransparentBackgrounds($html);
+            // Images must be found by TCPDF: Unreadable images break the whole layout
+            $html = pdfHelper::embedLocalImages($html, Yii::app()->getConfig('publicdir'), Yii::app()->getBaseUrl(), Yii::app()->request->getHostInfo());
+            // TCPDF doesn't support floats: Use tables instead of the grid layout
+            $html = pdfHelper::convertGridToTables($html);
+            // No new line after the content: It would add an empty page when the content ends at the bottom of a page
+            $oPDF->writeHTML($html, false, false, true, false, '');
 
             header("Cache-Control: must-revalidate, no-store, no-cache"); // Don't store in cache because it is sensitive data
 

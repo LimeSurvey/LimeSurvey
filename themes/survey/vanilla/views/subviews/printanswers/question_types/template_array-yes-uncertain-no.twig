@@ -1,9 +1,12 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
- <div class="col-lg-8">
+ <div class="{{ answerColumnClass|default('col-lg-8') }}">
     {% for subquestionId, subquestion in question.subquestions %}
         <div class="row">
-            <div class="col-lg-4 text-end">
+            <div class="col-lg-6">
+                <b>{{subquestion.question}} ({{subquestion.qid}})</b>
+            </div>
+            <div class="col-lg-6">
                 {% if subquestion.answervalue is same as("Y") %}
                     {{ gT("Yes") }} <i class="fa fa-check-square-o"></i>
                 {% elseif subquestion.answervalue is same as("N") %}
@@ -13,9 +16,6 @@
                 {% else %}
 
                 {% endif %}
-            </div>
-            <div class="col-lg-8 text-start">
-                <b>{{subquestion.question}} ({{subquestion.qid}})</b>
             </div>
         </div>
     {% endfor %}
