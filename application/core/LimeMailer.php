@@ -346,6 +346,63 @@ class LimeMailer extends PHPMailer
     }
 
     /**
+     * Add the List-Unsubscribe headers if the message offers an opt-out link
+     * Only token emails whose raw template uses OPTOUTURL or whose body contains the opt-out url get the headers,
+     * so that one click unsubscribe is not offered on emails without an opt-out link (e.g. registration or confirmation)
+     * List-Unsubscribe-Post (one click unsubscribe) is only added if the opt-out url uses HTTPS, as required by RFC 8058
+     * @see https://datatracker.ietf.org/doc/html/rfc2369
+     * @see https://datatracker.ietf.org/doc/html/rfc8058
+     * @return void
+     */
+    private function addListUnsubscribeHeaders()
+    {
+        if (empty($this->oToken)) {
+            return;
+        }
+        /* Do not add unsubscribe URL if not OPTOUTURL in body */
+        $optoutBaseUrl = $this->createListUnsubscribeUrl("/optout/tokens");
+        if (
+            strpos((string) $this->Body, $optoutBaseUrl) === false
+            && strpos((string) $this->rawBody, 'OPTOUTURL') === false
+        ) {
+            return;
+        }
+        // separate one click url, so that the OPTOUTURL replacement field always requires a confirmation
+        $unsubscribeUrl = $this->createListUnsubscribeUrl(
+            "/optout/oneclick",
+            [
+                "surveyid" => $this->surveyId,
+                "token" => $this->oToken->token,
+                "langcode" => $this->mailLanguage,
+            ]
+        );
+        // avoid duplicate headers if the same instance sends the message more than once
+        $this->clearCustomHeader("List-Unsubscribe");
+        $this->clearCustomHeader("List-Unsubscribe-Post");
+        $this->addCustomHeader("List-Unsubscribe", "<$unsubscribeUrl>");
+        // one click unsubscribe requires an HTTPS URI, over plain HTTP the receiver only gets the manual opt-out link
+        if (strtolower((string) parse_url($unsubscribeUrl, PHP_URL_SCHEME)) === 'https') {
+            $this->addCustomHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click");
+        }
+    }
+
+    /**
+     * Create an absolute url for the List-Unsubscribe headers the same way as the token replacement urls:
+     * validated against the allowed hosts to prevent host header injection, with a fallback to the request host
+     * @param string $route
+     * @param array<string, mixed> $params
+     * @return string
+     */
+    private function createListUnsubscribeUrl($route, $params = [])
+    {
+        $url = App()->createValidatedAbsoluteUrl($route, $params);
+        if ($url === false) {
+            $url = App()->getController()->createAbsoluteUrl($route, $params);
+        }
+        return $url;
+    }
+
+    /**
      * Sets the email type and raw content for a survey email.
      *
      * This function sets the email type, determines the appropriate language,
@@ -630,6 +687,7 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent. One or more attachments did not exist.'));
             return false;
         }
+        $this->addListUnsubscribeHeaders();
         /* All core done, next are done for all survey */
         $eventResult = $this->manageEvent();
         if (!is_null($eventResult)) {

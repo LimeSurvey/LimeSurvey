@@ -314,9 +314,16 @@
                     <?php eT("Reset failed login attempts of participants to make survey accessible again:"); ?>
                 </label>
                 <div class="">
-                    <a class='btn btn-large btn-warning' type="button" href='<?= \Yii::app()->createUrl('admin/globalsettings', ["sa" => "resetFailedLoginParticipants"]) ?>'>
+                    <button
+                        class='btn btn-large btn-warning'
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#confirmation-modal"
+                        data-post-url='<?= \Yii::app()->createUrl('admin/globalsettings', ["sa" => "resetFailedLoginParticipants"]) ?>'
+                        data-message="<?php eT("Do you really want to reset the failed login attempts of all participants?", 'html'); ?>"
+                    >
                         <?php eT("Reset participant attempts"); ?>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>

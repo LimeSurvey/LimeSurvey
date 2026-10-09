@@ -17,6 +17,7 @@ import { useAppState, useSurvey } from 'hooks'
 import { ContentEditor, DragAndDrop } from 'components'
 import { getDisplayAttributes } from 'components/QuestionSettings/attributes'
 import { getQuestionTypeInfo } from 'components/QuestionTypes/getQuestionTypeInfo'
+import { ARRAY_ROW_LABEL_INSET } from '../arrayLayout'
 
 import { ArrayColumnTitle } from './ArrayColumnTitle'
 
@@ -47,6 +48,8 @@ export const ArrayColumnsTitles = ({
   headersHeight,
   showNoAnswer = false,
   handleChildCodeUpdate = () => {},
+  handleChildAssessmentValueUpdate = () => {},
+  showAssessmentValue = false,
   isTitleFocused,
 }) => {
   const [isReorderingAnswers, setIsReorderingAnswers] = useState(false)
@@ -219,8 +222,8 @@ export const ArrayColumnsTitles = ({
             minWidth:
               scaleId === SCALE_1
                 ? highestSubquestionWidth +
-                  dragIconSize +
-                  (isFocused && showQNumCode?.showNumber ? 80 : 0)
+                  ARRAY_ROW_LABEL_INSET +
+                  (isFocused && showQNumCode?.showNumber ? 90 : 0)
                 : 0,
           }}
         ></div>
@@ -280,6 +283,26 @@ export const ArrayColumnsTitles = ({
                         placeholder={entitiesInfo.placeholder}
                         itemsKey={entitiesInfo.itemsKey}
                         entity={entity}
+                        showAssessmentValue={
+                          showAssessmentValue &&
+                          entitiesInfo.entity === Entities.answer
+                        }
+                        assessmentValue={entity.assessmentValue}
+                        assessmentScaleNumber={
+                          isArrayDualScale ? scaleId + 1 : undefined
+                        }
+                        handleAssessmentValueUpdate={(value) => {
+                          const childIndex = answers.findIndex(
+                            (answer) =>
+                              answer[entitiesInfo.idKey] ===
+                              entity[entitiesInfo.idKey]
+                          )
+                          handleChildAssessmentValueUpdate({
+                            newAssessmentValue: value,
+                            childIndex,
+                            childArray: answers,
+                          })
+                        }}
                         handleChildCodeUpdate={(value, index) => {
                           const childIndex = { answers, subquestions }[
                             entitiesInfo.itemsKey

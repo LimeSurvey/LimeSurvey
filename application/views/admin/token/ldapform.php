@@ -109,18 +109,20 @@
                     <?php endif; ?>
                     <!-- Upload button -->
                     <input type='hidden' name='subaction' value='uploadldap' />
-                    <p><input type='submit' class="btn btn-outline-secondary" name='submit' value='<?php eT('Upload');?>' /></p>
+                    <p><input type='submit' class="btn btn-primary" name='submit' value='<?php eT('Import');?>' /></p>
                 </form>
             <?php endif; ?>
 
             <!-- Note -->
-            <?php
-            $message = gT("Note: LDAP queries are defined by the administrator in the configuration file /application/config/ldap.php .");
-            $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => $message,
-                'type' => 'info',
-            ]);
-            ?>
+            <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
+                <?php
+                $message = gT("Note: LDAP queries are defined by the administrator in the configuration file /application/config/ldap.php .");
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => $message,
+                    'type' => 'info',
+                ]);
+                ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>

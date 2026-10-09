@@ -2868,11 +2868,21 @@ class Tokens extends SurveyCommonAction
 
     /**
      * Creates a token table if it did not exist
+     *
+     * Note: Needs the same permission as newParticipantTable(): Survey settings update or tokens create.
+     *
      * @param int $iSurveyId
      * @return void
+     * @throws CHttpException
      */
     public function startfromscratch(int $iSurveyId)
     {
+        if (
+            !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') &&
+            !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')
+        ) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $survey = Survey::model()->findByPk($iSurveyId);
         if (Yii::app()->request->getPost('createtable') !== "Y") {
             $aData = [
@@ -2973,13 +2983,17 @@ class Tokens extends SurveyCommonAction
 
     /**
      * Handle token form for addnew/edit actions
+     *
+     * Note: Private since it does no permission check of its own, it is only called by
+     * addnew() (tokens create permission) and edit() (tokens update permission).
+     *
      * @param int $iSurveyId
      * @param string $subaction
      * @param integer $iTokenId
      * @param null $deprecated in 6.5.5, used before to show partial view, move to Yii::app()->request->getIsAjaxRequest()
      * @return void
      */
-    public function handletokenform($iSurveyId, $subaction, $iTokenId = "", $deprecated = null)
+    private function handletokenform($iSurveyId, $subaction, $iTokenId = "", $deprecated = null)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         /*if (!$oSurvey->hasTokensTable) {
@@ -3280,7 +3294,7 @@ class Tokens extends SurveyCommonAction
         if ($request->getPost('bypassbademails') == '1') {
             return "emailstatus = 'OK'";
         } else {
-            return "emailstatus <> 'OptOut' OR emailstatus IS NULL";
+            return "emailstatus NOT LIKE 'OptOut%' OR emailstatus IS NULL";
         }
     }
 

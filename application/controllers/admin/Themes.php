@@ -612,7 +612,7 @@ JAVASCRIPT
             [
                 'isExport' => (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')),
                 'templatename' => $templatename,
-                'isExtend' => true,
+                'isExtend' => Permission::model()->hasGlobalPermission('templates', 'create'),
             ],
             true
         );
@@ -1161,6 +1161,8 @@ JAVASCRIPT
 
         switch ($screenname) {
             case 'welcome':
+                // The welcome page is the first page of a survey, so there is no previous page to go back to
+                $thissurvey['aNavigator']['aMovePrev']['show'] = false;
                 break;
 
             case 'question':

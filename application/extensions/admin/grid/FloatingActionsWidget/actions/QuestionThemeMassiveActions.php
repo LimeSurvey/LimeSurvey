@@ -20,7 +20,7 @@ class QuestionThemeMassiveActions
     {
         $actions = [];
 
-        if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
+        if (!Permission::model()->hasGlobalPermission('templates', 'delete')) {
             return $actions;
         }
 

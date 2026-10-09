@@ -154,5 +154,48 @@ echo viewHelper::getViewTestTag('checkIntegrity');
             </form><?php
                 } ?>
         </div>
+
+        <?php if (!empty($serverSettingChecks)) { ?>
+        <!-- Server configuration check -->
+        <div class="jumbotron message-box">
+            <h2><?php eT("Server configuration check"); ?></h2>
+            <p class="lead">
+                <?php eT("Checks PHP settings that can cause data loss or errors with large surveys."); ?>
+            </p>
+            <table class="table table-striped text-start">
+                <caption class="visually-hidden"><?php eT("Server configuration check"); ?></caption>
+                <thead>
+                    <tr>
+                        <th scope="col"><?php eT("PHP setting"); ?></th>
+                        <th scope="col"><?php eT("Recommended"); ?></th>
+                        <th scope="col"><?php eT("Current"); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($serverSettingChecks as $serverSettingCheck) { ?>
+                        <tr>
+                            <th scope="row"><?php echo $serverSettingCheck['setting']; ?></th>
+                            <td><?php echo $serverSettingCheck['recommended']; ?></td>
+                            <td>
+                                <?php if ($serverSettingCheck['ok']) { ?>
+                                    <span class="ri-check-fill text-success" aria-hidden="true"></span>
+                                    <?php echo CHtml::encode($serverSettingCheck['current']); ?>
+                                <?php } else { ?>
+                                    <span class="ri-error-warning-fill text-warning" aria-hidden="true"></span>
+                                    <strong><?php eT("Too low"); ?>: <?php echo CHtml::encode($serverSettingCheck['current']); ?></strong>
+                                    <br/>
+                                    <?php echo $serverSettingCheck['hint']; ?>
+                                    <?php echo sprintf(
+                                        gT("Please ask your system administrator to raise it to at least %s."),
+                                        $serverSettingCheck['recommended']
+                                    ); ?>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <?php } ?>
     </div>
 </div>

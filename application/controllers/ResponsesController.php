@@ -61,11 +61,21 @@ class ResponsesController extends LSBaseController
     }
 
     /**
+     * Redirect to the response of the given access code
+     *
+     * Note: Needs the responses read permission, otherwise it would disclose whether
+     * an access code has a response and its ID.
+     *
      * @param int $surveyId
      * @param string $token
+     * @return void
      */
     public function actionViewbytoken(int $surveyId, string $token): void
     {
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
+            App()->user->setFlash('error', gT("You do not have permission to access this page."));
+            $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
+        }
         // Get Response ID from token
         $oResponse = SurveyDynamic::model($surveyId)->findByAttributes(['token' => $token]);
         if (!$oResponse) {
@@ -108,7 +118,8 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * View a single response in detail
+     * View a single response in detail.
+     * Redirects to the response detail view of the new editor when the editor is enabled.
      *
      * @param int $surveyId
      * @param int $id
@@ -132,6 +143,13 @@ class ResponsesController extends LSBaseController
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
             App()->end(); // More clear, unneeded.
+        }
+        // Existing links (e.g. admin notification emails) open the response in the new editor when it is enabled
+        if (App()->getConfig('editorEnabled')) {
+            $this->redirect([
+                'editorLink/index',
+                'route' => 'responses/' . $surveyId . '/results/responses?id=' . $id
+            ]);
         }
         /* TODO : Check if response still exist, after checking survey */
         $aData = $this->getData($surveyId, $id, $browseLang);
@@ -726,10 +744,11 @@ class ResponsesController extends LSBaseController
      * @param int $responseId
      * @param int $qid
      * @param int $index
+     * @param int $inline : 1 to display images in the browser instead of downloading
      * @return void
      * @throws CHttpException
      */
-    public function actionDownloadfile(int $surveyId, int $responseId, int $qid, int $index): void
+    public function actionDownloadfile(int $surveyId, int $responseId, int $qid, int $index, int $inline = 0): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
             throw new CHttpException(403, gT("Invalid survey ID"));
@@ -768,10 +787,14 @@ class ResponsesController extends LSBaseController
                     if (is_null($mimeType)) {
                         $mimeType = "application/octet-stream";
                     }
+                    // Only raster images are shown inline; SVG can carry script, so it stays a download.
+                    $canInline = $inline && strpos($mimeType, 'image/') === 0 && $mimeType !== 'image/svg+xml';
+                    $fileName = rawurldecode((string) $aFile['name']);
                     @ob_clean();
                     header('Content-Description: File Transfer');
                     header('Content-Type: ' . $mimeType);
-                    header('Content-Disposition: attachment; filename="' . sanitize_filename(rawurldecode((string) $aFile['name'])) . '"');
+                    header('X-Content-Type-Options: nosniff');
+                    header('Content-Disposition: ' . ($canInline ? 'inline' : 'attachment') . '; filename="' . sanitize_filename($fileName) . '"; filename*=UTF-8\'\'' . rawurlencode($fileName));
                     header('Content-Transfer-Encoding: binary');
                     header('Expires: 0');
                     header("Cache-Control: must-revalidate, no-store, no-cache");

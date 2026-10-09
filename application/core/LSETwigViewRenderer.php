@@ -33,6 +33,12 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     private $_twig;
 
     /**
+     * @var array<string,array> Question data for question type views, cached per question id and language
+     * @see LSETwigViewRenderer::getQuestionTemplateData()
+     */
+    private $questionTemplateDataCache = [];
+
+    /**
      * @var array Custom LS Users Extensions
      * Example: array('HelloWorld_Twig_Extension')
      */
@@ -268,6 +274,7 @@ window.addEventListener('message', function(event) {
      *
      * @return  string the generated html
      * @throws CException
+     * @throws InvalidArgumentException if there is no valid question to render
      * @throws Twig_Error_Loader
      * @throws Twig_Error_Syntax
      */
@@ -280,7 +287,9 @@ window.addEventListener('message', function(event) {
         $extraPath = array();
         // check if this method is called from theme editor
         $sTemplateFolderName = null;
+        $oQuestionModel = null;
         if (empty($aData['bIsThemeEditor'])) {
+            $oQuestionModel = $this->getValidatedQuestionModel($oQuestionTemplate, $sView);
             // Get the name of the folder for that question type.
             $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName();
         }
@@ -302,15 +311,16 @@ window.addEventListener('message', function(event) {
         if ($this->getPathOfFile($sView . '.twig', null, $extraPath, $sDirName)) {
             // We're not using the Yii Theming system, so we don't use parent::renderFile
             // current controller properties will be accessible as {{ this.property }}
-                        //  aData and surveyInfo variables are accessible from question type twig files
+            //  aData and surveyInfo variables are accessible from question type twig files
             $aData['aData'] = $aData;
 
-            // check if this method is called from theme editor
+            // Theme editor previews render question fragments without a real question context.
             if (empty($aData['bIsThemeEditor'])) {
-                    $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
-                    $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
-                    $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
-                    $aData['this'] = App()->getController();
+                $aData = array_merge($aData, $this->getQuestionTemplateData($oQuestionModel));
+                $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
+                $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
+                $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
+                $aData['this'] = App()->getController();
             } else {
                 $aData['question_template_attribute'] = null;
             }
@@ -319,6 +329,155 @@ window.addEventListener('message', function(event) {
         } else {
             return App()->getController()->renderPartial($sView, $aData, true);
         }
+    }
+
+    /**
+     * Returns the question model of the current question template, failing loudly if it is missing.
+     *
+     * A missing question model means the question template was not initialised for the question being
+     * rendered (see qanda_helper::retrieveAnswers() and QuestionBaseRenderer), which is a programming error.
+     *
+     * @param QuestionTemplate|mixed $oQuestionTemplate the current question template instance
+     * @param string $sView the view being rendered, used in the error message
+     * @return Question
+     * @throws InvalidArgumentException if there is no question template or it has no valid question model
+     */
+    private function getValidatedQuestionModel($oQuestionTemplate, $sView)
+    {
+        if (!$oQuestionTemplate instanceof QuestionTemplate) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Expected QuestionTemplate instance in %s::renderQuestion(), got %s; view: %s.',
+                    __CLASS__,
+                    is_object($oQuestionTemplate) ? get_class($oQuestionTemplate) : gettype($oQuestionTemplate),
+                    $sView
+                )
+            );
+        }
+
+        $oQuestionModel = $oQuestionTemplate->oQuestion;
+        if (!$oQuestionModel instanceof Question) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'QuestionTemplate has no valid Question model; received: %s; view: %s.',
+                    is_object($oQuestionModel) ? get_class($oQuestionModel) : gettype($oQuestionModel),
+                    $sView
+                )
+            );
+        }
+
+        return $oQuestionModel;
+    }
+
+    /**
+     * Returns the question level data that is exposed to every question type twig view.
+     *
+     * renderQuestion() is called once per view, and some question types render one view per row or cell,
+     * so the result is cached per question and language for the duration of the request.
+     *
+     * @param Question $oQuestionModel the question being rendered
+     * @return array{questionData: array, sCurrentLanguage: string, questionAttributesI18n: array, questionAttributes: array, question_text: string|null, question_help: string|null}
+     * @throws InvalidArgumentException if the question has neither a translation for the current nor for the survey language
+     */
+    private function getQuestionTemplateData(Question $oQuestionModel)
+    {
+        $cacheKey = null;
+        if (!empty($oQuestionModel->qid)) {
+            $cacheKey = $oQuestionModel->qid . '|' . App()->language;
+            if (isset($this->questionTemplateDataCache[$cacheKey])) {
+                return $this->questionTemplateDataCache[$cacheKey];
+            }
+        }
+
+        $questionL10ns = is_array($oQuestionModel->questionl10ns) ? $oQuestionModel->questionl10ns : [];
+        $sCurrentLanguage = $this->resolveQuestionL10nLanguage(
+            $questionL10ns,
+            App()->language,
+            $oQuestionModel->survey->language ?? null,
+            $oQuestionModel->qid ?? 'unknown'
+        );
+
+        $questionAttributesI18n = QuestionAttribute::model()->getQuestionAttributes($oQuestionModel, $sCurrentLanguage);
+        if ($questionAttributesI18n === false) {
+            $questionAttributesI18n = [];
+        }
+
+        $questionL10n = $questionL10ns[$sCurrentLanguage];
+        $questionTemplateData = [
+            'questionData' => $oQuestionModel->attributes,
+            'sCurrentLanguage' => $sCurrentLanguage,
+            'questionAttributesI18n' => $questionAttributesI18n,
+            'questionAttributes' => $this->resolveI18nQuestionAttributesForLanguage($questionAttributesI18n, $sCurrentLanguage),
+            'question_text' => $questionL10n->question,
+            'question_help' => $questionL10n->help,
+        ];
+
+        if ($cacheKey !== null) {
+            $this->questionTemplateDataCache[$cacheKey] = $questionTemplateData;
+        }
+        return $questionTemplateData;
+    }
+
+    /**
+     * Returns the language to use for the question's texts: the current language if the question
+     * is translated into it, else the survey base language.
+     *
+     * @param array $questionL10ns the question's l10n models, indexed by language
+     * @param string|null $currentLanguage the current application language
+     * @param string|null $surveyLanguage the survey base language
+     * @param int|string $questionId the question id, used in the error message
+     * @return string
+     * @throws InvalidArgumentException if the question is translated into neither language
+     */
+    private function resolveQuestionL10nLanguage(array $questionL10ns, $currentLanguage, $surveyLanguage, $questionId)
+    {
+        $candidateLanguages = array_unique(
+            array_filter(
+                [$currentLanguage, $surveyLanguage],
+                static function ($language) {
+                    return is_string($language) && $language !== '';
+                }
+            )
+        );
+
+        foreach ($candidateLanguages as $language) {
+            if (isset($questionL10ns[$language])) {
+                return $language;
+            }
+        }
+
+        throw new InvalidArgumentException(
+            sprintf(
+                'Question has no translation for current language "%s" or survey language "%s"; question id: %s.',
+                $currentLanguage ?? 'null',
+                $surveyLanguage ?? 'null',
+                $questionId
+            )
+        );
+    }
+
+    /**
+     * Resolve i18n question attribute values for a single language.
+     *
+     * The QuestionAttribute model returns i18n values as arrays keyed by language, even if a single language is
+     * requested. For Twig templates, it is more convenient to work with scalar values for the current language.
+     *
+     * @param array $questionAttributes the attribute values as returned by QuestionAttribute::getQuestionAttributes()
+     * @param string $language the language to resolve i18n attributes for
+     * @return array
+     */
+    private function resolveI18nQuestionAttributesForLanguage(array $questionAttributes, $language)
+    {
+        $resolved = [];
+        foreach ($questionAttributes as $name => $value) {
+            if (is_array($value)) {
+                $resolved[$name] = array_key_exists($language, $value) ? $value[$language] : '';
+                continue;
+            }
+            $resolved[$name] = $value;
+        }
+
+        return $resolved;
     }
 
     /**
@@ -691,10 +850,8 @@ window.addEventListener('message', function(event) {
         $aData["aSurveyInfo"]['dir']              = (getLanguageRTL($languagecode)) ? "rtl" : "ltr";
 
         if (!empty($aData['aSurveyInfo']['sid'])) {
-            $showxquestions                            = App()->getConfig('showxquestions');
-            $aData["aSurveyInfo"]['bShowxquestions']  = ($showxquestions == 'show' ||
-                ($showxquestions == 'choose' && !isset($aData['aSurveyInfo']['showxquestions'])) ||
-                ($showxquestions == 'choose' && $aData['aSurveyInfo']['showxquestions'] == 'Y'));
+            $aData["aSurveyInfo"]['bShowxquestions']  = (!isset($aData['aSurveyInfo']['showxquestions']) ||
+                $aData['aSurveyInfo']['showxquestions'] == 'Y');
 
             // Welcome screen image and its display settings (see Survey::getWelcomeImageSettings())
             $oSurvey = $aData['aSurveyInfo']['oSurvey'] ?? Survey::model()->findByPk($aData['aSurveyInfo']['sid']);
