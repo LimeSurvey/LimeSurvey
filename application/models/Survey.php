@@ -1874,6 +1874,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'desc' => 't.datecreated desc',
             ),
 
+            'lastModified' => array(
+                'asc' => 't.lastmodified asc',
+                'desc' => 't.lastmodified desc',
+            ),
+
             'owner' => array(
                 'asc' => 'owner.users_name asc',
                 'desc' => 'owner.users_name desc',
