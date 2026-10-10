@@ -30,7 +30,7 @@
             <div class='{{ aSurveyInfo.class.registerformcolrow }} col-md-6 col-12 mb-3 mb-md-0' {{ aSurveyInfo.attr.registerformcolrow }}>
                 <label for='register_firstname' class='{{ aSurveyInfo.class.registerformcolrowlabel }} control-label '>{{ gT("First name") }}</label>
                 <div class="">
-                    {{ C.Html.textField('register_firstname', aSurveyInfo.sFirstName, ({'id' : 'register_firstname','class' : 'form-control ls-important-field', 'placeholder' : gT('Enter your first name') })) }}
+                    {{ C.Html.textField('register_firstname', aSurveyInfo.sFirstName, ({'id' : 'register_firstname','class' : 'form-control ls-important-field', 'placeholder' : gT('Enter your first name', 'unescaped') })) }}
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
             <div class='{{ aSurveyInfo.class.registerformcolrowb }} col-md-6 col-12' {{ aSurveyInfo.attr.registerformcolrowb }}>
                 <label {{ aSurveyInfo.attr.registerformcolrowblabel }}  class='{{ aSurveyInfo.class.registerformcolrowblabel }} control-label '>{{ gT("Last name") }}</label>
                 <div {{ aSurveyInfo.attr.registerformcolrowbdiv }} >
-                    {{ C.Html.textField('register_lastname', aSurveyInfo.sLastName, ({'id' : 'register_lastname', 'class' : 'form-control ls-important-field', 'placeholder' : gT('Enter your last name')})) }}
+                    {{ C.Html.textField('register_lastname', aSurveyInfo.sLastName, ({'id' : 'register_lastname', 'class' : 'form-control ls-important-field', 'placeholder' : gT('Enter your last name', 'unescaped')})) }}
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
         <div class='{{ aSurveyInfo.class.registerformcolrowc }} row mb-3' {{ aSurveyInfo.attr.registerformcolrowc }}>
             <label {{ aSurveyInfo.attr.registerformcolrowclabel }} class='{{ aSurveyInfo.class.registerformcolrowclabel }}  control-label'> {{ gT("E-mail") }} {{ include('./subviews/registration/required.twig') }}</label>
             <div {{ aSurveyInfo.attr.registerformcolrowcdiv }}  >
-                {{ C.Html.emailField('register_email', aSurveyInfo.sEmail, ({'id' : 'register_email','class' : 'form-control ls-important-field','required' : true, 'placeholder' : gT('Enter e-mail address')})) }}
+                {{ C.Html.emailField('register_email', aSurveyInfo.sEmail, ({'id' : 'register_email','class' : 'form-control ls-important-field','required' : true, 'placeholder' : gT('Enter e-mail address', 'unescaped')})) }}
             </div>
         </div>
 
