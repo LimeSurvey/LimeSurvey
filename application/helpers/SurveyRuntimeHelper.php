@@ -1123,6 +1123,8 @@ class SurveyRuntimeHelper
 
     /**
      * Perform save all if user asked for it
+     *
+     * @return void
      */
     public function saveAllIfNeeded()
     {
@@ -1173,6 +1175,14 @@ class SurveyRuntimeHelper
                 // the previous page when we return.
                 $iResponseID         = $this->sessionState()->getResponseId();
                 $oResponse           = SurveyDynamic::model($this->iSurveyid)->findByPk($iResponseID);
+                if (!$oResponse) {
+                    $this->aSurveyInfo['saved'] = array(
+                        'success' => false,
+                        'title' => gT('Error'),
+                        'text' => gT("Your responses were not saved. Please contact the survey administrator.")
+                    );
+                    return;
+                }
                 $oResponse->lastpage = $this->sessionState()->getStep();
                 if ($oResponse->save()) {
                     $this->aSurveyInfo['saved'] = array(
