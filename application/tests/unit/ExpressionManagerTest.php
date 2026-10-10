@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
     /**
      * TODO: Why is it here? Move it to root tests folder!
      */
@@ -687,13 +689,12 @@ EOD;
         $em = new ExpressionManager();
         $LEM->setTempVars($vars);
 
-        //$LEMsessid = 'responses_' . Yii::app()->getConfig('surveyID');
-        $LEMsessid = 'responses_12345';
         // manually set relevance status
-        $_SESSION[$LEMsessid]['relevanceStatus'] = array();
+        $sessionState = SurveySessionState::forSurvey(12345);
+        $sessionState->setRelevanceStatus([]);
         foreach ($vars as $var) {
             if (isset($var['qseq'])) {
-                $_SESSION[$LEMsessid]['relevanceStatus'][$var['qseq']] = 1;
+                $sessionState->setRelevance($var['qseq'], 1);
             }
         }
 
