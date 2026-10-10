@@ -625,26 +625,6 @@ class SurveySessionState
     }
 
     /**
-     * Returns the number of timer questions rendered, used to load the timer
-     * scripts only once per page.
-     *
-     * @return int|null
-     */
-    public function getTimerCount(): ?int
-    {
-        return $this->getInt('timercount');
-    }
-
-    /**
-     * @param int $timerCount
-     * @return void
-     */
-    public function setTimerCount(int $timerCount): void
-    {
-        $this->set('timercount', $timerCount);
-    }
-
-    /**
      * Whether time remaining was posted for a timed question.
      *
      * @param int $questionId
@@ -666,39 +646,6 @@ class SurveySessionState
     {
         $value = $this->get(self::QUESTION_TIMER_KEY_PREFIX . $questionId);
         return is_numeric($value) ? (float) $value : null;
-    }
-
-    /**
-     * Records the file upload question being rendered, for the uploader.
-     *
-     * @param string $fieldName SGQA field name of the upload question
-     * @param bool $preview Whether the question is shown as a preview, so uploads are not kept
-     * @return void
-     */
-    public function setUploadContext(string $fieldName, bool $preview): void
-    {
-        $this->set('fieldname', $fieldName);
-        $this->set('preview', (int) $preview);
-    }
-
-    /**
-     * Returns the field name stored by setUploadContext().
-     *
-     * @return string|null
-     */
-    public function getUploadFieldName(): ?string
-    {
-        return $this->getString('fieldname');
-    }
-
-    /**
-     * Whether the last file upload question was rendered as a preview.
-     *
-     * @return bool
-     */
-    public function isUploadPreview(): bool
-    {
-        return (bool) $this->get('preview', false);
     }
 
     /**

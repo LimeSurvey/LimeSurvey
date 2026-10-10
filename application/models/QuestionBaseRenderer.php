@@ -121,10 +121,6 @@ abstract class QuestionBaseRenderer extends StaticModel
         }
         /* End */
 
-        //Used to count how many timer questions in a page, and ensure scripts only load once
-        $surveySessionState = SurveySessionState::forSurvey((int) $oSurvey->sid);
-        $surveySessionState->setTimerCount($surveySessionState->getTimerCount() ?? 1);
-
         /* Work in all mode system : why disable it ? */
         //~ if ($thissurvey['format'] != "S")
         //~ {
@@ -197,38 +193,36 @@ abstract class QuestionBaseRenderer extends StaticModel
             true
         );
 
-        if ($surveySessionState->getTimerCount() < 2) {
-            $iAction = '';
-            if ($oSurvey->format == "G") {
-                $qcount = 0;
-                foreach ($surveySessionState->getFieldArray() as $ib) {
-                    if ($ib[5] == $oQuestion->gid) {
-                        $qcount++;
-                    }
-                }
-                // Override all other options and just allow freezing, survey is presented in group by group mode
-                // Why don't allow submit in Group by group mode, this surely broke 'mandatory' question, but this remove a great system for user (Denis 140224)
-                if ($qcount > 1) {
-                    $iAction = '3';
+        $iAction = '';
+        if ($oSurvey->format == "G") {
+            $qcount = 0;
+            foreach (SurveySessionState::forSurvey((int) $oSurvey->sid)->getFieldArray() as $ib) {
+                if ($ib[5] == $oQuestion->gid) {
+                    $qcount++;
                 }
             }
-
-            /* If this is a preview, don't allow the page to submit/reload */
-            $thisaction = returnglobal('action');
-            if ($thisaction == "previewquestion" || $thisaction == "previewgroup" || $this->bPreview == true) {
+            // Override all other options and just allow freezing, survey is presented in group by group mode
+            // Why don't allow submit in Group by group mode, this surely broke 'mandatory' question, but this remove a great system for user (Denis 140224)
+            if ($qcount > 1) {
                 $iAction = '3';
             }
-
-            $output .= Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_javascript', array(
-                'timersessionname' => $timersessionname,
-                'time_limit' => $time_limit,
-                'iAction' => $iAction,
-                'disable_next' => $disable_next,
-                'disable_prev' => $disable_prev,
-                'time_limit_countdown_message' => $time_limit_countdown_message,
-                'time_limit_message_delay' => $time_limit_message_delay
-                ), true);
         }
+
+        /* If this is a preview, don't allow the page to submit/reload */
+        $thisaction = returnglobal('action');
+        if ($thisaction == "previewquestion" || $thisaction == "previewgroup" || $this->bPreview == true) {
+            $iAction = '3';
+        }
+
+        $output .= Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_javascript', array(
+            'timersessionname' => $timersessionname,
+            'time_limit' => $time_limit,
+            'iAction' => $iAction,
+            'disable_next' => $disable_next,
+            'disable_prev' => $disable_prev,
+            'time_limit_countdown_message' => $time_limit_countdown_message,
+            'time_limit_message_delay' => $time_limit_message_delay
+            ), true);
 
         $output .= Yii::app()->twigRenderer->renderQuestion(
             '/survey/questions/question_timer/timer_content',

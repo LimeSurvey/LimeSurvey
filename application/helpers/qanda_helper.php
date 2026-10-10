@@ -390,9 +390,6 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     }
     /* End */
 
-    //Used to count how many timer questions in a page, and ensure scripts only load once
-    $thissurvey['timercount'] = (isset($thissurvey['timercount'])) ? $thissurvey['timercount']++ : 1;
-
     $disable_next = trim((string) $aQuestionAttributes['time_limit_disable_next']) != '' ? $aQuestionAttributes['time_limit_disable_next'] : 0;
     $disable_prev = trim((string) $aQuestionAttributes['time_limit_disable_prev']) != '' ? $aQuestionAttributes['time_limit_disable_prev'] : 0;
     $time_limit_action = trim((string) $aQuestionAttributes['time_limit_action']) != '' ? $aQuestionAttributes['time_limit_action'] : 1;
@@ -435,38 +432,36 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
 
     $output = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_header', array('timersessionname' => $timersessionname, 'time_limit' => $time_limit), true);
 
-    if ($thissurvey['timercount'] < 2) {
-        $iAction = '';
-        if (isset($thissurvey['format']) && $thissurvey['format'] == "G") {
-            $qcount = 0;
-            foreach ($sessionState->getFieldArray() as $ib) {
-                if ($ib[5] == $gid) {
-                    $qcount++;
-                }
-            }
-            // Override all other options and just allow freezing, survey is presented in group by group mode
-            // Why don't allow submit in Group by group mode, this surely broke 'mandatory' question, but this remove a great system for user (Denis 140224)
-            if ($qcount > 1) {
-                $iAction = '3';
+    $iAction = '';
+    if (isset($thissurvey['format']) && $thissurvey['format'] == "G") {
+        $qcount = 0;
+        foreach ($sessionState->getFieldArray() as $ib) {
+            if ($ib[5] == $gid) {
+                $qcount++;
             }
         }
-
-        /* If this is a preview, don't allow the page to submit/reload */
-        $thisaction = returnglobal('action');
-        if ($thisaction == "previewquestion" || $thisaction == "previewgroup") {
+        // Override all other options and just allow freezing, survey is presented in group by group mode
+        // Why don't allow submit in Group by group mode, this surely broke 'mandatory' question, but this remove a great system for user (Denis 140224)
+        if ($qcount > 1) {
             $iAction = '3';
         }
-
-        $output .= Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_javascript', array(
-            'timersessionname' => $timersessionname,
-            'time_limit' => $time_limit,
-            'iAction' => $iAction,
-            'disable_next' => $disable_next,
-            'disable_prev' => $disable_prev,
-            'time_limit_countdown_message' => $time_limit_countdown_message,
-            'time_limit_message_delay' => $time_limit_message_delay
-        ), true);
     }
+
+    /* If this is a preview, don't allow the page to submit/reload */
+    $thisaction = returnglobal('action');
+    if ($thisaction == "previewquestion" || $thisaction == "previewgroup") {
+        $iAction = '3';
+    }
+
+    $output .= Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_javascript', array(
+        'timersessionname' => $timersessionname,
+        'time_limit' => $time_limit,
+        'iAction' => $iAction,
+        'disable_next' => $disable_next,
+        'disable_prev' => $disable_prev,
+        'time_limit_countdown_message' => $time_limit_countdown_message,
+        'time_limit_message_delay' => $time_limit_message_delay
+    ), true);
 
     $output .= Yii::app()->twigRenderer->renderQuestion(
         '/survey/questions/question_timer/timer_content',

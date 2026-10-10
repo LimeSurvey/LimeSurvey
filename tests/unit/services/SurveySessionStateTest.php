@@ -430,18 +430,13 @@ class SurveySessionStateTest extends TestCase
     }
 
     /**
-     * @testdox Timer count and per-question timers use the timercount and timer_question_<qid> keys
+     * @testdox Per-question timers use the timer_question_<qid> keys
      */
     public function testTimers()
     {
         $state = new SurveySessionState(1);
-        $this->assertNull($state->getTimerCount());
         $this->assertFalse($state->hasQuestionTimer(12));
         $this->assertNull($state->getQuestionTimer(12));
-
-        $state->setTimerCount(1);
-        $this->assertSame(1, $state->getTimerCount());
-        $this->assertSame(1, $_SESSION['responses_1']['timercount']);
 
         // Written by the ExpressionManager as a field value, as a string or a float
         $state->setFieldValue(SurveySessionState::QUESTION_TIMER_KEY_PREFIX . '12', '25');
@@ -453,26 +448,6 @@ class SurveySessionStateTest extends TestCase
         $state->setFieldValue('timer_question_14', 'abc');
         $this->assertTrue($state->hasQuestionTimer(14));
         $this->assertNull($state->getQuestionTimer(14));
-    }
-
-    /**
-     * @testdox Upload context keeps the field name and stores the preview flag as int
-     */
-    public function testUploadContext()
-    {
-        $state = new SurveySessionState(1);
-        $this->assertNull($state->getUploadFieldName());
-        $this->assertFalse($state->isUploadPreview());
-
-        $state->setUploadContext('1X2X3', true);
-        $this->assertSame('1X2X3', $_SESSION['responses_1']['fieldname']);
-        $this->assertSame(1, $_SESSION['responses_1']['preview']);
-        $this->assertSame('1X2X3', $state->getUploadFieldName());
-        $this->assertTrue($state->isUploadPreview());
-
-        $state->setUploadContext('1X2X4', false);
-        $this->assertSame(0, $_SESSION['responses_1']['preview']);
-        $this->assertFalse($state->isUploadPreview());
     }
 
     /**
