@@ -32,7 +32,6 @@
             <directory name="vendor" />
             <directory name="assets/packages/pchart" />
             <directory name="application/views" />
-            <directory name="application/tests" />
             <directory name="application/libraries/*/views" />
             <directory name="application/core/plugins/*/views" />
             <directory name="application/core/plugins/*/vendor" />
