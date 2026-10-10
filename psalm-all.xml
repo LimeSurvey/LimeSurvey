@@ -41,7 +41,6 @@
             <directory name="application/extensions/admin/survey/*/views" />
             <directory name="application/extensions/admin/survey/question/*/views" />
             <directory name="application/extensions/*/*/*/views" />
-            <file name="application/libraries/simpletester.php" />
             <file name="application/libraries/admin/quexmlpdf.php" />
             <file name="application/libraries/admin/pdf.php" />
             <file name="application/libraries/jsonRPCClient.php" />
