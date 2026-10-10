@@ -15,6 +15,9 @@
  * And by soon I mean yesterday
  */
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
+use LimeSurvey\Models\Services\SurveySessionState;
+
 class UploaderController extends SurveyController
 {
     /**
@@ -23,10 +26,11 @@ class UploaderController extends SurveyController
      *
      * @param string $actionID
      * @return void
+     * @throws CHttpException
      */
     public function run($actionID)
     {
-        $surveyid = Yii::app()->session['LEMsid'];
+        $surveyid = ExpressionManagerSessionState::current()->getSurveyId();
         if (empty($surveyid)) {
             throw new CHttpException(401, gT("We are sorry but your session has expired."));
         }
@@ -35,7 +39,8 @@ class UploaderController extends SurveyController
             throw new CHttpException(400);
         }
 
-        $sLanguage = Yii::app()->session['responses_' . $surveyid]['s_lang'] ?? "";
+        $sessionState = SurveySessionState::forSurvey($surveyid);
+        $sLanguage = $sessionState->getLanguage() ?? "";
         Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -145,7 +150,6 @@ class UploaderController extends SurveyController
             }
             $filename = sanitize_filename($_FILES['uploadfile']['name'], false, false, true);
             $size = $_FILES['uploadfile']['size'] / 1024;
-            $preview = Yii::app()->session['preview'];
             /* Find the question by sFieldName : must be a upload question type, and id is end of sFieldName in $surveyid*/
             $qid = substr(explode("_", $sFieldName)[0], 1);
             if (empty($qid) || !ctype_digit($qid)) {
@@ -193,9 +197,10 @@ class UploaderController extends SurveyController
             $event = new PluginEvent('beforeProcessFileUpload');
             /* Current state */
             $event->set('surveyId', $surveyid);
-            $event->set('responseId', Yii::app()->session['responses_' . $surveyid]['srid'] ?? null); // NULL if not exist
+            $event->set('responseId', $sessionState->get('srid')); // NULL if not exist
             $event->set('qid', $oQuestion->qid);
-            $event->set('preview', $preview);
+            // Kept for backward compatibility of plugins: Always null
+            $event->set('preview', null);
             $event->set('fieldname', $sFieldName);
             $event->set('maxfilesize', $maxfilesize);
             $event->set('valid_extensions_array', $valid_extensions_array);
@@ -326,50 +331,29 @@ class UploaderController extends SurveyController
                 Yii::app()->end();
             }
             // if everything went fine and the file was uploaded successfully,
-            // If this is just a preview, don't save the file
-            if ($preview) {
-                if (move_uploaded_file($uploadfile_tmp_name, $randfileloc)) {
-                    /** @psalm-suppress UndefinedVariable TODO: Dead code? */
-                    $return = array(
-                                "success"       => true,
-                                "file_index"    => $filecount,
-                                "size"          => $size,
-                                "name"          => $filename,
-                                "ext"           => $cleanExt,
-                                "filename"      => $randfilename,
-                                "msg"           =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
-                            );
-                    // TODO : unlink this file since this is just a preview. But we can do it only if it's not needed, and still needed to have the file content
-                    // Maybe use a javascript 'onunload' on preview question/group
-                    // unlink($randfileloc)
-                    echo ls_json_encode($return);
-                    Yii::app()->end();
-                }
-            } else {
-                // send the file related info back to the client
-                $iFileUploadTotalSpaceMB = Yii::app()->getConfig("iFileUploadTotalSpaceMB");
-                if ($iFileUploadTotalSpaceMB > 0 && ((calculateTotalFileUploadUsage() + ($size / 1024 / 1024)) > $iFileUploadTotalSpaceMB)) {
-                    $return = array(
-                        "success" => false,
-                            "msg" => gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.", 'unescaped')
-                    );
-                    //header('Content-Type: application/json');
-                    echo ls_json_encode($return);
-                    Yii::app()->end();
-                }
-                if (move_uploaded_file($uploadfile_tmp_name, $randfileloc)) {
-                    $return = array(
-                        "success"  => true,
-                        "size"     => $size,
-                        "name"     => $filename,
-                        "ext"      => $cleanExt,
-                        "filename" => $randfilename,
-                        "msg"      =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
-                    );
-                    //header('Content-Type: application/json');
-                    echo ls_json_encode($return);
-                    Yii::app()->end();
-                }
+            // send the file related info back to the client
+            $iFileUploadTotalSpaceMB = Yii::app()->getConfig("iFileUploadTotalSpaceMB");
+            if ($iFileUploadTotalSpaceMB > 0 && ((calculateTotalFileUploadUsage() + ($size / 1024 / 1024)) > $iFileUploadTotalSpaceMB)) {
+                $return = array(
+                    "success" => false,
+                        "msg" => gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.", 'unescaped')
+                );
+                //header('Content-Type: application/json');
+                echo ls_json_encode($return);
+                Yii::app()->end();
+            }
+            if (move_uploaded_file($uploadfile_tmp_name, $randfileloc)) {
+                $return = array(
+                    "success"  => true,
+                    "size"     => $size,
+                    "name"     => $filename,
+                    "ext"      => $cleanExt,
+                    "filename" => $randfilename,
+                    "msg"      =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
+                );
+                //header('Content-Type: application/json');
+                echo ls_json_encode($return);
+                Yii::app()->end();
             }
             /* We get there : an unknown error happened … maybe a move_uploaded_file error (with debug=0) */
             $return = array(
@@ -451,7 +435,7 @@ class UploaderController extends SurveyController
             'minfiles' => $minfiles,
             'maxfiles' => $maxfiles,
             'qidattributes' => $qidattributes,
-            'preview' => Yii::app()->session['preview']
+            'preview' => null
         ];
 
         $body = '<body class="uploader">';

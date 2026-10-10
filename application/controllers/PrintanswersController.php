@@ -13,6 +13,8 @@
  *
  */
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * printanswers
  *
@@ -35,7 +37,7 @@ class PrintanswersController extends LSYii_Controller
      * printanswers::view()
      * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $printableexport='pdf'.
      * @param mixed $surveyid
-     * @param bool $printableexport
+     * @param bool|string $printableexport False, "pdf" or "quexmlpdf"
      * @return void
      */
     public function actionView($surveyid, $printableexport = false)
@@ -48,15 +50,17 @@ class PrintanswersController extends LSYii_Controller
 
         Yii::app()->loadHelper('database');
 
-        if (isset($_SESSION['responses_' . $iSurveyID]['sid'])) {
-            $iSurveyID = $_SESSION['responses_' . $iSurveyID]['sid'];
+        $finishedSurveyId = SurveySessionState::forSurvey((int) $iSurveyID)->getFinishedSurveyId();
+        if ($finishedSurveyId !== null) {
+            $iSurveyID = $finishedSurveyId;
         } else {
             //die('Invalid survey/session');
         }
         // Get the survey information
         // Set the language for display
-        if (isset($_SESSION['responses_' . $iSurveyID]['s_lang'])) {
-            $sLanguage = $_SESSION['responses_' . $iSurveyID]['s_lang'];
+        $sessionLanguage = SurveySessionState::forSurvey((int) $iSurveyID)->getLanguage();
+        if ($sessionLanguage !== null) {
+            $sLanguage = $sessionLanguage;
         } elseif ($survey) {
             // survey exist
             {
@@ -76,7 +80,8 @@ class PrintanswersController extends LSYii_Controller
         //Yii::app()->clientScript->registerPackage( 'survey-template' );
 
         //Survey is not finished or don't exist
-        if (!isset($_SESSION['responses_' . $iSurveyID]['srid'])) {
+        $sessionState = SurveySessionState::forSurvey((int) $iSurveyID);
+        if ($sessionState->getResponseId() === null) {
             //display "sorry but your session has expired"
             $this->sTemplate = $oTemplate->sTemplateName;
             $error = $this->renderPartial("/survey/system/errorWarning", array(
@@ -103,7 +108,7 @@ class PrintanswersController extends LSYii_Controller
             // App()->end();
         }
         //Fin session time out
-        $sSRID = $_SESSION['responses_' . $iSurveyID]['srid']; //I want to see the answers with this id
+        $sSRID = $sessionState->getResponseId(); //I want to see the answers with this id
         //Ensure script is not run directly, avoid path disclosure
         //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
 

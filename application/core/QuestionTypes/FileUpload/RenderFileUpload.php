@@ -52,8 +52,6 @@ class RenderFileUpload extends QuestionBaseRenderer
         $sAction = Yii::app()->request->getParam('action');
         // Preview is launched from question or group level, or the survey is not active
         $bPreview = $sAction == "previewgroup" || $sAction == "previewquestion" || $this->oQuestion->survey->active != "Y";
-        $_SESSION['responses_' . $iSurveyId]['fieldname'] = $this->sSGQA;
-        $_SESSION['responses_' . $iSurveyId]['preview'] = (int) $bPreview;
 
         $uploadurl = Yii::app()->getController()->createUrl(
             'uploader/index',

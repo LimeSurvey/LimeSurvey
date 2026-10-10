@@ -1,5 +1,8 @@
 <?php
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
+use LimeSurvey\Models\Services\SurveySessionState;
+
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -33,8 +36,8 @@ if (!defined('BASEPATH')) {
 * @param null $anonymized unused (all done in EM now)
 * @param integer|null $questionNum - needed to support dynamic JavaScript-based tailoring within questions
 * @param null|void $registerdata - deprecated
-* @param boolean bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
-* @param object|string - the template object to be used
+* @param boolean $bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
+* @param object|string $oTemplate - the template object to be used
 * @return string Text with replaced strings
 *
 * @psalm-suppress UndefinedVariable
@@ -76,7 +79,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $varsPassed[] = $var;
         }
     }
-    $_surveyid = $_SESSION['LEMsid'];
+    $_surveyid = ExpressionManagerSessionState::current()->getSurveyId();
 
     if ($_surveyid) {
         $totalgroups = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
@@ -85,7 +88,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     if (!isset($s_lang)) {
-        $s_lang = (Yii::app()->session['responses_' . $_surveyid]['s_lang'] ?? 'en');
+        $s_lang = (SurveySessionState::forSurvey((int) $_surveyid)->getLanguage() ?? 'en');
     }
     if ($_surveyid && !isset($thissurvey)) {
         $thissurvey = getSurveyInfo($_surveyid, $s_lang);
@@ -208,13 +211,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     $_linkreplace = '';
 
-    if (isset($thissurvey['sid']) && isset($_SESSION['responses_' . $thissurvey['sid']]['srid']) && $thissurvey['active'] == 'Y') {
-        $iscompleted = $thissurvey['iscompleted'] = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['responses_' . $thissurvey['sid']]['srid']);
+    if (isset($thissurvey['sid']) && SurveySessionState::forSurvey((int) $thissurvey['sid'])->getResponseId() !== null && $thissurvey['active'] == 'Y') {
+        $iscompleted = $thissurvey['iscompleted'] = SurveyDynamic::model($surveyid)->isCompleted(SurveySessionState::forSurvey((int) $thissurvey['sid'])->getResponseId());
     } else {
         $iscompleted = $thissurvey['iscompleted'] = false;
     }
 
-    if (isset($surveyid) && isset($_SESSION['responses_' . $surveyid]['srid'])) {
+    if (isset($surveyid) && SurveySessionState::forSurvey((int) $surveyid)->getResponseId() !== null) {
         $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-bs-toggle' => 'tooltip', 'data-bs-placement' => 'right', 'title' => gT("Note: Print will not include items on this page")));
     } else {
         $_quexmlpdf = "";
@@ -249,7 +252,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
-    if (isset($thissurvey['sid']) && !empty($_SESSION['responses_' . $thissurvey['sid']])) {
+    if (isset($thissurvey['sid']) && !empty(SurveySessionState::forSurvey((int) $thissurvey['sid'])->toArray())) {
         $coreReplacements = getStandardsReplacementFields($thissurvey);
     }
 
@@ -316,11 +319,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
  * Replacement done on this function can not be used in Expression for condition or equation
  * If you want keywords available on both replacement and condition, use LimeExpressionManager::setValueToKnowVar
  * Or add it in LimeExpressionManager->setVariableAndTokenMappingsForExpressionManager
+ * @param array $thissurvey Survey info (see getSurveyInfo()); its sid takes precedence over the ExpressionManager survey ID
+ * @return array Replacement values keyed by keyword
  * @psalm-suppress UndefinedVariable TODO
  */
 function getStandardsReplacementFields($thissurvey)
 {
-    $surveyid = $_SESSION['LEMsid'];
+    $surveyid = ExpressionManagerSessionState::current()->getSurveyId();
 
     Yii::app()->loadHelper('surveytranslator');
 
@@ -449,7 +454,7 @@ function ReplaceFields($text, $fieldsarray, $bReplaceInsertans = true, $staticRe
 *  in the session array containing responses
 *
 * @param mixed $line   string - the string to iterate, and then return
-* @param mixed $thissurvey     string - the string containing the surveyinformation
+* @param array $thissurvey The survey information, see getSurveyInfo()
 * @return string This string is returned containing the substituted responses
 *
 */
@@ -465,8 +470,9 @@ function PassthruReplace($line, $thissurvey)
 
         // lookup for the fitting arg
         $sValue = '';
-        if (isset($_SESSION['responses_' . $thissurvey['sid']]['urlparams'][$arg])) {
-            $sValue = urlencode((string) $_SESSION['responses_' . $thissurvey['sid']]['urlparams'][$arg]);
+        $urlParams = SurveySessionState::forSurvey((int) $thissurvey['sid'])->getUrlParams();
+        if (isset($urlParams[$arg])) {
+            $sValue = urlencode((string) $urlParams[$arg]);
         }
         $line = str_replace($cmd, $sValue, (string) $line); // replace
     }

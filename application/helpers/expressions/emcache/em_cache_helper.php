@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * Discussion here: https://bugs.limesurvey.org/view.php?id=14859
  * PR: https://github.com/LimeSurvey/LimeSurvey/pull/1273
@@ -188,7 +190,7 @@ class EmCacheHelper
         }
 
         // Don't use emcache with randomization.
-        if ($_SESSION['responses_' . self::$surveyinfo['sid']]['randomized']) {
+        if (SurveySessionState::forSurvey((int) self::$surveyinfo['sid'])->isRandomized()) {
             return false;
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * Service class to activate survey.
  * @todo Move to models/services/survey/ folder.
@@ -69,7 +71,7 @@ class SurveyActivator
         // Clear session cache (e.g. from a survey preview run in
         // the same browser session) before building the response table.
         $iSurveyId = $this->survey->sid;
-        unset($_SESSION['responses_' . $iSurveyId]);
+        SurveySessionState::forSurvey((int) $iSurveyId)->clear();
 
         $this->prepareResponsesTable();
 
