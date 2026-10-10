@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
 use LimeSurvey\Models\Services\SurveySessionState;
 
 /**
@@ -320,8 +321,9 @@ window.addEventListener('message', function(event) {
             if (empty($aData['bIsThemeEditor'])) {
                 $aData = array_merge($aData, $this->getQuestionTemplateData($oQuestionModel));
                 $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
-                $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
-                $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
+                $surveyId = ExpressionManagerSessionState::current()->getSurveyId();
+                $sBaseLanguage = Survey::model()->findByPk($surveyId)->language;
+                $aData['surveyInfo'] = getSurveyInfo($surveyId, $sBaseLanguage);
                 $aData['this'] = App()->getController();
             } else {
                 $aData['question_template_attribute'] = null;
@@ -531,8 +533,9 @@ window.addEventListener('message', function(event) {
 
             //  aData and surveyInfo variables are accessible from question type twig files
             $aData['aData'] = $aData;
-            $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
-            $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
+            $surveyId = ExpressionManagerSessionState::current()->getSurveyId();
+            $sBaseLanguage = Survey::model()->findByPk($surveyId)->language;
+            $aData['surveyInfo'] = getSurveyInfo($surveyId, $sBaseLanguage);
             $aData['this'] = App()->getController();
 
             $aData['question_template_attribute'] = null;

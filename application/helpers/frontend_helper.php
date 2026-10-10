@@ -19,6 +19,7 @@ if (!defined('BASEPATH')) {
 require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
 
 use LimeSurvey\PluginManager\PluginEvent;
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
 use LimeSurvey\Models\Services\SurveySessionState;
 
@@ -1986,7 +1987,7 @@ function killSurveySession($iSurveyID)
     //  unsetting LEMsingleton from session so new survey execution would start with new LEM instance
     //  SetDirtyFlag() method doesn't reset LEM properly
     //  this solution fixes bug: https://bugs.limesurvey.org/view.php?id=10162
-    unset($_SESSION["LEMsingleton"]);
+    ExpressionManagerSessionState::current()->clearSerializedInstance();
 }
 
 /**

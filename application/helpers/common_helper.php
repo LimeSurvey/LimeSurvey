@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
 use LimeSurvey\Models\Services\SurveySessionState;
 
 if (!defined('BASEPATH')) {
@@ -5148,7 +5149,7 @@ function getLabelSets($languages = null)
 function getHeader($meta = false)
 {
     /* Todo : move this to layout/public.html */
-    $surveyid = Yii::app()->session['LEMsid'];
+    $surveyid = ExpressionManagerSessionState::current()->getSurveyId();
     $oSurvey = Survey::model()->findByPk($surveyid);
     Yii::app()->loadHelper('surveytranslator');
 

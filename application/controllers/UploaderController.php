@@ -15,6 +15,7 @@
  * And by soon I mean yesterday
  */
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
 use LimeSurvey\Models\Services\SurveySessionState;
 
 class UploaderController extends SurveyController
@@ -29,7 +30,7 @@ class UploaderController extends SurveyController
      */
     public function run($actionID)
     {
-        $surveyid = Yii::app()->session['LEMsid'];
+        $surveyid = ExpressionManagerSessionState::current()->getSurveyId();
         if (empty($surveyid)) {
             throw new CHttpException(401, gT("We are sorry but your session has expired."));
         }
@@ -38,7 +39,7 @@ class UploaderController extends SurveyController
             throw new CHttpException(400);
         }
 
-        $sessionState = SurveySessionState::forSurvey((int) $surveyid);
+        $sessionState = SurveySessionState::forSurvey($surveyid);
         $sLanguage = $sessionState->getLanguage() ?? "";
         Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");

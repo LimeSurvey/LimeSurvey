@@ -24,6 +24,7 @@
  */
 
 use LimeSurvey\Helpers\questionHelper;
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
 use LimeSurvey\Models\Services\Quotas;
 use LimeSurvey\Models\Services\SurveySessionState;
 
@@ -665,7 +666,9 @@ class LimeExpressionManager
      */
     private $numQuestions = 0;
     /**
-     * String identifier for the active session
+     * Key of the participant survey session ('responses_<sid>'). No longer used
+     * (see sessionState()); kept for compatibility with instances serialized into
+     * the session.
      * @var string
      */
     private $sessid;
@@ -700,8 +703,9 @@ class LimeExpressionManager
         self::$instance =& $this;
         $this->em = new ExpressionManager();
         $this->em->ExpressionManagerStartEvent();
-        if (!isset($_SESSION['LEMlang'])) {
-            $_SESSION['LEMlang'] = 'en';    // so that there is a default
+        $emSessionState = self::emSessionState();
+        if (!$emSessionState->hasLanguage()) {
+            $emSessionState->setLanguage('en');    // so that there is a default
         }
     }
 
@@ -712,20 +716,22 @@ class LimeExpressionManager
     public static function &singleton()
     {
         $now = microtime(true);
-        if (isset($_SESSION['LEMdirtyFlag'])) {
+        $emSessionState = self::emSessionState();
+        if ($emSessionState->isDirty()) {
             $c = __CLASS__;
             self::$instance = new $c();
-            unset($_SESSION['LEMdirtyFlag']);
+            $emSessionState->clearDirty();
         } elseif (!isset(self::$instance)) {
-            if (isset($_SESSION['LEMsingleton'])) {
-                $restored = @unserialize($_SESSION['LEMsingleton'], ['allowed_classes' => [LimeExpressionManager::class, ExpressionManager::class]]);
-                /* $_SESSION['LEMsingleton'] can be not empty but unserialize return false */
+            $serializedInstance = $emSessionState->getSerializedInstance();
+            if ($serializedInstance !== null) {
+                $restored = @unserialize($serializedInstance, ['allowed_classes' => [LimeExpressionManager::class, ExpressionManager::class]]);
+                /* The stored instance can be not empty but unserialize return false */
                 /* You need to check if it's OK */
                 if (!($restored instanceof self) || !($restored->em instanceof ExpressionManager)) {
-                    if (!empty($_SESSION['LEMsid'])) {
-                        killSurveySession($_SESSION['LEMsid']);
+                    if (!empty($emSessionState->getSurveyId())) {
+                        killSurveySession($emSessionState->getSurveyId());
                     }
-                    unset($_SESSION['LEMsingleton']);
+                    $emSessionState->clearSerializedInstance();
                     throw new CHttpException(400, gT("We are sorry but your session has expired.", 'unescaped'));
                 }
                 self::$instance = $restored;
@@ -765,6 +771,18 @@ class LimeExpressionManager
     }
 
     /**
+     * Returns the ExpressionManager state kept in the PHP session (survey ID,
+     * language, serialized instance and refresh flags).
+     * Not kept in a property, for the same reason as sessionState().
+     *
+     * @return ExpressionManagerSessionState
+     */
+    private static function emSessionState(): ExpressionManagerSessionState
+    {
+        return ExpressionManagerSessionState::current();
+    }
+
+    /**
      * Set the previewmode
      * @param string|false $previewmode 'question', 'group', false
      * @return void
@@ -781,8 +799,9 @@ class LimeExpressionManager
      */
     public static function SetDirtyFlag()
     {
-        $_SESSION['LEMdirtyFlag'] = true;// For fieldmap and other. question help {HELP} is taken from fieldmap
-        $_SESSION['LEMforceRefresh'] = true;// For Expression manager string
+        $emSessionState = self::emSessionState();
+        $emSessionState->markDirty();// For fieldmap and other. question help {HELP} is taken from fieldmap
+        $emSessionState->requestForceRefresh();// For Expression manager string
         /* Bug #09589 : update a survey don't reset actual test => Force reloading of survey */
         $iSessionSurveyId = self::getLEMsurveyId();
         $sessionState = SurveySessionState::forSurvey((int) $iSessionSurveyId);
@@ -795,15 +814,17 @@ class LimeExpressionManager
      * Set the SurveyId - really checks whether the survey you're about
      * to work with is new, and if so, clears the LEM cache
      * @param integer|null $sid
+     * @return void
      */
     public static function SetSurveyId($sid = null)
     {
         if (!is_null($sid)) {
-            if (isset($_SESSION['LEMsid']) && $sid != $_SESSION['LEMsid']) {
+            $emSessionState = self::emSessionState();
+            if ($emSessionState->hasSurveyId() && $sid != $emSessionState->getSurveyId()) {
                 // then trying to use a new survey - so clear the LEM cache
                 self::SetDirtyFlag();
             }
-            $_SESSION['LEMsid'] = $sid;
+            $emSessionState->setSurveyId((int) $sid);
         }
     }
 
@@ -817,23 +838,21 @@ class LimeExpressionManager
         if (is_null($lang)) {
             return; // should never happen
         }
-        if (!isset($_SESSION['LEMlang'])) {
-            $_SESSION['LEMlang'] = $lang;
-        }
-        if ($_SESSION['LEMlang'] != $lang) {
+        $emSessionState = self::emSessionState();
+        if ($emSessionState->hasLanguage() && $emSessionState->getLanguage() != $lang) {
             // then changing languages, so clear cache
             self::SetDirtyFlag();
         }
-        $_SESSION['LEMlang'] = $lang;
+        $emSessionState->setLanguage($lang);
     }
 
     /**
      * Get the current public language
-     * @return string;
+     * @return string|null Null if no language is set yet
      */
     public static function getEMlanguage()
     {
-        return Yii::app()->session['LEMlang'];
+        return self::emSessionState()->getLanguage();
     }
 
     /**
@@ -910,7 +929,7 @@ class LimeExpressionManager
     {
         $LEM =& LimeExpressionManager::singleton();
         $LEM->SetSurveyId($iSurveyId); // This update session only if needed
-        if (!in_array(Yii::app()->session['LEMlang'], Survey::model()->findByPk($iSurveyId)->getAllLanguages())) {
+        if (!in_array(self::emSessionState()->getLanguage(), Survey::model()->findByPk($iSurveyId)->getAllLanguages())) {
             $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);// Reset language only if needed
         }
         $LEM->setVariableAndTokenMappingsForExpressionManager($iSurveyId);
@@ -3025,7 +3044,7 @@ class LimeExpressionManager
             if ($date_min != '' || $date_max != '') {
                 //Get date format of current question and convert date in help text accordingly
                 $LEM =& LimeExpressionManager::singleton();
-                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $questionNum, $_SESSION['LEMlang']);
+                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $questionNum, self::emSessionState()->getLanguage());
                 $aDateFormatData = getDateFormatDataForQID($aAttributes[$questionNum] ?? [], $LEM->surveyOptions);
                 $_minV = (($date_min == '') ? "''" : "if((strtotime(" . $date_min . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_min . ")),'')");
                 $_maxV = (($date_max == '') ? "''" : "if((strtotime(" . $date_max . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_max . ")),'')");
@@ -3304,8 +3323,9 @@ class LimeExpressionManager
          */
     public function setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh = false, $anonymized = false)
     {
-        if (isset($_SESSION['LEMforceRefresh'])) {
-            unset($_SESSION['LEMforceRefresh']);
+        $emSessionState = self::emSessionState();
+        if ($emSessionState->isForceRefreshRequested()) {
+            $emSessionState->clearForceRefresh();
             $forceRefresh = true;
         } elseif ($forceRefresh === false && !empty($this->knownVars) && ((!$this->sPreviewMode) || ($this->sPreviewMode === 'database') || ($this->sPreviewMode === 'logic'))) {
             return false;   // means that those variables have been cached and no changes needed
@@ -3317,7 +3337,7 @@ class LimeExpressionManager
         $this->em->SetSurveyMode($this->surveyMode);
         $survey = Survey::model()->findByPk($surveyid);
         // TODO - do I need to force refresh, or trust that createFieldMap will cache languages properly?
-        $fieldmap = createFieldMap($survey, $style = 'full', $forceRefresh, false, $_SESSION['LEMlang']);
+        $fieldmap = createFieldMap($survey, $style = 'full', $forceRefresh, false, $emSessionState->getLanguage());
         $this->sid = $surveyid;
         $this->sessid = 'responses_' . $this->sid;
         $this->runtimeTimings[] = [__METHOD__ . '.createFieldMap', (microtime(true) - $now)];
@@ -3401,19 +3421,19 @@ class LimeExpressionManager
             'D' => $this->gT("Decrease"),
         ];
 
-        $this->gseq2info = $this->getGroupInfoForEM($surveyid, $_SESSION['LEMlang']);
+        $this->gseq2info = $this->getGroupInfoForEM($surveyid, $emSessionState->getLanguage());
         foreach ($this->gseq2info as $aGroupInfo) {
             $this->groupId2groupSeq[$aGroupInfo['gid']] = $aGroupInfo['group_order'];
         }
 
-        $qattr = $this->getQuestionAttributesForEM($surveyid, 0, $_SESSION['LEMlang']);
+        $qattr = $this->getQuestionAttributesForEM($surveyid, 0, $emSessionState->getLanguage());
 
         $this->qattr = $qattr;
 
         $this->runtimeTimings[] = [__METHOD__ . ' - question_attributes_model->getQuestionAttributesForEM', (microtime(true) - $now)];
         $now = microtime(true);
 
-        $this->qans = $this->getAnswerSetsForEM($surveyid, $_SESSION['LEMlang']);
+        $this->qans = $this->getAnswerSetsForEM($surveyid, $emSessionState->getLanguage());
 
         $this->runtimeTimings[] = [__METHOD__ . ' - answers_model->getAnswerSetsForEM', (microtime(true) - $now)];
         $now = microtime(true);
@@ -4709,12 +4729,13 @@ class LimeExpressionManager
         $LEM->initialized = true;
 
         if ($initializeVars) {
+            $emSurveyId = self::emSessionState()->getSurveyId();
             $LEM->em->StartProcessingGroup(
-                isset($_SESSION['LEMsid']) ? $_SESSION['LEMsid'] : null,
+                $emSurveyId,
                 '',
                 true
             );
-            $LEM->setVariableAndTokenMappingsForExpressionManager($_SESSION['LEMsid']);
+            $LEM->setVariableAndTokenMappingsForExpressionManager($emSurveyId);
         }
     }
 
@@ -7415,7 +7436,7 @@ class LimeExpressionManager
 
         $LEM->initialized = false;    // so detect calls after done
         $LEM->ParseResultCache = []; // don't need to persist it in session
-        $_SESSION['LEMsingleton'] = serialize($LEM);
+        self::emSessionState()->setSerializedInstance(serialize($LEM));
     }
 
     /**
@@ -8256,11 +8277,7 @@ class LimeExpressionManager
         }
 
         foreach ($gseqList as $gseq) {
-            if (isset($_SESSION[$LEM->sessid]['relevanceStatus'])) {
-                $relStatus = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);
-            } else {
-                $relStatus = 1;
-            }
+            $relStatus = $sessionState->getRelevance('G' . $gseq, 1);
             $sInput = "<input type='hidden' id='relevanceG" . $gseq . "' name='relevanceG" . $gseq . "' value='" . $relStatus . "'/>\n";
             if ($bReturnArray) {
                 $inputParts[] = $sInput;
@@ -8779,6 +8796,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      * @param boolean|null $changeDB - if true, updates parameters and deletes old ones
      * @param int|null $iSurveyID - if set, then only for that survey
      * @param int|null $onlythisqid - if set, then only for this question ID
+     * @return void
      */
     public static function UpgradeQuestionAttributes($changeDB = false, $iSurveyID = null, $onlythisqid = null)
     {
@@ -8797,7 +8815,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         ];
         $reverseAttributeMap = array_flip($attibutemap);
         foreach ($aSurveyIDs as $iSurveyID) {
-            $qattrs = $LEM->getQuestionAttributesForEM($iSurveyID, $onlythisqid, $_SESSION['LEMlang']);
+            $qattrs = $LEM->getQuestionAttributesForEM($iSurveyID, $onlythisqid, self::emSessionState()->getLanguage());
             foreach ($qattrs as $qid => $qattr) {
                 $updates = [];
                 foreach ($attibutemap as $src => $target) {
@@ -8843,8 +8861,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $lang = '';
         }
         // Fill $lang if possible
-        if (!$lang && isset($_SESSION['LEMlang'])) {
-            $lang = $_SESSION['LEMlang'];
+        if (!$lang && self::emSessionState()->hasLanguage()) {
+            $lang = self::emSessionState()->getLanguage();
         }
 
         // todo: commented out for 13 years
@@ -8951,8 +8969,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     {
         $survey = Survey::model()->findByPk($surveyid);
 
-        if (is_null($sLanguage) && isset($_SESSION['LEMlang'])) {
-            $sLanguage = $_SESSION['LEMlang'];
+        if (is_null($sLanguage) && self::emSessionState()->hasLanguage()) {
+            $sLanguage = self::emSessionState()->getLanguage();
         } elseif (is_null($sLanguage)) {
             $sLanguage = $survey->language;
         }
@@ -9050,11 +9068,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         case Question::QT_D_DATE: //DATE
                             // Handle Arabic numerals
                             // TODO: Make a wrapper class around date converter, which constructor takes to-lang and from-lang
-                            $lang = $_SESSION['LEMlang'];
+                            $lang = self::emSessionState()->getLanguage();
                             $value = self::convertNonLatinNumerics($value, $lang);
                             $value = trim($value);
                             if ($value != "" && $value != "INVALID") {
-                                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid, $_SESSION['LEMlang']);
+                                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid, self::emSessionState()->getLanguage());
                                 if (!isset($aAttributes[$qid])) {
                                     $aAttributes[$qid] = [];
                                 }
@@ -9385,7 +9403,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             break;
                         case Question::QT_D_DATE: //DATE
                             $LEM =& LimeExpressionManager::singleton();
-                            $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $var['qid'], $_SESSION['LEMlang']);
+                            $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $var['qid'], self::emSessionState()->getLanguage());
                             $aDateFormatData = getDateFormatDataForQID($aAttributes[$var['qid']] ?? [], $LEM->surveyOptions);
                             $shown = '';
                             if (strtotime((string) $code) !== false) {
@@ -9582,10 +9600,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $LEM =& LimeExpressionManager::singleton();
         // We set $LEM->em->resetErrorsAndWarningsOnEachPart = false because, if a string has more than one expression, error information could be lost
         $LEM->em->resetErrorsAndWarningsOnEachPart = false;
-        $aSurveyInfo = getSurveyInfo($sid, $_SESSION['LEMlang']);
+        $emLanguage = self::emSessionState()->getLanguage();
+        $aSurveyInfo = getSurveyInfo($sid, $emLanguage);
         $aAttributesDefinitions = questionHelper::getAttributesDefinitions();
         /* All final survey string must be shown in survey language #12208 */
-        Yii::app()->setLanguage(Yii::app()->session['LEMlang']);
+        Yii::app()->setLanguage($emLanguage);
         /* @var boolean , did have error */
         $haveErrors = false;
         /* @var integer[] Used at end for count, number of errors by question */
@@ -9628,7 +9647,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
             return [
                 'errors' => 1,
-                'html'   => sprintf($LEM->gT('Invalid question - probably missing subquestions or language-specific settings for language %s'), $_SESSION['LEMlang'])
+                'html'   => sprintf($LEM->gT('Invalid question - probably missing subquestions or language-specific settings for language %s'), self::emSessionState()->getLanguage())
             ];
         }
 
@@ -10644,12 +10663,13 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     /**
      * Kills the survey session and throws an exception with the specified message.
      * @param string $message If empty, a default message is used.
+     * @return void
      * @throws Exception
      */
     private function throwFatalError($message = null)
     {
         if (empty($message)) {
-            $surveyInfo = getSurveyInfo($this->sid, $_SESSION['LEMlang']);
+            $surveyInfo = getSurveyInfo($this->sid, self::emSessionState()->getLanguage());
             if (!empty($surveyInfo['admin'])) {
                 $message = sprintf(
                     $this->gT("Due to a technical problem, your response could not be saved. Please contact the survey administrator %s (%s) about this problem. You will not be able to proceed with this survey."),

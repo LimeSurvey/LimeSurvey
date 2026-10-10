@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
 use LimeSurvey\Models\Services\SurveySessionState;
 
 if (!defined('BASEPATH')) {
@@ -78,7 +79,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $varsPassed[] = $var;
         }
     }
-    $_surveyid = $_SESSION['LEMsid'];
+    $_surveyid = ExpressionManagerSessionState::current()->getSurveyId();
 
     if ($_surveyid) {
         $totalgroups = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
@@ -318,11 +319,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
  * Replacement done on this function can not be used in Expression for condition or equation
  * If you want keywords available on both replacement and condition, use LimeExpressionManager::setValueToKnowVar
  * Or add it in LimeExpressionManager->setVariableAndTokenMappingsForExpressionManager
+ * @param array $thissurvey Survey info (see getSurveyInfo()); its sid takes precedence over the ExpressionManager survey ID
+ * @return array Replacement values keyed by keyword
  * @psalm-suppress UndefinedVariable TODO
  */
 function getStandardsReplacementFields($thissurvey)
 {
-    $surveyid = $_SESSION['LEMsid'];
+    $surveyid = ExpressionManagerSessionState::current()->getSurveyId();
 
     Yii::app()->loadHelper('surveytranslator');
 

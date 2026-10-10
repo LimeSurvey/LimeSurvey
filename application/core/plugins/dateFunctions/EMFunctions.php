@@ -8,6 +8,7 @@
 namespace dateFunctions;
 
 use LimeExpressionManager;
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
 use Survey;
 
 class EMFunctions
@@ -29,7 +30,7 @@ class EMFunctions
 
         // If it's not set, try to get it from the session
         if (empty($surveyId)) {
-            $surveyId = \Yii::app()->session['LEMsid'];
+            $surveyId = ExpressionManagerSessionState::current()->getSurveyId();
         }
         if (empty($surveyId)) {
             return '';
