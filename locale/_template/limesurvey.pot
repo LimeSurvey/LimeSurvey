@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-10-11 06:06:08+00:00\n"
+"POT-Creation-Date: 2026-10-11 06:09:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1798,7 +1798,7 @@ msgstr ""
 #: application/views/survey/questions/answer/file_upload/answer.twig:84
 #: editor/src/components/QuestionTypes/FileUpload/FileUploadItem.js:69
 #: editor/src/components/QuestionTypes/FileUpload/FileUploadParticipantView.js:39
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:211
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:217
 #: editor/src/pages/Responses/components/ResponsesTable/FileInfoCell.js:47
 msgid "Title"
 msgstr ""
@@ -1818,7 +1818,7 @@ msgstr ""
 #: application/views/survey/questions/answer/file_upload/answer.twig:85
 #: editor/src/components/QuestionTypes/FileUpload/FileUploadItem.js:80
 #: editor/src/components/QuestionTypes/FileUpload/FileUploadParticipantView.js:47
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:223
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:229
 #: editor/src/pages/Responses/components/ResponsesStatistics/QuestionComments.js:45
 #: editor/src/pages/Responses/components/ResponsesTable/FileInfoCell.js:38
 msgid "Comment"
@@ -18443,7 +18443,7 @@ msgstr ""
 #: application/views/questionAdministration/answerOptions.twig:60
 #: application/views/userGroup/viewUserGroup_view.php:76
 #: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:111
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:240
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:246
 msgid "Actions"
 msgstr ""
 
@@ -19625,7 +19625,7 @@ msgid "Add file"
 msgstr ""
 
 #: application/views/admin/emailtemplates/email_language_template_tab.php:132
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:235
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:241
 msgid "Size"
 msgstr ""
 
@@ -21276,7 +21276,7 @@ msgstr ""
 
 #: application/views/admin/labels/importlabelresources_view.php:41
 #: application/views/admin/labels/importlabelresources_view.php:53
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:170
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:176
 msgid "File"
 msgstr ""
 
@@ -22283,7 +22283,7 @@ msgstr ""
 #: application/views/quickTranslation/translatetabs_view.php:24
 #: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:179
 #: editor/src/pages/Responses/components/ResponsesStatistics/CommentsModal.js:118
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:362
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:368
 #: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:145
 #: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:184
 msgid "Loading..."
@@ -24947,7 +24947,7 @@ msgid "Use ComfortUpdate"
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:116
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:322
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:328
 msgid "Download"
 msgstr ""
 
@@ -25244,8 +25244,8 @@ msgid "End"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_backup.php:9
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:256
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:264
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:262
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:270
 msgid "Download file"
 msgstr ""
 
@@ -30193,28 +30193,28 @@ msgid "Are you sure you want to delete the attachments for the selected response
 msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:129
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:378
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:384
 #: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:78
 #: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:81
 msgid "Search responses"
 msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:134
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:383
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:389
 #: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:83
 #: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:86
 msgid "1 result found"
 msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:135
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:384
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:390
 #: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:84
 #: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:87
 msgid "%s results found"
 msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:144
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:343
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:349
 #: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:93
 #: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:96
 msgid "No responses match your search."
@@ -30222,7 +30222,7 @@ msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:145
 #: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:510
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:344
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:350
 #: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:94
 #: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:97
 msgid "There are no responses for this question yet."
@@ -30230,7 +30230,7 @@ msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:179
 #: editor/src/pages/Responses/components/ResponsesStatistics/CommentsModal.js:118
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:362
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:368
 #: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:145
 #: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:153
 #: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:184
@@ -30350,25 +30350,13 @@ msgstr ""
 msgid "No comments for this question."
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:52
-msgid "B"
-msgstr ""
-
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:55
-msgid "KB"
-msgstr ""
-
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:57
-msgid "MB"
-msgstr ""
-
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:94
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:100
 msgid "Preview not available for this file."
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:198
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:246
-#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:250
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:204
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:252
+#: editor/src/pages/Responses/components/ResponsesStatistics/FileUploadTable.js:256
 msgid "Preview file"
 msgstr ""
 
