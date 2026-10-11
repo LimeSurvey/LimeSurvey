@@ -601,7 +601,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('googleanalyticsstyle', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '3', 'allowEmpty' => true),
             array('autonumber_start', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('tokenlength', 'default', 'value' => 15),
-            array('tokenlength', 'numerical', 'integerOnly' => true, 'allowEmpty' => false, 'min' => '-1', 'max' => Token::MAX_LENGTH, 'tooBig' => gT('Token length cannot be bigger than {max} characters.')),
+            array('tokenlength', 'numerical', 'integerOnly' => true, 'allowEmpty' => false),
+            array('tokenlength', 'in', 'range' => self::getValidTokenLengths(), 'skipOnError' => true, 'message' => self::getInvalidTokenLengthMessage()),
             array('bouncetime', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('navigationdelay', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('template', 'filter', 'filter' => array($this, 'filterTemplateSave')),
@@ -651,6 +652,23 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $this->setOptions($this->gsid);
     }
 
+    /**
+     * Get the allowed access code lengths: -1 (inherit) or Token::MIN_LENGTH to Token::MAX_LENGTH
+     * @return int[]
+     */
+    public static function getValidTokenLengths()
+    {
+        return array_merge([-1], range(Token::MIN_LENGTH, Token::MAX_LENGTH));
+    }
+
+    /**
+     * Get the validation error message for an access code length outside the allowed range
+     * @return string
+     */
+    public static function getInvalidTokenLengthMessage()
+    {
+        return sprintf(gT('Access code length must be between %d and %d.'), Token::MIN_LENGTH, Token::MAX_LENGTH);
+    }
 
     /**
      * filterTemplateSave to fix some template name

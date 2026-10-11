@@ -59,6 +59,9 @@ use LimeSurvey\PluginManager\PluginEvent;
  */
 abstract class Token extends Dynamic
 {
+    /** @var int Minimum token length */
+    const MIN_LENGTH = 5;
+
     /** @var int Maximum token length */
     const MAX_LENGTH = 36;
 
