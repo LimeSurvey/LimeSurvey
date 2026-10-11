@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-10-11 05:43:41+00:00\n"
+"POT-Creation-Date: 2026-10-11 05:50:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19794,50 +19794,6 @@ msgstr ""
 msgid "Choose participant fields:"
 msgstr ""
 
-#: application/views/admin/export/exportresults_modal.php:165
-msgid "Take your results anywhere - unlock more formats"
-msgstr ""
-
-#: application/views/admin/export/exportresults_modal.php:166
-msgid "Switch to LimeSurvey Expert to receive the advanced export options."
-msgstr ""
-
-#: application/views/admin/export/exportresults_modal.php:169
-msgid "Show options"
-msgstr ""
-
-#: application/views/admin/export/exportresults_modal.php:174
-#: application/views/admin/export/exportresults_view.php:66
-#: application/views/admin/export/spss_view.php:94
-#: editor/src/components/ExportOptionsForm.js:88
-msgid "Export data"
-msgstr ""
-
-#: application/views/admin/export/exportresults_modal.php:179
-#: editor/src/components/ExportOptionsForm.js:36
-msgid "Filtered data"
-msgstr ""
-
-#: application/views/admin/export/exportresults_modal.php:183
-#: editor/src/components/ExportOptionsForm.js:37
-msgid "All data"
-msgstr ""
-
-#: application/views/admin/export/exportresults_modal.php:190
-#: editor/src/components/ExportOptionsForm.js:112
-msgid "File formats"
-msgstr ""
-
-#: application/views/admin/export/exportresults_modal.php:227
-#: editor/src/components/ExportOptionsForm.js:147
-msgid "CSV file separator"
-msgstr ""
-
-#: application/views/admin/export/exportresults_modal.php:239
-#: editor/src/components/ExportOptionsForm.js:174
-msgid "Export language"
-msgstr ""
-
 #: application/views/admin/export/exportresults_view.php:11
 msgid "%s of %s columns selected"
 msgstr ""
@@ -19848,6 +19804,12 @@ msgstr ""
 
 #: application/views/admin/export/exportresults_view.php:29
 msgid "Single response: ID %s"
+msgstr ""
+
+#: application/views/admin/export/exportresults_view.php:66
+#: application/views/admin/export/spss_view.php:94
+#: editor/src/components/ExportOptionsForm.js:88
+msgid "Export data"
 msgstr ""
 
 #: application/views/admin/export/generatestats/_statisticsoutput_answer.php:54
@@ -28568,6 +28530,14 @@ msgstr ""
 msgid "End screen settings"
 msgstr ""
 
+#: editor/src/components/ExportOptionsForm.js:36
+msgid "Filtered data"
+msgstr ""
+
+#: editor/src/components/ExportOptionsForm.js:37
+msgid "All data"
+msgstr ""
+
 #: editor/src/components/ExportOptionsForm.js:45
 msgid "SPSS (sav.)"
 msgstr ""
@@ -28578,6 +28548,18 @@ msgstr ""
 
 #: editor/src/components/ExportOptionsForm.js:61
 msgid "Semicolon (;)"
+msgstr ""
+
+#: editor/src/components/ExportOptionsForm.js:112
+msgid "File formats"
+msgstr ""
+
+#: editor/src/components/ExportOptionsForm.js:147
+msgid "CSV file separator"
+msgstr ""
+
+#: editor/src/components/ExportOptionsForm.js:174
+msgid "Export language"
 msgstr ""
 
 #: editor/src/components/GroupSettings/GroupAttribute.js:14
