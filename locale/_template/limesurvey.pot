@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-10-11 08:58:32+00:00\n"
+"POT-Creation-Date: 2026-10-11 17:09:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -625,7 +625,9 @@ msgstr ""
 #: editor/src/components/SurveyStructure/SurveyStructure.js:360
 #: themes/survey/bootswatch/config.xml:170
 #: themes/survey/fruity_twentythree/config.xml:275
+#: themes/survey/fruity_twentythree/views/subviews/header/head.twig:34
 #: themes/survey/vanilla/config.xml:163
+#: themes/survey/vanilla/views/subviews/header/head.twig:35
 msgid "Welcome"
 msgstr ""
 
@@ -5247,7 +5249,9 @@ msgstr ""
 #: application/models/TemplateManifest.php:169
 #: themes/survey/bootswatch/config.xml:264
 #: themes/survey/fruity_twentythree/config.xml:413
+#: themes/survey/fruity_twentythree/views/subviews/header/head.twig:38
 #: themes/survey/vanilla/config.xml:259
+#: themes/survey/vanilla/views/subviews/header/head.twig:39
 msgid "Registration"
 msgstr ""
 
@@ -13388,7 +13392,9 @@ msgstr ""
 
 #: application/helpers/frontend_helper.php:742
 #: themes/survey/fruity_twentythree/views/subviews/content/submit_preview.twig:22
+#: themes/survey/fruity_twentythree/views/subviews/header/head.twig:40
 #: themes/survey/vanilla/views/subviews/content/submit_preview.twig:22
+#: themes/survey/vanilla/views/subviews/header/head.twig:41
 msgid "Responses were not saved"
 msgstr ""
 
@@ -15054,7 +15060,9 @@ msgstr ""
 
 #: application/helpers/replacements_helper.php:258
 #: themes/survey/fruity_twentythree/views/subviews/content/clearall.twig:21
+#: themes/survey/fruity_twentythree/views/subviews/header/head.twig:37
 #: themes/survey/vanilla/views/subviews/content/clearall.twig:21
+#: themes/survey/vanilla/views/subviews/header/head.twig:38
 msgid "Answers cleared"
 msgstr ""
 
@@ -24047,7 +24055,9 @@ msgstr ""
 
 #: application/views/admin/themes/templateeditor_completed_view.php:2
 #: themes/survey/fruity_twentythree/views/subviews/content/submit.twig:36
+#: themes/survey/fruity_twentythree/views/subviews/header/head.twig:39
 #: themes/survey/vanilla/views/subviews/content/submit.twig:36
+#: themes/survey/vanilla/views/subviews/header/head.twig:40
 msgid "Thank you!"
 msgstr ""
 
@@ -28322,11 +28332,11 @@ msgstr ""
 
 #: application/views/userRole/edit.php:9
 #: application/views/userRole/partials/_form.php:8
-msgid "Create permission role"
+msgid "Create user role"
 msgstr ""
 
 #: application/views/userRole/edit.php:11
-msgid "Update permission role %s"
+msgid "Update user role %s"
 msgstr ""
 
 #: application/views/userRole/massiveAction/_selector.php:8
@@ -28350,7 +28360,7 @@ msgid "Apply role to user"
 msgstr ""
 
 #: application/views/userRole/partials/_form.php:11
-msgid "Edit permission role '%s'"
+msgid "Edit user role '%s'"
 msgstr ""
 
 #: application/views/userRole/partials/_import.php:5
@@ -28362,7 +28372,7 @@ msgid "Select role-XML file"
 msgstr ""
 
 #: application/views/userRole/partials/_view.php:7
-msgid "Permission role %s"
+msgid "User role %s"
 msgstr ""
 
 #: application/views/userRole/partials/_view.php:23
@@ -28374,7 +28384,7 @@ msgid "Add user role"
 msgstr ""
 
 #: application/views/userRole/partials/topbarBtns/leftSideButtons.php:14
-msgid "Add a new permission role"
+msgid "Add a new user role"
 msgstr ""
 
 #: application/views/userRole/partials/topbarBtns/leftSideButtons.php:24
@@ -28382,7 +28392,7 @@ msgid "Import (XML)"
 msgstr ""
 
 #: application/views/userRole/partials/topbarBtns/leftSideButtons.php:30
-msgid "Import permission role from XML"
+msgid "Import user role from XML"
 msgstr ""
 
 #: editor/src/App.js:39
@@ -30979,9 +30989,11 @@ msgid "Restart this survey"
 msgstr ""
 
 #: themes/survey/fruity_twentythree/views/subviews/content/load.twig:37
+#: themes/survey/fruity_twentythree/views/subviews/header/head.twig:35
 #: themes/survey/fruity_twentythree/views/subviews/navigation/save_buttons.twig:8
 #: themes/survey/fruity_twentythree/views/subviews/navigation/save_links.twig:25
 #: themes/survey/vanilla/views/subviews/content/load.twig:37
+#: themes/survey/vanilla/views/subviews/header/head.twig:36
 #: themes/survey/vanilla/views/subviews/navigation/save_buttons.twig:7
 #: themes/survey/vanilla/views/subviews/navigation/save_links.twig:25
 msgid "Load unfinished survey"
@@ -31047,7 +31059,9 @@ msgid "I confirm"
 msgstr ""
 
 #: themes/survey/fruity_twentythree/views/subviews/content/save.twig:44
+#: themes/survey/fruity_twentythree/views/subviews/header/head.twig:36
 #: themes/survey/vanilla/views/subviews/content/save.twig:44
+#: themes/survey/vanilla/views/subviews/header/head.twig:37
 msgid "Save your unfinished survey"
 msgstr ""
 
