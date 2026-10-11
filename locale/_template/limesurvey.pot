@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-10-11 06:16:18+00:00\n"
+"POT-Creation-Date: 2026-10-11 08:58:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8856,15 +8856,15 @@ msgid "Asterisk"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2790
-msgid "Check"
+msgid "Checkmark"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2791
-msgid "Check circle"
+msgid "Checkmark in circle"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2792
-msgid "Check square"
+msgid "Checkmark in square"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2793
@@ -8878,26 +8878,26 @@ msgid "Circle"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2795
+msgid "Cross"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:2796
 #: themes/question/inputondemand/survey/questions/answer/multipleshorttext/translations.php:21
 msgid "Plus"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2796
+#: application/core/LsDefaultDataSets.php:2797
 msgid "Resistance"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2797
+#: application/core/LsDefaultDataSets.php:2798
 #: application/helpers/questionHelper.php:1045
 #: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:143
 msgid "Square"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2798
-msgid "Star"
-msgstr ""
-
 #: application/core/LsDefaultDataSets.php:2799
-msgid "Times"
+msgid "Star"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2800
