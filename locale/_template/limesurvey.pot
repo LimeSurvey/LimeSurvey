@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-10-11 05:57:07+00:00\n"
+"POT-Creation-Date: 2026-10-11 06:06:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2639,6 +2639,8 @@ msgid "Survey structure import summary"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:2538
+#: editor/src/components/ImportSurvey/ImportSurveySummary.js:31
+#: editor/src/components/ImportSurvey/importSurveyNotifications.js:23
 msgid "Import of survey is completed."
 msgstr ""
 
@@ -4434,6 +4436,7 @@ msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:65
 #: application/controllers/admin/CheckIntegrity.php:142
+#: application/views/admin/checkintegrity/check_view.php:59
 #: application/views/admin/checkintegrity/fix_view.php:1
 msgid "Check data integrity"
 msgstr ""
@@ -4455,14 +4458,17 @@ msgid "Imports, exports and statistics of large surveys may fail."
 msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:188
+#: application/views/installer/precheck_view.php:189
 msgid "Large surveys may lose data when saving or exporting."
 msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:196
+#: application/views/installer/precheck_view.php:207
 msgid "Saving large forms or uploading files may fail."
 msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:204
+#: application/views/installer/precheck_view.php:225
 msgid "Importing surveys or uploading files may fail."
 msgstr ""
 
@@ -8058,7 +8064,7 @@ msgstr ""
 #: application/views/installer/dbconfig_view.php:122
 #: application/views/installer/license_view.php:16
 #: application/views/installer/populatedb_view.php:22
-#: application/views/installer/precheck_view.php:234
+#: application/views/installer/precheck_view.php:237
 #: application/views/survey/system/actionButton/movePrevious.php:11
 #: editor/src/pages/Responses/components/ResponseDetailView.js:102
 #: themes/survey/fruity_twentythree/views/subviews/content/quotas.twig:80
@@ -8071,7 +8077,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:1080
 #: application/views/installer/dbconfig_view.php:127
 #: application/views/installer/optconfig_view.php:85
-#: application/views/installer/precheck_view.php:242
+#: application/views/installer/precheck_view.php:245
 #: application/views/quotas/newanswer_view.php:34
 #: application/views/quotas/newanswertwo_view.php:52
 #: application/views/survey/system/actionButton/moveNext.php:11
@@ -18943,10 +18949,6 @@ msgstr ""
 msgid "Log of fixes"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:59
-msgid "Run data consistency check"
-msgstr ""
-
 #: application/views/admin/checkintegrity/check_view.php:66
 msgid "Data redundancy check"
 msgstr ""
@@ -19010,12 +19012,15 @@ msgstr ""
 #: application/views/admin/checkintegrity/check_view.php:185
 #: application/views/installer/precheck_view.php:52
 #: application/views/installer/precheck_view.php:187
-#: application/views/installer/precheck_view.php:204
-#: application/views/installer/precheck_view.php:221
+#: application/views/installer/precheck_view.php:205
+#: application/views/installer/precheck_view.php:223
 msgid "Too low"
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:189
+#: application/views/installer/precheck_view.php:191
+#: application/views/installer/precheck_view.php:209
+#: application/views/installer/precheck_view.php:227
 msgid "Please ask your system administrator to raise it to at least %s."
 msgstr ""
 
@@ -19030,7 +19035,7 @@ msgstr ""
 #: application/views/admin/checkintegrity/fix_view.php:51
 #: application/views/admin/update/updater/steps/_check_local_errors.php:184
 #: application/views/admin/update/updater/steps/_fileSystem.php:42
-#: application/views/installer/precheck_view.php:237
+#: application/views/installer/precheck_view.php:240
 msgid "Check again"
 msgstr ""
 
@@ -26106,18 +26111,6 @@ msgstr ""
 msgid "Recommended PHP settings"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:190
-msgid "Large surveys may lose data when saving or exporting. Please ask your system administrator to raise the PHP setting max_input_vars to at least %s."
-msgstr ""
-
-#: application/views/installer/precheck_view.php:207
-msgid "Saving large forms or uploading files may fail. Please ask your system administrator to raise the PHP setting post_max_size to at least %s."
-msgstr ""
-
-#: application/views/installer/precheck_view.php:224
-msgid "Importing surveys or uploading files may fail. Please ask your system administrator to raise the PHP setting upload_max_filesize to at least %s."
-msgstr ""
-
 #: application/views/installer/redirectmessage_view.php:7
 msgid "Database exists"
 msgstr ""
@@ -27568,6 +27561,7 @@ msgid "Drop file here"
 msgstr ""
 
 #: application/views/surveyAdministration/partial/_modalImportSurvey.php:63
+#: editor/src/components/ImportSurvey/importSurveyConfig.js:16
 msgid "Import on default survey group"
 msgstr ""
 
@@ -28581,24 +28575,8 @@ msgstr ""
 msgid "Please select an .lss, .lsa, .txt, or .tsv file."
 msgstr ""
 
-#: editor/src/components/ImportSurvey/ImportSurveyModal.js:71
-msgid "The import completed without a new survey ID."
-msgstr ""
-
 #: editor/src/components/ImportSurvey/ImportSurveyModal.js:99
 msgid "Import summary"
-msgstr ""
-
-#: editor/src/components/ImportSurvey/ImportSurveySummary.js:31
-msgid "Import of survey completed."
-msgstr ""
-
-#: editor/src/components/ImportSurvey/importSurveyConfig.js:16
-msgid "Default survey group"
-msgstr ""
-
-#: editor/src/components/ImportSurvey/importSurveyNotifications.js:23
-msgid "Survey imported successfully"
 msgstr ""
 
 #: editor/src/components/Modals/ConfirmModal.js:10
@@ -30057,10 +30035,6 @@ msgstr ""
 
 #: editor/src/pages/Errors/NotFound.js:7
 msgid "Page doesn't exist"
-msgstr ""
-
-#: editor/src/pages/Responses/Responses.js:100
-msgid "Export options not initialized"
 msgstr ""
 
 #: editor/src/pages/Responses/Responses.js:122
