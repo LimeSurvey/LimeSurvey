@@ -2568,8 +2568,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             if (!isset($aGIDReplacements[$oldgid])) {
                 $questionGroup = new QuestionGroup();
-                $questionGroup->attributes = $insertdata;
                 $questionGroup->sid = $iNewSID;
+                unset($insertdata['sid']);
+                $questionGroup->attributes = $insertdata;
                 if (!$questionGroup->save()) {
                     throw new Exception(gT("Error") . ": Failed to insert data [3]<br /> " . json_encode($questionGroup->getErrors()));
                 }
