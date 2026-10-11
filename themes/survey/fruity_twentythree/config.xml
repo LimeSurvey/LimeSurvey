@@ -105,9 +105,9 @@
         <checkicon type="icon" library="remixicon" category="Colors" width="4" title="Check icon">EB7A
             <!--  When adding new items, please keep them ordered alphabetically -->
             <dropdownoptions>
-                <option value="EB7A">Check</option>
-                <option value="EB80">Check circle</option>
-                <option value="EB82">Check square</option>
+                <option value="EB7A">Checkmark</option>
+                <option value="EB80">Checkmark in circle</option>
+                <option value="EB82">Checkmark in square</option>
             </dropdownoptions>
         </checkicon>
 
