@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-10-11 06:09:18+00:00\n"
+"POT-Creation-Date: 2026-10-11 06:16:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8788,23 +8788,23 @@ msgid "Fonts"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2773
-msgid "Attention Seekers"
+msgid "Attention seekers"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2774
-msgid "Bouncing Entrances"
+msgid "Bouncing entrances"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2775
-msgid "Bouncing Exits"
+msgid "Bouncing exits"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2776
-msgid "Fading Entrances"
+msgid "Fading entrances"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2777
-msgid "Fading Exits"
+msgid "Fading exits"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2778
@@ -8816,27 +8816,27 @@ msgid "Lightspeed"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2780
-msgid "Rotating Entrances"
+msgid "Rotating entrances"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2781
-msgid "Rotating Exits"
+msgid "Rotating exits"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2782
-msgid "Sliding Entrances"
+msgid "Sliding entrances"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2783
-msgid "Sliding Exits"
+msgid "Sliding exits"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2784
-msgid "Zoom Entrances"
+msgid "Zoom entrances"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2785
-msgid "Zoom Exits"
+msgid "Zoom exits"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2786
