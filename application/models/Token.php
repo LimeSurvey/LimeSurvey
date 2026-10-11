@@ -324,12 +324,15 @@ abstract class Token extends Dynamic
 
     /**
      * Sanitize string for any attribute
-     * @param string $attribute to sanitize
+     * Only strips HTML tags: The value is stored as plain text and encoded on output,
+     * encoding it here would show entities like &amp;amp; in the administration and in text emails
+     * and add one more level of encoding each time the participant is saved.
+     * @param string|null $attribute to sanitize
      * @return string sanitized attribute
      */
     public static function sanitizeAttribute($attribute)
     {
-        return htmlspecialchars(strip_tags((string) $attribute), ENT_NOQUOTES, 'UTF-8');
+        return strip_tags((string) $attribute);
     }
 
     /**
