@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
+
 /**
 * Export Action
 *
@@ -1461,8 +1463,9 @@ class Export extends SurveyCommonAction
         $siteLanguage = Yii::app()->language;
         foreach ($aLanguages as $language) {
             //set session for replacement helper if session not set
-            if (!isset($_SESSION['LEMsid'])) {
-                $_SESSION['LEMsid'] = $oSurvey->getPrimaryKey();
+            $emSessionState = ExpressionManagerSessionState::current();
+            if (!$emSessionState->hasSurveyId()) {
+                $emSessionState->setSurveyId((int) $oSurvey->getPrimaryKey());
             }
 
             $file = $this->exportPrintableHtml($oSurvey, $language, $tempdir);

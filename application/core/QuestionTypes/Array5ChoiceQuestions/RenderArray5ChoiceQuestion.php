@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Array (5 point choice) Question
  *  * The ia Array contains the following
@@ -75,7 +77,7 @@ class RenderArray5ChoiceQuestion extends QuestionBaseRenderer
             //Question is not mandatory
             ++$colCount; // add another column
         }
-        $sSurveyLanguage = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'];
+        $sSurveyLanguage = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getLanguage();
 
         // Get questions and answers by defined order
         $aSubquestions = $this->questionOrderingService->getOrderedSubQuestions($this->oQuestion, 0, $sSurveyLanguage);
@@ -219,18 +221,18 @@ class RenderArray5ChoiceQuestion extends QuestionBaseRenderer
         bool $right_exists,
         bool $error
     ): string {
-        $sSessionKey = 'responses_' . Yii::app()->getConfig('surveyID');
+        $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
         $answertext = $ansrow->questionl10ns[$sSurveyLanguage]->question;
         if (strpos((string) $answertext, '|') !== false) {
             $answertext = substr((string) $answertext, 0, strpos((string) $answertext, '|'));
         }
 
         // Value
-        $value = $_SESSION[$sSessionKey][$myfname] ?? '';
+        $value = $sessionState->getFieldValue($myfname, '');
 
         $answer_tds = '';
         for ($i = 1; $i <= 5; $i++) {
-            $CHECKED = (isset($_SESSION[$sSessionKey][$myfname]) && $_SESSION[$sSessionKey][$myfname] == $i) ? 'CHECKED' : '';
+            $CHECKED = ($sessionState->hasFieldValue($myfname) && $sessionState->getFieldValue($myfname) == $i) ? 'CHECKED' : '';
             $answer_tds .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/cells/answer_td_input', array(
                 'i' => $i,
                 'labelText' => (string) $i,
@@ -266,8 +268,8 @@ class RenderArray5ChoiceQuestion extends QuestionBaseRenderer
             $CHECKED = (
                 PRESELECT_NO_ANSWER
                 && (
-                    !isset($_SESSION[$sSessionKey][$myfname])
-                    || $_SESSION[$sSessionKey][$myfname] == ''
+                    !$sessionState->hasFieldValue($myfname)
+                    || $sessionState->getFieldValue($myfname) == ''
                 )
             ) ? 'CHECKED' : '';
             $answer_tds .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/cells/answer_td_input', array(

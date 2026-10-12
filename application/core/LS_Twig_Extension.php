@@ -40,6 +40,7 @@
  * To get the pure HTML, just do: {{ foo($bar) | raw }}
  */
 
+use LimeSurvey\Models\Services\SurveySessionState;
 use Twig\Extension\AbstractExtension;
 
 class LS_Twig_Extension extends AbstractExtension
@@ -252,7 +253,8 @@ class LS_Twig_Extension extends AbstractExtension
             $aQuestionClass .= ' mandatory';
         }
 
-        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['responses_' . $iSurveyId]['maxstep'] != $_SESSION['responses_' . $iSurveyId]['step']) {
+        $sessionState = SurveySessionState::forSurvey((int) $iSurveyId);
+        if ($lemQuestionInfo['anyUnanswered'] && $sessionState->getMaxStep() != $sessionState->getStep()) {
             $aQuestionClass .= ' missing';
         }
 
@@ -792,6 +794,9 @@ class LS_Twig_Extension extends AbstractExtension
      *  {{ dump(aResponses) }}
      *
      *  Of course, the survey must use token. If you want to show it after completion, the you must turn on public statistics
+     *
+     * @param int $iSurveyID
+     * @return array[] Attributes of all responses with the participant's access code
      */
     public static function getAllTokenAnswers($iSurveyID)
     {
@@ -799,7 +804,7 @@ class LS_Twig_Extension extends AbstractExtension
         $oResponses = SurveyDynamic::model($iSurveyID)->findAll(
             array(
                                 'condition' => 'token = :token',
-                                'params'    => array( ':token' => $_SESSION['responses_' . $iSurveyID]['token']),
+                                'params'    => array( ':token' => SurveySessionState::forSurvey((int) $iSurveyID)->getToken()),
                             )
         );
 

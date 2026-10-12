@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * class ResponsesController
  **/
@@ -442,7 +444,9 @@ class ResponsesController extends LSBaseController
      * Show responses for survey
      *
      * @param int $surveyId
+     * @param int $surveyid Alias of $surveyId, used if $surveyId is not set
      * @return void
+     * @throws CHttpException
      */
     public function actionBrowse(int $surveyId = 0, int $surveyid = 0): void
     {
@@ -499,12 +503,10 @@ class ResponsesController extends LSBaseController
             }
 
             // Model filters
-            if (isset($_SESSION['responses_' . $surveyId])) {
-                $sessionSurveyArray = App()->session->get('responses_' . $surveyId);
-                $visibleColumns = $sessionSurveyArray['filteredColumns'] ?? null;
-                if (!empty($visibleColumns)) {
-                    $model->setAttributes($visibleColumns, false);
-                }
+            $sessionState = SurveySessionState::forSurvey((int) $surveyId);
+            $visibleColumns = $sessionState->getFilteredColumns();
+            if (!empty($visibleColumns)) {
+                $model->setAttributes($visibleColumns, false);
             }
             // Using safe search on dynamic column names would be far too much complex.
             // So we pass over the safe validation and directly set attributes (second parameter of setAttributes to false).
@@ -527,7 +529,7 @@ class ResponsesController extends LSBaseController
             }
 
             // Sets which columns to filter
-            $filteredColumns = !empty(isset($_SESSION['responses_' . $surveyId]['filteredColumns'])) ? $_SESSION['responses_' . $surveyId]['filteredColumns'] : null;
+            $filteredColumns = $sessionState->getFilteredColumns();
             $aData['filteredColumns'] = $filteredColumns;
 
             // rendering
@@ -602,6 +604,8 @@ class ResponsesController extends LSBaseController
      * Saves the hidden columns for response browsing in the session
      * @access public
      * @param int $surveyId
+     * @return void
+     * @throws CHttpException
      */
     public function actionSetFilteredColumns(int $surveyId): void
     {
@@ -619,9 +623,9 @@ class ResponsesController extends LSBaseController
                             $aFilteredColumns[] = $sColumn;
                         }
                     }
-                    $_SESSION['responses_' . $surveyId]['filteredColumns'] = $aFilteredColumns;
+                    SurveySessionState::forSurvey($surveyId)->setFilteredColumns($aFilteredColumns);
                 } else {
-                    $_SESSION['responses_' . $surveyId]['filteredColumns'] = [];
+                    SurveySessionState::forSurvey($surveyId)->setFilteredColumns([]);
                 }
             }
         }
