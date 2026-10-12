@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 import Button from 'react-bootstrap/Button'
@@ -61,24 +61,6 @@ export const SurveyStructure = () => {
     questionGroup: null,
     index: null,
   })
-
-  useEffect(() => {
-    const allGroupsElement = document.querySelector(
-      '[data-rfd-droppable-id="all-groups"]'
-    )
-
-    if (allGroupsElement) {
-      if (isDraggingOutOfGroup || !hasSurveyUpdatePermission) {
-        allGroupsElement.style.cursor = 'not-allowed'
-      } else {
-        allGroupsElement.style.cursor = 'auto'
-      }
-
-      return () => {
-        allGroupsElement.style.cursor = 'auto'
-      }
-    }
-  }, [isDraggingOutOfGroup, hasSurveyUpdatePermission])
 
   const handleUpdate = (questionGroups) => {
     survey.questionGroups = questionGroups
@@ -371,7 +353,16 @@ export const SurveyStructure = () => {
               direction="vertical"
             >
               {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={{
+                    cursor:
+                      isDraggingOutOfGroup || !hasSurveyUpdatePermission
+                        ? 'not-allowed'
+                        : 'drag',
+                  }}
+                >
                   {questionGroups.map((questionGroup, index) => (
                     <Draggable
                       index={index}
