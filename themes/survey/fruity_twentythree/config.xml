@@ -97,6 +97,8 @@
         </fixnumauto>
         <deselectsinglechoice type="buttons" category="Simple options" width="4" title="Deselect single-choice option by click" options="on|off"
                               optionlabels="Yes|No">off</deselectsinglechoice>
+        <automatichyphenation type="buttons" category="Simple options" width="4" title="Automatic hyphenation" options="on|off"
+                              optionlabels="On|Off">on</automatichyphenation>
         <cornerradius type="buttons" category="Simple options" width="4" title="Corner radius" options="1|2|3" optionlabels="0px|4px|20px" optionimages="cornerradius_0.svg|cornerradius_4.svg|cornerradius_20.svg">2</cornerradius>
         <!-- colors -->
         <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
@@ -184,6 +186,7 @@
         <showpopups category="Display options" />
         <fixnumauto category="Display options" />
         <deselectsinglechoice category="Display options" />
+        <automatichyphenation category="Display options" />
     </optionsOrderReact>
 
     <!-- Here datas about how LimeSurvey should load the theme -->
