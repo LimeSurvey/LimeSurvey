@@ -300,6 +300,60 @@ export function activateSoftMandatory(){
     });
 }
 
+/**
+ * Error summary on top of the page (#ls-error-summary, see subviews/messages/warnings.twig)
+ * Marks the inputs of the listed questions as invalid and links them to their error message,
+ * moves the focus to the summary and lets the links move the focus to the question.
+ */
+export function activateErrorSummary(){
+    var $summary = $('#ls-error-summary');
+    if (!$summary.length) {
+        return;
+    }
+    var inputSelector = "input:not([type='hidden']):not([type='button']):not([type='submit']):not([type='reset']),select,textarea";
+    $summary.find('.ls-error-summary-link').each(function () {
+        var qid = $(this).data('qid');
+        var describedBy = ['ls-error-summary-message-' + qid];
+        if ($('#vmsg_' + qid).length) {
+            describedBy.push('vmsg_' + qid);
+        }
+        $('#question' + qid).find(inputSelector).not('.ls-mandSoft-checkbox').each(function () {
+            var current = ($(this).attr('aria-describedby') || '').split(/\s+/).filter(Boolean);
+            $(this).attr('aria-invalid', 'true')
+                .attr('aria-describedby', current.concat(describedBy.filter(function (id) {
+                    return current.indexOf(id) === -1;
+                })).join(' '));
+        });
+    });
+    /* Focus the first input of the question instead of only jumping to it */
+    $summary.on('click', '.ls-error-summary-link', function (event) {
+        var $question = $('#question' + $(this).data('qid'));
+        if (!$question.length) {
+            return;
+        }
+        event.preventDefault();
+        var $input = $question.find(inputSelector).not(':disabled').first();
+        $question[0].scrollIntoView();
+        if ($input.length) {
+            $input[0].focus({ preventScroll: true });
+        } else {
+            $question.attr('tabindex', '-1')[0].focus({ preventScroll: true });
+        }
+    });
+    var focusSummary = function () {
+        $summary[0].focus();
+    };
+    /* The popup is shown first if popups are used: move the focus to the summary once it is closed */
+    /* Global LSvar: a bundled theme can have its own local LSvar. Native listener: Bootstrap 5 events don't always reach jQuery handlers */
+    var lsVar = window.LSvar || {};
+    var popup = document.getElementById('bootstrap-alert-box-modal');
+    if (lsVar.showpopup == 1 && $.isArray(lsVar.startPopups) && lsVar.startPopups.length && popup) {
+        popup.addEventListener('hidden.bs.modal', focusSummary, { once: true });
+    } else {
+        focusSummary();
+    }
+}
+
 export function resetQuestionTimers(sid) {
     var surveyTimersItemName = 'limesurvey_timers_by_sid_' + sid;
     var timers = JSON.parse(window.localStorage.getItem(surveyTimersItemName) || "[]");
@@ -347,4 +401,5 @@ window.activateConfirmButton = activateConfirmButton;
 window.triggerEmClassChange = triggerEmClassChange;
 window.updateMandatoryErrorClass = updateMandatoryErrorClass;
 window.activateSoftMandatory = activateSoftMandatory;
+window.activateErrorSummary = activateErrorSummary;
 window.resetQuestionTimers = resetQuestionTimers;

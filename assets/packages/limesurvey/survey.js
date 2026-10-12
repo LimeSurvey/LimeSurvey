@@ -505,8 +505,11 @@ function activateErrorSummary(){
         $summary[0].focus();
     };
     /* The popup is shown first if popups are used: move the focus to the summary once it is closed */
-    if (LSvar.showpopup == 1 && $.isArray(LSvar.startPopups) && LSvar.startPopups.length && $('#bootstrap-alert-box-modal').length) {
-        $('#bootstrap-alert-box-modal').one('hidden.bs.modal', focusSummary);
+    /* Global LSvar: a bundled theme can have its own local LSvar. Native listener: Bootstrap 5 events don't always reach jQuery handlers */
+    var lsVar = window.LSvar || {};
+    var popup = document.getElementById('bootstrap-alert-box-modal');
+    if (lsVar.showpopup == 1 && $.isArray(lsVar.startPopups) && lsVar.startPopups.length && popup) {
+        popup.addEventListener('hidden.bs.modal', focusSummary, { once: true });
     } else {
         focusSummary();
     }
