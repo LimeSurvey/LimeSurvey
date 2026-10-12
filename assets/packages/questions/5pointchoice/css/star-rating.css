@@ -8,6 +8,11 @@
     overflow: hidden;
     width: 36px;
 }
+.star-rating.star-focused{
+    outline: 2px solid #333;
+    outline-offset: -2px;
+    border-radius: 4px;
+}
 .star-cancel{color: #727272;}
 .star-cancel.star-drained{color: #932424}
 .star-cancel.star-hover{color: #a12424; text-shadow: 1px 0 #a12424;}
