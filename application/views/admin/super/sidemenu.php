@@ -80,6 +80,10 @@ if (
                     "surveyLogicFile" => gT("Survey logic overview"),
                     "pageActionsMenu" => gT("Page actions menu"),
                     "questionActionsMenu" => gT("Question actions menu"),
+                    "moveUp" => gT("Move up"),
+                    "moveDown" => gT("Move down"),
+                    "movedToPosition" => gT('Moved to position %1$s of %2$s.', 'unescaped'),
+                    "movedToGroup" => gT('Moved to group "%1$s", position %2$s of %3$s.', 'unescaped'),
                 ]
             )
         . '};',

@@ -1,3 +1,4 @@
+import { format } from 'util'
 import {
   ToggleButtons,
   Input,
@@ -82,16 +83,6 @@ export const getPresentationSettingsBlocks = () => ({
           noPermissionDisabled: true,
         },
       },
-      NO_KEYBOARD: {
-        keyPath: 'noKeyboard',
-        props: {
-          id: 'no-keyboard',
-          mainText: t('On-screen keyboard'),
-          childComponent: ToggleButtons,
-          toggleOptions: getOnOffOptions(ONOFF_BOOLEAN),
-          noPermissionDisabled: true,
-        },
-      },
       QUESTION_INDEX: {
         keyPath: 'questionIndex',
         props: {
@@ -126,13 +117,17 @@ export const getPresentationSettingsBlocks = () => ({
           )
 
           return surveyLanguages.map((option) => {
-            let addOn =
-              option === survey.language ? ' (' + t('Base language') + ')' : ''
+            const isBaseLanguage = option === survey.language
             let languageOption = {
               value: option,
               label: languages
-                ? languages[option]?.description + addOn
-                : 'No data available',
+                ? isBaseLanguage
+                  ? format(
+                      t('%s (Base language)'),
+                      languages[option]?.description
+                    )
+                  : languages[option]?.description
+                : t('No data available'),
             }
 
             return languageOption

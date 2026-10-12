@@ -35,6 +35,7 @@ class ImportSurveyCommand extends CConsoleCommand
      * @param array $args
      * @return void
      */
+    #[\Override]
     public function run($args)
     {
         $source = $args[0];

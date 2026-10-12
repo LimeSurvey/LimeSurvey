@@ -1,3 +1,4 @@
+import { format } from 'util'
 import React from 'react'
 
 import { Button, ToggleButtons } from 'components'
@@ -9,7 +10,7 @@ import { ParticipantSource, QuestionSource, SurveyDataSource } from './sources'
 
 const sourceTabs = () => [
   { name: t('Question'), value: SOURCE.QUESTION },
-  { name: t('Survey data'), value: SOURCE.SURVEY_DATA },
+  { name: t('Response data'), value: SOURCE.SURVEY_DATA },
   { name: t('Participant data'), value: SOURCE.PARTICIPANT },
 ]
 
@@ -46,7 +47,7 @@ export const FilterSelectionRow = ({
 
       <div className="responses-statistics-filters-row">
         <div className="responses-statistics-filters-row-label">
-          {`${t('Filter selection')} #${index + 1}`}
+          {format(t('Filter selection #%s'), index + 1)}
         </div>
         <div className="responses-statistics-filters-row-tabs">
           <ToggleButtons

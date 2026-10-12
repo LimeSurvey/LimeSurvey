@@ -34,25 +34,13 @@ echo viewHelper::getViewTestTag('surveyQuotas');
             <div class="row">
                 <div class="col-12 content-right">
                     <?php $this->widget('application.extensions.admin.grid.CLSGridView', [
-                        'dataProvider'      => $oDataProvider,
-                        'id'                => 'quota-grid',
-                        'ajaxUpdate'        => 'quota-grid',
+                        'dataProvider'          => $oDataProvider,
+                        'id'                    => 'quota-grid',
+                        'ajaxUpdate'            => 'quota-grid',
                         'lsAfterAjaxUpdate' => ['onQuotaOpenAction();', 'if (typeof bindListItemclick === "function") { bindListItemclick(); }'],
-                        'emptyText'         => gT('No quotas'),
-                        'showSelectionBar'  => false,
-                        'summaryText'       => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                            gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSize',
-                                $iGridPageSize,
-                                Yii::app()->params['pageSizeOptions'],
-                                [
-                                        'class'    => 'changePageSize form-select',
-                                        'style'    => 'display: inline; width: auto',
-                                        'onchange' => "$.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }})"
-                                    ]
-                            )
-                        ),
+                        'emptyText'             => gT('No quotas'),
+                        'lsShowSelectionBar'  => false,
+                        'lsPageSizeCurrentValue'  => $iGridPageSize,
                         'columns'               => [
                             [
                                 'id'             => 'id',

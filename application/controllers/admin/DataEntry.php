@@ -113,8 +113,13 @@ class DataEntry extends SurveyCommonAction
 
     /**
      * Iterate Survey Method.
+     *
+     * Note: Resetting the responses and participants (unfinalizeanswers) is destructive, so it
+     * needs a POST request and the responses update permission on top of the survey activation one.
+     *
      * @param int $surveyid Given Survey ID
      * @return void
+     * @throws CHttpException
      */
     public function iteratesurvey($surveyid)
     {
@@ -125,6 +130,12 @@ class DataEntry extends SurveyCommonAction
         $aData['success'] = false;
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveyactivation', 'update')) {
             if (Yii::app()->request->getParam('unfinalizeanswers') == 'true') {
+                if (!Yii::app()->getRequest()->isPostRequest) {
+                    throw new CHttpException(405, gT("Invalid action"));
+                }
+                if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
+                    throw new CHttpException(403, gT("You do not have permission to access this page."));
+                }
                 SurveyDynamic::sid($surveyid);
                 Yii::app()->db->createCommand("DELETE from {{responses_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{responses_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
                 // Then set all remaining answers to incomplete state
@@ -1889,7 +1900,7 @@ class DataEntry extends SurveyCommonAction
 
                     if ($errormsg) {
                         foreach ($_POST as $key => $val) {
-                            if (substr($key, 0, 4) != "save" && $key != "action" && $key != "sid" && $key != "datestamp" && $key != "ipaddr") {
+                            if (substr($key, 0, 4) != "save" && $key != "action" && $key != "sid" && $key != "datestamp" && $key != "ipaddr" && $key != "quota_exit") {
                                 $hiddenfields .= CHtml::hiddenField($key, $val);
                             }
                         }
@@ -1957,6 +1968,11 @@ class DataEntry extends SurveyCommonAction
                         if ($_POST[$fieldname] == "" && ($irow['type'] == Question::QT_D_DATE || $irow['type'] == Question::QT_N_NUMERICAL || $irow['type'] == Question::QT_K_MULTIPLE_NUMERICAL)) {
                             // can't add '' in Date column
                             // Do nothing
+                        } elseif ($irow['type'] == 'quota_exit' || $irow['type'] == 'ipaddress') {
+                            // Neither field has a "seen but left blank" state like a real question does:
+                            // an empty value here means "not captured" and must be stored as NULL, not as
+                            // an empty string or the literal string "NULL".
+                            $insert_data[$fieldname] = ($_POST[$fieldname] === '') ? null : $_POST[$fieldname];
                         } elseif ($irow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
                             if (!strpos((string) $irow['fieldname'], "_Cfilecount")) {
                                 $json = $_POST[$fieldname];

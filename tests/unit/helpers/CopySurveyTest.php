@@ -8,6 +8,8 @@ use PluginSetting;
 use Question;
 use QuestionAttribute;
 use Survey;
+use SurveyURLParameter;
+use TemplateConfiguration;
 
 class CopySurveyTest extends TestBaseClass
 {
@@ -111,6 +113,52 @@ class CopySurveyTest extends TestBaseClass
     }
 
     /**
+     * Test that survey-specific theme options are copied with the survey.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testCopySurveyCopiesSurveyThemeOptions()
+    {
+        $survey = Survey::model()->findByPk(self::$testSurvey->sid);
+        $sourceConfiguration = TemplateConfiguration::model()->findByAttributes([
+            'sid' => $survey->sid,
+            'template_name' => 'vanilla',
+        ]);
+        $this->assertNotNull($sourceConfiguration, 'Expected the imported test survey to have a vanilla theme configuration.');
+
+        $originalOptions = $sourceConfiguration->options;
+        $customOptions = json_encode(['container' => 'off', 'ajaxmode' => 'off']);
+        $sourceConfiguration->options = $customOptions;
+        $this->assertTrue($sourceConfiguration->save(), json_encode($sourceConfiguration->errors));
+
+        $copiedSurvey = null;
+        try {
+            $result = $this->copySurvey($survey);
+
+            $this->assertEquals($result->getErrors(), []);
+
+            $copiedSurvey = $result->getCopiedSurvey();
+            $this->assertNotNull($copiedSurvey);
+
+            $copiedConfiguration = TemplateConfiguration::model()->findByAttributes([
+                'sid' => $copiedSurvey->sid,
+                'template_name' => 'vanilla',
+            ]);
+            $this->assertNotNull($copiedConfiguration, 'Survey theme configuration should be copied with the survey.');
+            $this->assertSame($customOptions, $copiedConfiguration->options);
+            $this->assertSame('inherit', $copiedConfiguration->files_css);
+        } finally {
+            $sourceConfiguration->options = $originalOptions;
+            $sourceConfiguration->save();
+
+            if ($copiedSurvey instanceof Survey) {
+                $copiedSurvey->delete();
+            }
+        }
+    }
+
+    /**
      * Test that multilingual (i18n) question attributes (e.g. 'printable_help', which has one
      * row per survey language) are all copied, not just one language.
      *
@@ -162,6 +210,85 @@ class CopySurveyTest extends TestBaseClass
                 QuestionAttribute::model()->setQuestionAttributeWithLanguage($sourceQuestion->qid, 'printable_help', '', $language);
             }
         }
+    }
+
+    /**
+     * Test that survey URL parameters are copied and their target question/subquestion ids remapped.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testCopySurveyCopiesUrlParameters()
+    {
+        $survey = Survey::model()->findByPk(self::$testSurvey->sid);
+        $subquestion = Question::model()->find(
+            'sid = :sid AND parent_qid > 0',
+            [':sid' => $survey->sid]
+        );
+        $this->assertNotNull($subquestion, 'Expected the test survey to contain a subquestion.');
+        $parentQuestion = Question::model()->findByPk($subquestion->parent_qid);
+
+        $this->createUrlParameter($survey->sid, 'withoutTarget');
+        $this->createUrlParameter($survey->sid, 'withSubquestion', $parentQuestion->qid, $subquestion->qid);
+
+        $copiedSurvey = null;
+        try {
+            $result = $this->copySurvey($survey);
+            $this->assertEquals($result->getErrors(), []);
+
+            $copiedSurvey = $result->getCopiedSurvey();
+            $this->assertNotNull($copiedSurvey);
+            $this->assertSame(2, $result->getCntUrlParameters());
+
+            $withoutTarget = SurveyURLParameter::model()->findByAttributes([
+                'sid' => $copiedSurvey->sid,
+                'parameter' => 'withoutTarget',
+            ]);
+            $this->assertNotNull($withoutTarget, 'Expected URL parameter without target to be copied.');
+            $this->assertEmpty($withoutTarget->targetqid);
+            $this->assertEmpty($withoutTarget->targetsqid);
+
+            $withSubquestion = SurveyURLParameter::model()->findByAttributes([
+                'sid' => $copiedSurvey->sid,
+                'parameter' => 'withSubquestion',
+            ]);
+            $this->assertNotNull($withSubquestion, 'Expected URL parameter with target to be copied.');
+
+            $copiedParentQuestion = Question::model()->findByAttributes([
+                'sid' => $copiedSurvey->sid,
+                'title' => $parentQuestion->title,
+                'parent_qid' => 0,
+            ]);
+            $copiedSubquestion = Question::model()->findByAttributes([
+                'sid' => $copiedSurvey->sid,
+                'title' => $subquestion->title,
+                'parent_qid' => $copiedParentQuestion->qid,
+            ]);
+            $this->assertEquals($copiedParentQuestion->qid, $withSubquestion->targetqid);
+            $this->assertEquals($copiedSubquestion->qid, $withSubquestion->targetsqid);
+        } finally {
+            SurveyURLParameter::model()->deleteAllByAttributes(['sid' => $survey->sid]);
+            if ($copiedSurvey instanceof Survey) {
+                $copiedSurvey->delete();
+            }
+        }
+    }
+
+    /**
+     * @param int $surveyId
+     * @param string $parameterName
+     * @param int|null $targetQid
+     * @param int|null $targetSqid
+     * @return void
+     */
+    private function createUrlParameter($surveyId, $parameterName, $targetQid = null, $targetSqid = null)
+    {
+        $urlParameter = new SurveyURLParameter();
+        $urlParameter->sid = $surveyId;
+        $urlParameter->parameter = $parameterName;
+        $urlParameter->targetqid = $targetQid;
+        $urlParameter->targetsqid = $targetSqid;
+        $this->assertTrue($urlParameter->save(), json_encode($urlParameter->getErrors()));
     }
 
     /**

@@ -27,6 +27,7 @@ class FileFetcherUploadZip extends FileFetcher
      * @param string $source
      * @return void
      */
+    #[\Override]
     public function setSource($source)
     {
         // Not used.
@@ -35,13 +36,16 @@ class FileFetcherUploadZip extends FileFetcher
     /**
      * Fetch files, meaning grab uploaded ZIP file and
      * unzip it in system tmp folder.
+     * Files left over from a previous, unfinished upload in the same
+     * session are removed first.
      *
      * @return void
      */
+    #[\Override]
     public function fetch()
     {
         $this->checkFileSizeError();
-        $this->clearTmpdir();
+        $this->abort();
         $this->extractZipFile($this->getTempdir());
     }
 
@@ -51,6 +55,7 @@ class FileFetcherUploadZip extends FileFetcher
      * @param string $destdir
      * @return boolean
      */
+    #[\Override]
     public function move($destdir)
     {
         if (empty($destdir)) {
@@ -88,6 +93,7 @@ class FileFetcherUploadZip extends FileFetcher
      * @return ExtensionConfig
      * @throws Exception
      */
+    #[\Override]
     public function getConfig()
     {
         $tempdir = $this->getTempdir();
@@ -143,11 +149,12 @@ class FileFetcherUploadZip extends FileFetcher
      * Abort unzip, clear files and session.
      * @return void
      */
+    #[\Override]
     public function abort()
     {
-        // Remove any files.
-        $tempdir = $this->getTempdir();
-        if ($tempdir) {
+        // Remove any files. Read the session state directly, since getTempdir() would create a new folder.
+        $tempdir = App()->user->getState('filefetcheruploadzip_tmpdir');
+        if ($tempdir && is_dir($tempdir)) {
             rmdirr($tempdir);
         }
 

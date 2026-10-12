@@ -10,7 +10,6 @@
 */
 class ExpressionValidate extends SurveyCommonAction
 {
-
     /**
      * @var integer : The survey ID to start to fill know vars
      */

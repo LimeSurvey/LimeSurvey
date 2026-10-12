@@ -40,7 +40,7 @@
         <input type='hidden' name='action' value='modlabelsetanswers'/>
 
         <!-- tab content -->
-        <?php $this->renderPartial("./labels/_labelviewtabcontent_view", ['lslanguages' => $lslanguages, 'results' => $results, 'action' => $action, 'updatePermission' => $model->hasPermission('update')]); ?>
+        <?php $this->renderPartial("./labels/_labelviewtabcontent_view", ['lslanguages' => $lslanguages, 'results' => $results, 'action' => $action, 'updatePermission' => $model->hasPermission('labelset', 'update')]); ?>
         <?php echo CHtml::endForm() ?>
 
         <!-- For javascript -->
@@ -55,7 +55,7 @@
     </div>
 
     <!-- Bottom content -->
-    <?php if ($model->hasPermission('update')) { ?>
+    <?php if ($model->hasPermission('labelset', 'update')) { ?>
         <?php $this->renderPartial("./labels/_labelviewrightcontent_view", ['lid' => $lid]); ?>
     <?php }; ?>
 </div>

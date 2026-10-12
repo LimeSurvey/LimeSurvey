@@ -24,3 +24,16 @@ body {
     background: #e7ecf0;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Brand logo on the error page: block-level (not the floated .logo-container
+   used in the navbar), so it stacks above the error title instead of sitting
+   next to it. */
+.error-logo-container {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.error-logo-container > img {
+    max-height: 90px;
+    width: auto;
+}

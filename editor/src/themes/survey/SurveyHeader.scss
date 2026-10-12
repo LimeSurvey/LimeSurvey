@@ -1,9 +1,10 @@
 .survey-header-container {
-  background-color: #a3c8ff44;
+  background: $white;
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
   border-radius: 2px;
   width: 100%;
   padding: 63px 67px;
+  border: 2px solid $g-700;
 
   .show-x-questions {
     font-size: 16px;
@@ -22,14 +23,14 @@
 
     *,
     svg {
-      color: #5076ff !important;
-      fill: #5076ff;
+      color: $active-green !important;
+      fill: $active-green;
       padding: 0;
       //styleName: LSD/Typography/Sans/Semi14;
       font-family: IBM Plex Sans;
       font-size: $font-size-sm;
       font-weight: $font-weight-600;
-      line-height: 20px;
+      line-height: $line-height-20;
       letter-spacing: -0.017em;
       text-align: left;
     }
@@ -54,7 +55,7 @@
 
       font-size: $font-size-sm;
       font-weight: $font-weight-500;
-      line-height: 20px;
+      line-height: $line-height-20;
       letter-spacing: -0.015em;
       text-align: left;
       color: $white;
@@ -80,20 +81,39 @@
     margin-bottom: 18px;
   }
 
+  .welcome-screen-survey-title {
+    .content-editable {
+      color: $g-900;
+      font-size: $font-size-xxxl;
+      margin-bottom: 16px;
+      font-style: $font-style-base;
+      font-family: $ibm-font-serif;
+      font-weight: $font-weight-600;
+      line-height: $line-height-52;
+      letter-spacing: -0.68px;
+      padding: 0;
+    }
+  }
+
   .welcome-title,
   .welcome-description {
-    font-size: $font-size-md;
-    letter-spacing: -0.017em;
-    text-align: left;
+    @include reg16;
+
     margin-bottom: 10px;
-    font-weight: $font-weight-normal;
+    line-height: $line-height-24;
+    .mce-content-body {
+      // Before contains the placeholder
+      &::before {
+        font-style: $font-style-placeholder;
+      }
+    }
   }
 
   .collapse-control {
     color: $g-700;
     font-size: $font-size-sm;
     font-weight: $font-weight-600;
-    line-height: 24px;
+    line-height: $line-height-24;
   }
 
   .border-bottom {

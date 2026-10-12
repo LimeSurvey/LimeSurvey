@@ -5,8 +5,6 @@
         <?php eT('Help');?>
     </a>
     <ul class="dropdown-menu larger-dropdown" aria-labelledby="helpDropdown">
-        <?php $this->renderPartial("/admin/super/_tutorial_menu", []); ?>
-        <li class="dropdown-divider" role="separator" aria-hidden="true"></li>
         <li>
             <a href="http://manual.limesurvey.org/" target="_blank" rel="noopener noreferrer" class="dropdown-item">
                 <!-- <i class="ri-question-fill"></i> -->

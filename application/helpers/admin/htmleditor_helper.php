@@ -24,7 +24,6 @@ function initKcfinder()
     $sAllowedExtensions = implode(' ', array_map('trim', explode(',', (string) Yii::app()->getConfig('allowedresourcesuploads'))));
     $_SESSION['KCFINDER']['types'] = array(
         'files' => $sAllowedExtensions,
-        'flash' => $sAllowedExtensions,
         'images' => $sAllowedExtensions
     );
     if (!empty(App()->getSession()->cookieParams['domain'])) {
@@ -163,7 +162,7 @@ function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = 
     } else {
         $htmleditormode = $session['htmleditormode'];
     }
-    if ($surveyID && getEmailFormat($surveyID) != 'html' && (substr($fieldtype, 0, 6) === "email_" || substr($fieldtype, 0, 6) === "email-" )) {
+    if ($surveyID && getEmailFormat($surveyID) != 'html' && isEmailEditorFieldtype($fieldtype)) {
         // email but survey as text email
         return '';
     }
@@ -281,6 +280,18 @@ function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
     return $htmlcode;
 }
 
+/**
+ * Registers the script for an inline CKEditor instance replacing the given textarea.
+ *
+ * @param string          $fieldtype Field type, e.g. 'email_invitation_en', 'email-invitation', 'question'
+ * @param string          $fieldname Field name, the id attribute of the textarea
+ * @param string          $fieldtext Field description
+ * @param int|string|null $surveyID  Survey ID
+ * @param int|string|null $gID       Group ID
+ * @param int|string|null $qID       Question ID
+ * @param string|null     $action    Action
+ * @return void
+ */
 function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
     $htmlcode = '';
@@ -320,10 +331,9 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
         }
     }
 
-    /* fieldtype have language at end , set fullpage for email HTML edit */
-    if (substr((string) $fieldtype, 0, 6) === 'email-') {
+    /* set fullpage for email HTML edit, so that doctype, html, head and body are kept */
+    if (isEmailEditorFieldtype($fieldtype)) {
         $htmlformatoption = ",fullPage:true\n";
-        //~ $htmlformatoption = ",allowedContent:true\n"; // seems unneeded
     }
     if ($surveyID == '') {
         $sFakeBrowserURL = Yii::app()->getController()->createUrl('admin/survey/sa/fakebrowser');
@@ -398,6 +408,20 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
             }";
 
     Yii::app()->getClientScript()->registerScript('ckEditorScriptsInline-' . $fieldname, $scriptCode, LSYii_ClientScript::POS_POSTSCRIPT);
+}
+
+/**
+ * Checks whether a field type belongs to an email body editor.
+ *
+ * Email template editors use 'email_<type>_<language>', the invitation and
+ * reminder sending pages use 'email-<type>'.
+ *
+ * @param string|null $fieldtype Field type passed to getEditor()
+ * @return bool
+ */
+function isEmailEditorFieldtype($fieldtype)
+{
+    return in_array(substr((string) $fieldtype, 0, 6), ['email_', 'email-'], true);
 }
 
 function getLoaderHTML($fieldname)

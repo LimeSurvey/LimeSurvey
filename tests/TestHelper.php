@@ -124,11 +124,12 @@ class TestHelper extends TestCase
             'radix' => $radix,
             'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : null),
             'savetimings' => ($thissurvey['savetimings'] == "Y"),
+            'savequotaexit' => ($thissurvey['savequotaexit'] == "Y"),
             'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
             'startlanguage' => (isset(App()->language) ? App()->language : $thissurvey['language']),
             'target' => Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $thissurvey['sid'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR,
             'tempdir' => Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR,
-            // for backward compatibilty convert timezone string to +/- hours
+            // for backward compatibility convert timezone string to +/- hours
             'timeadjust' => convertTimezoneDiffToHours(),
             'displayTimezone' => (isset($displayTimezone) ? $displayTimezone : 'UTC'),
             'token' => (isset($clienttoken) ? $clienttoken : null),

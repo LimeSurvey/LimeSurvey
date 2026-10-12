@@ -46,17 +46,16 @@
   font-size: $font-size-xs;
 }
 
-.expression-script-textarea {
-  height: 230px;
-  width: 220px;
-  border: 3px solid $g-600;
-  border-radius: $border-radius;
-  margin: 0 14px;
-  padding: 4px 12px;
+.expression-script-panel-editor {
+  width: 100%;
+}
+
+.expression-script-editor .cm-editor {
+  min-width: 0;
+}
+
+.expression-script-editor .cm-scroller {
   overflow: auto;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  box-sizing: border-box;
 }
 
 .expression-script-apply-button-container {

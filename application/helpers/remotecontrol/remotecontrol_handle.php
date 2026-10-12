@@ -454,13 +454,13 @@ class remotecontrol_handle
      * Set survey properties (RPC function)
      *
      * @see \Survey for the list of available properties
-     * Properties available are restricted
-     * * Always
+     * Some properties may not be modified depending on the survey's state
+     * * Always restricted
      *     * sid
      *     * active
      *     * language
      *     * additional_languages
-     * * If survey is active
+     * * Restricte if survey is active
      *     * anonymized
      *     * datestamp
      *     * savetimings
@@ -508,6 +508,7 @@ class remotecontrol_handle
                     unset($aSurveyData['savetimings']);
                     unset($aSurveyData['ipaddr']);
                     unset($aSurveyData['refurl']);
+                    unset($aSurveyData['savequotaexit']);
                 }
 
                 if (empty($aSurveyData)) {
@@ -584,6 +585,7 @@ class remotecontrol_handle
             'ipanonymize',
             'refurl',
             'savetimings',
+            'savequotaexit',
         ];
         // update survey activation settings
         foreach ($activationSettingNames as $activationSettingName) {
@@ -683,7 +685,7 @@ class remotecontrol_handle
 
         usort($oAllQuestions, 'groupOrderThenQuestionOrder');
 
-        $aSummary = createCompleteSGQA($iSurveyID, $oAllQuestions, $sLanguage);
+        $aSummary = getStatisticsFieldNames($iSurveyID, $oAllQuestions, $sLanguage);
 
         $helper = new statistics_helper();
         switch ($docType) {
@@ -2399,7 +2401,7 @@ class remotecontrol_handle
      * @param bool $bUnused If you want unused tokens, set true
      * @param bool|array $aAttributes The extended attributes that we want
      * @param array $aConditions Optional conditions to limit the list, either as a
-     *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
+     *              key => value if key is an integer : value is used as comparison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']
@@ -3116,7 +3118,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey that participants belong
      * @param array $overrideAllConditions replace the default conditions, either as a
-     *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
+     *              key => value if key is an integer : value is used as comparison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']
@@ -3418,9 +3420,8 @@ class remotecontrol_handle
             $aBasicDestinationFields = $survey_dynamic->tableSchema->columnNames;
             $aResponseData = array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
             $survey_dynamic->setAttributes($aResponseData, false);
-            $survey_dynamic->encryptSave();
 
-            if ($survey_dynamic->id) {
+            if ($survey_dynamic->encryptSave()) {
                 $result_id = $survey_dynamic->id;
                 $oResponse = Response::model($iSurveyID)->findByAttributes(array('id' => $result_id))->decrypt();
                 foreach ($oResponse->getFiles() as $aFile) {
@@ -3442,7 +3443,6 @@ class remotecontrol_handle
                         }
                     }
                 }
-
                 return $result_id;
             } else {
                 return array('status' => 'Unable to add response', 'error_code' => self::ERR_CREATION_FAILED);
@@ -3718,7 +3718,7 @@ class remotecontrol_handle
         if (!tableExists($survey->responsesTableName)) {
             return array('status' => 'No Data, survey table does not exist.', 'error_code' => self::ERR_NO_RESPONSE_TABLE);
         }
-        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId(null, true))) {
+        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) {
             return array('status' => 'No Data, could not get max id.', 'error_code' => self::ERR_NO_DATA);
         }
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
@@ -4174,7 +4174,7 @@ class remotecontrol_handle
      * @param model $oModel : can be \Token or \Survey or anything else
      * @param \LSDbCriteria $oCriteria
      * @param array $aConditions conditions to limit the list, either as a
-     *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
+     *              key => value if key is an integer : value is used as comparison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']

@@ -27,36 +27,16 @@ echo viewHelper::getViewTestTag('roles');
                 'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'RoleControl--identity-gridPanel',
-                    'caption' => gT('User roles'),
+                    'lsCaption' => gT('User roles'),
                     'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
                     'dataProvider' => $model->search(),
                     'columns' => $model->columns,
                     'filter' => $model,
-                    'showSelectionBar' => false,
+                    'lsShowSelectionBar' => false,
                     'ajaxType' => 'POST',
                     'ajaxUpdate' => 'RoleControl--identity-gridPanel',
                     'afterAjaxUpdate' => 'LS.RoleControl.bindButtons',
-                    'pager' => [
-                        'class' => 'application.extensions.admin.grid.CLSYiiPager',
-                    ],
-                    'summaryText' => html_entity_decode(
-                        gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
-                        '<span id="RoleControl--identity-gridPanel-rows-per-page-label">' .
-                        sprintf(
-                            gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSize',
-                                $pageSize,
-                                App()->params['pageSizeOptions'],
-                                [
-                                    'class' => 'changePageSize form-select',
-                                    'style' => 'display: inline; width: auto',
-                                    'aria-labelledby' => 'RoleControl--identity-gridPanel-rows-per-page-label',
-                                ]
-                            )
-                        ) .
-                        '</span>'
-                    ),
+                    'lsPageSizeCurrentValue' => $pageSize,
                 ]
             );
             ?>

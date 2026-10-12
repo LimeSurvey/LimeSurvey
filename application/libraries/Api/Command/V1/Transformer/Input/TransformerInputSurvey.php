@@ -95,6 +95,10 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'refurl',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
+            'saveQuotaExit' => [
+                'key' => 'savequotaexit',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'dateCreated' => [
                 'key' => 'datecreated',
                 'date',

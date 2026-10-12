@@ -21,6 +21,10 @@
         <NoValue errorLevel="suppress" />
         <UnusedClass errorLevel="suppress" />
         <UnsupportedPropertyReferenceUsage errorLevel="suppress" />
+        <!-- New in Psalm 6, wants the PHP 8.3 #[\Override] attribute added to
+             every overriding method (~1500 hits codebase-wide). A style/
+             annotation nag, not a correctness issue; out of scope here. -->
+        <MissingOverrideAttribute errorLevel="suppress" />
     </issueHandlers>
     <projectFiles>
         <directory name="application/" />

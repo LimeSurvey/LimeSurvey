@@ -1,6 +1,6 @@
 <?php
 /**
- * This view display any error encoutered while getting the welcome message. Most of those errors are returned by the update server, and concern the update key.
+ * This view display any error encountered while getting the welcome message. Most of those errors are returned by the update server, and concern the update key.
  * @var obj $errorObject the object error
  */
 // TODO : move to the controller

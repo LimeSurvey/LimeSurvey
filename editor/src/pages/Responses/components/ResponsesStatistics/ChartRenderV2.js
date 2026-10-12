@@ -13,6 +13,7 @@ import {
   QT_SEMICOLON_ARRAY_TEXT,
   QT_T_LONG_FREE_TEXT,
   QT_U_HUGE_FREE_TEXT,
+  QT_VERTICAL_FILE_UPLOAD,
 } from 'helpers'
 import { ReactComponent as StackedBarIcon } from 'assets/icons/stacked-bar-icon.svg'
 import { ReactComponent as RadarIcon } from 'assets/icons/radar-icon.svg'
@@ -22,6 +23,7 @@ import { StatisticsTable } from './StatisticsTable.js'
 import { ArrayTextTable } from './ArrayTextTable.js'
 import { ResponsesGrid } from './ResponsesGrid.js'
 import { MultiNumericalGrid } from './MultiNumericalGrid.js'
+import { FileUploadTable } from './FileUploadTable.js'
 import {
   BarChart,
   PieChart,
@@ -41,6 +43,7 @@ import {
   TEXT_QUESTION_TYPES,
   getSegmentedCategories,
   VALUE_TYPE,
+  wrapTerm,
 } from './ChartsUtils.js'
 import { QuestionComments } from './QuestionComments.js'
 import { CommentsModal } from './CommentsModal.js'
@@ -65,8 +68,18 @@ const VIEWS = [
     value: VIEW.BAR_CHART,
     label: () => t('Bar chart'),
     icon: () => <i className="ri-bar-chart-line"></i>,
-    isAvailable: ({ isArray, isArrayText, isNumerical, isMultiNumerical }) =>
-      !isArray && !isArrayText && !isNumerical && !isMultiNumerical,
+    isAvailable: ({
+      isArray,
+      isArrayText,
+      isNumerical,
+      isMultiNumerical,
+      isFileUpload,
+    }) =>
+      !isArray &&
+      !isArrayText &&
+      !isNumerical &&
+      !isMultiNumerical &&
+      !isFileUpload,
     render: ({
       isRanking,
       data,
@@ -135,12 +148,14 @@ const VIEWS = [
       isArrayText,
       isNumerical,
       isMultiNumerical,
+      isFileUpload,
     }) =>
       !isRanking &&
       !isArray &&
       !isArrayText &&
       !isNumerical &&
-      !isMultiNumerical,
+      !isMultiNumerical &&
+      !isFileUpload,
     // Comment types keep only Bar/Table/Comments in the quick toggle; pie moves
     // to the meatball menu.
     menuOnly: ({ hasComments }) => hasComments,
@@ -226,12 +241,21 @@ const VIEWS = [
       isText,
       isDualScale,
       isMultiNumerical,
+      isFileUpload,
       valueType,
       surveyId,
       question,
       filters,
     }) =>
-      isArrayText || isText || isDualScale || isMultiNumerical ? (
+      isFileUpload ? (
+        <FileUploadTable
+          surveyId={surveyId}
+          questionId={question?.qid}
+          questionCode={question?.code}
+          fields={question?.fields}
+          filters={filters}
+        />
+      ) : isArrayText || isText || isDualScale || isMultiNumerical ? (
         <ArrayTextTable
           surveyId={surveyId}
           questionCode={question?.code}
@@ -315,6 +339,7 @@ export const ChartRendererV2 = ({
   const isNumerical = question?.type === QT_N_NUMERICAL
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
   const isRanking = isRankingQuestion(question?.themeName)
+  const isFileUpload = question?.type === QT_VERTICAL_FILE_UPLOAD
   const isGridable =
     isNumerical ||
     [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
@@ -338,6 +363,7 @@ export const ChartRendererV2 = ({
   const hasResponses =
     isArrayText ||
     isMultiNumerical ||
+    isFileUpload ||
     (data ?? []).reduce((sum, item) => sum + (item?.value || 0), 0) > 0
 
   const viewContext = {
@@ -350,6 +376,7 @@ export const ChartRendererV2 = ({
     isDualScale,
     isNumerical,
     isMultiNumerical,
+    isFileUpload,
     isGridable,
   }
 
@@ -380,6 +407,7 @@ export const ChartRendererV2 = ({
     isDualScale,
     isNumerical,
     isMultiNumerical,
+    isFileUpload,
     surveyId,
     chartId,
     question,
@@ -448,17 +476,21 @@ export const ChartRendererV2 = ({
           <>
             {isArrayNumbers && (
               <div className="responses-statistics-chart-subtitle">
-                <TooltipContainer
-                  tip={t(
-                    'Each value is the mean of the numbers entered for a subquestion (row) and answer option (column): their sum divided by the number of responses that answered that cell. Unanswered cells are left out.'
-                  )}
-                >
-                  <span className="responses-statistics-chart-subtitle-term">
-                    {t('Mean')} <i className="ri-information-line"></i>
-                  </span>
-                </TooltipContainer>{' '}
-                {t(
-                  'of the subquestions (rows) in the concerning answer option (columns)'
+                {wrapTerm(
+                  t(
+                    '%sMean%s of the subquestions (rows) in the concerning answer option (columns)'
+                  ),
+                  (term) => (
+                    <TooltipContainer
+                      tip={t(
+                        'Each value is the mean of the numbers entered for a subquestion (row) and answer option (column): their sum divided by the number of responses that answered that cell. Unanswered cells are left out.'
+                      )}
+                    >
+                      <span className="responses-statistics-chart-subtitle-term">
+                        {term} <i className="ri-information-line"></i>
+                      </span>
+                    </TooltipContainer>
+                  )
                 )}
               </div>
             )}

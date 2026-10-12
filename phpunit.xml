@@ -103,6 +103,7 @@
       <file>tests/functional/backend/AdminViewsTest.php</file>
       <file>tests/functional/backend/NoGreenBarTest.php</file>
       <file>tests/functional/acceptance/18282-FailedEmail/FailedEmailTest.php</file>
+      <file>tests/functional/frontend/ReactEditorWorksTest.php</file>
     </testsuite>
     <testsuite name="user">
       <file>tests/functional/backend/UserManagementTest.php</file>

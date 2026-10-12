@@ -5,7 +5,7 @@
  */
 function saveParameter() {
     var sParamname = $.trim($('#paramname').val());
-    if (sParamname == '' || !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(sParamname) || sParamname == 'sid' || sParamname == 'newtest' || sParamname == 'token' || sParamname == 'lang') {
+    if (sParamname == '' || !/^[a-zA-Z_][a-zA-Z0-9_-]*$/.test(sParamname) || sParamname == 'sid' || sParamname == 'newtest' || sParamname == 'token' || sParamname == 'lang') {
         LS.ajaxAlerts(window.sEnterValidParam, 'danger', { inline: '#parameterError' });
         return;
     }

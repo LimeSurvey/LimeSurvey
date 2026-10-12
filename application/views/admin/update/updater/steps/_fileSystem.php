@@ -42,7 +42,7 @@
             echo CHtml::submitButton(gT('Check again', 'unescaped'), array("class" => "btn btn-outline-secondary"));
             echo CHtml::endForm();
             ?>
-        </div>>
+        </div>
     <?php else : ?>
         <div class="col-12 mt-2">
             <?php

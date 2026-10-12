@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_149 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             $aFields = array(

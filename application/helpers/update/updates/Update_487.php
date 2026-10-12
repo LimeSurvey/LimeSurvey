@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_487 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         // Adjust permissions for "Survey Participants" menu entry

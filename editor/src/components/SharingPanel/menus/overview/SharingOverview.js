@@ -1,3 +1,4 @@
+import { format } from 'util'
 import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -43,12 +44,13 @@ export const SharingOverview = () => {
 
     return surveyLanguages.map((option) => {
       const isBaseLanguage = option === survey.language
-      let addOn = isBaseLanguage ? ' (' + t('Base language') + ')' : ''
       let languageOption = {
         value: option,
         label: languages
-          ? languages[option]?.description + addOn
-          : 'No data available',
+          ? isBaseLanguage
+            ? format(t('%s (Base language)'), languages[option]?.description)
+            : languages[option]?.description
+          : t('No data available'),
       }
 
       return languageOption
@@ -113,6 +115,7 @@ export const SharingOverview = () => {
         />
         <PluginSlot slotName={PLUGIN_SLOTS.SHARING_OVERVIEW_BOTTOM_LEFT} />
         <PluginSlot slotName={PLUGIN_SLOTS.SHARING_OVERVIEW_BOTTOM_RIGHT} />
+        <PluginSlot slotName={PLUGIN_SLOTS.SHARING_OVERVIEW_CARD_BOTTOM} />
         <ParticipantsListCard
           hasUpdatePermission={hasUpdatePermission}
           surveyId={surveyId}

@@ -1,3 +1,4 @@
+import { format } from 'util'
 import React, { useState } from 'react'
 import {
   BarChart as RechartsBarChart,
@@ -146,7 +147,9 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
                   {ordinal(rank.position)}
                 </span>
                 <span>
-                  {rank.value} {rank.value === 1 ? t('vote') : t('votes')}
+                  {rank.value === 1
+                    ? format(t('%s vote'), rank.value)
+                    : format(t('%s votes'), rank.value)}
                 </span>
               </div>
             ))}

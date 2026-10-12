@@ -57,43 +57,11 @@ class RandomizerHelper
     ) {
         $this->initialize($question->sid, $survey);
 
-        // Check for excluded subquestion before randomization
-        /* @param string|null $excludeAllOthers */
-        $excludeAllOthers = $question->getQuestionAttribute('exclude_all_others');
-        $excludedSubquestion = null;
-
-        if (
-            $excludeAllOthers !== '' && $excludeAllOthers !== null &&
-            ($question->getQuestionAttribute('random_order') == 1 ||
-                $question->getQuestionAttribute('subquestion_order') == 'random')
-        ) {
-            [
-                $excludedSubquestion,
-                $groupedSubquestions
-            ] = $this->extractExcludedSubquestion(
-                $groupedSubquestions,
-                $excludeAllOthers
-            );
-        }
-
-        $keepCodes = $this->getKeepCodes($question);
-        $groupedSubquestions = $this->applyRandomSortingToSubquestionGroups(
+        // Only keep_codes_order pins positions; exclusive options (exclude_all_others) are randomized like any other
+        return $this->applyRandomSortingToSubquestionGroups(
             $groupedSubquestions,
-            $keepCodes
+            $this->getKeepCodes($question)
         );
-
-        // Reinsert excluded subquestion if needed
-        if ($excludedSubquestion !== null) {
-            $scaleId = $excludedSubquestion->scale_id;
-            array_splice(
-                $groupedSubquestions[$scaleId],
-                ($excludedSubquestion->question_order - 1),
-                0,
-                [$excludedSubquestion]
-            );
-        }
-
-        return $groupedSubquestions;
     }
 
     /**
@@ -104,17 +72,27 @@ class RandomizerHelper
      */
     private function getKeepCodes(Question $question): array
     {
-        $keepCodesRaw = $question->getQuestionAttribute('keep_codes_order');
-        if ($keepCodesRaw === null || trim((string) $keepCodesRaw) === '') {
+        return $this->splitCodes($question->getQuestionAttribute('keep_codes_order'));
+    }
+
+    /**
+     * Split a semicolon-separated list of codes into trimmed, non-empty codes.
+     *
+     * @param string|null $codesRaw
+     * @return string[]
+     */
+    private function splitCodes($codesRaw): array
+    {
+        if ($codesRaw === null || trim((string) $codesRaw) === '') {
             return [];
         }
 
-        return array_filter(
-            array_map('trim', explode(';', (string) $keepCodesRaw)),
+        return array_values(array_filter(
+            array_map('trim', explode(';', (string) $codesRaw)),
             function ($code) {
                 return $code !== '';
             }
-        );
+        ));
     }
 
     /**
@@ -226,36 +204,5 @@ class RandomizerHelper
         }
 
         return $groupedSubquestions;
-    }
-
-    /**
-     * Extract excluded subquestion from the grouped subquestions
-     *
-     * @param array $groupedSubquestions Subquestions grouped by scale_id
-     * @param string $excludeAllOthers The code of the excluded subquestion
-     * @return array [excludedSubquestion, updatedGroupedSubquestions]
-     */
-    public function extractExcludedSubquestion(
-        array $groupedSubquestions,
-        string $excludeAllOthers
-    ): array {
-        $excludedSubquestion = null;
-
-        if (empty($excludeAllOthers)) {
-            return [$excludedSubquestion, $groupedSubquestions];
-        }
-
-        foreach ($groupedSubquestions as $scaleId => $scaleArray) {
-            foreach ($scaleArray as $key => $subquestion) {
-                if ($subquestion->title == $excludeAllOthers) {
-                    $excludedSubquestion = $subquestion;
-                    unset($groupedSubquestions[$scaleId][$key]);
-                    $groupedSubquestions[$scaleId] = array_values($groupedSubquestions[$scaleId]);
-                    break 2;
-                }
-            }
-        }
-
-        return [$excludedSubquestion, $groupedSubquestions];
     }
 }

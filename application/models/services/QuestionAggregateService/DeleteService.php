@@ -87,16 +87,23 @@ class DeleteService
     /**
      * Function responsible for deleting an answer from a question.
      * It also deletes all languages for this answer.
+     * The answer must belong to a question of the given survey.
      *
-     * @param int $surveyId
-     * @param int $questionId
-     * @param int $answerId
+     * @param int $surveyId ID of the survey the answer must belong to
+     * @param int $answerId ID of the answer to delete
+     * @return void
+     * @throws NotFoundException if the answer does not exist in the survey
      * @throws PersistErrorException
-     *
      */
-    public function deleteAnswer($answerId)
+    public function deleteAnswer($surveyId, $answerId)
     {
-        $answer = Answer::model()->findByAttributes(['aid' => $answerId]);
+        $answer = Answer::model()->with('question')->find(
+            't.aid = :aid AND question.sid = :sid',
+            [':aid' => (int)$answerId, ':sid' => (int)$surveyId]
+        );
+        if (empty($answer)) {
+            throw new NotFoundException('Answer not found');
+        }
         $aidsCriteria = (new CDbCriteria())->addInCondition('aid', [$answerId]);
         AnswerL10n::model()->deleteAll($aidsCriteria);
         try {

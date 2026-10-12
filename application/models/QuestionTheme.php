@@ -807,6 +807,9 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns the Config Path for the selected Question Type base definition
      *
+     * The path is memoized per question type for the current request, because this
+     * is called for every question when loading question attributes.
+     *
      * @param string $type
      *
      * @return string Path to config XML
@@ -814,6 +817,11 @@ class QuestionTheme extends LSActiveRecord
      */
     public static function getQuestionXMLPathForBaseType($type)
     {
+        static $cacheMemo = [];
+        if (isset($cacheMemo[$type])) {
+            return $cacheMemo[$type];
+        }
+
         /** @var QuestionTheme|null */
         $questionTheme = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
         if (empty($questionTheme)) {
@@ -821,6 +829,7 @@ class QuestionTheme extends LSActiveRecord
         }
         $configXMLPath = App()->getConfig('rootdir') . '/' . $questionTheme->getXmlPath() . '/config.xml';
 
+        $cacheMemo[$type] = $configXMLPath;
         return $configXMLPath;
     }
 

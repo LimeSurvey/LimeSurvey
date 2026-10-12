@@ -143,7 +143,7 @@
             <default>0</default>
             <min>0</min>
             <help>Minimum number of files that the participant must upload for this question</help>
-            <caption>Min number of files</caption>
+            <caption>Minimum number of files</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -183,7 +183,7 @@
             <min>1</min>
             <default>1</default>
             <help>Maximum number of files that the participant can upload for this question</help>
-            <caption>Max number of files</caption>
+            <caption>Maximum number of files</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

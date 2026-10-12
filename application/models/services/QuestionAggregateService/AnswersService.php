@@ -116,7 +116,14 @@ class AnswersService
             // We use the container to create a model instance
             // allowing us to mock the model instance via
             // container configuration in unit tests
-            $answer = $this->modelAnswer->findByPk($answerId);
+            // Only reuse an existing answer if it belongs to this question.
+            // Any other ID (temp ID or foreign answer) creates a new answer.
+            $answer = is_numeric($answerId)
+                ? $this->modelAnswer->findByAttributes([
+                    'aid' => (int)$answerId,
+                    'qid' => $question->qid
+                ])
+                : null;
             if (!$answer) {
                 $answer = DI::getContainer()
                     ->make(Answer::class);
@@ -125,10 +132,14 @@ class AnswersService
                 'qid'              => $question->qid,
                 'code'             => $data['code'],
                 'sortorder'        => $count,
+                // 'assessment_value' is used by the new React editor/API
+                // (see TransformerInputAnswer), while 'assessment' is the
+                // legacy field name still submitted by the classic Twig/
+                // jQuery question editor (QuestionAdministrationController
+                // via SaveService). Both editors run in parallel, so both
+                // keys need to be supported here.
                 'assessment_value' =>
-                    isset($data['assessment'])
-                        ? $data['assessment']
-                        : 0,
+                    $data['assessment_value'] ?? $data['assessment'] ?? 0,
                 'scale_id'         => $scaleId
             ]);
             $answer->setScenario('saveall');

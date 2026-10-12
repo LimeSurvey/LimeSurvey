@@ -246,6 +246,61 @@ class QuestionOrderingServiceTest extends TestBaseClass
     }
 
     /**
+     * @testdox getOrderedAnswers() sorts accented and HTML formatted answers alphabetically in the requested language
+     */
+    public function testGetOrderedAnswersAlphabeticallyWithAccentsAndLanguage()
+    {
+        $question = \Mockery::mock(\Question::class)->makePartial();
+
+        $texts = [
+            ['fr' => 'france', 'en' => 'France'],
+            ['fr' => '<p>&Eacute;tats-Unis</p>', 'en' => 'United States'],
+            ['fr' => 'Algérie', 'en' => 'Algeria'],
+            ['fr' => 'Égypte', 'en' => 'Egypt'],
+        ];
+        $answers = [];
+        foreach ($texts as $index => $l10n) {
+            $answers[] = (object)[
+                'scale_id' => 0,
+                'sortorder' => $index,
+                'answerl10ns' => [
+                    'fr' => (object)['answer' => $l10n['fr']],
+                    'en' => (object)['answer' => $l10n['en']],
+                ]
+            ];
+        }
+        $question->answers = $answers;
+
+        $question->shouldReceive('getQuestionAttribute')
+            ->with('answer_order')
+            ->andReturn('alphabetical');
+        $question->shouldReceive('getQuestionType')
+            ->andReturn((object)['subquestions' => 0]);
+        $question->survey = (object)[
+            'language' => 'fr',
+            'allLanguages' => ['fr', 'en']
+        ];
+
+        $service = new QuestionOrderingService();
+
+        $result = $service->getOrderedAnswers($question, 0, 'fr');
+        $this->assertSame(
+            ['Algérie', 'Égypte', '<p>&Eacute;tats-Unis</p>', 'france'],
+            array_map(function ($answer) {
+                return $answer->answerl10ns['fr']->answer;
+            }, $result)
+        );
+
+        $result = $service->getOrderedAnswers($question, 0, 'en');
+        $this->assertSame(
+            ['Algeria', 'Egypt', 'France', 'United States'],
+            array_map(function ($answer) {
+                return $answer->answerl10ns['en']->answer;
+            }, $result)
+        );
+    }
+
+    /**
      * @testdox getOrderedAnswers() with random sorting preserves all items
      */
     public function testGetOrderedAnswersRandomly()
