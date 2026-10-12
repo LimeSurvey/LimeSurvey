@@ -82,7 +82,7 @@ class ColumnFilterWidget extends CWidget
         App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, CClientScript::POS_BEGIN);
 
         App()->getClientScript()->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/ColumnFilterWidget/assets/columns_filter.js',
+            App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/columns_filter.js'),
             CClientScript::POS_END
         );
     }

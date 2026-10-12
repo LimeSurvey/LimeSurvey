@@ -13217,14 +13217,17 @@ textarea,
   box-shadow: -4px 4px 0 #ffe046;
 }
 
+/* Inputs with their own subquestion validation are only marked when they are invalid themselves */
 .has-error .form-control,
-.input-error .form-control {
-  box-shadow: -4px 4px 0 #ff515f;
+.input-error .form-control:not(.em_sq_validation),
+.input-error .form-control.has-warning {
+  box-shadow: -4px 4px 0 #FF515F;
   z-index: 3;
 }
 .has-error .form-control:focus,
-.input-error .form-control:focus {
-  box-shadow: -4px 4px 0 #ff515f;
+.input-error .form-control:not(.em_sq_validation):focus,
+.input-error .form-control.has-warning:focus {
+  box-shadow: -4px 4px 0 #FF515F;
 }
 
 .control-label {

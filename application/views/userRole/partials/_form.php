@@ -5,10 +5,10 @@
 
 
 if ($model->isNewRecord) {
-    $modalTitle =  gT('Create permission role');
+    $modalTitle =  gT('Create user role');
     $buttonTitle = gT('Create');
 } else {
-    $modalTitle = sprintf(gT("Edit permission role '%s'"), $model->name);
+    $modalTitle = sprintf(gT("Edit user role '%s'"), $model->name);
     $buttonTitle = gT('Save');
 }
 Yii::app()->getController()->renderPartial(

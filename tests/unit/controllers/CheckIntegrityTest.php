@@ -818,7 +818,7 @@ class CheckIntegrityTest extends TestBaseClass
     }
 
     /**
-     * Submits the "Run data consistency check" button.
+     * Submits the "Check data integrity" button.
      *
      * @return string[] The log of fixes.
      */
