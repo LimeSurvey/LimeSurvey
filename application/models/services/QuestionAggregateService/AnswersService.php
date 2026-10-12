@@ -132,10 +132,14 @@ class AnswersService
                 'qid'              => $question->qid,
                 'code'             => $data['code'],
                 'sortorder'        => $count,
+                // 'assessment_value' is used by the new React editor/API
+                // (see TransformerInputAnswer), while 'assessment' is the
+                // legacy field name still submitted by the classic Twig/
+                // jQuery question editor (QuestionAdministrationController
+                // via SaveService). Both editors run in parallel, so both
+                // keys need to be supported here.
                 'assessment_value' =>
-                    isset($data['assessment'])
-                        ? $data['assessment']
-                        : 0,
+                    $data['assessment_value'] ?? $data['assessment'] ?? 0,
                 'scale_id'         => $scaleId
             ]);
             $answer->setScenario('saveall');

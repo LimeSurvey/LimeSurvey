@@ -68,7 +68,7 @@ export const ImportSurveyModal = ({
         groupStrategy,
       })
       if (!result?.newsid) {
-        throw new Error(t('The import completed without a new survey ID.'))
+        throw new Error('The import completed without a new survey ID.')
       }
       setSubmittedSummary(result)
       showImportSuccess()

@@ -381,7 +381,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['de-easy']['radixpoint'] = 1;
     $supportedLanguages['de-easy']['cldr'] = 'de';
     $supportedLanguages['de-easy']['momentjs'] = 'de';
-    $supportedLanguages['de-easy']['bcp47'] = 'de';
+    $supportedLanguages['de-easy']['bcp47'] = 'de-simple';
 
     // German informal
     $supportedLanguages['de-informal']['description'] = gT('German (informal)');
