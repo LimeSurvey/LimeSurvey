@@ -22,6 +22,8 @@
 
     The easiest way to change the text in the warnings is to create a new translation.
 
+    If questions with errors can be listed, the error summary is shown instead (also when popups are used), with a link to each question.
+
     These warnings are complementary to the popup ones. If you're using popups (set in config file), and then don't want to show these alerts, you can uncomment the hiddenClass checker
 #}
 
@@ -34,8 +36,27 @@
     </div>
 {% endif %}
 
-{# Error Html warnings #}
-{% if aSurveyInfo.errorHtml.show %}
+{# Error summary: The questions with errors, each linked to its question, with the generic error messages above them #}
+{% if aSurveyInfo.errorSummary.show|default(false) %}
+    <div id="ls-error-summary" class="ls-error-summary row alert alert-danger {{ aSurveyInfo.class.errorHtml }}" tabindex="-1" aria-labelledby="ls-error-summary-title">
+        <div role="alert">
+            <h2 id="ls-error-summary-title" class="ls-error-summary-title h5">{{ gT("Please check your answers") }}</h2>
+            {% for aMessage in aSurveyInfo.errorHtml.messages %}
+                <p>{{ aMessage }}</p>
+            {% endfor %}
+            <ul class="ls-error-summary-list mb-0">
+                {% for aQuestionError in aSurveyInfo.errorSummary.questions %}
+                    <li>
+                        <a href="#question{{ aQuestionError.qid }}" class="ls-error-summary-link alert-link" data-qid="{{ aQuestionError.qid }}">{% if aQuestionError.number %}{{ aQuestionError.number }} {% endif %}{{ aQuestionError.text }}</a>:
+                        <span id="ls-error-summary-message-{{ aQuestionError.qid }}" class="ls-error-summary-message">{% for sMessage in aQuestionError.messages %}{{ sMessage }}{% if not loop.last %} {% endif %}{% endfor %}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {{ registerScript('activateErrorSummary', "activateErrorSummary();", "POS_END") }}
+{# Error Html warnings, if no question can be listed #}
+{% elseif aSurveyInfo.errorHtml.show %}
     <p class=' {# Uncomment to hide when popup is on { aSurveyInfo.errorHtml.hiddenClass } #} row fade in show alert-dismissible alert alert-danger {{ aSurveyInfo.class.errorHtml }} ' role='alert'>
         <button  {{ aSurveyInfo.attr.errorHtmlbutton }} class="{{ aSurveyInfo.class.errorHtmlbutton }} btn-close" ></button>
     {% for aMessage in aSurveyInfo.errorHtml.messages  %}

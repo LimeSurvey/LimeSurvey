@@ -428,6 +428,9 @@ class SurveyRuntimeHelper
         $this->aSurveyInfo['errorHtml']['show']        = !empty($aErrorHtmlMessage) && $this->oTemplate->showpopups == 0;
         $this->aSurveyInfo['errorHtml']['hiddenClass'] = $this->oTemplate->showpopups == 1 ? "ls-js-hidden " : "";
         $this->aSurveyInfo['errorHtml']['messages']    = $aErrorHtmlMessage;
+        // Questions with errors, listed with links on top of the page (filled in the question loop below)
+        $this->aSurveyInfo['errorSummary']['show']      = false;
+        $this->aSurveyInfo['errorSummary']['questions'] = [];
 
         $_gseq = -1;
         foreach ($_SESSION[$this->LEMsessid]['grouplist'] as $gl) {
@@ -521,6 +524,16 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], null, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['image']                 = is_array($questionAttributes) && array_key_exists('image', $questionAttributes) ? $questionAttributes['image'] : [];
                     $aGroup['aQuestions'][$qid] = $this->doBeforeQuestionRenderEvent($aGroup['aQuestions'][$qid]);
+
+                    $aQuestionErrors = $this->getQuestionErrorMessages($qinfo, $qa[7]);
+                    if (!empty($aQuestionErrors)) {
+                        $this->aSurveyInfo['errorSummary']['questions'][] = [
+                            'qid'      => $qid,
+                            'number'   => $aGroup['aQuestions'][$qid]['number'],
+                            'text'     => $this->getErrorSummaryQuestionText($aGroup['aQuestions'][$qid]['text'], $aGroup['aQuestions'][$qid]['code']),
+                            'messages' => $aQuestionErrors,
+                        ];
+                    }
                     LimeExpressionManager::updateReplacementFields(array(
                         'QID' => null,
                         'SGQ' => null,
@@ -549,6 +562,9 @@ class SurveyRuntimeHelper
                 'GROUPNAME' => null,
             ));
         }
+        // A showpopups value of -1 means that no error message is shown at all, only the question tips
+        $this->aSurveyInfo['errorSummary']['show'] = !empty($this->aSurveyInfo['errorSummary']['questions'])
+            && $this->oTemplate->showpopups >= 0;
 
         /**
          *  ExpressionScript Engine Scripts and inputs
@@ -1505,6 +1521,56 @@ class SurveyRuntimeHelper
         }
 
         return $aErrorsMandatory;
+    }
+
+    /**
+     * Get the error messages of a single question for the error summary on top of the page
+     * @param array $qinfo The question status, as returned by LimeExpressionManager::GetQuestionStatus()
+     * @param string $sgq The SGQA field name of the question
+     * @return string[] Plain text error messages, empty if the question has no error to show
+     */
+    private function getQuestionErrorMessages($qinfo, $sgq)
+    {
+        if (!$this->okToShowErrors || empty($qinfo['relevant'])) {
+            return [];
+        }
+        $aMessages = [];
+        if (!empty($qinfo['mandViolation'])) {
+            $aMessages[] = !empty($qinfo['mandSoft'])
+                ? gT("Please notice you haven't answered this question. Still, you can continue without answering.")
+                : gT('This question is mandatory');
+        }
+        if (empty($qinfo['valid'])) {
+            $aMessages[] = gT("The answer to this question is not valid.");
+        }
+        // File upload errors are keyed by the field name, with a "_file_N" suffix for a single file
+        if (is_array($this->filenotvalidated)) {
+            foreach ($this->filenotvalidated as $sField => $sMessage) {
+                if ($sField === $sgq || strpos((string) $sField, $sgq . '_file_') === 0) {
+                    $aMessages[] = $sMessage;
+                }
+            }
+        }
+        return array_values(array_unique($aMessages));
+    }
+
+    /**
+     * Get the short plain text label of a question for the error summary
+     * @param string $sQuestionText The processed question text (HTML)
+     * @param string $sQuestionCode The question code, used if the question text is empty
+     * @return string
+     */
+    private function getErrorSummaryQuestionText($sQuestionText, $sQuestionCode)
+    {
+        // Trailing colons are removed, the template adds its own one after the question text
+        $sText = rtrim(trim(flattenText($sQuestionText, false, true)), ': ');
+        if ($sText === '') {
+            return (string) $sQuestionCode;
+        }
+        if (mb_strlen($sText, 'UTF-8') > 100) {
+            $sText = rtrim(mb_substr($sText, 0, 100, 'UTF-8')) . '…';
+        }
+        return $sText;
     }
 
     /**

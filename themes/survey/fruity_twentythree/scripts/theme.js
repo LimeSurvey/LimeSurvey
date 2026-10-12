@@ -186,8 +186,8 @@ var ThemeScripts = exports.ThemeScripts = function ThemeScripts() {
         $('[data-target=\'#navbar\']').remove();
       }
 
-      // Scroll to first error - After user close modal -
-      if ($('.input-error').length > 0 || $('.ls-em-error').length > 0) {
+      // Scroll to first error - After user close modal - unless the error summary gets the focus
+      if ($('#ls-error-summary').length === 0 && ($('.input-error').length > 0 || $('.ls-em-error').length > 0)) {
         $('#bootstrap-alert-box-modal').on('hidden.bs.modal', function () {
           var $firstError = $('.input-error').length > 0 ? $('.input-error').first() : $('.ls-em-error').first();
           var $pixToScroll = $firstError.offset().top - 100;
