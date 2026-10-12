@@ -200,8 +200,8 @@ export const SurveyStructure = () => {
 
   const reorderQuestionToNewGroup = (source, destination) => {
     if (!isSurveyActive) {
-      const sourceGroupIndex = source.droppableId.replace('g', '')
-      const destGroupIndex = destination.droppableId.replace('g', '')
+      const sourceGroupIndex = Number(source.droppableId.replace('g', ''))
+      const destGroupIndex = Number(destination.droppableId.replace('g', ''))
       // remove question from source and add it to destination group
       const [sourceQuestions, [movedQuestion]] = arrayDeleteItem(
         questionGroups[sourceGroupIndex].questions,
