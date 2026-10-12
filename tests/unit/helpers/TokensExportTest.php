@@ -41,7 +41,7 @@ class TokensExportTest extends TestBaseClass
 
         $this->assertStringContainsString('"p1@mail.com"', $output);
         $this->assertStringNotContainsString('"p2@mail.com"', $output);
-        $this->assertSame(2, \Token::model(self::$surveyId)->count(), 'No participant must be deleted.');
+        $this->assertSame(2, (int) \Token::model(self::$surveyId)->count(), 'No participant must be deleted.');
     }
 
     /**
