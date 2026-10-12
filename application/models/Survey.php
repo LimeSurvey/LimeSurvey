@@ -276,6 +276,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             if (tableExists("{{tokens_" . $this->sid . "}}")) {
                 Yii::app()->db->createCommand()->dropTable("{{tokens_" . $this->sid . "}}");
             }
+            // Delete the archived (old_*) tables of this survey and their settings
+            $this->deleteArchivedTables();
 
             /* Remove User/global settings part : need Question and QuestionGroup*/
             // Settings specific for this survey
@@ -353,6 +355,38 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return true;
     }
 
+
+    /**
+     * Returns the names of all archived tables of this survey (old_responses_<sid>_<date>,
+     * old_timings_<sid>_<date>, old_tokens_<sid>_<date>, old_questions_<sid>_<date> and
+     * legacy old_survey_<sid>_<date>), created when the survey was deactivated.
+     *
+     * @return string[] Full (prefixed) table names
+     */
+    public function getArchivedTableNames()
+    {
+        Yii::app()->loadHelper('database');
+        $sDBPrefix = Yii::app()->db->tablePrefix;
+        // The LIKE pattern is only a coarse prefilter ('_' is a wildcard there), the regex does the exact match
+        $sPattern = '/^' . preg_quote((string) $sDBPrefix, '/') . 'old_[a-z]+_' . (int) $this->sid . '_/';
+        $aTables = Yii::app()->db->createCommand(dbSelectTablesLike('{{old_}}%'))->queryColumn();
+        return array_values(array_filter($aTables, function ($sTableName) use ($sPattern) {
+            return (bool) preg_match($sPattern, (string) $sTableName);
+        }));
+    }
+
+    /**
+     * Drops all archived tables of this survey and deletes the related archived table settings.
+     *
+     * @return void
+     */
+    private function deleteArchivedTables()
+    {
+        foreach ($this->getArchivedTableNames() as $sTableName) {
+            Yii::app()->db->createCommand()->dropTable($sTableName);
+        }
+        ArchivedTableSettings::model()->deleteAllByAttributes(['survey_id' => $this->sid]);
+    }
 
     /**
      * The Survey languagesettings in currently active language. Falls back to the surveys' default language if the current language is not available.

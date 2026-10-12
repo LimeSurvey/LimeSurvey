@@ -65,6 +65,10 @@ export function useResponses(surveyId, pagination, filters, sorting) {
     patchMutation.mutate(operations)
   }
 
+  const exportMutation = useMutation({
+    mutationFn: (options) => responseService.exportResponses(options),
+  })
+
   /**
    * Find the zero-based page that lists a response under the current filters
    * and the default "id DESC" sort, by counting the responses with a higher id.
@@ -95,6 +99,8 @@ export function useResponses(surveyId, pagination, filters, sorting) {
     isFetching,
     refetch,
     mutateOperations,
+    exportResponses: exportMutation.mutateAsync,
+    isExporting: exportMutation.isPending,
     findResponsePageIndex,
   }
 }

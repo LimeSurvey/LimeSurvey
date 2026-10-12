@@ -781,6 +781,43 @@ class CheckIntegrityTest extends TestBaseClass
     }
 
     /**
+     * A question without texts in a survey language could not be edited (500 error),
+     * so the consistency check must create empty texts for every missing language.
+     */
+    public function testQuestionWithoutTextsGetsEmptyTextsCreatedAndReportedByTheConsistencyCheck()
+    {
+        $group = self::$testSurvey->groups[0];
+        $qid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99992, 'CINOL10N');
+        \Yii::app()->db->createCommand()->delete('{{question_l10ns}}', 'qid = :qid', array(':qid' => $qid));
+        $getL10ns = function () use ($qid) {
+            return \Yii::app()->db->createCommand()->select('language, question')->from('{{question_l10ns}}')->where('qid = :qid', array(':qid' => $qid))->queryAll();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertEmpty($getL10ns(), 'Merely loading the check page (GET) created question texts.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $l10ns = $getL10ns();
+            $surveyLanguages = self::$testSurvey->getAllLanguages();
+            $this->assertEqualsCanonicalizing($surveyLanguages, array_column($l10ns, 'language'), 'The consistency check did not create texts for exactly the survey languages.');
+            $this->assertSame(array(''), array_values(array_unique(array_column($l10ns, 'question'))), 'The created question texts are not empty.');
+            foreach ($surveyLanguages as $language) {
+                $this->assertStringContainsString(
+                    sprintf('Created empty texts for language %s of question CINOL10N (ID %s) in survey %s', $language, $qid, self::$surveyId),
+                    $logOfFixes
+                );
+            }
+        } finally {
+            $question = \Question::model()->findByPk($qid);
+            if ($question) {
+                $question->delete();
+            }
+        }
+    }
+
+    /**
      * Submits the "Run data consistency check" button.
      *
      * @return string[] The log of fixes.
