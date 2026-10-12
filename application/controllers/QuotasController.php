@@ -136,6 +136,7 @@ class QuotasController extends LSBaseController
             throw new CHttpException(403, gT("You do not have permission for this survey."));
         }
         Yii::app()->loadHelper('admin.htmleditor');
+        App()->session['FileManagerContext'] = "edit:survey:{$surveyid}";
 
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $oSurvey->sid;
@@ -237,6 +238,7 @@ class QuotasController extends LSBaseController
         );
 
         Yii::app()->loadHelper('admin.htmleditor');
+        App()->session['FileManagerContext'] = "edit:survey:{$surveyid}";
         $this->aData = $aData;
         $this->render('editquota_view', [
             'oQuota' => $oQuota,

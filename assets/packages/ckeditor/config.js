@@ -270,7 +270,7 @@ CKEDITOR.editorConfig = function (a) {
         a.filebrowserImageBrowseUrl = CKEDITOR.basePath + "../kcfinder/browse.php?type\x3dimages";
         a.filebrowserUploadUrl = CKEDITOR.basePath + "../kcfinder/upload.php?type\x3dfiles";
         a.filebrowserImageUploadUrl = CKEDITOR.basePath + "../kcfinder/upload.php?type\x3dimages";
-        a.removeDialogTabs = "link:upload;image:Upload";
+        a.removeDialogTabs = "link:upload;image:Upload;html5video:Upload";
         a.image_prefillDimensions = !1;
         a.image2_prefillDimensions = !1;
         a.allowedContent = !0;
@@ -278,6 +278,8 @@ CKEDITOR.editorConfig = function (a) {
         a.autoParagraph = !1;
         a.basicEntities = !1;
         a.entities = !1;
+        // Pasted or dropped image files would otherwise be embedded as huge base64 data URIs into the text
+        a.clipboard_handleImages = !1;
         a.uiColor = "#f1f1f1";
 
         "rtl" == $("html").attr("dir") && (a.contentsLangDirection = "rtl");

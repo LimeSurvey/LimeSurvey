@@ -761,19 +761,23 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Called via Ajax.
+     * Called via Ajax. Returns a new empty subquestion row for each survey language as JSON.
+     *
+     * The existing codes are read from the "codes" request parameter (JSON array, GET or POST).
+     * POST is used by the question editor, since long code lists exceed the maximum URL length.
      *
      * @param int $surveyid
      * @param int $gid
-     * @param string $codes
      * @param int $scale_id
      * @param int $position
      * @param string $assessmentvisible
      * @return void
+     * @throws CHttpException
      * @todo Permission check hard when both sid and gid are given.
      */
-    public function actionGetSubquestionRowForAllLanguages($surveyid, $gid, $codes, $scale_id, $position = 0, $assessmentvisible = '')
+    public function actionGetSubquestionRowForAllLanguages($surveyid, $gid, $scale_id, $position = 0, $assessmentvisible = '')
     {
+        $codes = App()->getRequest()->getParam('codes', '[]');
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (empty($oSurvey)) {
             throw new CHttpException(404, gT("Invalid survey ID"));
@@ -867,10 +871,22 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
+     * Called via Ajax. Returns a new empty answer option row for each survey language as JSON.
+     *
+     * The existing codes are read from the "codes" request parameter (JSON array, GET or POST).
+     * POST is used by the question editor, since long code lists exceed the maximum URL length.
+     *
+     * @param int $surveyid
+     * @param int $gid
+     * @param int $scale_id
+     * @param int $position
+     * @param string $assessmentvisible
      * @return void
+     * @throws CHttpException
      */
-    public function actionGetAnswerOptionRowForAllLanguages($surveyid, $gid, $codes, $scale_id, $position = 0, $assessmentvisible = '')
+    public function actionGetAnswerOptionRowForAllLanguages($surveyid, $gid, $scale_id, $position = 0, $assessmentvisible = '')
     {
+        $codes = App()->getRequest()->getParam('codes', '[]');
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (empty($oSurvey)) {
             throw new CHttpException(404, gT("Invalid survey ID"));

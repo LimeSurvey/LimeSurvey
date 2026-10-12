@@ -114,8 +114,6 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
 
     public function init()
     {
-        $this->subscribe('beforeSurveySettings');
-        $this->subscribe('newSurveySettings');
         $this->subscribe('beforeSurveySettingsSave');
         $this->subscribe('beforeActivate');
         $this->subscribe('beforeUserSave');
@@ -251,7 +249,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $iSurveyID = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_DataEntryCreate') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_DataEntryCreate')) {
             return;
         }
 
@@ -277,7 +275,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $iSurveyID = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_DataEntryUpdate') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_DataEntryUpdate')) {
             return;
         }
 
@@ -317,7 +315,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $iSurveyID = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_DataEntryDelete') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_DataEntryDelete')) {
             return;
         }
 
@@ -342,7 +340,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $iSurveyID = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_DataEntryImport') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_DataEntryImport')) {
             return;
         }
 
@@ -370,7 +368,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $iSurveyID = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_TokenSave') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_TokenSave')) {
             return;
         }
 
@@ -408,7 +406,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $iSurveyID = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_TokenDelete') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_TokenDelete')) {
             return;
         }
 
@@ -454,7 +452,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $surveyId = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_TokenDelete') || !$this->get('auditing', 'Survey', $surveyId, true)) {
+        if (!$this->checkSetting('AuditLog_Log_TokenDelete')) {
             return;
         }
 
@@ -646,47 +644,12 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         }
     }
 
-    /**
-    * This event is fired by the administration panel to gather extra settings
-    * available for a survey.
-    * The plugin should return setting meta data.
-    */
-    public function beforeSurveySettings()
-    {
-        $pluginsettings = $this->getPluginSettings(true);
-
-        $event = $this->getEvent();
-        $event->set("surveysettings.{$this->id}", array(
-            'name' => get_class($this),
-            'settings' => array(
-                'auditing' => array(
-                    'type' => 'select',
-                    'options' => array(0 => 'No',
-                        1 => 'Yes'),
-                    'default' => 1,
-                    'tab' => 'notification', // @todo: Setting no used yet
-                    'category' => 'Auditing for person-related data', // @todo: Setting no used yet
-                    'label' => 'Audit log for this survey:',
-                    'current' => $this->get('auditing', 'Survey', $event->get('survey'))
-                )
-            )
-        ));
-    }
-
-    public function newSurveySettings()
-    {
-        $event = $this->getEvent();
-        foreach ($event->get('settings') as $name => $value) {
-                $this->set($name, $value, 'Survey', $event->get('survey'));
-        }
-    }
-
     public function beforeSurveySettingsSave()
     {
         $event = $this->getEvent();
         $oModifiedSurvey = $event->get('modifiedSurvey');
         $iSurveyID = $oModifiedSurvey->sid;
-        if (!$this->checkSetting('AuditLog_Log_SurveySettings') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_SurveySettings')) {
             return;
         }
 

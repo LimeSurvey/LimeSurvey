@@ -122,13 +122,14 @@ var AdvancedRankingQuestion = function (options) {
         bindActions();
     },
     
+    /**
+     * Show the rank number on ranked items only; items still in the choice list have no rank
+     */
     updateRankingNumber= function () {
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function (index,item) {
-            $(item).find('.selector__index_row').text('#'+(index+1));
+            $(item).find('.selector__index_row').text('#' + (index + 1) + ' ');
         });
-        $('#sortable-choice-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function (index,item) {
-            $(item).find('.selector__index_row').text('#'+(index+1));
-        });
+        $('#sortable-choice-' + questionId + ' .answer-item.sortable-item.ls-choice .selector__index_row').text('');
     },
     /**
      * Update answers after updating drag and drop part
