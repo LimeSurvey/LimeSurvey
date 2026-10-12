@@ -891,4 +891,3 @@ $config['allow_unserialize_attachments'] = false;
 $config['twig_getConfig_extraallowlist'] = null;
 
 return $config;
-//settings deleted
