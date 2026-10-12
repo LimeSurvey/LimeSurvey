@@ -10,6 +10,7 @@ use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{ArrayNumbersProcessor,
     ArrayTextProcessor,
+    FileUploadProcessor,
     MultipleChoiceProcessor,
     MultipleNumericalProcessor,
     NumericalProcessor,
@@ -69,7 +70,7 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_K_MULTIPLE_NUMERICAL => fn() => new MultipleNumericalProcessor(),
             Question::QT_ASTERISK_EQUATION => fn() => null,
             Question::QT_D_DATE => fn() => null,
-            Question::QT_VERTICAL_FILE_UPLOAD => fn() => null,
+            Question::QT_VERTICAL_FILE_UPLOAD => fn() => new FileUploadProcessor(),
             Question::QT_SEMICOLON_ARRAY_TEXT => fn() => new ArrayTextProcessor(),
             Question::QT_X_TEXT_DISPLAY => fn() => null,
 

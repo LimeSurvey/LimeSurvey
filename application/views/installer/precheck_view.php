@@ -186,8 +186,9 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                        <span class='ri-error-warning-fill text-warning' aria-hidden='true'></span>
                        <span class='fw-bold'><?php eT("Too low"); ?>: <?= $model->maxInputVars ?></span>
                        <br/>
+                       <?php eT("Large surveys may lose data when saving or exporting."); ?>
                        <?= sprintf(
-                           gT("Large surveys may lose data when saving or exporting. Please ask your system administrator to raise the PHP setting max_input_vars to at least %s."),
+                           gT("Please ask your system administrator to raise it to at least %s."),
                            $model::RECOMMENDED_MAX_INPUT_VARS
                        ) ?>
                    <?php endif; ?>
@@ -203,8 +204,9 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                        <span class='ri-error-warning-fill text-warning' aria-hidden='true'></span>
                        <span class='fw-bold'><?php eT("Too low"); ?>: <?= CHtml::encode(ini_get('post_max_size')) ?></span>
                        <br/>
+                       <?php eT("Saving large forms or uploading files may fail."); ?>
                        <?= sprintf(
-                           gT("Saving large forms or uploading files may fail. Please ask your system administrator to raise the PHP setting post_max_size to at least %s."),
+                           gT("Please ask your system administrator to raise it to at least %s."),
                            $model::RECOMMENDED_POST_MAX_SIZE . 'M'
                        ) ?>
                    <?php endif; ?>
@@ -220,8 +222,9 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                        <span class='ri-error-warning-fill text-warning' aria-hidden='true'></span>
                        <span class='fw-bold'><?php eT("Too low"); ?>: <?= CHtml::encode(ini_get('upload_max_filesize')) ?></span>
                        <br/>
+                       <?php eT("Importing surveys or uploading files may fail."); ?>
                        <?= sprintf(
-                           gT("Importing surveys or uploading files may fail. Please ask your system administrator to raise the PHP setting upload_max_filesize to at least %s."),
+                           gT("Please ask your system administrator to raise it to at least %s."),
                            $model::RECOMMENDED_UPLOAD_MAX_FILESIZE . 'M'
                        ) ?>
                    <?php endif; ?>
