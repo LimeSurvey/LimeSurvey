@@ -32,7 +32,7 @@ class RemoteControlListResponseExportsTest extends BaseTest
     public function testInvalidSessionKey()
     {
         $result = $this->handler->list_response_exports('invalid-session-key');
-        $this->assertSame(array('status' => 'Invalid session key'), $result);
+        $this->assertSame(array('status' => 'Invalid session key', 'error_code' => 'ERR_INVALID_SESSION'), $result);
     }
 
     /**
