@@ -35,6 +35,28 @@ class RemoteControlListResponseExportsTest extends BaseTest
         $this->assertSame(array('status' => 'Invalid session key', 'error_code' => 'ERR_INVALID_SESSION'), $result);
     }
 
+    public function testNoExportFormats()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $this->assertIsString($sessionKey);
+        $app = App();
+        $originalPluginManager = $app->getPluginManager();
+        $pluginManager = $this->createMock(\LimeSurvey\PluginManager\PluginManager::class);
+        $pluginManager->expects($this->once())->method('dispatchEvent')->willReturnCallback(function ($event) {
+            $event->set('exportplugins', array());
+        });
+        try {
+            $app->setComponent('pluginManager', $pluginManager);
+            $result = $this->handler->list_response_exports($sessionKey);
+        } finally {
+            $app->setComponent('pluginManager', $originalPluginManager);
+        }
+        $this->assertSame(
+            array('status' => 'No export formats found', 'error_code' => 'ERR_NO_DATA'),
+            $result
+        );
+    }
+
     /**
      * The export formats are listed sorted by type, with plain-text labels and only the API relevant keys.
      */
