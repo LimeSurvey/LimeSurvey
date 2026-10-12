@@ -7,6 +7,7 @@
     height: 36px;
     overflow: hidden;
     width: 36px;
+    text-align: center;
 }
 .star-rating.star-focused{
     outline: 2px solid #333;
