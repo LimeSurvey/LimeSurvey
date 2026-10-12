@@ -1,13 +1,14 @@
 // Import shared mocks
 import 'tests/mocks'
 
-import { DragAndDrop } from './DragAndDrop'
+import { useState } from 'react'
 import { renderWithProviders } from 'tests/testUtils'
 import { screen } from '@testing-library/react'
-import { useState } from 'react'
-import { Draggable } from '@hello-pangea/dnd'
-import { DragDropContext } from '@hello-pangea/dnd'
+import { Draggable, DragDropContext } from '@hello-pangea/dnd'
+
 import { DragIcon } from 'components/icons'
+
+import { DragAndDrop } from './DragAndDrop'
 
 const DATA = [
   { value: 'A', qid: '1', aid: 'a' },

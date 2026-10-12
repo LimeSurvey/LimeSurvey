@@ -66,6 +66,7 @@ export const SurveyStructure = () => {
     const allGroupsElement = document.querySelector(
       '[data-rfd-droppable-id="all-groups"]'
     )
+
     if (allGroupsElement) {
       if (isDraggingOutOfGroup || !hasSurveyUpdatePermission) {
         allGroupsElement.style.cursor = 'not-allowed'
@@ -189,7 +190,7 @@ export const SurveyStructure = () => {
     newIndex
   ) => {
     if (source.droppableId === destination.droppableId) {
-      const groupIndex = source.droppableId.replace('g', '')
+      const groupIndex = Number(source.droppableId.replace('g', ''))
       const questions = questionGroups[groupIndex].questions
       const { movedQuestion, reorderedQuestions } = MoveQuestion(
         questions,

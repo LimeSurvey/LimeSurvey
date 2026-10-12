@@ -243,8 +243,8 @@ export const ArrayColumnsTitles = ({
             {entitiesInfo?.items?.map((entity, index) => {
               return (
                 <Draggable
-                  key={`${entity.appKey || entity[entitiesInfo.idKey]}}-subQuestionAnswerTitle`}
-                  draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}}-subQuestionAnswerTitle`}
+                  key={`${entity.appKey || entity[entitiesInfo.idKey]}-subQuestionAnswerTitle`}
+                  draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}-subQuestionAnswerTitle`}
                   index={index}
                 >
                   {(provided, snapshot) => (

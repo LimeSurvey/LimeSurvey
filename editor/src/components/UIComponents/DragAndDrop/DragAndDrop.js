@@ -25,12 +25,16 @@ export const DragAndDrop = ({
     !hasSurveyUpdatePermission
 
   const handleOnDragEnd = (result) => {
-    if ((isSurveyActive && surveyActiveDisable) || !hasSurveyUpdatePermission)
+    if ((isSurveyActive && surveyActiveDisable) || !hasSurveyUpdatePermission) {
       errorToast(
         isSurveyActive && surveyActiveDisable
           ? getTooltipMessages().ACTIVE_DISABLED
           : getTooltipMessages().NO_PERMISSION
       )
+
+      return
+    }
+
     onDragEnd(result)
   }
 
@@ -47,7 +51,6 @@ export const DragAndDrop = ({
             <div
               className={className}
               ref={provided.innerRef}
-              {...provided.droppableProps}
               {...provided.droppableProps}
             >
               {children}
