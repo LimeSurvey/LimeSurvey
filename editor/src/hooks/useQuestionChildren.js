@@ -319,6 +319,57 @@ export const useQuestionChildren = ({
     handleUpdate({ [childKey]: updatedChildren })
   }
 
+  const handleChildAssessmentValueUpdate = ({
+    newAssessmentValue = '',
+    childIndex,
+    childArray = [],
+  }) => {
+    const updatedChildren = [...childArray]
+
+    if (updatedChildren[childIndex] === undefined) {
+      reportExtras({
+        extraData: {
+          questionThemeName: question.questionThemeName,
+          updatedEntities: updatedChildren,
+          updateKey: 'answers',
+          index: childIndex,
+          question,
+        },
+        message: `Error while updating assessment value in ${question.questionThemeName} - unable to find item`,
+      })
+      return
+    }
+
+    updatedChildren[childIndex] = {
+      ...updatedChildren[childIndex],
+      assessmentValue: newAssessmentValue,
+    }
+
+    // Mirrors backend rule: numerical, integerOnly, allowEmpty (Yii CNumberValidator)
+    const assessmentValueString = String(newAssessmentValue ?? '')
+    const isValidAssessmentValue =
+      assessmentValueString.trim() === '' ||
+      /^\s*[+-]?\d+\s*$/.test(assessmentValueString)
+
+    if (isValidAssessmentValue) {
+      // An empty field is stored as 0 (DB column is NOT NULL DEFAULT 0), so
+      // send that explicitly. The UI keeps "" while the user is still typing.
+      const childrenToSave = updatedChildren.map((child, index) =>
+        index === childIndex && assessmentValueString.trim() === ''
+          ? { ...child, assessmentValue: 0 }
+          : child
+      )
+
+      const operation = createBufferOperation(question.qid)
+        .answer()
+        .update([...childrenToSave])
+
+      addToBuffer(operation)
+    }
+
+    handleUpdate({ answers: updatedChildren })
+  }
+
   const validateCode = ({
     newCode,
     childIndex,
@@ -389,6 +440,7 @@ export const useQuestionChildren = ({
     handleOnChildDragEnd,
     handleChildLUpdate,
     handleChildCodeUpdate,
+    handleChildAssessmentValueUpdate,
     activeLanguage,
   }
 }

@@ -47,4 +47,26 @@ class SurveyDynamicTest extends TestBaseClass
         // Table column name incorrectly spelled.
         $responseId = \SurveyDynamic::model(self::$surveyId)->insertRecords(array('starlanguage' => 'en'));
     }
+
+    /**
+     * Testing that the responses grid can be filtered by seed.
+     */
+    public function testSearchFiltersBySeed()
+    {
+        $matchingId = \SurveyDynamic::model(self::$surveyId)->insertRecords(array('startlanguage' => 'en', 'seed' => '123456789'));
+        $otherId = \SurveyDynamic::model(self::$surveyId)->insertRecords(array('startlanguage' => 'en', 'seed' => '987654321'));
+
+        $model = \SurveyDynamic::model(self::$surveyId);
+        $model->setAttributes(array('seed' => '123456789'), false);
+        $responseIds = array_map(
+            function ($response) {
+                return (int) $response->id;
+            },
+            $model->search()->getData()
+        );
+        $model->seed = null;
+
+        $this->assertContains((int) $matchingId, $responseIds, 'The response with the matching seed should be found.');
+        $this->assertNotContains((int) $otherId, $responseIds, 'The response with a different seed should be filtered out.');
+    }
 }

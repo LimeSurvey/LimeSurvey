@@ -176,6 +176,7 @@ class PluginManagerController extends SurveyCommonAction
             [
                 'showUpload' => false,
                 'scanFilesUrl' => $scanFilesUrl,
+                'extraMenus' => [],
             ],
             true
         );

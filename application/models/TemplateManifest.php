@@ -1469,6 +1469,7 @@ class TemplateManifest extends TemplateConfiguration
                             }
                         }
                     }
+                    self::translateDropdownOptions($dropdownOptionsDom);
                     $dropdownOptionsString = $dropdownOptions->asXML();
                     $dropdownOptionsArray = [];
                     if (isset($dropdownOptions->optgroup)) {
@@ -1523,6 +1524,34 @@ class TemplateManifest extends TemplateConfiguration
         return false;
     }
 
+    /**
+     * Translates the labels of the optgroups and the texts of the options of a theme option dropdown.
+     * The option values are not changed.
+     *
+     * @param DOMElement $dropdownOptionsDom The dropdownoptions element of a theme option
+     * @return void
+     */
+    private static function translateDropdownOptions(DOMElement $dropdownOptionsDom)
+    {
+        foreach ($dropdownOptionsDom->getElementsByTagName('optgroup') as $optgroup) {
+            $label = trim($optgroup->getAttribute('label'));
+            if ($label !== '') {
+                $optgroup->setAttribute('label', gT($label, 'unescaped'));
+            }
+        }
+        foreach ($dropdownOptionsDom->getElementsByTagName('option') as $option) {
+            $text = trim($option->textContent);
+            if ($text !== '') {
+                $option->textContent = gT($text, 'unescaped');
+            }
+        }
+    }
+
+    /**
+     * Returns the HTML options of the font dropdown, grouped by font package type
+     *
+     * @return string
+     */
     public static function getFontDropdownOptions()
     {
         $fontOptions = '';

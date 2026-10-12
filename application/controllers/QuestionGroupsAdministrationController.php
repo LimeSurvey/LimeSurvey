@@ -281,6 +281,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['sidemenu']['state'] = false;
         $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
 
+        // Unsaved group, so the breadcrumb shows "New question group"
+        $aData['oQuestionGroup'] = new QuestionGroup();
+        $aData['oQuestionGroup']->sid = $surveyid;
+
         $this->aData = $aData;
 
         $this->render('addGroup_view', $this->aData);

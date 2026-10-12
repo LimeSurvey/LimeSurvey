@@ -12,14 +12,14 @@ $ckeditorHandlers = "
         var dialogName = ev.data.name;
         var dialogDefinition = ev.data.definition;
 
-        // Remove upload tab from Link and Image dialog as it interferes with
+        // Remove upload tab from Link, Image and HTML5 video dialog as it interferes with
         // CSRF protection and upload can be reached using the browse server tab
         if ( dialogName == 'link')
         {
            // remove Upload tab
            dialogDefinition.removeContents( 'upload' );
         }
-        if ( dialogName == 'image')
+        if ( dialogName == 'image' || dialogName == 'html5video')
         {
            // remove Upload tab
            dialogDefinition.removeContents( 'Upload' );

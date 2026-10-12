@@ -36,8 +36,14 @@ const fileIcon = (extension) =>
     FILE_ICONS[icon].includes(extension)
   ) ?? 'ri-file-line'
 
-const formatNumber = (value, locale) => {
-  const options = { maximumFractionDigits: 1 }
+// The unit is formatted by the browser in the user's locale (e.g. "12,5 kB", "12,5 ko"), so it needs no translation.
+const formatNumber = (value, locale, unit) => {
+  const options = {
+    maximumFractionDigits: 1,
+    style: 'unit',
+    unit,
+    unitDisplay: 'short',
+  }
   try {
     return value.toLocaleString(locale, options)
   } catch {
@@ -49,12 +55,12 @@ const formatNumber = (value, locale) => {
 const formatFileSize = (sizeKb, locale) => {
   const kb = Number(sizeKb) || 0
   if (kb < 1) {
-    return `${formatNumber(Math.round(kb * 1024), locale)} ${t('B')}`
+    return formatNumber(Math.round(kb * 1024), locale, 'byte')
   }
   if (kb < 1024) {
-    return `${formatNumber(kb, locale)} ${t('KB')}`
+    return formatNumber(kb, locale, 'kilobyte')
   }
-  return `${formatNumber(kb / 1024, locale)} ${t('MB')}`
+  return formatNumber(kb / 1024, locale, 'megabyte')
 }
 
 const fileUrl = (surveyId, responseId, questionId, index, inline = false) =>

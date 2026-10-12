@@ -70,7 +70,7 @@ var ThemeOptions = function () {
                 $(item).val((inheritPossible ? 'inherit' : false));
             }
 
-            optionObject[$(item).attr('name')] = $(item).val();
+            optionObject[$(item).attr('name')] = getOptionFieldValue(item);
         });
 
         globalForm.find('.selector_image_selector').each(function (i, item) {
@@ -121,10 +121,19 @@ var ThemeOptions = function () {
     // Utility Methods
     // -- small utilities i.g. for images or similar, or very specialized functions
 
+    // Color picker text fields are left empty when the value is inherited, so they show the translated placeholder instead of "inherit"
+    var getOptionFieldValue = function (item) {
+        if ($(item).hasClass('selector__color-picker') && $(item).val() === '' && inheritPossible) {
+            return 'inherit';
+        }
+        return $(item).val();
+    };
+
     var applyColorPickerValue = function (item) {
         if ($(item).hasClass('selector__color-picker')) {
             console.ls.log($(item).data('inheritvalue'), $(item).val(), item);
             if ($(item).val() === 'inherit') {
+                $(item).val('');
                 $(item).closest('.input-group').find('.selector__colorpicker-inherit-value').val($(item).data('inheritvalue')).trigger('change');
             } else {
                 $(item).closest('.input-group').find('.selector__colorpicker-inherit-value').val($(item).val()).trigger('change');
@@ -386,7 +395,7 @@ var ThemeOptions = function () {
             var colorField = $(this).closest('.input-group').find('.selector__color-picker');
             console.ls.log(colorField, colorField.data('inheritvalue'));
             $(this).closest('.input-group').find('.selector__colorpicker-inherit-value').val(colorField.data('inheritvalue')).trigger('change');
-            colorField.attr('type', 'text').val('inherit');
+            colorField.attr('type', 'text').val('');
             optionObject[colorField.attr('name')] = 'inherit';
             updateFieldSettings();
         });

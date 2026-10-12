@@ -97,7 +97,7 @@ export const Responses = () => {
     const exportData = exportOptionsRef.current
     if (!exportData || !exportData.options) {
       toastComponent({
-        Component: <span>{t('Export options not initialized')}</span>,
+        Component: <span>Export options not initialized</span>,
       })
       return
     }

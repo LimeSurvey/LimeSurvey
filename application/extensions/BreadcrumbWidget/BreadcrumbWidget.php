@@ -117,7 +117,11 @@ class BreadcrumbWidget extends CWidget
         $subAction = $breadcrumbConfigArray['sSubaction'];
         $question = $breadcrumbConfigArray['oQuestion'];
         $mode = $breadcrumbConfigArray['mode'];
-        if (isset($questionGroup)) {
+        if (isset($questionGroup) && $questionGroup->isNewRecord) {
+            $breadcrumbs[] = [
+                'text' => gT('New question group'),
+            ];
+        } elseif (isset($questionGroup)) {
             $groupTitle = flattenText($questionGroup->questiongroupl10ns[$survey->language]->group_name);
             if ($mode == 'long') {
                 $groupTitle .= ' (' . $questionGroup->gid . ')';
@@ -128,7 +132,7 @@ class BreadcrumbWidget extends CWidget
             // If the questiongroup view is active right now, don't link it?
             if (!$subAction && !isset($question)) {
                 $breadcrumbs[] = [
-                    'text' => $questionGroup->isNewRecord ? gT('New question group') : $groupTitle,
+                    'text' => $groupTitle,
                 ];
             } else {
                 $breadcrumbs[] =
@@ -176,7 +180,7 @@ class BreadcrumbWidget extends CWidget
             if (!isset($subAction)) {
                 $breadcrumbs[] =
                     [
-                        'text' => $questionTitle,
+                        'text' => $question->isNewRecord ? gT('New question') : $questionTitle,
                     ];
             } else {
                 $breadcrumbs[] =

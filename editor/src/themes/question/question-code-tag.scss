@@ -2,21 +2,24 @@
   padding: 4px 8px;
   justify-content: center;
   align-items: center;
-  border-radius: 2px;
-  border: 1px solid #6e748c;
-  color: #1e1e1e;
+  border-radius: $border-radius-xs;
+  border: 1px solid $g-700;
+  color: $g-900;
   text-align: center;
-  font-size: 10px;
+  font-size: $font-size-xxs;
   font-style: $font-style-base;
   font-weight: $font-weight-normal;
-  line-height: 16px;
+  line-height: $line-height-16;
   letter-spacing: -0.5px;
   height: 28px;
   width: 60px;
   white-space: nowrap; /* Prevents text from wrapping */
   overflow: hidden; /* Hides overflow text */
   text-overflow: ellipsis; /* Shows "..." when text overflows */
-  margin-left: 20px;
+  &:focus-visible {
+    outline: 2px solid $g-700;
+    outline-offset: -2px;
+  }
 }
 
 .question-code-icon-error {
@@ -33,7 +36,7 @@
 }
 
 .question-code-tag-error {
-  font-size: 10px;
-  font-weight: 500;
+  font-size: $font-size-xxs;
+  font-weight: $font-weight-500;
   margin-left: 20px;
 }

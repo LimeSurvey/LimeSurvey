@@ -7,4 +7,10 @@ describe('getQuestionExample', () => {
 
     expect(question.attributes).toEqual(attributes)
   })
+
+  test('includes whether assessment values should be shown', () => {
+    const question = getQuestionExample({ showAssessmentValue: true })
+
+    expect(question.showAssessmentValue).toBe(true)
+  })
 })

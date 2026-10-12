@@ -703,6 +703,7 @@ class SurveyDynamic extends LSActiveRecord
         $criteria->compare('t.id', empty($this->id) ? null : $this->id, false);
         $criteria->compare('t.submitdate', $this->submitdate, true);
         $criteria->compare('t.startlanguage', $this->startlanguage, true);
+        $criteria->compare('t.seed', $this->seed, true);
 
         // Completed filters
         if ($this->completed_filter == "Y") {

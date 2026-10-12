@@ -2381,7 +2381,6 @@ class SurveyAdministrationController extends LSBaseController
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        $sBaseLanguage = $oSurvey->language;
         $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $iSurveyID]);
         $aData = array(
             'rows' => []
@@ -2390,11 +2389,7 @@ class SurveyAdministrationController extends LSBaseController
             $row = $oSurveyParameter->attributes;
 
             if ($oSurveyParameter->targetqid != '') {
-                $row['questionTitle'] = $oSurveyParameter->question->title . ": " . ellipsize(flattenText($oSurveyParameter->question->questionl10ns[$sBaseLanguage]->question, false, true), 43, .70);
-            }
-
-            if ($oSurveyParameter->targetsqid != '') {
-                $row['questionTitle'] .= (' - ' . ellipsize(flattenText($oSurveyParameter->subquestion->questionl10ns[$sBaseLanguage]->question, false, true), 30, .75));
+                $row['questionTitle'] = $oSurveyParameter->getQuestionTitle();
             }
 
             $row['qid'] = $oSurveyParameter->targetqid;

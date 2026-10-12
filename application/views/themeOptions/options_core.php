@@ -203,7 +203,9 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     <div class="input-group-text style__colorpicker">
                                         <input type="color" name="<?= $attributeKey ?>_picker" data-value="<?= $sParentOption ?>" class="selector__colorpicker-inherit-value"/>
                                     </div>
-                                    <input id="<?= $attributeKey ?>" type="text" name="<?= $attributeKey ?>" data-inheritvalue="<?= $sParentOption ?>" value="inherit"
+                                    <?php // An inherited color is shown as an empty field with a placeholder, see themeoptions-core.js ?>
+                                    <input id="<?= $attributeKey ?>" type="text" name="<?= $attributeKey ?>" data-inheritvalue="<?= $sParentOption ?>" value=""
+                                           <?php if ($bInherit) : ?>placeholder="<?= gT("Inherit") ?> [<?= gT("Inherited value:") ?> <?= CHtml::encode($sParentOption) ?>]"<?php endif; ?>
                                            class="selector_option_value_field selector__color-picker form-control simple_edit_options_<?= $attributeKey ?>"/>
                                     <?php if ($bInherit && isset($sParentOption)) : ?>
                                         <div class="input-group-text">
@@ -261,7 +263,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                             }
                                             ?>
 
-                                            <option <?= $dataAttributes ?> value="inherit"><?= gT("Inherit") ?>[<?= gT("Inherited value:") ?> <?= $inheritedValue ?>]</option>
+                                            <option <?= $dataAttributes ?> value="inherit"><?= gT("Inherit") ?> [<?= gT("Inherited value:") ?> <?= $inheritedValue ?>]</option>
                                         <?php endif; ?>
                                         <?php // dropdown options from config.xml file ?>
                                         <?= $aOptionAttributes['optionAttributes'][$attributeKey]['dropdownoptions'] ?>
@@ -290,7 +292,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                                 $inheritedValue = isset($sParentOption) ? $sParentOption : '';
                                             }
                                             ?>
-                                            <option value="inherit"><?= gT("Inherit") ?>[<?= gT("Inherited value:") ?> <?= $inheritedValue ?>]</option>
+                                            <option value="inherit"><?= gT("Inherit") ?> [<?= gT("Inherited value:") ?> <?= $inheritedValue ?>]</option>
                                         <?php endif; ?>
                                         <?php // Dropdown options for image files ?>
                                         <?= $imageOptions ?>
@@ -302,7 +304,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     <select class="selector_option_value_field form-select simple_edit_options_checkicon" <?= $parentDataAttribute ?>
                                             id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>">
                                         <?php if ($bInherit) : ?>
-                                            <option value="inherit"><?= gT("Inherit") ?>[<?= gT("Inherited value:") ?> <?= ($sParentOption ?? '') ?>]</option>
+                                            <option value="inherit"><?= gT("Inherit") ?> [<?= gT("Inherited value:") ?> <?= ($sParentOption ?? '') ?>]</option>
                                         <?php endif; ?>
                                         <?php // dropdown options from config.xml file ?>
                                         <?= $aOptionAttributes['optionAttributes'][$attributeKey]['dropdownoptions'] ?>

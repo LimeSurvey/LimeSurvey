@@ -463,6 +463,7 @@ class Question extends LSActiveRecord
         Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(DefaultValue::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
+        SurveyURLParameter::removeTargetQuestions($questionsIds);
     }
 
     /**
@@ -480,6 +481,7 @@ class Question extends LSActiveRecord
         QuestionL10n::model()->deleteAll($qidsCriteria);
         QuotaMember::model()->deleteAll($qidsCriteria);
         Condition::model()->deleteAll($qidsCriteria);
+        SurveyURLParameter::removeTargetQuestions($ids);
 
         // delete defaultvalues and defaultvalueL10ns
         $oDefaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));

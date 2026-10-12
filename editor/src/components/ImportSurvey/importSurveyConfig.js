@@ -13,7 +13,7 @@ export const IMPORT_SURVEY_GROUP_STRATEGIES = {
 export const getImportSurveyGroupOptions = () => [
   {
     value: IMPORT_SURVEY_GROUP_STRATEGIES.DEFAULT,
-    label: t('Default survey group'),
+    label: t('Import on default survey group'),
   },
   {
     value: IMPORT_SURVEY_GROUP_STRATEGIES.FROM_SURVEY,

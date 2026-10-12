@@ -303,6 +303,14 @@ class SurveysGroupsController extends SurveyCommonAction
             }
             if ($oSurvey->save()) {
                 $bRedirect = 1;
+            } else {
+                Yii::app()->setFlashMessage(
+                    CHtml::errorSummary(
+                        $oSurvey,
+                        CHtml::tag("p", ['class' => 'strong'], gT("Survey group settings could not be updated, please fix the following error:"))
+                    ),
+                    "error"
+                );
             }
         }
 

@@ -685,7 +685,7 @@ class remotecontrol_handle
 
         usort($oAllQuestions, 'groupOrderThenQuestionOrder');
 
-        $aSummary = createCompleteSGQA($iSurveyID, $oAllQuestions, $sLanguage);
+        $aSummary = getStatisticsFieldNames($iSurveyID, $oAllQuestions, $sLanguage);
 
         $helper = new statistics_helper();
         switch ($docType) {

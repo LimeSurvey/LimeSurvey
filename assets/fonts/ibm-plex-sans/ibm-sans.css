@@ -108,3 +108,7 @@ body {
         /* Sans serif fallback*/ sans-serif,
         /* Emoji fonts*/ "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
+
+.font-ibm-sans{
+    font-family: 'IBMPlexSans';
+}

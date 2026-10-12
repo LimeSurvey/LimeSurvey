@@ -115,7 +115,8 @@ class ExpressionManager
         // Note, this is effectively a Lexer using Regular Expressions.  Don't change this unless you understand compiler design.
         $RDP_regex_dq_string = '(?<!\\\\)".*?(?<!\\\\)"';
         $RDP_regex_sq_string = '(?<!\\\\)\'.*?(?<!\\\\)\'';
-        $RDP_regex_whitespace = '\s+';
+        // Non-breaking spaces (UTF-8 bytes C2 A0) are whitespace too: The HTML editor inserts them
+        $RDP_regex_whitespace = '(?:\s|\xC2\xA0)+';
         $RDP_regex_lparen = '\(';
         $RDP_regex_rparen = '\)';
         $RDP_regex_comma = ',';

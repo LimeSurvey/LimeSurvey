@@ -9,6 +9,258 @@ use ls\tests\TestBaseClass;
  */
 class ParticipantActionTest extends TestBaseClass
 {
+    /** @var \User User with only the global participant panel create permission */
+    private static $createOnlyUser;
+
+    /** @var \User User with only the global participant panel read permission */
+    private static $readOnlyUser;
+
+    /**
+     * Creates users with only the global participant panel create or read permission.
+     *
+     * @return void
+     */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+        self::$createOnlyUser = self::createUserWithPermissions(
+            [
+                'users_name' => 'cpdb_create_only',
+                'full_name' => 'cpdb_create_only',
+                'email' => 'cpdb_create_only@example.com',
+                'lang' => 'auto',
+                'password' => 'cpdb_create_only',
+                'parent_id' => 1,
+            ],
+            [
+                'auth_db' => ['read' => 'on'],
+                'participantpanel' => ['create' => 'on'],
+            ]
+        );
+        self::$readOnlyUser = self::createUserWithPermissions(
+            [
+                'users_name' => 'cpdb_read_only',
+                'full_name' => 'cpdb_read_only',
+                'email' => 'cpdb_read_only@example.com',
+                'lang' => 'auto',
+                'password' => 'cpdb_read_only',
+                'parent_id' => 1,
+            ],
+            [
+                'auth_db' => ['read' => 'on'],
+                'participantpanel' => ['read' => 'on'],
+            ]
+        );
+    }
+
+    /**
+     * Removes the test users and any participants left behind by failed tests.
+     *
+     * @return void
+     */
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+        foreach ([self::$createOnlyUser, self::$readOnlyUser] as $user) {
+            \Participant::model()->deleteAllByAttributes(['owner_uid' => $user->uid]);
+            \Permission::model()->deleteAllByAttributes(['uid' => $user->uid]);
+            $user->delete();
+        }
+        \Yii::app()->session['loginID'] = null;
+    }
+
+    /**
+     * Users without global create permission must not get the form to add a participant.
+     *
+     * @return void
+     */
+    public function testUserWithoutCreatePermissionCannotOpenAddParticipantModal()
+    {
+        \Yii::app()->session['loginID'] = self::$readOnlyUser->uid;
+        $called = $this->runParticipantsAction('openEditParticipant', []);
+
+        $this->assertEquals('outputNoPermission', $called);
+    }
+
+    /**
+     * Owners without global delete permission can delete their own participants.
+     *
+     * @return void
+     */
+    public function testOwnerWithoutGlobalDeletePermissionCanDeleteOwnParticipant()
+    {
+        $participant = $this->createParticipant(self::$createOnlyUser->uid);
+
+        \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
+        $called = $this->runParticipantsAction('deleteParticipant', [
+            'selectedoption' => 'po',
+            'participant_id' => $participant->participant_id,
+        ]);
+
+        $this->assertEquals('outputSuccess', $called);
+        $this->assertNull(\Participant::model()->findByPk($participant->participant_id));
+    }
+
+    /**
+     * Users without global delete permission must not delete participants of other users.
+     *
+     * @dataProvider deleteOptionProvider
+     * @param string $selectedOption
+     * @return void
+     */
+    public function testUserWithoutGlobalDeletePermissionCannotDeleteForeignParticipant($selectedOption)
+    {
+        $participant = $this->createParticipant(1);
+
+        \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
+        $called = $this->runParticipantsAction('deleteParticipant', [
+            'selectedoption' => $selectedOption,
+            'participant_id' => $participant->participant_id,
+        ]);
+
+        $this->assertEquals('outputNoPermission', $called);
+        $this->assertNotNull(\Participant::model()->findByPk($participant->participant_id));
+        $this->assertTrue($participant->delete());
+    }
+
+    /**
+     * Delete options of the participant delete action.
+     *
+     * @return array<string, string[]>
+     */
+    public static function deleteOptionProvider()
+    {
+        return [
+            'central panel only' => ['po'],
+            'central panel and surveys' => ['ptt'],
+            'central panel, surveys and responses' => ['ptta'],
+        ];
+    }
+
+    /**
+     * A mass delete by a user without global delete permission only deletes the participants they own.
+     *
+     * @return void
+     */
+    public function testMassDeleteWithoutGlobalDeletePermissionOnlyDeletesOwnParticipants()
+    {
+        $ownParticipant = $this->createParticipant(self::$createOnlyUser->uid);
+        $foreignParticipant = $this->createParticipant(1);
+
+        \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
+        $called = $this->runParticipantsAction('deleteParticipant', [
+            'selectedoption' => 'po',
+            'sItems' => json_encode([$ownParticipant->participant_id, $foreignParticipant->participant_id]),
+        ]);
+
+        $this->assertEquals('outputSuccess', $called);
+        $this->assertNull(\Participant::model()->findByPk($ownParticipant->participant_id));
+        $this->assertNotNull(\Participant::model()->findByPk($foreignParticipant->participant_id));
+        $this->assertTrue($foreignParticipant->delete());
+    }
+
+    /**
+     * Deleting participants from the central panel and their surveys must not delete participants of other users,
+     * even if all of them are linked to a survey where the user may delete survey participants.
+     *
+     * @return void
+     */
+    public function testDeleteParticipantTokenOnlyDeletesOwnParticipants()
+    {
+        // The survey owner has all permissions on the survey, including deleting survey participants
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_143933.lss', self::$createOnlyUser->uid);
+        \Token::createTable(self::$surveyId);
+
+        $ownParticipant = $this->createParticipant(self::$createOnlyUser->uid);
+        $foreignParticipant = $this->createParticipant(1);
+        foreach ([$ownParticipant, $foreignParticipant] as $participant) {
+            $surveyLink = new \SurveyLink();
+            $surveyLink->participant_id = $participant->participant_id;
+            $surveyLink->token_id = 0;
+            $surveyLink->survey_id = self::$surveyId;
+            $surveyLink->date_created = date('Y-m-d H:i:s');
+            $this->assertTrue($surveyLink->save());
+        }
+
+        \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
+        \Participant::model()->deleteParticipantToken(
+            $ownParticipant->participant_id . ',' . $foreignParticipant->participant_id
+        );
+
+        $this->assertNull(\Participant::model()->findByPk($ownParticipant->participant_id));
+        $this->assertNotNull(\Participant::model()->findByPk($foreignParticipant->participant_id));
+        \SurveyLink::model()->deleteAllByAttributes(['survey_id' => self::$surveyId]);
+        $this->assertTrue($foreignParticipant->delete());
+    }
+
+    /**
+     * Creates a central participant.
+     *
+     * @param integer $ownerUid
+     * @return \Participant
+     */
+    private function createParticipant($ownerUid)
+    {
+        $participant = new \Participant();
+        $participant->participant_id = $participant->genUuid();
+        $participant->blacklisted = 'N';
+        $participant->owner_uid = $ownerUid;
+        $participant->created_by = $ownerUid;
+        $this->assertTrue($participant->save(), 'Saved participant');
+        return $participant;
+    }
+
+    /**
+     * Runs a ParticipantsAction method with the given POST data.
+     *
+     * @param string $action Name of the ParticipantsAction method
+     * @param array<string, string> $post
+     * @return string|null Name of the called AjaxHelper output method
+     */
+    private function runParticipantsAction($action, array $post)
+    {
+        \Yii::import('application.controllers.admin.ParticipantsAction', true);
+        \Yii::import('application.helpers.admin.ajax_helper', true);
+
+        $dummyAjaxHelper = new class () extends \ls\ajax\AjaxHelper
+        {
+            public static $called = null;
+            public static function output($msg)
+            {
+                self::$called = 'output';
+            }
+            public static function outputSuccess($msg)
+            {
+                self::$called = 'outputSuccess';
+            }
+            public static function outputNoPermission()
+            {
+                // Like the real AjaxHelper, end the request here
+                self::$called = 'outputNoPermission';
+                throw new \CHttpException(403);
+            }
+            public static function outputError($msg, $code = 0)
+            {
+                self::$called = 'outputError';
+            }
+        };
+        $dummyAjaxHelper::$called = null;
+
+        $participantController = new \ParticipantsAction('dummy');
+        $participantController->setAjaxHelper($dummyAjaxHelper);
+
+        $_POST = $post;
+        try {
+            $participantController->$action();
+        } catch (\CHttpException $e) {
+            // Thrown by the dummy outputNoPermission()
+        } finally {
+            $_POST = [];
+        }
+
+        return $dummyAjaxHelper::$called;
+    }
+
     /**
      * @group pp
      */
