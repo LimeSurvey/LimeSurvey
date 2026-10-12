@@ -220,7 +220,7 @@ function isExcludedText(text) {
     'dd-mm-yyyy HH:MM',
     'dd/mm/yyyy HH:MM',
     'DD/MM/YYYY',
-    // Internal sanity-check error in Responses.js, intentionally not translated
+    // Internal sanity-check error, intentionally not translated
     'Export options not initialized',
   ]
   // Exclude single characters

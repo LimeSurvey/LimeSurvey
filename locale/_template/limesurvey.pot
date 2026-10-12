@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-10-11 17:09:57+00:00\n"
+"POT-Creation-Date: 2026-10-12 14:14:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -43,20 +43,20 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:357
 #: application/helpers/admin/import_helper.php:926
 #: application/helpers/admin/import_helper.php:2522
-#: application/helpers/admin/import_helper.php:2574
-#: application/helpers/admin/import_helper.php:2714
-#: application/helpers/admin/import_helper.php:2875
-#: application/helpers/admin/import_helper.php:3170
-#: application/helpers/admin/import_helper.php:3177
-#: application/helpers/admin/import_helper.php:3321
-#: application/helpers/admin/import_helper.php:3367
-#: application/helpers/admin/import_helper.php:3395
-#: application/helpers/admin/import_helper.php:3502
-#: application/helpers/admin/import_helper.php:3605
-#: application/helpers/admin/import_helper.php:3884
-#: application/helpers/admin/import_helper.php:4275
-#: application/helpers/admin/import_helper.php:4932
-#: application/helpers/admin/import_helper.php:4982
+#: application/helpers/admin/import_helper.php:2575
+#: application/helpers/admin/import_helper.php:2715
+#: application/helpers/admin/import_helper.php:2876
+#: application/helpers/admin/import_helper.php:3171
+#: application/helpers/admin/import_helper.php:3178
+#: application/helpers/admin/import_helper.php:3322
+#: application/helpers/admin/import_helper.php:3368
+#: application/helpers/admin/import_helper.php:3396
+#: application/helpers/admin/import_helper.php:3503
+#: application/helpers/admin/import_helper.php:3606
+#: application/helpers/admin/import_helper.php:3885
+#: application/helpers/admin/import_helper.php:4276
+#: application/helpers/admin/import_helper.php:4933
+#: application/helpers/admin/import_helper.php:4983
 #: application/models/TemplateManifest.php:167
 #: application/models/services/PasswordManagement.php:93
 #: application/views/admin/checkintegrity/fix_view.php:16
@@ -255,7 +255,7 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:76
 #: application/controllers/DashboardController.php:75
-#: application/controllers/PrintanswersController.php:155
+#: application/controllers/PrintanswersController.php:156
 #: application/controllers/QuestionAdministrationController.php:230
 #: application/controllers/QuestionAdministrationController.php:379
 #: application/controllers/QuestionAdministrationController.php:1206
@@ -265,13 +265,13 @@ msgstr ""
 #: application/controllers/QuestionGroupsAdministrationController.php:137
 #: application/controllers/QuestionGroupsAdministrationController.php:199
 #: application/controllers/QuestionGroupsAdministrationController.php:261
-#: application/controllers/QuestionGroupsAdministrationController.php:333
-#: application/controllers/QuestionGroupsAdministrationController.php:370
+#: application/controllers/QuestionGroupsAdministrationController.php:337
+#: application/controllers/QuestionGroupsAdministrationController.php:374
 #: application/controllers/QuickTranslationController.php:133
 #: application/controllers/QuotasController.php:88
-#: application/controllers/QuotasController.php:163
-#: application/controllers/QuotasController.php:223
-#: application/controllers/QuotasController.php:333
+#: application/controllers/QuotasController.php:164
+#: application/controllers/QuotasController.php:224
+#: application/controllers/QuotasController.php:335
 #: application/controllers/ResponsesController.php:952
 #: application/controllers/SurveyAdministrationController.php:161
 #: application/controllers/SurveyAdministrationController.php:163
@@ -510,12 +510,12 @@ msgstr ""
 #: application/controllers/QuestionGroupsAdministrationController.php:115
 #: application/controllers/QuestionGroupsAdministrationController.php:174
 #: application/controllers/QuestionGroupsAdministrationController.php:240
-#: application/controllers/QuestionGroupsAdministrationController.php:306
-#: application/controllers/QuestionGroupsAdministrationController.php:375
-#: application/controllers/QuestionGroupsAdministrationController.php:631
+#: application/controllers/QuestionGroupsAdministrationController.php:310
+#: application/controllers/QuestionGroupsAdministrationController.php:379
 #: application/controllers/QuestionGroupsAdministrationController.php:635
-#: application/controllers/QuestionGroupsAdministrationController.php:720
-#: application/controllers/QuotasController.php:420
+#: application/controllers/QuestionGroupsAdministrationController.php:639
+#: application/controllers/QuestionGroupsAdministrationController.php:724
+#: application/controllers/QuotasController.php:422
 #: application/controllers/SmtpOAuthController.php:41
 #: application/controllers/SmtpOAuthController.php:91
 #: application/controllers/SurveyAdministrationController.php:454
@@ -1312,7 +1312,7 @@ msgid "Deleted"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1495
-#: application/controllers/QuestionGroupsAdministrationController.php:399
+#: application/controllers/QuestionGroupsAdministrationController.php:403
 #: application/controllers/ResponsesController.php:650
 #: application/controllers/ResponsesController.php:879
 #: application/controllers/SurveysGroupsPermissionController.php:189
@@ -1340,7 +1340,7 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:1594
 #: application/controllers/QuestionAdministrationController.php:1861
 #: application/controllers/QuestionGroupsAdministrationController.php:188
-#: application/controllers/QuestionGroupsAdministrationController.php:624
+#: application/controllers/QuestionGroupsAdministrationController.php:628
 #: application/controllers/admin/Export.php:62
 #: application/controllers/survey/SurveyIndex.php:128
 #: application/core/SurveyCommonAction.php:173
@@ -1471,25 +1471,25 @@ msgstr ""
 msgid "Question group does not exists"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:407
+#: application/controllers/QuestionGroupsAdministrationController.php:411
 msgid "Invalid question group id"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:425
-#: application/controllers/QuestionGroupsAdministrationController.php:437
+#: application/controllers/QuestionGroupsAdministrationController.php:429
+#: application/controllers/QuestionGroupsAdministrationController.php:441
 msgid "The question group was deleted."
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:425
-#: application/controllers/QuestionGroupsAdministrationController.php:439
+#: application/controllers/QuestionGroupsAdministrationController.php:429
+#: application/controllers/QuestionGroupsAdministrationController.php:443
 msgid "Group could not be deleted"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:699
+#: application/controllers/QuestionGroupsAdministrationController.php:703
 msgid "Question group successfully stored"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:830
+#: application/controllers/QuestionGroupsAdministrationController.php:834
 #: application/controllers/SurveyAdministrationController.php:2220
 #: application/controllers/SurveyAdministrationController.php:3439
 #: application/views/admin/emailtemplates/emailtemplates_view.php:64
@@ -1499,7 +1499,7 @@ msgstr ""
 #: application/views/admin/token/managetokenattributes.php:25
 #: application/views/admin/token/remind.php:157
 #: application/views/assessment/assessments_edit.php:87
-#: application/views/questionGroupsAdministration/addGroup_view.php:30
+#: application/views/questionGroupsAdministration/addGroup_view.php:32
 #: application/views/quotas/_form_langsettings.php:18
 #: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:153
 msgid "Base language"
@@ -1520,9 +1520,9 @@ msgid "You do not have permission for this survey."
 msgstr ""
 
 #: application/controllers/QuotasController.php:89
-#: application/controllers/QuotasController.php:148
-#: application/controllers/QuotasController.php:224
-#: application/controllers/QuotasController.php:335
+#: application/controllers/QuotasController.php:149
+#: application/controllers/QuotasController.php:225
+#: application/controllers/QuotasController.php:337
 #: application/views/quotas/index.php:14
 #: application/views/surveyAdministration/partial/_modalCopySurvey.php:80
 msgid "Survey quotas"
@@ -1563,54 +1563,54 @@ msgstr ""
 msgid "Remaining"
 msgstr ""
 
-#: application/controllers/QuotasController.php:172
+#: application/controllers/QuotasController.php:173
 msgid "New quota saved"
 msgstr ""
 
-#: application/controllers/QuotasController.php:206
+#: application/controllers/QuotasController.php:207
 msgid "Quota saved"
 msgstr ""
 
-#: application/controllers/QuotasController.php:209
+#: application/controllers/QuotasController.php:210
 msgid "Quota or quota languages could not be updated."
 msgstr ""
 
-#: application/controllers/QuotasController.php:260
+#: application/controllers/QuotasController.php:262
 msgid "Quota with ID %s was deleted"
 msgstr ""
 
-#: application/controllers/QuotasController.php:312
+#: application/controllers/QuotasController.php:314
 #: application/controllers/admin/Database.php:194
 #: application/core/SurveyCommonAction.php:163
 msgid "Question not found"
 msgstr ""
 
-#: application/controllers/QuotasController.php:397
+#: application/controllers/QuotasController.php:399
 msgid "Quota rule not found."
 msgstr ""
 
-#: application/controllers/QuotasController.php:414
+#: application/controllers/QuotasController.php:416
 #: application/core/SurveyCommonAction.php:192
 msgid "Survey not found"
 msgstr ""
 
-#: application/controllers/QuotasController.php:429
+#: application/controllers/QuotasController.php:431
 msgid "No quotas selected!"
 msgstr ""
 
-#: application/controllers/QuotasController.php:439
+#: application/controllers/QuotasController.php:441
 msgid "Action completed successfully."
 msgstr ""
 
-#: application/controllers/QuotasController.php:442
+#: application/controllers/QuotasController.php:444
 msgid "One or more errors occurred. Please check and try again."
 msgstr ""
 
-#: application/controllers/QuotasController.php:459
+#: application/controllers/QuotasController.php:461
 msgid "Quota not found."
 msgstr ""
 
-#: application/controllers/QuotasController.php:462
+#: application/controllers/QuotasController.php:464
 msgid "You do not have permission for this quota."
 msgstr ""
 
@@ -2199,7 +2199,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:1189
 #: application/helpers/questionHelper.php:1215
 #: application/helpers/questionHelper.php:1274
-#: application/models/QuestionTemplate.php:413
+#: application/models/QuestionTemplate.php:411
 #: application/views/admin/authentication/ajaxLogin.php:65
 #: application/views/admin/authentication/login.php:75
 #: application/views/admin/authentication/login.php:82
@@ -2424,7 +2424,7 @@ msgstr ""
 #: application/models/Permission.php:927
 #: application/models/Permissiontemplates.php:236
 #: application/models/Question.php:720 application/models/QuestionGroup.php:337
-#: application/models/Quota.php:232 application/models/Quota.php:242
+#: application/models/Quota.php:243 application/models/Quota.php:253
 #: application/models/Survey.php:1675 application/models/SurveyDynamic.php:345
 #: application/models/SurveyDynamic.php:361
 #: application/models/SurveyURLParameter.php:231
@@ -6051,7 +6051,7 @@ msgstr ""
 
 #: application/controllers/admin/PluginManagerController.php:592
 #: application/libraries/PluginManager/PluginManager.php:123
-#: application/libraries/PluginManager/PluginManager.php:424
+#: application/libraries/PluginManager/PluginManager.php:439
 msgid "Invalid plugin name in config.xml."
 msgstr ""
 
@@ -7100,7 +7100,7 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:3108
 #: application/controllers/admin/Tokens.php:3233
 #: application/core/LsDefaultDataSets.php:331
-#: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:217
+#: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:221
 #: application/views/admin/token/browse.php:21
 #: application/views/admin/token/surveyParticipantView.php:13
 msgid "Survey participants"
@@ -10422,17 +10422,21 @@ msgstr ""
 msgid "Please fix the following input errors:"
 msgstr ""
 
-#: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:131
+#: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:122
 msgid "New question group"
 msgstr ""
 
-#: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:142
+#: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:146
 #: application/models/QuestionGroup.php:305
 #: application/views/questionGroupsAdministration/group_view.php:9
 msgid "Group summary"
 msgstr ""
 
-#: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:190
+#: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:183
+msgid "New question"
+msgstr ""
+
+#: application/extensions/BreadcrumbWidget/BreadcrumbWidget.php:194
 #: application/models/Question.php:700
 #: application/views/questionAdministration/questionSummary.php:16
 msgid "Question summary"
@@ -11553,43 +11557,43 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:220
 #: application/helpers/admin/import_helper.php:361
 #: application/helpers/admin/import_helper.php:930
-#: application/helpers/admin/import_helper.php:2718
-#: application/helpers/admin/import_helper.php:2879
+#: application/helpers/admin/import_helper.php:2719
+#: application/helpers/admin/import_helper.php:2880
 msgid "Error while saving: "
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:240
-#: application/helpers/admin/import_helper.php:2738
-#: application/helpers/admin/import_helper.php:2986
+#: application/helpers/admin/import_helper.php:2739
+#: application/helpers/admin/import_helper.php:2987
 msgid "Question %s has outdated links."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:243
-#: application/helpers/admin/import_helper.php:2741
-#: application/helpers/admin/import_helper.php:2998
+#: application/helpers/admin/import_helper.php:2742
+#: application/helpers/admin/import_helper.php:2999
 msgid "Help text for question %s has outdated links."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:260
 #: application/helpers/admin/import_helper.php:780
-#: application/helpers/admin/import_helper.php:2758
+#: application/helpers/admin/import_helper.php:2759
 msgid "Question code %s was updated to %s."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:378
-#: application/helpers/admin/import_helper.php:2914
-#: application/helpers/admin/import_helper.php:2990
+#: application/helpers/admin/import_helper.php:2915
+#: application/helpers/admin/import_helper.php:2991
 msgid "Subquestion %s of question %s has outdated links."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:396
 #: application/helpers/admin/import_helper.php:965
-#: application/helpers/admin/import_helper.php:2932
+#: application/helpers/admin/import_helper.php:2933
 msgid "Title of subquestion %s was updated to %s."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:649
-#: application/helpers/admin/import_helper.php:3619
+#: application/helpers/admin/import_helper.php:3620
 msgid "Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions."
 msgstr ""
 
@@ -11709,112 +11713,112 @@ msgstr ""
 msgid "Group description has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2623
+#: application/helpers/admin/import_helper.php:2624
 msgid "Error while saving group: "
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3053
-#: application/helpers/admin/import_helper.php:3101
+#: application/helpers/admin/import_helper.php:3054
+#: application/helpers/admin/import_helper.php:3102
 msgid "Answer option %s of question %s has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3429
-#: application/helpers/admin/import_helper.php:3433
+#: application/helpers/admin/import_helper.php:3430
+#: application/helpers/admin/import_helper.php:3434
 #: application/views/admin/databaseupdate/verify.php:24
 msgid "Error:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3475
+#: application/helpers/admin/import_helper.php:3476
 msgid "Unable to insert quota language settings for quota %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3477
+#: application/helpers/admin/import_helper.php:3478
 msgid "Unable to insert quota language settings for quota %s and language %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3525
+#: application/helpers/admin/import_helper.php:3526
 msgid "Error when saving %s for plugin %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3528
+#: application/helpers/admin/import_helper.php:3529
 msgid "Plugin %s didn't exist, settings not imported"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3625
+#: application/helpers/admin/import_helper.php:3626
 msgid "Attention: Some expressions in the imported texts were disabled because they could produce unsafe output."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3688
+#: application/helpers/admin/import_helper.php:3689
 msgid "This is not a valid participant data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3732
+#: application/helpers/admin/import_helper.php:3733
 msgid "Skipped participant entry:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3780
+#: application/helpers/admin/import_helper.php:3781
 msgid "This is not a valid response data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3903
+#: application/helpers/admin/import_helper.php:3904
 #: application/views/surveyAdministration/surveyActivation/_activation_error.php:20
 msgid "The survey response table could not be created."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3903
+#: application/helpers/admin/import_helper.php:3904
 #: application/views/surveyAdministration/surveyActivation/_activation_error.php:21
 msgid "Usually this is caused by having too many (sub-)questions in your survey. Please try removing questions from your survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3952
+#: application/helpers/admin/import_helper.php:3953
 msgid "File is empty or you selected an invalid character set (%s)."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:3965
+#: application/helpers/admin/import_helper.php:3966
 msgid "File seems empty or has only one line"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4029
+#: application/helpers/admin/import_helper.php:4030
 msgid "Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4036
+#: application/helpers/admin/import_helper.php:4037
 msgid "Import failed: No answers could be mapped."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4206
+#: application/helpers/admin/import_helper.php:4207
 msgid "%s response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4208
+#: application/helpers/admin/import_helper.php:4209
 msgid "No response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4211
+#: application/helpers/admin/import_helper.php:4212
 msgid "%s responses were inserted."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4215
+#: application/helpers/admin/import_helper.php:4216
 msgid "%s responses were updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4218
+#: application/helpers/admin/import_helper.php:4219
 msgid "%s responses cannot be inserted or updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4221
+#: application/helpers/admin/import_helper.php:4222
 msgid "%s responses already exist."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4238
+#: application/helpers/admin/import_helper.php:4239
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4328
+#: application/helpers/admin/import_helper.php:4329
 msgid "The file does not seem to be a valid survey file. The necessary headers are not present."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4371
+#: application/helpers/admin/import_helper.php:4372
 msgid "The file do not seem to be a valid tab-separated-values survey file. No language set."
 msgstr ""
 
@@ -12435,432 +12439,432 @@ msgstr ""
 msgid "Only answer the following question if:"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:198
+#: application/helpers/expressions/em_core_helper.php:206
 msgid "Absolute value"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:199
+#: application/helpers/expressions/em_core_helper.php:207
 msgid "Arc cosine"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:200
+#: application/helpers/expressions/em_core_helper.php:208
 msgid "addslashes"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:201
+#: application/helpers/expressions/em_core_helper.php:209
 msgid "Arc sine"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:202
+#: application/helpers/expressions/em_core_helper.php:210
 msgid "Arc tangent"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:203
+#: application/helpers/expressions/em_core_helper.php:211
 msgid "Arc tangent of two variables"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:204
+#: application/helpers/expressions/em_core_helper.php:212
 msgid "Round fractions up"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:205
+#: application/helpers/expressions/em_core_helper.php:213
 msgid "Returns true(1) if it is a valid date in gregorian calendar"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:206
+#: application/helpers/expressions/em_core_helper.php:214
 msgid "Cosine"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:207
+#: application/helpers/expressions/em_core_helper.php:215
 msgid "Count the number of answered questions in the list"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:208
+#: application/helpers/expressions/em_core_helper.php:216
 msgid "Count the number of answered questions in the list equal the first argument"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:209
+#: application/helpers/expressions/em_core_helper.php:217
 msgid "Count the number of answered questions in the list which pass the criteria (argument - operator - value)"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:210
+#: application/helpers/expressions/em_core_helper.php:218
 msgid "Format a local date/time"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:211
+#: application/helpers/expressions/em_core_helper.php:219
 msgid "Calculates the exponent of e"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:212
+#: application/helpers/expressions/em_core_helper.php:220
 msgid "Display numbers with comma as decimal separator, if needed"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:213
+#: application/helpers/expressions/em_core_helper.php:221
 msgid "Get float value of a variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:214
+#: application/helpers/expressions/em_core_helper.php:222
 msgid "Round fractions down"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:215
+#: application/helpers/expressions/em_core_helper.php:223
 msgid "Format a GMT date/time"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:216
+#: application/helpers/expressions/em_core_helper.php:224
 msgid "Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:217
+#: application/helpers/expressions/em_core_helper.php:225
 msgid "Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:218
+#: application/helpers/expressions/em_core_helper.php:226
 msgid "Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:219
+#: application/helpers/expressions/em_core_helper.php:227
 msgid "Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:220
+#: application/helpers/expressions/em_core_helper.php:228
 msgid "Format a local time/date as integer"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:221
+#: application/helpers/expressions/em_core_helper.php:229
 msgid "Conditional processing"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:222
+#: application/helpers/expressions/em_core_helper.php:230
 msgid "Join array elements with a string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:223
+#: application/helpers/expressions/em_core_helper.php:231
 msgid "Get the integer value of a variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:224
+#: application/helpers/expressions/em_core_helper.php:232
 msgid "Determine whether a variable is considered to be empty"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:225
+#: application/helpers/expressions/em_core_helper.php:233
 msgid "Finds whether the type of a variable is float"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:226
+#: application/helpers/expressions/em_core_helper.php:234
 msgid "Check if the content of a variable is a valid integer value"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:227
+#: application/helpers/expressions/em_core_helper.php:235
 msgid "Finds whether a value is not a number"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:228
+#: application/helpers/expressions/em_core_helper.php:236
 msgid "Finds whether a variable is NULL"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:229
+#: application/helpers/expressions/em_core_helper.php:237
 msgid "Finds whether a variable is a number or a numeric string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:230
+#: application/helpers/expressions/em_core_helper.php:238
 msgid "Find whether the type of a variable is string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:231
+#: application/helpers/expressions/em_core_helper.php:239
 msgid "Join strings, return joined string.This function is an alias of implode(\"\",argN)"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:232
+#: application/helpers/expressions/em_core_helper.php:240
 msgid "Return comma-separated list of values"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:233
+#: application/helpers/expressions/em_core_helper.php:241
 msgid "Return a list of retAttr from sgqa1...sgqaN which pass the criteria (cmpAttr op value)"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:234
+#: application/helpers/expressions/em_core_helper.php:242
 msgid "The logarithm of number to base, if given, or the natural logarithm. "
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:235
+#: application/helpers/expressions/em_core_helper.php:243
 msgid "Strip whitespace (or other characters) from the beginning of a string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:236
+#: application/helpers/expressions/em_core_helper.php:244
 msgid "Find highest value"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:237
+#: application/helpers/expressions/em_core_helper.php:245
 msgid "Find lowest value"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:238
+#: application/helpers/expressions/em_core_helper.php:246
 msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:239
+#: application/helpers/expressions/em_core_helper.php:247
 msgid "Inserts HTML line breaks before all newlines in a string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:240
+#: application/helpers/expressions/em_core_helper.php:248
 msgid "Format a number with grouped thousands"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:241
+#: application/helpers/expressions/em_core_helper.php:249
 msgid "Get value of pi"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:242
+#: application/helpers/expressions/em_core_helper.php:250
 msgid "Exponential expression"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:243
+#: application/helpers/expressions/em_core_helper.php:251
 msgid "Convert a quoted-printable string to an 8 bit string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:244
+#: application/helpers/expressions/em_core_helper.php:252
 msgid "Convert a 8 bit string to a quoted-printable string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:245
+#: application/helpers/expressions/em_core_helper.php:253
 msgid "Quote meta characters"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:246
+#: application/helpers/expressions/em_core_helper.php:254
 msgid "Generate a random integer"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:247
+#: application/helpers/expressions/em_core_helper.php:255
 msgid "Compare a string to a regular expression pattern"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:248
+#: application/helpers/expressions/em_core_helper.php:256
 msgid "Rounds a number to an optional precision"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:249
+#: application/helpers/expressions/em_core_helper.php:257
 msgid "Strip whitespace (or other characters) from the end of a string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:250
+#: application/helpers/expressions/em_core_helper.php:258
 msgid "Sine"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:251
+#: application/helpers/expressions/em_core_helper.php:259
 msgid "Return a formatted string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:252
+#: application/helpers/expressions/em_core_helper.php:260
 msgid "Square root"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:253
+#: application/helpers/expressions/em_core_helper.php:261
 msgid "Calculate the Sample Standard Deviation for the list of numbers"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:254
+#: application/helpers/expressions/em_core_helper.php:262
 msgid "Pad a string to a certain length with another string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:255
+#: application/helpers/expressions/em_core_helper.php:263
 msgid "Repeat a string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:256
+#: application/helpers/expressions/em_core_helper.php:264
 msgid "Replace all occurrences of the search string with the replacement string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:257
+#: application/helpers/expressions/em_core_helper.php:265
 msgid "Binary safe case-insensitive string comparison"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:258
+#: application/helpers/expressions/em_core_helper.php:266
 msgid "Binary safe string comparison"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:259
+#: application/helpers/expressions/em_core_helper.php:267
 msgid "Strip HTML and PHP tags from a string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:260
+#: application/helpers/expressions/em_core_helper.php:268
 msgid "Find position of first occurrence of a case-insensitive string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:261
+#: application/helpers/expressions/em_core_helper.php:269
 msgid "Un-quotes a quoted string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:262
+#: application/helpers/expressions/em_core_helper.php:270
 msgid "Case-insensitive strstr"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:263
+#: application/helpers/expressions/em_core_helper.php:271
 msgid "Get string length"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:264
+#: application/helpers/expressions/em_core_helper.php:272
 msgid "Find position of first occurrence of a string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:265
+#: application/helpers/expressions/em_core_helper.php:273
 msgid "Reverse a string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:266
+#: application/helpers/expressions/em_core_helper.php:274
 msgid "Find first occurrence of a string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:267
+#: application/helpers/expressions/em_core_helper.php:275
 msgid "Convert a string to lowercase"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:268
+#: application/helpers/expressions/em_core_helper.php:276
 msgid "Convert a date/time string to unix timestamp"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:269
+#: application/helpers/expressions/em_core_helper.php:277
 msgid "Convert a string to uppercase"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:270
+#: application/helpers/expressions/em_core_helper.php:278
 msgid "Return part of a string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:271
+#: application/helpers/expressions/em_core_helper.php:279
 msgid "Calculate the sum of values in an array"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:272
+#: application/helpers/expressions/em_core_helper.php:280
 msgid "Sum the values of answered questions in the list which pass the criteria (argument - operator - value)"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:273
+#: application/helpers/expressions/em_core_helper.php:281
 msgid "Tangent"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:274
+#: application/helpers/expressions/em_core_helper.php:282
 msgid "Convert a numerical value using a inputTable and outputTable of numerical values"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:275
+#: application/helpers/expressions/em_core_helper.php:283
 msgid "Return current UNIX timestamp"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:276
+#: application/helpers/expressions/em_core_helper.php:284
 msgid "Strip whitespace (or other characters) from the beginning and end of a string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:277
+#: application/helpers/expressions/em_core_helper.php:285
 msgid "Uppercase the first character of each word in a string"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:278
+#: application/helpers/expressions/em_core_helper.php:286
 msgid "Returns true if all non-empty responses are unique"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:386
+#: application/helpers/expressions/em_core_helper.php:394
 msgid "Unable to evaluate binary operator - fewer than 2 entries on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:392
-#: application/helpers/expressions/em_core_helper.php:558
+#: application/helpers/expressions/em_core_helper.php:400
+#: application/helpers/expressions/em_core_helper.php:566
 msgid "Invalid value(s) on the stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:553
+#: application/helpers/expressions/em_core_helper.php:561
 msgid "Unable to evaluate unary operator - no entries on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:610
+#: application/helpers/expressions/em_core_helper.php:618
 msgid "Extra tokens found"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:621
+#: application/helpers/expressions/em_core_helper.php:629
 msgid "Unbalanced equation - values left on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:625
+#: application/helpers/expressions/em_core_helper.php:633
 msgid "Not a valid expression"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:675
-#: application/helpers/expressions/em_core_helper.php:1009
-#: application/helpers/expressions/em_core_helper.php:1076
+#: application/helpers/expressions/em_core_helper.php:683
+#: application/helpers/expressions/em_core_helper.php:1017
+#: application/helpers/expressions/em_core_helper.php:1084
 msgid "Poorly terminated expression - expected a constant or variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:707
-#: application/helpers/expressions/em_core_helper.php:1814
+#: application/helpers/expressions/em_core_helper.php:715
+#: application/helpers/expressions/em_core_helper.php:1822
 msgid "Undefined variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:785
+#: application/helpers/expressions/em_core_helper.php:793
 msgid "The value of this variable can not be changed"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:789
+#: application/helpers/expressions/em_core_helper.php:797
 msgid "Only variables can be assigned values"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:830
+#: application/helpers/expressions/em_core_helper.php:838
 msgid "Expected expressions separated by commas"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:837
+#: application/helpers/expressions/em_core_helper.php:845
 msgid "Extra token found after expressions"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:852
-#: application/helpers/expressions/em_core_helper.php:1810
+#: application/helpers/expressions/em_core_helper.php:860
+#: application/helpers/expressions/em_core_helper.php:1818
 msgid "Undefined function"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:857
+#: application/helpers/expressions/em_core_helper.php:865
 msgid "Expected left parentheses after function name"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:874
+#: application/helpers/expressions/em_core_helper.php:882
 msgid "Extra comma found in function"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1021
+#: application/helpers/expressions/em_core_helper.php:1029
 msgid "Expected right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1803
+#: application/helpers/expressions/em_core_helper.php:1811
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1819
+#: application/helpers/expressions/em_core_helper.php:1827
 msgid "Unsupported syntax"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1826
+#: application/helpers/expressions/em_core_helper.php:1834
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1829
+#: application/helpers/expressions/em_core_helper.php:1837
 msgid "Missing %s closing left parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2178
+#: application/helpers/expressions/em_core_helper.php:2186
 msgid "Function must have at least %s argument|Function must have at least %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2277
+#: application/helpers/expressions/em_core_helper.php:2285
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2278
+#: application/helpers/expressions/em_core_helper.php:2286
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2490
+#: application/helpers/expressions/em_core_helper.php:2515
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:3344
+#: application/helpers/expressions/em_core_helper.php:3369
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -13166,8 +13170,8 @@ msgstr ""
 #: application/views/admin/survey/editLocalSettings_view.php:106
 #: application/views/admin/survey/editLocalSettings_view.php:116
 #: application/views/admin/survey/subview/surveydashboard/002-surveytextpanel.twig:16
-#: application/views/questionGroupsAdministration/addGroup_view.php:64
-#: application/views/questionGroupsAdministration/addGroup_view.php:71
+#: application/views/questionGroupsAdministration/addGroup_view.php:66
+#: application/views/questionGroupsAdministration/addGroup_view.php:73
 #: application/views/questionGroupsAdministration/editGroup_view.php:44
 #: application/views/questionGroupsAdministration/editGroup_view.php:48
 #: application/views/questionGroupsAdministration/group_view.php:23
@@ -13535,6 +13539,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:1256
 #: application/helpers/questionHelper.php:1501
 #: application/helpers/questionHelper.php:1621
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:100
 #: application/views/admin/surveymenu/_form.php:101
 #: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:19
 #: editor/src/helpers/getQuestionAttributesTitles.js:5
@@ -16051,7 +16056,7 @@ msgid "Destination URL:"
 msgstr ""
 
 #: application/models/Box.php:60
-#: application/views/questionGroupsAdministration/addGroup_view.php:55
+#: application/views/questionGroupsAdministration/addGroup_view.php:57
 #: application/views/questionGroupsAdministration/editGroup_view.php:37
 msgid "Title:"
 msgstr ""
@@ -16960,6 +16965,7 @@ msgid "Subquestion codes may only contain alphanumeric characters."
 msgstr ""
 
 #: application/models/Question.php:681
+#: application/views/questionAdministration/create.php:77
 msgid "Edit question"
 msgstr ""
 
@@ -17281,32 +17287,32 @@ msgstr ""
 msgid "Quota action"
 msgstr ""
 
-#: application/models/Quota.php:182 application/models/services/Quotas.php:298
+#: application/models/Quota.php:193 application/models/services/Quotas.php:298
 #: themes/survey/bootswatch/config.xml:364
 #: themes/survey/fruity_twentythree/config.xml:540
 #: themes/survey/vanilla/config.xml:371
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr ""
 
-#: application/models/Quota.php:220
+#: application/models/Quota.php:231
 #: application/views/quotas/editquota_view.php:10
 msgid "Edit quota"
 msgstr ""
 
-#: application/models/Quota.php:233
+#: application/models/Quota.php:244
 #: application/views/quotas/viewquotas_massive_selector.php:92
 msgid "Delete quotas"
 msgstr ""
 
-#: application/models/Quota.php:239 application/models/Quota.php:254
+#: application/models/Quota.php:250 application/models/Quota.php:265
 msgid "Are you sure you want to delete the selected quotas?"
 msgstr ""
 
-#: application/models/Quota.php:247
+#: application/models/Quota.php:258
 msgid "Validation"
 msgstr ""
 
-#: application/models/Quota.php:248
+#: application/models/Quota.php:259
 msgid "Validation of quota %s"
 msgstr ""
 
@@ -18158,7 +18164,7 @@ msgstr ""
 msgid "Failed to generate random string for token. Please check your configuration and ensure that the openssl or mcrypt extension is enabled."
 msgstr ""
 
-#: application/models/Token.php:427
+#: application/models/Token.php:430
 msgid "Language code is invalid in this survey"
 msgstr ""
 
@@ -22009,11 +22015,11 @@ msgstr ""
 msgid "Load error. Please contact the plugin author."
 msgstr ""
 
-#: application/views/admin/pluginmanager/scanFilesResult.php:45
+#: application/views/admin/pluginmanager/scanFilesResult.php:48
 msgid "Are you sure you want to delete this plugin from the file system?"
 msgstr ""
 
-#: application/views/admin/pluginmanager/scanFilesResult.php:49
+#: application/views/admin/pluginmanager/scanFilesResult.php:52
 msgid "Delete this plugin from the file system"
 msgstr ""
 
@@ -22346,6 +22352,7 @@ msgstr ""
 
 #: application/views/admin/super/sidemenu.php:73
 #: application/views/layouts/sidemenu.php:75
+#: application/views/questionAdministration/create.php:80
 msgid "Add question"
 msgstr ""
 
@@ -23061,64 +23068,45 @@ msgstr ""
 msgid "Enable “No answer” to configure this setting."
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:100
-msgid "Show..."
-msgstr ""
-
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:105
-msgid "... “no answer”"
-msgstr ""
-
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:112
-msgid "no answer"
+msgid "Show “No answer”"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:123
-msgid "... “No answer” preselected"
-msgstr ""
-
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:130
-msgid "No answer preselected"
+msgid "Preselect “No answer”"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:158
-msgid "... “There are X questions in this survey”"
-msgstr ""
-
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:165
-msgid "There are X questions in this survey"
+msgid "Show “There are X questions in this survey”"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:191
-msgid "... group name and description"
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:61
+msgid "Group name and description"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:223
-msgid "... question number and code"
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:76
+msgid "Question number and code"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:243
-msgid "... welcome screen"
-msgstr ""
-
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:250
-msgid "welcome screen"
+#: editor/src/components/WelcomeSettings/WelcomeSettings.js:66
+msgid "Show welcome screen"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:261
-msgid "... progress bar"
-msgstr ""
-
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:268
-msgid "progress bar"
+msgid "Show progress bar"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:279
-msgid "... question index, allow jumping"
-msgstr ""
-
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:286
-msgid "question index, allow jumping"
+msgid "Show question index and allow jumping"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:304
@@ -26559,7 +26547,7 @@ msgid "Encrypted:"
 msgstr ""
 
 #: application/views/questionAdministration/summary.php:201
-#: application/views/questionGroupsAdministration/addGroup_view.php:88
+#: application/views/questionGroupsAdministration/addGroup_view.php:90
 #: application/views/questionGroupsAdministration/editGroup_view.php:65
 #: application/views/questionGroupsAdministration/group_view.php:38
 msgid "Condition:"
@@ -26610,18 +26598,18 @@ msgstr ""
 msgid "Error: You have to enter a group title for each language."
 msgstr ""
 
-#: application/views/questionGroupsAdministration/addGroup_view.php:19
+#: application/views/questionGroupsAdministration/addGroup_view.php:20
 #: editor/src/components/QuestionTypeSelector/QuestionTypeSelector.js:229
 msgid "Add question group"
 msgstr ""
 
-#: application/views/questionGroupsAdministration/addGroup_view.php:80
+#: application/views/questionGroupsAdministration/addGroup_view.php:82
 #: application/views/questionGroupsAdministration/editGroup_view.php:57
 #: application/views/questionGroupsAdministration/group_view.php:53
 msgid "Randomization group:"
 msgstr ""
 
-#: application/views/questionGroupsAdministration/addGroup_view.php:100
+#: application/views/questionGroupsAdministration/addGroup_view.php:102
 msgid "Save question group"
 msgstr ""
 
@@ -28159,7 +28147,7 @@ msgstr ""
 msgid "No user group members found."
 msgstr ""
 
-#: application/views/userManagement/index.php:86
+#: application/views/userManagement/index.php:72
 msgid "Deactivated user"
 msgstr ""
 
@@ -29435,14 +29423,6 @@ msgstr ""
 msgid "“No answer” preselected"
 msgstr ""
 
-#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:61
-msgid "Group name and description"
-msgstr ""
-
-#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:76
-msgid "Question number and code"
-msgstr ""
-
 #: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:80
 msgid "Question number"
 msgstr ""
@@ -29825,10 +29805,6 @@ msgstr ""
 
 #: editor/src/components/WelcomeSettings/WelcomeSettings.js:57
 msgid "Welcome screen settings"
-msgstr ""
-
-#: editor/src/components/WelcomeSettings/WelcomeSettings.js:66
-msgid "Show welcome screen"
 msgstr ""
 
 #: editor/src/components/WelcomeSettings/WelcomeSettings.js:83
