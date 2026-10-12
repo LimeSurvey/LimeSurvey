@@ -1,4 +1,4 @@
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
 import { useState } from 'react'
 
 import { DragIcon } from 'components/icons'

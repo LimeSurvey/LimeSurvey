@@ -1,4 +1,4 @@
-import { Droppable } from 'react-beautiful-dnd'
+import { Droppable } from '@hello-pangea/dnd'
 
 import { CloseCircleFillIcon } from 'components/icons'
 import { ContentEditor } from 'components/UIComponents'

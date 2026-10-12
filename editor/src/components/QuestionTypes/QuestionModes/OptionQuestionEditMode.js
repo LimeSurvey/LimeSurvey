@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
 import { useAppState, useSurvey, useChildKeyboardShortcuts } from 'hooks'
