@@ -283,7 +283,7 @@ class uploader {
         if (!$this->config['disabled']) { // IF BROWSER IS ENABLED
             // TRY TO CREATE UPLOAD DIRECTORY IF NOT EXISTS
             if (!$this->config['disabled'] && !is_dir($this->config['uploadDir']))
-                @mkdir($this->config['uploadDir'], $this->config['dirPerms']);
+                @mkdir($this->config['uploadDir'], $this->config['dirPerms'], true);
 
             // CHECK & MAKE DEFAULT .htaccess
             if (isset($this->config['_check4htaccess']) &&
