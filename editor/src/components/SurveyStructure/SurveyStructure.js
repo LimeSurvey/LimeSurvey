@@ -34,6 +34,7 @@ import { RowPinned } from './RowPinned'
 import { RowQuestionGroup } from './RowQuestionGroup'
 import { arrayInsertItem } from '../../helpers/arrayInsertItem'
 
+/** Sidebar tree of question groups and questions with drag-and-drop reordering. */
 export const SurveyStructure = () => {
   const { surveyId } = useParams()
   const navigate = useNavigate()
@@ -165,6 +166,7 @@ export const SurveyStructure = () => {
     return false
   }
 
+  /** Moves a question inside its own group; returns false if source and destination groups differ. */
   const reorderQuestionWithinGroup = (
     source,
     destination,
@@ -198,6 +200,7 @@ export const SurveyStructure = () => {
     return false
   }
 
+  /** Moves a question to another group; not allowed while the survey is active. */
   const reorderQuestionToNewGroup = (source, destination) => {
     if (!isSurveyActive) {
       const sourceGroupIndex = Number(source.droppableId.replace('g', ''))

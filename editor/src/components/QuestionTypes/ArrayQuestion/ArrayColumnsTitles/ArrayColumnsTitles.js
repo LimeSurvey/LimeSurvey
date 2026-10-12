@@ -21,6 +21,7 @@ import { ARRAY_ROW_LABEL_INSET } from '../arrayLayout'
 
 import { ArrayColumnTitle } from './ArrayColumnTitle'
 
+/** Header row of an array question showing the draggable answer (column) titles. */
 export const ArrayColumnsTitles = ({
   question: {
     answers = [],
