@@ -495,20 +495,13 @@ export const ChartRendererV2 = ({
               </div>
             )}
             {isRanking && activeView?.value === VIEW.BAR_CHART && (
-              <div className="responses-statistics-chart-subtitle">
-                <TooltipContainer
-                  tip={t(
-                    'The bar chart shows how often each answer option was ranked, regardless of the place it got'
+              <div className="responses-statistics-chart-subtitle responses-statistics-chart-info">
+                <i className="ri-information-line" aria-hidden="true"></i>
+                <span>
+                  {t(
+                    'The bar chart shows each option’s average rank, calculated by adding all the ranks it received and dividing the total by the number of responses. A lower average means a better ranking.'
                   )}
-                >
-                  <span
-                    className="responses-statistics-chart-subtitle-term"
-                    role="img"
-                    aria-label={t('About this chart')}
-                  >
-                    <i className="ri-information-line"></i>
-                  </span>
-                </TooltipContainer>
+                </span>
               </div>
             )}
             <div>{activeView?.render(renderContext)}</div>
