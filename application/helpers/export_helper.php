@@ -2346,7 +2346,11 @@ function questionGetXMLStructure($xml, $gid, $qid)
 
 
 /**
+ * Outputs the survey participants as CSV, filtered by the options posted from the export dialog,
+ * and deletes the exported participants if requested
+ *
  * @param integer $iSurveyID
+ * @return void
  */
 function tokensExport($iSurveyID)
 {
@@ -2365,13 +2369,14 @@ function tokensExport($iSurveyID)
     $databasetype = Yii::app()->db->getDriverName();
     $oRecordSet->where("1=1");
 
+    // An encrypted email can't be searched for a substring in SQL, so it is filtered after decryption
+    $bFilterEmailAfterDecrypt = false;
     if ($sEmailFiter != '') {
-        // check if email is encrypted field
         $aAttributes = $oSurvey->getTokenEncryptionOptions();
-        if (array_key_exists('columns', $aAttributes) && array_key_exists('enabled', $aAttributes) && $aAttributes['enabled'] == 'Y' && array_key_exists('email', $aAttributes['columns']) && $aAttributes['columns']['email'] == 'Y') {
-            $sEmailFiter = LSActiveRecord::encryptSingle($sEmailFiter);
-        }
+        $bFilterEmailAfterDecrypt = ($aAttributes['enabled'] ?? 'N') == 'Y' && ($aAttributes['columns']['email'] ?? 'N') == 'Y';
+    }
 
+    if ($sEmailFiter != '' && !$bFilterEmailAfterDecrypt) {
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib'))) {
             $oRecordSet->andWhere("CAST(lt.email as varchar) like " . App()->db->quoteValue('%' . $sEmailFiter . '%'));
         } else {
@@ -2481,6 +2486,9 @@ function tokensExport($iSurveyID)
             // decrypting
             $token->decrypt();
             $brow = $token->attributes;
+            if ($bFilterEmailAfterDecrypt && mb_stripos((string) $brow['email'], $sEmailFiter) === false) {
+                continue;
+            }
             if (Yii::app()->request->getPost('maskequations')) {
                 $brow = array_map('MaskFormula', $brow);
             }
