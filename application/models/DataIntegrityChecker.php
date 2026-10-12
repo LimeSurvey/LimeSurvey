@@ -64,6 +64,14 @@ class DataIntegrityChecker
             $aData = $this->deleteOrphanPermissions($aData);
         }
 
+        if (isset($aDelete['surveyswithoutsurveygroup'])) {
+            $aData = $this->moveSurveysToDefaultSurveyGroup($aDelete['surveyswithoutsurveygroup'], $aData);
+        }
+
+        if (isset($aDelete['orphansurveygroupsettings'])) {
+            $aData = $this->deleteOrphanSurveyGroupSettings($aData);
+        }
+
         if (isset($aDelete['surveyswithoutresponsetable'])) {
             $aData = $this->deactivateSurveysWithoutResponseTable($aDelete['surveyswithoutresponsetable'], $aData);
         }
@@ -140,6 +148,11 @@ class DataIntegrityChecker
 
         if (isset($aDelete['question_l10ns'])) {
             $aData = $this->deleteQuestionL10ns($aDelete['question_l10ns'], $aData);
+        }
+
+        // After deleteQuestions(), so no texts are created for questions deleted in this pass
+        if (isset($aDelete['missingquestionl10ns'])) {
+            $aData = $this->createMissingQuestionL10ns($aDelete['missingquestionl10ns'], $aData);
         }
 
         if (isset($aDelete['groups'])) {
@@ -763,6 +776,78 @@ class DataIntegrityChecker
     }
 
     /**
+     * Returns the surveys whose survey group no longer exists.
+     *
+     * Without its survey group a survey has no settings to inherit, so most of its
+     * inherited settings are missing when it is opened.
+     *
+     * @return array[] Each with a 'sid' and a 'gsid' key.
+     */
+    private function findSurveysWithoutSurveyGroup()
+    {
+        return Yii::app()->db->createCommand()
+            ->select('sid, gsid')
+            ->from('{{surveys}}')
+            ->where('gsid NOT IN (SELECT sg.gsid FROM {{surveys_groups}} sg)')
+            ->order('sid')
+            ->queryAll();
+    }
+
+    /**
+     * Moves surveys whose survey group no longer exists to the default survey group.
+     *
+     * @param array[] $surveys Surveys to move, each with a 'sid' and a 'gsid' key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per moved survey and a warning per failed one.
+     */
+    private function moveSurveysToDefaultSurveyGroup(array $surveys, array $aData)
+    {
+        if (SurveysGroups::model()->findByPk(1) === null) {
+            $aData['warnings'][] = gT('Unable to move surveys of missing survey groups because the default survey group is missing');
+            return $aData;
+        }
+        foreach ($surveys as $survey) {
+            if (Survey::model()->updateByPk($survey['sid'], array('gsid' => 1))) {
+                $aData['messages'][] = sprintf(gT('Moved survey %s to the default survey group because its survey group %s no longer exists'), $survey['sid'], $survey['gsid']);
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to move survey %s to the default survey group'), $survey['sid']);
+            }
+        }
+        return $aData;
+    }
+
+    /**
+     * Returns the criteria matching survey group settings of survey groups that no
+     * longer exist.
+     *
+     * The global survey settings (gsid 0) have no survey group and the settings of the
+     * default survey group (gsid 1) are never deleted.
+     *
+     * @return CDbCriteria
+     */
+    private function getOrphanSurveyGroupSettingsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = 'gsid > 1 AND gsid NOT IN (SELECT sg.gsid FROM {{surveys_groups}} sg)';
+        return $oCriteria;
+    }
+
+    /**
+     * Deletes survey group settings of survey groups that no longer exist.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message if any setting was deleted.
+     */
+    private function deleteOrphanSurveyGroupSettings(array $aData)
+    {
+        $count = SurveysGroupsettings::model()->deleteAll($this->getOrphanSurveyGroupSettingsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u survey group setting(s) of survey groups that no longer exist'), $count);
+        }
+        return $aData;
+    }
+
+    /**
      * Deactivates active surveys whose response table is missing.
      *
      * @param array[] $surveys Surveys to deactivate, each with a 'sid' key.
@@ -877,6 +962,95 @@ class DataIntegrityChecker
     }
 
     /**
+     * Finds questions and subquestions that have no texts (question_l10ns row) in one
+     * of their survey's languages. Such questions can't be edited (500 error).
+     *
+     * Runs one query per language used by any survey, instead of one per survey.
+     *
+     * @return array[] Missing texts, each with a 'qid', 'title', 'sid' and 'language' key.
+     */
+    private function findMissingQuestionL10ns()
+    {
+        $aSurveyLanguages = array();
+        $aSurveys = Yii::app()->db->createCommand()
+            ->select('sid, language, additional_languages')
+            ->from('{{surveys}}')
+            ->queryAll();
+        foreach ($aSurveys as $aSurvey) {
+            $aLanguages = explode(' ', trim((string) $aSurvey['additional_languages']));
+            $aLanguages[] = $aSurvey['language'];
+            $aSurveyLanguages[$aSurvey['sid']] = array_filter($aLanguages);
+        }
+        if (empty($aSurveyLanguages)) {
+            return array();
+        }
+
+        $aMissing = array();
+        foreach (array_unique(array_merge(...array_values($aSurveyLanguages))) as $sLanguage) {
+            // The LIKE condition only narrows the result down, the exact match is done below
+            $aQuestions = Yii::app()->db->createCommand()
+                ->select('q.qid, q.title, q.sid')
+                ->from('{{questions}} q')
+                ->join('{{surveys}} s', 's.sid = q.sid')
+                ->leftJoin('{{question_l10ns}} l', 'l.qid = q.qid AND l.language = :l10nlanguage', array(':l10nlanguage' => $sLanguage))
+                ->where(
+                    'l.id IS NULL AND (s.language = :surveylanguage OR s.additional_languages LIKE :languagepattern)',
+                    array(':surveylanguage' => $sLanguage, ':languagepattern' => '%' . $sLanguage . '%')
+                )
+                ->queryAll();
+            foreach ($aQuestions as $aQuestion) {
+                if (in_array($sLanguage, $aSurveyLanguages[$aQuestion['sid']])) {
+                    $aMissing[] = array(
+                        'qid' => $aQuestion['qid'],
+                        'title' => $aQuestion['title'],
+                        'sid' => $aQuestion['sid'],
+                        'language' => $sLanguage,
+                    );
+                }
+            }
+        }
+        return $aMissing;
+    }
+
+    /**
+     * Creates empty texts for questions and subquestions that have none in one of
+     * their survey's languages.
+     *
+     * @param array[] $questionL10ns Missing texts, each with a 'qid', 'title', 'sid' and 'language' key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per created text.
+     */
+    private function createMissingQuestionL10ns(array $questionL10ns, array $aData)
+    {
+        foreach ($questionL10ns as $questionL10n) {
+            // Skip questions deleted earlier in this pass, e.g. subquestions of a deleted question
+            $exists = Yii::app()->db->createCommand()
+                ->select('count(*)')
+                ->from('{{questions}}')
+                ->where('qid = :qid', array(':qid' => $questionL10n['qid']))
+                ->queryScalar();
+            if (!$exists) {
+                continue;
+            }
+            // Raw insert: QuestionL10n's validation rules need a web user, which the console command has not
+            Yii::app()->db->createCommand()->insert('{{question_l10ns}}', array(
+                'qid' => $questionL10n['qid'],
+                'question' => '',
+                'help' => '',
+                'language' => $questionL10n['language'],
+            ));
+            $aData['messages'][] = sprintf(
+                gT('Created empty texts for language %s of question %s (ID %s) in survey %s'),
+                $questionL10n['language'],
+                CHtml::encode($questionL10n['title']),
+                $questionL10n['qid'],
+                $questionL10n['sid']
+            );
+        }
+        return $aData;
+    }
+
+    /**
      * Sets the group and question type of subquestions to their parent question's.
      *
      * @param array[] $subquestions Subquestions to fix, each with a 'qid' key and the
@@ -972,6 +1146,18 @@ class DataIntegrityChecker
         $iCount = Permission::model()->count($this->getOrphanSurveyPermissionsCriteria());
         if ($iCount > 0) {
             $aDelete['orphansurveypermissions'] = $iCount;
+        }
+
+        /**********************************************************************/
+        /*     Check surveys and survey group settings of deleted groups      */
+        /**********************************************************************/
+        $aSurveysWithoutSurveyGroup = $this->findSurveysWithoutSurveyGroup();
+        if (!empty($aSurveysWithoutSurveyGroup)) {
+            $aDelete['surveyswithoutsurveygroup'] = $aSurveysWithoutSurveyGroup;
+        }
+        $iCount = SurveysGroupsettings::model()->count($this->getOrphanSurveyGroupSettingsCriteria());
+        if ($iCount > 0) {
+            $aDelete['orphansurveygroupsettings'] = $iCount;
         }
 
         /**********************************************************************/
@@ -1222,6 +1408,14 @@ class DataIntegrityChecker
         $questions = QuestionL10n::model()->resetScope()->findAll($oCriteria);
         foreach ($questions as $question) {
             $aDelete['question_l10ns'][] = array('id' => $question['id'], 'qid' => $question['qid'], 'reason' => gT('No parent question'));
+        }
+
+        /**********************************************************************/
+        /*     Check questions without texts in a survey language             */
+        /**********************************************************************/
+        $aMissingQuestionL10ns = $this->findMissingQuestionL10ns();
+        if (!empty($aMissingQuestionL10ns)) {
+            $aDelete['missingquestionl10ns'] = $aMissingQuestionL10ns;
         }
 
         /**********************************************************************/

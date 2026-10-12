@@ -818,6 +818,18 @@ class SurveyCondition
                                 'condition' => 'questionl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
                             )))->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order ASC, scale_id ASC'));
+                // Answer options of both scales, the same for every subquestion
+                $scaleAnswers = [];
+                foreach ([0, 1] as $scaleId) {
+                    $scaleAnswers[$scaleId] = \Answer::model()->with(array(
+                            'answerl10ns' => array(
+                                'condition' => 'answerl10ns.language = :lang',
+                                'params' => array(':lang' => $this->language)
+                            )))->findAllByAttributes(
+                                array('qid' => $rows['qid'], 'scale_id' => $scaleId),
+                                array('order' => 't.sortorder ASC')
+                            );
+                }
                 foreach ($aresult as $arows) {
                     $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], $arows['title']);
                     $sLanguage = $this->language;
@@ -832,28 +844,10 @@ class SurveyCondition
                     $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $arows->questionl10ns[$this->language]->question);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $fieldName . "#1");
 
-                    // first label
-                    $lresult = \Answer::model()->with(array(
-                            'answerl10ns' => array(
-                                'condition' => 'answerl10ns.language = :lang',
-                                'params' => array(':lang' => $this->language)
-                            )))->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0));
-                    foreach ($lresult as $lrows) {
-                        $canswers[] = array($fieldName . "#0", "{$lrows['code']}", "{$lrows['code']}");
-                    }
-
-                    // second label
-                    $lresult = \Answer::model()->with(array(
-                            'answerl10ns' => array(
-                                'condition' => 'answerl10ns.language = :lang',
-                                'params' => array(':lang' => $this->language)
-                            )))->findAllByAttributes(array(
-                                'qid' => $rows['qid'],
-                                'scale_id' => 1
-                            ));
-
-                    foreach ($lresult as $lrows) {
-                        $canswers[] = array($fieldName . "#1", "{$lrows['code']}", "{$lrows['code']}");
+                    foreach ($scaleAnswers as $scaleId => $lresult) {
+                        foreach ($lresult as $lrows) {
+                            $canswers[] = array($fieldName . "#" . $scaleId, $lrows['code'], $lrows->answerl10ns[$this->language]->answer);
+                        }
                     }
 
                     // Only Show No-Answer if question is not mandatory
