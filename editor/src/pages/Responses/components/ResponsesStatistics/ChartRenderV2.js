@@ -42,6 +42,7 @@ import {
   CHOICE_QUESTION_TYPES,
   TEXT_QUESTION_TYPES,
   getSegmentedCategories,
+  statisticsGraphs,
   VALUE_TYPE,
   wrapTerm,
 } from './ChartsUtils.js'
@@ -306,8 +307,21 @@ const writeHiddenCharts = (hidden) => {
 const getStorageKey = (surveyId, chartId, index) =>
   `${surveyId ?? 'unknown'}:${chartId ?? `index-${index}`}`
 
-const getDefaultView = (availableViews, viewContext) => {
+// statistics_graphtype question setting → views it selects, first available wins.
+const GRAPH_VIEWS = {
+  [statisticsGraphs.BAR_CHART]: [VIEW.BAR_CHART],
+  [statisticsGraphs.PIE_CHART]: [VIEW.PIE_CHART],
+  [statisticsGraphs.RADAR]: [VIEW.RADAR],
+  [statisticsGraphs.LINE]: [VIEW.LINE],
+  [statisticsGraphs.POLAR_AREA]: [VIEW.POLAR_AREA],
+  [statisticsGraphs.DOUGHNUT_CHART]: [VIEW.DOUGHNUT, VIEW.STACKED_DOUGHNUT],
+  [statisticsGraphs.STACKED_BAR]: [VIEW.STACKED_BAR],
+  [statisticsGraphs.GROUPED_BAR]: [VIEW.GROUPED_BAR],
+}
+
+const getDefaultView = (availableViews, viewContext, chartType) => {
   const preferredViews = [
+    ...(GRAPH_VIEWS[chartType] ?? []),
     viewContext.isArrayText && VIEW.TABLE,
     viewContext.isArray && !viewContext.isArrayNumbers && VIEW.STACKED_BAR,
     viewContext.isNumerical && VIEW.TABLE,
@@ -382,7 +396,7 @@ export const ChartRendererV2 = ({
     ({ isAvailable }) => isAvailable?.(viewContext) ?? true
   )
   const [view, setView] = useState(() =>
-    getDefaultView(availableViews, viewContext)
+    getDefaultView(availableViews, viewContext, question?.chartType)
   )
   // `menuOnly` hides a view from the quick toggle (it stays in the meatball
   // menu); it can be a flag or a predicate of the view context.
@@ -416,17 +430,14 @@ export const ChartRendererV2 = ({
 
   const storageKey = getStorageKey(surveyId, chartId, index)
   const [isHidden, setIsHidden] = useState(
-    () => !!readHiddenCharts()[storageKey]
+    () =>
+      readHiddenCharts()[storageKey] ??
+      String(question?.chartType) === String(statisticsGraphs.DONT_SHOW)
   )
 
+  // Stored both ways so showing a "Don't show" chart sticks.
   const setHidden = (hidden) => {
-    const hiddenCharts = readHiddenCharts()
-    if (hidden) {
-      hiddenCharts[storageKey] = true
-    } else {
-      delete hiddenCharts[storageKey]
-    }
-    writeHiddenCharts(hiddenCharts)
+    writeHiddenCharts({ ...readHiddenCharts(), [storageKey]: hidden })
     setIsHidden(hidden)
   }
 

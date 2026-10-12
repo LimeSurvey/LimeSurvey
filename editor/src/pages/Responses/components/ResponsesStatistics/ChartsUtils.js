@@ -2,15 +2,24 @@ import { format } from 'util'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 import {
   dayJsHelper,
+  QT_1_ARRAY_DUAL,
   QT_5_POINT_CHOICE,
+  QT_A_ARRAY_5_POINT,
+  QT_B_ARRAY_10_CHOICE_QUESTIONS,
+  QT_C_ARRAY_YES_UNCERTAIN_NO,
+  QT_COLON_ARRAY_NUMBERS,
+  QT_E_ARRAY_INC_SAME_DEC,
   QT_EXCLAMATION_LIST_DROPDOWN,
+  QT_F_ARRAY,
   QT_G_GENDER,
+  QT_H_ARRAY_COLUMN,
   QT_I_LANGUAGE,
   QT_L_LIST,
   QT_M_MULTIPLE_CHOICE,
   QT_O_LIST_WITH_COMMENT,
   QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
   QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_R_RANKING,
   QT_S_SHORT_FREE_TEXT,
   QT_T_LONG_FREE_TEXT,
   QT_U_HUGE_FREE_TEXT,
@@ -86,6 +95,48 @@ export const statisticsGraphs = {
   LINE: 3,
   POLAR_AREA: 4,
   DOUGHNUT_CHART: 5,
+  STACKED_BAR: 6,
+  GROUPED_BAR: 7,
+}
+
+const ARRAY_POINT_CHOICE_TYPES = [
+  QT_A_ARRAY_5_POINT,
+  QT_B_ARRAY_10_CHOICE_QUESTIONS,
+  QT_C_ARRAY_YES_UNCERTAIN_NO,
+  QT_E_ARRAY_INC_SAME_DEC,
+  QT_F_ARRAY,
+  QT_H_ARRAY_COLUMN,
+]
+
+// Charts the statistics can draw for a question type (statistics_graphtype
+// values); types without a chart get an empty list.
+export const getStatisticsGraphsForType = (type) => {
+  if (type === QT_R_RANKING) {
+    return [statisticsGraphs.BAR_CHART]
+  }
+  if (CHOICE_QUESTION_TYPES.includes(type)) {
+    return [
+      statisticsGraphs.BAR_CHART,
+      statisticsGraphs.PIE_CHART,
+      statisticsGraphs.RADAR,
+      statisticsGraphs.LINE,
+      statisticsGraphs.POLAR_AREA,
+      statisticsGraphs.DOUGHNUT_CHART,
+    ]
+  }
+  if (TEXT_QUESTION_TYPES.includes(type)) {
+    return [statisticsGraphs.BAR_CHART, statisticsGraphs.PIE_CHART]
+  }
+  if (ARRAY_POINT_CHOICE_TYPES.includes(type)) {
+    return [statisticsGraphs.STACKED_BAR, statisticsGraphs.GROUPED_BAR]
+  }
+  if (type === QT_1_ARRAY_DUAL) {
+    return [statisticsGraphs.STACKED_BAR, statisticsGraphs.DOUGHNUT_CHART]
+  }
+  if (type === QT_COLON_ARRAY_NUMBERS) {
+    return [statisticsGraphs.GROUPED_BAR]
+  }
+  return []
 }
 
 // The registry's type/theme strings are static (only `title` is translated),

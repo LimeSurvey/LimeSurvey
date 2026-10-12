@@ -438,7 +438,7 @@ class questionHelper
             ),
             'help' => gT("Select the type of chart to be displayed"),
             'caption' => gT("Chart type"),
-            'default' => 0
+            'default' => ''
         );
 
         self::$attributes["location_mapservice"] = array(
