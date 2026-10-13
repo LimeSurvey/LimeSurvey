@@ -8,10 +8,10 @@ import { panelItemsKeys } from './Sidebars'
 import { StatisticsDetailModal } from './components/ResponsesStatistics/StatisticsDetailModal.js'
 import { StatisticsFiltersBuilder } from './components/ResponsesStatistics/StatisticsFiltersModal'
 
-// The filter modal keeps its state, but a tab can only act on it once its own
-// backend is wired. Turn each one on with its ticket.
+// Per-tab switch for the filter button. Both tabs can act on the filter now;
+// kept so either can be turned off on its own.
 const SHOW_RESPONSES_FILTER_BUTTON = true
-const SHOW_STATISTICS_FILTER_BUTTON = false
+const SHOW_STATISTICS_FILTER_BUTTON = true
 
 export const ResponsesHeader = ({
   setShowFilters = () => {},
