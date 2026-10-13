@@ -27,7 +27,7 @@
                                     type="checkbox"
                                     id='btn_<?php echo $aGroup['gid']; ?>'
                                     onclick="selectCheckboxes('grp_body_<?php echo $aGroup['gid']; ?>', 'summary[]', 'btn_<?php echo $aGroup['gid']; ?>');"
-                                /> All
+                                /> <?php eT("All"); ?>
                             </div>
                             <div id='grp_<?php echo $aGroup['gid']; ?>' class="ls-flex-row wrap filtertable">
                                 <?php foreach ($aGroup['questions'] as $key1 => $flt) : ?>
