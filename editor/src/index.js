@@ -13,4 +13,4 @@ root.render(<App />)
 reportWebVitals(console.log)
 
 // TEMP: trigger editor-build workflow
-window.__editorBuildCheck = '2026-10-13'
+window.__editorBuildCheck = '2026-10-13T19:37'
