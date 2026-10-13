@@ -14,21 +14,19 @@ const SurveyDatabaseAlert = ({ isSuperAdmin }) => {
       </div>
 
       <p className="label-m already-paused-alert-label">
-        {isSuperAdmin ? (
-          parse(
-            format(
-              t(
-                'A problem has been detected with the survey database. Please %sperform data integrity%s.'
-              ),
-              `<a href="${getSiteUrl('/index.php/admin/checkintegrity')}">`,
-              '</a>'
+        {isSuperAdmin
+          ? parse(
+              format(
+                t(
+                  'A problem has been detected with the survey database. Please %sperform data integrity%s.'
+                ),
+                `<a href="${getSiteUrl('/index.php/admin/checkintegrity')}">`,
+                '</a>'
+              )
             )
-          )
-        ) : (
-          t(
-            'A problem has been detected with the survey database. Please contact an administrator to perform a database integrity check.'
-          )
-        )}
+          : t(
+              'A problem has been detected with the survey database. Please contact an administrator to perform a database integrity check.'
+            )}
       </p>
     </div>
   )
