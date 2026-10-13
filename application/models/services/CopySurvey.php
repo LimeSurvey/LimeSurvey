@@ -483,6 +483,13 @@ class CopySurvey
             $optionsCopyQuestion['adjustLinks'] = $this->options->isResourcesAndLinks();
             $copyQuestion = new CopyQuestion($copyQuestionValues, $optionsCopyQuestion);
             if ($copyQuestion->copyQuestion($destinationSurvey->sid)) {
+                foreach ($copyQuestion->getCopyErrors() as $copyError) {
+                    $copyResults->setWarnings(sprintf(
+                        gT("Question '%s': %s"),
+                        \CHtml::encode($question->title),
+                        $copyError
+                    ));
+                }
                 $destinationQuestion = $copyQuestion->getNewCopiedQuestion();
                 //change sid and gip for the new question
                 $destinationQuestion->sid = $destinationSurvey->sid;
