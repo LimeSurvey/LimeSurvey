@@ -525,7 +525,8 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['image']                 = is_array($questionAttributes) && array_key_exists('image', $questionAttributes) ? $questionAttributes['image'] : [];
                     $aGroup['aQuestions'][$qid] = $this->doBeforeQuestionRenderEvent($aGroup['aQuestions'][$qid]);
 
-                    $aQuestionErrors = $this->getQuestionErrorMessages($qinfo, $qa[7]);
+                    // Questions of a hidden group are not shown, so their errors are not listed (except in group preview, where the group is shown)
+                    $aQuestionErrors = ($gnoshow && !$this->previewgrp) ? [] : $this->getQuestionErrorMessages($qinfo, $qa[7]);
                     if (!empty($aQuestionErrors)) {
                         $this->aSurveyInfo['errorSummary']['questions'][] = [
                             'qid'      => $qid,
