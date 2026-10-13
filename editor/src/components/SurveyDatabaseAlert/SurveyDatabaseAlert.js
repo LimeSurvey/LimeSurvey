@@ -1,6 +1,8 @@
 import { ExclamationIcon } from 'components/icons'
 import { useTranslation } from 'react-i18next'
 import { getSiteUrl } from 'helpers'
+import parse from 'html-react-parser'
+import { format } from 'util'
 
 const SurveyDatabaseAlert = ({ isSuperAdmin }) => {
   const { t } = useTranslation()
@@ -13,13 +15,15 @@ const SurveyDatabaseAlert = ({ isSuperAdmin }) => {
 
       <p className="label-m already-paused-alert-label">
         {isSuperAdmin ? (
-          <>
-            {t('A problem has been detected with the survey database. Please ')}
-            <a href={getSiteUrl('/index.php/admin/checkintegrity')}>
-              {t('perform data integrity')}
-            </a>
-            {t('.')}
-          </>
+          parse(
+            format(
+              t(
+                'A problem has been detected with the survey database. Please %sperform data integrity%s.'
+              ),
+              `<a href="${getSiteUrl('/index.php/admin/checkintegrity')}">`,
+              '</a>'
+            )
+          )
         ) : (
           t(
             'A problem has been detected with the survey database. Please contact an administrator to perform a database integrity check.'
