@@ -1,0 +1,63 @@
+# Rebuilds the static editor build (editor/build + editor/index.html) and commits it when the editor sources change
+name: QuestionEditor - Rebuild
+
+on:
+  push:
+    branches:
+      - master
+      - develop-major
+      - develop-minor
+      - feature/react-editor-build   # temporary
+    paths:
+      - 'editor/**'
+      - '!editor/build/**'
+      - '!editor/index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.ref_name }}-editor-build
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: ./editor
+
+jobs:
+  Build:
+    name: Build and commit editor
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup nodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: editor/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      # Not `npm run build`: build.cjs embeds the commit hash, which would change the build on every commit
+      - name: Build editor
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+          PUBLIC_URL: build
+        run: npx rsbuild build && node scripts/postbuild.js
+
+      - name: Commit and push changes
+        run: |
+          git add -A build index.html
+          if git diff --cached --quiet; then
+            echo "Editor build is up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Dev: Rebuilt editor"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
