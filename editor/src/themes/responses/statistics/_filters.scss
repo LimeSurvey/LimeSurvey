@@ -83,6 +83,11 @@
     &-tabs {
       grid-column: 1;
       min-width: 0;
+
+      .btn-outline-lime-toggle:not(:has(i, svg)) {
+        padding-left: calc(0.35em + 0.5rem);
+        padding-right: calc(0.35em + 0.5rem);
+      }
     }
 
     &-source {

@@ -94,7 +94,7 @@ class LimeMailer extends PHPMailer
     private $_bAttachementTypeDone = false;
 
     /**
-     * @var boolean $ignoremissingattachement allow to send if attachement have issue.
+     * @var boolean $ignoremissingattachement allow to send if attachment have issue.
      **/
     public $ignoremissingattachement = false;
 
@@ -975,7 +975,7 @@ class LimeMailer extends PHPMailer
         if (empty($this->surveyId)) {
             return true;
         }
-        // No attachement template : no attachments
+        // No attachment template : no attachments
         if (!array_key_exists($this->emailType, $this->_aAttachmentByType)) {
             return true;
         }

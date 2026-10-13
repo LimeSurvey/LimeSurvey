@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
     <div class="col-12 side-body ls-settings-wrapper" id="theme-option-sidebody">
 <?php endif; ?>
 
-    <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
+    <!-- Using bootstrap tabs to differ between just the options and advanced direct settings -->
     <div class="row">
         <div class="col-12">
             <!-- Nav tabs -->

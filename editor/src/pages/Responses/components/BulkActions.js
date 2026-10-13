@@ -3,7 +3,7 @@ import { Button } from 'components'
 import {
   DeleteIcon,
   DownloadIcon,
-  Seprator,
+  Separator,
   // UploadIcon,
   XIcon,
 } from 'components/icons'
@@ -39,8 +39,8 @@ export const BulkActions = ({
         <span className="number">{selectedCount}</span>
         {selectedAfter}
       </div>
-      <div className="seprator">
-        <Seprator />
+      <div className="separator">
+        <Separator />
       </div>
       {/* <Button className="primary" variant="none">
         <UploadIcon className="bulk-icon primary" />

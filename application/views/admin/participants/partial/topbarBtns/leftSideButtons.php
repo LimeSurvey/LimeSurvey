@@ -17,6 +17,8 @@ if (Permission::model()->hasGlobalPermission('participantpanel', 'read')) {
     );
 } elseif (
     Permission::model()->hasGlobalPermission('participantpanel', 'create')
+    || Permission::model()->hasGlobalPermission('participantpanel', 'import')
+    || Permission::model()->hasGlobalPermission('participantpanel', 'export')
     || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])
 ) {
     $this->widget(

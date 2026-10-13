@@ -612,7 +612,7 @@ JAVASCRIPT
             [
                 'isExport' => (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')),
                 'templatename' => $templatename,
-                'isExtend' => true,
+                'isExtend' => Permission::model()->hasGlobalPermission('templates', 'create'),
             ],
             true
         );
@@ -1024,7 +1024,7 @@ JAVASCRIPT
 
             App()->getClientScript()->registerScript("activateActionLink", "activateActionLink();", LSYii_ClientScript::POS_POSTSCRIPT); /* show the button if needed */
 
-            /* Must remove all exitsing scripts / css and js */
+            /* Must remove all existing scripts / css and js */
             App()->getClientScript()->unregisterPackage('admin-theme'); // We remove the admin package
 
             App()->getClientScript()->render($myoutput);
@@ -1161,6 +1161,8 @@ JAVASCRIPT
 
         switch ($screenname) {
             case 'welcome':
+                // The welcome page is the first page of a survey, so there is no previous page to go back to
+                $thissurvey['aNavigator']['aMovePrev']['show'] = false;
                 break;
 
             case 'question':

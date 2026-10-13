@@ -128,6 +128,11 @@ class Quota extends LSActiveRecord
         return $this->languagesettings[$this->survey->language];
     }
 
+    /**
+     * Count the completed responses matching all members of this quota
+     *
+     * @return int|string|null Number of completed responses, null if the response table or a member column is missing
+     */
     public function getCompleteCount()
     {
         if (!tableExists("responses_{$this->sid}")) {
@@ -139,18 +144,24 @@ class Quota extends LSActiveRecord
             // Keep a list of fields for easy reference
             $aQuotaColumns = array();
             foreach ($this->quotaMembers as $member) {
-                if (!in_array($member->memberInfo['fieldname'], $aExistingColumnName)) {
+                $aMemberInfo = $member->memberInfo;
+                if (!in_array($aMemberInfo['fieldname'], $aExistingColumnName)) {
                     \Yii::log(
                         sprintf(
                             "Invalid quota member %s",
-                            $member->memberInfo['fieldname']
+                            $aMemberInfo['fieldname']
                         ),
                         'warning',
                         'application.model.Quota'
                     );
                     return null;
                 }
-                $aQuotaColumns[$member->memberInfo['fieldname']][] = $member->memberInfo['value'];
+                $sValue = $aMemberInfo['value'];
+                // Answers of encrypted questions are stored encrypted: Compare with the encrypted value
+                if ($member->question->encrypted === 'Y') {
+                    $sValue = LSActiveRecord::encryptSingle($sValue);
+                }
+                $aQuotaColumns[$aMemberInfo['fieldname']][] = $sValue;
             }
 
             $oCriteria = new CDbCriteria();
