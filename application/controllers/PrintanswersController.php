@@ -122,11 +122,12 @@ class PrintanswersController extends LSYii_Controller
         $groupArray = $oResponseRow->getPrintAnswersArray($sSRID, $sLanguage, $printanswershonorsconditions);
 
         // Remove all <script>...</script> content from result.
+        // Data URIs are kept: Expressions can fill in an image from an answer (e.g. a signature)
         Yii::import('application.helpers.viewHelper');
         foreach ($groupArray as &$group) {
-            $group['description'] = viewHelper::purified($group['description']);
+            $group['description'] = viewHelper::purified($group['description'], true);
             foreach ($group['answerArray'] as &$answer) {
-                $answer['question'] = viewHelper::purified($answer['question']);
+                $answer['question'] = viewHelper::purified($answer['question'], true);
             }
         }
 
