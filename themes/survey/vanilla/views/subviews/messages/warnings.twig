@@ -46,10 +46,10 @@
             {% endfor %}
             <ul class="ls-error-summary-list mb-0">
                 {% for aQuestionError in aSurveyInfo.errorSummary.questions %}
-                    <li>
-                        <a href="#question{{ aQuestionError.qid }}" class="ls-error-summary-link alert-link" data-qid="{{ aQuestionError.qid }}">{% if aQuestionError.number %}{{ aQuestionError.number }} {% endif %}{{ aQuestionError.text }}</a>:
-                        <span id="ls-error-summary-message-{{ aQuestionError.qid }}" class="ls-error-summary-message">{% for sMessage in aQuestionError.messages %}{{ sMessage }}{% if not loop.last %} {% endif %}{% endfor %}</span>
-                    </li>
+                    {% set sQuestionLink %}<a href="#question{{ aQuestionError.qid }}" class="ls-error-summary-link alert-link" data-qid="{{ aQuestionError.qid }}">{% if aQuestionError.number %}{{ aQuestionError.number }} {% endif %}{{ aQuestionError.text }}</a>{% endset %}
+                    {% set sQuestionMessage %}<span id="ls-error-summary-message-{{ aQuestionError.qid }}" class="ls-error-summary-message">{% for sMessage in aQuestionError.messages %}{{ sMessage }}{% if not loop.last %} {% endif %}{% endfor %}</span>{% endset %}
+                    {# Question and its error message: The translated pattern is escaped, link and message are already escaped HTML #}
+                    <li>{{ gT("%s: %s")|escape|format(sQuestionLink, sQuestionMessage)|raw }}</li>
                 {% endfor %}
             </ul>
         </div>
