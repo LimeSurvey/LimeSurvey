@@ -312,7 +312,30 @@ class QuestionGroupService
         QuestionGroup $oQuestionGroup,
         array $dataSet
     ) {
-        $storeValid = true;
+        try {
+            $this->updateQuestionGroupLanguagesOrFail($oQuestionGroup, $dataSet);
+        } catch (PersistErrorException $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Stores questiongroup languages. All languages are attempted, languages
+     * failing validation are reported afterwards.
+     *
+     * @param QuestionGroup $oQuestionGroup
+     * @param array $dataSet array with languages
+     * @return void
+     * @throws PersistErrorException if any language could not be saved, the
+     *   first failing model is attached as error model
+     */
+    public function updateQuestionGroupLanguagesOrFail(
+        QuestionGroup $oQuestionGroup,
+        array $dataSet
+    ): void {
+        $failedLanguages = [];
+        $failedModel = null;
 
         foreach ($dataSet as $sLanguage => $aL10NBlock) {
             $l10N = $this->modelQuestionGroupL10n->findByAttributes(
@@ -329,11 +352,20 @@ class QuestionGroupService
                         'description' => $aL10NBlock['description']
                     ], false);
                 }
-                $storeValid = $storeValid && $l10N->save();
+                if (!$l10N->save()) {
+                    $failedLanguages[] = $sLanguage;
+                    $failedModel = $failedModel ?? $l10N;
+                }
             }
         }
 
-        return $storeValid;
+        if (!empty($failedLanguages)) {
+            $e = new PersistErrorException(
+                gT('Could not save question group') . ' (' . implode(', ', $failedLanguages) . ')'
+            );
+            $e->setErrorModel($failedModel);
+            throw $e;
+        }
     }
 
     /**

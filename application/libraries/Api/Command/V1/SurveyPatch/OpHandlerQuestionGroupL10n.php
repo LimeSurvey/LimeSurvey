@@ -97,7 +97,7 @@ class OpHandlerQuestionGroupL10n implements OpHandlerInterface
         if (empty($transformedProps)) {
             $this->throwNoValuesException($op);
         }
-        $questionGroupService->updateQuestionGroupLanguages(
+        $questionGroupService->updateQuestionGroupLanguagesOrFail(
             $questionGroup,
             $transformedProps
         );
