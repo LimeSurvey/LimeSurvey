@@ -1678,38 +1678,28 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     addPrimaryKey('surveys_groupsettings', array('gsid'));
 
     // insert settings for global level
-    $settings1 = new SurveysGroupsettings();
-    $settings1->setToDefault();
-    $settings1->gsid = 0;
     // get global settings from db
     $globalSetting1 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'showqnumcode'))->queryRow();
     $globalSetting2 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'showgroupinfo'))->queryRow();
     $globalSetting3 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'shownoanswer'))->queryRow();
     $globalSetting4 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'showxquestions'))->queryRow();
-    // set db values to model
-    $settings1->showqnumcode = ($globalSetting1 === false || $globalSetting1['stg_value'] == 'choose') ? 'X' : str_replace(array('both', 'number', 'code', 'none'), array('B', 'N', 'C', 'X'), (string) $globalSetting1['stg_value']);
-    $settings1->showgroupinfo = ($globalSetting2 === false || $globalSetting2['stg_value'] == 'choose') ? 'B' : str_replace(array('both', 'name', 'description', 'none'), array('B', 'N', 'D', 'X'), (string) $globalSetting2['stg_value']);
-    $settings1->shownoanswer = ($globalSetting3 === false || $globalSetting3['stg_value'] == '2') ? 'Y' : str_replace(array('1', '0'), array('Y', 'N'), (string) $globalSetting3['stg_value']);
-    $settings1->showxquestions = ($globalSetting4 === false || $globalSetting4['stg_value'] == 'choose') ? 'Y' : str_replace(array('show', 'hide'), array('Y', 'N'), (string) $globalSetting4['stg_value']);
-
-    // Quick hack to remote ipanonymize.
-    // TODO: Don't use models in updatedb_helper.
-    $attributes = $settings1->attributes;
-    unset($attributes['ipanonymize']);
-    // Same as ipanonymize, stale schema persists on model after column is removed from db,
-    // and interacts with older updates
-    if (isset($attributes['nokeyboard'])) {
-        unset($attributes['nokeyboard']);
-    }
-    /* Added in 649 update */
-    unset($attributes['showregisterpolicy']);
-    unset($attributes['showtokenpolicy']);
-    /* Added in 712 update */
-    unset($attributes['preselectnoanswer']);
-
-    /* Added in 715 update */
-    unset($attributes['savequotaexit']);
-
+    $globalSetting5 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'defaulttheme'))->queryRow();
+    // Plain SQL instead of the SurveysGroupsettings model: Its setToDefault() validated the default theme, which uninstalled an
+    // incompatible theme and redirected in the middle of the update. The theme is validated later when it is used.
+    // Columns not set here get their default value from the table definition above.
+    $attributes = array(
+        'gsid' => 0,
+        'owner_id' => 1,
+        'admin' => substr((string) App()->getConfig('siteadminname'), 0, 50),
+        'adminemail' => substr((string) App()->getConfig('siteadminemail'), 0, 254),
+        'format' => 'G',
+        'template' => ($globalSetting5 === false || $globalSetting5['stg_value'] === '') ? App()->getConfig('defaulttheme') : substr((string) $globalSetting5['stg_value'], 0, 100),
+        'usecaptcha' => 'N',
+        'showqnumcode' => ($globalSetting1 === false || $globalSetting1['stg_value'] == 'choose') ? 'X' : str_replace(array('both', 'number', 'code', 'none'), array('B', 'N', 'C', 'X'), (string) $globalSetting1['stg_value']),
+        'showgroupinfo' => ($globalSetting2 === false || $globalSetting2['stg_value'] == 'choose') ? 'B' : str_replace(array('both', 'name', 'description', 'none'), array('B', 'N', 'D', 'X'), (string) $globalSetting2['stg_value']),
+        'shownoanswer' => ($globalSetting3 === false || $globalSetting3['stg_value'] == '2') ? 'Y' : str_replace(array('1', '0'), array('Y', 'N'), (string) $globalSetting3['stg_value']),
+        'showxquestions' => ($globalSetting4 === false || $globalSetting4['stg_value'] == 'choose') ? 'Y' : str_replace(array('show', 'hide'), array('Y', 'N'), (string) $globalSetting4['stg_value']),
+    );
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
     //this will fail because of using model in updatedb_helper ...

@@ -1,4 +1,4 @@
-export * from './ExportPopupHTML'
+export * from './ExportResponsesModal'
 export * from './ResponseDetailView'
 export * from './BulkActions'
 export * from './ColumnActions'

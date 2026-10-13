@@ -264,7 +264,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         </div>
 
         <!-- Side menu behaviour -->
-        <?php /* This setting is just remaining here for campatibility reasons. It is not yet implemented into the new admmin panel */ ?>
+        <?php /* This setting is just remaining here for compatibility reasons. It is not yet implemented into the new admmin panel */ ?>
         <div class="mb-3" style="display: none;">
             <label class='col-12 form-label' for='sideMenuBehaviour'>
                 <?php eT("Side-menu behaviour"); ?>

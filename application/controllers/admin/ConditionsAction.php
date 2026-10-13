@@ -718,7 +718,7 @@ class ConditionsAction extends SurveyCommonAction
             'submitcid'     => $submitcid,
             'editSourceTab' => $this->getEditSourceTab(),
             'editTargetTab' => $this->getEditTargetTab(),
-            'addConditionToScenarioNr' => Yii::app()->request->getQuery('scenarioNr'),
+            'addConditionToScenarioNr' => (int) Yii::app()->request->getQuery('scenarioNr'),
             'surveyIsAnonymized' => $this->getSurveyIsAnonymized(),
         );
         $result .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
@@ -886,7 +886,7 @@ class ConditionsAction extends SurveyCommonAction
     }
 
     /**
-     * @return string Predfined, constant, questions, token field or regexp; defaults to predefined
+     * @return string Predefined, constant, questions, token field or regexp; defaults to predefined
      */
     protected function getEditTargetTab()
     {

@@ -187,13 +187,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 unset($insertdata['language']);
             }
 
-            if (!$bTranslateLinksFields) {
-                $sScenario = 'archiveimport';
-            } else {
-                $sScenario = 'import';
-            }
-
-            $oQuestion = new Question($sScenario);
+            // The group is added to an existing survey, so question codes must always be checked for uniqueness
+            $oQuestion = new Question('import');
             $oQuestion->setAttributes($insertdata, false);
 
             if (!isset($aQIDReplacements[$iOldQID])) {
@@ -1555,12 +1550,12 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
         $where = [];
     }
     $whereClause = "";
-    $criterias = [];
+    $criteria = [];
     if (count($where)) {
         foreach ($where as $field => $value) {
-            $criterias[] = Yii::app()->db->quoteColumnName($field) . " = " . Yii::app()->db->quoteValue($value);
+            $criteria[] = Yii::app()->db->quoteColumnName($field) . " = " . Yii::app()->db->quoteValue($value);
         }
-        $whereClause = " WHERE " . implode(" AND ", $criterias);
+        $whereClause = " WHERE " . implode(" AND ", $criteria);
     }
     if (count($columns)) {
         foreach ($columns as $index => $column) {
@@ -2332,6 +2327,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if (isset($insertdata['tokenlength']) && $insertdata['tokenlength'] > Token::MAX_LENGTH) {
             $insertdata['tokenlength'] = Token::MAX_LENGTH;
         }
+        if (isset($insertdata['tokenlength']) && !in_array((int) $insertdata['tokenlength'], Survey::getValidTokenLengths())) {
+            $insertdata['tokenlength'] = Token::DEFAULT_LENGTH;
+        }
 
         // Fix survey group when not copying
         if (!$isCopying) {
@@ -2570,8 +2568,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             if (!isset($aGIDReplacements[$oldgid])) {
                 $questionGroup = new QuestionGroup();
-                $questionGroup->attributes = $insertdata;
                 $questionGroup->sid = $iNewSID;
+                unset($insertdata['sid']);
+                $questionGroup->attributes = $insertdata;
                 if (!$questionGroup->save()) {
                     throw new Exception(gT("Error") . ": Failed to insert data [3]<br /> " . json_encode($questionGroup->getErrors()));
                 }
@@ -3764,9 +3763,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
-    if (\PHP_VERSION_ID < 80000) {
-        libxml_disable_entity_loader(true);
-    }
+ 
     $rankings = [];
     foreach ($survey->questions as $q) {
         if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {

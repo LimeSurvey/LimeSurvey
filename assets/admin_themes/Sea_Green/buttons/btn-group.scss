@@ -81,3 +81,92 @@
         background-color : $g-300;
     }
 }
+
+// Radio button groups get the look of the light toggle buttons in the new editor:
+// The selected option is a white tile with a purple bar on a grey track
+.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group) {
+    background: $g-300;
+    padding: 4px;
+    border-radius: $border-radius;
+
+    > .btn-outline-secondary {
+        color: $g-700;
+        background-color: transparent;
+        border: none;
+        border-left: 2px solid transparent;
+        border-radius: 2px;
+        font-weight: $font-weight-500;
+        font-size: $font-size-sm;
+        line-height: $line-height-20;
+        // Side padding fits the checkmark of the selected option (see below) plus a small margin
+        padding: .375rem calc(1.05em + 6px);
+        min-width: 80px;
+        min-height: auto;
+    }
+
+    > .btn-check:checked + .btn-outline-secondary {
+        background-color: $white;
+        border-left-color: $grape;
+        color: $g-750;
+    }
+
+    > .btn-check:not(:checked) + .btn-outline-secondary:hover {
+        background-color: $g-200;
+        color: $g-700;
+    }
+
+    > .btn-check:focus-visible + .btn-outline-secondary {
+        box-shadow: none;
+        outline: 2px solid $grape;
+        outline-offset: 2px;
+    }
+
+    &:has(> .btn-check:disabled) {
+        background: $g-100;
+
+        > .btn-outline-secondary {
+            color: $g-400;
+            border-left-color: transparent;
+            opacity: 1;
+        }
+
+        > .btn-check:checked + .btn-outline-secondary {
+            background-color: $white;
+        }
+    }
+}
+
+// The selected option is also marked by a checkmark, so it does not rely on colour alone.
+// The labels are flex containers (which also drops the whitespace around the label text) and the
+// negative left margin cancels the checkmark's width plus gap, so the labels do not move when switching.
+.btn-group > .btn-check + .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-group > .btn-check:checked + .btn {
+    &:not(:has(i, svg, [class^="ri-"], [class*=" ri-"]))::before {
+        content: "";
+        flex: none;
+        width: .35em;
+        height: .7em;
+        margin-top: -.15em;
+        margin-left: -.85em;
+        margin-right: .5em;
+        border: solid currentColor;
+        border-width: 0 .15em .15em 0;
+        /*rtl:ignore*/
+        transform: rotate(45deg);
+    }
+}
+
+// Forced colours mode (e.g. Windows high contrast) drops background colours, so map the selected option to the system highlight colours
+@media (forced-colors: active) {
+    .btn-group > .btn-check:checked + .btn {
+        forced-color-adjust: none;
+        background-color: Highlight !important;
+        border-color: Highlight !important;
+        color: HighlightText !important;
+    }
+}
