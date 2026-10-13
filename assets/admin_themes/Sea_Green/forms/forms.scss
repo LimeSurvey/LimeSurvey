@@ -18,7 +18,8 @@
 }
 
 .form-control.ls-important-field {
-    padding     : 14px 12px;
+    // 1px less vertical padding to make up for the thicker border, so the field is as high as a regular input
+    padding     : ($input-padding-y - 1px) $input-padding-x;
     font-weight : 400;
     font-size   : 14px;
     line-height : $line-height-16;
