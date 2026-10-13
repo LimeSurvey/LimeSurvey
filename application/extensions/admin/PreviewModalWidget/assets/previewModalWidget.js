@@ -58,12 +58,22 @@ if (typeof PreviewModalScript === 'function') {
       }
 
       /**
+       * Visually mark an item as the selected one and unmark all others
+       * @param {jQuery} item
+       */
+      markAsSelected(item) {
+          $(`.selector__Item--select-${this.widgetsJsName}`)
+              .removeClass('mark-as-selected active')
+              .removeAttr('aria-current');
+          item.addClass('mark-as-selected active').attr('aria-current', 'true');
+      }
+
+      /**
        * triggered by clicking on an item in the selector
        */
       selectItemClick (ev){
           console.ls.log('CURRENT SELECTED', $(ev.currentTarget));
-          $(`.selector__Item--select-${this.widgetsJsName}`).removeClass('mark-as-selected');
-          $(ev.currentTarget).addClass('mark-as-selected');
+          this.markAsSelected($(ev.currentTarget));
           const itemData = $(ev.currentTarget).data('item-value');
           this.selectItem(itemData);
       }
@@ -84,7 +94,7 @@ if (typeof PreviewModalScript === 'function') {
           const selectedItem = this.preSelectFromValue();
 
           if(selectedItem) {
-              $(selectedItem).addClass('mark-as-selected');
+              this.markAsSelected($(selectedItem));
               $(selectedItem).closest('div.panel-collapse').addClass('in');
           }
           this.options.onModalOpen();

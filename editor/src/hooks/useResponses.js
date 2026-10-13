@@ -94,11 +94,46 @@ export function useResponses(
       ? lastResponses.current.payload
       : undefined
 
+  const exportMutation = useMutation({
+    mutationFn: (options) => responseService.exportResponses(options),
+  })
+
+  /**
+   * Find the zero-based page that lists a response under the current filters
+   * and the default "id DESC" sort, by counting the responses with a higher id.
+   *
+   * @param {string|number} responseId Response to locate.
+   * @returns {Promise<number>} Page index containing the response.
+   */
+  const findResponsePageIndex = async (responseId) => {
+    const result = await responseService.getSurveyResponses(surveyId, {
+      pagination: { pageIndex: 0, pageSize: 1 },
+      filters: {
+        ...filters,
+        locateResponse: {
+          keys: ['id'],
+          filterMethod: 'greaterThan',
+          value: responseId,
+        },
+      },
+      // Counted under the same filter the table shows, or the page would be
+      // computed against a larger result set than the one being paged.
+      filterSet,
+      sorting: [],
+    })
+    const precedingCount = result?._meta?.pagination?.totalItems ?? 0
+
+    return Math.floor(precedingCount / pagination.pageSize)
+  }
+
   return {
     responses: error ? previous : payload,
     error,
     isFetching,
     refetch,
     mutateOperations,
+    exportResponses: exportMutation.mutateAsync,
+    isExporting: exportMutation.isPending,
+    findResponsePageIndex,
   }
 }

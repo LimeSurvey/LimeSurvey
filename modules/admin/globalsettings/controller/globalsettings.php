@@ -56,7 +56,7 @@ class GlobalSettings extends \GlobalSettings
      */
     protected function renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        // We add ou new paramater to the data to parse to the view
+        // We add ou new parameter to the data to parse to the view
         $aData["myNewParam"] = $this->myNewParam;
 
         // Then we just call the parent method
@@ -75,7 +75,7 @@ class GlobalSettings extends \GlobalSettings
     protected function renderCentralContents($sAction, $aViewUrls, $aData = [])
     {
       if ( file_exists ( \Yii::getPathOfAlias('lsadminmodules.'.$sAction.'.views.' . $aViewUrls) . '.php' )  ){
-        // Use alias to render a view outisde of application directory.
+        // Use alias to render a view outside of application directory.
         return \Yii::app()->getController()->renderPartial('lsadminmodules.'.$sAction.'.views.' . $aViewUrls, $aData, true);
       }else{
         //  var_dump( \Yii::getPathOfAlias('lsadminmodules.' . $sAction. '.views.' . $aViewUrls) );  die();

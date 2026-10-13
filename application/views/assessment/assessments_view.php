@@ -1,7 +1,7 @@
 <?php
 
 /**
-* Assesments view
+* Assessments view
 */
 
 // todo implement new ekeditor 1580136051118

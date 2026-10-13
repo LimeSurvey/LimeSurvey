@@ -280,7 +280,7 @@ export const ResponsesTable = ({
           ...currentOrder.slice(timingInsertIndex),
         ]
       })
-      // else if we have columns, then we pop the actions column and readd it to update the columns ref
+      // else if we have columns, then we pop the actions column and re-add it to update the columns ref
     } else if (!hideActions && columns.length) {
       columns.pop()
       setColumns([...columns, defaultColumns.ACTIONS])

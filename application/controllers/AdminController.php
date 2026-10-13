@@ -279,7 +279,7 @@ class AdminController extends LSYii_Controller
             $aActions[$action] = "application.controllers.admin.{$class}";
         }
 
-        // But now, they can be in a module added by a third pary developer.
+        // But now, they can be in a module added by a third party developer.
         $aModuleActions = $this->getModulesActions();
 
         // We keep a trace of the overridden actions and their path. It will be used in the rendering logic (SurveyCommonAction, renderPartial, etc)
@@ -378,7 +378,7 @@ class AdminController extends LSYii_Controller
     /**
      * This function returns an array similar to getActionClasses()
      * It will generate it by reading the directories names inside of lsadminmodulesrootdir
-     * So, by convention, admin module action class must be indentical to directory name
+     * So, by convention, admin module action class must be identical to directory name
      *
      */
     public function getAdminModulesActionClasses()

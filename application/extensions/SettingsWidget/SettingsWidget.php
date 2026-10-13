@@ -308,7 +308,7 @@ class SettingsWidget extends CWidget
 
         // col-md-6/col-md-6 used in survey settings, sm-4/sm-6 in global : use sm-4/sm-6 for plugins ?
         $metaData['labelOptions']['class'] .= " col-form-label text-end col-md-{$this->labelWidth}";
-        // Set the witdth of control-option according to existence of label
+        // Set the width of control-option according to existence of label
         if (!isset($metaData['label'])) {
             $metaData['controlOptions']['class'] .= " col-12";
         } else {
@@ -359,7 +359,7 @@ class SettingsWidget extends CWidget
     }
 
     /**
-     * render help/desscription according to type and $metaData['help']
+     * render help/description according to type and $metaData['help']
      * @todo $name is not used
      * @return string
      */
@@ -663,7 +663,7 @@ class SettingsWidget extends CWidget
         $value = $metaData['current'] ?? '';
         /**
          * Fix the value according to saveformat only if isset and not empty
-         * By defalt : save as sent by input (admin lanuage dependent
+         * By default : save as sent by input (admin language dependent
          **/
         if (!empty($metaData['saveformat'])) {
             if (is_string($value) && $value !== "") {
@@ -714,7 +714,7 @@ class SettingsWidget extends CWidget
         return CHtml::tag('div', $htmlOptions, $value);
     }
 
-    /* Return htmlOptions for an input od seting
+    /* Return htmlOptions for an input od setting
      *
      * @param array metaData : completMetaData of setting
      * @param string form form to be used

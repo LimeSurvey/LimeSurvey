@@ -222,7 +222,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         // An array to control unicity of $code (EM code)
         foreach ($model->metaData->columns as $column) {
             if (!in_array($column->name, $model->defaultColumns)) {
-                /* Add encryption symbole to question title for table header (if question is encrypted) */
+                /* Add encryption symbol to question title for table header (if question is encrypted) */
                 $encryptionSymbol = '';
                 if (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] === 'Y') {
                     $encryptionSymbol = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';

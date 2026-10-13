@@ -496,7 +496,7 @@ class LSActiveRecord extends CActiveRecord
         }
     }
     /**
-     * Function to show encryption symbol in gridview attribute header if value ois encrypted
+     * Function to show encryption symbol in gridview attribute header if value is encrypted
      * @param int $surveyId
      * @param string $className
      * @param string $attributeName

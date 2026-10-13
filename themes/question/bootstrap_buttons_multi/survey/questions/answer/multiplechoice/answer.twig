@@ -18,9 +18,13 @@
 
 {% set button_size_class = (question_template_attribute.button_size == 'default' or question_template_attribute.button_size is empty) ? '' : "btn-"~question_template_attribute.button_size %}
 {% set max_buttons_row = (question_template_attribute.max_buttons_row == 'default' or question_template_attribute.max_buttons_row is empty) ? 'col-md-2' : question_template_attribute.max_buttons_row %}
+{# Translate the col-md-* option of "Maximum number of buttons in a row" into a fixed grid column count #}
+{% set buttons_per_row_map = {'col-md-12': 1, 'col-md-6': 2, 'col-md-4': 3, 'col-md-3': 4, 'col-md-2': 6, 'col-md-1': 12} %}
+{% set max_buttons_row_value = question_template_attribute.max_buttons_row|default('') %}
+{% set buttons_cols_class = max_buttons_row_value in buttons_per_row_map|keys ? 'bootstrap-buttons-cols-' ~ buttons_per_row_map[max_buttons_row_value] : '' %}
 <input type="hidden" name="MULTI{{name}}" value="{{anscount}}" />
 <div class="{{coreClass}} {{ extraclass }}" >
-    <ul class="list-unstyled bootstrap-buttons-list" data-bs-toggle="buttons" role="group" aria-labelledby="ls-question-text-{{basename }}">
+    <ul class="list-unstyled bootstrap-buttons-list {{ buttons_cols_class }}" data-bs-toggle="buttons" role="group" aria-labelledby="ls-question-text-{{basename }}">
         {% for aRow in aRows %}
             {% set aRow = aRow|merge({'button_size_class': button_size_class})|merge({'max_buttons_row': max_buttons_row}) %}
             {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}

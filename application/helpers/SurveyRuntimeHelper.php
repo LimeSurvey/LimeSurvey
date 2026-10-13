@@ -660,7 +660,7 @@ class SurveyRuntimeHelper
     {
         $this->initFirstStep(); // If it's the first time user load this survey, will init session and LEM
         $this->initTotalAndMaxSteps();
-        $this->checkIfUseBrowserNav(); // Check if user used browser navigation, or relaoded page
+        $this->checkIfUseBrowserNav(); // Check if user used browser navigation, or reloaded page
         if ($this->sMove != 'clearcancel' && $this->sMove != 'confirmquota') {
             $this->checkPrevStep(); // Check if prev step is set, else set it
             $this->setMoveResult();
@@ -778,7 +778,7 @@ class SurveyRuntimeHelper
             'target'                      => Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $this->aSurveyInfo['sid'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR,
             'tempdir'                     => Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR,
             'displayTimezone'             => Yii::app()->getConfig('displayTimezone'),
-            // for backward compatibilty convert timezone string to +/- hours
+            // for backward compatibility convert timezone string to +/- hours
             'timeadjust'                  => convertTimezoneDiffToHours(),
             'token'                       => $clienttoken,
         );

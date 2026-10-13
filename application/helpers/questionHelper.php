@@ -736,7 +736,7 @@ class questionHelper
         self::$attributes["input_boxes"] = array(
         "types" => ":",
             'category' => gT('Display'),
-            'sortorder' => 110,
+            'sortorder' => 113,
             'inputtype' => 'switch',
             'options' => array(0 => gT('No'), 1 => gT('Yes')),
             'default' => 0,
