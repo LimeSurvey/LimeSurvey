@@ -36,8 +36,9 @@ export const SurveyOverview = ({
     statistics = {},
     refetch,
     isFetching,
-  } = useStatisticsAtGlance(survey?.sid)
-
+  } = useStatisticsAtGlance(survey?.sid, {
+    enabled: survey?.active === true && survey?.hasResponsesTable === true,
+  })
   const surveyTitle = survey?.languageSettings?.[survey?.language]?.title
   const dateCreated = new Date(survey.dateCreated)
 

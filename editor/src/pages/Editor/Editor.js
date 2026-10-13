@@ -12,6 +12,7 @@ import {
   PAGES,
 } from 'helpers'
 import { getSurveyPauseToastOptions } from 'components'
+import SurveyDatabaseAlert from 'components/SurveyDatabaseAlert/SurveyDatabaseAlert'
 import ThemeOptionsPreview from 'components/ThemeOptions/ThemeOptionsPreview'
 
 import Layout from './Layout'
@@ -82,6 +83,9 @@ export const Editor = () => {
   return (
     <>
       <PluginSlot slotName={PLUGIN_SLOTS.EDITOR_TOP} />
+      {survey.active && survey.hasResponsesTable === false && (
+        <SurveyDatabaseAlert isSuperAdmin={survey.isSuperAdmin} />
+      )}
       <div id="editor" key={activeLanguage}>
         <EditorTutorial survey={survey} isSurveyActive={survey.active} />
         {isLoadingSurvey || isLoadingTranslations ? (

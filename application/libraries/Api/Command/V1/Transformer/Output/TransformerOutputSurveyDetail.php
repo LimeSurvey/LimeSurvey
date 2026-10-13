@@ -9,6 +9,7 @@ use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 use SurveysGroups;
 use TemplateConfiguration;
+use Permission;
 
 /**
  * TransformerOutputSurveyDetail
@@ -107,6 +108,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['isEditorCompatible'] = $data->getIsEditorCompatible();
         $survey['languages'] = $data->allLanguages;
         $survey['hasTokens'] = $data->hasTokensTable;
+        $survey['hasResponsesTable'] = (bool) $data->hasResponsesTable;
+        $survey['isSuperAdmin'] = Permission::model()->hasGlobalPermission('superadmin', 'read');
         $survey['previewLink'] = App()->createUrl(
             "survey/index",
             array(
