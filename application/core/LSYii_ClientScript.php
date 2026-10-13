@@ -217,6 +217,10 @@ class LSYii_ClientScript extends CClientScript
      */
     public function registerPackage($name)
     {
+        if ($name === 'ckeditor' || in_array('ckeditor', $this->getRecursiveDependencies($name))) {
+            $this->registerCkeditorEmojiList();
+        }
+
         // Some packages must never be published through the asset manager because they
         // reference sibling packages using runtime-relative paths. For example, CKEditor's
         // config.js builds the KCFinder file browser URLs as `CKEDITOR.basePath + "../kcfinder/..."`.
@@ -243,6 +247,25 @@ class LSYii_ClientScript extends CClientScript
 
             parent::registerPackage($name);
         }
+    }
+
+    /**
+     * Tell CKEditor (see assets/packages/ckeditor/config.js) which emoji list to offer.
+     * 4-byte UTF-8 characters (most emojis) are stored as "????" when MySQL is connected with a charset other than utf8mb4
+     * so only emojis made of 3-byte characters are offered then.
+     * @return void
+     */
+    private function registerCkeditorEmojiList()
+    {
+        $db = Yii::app()->db;
+        $isMysql = in_array($db->getDriverName(), array('mysql', 'mysqli'));
+        $supportsFourByteChars = !$isMysql || strtolower((string) $db->charset) === 'utf8mb4';
+        $emojiListUrl = $supportsFourByteChars ? 'plugins/emoji/emoji.json' : 'plugins/emoji/emoji-bmp.json';
+        $this->registerScript(
+            'ckeditorEmojiList',
+            'window.LS = window.LS || {}; window.LS.ckeditorEmojiListUrl = ' . json_encode($emojiListUrl) . ';',
+            CClientScript::POS_HEAD
+        );
     }
 
     /**

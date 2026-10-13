@@ -280,6 +280,10 @@ CKEDITOR.editorConfig = function (a) {
         a.entities = !1;
         // Pasted or dropped image files would otherwise be embedded as huge base64 data URIs into the text
         a.clipboard_handleImages = !1;
+        // The emoji list is chosen server side (LSYii_ClientScript::registerCkeditorEmojiList) from the DB charset:
+        // emoji-bmp.json only contains emojis made of 3-byte UTF-8 characters (emoji.json filtered, U+FE0F added for emoji presentation),
+        // as 4-byte ones are stored as "????" on MySQL connections using 'utf8' (utf8mb3).
+        a.emoji_emojiListUrl = (window.LS && window.LS.ckeditorEmojiListUrl) || "plugins/emoji/emoji-bmp.json";
         a.uiColor = "#f1f1f1";
 
         "rtl" == $("html").attr("dir") && (a.contentsLangDirection = "rtl");
