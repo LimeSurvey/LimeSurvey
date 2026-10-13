@@ -11,3 +11,6 @@ root.render(<App />)
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 // eslint-disable-next-line no-console
 reportWebVitals(console.log)
+
+// TEMP: trigger editor-build workflow
+window.__editorBuildCheck = '2026-10-13'
