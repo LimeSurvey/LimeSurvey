@@ -128,6 +128,7 @@
                 id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][relevance]'
                 name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][relevance]'
                 value="{{ subquestion.relevance|escape('html_attr') }}"
+                placeholder="1"
                 onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
             />
         </td>
