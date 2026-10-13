@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-10-12 19:14:14+00:00\n"
+"POT-Creation-Date: 2026-10-13 08:05:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29913,10 +29913,10 @@ msgstr ""
 #: editor/src/components/QuestionTypes/FileUpload/FileUploadItem.js:71
 #: editor/src/components/QuestionTypes/FileUpload/FileUploadItem.js:82
 #: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoiceNumericalSubquestion.js:53
-#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:475
-#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:501
-#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:532
-#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:550
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:479
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:505
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:536
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:554
 #: editor/src/components/QuestionTypes/TextQuestion/BrowserDetectionTextAnswer.js:133
 #: editor/src/components/QuestionTypes/TextQuestion/LongTextAnswer.js:15
 #: editor/src/components/QuestionTypes/TextQuestion/NumericAnswer.js:12
@@ -29950,7 +29950,7 @@ msgstr ""
 
 #: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoiceCheckboxSubquestion.js:57
 #: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoiceShortTextSubquestion.js:24
-#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:572
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:576
 msgid "Enter your comment here."
 msgstr ""
 
@@ -32036,6 +32036,13 @@ msgstr ""
 #: themes/survey/vanilla/views/subviews/content/submit_preview.twig:23
 #, gp-priority: high
 msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr ""
+
+#. Shown to survey participants
+#: themes/survey/fruity_twentythree/views/subviews/header/head.twig:53
+#: themes/survey/vanilla/views/subviews/header/head.twig:54
+#, gp-priority: high
+msgid "Error: %s"
 msgstr ""
 
 #. Shown to survey participants
