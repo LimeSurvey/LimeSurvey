@@ -340,6 +340,21 @@ return [
         ]
     ],
 
+    'quicktranslation' => [
+        'devBaseUrl' => 'assets/packages/quicktranslation/',
+        'basePath'   => 'core.quicktranslation',
+        'position'   => CClientScript::POS_BEGIN,
+        'css'        => [
+            'css/quicktranslation.css'
+        ],
+        'js'         => [
+            'js/quicktranslation.js',
+        ],
+        'depends'    => [
+            'adminbasics',
+        ]
+    ],
+
     'printable'         => [
         'devBaseUrl' => 'assets/packages/printable/',
         'basePath'   => 'core.printable',

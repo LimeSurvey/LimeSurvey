@@ -1,0 +1,295 @@
+/* Quick translation: The texts are arranged like the survey is structured */
+
+.quick-translation {
+    /* Space for the sticky top bar of the survey */
+    --qt-sticky-top: 5rem;
+    --qt-muted-color: #5c6070;
+    --qt-border-color: #dee2e6;
+    --qt-untranslated-bg: #fff1e0;
+    --qt-untranslated-color: #6b3d00;
+    --qt-untranslated-border: #ffba68;
+}
+
+/* The admin theme underlines headings */
+.quick-translation h3,
+.quick-translation h4,
+.quick-translation h5 {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* The layout wrappers hide overflow, which turns them into scroll containers: The sidebar would not stick and
+   scrolling to a part of the page would scroll them. Clipping does not create a scroll container. */
+#vue-apps-main-container > .ls-flex-column:has(.quick-translation-nav),
+#pjax-content .side-body:has(.quick-translation-nav) {
+    overflow: clip;
+}
+
+/* The survey side menu of the editor has no panel on this page, only the icons (55px wide, fixed) */
+#vue-apps-main-container:has(.quick-translation) > .sidebar-container {
+    width: 74px;
+}
+
+/* The page has its own navigation of the survey structure. The side menu is only hidden, not left out: Links
+   (e.g. the breadcrumb) load the next page into the content only, there the side menu is needed again. */
+#vue-apps-main-container:has(.quick-translation) > #vue-sidebar-container {
+    display: none !important;
+}
+
+/* The content column leaves room for the side menu (col-11), which is not shown on this page */
+#vue-apps-main-container:has(.quick-translation) > .main-content-container {
+    flex: 1 1 0%;
+    width: auto;
+    max-width: none;
+}
+
+/* The top bar leaves room for the panel (350px + 15px), here only for the icons like the content */
+body:has(.quick-translation) .topbar.editor:not(.ms-0) {
+    margin-left: 89px;
+}
+
+/* Sidebar */
+.quick-translation-nav {
+    position: sticky;
+    top: var(--qt-sticky-top);
+    max-height: calc(100vh - var(--qt-sticky-top) - 1rem);
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding-right: 0.5rem;
+}
+
+/* Above the texts on small screens */
+@media (max-width: 991.98px) {
+    .quick-translation-nav {
+        position: static;
+        max-height: 40vh;
+    }
+}
+
+.quick-translation-hint {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--qt-muted-color);
+}
+
+.quick-translation-nav-list,
+.quick-translation-nav-list ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.quick-translation-nav-list ul {
+    padding-left: 1rem;
+}
+
+.quick-translation-nav-list a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.quick-translation-nav-list ul a {
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+/* Questions on one line, like in the question explorer */
+.quick-translation-nav-list ul .quick-translation-nav-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+.quick-translation-nav-list a:hover,
+.quick-translation-nav-list a:focus-visible {
+    background-color: var(--bs-light);
+}
+
+.quick-translation-nav-text {
+    flex-grow: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+/* Counters and markers of untranslated texts */
+.quick-translation-count,
+.quick-translation-untranslated {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border: 1px solid var(--qt-untranslated-border);
+    border-radius: 1rem;
+    background-color: var(--qt-untranslated-bg);
+    color: var(--qt-untranslated-color);
+    font-family: var(--bs-font-sans-serif);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+.quick-translation-languages {
+    color: var(--qt-muted-color);
+}
+
+/* Sections (survey texts, groups, emails) and questions */
+.quick-translation-section > .card-header,
+.quick-translation-question > .card-header {
+    background-color: var(--bs-light);
+}
+
+.quick-translation-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+}
+
+.quick-translation-toggle i {
+    transition: transform 0.2s;
+}
+
+.quick-translation-toggle[aria-expanded="false"] i {
+    transform: rotate(-90deg);
+}
+
+.quick-translation-section:focus,
+.quick-translation-question:focus {
+    outline: 2px solid var(--bs-primary);
+    outline-offset: 2px;
+}
+
+.quick-translation-type {
+    font-size: 0.875rem;
+    color: var(--qt-muted-color);
+}
+
+.quick-translation-part-title {
+    margin: 1.25rem 0 0;
+    color: var(--qt-muted-color);
+}
+
+.quick-translation-section,
+.quick-translation-question {
+    scroll-margin-top: var(--qt-sticky-top);
+}
+
+/* A single text: Source on the left, translation on the right */
+.quick-translation-field {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.5rem 1.5rem;
+    padding: 0.75rem 0;
+}
+
+.card-body > .quick-translation-field:first-child {
+    padding-top: 0;
+}
+
+.quick-translation-field + .quick-translation-field {
+    border-top: 1px dashed var(--qt-border-color);
+}
+
+@media (max-width: 767.98px) {
+    .quick-translation-field {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.quick-translation-label-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.quick-translation-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--qt-muted-color);
+}
+
+.quick-translation-code {
+    font-weight: 600;
+}
+
+.quick-translation-source {
+    display: flex;
+    gap: 0.375rem;
+    overflow-wrap: anywhere;
+}
+
+.quick-translation-source > ._from_ {
+    min-width: 0;
+    flex-grow: 1;
+}
+
+.quick-translation-source img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* The texts look like they do in the survey: Big question text and title, small help text */
+.quick-translation-field-title .quick-translation-source {
+    font-size: 1.375rem;
+    font-weight: 600;
+}
+
+.quick-translation-field-group .quick-translation-source,
+.quick-translation-field-question .quick-translation-source {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.quick-translation-field-question_help .quick-translation-source {
+    font-size: 0.875rem;
+    color: var(--qt-muted-color);
+}
+
+.quick-translation-help-icon {
+    flex-shrink: 0;
+}
+
+.quick-translation-editor {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.quick-translation-editor > textarea {
+    flex-grow: 1;
+}
+
+.quick-translation-editor-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+/* Inline editors replace the textarea */
+.quick-translation-editor > .cke {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.quick-translation-editor ._from_ p:last-child,
+.quick-translation-source p:last-child {
+    margin-bottom: 0;
+}
+
+/* Filter: Show only untranslated texts */
+.quick-translation-only-untranslated .quick-translation-field:not(.is-untranslated),
+.quick-translation-only-untranslated [data-untranslated="0"] {
+    display: none;
+}

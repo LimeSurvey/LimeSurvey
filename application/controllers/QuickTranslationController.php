@@ -74,6 +74,7 @@ class QuickTranslationController extends LSBaseController
         initKcfinder();
 
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'translation.js');
+        App()->getClientScript()->registerPackage('quicktranslation');
         Yii::app()->loadHelper("database");
         Yii::app()->loadHelper("admin.htmleditor");
         Yii::app()->loadHelper("surveytranslator");
@@ -160,6 +161,32 @@ class QuickTranslationController extends LSBaseController
     }
 
     /**
+     * Saves the posted translations without rendering the page, e.g. the texts of one question before
+     * previewing it. The posted fields are the same as for saving the whole page.
+     *
+     * @param int $surveyid
+     * @return void
+     * @throws CHttpException
+     */
+    public function actionAjaxSave($surveyid)
+    {
+        $surveyid = (int) $surveyid;
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        if (!App()->getRequest()->getIsPostRequest()) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+        $survey = Survey::model()->findByPk($surveyid);
+        $tolang = App()->getRequest()->getPost('tolang');
+        if (!in_array($tolang, $survey->additionalLanguages)) {
+            throw new CHttpException(400, gT("Invalid language"));
+        }
+        $this->translateSave($tolang, new \LimeSurvey\Models\Services\QuickTranslation($survey), $surveyid);
+        $this->renderJSON(['success' => true]);
+    }
+
+    /**
      * @param $survey Survey the survey object
      * @param $tolang
      * @param $baselang
@@ -217,64 +244,50 @@ class QuickTranslationController extends LSBaseController
 
     /**
      * Collecting database data and ckeditor data for the views.
+     * The fields are arranged like the survey is structured (see QuickTranslation::getSurveyStructure()), the
+     * names of the form fields are those translateSave() reads.
      *
-     * @param $quickTranslation \LimeSurvey\Models\Services\QuickTranslation the quick translation object
-     * @param $tolang string language to translate to
-     * @param $baselang  string the base language
-     * @param $baselangdesc string the base language description
-     * @param $tolangdesc string the language to translate description
+     * @param \LimeSurvey\Models\Services\QuickTranslation $quickTranslation the quick translation object
+     * @param string $tolang language to translate to
+     * @param string $baselang the base language
+     * @param string $baselangdesc the base language description
+     * @param string $tolangdesc the language to translate description
      *
      * @return array
      * @throws CException
      */
     private function displayUntranslatedFields($quickTranslation, $tolang, $baselang, $baselangdesc, $tolangdesc)
     {
-        // Define aData
         $survey = $quickTranslation->getSurvey();
-        $tabsViewData['surveyid'] = $survey->sid;
-        $tabsViewData['tab_names'] = $quickTranslation->getTabNames();
-        $tabsViewData['tolang'] = $tolang;
-        $tabsViewData['baselang'] = $baselang;
-        $tabsViewData['baselangdesc'] = $baselangdesc;
-        $tabsViewData['tolangdesc'] = $tolangdesc;
+        $viewData = [
+            'surveyid' => $survey->sid,
+            'tolang' => $tolang,
+            'baselang' => $baselang,
+            'baselangdesc' => $baselangdesc,
+            'tolangdesc' => $tolangdesc,
+            'bReadOnly' => !Permission::model()->hasSurveyPermission($survey->sid, 'translations', 'update'),
+            'canPreview' => Permission::model()->hasSurveyPermission($survey->sid, 'surveycontent', 'read'),
+            'fieldCounts' => [],
+        ];
 
-        //This is for the tab navbar
-        $tabsViewData['amTypeOptions'] = $quickTranslation->getAllTranslateFields();
-
-        //this array will contain all necessary data for the views
-        /*
-         * structure will be like
-         *
-         * $tabsViewData['tabname'] = [
-         *      'data1' => ''
-         *      ....
-         *      'tabFieldData = []
-         * ]
-         */
-        $tabsViewData['singleTabs'] = [];
-
-        //iterate through all tabs and define content of each tab
-        foreach ($tabsViewData['tab_names'] as $tabName) {
-            $singleTabData = [];
+        // All fields per field type, indexed by the record index used in the form field names
+        $fieldsByType = [];
+        foreach ($quickTranslation->getTabNames() as $tabName) {
             $translateFieldOptions = $quickTranslation->setupTranslateFields($tabName);
             $translationsBase = $quickTranslation->getTranslations($tabName, $baselang);
             $translationsTo = $quickTranslation->getTranslations($tabName, $tolang);
+            $fieldTypes = [$tabName => $translateFieldOptions];
             $associatedName = $translateFieldOptions["associated"];
-            $associated = false;
             if (!empty($associatedName)) {
-                $associated = true;
-                //get type options again
-                $associatedData = $quickTranslation->setupTranslateFields($associatedName);
+                $fieldTypes[$associatedName] = $quickTranslation->setupTranslateFields($associatedName);
             }
-            $singleTabData['type'] = $tabName;
-            $singleTabData['tabTitle'] = $translateFieldOptions['description'];
-            //always set first tab active
-            $singleTabData['activeTab'] = $tabName === 'title';
 
-            //iterates through active record results depending on the tab
             $countResultBase = count($translationsBase);
+            foreach (array_keys($fieldTypes) as $type) {
+                $viewData['fieldCounts'][$type] = $countResultBase;
+                $fieldsByType[$type] = [];
+            }
             for ($j = 0; $j < $countResultBase; $j++) {
-                $singleTabFieldsData = [];
                 $translationBase = $translationsBase[$j];
                 $translationTo = $translationsTo[$j];
 
@@ -304,89 +317,29 @@ class QuickTranslationController extends LSBaseController
                 $translationAttributesBase = array_merge($translationAttributesBase, $translationBase->getAttributes());
                 $translationAttributesTo = array_merge($translationAttributesTo, $translationTo->getAttributes());
 
-                $textfrom = htmlspecialchars_decode((string)$translationAttributesBase[$translateFieldOptions["dbColumn"]]);
-
-                $textto = $translationAttributesTo[$translateFieldOptions["dbColumn"]];
-                if ($associated) {
-                    $associatedResultBase = htmlspecialchars_decode((string)$translationAttributesBase[$associatedData["dbColumn"]]);
-                    $associatedResultTo = $translationAttributesTo[$associatedData["dbColumn"]];
-                }
-
                 $gid = ($translateFieldOptions["gid"] == true) ? $translationAttributesBase['gid'] : null;
                 $qid = ($translateFieldOptions["qid"] == true) ? $translationAttributesBase['qid'] : null;
 
-                $textform_length = strlen(trim($textfrom));
-                $textfrom2_length = $associated ? strlen(trim((string)$associatedResultBase)) : 0;
-
-                $singleTabFieldsData['all_fields_empty'] = ($textform_length == 0) && ($textfrom2_length == 0);
-
-                $singleTabFieldsData['fieldData'] = [
-                    'textfrom'       => $this->cleanup($textfrom),
-                    'textto'         => $this->cleanup($textto),
-                    'rowfrom'        => $translationAttributesBase,
-                    'gid'            => $gid,
-                    'qid'            => $qid,
-                    'amTypeOptions'  => $translateFieldOptions,
-                    'associatedData' => $associatedData,
-                    'i'              => $j,
-                    'type'           => $tabName,
-                    'associatedName' => $associatedName,
-                    'associated'     => $associated,
-                ];
-                $singleTabFieldsData['translateFields'] = [];
-                $singleTabFieldsData['translateFields'][] = [
-                    'surveyId'      => $survey->sid,
-                    'gid'           => $gid,
-                    'qid'           => $qid,
-                    'type'          => $tabName,
-                    'amTypeOptions' => $translateFieldOptions,
-                    'textfrom'      => $textfrom,
-                    'textto'        => $textto,
-                    'j'             => $j,
-                    'rowfrom'       => $translationAttributesBase,
-                    'nrows'         => max($this->calcNRows($textfrom), $this->calcNRows($textto))
-                ];
-                if ($associated && strlen(trim((string)$associatedResultBase)) > 0) {
-                    $singleTabFieldsData['translateFields'][] = [
+                foreach ($fieldTypes as $type => $typeOptions) {
+                    $textfrom = htmlspecialchars_decode((string) $translationAttributesBase[$typeOptions["dbColumn"]]);
+                    $textto = $translationAttributesTo[$typeOptions["dbColumn"]];
+                    $fieldsByType[$type][$j] = [
                         'surveyId'      => $survey->sid,
                         'gid'           => $gid,
                         'qid'           => $qid,
-                        'type'          => $associatedName,
-                        'amTypeOptions' => $associatedData,
-                        'textfrom'      => $associatedResultBase,
-                        'textto'        => $associatedResultTo,
+                        'type'          => $type,
+                        'amTypeOptions' => $typeOptions,
+                        'textfrom'      => $textfrom,
+                        'textto'        => $textto,
                         'j'             => $j,
                         'rowfrom'       => $translationAttributesBase,
-                        'nrows'         => max($this->calcNRows($associatedResultBase), $this->calcNRows($associatedResultTo))
+                        'nrows'         => max($this->calcNRows($textfrom), $this->calcNRows($textto)),
                     ];
                 }
-                $singleTabData['singleTabFieldsData'][] = $singleTabFieldsData;
-            } // end for
-
-            $tabsViewData['bReadOnly'] = !Permission::model()->hasSurveyPermission($survey->sid, 'translations', 'update');
-            $tabsViewData['singleTabs'][] = $singleTabData;
-        } // end foreach
-        return $tabsViewData;
-    }
-
-    /**
-     *
-     *
-     * @param string $string
-     * @return string|null
-     */
-    private function cleanup($string): ?string
-    {
-        if (extension_loaded('tidy')) {
-            $oTidy = new tidy();
-
-            $cleansedString = $oTidy->repairString($string, array(), 'utf8');
-        } else {
-            //We should check for tidy on Installation!
-            $cleansedString = $string;
+            }
         }
-
-        return $cleansedString;
+        $viewData['structure'] = $quickTranslation->getSurveyStructure($fieldsByType);
+        return $viewData;
     }
 
     /**
@@ -407,10 +360,10 @@ class QuickTranslationController extends LSBaseController
             $editor_function = "getEditor";
         } elseif ($displayType == "popup") {
             $editor_function = "getPopupEditor";
-            $aData[2] = urlencode((string) $htmleditor['description']);
+            $aData[2] = urlencode((string) $htmleditor['fieldLabel']);
         } elseif ($displayType == "modal") {
             $editor_function = "getModalEditor";
-            $aData[2] = $htmleditor['description'];
+            $aData[2] = $htmleditor['fieldLabel'];
         }
         return call_user_func_array($editor_function, $aData);
     }

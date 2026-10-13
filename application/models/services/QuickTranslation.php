@@ -8,6 +8,7 @@ use Question;
 use QuestionGroup;
 use QuestionGroupL10n;
 use QuestionL10n;
+use QuestionType;
 use Survey;
 use SurveyLanguageSetting;
 
@@ -483,6 +484,7 @@ class QuickTranslation
      *  gid  -->
      *  qid  -->
      *  description -->  the tab title
+     *  fieldLabel -->  the label of the single field
      *  HTMLeditorType -->  parameter for CKEditor
      *  HTMLeditorDisplay --> inline, modal for CKEditor to load it
      *  associated --> the associated field for the current one. If empty string this one has no associated field
@@ -518,7 +520,25 @@ class QuickTranslation
             'subquestion'                       => gT("Subquestions"),
             'answer'                            => gT("Answer options")
         ];
+        // Label of the single field, shown in tabs that mix two kinds of texts
+        $fieldLabels = [
+            'title'       => gT("Survey title"),
+            'description' => gT("Description"),
+            'welcome'     => gT("Welcome message"),
+            'end'         => gT("End message"),
+            'group'       => gT("Group name"),
+            'group_desc'  => gT("Group description"),
+            'question'    => gT("Question text"),
+            'question_help' => gT("Question help"),
+        ];
         $data['description'] = $descriptions[$type];
+        if (isset($fieldLabels[$type])) {
+            $data['fieldLabel'] = $fieldLabels[$type];
+        } elseif (str_starts_with($type, 'email')) {
+            $data['fieldLabel'] = str_ends_with($type, 'body') ? gT("Message") : gT("Subject");
+        } else {
+            $data['fieldLabel'] = $descriptions[$type];
+        }
         return $data;
     }
 
@@ -554,6 +574,185 @@ class QuickTranslation
             "emailbasicadminnotification",
             "emaildetailedadminnotification"
         ];
+    }
+
+    /**
+     * Arranges the translatable fields like the survey is structured: The survey texts, the question groups
+     * with their questions (each with its subquestions and answer options per scale) and the email templates.
+     * Fields without a source text are left out, as there is nothing to translate. Each field gets the flag
+     * 'untranslated' (translation is empty or still the same as the source text), and each part gets
+     * 'untranslatedCount', the number of untranslated fields in it.
+     *
+     * @param array $fieldsByType Fields per field type (e.g. 'question', 'question_help'), each a list indexed by
+     *                            the record index; A field has at least 'textfrom', 'textto' and 'rowfrom'
+     *                            (the attributes of the record in the base language)
+     * @return array{surveyTexts: array, groups: array, emails: array}
+     */
+    public function getSurveyStructure(array $fieldsByType)
+    {
+        $withSource = function (array $fields) {
+            $result = [];
+            foreach ($fields as $field) {
+                if ($field !== null && trim((string) $field['textfrom']) !== '') {
+                    $field['untranslated'] = $this->isUntranslated($field['textfrom'], $field['textto']);
+                    $result[] = $field;
+                }
+            }
+            return $result;
+        };
+        $countUntranslated = function (array $fields) {
+            return count(array_filter(array_column($fields, 'untranslated')));
+        };
+
+        $surveyTexts = [];
+        foreach (['title', 'description', 'welcome', 'end'] as $type) {
+            $surveyTexts = array_merge($surveyTexts, $withSource($fieldsByType[$type] ?? []));
+        }
+
+        $groups = [];
+        foreach ($fieldsByType['group'] ?? [] as $j => $field) {
+            $gid = (int) $field['rowfrom']['gid'];
+            $groups[$gid] = [
+                'gid' => $gid,
+                'name' => trim(strip_tags(html_entity_decode((string) $field['textfrom'], ENT_QUOTES, 'UTF-8'))),
+                'groupOrder' => (int) $field['rowfrom']['group_order'],
+                'fields' => $withSource([$field, $fieldsByType['group_desc'][$j] ?? null]),
+                'questions' => [],
+            ];
+        }
+
+        $questions = [];
+        foreach ($fieldsByType['question'] ?? [] as $j => $field) {
+            $qid = (int) $field['rowfrom']['qid'];
+            $questions[$qid] = [
+                'qid' => $qid,
+                'gid' => (int) $field['rowfrom']['gid'],
+                'code' => $field['rowfrom']['title'],
+                'text' => (string) $field['textfrom'],
+                'type' => $field['rowfrom']['type'],
+                'fields' => $withSource([$field, $fieldsByType['question_help'][$j] ?? null]),
+                'subquestions' => [],
+                'answers' => [],
+            ];
+        }
+        foreach ($fieldsByType['subquestion'] ?? [] as $field) {
+            $parentQid = (int) $field['rowfrom']['parent_qid'];
+            if (isset($questions[$parentQid])) {
+                $questions[$parentQid]['subquestions'][(int) $field['rowfrom']['scale_id']][] = $field;
+            }
+        }
+        foreach ($fieldsByType['answer'] ?? [] as $field) {
+            $qid = (int) $field['rowfrom']['qid'];
+            if (isset($questions[$qid])) {
+                $questions[$qid]['answers'][(int) $field['rowfrom']['scale_id']][] = $field;
+            }
+        }
+
+        $questionTypes = QuestionType::modelsAttributes();
+        foreach ($questions as $question) {
+            $questionType = $questionTypes[$question['type']] ?? [];
+            $question['typeName'] = $questionType['description'] ?? $question['type'];
+            $question['subquestionScales'] = [];
+            foreach ($question['subquestions'] as $scaleId => $fields) {
+                $fields = $withSource($fields);
+                if (!empty($fields)) {
+                    $question['subquestionScales'][] = [
+                        'title' => $this->getSubquestionScaleTitle($scaleId, ($questionType['subquestions'] ?? 1) > 1),
+                        'fields' => $fields,
+                        'untranslatedCount' => $countUntranslated($fields),
+                    ];
+                }
+            }
+            $question['answerScales'] = [];
+            foreach ($question['answers'] as $scaleId => $fields) {
+                $fields = $withSource($fields);
+                if (!empty($fields)) {
+                    $question['answerScales'][] = [
+                        'title' => ($questionType['answerscales'] ?? 1) > 1
+                            ? sprintf(gT("Answer options (scale %s)"), $scaleId + 1)
+                            : gT("Answer options"),
+                        'fields' => $fields,
+                        'untranslatedCount' => $countUntranslated($fields),
+                    ];
+                }
+            }
+            unset($question['subquestions'], $question['answers']);
+            if (empty($question['fields']) && empty($question['subquestionScales']) && empty($question['answerScales'])) {
+                continue;
+            }
+            $question['untranslatedCount'] = $countUntranslated($question['fields'])
+                + array_sum(array_column($question['subquestionScales'], 'untranslatedCount'))
+                + array_sum(array_column($question['answerScales'], 'untranslatedCount'));
+            if (isset($groups[$question['gid']])) {
+                $groups[$question['gid']]['questions'][] = $question;
+            }
+        }
+
+        foreach ($groups as $gid => $group) {
+            if (empty($group['fields']) && empty($group['questions'])) {
+                unset($groups[$gid]);
+                continue;
+            }
+            $groups[$gid]['untranslatedCount'] = $countUntranslated($group['fields'])
+                + array_sum(array_column($group['questions'], 'untranslatedCount'));
+        }
+        // The groups are queried by ID, the survey shows them by group order
+        uasort($groups, function ($a, $b) {
+            return [$a['groupOrder'], $a['gid']] <=> [$b['groupOrder'], $b['gid']];
+        });
+
+        $emails = [];
+        foreach ($this->getTabNames() as $type) {
+            if (!str_starts_with($type, 'email')) {
+                continue;
+            }
+            $fields = $withSource([$fieldsByType[$type][0] ?? null, $fieldsByType[$type . 'body'][0] ?? null]);
+            if (!empty($fields)) {
+                $emails[] = [
+                    'type' => $type,
+                    'title' => $this->setupTranslateFields($type . 'body')['description'],
+                    'fields' => $fields,
+                    'untranslatedCount' => $countUntranslated($fields),
+                ];
+            }
+        }
+
+        return [
+            'surveyTexts' => $surveyTexts,
+            'surveyTextsUntranslatedCount' => $countUntranslated($surveyTexts),
+            'groups' => array_values($groups),
+            'emails' => $emails,
+            'emailsUntranslatedCount' => array_sum(array_column($emails, 'untranslatedCount')),
+        ];
+    }
+
+    /**
+     * Checks if a text still needs a translation: The translation is empty or the same as the source text
+     * (new languages get a copy of the base language texts).
+     *
+     * @param string|null $textFrom The text in the base language
+     * @param string|null $textTo The text in the language to translate to
+     * @return bool
+     */
+    public function isUntranslated($textFrom, $textTo)
+    {
+        $textTo = trim(htmlspecialchars_decode((string) $textTo));
+        return $textTo === '' || $textTo === trim((string) $textFrom);
+    }
+
+    /**
+     * Returns the title of a list of subquestions, with the scale (Y or X) for questions with two scales
+     *
+     * @param int $scaleId The scale ID of the subquestions
+     * @param bool $hasTwoScales Whether the question type has two subquestion scales
+     * @return string
+     */
+    private function getSubquestionScaleTitle($scaleId, $hasTwoScales)
+    {
+        if (!$hasTwoScales) {
+            return gT("Subquestions");
+        }
+        return $scaleId == 0 ? gT("Subquestions (Y-scale)") : gT("Subquestions (X-scale)");
     }
 
     /**

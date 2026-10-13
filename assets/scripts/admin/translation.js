@@ -8,21 +8,16 @@ var iRunningThreads=0;
 $(document).on('ready  pjax:scriptcomplete',  function(){
 
     intThrottlingRate = 550; // 1 request per 550 ms
-    $('#translationtabs').show();
+    $('#quick-translation').show();
     $('#translationloading').hide();
 
-    // Tab ARIA state is handled globally: Bootstrap maintains aria-selected and
-    // adminbasics' tabsControl handles the roving tabindex plus arrow/Home/End
-    // navigation for any [role="tablist"], so nothing tab-specific is needed here.
-
-    $('input.auto-trans').click(function(ui)
+    $('.auto-trans').click(function(ui)
     {
-        var sTarget_id = $(ui.target).attr('id');
-
         var sBaseLang    = $("[name=baselang]").val();
         var sToLang      = $("[name=tolang]").val();
 
-        $("._from_",$(ui.target).parent()).each(function(index,element)
+        // Translate the texts of the section of the button
+        $("._from_",$(this).closest('.quick-translation-section')).each(function(index,element)
         {
             var sToConvert = $(element).html();
 
