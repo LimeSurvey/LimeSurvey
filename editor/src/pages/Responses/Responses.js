@@ -253,6 +253,7 @@ export const Responses = () => {
               setSorting={setSorting}
               sorting={sorting}
               sortedColumnId={sortedColumnId}
+              filterSet={filterSet}
               survey={survey}
               onPaginationChange={onPaginationChange}
               onSortChange={onSortChange}

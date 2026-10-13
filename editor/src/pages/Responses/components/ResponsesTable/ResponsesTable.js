@@ -38,6 +38,7 @@ export const ResponsesTable = ({
   survey,
   sortedColumnId,
   sorting,
+  filterSet,
   setSorting,
   responsesData,
   handleResponsesDelete = () => {},
@@ -279,11 +280,12 @@ export const ResponsesTable = ({
     setColumnsOrder(columns.map((c) => c?.id))
   }, [columns])
 
-  // Reset selection when sorting changes (dataset identity changes)
+  // Reset selection when sorting or the filter changes (dataset identity
+  // changes).
   useEffect(() => {
     setRowSelection({})
     setPersistentSelection({})
-  }, [sorting])
+  }, [sorting, filterSet])
 
   // Restore checkboxes from persistentSelection when page data changes
   useEffect(() => {
