@@ -14,7 +14,9 @@
 
   .MuiInputBase-input {
     color: $g-900;
-    padding: 10px 12px;
+    // Fixed content height instead of MUI's 1.4375em, so the field is 38px high like all other inputs
+    height: 20px;
+    padding: 9px 12px;
   }
   .MuiOutlinedInput-notchedOutline {
     border-radius: 4px !important;
