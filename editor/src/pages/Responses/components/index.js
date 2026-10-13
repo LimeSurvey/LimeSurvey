@@ -1,4 +1,3 @@
-export * from './ColumnFilter'
 export * from './ExportPopupHTML'
 export * from './ResponseDetailView'
 export * from './BulkActions'

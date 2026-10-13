@@ -26,16 +26,13 @@ export const Responses = () => {
   const { surveyId, menu } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
   const deepLinkResponseId = searchParams.get('id')
-  const [filters, setFilters] = useState({})
   const [pagination, setPagination] = useState(() => ({
     pageIndex: Math.max(Number(searchParams.get('page')) - 1, 0),
     pageSize: Number(searchParams.get('size')) || 10,
   }))
   const [globalFilter, setGlobalFilter] = useState('')
   const [sorting, setSorting] = useState([])
-  const [showTableFilters, setShowTableFilters] = useState(false)
   const [showStatisticsFilters, setShowStatisticsFilters] = useState(false)
-  const [columnsFilters, setColumnsFilters] = useState([])
   const [tabKey, setTabKey] = useState(TAB_KEYS.RESPONSES)
   const [statisticsFilters, setStatisticsFilters] = useState({})
 
@@ -59,7 +56,7 @@ export const Responses = () => {
     isFetching,
     mutateOperations,
     error: responsesError,
-  } = useResponses(surveyId, pagination, filters, sorting, filterSet)
+  } = useResponses(surveyId, pagination, sorting, filterSet)
 
   // A filter the server cannot honour — an attribute this survey does not
   // have, a question from another survey — comes back as a bad request with
@@ -184,10 +181,6 @@ export const Responses = () => {
     setSearchParams(next)
   }
 
-  const onFiltersChange = (filters) => {
-    setFilters(filters)
-  }
-
   const handleResponsesDelete = (ids) => {
     const operations = []
 
@@ -242,9 +235,6 @@ export const Responses = () => {
             filters={statisticsFilters}
             surveyId={surveyId}
             isRightBar={showStatisticsFilters}
-            showFilters={showStatisticsFilters}
-            setShowFilters={setShowStatisticsFilters}
-            setFilters={setStatisticsFilters}
             survey={survey}
             questionOptions={questionOptions}
             appliedFilters={appliedFilters}
@@ -260,14 +250,11 @@ export const Responses = () => {
               responsesData={responses}
               globalFilter={globalFilter}
               setGlobalFilter={setGlobalFilter}
-              setShowFilters={setShowTableFilters}
-              showFilters={showTableFilters}
               setSorting={setSorting}
               sorting={sorting}
               sortedColumnId={sortedColumnId}
               survey={survey}
               onPaginationChange={onPaginationChange}
-              onFiltersChange={onFiltersChange}
               onSortChange={onSortChange}
               handleResponsesDelete={handleResponsesDelete}
               handleAttachmentsDelete={handleAttachmentsDelete}
@@ -275,8 +262,6 @@ export const Responses = () => {
               pagination={pagination}
               setPagination={setPagination}
               isFetching={isFetching}
-              columnsFilters={columnsFilters}
-              setColumnsFilters={setColumnsFilters}
               disableUpdatingResponses={!hasResponsesUpdatePermission}
               deepLinkResponseId={deepLinkResponseId}
               onResponseModalOpen={handleResponseModalOpen}
@@ -344,9 +329,6 @@ export const Responses = () => {
           {tabKey !== TAB_KEYS.STATISTICS && (
             <div className="mb-3">
               <ResponsesHeader
-                setShowFilters={setShowTableFilters}
-                showFilters={showTableFilters}
-                setFilters={setColumnsFilters}
                 tabKey={tabKey}
                 survey={survey}
                 questionOptions={questionOptions}
