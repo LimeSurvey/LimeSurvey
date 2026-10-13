@@ -7,6 +7,12 @@
     height: 36px;
     overflow: hidden;
     width: 36px;
+    text-align: center;
+}
+.star-rating.star-focused{
+    outline: 2px solid #333;
+    outline-offset: -2px;
+    border-radius: 4px;
 }
 .star-cancel{color: #727272;}
 .star-cancel.star-drained{color: #932424}
