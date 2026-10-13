@@ -36,12 +36,16 @@ class SurveySidemenuWidget extends WhSelect2
 
     /**
      * Gets the active panel.
+     *
+     * @return string ID of the panel
      */
     public function getActivePanel()
     {
-        if (App()->request->getPathInfo() == 'quickTranslation/index') {
+        // Checked by controller: The path also contains the parameters if the URL is path formatted (e.g. after saving)
+        $controllerId = App()->getController()->id;
+        if ($controllerId == 'quickTranslation') {
             return 'survey-quick-translation';
-        } elseif (App()->request->getPathInfo() == 'surveyPermissions/index') {
+        } elseif ($controllerId == 'surveyPermissions') {
             return 'survey-permissions-panel';
         } else {
             foreach ($this->sideMenu as $k => $menu) {
