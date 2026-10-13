@@ -52,7 +52,13 @@ class SurveySidemenuWidget extends WhSelect2
                 }
             }
         }
-        return 'survey-settings-panel';
+        // Fall back to the first panel the user has entries in
+        foreach (['settings', 'menu', 'presentation'] as $panel) {
+            if (!empty($this->sideMenu[$panel])) {
+                return "survey-$panel-panel";
+            }
+        }
+        return '';
     }
 
     /**
@@ -136,6 +142,8 @@ class SurveySidemenuWidget extends WhSelect2
                 ],
                 [
                     'name' => 'participants',
+                    // Participant settings: The permission comes from the participant settings entry
+                    'permissionEntry' => 'tokens',
                     'route' => 'editorLink/index',
                     'params' => array('route' => 'survey/' . $this->sid . '/settings/tokens'),
                 ],
@@ -166,7 +174,9 @@ class SurveySidemenuWidget extends WhSelect2
 
         foreach ($sideMenu as $k => $panel) {
             foreach ($panel as $i => $item) {
-                if ($entry = $this->getSurveyEntry($item['name'])) {
+                $entry = $this->getSurveyEntry($item['name']);
+                $permissionEntry = isset($item['permissionEntry']) ? $this->getSurveyEntry($item['permissionEntry']) : $entry;
+                if ($entry && $permissionEntry && $permissionEntry->userHasPermission($this->sid)) {
                     $sideMenu[$k][$i]['name'] = $entry->menu_title;
                     if (!isset($item['route'])) {
                         $sideMenu[$k][$i]['url'] =
@@ -182,6 +192,22 @@ class SurveySidemenuWidget extends WhSelect2
         }
 
         return $sideMenu;
+    }
+
+    /**
+     * Gets the URL a panel icon leads to: The first enabled entry of the panel.
+     *
+     * @param string $panel Key of the panel in the side menu
+     * @return string|null Null if the panel has no enabled entry
+     */
+    public function getPanelUrl($panel)
+    {
+        foreach ($this->sideMenu[$panel] as $item) {
+            if (empty($item['disabled'])) {
+                return $item['url'];
+            }
+        }
+        return null;
     }
 
     /**
