@@ -252,46 +252,6 @@ class AdminTheme extends CFormModel
         return self::$instance;
     }
 
-    /**
-     * @return string[]
-     */
-    public static function getOtherAssets()
-    {
-        return array(
-            // Extension assets
-            'application/extensions/yiiwheels/assets',
-            'application/extensions/yiiwheels/widgets/box/assets',
-            'application/extensions/yiiwheels/widgets/grid/assets',
-            'application/extensions/yiiwheels/widgets/formhelpers/assets',
-            'application/extensions/yiiwheels/widgets/highcharts/assets',
-            'application/extensions/yiiwheels/widgets/maskinput/assets',
-            'application/extensions/yiiwheels/widgets/redactor/assets',
-            'application/extensions/yiiwheels/widgets/switch/assets',
-            'application/extensions/yiiwheels/widgets/datetimepicker/assets',
-            'application/extensions/yiiwheels/widgets/timeago/assets',
-            'application/extensions/yiiwheels/widgets/sparklines/assets',
-            'application/extensions/yiiwheels/widgets/datepicker/assets',
-            'application/extensions/yiiwheels/widgets/multiselect/assets',
-            'application/extensions/yiiwheels/widgets/gallery/assets',
-            'application/extensions/yiiwheels/widgets/select2/assets',
-            'application/extensions/yiiwheels/widgets/ace/assets',
-            'application/extensions/yiiwheels/widgets/modal/assets',
-            'application/extensions/yiiwheels/widgets/maskmoney/assets',
-            'application/extensions/yiiwheels/widgets/rangeslider/assets',
-            'application/extensions/yiiwheels/widgets/fileupload/assets',
-            'application/extensions/yiiwheels/widgets/typeahead/assets',
-            'application/extensions/yiiwheels/widgets/timepicker/assets',
-            'application/extensions/yiiwheels/widgets/html5editor/assets',
-            'application/extensions/yiiwheels/widgets/daterangepicker/assets',
-            'application/extensions/bootstrap/assets',
-            'application/extensions/LimeScript/assets',
-            'application/extensions/SettingsWidget/assets',
-            'application/extensions/FlashMessage/assets',
-            'application/extensions/admin/survey/question/PositionWidget/assets',
-            'application/extensions/admin/grid/MassiveActionsWidget/assets',
-            'application/extensions/admin/survey/question/PositionWidget/assets'
-        );
-    }
 
     /**
      * Return an array containing the configuration object of all templates in a given directory

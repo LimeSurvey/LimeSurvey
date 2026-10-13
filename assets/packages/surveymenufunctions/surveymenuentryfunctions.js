@@ -80,9 +80,11 @@ var SurveymenuEntriesFunctions = function() {
     };
 
     var onChangeCheckbox = function(elem) {
+        // Options with a default value (e.g. pjaxed) need an explicit value when unchecked
+        var uncheckedValue = $(elem).data("uncheckedValue");
         var toSetValue = $(elem).prop("checked")
             ? $(elem).data("value")
-            : "null";
+            : (uncheckedValue !== undefined ? uncheckedValue : "null");
         var optionArray = $(elem).data("option");
         var setSuccessfull = setObjectValueWithArray(
             toSetValue,
@@ -119,11 +121,17 @@ var SurveymenuEntriesFunctions = function() {
                 oCurrentDataOptions,
                 aOptionValues
             );
+            // Already unchecked by a higher priority option (e.g. external link disables pjax)
+            if ($(item).prop("disabled")) {
+                return;
+            }
             if (currentObjectValue !== null && currentObjectValue !== false) {
 				$(item).prop("checked", true);
 				if ($(item).hasClass("selector__disable_following")) {
 					triggerHide(item);
 				}
+            } else if (currentObjectValue === false) {
+                $(item).prop("checked", false);
             }
         });
 		

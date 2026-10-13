@@ -169,11 +169,15 @@ class SettingsWidget extends CWidget
     }
 
     /**
-     * @param string $name
-     * @param array $metaData
-     * @param array $form
-     * @param boolean $return
-     * @param string $wrapper
+     * Render a single setting (label, input and help).
+     * If the setting is localized and 'language' is an array of language codes,
+     * one input is rendered per language, posted as {$name}[$language].
+     *
+     * @param string $name Setting name
+     * @param array $metaData Setting definition
+     * @param array|null $form Unused form configuration
+     * @param boolean $return Whether to return the HTML instead of echoing it
+     * @param string $wrapper HTML tag used to wrap the setting
      * @return string|void
      * @throws CHttpException
      */
@@ -182,6 +186,24 @@ class SettingsWidget extends CWidget
         // No type : invalid setting
         if (!isset($metaData['type'])) {
             throw new CHttpException(405, 'invalid settings type');
+        }
+        // Localized setting with multiple languages : render one setting per language
+        if (!empty($metaData['localized']) && isset($metaData['language']) && is_array($metaData['language'])) {
+            App()->loadHelper('surveytranslator');
+            $result = '';
+            foreach ($metaData['language'] as $language) {
+                $languageMetaData = $metaData;
+                $languageMetaData['language'] = $language;
+                if (isset($languageMetaData['label'])) {
+                    $languageMetaData['label'] .= ' (' . getLanguageNameFromCode($language, false) . ')';
+                }
+                $result .= $this->renderSetting($name, $languageMetaData, $form, true, $wrapper);
+            }
+            if ($return) {
+                return $result;
+            }
+            echo $result;
+            return;
         }
         $wrapperCss = '';
         if ($metaData['type'] === 'radio') {
@@ -286,7 +308,7 @@ class SettingsWidget extends CWidget
 
         // col-md-6/col-md-6 used in survey settings, sm-4/sm-6 in global : use sm-4/sm-6 for plugins ?
         $metaData['labelOptions']['class'] .= " col-form-label text-end col-md-{$this->labelWidth}";
-        // Set the witdth of control-option according to existence of label
+        // Set the width of control-option according to existence of label
         if (!isset($metaData['label'])) {
             $metaData['controlOptions']['class'] .= " col-12";
         } else {
@@ -337,7 +359,7 @@ class SettingsWidget extends CWidget
     }
 
     /**
-     * render help/desscription according to type and $metaData['help']
+     * render help/description according to type and $metaData['help']
      * @todo $name is not used
      * @return string
      */
@@ -641,7 +663,7 @@ class SettingsWidget extends CWidget
         $value = $metaData['current'] ?? '';
         /**
          * Fix the value according to saveformat only if isset and not empty
-         * By defalt : save as sent by input (admin lanuage dependent
+         * By default : save as sent by input (admin language dependent
          **/
         if (!empty($metaData['saveformat'])) {
             if (is_string($value) && $value !== "") {
@@ -692,7 +714,7 @@ class SettingsWidget extends CWidget
         return CHtml::tag('div', $htmlOptions, $value);
     }
 
-    /* Return htmlOptions for an input od seting
+    /* Return htmlOptions for an input od setting
      *
      * @param array metaData : completMetaData of setting
      * @param string form form to be used

@@ -18,3 +18,8 @@ gT("Maximum characters allowed for 'Other:' option");
 gT("'Other:' option maximum characters");
 gT('Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized');
 gT('Use JavaScript function to remove text and uncheck checkbox (or use ExpressionScript Engine only).');
+gT("Position for 'Other:' option");
+gT("Indicates where the 'Other' option should be placed");
+gT('After specific subquestion');
+gT("Subquestion title for 'After specific subquestion'");
+gT("The title of the subquestion after which the 'Other:' option will be placed if the position is set to 'After specific subquestion'");
