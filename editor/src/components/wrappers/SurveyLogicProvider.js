@@ -192,7 +192,10 @@ export const SurveyLogicProvider = ({ children }) => {
         queryKey: [STATES.SURVEY_RESPONSES, surveyId],
       })
 
-      if (!result.operationsApplied) {
+      // Specific errors are already shown as toasts, see SurveyWorkspace
+      const hasErrorMessages =
+        result.validationErrors?.length || result.exceptionErrors?.length
+      if (!result.operationsApplied && !hasErrorMessages) {
         errorToast(
           'Sorry, we encountered an issue while saving the changes. Please try refreshing the page!'
         )
