@@ -13,7 +13,7 @@ Tokens = {
      /**
       * jQuery Plugin to manage the date in token modal edit.
       * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
-      * They are displayed via a switch hidding or showing a date picker.
+      * They are displayed via a switch hiding or showing a date picker.
       */
      YesNoDate: function (el) {
          var $elSwitch = el.querySelector('.YesNoDateSwitch'),           // switch element (generated with YiiWheels widgets)

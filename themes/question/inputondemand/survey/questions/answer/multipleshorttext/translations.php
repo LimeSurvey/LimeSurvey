@@ -16,8 +16,8 @@ if (!defined('BASEPATH')) {
 gT("Input on demand");
 gT('Automatically add a new line when something is inserted');
 gT('Auto-add new line:');
-gT('The icon used on the "add row"-button');
-gT('Add row icon:');
+gT('The icon used on the "Add row"-button');
+gT("'Add row' icon:");
 gT('Plus');
 gT('Plus in circle');
 gT('Chevron down');

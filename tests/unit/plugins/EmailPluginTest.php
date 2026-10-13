@@ -75,7 +75,7 @@ class EmailPluginTest extends TestBaseClass
             'clientSecret' => null,
         );
 
-        $this->assertSame($nullSettings, $credentials, 'The initial settings shoul be null.');
+        $this->assertSame($nullSettings, $credentials, 'The initial settings should be null.');
 
         $settings = array(
             'clientId' => 'CL13NT1D',

@@ -36,6 +36,8 @@ class FileFetcherUploadZip extends FileFetcher
     /**
      * Fetch files, meaning grab uploaded ZIP file and
      * unzip it in system tmp folder.
+     * Files left over from a previous, unfinished upload in the same
+     * session are removed first.
      *
      * @return void
      */
@@ -43,7 +45,7 @@ class FileFetcherUploadZip extends FileFetcher
     public function fetch()
     {
         $this->checkFileSizeError();
-        $this->clearTmpdir();
+        $this->abort();
         $this->extractZipFile($this->getTempdir());
     }
 
@@ -150,9 +152,9 @@ class FileFetcherUploadZip extends FileFetcher
     #[\Override]
     public function abort()
     {
-        // Remove any files.
-        $tempdir = $this->getTempdir();
-        if ($tempdir) {
+        // Remove any files. Read the session state directly, since getTempdir() would create a new folder.
+        $tempdir = App()->user->getState('filefetcheruploadzip_tmpdir');
+        if ($tempdir && is_dir($tempdir)) {
             rmdirr($tempdir);
         }
 

@@ -10,7 +10,7 @@
     <span class="text-danger">
         <?php eT('Warning: The following files/directories need to be updated but their permissions are set to read-only.'); ?>
         <br />
-        <?php eT('You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice.'); ?><br />
+        <?php eT('You must set according write permissions on these files before you can proceed. If you are unsure what to do please contact your system administrator for advice.'); ?><br />
     </span>
 
 <textarea readonly="readonly" style="background-color: #FFF; width: 800px; height: 150px; font-family: Monospace; font-size: 11px;">

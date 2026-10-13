@@ -15,6 +15,8 @@ $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] 
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
 $minVersion = ($debug > 0) ? "" : ".min";
 $minFolder = ($debug > 0) ? "/dev" : "/min";
+/* The asset manager excludes "src" folders (see assetManager in internal.php), so unminified sources in /src/ can't be published */
+$useAssetManager = !empty($userConfig['config']['use_asset_manager']);
 
 /* Please : comment the reason, mantis bug link: ajax don't need any package if i don't make error */
 /* Ajax must renderPartial (better : always return json) and never render and don't registerScript (IMHO) / Shnoulle on 2016-11-16 */
@@ -243,7 +245,7 @@ return array(
         'devBaseUrl' => 'node_modules/ace-builds',
         'basePath' => 'node_modules.ace-builds',
         'position' => CClientScript::POS_BEGIN,
-        'js' => ($debug > 0) ? array("/src/ace.js") : array("/src-min/ace.js"),
+        'js' => ($debug > 0 && !$useAssetManager) ? array("/src/ace.js") : array("/src-min/ace.js"),
         'depends' => array(
             'jquery-ace'
         )

@@ -83,7 +83,7 @@ class UserManager
     /**
          * Delete the given User and reassign their owned records to the site administrator.
          *
-         * Transfers any UserGroup.owner_id and Participant.owner_uid owned by the user to the site admin (uid=1), removes the user's group memberships, and then deletes the user. The whole operation is performed inside a database transaction and will be rolled back if an error occurs. Note: user permissions are not removed by this method.
+         * Transfers any UserGroup.owner_id, Participant.owner_uid and SurveysGroups.owner_id owned by the user to the site admin (uid=1), removes participant shares with the user and the user's group memberships, and then deletes the user. The whole operation is performed inside a database transaction and will be rolled back if an error occurs. Note: user permissions are not removed by this method.
          *
          * @param User $user The User model to delete; the method uses $user->uid to identify related records.
          * @return OperationResult An OperationResult whose success flag indicates whether the deletion committed, and whose messages describe actions taken or errors encountered.
@@ -108,6 +108,15 @@ class UserManager
             if ($participantsTranferred) {
                 $messages[] = new TypedMessage(sprintf(gT("All participants owned by this user were transferred to %s."), $siteAdminName), 'success');
             }
+
+            // Transfer any Survey Groups owned by this user to site's admin
+            $surveyGroupsTransferred = \SurveysGroups::model()->updateAll(['owner_id' => 1], 'owner_id = :owner_id', [':owner_id' => $userId]);
+            if ($surveyGroupsTransferred) {
+                $messages[] = new TypedMessage(sprintf(gT("All of the user's survey groups were transferred to %s."), $siteAdminName), 'success');
+            }
+
+            // Remove participant shares with this user
+            \ParticipantShare::model()->deleteAll('share_uid = :share_uid', [':share_uid' => $userId]);
 
             // Remove from groups
             $userAndGroupRelations = \UserInGroup::model()->findAllByAttributes(['uid' => $userId]);

@@ -37,7 +37,7 @@
     {{ C.Html.textField(id,fValue,({
         'id' : "answer"~id,
         'class' : "form-control "~answertypeclass,
-        'title' : gT('Only numbers may be entered in this field.'),
+        'title' : gT('Only numbers may be entered in this field.', 'unescaped'),
         'size' : (inputsize ? inputsize : null),
         'placeholder' : flatString(processString(placeholder,1),1),
         'maxlength' : (maxlength ? maxlength : null),
