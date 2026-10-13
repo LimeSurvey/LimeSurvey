@@ -84,9 +84,6 @@
       grid-column: 1;
       min-width: 0;
 
-      // Three tabs share a 448px modal, so the app-wide checkmark padding
-      // leaves too little for the labels and they wrap. Keep only the room
-      // the checkmark itself needs, symmetric so the label stays centred.
       .btn-outline-lime-toggle:not(:has(i, svg)) {
         padding-left: calc(0.35em + 0.5rem);
         padding-right: calc(0.35em + 0.5rem);
