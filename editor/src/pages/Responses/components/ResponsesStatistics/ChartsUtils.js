@@ -103,6 +103,7 @@ export const statisticsGraphs = {
   GROUPED_BAR: 7,
   TABLE: 8,
   COMMENTS: 9,
+  GRID: 10,
 }
 
 const ARRAY_POINT_CHOICE_TYPES = [
@@ -126,6 +127,15 @@ const TABLE_QUESTION_TYPES = [
   QT_N_NUMERICAL,
   QT_K_MULTIPLE_NUMERICAL,
   QT_VERTICAL_FILE_UPLOAD,
+]
+
+// Types whose statistics card has a Grid view (one row per response).
+const GRID_QUESTION_TYPES = [
+  QT_S_SHORT_FREE_TEXT,
+  QT_T_LONG_FREE_TEXT,
+  QT_U_HUGE_FREE_TEXT,
+  QT_N_NUMERICAL,
+  QT_K_MULTIPLE_NUMERICAL,
 ]
 
 const getChartsForType = (type) => {
@@ -161,6 +171,7 @@ const getChartsForType = (type) => {
 // values); types without a statistics card get an empty list.
 export const getStatisticsGraphsForType = (type) => [
   ...getChartsForType(type),
+  ...(GRID_QUESTION_TYPES.includes(type) ? [statisticsGraphs.GRID] : []),
   ...(TABLE_QUESTION_TYPES.includes(type) ? [statisticsGraphs.TABLE] : []),
   ...(isCommentQuestionType(type) ? [statisticsGraphs.COMMENTS] : []),
 ]
