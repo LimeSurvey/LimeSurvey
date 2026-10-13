@@ -14,15 +14,19 @@ import {
   QT_G_GENDER,
   QT_H_ARRAY_COLUMN,
   QT_I_LANGUAGE,
+  QT_K_MULTIPLE_NUMERICAL,
   QT_L_LIST,
   QT_M_MULTIPLE_CHOICE,
+  QT_N_NUMERICAL,
   QT_O_LIST_WITH_COMMENT,
   QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
   QT_Q_MULTIPLE_SHORT_TEXT,
   QT_R_RANKING,
   QT_S_SHORT_FREE_TEXT,
+  QT_SEMICOLON_ARRAY_TEXT,
   QT_T_LONG_FREE_TEXT,
   QT_U_HUGE_FREE_TEXT,
+  QT_VERTICAL_FILE_UPLOAD,
   QT_Y_YES_NO_RADIO,
 } from 'helpers'
 
@@ -97,6 +101,8 @@ export const statisticsGraphs = {
   DOUGHNUT_CHART: 5,
   STACKED_BAR: 6,
   GROUPED_BAR: 7,
+  TABLE: 8,
+  COMMENTS: 9,
 }
 
 const ARRAY_POINT_CHOICE_TYPES = [
@@ -108,9 +114,21 @@ const ARRAY_POINT_CHOICE_TYPES = [
   QT_H_ARRAY_COLUMN,
 ]
 
-// Charts the statistics can draw for a question type (statistics_graphtype
-// values); types without a chart get an empty list.
-export const getStatisticsGraphsForType = (type) => {
+// Types whose statistics card has a Table view (free texts get a Grid instead).
+const TABLE_QUESTION_TYPES = [
+  ...CHOICE_QUESTION_TYPES,
+  ...ARRAY_POINT_CHOICE_TYPES,
+  QT_1_ARRAY_DUAL,
+  QT_COLON_ARRAY_NUMBERS,
+  QT_SEMICOLON_ARRAY_TEXT,
+  QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_R_RANKING,
+  QT_N_NUMERICAL,
+  QT_K_MULTIPLE_NUMERICAL,
+  QT_VERTICAL_FILE_UPLOAD,
+]
+
+const getChartsForType = (type) => {
   if (type === QT_R_RANKING) {
     return [statisticsGraphs.BAR_CHART]
   }
@@ -138,6 +156,14 @@ export const getStatisticsGraphsForType = (type) => {
   }
   return []
 }
+
+// Views the statistics can open for a question type (statistics_graphtype
+// values); types without a statistics card get an empty list.
+export const getStatisticsGraphsForType = (type) => [
+  ...getChartsForType(type),
+  ...(TABLE_QUESTION_TYPES.includes(type) ? [statisticsGraphs.TABLE] : []),
+  ...(isCommentQuestionType(type) ? [statisticsGraphs.COMMENTS] : []),
+]
 
 // The registry's type/theme strings are static (only `title` is translated),
 // so derive the lookup sets once on first use instead of rebuilding and

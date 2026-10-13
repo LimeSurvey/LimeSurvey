@@ -14,6 +14,8 @@ const getGraphOptions = () => [
   { label: t('Doughnut chart'), value: statisticsGraphs.DOUGHNUT_CHART },
   { label: t('Stacked bar chart'), value: statisticsGraphs.STACKED_BAR },
   { label: t('Grouped bar chart'), value: statisticsGraphs.GROUPED_BAR },
+  { label: t('Table'), value: statisticsGraphs.TABLE },
+  { label: t('Comments'), value: statisticsGraphs.COMMENTS },
 ]
 
 export const getStatisticsAttributes = () => ({

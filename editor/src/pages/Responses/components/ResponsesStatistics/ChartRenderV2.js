@@ -317,6 +317,8 @@ const GRAPH_VIEWS = {
   [statisticsGraphs.DOUGHNUT_CHART]: [VIEW.DOUGHNUT, VIEW.STACKED_DOUGHNUT],
   [statisticsGraphs.STACKED_BAR]: [VIEW.STACKED_BAR],
   [statisticsGraphs.GROUPED_BAR]: [VIEW.GROUPED_BAR],
+  [statisticsGraphs.TABLE]: [VIEW.TABLE],
+  [statisticsGraphs.COMMENTS]: [VIEW.COMMENTS],
 }
 
 const getDefaultView = (availableViews, viewContext, chartType) => {
