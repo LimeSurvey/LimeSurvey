@@ -16,9 +16,34 @@ ul.bootstrap-buttons-list {
     margin-right: 0;
 }
 
-ul.bootstrap-buttons-list:has(> .bootstrap-buttons-div:nth-child(-n+2):last-child) {
+ul.bootstrap-buttons-list:not([class*="bootstrap-buttons-cols-"]):has(> .bootstrap-buttons-div:nth-child(-n+2):last-child) {
     grid-template-columns: repeat(auto-fit, minmax(140px, 200px));
     justify-content: start;
+}
+
+/*
+ * "Maximum number of buttons in a row" theme option (bootstrap-buttons-cols-* class set in answer.twig).
+ * From the md breakpoint on: exactly N equal columns, like the former col-md-* layout.
+ * Below it: buttons keep wrapping responsively, but never more than N per row.
+ */
+ul.bootstrap-buttons-list.bootstrap-buttons-cols-1 { --bootstrap-buttons-cols: 1; }
+ul.bootstrap-buttons-list.bootstrap-buttons-cols-2 { --bootstrap-buttons-cols: 2; }
+ul.bootstrap-buttons-list.bootstrap-buttons-cols-3 { --bootstrap-buttons-cols: 3; }
+ul.bootstrap-buttons-list.bootstrap-buttons-cols-4 { --bootstrap-buttons-cols: 4; }
+ul.bootstrap-buttons-list.bootstrap-buttons-cols-6 { --bootstrap-buttons-cols: 6; }
+ul.bootstrap-buttons-list.bootstrap-buttons-cols-12 { --bootstrap-buttons-cols: 12; }
+
+ul.bootstrap-buttons-list[class*="bootstrap-buttons-cols-"] {
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(max(140px, calc((100% - (var(--bootstrap-buttons-cols) - 1) * 20px) / var(--bootstrap-buttons-cols))), 1fr)
+    );
+}
+
+@media (min-width: 768px) {
+    ul.bootstrap-buttons-list[class*="bootstrap-buttons-cols-"] {
+        grid-template-columns: repeat(var(--bootstrap-buttons-cols), minmax(0, 1fr));
+    }
 }
 
 ul.bootstrap-buttons-list > .bootstrap-buttons-div {
@@ -47,4 +72,30 @@ ul.bootstrap-buttons-list .btn {
 
 .bootstrap-buttons-div .btn > :last-child {
     margin-bottom: 0;
+}
+
+/*
+ * "Button size" theme option. Scoped to the list so it wins over survey theme rules
+ * that reset button padding/height (e.g. fruity_twentythree ".btn-check + .btn").
+ * btn-xs does not exist in Bootstrap 5, so it is defined here.
+ */
+ul.bootstrap-buttons-list .btn.btn-lg {
+    min-height: 52px;
+    padding: 0.75rem 1.25rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+}
+
+ul.bootstrap-buttons-list .btn.btn-sm {
+    min-height: 0;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+ul.bootstrap-buttons-list .btn.btn-xs {
+    min-height: 0;
+    padding: 0.125rem 0.375rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
 }
