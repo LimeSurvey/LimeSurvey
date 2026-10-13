@@ -17187,6 +17187,78 @@ body {
   background-color: #DDDEE8;
 }
 
+.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group) {
+  background: #DDDEE8;
+  padding: 4px;
+  border-radius: 4px;
+}
+.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group) > .btn-outline-secondary {
+  color: #6E748C;
+  background-color: transparent;
+  border: none;
+  border-left: 2px solid transparent;
+  border-radius: 2px;
+  font-weight: 500;
+  font-size: 0.9975rem;
+  line-height: 20px;
+  padding: 0.375rem calc(1.05em + 6px);
+  min-width: 80px;
+  min-height: auto;
+}
+.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group) > .btn-check:checked + .btn-outline-secondary {
+  background-color: #fff;
+  border-left-color: #8146F6;
+  color: #515567;
+}
+.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group) > .btn-check:not(:checked) + .btn-outline-secondary:hover {
+  background-color: #EEEFF7;
+  color: #6E748C;
+}
+.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group) > .btn-check:focus-visible + .btn-outline-secondary {
+  box-shadow: none;
+  outline: 2px solid #8146F6;
+  outline-offset: 2px;
+}
+.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group):has(> .btn-check:disabled) {
+  background: #F9F9FB;
+}
+.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group):has(> .btn-check:disabled) > .btn-outline-secondary {
+  color: #D3D5DA;
+  border-left-color: transparent;
+  opacity: 1;
+}
+.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group):has(> .btn-check:disabled) > .btn-check:checked + .btn-outline-secondary {
+  background-color: #fff;
+}
+
+.btn-group > .btn-check + .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-group > .btn-check:checked + .btn:not(:has(i, svg, [class^=ri-], [class*=" ri-"]))::before {
+  content: "";
+  flex: none;
+  width: 0.35em;
+  height: 0.7em;
+  margin-top: -0.15em;
+  margin-left: -0.85em;
+  margin-right: 0.5em;
+  border: solid currentColor;
+  border-width: 0 0.15em 0.15em 0;
+  /*rtl:ignore*/
+  transform: rotate(45deg);
+}
+
+@media (forced-colors: active) {
+  .btn-group > .btn-check:checked + .btn {
+    forced-color-adjust: none;
+    background-color: Highlight !important;
+    border-color: Highlight !important;
+    color: HighlightText !important;
+  }
+}
 .dropdown-menu {
   font-size: 0.9975rem;
   background-color: #fff;
@@ -17389,12 +17461,14 @@ body {
   border-radius: 4px;
 }
 .lime-toggle-btn-group .btn-group .btn {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #D3D5DA;
   font-weight: 500;
   font-size: 0.9975rem;
   line-height: 20px;
-  padding: 2px 16px;
+  padding: 2px calc(1.05em + 6px);
   min-height: 20px;
 }
 .lime-toggle-btn-group .btn-group .btn-check + .btn-outline-secondary {
@@ -19185,7 +19259,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 }
 
 .form-control.ls-important-field {
-  padding: 14px 12px;
+  padding: 9px 12px;
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
