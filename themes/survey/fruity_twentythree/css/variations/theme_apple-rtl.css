@@ -13221,13 +13221,13 @@ textarea,
 .has-error .form-control,
 .input-error .form-control:not(.em_sq_validation),
 .input-error .form-control.has-warning {
-  box-shadow: -4px 4px 0 #FF515F;
+  box-shadow: -4px 4px 0 #ff515f;
   z-index: 3;
 }
 .has-error .form-control:focus,
 .input-error .form-control:not(.em_sq_validation):focus,
 .input-error .form-control.has-warning:focus {
-  box-shadow: -4px 4px 0 #FF515F;
+  box-shadow: -4px 4px 0 #ff515f;
 }
 
 .control-label {
