@@ -424,7 +424,7 @@ class questionHelper
         );
 
         self::$attributes["statistics_graphtype"] = array(
-            "types" => '15ABCDEFGHIKLMNOQRSTUWXYZ!:;|*',
+            "types" => '15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
             'category' => gT('Statistics'),
             'inputtype' => 'singleselect',
             'sortorder' => 102,
