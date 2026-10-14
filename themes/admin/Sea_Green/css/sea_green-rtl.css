@@ -21168,6 +21168,14 @@ input[type=checkbox]:disabled:checked:after {
   background-color: #9094A7;
   border-color: transparent;
 }
+input[type=checkbox]:indeterminate:after {
+  background-color: #1E1E1E;
+  border-color: #1E1E1E;
+}
+input[type=checkbox]:disabled:indeterminate:after {
+  background-color: #9094A7;
+  border-color: transparent;
+}
 input[type=checkbox]:focus-visible {
   outline: none;
 }
@@ -21233,6 +21241,14 @@ input[type=checkbox]:checked:after {
   background-color: #9094A7;
   border-color: transparent;
 }
+.checkbox input[type=checkbox]:indeterminate:after {
+  background-color: #1E1E1E;
+  border-color: #1E1E1E;
+}
+.checkbox input[type=checkbox]:disabled:indeterminate:after {
+  background-color: #9094A7;
+  border-color: transparent;
+}
 .checkbox input[type=checkbox]:focus-visible {
   outline: none;
 }
@@ -21295,6 +21311,14 @@ input[type=checkbox]:checked:after {
   border-color: #9094A7;
 }
 .checkbox-inline input[type=checkbox]:disabled:checked:after {
+  background-color: #9094A7;
+  border-color: transparent;
+}
+.checkbox-inline input[type=checkbox]:indeterminate:after {
+  background-color: #1E1E1E;
+  border-color: #1E1E1E;
+}
+.checkbox-inline input[type=checkbox]:disabled:indeterminate:after {
   background-color: #9094A7;
   border-color: transparent;
 }
