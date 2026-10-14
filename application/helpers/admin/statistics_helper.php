@@ -18,7 +18,9 @@
 *  Generate a chart for a question
 *  @param int $iQuestionID      ID of the question
 *  @param int $iSurveyID        ID of the survey
-*  @param mixed $type           Type of the chart to be created - null produces bar chart, any other value produces pie chart
+*  @param int|bool|null $type   Type of the chart to be created, as in the statistics_graphtype question attribute:
+*                               0 (or null/false) bar chart, 1 (or true) pie chart, 2 radar chart, 3 line chart,
+*                               4 polar area chart and 5 doughnut chart. Polar area and doughnut charts are drawn as pie charts.
 *  @param array $lbl            An array containing the labels for the chart items
 *  @param mixed $gdata          An array containing the percentages for the chart items
 *  @param mixed $grawdata       An array containing the raw count for the chart items
@@ -114,7 +116,84 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $gheight = 320;
         }
 
-        if (!$type) {
+        $iChartType = (int) $type;
+        if ($iChartType == 2 || $iChartType == 3) {
+            // Radar and line chart: One serie with one point per answer option
+            $lblout = array();
+            if ($sLanguageCode == 'ar') {
+                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
+            }
+            foreach ($lbl as $kkey => $kval) {
+                if (getLanguageRTL($sLanguageCode)) {
+                    $sLabel = ellipsize(html_entity_decode($kkey . ' )' . $kval . '(', ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8'), 30, 1, '...');
+                    if ($sLanguageCode == 'ar') {
+                        $lblout[] = $Arabic->utf8Glyphs($sLabel);
+                    } else {
+                        $lblout[] = UTF8Strrev($sLabel);
+                    }
+                } else {
+                    $lblout[] = ellipsize(html_entity_decode($kkey . ' (' . $kval . ')', ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8'), 30, 1, '...');
+                }
+            }
+
+            $DataSet = new pData();
+            $DataSet->AddPoint(array_values($grawdata), 'Serie1');
+            $DataSet->AddPoint($lblout, 'Serie2');
+            $DataSet->AddSerie('Serie1');
+            $DataSet->SetSerieName(gT('Count', 'unescaped'), 'Serie1');
+            $DataSet->SetAbsciseLabelSerie('Serie2');
+
+            // Line and radar chart of the same data must not share the cached image
+            $sCacheID = "graph" . $iSurveyID . $sLanguageCode . $iQuestionID . "_" . $iChartType;
+            if ($cache->IsInCache($sCacheID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
+                $cachefilename = basename((string) $cache->GetFileFromCache($sCacheID, $DataSet->GetData()));
+            } else {
+                $sFontFile = $rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile;
+                // The labels are drawn around the radar or below the line chart, so the chart needs room for the longest one
+                $iMaxLabelWidth = 0;
+                foreach ($lblout as $sLabel) {
+                    $aBox = imagettfbbox($chartfontsize, 0, $sFontFile, $sLabel);
+                    $iMaxLabelWidth = max($iMaxLabelWidth, $aBox[2] - $aBox[6]);
+                }
+                if ($iChartType == 2) {
+                    $iWidth = 380 + 2 * ($iMaxLabelWidth + 20);
+                    $iHeight = 440;
+                } else {
+                    $iWidth = 690;
+                    $iHeight = 300 + $iMaxLabelWidth;
+                }
+                $graph = new pChart($iWidth, $iHeight);
+                $graph->drawFilledRectangle(0, 0, $iWidth, $iHeight, 254, 254, 254, false);
+                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+                $graph->setFontProperties($sFontFile, $chartfontsize);
+                $graph->drawFilledRoundedRectangle(7, 7, $iWidth - 7, $iHeight - 7, 5, 254, 255, 254);
+                $graph->drawRoundedRectangle(5, 5, $iWidth - 5, $iHeight - 5, 5, 230, 230, 230);
+                if ($iChartType == 2) {
+                    // Use 1, 2 or 5 times a power of ten as distance between the rings, so that there are at most 10 rings
+                    $iMaxValue = max(1, max($grawdata));
+                    $iStep = 1;
+                    $aStepFactors = array(2, 2.5, 2);
+                    for ($i = 0; $iMaxValue > 10 * $iStep; $i++) {
+                        $iStep = (int) round($iStep * $aStepFactors[$i % 3]);
+                    }
+                    $iScaleMax = (int) ceil($iMaxValue / $iStep) * $iStep;
+                    $graph->setGraphArea($iMaxLabelWidth + 30, 30, $iWidth - $iMaxLabelWidth - 30, $iHeight - 30);
+                    $graph->drawRadarAxis($DataSet->GetData(), $DataSet->GetDataDescription(), true, 10, 60, 60, 60, 200, 200, 200, $iScaleMax, $iStep);
+                    $graph->drawFilledRadar($DataSet->GetData(), $DataSet->GetDataDescription(), 50, 10, $iScaleMax);
+                } else {
+                    $graph->setGraphArea(50, 30, $iWidth - 30, $iHeight - $iMaxLabelWidth - 30);
+                    $graph->drawGraphArea(254, 254, 254, true);
+                    $graph->drawScale($DataSet->GetData(), $DataSet->GetDataDescription(), SCALE_START0, 150, 150, 150, true, 90, 0, true);
+                    $graph->drawGrid(4, true, 230, 230, 230, 50);
+                    $graph->drawLineGraph($DataSet->GetData(), $DataSet->GetDataDescription());
+                    $graph->drawPlotGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 4, 2, 255, 255, 255);
+                }
+
+                $cache->WriteToCache($sCacheID, $DataSet->GetData(), $graph);
+                $cachefilename = basename((string) $cache->GetFileFromCache($sCacheID, $DataSet->GetData()));
+                unset($graph);
+            }
+        } elseif (!in_array($iChartType, array(1, 4, 5))) {
             // Bar chart
             $DataSet = new pData();
             $counter = 0;
@@ -3510,7 +3589,17 @@ class statistics_helper
                         $graphLbl[] = key($lbl);
                         reset($lbl);
                     }
-                    $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $graphLbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
+                    $iChartType = (int) ($aattr['statistics_graphtype'] ?? 0);
+                    // The chart type selected for the statistics overrides the question setting
+                    $sForcedChartType = Yii::app()->request->getPost('charttype', 'default');
+                    if ($sForcedChartType != 'default') {
+                        $iChartType = (int) $sForcedChartType;
+                    }
+                    // Pie, polar area and doughnut charts make no sense for multiple choice questions
+                    if (!$bAllowPieChart && in_array($iChartType, array(1, 4, 5))) {
+                        $iChartType = 0;
+                    }
+                    $cachefilename = createChart($qqid, $qsid, $iChartType, $graphLbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 }
 
                 if ($cachefilename || $outputType == 'html') {
