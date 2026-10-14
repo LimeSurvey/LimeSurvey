@@ -1273,6 +1273,20 @@ function LEMval(alias)
                             value = answerParts[0];
                         }
                         break;
+                    case 'M': //Multiple choice checkbox
+                    case 'P': //Multiple choice with comments checkbox + text
+                        // The "other" text and the comment fields have no answers and keep their text
+                        if (attr.answers !== undefined) {
+                            which_ans = '0~' + value;
+                            if (typeof attr.answers[which_ans] === 'undefined') {
+                                value = '';
+                            }
+                            else {
+                                answerParts = attr.answers[which_ans].split('|');
+                                value = answerParts[0];
+                            }
+                        }
+                        break;
                     case 'N': //NUMERICAL QUESTION TYPE
                     case 'K': //MULTIPLE NUMERICAL QUESTION
 

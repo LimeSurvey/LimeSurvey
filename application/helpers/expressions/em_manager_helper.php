@@ -3512,14 +3512,26 @@ class LimeExpressionManager
                 case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                 case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
-                case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
-                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                 case Question::QT_D_DATE: //DATE
                 case Question::QT_ASTERISK_EQUATION: //Equation
                 case Question::QT_I_LANGUAGE: //Language Question
                 case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                 case Question::QT_X_TEXT_DISPLAY: //BOILERPLATE QUESTION
                     $ansArray = null;
+                    break;
+                case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                    // A checked subquestion ('Y') gets the assessment value of the question, used by .value
+                    // The "other" text and the comment fields keep their text as value
+                    if ($aid === 'other' || preg_match('/comment$/', (string) $aid)) {
+                        $ansArray = null;
+                    } else {
+                        $assessmentValue = 0;
+                        if (!empty($this->surveyOptions['assessments'])) {
+                            $assessmentValue = (int) ($qattr[$questionNum]['assessment_value'] ?? 1);
+                        }
+                        $ansArray = ['0~Y' => $assessmentValue . '|' . ($fielddata['subquestion'] ?? '')];
+                    }
                     break;
                 case Question::QT_G_GENDER: //GENDER drop-down list
                 case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
@@ -9281,6 +9293,17 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 }
                                 $value = $answer;
                             }
+                        }
+                        break;
+                    case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                    case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                        $ansArray = $var['ansArray'];
+                        if (is_null($ansArray)) {
+                            // The "other" text and the comment fields
+                            $value = $code;
+                        } else {
+                            $answerInfo = isset($ansArray['0~' . $code]) ? explode('|', (string) $ansArray['0~' . $code]) : [$default];
+                            $value = $answerInfo[0];
                         }
                         break;
                     default:
