@@ -483,16 +483,32 @@ $(document).on('submit', function (e) {
     if (e.target.id != 'limesurvey') {
         return;
     }
-    // We only care about the final submit, not normal forward/backward navigation.
-    var submitter = e.originalEvent ? $(e.originalEvent.submitter) : null;
-    if (!submitter || submitter.attr('value') != 'movesubmit') {
+    // Another script (e.g. ajax mode) canceled the submit or handles it itself.
+    if (e.isDefaultPrevented()) {
         return;
     }
-    // Still, we disable all submit buttons to make sure the "back" button is not
-    // pressed while submitting.
-    $('#limesurvey button[type="submit"]').prop('disabled', true);
+    // Any navigation can finish the survey (e.g. "Next" when only hidden questions follow),
+    // and a second request after that ends with a "session expired" message.
+    var submitter = e.originalEvent ? $(e.originalEvent.submitter) : null;
+    if (!submitter || ['movenext', 'moveprev', 'movesubmit'].indexOf(submitter.attr('value')) === -1) {
+        return;
+    }
+    // We disable all submit buttons to make sure no other button is pressed while submitting.
+    $('#limesurvey button[type="submit"]:not(:disabled)').prop('disabled', true).addClass('ls-disabled-on-submit');
 
     // We also add a hidden input with the button's value, because it's not included
     // in the request when the button is disabled.
+    $('#onsubmitbuttoninput').remove();
     $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + submitter.attr('name') + '\' value=\'' + submitter.attr('value') + '\' type=\'hidden\' />');
+});
+
+/**
+ * Re-enable the submit buttons when the page is restored from the browser's back/forward cache
+ */
+$(window).on('pageshow', function (e) {
+    if (!e.originalEvent.persisted) {
+        return;
+    }
+    $('#limesurvey .ls-disabled-on-submit').prop('disabled', false).removeClass('ls-disabled-on-submit');
+    $('#onsubmitbuttoninput').remove();
 });
