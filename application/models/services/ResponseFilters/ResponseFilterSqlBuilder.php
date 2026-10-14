@@ -12,15 +12,20 @@ class ResponseFilterSqlBuilder
 {
     private ?int $surveyId;
 
+    private ?string $columnPrefix;
+
     private ConditionHandlerFactory $handlers;
 
     /**
      * @param int|null $surveyId Needed for the participant subquery and for
      *     handlers that read how a column is stored.
+     * @param string|null $columnPrefix Table to name the response columns with,
+     *     for a query that joins tables carrying the same column names.
      */
-    public function __construct(?int $surveyId = null)
+    public function __construct(?int $surveyId = null, ?string $columnPrefix = null)
     {
         $this->surveyId = $surveyId;
+        $this->columnPrefix = $columnPrefix;
         $this->handlers = new ConditionHandlerFactory();
     }
 
@@ -100,14 +105,14 @@ class ResponseFilterSqlBuilder
      */
     private function qualify(ResolvedCondition $condition): array
     {
-        $relation = $condition->getRelation();
-        if ($relation === null) {
+        $prefix = $condition->getRelation() ?? $this->columnPrefix;
+        if ($prefix === null) {
             return $condition->getKeys();
         }
 
         return array_map(
-            static function (string $key) use ($relation): string {
-                return "$relation.$key";
+            static function (string $key) use ($prefix): string {
+                return "$prefix.$key";
             },
             $condition->getKeys()
         );
@@ -129,7 +134,9 @@ class ResponseFilterSqlBuilder
         }
 
         $db = \App()->db;
-        $token = $db->quoteColumnName('token');
+        $token = $db->quoteColumnName(
+            $this->columnPrefix === null ? 'token' : "{$this->columnPrefix}.token"
+        );
         $relationToken = $db->quoteColumnName("$relation.token");
 
         return "$token IN (SELECT $relationToken FROM {{tokens_{$this->surveyId}}} $relation"

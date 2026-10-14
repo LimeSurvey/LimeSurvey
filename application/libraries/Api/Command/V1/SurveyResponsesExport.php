@@ -9,8 +9,14 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\ResponseFactory;
 use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseFilterCriteriaBuilder;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\ExportSurveyResultsService;
+use LimeSurvey\Models\Services\ResponseFilters\ParticipantResolver;
+use LimeSurvey\Models\Services\ResponseFilters\QuestionColumnMap;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterResolver;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSet;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSqlBuilder;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use Permission;
 use RuntimeException;
@@ -195,8 +201,18 @@ class SurveyResponsesExport implements CommandInterface
 
         [$type, $language, $answerFormat, $csvSeparator, $filters] = $this->getExportRequestData($request);
 
+        $resolvedFilters = $this->resolveFilterSet($request, $surveyId, $language);
+
         if (!in_array($type, $this->nativeFormats)) {
-            return $this->exportViaLegacyExporter($surveyId, $type, $language, $answerFormat, $csvSeparator, $filters);
+            return $this->exportViaLegacyExporter(
+                $surveyId,
+                $type,
+                $language,
+                $answerFormat,
+                $csvSeparator,
+                $filters,
+                $resolvedFilters
+            );
         }
 
         $exportService = $this->exportSurvey
@@ -215,7 +231,70 @@ class SurveyResponsesExport implements CommandInterface
             $exportService->setFilters($filters);
         }
 
+        if ($resolvedFilters !== []) {
+            $exportService->setFilterCriteria($this->buildFilterCriteria($surveyId, $resolvedFilters));
+        }
+
         return $exportService->exportResponses($surveyId, $type);
+    }
+
+    /**
+     * Read the condition-designer filter and resolve it against the survey's
+     * field map, as the responses list and the statistics tab do.
+     *
+     * @param Request $request
+     * @param int $surveyId
+     * @param string|null $language
+     * @return \LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter[]
+     *
+     * @throws InvalidArgumentException on a filter this survey cannot answer.
+     * @throws PermissionDeniedException when a participant filter is sent by a
+     *     caller who may not read the survey's participants.
+     */
+    protected function resolveFilterSet(Request $request, int $surveyId, ?string $language): array
+    {
+        $filterSet = ResponseFilterSet::fromRequestValue($request->getData('filterSet', null));
+        if ($filterSet->isEmpty()) {
+            return [];
+        }
+
+        if (
+            $filterSet->hasParticipantFilter()
+            && !$this->permission->hasSurveyPermission($surveyId, 'tokens')
+        ) {
+            throw new PermissionDeniedException();
+        }
+
+        $resolver = new ResponseFilterResolver(
+            QuestionColumnMap::fromQuestionFieldMap(
+                createFieldMap($this->surveyModel, 'full', false, false, $language)
+            ),
+            ParticipantResolver::fromSurvey($this->surveyModel)
+        );
+
+        return $resolver->resolve($filterSet);
+    }
+
+    /**
+     * Criteria for the native exporter, which reads the responses through
+     * SurveyDynamic and can join the participants as a relation.
+     *
+     * @param int $surveyId
+     * @param array $resolvedFilters
+     * @return \CDbCriteria
+     */
+    protected function buildFilterCriteria(int $surveyId, array $resolvedFilters)
+    {
+        $builder = new ResponseFilterCriteriaBuilder($surveyId);
+        $criteria = $builder->build($resolvedFilters);
+
+        $relations = $builder->getRelations();
+        if ($relations !== []) {
+            $criteria->with = array_fill_keys($relations, []);
+            $criteria->together = true;
+        }
+
+        return $criteria;
     }
 
     /**
@@ -239,7 +318,8 @@ class SurveyResponsesExport implements CommandInterface
         ?string $language,
         ?string $answerFormat,
         ?string $csvSeparator,
-        array $filters = []
+        array $filters = [],
+        array $resolvedFilters = []
     ): array {
         Yii::app()->loadHelper('admin.exportresults');
 
@@ -260,7 +340,10 @@ class SurveyResponsesExport implements CommandInterface
         $options->csvFieldSeparator = $csvSeparator ?: ',';
         $options->output = 'file';
 
-        $sqlFilter = $this->buildLegacySqlFilter($filters);
+        $sqlFilter = $this->combineSqlFilters(
+            $this->buildLegacySqlFilter($filters),
+            $this->buildFilterSetSqlFilter($surveyId, $resolvedFilters)
+        );
 
         $legacyService = new \ExportSurveyResultsService();
         $filePath = $legacyService->exportResponses($surveyId, $language, $legacyType, $options, $sqlFilter);
@@ -303,7 +386,44 @@ class SurveyResponsesExport implements CommandInterface
             $this->surveyModel->responsesTableName . '.$0',
             $criteria->condition
         );
-        $params = $criteria->params;
+        return $this->inlineParams($condition, $criteria->params);
+    }
+
+    /**
+     * The condition-designer filter for the legacy exporter.
+     *
+     * @param int $surveyId
+     * @param array $resolvedFilters
+     * @return string
+     */
+    protected function buildFilterSetSqlFilter(int $surveyId, array $resolvedFilters): string
+    {
+        if ($resolvedFilters === []) {
+            return '';
+        }
+
+        // The real table name, not the {{...}} form: it ends up inside a quoted
+        // column name, where the prefix is no longer expanded.
+        $table = Yii::app()->db->schema->getTable($this->surveyModel->responsesTableName);
+
+        $built = (new ResponseFilterSqlBuilder($surveyId, $table ? $table->name : null))
+            ->build($resolvedFilters);
+
+        return $built['condition'] === ''
+            ? ''
+            : $this->inlineParams($built['condition'], $built['params']);
+    }
+
+    /**
+     * The legacy exporter takes no bound values, so they are quoted into the
+     * condition itself.
+     *
+     * @param string $condition
+     * @param array $params
+     * @return string
+     */
+    protected function inlineParams(string $condition, array $params): string
+    {
         $position = 0;
 
         return preg_replace_callback('/\?|:[A-Za-z0-9_]+/', static function ($match) use ($params, &$position) {
@@ -312,6 +432,28 @@ class SurveyResponsesExport implements CommandInterface
                 ? Yii::app()->db->quoteValue($params[$key])
                 : $match[0];
         }, $condition);
+    }
+
+    /**
+     * Both filter kinds can be sent together, and each is self-contained, so
+     * they combine with AND.
+     *
+     * @param string ...$filters
+     * @return string
+     */
+    protected function combineSqlFilters(string ...$filters): string
+    {
+        $parts = array_values(array_filter($filters, static function ($filter) {
+            return $filter !== '';
+        }));
+
+        if (count($parts) < 2) {
+            return $parts[0] ?? '';
+        }
+
+        return implode(' AND ', array_map(static function ($part) {
+            return '(' . $part . ')';
+        }, $parts));
     }
 
     /**

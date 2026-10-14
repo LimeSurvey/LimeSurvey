@@ -87,6 +87,9 @@ class ExportSurveyResultsService
     /** @var array Filters used to scope which responses get exported. */
     protected $filters = [];
 
+    /** @var \CDbCriteria|null Criteria the caller resolved, used instead of $filters. */
+    protected $filterCriteria = null;
+
     /**
      * ExportSurveyResultsService constructor.
      *
@@ -210,6 +213,19 @@ class ExportSurveyResultsService
     public function setFilters(array $filters)
     {
         $this->filters = $filters;
+        return $this;
+    }
+
+    /**
+     * The condition-designer filter is resolved against the survey field map,
+     * which this service does not have, so the caller passes the criteria.
+     *
+     * @param \CDbCriteria|null $criteria
+     * @return $this
+     */
+    public function setFilterCriteria($criteria)
+    {
+        $this->filterCriteria = $criteria;
         return $this;
     }
 
@@ -352,6 +368,10 @@ class ExportSurveyResultsService
      */
     public function buildFilterCriteria()
     {
+        if ($this->filterCriteria !== null) {
+            return $this->filterCriteria;
+        }
+
         if (empty($this->filters)) {
             return null;
         }

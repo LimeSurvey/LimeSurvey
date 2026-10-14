@@ -151,7 +151,8 @@ export const Responses = () => {
 
     const exportPayload = {
       ...exportData.options,
-      filters: {},
+      filterSet:
+        exportData.options.responseType === 'filtered' ? filterSet : [],
     }
 
     try {
