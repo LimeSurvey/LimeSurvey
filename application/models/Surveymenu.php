@@ -147,19 +147,8 @@ class Surveymenu extends LSActiveRecord
                 }
 
                 //Skip menuentry if no permission
-                if (!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])) {
-                    $inArray = array_search($aEntry['permission'], array_keys(Permission::getGlobalBasePermissions()));
-                    if ($inArray) {
-                        $hasPermission = Permission::model()->hasGlobalPermission($aEntry['permission'], $aEntry['permission_grade']);
-                    } elseif ($oSurvey !== null) {
-                        $hasPermission = Permission::model()->hasSurveyPermission($oSurvey->sid, $aEntry['permission'], $aEntry['permission_grade']);
-                    } else {
-                        $hasPermission = true;
-                    }
-
-                    if (!$hasPermission) {
-                        continue;
-                    }
+                if (!$menuEntry->userHasPermission($oSurvey ? $oSurvey->sid : null)) {
+                    continue;
                 }
 
                 // Check if a specific user owns this menuentry.
