@@ -79,6 +79,15 @@ class QuestionBaseRendererRelevanceClassTest extends TestBaseClass
         $this->assertSame('ls-irrelevant ls-disabled', $renderer->getCurrentRelevecanceClass(self::SGQA . '_S12'));
     }
 
+    public function testIrrelevantCheckedExclusiveOptionDoesNotDisableOtherRows()
+    {
+        $this->setSession('Y');
+        $_SESSION['responses_' . self::SID]['relevanceStatus'][self::SGQA . '_S13'] = false;
+        $renderer = $this->makeRenderer(['exclude_all_others' => 'EX']);
+
+        $this->assertSame('ls-irrelevant ls-hidden', $renderer->getCurrentRelevecanceClass(self::SGQA . '_S11'));
+    }
+
     public function testExclusiveCodeAmongMultipleCodesIsResolved()
     {
         $this->setSession('Y');
