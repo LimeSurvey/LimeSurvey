@@ -5315,12 +5315,15 @@ function aEncodingsArray()
 * @param    integer $iMaxLength       max length of string
 * @param    integer   $fPosition       int (1|0) or float, .5, .2, etc for position to split
 * @param    string  $sEllipsis      ellipsis ; Default '...'
+* @param    boolean $bStripTags     strip tags first; false for plain text, where a '<' is not the start of a tag
 * @return    string        ellipsized string
 */
-function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;')
+function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;', $bStripTags = true)
 {
-    // Strip tags
-    $sString = trim(strip_tags($sString));
+    if ($bStripTags) {
+        $sString = strip_tags($sString);
+    }
+    $sString = trim($sString);
     // Is the string long enough to ellipsize?
     if (mb_strlen($sString, 'UTF-8') <= $iMaxLength + 3) {
         return $sString;

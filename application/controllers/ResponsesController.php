@@ -394,15 +394,14 @@ class ResponsesController extends LSBaseController
                 $answervalue = $date->convert($dateformatdetails['phpdate'] . " H:i:s");
             } else {
                 $answervalue = htmlspecialchars(
-                    viewHelper::flatten(
-                        stripJavaScript(
-                            getExtendedAnswer(
-                                $surveyId,
-                                $fnames[$i][0],
-                                $aResult[$fnames[$i][0]],
-                                $sBrowseLanguage
-                            )
-                        )
+                    viewHelper::responseValueToText(
+                        getExtendedAnswer(
+                            $surveyId,
+                            $fnames[$i][0],
+                            $aResult[$fnames[$i][0]],
+                            $sBrowseLanguage
+                        ),
+                        $aResult[$fnames[$i][0]]
                     ),
                     ENT_QUOTES
                 );
