@@ -1273,7 +1273,7 @@ class SurveyCondition
         if (isset($postquestionscount) && $postquestionscount > 0) {
             //Build the array used for the questionNav and copyTo select boxes
             foreach ($postrows as $pr) {
-                $pquestions[] = array("text" => $pr['title'] . ": " . (string) substr(flattenText($pr['question']), 0, 80),
+                $pquestions[] = array("text" => $pr['title'] . ": " . mb_substr(flattenText($pr['question']), 0, 80, 'UTF-8'),
                     "fieldname" => $this->getFieldName($pr['sid'], $pr['gid'], $pr['qid']));
             }
         }
