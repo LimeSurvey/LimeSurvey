@@ -68,6 +68,11 @@ export const renderCellText = ({
   if (
     questionThemeName === getQuestionTypeInfo().MULTIPLE_NUMERICAL_INPUTS.theme
   ) {
+    // generateData falls back to the value when the subquestion has no label
+    if (subquestionTitle === value) {
+      return <>{value}</>
+    }
+
     return (
       <>
         {subquestionTitle}: {Number(value)?.toFixed(2) ?? '0.00'}

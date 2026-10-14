@@ -1209,14 +1209,14 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
 }
 
 /**
- * This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
- * It can be used for the generation of statistics. Derived from StatisticsUserController
+ * Generates the list of statistics field names (e.g. "KQ12_S34") for the questions of a survey,
+ * as expected by statistics_helper::generate_statistics(). Derived from StatisticsUserController
  * @param int $iSurveyID Id of the Survey in question
  * @param array $aFilters an array which is the result of a query in Questions model
- * @param string $sLanguage
- * @return array The summary
+ * @param string|null $sLanguage
+ * @return string[] The statistics field names
  */
-function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
+function getStatisticsFieldNames($iSurveyID, $aFilters, $sLanguage)
 {
     $allfields = [];
     foreach ($aFilters as $flt) {
@@ -1235,7 +1235,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
-                    $myfield2 = $flt['type'] . $myfield . reset($row);
+                    $myfield2 = $flt['type'] . $myfield . "_S" . $row['qid'];
                     $allfields[] = $myfield2;
                 }
                 break;
@@ -1268,7 +1268,8 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 foreach ($result as $row) {
                     $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 1", 'question_order');
                     foreach ($fresult as $frow) {
-                        $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
+                        // Array (Text) fields are handled like free text fields ("T" prefix)
+                        $myfield2 = ($flt['type'] == Question::QT_SEMICOLON_ARRAY_TEXT ? "T" : "") . $myfield . "_S" . $row['qid'] . "_S" . $frow['qid'];
                         $allfields[] = $myfield2;
                     }
                 }
@@ -1276,12 +1277,9 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
             case Question::QT_R_RANKING: // Ranking
                 //get some answers
                 $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
-                //get number of answers
                 //loop through all answers. if there are 3 items to rate there will be 3 statistics
-                $i = 0;
                 foreach ($result as $row) {
-                    $i++;
-                    $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
+                    $myfield2 = "R" . $myfield . "_S" . $row['qid'] . "-" . strlen((string) $row['qid']);
                     $allfields[] = $myfield2;
                 }
 
@@ -1295,10 +1293,10 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 //loop through answers
                 foreach ($result as $row) {
                     //----------------- LABEL 1 ---------------------
-                    $myfield2 = $myfield . reset($row) . "#0";
+                    $myfield2 = $myfield . "_S" . $row['qid'] . "#0";
                     $allfields[] = $myfield2;
                     //----------------- LABEL 2 ---------------------
-                    $myfield2 = $myfield . reset($row) . "#1";
+                    $myfield2 = $myfield . "_S" . $row['qid'] . "#1";
                     $allfields[] = $myfield2;
                 }   //end WHILE -> loop through all answers
                 break;
@@ -1317,6 +1315,19 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
     }
 
     return $allfields;
+}
+
+/**
+ * Generates the list of statistics field names for the questions of a survey
+ * @deprecated Use getStatisticsFieldNames() instead
+ * @param int $iSurveyID Id of the Survey in question
+ * @param array $aFilters an array which is the result of a query in Questions model
+ * @param string|null $sLanguage
+ * @return string[] The statistics field names
+ */
+function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
+{
+    return getStatisticsFieldNames($iSurveyID, $aFilters, $sLanguage);
 }
 
 /**

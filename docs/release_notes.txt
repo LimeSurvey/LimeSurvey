@@ -14,7 +14,7 @@ HOW TO INSTALL
 ---------------
 This release does have the following requirements:
 
-*MySQL 5.5.3 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
+*MySQL ≥ 8.0, PostgreSQL ≥ 14, MariaDB ≥ 10.3.38, or MSSQL ≥ 2019
 *PHP 8.1.29 or later with the following modules/libraries enabled:
     *mbstring (Multibyte String Functions) extension library
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv for Windows and pdo_dblib for Linux)
@@ -34,6 +34,112 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.5.1 (build 261007) to 7.6.0 (build 261013) October 13, 2026
++New feature #JD-60: Import complete surveys from the React editor (#5228) (Adil Moumni Abdou)
++New feature #JD-16: File upload question type in statistics (#5295) (Stefan K)
++New feature #JD-104: Responses export modal (#5278) (Razvan Pandor)
++New feature #14429: Survey themes and question themes can now customize the content of the file upload popup (Carsten Schmitz)
+-Fixed issue: Username and password fields on the login page were higher than the other input fields (Carsten Schmitz)
+-Fixed issue: Survey resources file manager always opened in English regardless of the admin language (Carsten Schmitz)
+-Fixed issue: Survey owners could switch off the audit log for their survey (Carsten Schmitz)
+-Fixed issue: Survey overview showed PHP warnings when the survey's survey group had been deleted (Carsten Schmitz)
+-Fixed issue: Survey mass-action modal too big and had no close button (Carsten Schmitz)
+-Fixed issue: Labels with quotes or apostrophes in the mass action menu of lists were shown with HTML entities (e.g. Set &quot;Mandatory&quot; state) (Carsten Schmitz)
+-Fixed issue: Input fields and select boxes had different heights and borders in the admin interface and the new editor (Carsten Schmitz)
+-Fixed issue: In the survey export dialog no export format was preselected and the chosen format was not highlighted (Carsten Schmitz)
+-Fixed issue: In all-in-one surveys, a question could be shown on page load although its condition depended on a hidden later question group (e.g. with default answers or a resumed response) (Carsten Schmitz)
+-Fixed issue: Answer option and subquestion tables were cut off early, their header scrolled out of view and the scrollbar covered the delete button (Carsten Schmitz)
+-Fixed issue: Adding an answer option or subquestion failed on very long lists (Carsten Schmitz)
+-Fixed issue #JD-160: Numerical questions with wrong fallback for missing label in response list page (#5419) (Stefan K)
+-Fixed issue #JD-186: "Responses (last 30 days)" bar chart exceeds container (#5410) (Adil Moumni Abdou)
+-Fixed issue #JD-171: Alignment issues with multiple short texts question type (#5408) (SaraDimoska)
+-Fixed issue #9106: The browser page title did not indicate that a survey page was shown with answer errors (Carsten Schmitz)
+-Fixed issue #20759: Scanning for plugin files in the plugin manager failed with a PHP warning in debug mode (Carsten Schmitz)
+-Fixed issue #20758: LDAP participant import was offered to every survey administrator although no LDAP query was configured (Carsten Schmitz)
+-Fixed issue #20730: Quotas on encrypted questions never triggered (Carsten Schmitz)
+-Fixed issue #20723: Deleting a survey left its archived response, timings and participant tables behind (Carsten Schmitz)
+-Fixed issue #20666: Fixed ranking condition qid mapping and response (Carsten Schmitz)
+-Fixed issue #20622: Mandatory ranking questions can not be answered (Carsten Schmitz)
+-Fixed issue #20420: Copy survey fails with error 500 when user lacks permission for the survey's group (#5361) (Carsten Schmitz)
+-Fixed issue #20351: Insert image in the quota message editor said "You don't have permissions to browse server", even for superadmins (Carsten Schmitz)
+-Fixed issue #19990: An apostrophe inside quoted text in an expression (e.g. 'Crohn's disease') broke all following expressions and could exhaust memory (Carsten Schmitz)
+-Fixed issue #19696: Selecting the Raleway, Ubuntu, Source Sans Pro or IBM Plex Serif font in the survey theme options had no effect (Carsten Schmitz)
+-Fixed issue #19595: Logging in via LDAP with a different upper/lower case username created a second user on PostgreSQL (Carsten Schmitz)
+-Fixed issue #19538: Simple statistics showed no answers for encrypted questions except "No answer" (Carsten Schmitz)
+-Fixed issue #19531: Apostrophes in translated placeholders and tooltips were shown as HTML codes (e.g. email field on the save form in Italian) (Carsten Schmitz)
+-Fixed issue #19513: RemoteControl JSON-RPC API returned an empty response when the request id was 0 (Carsten Schmitz)
+-Fixed issue #19458: Labels in survey presentation settings were sentence fragments ("... progress bar") that were hard to read and translate (Carsten Schmitz)
+-Fixed issue #19444: Several elements on the user management page had the same id (Carsten Schmitz)
+-Fixed issue #19425: Bulk deleting users who own surveys failed with a misleading "protected user" error (Carsten Schmitz)
+-Fixed issue #19279: Adding a new question looked the same as editing one because the question editor had no page heading (Carsten Schmitz)
+-Fixed issue #19272: Exporting survey participants filtered by email address exported and deleted nothing when the email address was encrypted (Carsten Schmitz)
+-Fixed issue #19249: An image filled in from an answer (e.g. a signature) was missing from the printed answers and their PDF export (Carsten Schmitz)
+-Fixed issue #19128: Upgrading from LimeSurvey 3.x got stuck at the database update when the default survey theme was not compatible (Carsten Schmitz)
+-Fixed issue #19022: The HTML lang attribute for German (easy) was "de" instead of the standard "de-simple" (Carsten Schmitz)
+-Fixed issue #18783: Incorrect warning text (Carsten Schmitz)
+-Fixed issue #18781: Importing a survey filled the application log with "Failed to set unsafe attribute" warnings for question types and question groups (Carsten Schmitz)
+-Fixed issue #18682: Clicking the paste buttons in the HTML editor seemed to do nothing (Carsten Schmitz)
+-Fixed issue #18566: File manager did not work when LimeSurvey was accessed via a host name with a port (Carsten Schmitz)
+-Fixed issue #18549: Uploading a video from the HTML5 video dialog of the editor failed with "Incorrect server response" (Carsten Schmitz)
+-Fixed issue #18540: Users without permission to create themes were offered "Extend", which then failed with a permission error (Carsten Schmitz)
+-Fixed issue #18538: Users without permission to delete themes were offered "Uninstall", which only showed an empty modal (Carsten Schmitz)
+-Fixed issue #18513: Users with only import or export permission for central participants could not access the central participant database (Carsten Schmitz)
+-Fixed issue #18512: Users without permission to create central participants were offered "Add participant", which only showed "null" (Carsten Schmitz)
+-Fixed issue #18511: Deleting their own central participant without global delete permission showed "null" and did nothing (Carsten Schmitz)
+-Fixed issue #18493: An expression containing a non-breaking space (as inserted by the HTML editor) showed a syntax error (Carsten Schmitz)
+-Fixed issue #18437: Some texts in the Fruity theme options could not be translated (Carsten Schmitz)
+-Fixed issue #18408: In Array (numbers) question settings the "Text inputs" option was placed between minimum, step and maximum value (Carsten Schmitz)
+-Fixed issue #18392: All pages of a survey had the same browser/page title, so screen reader users could not tell the pages apart (Carsten Schmitz)
+-Fixed issue #18367: Pages crashed with an endless loop when a plugin checked permissions while plugins were loading (e.g. in afterPluginLoad) (Carsten Schmitz)
+-Fixed issue #18317: Setting an access code length below 5 was silently changed to 15 instead of showing an error (Carsten Schmitz)
+-Fixed issue #18285: Filtering by seed in the response list had no effect (Carsten Schmitz)
+-Fixed issue #18258: Opening the installer on an installed LimeSurvey showed an error page instead of going to the administration (Carsten Schmitz)
+-Fixed issue #18248: Questions without texts in a survey language could not be edited (500 error), and the data consistency check did not fix them (Carsten Schmitz)
+-Fixed issue #18049: RemoteControl statistics export left out multiple numerical, multiple short text, array (numbers/text), dual scale and ranking questions (Carsten Schmitz)
+-Fixed issue #17990: Deleting a question that was used as target in the panel integration left a broken URL parameter (Carsten Schmitz)
+-Fixed issue #17930: A plugin that failed to load before it was installed stayed marked as faulty after it was fixed, and could not be installed (Carsten Schmitz)
+-Fixed issue #17659: Deleting a user who owned a survey group left the group with a non-existing owner (Carsten Schmitz)
+-Fixed issue #17551: Advanced ranking question showed rank numbers on unranked items (Carsten Schmitz)
+-Fixed issue #17550: Input settings of Multiple numerical input questions were listed in an illogical order (Carsten Schmitz)
+-Fixed issue #17318: File manager stayed blank when a custom upload directory was set in config.php (Carsten Schmitz)
+-Fixed issue #17300: Selected option of button groups was shown by colour only and could not be seen at all in forced colours (high contrast) mode (Carsten Schmitz)
+-Fixed issue #17252: Admin list filters, column selection, page size and row links did not work when the application folder was not web-accessible (Carsten Schmitz)
+-Fixed issue #17246: Question theme folder did not follow the configured upload directory (Carsten Schmitz)
+-Fixed issue #17200: Survey logic file reported no errors although question codes were used more than once (Carsten Schmitz)
+-Fixed issue #17199: Importing a question group could create question codes that already existed in the survey (Carsten Schmitz)
+-Fixed issue #17053: Survey owner and survey group permissions were not covered by tests (Carsten Schmitz)
+-Fixed issue #16996: Range labels on the export responses page could not be translated separately from the email "From:" label (Carsten Schmitz)
+-Fixed issue #16919: Survey group owner field was not covered by tests (Carsten Schmitz)
+-Fixed issue #16874: Printable survey export (zip) did not use any stylesheets (Carsten Schmitz)
+-Fixed issue #16031: Emoticon slider and star rating did not show answers chosen by keyboard and had no visible focus (Carsten Schmitz)
+-Fixed issue #15870: Empty condition fields did not show that they default to 1 (always shown) (Carsten Schmitz)
+-Fixed issue #15847: Image formats added to the allowed theme image formats setting were still rejected on upload (Carsten Schmitz)
+-Fixed issue #15734: With "printanswershonorsconditions" set to 0 the print answers page showed no questions at all (Carsten Schmitz)
+-Fixed issue #15359: Theme editor preview of the welcome page showed a Previous button (Carsten Schmitz)
+-Fixed issue #15035: Survey logic file reported no errors for question codes with invalid characters (Carsten Schmitz)
+-Fixed issue #14972: An ampersand in a participant's first or last name was shown as "&amp;" in the participant list and in text emails, and was encoded again with every save (Carsten Schmitz)
+-Fixed issue #14479: Central participants could be saved with an invalid email address and errors on saving were not shown (Carsten Schmitz)
+-Fixed issue #14402: Welcome message was shown in all-in-one mode even though it was turned off (Carsten Schmitz)
+-Fixed issue #13988: Entering an invalid value in one subquestion marked all subquestion fields of the question as invalid (Carsten Schmitz)
+#Updated translation: Swahili by c_schmitz
+#Updated translation: Punjabi by c_schmitz
+#Updated translation: Malay by c_schmitz
+#Updated translation: Korean by c_schmitz
+#Updated translation: Irish by c_schmitz
+#Updated translation: Hebrew by c_schmitz
+#Updated translation: German by c_schmitz, Hyperion
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by Basil, c_schmitz, Hyperion
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Dutch by Han
+#Updated translation: Dutch by BloomingPrime, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch (Informal) by BloomingPrime, Han
+#Updated translation: Czech by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 7.5.0 (build 261001) to 7.5.1 (build 261007) October 7, 2026
 -Fixed issue: Retrying a failed database update to version 7 could fail with an 'Incorrect table name orphaned_orphaned_...' error (Carsten Schmitz)
 -Fixed issue: Remove on screen keyboard from presentation settings in new editor (haythem chibani)
@@ -6542,7 +6648,7 @@ Changes from 4.3.12 (build 200820) to 4.3.13 (build 200824) August 24, 2020
 
 
 Changes from 4.3.11 (build 200817) to 4.3.12 (build 200820) August 20, 2020
--Fixed issue #16594: Lime Survey 4.3.10+200812 Stored Cross Site Scripting (Permission Roles) (Gabriel Jenik)
+-Fixed issue #16594: Lime Survey 4.3.10+200812 Stored Cross Site Scripting (User Roles) (Gabriel Jenik)
 -Fixed issue #16593: Lime Survey 4.3.10+200812 Stored Cross Site Scripting (UserName) (Gabriel Jenik)
 -Fixed issue #16592: Lime Survey 4.3.10+200812 Stored Cross Site Scripting (User Details) (Gabriel Jenik)
 -Fixed issue #16591: Lime Survey 4.3.10+200812 Stored Cross Site Scripting (Survey Menu) (Gabriel Jenik)

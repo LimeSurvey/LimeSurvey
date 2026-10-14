@@ -97,19 +97,19 @@ App()->getClientScript()->registerScript(
 <div id='presentation-panel'>
     <div class="row">
         <h1>
-            <?php eT('Show...'); ?>
+            <?php eT('Display'); ?>
         </h1>
         <div class="col-12 col-lg-6">
             <!-- Show "No answer" -->
             <div class="mb-3">
-                <label class="form-label" for="shownoanswer"><?php eT('... “no answer”'); ?></label>
+                <label class="form-label" for="shownoanswer"><?php eT('Show “No answer”'); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'shownoanswer',
                             'checkedOption' => $oSurvey->shownoanswer,
-                            'ariaLabel' => gT('no answer'),
+                            'ariaLabel' => gT('Show “No answer”'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->shownoanswer . " ᴵ")) : $optionsOnOff
                         )
@@ -120,14 +120,14 @@ App()->getClientScript()->registerScript(
 
             <!-- Preselect "No answer" -->
             <div class="mb-3">
-                <label class="form-label" for="preselectnoanswer"><?php eT('... “No answer” preselected'); ?></label>
+                <label class="form-label" for="preselectnoanswer"><?php eT('Preselect “No answer”'); ?></label>
                 <div>
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'preselectnoanswer',
                             'checkedOption' => $oSurvey->preselectnoanswer,
-                            'ariaLabel' => gT('No answer preselected'),
+                            'ariaLabel' => gT('Preselect “No answer”'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge(
                                     $optionsOnOff,
@@ -155,14 +155,14 @@ App()->getClientScript()->registerScript(
             <!-- Show "There are X questions in this survey" -->
             <div class="mb-3">
                 <label class="form-label" for="showxquestions">
-                    <?php eT('... “There are X questions in this survey”'); ?></label>
+                    <?php eT('Show “There are X questions in this survey”'); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'showxquestions',
                             'checkedOption' => $oSurvey->showxquestions,
-                            'ariaLabel' => gT('There are X questions in this survey'),
+                            'ariaLabel' => gT('Show “There are X questions in this survey”'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showxquestions . " ᴵ")) : $optionsOnOff
                         )
@@ -188,7 +188,7 @@ App()->getClientScript()->registerScript(
 
             <!-- Show group name and/or group description -->
             <div class="mb-3">
-                <label class="form-label" for="showgroupinfo"><?php eT('... group name and description'); ?></label>
+                <label class="form-label" for="showgroupinfo"><?php eT('Group name and description'); ?></label>
                 <div class="col-12 col-lg-8">
                     <select id="showgroupinfo" name="showgroupinfo" class="form-select">
                         <?php if ($bShowInherited) { ?>
@@ -220,7 +220,7 @@ App()->getClientScript()->registerScript(
 
             <!-- Show question number and/or code -->
             <div class="mb-3">
-                <label class="form-label" for="showqnumcode"><?php eT('... question number and code'); ?></label>
+                <label class="form-label" for="showqnumcode"><?php eT('Question number and code'); ?></label>
                 <div class="col-12 col-lg-8">
                     <select class="form-select" id="showqnumcode" name="showqnumcode">
                         <?php if ($bShowInherited) { ?>
@@ -240,14 +240,14 @@ App()->getClientScript()->registerScript(
         <div class="col-12 col-lg-6">
             <!-- Show welcome screen -->
             <div class="mb-3">
-                <label class=" form-label" for='showwelcome'><?php eT("... welcome screen"); ?></label>
+                <label class=" form-label" for='showwelcome'><?php eT("Show welcome screen"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'showwelcome',
                             'checkedOption' => $oSurvey->showwelcome,
-                            'ariaLabel' => gT('welcome screen'),
+                            'ariaLabel' => gT('Show welcome screen'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showwelcome . " ᴵ")) : $optionsOnOff
                         )
@@ -258,14 +258,14 @@ App()->getClientScript()->registerScript(
 
             <!-- Show progress bar -->
             <div class="mb-3">
-                <label class=" form-label" for='showprogress'><?php eT("... progress bar"); ?></label>
+                <label class=" form-label" for='showprogress'><?php eT("Show progress bar"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'showprogress',
                             'checkedOption' => $oSurvey->showprogress,
-                            'ariaLabel' => gT('progress bar'),
+                            'ariaLabel' => gT('Show progress bar'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showprogress . " ᴵ")) : $optionsOnOff
                         )
@@ -276,14 +276,14 @@ App()->getClientScript()->registerScript(
 
             <!-- Show question index -->
             <div class="mb-3">
-                <label class="form-label" for='questionindex'><?php eT("... question index, allow jumping"); ?></label>
+                <label class="form-label" for='questionindex'><?php eT("Show question index and allow jumping"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'questionindex',
                             'checkedOption' => $oSurvey->questionindex,
-                            'ariaLabel' => gT('question index, allow jumping'),
+                            'ariaLabel' => gT('Show question index and allow jumping'),
                             'selectOptions' => $optionsQuestionIndex
                         )
                     );

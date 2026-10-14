@@ -167,7 +167,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 array(
                     'header' => gT('Owner'),
                     'name' => 'owner',
-                    'value' => '$data->owner->users_name',
+                    'value' => '$data->owner->users_name ?? ""',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 

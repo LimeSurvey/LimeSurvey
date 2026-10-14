@@ -56,7 +56,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
             <?php echo CHtml::form(["admin/checkintegrity", "sa" => 'fixintegrity'], 'post'); ?>
             <input type="hidden" name="ok" value="Y" />
             <button type="submit" class="btn btn-primary">
-                <?php eT("Run data consistency check"); ?>
+                <?php eT("Check data integrity"); ?>
             </button>
             </form>
         </div>
