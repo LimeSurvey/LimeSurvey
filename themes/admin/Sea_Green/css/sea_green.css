@@ -17208,7 +17208,7 @@ body {
   font-weight: 500;
   font-size: 0.9975rem;
   line-height: 20px;
-  padding: 0.375rem calc(1.05em + 6px);
+  padding: 0.375rem 16px;
   min-width: 80px;
   min-height: auto;
 }
@@ -17244,26 +17244,29 @@ body {
   justify-content: center;
 }
 
-.btn-group > .btn-check:checked + .btn:not(:has(i, svg, [class^=ri-], [class*=" ri-"]))::before {
-  content: "";
-  flex: none;
-  width: 0.35em;
-  height: 0.7em;
-  margin-top: -0.15em;
-  margin-left: -0.85em;
-  margin-right: 0.5em;
-  border: solid currentColor;
-  border-width: 0 0.15em 0.15em 0;
-  /*rtl:ignore*/
-  transform: rotate(45deg);
-}
-
 @media (forced-colors: active) {
+  .btn-group > .btn-check + .btn:not(:has(i, svg, [class^=ri-], [class*=" ri-"])) {
+    padding-left: calc(1.05em + 6px) !important;
+    padding-right: calc(1.05em + 6px) !important;
+  }
   .btn-group > .btn-check:checked + .btn {
     forced-color-adjust: none;
     background-color: Highlight !important;
     border-color: Highlight !important;
     color: HighlightText !important;
+  }
+  .btn-group > .btn-check:checked + .btn:not(:has(i, svg, [class^=ri-], [class*=" ri-"]))::before {
+    content: "";
+    flex: none;
+    width: 0.35em;
+    height: 0.7em;
+    margin-top: -0.15em;
+    margin-left: -0.85em;
+    margin-right: 0.5em;
+    border: solid currentColor;
+    border-width: 0 0.15em 0.15em 0;
+    /*rtl:ignore*/
+    transform: rotate(45deg);
   }
 }
 .dropdown-menu {
@@ -17475,7 +17478,7 @@ body {
   font-weight: 500;
   font-size: 0.9975rem;
   line-height: 20px;
-  padding: 2px calc(1.05em + 6px);
+  padding: 2px 16px;
   min-height: 20px;
 }
 .lime-toggle-btn-group .btn-group .btn-check + .btn-outline-secondary {
