@@ -32,8 +32,7 @@
             font-weight: $font-weight-500;
             font-size: $font-size-sm;
             line-height: $line-height-20;
-            // Side padding fits the checkmark of the selected option plus a small margin
-            padding: 2px calc(1.05em + 6px);
+            padding: 2px 16px;
             min-height: 20px;
         }
         .btn-check + .btn-outline-secondary {
