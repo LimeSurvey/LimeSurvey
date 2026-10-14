@@ -7,11 +7,8 @@ on:
       - master
       - develop-major
       - develop-minor
-      - feature/react-editor-build # temporary
     paths:
       - 'editor/**'
-      - '!editor/build/**'
-      - '!editor/index.html'
   workflow_dispatch:
 
 permissions:
@@ -54,7 +51,7 @@ jobs:
         if: steps.check.outputs.skip != 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
           cache-dependency-path: editor/package-lock.json
 
