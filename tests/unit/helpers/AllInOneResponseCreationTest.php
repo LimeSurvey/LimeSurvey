@@ -75,7 +75,8 @@ class AllInOneResponseCreationTest extends TestBaseClass
         $responses = \Yii::app()->db->createCommand('SELECT * FROM {{responses_' . self::$surveyId . '}}')->queryAll();
         $this->assertCount(1, $responses, 'Response created when submitting the page');
         $this->assertEquals('Answer', $responses[0][$sgqa], 'Answer saved with the response');
-        $this->assertEquals('2020-01-02 03:04:05', $responses[0]['startdate'], 'Start date is the date the survey was displayed');
+        // MSSQL returns datetime values with milliseconds
+        $this->assertEquals('2020-01-02 03:04:05', preg_replace('/\.000$/', '', $responses[0]['startdate']), 'Start date is the date the survey was displayed');
 
         $response = \Response::model(self::$surveyId)->findByPk($responses[0]['id']);
         $this->assertTrue($response->hasAnswers(), 'Response with an answer has answers');
