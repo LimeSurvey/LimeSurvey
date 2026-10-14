@@ -1,5 +1,5 @@
 # Fails PRs that commit editor build output; editor-build.yml rebuilds it after merge.
-name: QuestionEditor - No build output in PRs
+name: QuestionEditor - Build guard
 
 on:
   pull_request:
@@ -7,20 +7,19 @@ on:
 
 jobs:
   Guard:
-    name: No editor build files
+    name: Check for build files
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
 
     steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-
       - name: Fail if PR contains editor build output
         env:
-          BASE: ${{ github.event.pull_request.base.sha }}
-          HEAD: ${{ github.event.pull_request.head.sha }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
         run: |
-          files=$(git diff --name-only "$BASE...$HEAD" -- editor/build editor/index.html)
+          files=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR}/files" --paginate \
+            --jq '.[].filename | select(startswith("editor/build/") or . == "editor/index.html")')
 
           if [ -n "$files" ]; then
             echo "::error::Don't commit editor build output; CI rebuilds it after merge. Drop these changes:"
