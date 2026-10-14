@@ -734,6 +734,50 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     /**
+     * Returns the ids of all responses matching the filters of the responses grid,
+     * as used by "Select all" massive actions.
+     *
+     * @param int $surveyId
+     * @param string $filterQuery Serialized filter inputs of the responses grid
+     * @param array $excludedIds Response ids deselected by the user
+     * @param int|null $limit Maximum number of responses (lowest ids first), null for no limit
+     * @return array
+     */
+    public static function getIdsByGridFilter(int $surveyId, string $filterQuery, array $excludedIds = [], ?int $limit = null): array
+    {
+        $model = self::model($surveyId);
+        $model->bEncryption = true;
+
+        parse_str($filterQuery, $parsedFilterQuery);
+        $filters = $parsedFilterQuery['SurveyDynamic'] ?? null;
+        $filters = is_array($filters) ? $filters : [];
+        $model->setAttributes($filters, false);
+        // These filters are no table columns, so setAttributes() skips them
+        foreach (['completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter'] as $filterName) {
+            $model->$filterName = $filters[$filterName] ?? null;
+        }
+
+        $criteria = $model->search()->criteria;
+        $criteria->select = 't.id';
+        if ($limit !== null) {
+            $criteria->order = 't.id ASC';
+            $criteria->limit = $limit;
+        }
+
+        $responseIds = $model->getCommandBuilder()
+            ->createFindCommand($model->tableSchema, $criteria)
+            ->queryColumn();
+        if (empty($excludedIds)) {
+            return $responseIds;
+        }
+
+        $excludedIds = array_flip(array_map('strval', $excludedIds));
+        return array_values(array_filter($responseIds, function ($responseId) use ($excludedIds) {
+            return !isset($excludedIds[(string) $responseId]);
+        }));
+    }
+
+    /**
      * @param CDbCriteria $criteria
      * @param CSort $sort
      * @return void

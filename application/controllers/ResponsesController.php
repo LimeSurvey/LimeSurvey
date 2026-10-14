@@ -663,7 +663,7 @@ class ResponsesController extends LSBaseController
 
         // "Select all" posts an explicit flag: act on every response matching the grid filters
         if (empty($aResponseId) && App()->request->getPost('selectAll')) {
-            $aResponseId = $this->removeSelectAllExcludedIds($this->getAllResponseIds($surveyId));
+            $aResponseId = $this->getSelectAllResponseIds($surveyId);
         }
 
         $errors = 0;
@@ -809,7 +809,9 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * Construct a zip files from a list of response
+     * Construct a zip files from a list of response.
+     * Without a list, a posted selectAll flag ("Select all" in the grid) zips the files
+     * of all responses matching the posted grid filters, otherwise of all responses.
      *
      * @access public
      * @param int $surveyId : survey ID
@@ -828,7 +830,10 @@ class ResponsesController extends LSBaseController
                 App()->user->setFlash('error', gT('Sorry, this file was not found.'));
                 $this->redirect(["surveyAdministration/view", "surveyid" => $surveyId]);
             }
-            if (!$responseIds) {
+            if (!$responseIds && App()->request->isPostRequest && App()->request->getPost('selectAll')) {
+                // Downloading is not expensive like deleting, so the "Select all" limit does not apply
+                $aResponseId = $this->getSelectAllResponseIds($surveyId, false);
+            } elseif (!$responseIds) {
                 // No response id : get all survey files
                 $oCriteria = new CDbCriteria();
                 $oCriteria->select = "id";
@@ -891,7 +896,7 @@ class ResponsesController extends LSBaseController
 
         // "Select all" posts an explicit flag: act on every response matching the grid filters
         if ($responseId === null && empty($responseIds) && $request->getPost('selectAll')) {
-            $responseIds = $this->removeSelectAllExcludedIds($this->getAllResponseIds($surveyId));
+            $responseIds = $this->getSelectAllResponseIds($surveyId);
         }
 
         Yii::import('application.helpers.admin.ajax_helper', true);
@@ -1207,51 +1212,22 @@ class ResponsesController extends LSBaseController
 
     /**
      * Returns the ids of all responses matching the grid filters posted with the
-     * massive action. Used when the selectAll flag is posted ("Select all" in the grid).
+     * massive action, without the ones deselected by the user. Used when the
+     * selectAll flag is posted ("Select all" in the grid).
      *
      * @param int $surveyId
+     * @param bool $applyCap Whether to apply the "Select all" limit of expensive deletions
      * @return array
      */
-    private function getAllResponseIds(int $surveyId): array
+    private function getSelectAllResponseIds(int $surveyId, bool $applyCap = true): array
     {
-        $model = SurveyDynamic::model($surveyId);
-        $model->bEncryption = true;
-
-        parse_str((string) App()->request->getPost('filterQuery', ''), $parsedFilterQuery);
-        $filters = $parsedFilterQuery['SurveyDynamic'] ?? null;
-        if (is_array($filters) && !empty($filters)) {
-            $model->setAttributes($filters, false);
-            foreach (['completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter'] as $filterName) {
-                if (!empty($filters[$filterName])) {
-                    $model->$filterName = $filters[$filterName];
-                }
-            }
-        }
-
-        $criteria = $model->search()->criteria;
-        $criteria->select = 't.id';
-        $cap = $this->getSelectAllHardCap($surveyId);
-        if ($cap !== null) {
-            $criteria->order = 't.id ASC';
-            $criteria->limit = $cap;
-        }
-
-        return $model->getCommandBuilder()
-            ->createFindCommand($model->tableSchema, $criteria)
-            ->queryColumn();
-    }
-
-    private function removeSelectAllExcludedIds(array $responseIds): array
-    {
-        $excludedIds = json_decode(App()->request->getPost('excludedItems', '[]'), true);
-        if (!is_array($excludedIds) || empty($excludedIds)) {
-            return $responseIds;
-        }
-
-        $excludedIds = array_flip(array_map('strval', $excludedIds));
-        return array_values(array_filter($responseIds, function ($responseId) use ($excludedIds) {
-            return !isset($excludedIds[(string) $responseId]);
-        }));
+        $excludedIds = json_decode((string) App()->request->getPost('excludedItems', '[]'), true);
+        return SurveyDynamic::getIdsByGridFilter(
+            $surveyId,
+            (string) App()->request->getPost('filterQuery', ''),
+            is_array($excludedIds) ? $excludedIds : [],
+            $applyCap ? $this->getSelectAllHardCap($surveyId) : null
+        );
     }
 
     /**
