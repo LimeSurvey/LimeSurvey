@@ -11,12 +11,11 @@ const isApiError = (payload) =>
   typeof payload === 'object' && payload !== null && 'httpStatus' in payload
 
 /**
- * Fetch survey responses for the requested page, filters, and sorting, refetching
+ * Fetch survey responses for the requested page, filter, and sorting, refetching
  * on every mount and retaining the previous result while the query changes.
  *
  * @param {string|number} surveyId Survey to query.
  * @param {Object} pagination Page selection with a zero-based pageIndex and pageSize.
- * @param {Object} filters Response filters sent to the API.
  * @param {Array} sorting Sort descriptors sent to the API.
  * @param {Array} filterSet Condition designer filter, in the shape the API accepts.
  * @returns {Object} Responses, the error a rejected filter came back with, fetch
@@ -24,13 +23,7 @@ const isApiError = (payload) =>
  *   survey already had rather than emptying the table.
  *   Mutations invalidate response queries on success and refetch after success or failure.
  */
-export function useResponses(
-  surveyId,
-  pagination,
-  filters,
-  sorting,
-  filterSet
-) {
+export function useResponses(surveyId, pagination, sorting, filterSet) {
   const auth = useAuth()
   const responseService = useMemo(
     () => new ResponseService(auth, surveyId, getApiUrl()),
@@ -50,14 +43,12 @@ export function useResponses(
       surveyId,
       pagination.pageIndex,
       pagination.pageSize,
-      filters,
       sorting,
       filterSet,
     ],
     queryFn: () =>
       responseService.getSurveyResponses(surveyId, {
         pagination,
-        filters,
         sorting,
         filterSet,
       }),
@@ -109,7 +100,6 @@ export function useResponses(
     const result = await responseService.getSurveyResponses(surveyId, {
       pagination: { pageIndex: 0, pageSize: 1 },
       filters: {
-        ...filters,
         locateResponse: {
           keys: ['id'],
           filterMethod: 'greaterThan',
