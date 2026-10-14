@@ -368,23 +368,29 @@ class ExportSurveyResultsService
      */
     public function buildFilterCriteria()
     {
-        if ($this->filterCriteria !== null) {
+        $criteria = null;
+
+        if (!empty($this->filters)) {
+            $dataMap = $this->transformerOutputSurveyResponses->getDataMap();
+            $sort = new \CSort();
+            $criteria = new \LSDbCriteria();
+            $this->responseFilterPatcher->apply(
+                ['filters' => $this->filters],
+                $criteria,
+                $sort,
+                $dataMap
+            );
+        }
+
+        if ($this->filterCriteria === null) {
+            return $criteria;
+        }
+
+        if ($criteria === null) {
             return $this->filterCriteria;
         }
 
-        if (empty($this->filters)) {
-            return null;
-        }
-
-        $dataMap = $this->transformerOutputSurveyResponses->getDataMap();
-        $sort = new \CSort();
-        $criteria = new \LSDbCriteria();
-        $this->responseFilterPatcher->apply(
-            ['filters' => $this->filters],
-            $criteria,
-            $sort,
-            $dataMap
-        );
+        $criteria->mergeWith($this->filterCriteria);
 
         return $criteria;
     }
