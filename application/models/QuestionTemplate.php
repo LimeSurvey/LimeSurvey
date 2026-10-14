@@ -353,6 +353,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
+     * Returns the URL of the assets folder of the question template
+     *
      * @return string
      */
     public function getTemplateUrl()
@@ -370,7 +372,8 @@ class QuestionTemplate extends CFormModel
             if (is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName/")) {
                 $this->sTemplateUrl = "$sBaseUrl/$sCoreQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             } elseif (is_dir("$sUserQTemplateRootDir/$sTemplateFolderName/")) {
-                $this->sTemplateUrl = "$sBaseUrl/$sUserQTemplateRootDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
+                $sUserQTemplateDir = QuestionTheme::getPathRelativeToRootDir($sUserQTemplateRootDir);
+                $this->sTemplateUrl = "$sBaseUrl/$sUserQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             }
         }
         return $this->sTemplateUrl;

@@ -97,7 +97,7 @@ class ColumnFilterWidget extends CWidget
         }
 
         App()->getClientScript()->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/ColumnFilterWidget/assets/columns_filter.js',
+            App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/columns_filter.js'),
             CClientScript::POS_END
         );
     }
