@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-10-12 19:14:14+00:00\n"
+"POT-Creation-Date: 2026-10-13 09:39:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12059,7 +12059,7 @@ msgid "This survey setting has not been imported: %s => %s"
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:2371
-#: application/models/services/CopySurvey.php:75
+#: application/models/services/CopySurvey.php:76
 msgid "The desired survey ID was already in use, therefore a random one was assigned."
 msgstr ""
 
@@ -14693,7 +14693,7 @@ msgstr ""
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:70
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:56
 #: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:18
-#: editor/src/pages/Responses/components/ChartRenderer.js:112
+#: editor/src/pages/Responses/components/ChartRenderer.js:115
 #: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:69
 msgid "Bar chart"
 msgstr ""
@@ -14703,7 +14703,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:58
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:52
 #: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:22
-#: editor/src/pages/Responses/components/ChartRenderer.js:121
+#: editor/src/pages/Responses/components/ChartRenderer.js:124
 #: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:143
 msgid "Pie chart"
 msgstr ""
@@ -14712,7 +14712,7 @@ msgstr ""
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:83
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:60
 #: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:26
-#: editor/src/pages/Responses/components/ChartRenderer.js:130
+#: editor/src/pages/Responses/components/ChartRenderer.js:133
 #: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:168
 msgid "Radar chart"
 msgstr ""
@@ -14721,7 +14721,7 @@ msgstr ""
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:90
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:62
 #: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:30
-#: editor/src/pages/Responses/components/ChartRenderer.js:140
+#: editor/src/pages/Responses/components/ChartRenderer.js:143
 #: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:178
 msgid "Line chart"
 msgstr ""
@@ -14736,7 +14736,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:437
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:102
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:66
-#: editor/src/pages/Responses/components/ChartRenderer.js:149
+#: editor/src/pages/Responses/components/ChartRenderer.js:152
 #: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:136
 #: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:198
 msgid "Doughnut chart"
@@ -18195,7 +18195,7 @@ msgid "Preview"
 msgstr ""
 
 #: application/models/Survey.php:1665
-#: application/models/services/CopySurvey.php:112
+#: application/models/services/CopySurvey.php:116
 msgid "%s - Copy"
 msgstr ""
 
@@ -19279,32 +19279,36 @@ msgstr ""
 msgid "Wrong definition! Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
-#: application/models/services/CopySurvey.php:88
+#: application/models/services/CopySurvey.php:91
 msgid "Failed to copy survey"
 msgstr ""
 
-#: application/models/services/CopySurvey.php:144
+#: application/models/services/CopySurvey.php:148
 msgid "Conditions were not copied because question/group mappings are missing."
 msgstr ""
 
-#: application/models/services/CopySurvey.php:184
+#: application/models/services/CopySurvey.php:188
 msgid "Some resources could not be copied from the source survey"
 msgstr ""
 
-#: application/models/services/CopySurvey.php:319
+#: application/models/services/CopySurvey.php:323
 msgid "Failed to copy survey plugin settings"
 msgstr ""
 
-#: application/models/services/CopySurvey.php:359
+#: application/models/services/CopySurvey.php:363
 msgid "The target question of URL parameter '%s' could not be found in the copied survey, the target was removed."
 msgstr ""
 
-#: application/models/services/CopySurvey.php:366
+#: application/models/services/CopySurvey.php:370
 msgid "URL parameter '%s' could not be copied: %s"
 msgstr ""
 
-#: application/models/services/CopySurvey.php:406
+#: application/models/services/CopySurvey.php:410
 msgid "Failed to copy survey theme options"
+msgstr ""
+
+#: application/models/services/CopySurvey.php:591
+msgid "You are not allowed to use the survey group of the source survey, therefore the copy was placed in the default survey group. Settings inherited from the source survey group were applied directly to the copy."
 msgstr ""
 
 #: application/models/services/CopySurveyResources.php:52
@@ -29913,10 +29917,10 @@ msgstr ""
 #: editor/src/components/QuestionTypes/FileUpload/FileUploadItem.js:71
 #: editor/src/components/QuestionTypes/FileUpload/FileUploadItem.js:82
 #: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoiceNumericalSubquestion.js:53
-#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:475
-#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:501
-#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:532
-#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:550
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:479
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:505
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:536
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:554
 #: editor/src/components/QuestionTypes/TextQuestion/BrowserDetectionTextAnswer.js:133
 #: editor/src/components/QuestionTypes/TextQuestion/LongTextAnswer.js:15
 #: editor/src/components/QuestionTypes/TextQuestion/NumericAnswer.js:12
@@ -29950,7 +29954,7 @@ msgstr ""
 
 #: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoiceCheckboxSubquestion.js:57
 #: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoiceShortTextSubquestion.js:24
-#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:572
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:576
 msgid "Enter your comment here."
 msgstr ""
 
@@ -31157,7 +31161,7 @@ msgstr ""
 msgid "Each value is the mean of the numbers entered for a subquestion (row) and answer option (column): their sum divided by the number of responses that answered that cell. Unanswered cells are left out."
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponsesStatistics/Charts/BarChart.js:48
+#: editor/src/pages/Responses/components/ResponsesStatistics/Charts/BarChart.js:51
 msgid "Scrollable chart"
 msgstr ""
 
@@ -32036,6 +32040,13 @@ msgstr ""
 #: themes/survey/vanilla/views/subviews/content/submit_preview.twig:23
 #, gp-priority: high
 msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr ""
+
+#. Shown to survey participants
+#: themes/survey/fruity_twentythree/views/subviews/header/head.twig:53
+#: themes/survey/vanilla/views/subviews/header/head.twig:54
+#, gp-priority: high
+msgid "Error: %s"
 msgstr ""
 
 #. Shown to survey participants
