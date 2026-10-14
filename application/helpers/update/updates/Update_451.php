@@ -8,7 +8,7 @@ class Update_451 extends DatabaseUpdateBase
     public function up()
     {
 
-            // When encryptionkeypair is empty, encryption was never used (user comes from LS3), so it's safe to skip this udpate.
+            // When encryptionkeypair is empty, encryption was never used (user comes from LS3), so it's safe to skip this update.
         if (!empty(\Yii::app()->getConfig('encryptionkeypair'))) {
             // update wrongly encrypted custom attribute values for cpdb participants
             $encryptedAttributes = $this->db->createCommand()

@@ -177,4 +177,68 @@ class ImportTest extends TestBaseClass
             }
         }
     }
+
+    /**
+     * Test that importing a question only imports the languages that the question file
+     * and the survey have in common, so no orphaned translations are left in the database (see #16908).
+     *
+     * @return void
+     */
+    public function testImportQuestionOnlyImportsSurveyLanguages(): void
+    {
+        \Yii::app()->session['loginID'] = 1;
+        \Survey::model()->resetCache();
+
+        try {
+            // Target survey uses English (base) and German, the question file has English, German and French
+            $result = importSurveyFile(self::$surveysFolder . '/limesurvey_survey_import_question_test.lss', false);
+            $survey = \Survey::model()->findByPk($result['newsid']);
+            $survey->additional_languages = 'de';
+            $this->assertTrue($survey->save());
+
+            $questionResult = XMLImportQuestion(
+                self::$surveysFolder . '/limesurvey_question_16908_three_languages.lsq',
+                $survey->sid,
+                $survey->groups[0]->gid,
+                ['autorename' => true, 'translinkfields' => true]
+            );
+            $this->assertArrayNotHasKey('fatalerror', $questionResult);
+            $qid = $questionResult['newqid'];
+            $subQuestion = \Question::model()->findByAttributes(['parent_qid' => $qid]);
+            $this->assertNotNull($subQuestion);
+            $answer = \Answer::model()->findByAttributes(['qid' => $qid]);
+            $this->assertNotNull($answer);
+            $defaultValue = \DefaultValue::model()->findByAttributes(['qid' => $qid]);
+            $this->assertNotNull($defaultValue);
+
+            $languagesOf = function (array $models): array {
+                $languages = array_map(function ($model) {
+                    return $model->language;
+                }, $models);
+                sort($languages);
+                return $languages;
+            };
+            $expected = ['de', 'en'];
+
+            $this->assertSame($expected, $languagesOf(\QuestionL10n::model()->findAllByAttributes(['qid' => $qid])), 'Question texts');
+            $this->assertSame($expected, $languagesOf(\QuestionL10n::model()->findAllByAttributes(['qid' => $subQuestion->qid])), 'Subquestion texts');
+            $this->assertSame($expected, $languagesOf(\AnswerL10n::model()->findAllByAttributes(['aid' => $answer->aid])), 'Answer texts');
+            $this->assertSame($expected, $languagesOf(\DefaultValueL10n::model()->findAllByAttributes(['dvid' => $defaultValue->dvid])), 'Default values');
+            // QuestionAttribute::findAll() indexes the result by attribute name, so query the languages directly
+            $attributeLanguages = \Yii::app()->db->createCommand()
+                ->select('language')
+                ->from('{{question_attributes}}')
+                ->where('qid = :qid AND attribute = :attribute', [':qid' => $qid, ':attribute' => 'em_validation_q_tip'])
+                ->order('language')
+                ->queryColumn();
+            $this->assertSame($expected, $attributeLanguages, 'Translated question attributes');
+            // Attributes without a language are still imported
+            $this->assertNotNull(\QuestionAttribute::model()->findByAttributes(['qid' => $qid, 'attribute' => 'hidden']));
+        } finally {
+            if (isset($survey) && $survey) {
+                \Yii::app()->session['loginID'] = 1;
+                $survey->delete();
+            }
+        }
+    }
 }

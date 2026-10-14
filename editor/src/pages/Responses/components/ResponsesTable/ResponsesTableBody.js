@@ -16,6 +16,7 @@ export const ResponsesTableBody = ({
   sid,
   setShowQuestionComponent,
   cellQuestionInfoRef,
+  baseLanguage,
 }) => {
   const handleOnCellClick = (cell, row) => {
     const question = cell.column.columnDef?.meta?.question
@@ -104,7 +105,11 @@ export const ResponsesTableBody = ({
                         surveyId={sid}
                       />
                     ) : (
-                      <TableCell cell={cell} />
+                      <TableCell
+                        cell={cell}
+                        question={cell.column.columnDef?.meta?.question}
+                        baseLanguage={baseLanguage}
+                      />
                     )}
                   </div>
                 </td>

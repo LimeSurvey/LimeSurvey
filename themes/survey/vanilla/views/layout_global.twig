@@ -90,7 +90,7 @@
         {% endblock %}       
 
         {# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
-        <article>
+        <div id="content">
 
             <div id="{{ aSurveyInfo.id.dynamicreload }}">
             {% block body %}
@@ -129,7 +129,7 @@
             {% endblock %}
             </div>
 
-        </article>
+        </div>
         {% block footer %}
             {{ include('./subviews/footer/footer.twig') }}
         {% endblock %}

@@ -153,6 +153,12 @@
         }
     {% endif %}
 
+    {% if (aSurveyInfo.options.automatichyphenation == "off" ) %}
+        #outerframeContainer {
+            hyphens: manual;
+        }
+    {% endif %}
+
     {% if (aSurveyInfo.options.cornerradius == 1 ) %}
         {% set cornerradius = '0px' %}
     {% endif %}

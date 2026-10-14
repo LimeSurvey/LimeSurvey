@@ -234,7 +234,7 @@
         <attribute>
             <name>input_boxes</name>
             <category>Display</category>
-            <sortorder>110</sortorder>
+            <sortorder>113</sortorder>
             <inputtype>switch</inputtype>
             <options>
                 <option>

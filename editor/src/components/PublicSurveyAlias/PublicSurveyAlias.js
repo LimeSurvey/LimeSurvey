@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import { useSurveyUpdatePermission } from 'hooks'
 import { formatUrlPreview, getSurveyAccessLink } from 'helpers'
-import { CustomizeButton, Input } from 'components/UIComponents'
+import { Button, CustomizeButton, Input } from 'components/UIComponents'
 
 import CopyButton from './CopyButton'
 import { SurveyAccessModeSelector } from './SurveyAccessMode/SurveyAccessModeSelector'
@@ -41,11 +41,15 @@ export const PublicSurveyAlias = ({
     return getSurveyAccessLink({ survey, language })
   }, [survey, language])
 
+  const linkForPreview = useMemo(() => {
+    return getSurveyAccessLink({ survey, language, isPreviewLink: true })
+  }, [survey, language])
+
   const maxPreviewLength = useMemo(() => 40, [])
 
-  const cleanLink = useMemo(
-    () => formatUrlPreview(link, maxPreviewLength),
-    [link]
+  const cleanLinkForPreview = useMemo(
+    () => formatUrlPreview(linkForPreview, maxPreviewLength),
+    [linkForPreview]
   )
   const cleanLinkPrefix = useMemo(
     () => formatUrlPreview(linkPrefix, maxPreviewLength),
@@ -112,7 +116,7 @@ export const PublicSurveyAlias = ({
         {isEditingAlias && (
           <Input
             type="text"
-            className="survey-alias-input opacity-50 pe-0 "
+            className="survey-alias-input pe-0 "
             style={{ width: `${aliasWidth}px` }}
             value={cleanLinkPrefix}
             disabled
@@ -125,14 +129,14 @@ export const PublicSurveyAlias = ({
           style={
             isEditingAlias ? { width: `calc(100% - ${aliasWidth}px)` } : {}
           }
-          value={isEditingAlias ? surveyAlias : cleanLink}
+          value={isEditingAlias ? surveyAlias : cleanLinkForPreview}
           onChange={({ target: { value } }) => {
             setSurveyAlias(value)
           }}
           placeholder={t('Enter survey alias')}
           disabled={!isEditingAlias}
           Icon={isEditingAlias ? null : <CopyButton onClick={copySurveyLink} />}
-          inputClass={`border-none p-0 text-cursor ${isEditingAlias ? '' : 'opacity-50'}`}
+          inputClass={`border-none p-0 text-cursor ${isEditingAlias ? '' : ''}`}
           inputRef={inputRef}
         />
       </div>
@@ -144,23 +148,13 @@ export const PublicSurveyAlias = ({
         />
       )}
       {isEditingAlias && (
-        <div className="d-flex">
-          <div className="text-decoration-none px-3 med14-c text-info d-flex align-items-center gap-2">
-            <span
-              onClick={onAliasCancel}
-              className="cursor-pointer disable-select"
-            >
-              {t('Cancel')}
-            </span>
-          </div>
-          <div className="text-decoration-none px-3 med14-c text-success d-flex align-items-center gap-2">
-            <span
-              onClick={onAliasSave}
-              className="cursor-pointer disable-select"
-            >
-              {t('Save')}
-            </span>
-          </div>
+        <div className="survey-alias-actions">
+          <Button variant="outline-dark" onClick={onAliasCancel}>
+            {t('Cancel')}
+          </Button>
+          <Button variant="outline-dark" onClick={onAliasSave}>
+            {t('Save')}
+          </Button>
         </div>
       )}
       {/* Temporary span element to measure alias width */}

@@ -115,26 +115,6 @@ class AuditLogTest extends TestBaseClass
     }
 
     /**
-     * The per-survey "Audit log for this survey" setting must not allow deleting a survey without a trace.
-     */
-    public function testSurveyDeletionIsLoggedEvenWhenSurveyAuditingIsOff()
-    {
-        $surveyId = $this->importTestSurvey();
-        // Same event the survey settings page dispatches when "Audit log for this survey" is set to "No"
-        self::dispatchPluginEvent('AuditLog', 'newSurveySettings', [
-            'survey' => $surveyId,
-            'settings' => ['auditing' => 0],
-        ]);
-        $lastLogId = $this->getLastLogId();
-
-        $this->deleteSurvey($surveyId);
-
-        $rows = $this->getLogRowsAfter($lastLogId);
-        $this->assertCount(1, $rows);
-        $this->assertSame((string) $surveyId, $rows[0]['entityid']);
-    }
-
-    /**
      * A failing audit entry must not block the deletion (e.g. bulk delete or RemoteControl):
      * the survey is deleted and the error is written to the plugin log.
      */

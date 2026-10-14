@@ -67,7 +67,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     {
         $('.table-permissions-set .extended').hide();
     }
-    /* Show on the all columnn the state of included checkbox */
+    /* Show on the all column the state of included checkbox */
     $('.table-permissions-set tbody tr').each(function(){
         if ($(this).find('.extended input:checkbox:checked').length == $(this).find('.extended input:checkbox').length) {
             /* All is checked */
