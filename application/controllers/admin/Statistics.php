@@ -179,7 +179,8 @@ class Statistics extends SurveyCommonAction
                 $row['type'],
                 $row['title'],
                 $sGroupName,
-                flattenText($row->questionl10ns[$language]['question'])
+                flattenText($row->questionl10ns[$language]['question']),
+                $row['encrypted'] === 'Y'
             );
 
             if (!in_array($sGroupName, $aGroups)) {
@@ -193,7 +194,8 @@ class Statistics extends SurveyCommonAction
                 $row['type'],
                 $row['title'],
                 $sGroupName,
-                flattenText($row->questionl10ns[$language]['question'])
+                flattenText($row->questionl10ns[$language]['question']),
+                $row['encrypted'] === 'Y'
             );
             $keyone = $keyone + 1;
         }
