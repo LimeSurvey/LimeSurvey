@@ -2062,6 +2062,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
     $tableName = "{{responses_$surveyId}}";
     $importedResponses = 0;
     $batchData = [];
+    $batchModels = [];
     $survey = Survey::model()->findByPk($surveyId);
     $rankingMap = [];
     foreach ($survey->questions as $q) {
@@ -2148,15 +2149,13 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
             $dataRow[$additionalField] = $archivedResponse->{$additionalField};
         }
 
-        $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
-        $beforeDataEntryImport->set('iSurveyID', $surveyId);
-        $beforeDataEntryImport->set('oModel', $targetResponse);
-        App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
-
         if ($targetResponse->validate()) {
             $batchData[] = $dataRow;
+            // The inserted values are the data row: Hand them to plugins with the model
+            $targetResponse->setAttributes($dataRow, false);
+            $batchModels[] = $targetResponse;
         }
-        if (count($batchData) % 500 === 0) {
+        if (count($batchData) === 500) {
             if ($preserveIDs) {
                 switchMSSQLIdentityInsert("responses_$surveyId", true);
             }
@@ -2166,7 +2165,9 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
             if ($preserveIDs) {
                 switchMSSQLIdentityInsert("responses_$surveyId", false);
             }
+            dispatchDataEntryImportEvents($surveyId, $batchModels);
             $batchData = [];
+            $batchModels = [];
         }
 
         unset($targetResponse);
@@ -2182,8 +2183,28 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         if ($preserveIDs) {
             switchMSSQLIdentityInsert("responses_$surveyId", false);
         }
+        dispatchDataEntryImportEvents($surveyId, $batchModels);
     }
     return $importedResponses;
+}
+
+/**
+ * Dispatches the beforeDataEntryImport event for each imported response
+ *
+ * Like the other response imports, the event is dispatched after the response was written.
+ *
+ * @param int $surveyId survey ID
+ * @param PluginDynamic[] $models the imported responses
+ * @return void
+ */
+function dispatchDataEntryImportEvents(int $surveyId, array $models)
+{
+    foreach ($models as $model) {
+        $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+        $beforeDataEntryImport->set('iSurveyID', $surveyId);
+        $beforeDataEntryImport->set('oModel', $model);
+        App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+    }
 }
 
 
@@ -2333,6 +2354,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
         if (isset($insertdata['tokenlength']) && $insertdata['tokenlength'] > Token::MAX_LENGTH) {
             $insertdata['tokenlength'] = Token::MAX_LENGTH;
+        }
+        if (isset($insertdata['tokenlength']) && !in_array((int) $insertdata['tokenlength'], Survey::getValidTokenLengths())) {
+            $insertdata['tokenlength'] = Token::DEFAULT_LENGTH;
         }
 
         // Fix survey group when not copying
@@ -2572,8 +2596,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             if (!isset($aGIDReplacements[$oldgid])) {
                 $questionGroup = new QuestionGroup();
-                $questionGroup->attributes = $insertdata;
                 $questionGroup->sid = $iNewSID;
+                unset($insertdata['sid']);
+                $questionGroup->attributes = $insertdata;
                 if (!$questionGroup->save()) {
                     throw new Exception(gT("Error") . ": Failed to insert data [3]<br /> " . json_encode($questionGroup->getErrors()));
                 }

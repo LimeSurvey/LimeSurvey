@@ -18,11 +18,11 @@
 }
 
 .form-control.ls-important-field {
-    padding     : 14px 12px;
+    padding     : $input-padding-y $input-padding-x;
     font-weight : 400;
     font-size   : 14px;
     line-height : $line-height-16;
-    border      : 2px solid $g-900 !important;
+    border      : $input-border-width solid $input-border-color !important;
     box-shadow  : 8px 8px 0px $g-200;
     &:focus {
         box-shadow : 8px 8px 0px $elevation-shadow;
@@ -35,7 +35,7 @@
 
 input[type="file"] {
     position   : relative;
-    padding    : 13px 14px;
+    padding    : $input-padding-y 14px;
     box-shadow : 8px 8px 0px #eeeff7;
 }
 
@@ -45,7 +45,7 @@ input[type="file"]::file-selector-button {
     right         : 4px;
     transform     : translateY(-50%);
     margin        : 0;
-    padding       : 8px 12px;
+    padding       : 6px 12px;
     background    : $white;
     color         : $g-900;
     border        : 1px solid $g-900 !important;
@@ -53,13 +53,22 @@ input[type="file"]::file-selector-button {
     font-weight   : 500;
 }
 
-input[type="number"] {
-  height : 38px;
+// Single-line inputs and selects get a fixed height: Firefox doesn't allow a line height below "normal" in text inputs,
+// number, email and native date/time inputs don't get their height from padding and line height alone (e.g. email with
+// multiple), and the height of selects depends on how the browser lays out their text line
+input:where(.form-control:not(.form-control-sm, .form-control-lg, .input-group-sm > *, .input-group-lg > *)),
+select:where(.form-select, .form-control):where(:not([multiple], [size]:not([size="1"]), .form-select-sm, .form-select-lg, .input-group-sm > *, .input-group-lg > *)),
+input[type="number"],
+input[type="email"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  height : $input-fixed-height;
 }
 
 // select
 .form-select {
-    border      : 1px solid $g-900;
+    border      : $input-border-width solid $input-border-color;
     font-weight : $font-weight-normal;
     font-size   : $dropdown-font-size;
     line-height : $line-height-16;
@@ -77,7 +86,7 @@ input[type="number"] {
         color            : $g-600;
     }
     &.ls-important-field {
-        border     : 2px solid $g-900 !important;
+        border     : $input-border-width solid $input-border-color !important;
         box-shadow : 8px 8px 0px $g-200;
         &:focus {
             box-shadow : 8px 8px 0px $elevation-shadow;
@@ -90,6 +99,7 @@ input[type="number"] {
 }
 
 .input-group-text {
+    line-height      : $line-height-16;
     background-color : $g-800;
     color            : $white;
 }

@@ -212,7 +212,7 @@ class Tokens extends SurveyCommonAction
             return;
         }
 
-        if ($thissurvey['bounceprocessing'] != 'N' || ($thissurvey['bounceprocessing'] == 'G' && Yii::app()->getConfig('bounceaccounttype') != 'off')) {
+        if ($thissurvey['bounceprocessing'] == 'L' || ($thissurvey['bounceprocessing'] == 'G' && Yii::app()->getConfig('bounceaccounttype') != 'off')) {
             if (!function_exists('imap_open')) {
                 eT("The imap PHP library is not installed or not activated. Please contact your system administrator.");
                 return;

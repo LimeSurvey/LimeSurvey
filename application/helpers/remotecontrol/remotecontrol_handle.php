@@ -685,7 +685,7 @@ class remotecontrol_handle
 
         usort($oAllQuestions, 'groupOrderThenQuestionOrder');
 
-        $aSummary = createCompleteSGQA($iSurveyID, $oAllQuestions, $sLanguage);
+        $aSummary = getStatisticsFieldNames($iSurveyID, $oAllQuestions, $sLanguage);
 
         $helper = new statistics_helper();
         switch ($docType) {
@@ -3691,12 +3691,13 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @return array On success: list of export formats. On failure: array with status information
+     * @return array On success: list of export formats. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_DATA.
      */
     public function list_response_exports($sSessionKey)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
 
         Yii::app()->loadHelper('admin.exportresults');
@@ -3710,7 +3711,7 @@ class remotecontrol_handle
         }
 
         if (empty($aExportOptions)) {
-            return array('status' => 'No export formats found');
+            return array('status' => 'No export formats found', 'error_code' => self::ERR_NO_DATA);
         }
 
         ksort($aExportOptions, SORT_STRING);

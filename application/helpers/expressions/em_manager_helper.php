@@ -6723,16 +6723,19 @@ class LimeExpressionManager
                     break;
                 case Question::QT_R_RANKING:
                     $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
+                    // The base Q{qid} field holds the stored ranking, not a rank position: Count only the rank positions
+                    $relevantRanks = array_diff($relevantSQs, ['Q' . $qid]);
+                    $unansweredRanks = array_diff($unansweredSQs, ['Q' . $qid]);
                     // If min_answers or max_answers is set, we check that at least one answer is ranked.
                     // But, if no limit is set, then all answers must be ranked.
                     if (!empty($qattr['min_answers']) || !empty($qattr['max_answers'])) {
-                        $maxUnrankedAnswers = count($relevantSQs) - 1;
+                        $maxUnrankedAnswers = max(count($relevantRanks) - 1, 0);
                         $sMandatoryText = $LEM->gT('Please rank the items.');
                     } else {
                         $maxUnrankedAnswers = 0;
                         $sMandatoryText = $LEM->gT('Please rank all items.');
                     }
-                    if (count($unansweredSQs) - 1 > $maxUnrankedAnswers) {
+                    if (count($unansweredRanks) > $maxUnrankedAnswers) {
                         $qmandViolation = true; // TODO - what about 'other'?
                     }
                     $mandatoryTip .= App()->twigRenderer->renderPartial(
@@ -8243,8 +8246,8 @@ class LimeExpressionManager
         }
 
         foreach ($gseqList as $gseq) {
-            if (isset($_SESSION['relevanceStatus'])) {
-                $relStatus = (isset($_SESSION['relevanceStatus']['G' . $gseq]) ? $_SESSION['relevanceStatus']['G' . $gseq] : 1);
+            if (isset($_SESSION[$LEM->sessid]['relevanceStatus'])) {
+                $relStatus = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);
             } else {
                 $relStatus = 1;
             }
