@@ -8,9 +8,7 @@ const SurveyDatabaseAlertContent = ({ isSuperAdmin = false }) => {
 
   return (
     <div className="survey-database-alert-content">
-      <p>
-        {t('A problem has been detected with the survey database.')}
-      </p>
+      <p>{t('A problem has been detected with the survey database.')}</p>
 
       {isSuperAdmin ? (
         <>

@@ -12,7 +12,6 @@ import {
   PAGES,
 } from 'helpers'
 import { getSurveyPauseToastOptions } from 'components'
-import SurveyDatabaseAlert from 'components/SurveyDatabaseAlert/SurveyDatabaseAlert'
 import ThemeOptionsPreview from 'components/ThemeOptions/ThemeOptionsPreview'
 
 import Layout from './Layout'

@@ -39,11 +39,13 @@ import {
   SURVEY_STATUS_SWITCH_TYPES,
   SurveyOverview,
 } from 'components'
+import { useSurveyRequestTimestamp } from 'hooks/useSurveyRequestTimestamp'
 
 const SurveyActivationHandler = forwardRef(
   ({ showOverViewModal, setShowOverViewModal }, ref) => {
     const { surveyId: surveyIdParam } = useParams()
-    const { survey = {}, update } = useSurvey(surveyIdParam)
+    const { clearSurveyRequestTimestamp } = useSurveyRequestTimestamp()
+    const { survey = {}, update, fetchSurvey } = useSurvey(surveyIdParam)
     const { surveyArchives, fetchSurveyArchives } =
       useSurveyArchive(surveyIdParam)
     const { setFocused } = useFocused()
@@ -229,6 +231,10 @@ const SurveyActivationHandler = forwardRef(
       const isLastSwitchAPauseOperation =
         switchType === SURVEY_STATUS_SWITCH_TYPES.PAUSE
 
+      if (isSurveyActiveAfterOperation && !isLastSwitchAPauseOperation) {
+        clearSurveyRequestTimestamp(survey.sid)
+        await fetchSurvey(survey.sid)
+      }
       if (isLastSwitchAPauseOperation) {
         const PauseToastOptions = getSurveyPauseToastOptions(
           survey.sid,
@@ -239,6 +245,7 @@ const SurveyActivationHandler = forwardRef(
       }
 
       if (isSurveyActiveAfterOperation) {
+        await fetchSurvey(survey.sid)
         setShowOverViewModal(true)
       } else {
         const deactivationToastOptions = getSurveyDeactivationToastOptions()

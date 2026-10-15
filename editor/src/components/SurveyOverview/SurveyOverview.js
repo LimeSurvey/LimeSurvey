@@ -106,7 +106,9 @@ export const SurveyOverview = ({
           <div className="overview-section overview-main-section w-75">
             {survey.active && survey.hasResponsesTable === false && (
               <div className="alert alert-danger" role="alert">
-                <SurveyDatabaseAlertContent isSuperAdmin={survey.isSuperAdmin} />
+                <SurveyDatabaseAlertContent
+                  isSuperAdmin={survey.isSuperAdmin}
+                />
               </div>
             )}
             {toastMessage && (
