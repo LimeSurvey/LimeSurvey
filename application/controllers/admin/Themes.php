@@ -697,7 +697,7 @@ JAVASCRIPT
                 Yii::import('application.helpers.SurveyThemeHelper');
                 if (SurveyThemeHelper::isStandardTemplate($sNewName)) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
-                } elseif (file_exists($sNewDirectoryPath)) {
+                } elseif (file_exists($sNewDirectoryPath) || Template::findNameConflict($sNewName, $sOldName) !== null) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
                 } elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
@@ -739,7 +739,7 @@ JAVASCRIPT
             Template::validateTemplateName($newname);
 
             Yii::import('application.helpers.SurveyThemeHelper');
-            if (SurveyThemeHelper::isStandardTemplate($newname)) {
+            if (SurveyThemeHelper::isStandardTemplate($newname) || Template::findNameConflict($newname) !== null) {
                 Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname), 'error');
                 $this->getController()->redirect(array("themeOptions/index"));
             }
@@ -1413,7 +1413,7 @@ JAVASCRIPT
             $this->getController()->redirect(array($redirectUrl));
         }
 
-        if (is_dir($destdir)) {
+        if (is_dir($destdir) || ($themeType == 'survey' && Template::findNameConflict($sNewDirectoryName) !== null)) {
             Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
             $this->getController()->redirect(array($redirectUrl));
         }
