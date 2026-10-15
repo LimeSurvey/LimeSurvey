@@ -1258,6 +1258,7 @@ function getStatisticsFieldNames($iSurveyID, $aFilters, $sLanguage)
             case Question::QT_T_LONG_FREE_TEXT: // Long free text
             case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
             case Question::QT_S_SHORT_FREE_TEXT: // Short free text
+            case Question::QT_J_MAP: // Map
                 $myfield = "T$myfield";
                 $allfields[] = $myfield;
                 break;
@@ -1466,6 +1467,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                 case \Question::QT_G_GENDER:
                 case \Question::QT_I_LANGUAGE:
                 case \Question::QT_S_SHORT_FREE_TEXT:
+                case \Question::QT_J_MAP:
                 case \Question::QT_T_LONG_FREE_TEXT:
                 case \Question::QT_U_HUGE_FREE_TEXT:
                 case \Question::QT_X_TEXT_DISPLAY:

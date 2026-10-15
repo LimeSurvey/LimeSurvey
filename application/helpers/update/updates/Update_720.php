@@ -2,50 +2,68 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use CException;
+use LsDefaultDataSets;
 
 class Update_720 extends DatabaseUpdateBase
 {
     /**
-     * Adds the encryption_method column to surveys and surveys_groupsettings tables.
-     * Sets the global default (gsid=0) to 'B' (Basic encryption method).
-     *
-     * @inheritDoc
-     * @throws CException
+     * Register the standalone Map question type and migrate map-enabled Short Text questions onto it.
      */
     #[\Override]
     public function up()
     {
-        /* Create or alter encryption_method column, handling cases where dev git users may already have it */
-        $surveysTable = $this->db->schema->getTable('{{surveys}}', true);
-        if (!isset($surveysTable->columns['encryption_method'])) {
-            addColumn('{{surveys}}', 'encryption_method', "string(1) DEFAULT 'I'");
-        } else {
-            alterColumn('{{surveys}}', 'encryption_method', "string(1) DEFAULT 'I'");
+        $existing = $this->db->createCommand()
+            ->select('id')
+            ->from('{{question_themes}}')
+            ->where('name = :name AND question_type = :type', [':name' => 'map', ':type' => 'J'])
+            ->queryScalar();
+
+        if (empty($existing)) {
+            $mapTheme = null;
+            foreach (LsDefaultDataSets::getBaseQuestionThemeEntries() as $themeEntry) {
+                if ($themeEntry['name'] === 'map') {
+                    $mapTheme = $themeEntry;
+                    break;
+                }
+            }
+            if ($mapTheme !== null) {
+                $this->db->createCommand()->insert('{{question_themes}}', $mapTheme);
+            }
         }
 
-        $groupSettingsTable = $this->db->schema->getTable('{{surveys_groupsettings}}', true);
-        if (!isset($groupSettingsTable->columns['encryption_method'])) {
-            addColumn('{{surveys_groupsettings}}', 'encryption_method', "string(1) DEFAULT 'I'");
-        } else {
-            alterColumn('{{surveys_groupsettings}}', 'encryption_method', "string(1) DEFAULT 'I'");
-        }
-        /* Set global one to B (basic) if it's not hardened (only if I), didn't update any response table */
-        $this->db->createCommand()->update("{{surveys_groupsettings}}", ["encryption_method" => "B"], "gsid = 0 AND (encryption_method IS NULL OR encryption_method <> 'H')");
+        $this->db->createCommand()->update(
+            '{{question_themes}}',
+            ['group' => 'Mask questions', 'xml_path' => 'application/views/survey/questions/answer/map'],
+            'name = :name AND question_type = :type',
+            [':name' => 'map', ':type' => 'J']
+        );
 
-        /* Create the duplicatefinder in participants for checking duplicate */
-        $participantsTable = $this->db->schema->getTable('{{participants}}', true);
-        if (!isset($participantsTable->columns['duplicatefinder'])) {
-            addColumn('{{participants}}', 'duplicatefinder', "string(64) NOT NULL DEFAULT ''");
-        } else {
-            alterColumn('{{participants}}', 'duplicatefinder', "string(64) NOT NULL DEFAULT ''");
+        $mapQuestionIds = $this->db->createCommand()
+            ->select('q.qid')
+            ->from('{{questions}} q')
+            ->join('{{question_attributes}} qa', 'qa.qid = q.qid')
+            ->where("q.parent_qid = 0")
+            ->andWhere("q.type = :type", [':type' => 'S'])
+            // Questions on a custom Short Text theme stay untouched to keep their theme views and settings.
+            ->andWhere("q.question_theme_name IS NULL OR q.question_theme_name IN ('', 'core', 'shortfreetext', 'browserdetect')")
+            ->andWhere("qa.attribute = :attribute", [':attribute' => 'location_mapservice'])
+            ->andWhere("qa.value IN ('1', '100')")
+            // Short Text rendered a textarea, not a map, when display_rows was set.
+            ->andWhere("NOT EXISTS (SELECT 1 FROM {{question_attributes}} dr WHERE dr.qid = q.qid AND dr.attribute = 'display_rows' AND dr.value <> '')")
+            ->group('q.qid')
+            ->queryColumn();
+
+        if (empty($mapQuestionIds)) {
+            return;
         }
-        /* Add the index , do not break if it already exist */
-        try {
-            setTransactionBookmark();
-            $this->db->createCommand()->createIndex('{{participants_duplicatefinder}}', '{{participants}}', ['duplicatefinder'], false);
-        } catch (\Exception $e) {
-            rollBackToTransactionBookmark();
-        }
+
+        $this->db->createCommand()->update(
+            '{{questions}}',
+            [
+                'type' => 'J',
+                'question_theme_name' => 'map',
+            ],
+            ['in', 'qid', array_map('intval', $mapQuestionIds)]
+        );
     }
 }

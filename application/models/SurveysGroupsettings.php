@@ -502,7 +502,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 && !($attribute === 'showregisterpolicy' && $dbversion < 649)
                 && !($attribute === 'showtokenpolicy' && $dbversion < 649)
                 && !($attribute === 'preselectnoanswer' && $dbversion < 712)
-                && !($attribute === 'encryption_method' && $dbversion < 720)
+                && !($attribute === 'encryption_method' && $dbversion < 721)
             ) {
                 $this->$attribute = 'I';
             }

@@ -1,3 +1,7 @@
+/**
+ * Returns the type code, theme and title of the supported question types.
+ * @returns {Object<string, {type: string, theme: string, title: string}>}
+ */
 export const getQuestionTypeInfo = () => {
   return {
     ARRAY: {
@@ -28,7 +32,7 @@ export const getQuestionTypeInfo = () => {
     BROWSER_DETECTION: {
       type: 'S',
       theme: 'browserdetect',
-      title: t('Map/browser detection'),
+      title: t('Browser detection'),
     },
     DATE_TIME: {
       type: 'D',
@@ -52,6 +56,11 @@ export const getQuestionTypeInfo = () => {
       type: 'T',
       theme: 'longfreetext',
       title: t('Long text'),
+    },
+    MAP: {
+      type: 'J',
+      theme: 'map',
+      title: t('Map'),
     },
     MULTIPLE_CHOICE: {
       type: 'M',
