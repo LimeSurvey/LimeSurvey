@@ -2594,14 +2594,15 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Retuen duplicate record 
-    /**
-     * Checks Permissions for given $aActions and returns them as array
+     * Filter the participant mass actions by the permissions of the current user.
+     * Actions without permission are removed; 'add-to-survey' is always kept.
+     * A separator is only kept if it directly follows the kept 'delete' action.
      *
-     * @param array $aActions
-     * @param array $permissions
+     * @param array[] $aActions Action definitions, each with an 'action' key or a 'type' key (e.g. 'separator')
+     * @param array $permissions Permission flags, keyed by 'participantpanel' (isOwner, delete, update, export,
+     *                           editSharedParticipants, sharedParticipantExists) and 'superadmin' (read)
      *
-     * @return array
+     * @return array[] The allowed action definitions, in their original order
      */
     public function permissionCheckedActionsArray(array $aActions, array $permissions): array
     {
