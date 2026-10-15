@@ -92,3 +92,21 @@
     all: unset;
   }
 }
+
+.survey-database-alert {
+  padding: 8px 16px;
+
+  > svg {
+    flex-shrink: 0;
+  }
+}
+
+.survey-database-toast {
+  min-width: 0;
+  max-width: 600px;
+  margin-top: $top-bar-height;
+
+  > div:first-child {
+    flex-shrink: 0;
+  }
+}

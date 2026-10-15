@@ -1,6 +1,5 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import SurveyDatabaseAlert from 'components/SurveyDatabaseAlert/SurveyDatabaseAlert'
 
 import { STATES } from 'helpers'
 import {
@@ -93,12 +92,7 @@ const Layout = () => {
     <>
       <LeftSideBar surveyId={surveyId} />
       <div className="main-body position-relative right-side-margin">
-        <div className="survey-part">
-          {survey.active && survey.hasResponsesTable === false && (
-            <SurveyDatabaseAlert isSuperAdmin={survey.isSuperAdmin} />
-          )}
-          {renderMainContent()}
-        </div>
+        <div className="survey-part">{renderMainContent()}</div>
         {(!panel || panel === getSurveyPanels().structure.panel) && (
           <div className="inner-wrap" ref={ref} />
         )}

@@ -3175,17 +3175,17 @@ class SurveyAdministrationController extends LSBaseController
 
         /** Send a alert if Survey seems to be active but don't have response table */
         if ($oSurvey->isActive && !$oSurvey->hasResponsesTable) {
-            $alertstring = "<p>" . gT("A problem has been detected with the survey database.") . "</p>";
+            $alertstring = "<p class='mb-1'>" . gT("A problem has been detected with the survey database.") . "</p>";
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $alertstring .= "<p>" . sprintf(
+                $alertstring .= "<p class='mb-0'>" . sprintf(
                     gT("You can resolve this issue by %sperforming a data integrity check%s or by deactivating and reactivating your survey to reset the response database."),
                     '<a href="' . CHtml::encode(App()->createUrl("admin/checkintegrity")) . '">',
                     '</a>'
                 ) . "</p>";
             } else {
-                $alertstring .= "<p>" . gT("Please contact an administrator to perform a database integrity check or deactivate and reactivate your survey to reset the response database.") . "</p>";
+                $alertstring .= "<p class='mb-0'>" . gT("Please contact an administrator to perform a database integrity check or deactivate and reactivate your survey to reset the response database.") . "</p>";
             }
-            App()->setFlashMessage($alertstring, 'danger');
+            App()->setFlashMessage($alertstring, 'warning');
         }
 
         $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);

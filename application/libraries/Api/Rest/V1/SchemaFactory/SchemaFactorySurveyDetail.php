@@ -49,8 +49,6 @@ class SchemaFactorySurveyDetail
                     ->format(Schema::FORMAT_DATE_TIME),
                 Schema::boolean('hasResponsesTable')
                     ->default(false),
-                Schema::boolean('isSuperAdmin')
-                    ->default(false)
             )
         );
 
