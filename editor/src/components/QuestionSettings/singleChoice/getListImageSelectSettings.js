@@ -43,6 +43,11 @@ const displaySettings = () => {
     displayAttributes.HIDE_TIP,
     displayAttributes.ALWAYS_HIDE_THIS_QUESTION,
     displayAttributes.CSS_CLASSES,
+    displayAttributes.FIX_WIDTH,
+    displayAttributes.FIX_HEIGHT,
+    displayAttributes.CROP_OR_RESIZE,
+    displayAttributes.KEEP_ASPECT_RATIO,
+    displayAttributes.HORIZONTAL_SCROLL,
   ]
 }
 
