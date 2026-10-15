@@ -2956,7 +2956,14 @@ class SurveyAdministrationController extends LSBaseController
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
         $beforeSurveySettings->set('survey', $survey->sid);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
-        $aData['pluginSettings'] = $beforeSurveySettings->get('surveysettings');
+        $pluginSettings = $beforeSurveySettings->get('surveysettings');
+        if (is_array($pluginSettings)) {
+            // Sort the plugin panels by their displayed name, keeping the plugin IDs as keys
+            uasort($pluginSettings, function ($a, $b) {
+                return strnatcasecmp((string) ($a['name'] ?? ''), (string) ($b['name'] ?? ''));
+            });
+        }
+        $aData['pluginSettings'] = $pluginSettings;
         return $aData;
     }
 
