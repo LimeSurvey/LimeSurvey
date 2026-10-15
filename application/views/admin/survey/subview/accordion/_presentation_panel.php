@@ -91,6 +91,72 @@ App()->getClientScript()->registerScript(
     ",
     LSYii_ClientScript::POS_READY
 );
+
+// The question index always allows jumping back to previous groups, so "Allow backward navigation" has no effect while it is enabled
+$iEffectiveQuestionIndex = (int) (isset($oSurvey->oOptions->questionindex)
+    ? $oSurvey->oOptions->questionindex
+    : $oSurvey->questionindex);
+$bDisableAllowPrev = $iEffectiveQuestionIndex > 0;
+$mInheritedQuestionIndex = $oSurvey->questionindex == -1
+    ? $iEffectiveQuestionIndex
+    : null;
+$sAllowPrevDisabledMessage = gT('Participants can always go back while the question index is enabled.');
+
+App()->getClientScript()->registerScript(
+    'toggle-allow-prev',
+    "
+    (function () {
+        var inheritedQuestionIndex = " . CJavaScript::encode($mInheritedQuestionIndex) . ";
+        var questionIndexInputs = document.querySelectorAll('input[name=\"questionindex\"]');
+        var allowPrevInputs = document.querySelectorAll('#allowprev input[name=\"allowprev\"]');
+        var preservedValue = document.getElementById('allowprev-disabled-value');
+        var allowPrevGroup = document.getElementById('allowprev');
+        var disabledMessage = " . CJavaScript::encode($sAllowPrevDisabledMessage) . ";
+
+        function updateAllowPrevState() {
+            var selectedQuestionIndex = document.querySelector('input[name=\"questionindex\"]:checked');
+            var questionIndex = 0;
+            if (selectedQuestionIndex) {
+                questionIndex = selectedQuestionIndex.value === '-1'
+                    ? Number(inheritedQuestionIndex)
+                    : Number(selectedQuestionIndex.value);
+            }
+            var disableAllowPrev = questionIndex > 0;
+            var selectedAllowPrev = document.querySelector('#allowprev input[name=\"allowprev\"]:checked');
+
+            allowPrevInputs.forEach(function (input) {
+                input.disabled = disableAllowPrev;
+            });
+
+            if (preservedValue) {
+                preservedValue.disabled = !disableAllowPrev;
+                if (selectedAllowPrev) {
+                    preservedValue.value = selectedAllowPrev.value;
+                }
+            }
+
+            if (allowPrevGroup) {
+                allowPrevGroup.setAttribute('aria-disabled', String(disableAllowPrev));
+                // Once the Bootstrap tooltip is initialized it reads its text from data-bs-original-title, not title
+                var tooltip = window.bootstrap && bootstrap.Tooltip.getInstance(allowPrevGroup);
+                if (tooltip) {
+                    tooltip.hide();
+                }
+                allowPrevGroup.setAttribute(
+                    tooltip ? 'data-bs-original-title' : 'title',
+                    disableAllowPrev ? disabledMessage : ''
+                );
+            }
+        }
+
+        questionIndexInputs.forEach(function (input) {
+            input.addEventListener('change', updateAllowPrevState);
+        });
+        updateAllowPrevState();
+    }());
+    ",
+    LSYii_ClientScript::POS_READY
+);
 ?>
 
 <!-- Presentation panel -->
@@ -355,10 +421,22 @@ App()->getClientScript()->registerScript(
                             'name' => 'allowprev',
                             'checkedOption' => $oSurvey->allowprev,
                             'ariaLabel' => gT('Allow backward navigation'),
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->allowprev . " ᴵ")) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->allowprev . " ᴵ")) : $optionsOnOff,
+                            'htmlOptions' => array(
+                                'disabled' => $bDisableAllowPrev,
+                                'title' => $bDisableAllowPrev ? $sAllowPrevDisabledMessage : '',
+                            )
                         )
                     );
                                                             ?>
+                    <?= CHtml::hiddenField(
+                        'allowprev',
+                        $oSurvey->allowprev,
+                        array(
+                            'id' => 'allowprev-disabled-value',
+                            'disabled' => !$bDisableAllowPrev,
+                        )
+                    ) ?>
                 </div>
             </div>
             <!-- Participants may print answers -->
