@@ -83,9 +83,6 @@ export const Editor = () => {
   return (
     <>
       <PluginSlot slotName={PLUGIN_SLOTS.EDITOR_TOP} />
-      {survey.active && survey.hasResponsesTable === false && (
-        <SurveyDatabaseAlert isSuperAdmin={survey.isSuperAdmin} />
-      )}
       <div id="editor" key={activeLanguage}>
         <EditorTutorial survey={survey} isSurveyActive={survey.active} />
         {isLoadingSurvey || isLoadingTranslations ? (

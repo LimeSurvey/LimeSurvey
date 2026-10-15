@@ -8,12 +8,10 @@ const SurveyDatabaseAlert = ({ isSuperAdmin }) => {
   const { t } = useTranslation()
 
   return (
-    <div className="already-paused-alert yellow-left-mark" role="alert">
-      <div className="already-paused-alert-icon">
-        <ExclamationIcon />
-      </div>
+    <div className="generic-toast error-left-mark" role="alert">
+       <ExclamationIcon />
 
-      <p className="label-m already-paused-alert-label">
+      <p className="label-m database-error-label">
         {isSuperAdmin
           ? parse(
               format(
