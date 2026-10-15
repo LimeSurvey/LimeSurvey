@@ -278,54 +278,56 @@ class CLSGridView extends TbGridView
 
     private function registerGridviewScripts()
     {
-        $extensionsUrl = App()->getConfig("extensionsurl") . 'admin/grid/assets/';
+        $assetsPath = dirname(__FILE__) . '/assets/';
 
         // Grid selection // Cross-page checkbox selection persistence (generic, works for every CLSGridView)
         App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'gridSelection.js',
+            App()->getAssetManager()->publish($assetsPath . 'gridSelection.js'),
             CClientScript::POS_BEGIN
         );
 
         // Scrollbar
         App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'gridScrollbar.js',
+            App()->getAssetManager()->publish($assetsPath . 'gridScrollbar.js'),
             CClientScript::POS_BEGIN
         );
         // Accessibility: restore focus to sort column after AJAX grid update
         App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'restoreFocusAfterSort.js',
+            App()->getAssetManager()->publish($assetsPath . 'restoreFocusAfterSort.js'),
             CClientScript::POS_BEGIN
         );
         // Row link: make entire table rows clickable via data-rowlink attribute
         App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'rowLink.js',
+            App()->getAssetManager()->publish($assetsPath . 'rowLink.js'),
             CClientScript::POS_END
         );
         // Page size selector
         App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'changePageSize.js',
+            App()->getAssetManager()->publish($assetsPath . 'changePageSize.js'),
             CClientScript::POS_END
         );
         // Accessibility: aria-label for "Select all" checkboxes
         App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'ariaSelectAll.js',
+            App()->getAssetManager()->publish($assetsPath . 'ariaSelectAll.js'),
             CClientScript::POS_END
         );
         // Accessibility: keyboard navigation and focus management for sort links
         App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'sortAccessibility.js',
+            App()->getAssetManager()->publish($assetsPath . 'sortAccessibility.js'),
             CClientScript::POS_END
         );
         // Standard afterAjaxUpdate handler (actionDropdown, rowlink, columnFilter, restoreFocus)
         App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'afterAjaxUpdate.js',
+            App()->getAssetManager()->publish($assetsPath . 'afterAjaxUpdate.js'),
             CClientScript::POS_END
         );
     }
 
     /**
-     * Registers necessary client scripts.
-     * customization for CLSGridview
+     * Registers the client scripts needed by the grid: yiiGridView initialisation
+     * and the screen reader announcement of an empty result.
+     *
+     * @return void
      * @throws CException
      */
     public function registerClientScript()
@@ -387,9 +389,17 @@ class CLSGridView extends TbGridView
             "jQuery('#$id').yiiGridView($options);",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
+        // Under PJAX this inline script runs before afterAjaxUpdate.js is loaded, so defer until it is available
         $cs->registerScript(
             __CLASS__ . '-emptyAnnounce#' . $id,
-            'jQuery(function(){ LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . '); });',
+            'jQuery(function(){
+                var announceEmpty = function() { LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . '); };
+                if (window.LS && LS.gridView && LS.gridView.announceEmptyMessage) {
+                    announceEmpty();
+                } else {
+                    jQuery(document).one("pjax:scriptcomplete", announceEmpty);
+                }
+            });',
             LSYii_ClientScript::POS_READY
         );
     }

@@ -168,6 +168,18 @@ var UserManagement = function () {
         });
     };
 
+    /**
+     * Show the permissions the user already has in another way (e.g. by a global permission)
+     * as indeterminate when they are not set here
+     *
+     * @param {jQuery} checkboxes
+     */
+    var updateIndeterminatePermissions = function (checkboxes) {
+        checkboxes.filter('[data-indeterminate=1]').each(function () {
+            this.indeterminate = !this.checked;
+        });
+    };
+
     var wirePermissions = function (root) {
         // Multiple modals on the User Management page (single-user edit and the
         // massive-action batch edit) reuse the same ids, so everything must be
@@ -175,6 +187,11 @@ var UserManagement = function () {
         // one of the duplicate-id elements happens to be first/visible in the DOM.
         var rootObject = root ? $(root) : $('#UserManagement-action-modal');
         var tableObject = rootObject.find('#UserManagement--userpermissions-table');
+
+        updateIndeterminatePermissions(tableObject.find('input:checkbox'));
+        tableObject.on('change', 'input:checkbox[data-indeterminate=1]', function () {
+            updateIndeterminatePermissions($(this));
+        });
 
         var updateRowGeneralState = function (row) {
             var specificInputs = row.find('.specific-settings-block input:checkbox');
@@ -208,7 +225,7 @@ var UserManagement = function () {
         tableObject.on('click', '.general-row-selector', function () {
             var bChecked = this.checked;
             $(this).prop('indeterminate', false).removeClass('incomplete-selection');
-            $(this).closest('tr').find('input').prop('checked', bChecked);
+            updateIndeterminatePermissions($(this).closest('tr').find('input').prop('checked', bChecked));
             updateSelectAllState();
         });
 

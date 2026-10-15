@@ -37,6 +37,7 @@ class InstallFromConfigCommand extends CConsoleCommand
      * @param array $args
      * @return int
      */
+    #[\Override]
     public function run($args)
     {
 

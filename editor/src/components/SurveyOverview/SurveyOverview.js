@@ -6,8 +6,8 @@ import { ContentEditor, PublicSurveyAlias } from 'components'
 import { ACCESS_MODES, PAGES, SURVEY_MENU_TITLES } from 'helpers'
 import { useStatisticsAtGlance } from 'hooks'
 import { getSharingPanels } from 'shared/getSharingPanels'
+import { BrandedQRCode } from 'shared/BrandedQRCode'
 import { CheckIcon, EyeIcon, StopIcon } from 'components/icons'
-import { BrandedQRCode } from 'components/BrandedQRCode/BrandedQRCode'
 
 import rightArrowIcon from 'assets/icons/right-arrow.svg'
 import pencilIconWhite from 'assets/icons/pencil-icon-white.svg'
@@ -56,6 +56,11 @@ export const SurveyOverview = ({
     navigate(
       `/${PAGES.SHARE}/${survey.sid}/${getSharingPanels().sharing.panel}/${SURVEY_MENU_TITLES.sharingOverview}`
     )
+  }
+
+  const handleShowingResultsPanel = () => {
+    setShowOverViewModal(false)
+    navigate(`/responses/${survey.sid}`)
   }
 
   useLayoutEffect(() => {
@@ -176,7 +181,7 @@ export const SurveyOverview = ({
               </div>
             </div>
             <div
-              onClick={() => navigate(`/responses/${survey.sid}`)}
+              onClick={handleShowingResultsPanel}
               className="text-primary text-start arrow-link med14-c cursor-pointer"
             >
               {t('View results overview')} <img src={rightArrowIcon} />

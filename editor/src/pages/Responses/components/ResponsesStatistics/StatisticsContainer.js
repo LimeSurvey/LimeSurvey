@@ -32,6 +32,7 @@ const StatisticsChartCard = memo(function StatisticsChartCard({
   const data = useMemo(() => getDataWithPercentages(item), [item])
   const question = useMemo(
     () => ({
+      qid: item?.meta?.question?.qid,
       type: item?.meta?.question?.type,
       typeLabel: item?.meta?.question?.typeLabel,
       themeName: item?.meta?.question?.themeName,
@@ -40,6 +41,7 @@ const StatisticsChartCard = memo(function StatisticsChartCard({
       help: item?.meta?.question?.help,
       fields: item?.meta?.question?.fields,
       scaleHeaders: item?.meta?.question?.scaleHeaders,
+      chartType: item?.meta?.question?.chartType,
       index: index,
     }),
     [item, index]

@@ -19,6 +19,7 @@ class ResetPasswordCommand extends CConsoleCommand
     /**
      * @return int
      */
+    #[\Override]
     public function run($args)
     {
         if (isset($args) && isset($args[0]) && isset($args[1])) {

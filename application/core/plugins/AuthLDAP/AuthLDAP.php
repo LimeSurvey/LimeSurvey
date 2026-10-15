@@ -33,7 +33,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             'type' => 'select',
             'label' => 'LDAP version',
             'options' => array('2' => 'LDAPv2', '3'  => 'LDAPv3'),
-            'default' => '2',
+            'default' => '3',
+            'help' => 'LDAPv2 is obsolete and does not reliably support passwords with non-ASCII characters (e.g. §, ä, é) - use LDAPv3 unless your server does not support it.',
             'submitonchange' => true
         ),
         'ldapoptreferrals' => array(
@@ -82,7 +83,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         ),
         'bindpwd' => array(
             'type' => 'password',
-            'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previoulsy set.'
+            'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previously set.'
         ),
         'mailattribute' => array(
             'type' => 'string',
@@ -217,6 +218,13 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
      */
     private function ldapCreateNewUser($oEvent, $username, $password = null)
     {
+        // LDAP user names are case-insensitive: Don't create a second user differing only by case
+        if ($this->getUserByNameCaseInsensitive($username) !== null) {
+            $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
+            $oEvent->set('errorMessageTitle', gT("Failed to add user"));
+            $oEvent->set('errorMessageBody', gT("A user with this username already exists."));
+            return null;
+        }
         // Get configuration settings:
         $ldapmode = $this->get('ldapmode');
         $searchuserattribute = $this->get('searchuserattribute');
@@ -258,7 +266,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             ldap_close($ldapconn); // all done? close connection
             return null;
         }
-        // Now prepare the search fitler
+        // Now prepare the search filter
         if ($extrauserfilter != "") {
             $usersearchfilter = "(&($searchuserattribute=$ldapEscapedUsername)$extrauserfilter)";
         } else {
@@ -360,8 +368,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // using LDAP version
         if (empty($ldapver)) {
-            // If the version hasn't been set, default = 2
-            $ldapver = 2;
+            // If the version hasn't been set, default = 3 (LDAPv2 does not use UTF-8 for passwords)
+            $ldapver = 3;
         }
 
         $connectionSuccessful = ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, $ldapver);
@@ -455,7 +463,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         $ldapmode = $this->get('ldapmode');
         $autoCreateFlag = false;
-        $user = $this->api->getUserByName($username);
+        $user = $this->getUserByNameCaseInsensitive($username);
         // No user found!
         if ($user === null) {
             // If ldap mode is searchandbind and autocreation is enabled we can continue
@@ -523,7 +531,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 ldap_close($ldapconn); // all done? close connection
                 return;
             }
-            // Now prepare the search fitler
+            // Now prepare the search filter
             if ($extrauserfilter != "") {
                 $usersearchfilter = "(&($searchuserattribute=$ldapEscapedUsername)$extrauserfilter)";
             } else {
@@ -604,5 +612,26 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         /* Set the username as found in LimeSurvey */
         $this->setUsername($user->users_name);
         $this->setAuthSuccess($user);
+    }
+
+    /**
+     * Find a LimeSurvey user by username ignoring case, like the LDAP server does
+     * An exact match is preferred, otherwise the oldest case-insensitive match is returned.
+     * Needed because username comparison is case-sensitive on PostgreSQL.
+     *
+     * @param string $username
+     * @return User|null
+     */
+    private function getUserByNameCaseInsensitive($username)
+    {
+        $user = $this->api->getUserByName($username);
+        if ($user !== null) {
+            return $user;
+        }
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('LOWER(users_name) = LOWER(:users_name)');
+        $criteria->params[':users_name'] = $username;
+        $criteria->order = 'uid ASC';
+        return User::model()->find($criteria);
     }
 }

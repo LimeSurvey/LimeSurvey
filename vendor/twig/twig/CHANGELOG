@@ -1,3 +1,24 @@
+# 3.30.0 (2026-09-25)
+
+ * Fix `split`, `random`, and `shuffle` merging a trailing newline into the last character of a string
+ * Speed up splitting a string into characters in `split`, `random`, and `shuffle`
+ * Speed up escaping by fetching the escaper runtime once per template
+ * Speed up adding extensions to an environment
+ * Fix the escaping safe analysis retaining every compiled template node for the lifetime of the environment
+ * Speed up loading a template that the environment has already loaded
+ * Speed up rendering by compiling a cheaper generator guard into templates
+ * Speed up compiling filter, function, and test calls
+ * Fix `IntlExtension` letting the pattern derived from a date formatter prototype override an explicit locale
+ * Fix `IntlExtension` not honoring the locale of a date formatter prototype configured with no date and time styles
+ * Speed up macro calls
+ * Fix `TemplateWrapper::unwrap()` failing when called without arguments, which is now deprecated
+ * Add `TemplateWrapper::getDefaultEscapeStrategy()` to know the escaping strategy a template was compiled with
+ * Report a clear error when `random`, `reverse`, `shuffle`, and `split` receive a string that is not valid UTF-8
+ * Fix the deprecation about omitting parentheses when calling a macro being reported twice for the same call
+ * Add the macro name to the deprecation about omitting parentheses when calling a macro
+ * Deprecate cloning a `Twig\Environment` instance
+ * Fix array access with a `Stringable` key on subclasses of `ArrayObject` and `ArrayIterator`
+
 # 3.29.0 (2026-09-18)
 
  * Fix the PHP warning and cryptic error when a block or a macro rendered on its own uses macros imported in the template body
@@ -5,7 +26,7 @@
  * Fix the sandbox resolving `use` trait templates before checking that the `use` tag is allowed
  * Fix `html_attr` dropping `style` declarations whose value is `0`, `0.0` or `'0'`
  * Fix the `default` filter fallback emitting an undefined variable warning when it uses the null-safe operator
- * Fix the `matches` operator silently treating PCRE execution errors as non-matches
+ * Fix the `matches` operator silently treating PCRE execution errors as non-matches; it now throws a `RuntimeError`
  * Fix `TemplateWrapper::streamBlock()`, `TemplateWrapper::hasBlock()`, and `TemplateWrapper::getBlockNames()` omitting environment globals
  * Fix exceptions from dynamic parent expressions escaping without template context
  * Add the `BlockChain` class to compose blocks from multiple templates without using template internals

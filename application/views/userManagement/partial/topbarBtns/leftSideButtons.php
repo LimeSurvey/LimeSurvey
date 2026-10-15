@@ -9,8 +9,8 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [
-            'name' => 'ls-question-tools-button',
-            'id' => 'ls-question-tools-button',
+            'name' => 'add-user-button',
+            'id' => 'add-user-button',
             'text' => gT('Add user'),
             'icon' => 'ri-user-add-line',
             'htmlOptions' => $userHtmlOptions,
@@ -23,8 +23,8 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
 
     <?php
     $this->widget('ext.ButtonWidget.ButtonWidget', [
-        'name' => 'ls-create-token-button',
-        'id' => 'ls-create-token-button',
+        'name' => 'import-users-button',
+        'id' => 'import-users-button',
         'text' => gT('Import'),
         'icon' => 'ri-download-2-fill',
         'isDropDown' => true,
@@ -42,8 +42,8 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
 
     <?php
     $this->widget('ext.ButtonWidget.ButtonWidget', [
-        'name' => 'ls-create-token-button',
-        'id' => 'ls-create-token-button',
+        'name' => 'export-users-button',
+        'id' => 'export-users-button',
         'text' => gT('Export'),
         'icon' => 'ri-upload-2-fill',
         'isDropDown' => true,

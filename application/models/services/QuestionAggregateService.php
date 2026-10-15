@@ -215,9 +215,14 @@ class QuestionAggregateService
     /**
      * Delete answer from a question.
      * All language entries for this answer will be deleted.
-     * @param $surveyId
-     * @param $answerId
+     * The answer must belong to the survey the permission is checked on.
+     *
+     * @param int $surveyId ID of the survey the answer belongs to
+     * @param int $answerId ID of the answer to delete
      * @return void
+     * @throws PermissionDeniedException
+     * @throws NotFoundException if the answer does not belong to the survey
+     * @throws PersistErrorException
      */
     public function deleteAnswer($surveyId, $answerId)
     {
@@ -225,7 +230,7 @@ class QuestionAggregateService
 
         $transaction = $this->yiiDb->beginTransaction();
         try {
-            $this->deleteService->deleteAnswer($answerId);
+            $this->deleteService->deleteAnswer($surveyId, $answerId);
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollback();

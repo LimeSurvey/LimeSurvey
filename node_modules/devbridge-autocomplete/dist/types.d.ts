@@ -12,7 +12,7 @@ export type ServiceUrl = string | ((this: HTMLElement, query: string) => string)
 export type Orientation = "auto" | "top" | "bottom";
 export type WidthOption = number | "auto" | "flex";
 export type LookupFilter = (suggestion: Suggestion, originalQuery: string, queryLowerCase: string) => boolean;
-export type TransformResult = (response: string | AutocompleteResponse, originalQuery: string) => AutocompleteResponse;
+export type TransformResult = (response: any, originalQuery: string) => AutocompleteResponse;
 export type FormatResult = (suggestion: Suggestion, currentValue: string, index?: number) => string;
 export type FormatGroup = (suggestion: Suggestion, category: string) => string;
 export type SearchStartCallback = (this: HTMLElement, params: Record<string, unknown>) => unknown;

@@ -18,7 +18,10 @@
 class UploaderController extends SurveyController
 {
     /**
-     * @param int $actionID
+     * Handles file upload question requests: file download, delete and upload (mode=upload),
+     * otherwise renders the upload modal content (a fragment for AJAX requests, a full page otherwise).
+     *
+     * @param string $actionID
      * @return void
      */
     public function run($actionID)
@@ -331,7 +334,7 @@ class UploaderController extends SurveyController
                                 "success"       => true,
                                 "file_index"    => $filecount,
                                 "size"          => $size,
-                                "name"          => rawurlencode(basename((string) $filename)),
+                                "name"          => $filename,
                                 "ext"           => $cleanExt,
                                 "filename"      => $randfilename,
                                 "msg"           =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
@@ -426,10 +429,6 @@ class UploaderController extends SurveyController
         App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
 
-        $header = getHeader($meta);
-
-        echo $header;
-
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
         $oQuestion = self::getQuestion($surveyid, $qid);
@@ -451,7 +450,8 @@ class UploaderController extends SurveyController
             'qid' => $qid,
             'minfiles' => $minfiles,
             'maxfiles' => $maxfiles,
-            'qidattributes' => $qidattributes
+            'qidattributes' => $qidattributes,
+            'preview' => Yii::app()->session['preview']
         ];
 
         $body = '<body class="uploader">';
@@ -473,7 +473,15 @@ class UploaderController extends SurveyController
                     . "});
             });
         </script>";
-        $container = $this->renderPartial('/survey/questions/answer/file_upload/modal-container', $aData, true);
+        /* Render with twig to allow survey themes and question themes to override the modal content */
+        QuestionTemplate::getNewInstance($oQuestion);
+        $container = App()->twigRenderer->renderQuestion('/survey/questions/answer/file_upload/modal-container', $aData);
+        if (App()->request->getIsAjaxRequest()) {
+            /* Loaded into the survey page modal, which already has all assets: no page header or external scripts */
+            echo "<script>\n" . $sNeededScriptVar . $sLangScriptVar . "\n</script>\n" . $container . $scripts;
+            return;
+        }
+        echo getHeader($meta);
         $body .= $container . $scripts;
         $body .= '</body>
         </html>';

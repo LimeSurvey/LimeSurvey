@@ -6,6 +6,7 @@ use Question;
 
 class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
 {
+    #[\Override]
     public function process()
     {
         return $this->buildChartDataByType();

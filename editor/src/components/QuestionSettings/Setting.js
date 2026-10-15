@@ -180,19 +180,27 @@ export const Setting = ({
           attribute.attributePath,
           attribute.languageBased
         )
-        const isDisabled =
-          ([
-            'questionThemeName',
-            'encrypted',
-            'attributes.save_as_default',
-            'defaultAttributeValuesActions',
-            'other',
-          ].includes(attribute.attributePath) ||
-            attribute.disableWhenActive) &&
-          isSurveyActive
-            ? true
-            : attribute.action &&
-              (isTempId(question.qid) || !hasSurveyUpdatePermission)
+
+        const ATTRIBUTES_DISABLED_WHEN_ACTIVE = [
+          'questionThemeName',
+          'encrypted',
+          'attributes.save_as_default',
+          'defaultAttributeValuesActions',
+          'other',
+        ]
+
+        const isDisabledWhenActive =
+          ATTRIBUTES_DISABLED_WHEN_ACTIVE.includes(attribute.attributePath) ||
+          attribute.disableWhenActive
+
+        const isDisabledByActiveSurvey = isDisabledWhenActive && isSurveyActive
+
+        const isActionAttribute = !!attribute.action
+        const isActionDisabled =
+          isActionAttribute &&
+          (isTempId(question.qid) || !hasSurveyUpdatePermission)
+
+        const isDisabled = isDisabledByActiveSurvey || isActionDisabled
 
         const options =
           typeof attribute.getOptions === 'function'

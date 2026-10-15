@@ -24,19 +24,24 @@ class L10nService
     }
 
     /**
-     * @todo document me
+     * Creates or updates the localized texts (question, help, script) of a question.
      *
-     * @param int $questionId
+     * All blocks are always stored for $questionId. A 'qid' key inside a block
+     * is ignored, so the target question cannot be switched through the data.
+     * The caller is responsible for verifying that $questionId belongs to a
+     * survey the current user is allowed to update.
+     *
+     * @param int $questionId ID of the question the texts belong to
      * @param array {
      *      ...<array-key, array{
-     *          qid: int,
+     *          ?qid: int,
      *          question: string,
      *          help: string,
      *          ?language: string,
      *          ?script: string
      *      }>
-     *  } $data
-     * @param boolean $createIfNotExists
+     *  } $data Localized texts, keyed by language code
+     * @param boolean $createIfNotExists Create a missing L10n record instead of throwing
      * @return void
      * @throws NotFoundException
      * @throws PersistErrorException
@@ -44,7 +49,6 @@ class L10nService
     public function save($questionId, $data, $createIfNotExists = true)
     {
         foreach ($data as $language => $l10nBlock) {
-            $questionId = $l10nBlock['qid'] ?? $questionId;
             $language = !empty($l10nBlock['language'])
                 ? $l10nBlock['language']
                 : $language;

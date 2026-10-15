@@ -12,6 +12,7 @@ class Update_650 extends DatabaseUpdateBase
      *
      * @throws CException If a database update operation fails.
      */
+    #[\Override]
     public function up()
     {
         // Only fetch sid and attributedescriptions to minimize DB load.

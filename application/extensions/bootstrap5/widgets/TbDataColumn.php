@@ -23,8 +23,49 @@ class TbDataColumn extends CDataColumn
     public $filterInputOptions;
 
     /**
+     * Renders the header cell.
+     * Adds the aria-sort attribute to the header cell of the currently sorted column,
+     * so assistive technologies can announce the sort state (WCAG 4.1.2).
+     *
+     * @return void
+     */
+    public function renderHeaderCell()
+    {
+        $ariaSort = $this->getAriaSortValue();
+        if ($ariaSort !== null) {
+            $this->headerHtmlOptions['aria-sort'] = $ariaSort;
+        } else {
+            unset($this->headerHtmlOptions['aria-sort']);
+        }
+        parent::renderHeaderCell();
+    }
+
+    /**
+     * Returns the aria-sort value for this column's header cell.
+     *
+     * @return string|null 'ascending' or 'descending' if the grid is currently sorted by this column, null otherwise
+     */
+    protected function getAriaSortValue()
+    {
+        if (!$this->grid->enableSorting || !$this->sortable || $this->name === null) {
+            return null;
+        }
+        $sort = $this->grid->dataProvider->getSort();
+        if ($sort === false || $sort->resolveAttribute($this->name) === false) {
+            return null;
+        }
+        $isDescending = $sort->getDirection($this->name);
+        if ($isDescending === null) {
+            return null;
+        }
+        return $isDescending ? 'descending' : 'ascending';
+    }
+
+    /**
      * Renders the header cell content.
      * This method will render a link that can trigger the sorting if the column is sortable.
+     *
+     * @return void
      */
     protected function renderHeaderCellContent()
     {
@@ -35,10 +76,10 @@ class TbDataColumn extends CDataColumn
             if ($sort->resolveAttribute($this->name) !== false) {
                 $isAscending = $sort->getDirection($this->name);
                 if ($isAscending) {
-                    $label .= '<i class="ri-sort-asc ms-2"></i>';
+                    $label .= '<i class="ri-sort-asc ms-2" aria-hidden="true"></i>';
                 }
                 if (!$isAscending) {
-                    $label .= '<i class="ri-sort-desc ms-2"></i>';
+                    $label .= '<i class="ri-sort-desc ms-2" aria-hidden="true"></i>';
                 }
             }
 

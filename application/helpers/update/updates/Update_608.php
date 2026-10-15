@@ -9,6 +9,7 @@ class Update_608 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         $surveyThemes = $this->db->createCommand()
