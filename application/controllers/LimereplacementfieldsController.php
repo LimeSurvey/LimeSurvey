@@ -49,6 +49,17 @@ class LimeReplacementFieldsController extends LSBaseController
         list($replacementFields, $isInsertAnswerEnabled) = $this->getReplacementFields($fieldtype, $surveyid);
 
         if ($isInsertAnswerEnabled === true) {
+            if ($qid) {
+                $oQuestion = Question::model()->findByPk($qid);
+                if ($oQuestion && (int) $oQuestion->sid === $surveyid) {
+                    if (!empty($oQuestion->parent_qid)) {
+                        $qid = (int) $oQuestion->parent_qid;
+                    }
+                    if (empty($gid)) {
+                        $gid = (int) $oQuestion->gid;
+                    }
+                }
+            }
             //2: Get all other questions that occur before this question that are pre-determined answer types
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
 
@@ -147,6 +158,14 @@ class LimeReplacementFieldsController extends LSBaseController
                 return true;
 
             case 'editanswer':
+                // Subquestion/answer option rows of an unsaved question have no parent qid (and maybe no gid)
+                if (empty($qid)) {
+                    if (empty($gid)) {
+                        return true;
+                    }
+                    return is_null($previousQuestion) || $previousQuestion['gid'] != $gid || $question['gid'] == $gid;
+                }
+                // no break
             case 'copyquestion':
             case 'editquestion':
             case 'translatequestion':

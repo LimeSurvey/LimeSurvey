@@ -73,12 +73,7 @@ abstract class QuestionBaseRenderer extends StaticModel
                 ]
             );
             $this->addScript('QuestionStoredScript-' . $this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
-            /* Reset needed replacement */
-            LimeExpressionManager::updateReplacementFields(array(
-                'QID' => null,
-                'GID' => null,
-                'SGQ' => null,
-            ));
+            // QID/GID/SGQ stay set: they are needed for subquestion/answer texts and reset by SurveyRuntimeHelper after retrieveAnswers()
         }
         $diContainer = \LimeSurvey\DI::getContainer();
         $this->questionOrderingService = $diContainer->get(
