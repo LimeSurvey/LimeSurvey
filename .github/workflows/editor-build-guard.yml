@@ -1,4 +1,4 @@
-# Fails PRs that commit editor build output; editor-build.yml rebuilds it after merge.
+# Fails PRs that commit editor build output
 name: QuestionEditor - Build guard
 
 on:
