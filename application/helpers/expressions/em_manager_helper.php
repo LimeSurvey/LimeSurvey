@@ -6235,6 +6235,25 @@ class LimeExpressionManager
 
 
     /**
+     * Removes leading and trailing whitespace from the result of an Equation question, the same way the
+     * JavaScript side does with $.trim(): Besides ASCII whitespace this also strips Unicode spaces like the
+     * non-breaking space (U+00A0) inserted by the HTML editor, and literal &nbsp; entities.
+     * Otherwise a result like "\u{00A0}2" is a number in JavaScript but a string in PHP, and relevance
+     * equations using it evaluate differently on the page and on submit.
+     *
+     * @param string $result The flattened equation result
+     *
+     * @return string The trimmed result
+     */
+    public static function trimEquationResult($result)
+    {
+        $whitespace = '(?:\s|\p{Z}|\x{FEFF}|&nbsp;)+';
+        $trimmed = preg_replace('/^' . $whitespace . '|' . $whitespace . '$/u', '', (string) $result);
+        // preg_replace returns null on invalid UTF-8: Fall back to the plain trim() of flattenText
+        return $trimmed ?? (string) $result;
+    }
+
+    /**
      * For the current set of questions (whether in survey, gtoup, or question-by-question mode), assesses the following:
      * (a) mandatory - if so, then all relevant subquestions must be answered (e.g. pay attention to array_filter and array_filter_exclude)
      * (b) always-hidden
@@ -7055,6 +7074,7 @@ class LimeExpressionManager
                     true // Static replace
                 )
             );
+            $result = self::trimEquationResult($result);
 
             if ($LEM->knownVars[$sgqa]['onlynum']) {
                 $result = (is_numeric($result) ? $result : "");
