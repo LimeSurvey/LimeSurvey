@@ -37,7 +37,7 @@ export const getSurveyDatabaseAlertMessage = (
   return (
     <div className="reg14">
       {parse(
-        `${t('A problem has been detected in the survey database. ')}${action}`
+        `${t('A problem has been detected in the survey database.')} ${action}`
       )}
     </div>
   )
