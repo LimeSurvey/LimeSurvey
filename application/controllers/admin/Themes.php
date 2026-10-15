@@ -792,17 +792,13 @@ JAVASCRIPT
 
             Yii::import('application.helpers.SurveyThemeHelper');
             if (Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
-                if (!Template::hasInheritance($templatename)) {
+                if ($templatename == Yii::app()->getConfig('defaulttheme')) {
+                    // Deleting the default theme would leave every survey without a usable theme
+                    Yii::app()->setFlashMessage(sprintf(gT("You can't delete theme '%s' because it is the default survey theme."), $templatename), 'error');
+                } elseif (!Template::hasInheritance($templatename)) {
                     if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
                         Template::model()->findByPk($templatename)->deleteAssetVersion();
                         $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
-
-                        // The default template could be the same as the one we're trying to remove
-                        $globalDefaultIsGettingDeleted = Yii::app()->getConfig('defaulttheme') == $templatename;
-
-                        if ($globalDefaultIsGettingDeleted) {
-                            SettingGlobal::setSetting('defaulttheme', Yii::app()->getConfig('defaulttheme'));
-                        }
 
                         foreach ($surveys as $s) {
                             $s->template = Yii::app()->getConfig('defaulttheme');
