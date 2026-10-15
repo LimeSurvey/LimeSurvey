@@ -252,7 +252,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                             <?php
                                             $dataAttributes = '';
                                             $lightboxSrc = '';
-                                            $inheritedValue = isset($sParentOption) ? $sParentOption : '';
+                                            $inheritedValue = $attribute['inheritedvaluelabel'] ?? $sParentOption;
                                             if ($attributeKey === 'backgroundimagefile' && !empty($backgroundfileInheritPreview)) {
                                                 $lightboxSrc = $backgroundfileInheritPreview;
                                             } elseif ($attributeKey === 'brandlogofile' && !empty($logofileInheritPreview)) {
@@ -263,7 +263,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                             }
                                             ?>
 
-                                            <option <?= $dataAttributes ?> value="inherit"><?= gT("Inherit") ?> [<?= gT("Inherited value:") ?> <?= $inheritedValue ?>]</option>
+                                            <option <?= $dataAttributes ?> value="inherit"><?= gT("Inherit") ?> [<?= gT("Inherited value:") ?> <?= CHtml::encode($inheritedValue) ?>]</option>
                                         <?php endif; ?>
                                         <?php // dropdown options from config.xml file ?>
                                         <?= $aOptionAttributes['optionAttributes'][$attributeKey]['dropdownoptions'] ?>

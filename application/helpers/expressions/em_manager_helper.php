@@ -7420,7 +7420,13 @@ class LimeExpressionManager
             return $sHiddenInputs;
         } elseif ($applyJavaScriptAnyway && !self::isInitialized()) {
             $LEM =& LimeExpressionManager::singleton();
+            /* Page shown again without processing it (e.g. reloaded): the page tailoring info is still needed for the validation tips of the last processed page, add the tailoring of the html generated now */
+            $pageTailorInfo = $LEM->pageTailorInfo;
+            $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
             $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
+            /* Keep the numbering to get unique ids, but don't add the tailoring of this request again on the next reload */
+            $LEM->pageTailorInfo = $pageTailorInfo;
+            $LEM->em->ClearSubstitutionInfo(false);
             $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
             Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN, ['id' => 'lemscripts']);
 
