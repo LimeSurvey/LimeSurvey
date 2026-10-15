@@ -224,7 +224,11 @@ class LSSodium
             ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_MACBYTES
         );
         $minLengthChars = $minLengthBytes * 2; // each byte is represented by 2 hexadecimal characters (80 characters for 40 bytes)
-        if (!ctype_xdigit($sEncryptedString) || strlen($sEncryptedString) < $minLengthChars) {
+        if (
+            !ctype_xdigit($sEncryptedString)
+            || strlen($sEncryptedString) < $minLengthChars
+            || strlen($sEncryptedString) % 2 !== 0
+        ) {
             // Avoid broke of ParagonIE_Sodium_Compat::hex2bin
             return false;
         }
