@@ -1,31 +1,12 @@
 import { ExclamationIcon } from 'components/icons'
-import { useTranslation } from 'react-i18next'
-import { getSiteUrl } from 'helpers'
-import parse from 'html-react-parser'
-import { format } from 'util'
+import SurveyDatabaseAlertContent from './SurveyDatabaseAlertContent'
 
 const SurveyDatabaseAlert = ({ isSuperAdmin }) => {
-  const { t } = useTranslation()
 
   return (
     <div className="generic-toast error-left-mark" role="alert">
-       <ExclamationIcon />
-
-      <p className="label-m database-error-label">
-        {isSuperAdmin
-          ? parse(
-              format(
-                t(
-                  'A problem has been detected with the survey database. Please %sperform data integrity%s.'
-                ),
-                `<a href="${getSiteUrl('/index.php/admin/checkintegrity')}">`,
-                '</a>'
-              )
-            )
-          : t(
-              'A problem has been detected with the survey database. Please contact an administrator to perform a database integrity check.'
-            )}
-      </p>
+      <ExclamationIcon />
+      <SurveyDatabaseAlertContent isSuperAdmin={isSuperAdmin} />
     </div>
   )
 }

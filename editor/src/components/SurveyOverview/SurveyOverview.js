@@ -14,6 +14,8 @@ import pencilIconWhite from 'assets/icons/pencil-icon-white.svg'
 
 import OverViewToast from './OverViewToast'
 
+import SurveyDatabaseAlertContent from 'components/SurveyDatabaseAlert/SurveyDatabaseAlertContent'
+
 export const SurveyOverview = ({
   survey = {},
   update,
@@ -44,10 +46,10 @@ export const SurveyOverview = ({
 
   useEffect(() => {
     // Refetch statistics every time the modal opens
-    if (survey?.sid) {
+    if (survey?.sid && survey?.hasResponsesTable === true) {
       refetch()
     }
-  }, [survey?.sid, refetch])
+  }, [survey?.sid, survey?.hasResponsesTable, refetch])
 
   const numberRefs = useRef([])
   const statsRef = useRef(null)
@@ -102,6 +104,11 @@ export const SurveyOverview = ({
       ) : (
         <>
           <div className="overview-section overview-main-section w-75">
+            {survey.active && survey.hasResponsesTable === false && (
+              <div className="alert alert-danger" role="alert">
+                <SurveyDatabaseAlertContent isSuperAdmin={survey.isSuperAdmin} />
+              </div>
+            )}
             {toastMessage && (
               <div className="row mb-4 px-3">
                 <OverViewToast message={toastMessage} />
