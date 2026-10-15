@@ -869,6 +869,82 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
     }
 
     /**
+     * Test deleting a user that owns a survey group and has participants shared with them.
+     */
+    public function testDeleteUserAndSurveyGroupsAndParticipantShares()
+    {
+        // Creating target user.
+        $targetUserName = \Yii::app()->securityManager->generateRandomString(8);
+
+        $targetUserData = array(
+            'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
+            'email'      => $targetUserName . '@example.com',
+        );
+
+        $targetUser = self::createUserWithPermissions($targetUserData);
+        $userId = $targetUser->uid;
+
+        // Creating survey group owned by the user.
+        $surveysGroup = new \SurveysGroups();
+        $surveysGroup->name = 'group_' . \Yii::app()->securityManager->generateRandomString(8);
+        $surveysGroup->title = 'User deletion test group';
+        $surveysGroup->sortorder = 1;
+        $surveysGroup->created_by = 1;
+        $surveysGroup->owner_id = $userId;
+        $this->assertTrue($surveysGroup->save(false), 'Unexpected. The survey group could not be saved.');
+        $groupId = $surveysGroup->gsid;
+
+        // Creating participant owned by the site admin and shared with the user.
+        $participantName = \Yii::app()->securityManager->generateRandomString(8);
+        $participant = \Participant::model()->insertParticipant(array(
+            'participant_id' => 'participant_' . $participantName,
+            'firstname' => $participantName,
+            'email' => $participantName . '@example.com',
+            'blacklisted' => 'N',
+            'owner_uid' => 1,
+            'created_by' => 1,
+        ));
+        $participantId = $participant->participant_id;
+        $participantShare = new \ParticipantShare();
+        $participantShare->setAttributes(array(
+            'participant_id' => $participantId,
+            'share_uid' => $userId,
+            'date_added' => date('Y-m-d H:i:s'),
+            'can_edit' => 0,
+        ));
+        $this->assertTrue($participantShare->save(), 'Unexpected. The participant share could not be saved.');
+        $this->assertNotNull(\ParticipantShare::model()->findByAttributes(['share_uid' => $userId]), 'Unexpected. A participant share should have been found.');
+
+        $existingUser = \User::model()->findByPk($userId);
+        $userManager = new userManager();
+        $operationResult = $userManager->deleteUser($existingUser);
+        $messages = $operationResult->getMessages();
+
+        // Checking that user no longer exists.
+        $this->assertTrue($operationResult->isSuccess(), 'The operation should have been successful.');
+        $this->assertNull(\User::model()->findByPk($userId), 'User should have been deleted.');
+
+        // Checking that the survey group still exists and now belongs to the site admin.
+        $existingGroupAfterDeletion = \SurveysGroups::model()->findByPk($groupId);
+        $this->assertThat($existingGroupAfterDeletion, $this->isInstanceOf('\SurveysGroups'), 'Unexpected. A survey group should have been found.');
+        $this->assertSame(1, (int) $existingGroupAfterDeletion->owner_id, 'The survey group should have been transferred to the site admin.');
+
+        // Checking that the participant share with the deleted user is gone, but the participant still exists.
+        $this->assertNull(\ParticipantShare::model()->findByAttributes(['share_uid' => $userId]), 'The participant share with the deleted user should have been removed.');
+        $this->assertNotNull(\Participant::model()->findByPk($participantId), 'The participant should still exist.');
+
+        // Checking messages.
+        $siteAdminName = \User::model()->findByPk(1)->users_name;
+        $this->assertCount(2, $messages, 'There should be two messages.');
+        $this->assertSame(sprintf(gT("All of the user's survey groups were transferred to %s."), $siteAdminName), $messages[0]->getMessage());
+
+        // Cleanup.
+        $existingGroupAfterDeletion->delete();
+        \Participant::model()->deleteAll('participant_id = :participant_id', [':participant_id' => $participantId]);
+    }
+
+    /**
      * Test deleting a user in a group.
      */
     public function testDeleteAUserInAGroup()

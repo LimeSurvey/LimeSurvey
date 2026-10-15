@@ -3,6 +3,7 @@
 namespace ls\tests;
 
 use LimeSurvey\PluginManager\PluginManager;
+use LimeSurvey\PluginManager\PluginManagerShutdownFunction;
 
 class PluginManagerTest extends TestBaseClass
 {
@@ -61,5 +62,70 @@ class PluginManagerTest extends TestBaseClass
         $this->assertSame(1, \AfterPluginLoadTestPlugin::$afterPluginLoadCount, 'Plugins were loaded more than once.');
         $this->assertSame($pluginManager, \AfterPluginLoadTestPlugin::$applicationPluginManager);
         $this->assertSame($pluginManager, \Yii::app()->getPluginManager());
+    }
+
+    /**
+     * A plugin that is not installed and fails to load when scanning the plugin folders
+     * must be listed with its error, but must not be saved to the database.
+     * Otherwise it stays marked as faulty after its files were fixed.
+     * @return void
+     */
+    public function testScanPluginsDoesNotSaveLoadErrorOfNotInstalledPlugin()
+    {
+        $pluginName = 'ScanLoadErrorTestPlugin';
+        $pluginDir = \Yii::getPathOfAlias('uploaddir.plugins') . DIRECTORY_SEPARATOR . $pluginName;
+        mkdir($pluginDir);
+        file_put_contents(
+            $pluginDir . DIRECTORY_SEPARATOR . 'config.xml',
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            . '<config><metadata><name>' . $pluginName . '</name><type>plugin</type>'
+            . '<version>1.0.0</version><description>Test</description></metadata>'
+            . '<compatibility><version>7</version></compatibility></config>'
+        );
+        file_put_contents(
+            $pluginDir . DIRECTORY_SEPARATOR . $pluginName . '.php',
+            '<?php throw new \Exception("Broken test plugin");'
+        );
+        // Load errors are only handled (instead of thrown) without debug mode.
+        $debug = \Yii::app()->getConfig('debug');
+        \Yii::app()->setConfig('debug', 0);
+
+        try {
+            $result = \Yii::app()->getPluginManager()->scanPlugins();
+        } finally {
+            \Yii::app()->setConfig('debug', $debug);
+            unlink($pluginDir . DIRECTORY_SEPARATOR . 'config.xml');
+            unlink($pluginDir . DIRECTORY_SEPARATOR . $pluginName . '.php');
+            rmdir($pluginDir);
+        }
+
+        $this->assertArrayHasKey($pluginName, $result);
+        $this->assertSame(1, $result[$pluginName]['load_error']);
+        $this->assertSame('upload', $result[$pluginName]['pluginType']);
+        $this->assertStringContainsString('Broken test plugin', $result[$pluginName]['load_error_message']);
+        $this->assertNull(\Plugin::model()->findByAttributes(['name' => $pluginName]));
+    }
+
+    /**
+     * A fatal error of a plugin that is not installed (caught by the shutdown function
+     * while scanning the plugin folders) must not be saved to the database.
+     * @return void
+     */
+    public function testShutdownFunctionDoesNotSaveNotInstalledPlugin()
+    {
+        $pluginName = 'NotInstalledShutdownTestPlugin';
+        $shutdownFunction = new PluginManagerShutdownFunction();
+        $shutdownFunction->enable();
+        $shutdownFunction->setPluginName($pluginName);
+
+        ob_start();
+        try {
+            $shutdownFunction();
+        } finally {
+            $output = ob_get_clean();
+        }
+
+        $this->assertStringContainsString('This plugin is not installed.', $output);
+        $this->assertNull(\Plugin::model()->findByAttributes(['name' => $pluginName]));
     }
 }

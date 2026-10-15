@@ -321,6 +321,21 @@ class PluginManager extends \CApplicationComponent
                                         'message' => $ex->getMessage(),
                                         'file'  => $ex->getFile()
                                     ];
+                                    if (empty($plugin)) {
+                                        // Plugin is not installed: Only list it as faulty, without saving anything,
+                                        // so it is loaded again on next scan (e.g. after the plugin files were fixed).
+                                        if (App()->getConfig('debug') >= 2) {
+                                            throw $ex;
+                                        }
+                                        $result[$pluginName] = [
+                                            'pluginName' => $pluginName,
+                                            'load_error' => 1,
+                                            'load_error_message' => $error['message'] . ' ' . $error['file'],
+                                            'isCompatible' => false,
+                                            'pluginType' => $pluginType,
+                                        ];
+                                        continue;
+                                    }
                                     $saveResult = Plugin::handlePluginLoadError($plugin, $pluginName, $error);
                                     if (!$saveResult) {
                                         // If handlePluginLoadError return 0 because debug is set
@@ -485,6 +500,11 @@ class PluginManager extends \CApplicationComponent
                 'file'  => $ex->getFile()
             ];
             $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
+            if (empty($plugin)) {
+                // Plugin is not installed: Nothing to mark as faulty.
+                $this->shutdownObject->disable();
+                throw $ex;
+            }
             $saveResult = Plugin::handlePluginLoadError($plugin, $pluginName, $error);
             if (!$saveResult) {
                 // If handlePluginLoadError return 0 because debug is set

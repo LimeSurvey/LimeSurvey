@@ -8,6 +8,4 @@
             </select>
         </div>
     </div>
-    <div id="hereBeUserIds">
-    </div>
 </div>

@@ -28,7 +28,7 @@ export const ImportSurveySummary = ({ summary }) => {
 
   return (
     <div className="import-survey-summary">
-      <p>{t('Import of survey completed.')}</p>
+      <p>{t('Import of survey is completed.')}</p>
       <Table bordered size="sm" className="mb-0">
         <caption className="visually-hidden">
           {t('Survey structure import summary')}

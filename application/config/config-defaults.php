@@ -96,6 +96,19 @@ $config['customassetversionnumber']  = 1;        // Used to generate the path of
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
 $config['allowedthemeimageformats'] = 'gif,ico,jpg,jpeg,png'; // Image file types allowed to be uploaded in the themes section.
+/**
+ * MIME types accepted for each image file extension listed in allowedthemeimageformats.
+ * Both the MIME type detected from the file content and the one sent by the browser must match one of them.
+ * Extensions without an entry here fall back to the MIME types of the file extension map (see magic_file).
+ */
+$config['imagemimetypes'] = [
+    'gif' => ['image/gif'],
+    'ico' => ['image/x-icon', 'image/vnd.microsoft.icon', 'image/ico'],
+    'jpg' => ['image/jpeg', 'image/jpg'],
+    'jpeg' => ['image/jpeg', 'image/jpg'],
+    'png' => ['image/png'],
+    'svg' => ['image/svg+xml', 'image/svg'],
+];
 $config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,dotx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
@@ -731,7 +744,7 @@ $config['adminimageurl']          = $config['styleurl'] . $config['admintheme'] 
 $config['applicationurl']         = $config['publicurl'] . 'application/';
 $config['extensionsurl']          = $config['applicationurl'] . 'extensions/';
 $config['adminstyleurl']          = $config['styleurl'] . $config['admintheme'] . '/'; // Location of button bar files for admin script
-$config['userfontsurl']            = $config['uploadurl'] . '/fonts'; // Location of user's fonts
+$config['userfontsurl']           = $config['uploadurl'] . '/fonts'; // Location of user's fonts
 
 // Dir
 $config['publicdir']                = $config['rootdir']; // The directory path of the public scripts
@@ -749,9 +762,9 @@ $config['styledir']                 = $config['rootdir'] . DIRECTORY_SEPARATOR .
 $config['questiontypedir']          = $config['rootdir'] . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR . 'questionTypes';
 $config['userthemerootdir']         = $config['uploaddir'] . DIRECTORY_SEPARATOR . "themes" . DIRECTORY_SEPARATOR . "survey"; // The directory path of the user themes
 $config['usertwigextensionrootdir'] = $config['uploaddir'] . DIRECTORY_SEPARATOR . "twig" . DIRECTORY_SEPARATOR . "extensions"; // The directory path of the user custom twig extensions
-$config['customquestionthemedir']     = "themes" . DIRECTORY_SEPARATOR . "question";
-$config['userquestionthemerootdir'] = "upload" . DIRECTORY_SEPARATOR . $config['customquestionthemedir']; // The directory containing the user's question themes.
-$config['userfontsrootdir']          = $config['uploaddir'] . DIRECTORY_SEPARATOR . 'fonts'; // The directory containing the user's fonts.
+$config['customquestionthemedir']   = "themes" . DIRECTORY_SEPARATOR . "question";
+$config['userquestionthemerootdir'] = $config['uploaddir'] . DIRECTORY_SEPARATOR . $config['customquestionthemedir']; // The directory containing the user's question themes.
+$config['userfontsrootdir']         = $config['uploaddir'] . DIRECTORY_SEPARATOR . 'fonts'; // The directory containing the user's fonts.
 
 $config['lsadminmodulesrootdir']    = $config['rootdir'] . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR . "admin";
 //Overwrite files with the same name on upload?

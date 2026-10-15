@@ -1059,8 +1059,8 @@ class User extends LSActiveRecord
             $this->getAttribute($column),
             [
                 'class' => "form-control",
-                // Native date inputs keep a larger min-height for the picker; pin height to match the other form-control filters.
-                'style' => 'font-size:1rem;height:37.6px;min-height:0;'
+                // Native date inputs keep a larger min-height for the picker; the height itself comes from the admin theme like for all other inputs
+                'style' => 'font-size:1rem;min-height:0;'
             ]
         );
         $dateFilter .= "</div>";

@@ -38,22 +38,21 @@ Tokens = {
                  // Show date
 
                  $elDateContainer.classList.remove('d-none');
-                 $elHiddenInput.value = $elDate.value = moment().format($elDate.dataset.format);
+                 // Set the date through the picker, so its selected date matches the displayed one
+                 pickers['picker_' + $elDate.id].dates.setFromInput(moment().format($elDate.dataset.format));
+                 $elHiddenInput.value = $elDate.value;
              } else {
                  // Hide date, set hidden input to "N"
                  $elDateContainer.classList.add('d-none');
                  $elHiddenInput.value = 'N';
              }
          });
-         let initialized = false;
          // When user change date
          $elDate.addEventListener('change', function (e) {
-             // skip the first change (triggered on init)
-             if (!initialized) {
-                 initialized = true;
-                 return;
+             // Only take over the date while the switch is on, otherwise the hidden input keeps its value (eg: 'N')
+             if ($elSwitch.querySelector('input').checked) {
+                 $elHiddenInput.value = $elDate.value;
              }
-             $elHiddenInput.value = $elDate.value;
          });
      },
      YesNo: function (el) {
