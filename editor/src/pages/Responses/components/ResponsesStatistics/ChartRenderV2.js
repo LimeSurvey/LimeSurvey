@@ -9,6 +9,7 @@ import {
   QT_COLON_ARRAY_NUMBERS,
   QT_K_MULTIPLE_NUMERICAL,
   QT_N_NUMERICAL,
+  QT_J_MAP,
   QT_S_SHORT_FREE_TEXT,
   QT_SEMICOLON_ARRAY_TEXT,
   QT_T_LONG_FREE_TEXT,
@@ -325,6 +326,17 @@ const getDefaultView = (availableViews, viewContext) => {
   )
 }
 
+/**
+ * Renders the statistics card of a question with its chart, table or grid view.
+ * @param {Object} props
+ * @param {Object} props.data Chart data.
+ * @param {number} props.index Card index.
+ * @param {number|string} props.surveyId Survey id.
+ * @param {string} props.chartId Chart id.
+ * @param {Object} props.question Question metadata.
+ * @param {string} props.valueType Count or percentage.
+ * @param {Object} props.filters Active statistics filters.
+ */
 export const ChartRendererV2 = ({
   data,
   index = 0,
@@ -339,9 +351,12 @@ export const ChartRendererV2 = ({
   const isFileUpload = question?.type === QT_VERTICAL_FILE_UPLOAD
   const isGridable =
     isNumerical ||
-    [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
-      question?.type
-    )
+    [
+      QT_J_MAP,
+      QT_S_SHORT_FREE_TEXT,
+      QT_T_LONG_FREE_TEXT,
+      QT_U_HUGE_FREE_TEXT,
+    ].includes(question?.type)
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)

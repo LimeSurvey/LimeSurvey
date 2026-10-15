@@ -2,6 +2,10 @@ import { ToggleButtons, Select } from 'components/UIComponents'
 import { getOnOffOptions } from 'helpers/options'
 import { statisticsGraphs } from '../../../pages/Responses/components/ResponsesStatistics/ChartsUtils'
 
+/**
+ * Returns the statistics attribute definitions.
+ * @returns {Object<string, Object>} Attribute definitions.
+ */
 export const getStatisticsAttributes = () => ({
   SHOW_IN_STATISTICS: {
     component: Select,
@@ -46,6 +50,16 @@ export const getStatisticsAttributes = () => ({
       id: 'show-in-pubic-statistics',
       toggleOptions: getOnOffOptions(),
       defaultValue: '0',
+    },
+  },
+  DISPLAY_MAP: {
+    component: ToggleButtons,
+    attributePath: 'attributes.statistics_showmap',
+    props: {
+      labelText: t('Display map'),
+      id: 'display-map',
+      toggleOptions: getOnOffOptions(),
+      defaultValue: '1',
     },
   },
 })
