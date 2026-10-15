@@ -242,6 +242,7 @@ var UserManagement = function () {
             var bChecked = this.checked;
             tableObject.find('input:checkbox:not(:disabled)').prop('checked', bChecked).prop('indeterminate', false);
             tableObject.find('.general-row-selector').removeClass('incomplete-selection');
+            updateIndeterminatePermissions(tableObject.find('.specific-settings-block input:checkbox'));
             updateSelectAllState();
         });
 
