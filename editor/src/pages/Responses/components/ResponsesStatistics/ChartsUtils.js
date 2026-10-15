@@ -350,13 +350,14 @@ export const TruncatedTick = ({
   isImage = false,
   item = null,
   imageWidth = BAR_MAX_SIZE,
+  imageOffset = { x: -imageWidth / 2, y: 4 },
 }) => {
   const value = payload?.value ?? ''
 
   if (shouldRenderImage(isImage, item) && value) {
     const hasCenter = Number.isFinite(cx) && Number.isFinite(cy)
-    let boxX = -imageWidth / 2
-    let boxY = 4
+    let boxX = imageOffset.x
+    let boxY = imageOffset.y
     if (hasCenter) {
       const dirX = x - cx
       const dirY = y - cy
