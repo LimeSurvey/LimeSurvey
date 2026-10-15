@@ -14,6 +14,29 @@
  */
 class LimeReplacementFieldsController extends LSBaseController
 {
+    /** @var array<int, int>|null group_order indexed by gid, for the survey of the requested group */
+    private $groupOrders = null;
+
+    /**
+     * Returns the group_order of all groups of the survey the given group belongs to, indexed by gid
+     *
+     * @param integer $gid
+     * @return array<int, int>
+     */
+    private function getGroupOrders($gid)
+    {
+        if ($this->groupOrders === null) {
+            $this->groupOrders = [];
+            $group = QuestionGroup::model()->findByPk($gid);
+            if ($group) {
+                foreach (QuestionGroup::model()->findAllByAttributes(['sid' => $group->sid]) as $surveyGroup) {
+                    $this->groupOrders[$surveyGroup->gid] = (int) $surveyGroup->group_order;
+                }
+            }
+        }
+        return $this->groupOrders;
+    }
+
     /**
      *
      * action used to provide the html editor with data for the
@@ -163,7 +186,11 @@ class LimeReplacementFieldsController extends LSBaseController
                     if (empty($gid)) {
                         return true;
                     }
-                    return is_null($previousQuestion) || $previousQuestion['gid'] != $gid || $question['gid'] == $gid;
+                    $groupOrders = $this->getGroupOrders($gid);
+                    if (!isset($groupOrders[$gid], $groupOrders[$question['gid']])) {
+                        return true;
+                    }
+                    return $groupOrders[$question['gid']] <= $groupOrders[$gid];
                 }
                 // no break
             case 'copyquestion':
