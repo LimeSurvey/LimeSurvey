@@ -50,9 +50,13 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    padding: 6px 10px;
+    border-radius: $border-radius-xs !important;
+    background-color: $g-100 !important;
     font-weight: $font-weight-500;
 
     .btn-close {
+      margin-left: 4px;
       font-size: 8px;
       padding: 2px;
     }

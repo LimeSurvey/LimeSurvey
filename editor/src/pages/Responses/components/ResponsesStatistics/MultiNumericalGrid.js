@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { format } from 'util'
+import classNames from 'classnames'
 
 import { HighlightedText, SearchInput, useSearchTerms } from 'components'
 import { htmlToPlainText } from 'helpers'
@@ -17,6 +18,7 @@ export const MultiNumericalGrid = ({
   questionCode,
   fields,
   filters,
+  twoColumns = true,
 }) => {
   const [containerRef, isInView] = useIsInViewport(null, {
     initialInView: false,
@@ -110,7 +112,11 @@ export const MultiNumericalGrid = ({
 
     return (
       <>
-        <div className="responses-statistics-grid responses-statistics-grid--two-col">
+        <div
+          className={classNames('responses-statistics-grid', {
+            'responses-statistics-grid--two-col': twoColumns,
+          })}
+        >
           {cards.map((card) => (
             <div className="responses-statistics-grid-row" key={card.id}>
               <div className="responses-statistics-multi-numerical">
