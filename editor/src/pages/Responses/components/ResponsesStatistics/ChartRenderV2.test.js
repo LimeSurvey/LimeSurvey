@@ -1,7 +1,7 @@
 // Import shared mocks
 import 'tests/mocks'
 
-import { screen, within } from '@testing-library/react'
+import { act, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { QT_L_LIST } from 'helpers'
@@ -89,6 +89,54 @@ describe('ChartRendererV2 bar chart orientation', () => {
     await renderCard()
     await userEvent.click(getChevron())
     await userEvent.keyboard('{Escape}')
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument()
+  })
+
+  test('moves between the flyout options with the arrow keys', async () => {
+    await renderCard()
+    await userEvent.click(getChevron())
+    const vertical = screen.getByRole('menuitemradio', {
+      name: 'Vertical bar chart',
+    })
+    const horizontal = screen.getByRole('menuitemradio', {
+      name: 'Horizontal bar chart',
+    })
+    // Opening focuses the selected option.
+    expect(vertical).toHaveFocus()
+
+    await userEvent.keyboard('{ArrowDown}')
+    expect(horizontal).toHaveFocus()
+    await userEvent.keyboard('{ArrowDown}')
+    expect(vertical).toHaveFocus()
+    await userEvent.keyboard('{ArrowUp}')
+    expect(horizontal).toHaveFocus()
+    await userEvent.keyboard('{Home}')
+    expect(vertical).toHaveFocus()
+    await userEvent.keyboard('{End}')
+    expect(horizontal).toHaveFocus()
+  })
+
+  test('closes the flyout when tabbing out of it', async () => {
+    await renderCard()
+    await userEvent.click(getChevron())
+    await userEvent.tab()
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument()
+  })
+
+  test('closes the flyout when focus moves outside the toggle', async () => {
+    await renderWithProviders(
+      <>
+        <ChartRendererV2
+          data={data}
+          surveyId={1}
+          chartId="chart-1"
+          question={{ type: QT_L_LIST, code: 'Q1', title: 'How often?' }}
+        />
+        <button type="button">Outside</button>
+      </>
+    )
+    await userEvent.click(getChevron())
+    act(() => screen.getByRole('button', { name: 'Outside' }).focus())
     expect(screen.queryByRole('menu')).not.toBeInTheDocument()
   })
 

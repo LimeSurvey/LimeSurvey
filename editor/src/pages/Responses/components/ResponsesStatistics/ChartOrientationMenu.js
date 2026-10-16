@@ -92,14 +92,25 @@ export const ChartOrientationMenu = ({
         chevronRef?.current?.focus()
       }
     }
+    const handleFocusOut = (event) => {
+      if (
+        event.relatedTarget &&
+        !containerRef?.current?.contains(event.relatedTarget)
+      ) {
+        onClose()
+      }
+    }
+    const container = containerRef?.current
 
     document.addEventListener('mousedown', handlePointerDown)
     document.addEventListener('keydown', handleKeyDown)
+    container?.addEventListener('focusout', handleFocusOut)
     menuRef.current?.querySelector('[aria-checked="true"]')?.focus()
 
     return () => {
       document.removeEventListener('mousedown', handlePointerDown)
       document.removeEventListener('keydown', handleKeyDown)
+      container?.removeEventListener('focusout', handleFocusOut)
     }
   }, [])
 
@@ -108,12 +119,47 @@ export const ChartOrientationMenu = ({
     chevronRef?.current?.focus()
   }
 
+  const handleMenuKeyDown = (event) => {
+    const items = [
+      ...(menuRef.current?.querySelectorAll('[role="menuitemradio"]') ?? []),
+    ]
+    const index = items.indexOf(document.activeElement)
+    const focusItem = (nextIndex) =>
+      items[(nextIndex + items.length) % items.length]?.focus()
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault()
+        focusItem(index < 0 ? 0 : index + 1)
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        focusItem(index < 0 ? items.length - 1 : index - 1)
+        break
+      case 'Home':
+        event.preventDefault()
+        focusItem(0)
+        break
+      case 'End':
+        event.preventDefault()
+        focusItem(items.length - 1)
+        break
+      case 'Tab':
+        chevronRef?.current?.focus()
+        onClose()
+        break
+      default:
+        break
+    }
+  }
+
   return (
     <div
       ref={menuRef}
       className="responses-statistics-orientation-menu"
       role="menu"
       aria-label={t('Chart orientation')}
+      onKeyDown={handleMenuKeyDown}
     >
       <div className="responses-statistics-orientation-menu-title">
         {t('Chart orientation')}
@@ -124,6 +170,7 @@ export const ChartOrientationMenu = ({
           type="button"
           role="menuitemradio"
           aria-checked={value === orientation}
+          tabIndex={-1}
           className={classNames('responses-statistics-orientation-menu-item', {
             'responses-statistics-orientation-menu-item--selected':
               value === orientation,
