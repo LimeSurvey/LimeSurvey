@@ -11,11 +11,10 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
-import { BAR_MAX_SIZE, ordinal } from '../ChartsUtils'
+import { ordinal } from '../ChartsUtils'
 import { htmlToPlainText } from 'helpers'
 import { StatisticsDetailModal } from '../StatisticsDetailModal.js'
 import { StatisticsFilterSelect } from '../StatisticsFilterSelect.js'
-import { ORIENTATION } from '../ChartOrientationMenu'
 
 // One chart row per option; the chart top margin keeps the first bar's name
 // label from clipping.
@@ -25,11 +24,6 @@ const CHART_TOP_MARGIN = 22
 // Reserved width (left of the bars) for the rank badge column.
 const BADGE_COLUMN_WIDTH = 52
 const BADGE_HEIGHT = 36
-
-// Vertical layout: the rank badge and option name sit under each bar.
-const VERTICAL_CHART_HEIGHT = 400
-const COLUMN_TICK_WIDTH = 120
-const COLUMN_TICK_HEIGHT = 64
 
 // Option name sitting just above its bar.
 const NameLabel = ({ x, y, value }) => (
@@ -64,34 +58,6 @@ const RankBadgeTick = ({ x, y, index, ranked }) => {
   )
 }
 
-// Rank badge with the option name below it, rendered as an XAxis tick in the
-// vertical layout (resolved by `index` for the same reason as RankBadgeTick).
-const RankColumnTick = ({ x, y, index, ranked }) => {
-  const entry = ranked[index]
-  if (!entry) return null
-  return (
-    <foreignObject
-      x={x - COLUMN_TICK_WIDTH / 2}
-      y={y + 4}
-      width={COLUMN_TICK_WIDTH}
-      height={COLUMN_TICK_HEIGHT}
-      overflow="visible"
-    >
-      <div className="responses-statistics-ranking-column-tick">
-        <span className="responses-statistics-ranking-badge">
-          {entry.position}
-        </span>
-        <span
-          className="responses-statistics-ranking-column-name"
-          title={entry.title}
-        >
-          {entry.title}
-        </span>
-      </div>
-    </foreignObject>
-  )
-}
-
 const ClickHintTooltip = ({ active }) => {
   if (!active) return null
   return (
@@ -102,13 +68,8 @@ const ClickHintTooltip = ({ active }) => {
   )
 }
 
-export const RankingBarChart = ({
-  data = [],
-  title = '',
-  orientation = ORIENTATION.HORIZONTAL,
-}) => {
+export const RankingBarChart = ({ data = [], title = '' }) => {
   const [selectedKey, setSelectedKey] = useState(null)
-  const isVertical = orientation === ORIENTATION.VERTICAL
 
   const ranked = [...data]
     .sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
@@ -116,71 +77,44 @@ export const RankingBarChart = ({
 
   const selectedOption = ranked.find((option) => option.key === selectedKey)
 
-  const chartHeight = isVertical
-    ? VERTICAL_CHART_HEIGHT
-    : Math.max(ranked.length, 1) * ROW_HEIGHT + CHART_TOP_MARGIN
+  const chartHeight = Math.max(ranked.length, 1) * ROW_HEIGHT + CHART_TOP_MARGIN
 
   return (
     <div className="responses-statistics-ranking">
       <div className="responses-statistics-ranking-chart">
         <ResponsiveContainer width="100%" height={chartHeight}>
           <RechartsBarChart
-            layout={isVertical ? 'horizontal' : 'vertical'}
+            layout="vertical"
             data={ranked}
-            margin={
-              isVertical
-                ? { top: CHART_TOP_MARGIN, right: 20, left: 0, bottom: 0 }
-                : { top: CHART_TOP_MARGIN, right: 90, left: 0, bottom: 0 }
-            }
+            margin={{ top: CHART_TOP_MARGIN, right: 90, left: 0, bottom: 0 }}
           >
-            {isVertical ? (
-              <>
-                <XAxis
-                  type="category"
-                  dataKey="title"
-                  height={COLUMN_TICK_HEIGHT + 8}
-                  interval={0}
-                  tickLine={false}
-                  tick={(props) => (
-                    <RankColumnTick {...props} ranked={ranked} />
-                  )}
-                />
-                <YAxis type="number" hide domain={[0, 'dataMax']} />
-              </>
-            ) : (
-              <>
-                <XAxis type="number" hide domain={[0, 'dataMax']} />
-                <YAxis
-                  type="category"
-                  dataKey="title"
-                  width={BADGE_COLUMN_WIDTH}
-                  tickLine={false}
-                  axisLine={false}
-                  tick={(props) => <RankBadgeTick {...props} ranked={ranked} />}
-                />
-              </>
-            )}
+            <XAxis type="number" hide domain={[0, 'dataMax']} />
+            <YAxis
+              type="category"
+              dataKey="title"
+              width={BADGE_COLUMN_WIDTH}
+              tickLine={false}
+              axisLine={false}
+              tick={(props) => <RankBadgeTick {...props} ranked={ranked} />}
+            />
             <Tooltip
               cursor={{ fill: '#eeeff7' }}
               content={<ClickHintTooltip />}
             />
             <Bar
               dataKey="value"
-              radius={isVertical ? [4, 4, 0, 0] : [0, 4, 4, 0]}
-              barSize={isVertical ? undefined : 22}
-              maxBarSize={isVertical ? BAR_MAX_SIZE : undefined}
+              radius={[0, 4, 4, 0]}
+              barSize={22}
               onClick={(entry) => setSelectedKey(entry.key)}
             >
               {ranked.map((entry, index) => (
                 <Cell key={`ranking-cell-${index}`} fill={entry.fill} />
               ))}
-              {!isVertical && (
-                <LabelList dataKey="title" content={<NameLabel />} />
-              )}
+              <LabelList dataKey="title" content={<NameLabel />} />
               <LabelList
                 dataKey="value"
-                position={isVertical ? 'top' : 'right'}
-                offset={isVertical ? 8 : 16}
+                position="right"
+                offset={16}
                 className="responses-statistics-chart-labels"
               />
             </Bar>

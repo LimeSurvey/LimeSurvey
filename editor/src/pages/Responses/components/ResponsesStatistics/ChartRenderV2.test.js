@@ -4,7 +4,7 @@ import 'tests/mocks'
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { QT_L_LIST, QT_R_RANKING } from 'helpers'
+import { QT_L_LIST } from 'helpers'
 import { renderWithProviders } from 'tests/testUtils'
 
 import { ChartRendererV2 } from './ChartRenderV2'
@@ -158,21 +158,5 @@ describe('ChartRendererV2 bar chart orientation', () => {
 
     expect(getBarIcon(0)).toHaveClass('ri-bar-chart-horizontal-line')
     expect(getBarIcon(1)).toHaveClass('ri-bar-chart-line')
-  })
-
-  test('ranking keeps its horizontal layout as the default', async () => {
-    await renderCard({
-      question: {
-        type: QT_R_RANKING,
-        themeName: 'ranking',
-        code: 'Q3',
-        title: 'Rank these',
-      },
-    })
-    expect(getBarIcon()).toHaveClass('ri-bar-chart-horizontal-line')
-    expect(screen.getByTestId('ranking-bar-chart')).toHaveAttribute(
-      'data-orientation',
-      'horizontal'
-    )
   })
 })

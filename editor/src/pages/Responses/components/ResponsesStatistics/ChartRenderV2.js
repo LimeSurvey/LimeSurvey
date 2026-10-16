@@ -98,13 +98,7 @@ const VIEWS = [
       orientation,
     }) => {
       if (isRanking) {
-        return (
-          <RankingBarChart
-            data={data}
-            title={question?.title}
-            orientation={orientation}
-          />
-        )
+        return <RankingBarChart data={data} title={question?.title} />
       }
       return (
         <BarChart
@@ -415,9 +409,8 @@ export const ChartRendererV2 = ({
   const [view, setView] = useState(() =>
     getDefaultView(availableViews, viewContext, question?.chartType)
   )
-  const [orientation, setOrientation] = useState(
-    isRanking ? ORIENTATION.HORIZONTAL : ORIENTATION.VERTICAL
-  )
+  const [orientation, setOrientation] = useState(ORIENTATION.VERTICAL)
+  const hasOrientationSwitch = !isRanking
   const [isOrientationMenuOpen, setIsOrientationMenuOpen] = useState(false)
   const chartToggleRef = useRef(null)
   const orientationChevronRef = useRef(null)
@@ -429,11 +422,15 @@ export const ChartRendererV2 = ({
     .filter((option) => !isMenuOnly(option))
     .map(({ value, icon }) => ({
       value,
-      icon: value === VIEW.BAR_CHART ? BarChartToggleIcon : icon,
+      icon:
+        value === VIEW.BAR_CHART && hasOrientationSwitch
+          ? BarChartToggleIcon
+          : icon,
     }))
   const activeView =
     availableViews.find(({ value }) => value === view) ?? availableViews[0]
-  const isBarChartActive = activeView?.value === VIEW.BAR_CHART
+  const isBarChartActive =
+    hasOrientationSwitch && activeView?.value === VIEW.BAR_CHART
 
   const renderContext = {
     data,
