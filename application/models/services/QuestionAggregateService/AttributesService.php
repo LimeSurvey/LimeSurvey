@@ -115,6 +115,7 @@ class AttributesService
      * } $dataSet
      * @return void
      * @throws PersistErrorException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function save($question, $dataSet)
     {

@@ -43,6 +43,7 @@ class UpdateDBCommand extends CConsoleCommand
      * config.php whose database connection should be used instead of the default one.
      * @throws CException If the current database version is not found (application appears uninstalled) or if the upgrade process fails and requires manual intervention.
      */
+    #[\Override]
     public function run($args = null)
     {
         $usingCustomConfig = isset($args) && isset($args[0]) && $args[0];
@@ -66,15 +67,19 @@ class UpdateDBCommand extends CConsoleCommand
             Yii::import('application.helpers.update.update_helper', true);
             Yii::import('application.helpers.update.updatedb_helper', true);
 
+            $incompleteUpdate = getIncompleteDatabaseUpdateMarker();
+            if ($incompleteUpdate !== null) {
+                throw new CException("A previous database update (starting from database version {$incompleteUpdate}) failed or was interrupted, so the database is probably in an inconsistent state. Please restore the database backup you made before the update, then run the update again.");
+            }
             $result = db_upgrade_all($currentDbVersion);
             if ($result) {
                 echo "Database has been successfully upgraded to version $newDbVersion \n";
                 return 0;
             } else {
-                throw new CException("Please fix this error in your database and try again");
+                throw new CException("The database update failed, so the database is probably in an inconsistent state. Please restore the database backup you made before the update, then run the update again.");
             }
         } else {
-            echo "no need update : DB is uptodate\n";
+            echo "no need update : DB is up-to-date\n";
             return 0;
         }
     }

@@ -44,6 +44,9 @@ class CopySurveyResult
     private $cntQuotas = 0;
 
     /** @var int */
+    private $cntUrlParameters = 0;
+
+    /** @var int */
     private $cntQuotaMembers = 0;
 
     /** @var int */
@@ -230,6 +233,22 @@ class CopySurveyResult
     public function setCntQuotas(int $cntQuotas): void
     {
         $this->cntQuotas = $cntQuotas;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCntUrlParameters(): int
+    {
+        return $this->cntUrlParameters;
+    }
+
+    /**
+     * @param int $cntUrlParameters
+     */
+    public function setCntUrlParameters(int $cntUrlParameters): void
+    {
+        $this->cntUrlParameters = $cntUrlParameters;
     }
 
     /**

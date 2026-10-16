@@ -260,17 +260,26 @@ class viewHelper
      * Purifies HTML and returns the cleaned markup.
      *
      * Configures the purifier to allow target="_blank" and the `rel` values "external", "noreferrer", and "noopener".
+     * Optionally allows data URIs (HTMLPurifier only accepts real PNG, GIF and JPEG content for them).
      *
      * @param string $sHtml HTML to purify.
+     * @param boolean $bAllowDataUri Whether to keep data URIs, e.g. an image filled in from a response value
      * @return string The purified HTML string.
      */
-    public static function purified($sHtml)
+    public static function purified($sHtml, $bAllowDataUri = false)
     {
         $oPurifier = new CHtmlPurifier();
-        $oPurifier->options = array(
+        $aOptions = array(
             'HTML.TargetBlank' => true,
             'Attr.AllowedRel' => ['external', 'noreferrer', 'noopener'],
         );
+        if ($bAllowDataUri) {
+            $aOptions['URI.AllowedSchemes'] = array_merge(
+                HTMLPurifier_Config::createDefault()->get('URI.AllowedSchemes'),
+                ['data' => true]
+            );
+        }
+        $oPurifier->options = $aOptions;
         return $oPurifier->purify($sHtml);
     }
 
@@ -287,6 +296,26 @@ class viewHelper
             'Output.Newline' => ' '
         );
         return (string) $oPurifier->purify($sHtml);
+    }
+
+    /**
+     * Return a response value as plain text for display in the administration
+     *
+     * A value that getExtendedAnswer() returned unchanged is stored as entered by the participant: it is plain text,
+     * a '<' in it is not the start of a HTML tag. Other values contain answer or subquestion texts, which can be HTML:
+     * these are flattened.
+     * The returned text is not HTML escaped.
+     *
+     * @param string|null $sExtendedValue The value returned by getExtendedAnswer()
+     * @param string|null $sRawValue The value stored in the response table
+     * @return string
+     */
+    public static function responseValueToText($sExtendedValue, $sRawValue)
+    {
+        if ((string) $sExtendedValue === (string) $sRawValue) {
+            return (string) $sRawValue;
+        }
+        return html_entity_decode(self::flatten((string) $sExtendedValue), ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     /**

@@ -294,7 +294,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <?php echo '<h2 class="h3">' . gT('Question themes:') . '</h2>'; ?>
                 <!-- Installed Question Themes -->
                 <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
-                <!-- Available Quesiton Themes and broken question themes-->
+                <!-- Available Question Themes and broken question themes-->
                 <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
             </div>
         </div>

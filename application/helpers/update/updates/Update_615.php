@@ -10,6 +10,7 @@ class Update_615 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up()
     {
         $questionThemes = $this->getQuestionThemes();

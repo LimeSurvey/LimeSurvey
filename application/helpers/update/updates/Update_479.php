@@ -6,6 +6,7 @@ use LsDefaultDataSets;
 
 class Update_479 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $baseQuestionThemeEntries = LsDefaultDataSets::getBaseQuestionThemeEntries();

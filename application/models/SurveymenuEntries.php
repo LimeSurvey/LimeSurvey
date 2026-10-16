@@ -122,6 +122,28 @@ class SurveymenuEntries extends LSActiveRecord
         return $oSurveymenuEntries->getPrimaryKey();
     }
 
+    /**
+     * Checks whether the current user has the permission required by this menu entry.
+     * A global permission is checked globally, any other one on the given survey.
+     * Entries without a permission are always allowed.
+     *
+     * @param int|null $iSurveyId Survey to check a survey permission on; without it, survey permissions are not checked
+     * @return bool
+     */
+    public function userHasPermission($iSurveyId = null)
+    {
+        if (empty($this->permission) || empty($this->permission_grade)) {
+            return true;
+        }
+        if (array_key_exists($this->permission, Permission::getGlobalBasePermissions())) {
+            return Permission::model()->hasGlobalPermission($this->permission, $this->permission_grade);
+        }
+        if ($iSurveyId !== null) {
+            return Permission::model()->hasSurveyPermission($iSurveyId, $this->permission, $this->permission_grade);
+        }
+        return true;
+    }
+
     public function reorder()
     {
 
@@ -378,9 +400,6 @@ class SurveymenuEntries extends LSActiveRecord
                 'filter' => false,
             ],
             [
-                'name' => 'menu_class',
-            ],
-            [
                 'name'  => 'menu_link',
                 'value' => 'SurveymenuEntries::returnCombinedMenuLink($data)',
                 'type'  => 'text'
@@ -397,13 +416,6 @@ class SurveymenuEntries extends LSActiveRecord
                 'name'              => 'classes',
                 'htmlOptions'       => ['style' => 'white-space: prewrap;'],
                 'headerHtmlOptions' => ['style' => 'white-space: prewrap;'],
-            ],
-            [
-                'name'   => 'data',
-                'value'  => '$data->data ? CHtml::tag("i", array("class" => "ri-information-fill bigIcons", "title" => $data->data), "")
-                : ( $data->getdatamethod ? gT("GET data method:")."<br/>".CHtml::encode($data->getdatamethod) : "")',
-                'type'   => 'raw',
-                'filter' => false,
             ],
             [
                 'name'   => 'menu_id',

@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_136 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             addColumn('{{quota}}', 'autoload_url', "integer NOT NULL DEFAULT 0");

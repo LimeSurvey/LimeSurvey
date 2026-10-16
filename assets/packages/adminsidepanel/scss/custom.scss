@@ -298,6 +298,21 @@ div[class*=" col-"] {
     display: block;
 }
 
+// Group expand/collapse toggle: keep the theme's .btn sizing from making it taller
+// than the group name's line, so the chevron lines up with the text
+#sidebar .q-group .toggle-questiongroup.btn {
+    display: flex;
+    align-items: center;
+    height: 24px;
+    min-height: 0;
+    line-height: 1;
+
+    i {
+        font-size: 16px;
+        line-height: 1;
+    }
+}
+
 // Reserve space on the group name for the absolutely-positioned badge + actions
 // menu so a long name truncates with an ellipsis before them instead of running underneath.
 #sidebar .q-group .questiongroup-link {
@@ -336,7 +351,7 @@ div[class*=" col-"] {
 // Resize handle styles
 .resize-handle {
     position: absolute;
-    right: 0;
+    right: -20px;
     top: 0;
     width: 20px;
     display: flex;

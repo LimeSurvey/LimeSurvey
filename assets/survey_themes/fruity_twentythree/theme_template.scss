@@ -167,5 +167,8 @@ $base-color: #ffffff;
 @import "tables/no-tables";
 @import "tables/no-tables-mobiles";
 
-// TODO: placeholder, will probbably be removed
+// 6.4 Accessibility
+@import "a11y-handles/a11y-handles.scss";
+
+// TODO: placeholder, will probably be removed
 @import "darkmode/darkmode_colors.scss";

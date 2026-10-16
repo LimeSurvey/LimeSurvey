@@ -119,76 +119,34 @@
     background: $grape;
   }
 }
-.lime-align-btn-group {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
 
-  .btn {
-    color: $white;
-    font-weight: $font-weight-500;
-    font-size: $font-size-sm;
-    line-height: $line-height-20;
-
-    background: $g-400;
-    padding: 2px;
-    border-radius: 1.5px;
-    min-height: 40px;
-    min-width: 68.62px;
-    width: 100%;
-    align-items: stretch;
-    .left-side {
-      width: 50%;
-      font-size: $font-size-xxl;
-    }
-    .right-side {
-      width: 50%;
-      background-color: $g-600;
-    }
-    .center-side {
-      width: 100%;
-      font-size: $font-size-xxl;
-      background-color: $g-600;
-    }
-  }
-  .btn-check:active + .btn-outline-lime-alignment,
-  .btn-check:checked + .btn-outline-lime-alignment,
-  .btn-outline-lime-alignment.active,
-  .btn-outline-lime-alignment.dropdown-toggle.show,
-  .btn-outline-lime-alignment:active {
-    background-color: $aubergine;
-    border-color: $g-700;
-    color: $g-700;
-    border-radius: 2px;
-    .left-side {
-      color: $white;
-    }
-    .center-side {
-      color: $white;
-      background-color: $grape;
-    }
-    .right-side {
-      background-color: $grape;
-    }
-    &.disabled,
-    &[disabled] {
-      border-color: $g-600;
-      background-color: $g-400;
-      color: $g-600;
-    }
+// Forced colours mode (e.g. Windows high contrast) drops background colours, so the selected
+// option gets the system highlight colours and a checkmark (options that already show an icon
+// get none). The negative left margin cancels the checkmark's width plus the flex gap (gap-2),
+// so the label does not move when switching; the wider side padding leaves room for it.
+@media (forced-colors: active) {
+  .lime-toggle-btn-group .btn-outline-lime-toggle:not(:has(i, svg)) {
+    padding-left: calc(1.05em + 6px);
+    padding-right: calc(1.05em + 6px);
   }
 
-  .btn-check:active + .btn-outline-lime-alignment:focus,
-  .btn-check:checked + .btn-outline-lime-alignment:focus,
-  .btn-outline-lime-alignment.active:focus,
-  .btn-outline-lime-alignment.dropdown-toggle.show:focus,
-  .btn-outline-lime-alignment:active:focus,
-  .btn-outline-lime-alignment:active,
-  .btn-check:focus + .btn-outline-lime-alignment,
-  .btn-outline-lime-alignment:hover {
-    box-shadow: none;
-    background-color: $aubergine;
-    border-color: $g-700;
-    color: $white;
+  .lime-toggle-btn-group .btn-check:checked + .btn-outline-lime-toggle.btn {
+    forced-color-adjust: none;
+    background-color: Highlight !important;
+    border-color: Highlight !important;
+    color: HighlightText !important;
+
+    > div:not(:has(i, svg))::before {
+      content: '';
+      display: inline-block;
+      flex: none;
+      width: 0.35em;
+      height: 0.7em;
+      margin-top: -0.15em;
+      margin-left: calc(-0.35em - 0.5rem);
+      border: solid currentColor;
+      border-width: 0 0.15em 0.15em 0;
+      transform: rotate(45deg);
+    }
   }
 }
