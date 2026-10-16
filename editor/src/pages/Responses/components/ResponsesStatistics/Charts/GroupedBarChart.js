@@ -1,9 +1,11 @@
 import React from 'react'
+import classNames from 'classnames'
 import {
   BarChart as RechartsBarChart,
   Bar,
   XAxis,
   YAxis,
+  CartesianGrid,
   Cell,
   LabelList,
   Tooltip,
@@ -11,13 +13,18 @@ import {
 } from 'recharts'
 
 import {
+  BAR_MAX_SIZE,
   COLORS,
   CustomTooltip,
   formatMetricValue,
+  getBarChartMinWidth,
   getMetricDataKey,
   TooltipShell,
+  TruncatedTick,
   VALUE_TYPE,
 } from '../ChartsUtils'
+import { ORIENTATION } from '../ChartOrientationMenu'
+import { StackedLegend } from './StackedLegend'
 
 const GroupedTooltip = ({ active, payload, categoryTitle }) => {
   if (!active || !payload?.length) return null
@@ -113,9 +120,110 @@ const CategoryBarChart = ({ category, valueType, dataKey, domainMax }) => {
   )
 }
 
+const VERTICAL_CHART_HEIGHT = 400
+
+// Vertical layout: one chart with the subquestions along the x-axis and, for
+// each, one bar per option (or column), coloured per option as in the legend.
+const VerticalGroupedChart = ({ data, valueType, dataKey }) => {
+  const options = (data[0]?.options ?? []).map((option, index) => ({
+    key: `option-${index}`,
+    title: option.title,
+    color: COLORS[index % COLORS.length],
+  }))
+  const rows = data.map((category) => {
+    const row = { title: category.title, __options: {} }
+    ;(category.options ?? []).forEach((option, index) => {
+      row[`option-${index}`] = option[dataKey]
+      row.__options[`option-${index}`] = option
+    })
+    return row
+  })
+  const chartMinWidth = getBarChartMinWidth(rows.length * options.length)
+  const isPercentage = valueType === VALUE_TYPE.PERCENTAGE
+  const legendOptions = options.filter(({ title }) => title)
+
+  // The hovered bar's option, in the shape GroupedTooltip expects.
+  const renderTooltip = ({ active, payload }) => {
+    const item = payload?.[0]
+    const option = item?.payload?.__options?.[item.dataKey]
+    if (!active || !option) return null
+    return (
+      <GroupedTooltip
+        active={active}
+        payload={[{ ...item, payload: option }]}
+        categoryTitle={item.payload.title}
+      />
+    )
+  }
+
+  return (
+    <div className="responses-statistics-grouped-vertical">
+      {legendOptions.length > 0 && (
+        <StackedLegend segments={legendOptions} showTitle={false} />
+      )}
+      <div
+        className={classNames('responses-statistics-bar-chart-viewport', {
+          'responses-statistics-bar-chart-viewport--scrollable': chartMinWidth,
+        })}
+        tabIndex={chartMinWidth ? 0 : undefined}
+        aria-label={chartMinWidth ? t('Scrollable chart') : undefined}
+      >
+        <div
+          className="responses-statistics-bar-chart"
+          style={chartMinWidth ? { minWidth: chartMinWidth } : undefined}
+        >
+          <ResponsiveContainer width="100%" height={VERTICAL_CHART_HEIGHT}>
+            <RechartsBarChart data={rows} margin={{ top: 20, right: 20 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis
+                dataKey="title"
+                height={40}
+                interval={0}
+                tick={<TruncatedTick />}
+              />
+              <YAxis
+                domain={isPercentage ? [0, 100] : [0, 'auto']}
+                unit={isPercentage ? '%' : undefined}
+              />
+              <Tooltip
+                cursor={{ fill: '#eeeff7' }}
+                shared={false}
+                content={renderTooltip}
+              />
+              {options.map((option) => (
+                <Bar
+                  key={option.key}
+                  dataKey={option.key}
+                  name={option.title}
+                  fill={option.color}
+                  maxBarSize={BAR_MAX_SIZE}
+                  isAnimationActive={false}
+                >
+                  <LabelList
+                    dataKey={option.key}
+                    position="top"
+                    // Like the bar chart, empty bars get no "0" label.
+                    formatter={(value) =>
+                      value == null || Number(value) === 0
+                        ? ''
+                        : formatMetricValue(value, valueType)
+                    }
+                    style={{ fontSize: 12, fill: LABEL_COLOR }}
+                  />
+                </Bar>
+              ))}
+            </RechartsBarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export const GroupedBarChart = ({
   data = [],
   valueType = VALUE_TYPE.PERCENTAGE,
+  orientation = ORIENTATION.HORIZONTAL,
 }) => {
   const isPercentage = valueType === VALUE_TYPE.PERCENTAGE
   const dataKey = getMetricDataKey(valueType)
@@ -131,6 +239,16 @@ export const GroupedBarChart = ({
           ),
         1
       )
+
+  if (orientation === ORIENTATION.VERTICAL) {
+    return (
+      <VerticalGroupedChart
+        data={data}
+        valueType={valueType}
+        dataKey={dataKey}
+      />
+    )
+  }
 
   return (
     <div className="responses-statistics-bar-chart">
