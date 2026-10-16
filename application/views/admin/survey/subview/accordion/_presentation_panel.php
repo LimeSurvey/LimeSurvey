@@ -92,28 +92,30 @@ App()->getClientScript()->registerScript(
     LSYii_ClientScript::POS_READY
 );
 
-// The question index always allows jumping back to previous groups, so "Allow backward navigation" has no effect while it is enabled
+// The question index always allows jumping back to previous groups, so "Allow backward navigation" then only shows or hides the "Previous" button
 $iEffectiveQuestionIndex = (int) (isset($oSurvey->oOptions->questionindex)
     ? $oSurvey->oOptions->questionindex
     : $oSurvey->questionindex);
-$bDisableAllowPrev = $iEffectiveQuestionIndex > 0;
+$bQuestionIndexEnabled = $iEffectiveQuestionIndex > 0;
 $mInheritedQuestionIndex = $oSurvey->questionindex == -1
     ? $iEffectiveQuestionIndex
     : null;
-$sAllowPrevDisabledMessage = gT('Participants can always go back while the question index is enabled.');
+$sAllowPrevLabel = gT('Allow backward navigation');
+$sShowPrevLabel = gT('Show “Previous” button');
 
 App()->getClientScript()->registerScript(
-    'toggle-allow-prev',
+    'toggle-allow-prev-label',
     "
     (function () {
         var inheritedQuestionIndex = " . CJavaScript::encode($mInheritedQuestionIndex) . ";
         var questionIndexInputs = document.querySelectorAll('input[name=\"questionindex\"]');
-        var allowPrevInputs = document.querySelectorAll('#allowprev input[name=\"allowprev\"]');
-        var preservedValue = document.getElementById('allowprev-disabled-value');
+        var allowPrevLabel = document.getElementById('allowprev-label');
         var allowPrevGroup = document.getElementById('allowprev');
-        var disabledMessage = " . CJavaScript::encode($sAllowPrevDisabledMessage) . ";
+        var allowPrevHelp = document.getElementById('allowprev-help');
+        var allowPrevText = " . CJavaScript::encode($sAllowPrevLabel) . ";
+        var showPrevText = " . CJavaScript::encode($sShowPrevLabel) . ";
 
-        function updateAllowPrevState() {
+        function updateAllowPrevLabel() {
             var selectedQuestionIndex = document.querySelector('input[name=\"questionindex\"]:checked');
             var questionIndex = 0;
             if (selectedQuestionIndex) {
@@ -121,38 +123,23 @@ App()->getClientScript()->registerScript(
                     ? Number(inheritedQuestionIndex)
                     : Number(selectedQuestionIndex.value);
             }
-            var disableAllowPrev = questionIndex > 0;
-            var selectedAllowPrev = document.querySelector('#allowprev input[name=\"allowprev\"]:checked');
+            var labelText = questionIndex > 0 ? showPrevText : allowPrevText;
 
-            allowPrevInputs.forEach(function (input) {
-                input.disabled = disableAllowPrev;
-            });
-
-            if (preservedValue) {
-                preservedValue.disabled = !disableAllowPrev;
-                if (selectedAllowPrev) {
-                    preservedValue.value = selectedAllowPrev.value;
-                }
+            if (allowPrevLabel) {
+                allowPrevLabel.textContent = labelText;
             }
-
             if (allowPrevGroup) {
-                allowPrevGroup.setAttribute('aria-disabled', String(disableAllowPrev));
-                // Once the Bootstrap tooltip is initialized it reads its text from data-bs-original-title, not title
-                var tooltip = window.bootstrap && bootstrap.Tooltip.getInstance(allowPrevGroup);
-                if (tooltip) {
-                    tooltip.hide();
-                }
-                allowPrevGroup.setAttribute(
-                    tooltip ? 'data-bs-original-title' : 'title',
-                    disableAllowPrev ? disabledMessage : ''
-                );
+                allowPrevGroup.setAttribute('aria-label', labelText);
+            }
+            if (allowPrevHelp) {
+                allowPrevHelp.classList.toggle('d-none', questionIndex <= 0);
             }
         }
 
         questionIndexInputs.forEach(function (input) {
-            input.addEventListener('change', updateAllowPrevState);
+            input.addEventListener('change', updateAllowPrevLabel);
         });
-        updateAllowPrevState();
+        updateAllowPrevLabel();
     }());
     ",
     LSYii_ClientScript::POS_READY
@@ -413,30 +400,24 @@ App()->getClientScript()->registerScript(
         <div class="col-12 col-lg-6">
             <!-- Allow backward navigation: -->
             <div class="mb-3">
-                <label class=" form-label" for='allowprev'><?php eT("Allow backward navigation:"); ?></label>
+                <label class=" form-label" id="allowprev-label" for='allowprev'><?= CHtml::encode($bQuestionIndexEnabled ? $sShowPrevLabel : $sAllowPrevLabel) ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'allowprev',
                             'checkedOption' => $oSurvey->allowprev,
-                            'ariaLabel' => gT('Allow backward navigation'),
+                            'ariaLabel' => $bQuestionIndexEnabled ? $sShowPrevLabel : $sAllowPrevLabel,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->allowprev . " ᴵ")) : $optionsOnOff,
                             'htmlOptions' => array(
-                                'disabled' => $bDisableAllowPrev,
-                                'title' => $bDisableAllowPrev ? $sAllowPrevDisabledMessage : '',
+                                'aria-describedby' => 'allowprev-help',
                             )
                         )
                     );
                                                             ?>
-                    <?= CHtml::hiddenField(
-                        'allowprev',
-                        $oSurvey->allowprev,
-                        array(
-                            'id' => 'allowprev-disabled-value',
-                            'disabled' => !$bDisableAllowPrev,
-                        )
-                    ) ?>
+                </div>
+                <div id="allowprev-help" class="form-text <?= $bQuestionIndexEnabled ? '' : 'd-none' ?>">
+                    <?php eT('Participants can always go back using the question index while it is enabled.'); ?>
                 </div>
             </div>
             <!-- Participants may print answers -->
