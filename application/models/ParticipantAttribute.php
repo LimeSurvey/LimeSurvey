@@ -113,6 +113,7 @@ class ParticipantAttribute extends LSActiveRecord
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
+        $sodium->setEncryptionMethod(App()->getConfig('CPDB_encryption_method', 'B'));
         /* @var [] the attribute_id need encrypt and decrypt */
         $aParticipantAttributes = CHtml::listData(
             ParticipantAttributeName::model()->findAll(["select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'"]),
