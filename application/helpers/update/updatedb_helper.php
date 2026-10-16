@@ -3254,8 +3254,10 @@ function modifyPrimaryKey($sTablename, $aColumns)
 
 
 /**
+* Converts all tables and the database default to the given character set and collation (MySQL only)
 * @param string $sEncoding
 * @param string $sCollation
+* @return void
 */
 function fixMySQLCollations($sEncoding, $sCollation)
 {
@@ -3269,7 +3271,34 @@ function fixMySQLCollations($sEncoding, $sCollation)
         };
     }
     $sDatabaseName = getDBConnectionStringProperty('dbname');
-    Yii::app()->getDb()->createCommand("ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET {$sEncoding} COLLATE {$sCollation};");
+    try {
+        Yii::app()->getDb()->createCommand("ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET {$sEncoding} COLLATE {$sCollation};")->execute();
+    } catch (Exception $e) {
+        // Missing ALTER privilege on the database: Tables are created with explicit charset options anyway
+    };
+    if ($sEncoding === 'utf8mb4') {
+        fixMySQLConfigCharset();
+    }
+}
+
+/**
+* Replaces a MySQL connection charset of utf8 (utf8mb3) with utf8mb4 in config.php, if the file is writable.
+* @return void
+*/
+function fixMySQLConfigCharset()
+{
+    $sConfigFile = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
+    if (!is_file($sConfigFile) || !is_writable($sConfigFile)) {
+        return;
+    }
+    $sContent = file_get_contents($sConfigFile);
+    if ($sContent === false) {
+        return;
+    }
+    $sNewContent = preg_replace('/([\'"]charset[\'"]\s*=>\s*)([\'"])utf8(?:mb3)?\2/i', '$1$2utf8mb4$2', $sContent);
+    if ($sNewContent !== null && $sNewContent !== $sContent) {
+        file_put_contents($sConfigFile, $sNewContent, LOCK_EX);
+    }
 }
 
 /**
