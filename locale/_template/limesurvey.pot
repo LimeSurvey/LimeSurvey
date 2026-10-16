@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-10-16 08:20:24+00:00\n"
+"POT-Creation-Date: 2026-10-16 11:00:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3292,7 +3292,7 @@ msgstr ""
 #: application/controllers/admin/SurveysGroupsController.php:320
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:174
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:335
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:379
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:366
 #: application/views/themeOptions/options_core.php:5
 #: application/views/themeOptions/options_core.php:208
 #: application/views/themeOptions/options_core.php:266
@@ -14325,7 +14325,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:1256
 #: application/helpers/questionHelper.php:1501
 #: application/helpers/questionHelper.php:1621
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:166
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:153
 #: application/views/admin/surveymenu/_form.php:101
 #: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:19
 #: editor/src/helpers/getQuestionAttributesTitles.js:5
@@ -18683,35 +18683,35 @@ msgstr ""
 
 #: application/models/SurveysGroupsettings.php:453
 #: application/models/SurveysGroupsettings.php:455
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:264
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:296
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:251
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:283
 msgid "Show both"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:453
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:266
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:253
 msgid "Show group description only"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:453
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:265
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:252
 msgid "Show group name only"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:453
 #: application/models/SurveysGroupsettings.php:455
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:267
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:299
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:254
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:286
 msgid "Hide both"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:455
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:298
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:285
 msgid "Show question code only"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:455
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:297
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:284
 msgid "Show question number only"
 msgstr ""
 
@@ -18869,7 +18869,7 @@ msgid "Print answers"
 msgstr ""
 
 #: application/models/TemplateManifest.php:172
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:364
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:351
 #: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:333
 #: themes/survey/bootswatch/config.xml:302
 #: themes/survey/fruity_twentythree/config.xml:462
@@ -23851,88 +23851,88 @@ msgid "Settings for plugin %s"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:57
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:205
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:192
 #: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:46
 msgid "Enable “No answer” to configure this setting."
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:103
-msgid "Participants can always go back while the question index is enabled."
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:171
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:178
-msgid "Show “No answer”"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:189
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:196
-msgid "Preselect “No answer”"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:224
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:231
-msgid "Show “There are X questions in this survey”"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:257
-#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:61
-msgid "Group name and description"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:289
-#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:76
-msgid "Question number and code"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:309
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:316
-#: editor/src/components/WelcomeSettings/WelcomeSettings.js:66
-msgid "Show welcome screen"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:327
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:334
-msgid "Show progress bar"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:345
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:352
-msgid "Show question index and allow jumping"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:370
-msgid "Navigation delay (seconds):"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:396
-msgid "Automatically load end URL when survey complete:"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:403
-msgid "Automatically load end URL when survey complete"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:416
-msgid "Allow backward navigation:"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:423
 #: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:349
 msgid "Allow backward navigation"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:444
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:104
+msgid "Show “Previous” button"
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:158
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:165
+msgid "Show “No answer”"
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:176
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:183
+msgid "Preselect “No answer”"
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:211
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:218
+msgid "Show “There are X questions in this survey”"
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:244
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:61
+msgid "Group name and description"
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:276
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:76
+msgid "Question number and code"
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:296
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:303
+#: editor/src/components/WelcomeSettings/WelcomeSettings.js:66
+msgid "Show welcome screen"
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:314
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:321
+msgid "Show progress bar"
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:332
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:339
+msgid "Show question index and allow jumping"
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:357
+msgid "Navigation delay (seconds):"
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:383
+msgid "Automatically load end URL when survey complete:"
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:390
+msgid "Automatically load end URL when survey complete"
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:420
+msgid "Participants can always go back using the question index while it is enabled."
+msgstr ""
+
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:425
 msgid "Participants may print answers:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:451
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:432
 #: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:422
 msgid "Participants may print answers"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:463
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:474
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:444
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:455
 #: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:431
 #: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:437
 #: themes/survey/bootswatch/config.xml:287
@@ -23941,12 +23941,12 @@ msgstr ""
 msgid "Public statistics"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:467
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:448
 msgid "Public statistics:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:488
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:495
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:469
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:476
 msgid "Show graphs in public statistics:"
 msgstr ""
 
@@ -31869,6 +31869,12 @@ msgstr ""
 #: themes/survey/vanilla/views/layout_errors.twig:78
 #, gp-priority: high
 msgid "For further information please contact %s:"
+msgstr ""
+
+#. Shown to survey participants
+#: themes/survey/fruity_twentythree/views/layout_global.twig:100
+#, gp-priority: high
+msgid "Skip to main content"
 msgstr ""
 
 #. Shown to survey participants
