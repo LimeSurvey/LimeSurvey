@@ -1,17 +1,13 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
- <div class="col-lg-8">
+ <div class="{{ answerColumnClass|default('col-lg-8') }}">
     <div class="row">
-        <div class="col-lg-4 text-end">
-        </div>
-        <div class="col-lg-8 text-start">
+        <div class="col-12">
             {{question.answervalue}} - {{question.answeroption.answer}}
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 text-right">
-        </div>
-        <div class="col-md-8 text-left">
+        <div class="col-12">
             {{question.comment.answervalue|escape}}
         </div>
     </div>
