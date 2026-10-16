@@ -3185,7 +3185,7 @@ class SurveyAdministrationController extends LSBaseController
             } else {
                 $alertstring .= "<p class='mb-0'>" . gT("Please contact an administrator to perform a database integrity check or deactivate and reactivate your survey to reset the response database.") . "</p>";
             }
-            App()->setFlashMessage($alertstring, 'warning');
+            App()->setFlashMessage($alertstring, 'danger');
         }
 
         $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);

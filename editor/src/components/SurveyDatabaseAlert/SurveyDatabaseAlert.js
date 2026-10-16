@@ -48,7 +48,7 @@ export const SurveyDatabaseAlert = () => {
 
   return (
     <div
-      className="survey-database-alert generic-toast yellow-left-mark"
+      className="generic-toast yellow-left-mark toast-compact toast-fixed-icon"
       role="alert"
     >
       <ExclamationIcon />
