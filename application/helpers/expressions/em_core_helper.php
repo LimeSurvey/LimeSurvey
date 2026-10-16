@@ -1964,10 +1964,14 @@ class ExpressionManager
     /**
      * Clear cache of tailoring content.
      * When re-displaying same page, need to avoid generating double the amount of tailoring content.
+     * @param boolean $resetSubstitutionNum Restart the numbering of the tailoring ids
+     * @return void
      */
-    public function ClearSubstitutionInfo()
+    public function ClearSubstitutionInfo($resetSubstitutionNum = true)
     {
-        $this->substitutionNum = 0;
+        if ($resetSubstitutionNum) {
+            $this->substitutionNum = 0;
+        }
         $this->substitutionInfo = array(); // array of JavaScripts for managing each substitution
     }
 

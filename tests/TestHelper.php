@@ -307,6 +307,7 @@ class TestHelper extends TestCase
             ->where("stg_name=:stg_name", ['stg_name' => 'DBVersion'])
             ->queryScalar();
         $this->assertEquals($versionConfig['dbversionnumber'], $currentDbVersion, 'Version in db is same as updated to');
+        $this->assertNull(\getIncompleteDatabaseUpdateMarker(), 'Incomplete update marker is removed after a successful update');
 
         return $connection;
     }
