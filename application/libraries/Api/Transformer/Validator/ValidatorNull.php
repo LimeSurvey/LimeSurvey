@@ -23,7 +23,7 @@ class ValidatorNull implements ValidatorInterface
         $config[$this->name] = $this->normaliseConfigValue($config);
         $messages = [];
         if ($value === null && $config[$this->name] === false) {
-            $messages[] = $key . ' cannot be null';
+            $messages[] = sprintf(gT('%s cannot be null', 'unescaped'), $key);
         }
 
         return empty($messages) ? true : $messages;
