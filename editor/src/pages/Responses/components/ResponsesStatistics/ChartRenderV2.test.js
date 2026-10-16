@@ -4,7 +4,7 @@ import 'tests/mocks'
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { QT_F_ARRAY, QT_L_LIST, QT_R_RANKING } from 'helpers'
+import { QT_L_LIST, QT_R_RANKING } from 'helpers'
 import { renderWithProviders } from 'tests/testUtils'
 
 import { ChartRendererV2 } from './ChartRenderV2'
@@ -174,52 +174,5 @@ describe('ChartRendererV2 bar chart orientation', () => {
       'data-orientation',
       'horizontal'
     )
-  })
-
-  describe('array questions', () => {
-    const arrayData = [
-      {
-        key: 'SQ1',
-        title: 'Kitchen',
-        value: 5,
-        segments: [
-          { key: 'A1', title: 'Yes', value: 3, percentage: 60 },
-          { key: 'A2', title: 'No', value: 2, percentage: 40 },
-        ],
-      },
-    ]
-    const renderArrayCard = () =>
-      renderCard({
-        data: arrayData,
-        question: { type: QT_F_ARRAY, code: 'Q4', title: 'Array' },
-      })
-
-    test('has no orientation switch on the stacked chart', async () => {
-      await renderArrayCard()
-      expect(screen.getByTestId('stacked-bar-chart')).toBeInTheDocument()
-      expect(getChevron()).not.toBeInTheDocument()
-    })
-
-    test('switches the grouped chart, horizontal by default', async () => {
-      await renderArrayCard()
-      // Grouped bar chart.
-      await userEvent.click(
-        screen.getByTestId('toggleButton-chart-view-0-option-1')
-      )
-      expect(screen.getByTestId('grouped-bar-chart')).toHaveAttribute(
-        'data-orientation',
-        'horizontal'
-      )
-
-      await userEvent.click(getChevron())
-      await userEvent.click(
-        screen.getByRole('menuitemradio', { name: 'Vertical bar chart' })
-      )
-      expect(screen.getByTestId('grouped-bar-chart')).toHaveAttribute(
-        'data-orientation',
-        'vertical'
-      )
-      expect(getBarIcon()).toHaveClass('ri-bar-chart-grouped-line')
-    })
   })
 })

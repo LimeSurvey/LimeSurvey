@@ -49,9 +49,9 @@ import {
 import { QuestionComments } from './QuestionComments.js'
 import { CommentsModal } from './CommentsModal.js'
 import {
+  BarChartToggleIcon,
   ChartOrientationContext,
   ChartOrientationMenu,
-  createOrientationToggleIcon,
   ORIENTATION,
 } from './ChartOrientationMenu.js'
 
@@ -75,12 +75,6 @@ const VIEWS = [
     value: VIEW.BAR_CHART,
     label: () => t('Bar chart'),
     icon: () => <i className="ri-bar-chart-line"></i>,
-    orientationIcons: {
-      [ORIENTATION.VERTICAL]: () => <i className="ri-bar-chart-line"></i>,
-      [ORIENTATION.HORIZONTAL]: () => (
-        <i className="ri-bar-chart-horizontal-line"></i>
-      ),
-    },
     isAvailable: ({
       isArray,
       isArrayText,
@@ -143,21 +137,12 @@ const VIEWS = [
     value: VIEW.GROUPED_BAR,
     label: () => t('Grouped bar chart'),
     icon: () => <i className="ri-bar-chart-horizontal-line"></i>,
-    orientationIcons: {
-      [ORIENTATION.VERTICAL]: () => (
-        <i className="ri-bar-chart-grouped-line"></i>
-      ),
-      [ORIENTATION.HORIZONTAL]: () => (
-        <i className="ri-bar-chart-horizontal-line"></i>
-      ),
-    },
     isAvailable: ({ isArray, isArrayText, isDualScale }) =>
       isArray && !isArrayText && !isDualScale,
-    render: ({ data, valueType, orientation }) => (
+    render: ({ data, valueType }) => (
       <GroupedBarChart
         data={getSegmentedCategories(data)}
         valueType={valueType}
-        orientation={orientation}
       />
     ),
   },
@@ -315,15 +300,6 @@ const VIEWS = [
   },
 ]
 
-const ORIENTATION_TOGGLE_ICONS = Object.fromEntries(
-  VIEWS.filter(({ orientationIcons }) => orientationIcons).map(
-    ({ value, orientationIcons }) => [
-      value,
-      createOrientationToggleIcon(value, orientationIcons),
-    ]
-  )
-)
-
 const HIDDEN_CHARTS_STORAGE_KEY = 'responses-statistics-hidden-charts'
 
 const readHiddenCharts = () => {
@@ -440,7 +416,7 @@ export const ChartRendererV2 = ({
     getDefaultView(availableViews, viewContext, question?.chartType)
   )
   const [orientation, setOrientation] = useState(
-    isRanking || isArray ? ORIENTATION.HORIZONTAL : ORIENTATION.VERTICAL
+    isRanking ? ORIENTATION.HORIZONTAL : ORIENTATION.VERTICAL
   )
   const [isOrientationMenuOpen, setIsOrientationMenuOpen] = useState(false)
   const chartToggleRef = useRef(null)
@@ -453,11 +429,11 @@ export const ChartRendererV2 = ({
     .filter((option) => !isMenuOnly(option))
     .map(({ value, icon }) => ({
       value,
-      icon: ORIENTATION_TOGGLE_ICONS[value] ?? icon,
+      icon: value === VIEW.BAR_CHART ? BarChartToggleIcon : icon,
     }))
   const activeView =
     availableViews.find(({ value }) => value === view) ?? availableViews[0]
-  const activeOrientationIcons = activeView?.orientationIcons
+  const isBarChartActive = activeView?.value === VIEW.BAR_CHART
 
   const renderContext = {
     data,
@@ -567,10 +543,9 @@ export const ChartRendererV2 = ({
                 ref={chartToggleRef}
                 className="responses-statistics-chart-toggle"
               >
-                {activeOrientationIcons && isOrientationMenuOpen && (
+                {isBarChartActive && isOrientationMenuOpen && (
                   <ChartOrientationMenu
                     orientation={orientation}
-                    icons={activeOrientationIcons}
                     onSelect={handleOrientationSelect}
                     onClose={() => setIsOrientationMenuOpen(false)}
                     containerRef={chartToggleRef}
@@ -580,7 +555,7 @@ export const ChartRendererV2 = ({
                 <ChartOrientationContext.Provider
                   value={{
                     orientation,
-                    activeView: activeView?.value,
+                    isActive: isBarChartActive,
                     isOpen: isOrientationMenuOpen,
                     onToggleMenu: () =>
                       setIsOrientationMenuOpen((isOpen) => !isOpen),

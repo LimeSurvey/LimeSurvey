@@ -10,32 +10,30 @@ const ORIENTATION_OPTIONS = [
   {
     value: ORIENTATION.VERTICAL,
     label: () => t('Vertical bar chart'),
+    iconClassName: 'ri-bar-chart-line',
   },
   {
     value: ORIENTATION.HORIZONTAL,
     label: () => t('Horizontal bar chart'),
+    iconClassName: 'ri-bar-chart-horizontal-line',
   },
 ]
 
+export const getOrientationIconClassName = (orientation) =>
+  ORIENTATION_OPTIONS.find(({ value }) => value === orientation)
+    ?.iconClassName ?? ORIENTATION_OPTIONS[0].iconClassName
+
 export const ChartOrientationContext = createContext({
   orientation: ORIENTATION.VERTICAL,
-  activeView: null,
+  isActive: false,
   isOpen: false,
   onToggleMenu: () => {},
   chevronRef: null,
 })
 
-export const createOrientationToggleIcon = (view, icons) => {
-  const OrientationToggleIcon = () => (
-    <OrientationToggleIconContent view={view} icons={icons} />
-  )
-  return OrientationToggleIcon
-}
-
-const OrientationToggleIconContent = ({ view, icons }) => {
-  const { orientation, activeView, isOpen, onToggleMenu, chevronRef } =
+export const BarChartToggleIcon = () => {
+  const { orientation, isActive, isOpen, onToggleMenu, chevronRef } =
     useContext(ChartOrientationContext)
-  const isActive = activeView === view
 
   const handleClick = (event) => {
     event.preventDefault()
@@ -51,7 +49,7 @@ const OrientationToggleIconContent = ({ view, icons }) => {
 
   return (
     <span className="responses-statistics-bar-toggle-icon">
-      <span aria-hidden="true">{icons[orientation]()}</span>
+      <i className={getOrientationIconClassName(orientation)}></i>
       {isActive && (
         <span
           ref={chevronRef}
@@ -75,7 +73,6 @@ const OrientationToggleIconContent = ({ view, icons }) => {
 
 export const ChartOrientationMenu = ({
   orientation,
-  icons,
   onSelect,
   onClose,
   containerRef,
@@ -121,7 +118,7 @@ export const ChartOrientationMenu = ({
       <div className="responses-statistics-orientation-menu-title">
         {t('Chart orientation')}
       </div>
-      {ORIENTATION_OPTIONS.map(({ value, label }) => (
+      {ORIENTATION_OPTIONS.map(({ value, label, iconClassName }) => (
         <button
           key={value}
           type="button"
@@ -133,7 +130,7 @@ export const ChartOrientationMenu = ({
           })}
           onClick={() => handleSelect(value)}
         >
-          <span aria-hidden="true">{icons[value]()}</span>
+          <i className={iconClassName}></i>
           {label()}
         </button>
       ))}

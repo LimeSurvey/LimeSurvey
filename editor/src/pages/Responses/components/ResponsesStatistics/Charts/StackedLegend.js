@@ -2,13 +2,11 @@ import React from 'react'
 
 // Shared "Distribution by choice" legend used by the segmented charts
 // (stacked bar, dual-scale stacked bar and doughnut grid).
-export const StackedLegend = ({ segments = [], showTitle = true }) => (
+export const StackedLegend = ({ segments = [] }) => (
   <div className="responses-statistics-stacked-legend">
-    {showTitle && (
-      <span className="responses-statistics-stacked-legend-title">
-        {t('Distribution')}:
-      </span>
-    )}
+    <span className="responses-statistics-stacked-legend-title">
+      {t('Distribution')}:
+    </span>
     <div className="responses-statistics-stacked-legend-items">
       {segments.map((segment) => (
         <span
