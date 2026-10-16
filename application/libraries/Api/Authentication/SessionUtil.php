@@ -51,6 +51,8 @@ class SessionUtil
         foreach ($session as $k => $v) {
             $app->session[$k] = $v;
         }
+        // yii resets the language to defaultlang, so apply the user's language for API translations
+        $app->setLanguage($userLang);
         $app->user->setId($aUserData['uid']);
 
         return true;
