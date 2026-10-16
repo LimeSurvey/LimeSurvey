@@ -48,7 +48,7 @@ export const DateInput = ({
       <button
         type="button"
         className="date-range-input-icon"
-        aria-label={label}
+        aria-label={`${label}: ${t('Show in calendar')}`}
         onClick={() => value && onIconClick(value)}
       >
         <Calendar3 size={14} />

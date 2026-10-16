@@ -6,6 +6,8 @@ import {
   startOfDay,
   addDays,
   subDays,
+  max,
+  min,
 } from 'date-fns'
 
 import { DateInput } from './DateInput'
@@ -53,10 +55,17 @@ export const DateRangePicker = ({
     if (!days || days < 1) return
 
     const today = startOfDay(new Date())
-    const newRange =
+    const lower = startOfDay(minDate)
+    const upper = startOfDay(maxDate)
+    const clampDate = (date) => min([max([date, lower]), upper])
+    const rawRange =
       key === 'upTo'
         ? { from: subDays(today, days - 1), to: today }
         : { from: today, to: addDays(today, days - 1) }
+    const newRange = {
+      from: clampDate(rawRange.from),
+      to: clampDate(rawRange.to),
+    }
     setTempRange(newRange)
     setMonth(newRange.from)
   }
