@@ -169,6 +169,7 @@ export const ColumnFilter = ({ column, columnsFilters, setColumnsFilters }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <DateRangePicker
+          key={`${startDate}|${endDate}`}
           onUpdate={(value) => setFilterValue(value[0], dateRangeFilter)}
           startDate={startDate}
           endDate={endDate}

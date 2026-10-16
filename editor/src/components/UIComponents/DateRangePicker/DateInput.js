@@ -1,58 +1,63 @@
 import { useEffect, useState } from 'react'
 import { format, parse, isValid, isBefore, isAfter, startOfDay } from 'date-fns'
 import { Calendar3 } from 'react-bootstrap-icons'
+import classNames from 'classnames'
 
 export const DateInput = ({
   value,
-  inputFormat,
-  fallbackFormat,
+  dateFormat,
   minDate,
   maxDate,
   onCommit,
-  onIconClick,
   label,
 }) => {
-  const formatted = value ? format(value, inputFormat) : ''
+  const formatted = value ? format(value, dateFormat) : ''
   const [text, setText] = useState(formatted)
+  const [isInvalid, setIsInvalid] = useState(false)
 
-  useEffect(() => setText(formatted), [formatted])
+  useEffect(() => {
+    setText(formatted)
+    setIsInvalid(false)
+  }, [formatted])
 
   const commit = () => {
     if (text === formatted) return
+    if (!text.trim()) {
+      setText(formatted)
+      return
+    }
 
-    let parsed = parse(text, inputFormat, new Date())
-    if (!isValid(parsed)) parsed = parse(text, fallbackFormat, new Date())
+    const parsed = parse(text.trim(), dateFormat, new Date())
     const inBounds =
       isValid(parsed) &&
       !isBefore(parsed, startOfDay(minDate)) &&
       !isAfter(parsed, maxDate)
 
-    if (inBounds) {
-      onCommit(parsed)
-    } else {
-      setText(formatted)
-    }
+    setIsInvalid(!inBounds)
+    if (inBounds) onCommit(parsed)
   }
 
   return (
-    <div className="date-range-input">
+    <div
+      className={classNames('date-range-input', { 'is-invalid': isInvalid })}
+    >
       <input
         type="text"
         aria-label={label}
-        placeholder={inputFormat}
+        aria-invalid={isInvalid}
+        title={isInvalid ? t('Invalid date') : undefined}
+        placeholder={format(new Date(), dateFormat)}
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => {
+          setText(e.target.value)
+          setIsInvalid(false)
+        }}
         onBlur={commit}
         onKeyDown={(e) => e.key === 'Enter' && commit()}
       />
-      <button
-        type="button"
-        className="date-range-input-icon"
-        aria-label={`${label}: ${t('Show in calendar')}`}
-        onClick={() => value && onIconClick(value)}
-      >
+      <span className="date-range-input-icon">
         <Calendar3 size={14} />
-      </button>
+      </span>
     </div>
   )
 }

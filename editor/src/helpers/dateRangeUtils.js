@@ -11,20 +11,32 @@ import {
   endOfMonth,
   subMonths,
 } from 'date-fns'
+import * as dayPickerLocales from '@daypicker/react/locale'
 
 export const WEEK_STARTS_ON = 1
 export const EMPTY_DAY_COUNTS = { upTo: '', from: '' }
 
-export const getFormatters = (language) => {
-  const dateFormat = (options) => (date) =>
-    new Intl.DateTimeFormat(language, options).format(date)
+// LimeSurvey language codes that don't map directly to a DayPicker locale export.
+const LOCALE_ALIASES = {
+  'zh-Hans': 'zhCN',
+  'zh-Hant-HK': 'zhHK',
+  'zh-Hant-TW': 'zhTW',
+  'en': 'enUS',
+}
 
-  return {
-    formatCaption: dateFormat({ month: 'long', year: 'numeric' }),
-    formatWeekdayName: dateFormat({ weekday: 'short' }),
-    formatMonthDropdown: dateFormat({ month: 'long' }),
-    formatYearDropdown: dateFormat({ year: 'numeric' }),
-  }
+export const getDayPickerLocale = (language = 'en') => {
+  const code = language.replace(/-(informal|easy)$/, '')
+  const toExportName = (value) =>
+    value.replace(/-([a-z])/gi, (_, char) => char.toUpperCase())
+  const candidates = [
+    LOCALE_ALIASES[code],
+    toExportName(code),
+    LOCALE_ALIASES[code.split('-')[0]],
+    code.split('-')[0],
+  ]
+
+  const match = candidates.find((name) => name && dayPickerLocales[name])
+  return dayPickerLocales[match] ?? dayPickerLocales.enUS
 }
 
 export const getPresets = () => {

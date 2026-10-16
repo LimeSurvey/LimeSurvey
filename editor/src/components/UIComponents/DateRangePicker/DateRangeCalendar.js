@@ -1,9 +1,13 @@
 import { useMemo } from 'react'
 import { DayPicker } from '@daypicker/react'
-import { addMonths } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 
-import { WEEK_STARTS_ON, getFormatters } from 'helpers/dateRangeUtils'
+import { WEEK_STARTS_ON, getDayPickerLocale } from 'helpers/dateRangeUtils'
+
+const formatters = {
+  formatWeekdayName: (weekday, options, dateLib) =>
+    dateLib.format(weekday, 'ccc'),
+}
 
 export const DateRangeCalendar = ({
   selected,
@@ -14,32 +18,29 @@ export const DateRangeCalendar = ({
   maxDate,
 }) => {
   const { i18n } = useTranslation()
-  const language = i18n?.language || 'en'
-  const formatters = getFormatters(language)
-
-  const monthLabelFormat = new Intl.DateTimeFormat(language, {
-    month: 'short',
-    year: 'numeric',
-  })
-  const monthLabel = monthLabelFormat.format(month)
-  const nextMonthLabel = monthLabelFormat.format(addMonths(month, 1))
-
-  const calendarComponents = useMemo(
-    () => ({
-      Weeks: ({ children, ...props }) => (
-        <tbody {...props}>
-          <tr className="date-range-month-label">
-            <td colSpan={7}>{monthLabel}</td>
-          </tr>
-          {children}
-          <tr className="date-range-month-label">
-            <td colSpan={7}>{nextMonthLabel}</td>
-          </tr>
-        </tbody>
-      ),
-    }),
-    [monthLabel, nextMonthLabel]
+  const locale = useMemo(
+    () => getDayPickerLocale(i18n?.language),
+    [i18n?.language]
   )
+
+  const calendarComponents = useMemo(() => {
+    const monthLabelFormat = new Intl.DateTimeFormat(locale.code, {
+      month: 'short',
+      year: 'numeric',
+    })
+
+    return {
+      // eslint-disable-next-line no-unused-vars
+      MonthCaption: ({ calendarMonth, displayIndex, ...props }) => (
+        <>
+          <div {...props} />
+          <div className="date-range-month-label" aria-hidden="true">
+            {monthLabelFormat.format(calendarMonth.date)}
+          </div>
+        </>
+      ),
+    }
+  }, [locale.code])
 
   return (
     <div className="date-range-calendar">
@@ -48,6 +49,7 @@ export const DateRangeCalendar = ({
         captionLayout="dropdown"
         navLayout="around"
         showOutsideDays
+        locale={locale}
         weekStartsOn={WEEK_STARTS_ON}
         formatters={formatters}
         components={calendarComponents}

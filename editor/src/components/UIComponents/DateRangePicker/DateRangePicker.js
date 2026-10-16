@@ -24,7 +24,6 @@ export const DateRangePicker = ({
   maxDate = new Date('2050-04-17T15:30'),
   onUpdate = () => {},
   dateFormat = 'yyyy-MM-dd',
-  inputFormat = 'MMM d, yyyy',
 }) => {
   const initialRange = { from: toDate(startDate), to: toDate(endDate) }
   const [range, setRange] = useState(initialRange)
@@ -39,7 +38,8 @@ export const DateRangePicker = ({
     triggerRef,
     containerRef,
     clickRef,
-  } = useDateRangePopover()
+    handleKeyDown,
+  } = useDateRangePopover(() => handleCancel())
 
   const clampDate = (date) =>
     min([max([date, startOfDay(minDate)]), startOfDay(maxDate)])
@@ -89,9 +89,15 @@ export const DateRangePicker = ({
     setMonth(to)
   }
 
-  const handleCalendarSelect = (selected) => {
+  const handleCalendarSelect = (selected, triggerDate) => {
     setDayCounts(EMPTY_DAY_COUNTS)
-    setTempRange(selected ?? { from: undefined, to: undefined })
+    const isSelectingEnd = tempRange.from && !tempRange.to
+    // click outside an in-progress selection starts a new range.
+    setTempRange(
+      isSelectingEnd && selected
+        ? selected
+        : { from: triggerDate, to: undefined }
+    )
   }
 
   const handleConfirm = () => {
@@ -119,6 +125,7 @@ export const DateRangePicker = ({
   const handleCancel = () => {
     setTempRange(range)
     setDayCounts(EMPTY_DAY_COUNTS)
+    setMonth(range.from ?? new Date())
     closePicker()
   }
 
@@ -138,16 +145,27 @@ export const DateRangePicker = ({
   }
 
   return (
-    <div ref={triggerRef} className="date-range-picker">
-      <div className="date-range-placeholder" onClick={openPicker}>
+    <div className="date-range-picker">
+      <button
+        ref={triggerRef}
+        type="button"
+        className="date-range-placeholder"
+        aria-haspopup="dialog"
+        aria-expanded={showPicker}
+        onClick={openPicker}
+      >
         {range.from && format(range.from, dateFormat)} —{' '}
         {range.to && format(range.to, dateFormat)}
-      </div>
+      </button>
       {showPicker && (
         <div
           ref={containerRef}
+          role="dialog"
+          aria-label={t('Select date range')}
+          tabIndex={-1}
           className="date-range-container"
           style={{ top: position.top, left: position.left }}
+          onKeyDown={handleKeyDown}
         >
           <div ref={clickRef} className="date-range-component">
             <DateRangePresets
@@ -161,23 +179,19 @@ export const DateRangePicker = ({
                 <DateInput
                   label={t('Start date')}
                   value={tempRange.from}
-                  inputFormat={inputFormat}
-                  fallbackFormat={dateFormat}
+                  dateFormat={dateFormat}
                   minDate={minDate}
                   maxDate={maxDate}
                   onCommit={handleFromInput}
-                  onIconClick={setMonth}
                 />
                 <span>{t('until')}</span>
                 <DateInput
                   label={t('End date')}
                   value={tempRange.to}
-                  inputFormat={inputFormat}
-                  fallbackFormat={dateFormat}
+                  dateFormat={dateFormat}
                   minDate={minDate}
                   maxDate={maxDate}
                   onCommit={handleToInput}
-                  onIconClick={setMonth}
                 />
               </div>
               <DateRangeCalendar

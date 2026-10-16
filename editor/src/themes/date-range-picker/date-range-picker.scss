@@ -2,6 +2,12 @@
   background-color: $white;
 
   .date-range-placeholder {
+    display: block;
+    width: 100%;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
     padding: 10px;
     border: 1px solid $g-200;
     border-radius: $border-radius;
@@ -118,6 +124,10 @@
       border-color: $grape;
     }
 
+    &.is-invalid {
+      border-color: $error;
+    }
+
     input {
       flex: 1;
       min-width: 0;
@@ -140,10 +150,6 @@
     border-radius: 3px;
     background-color: $g-700;
     color: $white;
-
-    &:hover {
-      background-color: $g-750;
-    }
   }
 
   .date-range-calendar {
@@ -257,10 +263,6 @@
       .rdp-weekday {
         padding-top: 10px;
       }
-
-      .date-range-month-label td {
-        padding: 10px 0 4px 12px;
-      }
     }
 
     .rdp-weekday {
@@ -269,7 +271,8 @@
       color: $g-900;
     }
 
-    .date-range-month-label td {
+    .date-range-month-label {
+      padding: 10px 0 0 12px;
       font-size: 13px;
       color: $g-600;
     }
