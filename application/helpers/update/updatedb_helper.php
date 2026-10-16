@@ -42,6 +42,30 @@ use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
 */
 
 /**
+ * Deletes the file cache that the web application uses (tmp/runtime/cache), including its cached table schemas.
+ *
+ * Needed when the current application does not use that cache itself: the console sets YII_DEBUG,
+ * so its cache component is a CDummyCache and flushing it leaves the web side's stale schema in place.
+ *
+ * @see https://bugs.limesurvey.org/view.php?id=20772
+ * @return void
+ */
+function flushWebFileCache()
+{
+    if (Yii::app()->cache instanceof CFileCache) {
+        // Already flushed with the application cache
+        return;
+    }
+    try {
+        $fileCache = new CFileCache();
+        $fileCache->init();
+        $fileCache->flush();
+    } catch (\Throwable $t) {
+        Yii::log('Failed to flush the file cache: ' . $t->getMessage(), 'error', 'application.db.update');
+    }
+}
+
+/**
  * Executes all required database migrations from the given previous DB version up to the configured target DB version.
  *
  * @param int $iOldDBVersion The previous database version to upgrade from.
@@ -232,6 +256,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     if (method_exists(Yii::app()->cache, 'gc')) {
         Yii::app()->cache->gc();
     }
+    flushWebFileCache();
 
     // Inform superadmin about update
     $superadmins = User::model()->getSuperAdmins();
