@@ -41,10 +41,17 @@ export const DateRangePicker = ({
     clickRef,
   } = useDateRangePopover()
 
+  const clampDate = (date) =>
+    min([max([date, startOfDay(minDate)]), startOfDay(maxDate)])
+
   const applyPreset = (presetRange) => {
-    setTempRange(presetRange)
+    const clampedRange = {
+      from: clampDate(presetRange.from),
+      to: clampDate(presetRange.to),
+    }
+    setTempRange(clampedRange)
     setDayCounts(EMPTY_DAY_COUNTS)
-    setMonth(presetRange.from)
+    setMonth(clampedRange.from)
   }
 
   const handleDayCountChange = (key) => (e) => {
@@ -55,9 +62,6 @@ export const DateRangePicker = ({
     if (!days || days < 1) return
 
     const today = startOfDay(new Date())
-    const lower = startOfDay(minDate)
-    const upper = startOfDay(maxDate)
-    const clampDate = (date) => min([max([date, lower]), upper])
     const rawRange =
       key === 'upTo'
         ? { from: subDays(today, days - 1), to: today }
