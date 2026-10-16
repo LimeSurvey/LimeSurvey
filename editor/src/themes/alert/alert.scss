@@ -106,9 +106,26 @@
 
 .toast-constrained {
   min-width: 0;
-  max-width: 600px;
+  max-width: 800px;
 }
 
 .toast-below-top-bar {
   margin-top: $top-bar-height;
+}
+
+.error-left-mark {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    background-color: $error;
+    border-top-left-radius: 7px; // 1px less than parent
+    border-bottom-left-radius: 7px; // 1px less than parent
+    border-left: 1px $g-900 solid;
+  }
 }

@@ -1,6 +1,6 @@
 import parse from 'html-react-parser'
 
-import { ExclamationIcon } from 'components/icons'
+import { ExclamationMark } from 'components/icons'
 import { useAppState } from 'hooks'
 import { STATES } from 'helpers'
 import { format } from 'util'
@@ -48,10 +48,10 @@ export const SurveyDatabaseAlert = () => {
 
   return (
     <div
-      className="generic-toast yellow-left-mark toast-compact toast-fixed-icon"
+      className="generic-toast error-left-mark toast-compact toast-fixed-icon"
       role="alert"
     >
-      <ExclamationIcon />
+      <ExclamationMark />
       {getSurveyDatabaseAlertMessage(userDetail?.isSuperAdmin)}
     </div>
   )
