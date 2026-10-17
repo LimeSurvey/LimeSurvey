@@ -64,8 +64,10 @@ class RankingExportTest extends TestBaseClass
             // Invalid values must not break the export and render as empty ranks.
             '{"0":"SQ01","1":"SQ02"}',
             '[]',
-            json_encode(['SQ01', 2, 'SQ02']),
+            json_encode(['SQ01', 1.5, 'SQ02']),
             json_encode([['SQ01'], 'SQ02']),
+            // Integer codes are accepted as strings.
+            json_encode([2, 'SQ01']),
         ];
         foreach ($responses as $value) {
             SurveyDynamic::model(self::$surveyId)->insertRecords([
@@ -84,6 +86,7 @@ class RankingExportTest extends TestBaseClass
         for ($row = 3; $row <= 6; $row++) {
             $this->assertSame($emptyRow, $rows[$row]);
         }
+        $this->assertSame(['2', 'SQ01', '', ''], $rows[7]);
 
         $rows = $this->classicExport([$rankFieldName], 'full', 'long');
         $this->assertSame('Ranking question [Rank 1]', $rows[0][0]);
@@ -92,6 +95,7 @@ class RankingExportTest extends TestBaseClass
         for ($row = 3; $row <= 6; $row++) {
             $this->assertSame($emptyRow, $rows[$row]);
         }
+        $this->assertSame(['2', 'Some example subquestion', '', ''], $rows[7]);
 
         // REST API export.
         $answerCache = new SurveyAnswerCache();
@@ -114,6 +118,7 @@ class RankingExportTest extends TestBaseClass
         for ($row = 3; $row <= 6; $row++) {
             $this->assertSame($emptyRow, $pick($rows[$row]));
         }
+        $this->assertSame(['2', 'Some example subquestion', '', ''], $pick($rows[7]));
     }
 
     /**
