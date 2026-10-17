@@ -1,9 +1,38 @@
-.imageselect-horizontal {
-    width:90%;
-    margin: auto;
-    white-space: nowrap;
-    overflow: hidden;
-    position: relative;
+/*
+ * Image size and fit, set by the image settings (see answer.twig):
+ * --imageselect-width / --imageselect-height on the list, plus one imageselect-fit-* class.
+ * The img has the class fixed-width, so the general ".ls-answers img" rule of the survey themes doesn't apply.
+ */
+.imageselect-answers .imageselect-img {
+    max-width: 100%;
+    width: var(--imageselect-width, auto);
+    height: var(--imageselect-height, auto);
+    object-fit: contain;
+}
+
+.imageselect-answers.imageselect-fit-cover .imageselect-img {
+    object-fit: cover;
+}
+
+.imageselect-answers.imageselect-fit-fill .imageselect-img {
+    object-fit: fill;
+}
+
+/* Display columns: don't split an answer across two columns */
+.imageselect-answers > li {
+    break-inside: avoid;
+}
+
+/* Horizontal scroll: all answers in one row that can be scrolled */
+.imageselect-answers.imageselect-horizontal {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    overflow-x: auto;
+}
+
+.imageselect-answers.imageselect-horizontal > li {
+    flex: 0 0 auto;
 }
 
 .imageselect-list{
@@ -11,24 +40,11 @@
     padding: 4px;
 }
 
-.imageselect-horizontal .imageselect-list{
-    width: 2000%;
-    white-space: nowrap;
-    position: absolute;
-    overflow: visible;
-    left: 4px;
-    top: 4px;
-}
 .imageselect-list li.imageselect-listitem{
     padding: 0;
     margin: 6px 8px;
     border: 0;
     display: block;
-}
-
-.imageselect-horizontal li.imageselect-listitem{
-        display: inline-block;
-        height: 100%;
 }
 
 .imageselect-container{

@@ -307,6 +307,20 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       return { location_mapservice: { '': '100' } }
     }
 
+    // Fix height has a default in the question theme's config.xml (200), but the Input
+    // setting can't show defaults, so store it. The other image settings show their
+    // default via defaultValue in getDisplayAttributes.js, and fix_width's default (-1) means "not set".
+    if (
+      [
+        getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
+        getQuestionTypeInfo().MULTIPLE_CHOICE_IMAGE_SELECT.theme,
+      ].includes(questionThemeName)
+    ) {
+      return {
+        fix_height: { '': '200' },
+      }
+    }
+
     return {}
   }
 
