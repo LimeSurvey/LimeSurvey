@@ -15,7 +15,9 @@ class ExpressionQuestionForAllTest extends TestBaseClass
 
     /**
      * Activate the plugin, import and activate the survey
-     * (multiple choice FILTER and Multip, ranking Rank, all in one group)
+     * (multiple choice A123 in the first group, ranking C1x0 in the second group).
+     * The survey file must not be imported by other unit tests: getSubQuestions() caches the
+     * subquestions by survey id for the whole process, a reimport with the same id gets the old ones.
      */
     public static function setUpBeforeClass(): void
     {
@@ -36,7 +38,7 @@ class ExpressionQuestionForAllTest extends TestBaseClass
         $plugin->save();
         App()->getPluginManager()->loadPlugin('expressionQuestionForAll', $plugin->id);
 
-        $surveyFile = self::$surveysFolder . '/limesurvey_survey_rankingFilterHideShow.lss';
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_157447_array_filter_ranking_max_columns.lss';
         self::importSurvey($surveyFile);
         self::$testHelper->activateSurvey(self::$surveyId);
     }
@@ -98,19 +100,21 @@ class ExpressionQuestionForAllTest extends TestBaseClass
     public function testQuestionAttributes()
     {
         $this->startSurvey();
-        $multiple = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'parent_qid' => 0, 'title' => 'Multip']);
-        $ranking = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'parent_qid' => 0, 'title' => 'Rank']);
+        $multiple = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'parent_qid' => 0, 'title' => 'A123']);
+        $ranking = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'parent_qid' => 0, 'title' => 'C1x0']);
 
-        $this->assertSame((string) $multiple->qid, \LimeExpressionManager::ProcessString('{Multip.qid}'));
-        $this->assertSame((string) $multiple->gid, \LimeExpressionManager::ProcessString('{Multip.gid}'));
-        $this->assertSame('M', \LimeExpressionManager::ProcessString('{Multip.type}'));
-        $this->assertSame('N', \LimeExpressionManager::ProcessString('{Multip.mandatory}'));
-        $this->assertSame('0', \LimeExpressionManager::ProcessString('{Multip.gseq}'));
-        $this->assertSame('2', \LimeExpressionManager::ProcessString('{Multip.qseq}'));
+        $this->assertSame((string) $multiple->qid, \LimeExpressionManager::ProcessString('{A123.qid}'));
+        $this->assertSame((string) $multiple->gid, \LimeExpressionManager::ProcessString('{A123.gid}'));
+        $this->assertSame('M', \LimeExpressionManager::ProcessString('{A123.type}'));
+        $this->assertSame('N', \LimeExpressionManager::ProcessString('{A123.mandatory}'));
+        $this->assertSame('0', \LimeExpressionManager::ProcessString('{A123.gseq}'));
+        $this->assertSame('0', \LimeExpressionManager::ProcessString('{A123.qseq}'));
 
-        $this->assertSame((string) $ranking->qid, \LimeExpressionManager::ProcessString('{Rank.qid}'));
-        $this->assertSame('R', \LimeExpressionManager::ProcessString('{Rank.type}'));
-        $this->assertSame('1', \LimeExpressionManager::ProcessString('{Rank.qseq}'));
+        $this->assertSame((string) $ranking->qid, \LimeExpressionManager::ProcessString('{C1x0.qid}'));
+        $this->assertSame((string) $ranking->gid, \LimeExpressionManager::ProcessString('{C1x0.gid}'));
+        $this->assertSame('R', \LimeExpressionManager::ProcessString('{C1x0.type}'));
+        $this->assertSame('1', \LimeExpressionManager::ProcessString('{C1x0.gseq}'));
+        $this->assertSame('1', \LimeExpressionManager::ProcessString('{C1x0.qseq}'));
     }
 
     /**
@@ -119,8 +123,8 @@ class ExpressionQuestionForAllTest extends TestBaseClass
     public function testNoValue()
     {
         $this->startSurvey();
-        $this->assertSame('', \LimeExpressionManager::ProcessString('{Rank.value}'));
-        $this->assertSame('', \LimeExpressionManager::ProcessString('{Multip.shown}'));
+        $this->assertSame('', \LimeExpressionManager::ProcessString('{C1x0.value}'));
+        $this->assertSame('', \LimeExpressionManager::ProcessString('{A123.shown}'));
     }
 
     /**
@@ -128,8 +132,8 @@ class ExpressionQuestionForAllTest extends TestBaseClass
      */
     public function testNoPrefill()
     {
-        $this->startSurvey(['Multip' => 'Y']);
+        $this->startSurvey(['A123' => 'Y']);
         $this->assertArrayNotHasKey('', $_SESSION['responses_' . self::$surveyId]);
-        $this->assertSame('', \LimeExpressionManager::ProcessString('{Multip}'));
+        $this->assertSame('', \LimeExpressionManager::ProcessString('{A123}'));
     }
 }
