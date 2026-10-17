@@ -65,10 +65,11 @@ const SUBQUESTION_KINDS = {
 const MULTIPLE_CHOICE_TYPES = ['M', 'P']
 
 // Array types → row × column (+ optional value):
-//   arrayScale (F/H) → row (subquestion) × column (answer scale) (point choice/column)
-//   arrayDual  (1)   → row × two answer scales
-//   arrayGrid  (:/;) → row × column (both subquestions) + value (numbers/text)
 const ARRAY_KINDS = {
+  'A': 'arrayScale',
+  'B': 'arrayScale',
+  'C': 'arrayScale',
+  'E': 'arrayScale',
   'F': 'arrayScale',
   'H': 'arrayScale',
   '1': 'arrayDual',
@@ -95,7 +96,10 @@ const getQuestionKind = (type) => {
 }
 
 // Sub-question options for a given axis: scaleId 0 = rows (default), 1 = grid columns.
-const buildSubquestions = (question, language, scaleId = 0) =>
+// `byCode` picks the sub-question's code rather than its id as the value, for
+// the one place the backend matches on the code: a ranking's answer is stored
+// as the codes of the items, in rank order.
+const buildSubquestions = (question, language, scaleId = 0, byCode = false) =>
   (question.subquestions || [])
     .filter((sq) => sq.scaleId === scaleId)
     .map((sq) => {
@@ -103,7 +107,7 @@ const buildSubquestions = (question, language, scaleId = 0) =>
         localized(sq.l10ns, language, 'question')
       )
       return {
-        value: sq.qid,
+        value: byCode ? sq.title : sq.qid,
         label: sqText || sq.title,
       }
     })
@@ -121,16 +125,24 @@ const mapAnswers = (answers, language) =>
     }
   })
 
-// Some flat answer types keep their options built-in rather than stored in
+// 1..n, for the point-choice scales.
+const numberScale = (upTo) =>
+  Array.from({ length: upTo }, (unused, index) => ({
+    value: String(index + 1),
+    label: String(index + 1),
+  }))
+
+// Some answer types keep their options built-in rather than stored in
 // `question.answers`, so we generate them here (matching the editor's
 // condition-designer handlers). Returns null for types that use real answers.
 const synthesizeAnswerOptions = (type) => {
   switch (type) {
     case '5': // 5 point choice → 1..5
-      return [1, 2, 3, 4, 5].map((n) => ({
-        value: String(n),
-        label: String(n),
-      }))
+      return numberScale(5)
+    case 'A': // Array (5 point choice) → 1..5
+      return numberScale(5)
+    case 'B': // Array (10 point choice) → 1..10
+      return numberScale(10)
     case 'G': // Gender
       return [
         { value: 'F', label: t('Female (F)') },
@@ -140,6 +152,18 @@ const synthesizeAnswerOptions = (type) => {
       return [
         { value: 'Y', label: t('Yes') },
         { value: 'N', label: t('No') },
+      ]
+    case 'C': // Array (Yes/No/Uncertain)
+      return [
+        { value: 'Y', label: t('Yes') },
+        { value: 'N', label: t('No') },
+        { value: 'U', label: t('Uncertain') },
+      ]
+    case 'E': // Array (Increase/Same/Decrease)
+      return [
+        { value: 'I', label: t('Increase') },
+        { value: 'S', label: t('Same') },
+        { value: 'D', label: t('Decrease') },
       ]
     default:
       return null
@@ -185,10 +209,13 @@ const buildArray = (question, language, kind) => {
     }
   }
 
-  // arrayScale (F/H): columns are the question's answer scale.
+  // arrayScale: columns are the question's scale — stored as answers for F and
+  // H, built into the type for A, B, C and E.
   return {
     rows,
-    columns: mapAnswers(question.answers, language),
+    columns:
+      synthesizeAnswerOptions(question.type) ||
+      mapAnswers(question.answers, language),
   }
 }
 
@@ -197,7 +224,10 @@ const buildArray = (question, language, kind) => {
 // fallback to answers for the legacy shape); the number of rank positions is
 // capped by the `max_answers` attribute when set.
 const buildRanking = (question, language) => {
-  const subItems = buildSubquestions(question, language)
+  // Items are identified by their code: a ranking stores the codes of the
+  // ranked items, so that is what a filter has to compare. The answer-based
+  // fallback below already uses codes.
+  const subItems = buildSubquestions(question, language, 0, true)
   const options = subItems.length
     ? subItems
     : mapAnswers(question.answers, language)
