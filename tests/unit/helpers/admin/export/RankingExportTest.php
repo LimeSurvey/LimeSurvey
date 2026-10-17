@@ -11,6 +11,7 @@ use LimeSurvey\Models\Services\SurveyAnswerCache;
 use ls\tests\TestBaseClass;
 use Plugin;
 use Question;
+use QuestionL10n;
 use Survey;
 use SurveyActivator;
 use SurveyDynamic;
@@ -34,6 +35,7 @@ class RankingExportTest extends TestBaseClass
     {
         parent::setUpBeforeClass();
         Yii::import('application.helpers.admin.export.*', true);
+        Yii::app()->loadHelper('export');
         Yii::app()->loadHelper('admin.exportresults');
     }
 
@@ -119,6 +121,18 @@ class RankingExportTest extends TestBaseClass
             $this->assertSame($emptyRow, $pick($rows[$row]));
         }
         $this->assertSame(['2', 'Some example subquestion', '', ''], $pick($rows[7]));
+
+        // "Strip HTML code" applies to ranking item texts like to answer options.
+        $item = Question::model()->findByAttributes(['parent_qid' => $rankingQuestion->qid, 'title' => 'SQ03']);
+        QuestionL10n::model()->updateAll(
+            ['question' => '<p><strong>Third</strong> subquestion</p>'],
+            'qid = :qid',
+            [':qid' => $item->qid]
+        );
+        $rows = $this->classicExport([$rankFieldName], 'code', 'long', '1');
+        $this->assertSame('Third subquestion', $rows[1][0]);
+        $rows = $this->classicExport([$rankFieldName], 'code', 'long', '0');
+        $this->assertSame('<p><strong>Third</strong> subquestion</p>', $rows[1][0]);
     }
 
     /**
@@ -127,9 +141,10 @@ class RankingExportTest extends TestBaseClass
      * @param string[] $columns Selected columns
      * @param string $headingFormat
      * @param string $answerFormat
+     * @param string $stripHtmlCode "1" to strip HTML from answer texts
      * @return array<int, array<int, string>>
      */
-    private function classicExport(array $columns, $headingFormat, $answerFormat)
+    private function classicExport(array $columns, $headingFormat, $answerFormat, $stripHtmlCode = '0')
     {
         $options = new FormattingOptions();
         $options->selectedColumns = $columns;
@@ -138,6 +153,7 @@ class RankingExportTest extends TestBaseClass
         $options->responseCompletionState = 'all';
         $options->headingFormat = $headingFormat;
         $options->answerFormat = $answerFormat;
+        $options->stripHtmlCode = $stripHtmlCode;
         $options->output = 'file';
         $file = (new \ExportSurveyResultsService())->exportResponses(self::$surveyId, 'en', 'csv', $options);
         $csv = file_get_contents($file);

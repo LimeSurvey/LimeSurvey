@@ -55,6 +55,15 @@ class SurveyDao
             }
             $survey->answers[$aAnswer->question->qid][$aAnswer->scale_id][$aAnswer->code] = $answer;
         }
+        // Ranking items are subquestions: add their texts so ranked codes resolve like answer options
+        foreach (Question::getRankingItemTexts($intId, $lang) as $rankingQid => $itemTexts) {
+            foreach ($itemTexts as $code => $text) {
+                if (!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1) {
+                    $text = stripTagsFull($text);
+                }
+                $survey->answers[$rankingQid][0][$code] = $text;
+            }
+        }
         //Load language settings for requested language
         $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = ' . $intId . ' AND surveyls_language = \'' . $lang . '\';';
         $recordSet = Yii::app()->db->createCommand($sQuery)->query();

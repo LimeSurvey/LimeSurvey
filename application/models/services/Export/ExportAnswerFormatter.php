@@ -29,23 +29,19 @@ class ExportAnswerFormatter
     /** @var SurveyAnswerCache */
     private $answerCache;
 
-    /** @var string|null Language used to resolve ranking subquestion labels. */
-    private $language;
-
     public function __construct(SurveyAnswerCache $answerCache)
     {
         $this->answerCache = $answerCache;
     }
 
     /**
-     * Preload answer labels and set the language used by subsequent formatting.
+     * Load answer data for a survey into the shared cache.
      *
-     * @param int $surveyId Survey ID
-     * @param string $language Language code for answer and subquestion labels
+     * @param int $surveyId
+     * @param string $language
      */
     public function loadAnswers($surveyId, $language)
     {
-        $this->language = $language;
         $this->answerCache->load($surveyId, $language);
     }
 
@@ -56,7 +52,7 @@ class ExportAnswerFormatter
      * @param mixed $value Raw answer value from the database
      * @param string|null $type Question type character
      * @param string $fieldKey Full field key (e.g. "123X456X789SQ001")
-     * @param int|string|null $qid Question ID for answer or ranking subquestion lookup
+     * @param int|string|null $qid Question ID for answer label lookup
      * @return mixed Formatted display value
      */
     public function formatFullAnswer($value, $type, $fieldKey, $qid = null)
@@ -99,7 +95,7 @@ class ExportAnswerFormatter
         }
 
         if ($type === Question::QT_R_RANKING) {
-            return $this->formatRankingAnswer($value, $qid);
+            return $this->lookupAnswerLabel($qid, 0, $value) ?? $value;
         }
 
         if (
@@ -197,33 +193,6 @@ class ExportAnswerFormatter
     {
         $scaleId = (mb_substr($fieldKey, -1) === '0') ? 0 : 1;
         return $this->lookupAnswerLabel($qid, $scaleId, $value) ?? '';
-    }
-
-    /**
-     * Format a ranking answer as localized subquestion text.
-     *
-     * Ranking answers are stored as a single JSON array column per question
-     * (the ranked list of subquestion codes, ordered by rank), but by the time
-     * this is called $value is expected to be a single subquestion code for
-     * one rank position: ExportSurveyResultsService::expandRankingFieldMap() /
-     * TransformerOutputSurveyResponses::extractAnswers() decode that JSON and
-     * fold it out into one answer entry per rank before formatFullAnswer() is
-     * called. Ranking options are not rows in the answers table, so they are
-     * not resolved by the answer label cache; the title lookup is used
-     * instead. Non-string values (including one that slipped through as
-     * invalid/malformed JSON) are returned unchanged rather than passed to
-     * the title lookup.
-     *
-     * @param mixed $value A single ranked subquestion code
-     * @param int|string|null $qid
-     * @return mixed
-     */
-    private function formatRankingAnswer($value, $qid)
-    {
-        if ($qid === null || !is_string($value) || $value === '') {
-            return $value;
-        }
-        return Question::model()->getQuestionFromTitle((int)$qid, $value, $this->language) ?? $value;
     }
 
     /**

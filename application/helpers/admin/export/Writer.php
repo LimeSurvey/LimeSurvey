@@ -265,7 +265,7 @@ abstract class Writer implements IWriter
             $rankedCodes = Question::decodeRankedCodes($aResponse['Q' . $field['qid']] ?? null);
             return ($rankedCodes !== null && isset($rankedCodes[$field['aid'] - 1])) ? $rankedCodes[$field['aid'] - 1] : null;
         }
-        return $aResponse[$column] ?? null;
+        return $aResponse[$column];
     }
 
     /**

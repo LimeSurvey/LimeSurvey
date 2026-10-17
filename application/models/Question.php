@@ -443,6 +443,36 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * Returns the item texts of all ranking questions of a survey in one
+     * language, as [ranking question qid][item code] => item text.
+     *
+     * Ranking items are subquestions; exports use this to resolve ranked codes
+     * to their texts the same way as answer options.
+     *
+     * @param int $surveyId
+     * @param string $language
+     * @return array<int, array<string, string>>
+     */
+    public static function getRankingItemTexts($surveyId, $language)
+    {
+        $rows = Yii::app()->db->createCommand()
+            ->select('sq.parent_qid, sq.title, l10n.question')
+            ->from('{{questions}} sq')
+            ->join('{{questions}} q', 'q.qid = sq.parent_qid')
+            ->join('{{question_l10ns}} l10n', 'l10n.qid = sq.qid')
+            ->where(
+                'q.sid = :sid AND q.type = :type AND l10n.language = :language',
+                [':sid' => (int) $surveyId, ':type' => self::QT_R_RANKING, ':language' => $language]
+            )
+            ->queryAll();
+        $texts = [];
+        foreach ($rows as $row) {
+            $texts[(int) $row['parent_qid']][$row['title']] = $row['question'];
+        }
+        return $texts;
+    }
+
+    /**
      * Return the key=>value answer for a given $qid
      *
      * @staticvar array $questionCache
