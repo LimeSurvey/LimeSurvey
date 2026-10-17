@@ -10128,14 +10128,16 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 . "<td class='$errclass'>Q-" . $q['info']['qseq'] . "</td>"
                 . "<td><b>" . $mandatory;
 
-            if ($varNameErrorMsg == '') {
-                $editlink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
-                $questionRow .= $rootVarName;
-            } else {
-                $editlink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
-                $questionRow .= "<span class='highlighterror' title='" . CHtml::encode($varNameError['message']) . "' "
-                    . "onclick='window.open(\"$editlink\",\"_blank\")'>"
-                    . $rootVarName . "</span>";
+            $editlink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
+            $questionRow .= $rootVarName;
+            $varNameErrText = '';
+            if ($varNameErrorMsg != '') {
+                $varNameErrText = "<br><em class='badge bg-danger text-wrap text-start'>" . CHtml::encode($varNameError['message']) . "</em>";
+                if ($varNameError['qid'] != $qid) {
+                    // Duplicated variable name: Link to the question that uses it first
+                    $firstUseLink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
+                    $varNameErrText .= " [<a target='_blank' href='$firstUseLink'>" . sprintf(gT("Question ID %s"), $varNameError['qid']) . "</a>]";
+                }
             }
             $questionRow .= "</b>"
                 . "<br/>"
@@ -10143,6 +10145,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 . "<br/>"
                 . "<span class='question-type'>$typedesc [$type]</span> "
                 . "<span class='question-theme'>$themeDesc</span> "
+                . $varNameErrText
                 . $errText . " "
                 . $sWarningsText
                 . "</td>"
