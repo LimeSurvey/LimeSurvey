@@ -108,9 +108,9 @@
                 "editanswer",
                 "subquestions["~subquestion.qid~"]["~scale_id~"][subquestionl10n]["~language~"]",
                 "["~gT("Subquestion:", "js")~"]("~language~")",
-                subquestion.sid,
-                gid,
-                (subquestion.qid matches '/^\\d+$/') ? subquestion.qid : "",
+                subquestion.sid ?: surveyid,
+                question.gid ?: gid,
+                question.qid ?: "",
                 'editanswer'
             ) }}
         </div>

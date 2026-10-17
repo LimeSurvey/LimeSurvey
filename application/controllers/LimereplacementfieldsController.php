@@ -14,6 +14,29 @@
  */
 class LimeReplacementFieldsController extends LSBaseController
 {
+    /** @var array<int, int>|null group_order indexed by gid, for the survey of the requested group */
+    private $groupOrders = null;
+
+    /**
+     * Returns the group_order of all groups of the survey the given group belongs to, indexed by gid
+     *
+     * @param integer $gid
+     * @return array<int, int>
+     */
+    private function getGroupOrders($gid)
+    {
+        if ($this->groupOrders === null) {
+            $this->groupOrders = [];
+            $group = QuestionGroup::model()->findByPk($gid);
+            if ($group) {
+                foreach (QuestionGroup::model()->findAllByAttributes(['sid' => $group->sid]) as $surveyGroup) {
+                    $this->groupOrders[$surveyGroup->gid] = (int) $surveyGroup->group_order;
+                }
+            }
+        }
+        return $this->groupOrders;
+    }
+
     /**
      *
      * action used to provide the html editor with data for the
@@ -49,6 +72,17 @@ class LimeReplacementFieldsController extends LSBaseController
         list($replacementFields, $isInsertAnswerEnabled) = $this->getReplacementFields($fieldtype, $surveyid);
 
         if ($isInsertAnswerEnabled === true) {
+            if ($qid) {
+                $oQuestion = Question::model()->findByPk($qid);
+                if ($oQuestion && (int) $oQuestion->sid === $surveyid) {
+                    if (!empty($oQuestion->parent_qid)) {
+                        $qid = (int) $oQuestion->parent_qid;
+                    }
+                    if (empty($gid)) {
+                        $gid = (int) $oQuestion->gid;
+                    }
+                }
+            }
             //2: Get all other questions that occur before this question that are pre-determined answer types
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
 
@@ -147,6 +181,18 @@ class LimeReplacementFieldsController extends LSBaseController
                 return true;
 
             case 'editanswer':
+                // Subquestion/answer option rows of an unsaved question have no parent qid (and maybe no gid)
+                if (empty($qid)) {
+                    if (empty($gid)) {
+                        return true;
+                    }
+                    $groupOrders = $this->getGroupOrders($gid);
+                    if (!isset($groupOrders[$gid], $groupOrders[$question['gid']])) {
+                        return true;
+                    }
+                    return $groupOrders[$question['gid']] <= $groupOrders[$gid];
+                }
+                // no break
             case 'copyquestion':
             case 'editquestion':
             case 'translatequestion':
