@@ -355,6 +355,13 @@ const getDefaultView = (availableViews, viewContext, chartType) => {
   )
 }
 
+/**
+ * Render a question's statistics card with its available views and visibility
+ * controls. Visibility choices are remembered in local storage when possible.
+ *
+ * Multiple short text questions show a response list that fetches its own data,
+ * so an empty `data` array does not suppress that list.
+ */
 export const ChartRendererV2 = ({
   data,
   index = 0,

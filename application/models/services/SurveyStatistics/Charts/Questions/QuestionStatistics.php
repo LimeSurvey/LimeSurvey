@@ -52,6 +52,10 @@ class QuestionStatistics implements StatisticsChartInterface
     /** @var \Survey|null Survey model injected by the service to avoid a second fetch */
     private ?\Survey $survey = null;
 
+    /**
+     * Configure processors for supported question types, including placeholders
+     * for multiple short text questions whose responses are fetched by the client.
+     */
     public function __construct()
     {
         $this->factories = [
