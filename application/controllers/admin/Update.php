@@ -193,7 +193,10 @@ class Update extends DynamicSurveyCommonAction
 
                         case 'hard_lock':
                             $title = gT("Your update key has been locked!");
-                            $message = gT("This usually happens if the payment for your update key is still outstanding. Please check your invoices in your LimeSurvey account or contact LimeSurvey support.");
+                            $message = sprintf(
+                                gT("This usually happens if the payment for your update key is still outstanding. Please check your invoices in your LimeSurvey account or contact LimeSurvey support at %s."),
+                                'support@limesurvey.org'
+                            );
                             break;
 
                         case 'not_found':
