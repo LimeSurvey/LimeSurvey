@@ -752,7 +752,8 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Opens the modal to add dummy users
+     * Opens the modal to edit the roles of a user
+     * Only the roles the current user is allowed to assign are offered
      *
      * @return string|null
      * @throws CException
@@ -770,17 +771,20 @@ class UserManagementController extends LSBaseController
             );
         }
 
-        $aPermissionTemplates = Permissiontemplates::model()->findAll();
+        $aAssignableRoles = $userManager->getAssignableRoles();
         $aPossibleRoles = [];
-        array_walk(
-            $aPermissionTemplates,
-            function ($oPermissionRole) use (&$aPossibleRoles) {
-                $aPossibleRoles[$oPermissionRole->ptid] = $oPermissionRole->name;
+        foreach ($aAssignableRoles as $oPermissionRole) {
+            $aPossibleRoles[$oPermissionRole->ptid] = $oPermissionRole->name;
+        }
+        $aCurrentRoles = [];
+        $aLockedRoles = [];
+        foreach ($oUser->roles as $oRole) {
+            if (isset($aAssignableRoles[$oRole->ptid])) {
+                $aCurrentRoles[] = $oRole->ptid;
+            } else {
+                $aLockedRoles[] = $oRole->name;
             }
-        );
-        $aCurrentRoles = array_map(function ($oRole) {
-            return $oRole->ptid;
-        }, $oUser->roles);
+        }
 
         return $this->renderPartial(
             'partial/addrole',
@@ -788,6 +792,8 @@ class UserManagementController extends LSBaseController
                 'oUser' => $oUser,
                 'aPossibleRoles' => $aPossibleRoles,
                 'aCurrentRoles' => $aCurrentRoles,
+                'aLockedRoles' => $aLockedRoles,
+                'hasIndividualPermissions' => $userManager->hasIndividualGlobalPermissions(),
             ]
         );
     }
@@ -812,19 +818,16 @@ class UserManagementController extends LSBaseController
                 ]
             ]);
         }
-        $aUserRoleIds = Yii::app()->request->getPost('roleselector', []);
-        $results = [];
-
-        $clearUser = Permissiontemplates::model()->clearUser($iUserId);
-        foreach ($aUserRoleIds as $iUserRoleId) {
-            if ($iUserRoleId == '') {
-                continue;
-            }
-            $results[$iUserRoleId] = Permissiontemplates::model()->applyToUser($iUserId, $iUserRoleId);
-        }
-        if (empty($aUserRoleIds)) {
-            $results['clear'] = $clearUser;
-        }
+        $aUserRoleIds = array_map('intval', (array) Yii::app()->request->getPost('roleselector', []));
+        $aAssignableRoleIds = array_keys($userManager->getAssignableRoles());
+        /* Keep the current roles the managing user is not allowed to remove */
+        $aLockedRoleIds = array_diff(
+            array_map(function ($oRole) {
+                return $oRole->ptid;
+            }, $oUser->roles),
+            $aAssignableRoleIds
+        );
+        $userManager->setRoles(array_merge($aLockedRoleIds, array_intersect($aUserRoleIds, $aAssignableRoleIds)));
         return $this->renderPartial('partial/json', [
             "data" => [
                 'success' => true,
@@ -1430,12 +1433,15 @@ class UserManagementController extends LSBaseController
      */
     public function actionBatchApplyRoles()
     {
-        /* Need super admin roles */
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
-        $aUserRoleIds = Yii::app()->request->getPost('roleselector');
+        $aUserRoleIds = array_map('intval', (array) Yii::app()->request->getPost('roleselector', []));
+        $aAssignableRoleIds = array_keys((new UserManager(Yii::app()->user))->getAssignableRoles());
+        if (array_diff($aUserRoleIds, $aAssignableRoleIds)) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $aResults = [];
 
         foreach ($aItems as $sItem) {
@@ -1452,9 +1458,10 @@ class UserManagementController extends LSBaseController
                 $aResults[$sItem]['result'] = false;
                 $aResults[$sItem]['error'] = gT('You are not allowed to assign a role to this user.');
             } else {
-                foreach ($aUserRoleIds as $iUserRoleId) {
-                    $aResults[$sItem]['result'] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
-                }
+                $aCurrentRoleIds = array_map(function ($oRole) {
+                    return $oRole->ptid;
+                }, $model->roles);
+                $aResults[$sItem]['result'] = $userManager->setRoles(array_merge($aCurrentRoleIds, $aUserRoleIds));
             }
         }
 
