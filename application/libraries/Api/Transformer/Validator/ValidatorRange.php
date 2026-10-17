@@ -26,7 +26,7 @@ class ValidatorRange implements ValidatorInterface
             $range = $this->getRange($config);
             if (!empty($range)) {
                 if (!in_array($value, $range, true)) {
-                    $messages[] = $value . ' is not in the list.';
+                    $messages[] = sprintf(gT('%s is not in the list.', 'unescaped'), $value);
                 }
             }
         }
