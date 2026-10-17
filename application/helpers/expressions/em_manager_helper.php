@@ -7869,8 +7869,6 @@ class LimeExpressionManager
                     $qvalJS .= implode("", $valParts);
                     $qvalJS .= "}\n";
                     $valEqns[] = $qvalJS;
-
-                    $relParts[] = "  LEMval" . $arg['qid'] . "(sgqa);\n";
                 }
 
                 if ($arg['hidden']) {
@@ -7899,6 +7897,10 @@ class LimeExpressionManager
                 }
                 $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
                 $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                if (count($valParts) > 0) {
+                    // Validate only after the relevance status is set, otherwise a question that just became relevant is still seen as irrelevant
+                    $relParts[] = "  LEMval" . $arg['qid'] . "(sgqa);\n";
+                }
 
                 $relParts[] = "}\n";
                 if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0))) {
