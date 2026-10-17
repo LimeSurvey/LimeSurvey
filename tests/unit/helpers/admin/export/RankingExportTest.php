@@ -21,10 +21,10 @@ use Yii;
  * array column per question, but exports must show one column per rank like
  * in LimeSurvey 6.
  *
- * Both exporters are covered in a single test so the fixture is imported only
- * once: the import keeps the survey ID from the file, and getSubQuestions()
- * caches subquestions per survey ID for the whole PHP process, so a second
- * import of the same file in one PHPUnit run would see stale subquestions.
+ * The fixture is imported under its own survey ID: the import otherwise keeps
+ * the ID from the file, and getSubQuestions() caches subquestions per survey ID
+ * for the whole PHP process, so any earlier test importing the same file would
+ * leave stale subquestions behind.
  *
  * @group services
  */
@@ -46,7 +46,7 @@ class RankingExportTest extends TestBaseClass
         $plugin = Plugin::model()->findByAttributes(['name' => 'Authdb']);
         App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
 
-        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_rankingFilterHideShow.lss');
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_rankingFilterHideShow.lss', 1, 207130);
         $activator = new SurveyActivator(self::$testSurvey);
         $activator->activate();
         Yii::app()->db->schema->refresh();
