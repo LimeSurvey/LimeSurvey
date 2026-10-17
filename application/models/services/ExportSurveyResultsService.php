@@ -78,6 +78,9 @@ class ExportSurveyResultsService
     /** @var int Number of responses to fetch per chunk. */
     protected $chunkSize = 500;
 
+    /** @var string[] Names of the encrypted response columns of the exported survey. */
+    protected $encryptedAttributes = [];
+
     /** @var string 'long' for full translated answers, 'short' for raw answer codes. */
     protected $answerFormat = 'long';
 
@@ -271,6 +274,9 @@ class ExportSurveyResultsService
         // Generate field map for questions (do this once)
         // force_refresh = true to bypass stale session-cached field maps
         $fieldMap = createFieldMap($this->loadedSurvey, 'full', true, false, $language);
+        $this->encryptedAttributes = array_keys(array_filter($fieldMap, function ($field) {
+            return ($field['encrypted'] ?? 'N') === 'Y';
+        }));
         $this->transformerOutputSurveyResponses->fieldMap = $this->expandRankingFieldMap($fieldMap);
 
         // Pre-cache token table existence for the transformer
@@ -465,6 +471,7 @@ class ExportSurveyResultsService
         array $timingsData = [],
         array $timingFieldKeys = []
     ) {
+        $this->decryptResponses($chunk);
         $transformedResponses = $this->transformerOutputSurveyResponses->transform(
             $chunk,
             ['survey' => $this->loadedSurvey]
@@ -496,6 +503,28 @@ class ExportSurveyResultsService
         }
 
         return $transformedResponses;
+    }
+
+    /**
+     * Decrypts the encrypted response columns of a chunk of responses in place,
+     * so encrypted answers are exported as plain values.
+     *
+     * @param SurveyDynamic[] $chunk
+     * @return void
+     */
+    private function decryptResponses(array $chunk)
+    {
+        foreach ($chunk as $response) {
+            foreach ($this->encryptedAttributes as $attribute) {
+                if (!$response->hasAttribute($attribute)) {
+                    continue;
+                }
+                $value = $response->getAttribute($attribute);
+                if ($value !== null && $value !== '') {
+                    $response->setAttribute($attribute, \LSActiveRecord::decryptSingle($value));
+                }
+            }
+        }
     }
 
     /**
