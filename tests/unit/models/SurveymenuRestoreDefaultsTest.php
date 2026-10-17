@@ -16,14 +16,18 @@ class SurveymenuRestoreDefaultsTest extends TestBaseClass
         $db = \Yii::app()->db;
         $now = date('Y-m-d H:i:s');
 
+        // Explicit id: The PostgreSQL sequence is not advanced past the default menus inserted with fixed ids
+        $customMenuId = (int) $db->createCommand('SELECT MAX(id) FROM {{surveymenu}}')->queryScalar() + 1;
+        switchMSSQLIdentityInsert('surveymenu', true);
         $db->createCommand()->insert('{{surveymenu}}', [
+            'id' => $customMenuId,
             'name' => 'restoretestmenu',
             'title' => 'Restore test menu',
             'ordering' => 99,
             'level' => 0,
             'created_at' => $now,
         ]);
-        $customMenuId = (int) $db->getLastInsertID();
+        switchMSSQLIdentityInsert('surveymenu', false);
 
         $entry = [
             'title' => 'Restore test entry',
