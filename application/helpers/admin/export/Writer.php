@@ -247,13 +247,11 @@ abstract class Writer implements IWriter
     /**
      * Extracts the raw value for a single export column from a response row.
      *
-     * Per-rank-position ranking fields (registered dynamically by
-     * ExportSurveyResultsService::expandRankingColumns(), with their own
-     * 'qid'/'aid' but no column of their own) have no matching key in
-     * $aResponse: the response row only carries the base "Q{qid}" JSON column
-     * (the ranked list of subquestion codes, ordered by rank). For those
-     * fields, this decodes that JSON and returns the code at the field's rank
-     * position ('aid', 1-based) instead.
+     * A ranking question's per-rank fieldmap entries ("Q{qid}_S{sqid}") have no
+     * column of their own: the response row only carries the base "Q{qid}"
+     * JSON column (the ranked list of subquestion codes, ordered by rank). For
+     * those fields, this decodes that JSON and returns the code at the field's
+     * rank position ('aid', 1-based) instead.
      *
      * @param SurveyObj $oSurvey
      * @param array $aResponse

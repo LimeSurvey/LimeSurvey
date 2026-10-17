@@ -15,13 +15,13 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     public ?bool $hasTokenTable = null;
 
     /**
-     * Ranking questions to fold out into one answer entry per rank position.
+     * Ranking questions to fold out into one answer entry per rank.
      * Keyed by the raw response attribute ("Q{qid}", the JSON-array column
      * actually stored in the database), each entry: ['qid', 'gid', 'sid',
-     * 'columnCount']. Populated by
-     * ExportSurveyResultsService::expandRankingFieldMap().
+     * 'ranks' => [rank fieldmap key ("Q{qid}_S{sqid}") => rank (1-based)]].
+     * Populated by ExportSurveyResultsService::expandRankingFieldMap().
      *
-     * @var array<string, array{qid: int, gid: int, sid: int, columnCount: int}>
+     * @var array<string, array{qid: int, gid: int, sid: int, ranks: array<string, int>}>
      */
     public array $rankingFields = [];
 
@@ -103,9 +103,8 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
      * Ranking questions (listed in $this->rankingFields) are stored as a
      * single JSON array column (the ranked list of subquestion codes,
      * ordered by rank); those are decoded and folded out into one answer
-     * entry per rank position instead of a single entry holding the raw
-     * JSON, matching the columns registered by
-     * ExportSurveyResultsService::expandRankingFieldMap().
+     * entry per rank fieldmap key instead of a single entry holding the raw
+     * JSON. Invalid values leave every rank empty.
      *
      * @param array $attributes
      * @return array
@@ -130,27 +129,14 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
             } elseif (isset($this->rankingFields[$key])) {
                 $ranking = $this->rankingFields[$key];
                 $rankedCodes = $this->decodeRankedCodes($value);
-                if ($rankedCodes === null) {
-                    // Not decodable into a valid ranked-codes list: keep the raw
-                    // value as a single answer entry instead of folding it out.
-                    $answers[$key] = [
-                        "key"   => $key,
+                foreach ($ranking['ranks'] as $rankFieldKey => $rank) {
+                    $answers[$rankFieldKey] = [
+                        "key"   => $rankFieldKey,
                         "id"    => $ranking['qid'],
                         "gid"   => $ranking['gid'],
                         "sid"   => $ranking['sid'],
-                        "value" => $value,
+                        "value" => $rankedCodes[$rank - 1] ?? null,
                     ];
-                } else {
-                    for ($position = 1; $position <= $ranking['columnCount']; $position++) {
-                        $rankFieldKey = "{$key}_rank{$position}";
-                        $answers[$rankFieldKey] = [
-                            "key"   => $rankFieldKey,
-                            "id"    => $ranking['qid'],
-                            "gid"   => $ranking['gid'],
-                            "sid"   => $ranking['sid'],
-                            "value" => $rankedCodes[$position - 1] ?? null,
-                        ];
-                    }
                 }
             } elseif (!empty($this->fieldMap[$key]) && str_starts_with($key, "Q")) {
                 $answers[$key] = [
