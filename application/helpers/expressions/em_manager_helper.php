@@ -33,6 +33,7 @@ Yii::import('application.helpers.expressions.warnings.EMWarningBase', true);
 Yii::import('application.helpers.expressions.warnings.EMWarningInvalidComparison', true);
 Yii::import('application.helpers.expressions.warnings.EMWarningPlusOperator', true);
 Yii::import('application.helpers.expressions.warnings.EMWarningAssignment', true);
+Yii::import('application.helpers.expressions.warnings.EMWarningLaterQuestion', true);
 Yii::import('application.helpers.expressions.warnings.EMWarningHTMLBaker', true);
 Yii::app()->loadHelper('database');
 Yii::app()->loadHelper('frontend');
