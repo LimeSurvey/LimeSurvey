@@ -79,7 +79,7 @@ class SideBarWidget extends CWidget
     public function registerClientScript(): void
     {
         App()->getClientScript()->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/GridActionsWidget/assets/action_dropdown.js',
+            App()->getAssetManager()->publish(dirname(__FILE__, 2) . '/admin/grid/GridActionsWidget/assets/action_dropdown.js'),
             CClientScript::POS_END
         );
     }

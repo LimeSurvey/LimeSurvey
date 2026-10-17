@@ -238,7 +238,7 @@ class Question extends LSActiveRecord
                 $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
         }
-        if ($this->survey->isActive) {
+        if (!empty($this->survey) && $this->survey->isActive) {
             $aRules = array_merge($aRules, $this->rulesForActiveSurvey());
         }
         /* When question exist and are already set with title, allow keep bad title */
@@ -463,6 +463,7 @@ class Question extends LSActiveRecord
         Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(DefaultValue::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
+        SurveyURLParameter::removeTargetQuestions($questionsIds);
     }
 
     /**
@@ -480,6 +481,7 @@ class Question extends LSActiveRecord
         QuestionL10n::model()->deleteAll($qidsCriteria);
         QuotaMember::model()->deleteAll($qidsCriteria);
         Condition::model()->deleteAll($qidsCriteria);
+        SurveyURLParameter::removeTargetQuestions($ids);
 
         // delete defaultvalues and defaultvalueL10ns
         $oDefaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));

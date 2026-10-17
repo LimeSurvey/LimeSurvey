@@ -30,7 +30,6 @@ $_CONFIG = array(
 
     // (F)CKEditor types
         'files'   =>  "",
-        'flash'   =>  "swf",
         'images'  =>  "*img",
 
     // TinyMCE types

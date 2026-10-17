@@ -205,7 +205,7 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
 
 
     /**
-     * Delete all childs(Label and LabelL10n) for a LabelSet
+     * Delete all children (Label and LabelL10n) for a LabelSet
      */
     public function deleteLabelsForLabelSet()
     {

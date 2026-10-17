@@ -13,6 +13,7 @@ import {
   QT_SEMICOLON_ARRAY_TEXT,
   QT_T_LONG_FREE_TEXT,
   QT_U_HUGE_FREE_TEXT,
+  QT_VERTICAL_FILE_UPLOAD,
 } from 'helpers'
 import { ReactComponent as StackedBarIcon } from 'assets/icons/stacked-bar-icon.svg'
 import { ReactComponent as RadarIcon } from 'assets/icons/radar-icon.svg'
@@ -22,6 +23,7 @@ import { StatisticsTable } from './StatisticsTable.js'
 import { ArrayTextTable } from './ArrayTextTable.js'
 import { ResponsesGrid } from './ResponsesGrid.js'
 import { MultiNumericalGrid } from './MultiNumericalGrid.js'
+import { FileUploadTable } from './FileUploadTable.js'
 import {
   BarChart,
   PieChart,
@@ -40,6 +42,7 @@ import {
   CHOICE_QUESTION_TYPES,
   TEXT_QUESTION_TYPES,
   getSegmentedCategories,
+  statisticsGraphs,
   VALUE_TYPE,
   wrapTerm,
 } from './ChartsUtils.js'
@@ -66,8 +69,18 @@ const VIEWS = [
     value: VIEW.BAR_CHART,
     label: () => t('Bar chart'),
     icon: () => <i className="ri-bar-chart-line"></i>,
-    isAvailable: ({ isArray, isArrayText, isNumerical, isMultiNumerical }) =>
-      !isArray && !isArrayText && !isNumerical && !isMultiNumerical,
+    isAvailable: ({
+      isArray,
+      isArrayText,
+      isNumerical,
+      isMultiNumerical,
+      isFileUpload,
+    }) =>
+      !isArray &&
+      !isArrayText &&
+      !isNumerical &&
+      !isMultiNumerical &&
+      !isFileUpload,
     render: ({
       isRanking,
       data,
@@ -136,12 +149,14 @@ const VIEWS = [
       isArrayText,
       isNumerical,
       isMultiNumerical,
+      isFileUpload,
     }) =>
       !isRanking &&
       !isArray &&
       !isArrayText &&
       !isNumerical &&
-      !isMultiNumerical,
+      !isMultiNumerical &&
+      !isFileUpload,
     // Comment types keep only Bar/Table/Comments in the quick toggle; pie moves
     // to the meatball menu.
     menuOnly: ({ hasComments }) => hasComments,
@@ -227,12 +242,21 @@ const VIEWS = [
       isText,
       isDualScale,
       isMultiNumerical,
+      isFileUpload,
       valueType,
       surveyId,
       question,
       filters,
     }) =>
-      isArrayText || isText || isDualScale || isMultiNumerical ? (
+      isFileUpload ? (
+        <FileUploadTable
+          surveyId={surveyId}
+          questionId={question?.qid}
+          questionCode={question?.code}
+          fields={question?.fields}
+          filters={filters}
+        />
+      ) : isArrayText || isText || isDualScale || isMultiNumerical ? (
         <ArrayTextTable
           surveyId={surveyId}
           questionCode={question?.code}
@@ -283,8 +307,24 @@ const writeHiddenCharts = (hidden) => {
 const getStorageKey = (surveyId, chartId, index) =>
   `${surveyId ?? 'unknown'}:${chartId ?? `index-${index}`}`
 
-const getDefaultView = (availableViews, viewContext) => {
+// statistics_graphtype question setting → views it selects, first available wins.
+const GRAPH_VIEWS = {
+  [statisticsGraphs.BAR_CHART]: [VIEW.BAR_CHART],
+  [statisticsGraphs.PIE_CHART]: [VIEW.PIE_CHART],
+  [statisticsGraphs.RADAR]: [VIEW.RADAR],
+  [statisticsGraphs.LINE]: [VIEW.LINE],
+  [statisticsGraphs.POLAR_AREA]: [VIEW.POLAR_AREA],
+  [statisticsGraphs.DOUGHNUT_CHART]: [VIEW.DOUGHNUT, VIEW.STACKED_DOUGHNUT],
+  [statisticsGraphs.STACKED_BAR]: [VIEW.STACKED_BAR],
+  [statisticsGraphs.GROUPED_BAR]: [VIEW.GROUPED_BAR],
+  [statisticsGraphs.GRID]: [VIEW.GRID],
+  [statisticsGraphs.TABLE]: [VIEW.TABLE],
+  [statisticsGraphs.COMMENTS]: [VIEW.COMMENTS],
+}
+
+const getDefaultView = (availableViews, viewContext, chartType) => {
   const preferredViews = [
+    ...(GRAPH_VIEWS[chartType] ?? []),
     viewContext.isArrayText && VIEW.TABLE,
     viewContext.isArray && !viewContext.isArrayNumbers && VIEW.STACKED_BAR,
     viewContext.isNumerical && VIEW.TABLE,
@@ -313,6 +353,7 @@ export const ChartRendererV2 = ({
 }) => {
   const isNumerical = question?.type === QT_N_NUMERICAL
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
+  const isFileUpload = question?.type === QT_VERTICAL_FILE_UPLOAD
   const isGridable =
     isNumerical ||
     [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
@@ -337,6 +378,7 @@ export const ChartRendererV2 = ({
   const hasResponses =
     isArrayText ||
     isMultiNumerical ||
+    isFileUpload ||
     (data ?? []).reduce((sum, item) => sum + (item?.value || 0), 0) > 0
 
   const viewContext = {
@@ -349,6 +391,7 @@ export const ChartRendererV2 = ({
     isDualScale,
     isNumerical,
     isMultiNumerical,
+    isFileUpload,
     isGridable,
   }
 
@@ -356,7 +399,7 @@ export const ChartRendererV2 = ({
     ({ isAvailable }) => isAvailable?.(viewContext) ?? true
   )
   const [view, setView] = useState(() =>
-    getDefaultView(availableViews, viewContext)
+    getDefaultView(availableViews, viewContext, question?.chartType)
   )
   // `menuOnly` hides a view from the quick toggle (it stays in the meatball
   // menu); it can be a flag or a predicate of the view context.
@@ -379,6 +422,7 @@ export const ChartRendererV2 = ({
     isDualScale,
     isNumerical,
     isMultiNumerical,
+    isFileUpload,
     surveyId,
     chartId,
     question,
@@ -389,17 +433,14 @@ export const ChartRendererV2 = ({
 
   const storageKey = getStorageKey(surveyId, chartId, index)
   const [isHidden, setIsHidden] = useState(
-    () => !!readHiddenCharts()[storageKey]
+    () =>
+      readHiddenCharts()[storageKey] ??
+      String(question?.chartType) === String(statisticsGraphs.DONT_SHOW)
   )
 
+  // Stored both ways so showing a "Don't show" chart sticks.
   const setHidden = (hidden) => {
-    const hiddenCharts = readHiddenCharts()
-    if (hidden) {
-      hiddenCharts[storageKey] = true
-    } else {
-      delete hiddenCharts[storageKey]
-    }
-    writeHiddenCharts(hiddenCharts)
+    writeHiddenCharts({ ...readHiddenCharts(), [storageKey]: hidden })
     setIsHidden(hidden)
   }
 

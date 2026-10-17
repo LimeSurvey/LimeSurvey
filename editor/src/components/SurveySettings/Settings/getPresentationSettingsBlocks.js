@@ -83,16 +83,6 @@ export const getPresentationSettingsBlocks = () => ({
           noPermissionDisabled: true,
         },
       },
-      NO_KEYBOARD: {
-        keyPath: 'noKeyboard',
-        props: {
-          id: 'no-keyboard',
-          mainText: t('On-screen keyboard'),
-          childComponent: ToggleButtons,
-          toggleOptions: getOnOffOptions(ONOFF_BOOLEAN),
-          noPermissionDisabled: true,
-        },
-      },
       QUESTION_INDEX: {
         keyPath: 'questionIndex',
         props: {

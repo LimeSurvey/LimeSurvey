@@ -24,7 +24,6 @@ function initKcfinder()
     $sAllowedExtensions = implode(' ', array_map('trim', explode(',', (string) Yii::app()->getConfig('allowedresourcesuploads'))));
     $_SESSION['KCFINDER']['types'] = array(
         'files' => $sAllowedExtensions,
-        'flash' => $sAllowedExtensions,
         'images' => $sAllowedExtensions
     );
     if (!empty(App()->getSession()->cookieParams['domain'])) {
@@ -75,7 +74,7 @@ function initKcfinder()
                     $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl') . "/surveys/{$surveyid}/";
                 }
 
-                $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')) . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $surveyid . DIRECTORY_SEPARATOR;
+                $_SESSION['KCFINDER']['uploadDir'] = (realpath((string) Yii::app()->getConfig('uploaddir')) ?: Yii::app()->getConfig('uploaddir')) . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $surveyid . DIRECTORY_SEPARATOR;
             }
         } elseif (preg_match('/^edit:label/', (string) Yii::app()->session['FileManagerContext']) != 0) {
             $contextarray = explode(':', (string) Yii::app()->session['FileManagerContext'], 3);
@@ -84,7 +83,7 @@ function initKcfinder()
             if (Permission::model()->hasGlobalPermission('labelsets', 'update') && isset($labelid) && $labelid != '') {
                 $_SESSION['KCFINDER']['disabled'] = false;
                 $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl') . "/labels/{$labelid}/";
-                $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')) . DIRECTORY_SEPARATOR . 'labels' . DIRECTORY_SEPARATOR . $labelid . DIRECTORY_SEPARATOR;
+                $_SESSION['KCFINDER']['uploadDir'] = (realpath((string) Yii::app()->getConfig('uploaddir')) ?: Yii::app()->getConfig('uploaddir')) . DIRECTORY_SEPARATOR . 'labels' . DIRECTORY_SEPARATOR . $labelid . DIRECTORY_SEPARATOR;
             }
         }
     }

@@ -232,3 +232,7 @@
         url('./font-src/raleway/raleway-v28-latin-ext_latin-900italic.ttf') format('truetype'), /* Safari, Android, iOS */
         url('./font-src/raleway/raleway-v28-latin-ext_latin-900italic.svg#Raleway') format('svg'); /* Legacy iOS */
 }
+
+.font-raleway{
+    font-family: 'Raleway';
+}
