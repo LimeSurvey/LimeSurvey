@@ -492,6 +492,10 @@ class Surveymenu extends LSActiveRecord
             foreach ($basicMenues as $basicMenu) {
                 $oDB->createCommand()->insert("{{surveymenu}}", $basicMenu);
             }
+            // The default menus have fixed ids, so the PostgreSQL sequence must be moved past them
+            if ($oDB->getDriverName() === 'pgsql') {
+                $oDB->createCommand("SELECT setval(pg_get_serial_sequence('{{surveymenu}}', 'id'), (SELECT MAX(id) FROM {{surveymenu}}))")->execute();
+            }
             // Remove the entries of custom menus that no longer exist
             $oDB->createCommand()->delete(
                 '{{surveymenu_entries}}',

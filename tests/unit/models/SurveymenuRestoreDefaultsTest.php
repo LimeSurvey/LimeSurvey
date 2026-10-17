@@ -47,4 +47,20 @@ class SurveymenuRestoreDefaultsTest extends TestBaseClass
 
         $db->createCommand()->delete('{{surveymenu_entries}}', "name = 'restoretestdefault'");
     }
+
+    /**
+     * A new menu can be created after the default menus with fixed ids were restored.
+     */
+    public function testCreateMenuAfterRestoreDefaults()
+    {
+        $this->assertTrue(\Surveymenu::model()->restoreDefaults());
+
+        $menu = new \Surveymenu();
+        $menu->name = 'restoretestnewmenu';
+        $menu->title = 'Restore test new menu';
+        $menu->ordering = 99;
+        $menu->changed_at = date('Y-m-d H:i:s');
+        $this->assertTrue($menu->save(), print_r($menu->getErrors(), true));
+        $menu->delete();
+    }
 }
