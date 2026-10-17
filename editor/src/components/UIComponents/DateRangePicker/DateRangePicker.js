@@ -1,9 +1,21 @@
-import { useRef, useState } from 'react'
-import { DateRangePicker as ReactDateRangePicker } from 'react-date-range'
-import { format } from 'date-fns'
+import { useState } from 'react'
+import {
+  format,
+  isBefore,
+  isAfter,
+  startOfDay,
+  addDays,
+  subDays,
+  max,
+  min,
+} from 'date-fns'
 
-import { useElementClick } from 'hooks/useElementClick'
-import { Button } from '../Buttons'
+import { DateInput } from './DateInput'
+import { DateRangePresets } from './DateRangePresets'
+import { DateRangeCalendar } from './DateRangeCalendar'
+import { DateRangeActions } from './DateRangeActions'
+import { useDateRangePopover } from 'hooks/useDateRangePopover'
+import { EMPTY_DAY_COUNTS, toDate } from 'helpers/dateRangeUtils'
 
 export const DateRangePicker = ({
   startDate = null,
@@ -13,65 +25,116 @@ export const DateRangePicker = ({
   onUpdate = () => {},
   dateFormat = 'yyyy-MM-dd',
 }) => {
-  const [range, setRange] = useState([
-    {
-      startDate,
-      endDate,
-      key: 'selection',
-    },
-  ])
-  const [tempRange, setTempRange] = useState([
-    {
-      startDate,
-      endDate,
-      key: 'selection',
-    },
-  ])
+  const initialRange = { from: toDate(startDate), to: toDate(endDate) }
+  const [range, setRange] = useState(initialRange)
+  const [tempRange, setTempRange] = useState(initialRange)
+  const [month, setMonth] = useState(initialRange.from ?? new Date())
+  const [dayCounts, setDayCounts] = useState(EMPTY_DAY_COUNTS)
+  const {
+    showPicker,
+    openPicker,
+    closePicker,
+    position,
+    triggerRef,
+    containerRef,
+    clickRef,
+    handleKeyDown,
+  } = useDateRangePopover(() => handleCancel())
 
-  const [showPicker, setShowPicker] = useState(false)
-  const triggerRef = useRef(null)
-  const [pickerPosition, setPickerPosition] = useState({ top: 0, left: 0 })
-  const handleClickInside = () => {
-    setShowPicker(false)
+  const clampDate = (date) =>
+    min([max([date, startOfDay(minDate)]), startOfDay(maxDate)])
+
+  const applyPreset = (presetRange) => {
+    const clampedRange = {
+      from: clampDate(presetRange.from),
+      to: clampDate(presetRange.to),
+    }
+    setTempRange(clampedRange)
+    setDayCounts(EMPTY_DAY_COUNTS)
+    setMonth(clampedRange.from)
   }
 
-  const ref = useElementClick(handleClickInside)
+  const handleDayCountChange = (key) => (e) => {
+    const value = e.target.value
+    setDayCounts({ ...EMPTY_DAY_COUNTS, [key]: value })
 
-  const openPicker = () => {
-    const rect = triggerRef.current.getBoundingClientRect()
-    const positionOffset = 120
+    const days = parseInt(value, 10)
+    if (!days || days < 1) return
 
-    setPickerPosition({
-      top: rect.bottom - positionOffset,
-      left: rect.left - positionOffset,
-    })
-    setShowPicker(true)
+    const today = startOfDay(new Date())
+    const rawRange =
+      key === 'upTo'
+        ? { from: subDays(today, days - 1), to: today }
+        : { from: today, to: addDays(today, days - 1) }
+    const newRange = {
+      from: clampDate(rawRange.from),
+      to: clampDate(rawRange.to),
+    }
+    setTempRange(newRange)
+    setMonth(newRange.from)
+  }
+
+  const handleFromInput = (from) => {
+    const to = tempRange.to && isAfter(from, tempRange.to) ? from : tempRange.to
+    setTempRange({ from, to })
+    setDayCounts(EMPTY_DAY_COUNTS)
+    setMonth(from)
+  }
+
+  const handleToInput = (to) => {
+    const from =
+      !tempRange.from || isBefore(to, tempRange.from) ? to : tempRange.from
+    setTempRange({ from, to })
+    setDayCounts(EMPTY_DAY_COUNTS)
+    setMonth(to)
+  }
+
+  const handleCalendarSelect = (selected, triggerDate) => {
+    setDayCounts(EMPTY_DAY_COUNTS)
+    const isSelectingEnd = tempRange.from && !tempRange.to
+    // click outside an in-progress selection starts a new range.
+    setTempRange(
+      isSelectingEnd && selected
+        ? selected
+        : { from: triggerDate, to: undefined }
+    )
   }
 
   const handleConfirm = () => {
-    setRange(tempRange)
-    const startDate = format(tempRange[0]?.startDate, dateFormat)
-    const endDate = format(tempRange[0]?.endDate, dateFormat)
+    if (!tempRange?.from) {
+      handleClear()
+      return
+    }
 
-    onUpdate([{ startDate, endDate }])
-    setShowPicker(false)
+    const confirmedRange = {
+      from: tempRange.from,
+      to: tempRange.to ?? tempRange.from,
+    }
+    setRange(confirmedRange)
+    setTempRange(confirmedRange)
+
+    onUpdate([
+      {
+        startDate: format(confirmedRange.from, dateFormat),
+        endDate: format(confirmedRange.to, dateFormat),
+      },
+    ])
+    closePicker()
   }
 
   const handleCancel = () => {
     setTempRange(range)
-    setShowPicker(false)
+    setDayCounts(EMPTY_DAY_COUNTS)
+    setMonth(range.from ?? new Date())
+    closePicker()
   }
 
   const handleClear = () => {
-    setRange([
-      {
-        startDate: null,
-        endDate: null,
-        key: 'selection',
-      },
-    ])
+    setRange({ from: undefined, to: undefined })
+    setTempRange({ from: undefined, to: undefined })
+    setDayCounts(EMPTY_DAY_COUNTS)
 
-    setShowPicker(false)
+    closePicker()
     onUpdate([
       {
         startDate: null,
@@ -82,40 +145,68 @@ export const DateRangePicker = ({
   }
 
   return (
-    <div ref={triggerRef} className="date-range-picker">
-      <div className="date-range-placeholder" onClick={openPicker}>
-        {range[0]?.startDate && format(range[0]?.startDate, dateFormat)} —{' '}
-        {range[0]?.endDate && format(range[0]?.endDate, dateFormat)}
-      </div>
+    <div className="date-range-picker">
+      <button
+        ref={triggerRef}
+        type="button"
+        className="date-range-placeholder"
+        aria-haspopup="dialog"
+        aria-expanded={showPicker}
+        onClick={openPicker}
+      >
+        {range.from && format(range.from, dateFormat)} —{' '}
+        {range.to && format(range.to, dateFormat)}
+      </button>
       {showPicker && (
         <div
+          ref={containerRef}
+          role="dialog"
+          aria-label={t('Select date range')}
+          tabIndex={-1}
           className="date-range-container"
-          style={{
-            top: pickerPosition.top,
-            left: pickerPosition.left,
-          }}
+          style={{ top: position.top, left: position.left }}
+          onKeyDown={handleKeyDown}
         >
-          <div ref={ref} className="date-range-component">
-            <ReactDateRangePicker
-              editableDateInputs={true}
-              onChange={(item) => {
-                setTempRange([item.selection])
-              }}
-              ranges={tempRange}
-              minDate={minDate}
-              maxDate={maxDate}
-              scroll={{ enabled: true }}
+          <div ref={clickRef} className="date-range-component">
+            <DateRangePresets
+              tempRange={tempRange}
+              dayCounts={dayCounts}
+              onPresetSelect={applyPreset}
+              onDayCountChange={handleDayCountChange}
             />
-            <div className="action-buttons">
-              <Button variant="outline-secondary" onClick={handleClear}>
-                {t('Clear')}
-              </Button>
-              <Button variant="outline-secondary" onClick={handleCancel}>
-                {t('Cancel')}
-              </Button>
-              <Button variant="outline-info" onClick={handleConfirm}>
-                {t('Confirm')}
-              </Button>
+            <div className="date-range-main">
+              <div className="date-range-inputs">
+                <DateInput
+                  label={t('Start date')}
+                  value={tempRange.from}
+                  dateFormat={dateFormat}
+                  minDate={minDate}
+                  maxDate={maxDate}
+                  onCommit={handleFromInput}
+                />
+                <span>{t('until')}</span>
+                <DateInput
+                  label={t('End date')}
+                  value={tempRange.to}
+                  dateFormat={dateFormat}
+                  minDate={minDate}
+                  maxDate={maxDate}
+                  onCommit={handleToInput}
+                />
+              </div>
+              <DateRangeCalendar
+                selected={tempRange}
+                month={month}
+                onMonthChange={setMonth}
+                onSelect={handleCalendarSelect}
+                minDate={minDate}
+                maxDate={maxDate}
+              />
+              <DateRangeActions
+                onClear={handleClear}
+                onCancel={handleCancel}
+                onConfirm={handleConfirm}
+              />
             </div>
           </div>
         </div>
