@@ -48,6 +48,12 @@ import {
 } from './ChartsUtils.js'
 import { QuestionComments } from './QuestionComments.js'
 import { CommentsModal } from './CommentsModal.js'
+import {
+  BarChartToggleIcon,
+  ChartOrientationContext,
+  ChartOrientationMenu,
+  ORIENTATION,
+} from './ChartOrientationMenu.js'
 
 const VIEW = {
   BAR_CHART: 'bar-chart',
@@ -89,6 +95,7 @@ const VIEWS = [
       question,
       hasComments,
       onViewComments,
+      orientation,
     }) => {
       if (isRanking) {
         return <RankingBarChart data={data} title={question?.title} />
@@ -100,6 +107,7 @@ const VIEWS = [
           isImage={isImage}
           hasComments={hasComments}
           onViewComments={onViewComments}
+          orientation={orientation}
         />
       )
     },
@@ -401,15 +409,28 @@ export const ChartRendererV2 = ({
   const [view, setView] = useState(() =>
     getDefaultView(availableViews, viewContext, question?.chartType)
   )
+  const [orientation, setOrientation] = useState(ORIENTATION.VERTICAL)
+  const hasOrientationSwitch = !isRanking
+  const [isOrientationMenuOpen, setIsOrientationMenuOpen] = useState(false)
+  const chartToggleRef = useRef(null)
+  const orientationChevronRef = useRef(null)
   // `menuOnly` hides a view from the quick toggle (it stays in the meatball
   // menu); it can be a flag or a predicate of the view context.
   const isMenuOnly = ({ menuOnly }) =>
     typeof menuOnly === 'function' ? menuOnly(viewContext) : !!menuOnly
   const toggleOptions = availableViews
     .filter((option) => !isMenuOnly(option))
-    .map(({ value, icon }) => ({ value, icon }))
+    .map(({ value, icon }) => ({
+      value,
+      icon:
+        value === VIEW.BAR_CHART && hasOrientationSwitch
+          ? BarChartToggleIcon
+          : icon,
+    }))
   const activeView =
     availableViews.find(({ value }) => value === view) ?? availableViews[0]
+  const isBarChartActive =
+    hasOrientationSwitch && activeView?.value === VIEW.BAR_CHART
 
   const renderContext = {
     data,
@@ -428,6 +449,7 @@ export const ChartRendererV2 = ({
     question,
     hasComments,
     filters,
+    orientation,
     onViewComments: setCommentsAnswer,
   }
 
@@ -448,7 +470,13 @@ export const ChartRendererV2 = ({
   // so the user stays anchored to the chart they're viewing.
   const handleViewChange = (value) => {
     setView(value)
+    setIsOrientationMenuOpen(false)
     cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const handleOrientationSelect = (value) => {
+    setOrientation(value)
+    setIsOrientationMenuOpen(false)
   }
 
   const actions = [
@@ -508,14 +536,37 @@ export const ChartRendererV2 = ({
             )}
             <div>{activeView?.render(renderContext)}</div>
             {toggleOptions.length > 1 && (
-              <div className="responses-statistics-chart-toggle">
-                <ToggleButtons
-                  id={`chart-view-${index}`}
-                  value={activeView?.value}
-                  onChange={handleViewChange}
-                  toggleOptions={toggleOptions}
-                  theme="quick-access"
-                />
+              <div
+                ref={chartToggleRef}
+                className="responses-statistics-chart-toggle"
+              >
+                {isBarChartActive && isOrientationMenuOpen && (
+                  <ChartOrientationMenu
+                    orientation={orientation}
+                    onSelect={handleOrientationSelect}
+                    onClose={() => setIsOrientationMenuOpen(false)}
+                    containerRef={chartToggleRef}
+                    chevronRef={orientationChevronRef}
+                  />
+                )}
+                <ChartOrientationContext.Provider
+                  value={{
+                    orientation,
+                    isActive: isBarChartActive,
+                    isOpen: isOrientationMenuOpen,
+                    onToggleMenu: () =>
+                      setIsOrientationMenuOpen((isOpen) => !isOpen),
+                    chevronRef: orientationChevronRef,
+                  }}
+                >
+                  <ToggleButtons
+                    id={`chart-view-${index}`}
+                    value={activeView?.value}
+                    onChange={handleViewChange}
+                    toggleOptions={toggleOptions}
+                    theme="quick-access"
+                  />
+                </ChartOrientationContext.Provider>
               </div>
             )}
           </>
