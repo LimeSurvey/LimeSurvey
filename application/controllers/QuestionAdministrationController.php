@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\QuestionAggregateService;
+use LimeSurvey\Models\Services\SurveyDetailService;
 use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     PermissionDeniedException,
@@ -2229,6 +2230,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param array $aQids all question id's affected
      * @param int $iQuestionOrder the desired position
      * @param QuestionGroup $oQuestionGroup the desired QuestionGroup
+     * @return void
      * @throws CException
      */
     public static function changeMultipleQuestionPositionAndGroup($aQids, $iQuestionOrder, $oQuestionGroup)
@@ -2284,6 +2286,8 @@ class QuestionAdministrationController extends LSBaseController
                 $iQuestionOrder++;
             }
             $oTransaction->commit();
+            // updateAll() bypasses Question::afterSave(), so update the survey's lastmodified timestamp here
+            (new SurveyDetailService())->touchSurveyLastModified((int) $oQuestionGroup->sid);
         } catch (Exception $e) {
             $oTransaction->rollback();
         }
