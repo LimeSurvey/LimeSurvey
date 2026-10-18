@@ -732,10 +732,12 @@ class UserManagementController extends LSBaseController
             !(Permission::model()->hasGlobalPermission('users', 'update') &&
             Permission::model()->hasGlobalPermission('templates', 'update'))
         ) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors' => [gT("You do not have permission to access this page.")],
+                ]
+            ]);
         }
 
         $userId = Yii::app()->request->getPost('userid');
@@ -876,16 +878,14 @@ class UserManagementController extends LSBaseController
      * Imports users from an uploaded CSV or JSON file, creating new users or updating existing ones, then redirects to the user index after adding alert message.
      *
      * @param string $importFormat Format of the uploaded file; must be "csv" or "json".
-     * @return string The rendered error partial when the current user lacks create permission; or redirect.
+     * @return string Never returns normally; always ends with a redirect.
+     * @throws CHttpException If the current user lacks permission to create users.
      * @throws LSUserException If an unsupported $importFormat is provided.
      */
     public function actionImportUsers(string $importFormat = 'csv'): string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         if (!in_array($importFormat, ['csv', 'json'])) {
             throw new LSUserException(400, gT("Invalid format"));
