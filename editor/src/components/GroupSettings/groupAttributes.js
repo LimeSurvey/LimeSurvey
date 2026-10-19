@@ -25,7 +25,7 @@ export const getQuestionGroupAttributes = () => [
     component: Input,
     attributePath: 'randomizationGroup',
     props: {
-      labelText: t('Randomization group'),
+      labelText: t('Randomization group name'),
       dataTestId: 'group-randomization-group',
       noPermissionDisabled: true,
       type: 'textarea',
