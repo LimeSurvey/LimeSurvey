@@ -17,29 +17,31 @@ class SurveyLastModifiedTest extends TestBaseClass
     private const OLD_TIMESTAMP = '2000-01-01 00:00:00';
 
     /**
-     * Import the test survey.
-     *
-     * @return void
-     */
-    public static function setupBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-
-        $surveyFile = self::$surveysFolder . '/limesurvey_survey_594264_getGroupDescription.lss';
-        self::importSurvey($surveyFile);
-    }
-
-    /**
-     * Reset the survey's lastmodified timestamp and the per-request de-duplication of SurveyDetailService.
+     * Import a fresh copy of the test survey, so tests that delete groups or questions don't affect others,
+     * and reset its lastmodified timestamp and the per-request de-duplication of SurveyDetailService.
      *
      * @return void
      */
     public function setUp(): void
     {
         parent::setUp();
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_594264_getGroupDescription.lss');
         (new \ReflectionProperty(SurveyDetailService::class, 'lastTouched'))->setValue(null, []);
         Survey::model()->updateByPk(self::$surveyId, ['lastmodified' => self::OLD_TIMESTAMP]);
         Survey::model()->resetCache();
+    }
+
+    /**
+     * Delete the survey imported in setUp().
+     *
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        \Yii::app()->session['loginID'] = 1;
+        Survey::model()->deleteSurvey(self::$surveyId);
+        self::$testSurvey = null;
+        parent::tearDown();
     }
 
     /**

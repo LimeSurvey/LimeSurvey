@@ -2168,11 +2168,12 @@ class QuestionAdministrationController extends LSBaseController
                 $iQuestionOrder++;
             }
             $oTransaction->commit();
-            // updateAll() bypasses Question::afterSave(), so update the survey's lastmodified timestamp here
-            (new SurveyDetailService())->touchSurveyLastModified((int) $oQuestionGroup->sid);
         } catch (Exception $e) {
             $oTransaction->rollback();
+            return;
         }
+        // updateAll() bypasses Question::afterSave(), so update the survey's lastmodified timestamp here
+        (new SurveyDetailService())->touchSurveyLastModified((int) $oQuestionGroup->sid);
     }
 
     /**
