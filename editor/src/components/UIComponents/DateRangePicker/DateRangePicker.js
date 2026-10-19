@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { format } from 'util'
 import {
-  format,
+  format as formatDate,
   isBefore,
   isAfter,
   startOfDay,
@@ -32,6 +33,7 @@ export const DateRangePicker = ({
   const [dayCounts, setDayCounts] = useState(EMPTY_DAY_COUNTS)
   const [isFromValid, setIsFromValid] = useState(true)
   const [isToValid, setIsToValid] = useState(true)
+  const hasInvalidInput = !isFromValid || !isToValid
   const propsKey = `${initialRange.from?.getTime()}|${initialRange.to?.getTime()}`
   const [prevPropsKey, setPrevPropsKey] = useState(propsKey)
   if (propsKey !== prevPropsKey) {
@@ -85,6 +87,11 @@ export const DateRangePicker = ({
   }
 
   const handleFromInput = (from) => {
+    if (!from) {
+      setTempRange({ from: undefined, to: tempRange.to })
+      setDayCounts(EMPTY_DAY_COUNTS)
+      return
+    }
     const to = tempRange.to && isAfter(from, tempRange.to) ? from : tempRange.to
     setTempRange({ from, to })
     setDayCounts(EMPTY_DAY_COUNTS)
@@ -92,6 +99,11 @@ export const DateRangePicker = ({
   }
 
   const handleToInput = (to) => {
+    if (!to) {
+      setTempRange({ from: tempRange.from, to: undefined })
+      setDayCounts(EMPTY_DAY_COUNTS)
+      return
+    }
     const from =
       !tempRange.from || isBefore(to, tempRange.from) ? to : tempRange.from
     setTempRange({ from, to })
@@ -111,24 +123,25 @@ export const DateRangePicker = ({
   }
 
   const handleConfirm = () => {
-    if (!isFromValid || !isToValid) return
+    if (hasInvalidInput) return
 
-    if (!tempRange?.from) {
+    const from = tempRange.from ?? tempRange.to
+    if (!from) {
       handleClear()
       return
     }
 
     const confirmedRange = {
-      from: tempRange.from,
-      to: tempRange.to ?? tempRange.from,
+      from,
+      to: tempRange.to ?? from,
     }
     setRange(confirmedRange)
     setTempRange(confirmedRange)
 
     onUpdate([
       {
-        startDate: format(confirmedRange.from, dateFormat),
-        endDate: format(confirmedRange.to, dateFormat),
+        startDate: formatDate(confirmedRange.from, dateFormat),
+        endDate: formatDate(confirmedRange.to, dateFormat),
       },
     ])
     closePicker()
@@ -166,8 +179,8 @@ export const DateRangePicker = ({
         aria-expanded={showPicker}
         onClick={openPicker}
       >
-        {range.from && format(range.from, dateFormat)} —{' '}
-        {range.to && format(range.to, dateFormat)}
+        {range.from && formatDate(range.from, dateFormat)} —{' '}
+        {range.to && formatDate(range.to, dateFormat)}
       </button>
       {showPicker && (
         <div
@@ -208,6 +221,14 @@ export const DateRangePicker = ({
                   onValidityChange={setIsToValid}
                 />
               </div>
+              {hasInvalidInput && (
+                <div className="date-range-error" role="alert">
+                  {format(
+                    t('Invalid date, please use "%s" format.'),
+                    dateFormat
+                  )}
+                </div>
+              )}
               <DateRangeCalendar
                 selected={tempRange}
                 month={month}
@@ -220,6 +241,7 @@ export const DateRangePicker = ({
                 onClear={handleClear}
                 onCancel={handleCancel}
                 onConfirm={handleConfirm}
+                confirmDisabled={hasInvalidInput}
               />
             </div>
           </div>

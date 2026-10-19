@@ -28,7 +28,9 @@ export const DateInput = ({
   const commit = () => {
     if (text === formatted) return
     if (!text.trim()) {
-      setText(formatted)
+      setIsInvalid(false)
+      if (formatted) onCommit(undefined)
+      else setText('')
       return
     }
 
@@ -50,7 +52,7 @@ export const DateInput = ({
         type="text"
         aria-label={label}
         aria-invalid={isInvalid}
-        title={isInvalid ? t('Invalid date') : undefined}
+        title={isInvalid ? t('Invalid date.') : undefined}
         placeholder={format(new Date(), dateFormat)}
         value={text}
         onChange={(e) => {

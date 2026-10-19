@@ -1,6 +1,11 @@
 import { Button } from '../Buttons'
 
-export const DateRangeActions = ({ onClear, onCancel, onConfirm }) => (
+export const DateRangeActions = ({
+  onClear,
+  onCancel,
+  onConfirm,
+  confirmDisabled = false,
+}) => (
   <div className="action-buttons">
     <Button
       variant=""
@@ -21,6 +26,7 @@ export const DateRangeActions = ({ onClear, onCancel, onConfirm }) => (
         variant=""
         className="date-range-btn date-range-btn-confirm"
         onClick={onConfirm}
+        disabled={confirmDisabled}
       >
         {t('Confirm')}
       </Button>

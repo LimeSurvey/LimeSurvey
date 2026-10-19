@@ -139,6 +139,13 @@
     }
   }
 
+  .date-range-error {
+    padding: 0 16px 8px;
+    background-color: $g-100;
+    color: $error;
+    font-size: 13px;
+  }
+
   .date-range-input-icon {
     display: flex;
     align-items: center;
@@ -348,8 +355,13 @@
       background-color: $grape;
       color: $white;
 
-      &:hover {
+      &:hover:not(:disabled) {
         filter: brightness(0.92);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
       }
     }
   }
