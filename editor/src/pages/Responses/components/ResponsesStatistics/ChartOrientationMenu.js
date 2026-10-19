@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useRef } from 'react'
+import { useRef } from 'react'
+import { Dropdown } from 'react-bootstrap'
 import classNames from 'classnames'
 
 export const ORIENTATION = {
@@ -23,164 +24,84 @@ export const getOrientationIconClassName = (orientation) =>
   ORIENTATION_OPTIONS.find(({ value }) => value === orientation)
     ?.iconClassName ?? ORIENTATION_OPTIONS[0].iconClassName
 
-export const ChartOrientationContext = createContext({
-  orientation: ORIENTATION.VERTICAL,
-  isActive: false,
-  isOpen: false,
-  onToggleMenu: () => {},
-  chevronRef: null,
-})
+const MENU_GAP = 6
 
-export const BarChartToggleIcon = () => {
-  const { orientation, isActive, isOpen, onToggleMenu, chevronRef } =
-    useContext(ChartOrientationContext)
-
-  const handleClick = (event) => {
-    event.preventDefault()
-    event.stopPropagation()
-    onToggleMenu()
+const getMenuOffset = (dropdown, placement) => {
+  const group = dropdown?.closest('.btn-group')
+  if (!group) {
+    return [0, MENU_GAP]
   }
-
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      handleClick(event)
-    }
-  }
-
-  return (
-    <span className="responses-statistics-bar-toggle-icon">
-      <i className={getOrientationIconClassName(orientation)}></i>
-      {isActive && (
-        <span
-          ref={chevronRef}
-          role="button"
-          tabIndex={0}
-          aria-label={t('Chart orientation')}
-          aria-haspopup="menu"
-          aria-expanded={isOpen}
-          className="responses-statistics-bar-toggle-chevron"
-          onClick={handleClick}
-          onKeyDown={handleKeyDown}
-        >
-          <i
-            className={isOpen ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'}
-          ></i>
-        </span>
-      )}
-    </span>
-  )
+  const groupRect = group.getBoundingClientRect()
+  const dropdownRect = dropdown.getBoundingClientRect()
+  const skidding =
+    getComputedStyle(group).direction === 'rtl'
+      ? groupRect.left - dropdownRect.left
+      : groupRect.right - dropdownRect.right
+  const distance = placement.startsWith('top')
+    ? dropdownRect.top - groupRect.top
+    : groupRect.bottom - dropdownRect.bottom
+  return [skidding, distance + MENU_GAP]
 }
 
-export const ChartOrientationMenu = ({
-  orientation,
-  onSelect,
-  onClose,
-  containerRef,
-  chevronRef,
-}) => {
-  const menuRef = useRef(null)
-
-  useEffect(() => {
-    const handlePointerDown = (event) => {
-      if (!containerRef?.current?.contains(event.target)) {
-        onClose()
-      }
-    }
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        onClose()
-        chevronRef?.current?.focus()
-      }
-    }
-    const handleFocusOut = (event) => {
-      if (
-        event.relatedTarget &&
-        !containerRef?.current?.contains(event.relatedTarget)
-      ) {
-        onClose()
-      }
-    }
-    const container = containerRef?.current
-
-    document.addEventListener('mousedown', handlePointerDown)
-    document.addEventListener('keydown', handleKeyDown)
-    container?.addEventListener('focusout', handleFocusOut)
-    menuRef.current?.querySelector('[aria-checked="true"]')?.focus()
-
-    return () => {
-      document.removeEventListener('mousedown', handlePointerDown)
-      document.removeEventListener('keydown', handleKeyDown)
-      container?.removeEventListener('focusout', handleFocusOut)
-    }
-  }, [])
-
-  const handleSelect = (value) => {
-    onSelect(value)
-    chevronRef?.current?.focus()
-  }
-
-  const handleMenuKeyDown = (event) => {
-    const items = [
-      ...(menuRef.current?.querySelectorAll('[role="menuitemradio"]') ?? []),
-    ]
-    const index = items.indexOf(document.activeElement)
-    const focusItem = (nextIndex) =>
-      items[(nextIndex + items.length) % items.length]?.focus()
-
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault()
-        focusItem(index < 0 ? 0 : index + 1)
-        break
-      case 'ArrowUp':
-        event.preventDefault()
-        focusItem(index < 0 ? items.length - 1 : index - 1)
-        break
-      case 'Home':
-        event.preventDefault()
-        focusItem(0)
-        break
-      case 'End':
-        event.preventDefault()
-        focusItem(items.length - 1)
-        break
-      case 'Tab':
-        chevronRef?.current?.focus()
-        onClose()
-        break
-      default:
-        break
-    }
+export const ChartOrientationMenu = ({ orientation, onSelect }) => {
+  const dropdownRef = useRef(null)
+  const popperConfig = {
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: ({ placement }) =>
+            getMenuOffset(dropdownRef.current, placement),
+        },
+      },
+    ],
   }
 
   return (
-    <div
-      ref={menuRef}
-      className="responses-statistics-orientation-menu"
-      role="menu"
-      aria-label={t('Chart orientation')}
-      onKeyDown={handleMenuKeyDown}
+    <Dropdown
+      ref={dropdownRef}
+      drop="up"
+      align="end"
+      className="responses-statistics-orientation-dropdown"
     >
-      <div className="responses-statistics-orientation-menu-title">
-        {t('Chart orientation')}
-      </div>
-      {ORIENTATION_OPTIONS.map(({ value, label, iconClassName }) => (
-        <button
-          key={value}
-          type="button"
-          role="menuitemradio"
-          aria-checked={value === orientation}
-          tabIndex={-1}
-          className={classNames('responses-statistics-orientation-menu-item', {
-            'responses-statistics-orientation-menu-item--selected':
-              value === orientation,
-          })}
-          onClick={() => handleSelect(value)}
+      <Dropdown.Toggle
+        variant="light"
+        aria-label={t('Chart orientation')}
+        className="responses-statistics-orientation-toggle"
+      >
+        <i className="ri-arrow-down-s-line"></i>
+      </Dropdown.Toggle>
+      <Dropdown.Menu
+        popperConfig={popperConfig}
+        role="menu"
+        aria-label={t('Chart orientation')}
+        className="responses-statistics-orientation-menu"
+      >
+        <Dropdown.Header
+          aria-hidden="true"
+          className="responses-statistics-orientation-menu-title"
         >
-          <i className={iconClassName}></i>
-          {label()}
-        </button>
-      ))}
-    </div>
+          {t('Chart orientation')}
+        </Dropdown.Header>
+        {ORIENTATION_OPTIONS.map(({ value, label, iconClassName }) => (
+          <Dropdown.Item
+            key={value}
+            role="menuitemradio"
+            aria-checked={value === orientation}
+            className={classNames(
+              'responses-statistics-orientation-menu-item',
+              {
+                'responses-statistics-orientation-menu-item--selected':
+                  value === orientation,
+              }
+            )}
+            onClick={() => onSelect(value)}
+          >
+            <i className={iconClassName}></i>
+            {label()}
+          </Dropdown.Item>
+        ))}
+      </Dropdown.Menu>
+    </Dropdown>
   )
 }

@@ -235,6 +235,22 @@ export const getUnionSegments = (data = []) => {
 export const shouldRenderImage = (isImage, item) =>
   isImage && item?.key !== 'NoAnswer' && !NON_ANSWER_KEYS.includes(item?.key)
 
+export const LABEL_CHAR_WIDTH = 7
+
+export const getCategoryAxisWidth = (
+  data = [],
+  { isImage = false, maxWidth, imageWidth = 0, gap = 0 }
+) => {
+  const textLengths = data
+    .filter((item) => !shouldRenderImage(isImage, item))
+    .map((item) => String(item?.title ?? '').length)
+  const textWidth = textLengths.length
+    ? Math.min(maxWidth, Math.max(...textLengths) * LABEL_CHAR_WIDTH + gap)
+    : 0
+  const hasImages = textLengths.length < data.length
+  return isImage && hasImages ? Math.max(textWidth, imageWidth) : textWidth
+}
+
 export const getLabelInterval = (count) => {
   if (count > 20) return 2
   if (count > 10) return 1

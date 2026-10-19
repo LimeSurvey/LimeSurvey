@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import classNames from 'classnames'
 import {
   BarChart as RechartsBarChart,
@@ -22,16 +22,43 @@ import {
   getBarChartMinWidth,
   getLabelInterval,
   getMetricDataKey,
+  getCategoryAxisWidth,
+  shouldRenderImage,
   VALUE_TYPE,
 } from '../ChartsUtils'
 import { ORIENTATION } from '../ChartOrientationMenu'
 
+const CHART_HEIGHT = 400
 const HORIZONTAL_ROW_HEIGHT = 50
 const HORIZONTAL_IMAGE_SIZE = 64
 const HORIZONTAL_IMAGE_ROW_HEIGHT = HORIZONTAL_IMAGE_SIZE + 16
+const HORIZONTAL_IMAGE_AXIS_WIDTH = HORIZONTAL_IMAGE_SIZE + 16
 const HORIZONTAL_AXIS_HEIGHT = 30
 const HORIZONTAL_LABEL_WIDTH = 150
 const HORIZONTAL_BAR_MAX_SIZE = 32
+const HORIZONTAL_LABEL_GAP = 8
+const HORIZONTAL_LABEL_LINE_HEIGHT = 16
+
+const WrappedTick = ({ x, y, payload, width, height }) => (
+  <foreignObject
+    x={x - width + HORIZONTAL_LABEL_GAP}
+    y={y - height / 2}
+    width={width - HORIZONTAL_LABEL_GAP}
+    height={height}
+  >
+    <div className="responses-statistics-bar-label">
+      <span
+        className="responses-statistics-chart-labels"
+        title={payload?.value}
+        style={{
+          WebkitLineClamp: Math.floor(height / HORIZONTAL_LABEL_LINE_HEIGHT),
+        }}
+      >
+        {payload?.value}
+      </span>
+    </div>
+  </foreignObject>
+)
 
 export const BarChart = ({
   data,
@@ -56,22 +83,44 @@ export const BarChart = ({
     : HORIZONTAL_ROW_HEIGHT
   const chartHeight = isHorizontal
     ? Math.max(data.length, 1) * rowHeight + HORIZONTAL_AXIS_HEIGHT
-    : 400
+    : CHART_HEIGHT
+  const isScrollableY = scrollable && isHorizontal && chartHeight > CHART_HEIGHT
+  const isScrollable = Boolean(chartMinWidth) || isScrollableY
+
+  const labelAxisWidth = getCategoryAxisWidth(data, {
+    isImage,
+    maxWidth: HORIZONTAL_LABEL_WIDTH,
+    imageWidth: HORIZONTAL_IMAGE_AXIS_WIDTH,
+    gap: HORIZONTAL_LABEL_GAP,
+  })
+
+  const imageItemsByTitle = useMemo(() => {
+    if (!isImage) {
+      return null
+    }
+    const items = new Map()
+    data.forEach((row) => {
+      if (!items.has(row.title)) {
+        items.set(row.title, row)
+      }
+    })
+    return items
+  }, [data, isImage])
 
   const findImageItem = (props) =>
-    isImage ? data.find((row) => row.title === props.payload?.value) : null
+    imageItemsByTitle?.get(props.payload?.value) ?? null
 
-  const metricAxisProps = {
-    unit: isPercentage ? '%' : undefined,
-  }
+  const metricUnit = isPercentage ? '%' : undefined
 
   return (
     <div
       className={classNames('responses-statistics-bar-chart-viewport', {
         'responses-statistics-bar-chart-viewport--scrollable': chartMinWidth,
+        'responses-statistics-bar-chart-viewport--scrollable-y': isScrollableY,
       })}
-      tabIndex={chartMinWidth ? 0 : undefined}
-      aria-label={chartMinWidth ? t('Scrollable chart') : undefined}
+      style={isScrollableY ? { maxHeight: CHART_HEIGHT } : undefined}
+      tabIndex={isScrollable ? 0 : undefined}
+      aria-label={isScrollable ? t('Scrollable chart') : undefined}
     >
       <div
         className={classNames('responses-statistics-bar-chart', {
@@ -96,32 +145,35 @@ export const BarChart = ({
                   type="number"
                   orientation="top"
                   height={HORIZONTAL_AXIS_HEIGHT}
-                  {...metricAxisProps}
+                  unit={metricUnit}
                 />
                 <YAxis
                   type="category"
                   dataKey="title"
-                  width={
-                    isImage
-                      ? HORIZONTAL_IMAGE_SIZE + 16
-                      : HORIZONTAL_LABEL_WIDTH
-                  }
+                  width={labelAxisWidth}
                   interval={0}
                   tickLine={false}
-                  tick={(props) => (
-                    <TruncatedTick
-                      {...props}
-                      textAnchor="end"
-                      dy={4}
-                      isImage={isImage}
-                      item={findImageItem(props)}
-                      imageWidth={HORIZONTAL_IMAGE_SIZE}
-                      imageOffset={{
-                        x: -HORIZONTAL_IMAGE_SIZE,
-                        y: -HORIZONTAL_IMAGE_SIZE / 2,
-                      }}
-                    />
-                  )}
+                  tick={(props) => {
+                    const item = findImageItem(props)
+                    return shouldRenderImage(isImage, item) ? (
+                      <TruncatedTick
+                        {...props}
+                        isImage={isImage}
+                        item={item}
+                        imageWidth={HORIZONTAL_IMAGE_SIZE}
+                        imageOffset={{
+                          x: -HORIZONTAL_IMAGE_SIZE,
+                          y: -HORIZONTAL_IMAGE_SIZE / 2,
+                        }}
+                      />
+                    ) : (
+                      <WrappedTick
+                        {...props}
+                        width={labelAxisWidth}
+                        height={rowHeight}
+                      />
+                    )
+                  }}
                 />
                 <ReferenceLine x={0} stroke="#6e748c" />
               </>
@@ -141,7 +193,7 @@ export const BarChart = ({
                     />
                   )}
                 />
-                <YAxis {...metricAxisProps} />
+                <YAxis unit={metricUnit} />
               </>
             )}
             <Tooltip

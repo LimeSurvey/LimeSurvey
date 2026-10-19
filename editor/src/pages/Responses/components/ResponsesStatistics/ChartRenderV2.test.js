@@ -49,13 +49,20 @@ const renderCard = (props = {}) =>
   )
 
 const getCardToggle = (index = 0) =>
-  document.getElementById(`chart-view-${index}`)
+  document
+    .getElementById(`chart-view-${index}`)
+    .closest('.responses-statistics-chart-toggle')
 
 const getChevron = (container = document.body) =>
   within(container).queryByRole('button', { name: 'Chart orientation' })
 
-const getBarIcon = (index = 0) =>
-  getCardToggle(index).querySelector('.responses-statistics-bar-toggle-icon i')
+const getBarOption = (index = 0) =>
+  screen.getByTestId(`toggleButton-chart-view-${index}-option-0`)
+
+const getBarIcon = (index = 0) => getBarOption(index).querySelector('i')
+
+const expectMenuOpen = (isOpen, container) =>
+  expect(getChevron(container)).toHaveAttribute('aria-expanded', String(isOpen))
 
 describe('ChartRendererV2 bar chart orientation', () => {
   // jsdom doesn't implement scrollIntoView, used when the view changes.
@@ -73,57 +80,33 @@ describe('ChartRendererV2 bar chart orientation', () => {
     expect(getChevron()).not.toBeInTheDocument()
   })
 
+  test('keeps the chevron out of the bar chart radio label', async () => {
+    await renderCard()
+    expect(getChevron().closest('label')).toBeNull()
+    expect(getBarOption()).not.toContainElement(getChevron())
+  })
+
   test('opens and closes the orientation flyout from the chevron', async () => {
     await renderCard()
     expect(screen.queryByRole('menu')).not.toBeInTheDocument()
 
     await userEvent.click(getChevron())
     expect(screen.getByRole('menu')).toBeInTheDocument()
-    expect(getChevron()).toHaveAttribute('aria-expanded', 'true')
+    expectMenuOpen(true)
 
     await userEvent.click(getChevron())
-    expect(screen.queryByRole('menu')).not.toBeInTheDocument()
+    expectMenuOpen(false)
   })
 
-  test('closes the flyout on Escape', async () => {
+  test('closes the flyout on Escape and returns focus to the chevron', async () => {
     await renderCard()
     await userEvent.click(getChevron())
     await userEvent.keyboard('{Escape}')
-    expect(screen.queryByRole('menu')).not.toBeInTheDocument()
+    expectMenuOpen(false)
+    expect(getChevron()).toHaveFocus()
   })
 
-  test('moves between the flyout options with the arrow keys', async () => {
-    await renderCard()
-    await userEvent.click(getChevron())
-    const vertical = screen.getByRole('menuitemradio', {
-      name: 'Vertical bar chart',
-    })
-    const horizontal = screen.getByRole('menuitemradio', {
-      name: 'Horizontal bar chart',
-    })
-    // Opening focuses the selected option.
-    expect(vertical).toHaveFocus()
-
-    await userEvent.keyboard('{ArrowDown}')
-    expect(horizontal).toHaveFocus()
-    await userEvent.keyboard('{ArrowDown}')
-    expect(vertical).toHaveFocus()
-    await userEvent.keyboard('{ArrowUp}')
-    expect(horizontal).toHaveFocus()
-    await userEvent.keyboard('{Home}')
-    expect(vertical).toHaveFocus()
-    await userEvent.keyboard('{End}')
-    expect(horizontal).toHaveFocus()
-  })
-
-  test('closes the flyout when tabbing out of it', async () => {
-    await renderCard()
-    await userEvent.click(getChevron())
-    await userEvent.tab()
-    expect(screen.queryByRole('menu')).not.toBeInTheDocument()
-  })
-
-  test('closes the flyout when focus moves outside the toggle', async () => {
+  test('ignores Escape pressed outside the flyout', async () => {
     await renderWithProviders(
       <>
         <ChartRendererV2
@@ -136,8 +119,58 @@ describe('ChartRendererV2 bar chart orientation', () => {
       </>
     )
     await userEvent.click(getChevron())
-    act(() => screen.getByRole('button', { name: 'Outside' }).focus())
-    expect(screen.queryByRole('menu')).not.toBeInTheDocument()
+    const outside = screen.getByRole('button', { name: 'Outside' })
+    act(() => outside.focus())
+    await userEvent.keyboard('{Escape}')
+    expectMenuOpen(true)
+    expect(outside).toHaveFocus()
+  })
+
+  test('opening with Space does not select an option', async () => {
+    await renderCard()
+    act(() => getChevron().focus())
+    await userEvent.keyboard(' ')
+
+    expectMenuOpen(true)
+    expect(screen.getByTestId('bar-chart')).toHaveAttribute(
+      'data-orientation',
+      'vertical'
+    )
+  })
+
+  test('moves between the flyout options with the arrow keys', async () => {
+    await renderCard()
+    act(() => getChevron().focus())
+    await userEvent.keyboard('{Enter}')
+    const vertical = screen.getByRole('menuitemradio', {
+      name: 'Vertical bar chart',
+    })
+    const horizontal = screen.getByRole('menuitemradio', {
+      name: 'Horizontal bar chart',
+    })
+    // Opening from the keyboard focuses the first option.
+    expect(vertical).toHaveFocus()
+
+    await userEvent.keyboard('{ArrowDown}')
+    expect(horizontal).toHaveFocus()
+    await userEvent.keyboard('{ArrowUp}')
+    expect(vertical).toHaveFocus()
+  })
+
+  test('closes the flyout when tabbing out of it', async () => {
+    await renderCard()
+    act(() => getChevron().focus())
+    await userEvent.keyboard('{Enter}')
+    await userEvent.keyboard('{ArrowDown}')
+    await userEvent.tab()
+    expectMenuOpen(false)
+  })
+
+  test('closes the flyout on a click outside', async () => {
+    await renderCard()
+    await userEvent.click(getChevron())
+    await userEvent.click(document.body)
+    expectMenuOpen(false)
   })
 
   test('selecting an orientation updates the icon and closes the flyout', async () => {
@@ -149,7 +182,7 @@ describe('ChartRendererV2 bar chart orientation', () => {
       screen.getByRole('menuitemradio', { name: 'Horizontal bar chart' })
     )
 
-    expect(screen.queryByRole('menu')).not.toBeInTheDocument()
+    expectMenuOpen(false)
     expect(getBarIcon()).toHaveClass('ri-bar-chart-horizontal-line')
     expect(screen.getByTestId('bar-chart')).toHaveAttribute(
       'data-orientation',
