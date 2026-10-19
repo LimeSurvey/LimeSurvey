@@ -467,7 +467,7 @@ $internalConfig = array(
 
 
 
-$result = CMap::mergeArray($internalConfig, $userConfig);
+$result = \LimeSurvey\Helpers\ConfigMergeHelper::merge($internalConfig, $userConfig);
 /**
  * Some workarounds for erroneous settings in user config.php.
  * seems not to be used anymore...

@@ -42,6 +42,30 @@ use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
 */
 
 /**
+ * Deletes the file cache that the web application uses (tmp/runtime/cache), including its cached table schemas.
+ *
+ * Needed when the current application does not use that cache itself: the console sets YII_DEBUG,
+ * so its cache component is a CDummyCache and flushing it leaves the web side's stale schema in place.
+ *
+ * @see https://bugs.limesurvey.org/view.php?id=20772
+ * @return void
+ */
+function flushWebFileCache()
+{
+    if (Yii::app()->cache instanceof CFileCache) {
+        // Already flushed with the application cache
+        return;
+    }
+    try {
+        $fileCache = new CFileCache();
+        $fileCache->init();
+        $fileCache->flush();
+    } catch (\Throwable $t) {
+        Yii::log('Failed to flush the file cache: ' . $t->getMessage(), 'error', 'application.db.update');
+    }
+}
+
+/**
  * Executes all required database migrations from the given previous DB version up to the configured target DB version.
  *
  * @param int $iOldDBVersion The previous database version to upgrade from.
@@ -232,6 +256,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     if (method_exists(Yii::app()->cache, 'gc')) {
         Yii::app()->cache->gc();
     }
+    flushWebFileCache();
 
     // Inform superadmin about update
     $superadmins = User::model()->getSuperAdmins();
@@ -3254,8 +3279,10 @@ function modifyPrimaryKey($sTablename, $aColumns)
 
 
 /**
+* Converts all tables and the database default to the given character set and collation (MySQL only)
 * @param string $sEncoding
 * @param string $sCollation
+* @return void
 */
 function fixMySQLCollations($sEncoding, $sCollation)
 {
@@ -3269,7 +3296,34 @@ function fixMySQLCollations($sEncoding, $sCollation)
         };
     }
     $sDatabaseName = getDBConnectionStringProperty('dbname');
-    Yii::app()->getDb()->createCommand("ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET {$sEncoding} COLLATE {$sCollation};");
+    try {
+        Yii::app()->getDb()->createCommand("ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET {$sEncoding} COLLATE {$sCollation};")->execute();
+    } catch (Exception $e) {
+        // Missing ALTER privilege on the database: Tables are created with explicit charset options anyway
+    };
+    if ($sEncoding === 'utf8mb4') {
+        fixMySQLConfigCharset();
+    }
+}
+
+/**
+* Replaces a MySQL connection charset of utf8 (utf8mb3) with utf8mb4 in config.php, if the file is writable.
+* @return void
+*/
+function fixMySQLConfigCharset()
+{
+    $sConfigFile = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
+    if (!is_file($sConfigFile) || !is_writable($sConfigFile)) {
+        return;
+    }
+    $sContent = file_get_contents($sConfigFile);
+    if ($sContent === false) {
+        return;
+    }
+    $sNewContent = preg_replace('/([\'"]charset[\'"]\s*=>\s*)([\'"])utf8(?:mb3)?\2/i', '$1$2utf8mb4$2', $sContent);
+    if ($sNewContent !== null && $sNewContent !== $sContent) {
+        file_put_contents($sConfigFile, $sNewContent, LOCK_EX);
+    }
 }
 
 /**

@@ -259,10 +259,18 @@ abstract class Response extends Dynamic
     {
     }
 
-    /** Get all encrypted questions for a survey, as array of fieldnames */
+    /**
+     * Get all encrypted questions for a survey, as array of fieldnames
+     *
+     * @param int $surveyid Survey ID
+     * @return string[] Fieldnames of the encrypted questions; empty if the survey does not exist (e.g. archiving the responses table of a deleted survey)
+     */
     public static function getEncryptedAttributes($surveyid = 0)
     {
         $survey = Survey::model()->findByPk($surveyid);
+        if (!$survey) {
+            return array();
+        }
         $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
         $aAttributes = array();
         foreach ($fieldmap as $field) {

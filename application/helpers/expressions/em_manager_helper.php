@@ -33,6 +33,7 @@ Yii::import('application.helpers.expressions.warnings.EMWarningBase', true);
 Yii::import('application.helpers.expressions.warnings.EMWarningInvalidComparison', true);
 Yii::import('application.helpers.expressions.warnings.EMWarningPlusOperator', true);
 Yii::import('application.helpers.expressions.warnings.EMWarningAssignment', true);
+Yii::import('application.helpers.expressions.warnings.EMWarningLaterQuestion', true);
 Yii::import('application.helpers.expressions.warnings.EMWarningHTMLBaker', true);
 Yii::app()->loadHelper('database');
 Yii::app()->loadHelper('frontend');
@@ -4789,7 +4790,8 @@ class LimeExpressionManager
                 } else {
                     continue;
                 }
-                if (!isset($knownVar['jsName'])) {
+                // Variables without a response column (e.g. question codes added by plugins) can't be prefilled
+                if (!isset($knownVar['jsName']) || empty($knownVar['sgqa'])) {
                     continue;
                 }
                 switch ($knownVar['type']) {
@@ -6390,7 +6392,7 @@ class LimeExpressionManager
                     } else {
                         $relevantSQs[] = $sgqa;
                     }
-                    // This just remove the last ranking : don't control validity of answers done: user can rank irrelevant answers .... See Bug #09774
+                    // This just remove the last ranking: Ranked filtered answers are reset in resetFilteredAnswerOptions()
                     continue;
                 }
                 $foundSQrelevance = false;
@@ -6561,6 +6563,11 @@ class LimeExpressionManager
         // These array_unique only apply to array_filter of type L (list)
         $relevantSQs = array_unique($relevantSQs);
         $irrelevantSQs = array_unique($irrelevantSQs);
+
+        // Answer options filtered out by array_filter are only cleared by JavaScript: Clear them here too
+        if ($qrel && !empty($LEM->subQrelInfo[$qid])) {
+            $LEM->resetFilteredAnswerOptions($qInfo);
+        }
 
         ////////////////////////////////////////////////////////////////////
         // WHICH RELEVANT, VISIBLE (SUB)-QUESTIONS HAVEN'T BEEN ANSWERED? //
@@ -7867,8 +7874,6 @@ class LimeExpressionManager
                     $qvalJS .= implode("", $valParts);
                     $qvalJS .= "}\n";
                     $valEqns[] = $qvalJS;
-
-                    $relParts[] = "  LEMval" . $arg['qid'] . "(sgqa);\n";
                 }
 
                 if ($arg['hidden']) {
@@ -7897,6 +7902,10 @@ class LimeExpressionManager
                 }
                 $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
                 $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                if (count($valParts) > 0) {
+                    // Validate only after the relevance status is set, otherwise a question that just became relevant is still seen as irrelevant
+                    $relParts[] = "  LEMval" . $arg['qid'] . "(sgqa);\n";
+                }
 
                 $relParts[] = "}\n";
                 if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0))) {
@@ -10126,14 +10135,16 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 . "<td class='$errclass'>Q-" . $q['info']['qseq'] . "</td>"
                 . "<td><b>" . $mandatory;
 
-            if ($varNameErrorMsg == '') {
-                $editlink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
-                $questionRow .= $rootVarName;
-            } else {
-                $editlink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
-                $questionRow .= "<span class='highlighterror' title='" . CHtml::encode($varNameError['message']) . "' "
-                    . "onclick='window.open(\"$editlink\",\"_blank\")'>"
-                    . $rootVarName . "</span>";
+            $editlink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
+            $questionRow .= $rootVarName;
+            $varNameErrText = '';
+            if ($varNameErrorMsg != '') {
+                $varNameErrText = "<br><em class='badge bg-danger text-wrap text-start'>" . CHtml::encode($varNameError['message']) . "</em>";
+                if ($varNameError['qid'] != $qid) {
+                    // Duplicated variable name: Link to the question that uses it first
+                    $firstUseLink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
+                    $varNameErrText .= " [<a target='_blank' href='$firstUseLink'>" . sprintf(gT("Question ID %s"), $varNameError['qid']) . "</a>]";
+                }
             }
             $questionRow .= "</b>"
                 . "<br/>"
@@ -10141,6 +10152,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 . "<br/>"
                 . "<span class='question-type'>$typedesc [$type]</span> "
                 . "<span class='question-theme'>$themeDesc</span> "
+                . $varNameErrText
                 . $errText . " "
                 . $sWarningsText
                 . "</td>"
@@ -10340,6 +10352,89 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         }
 
         return $result;
+    }
+
+    /**
+     * Reset the answer of a list or ranking question when it is an answer option filtered out by array_filter
+     * or array_filter_exclude. In the browser JavaScript hides and clears these options, but without JavaScript
+     * (or with a manipulated request) a filtered option could be submitted and saved.
+     * Ranking: The remaining ranked options move up so there are no empty ranks.
+     *
+     * @param array $qInfo question information from questionSeq2relevance (needs qid, type, gseq and qseq)
+     * @return void
+     */
+    private function resetFilteredAnswerOptions($qInfo)
+    {
+        $qid = $qInfo['qid'];
+        switch ($qInfo['type']) {
+            case Question::QT_L_LIST:
+                $codes = CHtml::listData(
+                    Answer::model()->findAll('qid = :qid and scale_id = 0', [':qid' => $qid]),
+                    'aid',
+                    'code'
+                );
+                break;
+            case Question::QT_R_RANKING:
+                $codes = CHtml::listData(
+                    Question::model()->findAll('parent_qid = :qid', [':qid' => $qid]),
+                    'qid',
+                    'title'
+                );
+                break;
+            default:
+                return;
+        }
+        // Filters of answer options use the row id Q{qid}_S{aid} (list) or Q{qid}_S{subquestion qid} (ranking)
+        $filteredCodes = [];
+        foreach ($this->subQrelInfo[$qid] as $rowdivid => $sq) {
+            if (!preg_match('/^Q' . $qid . '_S(\d+)$/', (string) $rowdivid, $matches) || !isset($codes[$matches[1]])) {
+                continue;
+            }
+            $relevant = $this->em->ProcessBooleanExpression(
+                htmlspecialchars_decode((string) $sq['eqn'], ENT_QUOTES),
+                $qInfo['gseq'],
+                $qInfo['qseq']
+            );
+            // Options with an error in the filter equation are always shown, see #7703
+            if (!$relevant && !$this->em->HasErrors()) {
+                $filteredCodes[] = (string) $codes[$matches[1]];
+            }
+        }
+        if (empty($filteredCodes)) {
+            return;
+        }
+        $sgqas = explode('|', (string) $this->qid2code[$qid]);
+        if ($qInfo['type'] == Question::QT_R_RANKING) {
+            // The rank fields are all fields except the question field itself
+            $sgqas = array_values(array_diff($sgqas, ['Q' . $qid]));
+        } else {
+            // Only the list answer itself: Not the other or comment field
+            $sgqas = ['Q' . $qid];
+        }
+        $values = [];
+        foreach ($sgqas as $sgqa) {
+            $values[$sgqa] = $_SESSION[$this->sessid][$sgqa] ?? null;
+        }
+        $keptValues = array_values(array_filter(
+            $values,
+            function ($value) use ($filteredCodes) {
+                return !in_array((string) $value, $filteredCodes, true);
+            }
+        ));
+        if (count($keptValues) == count($values)) {
+            return;
+        }
+        foreach ($sgqas as $index => $sgqa) {
+            $value = $keptValues[$index] ?? null;
+            if ($value === $values[$sgqa]) {
+                continue;
+            }
+            $_SESSION[$this->sessid][$sgqa] = $value;
+            $this->updatedValues[$sgqa] = [
+                'type'  => $qInfo['type'],
+                'value' => $value,
+            ];
+        }
     }
 
     /**
