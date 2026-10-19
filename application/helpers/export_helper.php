@@ -254,7 +254,8 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                         } // else do default action
                     default:
                         if (isset($row[$fieldno])) {
-                            $strTmp = mb_substr(stripTagsFull($row[$fieldno], false), 0, $iLength);
+                            // Response data is plain text: Only new lines are replaced, a '<' is not the start of a HTML tag
+                            $strTmp = mb_substr(trim(preg_replace('~\R~u', ' ', (string) $row[$fieldno])), 0, $iLength);
                             if (trim($strTmp) != '') {
                                 echo quoteSPSS($strTmp, $q, $field);
                             } elseif ($row[$fieldno] === '') {

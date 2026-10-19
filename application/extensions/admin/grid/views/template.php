@@ -12,14 +12,16 @@ $countSpan = "<span class='grid-selection-count'>0</span>";
 <div id="bottom-scroller" class="content-right scrolling-wrapper">
     {items}
 </div>
+<?php if ($this->lsSelectAllEnabled) : ?>
+<!-- "Select all" settings, also used when the selection bar is replaced by the floating actions bar -->
+<div class="grid-select-all-config d-none"
+     data-total-count="<?= (int) $this->dataProvider->getTotalItemCount() ?>"
+     data-select-all-disable-threshold="<?= (int) $this->lsSelectAllDisableThreshold ?>"
+     data-select-all-warning-message="<?= CHtml::encode(gT('Individual deselection is unavailable when more than {threshold} entries are selected. Reduce the selection below {threshold} to enable this feature.')) ?>"></div>
+<?php endif; ?>
 <?php if ($showSelectionBar ?? true): ?>
 <div class="grid-selection-bar"
      data-grid-id="<?= CHtml::encode($this->id) ?>"
-     <?php if ($this->lsSelectAllEnabled) : ?>
-     data-total-count="<?= (int) $this->dataProvider->getTotalItemCount() ?>"
-    data-select-all-disable-threshold="<?= (int) $this->lsSelectAllDisableThreshold ?>"
-    data-select-all-warning-message="<?= CHtml::encode(gT('Individual deselection is unavailable when more than {threshold} entries are selected. Reduce the selection below {threshold} to enable this feature.')) ?>"
-     <?php endif; ?>
      style="display:none;">
     <span class="grid-selection-count-text">
         <?= sprintf(gT('%s selected'), $countSpan) ?>

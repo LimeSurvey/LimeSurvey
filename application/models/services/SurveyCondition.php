@@ -696,7 +696,7 @@ class SurveyCondition
         $canswers = array();
 
         foreach ($theserows as $rows) {
-            $shortquestion = $rows['title'] . ": " . strip_tags((string) $rows['question']);
+            $shortquestion = $rows['title'] . ": " . flattenText($rows['question']);
 
             if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F" || $rows['type'] == "H") {
                 $aresult = \Question::model()->with('questionl10ns')->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order ASC'));
@@ -802,7 +802,7 @@ class SurveyCondition
                 foreach ($y_axis_db->readAll() as $yrow) {
                     foreach ($x_axis as $key => $val) {
                         $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], $yrow['title'] . "_" . $key);
-                        $shortquestion = $rows['title'] . ":{$yrow['title']}:$key: [" . strip_tags((string) $yrow['question']) . "][" . strip_tags((string) $val) . "] " . flattenText($rows['question']);
+                        $shortquestion = $rows['title'] . ":{$yrow['title']}:$key: [" . flattenText($yrow['question']) . "][" . flattenText($val) . "] " . flattenText($rows['question']);
                         $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $fieldName);
                         if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                         }
@@ -836,12 +836,12 @@ class SurveyCondition
                     // dualscale_header are always set, but can be empty
                     $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
                     $label2 = empty($attr['dualscale_headerB'][$sLanguage]) ? gT('Scale 2') : $attr['dualscale_headerB'][$sLanguage];
-                    $shortanswer = "{$arows['title']}: [" . strip_tags((string) $arows->questionl10ns[$this->language]->question) . "][$label1]";
-                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $arows->questionl10ns[$this->language]->question);
+                    $shortanswer = "{$arows['title']}: [" . flattenText($arows->questionl10ns[$this->language]->question) . "][$label1]";
+                    $shortquestion = $rows['title'] . ":$shortanswer " . flattenText($arows->questionl10ns[$this->language]->question);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $fieldName . "#0");
 
-                    $shortanswer = "{$arows['title']}: [" . strip_tags((string) $arows->questionl10ns[$this->language]->question) . "][$label2]";
-                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $arows->questionl10ns[$this->language]->question);
+                    $shortanswer = "{$arows['title']}: [" . flattenText($arows->questionl10ns[$this->language]->question) . "][$label2]";
+                    $shortquestion = $rows['title'] . ":$shortanswer " . flattenText($arows->questionl10ns[$this->language]->question);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $fieldName . "#1");
 
                     foreach ($scaleAnswers as $scaleId => $lresult) {
@@ -864,8 +864,8 @@ class SurveyCondition
 
                 foreach ($aresult as $arows) {
                     $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], $arows['title']);
-                    $shortanswer = "{$arows['title']}: [" . strip_tags((string) $arows->questionl10ns[$this->language]->question) . "]";
-                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
+                    $shortanswer = "{$arows['title']}: [" . flattenText($arows->questionl10ns[$this->language]->question) . "]";
+                    $shortquestion = $rows['title'] . ":$shortanswer " . flattenText($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $fieldName);
 
                     // Only Show No-Answer if question is not mandatory
@@ -896,7 +896,7 @@ class SurveyCondition
 
                 for ($i = 1; $i <= $acount; $i++) {
                     $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], (string)$i);
-                    $cquestions[] = array("{$rows['title']}: [RANK $i] " . strip_tags((string) $rows['question']), $rows['qid'], $rows['type'], $fieldName);
+                    $cquestions[] = array("{$rows['title']}: [RANK $i] " . flattenText($rows['question']), $rows['qid'], $rows['type'], $fieldName);
                     foreach ($quickList as $qck) {
                         $canswers[] = array($fieldName, $qck[0], $qck[1]);
                     }
@@ -910,7 +910,7 @@ class SurveyCondition
             } elseif ($rows['type'] == \Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == \Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                 $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid']);
                 $shortanswer = " [" . gT("Group of checkboxes") . "]";
-                $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
+                $shortquestion = $rows['title'] . ":$shortanswer " . flattenText($rows['question']);
                 $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $fieldName);
 
                 $aresult = \Question::model()->with('questionl10ns')->findAllByAttributes(array(
@@ -922,9 +922,9 @@ class SurveyCondition
                     $theanswer = $arows->questionl10ns[$this->language]->question;
                     $canswers[] = array($fieldName, $arows['title'], $theanswer);
 
-                    $shortanswer = "{$arows['title']}: [" . strip_tags((string) $theanswer) . "]";
+                    $shortanswer = "{$arows['title']}: [" . flattenText($theanswer) . "]";
                     $shortanswer .= "[" . gT("Single checkbox") . "]";
-                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
+                    $shortquestion = $rows['title'] . ":$shortanswer " . flattenText($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], "+" . $fieldNameWithTitle);
                     $canswers[] = array("+" . $fieldNameWithTitle, 'Y', gT("Checked"));
                     $canswers[] = array("+" . $fieldNameWithTitle, '', gT("Not checked"));
@@ -932,8 +932,8 @@ class SurveyCondition
                 if ($rows['other'] == "Y") {
                     $fieldNameWithTitle = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], 'other');
                     $theanswer = gT("Other");
-                    $shortanswer = "other: [" . strip_tags((string) $theanswer) . "]";
-                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
+                    $shortanswer = "other: [" . flattenText($theanswer) . "]";
+                    $shortquestion = $rows['title'] . ":$shortanswer " . flattenText($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'] . 'other', $fieldNameWithTitle); // Set QTypes to specific for javascript
                     $canswers[] = array($fieldNameWithTitle, '', gT("No answer"));
                 }
@@ -1040,7 +1040,7 @@ class SurveyCondition
 
         $theserows2 = array();
         foreach ($theserows as $row) {
-            $question = strip_tags((string) $row['question']);
+            $question = flattenText($row['question']);
             $questionselecter = \viewHelper::flatEllipsizeText($question, true, 40);
             $theserows2[] = array(
                 'value' => $caller->createNavigatorUrl($row['gid'], $row['qid']),
@@ -1050,7 +1050,7 @@ class SurveyCondition
 
         $postrows2 = array();
         foreach ($postrows as $row) {
-            $question = strip_tags((string) $row['question']);
+            $question = flattenText($row['question']);
             $questionselecter = \viewHelper::flatEllipsizeText($question, true, 40);
             $postrows2[] = array(
                 'value' => $caller->createNavigatorUrl($row['gid'], $row['qid']),
@@ -1062,7 +1062,7 @@ class SurveyCondition
             'theserows' => $theserows2,
             'postrows' => $postrows2,
             'currentValue' => $caller->createNavigatorUrl($gid, $qid),
-            'currentText' => $questiontitle . ':' . \viewHelper::flatEllipsizeText(strip_tags((string) $sCurrentFullQuestionText), true, 40)
+            'currentText' => $questiontitle . ':' . \viewHelper::flatEllipsizeText(flattenText($sCurrentFullQuestionText), true, 40)
         );
 
         return $caller->renderPartialView('navigator', $data, true);
@@ -1273,7 +1273,7 @@ class SurveyCondition
         if (isset($postquestionscount) && $postquestionscount > 0) {
             //Build the array used for the questionNav and copyTo select boxes
             foreach ($postrows as $pr) {
-                $pquestions[] = array("text" => $pr['title'] . ": " . (string) substr(strip_tags((string) $pr['question']), 0, 80),
+                $pquestions[] = array("text" => $pr['title'] . ": " . mb_substr(flattenText($pr['question']), 0, 80, 'UTF-8'),
                     "fieldname" => $this->getFieldName($pr['sid'], $pr['gid'], $pr['qid']));
             }
         }

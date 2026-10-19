@@ -455,3 +455,34 @@ describe('AnswerDeleteJoiWithStripUnknown Schema Tests', () => {
     expect(error.message).toContain('"id" is required')
   })
 })
+
+describe('Answer schemas accept freshly added answers', () => {
+  const answer = {
+    tempId: 'temp__1',
+    code: 'A1',
+    sortOrder: 0,
+    assessmentValue: 0,
+    scaleId: 1,
+    l10ns: { en: { aid: 'temp__1', answer: '', language: 'en' } },
+  }
+
+  test('update allows l10ns aid and an empty answer text', () => {
+    const { error } = answerUpdateJoi.validate({
+      entity: Entities.answer,
+      op: Operations.update,
+      id: 123,
+      props: [{ ...answer, aid: 'temp__1' }],
+    })
+    expect(error).toBeUndefined()
+  })
+
+  test('create allows l10ns aid and an empty answer text', () => {
+    const { error } = answerCreateJoi.validate({
+      entity: Entities.answer,
+      op: Operations.create,
+      id: 123,
+      props: [answer],
+    })
+    expect(error).toBeUndefined()
+  })
+})
