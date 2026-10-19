@@ -586,7 +586,7 @@
           } catch (e) {}
           $('#' + this.fieldname + '_uploadedfiles').removeClass('d-none');
           $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
-          const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
+          const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico', 'heic');
           const templateHtml = $('#filerowtemplate_' + this.fieldname).html();
           jsonobj.forEach((item, iterator) => {
             let imageOrPlaceholder, imageOrPlaceholderHtml, title, comment, name, filepointer;
