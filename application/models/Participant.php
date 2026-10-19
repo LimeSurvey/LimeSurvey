@@ -136,7 +136,7 @@ class Participant extends LSActiveRecord
             'title'            => gT('Add participant to survey'),
             'linkClass'        => 'action_participant_addToSurvey',
             'iconClass'        => 'ri-user-add-fill',
-            'enabledCondition' => $this->userHasPermissionToEdit(),
+            'enabledCondition' => $this->userHasPermissionToAddToSurvey(),
             'linkAttributes'   => [
                 'data-participant-id' => $this->participant_id
             ],
@@ -145,7 +145,7 @@ class Participant extends LSActiveRecord
             'title'            => gT('List active surveys'),
             'linkClass'        => 'action_participant_infoModal',
             'iconClass'        => 'ri-search-line',
-            'enabledCondition' => $this->userHasPermissionToEdit(),
+            'enabledCondition' => $this->userHasPermissionToRead(),
             'linkAttributes'   => [
                 'data-participant-id' => $this->participant_id
             ],
@@ -2438,6 +2438,77 @@ class Participant extends LSActiveRecord
             'participant_id = :participant_id AND (share_uid = :userid OR share_uid = -1)',
             [':participant_id' => $this->participant_id, ':userid' => $userId]
         );
+    }
+
+    /**
+     * Returns true if the logged in user may add this participant to a survey:
+     * users who may edit the participant, and users with the global participant panel export
+     * permission who may see the participant (adding to a survey copies the data like an export).
+     * Note: Same rules as filterParticipantIdsAddableToSurvey().
+     *
+     * @return boolean
+     */
+    public function userHasPermissionToAddToSurvey()
+    {
+        if ($this->userHasPermissionToEdit()) {
+            return true;
+        }
+        return Permission::model()->hasGlobalPermission('participantpanel', 'export')
+            && $this->userHasPermissionToRead();
+    }
+
+    /**
+     * Reduces a list of participant IDs to the participants the logged in user may add to a survey
+     * (same rules as userHasPermissionToAddToSurvey()). Empty IDs are dropped.
+     *
+     * @param string[] $participantIds
+     * @return string[]
+     */
+    public function filterParticipantIdsAddableToSurvey(array $participantIds)
+    {
+        $editableIds = $this->filterEditableParticipantIds($participantIds);
+        if (!Permission::model()->hasGlobalPermission('participantpanel', 'export')) {
+            return $editableIds;
+        }
+        return array_values(array_unique(array_merge($editableIds, $this->filterReadableParticipantIds($participantIds))));
+    }
+
+    /**
+     * Reduces a list of participant IDs to the participants the logged in user may see
+     * (same rules as userHasPermissionToRead()). Empty IDs are dropped.
+     * Superadmins and users with the global participant panel read permission get all IDs back,
+     * other users only the participants they own or that are shared with them or with all users
+     * (share_uid -1).
+     *
+     * @param string[] $participantIds
+     * @return string[]
+     */
+    public function filterReadableParticipantIds(array $participantIds)
+    {
+        $participantIds = array_values(array_filter($participantIds, function ($participantId) {
+            return is_scalar($participantId) && (string) $participantId !== '';
+        }));
+        if (
+            empty($participantIds)
+            || Permission::model()->hasGlobalPermission('superadmin', 'read')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'read')
+        ) {
+            return $participantIds;
+        }
+        $userId = (int) Yii::app()->user->id;
+        return Yii::app()->db->createCommand()
+            ->selectDistinct('p.participant_id')
+            ->from('{{participants}} p')
+            ->leftJoin(
+                '{{participant_shares}} ps',
+                "ps.participant_id = p.participant_id AND (ps.share_uid = :shareuid OR ps.share_uid = -1)",
+                [':shareuid' => $userId]
+            )
+            ->where(
+                ['and', 'p.owner_uid = :owneruid OR ps.participant_id IS NOT NULL', ['in', 'p.participant_id', $participantIds]],
+                [':owneruid' => $userId]
+            )
+            ->queryColumn();
     }
 
     /**

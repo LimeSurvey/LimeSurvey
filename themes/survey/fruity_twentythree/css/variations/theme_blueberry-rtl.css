@@ -15468,7 +15468,7 @@ body .imageselect-listitem label::after {
 .answer-container .bootstrap-select .bs-ok-default:after {
   font-size: 0.9975rem;
 }
-.answer-container .bootstrap-select .btn.dropdown-toggle:focus, .answer-container .bootstrap-select > select.mobile-device:focus + .dropdown-toggle {
+.answer-container .bootstrap-select .btn.dropdown-toggle:focus:not(:focus-visible), .answer-container .bootstrap-select > select.mobile-device:focus:not(:focus-visible) + .dropdown-toggle {
   outline: none !important;
 }
 .answer-container .bootstrap-select > .btn.dropdown-toggle {
@@ -15927,6 +15927,30 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   .no-tables-mobile table.ls-answers tr.ls-heading-repeat {
     display: none;
   }
+}
+
+html:not(.ls-pointer-nav) :focus-visible {
+  outline: 2px solid #1E1E1E !important;
+  outline-offset: 2px !important;
+}
+html:not(.ls-pointer-nav) input[type=radio]:focus-visible + label::before,
+html:not(.ls-pointer-nav) input[type=checkbox]:focus-visible + label::before,
+html:not(.ls-pointer-nav) .btn-check:focus-visible + .btn,
+html:not(.ls-pointer-nav) .imageselect-checkbox:focus-visible + .imageselect-label,
+html:not(.ls-pointer-nav) .bootstrap-select > .btn.dropdown-toggle:focus-visible {
+  outline: 2px solid #1E1E1E !important;
+  outline-offset: 2px !important;
+}
+
+.skip-link.visually-hidden-focusable:focus,
+.skip-link.visually-hidden-focusable:focus-within {
+  position: fixed;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1031;
+  padding: 0.5rem 1rem;
+  background-color: #ffffff;
+  color: #1E1E1E;
 }
 
 .darkmode-on {

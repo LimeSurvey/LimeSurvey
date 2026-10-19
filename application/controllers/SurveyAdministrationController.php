@@ -435,6 +435,8 @@ class SurveyAdministrationController extends LSBaseController
             $iQuestionNumber++;
             $iGroupNumber = $oQuestion->gid;
         }
+        // updateAll() bypasses Question::afterSave(), so update the survey's lastmodified timestamp here
+        (new SurveyDetailService())->touchSurveyLastModified((int) $iSurveyID);
         /* Expression text need to be update from condition */
         LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
@@ -2956,7 +2958,14 @@ class SurveyAdministrationController extends LSBaseController
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
         $beforeSurveySettings->set('survey', $survey->sid);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
-        $aData['pluginSettings'] = $beforeSurveySettings->get('surveysettings');
+        $pluginSettings = $beforeSurveySettings->get('surveysettings');
+        if (is_array($pluginSettings)) {
+            // Sort the plugin panels by their displayed name, keeping the plugin IDs as keys
+            uasort($pluginSettings, function ($a, $b) {
+                return strnatcasecmp((string) ($a['name'] ?? ''), (string) ($b['name'] ?? ''));
+            });
+        }
+        $aData['pluginSettings'] = $pluginSettings;
         return $aData;
     }
 

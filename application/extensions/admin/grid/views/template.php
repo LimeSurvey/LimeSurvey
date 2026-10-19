@@ -55,6 +55,7 @@ if (!empty($this->lsAdditionalColumns)) {
         'filteredColumns'   => $this->lsAdditionalColumnsSelected,
         'columnsData'       => $this->columns,
         'ajaxUpdate'        => $this->id,
+        'organize'          => $this->lsOrganizeColumns,
     ]);
 }
 ?>
