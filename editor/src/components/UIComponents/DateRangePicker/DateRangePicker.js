@@ -30,6 +30,8 @@ export const DateRangePicker = ({
   const [tempRange, setTempRange] = useState(initialRange)
   const [month, setMonth] = useState(initialRange.from ?? new Date())
   const [dayCounts, setDayCounts] = useState(EMPTY_DAY_COUNTS)
+  const [isFromValid, setIsFromValid] = useState(true)
+  const [isToValid, setIsToValid] = useState(true)
   const {
     showPicker,
     openPicker,
@@ -101,6 +103,8 @@ export const DateRangePicker = ({
   }
 
   const handleConfirm = () => {
+    if (!isFromValid || !isToValid) return
+
     if (!tempRange?.from) {
       handleClear()
       return
@@ -183,6 +187,7 @@ export const DateRangePicker = ({
                   minDate={minDate}
                   maxDate={maxDate}
                   onCommit={handleFromInput}
+                  onValidityChange={setIsFromValid}
                 />
                 <span>{t('until')}</span>
                 <DateInput
@@ -192,6 +197,7 @@ export const DateRangePicker = ({
                   minDate={minDate}
                   maxDate={maxDate}
                   onCommit={handleToInput}
+                  onValidityChange={setIsToValid}
                 />
               </div>
               <DateRangeCalendar

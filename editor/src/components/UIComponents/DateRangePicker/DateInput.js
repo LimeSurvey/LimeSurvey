@@ -9,6 +9,7 @@ export const DateInput = ({
   minDate,
   maxDate,
   onCommit,
+  onValidityChange = () => {},
   label,
 }) => {
   const formatted = value ? format(value, dateFormat) : ''
@@ -19,6 +20,10 @@ export const DateInput = ({
     setText(formatted)
     setIsInvalid(false)
   }, [formatted])
+
+  useEffect(() => {
+    onValidityChange(!isInvalid)
+  }, [isInvalid, onValidityChange])
 
   const commit = () => {
     if (text === formatted) return
