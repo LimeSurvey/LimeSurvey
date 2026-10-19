@@ -423,7 +423,7 @@ function SPSSGetValues($field, $qidattributes, $language)
             'size' => numericSize($field['sql_name'], true),
         );
     }
-    if (in_array($field['LStype'], array('Q', 'S', 'T', 'U', ';', '*'))) {
+    if (in_array($field['LStype'], array('Q', 'S', 'J', 'T', 'U', ';', '*'))) {
         return array(
             'SPSStype' => "A",
             'size' => stringSize($field['sql_name']),
@@ -495,6 +495,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
         Question::QT_N_NUMERICAL => array('name' => 'Numerical input', 'size' => 3, 'SPSStype' => 'F', 'Scale' => 3),
         Question::QT_R_RANKING => array('name' => 'Ranking', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_S_SHORT_FREE_TEXT => array('name' => 'Short free text', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_J_MAP => array('name' => 'Map', 'size' => 1, 'SPSStype' => 'A'),
         Question::QT_Y_YES_NO_RADIO => array('name' => 'Yes/No', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_COLON_ARRAY_NUMBERS => array('name' => 'Multi flexi numbers', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
         Question::QT_SEMICOLON_ARRAY_TEXT => array('name' => 'Multi flexi text', 'size' => 1, 'SPSStype' => 'A'),
@@ -2001,6 +2002,11 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         $question->appendChild($response);
                         break;
+                    case "J": //Map
+                        $response->appendChild(QueXMLCreateFree("longtext", quexml_get_lengthth($qid, "maximum_chars", "65535"), ""));
+                        quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
+                        $question->appendChild($response);
+                        break;
                     case "T": //LONG FREE TEXT
                         $response->appendChild(QueXMLCreateFree("longtext", quexml_get_lengthth($qid, "display_rows", "40"), ""));
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
@@ -2346,7 +2352,11 @@ function questionGetXMLStructure($xml, $gid, $qid)
 
 
 /**
+ * Outputs the survey participants as CSV, filtered by the options posted from the export dialog,
+ * and deletes the exported participants if requested
+ *
  * @param integer $iSurveyID
+ * @return void
  */
 function tokensExport($iSurveyID)
 {
@@ -2365,13 +2375,14 @@ function tokensExport($iSurveyID)
     $databasetype = Yii::app()->db->getDriverName();
     $oRecordSet->where("1=1");
 
+    // An encrypted email can't be searched for a substring in SQL, so it is filtered after decryption
+    $bFilterEmailAfterDecrypt = false;
     if ($sEmailFiter != '') {
-        // check if email is encrypted field
         $aAttributes = $oSurvey->getTokenEncryptionOptions();
-        if (array_key_exists('columns', $aAttributes) && array_key_exists('enabled', $aAttributes) && $aAttributes['enabled'] == 'Y' && array_key_exists('email', $aAttributes['columns']) && $aAttributes['columns']['email'] == 'Y') {
-            $sEmailFiter = LSActiveRecord::encryptSingle($sEmailFiter);
-        }
+        $bFilterEmailAfterDecrypt = ($aAttributes['enabled'] ?? 'N') == 'Y' && ($aAttributes['columns']['email'] ?? 'N') == 'Y';
+    }
 
+    if ($sEmailFiter != '' && !$bFilterEmailAfterDecrypt) {
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib'))) {
             $oRecordSet->andWhere("CAST(lt.email as varchar) like " . App()->db->quoteValue('%' . $sEmailFiter . '%'));
         } else {
@@ -2481,6 +2492,9 @@ function tokensExport($iSurveyID)
             // decrypting
             $token->decrypt();
             $brow = $token->attributes;
+            if ($bFilterEmailAfterDecrypt && mb_stripos((string) $brow['email'], $sEmailFiter) === false) {
+                continue;
+            }
             if (Yii::app()->request->getPost('maskequations')) {
                 $brow = array_map('MaskFormula', $brow);
             }

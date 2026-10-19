@@ -1468,9 +1468,8 @@ class Export extends SurveyCommonAction
                 $emSessionState->setSurveyId((int) $oSurvey->getPrimaryKey());
             }
 
-            $file = $this->exportPrintableHtml($oSurvey, $language, $tempdir);
-            $relativePath = substr($file, strlen($tempdir));
-            $zip->addFromString($relativePath, file_get_contents($file));
+            $file = $this->exportPrintableHtml($oSurvey, $language, $tempdir, $zip);
+            $zip->addFromString(basename($file), file_get_contents($file));
             unlink($file);
         }
         // set language back (gets changed in loop above)
@@ -1497,10 +1496,15 @@ class Export extends SurveyCommonAction
      * @param Survey $oSurvey
      * @param string $language
      * @param string $tempdir the directory the file will be stored in
+     * @param LimeSurvey\Zip $zip the zip file the stylesheets of the questionnaire are added to
      * @return string File name where the data is stored
      */
-    private function exportPrintableHtml(Survey $oSurvey, string $language, string $tempdir): string
-    {
+    private function exportPrintableHtml(
+        Survey $oSurvey,
+        string $language,
+        string $tempdir,
+        LimeSurvey\Zip $zip
+    ): string {
         $printableSurvey = new printablesurvey();
         $response = $printableSurvey->index($oSurvey->primaryKey, $language, true);
         $file = "$tempdir/questionnaire_{$oSurvey->getPrimaryKey()}_{$language}.html";
@@ -1508,9 +1512,143 @@ class Export extends SurveyCommonAction
         // remove first slash to get local path for local storage for template assets
         $templateDir = Template::getTemplateURL($oSurvey->templateEffectiveName);
         $response = str_replace($templateDir, substr((string) $templateDir, 1), (string) $response);
+        $response = $this->addPrintableStylesheets($response, $zip);
 
         file_put_contents($file, $response);
         return $file;
+    }
+
+    /**
+     * Add the stylesheets of the printable survey view to the zip file and link them in the html.
+     * Must be called right after PrintableSurvey::index(), which registers the stylesheets.
+     * The files are stored in the zip file at their URL path, so relative references inside the stylesheets
+     * keep working.
+     *
+     * @param string $html the printable survey html
+     * @param LimeSurvey\Zip $zip the zip file the stylesheets are added to
+     * @return string the html with the stylesheet links
+     */
+    private function addPrintableStylesheets(string $html, LimeSurvey\Zip $zip): string
+    {
+        $clientScript = App()->getClientScript();
+        // Same as the online printable survey view: The 'printable' package registered by PrintableSurvey
+        // and the survey theme package
+        $clientScript->registerPackage(Template::getLastInstance()->sPackageName);
+        $clientScript->renderCoreScripts();
+        $cssFiles = $clientScript->getCssFiles();
+        $clientScript->reset();
+
+        $links = '';
+        foreach ($cssFiles as $url => $media) {
+            if (preg_match('#^([a-z][a-z0-9+.-]*:)?//#i', (string) $url)) {
+                // External stylesheet: Keep the absolute URL
+                $links .= CHtml::cssFile($url, $media) . "\n";
+                continue;
+            }
+            $urlPath = (string) parse_url((string) $url, PHP_URL_PATH);
+            if ($this->addPrintableResource($urlPath, $zip)) {
+                $links .= CHtml::cssFile(ltrim($urlPath, '/'), $media) . "\n";
+            }
+        }
+
+        $headEnd = stripos($html, '</head>');
+        if ($headEnd === false) {
+            return $links . $html;
+        }
+        return substr_replace($html, $links, $headEnd, 0);
+    }
+
+    /**
+     * Add a stylesheet, font or image of the LimeSurvey installation to the zip file at its URL path.
+     * Stylesheets are parsed to also add the stylesheets, fonts and images they reference with a relative URL.
+     *
+     * @param string $urlPath absolute URL path of the file, e.g. /tmp/assets/1a2b3c4d/printable.css
+     * @param LimeSurvey\Zip $zip the zip file the file is added to
+     * @return bool whether the file is in the zip file
+     */
+    private function addPrintableResource(string $urlPath, LimeSurvey\Zip $zip): bool
+    {
+        $pathInZip = ltrim($urlPath, '/');
+        if ($zip->locateName($pathInZip) !== false) {
+            return true;
+        }
+        $extension = strtolower(pathinfo($urlPath, PATHINFO_EXTENSION));
+        $allowedExtensions = [
+            'css', 'eot', 'gif', 'ico', 'jpeg', 'jpg', 'otf', 'png', 'svg', 'ttf', 'webp', 'woff', 'woff2'
+        ];
+        if (!in_array($extension, $allowedExtensions)) {
+            return false;
+        }
+        $filePath = $this->getLocalPathFromUrlPath($urlPath);
+        if ($filePath === null) {
+            return false;
+        }
+        $zip->addFile($filePath, $pathInZip);
+
+        if ($extension === 'css') {
+            preg_match_all(
+                '/url\(\s*([\'"]?)(.*?)\1\s*\)|@import\s+([\'"])(.*?)\3/i',
+                (string) file_get_contents($filePath),
+                $matches,
+                PREG_SET_ORDER
+            );
+            foreach ($matches as $match) {
+                $reference = $match[4] ?? $match[2];
+                // Skip data URIs, external and absolute URLs and fragments
+                if ($reference === '' || preg_match('#^([a-z][a-z0-9+.-]*:|/|\\#)#i', $reference)) {
+                    continue;
+                }
+                $reference = rawurldecode((string) preg_replace('/[?#].*$/', '', $reference));
+                $this->addPrintableResource($this->normalizeUrlPath(dirname($urlPath) . '/' . $reference), $zip);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Get the local file of an URL path pointing to the asset directory or the LimeSurvey installation
+     *
+     * @param string $urlPath absolute URL path of the file
+     * @return string|null the real path of the file or null if it is not an existing file inside these directories
+     */
+    private function getLocalPathFromUrlPath(string $urlPath): ?string
+    {
+        $assetManager = App()->getAssetManager();
+        $directories = [
+            [$assetManager->getBaseUrl(), $assetManager->getBasePath()],
+            [App()->getBaseUrl(), App()->getConfig('rootdir')],
+        ];
+        foreach ($directories as [$baseUrl, $basePath]) {
+            if (strpos($urlPath, $baseUrl . '/') !== 0) {
+                continue;
+            }
+            $basePath = realpath($basePath);
+            $filePath = realpath($basePath . substr($urlPath, strlen((string) $baseUrl)));
+            $isInBasePath = $basePath && $filePath && strpos($filePath, $basePath . DIRECTORY_SEPARATOR) === 0;
+            if ($isInBasePath && is_file($filePath)) {
+                return $filePath;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Resolve the '.' and '..' segments of an absolute URL path
+     *
+     * @param string $urlPath absolute URL path, e.g. /tmp/assets/1a2b3c4d/css/../fonts/font.woff
+     * @return string the URL path without '.' and '..' segments, e.g. /tmp/assets/1a2b3c4d/fonts/font.woff
+     */
+    private function normalizeUrlPath(string $urlPath): string
+    {
+        $segments = [];
+        foreach (explode('/', $urlPath) as $segment) {
+            if ($segment === '..') {
+                array_pop($segments);
+            } elseif ($segment !== '.' && $segment !== '') {
+                $segments[] = $segment;
+            }
+        }
+        return '/' . implode('/', $segments);
     }
 
     /**

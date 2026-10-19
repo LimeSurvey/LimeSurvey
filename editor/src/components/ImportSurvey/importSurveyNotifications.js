@@ -20,7 +20,7 @@ export const showImportError = (message) =>
 export const showImportSuccess = () =>
   Toast({
     ...BASE_OPTIONS,
-    message: t('Survey imported successfully'),
+    message: t('Import of survey is completed.'),
     className: 'import-survey-toast import-survey-toast--success',
     leftIcon: <SmallCheckMarkIcon />,
     rightIcon: '',

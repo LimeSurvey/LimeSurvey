@@ -23,6 +23,21 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
 }
 
     $counter2 = 0;
+
+    // Encrypted responses can only be matched as a whole: text filters are limited to exact matches, range filters can't work at all
+    $encrypted = !empty($flt[6]);
+    $encryptionNoticeId = 'encryption-notice-' . $flt[0];
+    $textInputOptions = $encrypted ? array('aria-describedby' => $encryptionNoticeId) : array();
+    $rangeInputOptions = $encrypted ? array('disabled' => true, 'aria-describedby' => $encryptionNoticeId) : array();
+    $encryptionNotice = '';
+if ($encrypted) {
+    if (in_array($flt[2], [Question::QT_Q_MULTIPLE_SHORT_TEXT, Question::QT_T_LONG_FREE_TEXT, Question::QT_U_HUGE_FREE_TEXT, Question::QT_S_SHORT_FREE_TEXT])) {
+        $encryptionNoticeText = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
+    } else {
+        $encryptionNoticeText = gT("This field is encrypted and can't be filtered by a range of values.");
+    }
+    $encryptionNotice = "<div class='form-text mb-3' id='" . $encryptionNoticeId . "'><span class='ri-key-2-fill text-success' aria-hidden='true'></span> " . $encryptionNoticeText . "</div>";
+}
 ?>
 
 
@@ -69,6 +84,7 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
         switch ($flt[2]) {
             case Question::QT_K_MULTIPLE_NUMERICAL: // Multiple Numerical
                 echo '<h4 class="question-selector-title">' . $oStatisticsHelper::_showSpeaker($niceqtext) . '</h4><br/>';
+                echo $encryptionNotice;
                 //go through all the (multiple) answers
                 foreach ($result[$key1] as $row1) {
                     $row1 = array_values($row1);
@@ -107,13 +123,13 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
                         <div class='mb-3 row'>
                         <label for='" . $myfield2 . "' class='col-md-4 form-label'>" . gT("Number greater than:") . "</label>
                         <div class='col-md-6'>"
-                        . CHtml::numberField($myfield2, $_POST[$myfield2] ?? '', array( 'class' => 'form-control', 'step' => 'any'))
+                        . CHtml::numberField($myfield2, $_POST[$myfield2] ?? '', array( 'class' => 'form-control', 'step' => 'any') + $rangeInputOptions)
                         . "</div>
                         </div>
                         <div class='mb-3 row'>
                         <label for='N" . $myfield3 . "' class='col-md-4 form-label'>" . gT("Number less than:") . "</label>
                         <div class='col-md-6'>"
-                        . CHtml::numberField($myfield3, $_POST[$myfield3] ?? '', array( 'class' => 'form-control', 'step' => 'any'))
+                        . CHtml::numberField($myfield3, $_POST[$myfield3] ?? '', array( 'class' => 'form-control', 'step' => 'any') + $rangeInputOptions)
                         . "</div>
                         </div>";
                     }
@@ -124,6 +140,7 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
 
             case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple short text
                 echo '<h4 class="question-selector-title">' . $oStatisticsHelper::_showSpeaker($niceqtext) . '</h4><br/>';
+                echo $encryptionNotice;
                 //get subqestions
                 $result[$key1] = Question::model()->getQuestionsForStatistics('title, question, qid', "parent_qid='$flt[0]'", 'question_order');
                 //$counter2=0;
@@ -145,7 +162,7 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
                     echo $flt[3] . " - " . $oStatisticsHelper::_showSpeaker(flattenText($row['question'], true))
                     . "<br /><p style='padding: 1em;'>\n"
                     . "\t<span class='smalltext'>" . gT("Responses containing") . ":</span><br />\n";
-                    echo CHtml::textField($myfield2, $_POST[$myfield2] ?? '', array('class' => 'form-control'));
+                    echo CHtml::textField($myfield2, $_POST[$myfield2] ?? '', array('class' => 'form-control') + $textInputOptions);
                     echo "</p>";
                     echo '</div></div>';
                 }
@@ -169,12 +186,14 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
                 . "<br />\n"
                 . "\t<span class='smalltext'>" . gT("Responses containing") . ":</span>
                 </div>\n"
-                . CHtml::textArea($myfield2, $_POST[$myfield2] ?? '', array('rows' => '3','cols' => '40'));
+                . CHtml::textArea($myfield2, $_POST[$myfield2] ?? '', array('rows' => '3','cols' => '40') + $textInputOptions)
+                . $encryptionNotice;
                 break;
 
 
 
             case Question::QT_S_SHORT_FREE_TEXT: // Short free text
+            case Question::QT_J_MAP:
                 echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                 $myfield2 = "T$myfield";
                 echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
@@ -188,7 +207,8 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
                 . "<br />\n"
                 . "\t<span class='smalltext'>" . gT("Responses containing") . ":</span>
                 </div>\n"
-                . CHtml::textField($myfield2, $_POST[$myfield2] ?? '', array('class' => 'form-control'));
+                . CHtml::textField($myfield2, $_POST[$myfield2] ?? '', array('class' => 'form-control') + $textInputOptions)
+                . $encryptionNotice;
                 break;
 
 
@@ -221,15 +241,16 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
                 <div class='mb-3 row'>
                 <label for='" . $myfield2 . "' class='col-md-4 form-label'>" . gT("Number greater than:") . "</label>
                 <div class='col-md-6'>"
-                . CHtml::numberField($myfield2, $_POST[$myfield2] ?? '', array( 'class' => 'form-control', 'step' => 'any'))
+                . CHtml::numberField($myfield2, $_POST[$myfield2] ?? '', array( 'class' => 'form-control', 'step' => 'any') + $rangeInputOptions)
                 . "</div>
                 </div>
                 <div class='mb-3 row'>
                 <label for='N" . $myfield3 . "' class='col-md-4 form-label'>" . gT("Number less than:") . "</label>
                 <div class='col-md-6'>"
-                . CHtml::numberField($myfield3, $_POST[$myfield3] ?? '', array( 'class' => 'form-control', 'step' => 'any'))
+                . CHtml::numberField($myfield3, $_POST[$myfield3] ?? '', array( 'class' => 'form-control', 'step' => 'any') + $rangeInputOptions)
                 . "</div>
-                </div>";
+                </div>"
+                . $encryptionNotice;
                 break;
 
 
@@ -241,15 +262,16 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
                 <div class='mb-3 row'>
                 <label for='" . $myfield2 . "' class='col-md-4 form-label'>" . gT("Number of files greater than:") . "</label>
                 <div class='col-md-6'>"
-                . CHtml::numberField($myfield2, $_POST[$myfield2] ?? '', array( 'class' => 'form-control', 'step' => 'any'))
+                . CHtml::numberField($myfield2, $_POST[$myfield2] ?? '', array( 'class' => 'form-control', 'step' => 'any') + $rangeInputOptions)
                 . "</div>
                 </div>
                 <div class='mb-3 row'>
                 <label for='" . $myfield3 . "' class='col-md-4 form-label'>" . gT("Number of files less than:") . "</label>
                 <div class='col-md-6'>"
-                . CHtml::numberField($myfield3, $_POST[$myfield3] ?? '', array( 'class' => 'form-control', 'step' => 'any'))
+                . CHtml::numberField($myfield3, $_POST[$myfield3] ?? '', array( 'class' => 'form-control', 'step' => 'any') + $rangeInputOptions)
                 . "</div>
-                </div>";
+                </div>"
+                . $encryptionNotice;
                 break;
 
 
@@ -286,57 +308,70 @@ if ($flt[2] == Question::QT_COLON_ARRAY_NUMBERS && !empty($qidattributes['input_
                 <div class='mb-3 row' style='margin-top:1em;'>
                 <label for='" . $myfield3 . "' class='col-md-4 col-form-label smalltext'>" . gT("Date equals:") . "</label>
                 <div class='col-md-8'>";
-                Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
-                    'name' => $myfield3,
-                    'id' => $myfield3,
-                    'value' => $_POST[$myfield3] ?? '',
-                    'pluginOptions' => array(
-                        'format' => $dateformatdetails['jsdate'],
-                        'allowInputToggle' => true,
-                        'showClear' => true,
-                        'theme' => 'light',
-                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                    )
-                ));
+                if ($encrypted) {
+                    echo CHtml::textField($myfield3, '', array('id' => $myfield3, 'class' => 'form-control') + $rangeInputOptions);
+                } else {
+                    Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
+                        'name' => $myfield3,
+                        'id' => $myfield3,
+                        'value' => $_POST[$myfield3] ?? '',
+                        'pluginOptions' => array(
+                            'format' => $dateformatdetails['jsdate'],
+                            'allowInputToggle' => true,
+                            'showClear' => true,
+                            'theme' => 'light',
+                            'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                        )
+                    ));
+                }
                 echo "
                 </div>
               </div>
               <div class='mb-3 row'>
               <label for='" . $myfield4 . "' class='col-md-4 col-form-label smalltext'>" . gT("Date is >= :") . "</label>
               <div class='col-md-8'>";
-                Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
-                  'name' => $myfield4,
-                  'id' => $myfield4,
-                  'value' => $_POST[$myfield4] ?? '',
-                  'pluginOptions' => array(
-                      'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                      'allowInputToggle' => true,
-                      'showClear' => true,
-                      'theme' => 'light',
-                      'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                  )
-                ));
+                if ($encrypted) {
+                    echo CHtml::textField($myfield4, '', array('id' => $myfield4, 'class' => 'form-control') + $rangeInputOptions);
+                } else {
+                    Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
+                      'name' => $myfield4,
+                      'id' => $myfield4,
+                      'value' => $_POST[$myfield4] ?? '',
+                      'pluginOptions' => array(
+                          'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                          'allowInputToggle' => true,
+                          'showClear' => true,
+                          'theme' => 'light',
+                          'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                      )
+                    ));
+                }
                 echo "
               </div>
             </div>
             <div class='mb-3 row'>
             <label for='" . $myfield5 . "' class='col-md-4 col-form-label smalltext'>" . gT("And/or Date is <= :") . "</label>
             <div class='col-md-8'>";
-                Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
-                'name' => $myfield5,
-                'id' => $myfield5,
-                'value' => $_POST[$myfield5] ?? '',
-                'pluginOptions' => array(
-                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                    'allowInputToggle' => true,
-                    'showClear' => true,
-                    'theme' => 'light',
-                    'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                )
-                ));
+                if ($encrypted) {
+                    echo CHtml::textField($myfield5, '', array('id' => $myfield5, 'class' => 'form-control') + $rangeInputOptions);
+                } else {
+                    Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
+                    'name' => $myfield5,
+                    'id' => $myfield5,
+                    'value' => $_POST[$myfield5] ?? '',
+                    'pluginOptions' => array(
+                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                        'allowInputToggle' => true,
+                        'showClear' => true,
+                        'theme' => 'light',
+                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                    )
+                    ));
+                }
                 echo "
             </div>
           </div>";
+                echo $encryptionNotice;
 
                 echo '</div>';
                 break;

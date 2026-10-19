@@ -179,7 +179,8 @@ class Statistics extends SurveyCommonAction
                 $row['type'],
                 $row['title'],
                 $sGroupName,
-                flattenText($row->questionl10ns[$language]['question'])
+                flattenText($row->questionl10ns[$language]['question']),
+                $row['encrypted'] === 'Y'
             );
 
             if (!in_array($sGroupName, $aGroups)) {
@@ -193,7 +194,8 @@ class Statistics extends SurveyCommonAction
                 $row['type'],
                 $row['title'],
                 $sGroupName,
-                flattenText($row->questionl10ns[$language]['question'])
+                flattenText($row->questionl10ns[$language]['question']),
+                $row['encrypted'] === 'Y'
             );
             $keyone = $keyone + 1;
         }
@@ -783,6 +785,7 @@ class Statistics extends SurveyCommonAction
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  //P - Multiple choice with comments
                 case Question::QT_M_MULTIPLE_CHOICE:  //M - Multiple choice
                 case Question::QT_S_SHORT_FREE_TEXT:
+                case Question::QT_J_MAP:
                 case Question::QT_T_LONG_FREE_TEXT: // Long free text
                 case Question::QT_N_NUMERICAL:
                     $summary[] = $type . 'Q' . $row['qid'];

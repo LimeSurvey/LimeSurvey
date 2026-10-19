@@ -42,9 +42,9 @@ export const ExportOptionsForm = ({
     { value: 'csv', label: t('CSV') },
     { value: 'html', label: t('HTML') },
     { value: 'pdf', label: t('PDF') },
-    { value: 'spss', label: t('SPSS (sav.)') },
+    { value: 'spss', label: t('SPSS (.sav)') },
     { value: 'stata', label: t('STATA (.xml)') },
-    { value: 'r_syntax', label: t('R (syntax)') },
+    { value: 'r_syntax', label: t('R (syntax file)') },
     { value: 'r_data', label: t('R (data file)') },
     { value: 'json', label: t('JSON') },
     { value: 'excel', label: t('Microsoft Excel') },
@@ -57,8 +57,8 @@ export const ExportOptionsForm = ({
   ]
 
   const csvSeparatorOptions = [
-    { label: t('Comma (,)'), value: ',' },
-    { label: t('Semicolon (;)'), value: ';' },
+    { label: t('Comma'), value: ',' },
+    { label: t('Semicolon'), value: ';' },
     { label: t('Tab'), value: '\t' },
   ]
 

@@ -12,7 +12,7 @@ const localized = (l10ns, language, key) => {
 }
 
 // Free-text question types (short / long / huge text).
-const FREE_TEXT_TYPES = ['S', 'T', 'U']
+const FREE_TEXT_TYPES = ['S', 'T', 'U', 'J']
 
 // Types that carry no filterable response data, so they're kept out of the
 // question dropdown: X Text display (no data) and * Equation (computed).
