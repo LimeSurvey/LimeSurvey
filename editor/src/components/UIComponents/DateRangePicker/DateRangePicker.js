@@ -32,6 +32,14 @@ export const DateRangePicker = ({
   const [dayCounts, setDayCounts] = useState(EMPTY_DAY_COUNTS)
   const [isFromValid, setIsFromValid] = useState(true)
   const [isToValid, setIsToValid] = useState(true)
+  const propsKey = `${initialRange.from?.getTime()}|${initialRange.to?.getTime()}`
+  const [prevPropsKey, setPrevPropsKey] = useState(propsKey)
+  if (propsKey !== prevPropsKey) {
+    setPrevPropsKey(propsKey)
+    setRange(initialRange)
+    setTempRange(initialRange)
+    setMonth(initialRange.from ?? new Date())
+  }
   const {
     showPicker,
     openPicker,
