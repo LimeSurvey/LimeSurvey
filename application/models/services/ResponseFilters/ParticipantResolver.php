@@ -35,6 +35,24 @@ class ParticipantResolver
         }
     }
 
+    /**
+     * The participant columns of a survey, or none when it has no participant
+     * table; in which case a participant filter cannot be honoured and is
+     * refused rather than ignored.
+     *
+     * Read from the table itself so custom attributes need no separate lookup.
+     */
+    public static function fromSurvey(?\Survey $survey): self
+    {
+        if (empty($survey) || !$survey->hasTokensTable) {
+            return new self([]);
+        }
+
+        $table = \App()->db->schema->getTable($survey->tokensTableName);
+
+        return new self($table === null ? [] : array_keys($table->columns));
+    }
+
     public function resolve(ResponseFilter $filter): ResolvedFilter
     {
         if ($filter->getSource() !== ResponseFilter::SOURCE_PARTICIPANT) {

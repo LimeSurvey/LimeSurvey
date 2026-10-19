@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { ToggleButtons } from 'components'
 import { useStatistics } from 'hooks'
@@ -17,22 +17,28 @@ const valueTypeOptions = [
 export const ResponsesStatistics = ({
   surveyId,
   filters = {},
-  showFilters,
-  setShowFilters,
-  setFilters,
   survey,
   questionOptions = [],
   appliedFilters = [],
   setAppliedFilters,
+  filterSet = [],
+  onFilterError,
 }) => {
   const {
     statistics,
+    error,
     isFetching,
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
-  } = useStatistics(surveyId, filters)
+  } = useStatistics(surveyId, filters, filterSet)
   const [valueType, setValueType] = useState(VALUE_TYPE.PERCENTAGE)
+
+  useEffect(() => {
+    if (error) {
+      onFilterError?.(error)
+    }
+  }, [error, onFilterError])
 
   const [loadMoreRef] = useIsInViewport(null, {
     initialInView: false,
@@ -66,6 +72,7 @@ export const ResponsesStatistics = ({
         surveyId={surveyId}
         valueType={valueType}
         filters={filters}
+        filterSet={filterSet}
       />
     )
   }
@@ -74,9 +81,6 @@ export const ResponsesStatistics = ({
     <>
       <div className="responses-statistics-toolbar">
         <ResponsesHeader
-          setShowFilters={setShowFilters}
-          showFilters={showFilters}
-          setFilters={setFilters}
           tabKey={TAB_KEYS.STATISTICS}
           survey={survey}
           questionOptions={questionOptions}

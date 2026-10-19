@@ -8,15 +8,12 @@ import { panelItemsKeys } from './Sidebars'
 import { StatisticsDetailModal } from './components/ResponsesStatistics/StatisticsDetailModal.js'
 import { StatisticsFiltersBuilder } from './components/ResponsesStatistics/StatisticsFiltersModal'
 
-// The filter modal keeps its state, but a tab can only act on it once its own
-// backend is wired. Turn each one on with its ticket.
+// Per-tab switch for the filter button. Both tabs can act on the filter now;
+// kept so either can be turned off on its own.
 const SHOW_RESPONSES_FILTER_BUTTON = true
-const SHOW_STATISTICS_FILTER_BUTTON = false
+const SHOW_STATISTICS_FILTER_BUTTON = true
 
 export const ResponsesHeader = ({
-  setShowFilters = () => {},
-  showFilters,
-  setFilters = () => {},
   tabKey,
   survey,
   questionOptions = [],
@@ -47,38 +44,6 @@ export const ResponsesHeader = ({
           'opacity-0 disabled': tabKey === TAB_KEYS.OVERVIEW,
         })}
       >
-        {!isStatistics && (
-          <>
-            <div>
-              <Button
-                className={`btn filter-button`}
-                onClick={() => setShowFilters(!showFilters)}
-                variant="light"
-              >
-                {showFilters ? (
-                  <i className="ri-eye-off-line me-2"></i>
-                ) : (
-                  <i className="ri-filter-2-line me-2"></i>
-                )}
-                {showFilters ? t('Hide filters') : t('Filter responses')}
-              </Button>
-            </div>
-            <div>
-              <Button
-                className={`btn filter-button`}
-                onClick={() => {
-                  setFilters({})
-                  setAppliedFilters([])
-                  setShowFilters(false)
-                }}
-                variant="light"
-              >
-                <i className="ri-filter-off-line me-2"></i>
-                {t('Clear filters')}
-              </Button>
-            </div>
-          </>
-        )}
         {showFilterButton && (
           <div>
             <Button

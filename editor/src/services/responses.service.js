@@ -19,14 +19,12 @@ export class ResponseService {
     sid,
     options = {
       pagination: { pageIndex: 0, pageSize: 10 },
-      filters: [],
       sorting: [],
       filterSet: [],
     }
   ) => {
     const {
       pagination = { pageIndex: 0, pageSize: 10 },
-      filters = [],
       sorting = [],
       filterSet = [],
     } = options
@@ -37,12 +35,10 @@ export class ResponseService {
         pageSize: pagination.pageSize,
       },
       sort: {},
-      filters: [],
     }
 
     // The condition-designer filter. Sent only when there is one, so requests
-    // without it stay exactly as they were. It combines with the column
-    // filters above rather than replacing them.
+    // without it stay exactly as they were.
     if (filterSet.length > 0) {
       body.filterSet = filterSet
     }
@@ -50,18 +46,6 @@ export class ResponseService {
     if (sorting.length > 0 && sorting[0].id) {
       body.sort[sorting[0].id] = sorting[0].desc ? 'desc' : 'asc'
     }
-
-    Object.entries(filters || {}).forEach(
-      ([, { value, filterMethod: type, keys }]) => {
-        if (!value?.length && !value) return
-
-        body.filters.push({
-          key: keys[0],
-          filterMethod: type,
-          value,
-        })
-      }
-    )
 
     return await this.restClient.post(`survey-responses/${sid}`, body)
   }
@@ -71,20 +55,12 @@ export class ResponseService {
   }
 
   exportResponses = async (options) => {
-    const { filters, ...restOptions } = options
-    const body = { ...restOptions, filters: [] }
+    const { filterSet = [], ...restOptions } = options
+    const body = { ...restOptions }
 
-    Object.entries(filters || {}).forEach(
-      ([, { value, filterMethod: type, keys }]) => {
-        if (!value?.length && !value) return
-
-        body.filters.push({
-          key: keys[0],
-          filterMethod: type,
-          value,
-        })
-      }
-    )
+    if (filterSet.length > 0) {
+      body.filterSet = filterSet
+    }
 
     return await this.restClient.post(
       `survey-responses-export/${this.surveyId}`,
