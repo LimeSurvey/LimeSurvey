@@ -87,29 +87,45 @@ class SurveyConditionAccessTest extends TestBaseClass
     /**
      * Updating a condition through another question must not change it.
      *
+     * @dataProvider updateTabProvider
+     * @param string $editTargetTab The tab the update is sent from
      * @return void
      */
-    public function testUpdateConditionIgnoresConditionOfOtherQuestion()
+    public function testUpdateConditionIgnoresConditionOfOtherQuestion(string $editTargetTab)
     {
-        $this->updateConstantCondition($this->qidA, 'B2');
+        $this->updateCondition($this->qidA, 'B2', $editTargetTab);
 
         $condition = \Condition::model()->findByPk($this->cidOfB);
         $this->assertSame($this->qidB, (int)$condition->qid, 'Condition was moved to another question.');
         $this->assertSame('A1', $condition->value, 'Condition of another question was changed.');
 
-        $this->updateConstantCondition($this->qidB, 'B2');
+        $this->updateCondition($this->qidB, 'B2', $editTargetTab);
         $condition = \Condition::model()->findByPk($this->cidOfB);
         $this->assertSame('B2', $condition->value, 'Condition of the question was not updated.');
     }
 
     /**
-     * Update the test condition to a constant value, sent for the given question.
+     * The update paths: A constant value and the answers of the source question.
+     *
+     * @return array
+     */
+    public function updateTabProvider(): array
+    {
+        return [
+            'constant' => ['#CONST'],
+            'answers' => ['#CANSWERSTAB'],
+        ];
+    }
+
+    /**
+     * Update the test condition to a new value, sent for the given question.
      *
      * @param int $qid The question the update is sent for
-     * @param string $value The new constant value
+     * @param string $value The new value
+     * @param string $editTargetTab The tab the update is sent from
      * @return void
      */
-    private function updateConstantCondition(int $qid, string $value)
+    private function updateCondition(int $qid, string $value, string $editTargetTab)
     {
         $app = new class {
             /**
@@ -131,9 +147,9 @@ class SurveyConditionAccessTest extends TestBaseClass
                 'p_cquestions' => '',
                 'p_csrctoken' => '',
                 'conditionCfieldname' => '',
-                'p_canswers' => [],
+                'p_canswers' => $editTargetTab === '#CANSWERSTAB' ? [$value] : [],
             ],
-            '#CONST',
+            $editTargetTab,
             $app,
             $value,
             '',
