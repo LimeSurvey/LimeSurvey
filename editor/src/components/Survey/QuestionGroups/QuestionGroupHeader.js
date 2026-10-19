@@ -3,8 +3,14 @@ import { useParams } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import classNames from 'classnames'
 
-import { createBufferOperation, hasTempId, L10ns, getSiteUrl } from 'helpers'
-import { useBuffer } from 'hooks'
+import {
+  createBufferOperation,
+  hasTempId,
+  L10ns,
+  getSiteUrl,
+  STATES,
+} from 'helpers'
+import { useAppState, useBuffer } from 'hooks'
 import { ContentEditor } from 'components/UIComponents'
 import { Dropdown } from 'components/UIComponents/Dropdown/Dropdown'
 import { ReactComponent as DownArrow } from 'assets/icons/down-arrow.svg'
@@ -29,6 +35,8 @@ export const QuestionGroupHeader = ({
   const { surveyId } = useParams()
   const { addToBuffer } = useBuffer()
 
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
+
   const handleDuplicate = () => {
     duplicateGroup()
   }
@@ -47,6 +55,7 @@ export const QuestionGroupHeader = ({
       label: t('Duplicate group'),
       icon: 'ri-file-copy-line',
       onClick: handleDuplicate,
+      disabled: { state: isSurveyActive },
       testId: 'duplicate-button',
     },
     {
@@ -54,6 +63,7 @@ export const QuestionGroupHeader = ({
       label: t('Delete group'),
       icon: 'ri-delete-bin-line',
       onClick: handleDelete,
+      disabled: { state: isSurveyActive },
       className: 'text-danger',
       testId: 'delete-button',
     },
