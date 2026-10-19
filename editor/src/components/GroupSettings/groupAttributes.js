@@ -1,6 +1,6 @@
 import { Input } from 'components/UIComponents'
 
-export const getQuestionGroupAttributes =() => [
+export const getQuestionGroupAttributes = () => [
   {
     component: Input,
     attributePath: 'l10ns.[language].groupName',
