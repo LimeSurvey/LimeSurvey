@@ -87,4 +87,28 @@ class AuthLDAPTest extends TestBaseClass
         $this->assertSame(\AuthLDAP::ERROR_ALREADY_EXISTING_USER, $event->get('errorCode'));
         $this->assertSame(1, (int) \User::model()->count('LOWER(users_name) = :name', [':name' => 'authldapcasetest']));
     }
+
+    /**
+     * A failing STARTTLS returns the LDAP error instead of an empty message (shown as invalid password)
+     */
+    public function testFailingStartTlsReturnsLdapError()
+    {
+        $settings = ['server' => 'ldap://127.0.0.1', 'ldapport' => '1', 'ldaptls' => '1', 'ldapversion' => '3'];
+        foreach ($settings as $key => $value) {
+            $this->callPrivate('set', [$key, $value]);
+        }
+        try {
+            $result = $this->callPrivate('createConnection', []);
+        } finally {
+            \PluginSetting::model()->deleteAllByAttributes(
+                ['plugin_id' => self::$plugin->getId(), 'key' => array_keys($settings)]
+            );
+        }
+        $this->assertIsArray($result);
+        $this->assertSame(100, $result['errorCode']);
+        $this->assertSame(
+            sprintf(gT('Could not start TLS on the LDAP connection: %s'), "Can't contact LDAP server"),
+            $result['errorMessage']
+        );
+    }
 }
