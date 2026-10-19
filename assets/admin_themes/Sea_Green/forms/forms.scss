@@ -116,7 +116,7 @@ input[type="datetime-local"] {
     }
 }
 
-.input-group > .btn-outline-secondary:not(:hover, :focus, :active, .active, .show, .disabled, [disabled]) {
+.input-group > .btn-outline-secondary:not(:hover, :focus, :active, .active, .show, .disabled, [disabled], :disabled) {
     border-color : $input-border-color;
 }
 

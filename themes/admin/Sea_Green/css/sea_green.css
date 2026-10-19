@@ -19360,7 +19360,7 @@ input[type=datetime-local] {
   vertical-align: top;
 }
 
-.input-group > .btn-outline-secondary:not(:hover, :focus, :active, .active, .show, .disabled, [disabled]) {
+.input-group > .btn-outline-secondary:not(:hover, :focus, :active, .active, .show, .disabled, [disabled], :disabled) {
   border-color: #6E748C;
 }
 
