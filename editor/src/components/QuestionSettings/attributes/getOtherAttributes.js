@@ -10,6 +10,7 @@ export const getOtherAttributes = () => ({
       dataTestId: 'min-number-of-files',
       type: 'number',
       defaultValue: '0',
+      min: 0,
     },
   },
   ALLOWED_FILE_TYPES: {
