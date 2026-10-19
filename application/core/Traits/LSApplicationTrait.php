@@ -30,10 +30,40 @@ trait LSApplicationTrait
         }
         /* use App()->session and not App()->user for easiest unit test */
         $this->currentUserId = App()->session['loginID'];
-        if ($this->currentUserId && !User::model()->notexpired()->active()->findByPk($this->currentUserId)) {
-            $this->currentUserId = 0;
+        if ($this->currentUserId) {
+            $oUser = User::model()->notexpired()->active()->findByPk($this->currentUserId);
+            if (!$oUser || $this->isSessionTokenStale($oUser)) {
+                $this->currentUserId = 0;
+            }
         }
         return $this->currentUserId;
+    }
+
+    /**
+     * Whether the given user's stored session token (rotated on every
+     * password change, see User::setPassword()) no longer matches the
+     * token cached in the current session at login time. A mismatch means
+     * the password was changed from another session in the meantime, and
+     * this session must be treated as invalid.
+     *
+     * The check is skipped on installations not yet upgraded to DB version
+     * 716 (column does not exist yet), for users who have not logged in
+     * since that upgrade (no token generated yet), and whenever the current
+     * session has no cached token to compare against (e.g. a session set up
+     * by internal/trusted code that assigns loginID directly instead of
+     * going through LSUserIdentity::postLogin(), such as console commands
+     * or the test suite) — only a session that actually went through a
+     * normal login and cached a token can go stale.
+     *
+     * @param User $oUser
+     * @return bool
+     */
+    private function isSessionTokenStale($oUser)
+    {
+        if (App()->getConfig('DBVersion') < 716 || empty($oUser->session_token) || empty(App()->session['session_token'])) {
+            return false;
+        }
+        return $oUser->session_token !== App()->session['session_token'];
     }
 
     /**

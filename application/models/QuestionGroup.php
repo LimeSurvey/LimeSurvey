@@ -18,6 +18,7 @@ use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     BadRequestException
 };
+use LimeSurvey\Models\Services\SurveyDetailService;
 
 /**
  * Class QuestionGroup
@@ -95,21 +96,26 @@ class QuestionGroup extends LSActiveRecord
 
 
     /**
-     * @param integer $iSurveyId
-     * @param int $position
+     * Renumbers the group_order of every group in a survey sequentially, keeping the
+     * current order and using the group name in the survey's base language (then the
+     * group ID) as a tiebreaker for groups that share a group_order.
+     *
+     * @param integer $iSurveyId Survey whose groups are renumbered.
+     * @param int $position The group_order to assign to the first group.
+     * @return void
      */
     public function updateGroupOrder($iSurveyId, $position = 0)
     {
         $iSurveyId = (int) $iSurveyId;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $language = $oSurvey->language;
+        // Left join with the language in the ON clause: a group without a base-language
+        // localization row must still be renumbered, with group_name only breaking ties.
         $data = Yii::app()->db->createCommand()->select('g.gid')
-            ->where('g.sid=:sid AND gl.language = :language')
-            ->order('group_order, group_name ASC')
             ->from('{{groups}} g')
-            ->join('{{group_l10ns}} gl', 'g.gid=gl.gid')
-            ->bindParam(':sid', $iSurveyId, PDO::PARAM_INT)
-            ->bindParam(':language', $language, PDO::PARAM_STR)
+            ->leftJoin('{{group_l10ns}} gl', 'g.gid=gl.gid AND gl.language=:language', array(':language' => $language))
+            ->where('g.sid=:sid', array(':sid' => $iSurveyId))
+            ->order('g.group_order, gl.group_name ASC, g.gid ASC')
             ->query();
 
         $position = intval($position);
@@ -171,7 +177,9 @@ class QuestionGroup extends LSActiveRecord
         Question::deleteAllById($questionIds);
         Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
         QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' => $groupId));
-        return QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
+        $affectedRows = QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
+        (new SurveyDetailService())->touchSurveyLastModified((int) $surveyId);
+        return $affectedRows;
     }
 
     /**
@@ -429,6 +437,19 @@ class QuestionGroup extends LSActiveRecord
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Update the survey's lastmodified timestamp after the question group was saved.
+     *
+     * @return void
+     */
+    protected function afterSave()
+    {
+        parent::afterSave();
+        if (!empty($this->sid)) {
+            (new SurveyDetailService())->touchSurveyLastModified((int) $this->sid);
         }
     }
 

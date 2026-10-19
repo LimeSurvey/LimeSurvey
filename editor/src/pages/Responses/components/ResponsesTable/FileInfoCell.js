@@ -1,8 +1,9 @@
+import { format } from 'util'
 import { Badge } from 'react-bootstrap'
 
 export const FileInfoCell = ({ filesInfo, surveyId, rowId, questionId }) => {
   const filesToRender = filesInfo.map((fileInfo, index) => {
-    // To avoid showing that the file size is 0 MB, incase of the size is very small.
+    // To avoid showing that the file size is 0 MB, in case of the size is very small.
     const fileSize = Math.max(fileInfo.approxFileSizeInMB, 0.1)
 
     if (fileInfo.isDeleted) {
@@ -26,8 +27,7 @@ export const FileInfoCell = ({ filesInfo, surveyId, rowId, questionId }) => {
               target="_blank"
               rel="noreferrer"
             >
-              {fileSize}
-              {t('MB')}
+              {format(t('%s MB'), fileSize)}
             </a>
           </div>
         </Badge>

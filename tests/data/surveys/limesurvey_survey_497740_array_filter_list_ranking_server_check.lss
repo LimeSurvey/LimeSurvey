@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document><LimeSurveyDocType>Survey</LimeSurveyDocType><DBVersion>717</DBVersion><languages><language>en</language></languages>
+<answers><fields><fieldname>aid</fieldname><fieldname>qid</fieldname><fieldname>code</fieldname><fieldname>sortorder</fieldname><fieldname>assessment_value</fieldname><fieldname>scale_id</fieldname></fields><rows>
+   <row><aid>301</aid><qid>102</qid><code>A1</code><sortorder>1</sortorder><assessment_value>0</assessment_value><scale_id>0</scale_id></row>
+   <row><aid>302</aid><qid>102</qid><code>A2</code><sortorder>2</sortorder><assessment_value>0</assessment_value><scale_id>0</scale_id></row>
+   <row><aid>303</aid><qid>102</qid><code>A3</code><sortorder>3</sortorder><assessment_value>0</assessment_value><scale_id>0</scale_id></row>
+</rows></answers>
+<answer_l10ns><fields><fieldname>id</fieldname><fieldname>aid</fieldname><fieldname>answer</fieldname><fieldname>language</fieldname></fields><rows>
+   <row><id>1</id><aid>301</aid><answer>Opt1</answer><language>en</language></row>
+   <row><id>2</id><aid>302</aid><answer>Opt2</answer><language>en</language></row>
+   <row><id>3</id><aid>303</aid><answer>Opt3</answer><language>en</language></row>
+</rows></answer_l10ns>
+<groups><fields><fieldname>gid</fieldname><fieldname>sid</fieldname><fieldname>group_order</fieldname><fieldname>randomization_group</fieldname><fieldname>grelevance</fieldname></fields><rows>
+<row><gid>1</gid><sid>497740</sid><group_order>1</group_order><randomization_group/><grelevance>1</grelevance></row>
+<row><gid>2</gid><sid>497740</sid><group_order>2</group_order><randomization_group/><grelevance>1</grelevance></row>
+</rows></groups>
+<group_l10ns><fields><fieldname>id</fieldname><fieldname>gid</fieldname><fieldname>group_name</fieldname><fieldname>description</fieldname><fieldname>language</fieldname></fields><rows>
+<row><id>1</id><gid>1</gid><group_name>G1</group_name><description/><language>en</language></row>
+<row><id>2</id><gid>2</gid><group_name>G2</group_name><description/><language>en</language></row>
+</rows></group_l10ns>
+<questions><fields><fieldname>qid</fieldname><fieldname>parent_qid</fieldname><fieldname>sid</fieldname><fieldname>gid</fieldname><fieldname>type</fieldname><fieldname>title</fieldname><fieldname>other</fieldname><fieldname>mandatory</fieldname><fieldname>question_order</fieldname><fieldname>scale_id</fieldname><fieldname>same_default</fieldname><fieldname>relevance</fieldname><fieldname>encrypted</fieldname><fieldname>question_theme_name</fieldname><fieldname>same_script</fieldname></fields><rows>
+   <row><qid>101</qid><parent_qid>0</parent_qid><sid>497740</sid><gid>1</gid><type>M</type><title>Q1</title><other>N</other><mandatory>N</mandatory><question_order>1</question_order><scale_id>0</scale_id><same_default>0</same_default><relevance>1</relevance><encrypted>N</encrypted><question_theme_name>multiplechoice</question_theme_name><same_script>0</same_script></row>
+   <row><qid>102</qid><parent_qid>0</parent_qid><sid>497740</sid><gid>2</gid><type>L</type><title>Q2</title><other>N</other><mandatory>N</mandatory><question_order>1</question_order><scale_id>0</scale_id><same_default>0</same_default><relevance>1</relevance><encrypted>N</encrypted><question_theme_name>listradio</question_theme_name><same_script>0</same_script></row>
+   <row><qid>103</qid><parent_qid>0</parent_qid><sid>497740</sid><gid>2</gid><type>R</type><title>Q3</title><other>N</other><mandatory>N</mandatory><question_order>2</question_order><scale_id>0</scale_id><same_default>0</same_default><relevance>1</relevance><encrypted>N</encrypted><question_theme_name>ranking</question_theme_name><same_script>0</same_script></row>
+</rows></questions>
+<subquestions><fields><fieldname>qid</fieldname><fieldname>parent_qid</fieldname><fieldname>sid</fieldname><fieldname>gid</fieldname><fieldname>type</fieldname><fieldname>title</fieldname><fieldname>other</fieldname><fieldname>mandatory</fieldname><fieldname>question_order</fieldname><fieldname>scale_id</fieldname><fieldname>same_default</fieldname><fieldname>relevance</fieldname><fieldname>encrypted</fieldname><fieldname>question_theme_name</fieldname><fieldname>same_script</fieldname></fields><rows>
+   <row><qid>201</qid><parent_qid>101</parent_qid><sid>497740</sid><gid>1</gid><type>M</type><title>A1</title><other>N</other><mandatory>N</mandatory><question_order>1</question_order><scale_id>0</scale_id><same_default>0</same_default><relevance>1</relevance><encrypted>N</encrypted><question_theme_name></question_theme_name><same_script>0</same_script></row>
+   <row><qid>202</qid><parent_qid>101</parent_qid><sid>497740</sid><gid>1</gid><type>M</type><title>A2</title><other>N</other><mandatory>N</mandatory><question_order>2</question_order><scale_id>0</scale_id><same_default>0</same_default><relevance>1</relevance><encrypted>N</encrypted><question_theme_name></question_theme_name><same_script>0</same_script></row>
+   <row><qid>203</qid><parent_qid>101</parent_qid><sid>497740</sid><gid>1</gid><type>M</type><title>A3</title><other>N</other><mandatory>N</mandatory><question_order>3</question_order><scale_id>0</scale_id><same_default>0</same_default><relevance>1</relevance><encrypted>N</encrypted><question_theme_name></question_theme_name><same_script>0</same_script></row>
+   <row><qid>204</qid><parent_qid>103</parent_qid><sid>497740</sid><gid>2</gid><type>R</type><title>A1</title><other>N</other><mandatory>N</mandatory><question_order>1</question_order><scale_id>0</scale_id><same_default>0</same_default><relevance>1</relevance><encrypted>N</encrypted><question_theme_name></question_theme_name><same_script>0</same_script></row>
+   <row><qid>205</qid><parent_qid>103</parent_qid><sid>497740</sid><gid>2</gid><type>R</type><title>A2</title><other>N</other><mandatory>N</mandatory><question_order>2</question_order><scale_id>0</scale_id><same_default>0</same_default><relevance>1</relevance><encrypted>N</encrypted><question_theme_name></question_theme_name><same_script>0</same_script></row>
+   <row><qid>206</qid><parent_qid>103</parent_qid><sid>497740</sid><gid>2</gid><type>R</type><title>A3</title><other>N</other><mandatory>N</mandatory><question_order>3</question_order><scale_id>0</scale_id><same_default>0</same_default><relevance>1</relevance><encrypted>N</encrypted><question_theme_name></question_theme_name><same_script>0</same_script></row>
+</rows></subquestions>
+<question_l10ns><fields><fieldname>id</fieldname><fieldname>qid</fieldname><fieldname>question</fieldname><fieldname>help</fieldname><fieldname>language</fieldname><fieldname>script</fieldname></fields><rows>
+   <row><id>1</id><qid>101</qid><question>Q1</question><help/><language>en</language><script/></row>
+   <row><id>2</id><qid>102</qid><question>Q2</question><help/><language>en</language><script/></row>
+   <row><id>3</id><qid>103</qid><question>Q3</question><help/><language>en</language><script/></row>
+   <row><id>4</id><qid>201</qid><question>Opt1</question><help/><language>en</language><script/></row>
+   <row><id>5</id><qid>202</qid><question>Opt2</question><help/><language>en</language><script/></row>
+   <row><id>6</id><qid>203</qid><question>Opt3</question><help/><language>en</language><script/></row>
+   <row><id>7</id><qid>204</qid><question>Opt1</question><help/><language>en</language><script/></row>
+   <row><id>8</id><qid>205</qid><question>Opt2</question><help/><language>en</language><script/></row>
+   <row><id>9</id><qid>206</qid><question>Opt3</question><help/><language>en</language><script/></row>
+</rows></question_l10ns>
+<question_attributes><fields><fieldname>qid</fieldname><fieldname>attribute</fieldname><fieldname>value</fieldname><fieldname>language</fieldname></fields><rows>
+<row><qid>102</qid><attribute>array_filter</attribute><value>Q1</value><language/></row>
+<row><qid>103</qid><attribute>array_filter</attribute><value>Q1</value><language/></row>
+</rows></question_attributes>
+<surveys><fields><fieldname>sid</fieldname><fieldname>admin</fieldname><fieldname>adminemail</fieldname><fieldname>anonymized</fieldname><fieldname>format</fieldname><fieldname>language</fieldname><fieldname>additional_languages</fieldname><fieldname>gsid</fieldname><fieldname>template</fieldname></fields><rows>
+<row><sid>497740</sid><admin>inherit</admin><adminemail>inherit</adminemail><anonymized>N</anonymized><format>G</format><language>en</language><additional_languages/><gsid>1</gsid><template>inherit</template></row>
+</rows></surveys>
+<surveys_languagesettings><fields><fieldname>surveyls_survey_id</fieldname><fieldname>surveyls_language</fieldname><fieldname>surveyls_title</fieldname></fields><rows>
+<row><surveyls_survey_id>497740</surveyls_survey_id><surveyls_language>en</surveyls_language><surveyls_title>9774 test</surveyls_title></row>
+</rows></surveys_languagesettings>
+</document>

@@ -30,6 +30,13 @@
 
 class ExpressionManager
 {
+    /**
+     * Matches right after a single quote that is an apostrophe inside a word (e.g. Crohn's, l'été),
+     * so it does not end a single-quoted string. A quote directly followed by an operator word
+     * (e.g. 'a'and'b') still ends the string.
+     */
+    const RDP_REGEX_INNER_APOSTROPHE = '(?<=\\p{L}\')(?!(?:and|or|eq|ne|lt|le|gt|ge)\\b)\\p{L}';
+
     // These are the allowable variable suffixes for variables - each represents an attribute of a variable that can be updated on same page
     private $aRDP_regexpVariableAttribute = array(
         'code',
@@ -114,8 +121,9 @@ class ExpressionManager
         // List of token-matching regular expressions
         // Note, this is effectively a Lexer using Regular Expressions.  Don't change this unless you understand compiler design.
         $RDP_regex_dq_string = '(?<!\\\\)".*?(?<!\\\\)"';
-        $RDP_regex_sq_string = '(?<!\\\\)\'.*?(?<!\\\\)\'';
-        $RDP_regex_whitespace = '\s+';
+        $RDP_regex_sq_string = '(?<!\\\\)\'.*?(?<!\\\\)\'(?!' . self::RDP_REGEX_INNER_APOSTROPHE . ')';
+        // Non-breaking spaces (UTF-8 bytes C2 A0) are whitespace too: The HTML editor inserts them
+        $RDP_regex_whitespace = '(?:\s|\xC2\xA0)+';
         $RDP_regex_lparen = '\(';
         $RDP_regex_rparen = '\)';
         $RDP_regex_comma = ',';
@@ -1904,6 +1912,7 @@ class ExpressionManager
 
         $expr = $this->ExpandThisVar($expr);
         $status = $this->RDP_Evaluate($expr);
+        $this->RDP_AddLaterQuestionWarnings();
         if (!$status) {
             return false; // if there are errors in the expression, hide it?
         }
@@ -1926,6 +1935,56 @@ class ExpressionManager
     }
 
     /**
+     * Add a warning for each variable of the last evaluated expression that belongs to a later question.
+     * Such a condition is only evaluated in page order, so it does not react when the later question is shown or hidden (mantis #14467).
+     * @return void
+     */
+    private function RDP_AddLaterQuestionWarnings()
+    {
+        if ($this->groupSeq == -1 || $this->questionSeq == -1) {
+            return;
+        }
+        foreach ($this->RDP_tokens as $pos => $token) {
+            if ($token[2] != 'WORD' && $token[2] != 'SGQA') {
+                continue;
+            }
+            if (isset($this->RDP_tokens[$pos + 1]) && $this->RDP_tokens[$pos + 1][2] == 'LP') {
+                continue; // Function call
+            }
+            if (!$this->RDP_isValidVariable($token[0])) {
+                continue;
+            }
+            if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", (string) $token[0])) {
+                continue; // Static attribute: Known from the start
+            }
+            $groupSeq = $this->GetVarAttribute($token[0], 'gseq', -1);
+            $questionSeq = $this->GetVarAttribute($token[0], 'qseq', -1);
+            if ($groupSeq == -1 || $questionSeq == -1) {
+                continue;
+            }
+            if ($groupSeq > $this->groupSeq || ($groupSeq == $this->groupSeq && $questionSeq > $this->questionSeq)) {
+                $this->RDP_AddWarning(new EMWarningLaterQuestion($token));
+            }
+        }
+    }
+
+    /**
+     * Parse and validate an expression without executing registered functions.
+     *
+     * @param string $expr
+     * @param int $groupSeq
+     * @param int $questionSeq
+     * @return bool
+     */
+    public function validateExpression($expr, $groupSeq = -1, $questionSeq = -1)
+    {
+        $this->groupSeq = $groupSeq;
+        $this->questionSeq = $questionSeq;
+
+        return $this->RDP_Evaluate($this->ExpandThisVar($expr), true);
+    }
+
+    /**
      * Start processing a group of substitutions - will be incrementally numbered
      */
 
@@ -1940,10 +1999,14 @@ class ExpressionManager
     /**
      * Clear cache of tailoring content.
      * When re-displaying same page, need to avoid generating double the amount of tailoring content.
+     * @param boolean $resetSubstitutionNum Restart the numbering of the tailoring ids
+     * @return void
      */
-    public function ClearSubstitutionInfo()
+    public function ClearSubstitutionInfo($resetSubstitutionNum = true)
     {
-        $this->substitutionNum = 0;
+        if ($resetSubstitutionNum) {
+            $this->substitutionNum = 0;
+        }
         $this->substitutionInfo = array(); // array of JavaScripts for managing each substitution
     }
 
@@ -2307,6 +2370,21 @@ class ExpressionManager
     }
 
     /**
+     * Check if the single quote at $parts[$index] is an apostrophe inside a word
+     * @param string[] $parts the string parts from splitting on RDP_ExpressionRegex
+     * @param integer $index the index of the single quote part
+     * @return boolean
+     */
+    private function isInnerApostrophe($parts, $index)
+    {
+        if ($index == 0 || !isset($parts[$index + 1])) {
+            return false;
+        }
+        $context = substr((string) $parts[$index - 1], -1) . "'" . $parts[$index + 1];
+        return (bool) preg_match('#' . self::RDP_REGEX_INNER_APOSTROPHE . '#Ai', $context, $matches, 0, 2);
+    }
+
+    /**
      * Split a source string into STRING vs. EXPRESSION, where the latter is surrounded by unescaped curly braces.
      * This version properly handles nested curly braces and curly braces within strings within curly braces - both of which are needed to better support JavaScript
      * Users still need to add a space or carriage return after opening braces (and ideally before closing braces too) to avoid  having them treated as expressions.
@@ -2404,6 +2482,8 @@ class ExpressionManager
                     } else {
                         if ($inDQString) {
                             // then just push the single quote
+                        } elseif ($inSQString && $this->isInnerApostrophe($parts, $j)) {
+                            // an apostrophe inside a word does not end the single-quoted string
                         } else {
                             if ($inSQString) {
                                 $inSQString = false; // finishing a single-quoted string

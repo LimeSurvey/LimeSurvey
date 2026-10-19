@@ -44,6 +44,18 @@ class ExpressionManagerTest extends TestBaseClass
         }
     }
 
+    public function testExpressionValidationDetectsUnknownFunctions(): void
+    {
+        $this->assertTrue($this->em->validateExpression('abs(1)'));
+        $this->assertFalse(
+            $this->em->validateExpression('unknown_function(1)')
+        );
+
+        $errors = $this->em->GetErrors();
+        $this->assertCount(1, $errors);
+        $this->assertSame('unknown_function', $errors[0][1][0]);
+    }
+
     public function testFunctions()
     {
         $functions = array(
@@ -90,6 +102,30 @@ class ExpressionManagerTest extends TestBaseClass
         foreach ($strings as $escaped => $expected) {
             $this->assertEquals($expected, $this->em->sProcessStringContainingExpressions($escaped));
         }
+    }
+
+    /**
+     * An apostrophe inside a word does not end a single-quoted string (#19990)
+     */
+    public function testApostropheInsideSingleQuotedString()
+    {
+        $strings = array(
+            "{if(1,'Crohn's disease','')}" => "Crohn's disease",
+            "{'rock'n'roll'}" => "rock'n'roll",
+            "{if(1,'x','y')}{if(1,'Crohn's','')} and {'a'}" => "xCrohn's and a",
+            "{'Crohn\\'s'}" => "Crohn's",
+            "{'a'and'b'}" => "1",
+            "{'a'or''}" => "1",
+        );
+        foreach ($strings as $source => $expected) {
+            $this->assertSame($expected, (string) $this->em->sProcessStringContainingExpressions($source), "Source: $source");
+        }
+        $parts = $this->em->asSplitStringOnExpressions("{if(1,'Crohn's','')} text {1}");
+        $this->assertSame(
+            array("{if(1,'Crohn's','')}", ' text ', '{1}'),
+            array_column($parts, 0)
+        );
+        $this->assertSame(array('EXPRESSION', 'STRING', 'EXPRESSION'), array_column($parts, 2));
     }
 
     public function testJuggling()

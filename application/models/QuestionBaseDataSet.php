@@ -41,7 +41,7 @@ abstract class QuestionBaseDataSet extends StaticModel
             $iSurveyId = Yii::app()->request->getParam('sid') ??
                 Yii::app()->request->getParam('surveyid') ??
                 Yii::app()->request->getParam('surveyId');
-            $this->oQuestion = $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
+            $this->oQuestion = $oQuestion = QuestionCreate::create($iSurveyId, $sQuestionType);
         }
 
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;

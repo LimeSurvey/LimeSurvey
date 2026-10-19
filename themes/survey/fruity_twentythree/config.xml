@@ -95,6 +95,8 @@
         <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value"
                     options="enable|partial|disable" optionlabels="Yes|For expression|No">enable
         </fixnumauto>
+        <deselectsinglechoice type="buttons" category="Simple options" width="4" title="Deselect single-choice option by click" options="on|off"
+                              optionlabels="Yes|No">off</deselectsinglechoice>
         <cornerradius type="buttons" category="Simple options" width="4" title="Corner radius" options="1|2|3" optionlabels="0px|4px|20px" optionimages="cornerradius_0.svg|cornerradius_4.svg|cornerradius_20.svg">2</cornerradius>
         <!-- colors -->
         <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
@@ -103,9 +105,9 @@
         <checkicon type="icon" library="remixicon" category="Colors" width="4" title="Check icon">EB7A
             <!--  When adding new items, please keep them ordered alphabetically -->
             <dropdownoptions>
-                <option value="EB7A"> Check </option>
-                <option value="EB80"> Check circle </option>
-                <option value="EB82"> Check square </option>
+                <option value="EB7A">Checkmark</option>
+                <option value="EB80">Checkmark in circle</option>
+                <option value="EB82">Checkmark in square</option>
             </dropdownoptions>
         </checkicon>
 
@@ -181,6 +183,7 @@
         <questionhelptextposition category="Display options"/>
         <showpopups category="Display options" />
         <fixnumauto category="Display options" />
+        <deselectsinglechoice category="Display options" />
     </optionsOrderReact>
 
     <!-- Here datas about how LimeSurvey should load the theme -->
@@ -502,7 +505,7 @@
                         <![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
                     <showsurveypolicynotice>2</showsurveypolicynotice>
                     <datasecurity_notice_label type="data" twig="on">
-                        <![CDATA[ <a href='#data-security-modal-' data-bs-toggle='collapse'> {{ gT('Show privacy policy') }} </a>  ]]></datasecurity_notice_label>
+                        <![CDATA[ {STARTPOLICYLINK}{{ gT('Show privacy policy') }}{ENDPOLICYLINK} ]]></datasecurity_notice_label>
                     <datasecurity_notice type="data" twig="on">
                         <![CDATA[ {{ gT("Your privacy policy text is shown here.") }} ]]></datasecurity_notice>
                 </survey>

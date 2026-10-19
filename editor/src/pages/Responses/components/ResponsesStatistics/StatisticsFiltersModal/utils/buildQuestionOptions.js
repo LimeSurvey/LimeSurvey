@@ -1,4 +1,5 @@
 // Turn the survey object into a clean list the dropdowns can display.
+import { format } from 'util'
 import { getQuestionTypeInfo } from 'components'
 import { RemoveHTMLTagsInString, getAttributeValue } from 'helpers'
 
@@ -214,7 +215,7 @@ const buildRanking = (question, language) => {
   return {
     ranks: Array.from({ length: rankCount }, (_, i) => ({
       value: String(i + 1),
-      label: `${t('Rank')} ${i + 1}`,
+      label: format(t('Rank %s'), i + 1),
     })),
     items: options,
   }

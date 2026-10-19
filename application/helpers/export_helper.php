@@ -54,7 +54,7 @@ function isNumericExtended(string $value)
 }
 
 /**
- * Returns splitted unicode string correctly
+ * Returns split unicode string correctly
  * source: http://www.php.net/manual/en/function.str-split.php#107658
  *
  * @param string $str
@@ -254,7 +254,8 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                         } // else do default action
                     default:
                         if (isset($row[$fieldno])) {
-                            $strTmp = mb_substr(stripTagsFull($row[$fieldno], false), 0, $iLength);
+                            // Response data is plain text: Only new lines are replaced, a '<' is not the start of a HTML tag
+                            $strTmp = mb_substr(trim(preg_replace('~\R~u', ' ', (string) $row[$fieldno])), 0, $iLength);
                             if (trim($strTmp) != '') {
                                 echo quoteSPSS($strTmp, $q, $field);
                             } elseif ($row[$fieldno] === '') {
@@ -541,7 +542,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
     $fieldnames = array_keys($fieldmap);
     $num_results = safecount($fieldnames);
     $diff = 0;
-    $noQID = array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage', 'seed');
+    $noQID = array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage', 'seed', 'quota_exit');
     # Build array that has to be returned
     for ($i = 0; $i < $num_results; $i++) {
         #Condition for SPSS fields:
@@ -591,6 +592,10 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
             case 'seed':
                 $fieldtype = 'A';
                 $val_size = 31;
+                break;
+            case 'quota_exit':
+                $fieldtype = 'F';
+                $val_size = 7;
                 break;
             default:
                 // Not set for default
@@ -875,11 +880,13 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
 {
     if (!isset($exclude['answers'])) {
         //Answer table
+        // Tiebreaker on the primary key is required because sortorder alone is not unique across questions,
+        // and chunked LIMIT/OFFSET pagination needs a fully deterministic order (varies between DB engines otherwise).
         $aquery = "SELECT {{answers}}.*
         FROM {{answers}}, {{questions}}
         WHERE {{answers}}.qid={{questions}}.qid
         AND {{questions}}.sid=$iSurveyID
-        ORDER BY {{answers}}.sortorder";
+        ORDER BY {{answers}}.sortorder, {{answers}}.aid";
         buildXMLFromQuery($xmlwriter, $aquery);
 
         //Answer L10n table
@@ -888,7 +895,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
         WHERE {{answers}}.aid={{answer_l10ns}}.aid
         AND {{answers}}.qid={{questions}}.qid
         AND {{questions}}.sid=$iSurveyID
-        ORDER BY {{answers}}.sortorder";
+        ORDER BY {{answers}}.sortorder, {{answer_l10ns}}.id";
         buildXMLFromQuery($xmlwriter, $aquery);
     }
 
@@ -914,7 +921,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
 
     // DefaultValues L10n
     $query = "SELECT {{defaultvalue_l10ns}}.*
-    FROM {{defaultvalue_l10ns}} JOIN {{defaultvalues}} ON {{defaultvalue_l10ns}}.dvid = {{defaultvalues}}.dvid JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID ORDER BY {{defaultvalues}}.dvid";
+    FROM {{defaultvalue_l10ns}} JOIN {{defaultvalues}} ON {{defaultvalue_l10ns}}.dvid = {{defaultvalues}}.dvid JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID ORDER BY {{defaultvalues}}.dvid, {{defaultvalue_l10ns}}.id";
     buildXMLFromQuery($xmlwriter, $query);
 
     // QuestionGroup
@@ -930,7 +937,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     FROM {{group_l10ns}}
     JOIN $quotedGroups on $quotedGroups.gid={{group_l10ns}}.gid
     WHERE sid=$iSurveyID
-    ORDER BY {{group_l10ns}}.gid";
+    ORDER BY {{group_l10ns}}.gid, {{group_l10ns}}.id";
     buildXMLFromQuery($xmlwriter, $gquery);
 
     //Questions
@@ -952,7 +959,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     FROM {{question_l10ns}}
     JOIN {{questions}} ON {{questions}}.qid={{question_l10ns}}.qid
     WHERE sid=$iSurveyID
-    ORDER BY {{question_l10ns}}.qid";
+    ORDER BY {{question_l10ns}}.qid, {{question_l10ns}}.id";
     buildXMLFromQuery($xmlwriter, $qquery);
 
 
@@ -2340,7 +2347,11 @@ function questionGetXMLStructure($xml, $gid, $qid)
 
 
 /**
+ * Outputs the survey participants as CSV, filtered by the options posted from the export dialog,
+ * and deletes the exported participants if requested
+ *
  * @param integer $iSurveyID
+ * @return void
  */
 function tokensExport($iSurveyID)
 {
@@ -2359,13 +2370,14 @@ function tokensExport($iSurveyID)
     $databasetype = Yii::app()->db->getDriverName();
     $oRecordSet->where("1=1");
 
+    // An encrypted email can't be searched for a substring in SQL, so it is filtered after decryption
+    $bFilterEmailAfterDecrypt = false;
     if ($sEmailFiter != '') {
-        // check if email is encrypted field
         $aAttributes = $oSurvey->getTokenEncryptionOptions();
-        if (array_key_exists('columns', $aAttributes) && array_key_exists('enabled', $aAttributes) && $aAttributes['enabled'] == 'Y' && array_key_exists('email', $aAttributes['columns']) && $aAttributes['columns']['email'] == 'Y') {
-            $sEmailFiter = LSActiveRecord::encryptSingle($sEmailFiter);
-        }
+        $bFilterEmailAfterDecrypt = ($aAttributes['enabled'] ?? 'N') == 'Y' && ($aAttributes['columns']['email'] ?? 'N') == 'Y';
+    }
 
+    if ($sEmailFiter != '' && !$bFilterEmailAfterDecrypt) {
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib'))) {
             $oRecordSet->andWhere("CAST(lt.email as varchar) like " . App()->db->quoteValue('%' . $sEmailFiter . '%'));
         } else {
@@ -2475,6 +2487,9 @@ function tokensExport($iSurveyID)
             // decrypting
             $token->decrypt();
             $brow = $token->attributes;
+            if ($bFilterEmailAfterDecrypt && mb_stripos((string) $brow['email'], $sEmailFiter) === false) {
+                continue;
+            }
             if (Yii::app()->request->getPost('maskequations')) {
                 $brow = array_map('MaskFormula', $brow);
             }

@@ -12,264 +12,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-
-/**
- *
- *  Generate a chart for a question
- *  @param int $iQuestionID      ID of the question
- *  @param int $iSurveyID        ID of the survey
- *  @param mixed $type           Type of the chart to be created - null produces bar chart, any other value produces pie chart
- *  @param array $lbl            An array containing the labels for the chart items
- *  @param mixed $gdata          An array containing the percentages for the chart items
- *  @param mixed $grawdata       An array containing the raw count for the chart items
- *  @param pCache $cache          An object containing [Hashkey] and [CacheFolder]
- *  @param mixed $sLanguageCode  Language Code
- *  @param string $sQuestionType The question type
- *  @return                false|string
- */
-function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $cache, $sLanguageCode, $sQuestionType)
-{
-    /* This is a lazy solution to bug #6389. A better solution would be to find out how
-    the "T" gets passed to this function from the statistics.js file in the first place! */
-    if (substr($iSurveyID, 0, 1) == "T") {
-        $iSurveyID = substr($iSurveyID, 1);
-    }
-    static $bErrorGenerate = false;
-
-    if ($bErrorGenerate) {
-        return false;
-    }
-    $rootdir = Yii::app()->getConfig("rootdir");
-    $homedir = Yii::app()->getConfig("homedir");
-    $admintheme = Yii::app()->getConfig("admintheme");
-    $chartfontfile = Yii::app()->getConfig("chartfontfile");
-    $chartfontsize = Yii::app()->getConfig("chartfontsize");
-    $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");
-    $cachefilename = "";
-
-    /* Set the fonts for the chart */
-    if ($chartfontfile == 'auto') {
-        // Tested with ar,be,el,fa,hu,he,is,lt,mt,sr, and en (english)
-        // Not working for hi, si, zh, th, ko, ja : see $config['alternatechartfontfile'] to add some specific language font
-        $chartfontfile = 'DejaVuSans.ttf';
-        if (array_key_exists($sLanguageCode, $alternatechartfontfile)) {
-            $neededfontfile = $alternatechartfontfile[$sLanguageCode];
-            if (is_file($rootdir . "/assets/fonts/" . $neededfontfile)) {
-                $chartfontfile = $neededfontfile;
-            } else {
-                Yii::app()->setFlashMessage(sprintf(gT('The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory to generate the charts.'), $neededfontfile), 'error');
-                $bErrorGenerate = true; // Don't do a graph again.
-                return false;
-            }
-        }
-    }
-    if (count($lbl) > 72) {
-        $DataSet = array(1 => array(1 => 1));
-        if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet) && Yii::app()->getConfig('debug') < 2) {
-            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
-        } else {
-            $graph = new pChart(690, 200);
-            $graph->loadColorPalette(Yii::app()->getConfig('styledir') . DIRECTORY_SEPARATOR . $admintheme . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
-            $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-            $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-            $graph->drawTitle(0, 0, gT('Sorry, but this question has too many answer options to be shown properly in a graph.', 'unescaped'), 30, 30, 30, 690, 200);
-            $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet, $graph);
-            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
-            unset($graph);
-        }
-        return  $cachefilename;
-    }
-    if (array_sum($gdata) == 0) {
-        $DataSet = array(1 => array(1 => 1));
-        if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet) && Yii::app()->getConfig('debug') < 2) {
-            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
-        } else {
-            $graph = new pChart(690, 200);
-            $graph->loadColorPalette(Yii::app()->getConfig('styledir') . DIRECTORY_SEPARATOR . $admintheme . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
-            $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-            $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-            $graph->drawTitle(0, 0, gT('Sorry, but this question has no responses yet so a graph cannot be shown.', 'unescaped'), 30, 30, 30, 690, 200);
-            $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet, $graph);
-            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
-            unset($graph);
-        }
-        return  $cachefilename;
-    }
-
-    if (array_sum($gdata) > 0) {
-//Make sure that the percentages add up to more than 0
-        $i = 0;
-        foreach ($gdata as $data) {
-            if ($data != 0) {
-                $i++;
-            }
-        }
-
-        /* Totatllines is the number of entries to show in the key and we need to reduce the font
-        and increase the size of the chart if there are lots of them (ie more than 15) */
-        $totallines = $i;
-        if ($totallines > 15) {
-            $gheight = 320 + (6.7 * ($totallines - 15));
-        } else {
-            $gheight = 320;
-        }
-
-        if (!$type) {
-// Bar chart
-            $DataSet = new pData();
-            $counter = 0;
-            $maxyvalue = 0;
-            foreach ($grawdata as $datapoint) {
-                $DataSet->AddPoint(array($datapoint), "Serie" . $counter);
-                $DataSet->AddSerie("Serie" . $counter);
-
-                $counter++;
-                if ($datapoint > $maxyvalue) {
-                    $maxyvalue = $datapoint;
-                }
-            }
-
-
-
-            if ($sLanguageCode == 'ar') {
-                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
-                foreach ($lbl as $kkey => $kval) {
-                    if (preg_match("^[A-Za-z]^", $kkey)) {
-//auto detect if english
-                        $lblout[] = $kkey . ' (' . $kval . ')';
-                    } else {
-                        $lblout[] = $Arabic->utf8Glyphs($kkey . ' )' . $kval . '(');
-                    }
-                }
-            } elseif (getLanguageRTL($sLanguageCode)) {
-                foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = UTF8Strrev($kkey . ' )' . $kval . '(');
-                }
-            } else {
-                foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = $kkey . ' (' . $kval . ')';
-                }
-            }
-
-            $counter = 0;
-            foreach ($lblout as $sLabelName) {
-                $DataSet->SetSerieName(html_entity_decode($sLabelName, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8'), "Serie" . $counter);
-                $counter++;
-            }
-
-            if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
-                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
-            } else {
-                $graph = new pChart(1, 1);
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $legendsize = $graph->getLegendBoxSize($DataSet->GetDataDescription());
-
-                if ($legendsize[1] < 320) {
-                    $gheight = 420;
-                } else {
-                    $gheight = $legendsize[1] + 100;
-                }
-                $graph = new pChart(690 + $legendsize[0], $gheight);
-                $graph->drawFilledRectangle(0, 0, 690 + $legendsize[0], $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette(Yii::app()->getConfig('styledir') . DIRECTORY_SEPARATOR . $admintheme . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
-
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $graph->setGraphArea(50, 30, 500, $gheight - 60);
-                $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
-                $graph->drawRoundedRectangle(5, 5, 525 + $legendsize[0], $gheight - 5, 5, 230, 230, 230);
-                $graph->drawGraphArea(254, 254, 254, true);
-                $graph->drawScale($DataSet->GetData(), $DataSet->GetDataDescription(), SCALE_START0, 150, 150, 150, true, 90, 0, true, 5, false);
-                $graph->drawGrid(4, true, 230, 230, 230, 50);
-                // Draw the 0 line
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $graph->drawTreshold(0, 143, 55, 72, true, true);
-
-                // Draw the bar graph
-                $graph->drawBarGraph($DataSet->GetData(), $DataSet->GetDataDescription(), false);
-                //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
-                // Finish the graph
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $graph->drawLegend(510, 30, $DataSet->GetDataDescription(), 250, 250, 250);
-
-                $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData(), $graph);
-                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
-                unset($graph);
-            }
-        }    //end if (bar chart)
-
-        //Pie Chart
-        else {
-            // this block is to remove the items with value == 0
-            // and an inelegant way to remove comments from List with Comments questions
-            $i = 0;
-            $j = 0;
-            $labelTmp = array();
-            while (isset($gdata[$i])) {
-                $aHelperArray = array_keys($lbl);
-                if ($gdata[$i] == 0 || ($sQuestionType == Question::QT_O_LIST_WITH_COMMENT && substr($aHelperArray[$i], 0, strlen(gT("Comments"))) == gT("Comments"))) {
-                    array_splice($gdata, $i, 1);
-                } else {
-                    $i++;
-                    $labelTmp = $labelTmp + array_slice($lbl, $j, 1, true); // Preserve numeric keys for the labels!
-                }
-                $j++;
-            }
-            $lbl = $labelTmp;
-
-            if ($sLanguageCode == 'ar') {
-                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
-
-                foreach ($lbl as $kkey => $kval) {
-                    if (preg_match("^[A-Za-z]^", $kkey)) {
-//auto detect if english
-                        $lblout[] = $kkey . ' (' . $kval . ')';
-                    } else {
-                        $lblout[] = $Arabic->utf8Glyphs($kkey . ' )' . $kval . '(');
-                    }
-                }
-            } elseif (getLanguageRTL($sLanguageCode)) {
-                foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = UTF8Strrev(html_entity_decode($kkey, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8') . ' )' . $kval . '(');
-                }
-            } else {
-                foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = html_entity_decode($kkey, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8') . ' (' . $kval . ')';
-                }
-            }
-
-
-            //create new 3D pie chart
-            $DataSet = new pData();
-            $DataSet->AddPoint($gdata, "Serie1");
-            $DataSet->AddPoint($lblout, "Serie2");
-            $DataSet->AddAllSeries();
-            $DataSet->SetAbsciseLabelSerie("Serie2");
-
-            if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
-                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
-            } else {
-                $gheight = ceil($gheight);
-                $graph = new pChart(690, $gheight);
-                $graph->drawFilledRectangle(0, 0, 690, $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette($homedir . '/assets/styles/' . $admintheme . '/images/limesurvey.pal');
-                $graph->drawFilledRoundedRectangle(7, 7, 687, $gheight - 3, 5, 254, 255, 254);
-                $graph->drawRoundedRectangle(5, 5, 689, $gheight - 1, 5, 230, 230, 230);
-
-                // Draw the pie chart
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $graph->drawPieGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 225, round($gheight / 2), 170, PIE_PERCENTAGE, true, 50, 20, 5);
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $graph->drawPieLegend(430, 12, $DataSet->GetData(), $DataSet->GetDataDescription(), 250, 250, 250);
-                $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData(), $graph);
-                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
-                unset($graph);
-            }
-        }    //end else -> pie charts
-    }
-
-    return $cachefilename;
-}
-
+Yii::import('application.helpers.statisticschart_helper', true);
 
 /**
 * Return data to populate a Google Map
@@ -286,9 +29,9 @@ function getQuestionMapData($sField, $qsid)
 
     //loop through question data
     foreach ($aresult as $arow) {
-        $alocation = explode(";", (string) $arow->$sField);
-        if (count($alocation) >= 2) {
-            $d[] = "{$alocation[0]} {$alocation[1]}";
+        $location = explode(";", (string) $arow->$sField);
+        if (count($location) >= 2) {
+            $d[] = "{$location[0]} {$location[1]}";
         }
     }
     return $d;
@@ -424,7 +167,7 @@ function buildSelects($allfields, $surveyid, $language)
                         $mselects[] = $quoteColumn(substr($pv, 1, strlen($pv)) . "_S" . $arow['qid']) . " = 'Y'";
                     }
                 }
-                /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
+                /* If there are multiple conditions generated from this multiple choice question, join them using the boolean "OR" */
                 if ($mselects) {
                     $thismulti = implode(" OR ", $mselects);
                     $selects[] = "($thismulti)";
@@ -474,7 +217,7 @@ function buildSelects($allfields, $surveyid, $language)
             elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
                 $selectSubs = array();
                 $postValue = is_array($_POST[$pv]) ? implode(' OR ', $_POST[$pv]) : (string) $_POST[$pv];
-                //We intepret and * and % as wildcard matches, and use ' OR ' and , as the separators
+                //We interpret and * and % as wildcard matches, and use ' OR ' and , as the separators
                 $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $postValue)));
                 $columnName = ($pv[1] === 'Q') ? substr($pv, 1) : $pv;
                 if (is_array($pvParts) and count($pvParts)) {
@@ -586,6 +329,23 @@ class userstatistics_helper
     protected $xlsRow = 0;
 
     /**
+     * Returns the completion filter for public statistics, taken from the
+     * filterout_incomplete_answers setting only. The request and the session
+     * value used by the admin statistics are ignored on purpose, so visitors
+     * and logged-in administrators always see the same public statistics.
+     *
+     * @return string One of 'all', 'complete' or 'incomplete'
+     */
+    public static function completionFilterState()
+    {
+        $filterState = Yii::app()->getConfig('filterout_incomplete_answers');
+        if (in_array($filterState, ['all', 'complete', 'incomplete'], true)) {
+            return $filterState;
+        }
+        return 'all';
+    }
+
+    /**
      * Builds an array containing information about this particular question/answer combination
      *
      * @param string $rt The code passed from the statistics form listing the field/answer (SGQA) combination to be displayed
@@ -627,7 +387,7 @@ class userstatistics_helper
         //M - Multiple choice, therefore multiple fields - one for each answer
         if ($firstletter == "M" || $firstletter == "P") {
             //get SGQ data
-            $qqid = substr($rt, 2);
+            $qqid = (int) substr($rt, 2);
 
             //select details for this question
             $nresult = Question::model()->with('questionl10ns')->find('language=:language AND parent_qid=0 AND t.qid=:qid', array(':language' => $language, ':qid' => $qqid));
@@ -642,13 +402,19 @@ class userstatistics_helper
                 'condition' => 'language=:language AND parent_qid=:qid AND scale_id=0',
                 'params'    => array(':language' => $language, ':qid' => $qqid)
             ));
+            // Security (mantis #20744): $rt comes from the request, so only keep columns that
+            // exist in this survey's response table before they are used in any query.
+            $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
             foreach ($result as $row) {
                 $mfield = substr($rt, 1) . "_S" . $row['qid'];
+                if (!in_array($mfield, $validColumns, true)) {
+                    continue;
+                }
                 $alist[] = array($row->title, flattenText($row->questionl10ns[$language]->question), $mfield);
             }
 
             //Add the "other" answer if it exists
-            if ($qother == "Y") {
+            if ($qother == "Y" && in_array(substr($rt, 1) . "_Cother", $validColumns, true)) {
                 $mfield = substr($rt, 1) . "_Cother";
                 $alist[] = array(gT("Other"), gT("Other"), $mfield);
             }
@@ -744,13 +510,21 @@ class userstatistics_helper
         } else {
             if ($firstletter == "|") {
                 // File Upload
-                //get SGQ data
-                $qqid = substr(explode("_", $rt)[0], 1);
 
-                $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => intval($qqid)));
-                $qtitle = $nresult->title;
-                $qtype = $nresult->type;
-                $qquestion = flattenText($nresult->question);
+                // Security (mantis #20755): $rt comes from the request, so only accept the column of a
+                // file upload question of this survey before it is used in any query.
+                $fieldname = substr($rt, 1);
+                if (
+                    !isset($fieldmap[$fieldname], $fieldmap[$fieldname . '_Cfilecount'])
+                    || $fieldmap[$fieldname]['type'] !== Question::QT_VERTICAL_FILE_UPLOAD
+                ) {
+                    return [];
+                }
+                $fielddata = $fieldmap[$fieldname];
+                $qqid = $fielddata['qid'];
+                $qtitle = flattenText($fielddata['title']);
+                $qtype = $fielddata['type'];
+                $qquestion = flattenText($fielddata['question']);
                 /*
                 4)      Average size of file per respondent
                 5)      Average no. of files
@@ -762,20 +536,32 @@ class userstatistics_helper
                 10)     min file size
                 */
 
+                // Only include the responses that match the selected filters
+                $conditions = array();
+                if (self::completionFilterState() === "incomplete") {
+                    $conditions[] = "submitdate is null";
+                } elseif (self::completionFilterState() === "complete") {
+                    $conditions[] = "submitdate is not null";
+                }
+                //$sql was set somewhere before
+                if (!empty($sql)) {
+                    $conditions[] = $sql;
+                }
+                $where = $conditions ? " WHERE " . implode(" AND ", $conditions) : "";
+
                 // 1) Total number of files uploaded
                 // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
-                $fieldname = substr($rt, 1, strlen($rt));
-                $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as avg FROM {{responses_$surveyid}}";
+                $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_Cfilecount') . ") as avg FROM {{responses_$surveyid}}" . $where;
                 $result = Yii::app()->db->createCommand($query)->query();
 
                 $showem = array();
 
                 foreach ($result->readAll() as $row) {
-                    $showem[] = array(gT("Total number of files"), $row['sum']);
-                    $showem[] = array(gT("Average no. of files per respondent"), $row['avg']);
+                    $showem[] = array(gT("Total number of files"), $row['sum'] ?? 0);
+                    $showem[] = array(gT("Average no. of files per respondent"), $row['avg'] ?? 0);
                 }
 
-                $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{responses_$surveyid}}";
+                $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{responses_$surveyid}}" . $where;
                 $result = Yii::app()->db->createCommand($query)->query();
 
                 $responsecount = 0;
@@ -786,15 +572,15 @@ class userstatistics_helper
                     $json = $row['json'];
                     $phparray = json_decode((string) $json);
 
-                    foreach ($phparray as $metadata) {
-                        $size += (int)$metadata->size;
+                    foreach ((array) $phparray as $metadata) {
+                        $size += (int) ($metadata->size ?? 0);
                         $filecount++;
                     }
                     $responsecount++;
                 }
                 $showem[] = array(gT("Total size of files"), $size . " KB");
-                $showem[] = array(gT("Average file size"), $size / $filecount . " KB");
-                $showem[] = array(gT("Average size per respondent"), $size / $responsecount . " KB");
+                $showem[] = array(gT("Average file size"), ($filecount ? $size / $filecount : 0) . " KB");
+                $showem[] = array(gT("Average size per respondent"), ($responsecount ? $size / $responsecount : 0) . " KB");
 
                 /*              $query="SELECT title, question FROM {{questions}} WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
                 $result=db_execute_num($query) or safeDie("Couldn't get list of subquestions for multitype<br />$query<br />");
@@ -823,12 +609,26 @@ class userstatistics_helper
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow, 0, gT("Calculation"));
                         $this->sheet->write($this->xlsRow, 1, gT("Result"));
+                        foreach ($showem as $shw) {
+                            $this->xlsRow++;
+                            $this->sheet->write($this->xlsRow, 0, html_entity_decode($shw[0], ENT_QUOTES, 'UTF-8'));
+                            $this->sheet->write($this->xlsRow, 1, html_entity_decode((string) $shw[1], ENT_QUOTES, 'UTF-8'));
+                        }
                         break;
 
                     case 'pdf':
                         $headPDF = array();
                         $headPDF[] = array(gT("Calculation"), gT("Result"));
-
+                        $tablePDF = array();
+                        foreach ($showem as $shw) {
+                            $tablePDF[] = array(html_entity_decode($shw[0], ENT_QUOTES, 'UTF-8'), html_entity_decode((string) $shw[1], ENT_QUOTES, 'UTF-8'));
+                        }
+                        $pdfTitle = sprintf(gT("Summary for %s"), html_entity_decode((string) $qtitle, ENT_QUOTES, 'UTF-8'));
+                        $titleDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
+                        $this->pdf->AddPage('P', 'A4');
+                        $this->pdf->Bookmark($this->pdf->delete_html($qquestion), 1, 0);
+                        $this->pdf->titleintopdf($pdfTitle, $titleDesc);
+                        $this->pdf->headTable($headPDF, $tablePDF);
                         break;
 
                     case 'html':
@@ -840,11 +640,13 @@ class userstatistics_helper
                             . gT("Calculation") . "</strong></th>\n"
                             . "\t\t<th width='50%' class='text-end'><strong>"
                             . gT("Result") . "</strong></th>\n"
-                            . "\t</tr></thead>\n";
+                            . "\t</tr></thead>\n"
+                            . "<tbody>\n";
 
                         foreach ($showem as $res) {
                             $statisticsoutput .= "<tr><td>" . $res[0] . "</td><td>" . $res[1] . "</td></tr>";
                         }
+                        $statisticsoutput .= "</tbody></table>\n";
                         break;
 
                     default:
@@ -969,9 +771,9 @@ class userstatistics_helper
                     }
 
                     //filter incomplete answers if set
-                    if (incompleteAnsFilterState() == "incomplete") {
+                    if (self::completionFilterState() == "incomplete") {
                         $query .= " AND submitdate is null";
-                    } elseif (incompleteAnsFilterState() == "complete") {
+                    } elseif (self::completionFilterState() == "complete") {
                         $query .= " AND submitdate is not null";
                     }
 
@@ -1132,6 +934,9 @@ class userstatistics_helper
             } // NICE SIMPLE SINGLE OPTION ANSWERS
             else {
                 //search for key
+                if (!isset($fieldmap[$rt])) {
+                    return [];
+                }
                 $fielddata = $fieldmap[$rt];
                 //get SGQA IDs
                 $qqid = $fielddata['qid'];
@@ -1505,9 +1310,9 @@ class userstatistics_helper
 
         //check filter option
         $criteria = new CDbCriteria();
-        if (incompleteAnsFilterState() == "incomplete") {
+        if (self::completionFilterState() == "incomplete") {
             $criteria->addCondition("submitdate is null");
-        } elseif (incompleteAnsFilterState() == "complete") {
+        } elseif (self::completionFilterState() == "complete") {
             $criteria->addCondition("submitdate is not null");
         }
 
@@ -1883,7 +1688,7 @@ class userstatistics_helper
         }    //end foreach -> loop through answer data
 
         //no filtering of incomplete answers and NO multiple option questions
-        //if ((incompleteAnsFilterState() != "complete") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
+        //if ((self::completionFilterState() != "complete") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
         //error_log("TIBO ".print_r($showaggregated_indice_table,true));
         if (($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE) and ($outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
@@ -1917,7 +1722,7 @@ class userstatistics_helper
                 $TotalIncomplete = max(($results - $TotalCompleted), 0); // don't show negative number
 
                 //output
-                if ((incompleteAnsFilterState() != "complete")) {
+                if ((self::completionFilterState() != "complete")) {
                     $fname = gT("Not completed or not displayed");
                 } else {
                     $fname = gT("Not displayed");
@@ -1944,7 +1749,7 @@ class userstatistics_helper
                 $justcode[] = $fname;
 
                 //edit labels and put them into another array
-                if ((incompleteAnsFilterState() != "complete")) {
+                if ((self::completionFilterState() != "complete")) {
                     $lbl[gT("Not completed or not displayed")] = $TotalIncomplete;
                 } else {
                     $lbl[gT("Not displayed")] = $TotalIncomplete;
@@ -1958,9 +1763,9 @@ class userstatistics_helper
             foreach ($outputs['alist'] as $al) {
                 $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2]) . " IS NULL");
             }
-            if (incompleteAnsFilterState() == "incomplete") {
+            if (self::completionFilterState() == "incomplete") {
                 $criteria->addCondition("submitdate IS NULL");
-            } elseif (incompleteAnsFilterState() == "complete") {
+            } elseif (self::completionFilterState() == "complete") {
                 $criteria->addCondition("submitdate IS NOT NULL");
             }
             $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
@@ -1982,7 +1787,7 @@ class userstatistics_helper
             } else {
                 // Add a line with not displayed %
                 if ($multiNotDisplayed > 0) {
-                    if ((incompleteAnsFilterState() != "complete")) {
+                    if ((self::completionFilterState() != "complete")) {
                         $fname = gT("Not completed or not displayed");
                     } else {
                         $fname = gT("Not displayed");
@@ -2067,7 +1872,7 @@ class userstatistics_helper
                         $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
                         $gdata[$i] = 0;
 
-                        //check if we have to adjust ouput due to Yii::app()->getConfig('showaggregateddata') setting
+                        //check if we have to adjust output due to Yii::app()->getConfig('showaggregateddata') setting
                         if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) {
                             $statisticsoutput .= "\t\t</td>";
                         } elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
@@ -2312,7 +2117,7 @@ class userstatistics_helper
                     /*
                     * four steps to calculate the standard deviation
                     * 1 = calculate difference between item and arithmetic mean and multiply with the number of elements
-                    * 2 = create sqaure value of difference
+                    * 2 = create square value of difference
                     * 3 = sum up square values
                     * 4 = multiply result with 1 / (number of items)
                     * 5 = get root
@@ -2448,7 +2253,12 @@ class userstatistics_helper
 
             if ($bShowGraph == true) {
                 $qqid = explode("_", substr($rt, 1))[0];
-                $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
+                $iChartType = (int) ($aattr['statistics_graphtype'] ?? 0);
+                // Pie, polar area and doughnut charts make no sense for multiple choice questions
+                if (!$bAllowPieChart && in_array($iChartType, array(1, 4, 5))) {
+                    $iChartType = 0;
+                }
+                $cachefilename = createChart($qqid, $qsid, $iChartType, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 if ($cachefilename) {
                     // Add the image only if constructed
 
@@ -2490,7 +2300,7 @@ class userstatistics_helper
 
         //close table/output
         if ($outputType == 'html') {
-            // show this block only when we show graphs and are not in the public statics controller
+            // show this block only when we show graphs and are not in the public statistics controller
             // this is because the links don't work from that controller
             if ($usegraph == 1 && get_class(Yii::app()->getController()) !== 'StatisticsUserController') {
                 $sImgUrl = Yii::app()->getConfig('adminimageurl');
@@ -2718,9 +2528,9 @@ class userstatistics_helper
         $query = "SELECT count(*) FROM {{responses_$surveyid}}";
 
         //if incompleted answers should be filtert submitdate has to be not null
-        if (incompleteAnsFilterState() == "incomplete") {
+        if (self::completionFilterState() == "incomplete") {
             $query .= " WHERE submitdate is null";
-        } elseif (incompleteAnsFilterState() == "complete") {
+        } elseif (self::completionFilterState() == "complete") {
             $query .= " WHERE submitdate is not null";
         }
         $total = Yii::app()->db->createCommand($query)->queryScalar();
@@ -2730,7 +2540,7 @@ class userstatistics_helper
             //Save the filters to session for use in browsing text & other features (statistics.php function listcolumn())
             Yii::app()->session['statistics_selects_' . $surveyid] = $selects;
             //filter incomplete answers?
-            if (incompleteAnsFilterState() == "complete" || incompleteAnsFilterState() == "incomplete") {
+            if (self::completionFilterState() == "complete" || self::completionFilterState() == "incomplete") {
                 $query .= " AND ";
             } else {
                 $query .= " WHERE ";
@@ -2832,7 +2642,7 @@ class userstatistics_helper
             foreach ($runthrough as $rt) {
                 //Step 1: Get information about this response field (SGQA) for the summary
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
-                $sOutputHTML .= $outputs['statisticsoutput'];
+                $sOutputHTML .= $outputs['statisticsoutput'] ?? '';
                 //2. Collect and Display results #######################################################################
                 if (isset($outputs['alist']) && $outputs['alist']) {
                     //Make sure there really is an answerlist, and if so:
@@ -2934,9 +2744,9 @@ class userstatistics_helper
             }
 
             //filtering enabled?
-            if (incompleteAnsFilterState() == "incomplete") {
+            if (self::completionFilterState() == "incomplete") {
                 $query .= " AND submitdate is null";
-            } elseif (incompleteAnsFilterState() == "complete") {
+            } elseif (self::completionFilterState() == "complete") {
                 $query .= " AND submitdate is not null";
             }
 
@@ -2993,10 +2803,24 @@ class userstatistics_helper
     }
 
     /**
-     *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
+     * Returns a simple list of values in a particular column, that meet the requirements of the SQL
+     *
+     * @param int    $surveyid   Survey ID
+     * @param string $column     Response table column to list
+     * @param string $sortby     Response table column to sort by (optional)
+     * @param string $sortmethod Sort direction, ASC or DESC (optional)
+     * @param string $sorttype   N for numerical sorting (optional)
+     * @return array[] List of ['id' => response ID, 'value' => column value]
+     * @throws InvalidArgumentException if $column or $sortby is not a response table column
      */
     function _listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
+        // Security (mantis #20741): quoteColumnName() does not escape identifier quoting
+        // characters, so only real response table columns may be passed to it.
+        $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
+        if (!in_array($column, $validColumns, true) || ($sortby != '' && !in_array($sortby, $validColumns, true))) {
+            throw new InvalidArgumentException('Statistics column listing references an unknown column.');
+        }
         $search['condition'] = Yii::app()->db->quoteColumnName($column) . " != ''";
         $sDBDriverName = Yii::app()->db->getDriverName();
         if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') {
@@ -3004,9 +2828,9 @@ class userstatistics_helper
         }
 
         //filter incomplete answers if set
-        if (incompleteAnsFilterState() == "incomplete") {
+        if (self::completionFilterState() == "incomplete") {
             $search['condition'] .= " AND submitdate is null";
-        } elseif (incompleteAnsFilterState() == "complete") {
+        } elseif (self::completionFilterState() == "complete") {
             $search['condition'] .= " AND submitdate is not null";
         }
 
@@ -3027,6 +2851,11 @@ class userstatistics_helper
             if ($sorttype == 'N') {
                 $sortby = "($sortby * 1)";
             } //Converts text sorting into numerical sorting
+            // Avoid bad sortmethod parameter (mantis #20145)
+            $sortmethod = strtoupper($sortmethod);
+            if ($sortmethod && !in_array($sortmethod, ['ASC', 'DESC'])) {
+                $sortmethod = "";
+            }
             $search['order'] = $sortby . ' ' . $sortmethod;
         }
         $results = SurveyDynamic::model($surveyid)->findAll($search);

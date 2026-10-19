@@ -94,7 +94,7 @@ class LimeMailer extends PHPMailer
     private $_bAttachementTypeDone = false;
 
     /**
-     * @var boolean $ignoremissingattachement allow to send if attachement have issue.
+     * @var boolean $ignoremissingattachement allow to send if attachment have issue.
      **/
     public $ignoremissingattachement = false;
 
@@ -657,6 +657,9 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent because demo-mode is activated.'));
             return false;
         }
+        // Remove any previously set value first: this mailer instance can be reused across several
+        // recipients in a loop, and addCustomHeader() alone would keep stacking duplicate headers.
+        $this->clearCustomHeader("X-messagetype");
         $this->addCustomHeader("X-messagetype", $this->emailType);
         // If the email method is set to "Plugin", we need to dispatch an event to that specific plugin
         // so it can perform it's logic without depending on the more generic "beforeEmail" event.
@@ -972,7 +975,7 @@ class LimeMailer extends PHPMailer
         if (empty($this->surveyId)) {
             return true;
         }
-        // No attachement template : no attachments
+        // No attachment template : no attachments
         if (!array_key_exists($this->emailType, $this->_aAttachmentByType)) {
             return true;
         }

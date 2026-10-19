@@ -178,7 +178,7 @@ class ThemeOptionsController extends LSBaseController
         $gridid = App()->request->getPost('grididvalue');
         $aResults = array();
 
-        if (Permission::model()->hasGlobalPermission('templates', 'update')) {
+        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             foreach ($aTemplates as $template) {
                 $templateID = (int) $template;
                 $model = $this->loadModel($templateID, $gridid); //model is TemplateConfiguration or QuestionTheme
@@ -568,7 +568,7 @@ class ThemeOptionsController extends LSBaseController
     public function actionUninstall()
     {
         $templatename = App()->request->getPost('templatename');
-        if (Permission::model()->hasGlobalPermission('templates', 'update')) {
+        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             if (!Template::hasInheritance($templatename)) {
                 TemplateConfiguration::uninstall($templatename);
             } else {

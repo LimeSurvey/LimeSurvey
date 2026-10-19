@@ -14,6 +14,7 @@ export const getThemeAttributes = () => ({
         { label: t('Small'), value: 'sm' },
         { label: t('Extra small'), value: 'xs' },
       ],
+      defaultValue: 'default',
     },
   },
   MAXIMUM_NUMBER_OF_BUTTONS_IN_A_ROW: {
@@ -31,6 +32,7 @@ export const getThemeAttributes = () => ({
         { label: '6', value: 'col-md-2' },
         { label: '12', value: 'col-md-1' },
       ],
+      defaultValue: 'default',
     },
   },
   ALLOW_SEARCHING_DROPDOWN: {

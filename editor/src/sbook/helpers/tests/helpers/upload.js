@@ -1,5 +1,5 @@
-import { expect } from '@storybook/test'
-import { fireEvent } from '@storybook/test'
+import { expect } from 'storybook/test'
+import { fireEvent } from 'storybook/test'
 import { sleep } from 'helpers/sleep'
 
 function canvasImage(src) {

@@ -240,6 +240,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['hat']['dateformat'] = 6;
     $supportedLanguages['hat']['radixpoint'] = 1;
     $supportedLanguages['hat']['cldr'] = 'fr_ht';
+    $supportedLanguages['hat']['bcp47'] = 'ht';
     $supportedLanguages['hat']['fdow'] = 1;
 
     // Chinese (Traditional - Hong Kong)
@@ -286,6 +287,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['cs-informal']['radixpoint'] = 1;
     $supportedLanguages['cs-informal']['cldr'] = 'cs';
     $supportedLanguages['cs-informal']['momentjs'] = 'cs';
+    $supportedLanguages['cs-informal']['bcp47'] = 'cs';
     $supportedLanguages['cs-informal']['fdow'] = 1;
 
     // Danish
@@ -324,6 +326,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['nl-informal']['radixpoint'] = 1;
     $supportedLanguages['nl-informal']['cldr'] = 'nl';
     $supportedLanguages['nl-informal']['momentjs'] = 'nl';
+    $supportedLanguages['nl-informal']['bcp47'] = 'nl';
     $supportedLanguages['nl-informal']['fdow'] = 1;
 
     // English
@@ -379,6 +382,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ful']['radixpoint'] = 1;
     $supportedLanguages['ful']['cldr'] = 'ff';
     $supportedLanguages['ful']['momentjs'] = null;
+    $supportedLanguages['ful']['bcp47'] = 'ff';
     $supportedLanguages['ful']['fdow'] = 0;
 
     // Galician
@@ -416,6 +420,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['de-easy']['radixpoint'] = 1;
     $supportedLanguages['de-easy']['cldr'] = 'de';
     $supportedLanguages['de-easy']['momentjs'] = 'de';
+    $supportedLanguages['de-easy']['bcp47'] = 'de-simple';
     $supportedLanguages['de-easy']['fdow'] = 1;
 
     // German informal
@@ -426,6 +431,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['de-informal']['radixpoint'] = 1;
     $supportedLanguages['de-informal']['cldr'] = 'de';
     $supportedLanguages['de-informal']['momentjs'] = 'de';
+    $supportedLanguages['de-informal']['bcp47'] = 'de';
     $supportedLanguages['de-informal']['fdow'] = 1;
 
     // Gujarati
@@ -453,6 +459,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['kal']['dateformat'] = 2;
     $supportedLanguages['kal']['radixpoint'] = 1;
     $supportedLanguages['kal']['momentjs'] = null;
+    $supportedLanguages['kal']['bcp47'] = 'kl';
     $supportedLanguages['kal']['fdow'] = 0;
 
     // Hazaragi
@@ -518,6 +525,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['hu-informal']['radixpoint'] = 1;
     $supportedLanguages['hu-informal']['cldr'] = 'hu';
     $supportedLanguages['hu-informal']['momentjs'] = 'hu';
+    $supportedLanguages['hu-informal']['bcp47'] = 'hu';
     $supportedLanguages['hu-informal']['fdow'] = 1;
 
     // Icelandic
@@ -555,6 +563,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ie']['radixpoint'] = 0;
     $supportedLanguages['ie']['cldr'] = 'ga';
     $supportedLanguages['ie']['momentjs'] = 'ga';
+    $supportedLanguages['ie']['bcp47'] = 'ga';
     $supportedLanguages['ie']['fdow'] = 1;
 
     // Hiligaynon
@@ -582,6 +591,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['it-informal']['radixpoint'] = 1;
     $supportedLanguages['it-informal']['cldr'] = 'it';
     $supportedLanguages['it-informal']['momentjs'] = 'it';
+    $supportedLanguages['it-informal']['bcp47'] = 'it';
     $supportedLanguages['it-informal']['fdow'] = 1;
 
     // Japanese
@@ -647,6 +657,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['run']['radixpoint'] = 1;
     $supportedLanguages['run']['cldr'] = 'rn';
     $supportedLanguages['run']['momentjs'] = null;
+    $supportedLanguages['run']['bcp47'] = 'rn';
     $supportedLanguages['run']['fdow'] = 0;
 
     // Kurdish (Sorani)
@@ -777,6 +788,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['mya']['dateformat'] = 1;
     $supportedLanguages['mya']['radixpoint'] = 1;
     $supportedLanguages['mya']['momentjs'] = 'my';
+    $supportedLanguages['mya']['bcp47'] = 'my';
     $supportedLanguages['mya']['fdow'] = 1;
 
     // Norwegian Bokmal
@@ -868,6 +880,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['pl-informal']['radixpoint'] = 1;
     $supportedLanguages['pl-informal']['cldr'] = 'pl';
     $supportedLanguages['pl-informal']['momentjs'] = 'pl';
+    $supportedLanguages['pl-informal']['bcp47'] = 'pl';
     $supportedLanguages['pl-informal']['fdow'] = 1;
 
     // Portuguese
@@ -913,6 +926,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['roh']['dateformat'] = 1;
     $supportedLanguages['roh']['radixpoint'] = 1;
     $supportedLanguages['roh']['momentjs'] = null;
+    $supportedLanguages['roh']['bcp47'] = 'rm';
     $supportedLanguages['roh']['fdow'] = 0;
 
     // Russian
@@ -1004,6 +1018,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['es-informal']['radixpoint'] = 1;
     $supportedLanguages['es-informal']['cldr'] = 'es';
     $supportedLanguages['es-informal']['momentjs'] = 'es';
+    $supportedLanguages['es-informal']['bcp47'] = 'es';
     $supportedLanguages['es-informal']['fdow'] = 1;
 
 
@@ -1024,6 +1039,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['es-AR-informal']['radixpoint'] = 0;
     $supportedLanguages['es-AR-informal']['cldr'] = 'es-AR';
     $supportedLanguages['es-AR-informal']['momentjs'] = 'es';
+    $supportedLanguages['es-AR-informal']['bcp47'] = 'es-AR';
     $supportedLanguages['es-AR-informal']['fdow'] = 1;
 
     // Spanish (Chile)
@@ -1196,6 +1212,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['xho']['dateformat'] = 5;
     $supportedLanguages['xho']['radixpoint'] = 1;
     $supportedLanguages['xho']['momentjs'] = 'null';
+    $supportedLanguages['xho']['bcp47'] = 'xh';
     $supportedLanguages['xho']['fdow'] = 0;
 
     // Yakut
@@ -1214,6 +1231,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['yor']['dateformat'] = 5;
     $supportedLanguages['yor']['radixpoint'] = 1;
     $supportedLanguages['yor']['momentjs'] = null;
+    $supportedLanguages['yor']['bcp47'] = 'yo';
     $supportedLanguages['yor']['fdow'] = 0;
 
     // Zulu
@@ -1466,6 +1484,29 @@ function getLanguageRTL($sLanguageCode)
     } else {
         return false;
     }
+}
+
+/**
+ * Returns a valid BCP 47 language tag for use in the HTML lang attribute.
+ * Some LimeSurvey language codes append a non-standard variant suffix
+ * (e.g. 'nl-informal', 'de-easy') that is not a valid BCP 47 subtag; for those,
+ * the 'bcp47' entry in getLanguageData() gives the valid tag to use instead.
+ * Note: this intentionally does NOT reuse the 'cldr' mapping from getLanguageData().
+ * That mapping is meant for ICU locale/collation fallback (see LSYii_Locale,
+ * SortHelper) and maps some already-valid codes (e.g. 'lb', 'hat', 'pap-CW')
+ * to an unrelated approximate locale, which would misrepresent the actual
+ * content language if used for the HTML lang attribute.
+ *
+ * @param string $sLanguageCode
+ * @return string
+ */
+function getHtmlLangAttributeValue($sLanguageCode)
+{
+    $aLanguageData = getLanguageData(false, $sLanguageCode);
+    if (!empty($aLanguageData[$sLanguageCode]['bcp47'])) {
+        return $aLanguageData[$sLanguageCode]['bcp47'];
+    }
+    return (string) $sLanguageCode;
 }
 
     /**

@@ -142,7 +142,7 @@ function doFileUpload()
             // you can disable upload button
             this.disable();
 
-            // Uploding -> Uploading. -> Uploading...
+            // Uploading -> Uploading. -> Uploading...
             interval = window.setInterval(function () {
                 var text = button.text();
                 if (text.length < 13)

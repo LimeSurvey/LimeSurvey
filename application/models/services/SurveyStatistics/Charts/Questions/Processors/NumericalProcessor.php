@@ -9,6 +9,7 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processor
  */
 class NumericalProcessor extends AbstractQuestionProcessor
 {
+    #[\Override]
     public function process()
     {
         $this->rt();

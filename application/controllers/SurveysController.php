@@ -28,8 +28,8 @@ class SurveysController extends LSYii_Controller
         } else {
             $lang = Yii::app()->getConfig('defaultlang');
         }
-            App()->setLanguage($lang);
-
+        App()->setLanguage($lang);
+        LimeExpressionManager::SetSurveyId(0);
 
         $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
         $this->sTemplate = $oTemplate->sTemplateName;
@@ -112,6 +112,11 @@ class SurveysController extends LSYii_Controller
             $oTemplate = Template::model()->getInstance(null, $surveyId);
         } else {
             $oTemplate = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
+        }
+        $aSurveyInfo = array();
+        if ($surveyId) {
+            // Needed so the twig renderer resolves the survey's own (not just the global) theme options.
+            $aSurveyInfo['sid'] = $surveyId;
         }
         $this->sTemplate = $oTemplate->sTemplateName;
 

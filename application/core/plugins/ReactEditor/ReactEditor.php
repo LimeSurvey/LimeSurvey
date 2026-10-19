@@ -18,6 +18,9 @@ class ReactEditor extends \PluginBase
 
     protected static $name = 'ReactEditor';
 
+    /** @inheritdoc this plugin doesn't have any public method */
+    public $allowedPublicMethods = array();
+
     /**
      * @return void
      */

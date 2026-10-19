@@ -19,6 +19,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function rt(): void
     {
         $this->rt = 'Q' . $this->question['qid'];
@@ -28,6 +29,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
      * @inheritDoc
      * @return array Single chart plan
      */
+    #[\Override]
     public function process(): array
     {
         $this->rt();

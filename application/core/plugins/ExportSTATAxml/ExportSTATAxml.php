@@ -26,10 +26,10 @@ class ExportSTATAxml extends \LimeSurvey\PluginManager\PluginBase
             'type' => 'select',
             'label' => 'Export for Stata',
             'options' => array('113' => 'version 8 through 12', '117'  => 'version 13 and up'),
-            'default' => '113',
+            'default' => '117',
             'submitonchange' => false
-            )
-        );
+        ),
+    );
 
     public function listExportOptions()
     {

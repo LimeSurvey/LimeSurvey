@@ -24,10 +24,11 @@
 #}
 
 {# We register a specific css file for that layout. #}
+{{ registerTemplateCssFile('css/errors.css') }}
 {% set aError     = aSurveyInfo.aError    %}
 
 <!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}"
+<html lang="{{ aSurveyInfo.htmllanguagecode }}" dir="{{ aSurveyInfo.dir }}"
       class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}
       xmlns="http://www.w3.org/1999/html">
 
@@ -55,6 +56,11 @@
     <div class="container m-auto ">
         <div class="row align-items-center">
             <div class="col">
+                {% if( aSurveyInfo.options.brandlogo == "on") %}
+                    <div class="error-logo-container">
+                        {{ image(aSurveyInfo.options.brandlogofile, '', {"class": "logo img-fluid"}) }}
+                    </div>
+                {% endif %}
                 <h2 class="error-title">
                     {% if aError.error %}
                         {{ aError.error }}

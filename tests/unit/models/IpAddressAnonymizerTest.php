@@ -78,4 +78,33 @@ class IpAddressAnonymizerTest extends TestCase
         $this->assertEquals('2a03:2880:2117:0:0:0:0:0', $ipAnonymizer->anonymizeIpAddress());
     }
 
+    /**
+     * Test ip anonymization with a "::"-compressed ipv6 address. Previously the loopback
+     * address "::1" was anonymized to garbage ("':0:0:0:0:0'") because explode(':', ...)
+     * on a compressed address doesn't yield the 8 groups the algorithm assumes.
+     *
+     * ::1 is fully "0000:0000:0000:0000:0000:0000:0000:0001", so it is anonymized to
+     * 0000:0000:0000:0:0:0:0:0
+     */
+    public function testIpAnonymizeCompressedIpv6(){
+        $ipToBeTested = '::1';
+        $ipAnonymizer = new IpAddressAnonymizer($ipToBeTested);
+
+        $this->assertEquals('0000:0000:0000:0:0:0:0:0', $ipAnonymizer->anonymizeIpAddress());
+    }
+
+    /**
+     * Test ip anonymization with a "::"-compressed ipv6 address that has non-zero
+     * groups on both sides of the compression.
+     *
+     * 2a03:2880::5:1 is fully "2a03:2880:0000:0000:0000:0000:0005:0001", so it is
+     * anonymized to 2a03:2880:0000:0:0:0:0:0
+     */
+    public function testIpAnonymizeCompressedIpv6WithLeadingGroups(){
+        $ipToBeTested = '2a03:2880::5:1';
+        $ipAnonymizer = new IpAddressAnonymizer($ipToBeTested);
+
+        $this->assertEquals('2a03:2880:0000:0:0:0:0:0', $ipAnonymizer->anonymizeIpAddress());
+    }
+
 }

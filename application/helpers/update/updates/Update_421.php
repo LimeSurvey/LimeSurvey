@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_421 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             // question_themes

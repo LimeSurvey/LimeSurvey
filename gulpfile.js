@@ -23,13 +23,9 @@ const sass = require('gulp-sass')(require('sass'));
 const gulppostcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
-const concat = require('gulp-concat');
 const rtlcss = require('gulp-rtlcss');
-const gulpIf = require('gulp-if');
-const useref = require('gulp-useref');
 const replace = require('gulp-replace');
 const merge = require('merge-stream');
-const sourcemaps = require('gulp-sourcemaps');
 const babelify = require('babelify');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
@@ -57,7 +53,7 @@ function js_minify() {
         .pipe(rename('bootstrap_5.js'))
         // buffer
         .pipe(buffer())
-        // distination
+        // destination
         .pipe(dest('assets/bootstrap_5/build/js/'))
         .pipe(uglify())
         .pipe(rename({extname: '.min.js'}))
@@ -279,7 +275,7 @@ function survey_theme_ls6_js() {
         .pipe(rename('theme.js'))
         // buffer
         .pipe(buffer())
-        // distination
+        // destination
         .pipe(replace(/^/, fs.readFileSync('assets/survey_themes/fruity_twentythree/theme_js_disclaimer.js')))
         .pipe(dest('themes/survey/fruity_twentythree/scripts/'));
 }

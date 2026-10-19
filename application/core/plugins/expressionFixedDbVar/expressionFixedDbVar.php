@@ -35,52 +35,58 @@ class expressionFixedDbVar extends PluginBase
     */
     protected $settings = array(
         'SEED' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Add SEED variable',
             'default' => '1',
             'column' => 'seed',
         ),
         'SUBMITDATE' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Add SUBMITDATE variable',
             'default' => '1',
             'column' => 'submitdate',
         ),
         'STARTDATE' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Add STARTDATE variable',
             'default' => '0',
             'column' => 'startdate',
         ),
         'DATESTAMP' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Add DATESTAMP variable',
             'default' => '1',
             'column' => 'datestamp',
         ),
         'LASTPAGE' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Add LASTPAGE variable',
             'default' => '0',
             'column' => 'lastpage',
         ),
         'STARTLANGUAGE' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Add STARTLANGUAGE variable',
             'default' => '0',
             'column' => 'startlanguage',
         ),
         'IPADDR' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Add IPADDR variable',
             'default' => '0',
             'column' => 'ipaddr',
         ),
         'REFURL' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Add REFURL variable',
             'default' => '0',
             'column' => 'ipaddr',
+        ),
+        'QUOTA_EXIT' => array(
+            'type' => 'boolean',
+            'label' => 'Add QUOTA_EXIT variable',
+            'default' => '0',
+            'column' => 'quota_exit',
         ),
     );
 
@@ -205,6 +211,7 @@ class expressionFixedDbVar extends PluginBase
         $this->settings['STARTLANGUAGE']['label'] = $this->gT('Add STARTLANGUAGE variable');
         $this->settings['IPADDR']['label'] = $this->gT('Add IPADDR variable');
         $this->settings['REFURL']['label'] = $this->gT('Add REFURL variable');
+        $this->settings['QUOTA_EXIT']['label'] = $this->gT('Add QUOTA_EXIT variable');
         return parent::getPluginSettings($getValues);
     }
 

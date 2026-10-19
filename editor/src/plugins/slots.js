@@ -7,6 +7,9 @@ export const PLUGIN_SLOTS = {
   SURVEY_SETTINGS_BLOCK_TOKENS_BOTTOM: 'surveysettingsblock:tokens:bottom',
   SHARING_OVERVIEW_BOTTOM_LEFT: 'sharingoverview:bottom:left',
   SHARING_OVERVIEW_BOTTOM_RIGHT: 'sharingoverview:bottom:right',
+  SHARING_OVERVIEW_CARD_BOTTOM: 'sharingoverview:card:bottom',
+  SHARING_OVERVIEW_SOCIAL_MEDIA_CARD_BOTTOM:
+    'sharingoverview:socialmediacard:bottom',
   TRANSLATIONS_PANEL: 'translations:panel:content',
   FEEDBACK_FORM_OPEN: 'feedback:form:open',
   CONTENT_EDITOR: 'content:editor:extra', // extra logic for editable content ( contentEditable & tinymce)
