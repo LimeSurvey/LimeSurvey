@@ -241,4 +241,56 @@ class ImportTest extends TestBaseClass
             }
         }
     }
+
+    /**
+     * Importing responses from an archive created before LimeSurvey 7 (old SGQA column names)
+     * must keep empty answers as empty strings and missing (NULL) answers as NULL.
+     */
+    public function testImportOldResponsesKeepsEmptyValues(): void
+    {
+        \Yii::app()->session['loginID'] = 1;
+        \Yii::app()->loadHelper('admin.activate');
+        $file = self::$surveysFolder . '/limesurvey_survey_932686_multiple_choice_empty_values.lss';
+        // Question "Select" (qid 5599) was not answered, question "Filtered" (qid 5603) was filtered out (no elements)
+        $responsesFile = self::$tempFolder . '/import_old_responses_empty_values.lsr';
+        file_put_contents(
+            $responsesFile,
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            . '<document><LimeSurveyDocType>Responses</LimeSurveyDocType><DBVersion>499</DBVersion>'
+            . '<languages><language>en</language></languages><responses><rows><row>'
+            . '<id><![CDATA[1]]></id><submitdate><![CDATA[2020-01-01 00:00:00]]></submitdate>'
+            . '<lastpage><![CDATA[1]]></lastpage><startlanguage><![CDATA[en]]></startlanguage>'
+            . '<startdate><![CDATA[2020-01-01 00:00:00]]></startdate><datestamp><![CDATA[2020-01-01 00:00:00]]></datestamp>'
+            . '<_932686X537X5599SQ001/><_932686X537X5599SQ002><![CDATA[Y]]></_932686X537X5599SQ002>'
+            . '</row></rows></responses></document>'
+        );
+
+        try {
+            $result = XMLImportSurvey($file, null, null, null, true, false);
+            $survey = \Survey::model()->findByPk($result['newsid']);
+            (new \SurveyActivator($survey))->activate();
+
+            $responseResult = XMLImportResponses($responsesFile, $survey->sid, $result['FieldReMap']);
+            $this->assertSame(1, $responseResult['responses']);
+
+            $response = \Yii::app()->db->createCommand()
+                ->select('*')
+                ->from($survey->responsesTableName)
+                ->queryRow();
+            $values = [];
+            foreach (\Question::model()->findAll('sid = :sid AND parent_qid > 0', [':sid' => $survey->sid]) as $subQuestion) {
+                $values[$subQuestion->parent->title . '_' . $subQuestion->title] = $response['Q' . $subQuestion->parent_qid . '_S' . $subQuestion->qid];
+            }
+            $this->assertSame('', $values['Select_SQ001'], 'Unanswered option must stay an empty string');
+            $this->assertSame('Y', $values['Select_SQ002']);
+            $this->assertNull($values['Select_SQ003'], 'Option without value must stay NULL');
+            $this->assertNull($values['Filtered_SQ001'], 'Filtered option must stay NULL');
+        } finally {
+            unlink($responsesFile);
+            if (isset($survey) && $survey) {
+                \Yii::app()->session['loginID'] = 1;
+                $survey->delete();
+            }
+        }
+    }
 }

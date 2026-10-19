@@ -11,7 +11,7 @@ $bs-select-item-padding-x : 12px;
         font-size : $font-size-sm;
     }
 
-    .btn.dropdown-toggle:focus, & > select.mobile-device:focus + .dropdown-toggle {
+    .btn.dropdown-toggle:focus:not(:focus-visible), & > select.mobile-device:focus:not(:focus-visible) + .dropdown-toggle {
         outline : none !important;
     }
 

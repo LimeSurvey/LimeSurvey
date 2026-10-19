@@ -88,7 +88,6 @@ $config['blockaddingtosurveys']      = 'Y'; // Don't allow blocklisted participa
 $config['hideblacklisted']           = 'N'; // Don't show blocklisted participants
 $config['deleteblacklisted']         = 'N'; // Delete globally blocklisted participant from the database
 $config['allowunblacklist']          = 'N'; // Allow participant to unblocklist himself/herself
-$config['userideditable']            = 'N'; // Allow editing of user IDs
 
 $config['defaulttheme']              = 'fruity_twentythree'; // This setting specifys the default theme used for the 'public list' of surveys
 $config['createsample']              = true;
@@ -467,13 +466,13 @@ $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of re
 */
 
 /**
-*  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/fonts
+*  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/assets/fonts
 *  Set this to specific font-file (for example 'DejaVuSans.ttf') or set it to 'auto' and LimeSurvey tried to pick the best font depending on your survey base language
 */
 $config['chartfontfile'] = 'auto';
 /**
-*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/fonts
-*  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/fonts, an alert is sent to admin
+*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/assets/fonts
+*  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/assets/fonts, an alert is sent to admin
 */
 $config['alternatechartfontfile'] = array(
     'hi' => 'FreeSans.ttf',
