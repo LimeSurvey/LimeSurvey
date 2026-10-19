@@ -36,7 +36,7 @@ const wrapper = ({ children }) => {
 
 const render = (sid) =>
   renderHook(
-    ({ sid, filterSet }) => useResponses(sid, pagination, {}, [], filterSet),
+    ({ sid, filterSet }) => useResponses(sid, pagination, [], filterSet),
     { wrapper, initialProps: { sid, filterSet: [] } }
   )
 

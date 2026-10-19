@@ -17,9 +17,6 @@ const valueTypeOptions = [
 export const ResponsesStatistics = ({
   surveyId,
   filters = {},
-  showFilters,
-  setShowFilters,
-  setFilters,
   survey,
   questionOptions = [],
   appliedFilters = [],
@@ -84,9 +81,6 @@ export const ResponsesStatistics = ({
     <>
       <div className="responses-statistics-toolbar">
         <ResponsesHeader
-          setShowFilters={setShowFilters}
-          showFilters={showFilters}
-          setFilters={setFilters}
           tabKey={TAB_KEYS.STATISTICS}
           survey={survey}
           questionOptions={questionOptions}
