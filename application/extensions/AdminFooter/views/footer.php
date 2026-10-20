@@ -1,9 +1,19 @@
 <div class='footer'>
     <div style='float:left;width:110px;text-align:left;'>
-        <a class='ls-link' href='http://manual.limesurvey.org'><img alt='LimeSurvey - <?php eT("Online Manual"); ?>' title='LimeSurvey - <?php eT("Online manual"); ?>' src='<?php echo Yii::app()->getConfig('adminimageurl'); ?>docs.png' /></a>
+        <a class='ls-link' href='http://manual.limesurvey.org'>
+            <img alt='LimeSurvey - <?php eT("Online Manual"); ?>' title='LimeSurvey - <?php eT("Online manual"); ?>'
+                 src='<?php echo Yii::app()->getConfig('adminimageurl'); ?>docs.png'/>
+        </a>
     </div>
     <div style='float:right;'>
-        <a class='ls-link' href='https://donate.limesurvey.org' target="_blank"><img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo Yii::app()->getConfig('adminimageurl'); ?>donate.png'/></a>
+        <a class='ls-link' href='https://donate.limesurvey.org' target="_blank">
+            <img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey'
+                 title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!'
+                 src='<?php echo Yii::app()->getConfig('adminimageurl'); ?>donate.png'/>
+        </a>
     </div>
-    <div class='subtitle'><a class='subtitle ls-link' title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a><br /><?php echo $versiontitle . " " . $versionnumber . $buildtext; ?></div>
+    <div class='subtitle'>
+        <a class='subtitle ls-link' title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community
+            Edition</a><br/><?php echo $versiontitle . " " . $versionnumber . $buildtext; ?>
+    </div>
 </div>
