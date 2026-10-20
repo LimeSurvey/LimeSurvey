@@ -102,11 +102,6 @@ export const getQuestionItemsList = () => [
         hidden: !process.env.REACT_APP_DEV_MODE,
       },
       {
-        value: getQuestionTypeInfo().GENDER.type,
-        label: getQuestionTypeInfo().GENDER.title,
-        theme: getQuestionTypeInfo().GENDER.theme,
-      },
-      {
         value: getQuestionTypeInfo().YES_NO.type,
         label: getQuestionTypeInfo().YES_NO.title,
         theme: getQuestionTypeInfo().YES_NO.theme,

@@ -131,11 +131,6 @@ const synthesizeAnswerOptions = (type) => {
         value: String(n),
         label: String(n),
       }))
-    case 'G': // Gender
-      return [
-        { value: 'F', label: t('Female (F)') },
-        { value: 'M', label: t('Male (M)') },
-      ]
     case 'Y': // Yes/No
       return [
         { value: 'Y', label: t('Yes') },

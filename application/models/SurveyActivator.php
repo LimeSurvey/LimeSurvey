@@ -156,6 +156,7 @@ class SurveyActivator
      * For each question, create the appropriate field(s)
      *
      * @param string $collation
+     * @param array $sFieldMap The field map of the survey
      * @return void
      */
     protected function prepareTableDefinition(string $collation, array $sFieldMap)
@@ -213,7 +214,6 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "datetime");
                     break;
                 case Question::QT_5_POINT_CHOICE:
-                case Question::QT_G_GENDER:
                 case Question::QT_Y_YES_NO_RADIO:
                 case Question::QT_X_TEXT_DISPLAY:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(1)");

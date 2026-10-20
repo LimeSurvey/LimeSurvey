@@ -311,13 +311,13 @@ element.style {
 .ls-answers .ls-heading th{font-weight:700}
 /* Max width for some answer part */
 @media (min-width: 768px) {
-  .yesno-button,.gender-button {
+  .yesno-button {
     width: 50%;
   }
-  .yesno-button,.gender-button {
+  .yesno-button {
     float: left;
   }
-  .dir-rtl .yesno-button,.dir-rtl .gender-button {
+  .dir-rtl .yesno-button {
     float: right;
   }
 }
@@ -394,7 +394,7 @@ Responsive navbar-brand image CSS
 
 
 
-/* Wrap text in e.g. gender button "No answer */
+/* Wrap text in e.g. yes/no button "No answer */
 .wrap-normal {
     white-space: normal;
 }

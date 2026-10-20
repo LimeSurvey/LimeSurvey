@@ -263,15 +263,6 @@ class STATAxmlWriter extends Writer
                         'code' => 0,
                         'answer' => gT('Not selected')
                     );
-                } elseif ($aQuestion['type'] == Question::QT_G_GENDER) {
-                    $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
-                        'code' => 'F',
-                        'answer' => gT('Female')
-                    );
-                    $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
-                        'code' => 'M',
-                        'answer' => gT('Male')
-                    );
                 } elseif ($aQuestion['type'] == Question::QT_Y_YES_NO_RADIO) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
@@ -386,6 +377,7 @@ class STATAxmlWriter extends Writer
      * @param array $values Response data values for a single observation.
      * @param FormattingOptions $oOptions Formatting options (not used by this method but provided for interface compatibility).
      * @param array $fieldNames Optional field names (unused).
+     * @return void
      */
     protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
@@ -404,7 +396,7 @@ class STATAxmlWriter extends Writer
          * Recode collected responses and determine STATA variable types and formats.
          *
          * Processes all stored response rows, converting values to STATA-compatible
-         * representations (for example: date, gender, yes/no/uncertain, list codes,
+         * representations (for example: date, yes/no/uncertain, list codes,
          * and non-numeric answer codes), measures required string lengths, and
          * updates the fieldmap entries with the resulting `statatype` and
          * `stataformat` for each variable.
@@ -438,15 +430,6 @@ class STATAxmlWriter extends Writer
                 if ($response != '') {
                     // recode some values from letters to numeric, so we can attach value labels and have more time doing statistics
                     switch ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type']) {
-                        case Question::QT_G_GENDER: //GENDER drop-down list
-                            $response = str_replace(array(
-                                'F',
-                                'M'
-                            ), array(
-                                '0',
-                                '1'
-                            ), $response);
-                            break;
                         case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
                         case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
                             $response = str_replace(array(

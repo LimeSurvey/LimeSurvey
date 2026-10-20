@@ -171,20 +171,6 @@ class SurveyObj
                 }
                 break;
 
-            case Question::QT_G_GENDER:
-                switch ($answerCode) {
-                    case 'M':
-                        $fullAnswer = $translator->translate('Male', $sLanguageCode);
-                        break;
-
-                    case 'F':
-                        $fullAnswer = $translator->translate('Female', $sLanguageCode);
-                        break;
-
-                    default:
-                        $fullAnswer = $translator->translate('N/A', $sLanguageCode);
-                }
-                break;
 
             case Question::QT_M_MULTIPLE_CHOICE:   //MULTIOPTION
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:

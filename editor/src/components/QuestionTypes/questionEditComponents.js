@@ -7,7 +7,6 @@ import { RankingQuestion } from './RankingQuestion/RankingQuestion'
 import { RankingAdvancedQuestion } from './RankingAdvancedQuestion/RankingAdvancedQuestion'
 import { Equation } from './Equation/Equation'
 import { DateTime } from './DateTime/DateTime'
-import { GenderQuestion } from './GenderQuestion/GenderQuestion'
 import { YesNoQuestion } from './YesNoQuestion/YesNoQuestion'
 import { ArrayQuestion } from './ArrayQuestion/ArrayQuestion'
 import { OptionQuestionEditMode } from './QuestionModes/OptionQuestionEditMode'
@@ -52,7 +51,6 @@ export const questionEditComponents = {
   [getQuestionTypeInfo().RANKING_ADVANCED.theme]: RankingAdvancedQuestion,
   [getQuestionTypeInfo().EQUATION.theme]: Equation,
   [getQuestionTypeInfo().DATE_TIME.theme]: DateTime,
-  [getQuestionTypeInfo().GENDER.theme]: GenderQuestion,
   [getQuestionTypeInfo().YES_NO.theme]: YesNoQuestion,
   [getQuestionTypeInfo().TEXT_DISPLAY.theme]: TextDisplay,
 }

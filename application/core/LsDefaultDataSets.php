@@ -1143,6 +1143,11 @@ class LsDefaultDataSets
         return $returnArray;
     }
 
+    /**
+     * Get the default entries of the core question themes.
+     *
+     * @return array[] One row of the question_themes table per core question theme
+     */
     public static function getBaseQuestionThemeEntries()
     {
         $aBaseQuestionThemes = [
@@ -1481,30 +1486,6 @@ class LsDefaultDataSets
                 "extends" => "",
                 "group" => "Mask questions",
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"0\",\"class\":\"upload-files\"}",
-            ),
-            array(
-                "name" => "gender",
-                "visible" => "Y",
-                "xml_path" => "application/views/survey/questions/answer/gender",
-                "image_path" => "/assets/images/screenshots/G.png",
-                "title" => "Gender",
-                "creation_date" => "2018-09-08 00:00:00",
-                "author" => "LimeSurvey GmbH",
-                "author_email" => "info@limesurvey.org",
-                "author_url" => "http://www.limesurvey.org",
-                "copyright" => "Copyright (C) 2005 - 2018 LimeSurvey Gmbh, Inc. All rights reserved.",
-                "license" => "GNU General Public License version 2 or later",
-                "version" => "1.0",
-                "api_version" => "1",
-                "description" => "Gender question type configuration",
-                "last_update" => "2019-09-23 15:05:59",
-                "owner_id" => 1,
-                "theme_type" => "question_theme",
-                "question_type" => "G",
-                "core_theme" => 1,
-                "extends" => "",
-                "group" => "Mask questions",
-                "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"0\",\"class\":\"gender\"}",
             ),
             array(
                 "name" => "hugefreetext",

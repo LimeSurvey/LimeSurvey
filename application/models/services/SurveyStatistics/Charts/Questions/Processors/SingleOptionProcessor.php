@@ -10,7 +10,6 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
 {
     /** @var array */
     private const SPECIAL_TYPES = [
-        Question::QT_G_GENDER,
         Question::QT_Y_YES_NO_RADIO,
         Question::QT_I_LANGUAGE,
         Question::QT_5_POINT_CHOICE
@@ -91,9 +90,6 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
         $type = $this->question['type'];
 
         switch ($type) {
-            case Question::QT_G_GENDER:
-                $data = $this->handleGender();
-                break;
             case Question::QT_Y_YES_NO_RADIO:
                 $data = $this->handleYesNo();
                 break;
@@ -108,22 +104,6 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
         }
 
         return $data;
-    }
-
-    /**
-     * @return array
-     */
-    private function handleGender(): array
-    {
-        $codes = ['F', 'M'];
-        $labels = ['Female', 'Male'];
-
-        [$legend, $items] = $this->buildItemsFromCodes($this->rt, $codes, $labels);
-        return [
-            'title' => $this->question['question'],
-            'legend' => $legend,
-            'data' => $items
-        ];
     }
 
     /**

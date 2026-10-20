@@ -39,7 +39,6 @@ import {
   getArrayTextsSettings,
 } from './array'
 import {
-  getGenderSettings,
   getRankingAdvancedSettings,
   getRankingSettings,
   getRatingSettings,
@@ -61,7 +60,6 @@ export const getQuestionSettings = () => {
     [getQuestionTypeInfo().FILE_UPLOAD.theme]: getFileUploadSettings(),
     [getQuestionTypeInfo().SINGLE_CHOICE_FIVE_POINT_CHOICE.theme]:
       getFivePointChoiceSettings(),
-    [getQuestionTypeInfo().GENDER.theme]: getGenderSettings(),
     [getQuestionTypeInfo().SINGLE_CHOICE_LIST_RADIO.theme]:
       getListRadioSettings(),
     [getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme]:

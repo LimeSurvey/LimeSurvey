@@ -82,20 +82,6 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 break;
 
 
-            //GENDER drop-down list
-            case Question::QT_G_GENDER:
-                ?>
-            <div class="col-md-10">
-                <select name='<?php echo $fieldname; ?>'  class='form-select'>
-                    <option selected='selected' value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
-                    <option value='F'><?php eT("Female", 'html', $sDataEntryLanguage); ?></option>
-                    <option value='M'><?php eT("Male", 'html', $sDataEntryLanguage); ?></option>
-                </select>
-            </div>
-                <?php
-                break;
-
-
             //Multiple short text
             case Question::QT_Q_MULTIPLE_SHORT_TEXT:
             case Question::QT_K_MULTIPLE_NUMERICAL:

@@ -33,7 +33,6 @@ abstract class AbstractQuestionProcessor
         Question::QT_EXCLAMATION_LIST_DROPDOWN,
         Question::QT_O_LIST_WITH_COMMENT,
         Question::QT_Y_YES_NO_RADIO,
-        Question::QT_G_GENDER,
         Question::QT_5_POINT_CHOICE,
         Question::QT_A_ARRAY_5_POINT,
         Question::QT_B_ARRAY_10_CHOICE_QUESTIONS,

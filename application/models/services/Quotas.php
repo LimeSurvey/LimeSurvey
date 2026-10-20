@@ -128,11 +128,6 @@ class Quotas
                     $aAnswerList[$oDbAnsList->title] = $tmparrayans;
                 }
                 break;
-            case \Question::QT_G_GENDER:
-                $aAnswerList = array(
-                    'M' => array('Title' => $aQuestion['title'], 'Display' => gT("Male"), 'code' => 'M'),
-                    'F' => array('Title' => $aQuestion['title'], 'Display' => gT("Female"), 'code' => 'F'));
-                break;
             case \Question::QT_L_LIST:
             case \Question::QT_O_LIST_WITH_COMMENT:
             case \Question::QT_EXCLAMATION_LIST_DROPDOWN:

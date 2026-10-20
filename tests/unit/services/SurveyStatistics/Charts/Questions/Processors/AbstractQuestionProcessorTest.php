@@ -91,7 +91,10 @@ class AbstractQuestionProcessorTest extends TestCase
     }
 
     /**
+     * Test that buildItemsFromCodes() pairs codes with labels and adds a NoAnswer bucket for no-answer-type questions.
+     *
      * @testdox buildItemsFromCodes() pairs codes with labels and adds a NoAnswer bucket for no-answer-type questions
+     * @return void
      */
     public function testBuildItemsFromCodesAddsNoAnswerForApplicableTypes()
     {
@@ -100,7 +103,7 @@ class AbstractQuestionProcessorTest extends TestCase
             'sid' => 1,
             'gid' => 1,
             'qid' => 1,
-            'type' => Question::QT_G_GENDER,
+            'type' => Question::QT_Y_YES_NO_RADIO,
             'title' => 'Q1',
         ]);
         $batch = new ResponseAggregateBatch(1);
@@ -144,12 +147,15 @@ class AbstractQuestionProcessorTest extends TestCase
     }
 
     /**
+     * Test that buildItemsFromCodes() returns empty legend/items for an empty code list.
+     *
      * @testdox buildItemsFromCodes() returns empty legend/items for an empty code list
+     * @return void
      */
     public function testBuildItemsFromCodesWithNoCodes()
     {
         $processor = new ConcreteTestQuestionProcessor();
-        $processor->setQuestion(['sid' => 1, 'gid' => 1, 'qid' => 1, 'type' => Question::QT_G_GENDER, 'title' => 'Q1']);
+        $processor->setQuestion(['sid' => 1, 'gid' => 1, 'qid' => 1, 'type' => Question::QT_Y_YES_NO_RADIO, 'title' => 'Q1']);
         $processor->setBatch(new ResponseAggregateBatch(1));
 
         [$legend, $items] = $processor->publicBuildItemsFromCodes('Q1', []);

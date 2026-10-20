@@ -1,5 +1,4 @@
 export { getRankingSettings } from './getRankingSettings'
 export { getRankingAdvancedSettings } from './getRankingAdvancedSettings'
 export { getRatingSettings } from './getRatingSettings'
-export { getGenderSettings } from './getGenderSettings'
 export { getYesNoSettings } from './getYesNoSettings'
