@@ -299,20 +299,27 @@ class AdminController extends LSYii_Controller
      * This function is very similar to AdminController::actions()
      * Routes all the modules actions to their respective places
      *
+     * A module overriding a core action declares its class in the lsadminmodules\<action>\controller namespace,
+     * a module adding a new action declares a global class.
+     *
      * todo REFACTORING we don't have to refactore this method ...
      *
      * @access public
-     * @return array
+     * @return array Action IDs mapped to the class name or path alias of the module action class
      */
     public function getModulesActions()
     {
         $aActions = $this->getAdminModulesActionClasses();
-        $aAdminModulesClasses = array();
+        $aCoreActions = $this->getActionClasses();
 
       // lsadminmodules alias is defined in AdminController::init()
       // Notice that the file and the directory name must be the same.
         foreach ($aActions as $action => $class) {
-            $aActions[$action] = 'lsadminmodules\\' . $action . '\controller\\' . $action;
+            if (isset($aCoreActions[$action])) {
+                $aActions[$action] = 'lsadminmodules\\' . $action . '\controller\\' . $action;
+            } else {
+                $aActions[$action] = 'lsadminmodules.' . $action . '.controller.' . $action;
+            }
         }
 
         return $aActions;

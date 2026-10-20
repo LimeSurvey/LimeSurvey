@@ -9,8 +9,8 @@
     <h3 class="pagetitle"><?php eT('Hello World Admin Module'); ?></h3>
     <div class="row">
         <div class="col-12 ">
-          Hello <?php echo $sUserName; ?> ! <br/>
-          sWho parameter in url: <?php echo $sWho; ?>
+          Hello <?php echo CHtml::encode($sUserName); ?> ! <br/>
+          sWho parameter in url: <?php echo CHtml::encode($sWho); ?>
         </div>
 
         <div class="col-12 ">

@@ -152,19 +152,19 @@ public $myNewParam = "This was not in global setting core controller";
 ```
 https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/controller/globalsettings.php#L31
 
-### Override \GlobalSetting::_renderWrappedTemplate()
+### Override \GlobalSetting::renderWrappedTemplate()
 
 We want to display this new param inside the overview pan of global settings. So first, we need to add $myNewParam to the array of data passed to the views.
-So, first, we override the \GlobalSetting::_renderWrappedTemplate() :
+So, first, we override the \GlobalSetting::renderWrappedTemplate() :
 
 ```php
-protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+protected function renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
 {
     // We add ou new parameter to the data to parse to the view
     $aData["myNewParam"] = $this->myNewParam;
 
     // Then we just call the parent method
-    parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+    parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
 }
 ```
 https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/controller/globalsettings.php#L50-L64

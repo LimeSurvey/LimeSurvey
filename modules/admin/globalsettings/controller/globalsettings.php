@@ -40,8 +40,8 @@ class GlobalSettings extends \GlobalSettings
      */
     public function HelloWorld($sWho="World")
     {
-        // Call to Survey_Common_Action::_renderWrappedTemplate that will generate the "Layout"
-        $this->_renderWrappedTemplate('globalsettings', 'HelloWorld', array(
+        // Call to SurveyCommonAction::renderWrappedTemplate that will generate the "Layout"
+        $this->renderWrappedTemplate('globalsettings', 'HelloWorld', array(
             'sWho'=>$sWho,
           ));
 
