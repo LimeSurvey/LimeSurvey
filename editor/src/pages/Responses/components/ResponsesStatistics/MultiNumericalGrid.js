@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { format } from 'util'
+import classNames from 'classnames'
 
 import { HighlightedText, SearchInput, useSearchTerms } from 'components'
 import { htmlToPlainText } from 'helpers'
@@ -9,14 +10,19 @@ import { useIsInViewport } from 'hooks/useInViewport'
 import { formatAnswerDate } from './ChartsUtils.js'
 
 /**
- * Per-response answers of a multiple numerical input (K): one card per
- * participant, listing each subquestion and the number they entered.
+ * Per-response answers of multiple numerical input (K) or multiple short text
+ * (Q) questions: one card per response, listing its nonempty subquestion answers.
+ * Responses load when the component first enters the viewport.
+ *
+ * `twoColumns` defaults to true for two response cards per row; false uses a
+ * single column.
  */
 export const MultiNumericalGrid = ({
   surveyId,
   questionCode,
   fields,
   filters,
+  twoColumns = true,
 }) => {
   const [containerRef, isInView] = useIsInViewport(null, {
     initialInView: false,
@@ -110,7 +116,11 @@ export const MultiNumericalGrid = ({
 
     return (
       <>
-        <div className="responses-statistics-grid responses-statistics-grid--two-col">
+        <div
+          className={classNames('responses-statistics-grid', {
+            'responses-statistics-grid--two-col': twoColumns,
+          })}
+        >
           {cards.map((card) => (
             <div className="responses-statistics-grid-row" key={card.id}>
               <div className="responses-statistics-multi-numerical">

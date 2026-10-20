@@ -9,6 +9,7 @@ import {
   QT_COLON_ARRAY_NUMBERS,
   QT_K_MULTIPLE_NUMERICAL,
   QT_N_NUMERICAL,
+  QT_Q_MULTIPLE_SHORT_TEXT,
   QT_S_SHORT_FREE_TEXT,
   QT_SEMICOLON_ARRAY_TEXT,
   QT_T_LONG_FREE_TEXT,
@@ -74,12 +75,14 @@ const VIEWS = [
       isArrayText,
       isNumerical,
       isMultiNumerical,
+      isMultipleShortText,
       isFileUpload,
     }) =>
       !isArray &&
       !isArrayText &&
       !isNumerical &&
       !isMultiNumerical &&
+      !isMultipleShortText &&
       !isFileUpload,
     render: ({
       isRanking,
@@ -149,6 +152,7 @@ const VIEWS = [
       isArrayText,
       isNumerical,
       isMultiNumerical,
+      isMultipleShortText,
       isFileUpload,
     }) =>
       !isRanking &&
@@ -156,6 +160,7 @@ const VIEWS = [
       !isArrayText &&
       !isNumerical &&
       !isMultiNumerical &&
+      !isMultipleShortText &&
       !isFileUpload,
     // Comment types keep only Bar/Table/Comments in the quick toggle; pie moves
     // to the meatball menu.
@@ -210,13 +215,21 @@ const VIEWS = [
     icon: () => <i className="ri-list-check"></i>,
     isAvailable: ({ isGridable, isMultiNumerical }) =>
       isGridable || isMultiNumerical,
-    render: ({ surveyId, question, filters, isNumerical, isMultiNumerical }) =>
-      isMultiNumerical ? (
+    render: ({
+      surveyId,
+      question,
+      filters,
+      isNumerical,
+      isMultiNumerical,
+      isMultipleShortText,
+    }) =>
+      isMultiNumerical || isMultipleShortText ? (
         <MultiNumericalGrid
           surveyId={surveyId}
           questionCode={question?.code}
           fields={question?.fields}
           filters={filters}
+          twoColumns={isMultiNumerical}
         />
       ) : (
         <ResponsesGrid
@@ -342,6 +355,13 @@ const getDefaultView = (availableViews, viewContext, chartType) => {
   )
 }
 
+/**
+ * Render a question's statistics card with its available views and visibility
+ * controls. Visibility choices are remembered in local storage when possible.
+ *
+ * Multiple short text questions show a response list that fetches its own data,
+ * so an empty `data` array does not suppress that list.
+ */
 export const ChartRendererV2 = ({
   data,
   index = 0,
@@ -353,12 +373,16 @@ export const ChartRendererV2 = ({
 }) => {
   const isNumerical = question?.type === QT_N_NUMERICAL
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
+  const isMultipleShortText = question?.type === QT_Q_MULTIPLE_SHORT_TEXT
   const isFileUpload = question?.type === QT_VERTICAL_FILE_UPLOAD
   const isGridable =
     isNumerical ||
-    [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
-      question?.type
-    )
+    [
+      QT_S_SHORT_FREE_TEXT,
+      QT_T_LONG_FREE_TEXT,
+      QT_U_HUGE_FREE_TEXT,
+      QT_Q_MULTIPLE_SHORT_TEXT,
+    ].includes(question?.type)
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
@@ -378,6 +402,7 @@ export const ChartRendererV2 = ({
   const hasResponses =
     isArrayText ||
     isMultiNumerical ||
+    isMultipleShortText ||
     isFileUpload ||
     (data ?? []).reduce((sum, item) => sum + (item?.value || 0), 0) > 0
 
@@ -391,6 +416,7 @@ export const ChartRendererV2 = ({
     isDualScale,
     isNumerical,
     isMultiNumerical,
+    isMultipleShortText,
     isFileUpload,
     isGridable,
   }
@@ -422,6 +448,7 @@ export const ChartRendererV2 = ({
     isDualScale,
     isNumerical,
     isMultiNumerical,
+    isMultipleShortText,
     isFileUpload,
     surveyId,
     chartId,
