@@ -59,6 +59,10 @@ class QuestionResolver
             throw new InvalidArgumentException("Question $qid holds no answers to filter on.");
         }
 
+        if ($this->map->isEncrypted($qid)) {
+            throw new InvalidArgumentException("Question $qid is encrypted, so it cannot be filtered.");
+        }
+
         $kind = QuestionKind::fromType($type);
         $innerJoin = ResponseFilter::JOIN_AND;
 
@@ -380,7 +384,7 @@ class QuestionResolver
 
         if ($filter->getFileUploaded() === ResponseFilter::FILE_UPLOADED_NO) {
             return [
-                new ResolvedCondition([$countColumn], ResolvedCondition::OPERATOR_EMPTY, null),
+                new ResolvedCondition([$countColumn], ResolvedCondition::OPERATOR_NULL, 'false'),
                 ...$this->range($countColumn, ['', 0]),
             ];
         }

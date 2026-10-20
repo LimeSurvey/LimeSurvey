@@ -20,19 +20,38 @@ class ParticipantResolver
      */
     public const RELATION = 'tokens';
 
+    /** Column kinds, which decide how a value is compared. */
+    public const KIND_TEXT = 'text';
+    public const KIND_INTEGER = 'integer';
+    public const KIND_OTHER = 'other';
+    /** Stored as ciphertext with a random nonce, so no comparison can match it. */
+    public const KIND_ENCRYPTED = 'encrypted';
+
     /** @var array<string,true> Attribute columns this survey has, lowercased. */
     private array $allowed;
+
+    /** @var array<string,string> Column kind per lowercased column; text when absent. */
+    private array $kinds;
+
+    /** @var bool Whether the survey is anonymized, which refuses every participant filter. */
+    private bool $anonymized;
 
     /**
      * @param array<int,string> $attributes Participant columns of this survey.
      *     Empty when the survey has no participant table at all.
+     * @param bool $anonymized Anonymized responses are not linked to
+     *     participants (no token column), and must not be filtered by them.
+     * @param array<string,string> $kinds KIND_* per column; columns left out
+     *     are treated as text.
      */
-    public function __construct(array $attributes)
+    public function __construct(array $attributes, bool $anonymized = false, array $kinds = [])
     {
+        $this->anonymized = $anonymized;
         $this->allowed = [];
         foreach ($attributes as $attribute) {
             $this->allowed[strtolower((string) $attribute)] = true;
         }
+        $this->kinds = array_change_key_case($kinds, CASE_LOWER);
     }
 
     /**
@@ -48,9 +67,39 @@ class ParticipantResolver
             return new self([]);
         }
 
-        $table = \App()->db->schema->getTable($survey->tokensTableName);
+        if ($survey->isAnonymized) {
+            return new self([], true);
+        }
 
-        return new self($table === null ? [] : array_keys($table->columns));
+        $table = \App()->db->schema->getTable($survey->tokensTableName);
+        if ($table === null) {
+            return new self([]);
+        }
+
+        $kinds = [];
+        foreach ($table->columns as $name => $column) {
+            $kinds[$name] = self::kindOf($column);
+        }
+        foreach ($survey->getAllEncryptedAttributes($survey->sid, 'TokenDynamic') as $name) {
+            $kinds[$name] = self::KIND_ENCRYPTED;
+        }
+
+        return new self(array_keys($table->columns), false, $kinds);
+    }
+
+    /**
+     * Text columns are matched with LIKE; PostgreSQL has no LIKE for integers
+     * or dates, so those need a different comparison or none at all.
+     */
+    private static function kindOf(\CDbColumnSchema $column): string
+    {
+        if ($column->type === 'integer') {
+            return self::KIND_INTEGER;
+        }
+
+        return preg_match('/char|text/i', (string) $column->dbType) === 1
+            ? self::KIND_TEXT
+            : self::KIND_OTHER;
     }
 
     public function resolve(ResponseFilter $filter): ResolvedFilter
@@ -65,13 +114,31 @@ class ParticipantResolver
         }
 
         $column = $this->requireAttribute((string) $filter->getAttribute());
+        $value = trim($value);
 
-        // A text box means "contains", the same as filtering a free-text
-        // question, so a surname search need not be spelled in full.
+        switch ($this->kinds[$column] ?? self::KIND_TEXT) {
+            case self::KIND_INTEGER:
+                if (preg_match('/^-?\d+$/', $value) !== 1) {
+                    throw new InvalidArgumentException("Participant attribute '$column' needs a whole number.");
+                }
+                $operator = ResolvedCondition::OPERATOR_EQUAL;
+                $value = (int) $value;
+                break;
+            case self::KIND_TEXT:
+                $operator = ResolvedCondition::OPERATOR_CONTAIN;
+                break;
+            case self::KIND_ENCRYPTED:
+                throw new InvalidArgumentException(
+                    "Participant attribute '$column' is encrypted, so it cannot be filtered."
+                );
+            default:
+                throw new InvalidArgumentException("Participant attribute '$column' cannot be filtered.");
+        }
+
         return new ResolvedFilter($filter->getJoin(), [
             new ResolvedCondition(
                 [$column],
-                ResolvedCondition::OPERATOR_CONTAIN,
+                $operator,
                 $value,
                 self::RELATION
             ),
@@ -89,6 +156,12 @@ class ParticipantResolver
         // {TOKEN:EMAIL} -> email
         if (preg_match('/^\{token:([a-z0-9_]+)\}$/', $column, $matches) === 1) {
             $column = $matches[1];
+        }
+
+        if ($this->anonymized) {
+            throw new InvalidArgumentException(
+                'This survey is anonymized, so it cannot be filtered by participant.'
+            );
         }
 
         if ($this->allowed === []) {

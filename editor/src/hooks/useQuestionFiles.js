@@ -5,7 +5,14 @@ import { useQuestionAnswers } from './useQuestionAnswers'
 export function useQuestionFiles(
   surveyId,
   questionCode,
-  { enabled = true, field, filters = {}, search = [], pageSize } = {}
+  {
+    enabled = true,
+    field,
+    filters = {},
+    filterSet = [],
+    search = [],
+    pageSize,
+  } = {}
 ) {
   const fields = field ? [field] : []
   const {
@@ -23,6 +30,7 @@ export function useQuestionFiles(
         activeLanguage,
         field,
         filters,
+        filterSet,
         search,
         pageSize,
       ],
@@ -34,7 +42,8 @@ export function useQuestionFiles(
           activeLanguage,
           field,
           filters,
-          search
+          search,
+          filterSet
         ),
     }),
     { enabled, fields, pageItems: 'files' }

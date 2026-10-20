@@ -64,6 +64,7 @@ class QuestionResolverTest extends TestCase
             'Q150' => $this->column(['qid' => 150, 'type' => '|', 'aid' => '']),
             'Q150_Cfilecount' => $this->column(['qid' => 150, 'type' => '|', 'aid' => 'filecount']),
             '111X1X80' => $this->column(['qid' => 80, 'type' => 'X']),
+            '111X1X85' => $this->column(['qid' => 85, 'type' => 'S', 'encrypted' => 'Y']),
         ]));
     }
 
@@ -258,6 +259,14 @@ class QuestionResolverTest extends TestCase
         $this->resolveOne(['qid' => 80, 'text' => 'anything']);
     }
 
+    /** Encrypted answers are ciphertext, so a filter on them could never match. */
+    public function testAnEncryptedQuestionThrows(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Question 85 is encrypted, so it cannot be filtered.');
+        $this->resolveOne(['qid' => 85, 'text' => 'anything']);
+    }
+
     /**
      * A ranking is one JSON array of item codes in rank order, so "this item
      * in this place" tests one element of it.
@@ -331,7 +340,10 @@ class QuestionResolverTest extends TestCase
         $this->assertCount(2, $conditions);
         $this->assertTrue($resolved->isInnerOr());
 
-        $this->assertSame(ResolvedCondition::OPERATOR_EMPTY, $conditions[0]->getOperator());
+        // IS NULL, not `= ''`: the count is an integer column, and PostgreSQL
+        // rejects comparing it to a string.
+        $this->assertSame(ResolvedCondition::OPERATOR_NULL, $conditions[0]->getOperator());
+        $this->assertSame('false', $conditions[0]->getValue());
         $this->assertSame(['Q150_Cfilecount'], $conditions[0]->getKeys());
 
         $this->assertSame(ResolvedCondition::OPERATOR_RANGE, $conditions[1]->getOperator());

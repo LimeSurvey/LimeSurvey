@@ -85,6 +85,21 @@ class QuestionColumnMap
     }
 
     /**
+     * Whether the question stores its answers encrypted. The setting is per
+     * question, so every column of it carries the same flag.
+     */
+    public function isEncrypted(int $qid): bool
+    {
+        foreach ($this->getColumns($qid) as $column) {
+            if (($column['encrypted'] ?? 'N') === 'Y') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * The column that holds the answer itself, for questions that have just
      * one. Skips the extras a question can carry alongside it — the "other"
      * text, a comment, a file count — which are identified by their `aid`.

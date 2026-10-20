@@ -412,11 +412,14 @@ class ExportSurveyResultsService
             $dataMap = $this->transformerOutputSurveyResponses->getDataMap();
             $sort = new \CSort();
             $criteria = new \LSDbCriteria();
+            $alias = $this->filterCriteria !== null && !empty($this->filterCriteria->with) ? 't' : '';
             $this->responseFilterPatcher->apply(
                 ['filters' => $this->filters],
                 $criteria,
                 $sort,
-                $dataMap
+                $dataMap,
+                [],
+                $alias
             );
         }
 

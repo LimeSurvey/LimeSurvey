@@ -237,6 +237,12 @@ class SurveyResponses implements CommandInterface
 
         [$criteria, $sort] = $this->buildCriteria($request, $filters);
         $criteria->order = $sort->defaultOrder;
+
+        if (is_array($criteria->with) && array_key_exists(ParticipantResolver::RELATION, $criteria->with)) {
+            $criteria->join .= ' LEFT JOIN ' . $this->survey->tokensTableName . ' '
+                . ParticipantResolver::RELATION . ' ON '
+                . ParticipantResolver::RELATION . '.token = ' . self::RESPONSE_TABLE_ALIAS . '.token';
+        }
         $pagination = $this->buildPagination($request);
         $pageSize = max(1, (int) ($pagination['pageSize'] ?? 1));
         $currentPage = max(0, (int) ($pagination['currentPage'] ?? 0));
@@ -470,12 +476,12 @@ class SurveyResponses implements CommandInterface
         }
 
         $fixed = array_intersect(self::FIXED_OUTPUT_COLUMNS, $validColumns);
-        // Quote explicitly: Yii implodes an array select without quoting, and
-        // dual-scale column names contain `#`, which starts a MySQL comment.
-        $criteria->select = array_map(
-            [\Yii::app()->db, 'quoteColumnName'],
-            array_values(array_unique(array_merge($fixed, $selected)))
-        );
+        $columns = array_values(array_unique(array_merge($fixed, $selected)));
+        if (!empty($criteria->with)) {
+            $criteria->select = $columns;
+            return;
+        }
+        $criteria->select = array_map([\Yii::app()->db, 'quoteColumnName'], $columns);
     }
 
     /**

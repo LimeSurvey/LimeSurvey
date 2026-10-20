@@ -30,6 +30,13 @@ class ParticipantResolverTest extends TestCase
             'completed',
             'attribute_1',
             'attribute_2',
+            'attribute_3',
+            'validfrom',
+        ], false, [
+            'remindercount' => ParticipantResolver::KIND_INTEGER,
+            'usesleft' => ParticipantResolver::KIND_INTEGER,
+            'validfrom' => ParticipantResolver::KIND_OTHER,
+            'attribute_3' => ParticipantResolver::KIND_ENCRYPTED,
         ]);
     }
 
@@ -60,6 +67,43 @@ class ParticipantResolverTest extends TestCase
         $this->assertSame(['email'], $condition->getKeys());
         $this->assertSame(ResolvedCondition::OPERATOR_CONTAIN, $condition->getOperator());
         $this->assertSame('example.org', $condition->getValue());
+    }
+
+    /**
+     * Integer columns are matched exactly.
+     */
+    public function testAnIntegerAttributeIsMatchedExactly(): void
+    {
+        $condition = $this->singleCondition([
+            'attribute' => '{TOKEN:USESLEFT}',
+            'value' => ' 1 ',
+        ]);
+
+        $this->assertSame(['usesleft'], $condition->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_EQUAL, $condition->getOperator());
+        $this->assertSame(1, $condition->getValue());
+    }
+
+    public function testAnIntegerAttributeRefusesANonNumericValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('needs a whole number');
+        $this->resolveOne(['attribute' => '{TOKEN:REMINDERCOUNT}', 'value' => 'abc']);
+    }
+
+    public function testANonTextNonIntegerAttributeIsRefused(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('cannot be filtered');
+        $this->resolveOne(['attribute' => 'validfrom', 'value' => '2026']);
+    }
+
+    /** Encrypted attributes are ciphertext, so a filter on them could never match. */
+    public function testAnEncryptedAttributeIsRefused(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('is encrypted');
+        $this->resolveOne(['attribute' => '{TOKEN:ATTRIBUTE_3}', 'value' => 'x']);
     }
 
     /** Custom attributes are numbered, and unwrap the same way. */
@@ -130,6 +174,21 @@ class ParticipantResolverTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('no participant table');
         (new ParticipantResolver([]))->resolve($set->all()[0]);
+    }
+
+    /**
+     * Anonymized responses have no token column to join on, and must not be
+     * filtered by participant anyway, even when a participant table exists.
+     */
+    public function testAnAnonymizedSurveyThrows(): void
+    {
+        $set = ResponseFilterSet::fromRequestValue([
+            ['source' => 'participant', 'attribute' => '{TOKEN:EMAIL}', 'value' => 'x'],
+        ]);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('anonymized');
+        (new ParticipantResolver(['email'], true))->resolve($set->all()[0]);
     }
 
     /**

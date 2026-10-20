@@ -71,4 +71,10 @@ describe('buildQuestionOptions', () => {
       { value: 'A2', label: 'Disagree' },
     ])
   })
+
+  // Encrypted answers are ciphertext, which the backend refuses to filter.
+  it('leaves out encrypted questions', () => {
+    expect(optionFor('S', { encrypted: true })).toBeUndefined()
+    expect(optionFor('S', { encrypted: false })).toBeDefined()
+  })
 })

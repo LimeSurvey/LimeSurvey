@@ -265,6 +265,7 @@ const VIEWS = [
           questionCode={question?.code}
           fields={question?.fields}
           filters={filters}
+          filterSet={filterSet}
         />
       ) : isArrayText || isText || isDualScale || isMultiNumerical ? (
         <ArrayTextTable

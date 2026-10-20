@@ -19,12 +19,14 @@ export class ResponseService {
     sid,
     options = {
       pagination: { pageIndex: 0, pageSize: 10 },
+      filters: {},
       sorting: [],
       filterSet: [],
     }
   ) => {
     const {
       pagination = { pageIndex: 0, pageSize: 10 },
+      filters = {},
       sorting = [],
       filterSet = [],
     } = options
@@ -46,6 +48,19 @@ export class ResponseService {
     if (sorting.length > 0 && sorting[0].id) {
       body.sort[sorting[0].id] = sorting[0].desc ? 'desc' : 'asc'
     }
+
+    Object.entries(filters || {}).forEach(
+      ([, { value, filterMethod: type, keys }]) => {
+        if (!value?.length && !value) return
+
+        body.filters = body.filters || []
+        body.filters.push({
+          key: keys[0],
+          filterMethod: type,
+          value,
+        })
+      }
+    )
 
     return await this.restClient.post(`survey-responses/${sid}`, body)
   }

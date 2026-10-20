@@ -5,9 +5,17 @@ namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions;
 use InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 
-class RangeConditionHandler implements HandlerInterface
+class RangeConditionHandler implements HandlerInterface, SurveyContextAwareInterface
 {
     use ConditionHandlerHelperTrait;
+
+    /** Set by the builder; needed only to read a column's storage type. */
+    private ?int $surveyId = null;
+
+    public function setSurveyId(?int $surveyId): void
+    {
+        $this->surveyId = $surveyId;
+    }
 
     /**
      * Plain decimal test, the same one the statistics aggregates use. Numeric
@@ -40,6 +48,7 @@ class RangeConditionHandler implements HandlerInterface
             throw new InvalidArgumentException("Invalid range sent.");
         }
 
+        $rawKey = (string) $key;
         $key = $this->sanitizeKey($key);
 
         $range = $this->parseRange($value);
@@ -52,7 +61,7 @@ class RangeConditionHandler implements HandlerInterface
         $minParam = $this->nextParamName();
         $maxParam = $this->nextParamName();
 
-        $number = $this->numericExpression($key);
+        $number = $this->isIntegerColumn($rawKey) ? $key : $this->numericExpression($key);
 
         if ($min === null) {
             $criteria->condition = "$number <= $maxParam";
@@ -103,6 +112,26 @@ class RangeConditionHandler implements HandlerInterface
     protected function driverName(): string
     {
         return (string) App()->db->getDriverName();
+    }
+
+    /**
+     * Whether the response column is an integer. Without the survey the type
+     * is unknown, and the guarded expression is used.
+     */
+    protected function isIntegerColumn(string $field): bool
+    {
+        if ($this->surveyId === null) {
+            return false;
+        }
+
+        $dot = strrpos($field, '.');
+        if ($dot !== false) {
+            $field = substr($field, $dot + 1);
+        }
+
+        $column = \SurveyDynamic::model($this->surveyId)->getTableSchema()->getColumn($field);
+
+        return $column !== null && $column->type === 'integer';
     }
 
     /**

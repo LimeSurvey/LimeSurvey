@@ -381,9 +381,12 @@ class SurveyResponsesExport implements CommandInterface
         }
 
         // Prefix columns with the responses table to avoid ambiguity with joined tables.
-        $condition = preg_replace(
-            '/[`"\[][\w-]+[`"\]]/',
-            $this->surveyModel->responsesTableName . '.$0',
+        $table = $this->surveyModel->responsesTableName;
+        $condition = preg_replace_callback(
+            "/'(?:[^']|'')*'|[`\"\\[][\\w-]+[`\"\\]]/",
+            static function (array $match) use ($table): string {
+                return $match[0][0] === "'" ? $match[0] : $table . '.' . $match[0];
+            },
             $criteria->condition
         );
         return $this->inlineParams($condition, $criteria->params);

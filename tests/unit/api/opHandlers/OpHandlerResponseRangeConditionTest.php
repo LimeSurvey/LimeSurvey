@@ -194,6 +194,27 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
         $this->assertStringNotContainsString('CASE WHEN', $criteria->condition);
     }
 
+    /**
+     * An integer column holds only numbers, so it is compared directly and
+     * its index stays usable; no cast, no regex guard.
+     */
+    public function testAnIntegerColumnIsComparedDirectly(): void
+    {
+        $handler = new class extends RangeConditionHandler {
+            protected function isIntegerColumn(string $field): bool
+            {
+                return $field === 't.id';
+            }
+        };
+
+        $criteria = $handler->execute('t.id', ['10', '25']);
+        [$minParam, $maxParam] = array_keys($criteria->params);
+
+        $quoted = App()->db->quoteColumnName('t.id');
+        $this->assertSame("$quoted BETWEEN $minParam AND $maxParam", $criteria->condition);
+        $this->assertStringNotContainsString('CAST', $criteria->condition);
+    }
+
     /** The per-driver branches are otherwise only reachable on those drivers. */
     private function handlerFor(string $driver): RangeConditionHandler
     {

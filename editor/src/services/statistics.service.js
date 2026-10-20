@@ -400,7 +400,8 @@ export class StatisticsService {
     language,
     field,
     statisticsFilters,
-    search
+    search,
+    filterSet = []
   ) => {
     const terms = [
       ...new Set([...(statisticsFilters?.search ?? []), ...(search ?? [])]),
@@ -417,6 +418,9 @@ export class StatisticsService {
     }
     if (language) {
       body.language = language
+    }
+    if (Array.isArray(filterSet) && filterSet.length) {
+      body.filterSet = filterSet
     }
 
     const data = await this.restClient.post(`survey-responses/${sid}`, body)

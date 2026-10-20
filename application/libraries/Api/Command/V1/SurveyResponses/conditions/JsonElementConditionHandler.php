@@ -106,6 +106,11 @@ class JsonElementConditionHandler implements HandlerInterface, SurveyContextAwar
             return false;
         }
 
+        $dot = strrpos($field, '.');
+        if ($dot !== false) {
+            $field = substr($field, $dot + 1);
+        }
+
         $column = \SurveyDynamic::model($this->surveyId)->getTableSchema()->getColumn($field);
 
         return $column !== null && preg_match('/^jsonb?$/i', (string) $column->dbType) === 1;
