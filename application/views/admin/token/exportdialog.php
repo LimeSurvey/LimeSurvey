@@ -139,7 +139,7 @@
                         </div>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
-                            'text' => gT('Add a column with the participant-specific survey URL (including the token).'),
+                            'text' => gT('Add a column with the participant-specific survey URL (including the access code).'),
                             'type' => 'info',
                             'htmlOptions' => ['class' => 'mt-1'],
                         ]);
