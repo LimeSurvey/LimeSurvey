@@ -329,6 +329,23 @@ class userstatistics_helper
     protected $xlsRow = 0;
 
     /**
+     * Returns the completion filter for public statistics, taken from the
+     * filterout_incomplete_answers setting only. The request and the session
+     * value used by the admin statistics are ignored on purpose, so visitors
+     * and logged-in administrators always see the same public statistics.
+     *
+     * @return string One of 'all', 'complete' or 'incomplete'
+     */
+    public static function completionFilterState()
+    {
+        $filterState = Yii::app()->getConfig('filterout_incomplete_answers');
+        if (in_array($filterState, ['all', 'complete', 'incomplete'], true)) {
+            return $filterState;
+        }
+        return 'all';
+    }
+
+    /**
      * Builds an array containing information about this particular question/answer combination
      *
      * @param string $rt The code passed from the statistics form listing the field/answer (SGQA) combination to be displayed
@@ -521,9 +538,9 @@ class userstatistics_helper
 
                 // Only include the responses that match the selected filters
                 $conditions = array();
-                if (incompleteAnsFilterState() === "incomplete") {
+                if (self::completionFilterState() === "incomplete") {
                     $conditions[] = "submitdate is null";
-                } elseif (incompleteAnsFilterState() === "complete") {
+                } elseif (self::completionFilterState() === "complete") {
                     $conditions[] = "submitdate is not null";
                 }
                 //$sql was set somewhere before
@@ -754,9 +771,9 @@ class userstatistics_helper
                     }
 
                     //filter incomplete answers if set
-                    if (incompleteAnsFilterState() == "incomplete") {
+                    if (self::completionFilterState() == "incomplete") {
                         $query .= " AND submitdate is null";
-                    } elseif (incompleteAnsFilterState() == "complete") {
+                    } elseif (self::completionFilterState() == "complete") {
                         $query .= " AND submitdate is not null";
                     }
 
@@ -1293,9 +1310,9 @@ class userstatistics_helper
 
         //check filter option
         $criteria = new CDbCriteria();
-        if (incompleteAnsFilterState() == "incomplete") {
+        if (self::completionFilterState() == "incomplete") {
             $criteria->addCondition("submitdate is null");
-        } elseif (incompleteAnsFilterState() == "complete") {
+        } elseif (self::completionFilterState() == "complete") {
             $criteria->addCondition("submitdate is not null");
         }
 
@@ -1671,7 +1688,7 @@ class userstatistics_helper
         }    //end foreach -> loop through answer data
 
         //no filtering of incomplete answers and NO multiple option questions
-        //if ((incompleteAnsFilterState() != "complete") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
+        //if ((self::completionFilterState() != "complete") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
         //error_log("TIBO ".print_r($showaggregated_indice_table,true));
         if (($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE) and ($outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
@@ -1705,7 +1722,7 @@ class userstatistics_helper
                 $TotalIncomplete = max(($results - $TotalCompleted), 0); // don't show negative number
 
                 //output
-                if ((incompleteAnsFilterState() != "complete")) {
+                if ((self::completionFilterState() != "complete")) {
                     $fname = gT("Not completed or not displayed");
                 } else {
                     $fname = gT("Not displayed");
@@ -1732,7 +1749,7 @@ class userstatistics_helper
                 $justcode[] = $fname;
 
                 //edit labels and put them into another array
-                if ((incompleteAnsFilterState() != "complete")) {
+                if ((self::completionFilterState() != "complete")) {
                     $lbl[gT("Not completed or not displayed")] = $TotalIncomplete;
                 } else {
                     $lbl[gT("Not displayed")] = $TotalIncomplete;
@@ -1746,9 +1763,9 @@ class userstatistics_helper
             foreach ($outputs['alist'] as $al) {
                 $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2]) . " IS NULL");
             }
-            if (incompleteAnsFilterState() == "incomplete") {
+            if (self::completionFilterState() == "incomplete") {
                 $criteria->addCondition("submitdate IS NULL");
-            } elseif (incompleteAnsFilterState() == "complete") {
+            } elseif (self::completionFilterState() == "complete") {
                 $criteria->addCondition("submitdate IS NOT NULL");
             }
             $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
@@ -1770,7 +1787,7 @@ class userstatistics_helper
             } else {
                 // Add a line with not displayed %
                 if ($multiNotDisplayed > 0) {
-                    if ((incompleteAnsFilterState() != "complete")) {
+                    if ((self::completionFilterState() != "complete")) {
                         $fname = gT("Not completed or not displayed");
                     } else {
                         $fname = gT("Not displayed");
@@ -2511,9 +2528,9 @@ class userstatistics_helper
         $query = "SELECT count(*) FROM {{responses_$surveyid}}";
 
         //if incompleted answers should be filtert submitdate has to be not null
-        if (incompleteAnsFilterState() == "incomplete") {
+        if (self::completionFilterState() == "incomplete") {
             $query .= " WHERE submitdate is null";
-        } elseif (incompleteAnsFilterState() == "complete") {
+        } elseif (self::completionFilterState() == "complete") {
             $query .= " WHERE submitdate is not null";
         }
         $total = Yii::app()->db->createCommand($query)->queryScalar();
@@ -2523,7 +2540,7 @@ class userstatistics_helper
             //Save the filters to session for use in browsing text & other features (statistics.php function listcolumn())
             Yii::app()->session['statistics_selects_' . $surveyid] = $selects;
             //filter incomplete answers?
-            if (incompleteAnsFilterState() == "complete" || incompleteAnsFilterState() == "incomplete") {
+            if (self::completionFilterState() == "complete" || self::completionFilterState() == "incomplete") {
                 $query .= " AND ";
             } else {
                 $query .= " WHERE ";
@@ -2727,9 +2744,9 @@ class userstatistics_helper
             }
 
             //filtering enabled?
-            if (incompleteAnsFilterState() == "incomplete") {
+            if (self::completionFilterState() == "incomplete") {
                 $query .= " AND submitdate is null";
-            } elseif (incompleteAnsFilterState() == "complete") {
+            } elseif (self::completionFilterState() == "complete") {
                 $query .= " AND submitdate is not null";
             }
 
@@ -2811,9 +2828,9 @@ class userstatistics_helper
         }
 
         //filter incomplete answers if set
-        if (incompleteAnsFilterState() == "incomplete") {
+        if (self::completionFilterState() == "incomplete") {
             $search['condition'] .= " AND submitdate is null";
-        } elseif (incompleteAnsFilterState() == "complete") {
+        } elseif (self::completionFilterState() == "complete") {
             $search['condition'] .= " AND submitdate is not null";
         }
 

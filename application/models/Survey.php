@@ -1808,18 +1808,21 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'htmlOptions'       => ['class' => 'd-md-none d-lg-table-cell has-link'],
             ],
             'incomplete' => [
+                'modalLabel'  => gT('Partial responses'),
                 'header'      => gT('Incomplete'),
                 'value'       => '$data->countIncompleteAnswers',
                 'name'        => 'incomplete',
                 'htmlOptions' => ['class' => 'has-link'],
             ],
             'full' => [
+                'modalLabel'  => gT('Full responses'),
                 'header'      => gT('Full'),
                 'name'        => 'full',
                 'value'       => '$data->countFullAnswers',
                 'htmlOptions' => ['class' => 'has-link'],
             ],
             'total' => [
+                'modalLabel'  => gT('Total responses'),
                 'header'      => gT('Total'),
                 'name'        => 'total',
                 'value'       => '$data->countTotalAnswers',
@@ -1885,6 +1888,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'creation_date' => array(
                 'asc' => 't.datecreated asc',
                 'desc' => 't.datecreated desc',
+            ),
+
+            'lastModified' => array(
+                'asc' => 't.lastmodified asc',
+                'desc' => 't.lastmodified desc',
             ),
 
             'owner' => array(

@@ -88,7 +88,6 @@ $config['blockaddingtosurveys']      = 'Y'; // Don't allow blocklisted participa
 $config['hideblacklisted']           = 'N'; // Don't show blocklisted participants
 $config['deleteblacklisted']         = 'N'; // Delete globally blocklisted participant from the database
 $config['allowunblacklist']          = 'N'; // Allow participant to unblocklist himself/herself
-$config['userideditable']            = 'N'; // Allow editing of user IDs
 
 $config['defaulttheme']              = 'fruity_twentythree'; // This setting specifys the default theme used for the 'public list' of surveys
 $config['createsample']              = true;
