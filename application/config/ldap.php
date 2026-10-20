@@ -120,23 +120,18 @@ $ldap_queries = array();
 // $ldap_queries[$query_id]['userscope'] = 'sub';
 
 // Define the user's attribute that provides the firstname
-// do not use capital letters in the attribute name
-// for instance use 'givenname' and not 'givenName'
 // $ldap_queries[$query_id]['firstname_attr'] = 'givenname';
 
 // Give the user's attribute that provides the lastname
-// do not use capital letters in the attribute name
 // $ldap_queries[$query_id]['lastname_attr'] = 'sn';
 
 // Give the user's attribute that provides the email address
-// do not use capital letters in the attribute name
 // If multivalued, only the first entry is read
 // $ldap_queries[$query_id]['email_attr'] = 'mail';
 
 
 // optionally give the user's attributes that provides the
 // token, language, attr1 and attr2 piece of information
-// do not use capital letters in the attribute name
 // if unused, leave empty or comment the lines
 // $ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation bu phpsv
 // $ldap_queries[$query_id]['language'] = '';
