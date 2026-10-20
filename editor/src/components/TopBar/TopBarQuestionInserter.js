@@ -40,6 +40,10 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       : survey?.questionGroups[0]
 
   const handleAddQuestionGroup = (newQuestionGroup, index) => {
+    if (survey.isActive) {
+      return
+    }
+
     if (!survey.questionGroups) {
       survey.questionGroups = []
     }
