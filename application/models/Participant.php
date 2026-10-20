@@ -2398,11 +2398,15 @@ class Participant extends LSActiveRecord
      * and users holding an editable share of the participant (shared with them or with
      * all users, share_uid -1).
      * Note: Same rules as filterEditableParticipantIds() and ParticipantShare::canEditSharedParticipant().
+     * In an API session opened with an API token, the token must allow updating the participant panel.
      *
      * @return boolean
      */
     public function userHasPermissionToEdit()
     {
+        if (!UserApiToken::scopeAllowsGlobal('participantpanel', 'update')) {
+            return false;
+        }
         if (Permission::model()->hasGlobalPermission('superadmin') || Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
             // Superadmins can do anything and users with global edit permission can to edit all participants
             return true;
@@ -2419,11 +2423,15 @@ class Participant extends LSActiveRecord
      * Superadmins and users with the global participant panel read permission see all participants,
      * other users only the ones they own or that are shared with them or with all users (share_uid -1).
      * Note: Mirrors the visibility rules of search().
+     * In an API session opened with an API token, the token must allow reading the participant panel.
      *
      * @return boolean
      */
     public function userHasPermissionToRead()
     {
+        if (!UserApiToken::scopeAllowsGlobal('participantpanel', 'read')) {
+            return false;
+        }
         if (
             Permission::model()->hasGlobalPermission('superadmin', 'read')
             || Permission::model()->hasGlobalPermission('participantpanel', 'read')
@@ -2446,12 +2454,16 @@ class Participant extends LSActiveRecord
      * Superadmins and users with the global participant panel update permission get all IDs back,
      * other users only the participants they own or that are shared with them or with all users
      * (share_uid -1) with editing allowed.
+     * In an API session opened with an API token, the token must allow updating the participant panel.
      *
      * @param string[] $participantIds
-     * @return string[]
+     * @return string[] The IDs of the participants the user may edit
      */
     public function filterEditableParticipantIds(array $participantIds)
     {
+        if (!UserApiToken::scopeAllowsGlobal('participantpanel', 'update')) {
+            return [];
+        }
         $participantIds = array_values(array_filter($participantIds, function ($participantId) {
             return is_scalar($participantId) && (string) $participantId !== '';
         }));

@@ -59,6 +59,21 @@ class LSUserIdentity extends CUserIdentity
      */
     public $oneTimePasswordActorId = null;
 
+    /**
+     * True if the login comes from RemoteControl or the REST API.
+     * Only then an API token can be used instead of the password.
+     *
+     * @var bool
+     */
+    public $isApiLogin = false;
+
+    /**
+     * ID of the API token used to log in, null if the login was done with the password.
+     *
+     * @var int|null
+     */
+    public $apiTokenId = null;
+
     public function authenticate()
     {
         // First initialize the result, we can later retrieve it to get the exact error code/message
@@ -72,7 +87,10 @@ class LSUserIdentity extends CUserIdentity
 
         /* Plugin action(s) : need a plugin */
         if ($result->isValid()) {
-            if (is_null($this->plugin)) {
+            if ($this->isApiLogin && UserApiToken::isTokenFormat($this->password)) {
+                // API tokens are checked by the core and replace the authentication plugin, including its second factor
+                $result = $this->authenticateApiToken();
+            } elseif (is_null($this->plugin)) {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
                 // Delegate actual authentication to plugin
@@ -115,6 +133,25 @@ class LSUserIdentity extends CUserIdentity
         $this->errorMessage = $result->getMessage();
 
         return $result->isValid();
+    }
+
+    /**
+     * Authenticate with an API token sent instead of the password.
+     *
+     * @return LSAuthResult The result of the authentication
+     */
+    protected function authenticateApiToken()
+    {
+        $user = User::findByUsername($this->username);
+        $apiToken = $user === null ? null : UserApiToken::model()->findValidToken($user->uid, $this->password);
+        if ($apiToken === null) {
+            return new LSAuthResult(self::ERROR_PASSWORD_INVALID);
+        }
+        $apiToken->markUsed();
+        $this->id = $user->uid;
+        $this->user = $user;
+        $this->apiTokenId = (int) $apiToken->id;
+        return new LSAuthResult(self::ERROR_NONE);
     }
 
     public function getConfig()

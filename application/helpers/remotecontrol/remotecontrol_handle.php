@@ -51,6 +51,13 @@ class remotecontrol_handle
     protected $controller;
 
     /**
+     * ID of the API token used by the last successful login, null if the password was used
+     *
+     * @var int|null
+     */
+    protected $apiTokenId = null;
+
+    /**
      * Constructor, stores the action instance into this handle class
      *
      * @access public
@@ -67,6 +74,9 @@ class remotecontrol_handle
      * Using this function you can create a new XML-RPC/JSON-RPC session key.
      * This is mandatory for all following LSRC2 function calls.
      *
+     * Instead of the password you can use a personal API token, created in the account settings
+     * (e.g. if you use two-factor authentication). The session then only has the permissions of the token.
+     *
      * * In case of success : Return the session key in string
      * * In case of error:
      *     * for protocol-level errors (invalid format etc), an error message.
@@ -74,8 +84,8 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $username
-     * @param string $password
-     * @param string $plugin to be used
+     * @param string $password The password or an API token
+     * @param string $plugin to be used, not used for API tokens
      * @return string|array On success: session key string. On failure: array with 'status' and 'error_code' keys.
      *              Possible error codes: ERR_INVALID_CREDENTIALS.
      */
@@ -91,6 +101,7 @@ class remotecontrol_handle
             $session->id = $sSessionKey;
             $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
             $session->data = $username;
+            $session->api_token_id = $this->apiTokenId;
             $session->save();
             return $sSessionKey;
         }
@@ -2932,6 +2943,7 @@ class remotecontrol_handle
      *
      * If user is admin he can get survey groups of every user (parameter sUser) or all survey groups (sUser=null)
      * Else only the survey groups belonging to the user requesting will be shown.
+     * In a session opened with an API token, only the survey groups allowed by the token are shown.
      *
      * Returns array with survey group attributes
      *
@@ -2956,11 +2968,16 @@ class remotecontrol_handle
                 }
             }
 
-            if (empty($sOwner)) {
-                $aUserSurveyGroups = $oSurveyGroup->findAll();
-            } else {
-                $aUserSurveyGroups = $oSurveyGroup->findAllByAttributes(array('owner_id' => $sOwner));
+            $oCriteria = new CDbCriteria();
+            if (!empty($sOwner)) {
+                $oCriteria->compare('owner_id', $sOwner);
             }
+            $oApiToken = UserApiToken::getScopeFor();
+            $aReadableGroupIds = $oApiToken ? $oApiToken->getReadableSurveyGroupIds() : null;
+            if ($aReadableGroupIds !== null) {
+                $oCriteria->addInCondition('gsid', $aReadableGroupIds);
+            }
+            $aUserSurveyGroups = $oSurveyGroup->findAll($oCriteria);
             if (count($aUserSurveyGroups) == 0) {
                 return array('status' => 'No survey groups found', 'error_code' => self::ERR_NO_DATA);
             }
@@ -4018,19 +4035,23 @@ class remotecontrol_handle
     }
 
     /**
-     * Login with username and password
+     * Login with username and password, or with username and API token
+     *
+     * Stores the ID of the API token in $this->apiTokenId if one was used.
      *
      * @access protected
      * @param string $sUsername username
-     * @param string $sPassword password
-     * @param string $sPlugin plugin to be used
-     * @return bool|string
+     * @param string $sPassword password or API token
+     * @param string $sPlugin plugin to be used, not used for API tokens
+     * @return bool|string True on success, the error message or false on failure
      */
     protected function _doLogin($sUsername, $sPassword, $sPlugin)
     {
         /* @var $identity LSUserIdentity */
         $identity = new LSUserIdentity($sUsername, $sPassword);
         $identity->setPlugin($sPlugin);
+        $identity->isApiLogin = true;
+        $this->apiTokenId = null;
         $event = new PluginEvent('remoteControlLogin');
         $event->set('identity', $identity);
         $event->set('plugin', $sPlugin);
@@ -4044,6 +4065,7 @@ class remotecontrol_handle
             }
             return false;
         } else {
+            $this->apiTokenId = $identity->apiTokenId;
             return true;
         }
     }
@@ -4080,9 +4102,12 @@ class remotecontrol_handle
     /**
      * Check if the session key is valid. If yes returns true, otherwise false and sends an error message with error code 1
      *
+     * If the session was opened with an API token, the permissions are limited to the ones of the token
+     * from now on. The session is no longer valid once the token is revoked or expired.
+     *
      * @access protected
      * @param string $sSessionKey Auth credentials
-     * @return bool
+     * @return bool True if the session key is valid
      */
     protected function _checkSessionKey($sSessionKey)
     {
@@ -4096,7 +4121,8 @@ class remotecontrol_handle
             return false;
         } else {
             $this->_jumpStartSession($oResult->data);
-            return true;
+            $oUser = User::model()->findByPk(Yii::app()->session['loginID']);
+            return UserApiToken::activateForSession($oResult, $oUser);
         }
     }
 

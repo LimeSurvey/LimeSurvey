@@ -502,6 +502,7 @@ class Permission extends LSActiveRecord
 
     /**
      * Checks if a user has a certain permission
+     * If the current API session was opened with an API token, the permission is also limited to the permissions of the token.
      *
      * @param $iEntityID integer The entity ID
      * @param string $sEntityName string The entity name
@@ -512,6 +513,13 @@ class Permission extends LSActiveRecord
      */
     public function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
+        $apiToken = UserApiToken::getScopeFor($iUserID);
+        if ($apiToken !== null) {
+            return $apiToken->allows($iEntityID, $sEntityName, $sPermission, $sCRUD)
+                && UserApiToken::withoutScope(function () use ($iEntityID, $sEntityName, $sPermission, $sCRUD, $iUserID) {
+                    return $this->hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD, $iUserID);
+                });
+        }
         // TODO: in entry script, if CConsoleApplication, set user as superadmin
         if (is_null($iUserID) && Yii::app() instanceof CConsoleApplication) {
             return true;
@@ -690,6 +698,7 @@ class Permission extends LSActiveRecord
     /**
      * Checks if a user has a certain permission in the given survey
      * Note: This function automatically also takes global permissions into account
+     * The results are cached, except in API sessions opened with an API token.
      *
      * @param $iSurveyID integer The survey ID
      * @param $sPermission string Name of the permission
@@ -700,6 +709,11 @@ class Permission extends LSActiveRecord
     public function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
         $iUserID = $this->getUserId($iUserID);
+        if (UserApiToken::isActive()) {
+            // The result depends on the token scope, which can be suspended: don't use or fill the cache
+            $oSurvey = Survey::Model()->findByPk($iSurveyID);
+            return $oSurvey ? $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID) : false;
+        }
         if (isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID])) {
             return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID];
         }
@@ -714,6 +728,16 @@ class Permission extends LSActiveRecord
         }
         $oSurvey = Survey::Model()->findByPk($iSurveyID);
         return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID] = ($oSurvey ? $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID) : false);
+    }
+
+    /**
+     * Empty the cache of the survey permissions, e.g. when the scope of an API token changes.
+     *
+     * @return void
+     */
+    public static function resetSurveyPermissionCache()
+    {
+        self::$aCachedSurveyPermissions = [];
     }
 
     /**

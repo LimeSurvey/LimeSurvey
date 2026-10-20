@@ -489,6 +489,7 @@ function populateDatabase($oDB)
             'id' => "string(32) NOT NULL",
             'expire' => "integer NULL",
             'data' => "longbinary",
+            'api_token_id' => "integer NULL",
         ), $options);
         $oDB->createCommand()->addPrimaryKey('{{sessions_pk}}', '{{sessions}}', 'id');
         $oDB->createCommand()->createIndex('sess_expire', '{{sessions}}', 'expire');
@@ -1067,6 +1068,37 @@ function populateDatabase($oDB)
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);
         $oDB->createCommand()->createIndex('{{idx2_users}}', '{{users}}', 'email', false);
+
+        // user_api_tokens
+        $oDB->createCommand()->createTable('{{user_api_tokens}}', array(
+            'id' => "pk",
+            'uid' => "integer NOT NULL",
+            'name' => "string(150) NOT NULL",
+            'token_hash' => "string(64) NOT NULL",
+            'created' => "datetime NOT NULL",
+            'last_used' => "datetime NULL",
+            'expires' => "datetime NULL",
+        ), $options);
+
+        $oDB->createCommand()->createIndex('{{idx1_user_api_tokens}}', '{{user_api_tokens}}', 'token_hash', true);
+        $oDB->createCommand()->createIndex('{{idx2_user_api_tokens}}', '{{user_api_tokens}}', 'uid', false);
+
+        // user_api_token_permissions
+        $oDB->createCommand()->createTable('{{user_api_token_permissions}}', array(
+            'id' => "pk",
+            'token_id' => "integer NOT NULL",
+            'entity' => "string(50) NOT NULL",
+            'entity_id' => "integer NOT NULL",
+            'permission' => "string(100) NOT NULL",
+            'create_p' => "integer NOT NULL DEFAULT 0",
+            'read_p' => "integer NOT NULL DEFAULT 0",
+            'update_p' => "integer NOT NULL DEFAULT 0",
+            'delete_p' => "integer NOT NULL DEFAULT 0",
+            'import_p' => "integer NOT NULL DEFAULT 0",
+            'export_p' => "integer NOT NULL DEFAULT 0",
+        ), $options);
+
+        $oDB->createCommand()->createIndex('{{idx1_user_api_token_permissions}}', '{{user_api_token_permissions}}', ['token_id', 'entity', 'entity_id', 'permission'], true);
 
 
         //user_groups

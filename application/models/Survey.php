@@ -2013,7 +2013,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get criteria from Permission
-     * @param $userid for this user id , if not set : get current one
+     * If the current API session was opened with an API token, the surveys are also limited to the ones of the token.
+     * @param int|null $userid for this user id , if not set : get current one
      * @todo : move to PermissionInterface
      * @todo : create an event
      * @return CDbCriteria
@@ -2057,6 +2058,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 );
                 $criteriaPerm->compare("surveysgroupsowner{$userid}.owner_id", $userid, false, 'OR');
             }
+        }
+        /* Limit to the surveys of the API token the current API session was opened with */
+        $apiToken = UserApiToken::getScopeFor($userid);
+        $readableSurveyIds = $apiToken ? $apiToken->getReadableSurveyIds() : null;
+        if ($readableSurveyIds !== null) {
+            $criteriaPerm->addInCondition('t.sid', $readableSurveyIds);
         }
         /* Place for a new event */
         return $criteriaPerm;
@@ -2590,17 +2597,37 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Get the detail of the global 'surveys' permission that gives a survey permission detail.
+     *
+     * @param string $sPermission Name of the survey permission
+     * @param string $sCRUD The survey permission detail: 'create', 'read', 'update', 'delete', 'import' or 'export'
+     * @return string The detail of the global 'surveys' permission
+     */
+    public static function getGlobalSurveysCrud($sPermission, $sCRUD)
+    {
+        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, response , question content …) need only allow update surveys
+            return 'update';
+        }
+        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, response , question content …) need only allow update surveys
+            return 'update';
+        }
+        return $sCRUD;
+    }
+
+    /**
      * @inheritdoc
+     * If the current API session was opened with an API token, the permission is also limited to the permissions of the token.
      */
     public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        $sGlobalCRUD = $sCRUD;
-        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, response , question content …) need only allow update surveys
-            $sGlobalCRUD = 'update';
+        $apiToken = UserApiToken::getScopeFor($iUserID);
+        if ($apiToken !== null) {
+            return $apiToken->allows($this->getPrimaryKey(), 'survey', $sPermission, $sCRUD)
+                && UserApiToken::withoutScope(function () use ($sPermission, $sCRUD, $iUserID) {
+                    return $this->hasPermission($sPermission, $sCRUD, $iUserID);
+                });
         }
-        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, response , question content …) need only allow update surveys
-            $sGlobalCRUD = 'update';
-        }
+        $sGlobalCRUD = self::getGlobalSurveysCrud($sPermission, $sCRUD);
         /* Global */
         if (Permission::model()->hasPermission(0, 'global', 'surveys', $sGlobalCRUD, $iUserID)) {
             return true;
