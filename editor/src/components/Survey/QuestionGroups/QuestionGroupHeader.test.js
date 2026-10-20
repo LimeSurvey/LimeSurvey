@@ -36,6 +36,10 @@ describe('QuestionGroupHeader', () => {
   afterEach(() => {
     openSpy.mockRestore()
     queryClient.setQueryData(['appState', STATES.IS_SURVEY_ACTIVE], false)
+    queryClient.setQueryData(
+      ['appState', STATES.HAS_SURVEY_UPDATE_PERMISSION],
+      true
+    )
   })
 
   const setSurveyActive = async (value) => {
@@ -62,6 +66,22 @@ describe('QuestionGroupHeader', () => {
       }
     }
   )
+
+  test('Duplicate/Delete are disabled when the user lacks survey update permission', async () => {
+    await setSurveyActive(false)
+    await act(async () => {
+      queryClient.setQueryData(
+        ['appState', STATES.HAS_SURVEY_UPDATE_PERMISSION],
+        false
+      )
+    })
+    fireEvent.click(await screen.findByTestId('meatball-menu-button'))
+
+    expect(await screen.findByTestId('duplicate-button')).toHaveClass(
+      'disabled'
+    )
+    expect(await screen.findByTestId('delete-button')).toHaveClass('disabled')
+  })
 
   test('Opens the group preview URL in a new tab when the preview icon is clicked', async () => {
     const previewIcon = await screen.findByTestId(
