@@ -212,7 +212,7 @@ class SurveyRuntimeHelper
             if (EmCacheHelper::useCache()) {
                 $this->aSurveyInfo['emcache'] = true;
             }
-            if (intval($this->sessionState()->getFillToken() ?? 0)) {
+            if ($this->sessionState()->getFillToken() !== null) {
                 $this->aSurveyInfo['filltoken'] = true;
             }
             $this->checkQuotas(); // check quotas (then the process will stop here)
@@ -229,7 +229,9 @@ class SurveyRuntimeHelper
                 if ($this->sessionState()->getToken() !== null) {
                     $this->sessionState()->setTokenUsed($this->sessionState()->getToken());
                 }
-                $oSurveyResponse->save();
+                if ($oSurveyResponse) {
+                    $oSurveyResponse->save();
+                }
                 $survey = Survey::model()->findByPk($surveyid);
             }
             // TODO: move somewhere else
