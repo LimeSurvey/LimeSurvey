@@ -8708,16 +8708,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         return trim($othertext);
     }
 
-
-    /**
-     * @param string $sTextToTranslate
-     * @param integer $number
-     */
-    private function ngT($sTextToTranslate, $number, $escapemode = 'html')
-    {
-        return ngT($sTextToTranslate, $number, $escapemode);
-    }
-
     /**
      * Returns true if the survey is using comma as the radix
      * @return boolean
@@ -10094,7 +10084,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             // FINALLY, SHOW THE QUESTION ROW(S), COLOR-CODING QUESTIONS THAT CONTAIN ERRORS
             //////
             $errclass = ($errorCount > 0) ? 'danger' : '';
-            $errText = ($errorCount > 0) ? "<br><em class='badge bg-danger'>" . $LEM->ngT("This question has at least {n} error.|This question has at least {n} errors.", $errorCount) . "</em>" : "";
+            $errText = ($errorCount > 0) ? "<br><em class='badge bg-danger'>" . sprintf(gTPlural("This question has at least %d error.", "This question has at least %d errors.", $errorCount), $errorCount) . "</em>" : "";
             /* Construct the warnings */
             $sWarningsText = "";
             if (count($aWarnings) > 0) {
@@ -10153,7 +10143,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         if (count($aQuestionWarnings) > 0) {
             $out = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                     'tag' => 'p',
-                    'text' => $LEM->ngT("{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified.", count($aQuestionWarnings)),
+                    'text' => sprintf(gTPlural("%d question contains warnings that need to be verified.", "%d questions contain warnings that need to be verified.", count($aQuestionWarnings)), count($aQuestionWarnings)),
                     'type' => 'warning',
                 ], true) . $out;
         }
@@ -10161,7 +10151,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             if (count($allQuestionsErrors) > 0) {
                 $out = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                         'tag' => 'p',
-                        'text' => $LEM->ngT("{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected.", count($allQuestionsErrors)),
+                        'text' => sprintf(gTPlural("%d question contains errors that need to be corrected.", "%d questions contain errors that need to be corrected.", count($allQuestionsErrors)), count($allQuestionsErrors)),
                         'type' => 'danger',
                     ], true) . $out;
             } else {

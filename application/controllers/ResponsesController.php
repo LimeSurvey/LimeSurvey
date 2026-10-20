@@ -687,8 +687,8 @@ class ResponsesController extends LSBaseController
         }
 
         if ($errors || $timingErrors) {
-            $message = ($errors) ? ngT("A response was not deleted.|{n} responses were not deleted.", $errors) : "";
-            $message .= ($timingErrors) ? ngT("A timing record was not deleted.|{n} timing records were not deleted.", $errors) : "";
+            $message = ($errors) ? sprintf(gTPlural("A response was not deleted.", "%d responses were not deleted.", $errors), $errors) : "";
+            $message .= ($timingErrors) ? sprintf(gTPlural("A timing record was not deleted.", "%d timing records were not deleted.", $errors), $errors) : "";
             if (App()->getRequest()->isAjaxRequest) {
                 ls\ajax\AjaxHelper::outputError($message);
             } else {
@@ -923,7 +923,7 @@ class ResponsesController extends LSBaseController
             App()->user->setFlash('error', $message);
             $this->redirect(["responses/browse", "surveyId" => $surveyId]);
         }
-        $message = sprintf(ngT('%d file deleted.|%d files deleted.', $allSuccess), $allSuccess);
+        $message = sprintf(gTPlural('%d file deleted.', '%d files deleted.', $allSuccess), $allSuccess);
         if ($request->isAjaxRequest) {
             ls\ajax\AjaxHelper::outputSuccess($message);
             App()->end();

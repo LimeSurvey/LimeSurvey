@@ -307,6 +307,7 @@ $internalConfig = array(
                 'sprintf'                 => 'sprintf',
                 'gT'                      => 'gT',
                 'ngT'                     => 'ngT',
+                'gTPlural'                => 'gTPlural',
                 'createAbsoluteUrl'       => 'LS_Twig_Extension::createAbsoluteUrl',/* Not in 3.X */
                 'createUrl'               => 'LS_Twig_Extension::createUrl',
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
@@ -434,6 +435,7 @@ $internalConfig = array(
                     'sprintf',
                     'gT',
                     'ngT',
+                    'gTPlural',
                     'createAbsoluteUrl',
                     'createUrl',
                     'json_decode',
