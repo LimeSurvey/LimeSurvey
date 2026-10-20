@@ -19,7 +19,7 @@ gT('Horizontal scroll:');
 gT('Keep images aspect ratio. Can be achieved by not setting both width and height. Needs JavaScript enabled.');
 gT('Keep aspect-ratio');
 gT('Crop images to fit into size. Needs JavaScript enabled.');
-gT('Crop or Resize');
+gT('Crop or resize');
 gT('Resize');
 gT('Crop');
 gT('Fix width of the images to this value. Leave empty to not change them.');

@@ -20,6 +20,8 @@ export const Button = React.forwardRef(function Button(
     href = null,
     active = false,
     size = '',
+    ariaLabel,
+    type = 'button',
   },
   ref
 ) {
@@ -38,6 +40,8 @@ export const Button = React.forwardRef(function Button(
       href={href}
       active={active}
       size={size}
+      aria-label={ariaLabel}
+      type={type}
     >
       {Icon && <div className={`button-icon `}>{<Icon size={iconSize} />}</div>}
       {text && (

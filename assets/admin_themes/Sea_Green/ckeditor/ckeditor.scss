@@ -1,4 +1,4 @@
-// CKEDITOR overrides are loaded before original css gets dymanically inserted into the page so definitions have to
+// CKEDITOR overrides are loaded before original css gets dynamically inserted into the page so definitions have to
 // include !important tag
 .cke_top {
     background : $white !important;
@@ -9,9 +9,16 @@
     opacity : unset !important;
 }
 
+// The source code editor (CodeMirror) is excluded so it keeps its syntax highlighting colors
 .cke_reset_all,
-.cke_reset_all * {
+.cke_reset_all *:not(.CodeMirror *) {
     color : $g-900 !important;
+}
+
+// The CKEditor skin resets the font of every element inside dialogs, which turns the source code editor into a
+// proportional font: Let CodeMirror elements inherit the monospace font from the editor container instead
+.cke_reset_all .CodeMirror * {
+    font : inherit;
 }
 
 .cke_contents {

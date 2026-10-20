@@ -237,7 +237,7 @@ class Question extends LSActiveRecord
                 $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
         }
-        if ($this->survey->isActive) {
+        if (!empty($this->survey) && $this->survey->isActive) {
             $aRules = array_merge($aRules, $this->rulesForActiveSurvey());
         }
         /* When question exist and are already set with title, allow keep bad title */
@@ -334,19 +334,32 @@ class Question extends LSActiveRecord
 
 
     /**
-     * Fix sort order for questions in a group
-     * All questions in the group will be assigned a sequential question order,
-     * starting in the specified value
+     * Fix sort order for questions in a group (or, for a given parent question and
+     * scale, its subquestions). All matching questions will be assigned a sequential
+     * question order, starting at the specified value, ordered by their current
+     * question_order and using the question code (title) as a tiebreaker for
+     * questions that currently share the same question_order.
+     *
      * @param int $gid
-     * @param int $startingOrder   the starting question order.
+     * @param int $startingOrder the starting question order.
+     * @param int $parentQid 0 for top-level questions, or a question's qid to
+     *            reorder its subquestions instead.
+     * @param int|null $scaleId restrict to this scale_id; null to not filter by it,
+     *            matching this method's original (top-level questions only) behavior.
      */
-    public function updateQuestionOrder($gid, $startingOrder = 1)
+    public function updateQuestionOrder($gid, $startingOrder = 1, $parentQid = 0, $scaleId = null)
     {
+        $criteria = array(':gid' => $gid, ':parent_qid' => $parentQid);
+        $condition = 'gid=:gid AND parent_qid=:parent_qid';
+        if ($scaleId !== null) {
+            $condition .= ' AND scale_id=:scale_id';
+            $criteria[':scale_id'] = $scaleId;
+        }
+
         $data = Yii::app()->db->createCommand()->select('qid')
-            ->where(array('and', 'gid=:gid', 'parent_qid=0'))
+            ->where($condition, $criteria)
             ->order('question_order, title ASC')
             ->from('{{questions}}')
-            ->bindParam(':gid', $gid, PDO::PARAM_INT)
             ->query();
 
         $position = intval($startingOrder);
@@ -449,6 +462,7 @@ class Question extends LSActiveRecord
         Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(DefaultValue::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
+        SurveyURLParameter::removeTargetQuestions($questionsIds);
     }
 
     /**
@@ -466,6 +480,7 @@ class Question extends LSActiveRecord
         QuestionL10n::model()->deleteAll($qidsCriteria);
         QuotaMember::model()->deleteAll($qidsCriteria);
         Condition::model()->deleteAll($qidsCriteria);
+        SurveyURLParameter::removeTargetQuestions($ids);
 
         // delete defaultvalues and defaultvalueL10ns
         $oDefaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));

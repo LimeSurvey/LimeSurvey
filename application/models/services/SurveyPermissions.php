@@ -203,8 +203,9 @@ class SurveyPermissions
      * Returns a list of users which still not have survey permissions and
      * could be added to survey permissions,
      * including the check for usercontrolSameGroupPolicy (see config file for more information).
+     * The list is sorted alphabetically by username.
      *
-     * @return array
+     * @return array<int, array{userid: int, fullname: string, usersname: string}>
      */
     public function getSurveyUserList()
     {
@@ -212,6 +213,7 @@ class SurveyPermissions
         $criteria = new \CDbCriteria();
         $criteria->select = 't.uid, t.users_name, t.full_name';
         $criteria->addNotInCondition('t.uid', $aUserIds);
+        $criteria->order = 't.users_name';
         $users = \User::model()->findAll($criteria);
 
         $authorizedUsersList = [];

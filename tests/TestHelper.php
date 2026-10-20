@@ -129,7 +129,7 @@ class TestHelper extends TestCase
             'startlanguage' => (isset(App()->language) ? App()->language : $thissurvey['language']),
             'target' => Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $thissurvey['sid'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR,
             'tempdir' => Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR,
-            // for backward compatibilty convert timezone string to +/- hours
+            // for backward compatibility convert timezone string to +/- hours
             'timeadjust' => convertTimezoneDiffToHours(),
             'displayTimezone' => (isset($displayTimezone) ? $displayTimezone : 'UTC'),
             'token' => (isset($clienttoken) ? $clienttoken : null),

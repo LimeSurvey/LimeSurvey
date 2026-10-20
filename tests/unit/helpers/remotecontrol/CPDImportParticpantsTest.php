@@ -12,6 +12,7 @@ class CPDImportParticpantsTest extends BaseTest
         \Yii::app()->db->createCommand()->truncateTable('{{participant_attribute_names_lang}}');
         \Yii::app()->db->createCommand()->truncateTable('{{participant_attribute_values}}');
         \Yii::app()->db->createCommand()->truncateTable('{{participant_shares}}');
+        \Yii::app()->db->createCommand()->truncateTable('{{survey_links}}');
         parent::setUp();
     }
 
@@ -281,5 +282,93 @@ class CPDImportParticpantsTest extends BaseTest
 
         $attribute = $max->getParticipantAttribute('ea_' . $attributeId);
         $this->assertEquals('123456789', $attribute);
+    }
+
+    /**
+     * Participants not in the import list are removed, participants in the list
+     * (identified by participant_id, id or firstname/lastname/email) are kept.
+     */
+    public function testParticipantsNotInListRemovedWhenRemoveTrue()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $existing = array(
+            $this->makeParticipant('keep1', 'One'),
+            $this->makeParticipant('keep2', 'Two'),
+            $this->makeParticipant('keep3', 'Three'),
+            $this->makeParticipant('gone', 'Away'),
+        );
+        $result = $this->handler->cpd_importParticipants($sessionKey, $existing);
+        $this->assertEquals(4, $result['ImportCount']);
+        \Yii::app()->db->createCommand()->insert('{{survey_links}}', array(
+            'participant_id' => 'gone',
+            'token_id' => 1,
+            'survey_id' => 1,
+            'date_created' => date('Y-m-d H:i:s')
+        ));
+
+        $keepById = $this->makeParticipant(null, 'Two');
+        $keepById['id'] = 'keep2';
+        $import = array(
+            $this->makeParticipant('keep1', 'One'),
+            $keepById,
+            $this->makeParticipant(null, 'Three'),
+            $this->makeParticipant('new', 'New'),
+        );
+        $result = $this->handler->cpd_importParticipants($sessionKey, $import, false, true);
+        $this->assertEquals(1, $result['ImportCount']);
+        $this->assertEquals(0, $result['UpdateCount']);
+        $this->assertEquals(1, $result['RemoveCount']);
+
+        foreach (array('keep1', 'keep2', 'keep3', 'new') as $participantId) {
+            $this->assertNotNull(\Participant::model()->findByPk($participantId), $participantId);
+        }
+        $this->assertNull(\Participant::model()->findByPk('gone'));
+        $this->assertEquals(0, \SurveyLink::model()->countByAttributes(array('participant_id' => 'gone')));
+    }
+
+    /**
+     * Without the remove flag nothing is deleted.
+     */
+    public function testParticipantsNotRemovedWhenRemoveFalse()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $this->handler->cpd_importParticipants($sessionKey, array($this->makeParticipant('max', 'Max')));
+
+        $result = $this->handler->cpd_importParticipants($sessionKey, array($this->makeParticipant('erika', 'Erika')));
+        $this->assertEquals(0, $result['RemoveCount']);
+        $this->assertNotNull(\Participant::model()->findByPk('max'));
+    }
+
+    /**
+     * An empty import list with the remove flag is rejected and does not delete anything.
+     */
+    public function testEmptyImportListWithRemoveIsRejected()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $this->handler->cpd_importParticipants($sessionKey, array($this->makeParticipant('max', 'Max')));
+
+        $result = $this->handler->cpd_importParticipants($sessionKey, array(), false, true);
+        $this->assertEquals(\remotecontrol_handle::ERR_INVALID_PARAMETERS, $result['error_code']);
+        $this->assertNotNull(\Participant::model()->findByPk('max'));
+    }
+
+    /**
+     * Build a participant row for cpd_importParticipants
+     *
+     * @param string|null $participantId Participant ID, or null to identify the participant by name and email
+     * @param string $lastname Last name, also used to build a unique email address
+     * @return array
+     */
+    private function makeParticipant($participantId, $lastname)
+    {
+        $participant = array(
+            'firstname' => 'Test',
+            'lastname' => $lastname,
+            'email' => strtolower($lastname) . '@example.com'
+        );
+        if ($participantId !== null) {
+            $participant['participant_id'] = $participantId;
+        }
+        return $participant;
     }
 }

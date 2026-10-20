@@ -21,5 +21,5 @@ gT('Show number:');
 gT('Allow only moving the answers');
 gT('Without reorder:');
 gT('Change visualization of the ranking question');
-gT('Visualisation:');
+gT('Visualization:');
 gT('Blocks');

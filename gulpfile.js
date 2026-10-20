@@ -34,31 +34,30 @@ const fs = require('fs');
 
 function js_minify() {
     // browserify package handler
-    return (
-        browserify({
-            entries: ["assets/bootstrap_5/js/bootstrap_5.js"],
+    return browserify({
+        entries: ['assets/bootstrap_5/js/bootstrap_5.js']
+    })
+        // transform babelify ES6 to ES5 [@babel/preset-env]
+        .transform(babelify, {
+            presets: ['@babel/preset-env'],
+            retainLines: false,
+            compact: false,
+            global: true
+
         })
-            // transform babelify ES6 to ES5 [@babel/preset-env]
-            .transform(babelify, {
-                presets: ["@babel/preset-env"],
-                retainLines: false,
-                compact: false,
-                global: true,
-            })
-            // bundle the transformed code
-            .bundle()
-            // sourcemap
-            .pipe(source("assets/bootstrap_5/js/bootstrap_5.js"))
-            // rename
-            .pipe(rename("bootstrap_5.js"))
-            // buffer
-            .pipe(buffer())
-            // distination
-            .pipe(dest("assets/bootstrap_5/build/js/"))
-            .pipe(uglify())
-            .pipe(rename({ extname: ".min.js" }))
-            .pipe(dest("assets/bootstrap_5/build/js/"))
-    );
+        // bundle the transformed code
+        .bundle()
+        // sourcemap
+        .pipe(source('assets/bootstrap_5/js/bootstrap_5.js'))
+        // rename
+        .pipe(rename('bootstrap_5.js'))
+        // buffer
+        .pipe(buffer())
+        // destination
+        .pipe(dest('assets/bootstrap_5/build/js/'))
+        .pipe(uglify())
+        .pipe(rename({extname: '.min.js'}))
+        .pipe(dest('assets/bootstrap_5/build/js/'));
 }
 
 function scss_transpile() {
@@ -228,10 +227,10 @@ function survey_theme_ls6() {
 
 function survey_theme_ls6_rtl() {
     let variations = [
-        ["apple", "#14AE5C"],
-        ["blueberry", "#5076FF"],
+        ["apple", "#0F8545"],
+        ["blueberry", "#3D67FF"],
         ["grape", "#8146F6"],
-        ["mango", "#ED5046"],
+        ["mango", "#E32416"],
     ];
     let plugins = [
         autoprefixer(),
@@ -276,7 +275,7 @@ function survey_theme_ls6_js() {
         .pipe(rename('theme.js'))
         // buffer
         .pipe(buffer())
-        // distination
+        // destination
         .pipe(replace(/^/, fs.readFileSync('assets/survey_themes/fruity_twentythree/theme_js_disclaimer.js')))
         .pipe(dest('themes/survey/fruity_twentythree/scripts/'));
 }

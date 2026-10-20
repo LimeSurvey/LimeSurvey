@@ -15,4 +15,4 @@ if (!defined('BASEPATH')) {
  */
 gT("Browser detection");
 gT('Show also the platform information of the participant');
-gT('Show Platform information:');
+gT('Show platform information:');

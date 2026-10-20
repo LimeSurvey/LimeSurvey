@@ -353,6 +353,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
+     * Returns the URL of the assets folder of the question template
+     *
      * @return string
      */
     public function getTemplateUrl()
@@ -370,7 +372,8 @@ class QuestionTemplate extends CFormModel
             if (is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName/")) {
                 $this->sTemplateUrl = "$sBaseUrl/$sCoreQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             } elseif (is_dir("$sUserQTemplateRootDir/$sTemplateFolderName/")) {
-                $this->sTemplateUrl = "$sBaseUrl/$sUserQTemplateRootDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
+                $sUserQTemplateDir = QuestionTheme::getPathRelativeToRootDir($sUserQTemplateRootDir);
+                $this->sTemplateUrl = "$sBaseUrl/$sUserQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             }
         }
         return $this->sTemplateUrl;
@@ -390,15 +393,13 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Called from admin, to generate the template list for a given question type
-     * @param string $type
-     * @return array
-     * @todo Move to QuestionTheme?
-     * @todo This is not the same as QuestionTheme::findQuestionMetaDataForAllTypes() which is the database layer
-     * @todo this should check the filestructure instead of the database as this is the filestructure layer
+     * Reads the installed question themes from the database on purpose: Themes that are
+     * only present in the file system are not installed and must not be selectable.
+     * @param string $type The question type
+     * @return array<string, array{title: string, preview: string}> Keyed by theme name ('core' for the base theme)
      */
     public static function getQuestionTemplateList($type)
     {
-        // todo: incorrect, this should check the filestructure instead of the database as this is the filestructure layer
         /** @var QuestionTheme[] */
         $questionThemes = QuestionTheme::model()->findAllByAttributes(
             [],

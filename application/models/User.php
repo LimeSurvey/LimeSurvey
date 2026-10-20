@@ -778,7 +778,7 @@ class User extends LSActiveRecord
                     )
                 )
                 || (!$permission_superadmin_read
-                    && ($this->uid != App()->session['loginID'] // One cant delete onesself
+                    && ($this->uid != App()->session['loginID'] // One can't delete onesself
                         && (
                             $permission_users_delete // Global permission to delete users
                             && $this->parent_id == App()->session['loginID'] // User is owned by current admin
@@ -1059,8 +1059,8 @@ class User extends LSActiveRecord
             $this->getAttribute($column),
             [
                 'class' => "form-control",
-                // Native date inputs keep a larger min-height for the picker; pin height to match the other form-control filters.
-                'style' => 'font-size:1rem;height:37.6px;min-height:0;'
+                // Native date inputs keep a larger min-height for the picker; the height itself comes from the admin theme like for all other inputs
+                'style' => 'font-size:1rem;min-height:0;'
             ]
         );
         $dateFilter .= "</div>";
@@ -1316,7 +1316,7 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'read', $managerId)) {
             return true;
         }
-        /* Finally : simple user can update only childs users */
+        /* Finally : simple user can update only child users */
         return Permission::model()->hasGlobalPermission('users', 'update', $managerId)
                 && $this->parent_id == $managerId;
     }

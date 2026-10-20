@@ -58,9 +58,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         'movenextbutton',
         'percentcomplete',
         's_lang',
-        'showgroupinfo',
-        'showqnumcode',
-        'showxquestions',
         'sitelogo',
         'templatedir',
         'thissurvey',
@@ -79,10 +76,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $varsPassed[] = $var;
         }
     }
-    // Local over-rides in case not set above
-    if (!isset($showgroupinfo)) {
-        $showgroupinfo = Yii::app()->getConfig('showgroupinfo');
-    }
     $_surveyid = $_SESSION['LEMsid'];
 
     if ($_surveyid) {
@@ -91,9 +84,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $totalgroups = "";
     }
 
-    if (!isset($showxquestions)) {
-        $showxquestions = Yii::app()->getConfig('showxquestions');
-    }
     if (!isset($s_lang)) {
         $s_lang = (Yii::app()->session['responses_' . $_surveyid]['s_lang'] ?? 'en');
     }
@@ -170,24 +160,12 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         return LimeExpressionManager::ProcessString($line, $questionNum, null, 1, 1, true);
     }
 
-    if (
-        $showgroupinfo == 'both' ||
-        $showgroupinfo == 'name' ||
-        ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
-        ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-        ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
-    ) {
+    if (!isset($thissurvey['showgroupinfo']) || in_array($thissurvey['showgroupinfo'], ['B', 'N'])) {
         $_groupname = $groupname ?? '';
     } else {
         $_groupname = '';
     };
-    if (
-        $showgroupinfo == 'both' ||
-        $showgroupinfo == 'description' ||
-        ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
-        ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-        ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
-    ) {
+    if (!isset($thissurvey['showgroupinfo']) || in_array($thissurvey['showgroupinfo'], ['B', 'D'])) {
         $_groupdescription = $groupdescription ?? '';
     } else {
         $_groupdescription = '';
@@ -197,11 +175,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $totalquestions = 0;
     }
     $_totalquestionsAsked = $totalquestions;
-    if (
-        $showxquestions == 'show' ||
-        ($showxquestions == 'choose' && !isset($thissurvey['showxquestions'])) ||
-        ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y')
-    ) {
+    if (!isset($thissurvey['showxquestions']) || $thissurvey['showxquestions'] == 'Y') {
         if ($_totalquestionsAsked < 1) {
             $_therearexquestions = gT("There are no questions in this survey."); // Singular
         } elseif ($_totalquestionsAsked == 1) {
@@ -286,7 +260,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['CHECKJAVASCRIPT'] = '';
     $coreReplacements['CLEARALL'] = $_clearall;
     $coreReplacements['QUEXMLPDF'] = $_quexmlpdf;
-    $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reaons
+    $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reasons
     $coreReplacements['COMPLETED'] = $redata['completed'] ?? ''; // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['ENDTEXT'] = $_endtext;
@@ -406,7 +380,7 @@ function getStandardsReplacementFields($thissurvey)
     $_assessment_current_total = '';
     if (!empty($thissurvey['assessments']) && $thissurvey['assessments'] == "Y") {
         $assessmentdata = doAssessment($surveyid);
-        $_assessment_current_total = $assessmentdata['datas']['total_score'] ?? gT("Unkown");
+        $_assessment_current_total = $assessmentdata['datas']['total_score'] ?? gT("Unknown");
     }
 
     $oSurvey = Survey::model()->findByPk($surveyid);

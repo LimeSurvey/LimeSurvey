@@ -78,13 +78,12 @@ export const RankingAdvancedQuestionSubquestions = ({
                   >
                     <div
                       className={classNames(
-                        'cursor-pointer position-absolute remove-option-button',
+                        'cursor-pointer remove-option-button me-3',
                         {
                           'd-none disabled': !isFocused,
                         }
                       )}
                       onClick={() => handleRemoveSubquestion(subquestion)}
-                      style={{ left: -24 }}
                     >
                       <CloseCircleFillIcon
                         className={classNames(

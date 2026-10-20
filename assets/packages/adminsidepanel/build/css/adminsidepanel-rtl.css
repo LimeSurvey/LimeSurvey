@@ -290,6 +290,18 @@ div[class*=" col-"].nofloat {
   display: block;
 }
 
+#sidebar .q-group .toggle-questiongroup.btn {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  min-height: 0;
+  line-height: 1;
+}
+#sidebar .q-group .toggle-questiongroup.btn i {
+  font-size: 16px;
+  line-height: 1;
+}
+
 #sidebar .q-group .questiongroup-link {
   padding-left: 70px;
 }

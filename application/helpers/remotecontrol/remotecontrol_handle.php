@@ -685,7 +685,7 @@ class remotecontrol_handle
 
         usort($oAllQuestions, 'groupOrderThenQuestionOrder');
 
-        $aSummary = createCompleteSGQA($iSurveyID, $oAllQuestions, $sLanguage);
+        $aSummary = getStatisticsFieldNames($iSurveyID, $oAllQuestions, $sLanguage);
 
         $helper = new statistics_helper();
         switch ($docType) {
@@ -2401,7 +2401,7 @@ class remotecontrol_handle
      * @param bool $bUnused If you want unused tokens, set true
      * @param bool|array $aAttributes The extended attributes that we want
      * @param array $aConditions Optional conditions to limit the list, either as a
-     *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
+     *              key => value if key is an integer : value is used as comparison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']
@@ -3118,7 +3118,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey that participants belong
      * @param array $overrideAllConditions replace the default conditions, either as a
-     *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
+     *              key => value if key is an integer : value is used as comparison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']
@@ -3420,9 +3420,8 @@ class remotecontrol_handle
             $aBasicDestinationFields = $survey_dynamic->tableSchema->columnNames;
             $aResponseData = array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
             $survey_dynamic->setAttributes($aResponseData, false);
-            $survey_dynamic->encryptSave();
 
-            if ($survey_dynamic->id) {
+            if ($survey_dynamic->encryptSave()) {
                 $result_id = $survey_dynamic->id;
                 $oResponse = Response::model($iSurveyID)->findByAttributes(array('id' => $result_id))->decrypt();
                 foreach ($oResponse->getFiles() as $aFile) {
@@ -3444,7 +3443,6 @@ class remotecontrol_handle
                         }
                     }
                 }
-
                 return $result_id;
             } else {
                 return array('status' => 'Unable to add response', 'error_code' => self::ERR_CREATION_FAILED);
@@ -3684,6 +3682,69 @@ class remotecontrol_handle
     }
 
     /**
+     * List available response export formats.
+     *
+     * Each entry contains the 'type' to use as document type in export_responses
+     * and export_responses_by_token, a plain-text 'label' and 'tooltip' (tooltip can be null)
+     * and 'isDefault', which flags the default export format.
+     * Labels and tooltips are always in English.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @return array On success: list of export formats. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_DATA.
+     */
+    public function list_response_exports($sSessionKey)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
+        }
+
+        Yii::app()->loadHelper('admin.exportresults');
+        $oExport = new ExportSurveyResultsService();
+        $sOriginalLanguage = Yii::app()->getLanguage();
+        try {
+            Yii::app()->setLanguage('en');
+            $aExportOptions = $oExport->getExportOptions();
+        } finally {
+            Yii::app()->setLanguage($sOriginalLanguage);
+        }
+
+        if (empty($aExportOptions)) {
+            return array('status' => 'No export formats found', 'error_code' => self::ERR_NO_DATA);
+        }
+
+        ksort($aExportOptions, SORT_STRING);
+        $aExportFormats = array();
+        foreach ($aExportOptions as $sType => $aExportOption) {
+            $aExportFormats[] = array(
+                'type' => (string) $sType,
+                'label' => $this->htmlToPlainText($aExportOption['label']),
+                'tooltip' => $this->htmlToPlainText($aExportOption['tooltip']),
+                'isDefault' => $aExportOption['default'],
+            );
+        }
+
+        return $aExportFormats;
+    }
+
+    /**
+     * Convert an HTML fragment meant for the admin GUI to plain text,
+     * keeping words on both sides of a tag apart
+     *
+     * @param string|null $sHtml The HTML fragment
+     * @return string|null The plain text, or null if no or an empty fragment was given
+     */
+    protected function htmlToPlainText($sHtml)
+    {
+        if ($sHtml === null || $sHtml === '') {
+            return null;
+        }
+        $sText = flattenText(str_replace('<', ' <', (string) $sHtml), false, true);
+        return trim(preg_replace('~\s+~u', ' ', $sText));
+    }
+
+    /**
      * Export responses in base64 encoded string
      *
      * @access public
@@ -3720,7 +3781,7 @@ class remotecontrol_handle
         if (!tableExists($survey->responsesTableName)) {
             return array('status' => 'No Data, survey table does not exist.', 'error_code' => self::ERR_NO_RESPONSE_TABLE);
         }
-        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId(null, true))) {
+        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) {
             return array('status' => 'No Data, could not get max id.', 'error_code' => self::ERR_NO_DATA);
         }
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
@@ -4050,20 +4111,38 @@ class remotecontrol_handle
      * @param array $aParticipants
      * [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
      * @param bool $update
-     * @return array On success: array with status 'OK'. On failure: array with 'status' and 'error_code' keys.
-     *              Possible error codes: ERR_INVALID_SESSION.
+     * @param bool $remove If true, delete all participants from the CPDB whose ID is not in the import list.
+     *                     Requires the global participant panel delete permission and a non-empty import list.
+     * @return array On success: array with 'ImportCount', 'UpdateCount' and 'RemoveCount'.
+     *              On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_PERMISSION, ERR_INVALID_PARAMETERS.
      */
-    public function cpd_importParticipants($sSessionKey, $participants, $update = false)
+    public function cpd_importParticipants($sSessionKey, $participants, $update = false, $remove = false)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
+        }
+        if ($remove) {
+            if (!Permission::model()->hasGlobalPermission('participantpanel', 'delete')) {
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
+            }
+            // An empty import list must never be interpreted as "remove everybody"
+            if (empty($participants) || !is_array($participants)) {
+                return array(
+                    'status' => 'Error: No participants to import',
+                    'error_code' => self::ERR_INVALID_PARAMETERS
+                );
+            }
         }
 
         $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
         $aResponse = array(
             'ImportCount' => 0,
-            'UpdateCount' => 0
+            'UpdateCount' => 0,
+            'RemoveCount' => 0
         );
+        // IDs of all participants in the import list, these are kept when $remove is set
+        $aKeepParticipantIds = array();
 
         $aAttributeRecords = ParticipantAttributeName::model()
                                  ->with('participant_attribute_names_lang')
@@ -4086,6 +4165,9 @@ class remotecontrol_handle
                     'owner_uid' => Yii::app()->session['loginID']
                 ));
             }
+            if ($model) {
+                $aKeepParticipantIds[] = $model->participant_id;
+            }
 
             // Participant not found, so we create a new one
             if (!$model) {
@@ -4099,6 +4181,7 @@ class remotecontrol_handle
                 } else {
                     $model->participant_id = Participant::genUuid();
                 }
+                $aKeepParticipantIds[] = $model->participant_id;
             } elseif (!$model->userHasPermissionToEdit()) {
                 /* No permission to update : continue */
                 continue;
@@ -4148,6 +4231,20 @@ class remotecontrol_handle
             }
         }
 
+        if ($remove && !empty($aKeepParticipantIds)) {
+            $aAllParticipantIds = Yii::app()->db->createCommand()
+                ->select('participant_id')
+                ->from(Participant::model()->tableName())
+                ->queryColumn();
+            $aRemoveParticipantIds = array_diff($aAllParticipantIds, $aKeepParticipantIds);
+            if (!empty($aRemoveParticipantIds)) {
+                $aResponse['RemoveCount'] = Participant::model()->deleteParticipants(
+                    implode(',', $aRemoveParticipantIds),
+                    false
+                );
+            }
+        }
+
         return $aResponse;
     }
 
@@ -4176,7 +4273,7 @@ class remotecontrol_handle
      * @param model $oModel : can be \Token or \Survey or anything else
      * @param \LSDbCriteria $oCriteria
      * @param array $aConditions conditions to limit the list, either as a
-     *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
+     *              key => value if key is an integer : value is used as comparison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']

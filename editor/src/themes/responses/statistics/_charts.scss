@@ -525,6 +525,27 @@
   }
 }
 
+.responses-statistics-bar-chart-viewport {
+  max-width: 100%;
+
+  &--scrollable {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scrollbar-gutter: stable;
+  }
+}
+
+@media print {
+  .responses-statistics-bar-chart-viewport--scrollable {
+    overflow: visible;
+
+    .responses-statistics-bar-chart {
+      min-width: 100% !important;
+    }
+  }
+}
+
 // Also used by the Overview page's Completed/Incomplete chart, so keep it unscoped.
 .responses-statistics-pie-chart {
   overflow-x: auto;

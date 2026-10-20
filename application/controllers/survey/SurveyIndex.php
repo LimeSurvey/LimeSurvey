@@ -503,7 +503,10 @@ class SurveyIndex extends CAction
                 if (empty(Yii::app()->request->getParam('loadname')) && empty(Yii::app()->request->getParam('loadpass'))) {
                     Yii::app()->setConfig('move', "loadall"); // Show loading form
                 } else {
+                    $previousResponseId = $_SESSION['responses_' . $surveyid]['srid'] ?? null;
+                    $previousSavedControlId = $_SESSION['responses_' . $surveyid]['scid'] ?? null;
                     if (loadanswers()) {
+                        $this->deleteUnusedEmptyResponse($surveyid, $previousResponseId, $previousSavedControlId);
                         Yii::app()->setConfig('move', 'reload');
                         $move = "reload"; // SurveyRunTimeHelper use $move in $arg
                     } else {
@@ -737,6 +740,30 @@ class SurveyIndex extends CAction
         }
 
         App()->setLanguage($baselang);
+    }
+
+    /**
+     * Delete the response of the current session after a saved response was loaded instead,
+     * but only if it was never saved or submitted and has no answers (e.g. created by viewing the first page).
+     * @param integer $surveyid
+     * @param integer|null $previousResponseId Response id of the session before loading the saved response
+     * @param integer|null $previousSavedControlId Saved control id of the session before loading the saved response
+     * @return void
+     */
+    private function deleteUnusedEmptyResponse($surveyid, $previousResponseId, $previousSavedControlId)
+    {
+        if (
+            empty($previousResponseId)
+            || !empty($previousSavedControlId)
+            || $previousResponseId == ($_SESSION['responses_' . $surveyid]['srid'] ?? null)
+            || SavedControl::model()->exists("sid = :sid AND srid = :srid", [':sid' => $surveyid, ':srid' => $previousResponseId])
+        ) {
+            return;
+        }
+        $response = Response::model($surveyid)->findByPk($previousResponseId);
+        if ($response && empty($response->submitdate) && !$response->hasAnswers()) {
+            $response->delete(true);
+        }
     }
 
     private function isClientTokenDifferentFromSessionToken($clientToken, $surveyid)

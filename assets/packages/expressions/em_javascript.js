@@ -74,6 +74,22 @@ function checkconditions(value, name, type, evt_type)
 }
 
 /**
+ * Check if a numeric input belongs to a text question with the "Numbers only" attribute
+ * (e.g. Short free text, Multiple short text, Array (Texts) or an "Other" text field).
+ * Its answer is saved as text, so it must not be rewritten as a number.
+ * @param {string} name The name of the input
+ * @return {boolean}
+ */
+function isNumbersOnlyText(name)
+{
+    if (typeof LEMvarNameAttr === 'undefined' || typeof LEMvarNameAttr['java' + name] === 'undefined') {
+        return false;
+    }
+    /* Numerical, Multiple numerical and Array (Numbers) questions save numbers */
+    return $.inArray(LEMvarNameAttr['java' + name].type, ['N', 'K', ':']) === -1;
+}
+
+/**
  * fixnum_checkconditions : javascript function attach to some element
  * Update the answer of the user to be numeric and launch checkconditions
  *
@@ -138,68 +154,76 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             window.correctNumberField[name] = null;
         }
 
-        var addition = "";
-
-        var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/); /* 1.0 : keep .0 */
-        var matchMustGetZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)([0-9]*)$/); /* Maybe have 0 */
-        if(matchFollowingZeroes){
-            addition = LEMradix+matchFollowingZeroes[3];
-        } else if(matchMustGetZeroes) {
-            /* Don‘t find good regexp … */
-            while (cleansedValue.substr(-1) === "0") {
-                addition += "0";
-                cleansedValue = cleansedValue.slice(0, -1);
-            }
-        }
-
-        if(decimalValue == undefined){
-            try{
-                decimalValue = new Decimal(cleansedValue);
-            } catch(e){
-                try{
-                    decimalValue = new Decimal(cleansedValue.replace(',','.'));
-                } catch(e){
-                    decimalValue = new Decimal(NaN);
-
-                }
-            }
-        }
-
-        /**
-         * Work on length of the number
-         * Avoid numbers longer than 20 characters before the decimal separator and 10 after the decimal separator.
-         */
-        // Treat decimal part, if there is one.
-        // Trim after 10th decimal if larger than 10 decimals.
-        if(decimalValue.dp()>10){
-            decimalValue.toDecimalPlaces(10);
-        }
-
-        /**
-         * Set display value
-         */
-        displayVal = decimalValue.toString();
-        if (displayVal=='NaN')
-        {
-            newval=displayVal;
-            if(cleansedValue == '' && value != cleansedValue) {
-                window.correctNumberField[name] = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 500);
-            }
-        }
-        else{
-            if(LEMradix==",")
-                displayVal = displayVal.replace(/\./,',');
-
-            newval = displayVal+addition
-
-            if (name.match(/other$/)) {
-                if($('#answer'+name+'text').val() != newval){
-                    $('#answer'+name+'text').val(newval);
-                }
-            }
-
-            if(value != newval){
+        if (isNumbersOnlyText(name)) {
+            /* A text answer is kept as typed (e.g. with leading zeros): only remove the characters that are not allowed */
+            newval = cleansedValue;
+            if (value != newval) {
                 window.correctNumberField[name] = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 1500);
+            }
+        } else {
+            var addition = "";
+
+            var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/); /* 1.0 : keep .0 */
+            var matchMustGetZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)([0-9]*)$/); /* Maybe have 0 */
+            if(matchFollowingZeroes){
+                addition = LEMradix+matchFollowingZeroes[3];
+            } else if(matchMustGetZeroes) {
+                /* Don‘t find good regexp … */
+                while (cleansedValue.substr(-1) === "0") {
+                    addition += "0";
+                    cleansedValue = cleansedValue.slice(0, -1);
+                }
+            }
+
+            if(decimalValue == undefined){
+                try{
+                    decimalValue = new Decimal(cleansedValue);
+                } catch(e){
+                    try{
+                        decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                    } catch(e){
+                        decimalValue = new Decimal(NaN);
+
+                    }
+                }
+            }
+
+            /**
+             * Work on length of the number
+             * Avoid numbers longer than 20 characters before the decimal separator and 10 after the decimal separator.
+             */
+            // Treat decimal part, if there is one.
+            // Trim after 10th decimal if larger than 10 decimals.
+            if(decimalValue.dp()>10){
+                decimalValue.toDecimalPlaces(10);
+            }
+
+            /**
+             * Set display value
+             */
+            displayVal = decimalValue.toString();
+            if (displayVal=='NaN')
+            {
+                newval=displayVal;
+                if(cleansedValue == '' && value != cleansedValue) {
+                    window.correctNumberField[name] = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 500);
+                }
+            }
+            else{
+                if(LEMradix==",")
+                    displayVal = displayVal.replace(/\./,',');
+
+                newval = displayVal+addition
+
+                if (name.match(/other$/)) {
+                    if($('#answer'+name+'text').val() != newval){
+                        $('#answer'+name+'text').val(newval);
+                    }
+                }
+
+                if(value != newval){
+                    window.correctNumberField[name] = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 1500);
+                }
             }
         }
     }
@@ -1246,6 +1270,20 @@ function LEMval(alias)
                         else {
                             answerParts = attr.answers[which_ans].split('|');
                             value = answerParts[0];
+                        }
+                        break;
+                    case 'M': //Multiple choice checkbox
+                    case 'P': //Multiple choice with comments checkbox + text
+                        // The "other" text and the comment fields have no answers and keep their text
+                        if (attr.answers !== undefined) {
+                            which_ans = '0~' + value;
+                            if (typeof attr.answers[which_ans] === 'undefined') {
+                                value = '';
+                            }
+                            else {
+                                answerParts = attr.answers[which_ans].split('|');
+                                value = answerParts[0];
+                            }
                         }
                         break;
                     case 'N': //NUMERICAL QUESTION TYPE

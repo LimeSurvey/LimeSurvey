@@ -841,10 +841,14 @@ p.return-to-survey {
     clear: left;
 }
 
-/* Make sure question index menu is not too long. */
-#index-menu ul.dropdown-menu {
-    max-height: 50vh;
-    overflow-y: scroll;
+/* Make sure question index menu is not too long: Scroll it on its own on non-collapsed navbar. */
+@media (min-width: 768px) {
+    .index-menu-full > .dropdown-menu,
+    .index-menu-incremental > .dropdown-menu {
+        max-height: 75vh;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
 }
 
 .text-break-pre {

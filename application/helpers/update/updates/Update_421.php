@@ -47,7 +47,7 @@ class Update_421 extends DatabaseUpdateBase
 
             $baseQuestionThemeEntries = \LsDefaultDataSets::getBaseQuestionThemeEntries();
             // The Gender question type was removed from the default data set. Later updates
-            // still rely on its theme until Update_720 converts its questions and removes it.
+            // still rely on its theme until Update_721 converts its questions and removes it.
             $baseQuestionThemeEntries[] = $this->getLegacyGenderThemeEntry();
         foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
             $this->db->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);

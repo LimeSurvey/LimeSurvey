@@ -514,7 +514,7 @@ class LimeExpressionManager
      * 'qid' => 702 // the question id
      * 'qseq' => 6 // the question sequence
      * 'gseq' => 0 // the group sequence
-     * 'sgqa' => '26626X34X702' // the root of the SGQA code (reallly just the SGQ)
+     * 'sgqa' => '26626X34X702' // the root of the SGQA code (really just the SGQ)
      * 'varName' => 'afSrcFilter_sq1' // the full qcode variable name - note, if there are subquestions, don't use this one.
      * 'type' => 'M' // the one-letter question type
      * 'fieldname' => '26626X34X702sq1' // the fieldname (used as JavaScript variable name, and also as database column name
@@ -1619,12 +1619,14 @@ class LimeExpressionManager
                             case Question::QT_D_DATE: //DATE QUESTION TYPE
                                 // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_min']) != '') {
-                                    $mindate = $qattr['date_min'];
-                                    if ((strlen((string)$mindate) == 4)) {
+                                    $mindate = trim((string) $qattr['date_min']);
+                                    if (ctype_digit($mindate) && strlen($mindate) == 4) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_min = '\'' . $mindate . '-01-01' . ' 00:00\'';
-                                    } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $mindate)) {
-                                        $date_min = '\'' . $mindate . ' 00:00\'';
+                                    } elseif (preg_match(QuestionAttribute::DATE_LIMIT_PATTERN, $mindate)) {
+                                        // a date, optionally followed by a time: the pattern ensures it can't break out of the quotes
+                                        $mindate = str_replace('T', ' ', $mindate);
+                                        $date_min = '\'' . (strlen($mindate) == 10 ? $mindate . ' 00:00' : $mindate) . '\'';
                                     } elseif (array_key_exists($date_min, $this->qcode2sgqa)) {  // refers to another question
                                         $date_min = $date_min . '.NAOK';
                                     }
@@ -1694,12 +1696,14 @@ class LimeExpressionManager
                             case Question::QT_D_DATE: //DATE QUESTION TYPE
                                 // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                 if (trim((string) $qattr['date_max']) != '') {
-                                    $maxdate = $qattr['date_max'];
-                                    if ((strlen((string)$maxdate) == 4)) {
+                                    $maxdate = trim((string) $qattr['date_max']);
+                                    if (ctype_digit($maxdate) && strlen($maxdate) == 4) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_max = '\'' . $maxdate . '-12-31 23:59' . '\'';
-                                    } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $maxdate)) {
-                                        $date_max = '\'' . $maxdate . ' 23:59\'';
+                                    } elseif (preg_match(QuestionAttribute::DATE_LIMIT_PATTERN, $maxdate)) {
+                                        // a date, optionally followed by a time: the pattern ensures it can't break out of the quotes
+                                        $maxdate = str_replace('T', ' ', $maxdate);
+                                        $date_max = '\'' . (strlen($maxdate) == 10 ? $maxdate . ' 23:59' : $maxdate) . '\'';
                                     } elseif (array_key_exists($date_max, $this->qcode2sgqa)) {  // refers to another question
                                         $date_max = $date_max . '.NAOK';
                                     }
@@ -3504,14 +3508,26 @@ class LimeExpressionManager
                 case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                 case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
-                case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
-                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                 case Question::QT_D_DATE: //DATE
                 case Question::QT_ASTERISK_EQUATION: //Equation
                 case Question::QT_I_LANGUAGE: //Language Question
                 case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                 case Question::QT_X_TEXT_DISPLAY: //BOILERPLATE QUESTION
                     $ansArray = null;
+                    break;
+                case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                    // A checked subquestion ('Y') gets the assessment value of the question, used by .value
+                    // The "other" text and the comment fields keep their text as value
+                    if ($aid === 'other' || preg_match('/comment$/', (string) $aid)) {
+                        $ansArray = null;
+                    } else {
+                        $assessmentValue = 0;
+                        if (!empty($this->surveyOptions['assessments'])) {
+                            $assessmentValue = (int) ($qattr[$questionNum]['assessment_value'] ?? 1);
+                        }
+                        $ansArray = ['0~Y' => $assessmentValue . '|' . ($fielddata['subquestion'] ?? '')];
+                    }
                     break;
                 case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
                 case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
@@ -4131,6 +4147,26 @@ class LimeExpressionManager
     }
 
     /**
+     * Return whether a subquestion is relevant, using its own array_filter/relevance
+     * status when the ExpressionManager tracks it individually (i.e. $sgqa is a known
+     * variable), and falling back to the parent question's relevance otherwise (e.g.
+     * pseudo subquestions such as the "other" field, which are not tracked under their
+     * own SGQA/fieldname).
+     *
+     * @param string $sgqa The subquestion's SGQA/fieldname
+     * @param int $qid The (parent) question id to fall back to
+     * @return boolean
+     */
+    public static function SubQuestionOrQuestionIsRelevant($sgqa, $qid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if (!isset($LEM->knownVars[$sgqa])) {
+            return self::QuestionIsRelevant($qid);
+        }
+        return self::SubQuestionIsRelevant($sgqa);
+    }
+
+    /**
      * Return whether question $qid is relevanct
      * @param int $qid
      * @return boolean
@@ -4669,13 +4705,18 @@ class LimeExpressionManager
     }
 
     /**
-     * Initialize a survey so can use EM to manage navigation
+     * Initialize a survey so can use EM to manage navigation.
+     * Timing storage is enabled only when Save timings is enabled and its table exists.
+     * Applies valid session starting values. They are persisted right away only if the response already exists,
+     * otherwise they are saved when the response is created (after the welcome page and survey policy).
+     *
      * @param int $surveyid
-     * @param string $surveyMode
-     * @param array $aSurveyOptions
-     * @param bool $forceRefresh
+     * @param string $surveyMode 'survey', 'question', or 'group'; unrecognized values use 'group'.
+     * @param array|null $aSurveyOptions Runtime options; null uses the defaults.
+     * @param bool $forceRefresh Whether to rebuild cached variable and token mappings.
      * @param int $debugLevel
-     * @return array
+     * @return array Initial navigation state: hasNext is true and hasPrevious is false.
+     * @throws CDbException If an uncaught database operation fails.
      */
     public static function StartSurvey($surveyid, $surveyMode = 'group', $aSurveyOptions = null, $forceRefresh = false, $debugLevel = 0)
     {
@@ -4688,7 +4729,7 @@ class LimeExpressionManager
             $aSurveyOptions = [];
         }
         $LEM->surveyOptions['active'] = (isset($aSurveyOptions['active']) ? $aSurveyOptions['active'] : false);
-        // make sure to get the previewmode set by aSurveyOptions because LEM reset happens inbetween
+        // make sure to get the previewmode set by aSurveyOptions because LEM reset happens in between
         self::SetPreviewMode($aSurveyOptions['previewmode'] ?? false);
         $LEM->surveyOptions['allowsave'] = (isset($aSurveyOptions['allowsave']) ? $aSurveyOptions['allowsave'] : false);
         $LEM->surveyOptions['alloweditaftercompletion'] = (isset($aSurveyOptions['alloweditaftercompletion']) ? $aSurveyOptions['alloweditaftercompletion'] : false);
@@ -4701,12 +4742,13 @@ class LimeExpressionManager
         $LEM->surveyOptions['ipAnonymize'] = $survey->isIpAnonymize;
         $LEM->surveyOptions['radix'] = (isset($aSurveyOptions['radix']) ? $aSurveyOptions['radix'] : '.');
         $LEM->surveyOptions['refurl'] = (isset($aSurveyOptions['refurl']) ? $aSurveyOptions['refurl'] : null);
-        $LEM->surveyOptions['savetimings'] = $survey->isSaveTimings;
+        $canSaveTimings = $survey->isSaveTimings && $survey->hasTimingsTable;
+        $LEM->surveyOptions['savetimings'] = $canSaveTimings;
         $LEM->sgqaNaming = (isset($aSurveyOptions['sgqaNaming']) ? ($aSurveyOptions['sgqaNaming'] == "Y") : true); // TODO default should eventually be false
         $LEM->surveyOptions['startlanguage'] = (isset($aSurveyOptions['startlanguage']) ? $aSurveyOptions['startlanguage'] : 'en');
         $LEM->surveyOptions['surveyls_dateformat'] = (isset($aSurveyOptions['surveyls_dateformat']) ? $aSurveyOptions['surveyls_dateformat'] : 1);
         $LEM->surveyOptions['tablename'] = (isset($aSurveyOptions['tablename']) ? $aSurveyOptions['tablename'] : $survey->responsesTableName);
-        $LEM->surveyOptions['tablename_timings'] = ($survey->isSaveTimings ? $survey->timingsTableName : '');
+        $LEM->surveyOptions['tablename_timings'] = ($canSaveTimings ? $survey->timingsTableName : '');
         $LEM->surveyOptions['target'] = (isset($aSurveyOptions['target']) ? $aSurveyOptions['target'] : '/temp/files/');
         $LEM->surveyOptions['timeadjust'] = (isset($aSurveyOptions['timeadjust']) ? $aSurveyOptions['timeadjust'] : 0);
         $LEM->surveyOptions['displayTimezone'] = Yii::app()->getConfig('displayTimezone') ?: date_default_timezone_get();
@@ -4714,7 +4756,7 @@ class LimeExpressionManager
         $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : null);
         $LEM->surveyOptions['savequotaexit'] = (isset($aSurveyOptions['savequotaexit']) ? $aSurveyOptions['savequotaexit'] : false);
         $LEM->debugLevel = $debugLevel;
-        $_SESSION[$LEM->sessid]['LEMdebugLevel'] = $debugLevel; // need acces to SESSSION to decide whether to cache serialized instance of $LEM
+        $_SESSION[$LEM->sessid]['LEMdebugLevel'] = $debugLevel; // need access to SESSION to decide whether to cache serialized instance of $LEM
         switch ($surveyMode) {
             case 'survey':
                 $LEM->allOnOnePage = true;
@@ -4792,7 +4834,10 @@ class LimeExpressionManager
                     unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                 }
             }
-            $LEM->_UpdateValuesInDatabase();
+            // Don't create the response before the survey is actually started (welcome page, survey policy): Prefilled values are saved on creation
+            if (isset($_SESSION[$LEM->sessid]['srid'])) {
+                $LEM->_UpdateValuesInDatabase();
+            }
         }
 
         return [
@@ -5207,6 +5252,35 @@ class LimeExpressionManager
     }
 
     /**
+     * Get the prefilled (starting) values currently set in session, to be saved when the response is created.
+     * @return array[] Values indexed by SGQA, each with 'type' and 'value' (same format as updatedValues)
+     */
+    private function getStartingValuesToSave()
+    {
+        $startingValues = [];
+        if (empty($_SESSION[$this->sessid]['startingValues']) || !is_array($_SESSION[$this->sessid]['startingValues'])) {
+            return $startingValues;
+        }
+        foreach (array_keys($_SESSION[$this->sessid]['startingValues']) as $k) {
+            if (isset($this->knownVars[$k])) {
+                $sgqa = $k;
+            } elseif (isset($this->qcode2sgqa[$k])) {
+                $sgqa = $this->qcode2sgqa[$k];
+            } else {
+                continue;
+            }
+            if (!isset($this->knownVars[$sgqa]['jsName']) || !isset($_SESSION[$this->sessid][$sgqa])) {
+                continue;
+            }
+            $startingValues[$sgqa] = [
+                'type'  => $this->knownVars[$sgqa]['type'],
+                'value' => $_SESSION[$this->sessid][$sgqa],
+            ];
+        }
+        return $startingValues;
+    }
+
+    /**
      * Write values to database.
      * @param boolean $finished - true if the survey needs to be finalized
      * @return string
@@ -5232,7 +5306,7 @@ class LimeExpressionManager
             }
             if ($this->surveyOptions['datestamp'] == true) {
                 $sdata['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
-                $sdata['startdate'] = $_SESSION[$this->sessid]['datestamp'];
+                $sdata['startdate'] = $_SESSION[$this->sessid]['startdate'] ?? $_SESSION[$this->sessid]['datestamp'];
                 if($this->surveyOptions['anonymized']){
                     //all dates should be anonymized
                     $sdata['datestamp'] = $this->anonymizeDate();
@@ -5272,6 +5346,8 @@ class LimeExpressionManager
                 }
                 $srid = $iNewID;
                 $_SESSION[$this->sessid]['srid'] = $iNewID;
+                // Prefilled values were not saved before the response was created: Add them, values from the current page take precedence
+                $updatedValues = $updatedValues + $this->getStartingValuesToSave();
             } catch (Exception $e) {
                 $srid = null;
                 $query = $e->getMessage();
@@ -5393,6 +5469,8 @@ class LimeExpressionManager
                     return $message;
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
+                    // Decrypt the stored values before setting the new plain ones: encryptSave() encrypts all of them again
+                    $oResponse->decrypt();
                     try {
                         $questions = $survey->questions;
                         $empty = ['', false, null];
@@ -5424,8 +5502,8 @@ class LimeExpressionManager
                         }
                         $this->throwFatalError();
                     }
-                    $oResponse->decrypt();
-                    if (!$oResponse->encryptSave()) {
+                    // Save only needed value, no validation
+                    if (!$oResponse->encryptSave(false, array_keys($aResponseAttributes))) {
                         $message = submitfailed('', print_r($oResponse->getErrors(), true)); // $response->getErrors() is array[string[]], then can not join
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                             $message .= CHTml::errorSummary($oResponse, $this->gT('Error on response update'));  // Add SQL error according to debugLevel
@@ -5570,7 +5648,12 @@ class LimeExpressionManager
                 $result = $LEM->_ValidateSurvey($force);
                 $message .= $result['message'];
                 $finished = false;
-                $message .= $LEM->_UpdateValuesInDatabase($finished);// This happen too for $processPOST=false : need to fix it ?
+                if ($processPOST || isset($_SESSION[$LEM->sessid]['srid'])) {
+                    $message .= $LEM->_UpdateValuesInDatabase($finished);
+                } elseif (!isset($_SESSION[$LEM->sessid]['startdate'])) {
+                    // Only displaying the survey: Don't create the response yet, but remember when the participant started
+                    $_SESSION[$LEM->sessid]['startdate'] = gmdate("Y-m-d H:i:s");
+                }
                 $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
                 $LEM->lastMoveResult = [
                     'finished'      => $finished,
@@ -5624,10 +5707,17 @@ class LimeExpressionManager
                 while (true) {
                     $LEM->currentQset = [];    // reset active list of questions
                     if (++$LEM->currentGroupSeq >= $LEM->numGroups) {
+                        if ($seq < $LEM->numGroups) {
+                            // Jumped to an existing step, but no relevant group from there on: never submit without an explicit submit (see #11833)
+                            $moveResult = $LEM->jumpToLastRelevantGroup($message, $now);
+                            if (!is_null($moveResult)) {
+                                return $moveResult;
+                            }
+                        }
                         $message .= $LEM->_UpdateValuesInDatabase(true);
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
                         $LEM->lastMoveResult = [
-                            'finished'      => true, /* Maybe is better to NEVER set finished to true when use JumpTo, but only when NavigateForwards */
+                            'finished'      => true,
                             'message'       => $message,
                             'gseq'          => $LEM->currentGroupSeq,
                             'seq'           => $LEM->currentGroupSeq,
@@ -5720,6 +5810,13 @@ class LimeExpressionManager
                 while (true) {
                     $LEM->currentQset = [];    // reset active list of questions
                     if (++$LEM->currentQuestionSeq >= $LEM->numQuestions) {
+                        if ($seq < $LEM->numQuestions) {
+                            // Jumped to an existing step, but no relevant question from there on: never submit without an explicit submit (see #11833)
+                            $moveResult = $LEM->jumpToLastRelevantQuestion($message, $now, $notRelevantSteps, $hiddenSteps);
+                            if (!is_null($moveResult)) {
+                                return $moveResult;
+                            }
+                        }
                         $message .= $LEM->_UpdateValuesInDatabase(true);
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
                         $LEM->lastMoveResult = [
@@ -5797,6 +5894,102 @@ class LimeExpressionManager
                 }
                 break;
         }
+    }
+
+    /**
+     * Display the last relevant group of the survey in group by group mode.
+     * Used when a jump reached the end of the survey without an explicit submit, to not finalize the response.
+     * @param string $message messages collected during the move so far
+     * @param float $now microtime when the move started, for runtime timings
+     * @return array|null the move result, null if there is no relevant group at all
+     */
+    private function jumpToLastRelevantGroup($message, $now)
+    {
+        for ($gseq = $this->numGroups - 1; $gseq >= 0; $gseq--) {
+            $this->currentQset = [];    // reset active list of questions
+            $result = $this->_ValidateGroup($gseq);
+            if (is_null($result)) {
+                continue;   // this is an invalid group - skip it
+            }
+            $message .= $result['message'];
+            if (!$result['relevant'] || $result['hidden']) {
+                continue;
+            }
+            $this->currentGroupSeq = $gseq;
+            $message .= $this->_UpdateValuesInDatabase();
+            $this->runtimeTimings[] = [__CLASS__ . '::JumpTo', (microtime(true) - $now)];
+            $this->lastMoveResult = [
+                'finished'      => false,
+                'message'       => $message,
+                'gseq'          => $this->currentGroupSeq,
+                'seq'           => $this->currentGroupSeq,
+                'mandViolation' => (($this->maxGroupSeq > $this->currentGroupSeq) ? $result['mandViolation'] : false),
+                'mandSoft'      => (isset($result['mandSoft'])) ? $result['mandSoft'] : false,
+                'mandNonSoft'   => (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
+                'valid'         => (($this->maxGroupSeq > $this->currentGroupSeq) ? $result['valid'] : false),
+                'unansweredSQs' => $result['unansweredSQs'],
+                'invalidSQs'    => $result['invalidSQs'],
+            ];
+            return $this->lastMoveResult;
+        }
+        return null;
+    }
+
+    /**
+     * Display the last relevant question of the survey in question by question mode.
+     * Used when a jump reached the end of the survey without an explicit submit, to not finalize the response.
+     * @param string $message messages collected during the move so far
+     * @param float $now microtime when the move started, for runtime timings
+     * @param integer $notRelevantSteps number of not relevant steps counted during the move so far
+     * @param integer $hiddenSteps number of hidden steps counted during the move so far
+     * @return array|null the move result, null if there is no relevant question at all
+     */
+    private function jumpToLastRelevantQuestion($message, $now, $notRelevantSteps, $hiddenSteps)
+    {
+        for ($qseq = $this->numQuestions - 1; $qseq >= 0; $qseq--) {
+            $this->currentQset = [];    // reset active list of questions
+            $this->groupRelevanceInfo = [];
+            if (!isset($this->questionSeq2relevance[$qseq])) {
+                continue;
+            }
+            $qInfo = $this->questionSeq2relevance[$qseq];
+            $this->currentQuestionSeq = $qseq;
+            $this->currentQID = $qInfo['qid'];
+            $this->currentGroupSeq = $qInfo['gseq'];
+            $this->ProcessAllNeededRelevance($qseq);
+            $this->_CreateSubQLevelRelevanceAndValidationEqns($qseq);
+            $result = $this->_ValidateQuestion($qseq);
+            $message .= $result['message'];
+            $grel = $this->gRelInfo[$this->currentGroupSeq]['result'];
+            if (!$grel || !$result['relevant'] || $result['hidden']) {
+                if (!$grel || !$result['relevant']) {
+                    $notRelevantSteps--;
+                }
+                if ($result['hidden']) {
+                    $hiddenSteps--;
+                }
+                continue;
+            }
+            $message .= $this->_UpdateValuesInDatabase();
+            $this->runtimeTimings[] = [__CLASS__ . '::JumpTo', (microtime(true) - $now)];
+            $this->lastMoveResult = [
+                'finished'      => false,
+                'message'       => $message,
+                'qseq'          => $this->currentQuestionSeq,
+                'gseq'          => $this->currentGroupSeq,
+                'seq'           => $this->currentQuestionSeq,
+                'mandViolation' => (($this->maxQuestionSeq > $this->currentQuestionSeq) ? $result['mandViolation'] : false),
+                'mandSoft'      => (isset($result['mandSoft'])) ? $result['mandSoft'] : false,
+                'mandNonSoft'   => (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
+                'valid'         => (($this->maxQuestionSeq > $this->currentQuestionSeq) ? $result['valid'] : true),
+                'unansweredSQs' => $result['unansweredSQs'],
+                'invalidSQs'    => $result['invalidSQs'],
+                'notRelevantSteps'   => $notRelevantSteps,
+                'hiddenSteps'   => $hiddenSteps
+            ];
+            return $this->lastMoveResult;
+        }
+        return null;
     }
 
     /**
@@ -6531,16 +6724,19 @@ class LimeExpressionManager
                     break;
                 case Question::QT_R_RANKING:
                     $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
+                    // The base Q{qid} field holds the stored ranking, not a rank position: Count only the rank positions
+                    $relevantRanks = array_diff($relevantSQs, ['Q' . $qid]);
+                    $unansweredRanks = array_diff($unansweredSQs, ['Q' . $qid]);
                     // If min_answers or max_answers is set, we check that at least one answer is ranked.
                     // But, if no limit is set, then all answers must be ranked.
                     if (!empty($qattr['min_answers']) || !empty($qattr['max_answers'])) {
-                        $maxUnrankedAnswers = count($relevantSQs) - 1;
+                        $maxUnrankedAnswers = max(count($relevantRanks) - 1, 0);
                         $sMandatoryText = $LEM->gT('Please rank the items.');
                     } else {
                         $maxUnrankedAnswers = 0;
                         $sMandatoryText = $LEM->gT('Please rank all items.');
                     }
-                    if (count($unansweredSQs) - 1 > $maxUnrankedAnswers) {
+                    if (count($unansweredRanks) > $maxUnrankedAnswers) {
                         $qmandViolation = true; // TODO - what about 'other'?
                     }
                     $mandatoryTip .= App()->twigRenderer->renderPartial(
@@ -7252,7 +7448,7 @@ class LimeExpressionManager
     /*
     * Generate JavaScript needed to do dynamic relevance and tailoring
     * Also create list of variables that need to be declared
-    * @return string|array : line to be added to content Javacript line + hidden input (can't use register script...)
+    * @return string|array : line to be added to content Javascript line + hidden input (can't use register script...)
     */
     public static function GetRelevanceAndTailoringJavaScript($bReturnArray = false)
     {
@@ -8050,8 +8246,8 @@ class LimeExpressionManager
         }
 
         foreach ($gseqList as $gseq) {
-            if (isset($_SESSION['relevanceStatus'])) {
-                $relStatus = (isset($_SESSION['relevanceStatus']['G' . $gseq]) ? $_SESSION['relevanceStatus']['G' . $gseq] : 1);
+            if (isset($_SESSION[$LEM->sessid]['relevanceStatus'])) {
+                $relStatus = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);
             } else {
                 $relStatus = 1;
             }
@@ -8914,7 +9110,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $updatedValues[$sq] = $_update;
                     $LEM->updatedValues[$sq] = $_update;
                 } else {  // irrelevant, so database will be NULLed separately
-                    // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
+                    // Must unset the value, rather than setting to '', so that EM can reuse the default value as needed.
                     unset($_SESSION[$LEM->sessid][$sq]);
                     $_update = [
                         'type'  => $type,
@@ -9096,6 +9292,17 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 }
                                 $value = $answer;
                             }
+                        }
+                        break;
+                    case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                    case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                        $ansArray = $var['ansArray'];
+                        if (is_null($ansArray)) {
+                            // The "other" text and the comment fields
+                            $value = $code;
+                        } else {
+                            $answerInfo = isset($ansArray['0~' . $code]) ? explode('|', (string) $ansArray['0~' . $code]) : [$default];
+                            $value = $answerInfo[0];
                         }
                         break;
                     default:
@@ -9383,7 +9590,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $allQuestionsErrors = [];
         /* @var array[] questions with warnings : gid,qid and count to create a list (@todo) ? */
         $aQuestionWarnings = [];
-        $warnings = 0;
 
         /* Import needed helpers */
         Yii::import('application.helpers.replacements_helper', true);
@@ -9739,28 +9945,28 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $varNameError = null;
             if (isset($varNamesUsed[$rootVarName])) {
                 $varNameErrorMsg .= $LEM->gT('This variable name has already been used.');
+                // A duplicated variable name breaks Expression Manager logic, whatever the naming mode
+                ++$errorCount;
             } else {
                 $varNamesUsed[$rootVarName] = [
                     'gseq' => $gseq,
-                    'qid'  => $qid
+                    'qid'  => $qid,
+                    'gid'  => $gid,
                 ];
             }
 
             if (!preg_match('/^[a-zA-Z][0-9a-zA-Z]*$/', (string) $rootVarName)) {
-                $varNameErrorMsg .= $LEM->gT('Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated.');
+                $varNameErrorMsg = trim($varNameErrorMsg . ' ' . $LEM->gT('Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated.'));
+                // A deprecated variable name can't be used reliably in expressions, whatever the naming mode
+                ++$errorCount;
             }
             if ($varNameErrorMsg != '') {
                 $varNameError = [
                     'message' => $varNameErrorMsg,
                     'gseq'    => $varNamesUsed[$rootVarName]['gseq'],
                     'qid'     => $varNamesUsed[$rootVarName]['qid'],
-                    'gid'     => $gid,
+                    'gid'     => $varNamesUsed[$rootVarName]['gid'],
                 ];
-                if (!$LEM->sgqaNaming) {
-                    ++$errorCount;
-                } else {
-                    ++$warnings;
-                }
             }
 
             //////
@@ -9925,7 +10131,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $questionRow .= $rootVarName;
             } else {
                 $editlink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
-                $questionRow .= "<span class='highlighterror' title='" . $varNameError['message'] . "' "
+                $questionRow .= "<span class='highlighterror' title='" . CHtml::encode($varNameError['message']) . "' "
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";
             }
@@ -10254,7 +10460,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 break;
             case 'D': // Date + time
-                /*  @todo : but are already partially in EM and in old function ? */
+                /* INVALID is set by EM for unparsable user input and checked in validation equation: Keep it */
+                if ($value !== "INVALID" && !self::isValidDateTimeValue($value)) {
+                    $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
+                    return false;
+                }
                 break;
             case '*': // Equation
                 /* No validity control ? size ? */
@@ -10319,6 +10529,24 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 break;
         }
         return true;
+    }
+
+    /**
+     * Check if a value is a real date in the format stored in the response table (Y-m-d with optional H:i or H:i:s)
+     * Out of range values (for example a 5 digits year or 2020-02-31) are rejected: The database can not store them
+     *
+     * @param string $value the value to check
+     * @return boolean
+     */
+    private static function isValidDateTimeValue($value)
+    {
+        if (!preg_match('/^(\d{4})-(\d{2})-(\d{2})(?: (\d{2}):(\d{2})(?::(\d{2}))?)?$/', (string) $value, $matches)) {
+            return false;
+        }
+        if (!checkdate((int) $matches[2], (int) $matches[3], (int) $matches[1])) {
+            return false;
+        }
+        return (!isset($matches[4]) || ($matches[4] < 24 && $matches[5] < 60 && (!isset($matches[6]) || $matches[6] < 60)));
     }
 
     /**

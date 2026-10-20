@@ -57,7 +57,7 @@
                 'id' : "answer"~myfname2,
                 'aria-labelledby' : "answertext" ~ basename ~ "_" ~ dataCode,
                 'class' : "multiflexitext form-control "~answertypeclass~" ",
-                'title' : gT('Only numbers may be entered in this field.'),
+                'title' : gT('Only numbers may be entered in this field.', 'unescaped'),
                 'size' : (inputsize ? inputsize : null),
                 'maxlength' : (maxlength ? maxlength : null),
                 'data-number' : 1,

@@ -1,7 +1,7 @@
 <?php
 /**
  * This contains a list of admin views that we can loop for bulk testing.
- * Each element conntains an ID as key and the admin route that we can test
+ * Each element contains an ID as key and the admin route that we can test
  * // TODO currtnly these only contain pages that do not depend on opening a survey!
  */
 

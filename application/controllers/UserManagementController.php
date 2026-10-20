@@ -1127,11 +1127,12 @@ class UserManagementController extends LSBaseController
             $aResults[$user]['title'] = $model->users_name;
 
             // Delete the user and store the result
-            $aResults[$user]['result'] = $this->deleteUser($user);
+            $errorMessage = null;
+            $aResults[$user]['result'] = $this->deleteUser($user, $errorMessage);
 
             // If the user could not be deleted or it's the current user, add an error message
             if (!$aResults[$user]['result'] || $user == Yii::app()->user->id) {
-                $aResults[$user]['error'] = gT("You cannot delete yourself or a protected user.");
+                $aResults[$user]['error'] = $errorMessage ?? gT("You cannot delete yourself or a protected user.");
             }
         }
 
@@ -1152,12 +1153,20 @@ class UserManagementController extends LSBaseController
     /**
      * render selected items for massive action modal
      *
-     * @return void
+     * Note: Needs the global users read permission, the same as the user list grid it is used by.
+     *
+     * @return string|void
      * @throws CHttpException
      * @throws CException
      */
     public function actionRenderSelectedItems()
     {
+        if (!Permission::model()->hasGlobalPermission('users', 'read')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
         $aUsers = json_decode(App()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
@@ -1502,10 +1511,11 @@ class UserManagementController extends LSBaseController
      * UserManager and returns the deletion result.
      *
      * @param int $uid The ID of the user to delete.
+     * @param string|null $errorMessage Set to a user-facing reason when the deletion is refused because the user owns surveys.
      * @return bool `true` if the user was deleted successfully, `false` otherwise.
      * @throws CException
      */
-    public function deleteUser(int $uid): bool
+    public function deleteUser(int $uid, ?string &$errorMessage = null): bool
     {
         if (!App()->getRequest()->getIsPostRequest()) {
             throw new CHttpException(400, gT('Your request is invalid.'));
@@ -1554,6 +1564,7 @@ class UserManagementController extends LSBaseController
         // Check if user owns a survey
         $aOwnedSurveys = Survey::model()->findAllByAttributes(['owner_id' => $userId]);
         if (count($aOwnedSurveys)) {
+            $errorMessage = gT("This user owns surveys. Delete the user individually to transfer the surveys to another user.");
             return false;
         }
 

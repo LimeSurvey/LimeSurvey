@@ -5,6 +5,7 @@ import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { STATES } from 'helpers'
 import { useAppState, useSurvey } from 'hooks'
 import { SubquestionCodeInput } from '../../subquestionCodeComponents'
+import { AssessmentValueInput } from '../../AssessmentValueInput'
 
 export const ArrayColumnTitle = ({
   id,
@@ -21,6 +22,10 @@ export const ArrayColumnTitle = ({
   isNoAnswer = false,
   code,
   handleChildCodeUpdate,
+  showAssessmentValue = false,
+  assessmentValue,
+  assessmentScaleNumber,
+  handleAssessmentValueUpdate = () => {},
   focusContentEditor,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
@@ -70,13 +75,25 @@ export const ArrayColumnTitle = ({
               isNoAnswer && isFocused && showQNumCode?.showNumber ? '28px' : 0,
           }}
         >
-          {isFocused && showQNumCode?.showNumber && !isNoAnswer && (
-            <SubquestionCodeInput
-              isColumnTitle={true}
-              isSurveyActive={isSurveyActive}
-              onChange={(e) => handleChildCodeUpdate(e.target.value, index)}
-              code={code}
-            />
+          {!isNoAnswer && (
+            <div className="array-answer-metadata">
+              {isFocused && showQNumCode?.showNumber && (
+                <SubquestionCodeInput
+                  isColumnTitle={true}
+                  isSurveyActive={isSurveyActive}
+                  onChange={(e) => handleChildCodeUpdate(e.target.value, index)}
+                  code={code}
+                />
+              )}
+              {showAssessmentValue && (
+                <AssessmentValueInput
+                  assessmentValue={assessmentValue}
+                  answerCode={code}
+                  scaleNumber={assessmentScaleNumber}
+                  onChange={(e) => handleAssessmentValueUpdate(e.target.value)}
+                />
+              )}
+            </div>
           )}
           <ContentEditor
             id={id}

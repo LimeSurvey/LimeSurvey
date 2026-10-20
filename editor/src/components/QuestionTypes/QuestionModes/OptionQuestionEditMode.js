@@ -12,6 +12,7 @@ import { ImageChoice } from 'components/QuestionTypes/ImageChoice'
 import { getQuestionTypeInfo } from '../getQuestionTypeInfo'
 import { singleChoiceThemes } from '../singleChoiceThemes'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
+import { AssessmentValueInput } from '../AssessmentValueInput'
 
 const imageThemeComponents = [
   getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
@@ -19,7 +20,7 @@ const imageThemeComponents = [
 ]
 
 export const OptionQuestionEditMode = ({
-  question: { questionThemeName } = {},
+  question: { questionThemeName, showAssessmentValue } = {},
   handleChildLUpdate,
   isFocused,
   handleChildAdd,
@@ -27,6 +28,7 @@ export const OptionQuestionEditMode = ({
   handleChildDelete,
   language,
   handleChildCodeUpdate,
+  handleChildAssessmentValueUpdate,
   _children = [],
   isTitleFocused,
 }) => {
@@ -65,7 +67,7 @@ export const OptionQuestionEditMode = ({
   return (
     <div>
       <DragAndDrop
-        className="children-parent"
+        className="children-parent edit-mode"
         onDragEnd={handleOnDragEnd}
         droppableId={'droppable'}
       >
@@ -76,7 +78,7 @@ export const OptionQuestionEditMode = ({
             index={index}
           >
             {(provided, snapshot) => (
-              <div>
+              <div className="w-100">
                 <div
                   ref={provided.innerRef}
                   {...provided.draggableProps}
@@ -106,7 +108,10 @@ export const OptionQuestionEditMode = ({
                       )}
                     />
                   </div>
-                  <div style={{ height: 28 }} {...provided.dragHandleProps}>
+                  <div
+                    className="question-drag-handle"
+                    {...provided.dragHandleProps}
+                  >
                     <DragIcon
                       className={classNames('text-secondary fill-current', {
                         'd-none': !isFocused,
@@ -170,6 +175,19 @@ export const OptionQuestionEditMode = ({
                       showToolbar={true}
                     />
                   </div>
+                  {showAssessmentValue && (
+                    <AssessmentValueInput
+                      assessmentValue={child.assessmentValue}
+                      answerCode={child.code}
+                      onChange={(e) =>
+                        handleChildAssessmentValueUpdate({
+                          newAssessmentValue: e.target.value,
+                          childIndex: index,
+                          childArray: _children,
+                        })
+                      }
+                    />
+                  )}
                 </div>
               </div>
             )}

@@ -224,6 +224,26 @@ abstract class Response extends Dynamic
         return array($success, $errors);
     }
 
+    /**
+     * Check if any question of this response has a value. The response meta data (dates, language, token, seed, ...) is ignored.
+     * Empty values are not encrypted, so the check works with encrypted values too.
+     * @return boolean
+     */
+    public function hasAnswers()
+    {
+        $survey = Survey::model()->findByPk($this->dynamicId);
+        foreach (createFieldMap($survey, 'short', false, false) as $field) {
+            if (empty($field['qid'])) {
+                continue;
+            }
+            $value = $this->getAttribute($field['fieldname']);
+            if (!is_null($value) && $value !== '') {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function delete($deleteFiles = false)
     {
         if ($deleteFiles) {
