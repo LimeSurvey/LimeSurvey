@@ -23,7 +23,7 @@ class ValidatorEmpty implements ValidatorInterface
         $config[$this->name] = $this->normaliseConfigValue($config);
         $messages = [];
         if (empty($value) && $config[$this->name] === false) {
-            $messages[] = sprintf(gT('%s cannot be empty', 'unescaped'), $key);
+            $messages[] = sprintf(gT('%s cannot be left empty.', 'unescaped'), $key);
         }
 
         return empty($messages) ? true : $messages;
