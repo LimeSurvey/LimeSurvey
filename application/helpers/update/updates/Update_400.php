@@ -11,11 +11,16 @@ class Update_400 extends DatabaseUpdateBase
     public function up()
     {
         if ($this->db->driverName == 'mysql') {
-            $this->db->createCommand(
-                "ALTER DATABASE `" . getDBConnectionStringProperty(
-                    'dbname'
-                ) . "` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-            );
+            try {
+                $this->db->createCommand(
+                    "ALTER DATABASE `" . getDBConnectionStringProperty(
+                        'dbname'
+                    ) . "` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+                )->execute();
+            } catch (\Exception $e) {
+                // Missing ALTER privilege on the database: Tables are created with explicit charset options anyway
+            }
+            fixMySQLConfigCharset();
         }
 
         // Question table

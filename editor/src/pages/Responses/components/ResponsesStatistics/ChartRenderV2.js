@@ -43,6 +43,7 @@ import {
   CHOICE_QUESTION_TYPES,
   TEXT_QUESTION_TYPES,
   getSegmentedCategories,
+  statisticsGraphs,
   VALUE_TYPE,
   wrapTerm,
 } from './ChartsUtils.js'
@@ -307,8 +308,26 @@ const writeHiddenCharts = (hidden) => {
 const getStorageKey = (surveyId, chartId, index) =>
   `${surveyId ?? 'unknown'}:${chartId ?? `index-${index}`}`
 
-const getDefaultView = (availableViews, viewContext) => {
+// statistics_graphtype question setting → views it selects, first available wins.
+const GRAPH_VIEWS = {
+  [statisticsGraphs.BAR_CHART]: [VIEW.BAR_CHART],
+  [statisticsGraphs.PIE_CHART]: [VIEW.PIE_CHART],
+  [statisticsGraphs.RADAR]: [VIEW.RADAR],
+  [statisticsGraphs.LINE]: [VIEW.LINE],
+  [statisticsGraphs.POLAR_AREA]: [VIEW.POLAR_AREA],
+  [statisticsGraphs.DOUGHNUT_CHART]: [VIEW.DOUGHNUT, VIEW.STACKED_DOUGHNUT],
+  [statisticsGraphs.STACKED_BAR]: [VIEW.STACKED_BAR],
+  [statisticsGraphs.GROUPED_BAR]: [VIEW.GROUPED_BAR],
+  [statisticsGraphs.GRID]: [VIEW.GRID],
+  [statisticsGraphs.TABLE]: [VIEW.TABLE],
+  [statisticsGraphs.COMMENTS]: [VIEW.COMMENTS],
+}
+
+const getDefaultView = (availableViews, viewContext, chartType) => {
   const preferredViews = [
+    // Ranking opens on the table; only the table breaks down the ranked places.
+    viewContext.isRanking && VIEW.TABLE,
+    ...(GRAPH_VIEWS[chartType] ?? []),
     viewContext.isArrayText && VIEW.TABLE,
     viewContext.isArray && !viewContext.isArrayNumbers && VIEW.STACKED_BAR,
     viewContext.isNumerical && VIEW.TABLE,
@@ -348,6 +367,7 @@ export const ChartRendererV2 = ({
 }) => {
   const isNumerical = question?.type === QT_N_NUMERICAL
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
+  const isRanking = isRankingQuestion(question?.themeName)
   const isFileUpload = question?.type === QT_VERTICAL_FILE_UPLOAD
   const isGridable =
     isNumerical ||
@@ -360,7 +380,6 @@ export const ChartRendererV2 = ({
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
-  const isRanking = isRankingQuestion(question?.themeName)
   const hasComments = isCommentQuestionType(question?.type)
   const isChoice = CHOICE_QUESTION_TYPES.includes(question?.type)
   const isArray = (data ?? []).some((item) => Array.isArray(item?.segments))
@@ -397,7 +416,7 @@ export const ChartRendererV2 = ({
     ({ isAvailable }) => isAvailable?.(viewContext) ?? true
   )
   const [view, setView] = useState(() =>
-    getDefaultView(availableViews, viewContext)
+    getDefaultView(availableViews, viewContext, question?.chartType)
   )
   // `menuOnly` hides a view from the quick toggle (it stays in the meatball
   // menu); it can be a flag or a predicate of the view context.
@@ -431,17 +450,14 @@ export const ChartRendererV2 = ({
 
   const storageKey = getStorageKey(surveyId, chartId, index)
   const [isHidden, setIsHidden] = useState(
-    () => !!readHiddenCharts()[storageKey]
+    () =>
+      readHiddenCharts()[storageKey] ??
+      String(question?.chartType) === String(statisticsGraphs.DONT_SHOW)
   )
 
+  // Stored both ways so showing a "Don't show" chart sticks.
   const setHidden = (hidden) => {
-    const hiddenCharts = readHiddenCharts()
-    if (hidden) {
-      hiddenCharts[storageKey] = true
-    } else {
-      delete hiddenCharts[storageKey]
-    }
-    writeHiddenCharts(hiddenCharts)
+    writeHiddenCharts({ ...readHiddenCharts(), [storageKey]: hidden })
     setIsHidden(hidden)
   }
 
@@ -505,6 +521,16 @@ export const ChartRendererV2 = ({
                     </TooltipContainer>
                   )
                 )}
+              </div>
+            )}
+            {isRanking && activeView?.value === VIEW.BAR_CHART && (
+              <div className="responses-statistics-chart-subtitle responses-statistics-chart-info">
+                <i className="ri-information-line" aria-hidden="true"></i>
+                <span>
+                  {t(
+                    'The bar chart shows each option’s average rank, calculated by adding all the ranks it received and dividing the total by the number of times this option was ranked. A lower average means a better ranking.'
+                  )}
+                </span>
               </div>
             )}
             <div>{activeView?.render(renderContext)}</div>

@@ -330,4 +330,13 @@ class EncryptAttributesTest extends TestBaseClass
             $updatedValuesProperty->setValue($LEM, $originalUpdatedValues);
         }
     }
+
+    /**
+     * A survey that no longer exists has no encrypted attributes (e.g. when
+     * the data integrity check archives the responses table of a deleted survey).
+     */
+    public function testGetEncryptedAttributesOfMissingSurveyIsEmpty()
+    {
+        $this->assertSame([], \Response::getEncryptedAttributes(999999999));
+    }
 }

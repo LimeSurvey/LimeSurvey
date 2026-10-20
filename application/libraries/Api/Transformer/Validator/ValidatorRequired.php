@@ -28,7 +28,7 @@ class ValidatorRequired implements ValidatorInterface
             $config[$this->name]
             && !array_key_exists($key, $data)
         ) {
-            $messages[] = $key . ' is required';
+            $messages[] = sprintf(gT('%s is required', 'unescaped'), $key);
         }
 
         return empty($messages) ? true : $messages;

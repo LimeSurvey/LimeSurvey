@@ -1055,10 +1055,10 @@ function LEMval(alias)
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
                     if (attr.type == 'O' && varName.match(/comment$/)) {
-                        answer = htmlentities(value);
+                        answer = htmlspecialchars(value);
                     }
                     else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
-                        answer = htmlentities(value);
+                        answer = htmlspecialchars(value);
                     } else if (attr.type == 'R') {
                         if (value) {
                             let context = document.getElementById(whichJsName);
@@ -1109,7 +1109,7 @@ function LEMval(alias)
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                        shown = htmlentities(value);
+                        shown = htmlspecialchars(value);
                     break;
                 case 'M': //Multiple choice checkbox
                 case 'P': //Multiple choice with comments checkbox + text
@@ -1123,7 +1123,7 @@ function LEMval(alias)
                                 shown = parseFloat(numtest.valueOf());
                             }
                             catch(e) {
-                                shown = htmlentities(value);
+                                shown = htmlspecialchars(value);
                             }
                         }
                         else {
@@ -1167,7 +1167,7 @@ function LEMval(alias)
             if (value === '') {
                 return '';
             }
-            // Always htmlentities user entered values, see #13928
+            // Always encode HTML special chars in user entered values, see #13928
             switch(attr.type)
             {
                 case '!': //List - dropdown
@@ -1177,10 +1177,10 @@ function LEMval(alias)
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
                     if (attr.type == 'O' && varName.match(/comment$/)) {
-                        value = htmlentities(value);
+                        value = htmlspecialchars(value);
                     }
                     else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
-                        value = htmlentities(value);
+                        value = htmlspecialchars(value);
                     }
                     break;
                 case 'N': //NUMERICAL QUESTION TYPE
@@ -1192,13 +1192,13 @@ function LEMval(alias)
                 case 'U': //HUGE FREE TEXT
                 case 'D': //DATE
                 case '*': //Equation
-                case '|': //File Upload (unsure need to be htmlentities ?)
-                        value = htmlentities(value);
+                case '|': //File Upload (unsure need to be encoded ?)
+                        value = htmlspecialchars(value);
                     break;
                 case 'M': //Multiple choice checkbox
                 case 'P': //Multiple choice with comments checkbox + text
                     if (attr.type == 'P' && varName.match(/comment$/)) {
-                        value = htmlentities(value);
+                        value = htmlspecialchars(value);
                     }
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons

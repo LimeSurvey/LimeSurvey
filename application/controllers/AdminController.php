@@ -15,6 +15,9 @@
 
 class AdminController extends LSYii_Controller
 {
+    /** Example admin modules removed from the release: Leftovers in installations upgraded over an older release are not loaded */
+    private const REMOVED_EXAMPLE_ADMIN_MODULES = ['HelloWorld', 'globalsettings'];
+
     public $sTemplate = null; // this is needed for the preview rendering inside the questioneditor
     public $layout = false;
     public $aAdminModulesClasses = array();
@@ -217,7 +220,8 @@ class AdminController extends LSYii_Controller
                 $this->currentModuleAction = $action; // For subviews rendering, see: AdminController::renderPartial()
 
                 // Since module's class has the same name has core class, we need to load the core and module classes with namespace
-                Yii::import('application\\controllers\\admin\\' . $action, true);
+                // The core class is loaded by its file name, which can differ in case from the action ID
+                Yii::import($aOverridenCoreActions[$action]['core'], true);
                 $sActionModuleClass = 'lsadminmodules\\' . $action . '\controller\\' . $action;
                 Yii::import($sActionModuleClass, true);
             }
@@ -245,13 +249,15 @@ class AdminController extends LSYii_Controller
         if (!empty($this->currentModuleAction)) {
           // Standard: the views are stored in a folder that has the same name as the controller file.
           // TODO: check if it is the case for all controllers, if not normalize it, so 3rd party coder can easily extend any LS Core controller/action/view.
-            $sParsedView = explode(DIRECTORY_SEPARATOR, $view);
+          // Views of the action are rendered as /admin/<action>/<view>, its subviews as ./<action>/<view>
+            $sView = preg_replace('#^/admin/#', './', $view);
+            $sParsedView = explode('/', $sView);
             $sAction = (empty($sParsedView[1])) ? '' : $sParsedView[1];
 
           // We allow a module to override only the controller views.
             if ($sAction == $this->currentModuleAction) {
               // Convert the view path to module view alias .
-                $sModulePath = 'lsadminmodules.' . $sAction . '.views' . substr(ltrim(str_replace(DIRECTORY_SEPARATOR, '.', $view), '.'), strlen($sAction)) ;
+                $sModulePath = 'lsadminmodules.' . $sAction . '.views' . substr(ltrim(str_replace('/', '.', $sView), '.'), strlen($sAction)) ;
 
                 if (file_exists(\Yii::getPathOfAlias($sModulePath) . '.php')) {
                     $view = $sModulePath;
@@ -299,20 +305,27 @@ class AdminController extends LSYii_Controller
      * This function is very similar to AdminController::actions()
      * Routes all the modules actions to their respective places
      *
+     * A module overriding a core action declares its class in the lsadminmodules\<action>\controller namespace,
+     * a module adding a new action declares a global class.
+     *
      * todo REFACTORING we don't have to refactore this method ...
      *
      * @access public
-     * @return array
+     * @return array Action IDs mapped to the class name or path alias of the module action class
      */
     public function getModulesActions()
     {
         $aActions = $this->getAdminModulesActionClasses();
-        $aAdminModulesClasses = array();
+        $aCoreActions = $this->getActionClasses();
 
       // lsadminmodules alias is defined in AdminController::init()
       // Notice that the file and the directory name must be the same.
         foreach ($aActions as $action => $class) {
-            $aActions[$action] = 'lsadminmodules\\' . $action . '\controller\\' . $action;
+            if (isset($aCoreActions[$action])) {
+                $aActions[$action] = 'lsadminmodules\\' . $action . '\controller\\' . $action;
+            } else {
+                $aActions[$action] = 'lsadminmodules.' . $action . '.controller.' . $action;
+            }
         }
 
         return $aActions;
@@ -348,7 +361,7 @@ class AdminController extends LSYii_Controller
             'export'           => 'Export',
             'expressions'      => 'Expressions',
             'validate'         => 'ExpressionValidate',
-            'globalsettings'   => 'GlobalSettings',
+            'globalsettings'   => 'globalsettings',
             'htmleditorpop'    => 'HtmlEditorPop',
             'surveysgroups'    => 'SurveysGroupsController',
             'limereplacementfields' => 'limereplacementfields',
@@ -379,7 +392,9 @@ class AdminController extends LSYii_Controller
      * This function returns an array similar to getActionClasses()
      * It will generate it by reading the directories names inside of lsadminmodulesrootdir
      * So, by convention, admin module action class must be identical to directory name
+     * The example modules of older releases are skipped, see REMOVED_EXAMPLE_ADMIN_MODULES
      *
+     * @return array Admin module names, indexed by module name
      */
     public function getAdminModulesActionClasses()
     {
@@ -387,13 +402,15 @@ class AdminController extends LSYii_Controller
       // This function is called at least twice by page load. Once from AdminController, another one by SurveyCommonAction
         if (empty($this->aAdminModulesClasses)) {
             $aAdminModulesClasses = array();
-            $slsadminmodules = new DirectoryIterator(Yii::app()->getConfig('lsadminmodulesrootdir'));
-            Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir'));
+            $sAdminModulesRootDir = Yii::app()->getConfig('lsadminmodulesrootdir');
+            Yii::setPathOfAlias('lsadminmodules', $sAdminModulesRootDir);
 
-            foreach ($slsadminmodules as $fileinfo) {
-                if ($fileinfo->isDir() && !$fileinfo->isDot()) {
-                    $sModuleName =  $fileinfo->getFilename();
-                    $aAdminModulesClasses[$sModuleName] = $sModuleName;
+            if (is_dir($sAdminModulesRootDir)) {
+                foreach (new DirectoryIterator($sAdminModulesRootDir) as $fileinfo) {
+                    if ($fileinfo->isDir() && !$fileinfo->isDot() && !in_array($fileinfo->getFilename(), self::REMOVED_EXAMPLE_ADMIN_MODULES)) {
+                        $sModuleName =  $fileinfo->getFilename();
+                        $aAdminModulesClasses[$sModuleName] = $sModuleName;
+                    }
                 }
             }
             $this->aAdminModulesClasses = $aAdminModulesClasses;
