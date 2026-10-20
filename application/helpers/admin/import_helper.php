@@ -5177,6 +5177,10 @@ function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQ
 
 /**
  * Fixes old fieldname references
+ *
+ * Field roots that don't occur in the text are skipped, because collecting the
+ * matching questions for every root would make large survey imports very slow.
+ *
  * @param mixed $convertedValue the input
  * @param mixed $allImportedQuestions the cached questions
  * @param mixed $oldNewFieldRoot the old and new fieldname mappings in the old format
@@ -5188,6 +5192,10 @@ function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot)
         return $convertedValue;
     }
     foreach ($oldNewFieldRoot as $old => $new) {
+        // Nothing to replace for this root: Skip the expensive question lookup below
+        if (strpos($convertedValue, (string) $old) === false && strpos($convertedValue, (string) $new) === false) {
+            continue;
+        }
         $parts = explode("X", $new);
         $sid = $parts[0];
         $gid = $parts[1];
