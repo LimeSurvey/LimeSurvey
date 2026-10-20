@@ -4,6 +4,7 @@ namespace LimeSurvey\Models\Services;
 
 use LSWebUser;
 use Permission;
+use Permissiontemplates;
 use User;
 use LimeSurvey\Datavalueobjects\OperationResult;
 use LimeSurvey\Datavalueobjects\TypedMessage;
@@ -60,11 +61,113 @@ class UserManager
      */
     public function canAssignRole()
     {
+        if (empty($this->managingUser) || empty($this->targetUser)) {
+            return false;
+        }
+        if (Permission::model()->hasGlobalPermission('superadmin', 'create', $this->managingUser->id)) {
+            return true;
+        }
+        /* Roles replace the individual permissions: Only a user allowed to create superadmins can update roles of a superadmin */
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read', $this->targetUser->uid)) {
+            return false;
+        }
+        return $this->canAssignPermissions();
+    }
+
+    /**
+     * Returns the roles the managing user is allowed to assign or to remove.
+     * A role is assignable if the managing user has all the permissions given by the role.
+     * @return Permissiontemplates[] indexed by role id
+     */
+    public function getAssignableRoles(): array
+    {
+        if (empty($this->managingUser)) {
+            return [];
+        }
+        $assignableRoles = [];
+        foreach (Permissiontemplates::model()->findAll() as $role) {
+            if ($this->isRoleAssignable($role)) {
+                $assignableRoles[$role->ptid] = $role;
+            }
+        }
+        return $assignableRoles;
+    }
+
+    /**
+     * Returns true if the managing user has all the permissions given by the role.
+     * Roles with any superadmin permission need superadmin/create permission.
+     * @param Permissiontemplates $role
+     * @return bool
+     */
+    public function isRoleAssignable(Permissiontemplates $role): bool
+    {
         if (empty($this->managingUser)) {
             return false;
         }
-        /* roles can have superadmin permission, then need superadmin/create permission */
-        return Permission::model()->hasGlobalPermission('superadmin', 'create', $this->managingUser->id);
+        $managingUserId = $this->managingUser->id;
+        if (Permission::model()->hasGlobalPermission('superadmin', 'create', $managingUserId)) {
+            return true;
+        }
+        $rolePermissions = Permission::model()->findAllByAttributes([
+            'entity' => 'role',
+            'entity_id' => $role->ptid,
+        ]);
+        foreach ($rolePermissions as $rolePermission) {
+            foreach (['create', 'read', 'update', 'delete', 'import', 'export'] as $crud) {
+                if (empty($rolePermission->getAttribute($crud . '_p'))) {
+                    continue;
+                }
+                if ($rolePermission->permission == 'superadmin') {
+                    return false;
+                }
+                if (!Permission::model()->hasGlobalPermission($rolePermission->permission, $crud, $managingUserId)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Returns true if the target user has any individual global permission set.
+     * These permissions are removed when roles are assigned.
+     * @return bool
+     */
+    public function hasIndividualGlobalPermissions(): bool
+    {
+        if (empty($this->targetUser)) {
+            return false;
+        }
+        $criteria = new \CDbCriteria();
+        $criteria->compare('uid', $this->targetUser->uid);
+        $criteria->compare('entity', 'global');
+        $criteria->addCondition('create_p = 1 OR read_p = 1 OR update_p = 1 OR delete_p = 1 OR import_p = 1 OR export_p = 1');
+        return Permission::model()->exists($criteria);
+    }
+
+    /**
+     * Set the roles of the target user, replacing the current ones.
+     * Roles replace the individual global permissions, then these are deleted when the user has or had roles:
+     * A user losing their last role doesn't get back their previous individual permissions.
+     * Permission checks are not done here.
+     * @param int[] $roleIds
+     * @return bool
+     */
+    public function setRoles(array $roleIds): bool
+    {
+        if (empty($this->targetUser)) {
+            return false;
+        }
+        $userId = $this->targetUser->uid;
+        $hadRoles = !empty(Permission::getUserRole($userId));
+        $success = Permissiontemplates::model()->clearUser($userId);
+        foreach (array_unique($roleIds) as $roleId) {
+            $success = Permissiontemplates::model()->applyToUser($userId, (int) $roleId) && $success;
+        }
+        if ($hadRoles || !empty($roleIds)) {
+            Permission::model()->deleteAllByAttributes(['uid' => $userId, 'entity' => 'global']);
+        }
+        return $success;
     }
 
     /**

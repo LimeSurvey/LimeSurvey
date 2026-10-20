@@ -2360,8 +2360,10 @@ function tokensExport($iSurveyID)
     $iInvitationStatus = App()->request->getPost('invitationstatus');
     $iReminderStatus = App()->request->getPost('reminderstatus');
     $sTokenLanguage = App()->request->getPost('tokenlanguage');
+    $bIncludeSurveyLink = (bool) App()->request->getPost('includesurveylink', 0);
 
     $oSurvey = Survey::model()->findByPk($iSurveyID);
+    $aSurveyLanguages = $oSurvey->getAllLanguages();
     $bIsNotAnonymous = ($oSurvey->anonymized == 'N' && $oSurvey->active == 'Y'); // db table exist (responses_$iSurveyID) ?
     $bIsDateStamped = ($oSurvey->datestamp == 'Y' && $oSurvey->active == 'Y'); // db table exist (responses_$iSurveyID) ?
     $attrfieldnames = getAttributeFieldNames($iSurveyID);
@@ -2453,6 +2455,9 @@ function tokensExport($iSurveyID)
             $tokenoutput .= " <" . str_replace(",", " ", (string) $attrfielddescr[$attr_name]['description']) . ">";
         }
     }
+    if ($bIncludeSurveyLink) {
+        $tokenoutput .= ',surveylink';
+    }
     $tokenoutput .= "\n";
     echo $tokenoutput;
     $tokenoutput = "";
@@ -2490,6 +2495,12 @@ function tokensExport($iSurveyID)
             if ($bFilterEmailAfterDecrypt && mb_stripos((string) $brow['email'], $sEmailFiter) === false) {
                 continue;
             }
+            // The link is built before the masking to use the unchanged access code
+            $surveyLink = '';
+            if ($bIncludeSurveyLink && (string) $brow['token'] !== '') {
+                $language = in_array($brow['language'], $aSurveyLanguages) ? $brow['language'] : $oSurvey->language;
+                $surveyLink = $oSurvey->getSurveyUrl($language, ['token' => $brow['token']]);
+            }
             if (Yii::app()->request->getPost('maskequations')) {
                 $brow = array_map('MaskFormula', $brow);
             }
@@ -2521,6 +2532,9 @@ function tokensExport($iSurveyID)
             }
             foreach ($attrfieldnames as $attr_name) {
                 $tokenoutput .= '"' . str_replace('"', '""', trim((string) $brow[$attr_name])) . '",';
+            }
+            if ($bIncludeSurveyLink) {
+                $tokenoutput .= '"' . str_replace('"', '""', $surveyLink) . '",';
             }
             $tokenoutput = substr($tokenoutput, 0, -1); // remove last comma
             $tokenoutput .= "\n";
