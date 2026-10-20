@@ -220,7 +220,8 @@ class AdminController extends LSYii_Controller
                 $this->currentModuleAction = $action; // For subviews rendering, see: AdminController::renderPartial()
 
                 // Since module's class has the same name has core class, we need to load the core and module classes with namespace
-                Yii::import('application\\controllers\\admin\\' . $action, true);
+                // The core class is loaded by its file name, which can differ in case from the action ID
+                Yii::import($aOverridenCoreActions[$action]['core'], true);
                 $sActionModuleClass = 'lsadminmodules\\' . $action . '\controller\\' . $action;
                 Yii::import($sActionModuleClass, true);
             }
@@ -248,13 +249,15 @@ class AdminController extends LSYii_Controller
         if (!empty($this->currentModuleAction)) {
           // Standard: the views are stored in a folder that has the same name as the controller file.
           // TODO: check if it is the case for all controllers, if not normalize it, so 3rd party coder can easily extend any LS Core controller/action/view.
-            $sParsedView = explode(DIRECTORY_SEPARATOR, $view);
+          // Views of the action are rendered as /admin/<action>/<view>, its subviews as ./<action>/<view>
+            $sView = preg_replace('#^/admin/#', './', $view);
+            $sParsedView = explode('/', $sView);
             $sAction = (empty($sParsedView[1])) ? '' : $sParsedView[1];
 
           // We allow a module to override only the controller views.
             if ($sAction == $this->currentModuleAction) {
               // Convert the view path to module view alias .
-                $sModulePath = 'lsadminmodules.' . $sAction . '.views' . substr(ltrim(str_replace(DIRECTORY_SEPARATOR, '.', $view), '.'), strlen($sAction)) ;
+                $sModulePath = 'lsadminmodules.' . $sAction . '.views' . substr(ltrim(str_replace('/', '.', $sView), '.'), strlen($sAction)) ;
 
                 if (file_exists(\Yii::getPathOfAlias($sModulePath) . '.php')) {
                     $view = $sModulePath;
