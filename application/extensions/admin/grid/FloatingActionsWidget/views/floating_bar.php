@@ -24,7 +24,7 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
     </span>
     <div class="floating-actions-separator" role="separator" aria-hidden="true"></div>
 
-    <?php if ($selectAllUrl): ?>
+    <?php if ($selectAllUrl || $this->lsSelectAllEnabled): ?>
         <!-- Separator before "Select all" -->
         <!-- Select all button -->
         <button

@@ -64,10 +64,15 @@ ul.bootstrap-buttons-list .btn {
     padding-right: 0;
 }
 
+/*
+ * The label text is an anonymous flex item that can't shrink below its longest word,
+ * so break overly long words (e.g. German compounds) instead of letting them overflow the button.
+ */
 .bootstrap-buttons-div .btn {
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow-wrap: anywhere;
 }
 
 .bootstrap-buttons-div .btn > :last-child {

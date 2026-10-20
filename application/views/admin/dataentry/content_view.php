@@ -496,6 +496,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 break;
 
             case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+            case Question::QT_J_MAP:
                 ?>
             <div class="col-md-10">
                 <?php

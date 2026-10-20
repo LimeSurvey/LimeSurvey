@@ -2,7 +2,7 @@
 <div class="jumbotron message-box message-box-warning">
     <h2><?php eT("Warning"); ?></h2>
     <?php echo CHtml::form(array("admin/tokens/sa/email/action/{$sSubAction}/surveyid/{$surveyid}"), 'post', ['id' => 'tokenSubmitInviteForm']); ?>
-        <span id="tokenSendNotice"><?php printf(ngT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s{n}%s second.|There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s{n}%s seconds.", Yii::app()->getConfig('sendingrate')), '<span id="tokenSendCounter">', '</span>'); ?></span>
+        <span id="tokenSendNotice"><?php printf(gTPlural("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s%d%s second.", "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s%d%s seconds.", Yii::app()->getConfig('sendingrate')), '<span id="tokenSendCounter">', Yii::app()->getConfig('sendingrate'), '</span>'); ?></span>
         <br />
         <br />
         <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, (string) gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
@@ -70,7 +70,7 @@
             aria-valuemin="0" 
             aria-valuemax="100" 
             style="width:100%">
-            <span class="visually-hidden"><?php neT("{n} second to go|{n} seconds to go", Yii::app()->getConfig('sendingrate')); ?></span>
+            <span class="visually-hidden"><?php printf(gTPlural("%d second to go", "%d seconds to go", Yii::app()->getConfig('sendingrate')), Yii::app()->getConfig('sendingrate')); ?></span>
         </div>
     </div>
 </div>

@@ -51,7 +51,7 @@ function CheckForDBUpgrades($subaction = null)
                             'htmlOptions' => ['class' => "flash-$key"]
                         ], true) . "\n";
                 }
-                $data = $msg . "<p><a href='" . Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db") . "'>" . gT("Please fix this error in your database and try again") . "</a></p></div> ";
+                $data = $msg . "<p><a href='" . Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db") . "'>" . gT("Back to the database update page") . "</a></p></div> ";
             }
             return $data;
         } else {

@@ -5,8 +5,6 @@ var LS = LS || {
 $(document).on('ready  pjax:scriptcomplete', function(){
     wireAddUserGroupForm();
 
-    $(':checkbox:not(:checked)[data-indeterminate=1]').prop('indeterminate', true)
-
     $(".surveysecurity").tablesorter({
         widgets: ['zebra'],
         sortList: [[2,0]],
