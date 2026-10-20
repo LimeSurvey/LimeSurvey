@@ -179,67 +179,38 @@ But good news: LimeSurvey is OpenSource. So if you feel blocked because the sign
 
 ### Override the views
 
-We made admin views override very simple for module. You just have to copy paste the views in your local module. If you have a look to the folders **/modules/admin/globalsettings/views** , you can see it contains 3 files:
-```
-[HelloWorld.php]
-[_overview.php]
-[globalSettings_view.php]
-```
-https://github.com/LimeSurvey/LimeSurvey/tree/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/views
+Admin views are easy to override from a module: copy a core view into the **views** directory of your module, using the same file name, and the module copy is rendered instead of the core one. This works for every view the overridden controller renders through renderWrappedTemplate(), see renderCentralContents() in the module controller.
 
-**_overview.php** and **globalSettings_view.php** has been copy/paste from core views:
-https://github.com/LimeSurvey/LimeSurvey/tree/98df1afb094077995e2e3b4426a4b64d06d20d60/application/views/admin/globalsettings
+This example module only ships its own **HelloWorld.php** view. It does not override the core global settings views, because a copy shipped with every installation replaces the real global settings page and stops receiving the changes made to the core views.
 
-Now, the views from the module are the one rendered, not the views from the core. To make it clear, we added an alert in the module views.
-
-In globalSettings_view.php:
+To try it, copy **_overview.php** and **globalSettings_view.php** from **application/views/admin/globalsettings/** to **modules/admin/globalsettings/views/**. Then, in globalSettings_view.php, pass $myNewParam to the subview _overview.php:
 ```php
-<?php if(YII_DEBUG ): ?>
-  <p class="alert alert-info "> This view is rendered from the global settings module. This message is shown only when debug mode is on. </p>
-<?php endif;?>
+$this->renderPartial(
+    "./globalsettings/_overview",
+    [
+        'usercount'          => $usercount,
+        'surveycount'        => $surveycount,
+        'activesurveycount'  => $activesurveycount,
+        'deactivatedsurveys' => $deactivatedsurveys,
+        'activetokens'       => $activetokens,
+        'deactivatedtokens'  => $deactivatedtokens,
+        // Here, we pass to the subview the new parameter
+        'myNewParam'         => $myNewParam,
+    ]
+);
 ```
-https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/views/globalSettings_view.php#L15-L17
-
-In _overview.php :
-```php
-<?php if(YII_DEBUG ): ?>
-  <p class="alert alert-info "> This subview is rendered from global settings module. This message is shown only when debug mode is on. </p>
-<?php endif;?>
-```
-https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/views/_overview.php#L15-L17
-
-If debug mode is on, it will show you an alert that tells you those views are the one from the module.
-
-Then, in  globalSettings_view.phop, we add the parameter $myNewParam to the data passed to the view  _overview.php
-```php
-$this->renderPartial("./globalsettings/_overview", array(
-    'usercount'=>$usercount,
-    'surveycount'=>$surveycount,
-    'activesurveycount'=>$activesurveycount,
-    'deactivatedsurveys'=>$deactivatedsurveys,
-    'activetokens'=>$activetokens,
-    'deactivatedtokens'=>$deactivatedtokens,
-    // Here, we pass to the subview the new parameter
-    'myNewParam'=>$myNewParam,
-  )
-```
-https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/views/globalSettings_view.php#L40-L51
 
 That's a bit annoying. Would be better if all the data was passed to the subviews, so we would avoid to force third party coder to override the main views. Again: if you face this situation, you can make a PR, so step by step LimeSurvey become more modular.
 
-Now, in _overview.php, we show that data:
+Now, in _overview.php, show that data:
 ```php
-    <?php if(YII_DEBUG ): ?>
-      <!-- If debug mode is on, we show the new parameter -->
-      <tr>
-          <th >Value of myNewParam :</th><td><?php echo $myNewParam; ?></td>
-      </tr>
-    <?php endif;?>
+<tr>
+    <th>Value of myNewParam:</th>
+    <td><?php echo CHtml::encode($myNewParam); ?></td>
+</tr>
 ```
-https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/views/_overview.php#L39-L44
 
-Now, if debug mode is on, you should see:
-![Full page Global Settings view overridden](https://account.limesurvey.org/images/github/global-setting-views-override.png)
+Keep in mind that your copies do not receive later changes made to the core views, so only copy the views you really need to change.
 
 ## Conclusion
 
