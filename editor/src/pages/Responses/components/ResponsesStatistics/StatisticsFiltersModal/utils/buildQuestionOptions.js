@@ -23,7 +23,8 @@ const EXCLUDED_TYPES = ['X', '*']
 // metadata, not a plain answer, so filtering it makes no sense.
 const isFilterableQuestion = (question) =>
   !EXCLUDED_TYPES.includes(question.type) &&
-  question.questionThemeName !== getQuestionTypeInfo().BROWSER_DETECTION.theme &&
+  question.questionThemeName !==
+    getQuestionTypeInfo().BROWSER_DETECTION.theme &&
   question.encrypted !== true &&
   question.encrypted !== 'Y'
 
