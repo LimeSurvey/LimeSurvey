@@ -2476,21 +2476,13 @@ class Tokens extends SurveyCommonAction
                         }
 
                         if ($bFilterDuplicateToken) {
-                            $aParams = array();
-                            $oCriteria = new CDbCriteria();
-                            $oCriteria->condition = "";
-
-                            // @todo If a field is encrypted, then the condition value also needs to be encrypted before comparison
+                            $aDuplicateAttributes = array();
                             foreach ($aFilterDuplicateFields as $field) {
                                 if (isset($aWriteArray[$field])) {
-                                    $oCriteria->addCondition("{$field} = :{$field}");
-                                    $aParams[":{$field}"] = $aWriteArray[$field];
+                                    $aDuplicateAttributes[$field] = $aWriteArray[$field];
                                 }
                             }
-                            if (!empty($aParams)) {
-                                $oCriteria->params = $aParams;
-                            }
-                            $dupresult = TokenDynamic::model($iSurveyId)->count($oCriteria);
+                            $dupresult = TokenDynamic::model($iSurveyId)->countByUnencryptedAttributes($aDuplicateAttributes);
                             if ($dupresult > 0) {
                                 $bDuplicateFound = true;
                                 $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s)"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']));
