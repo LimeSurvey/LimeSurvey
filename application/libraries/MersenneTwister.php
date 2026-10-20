@@ -2,6 +2,8 @@
 
 namespace ls\mersenne;
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * Set seed for this response
  * If there is no seed, create a new one
@@ -12,9 +14,10 @@ namespace ls\mersenne;
  */
 function setSeed($surveyid, $survey = null)
 {
+    $sessionState = SurveySessionState::forSurvey((int) $surveyid);
     /* In started survey : get seed from response table */
-    if (isset($_SESSION['responses_' . $surveyid]['srid'])) {
-        $oResponse = \Response::model($surveyid)->findByPk($_SESSION['responses_' . $surveyid]['srid']);
+    if ($sessionState->getResponseId() !== null) {
+        $oResponse = \Response::model($surveyid)->findByPk($sessionState->getResponseId());
         $seed = $oResponse->seed;
         /* fix empty seed, this allow broken seed (not number) */
         if (empty($seed)) {
@@ -31,7 +34,7 @@ function setSeed($surveyid, $survey = null)
         if ($survey->getIsActive()) {
             $table = \Yii::app()->db->schema->getTable('{{responses_' . $surveyid . '}}');
             if (isset($table->columns['seed'])) {
-                $_SESSION['responses_' . $surveyid]['startingValues']['seed'] = $seed;
+                $sessionState->setStartingValue('seed', $seed);
             }
         }
     }

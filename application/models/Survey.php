@@ -13,6 +13,7 @@
 *
 */
 
+use LimeSurvey\Models\Services\SurveySessionState;
 use LimeSurvey\Models\Services\SurveyUseCaptcha;
 use LimeSurvey\PluginManager\PluginEvent;
 
@@ -438,8 +439,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sLang = Yii::app()->request->getParam('lang');
         } else {
             // SESSION
-            if (isset(Yii::app()->session['responses_' . $this->sid]['s_lang'])) {
-                $sLang = Yii::app()->session['responses_' . $this->sid]['s_lang'];
+            $sessionLanguage = SurveySessionState::forSurvey((int) $this->sid)->getLanguage();
+            if ($sessionLanguage !== null) {
+                $sLang = $sessionLanguage;
             }
         }
         return $sLang;

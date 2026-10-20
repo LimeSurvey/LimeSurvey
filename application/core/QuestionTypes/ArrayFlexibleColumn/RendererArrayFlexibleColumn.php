@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Array by column Question
  *  * The ia Array contains the following
@@ -66,8 +68,8 @@ class RendererArrayFlexibleColumn extends QuestionBaseRenderer
         $coreClass = "ls-answers subquestion-list questions-list array-radio";
         $checkconditionFunction = "checkconditions";
 
-        $sSessionKey = 'responses_' . Yii::app()->getConfig('surveyID');
-        $sSurveyLanguage = $_SESSION[$sSessionKey]['s_lang'];
+        $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
+        $sSurveyLanguage = $sessionState->getLanguage();
         // Answer options are always ordered by sortorder and code, the ordering service is not used here
         $aAnswers = Answer::model()->findAll(array('order' => 'sortorder, code', 'condition' => 'qid=:qid AND scale_id=0', 'params' => array(':qid' => $this->oQuestion->qid)));
 
@@ -158,19 +160,19 @@ class RendererArrayFlexibleColumn extends QuestionBaseRenderer
                 $myfname = $this->sSGQA . "_S" . $ld;
                 $aData['aQuestions'][$j]['myfname'] = $myfname;
                 if (
-                    isset($_SESSION[$sSessionKey][$myfname]) &&
-                    $_SESSION[$sSessionKey][$myfname] === $ansrow['code'] &&
+                    $sessionState->hasFieldValue($myfname) &&
+                    $sessionState->getFieldValue($myfname) === $ansrow['code'] &&
                     ($ansrow['code'] !== '' || PRESELECT_NO_ANSWER)
                 ) {
                     $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                 } elseif (
-                    !isset($_SESSION[$sSessionKey][$myfname]) &&
+                    !$sessionState->hasFieldValue($myfname) &&
                     $ansrow['code'] == '' &&
                     PRESELECT_NO_ANSWER
                 ) {
                     $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                     // Humm.. (by lemeur), not sure this section can be reached
-                    // because I think $_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$myfname] is always set (by save.php ??) !
+                    // because I think the session value of $myfname is always set (by save.php ??) !
                     // should remove the !isset part I think !!
                 } else {
                     $aData['checked'][$ansrow['code']][$ld] = "";
@@ -183,8 +185,8 @@ class RendererArrayFlexibleColumn extends QuestionBaseRenderer
         foreach ($anscode as $j => $ld) {
             $myfname = $this->sSGQA . "_S" . $ld;
 
-            if (isset($_SESSION[$sSessionKey][$myfname])) {
-                $aData['aQuestions'][$j]['myfname_value'] = $_SESSION[$sSessionKey][$myfname];
+            if ($sessionState->hasFieldValue($myfname)) {
+                $aData['aQuestions'][$j]['myfname_value'] = $sessionState->getFieldValue($myfname);
             } else {
                 $aData['aQuestions'][$j]['myfname_value'] = '';
             }
