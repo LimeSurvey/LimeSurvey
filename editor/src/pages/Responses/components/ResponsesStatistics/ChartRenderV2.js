@@ -499,7 +499,7 @@ export const ChartRendererV2 = ({
                 <i className="ri-information-line" aria-hidden="true"></i>
                 <span>
                   {t(
-                    'The bar chart shows each option’s average rank, calculated by adding all the ranks it received and dividing the total by the number of responses. A lower average means a better ranking.'
+                    'The bar chart shows each option’s average rank, calculated by adding all the ranks it received and dividing the total by the number of times this option was ranked. A lower average means a better ranking.'
                   )}
                 </span>
               </div>
