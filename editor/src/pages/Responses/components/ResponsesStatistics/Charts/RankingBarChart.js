@@ -68,11 +68,47 @@ const ClickHintTooltip = ({ active }) => {
   )
 }
 
+// Average rank = sum of all ranks the option received / number of responses
+// that ranked it. Null when nobody ranked the option.
+const getAverageRank = (ranks = []) => {
+  let responses = 0
+  let rankSum = 0
+  ranks.forEach(({ position, value }) => {
+    responses += value ?? 0
+    rankSum += position * (value ?? 0)
+  })
+  return responses ? rankSum / responses : null
+}
+
+const AverageRankLabel = ({ x, y, width, height, index, ranked }) => {
+  const averageRank = ranked[index]?.averageRank
+  if (averageRank === null || averageRank === undefined) return null
+  return (
+    <text
+      className="responses-statistics-chart-labels"
+      x={x + width + 16}
+      y={y + height / 2}
+      dominantBaseline="central"
+    >
+      {format(t('Average rank: %s'), averageRank.toFixed(1))}
+    </text>
+  )
+}
+
 export const RankingBarChart = ({ data = [], title = '' }) => {
   const [selectedKey, setSelectedKey] = useState(null)
 
-  const ranked = [...data]
-    .sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
+  const ranked = data
+    .map((item) => {
+      const averageRank = getAverageRank(item.ranks)
+      const rankCount = item.ranks?.length ?? 0
+      return {
+        ...item,
+        averageRank,
+        barValue: averageRank === null ? 0 : rankCount + 1 - averageRank,
+      }
+    })
+    .sort((a, b) => (a.averageRank ?? Infinity) - (b.averageRank ?? Infinity))
     .map((item, index) => ({ ...item, position: ordinal(index + 1) }))
 
   const selectedOption = ranked.find((option) => option.key === selectedKey)
@@ -86,7 +122,7 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
           <RechartsBarChart
             layout="vertical"
             data={ranked}
-            margin={{ top: CHART_TOP_MARGIN, right: 90, left: 0, bottom: 0 }}
+            margin={{ top: CHART_TOP_MARGIN, right: 160, left: 0, bottom: 0 }}
           >
             <XAxis type="number" hide domain={[0, 'dataMax']} />
             <YAxis
@@ -102,7 +138,7 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
               content={<ClickHintTooltip />}
             />
             <Bar
-              dataKey="value"
+              dataKey="barValue"
               radius={[0, 4, 4, 0]}
               barSize={22}
               onClick={(entry) => setSelectedKey(entry.key)}
@@ -112,10 +148,10 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
               ))}
               <LabelList dataKey="title" content={<NameLabel />} />
               <LabelList
-                dataKey="value"
-                position="right"
-                offset={16}
-                className="responses-statistics-chart-labels"
+                dataKey="averageRank"
+                content={(props) => (
+                  <AverageRankLabel {...props} ranked={ranked} />
+                )}
               />
             </Bar>
           </RechartsBarChart>
@@ -131,7 +167,7 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
           {htmlToPlainText(title)}
         </h2>
         <StatisticsFilterSelect
-          label={t('See all rankings for:')}
+          label={t('Rank distribution for:')}
           options={ranked}
           value={selectedKey}
           onChange={setSelectedKey}
@@ -148,8 +184,8 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
                 </span>
                 <span>
                   {rank.value === 1
-                    ? format(t('%s vote'), rank.value)
-                    : format(t('%s votes'), rank.value)}
+                    ? format(t('%s response'), rank.value)
+                    : format(t('%s responses'), rank.value)}
                 </span>
               </div>
             ))}
