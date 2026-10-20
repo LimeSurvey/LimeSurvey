@@ -15,6 +15,9 @@
 
 class AdminController extends LSYii_Controller
 {
+    /** Example admin modules removed from the release: Leftovers in installations upgraded over an older release are not loaded */
+    private const REMOVED_EXAMPLE_ADMIN_MODULES = ['HelloWorld', 'globalsettings'];
+
     public $sTemplate = null; // this is needed for the preview rendering inside the questioneditor
     public $layout = false;
     public $aAdminModulesClasses = array();
@@ -355,7 +358,7 @@ class AdminController extends LSYii_Controller
             'export'           => 'Export',
             'expressions'      => 'Expressions',
             'validate'         => 'ExpressionValidate',
-            'globalsettings'   => 'GlobalSettings',
+            'globalsettings'   => 'globalsettings',
             'htmleditorpop'    => 'HtmlEditorPop',
             'surveysgroups'    => 'SurveysGroupsController',
             'limereplacementfields' => 'limereplacementfields',
@@ -386,7 +389,9 @@ class AdminController extends LSYii_Controller
      * This function returns an array similar to getActionClasses()
      * It will generate it by reading the directories names inside of lsadminmodulesrootdir
      * So, by convention, admin module action class must be identical to directory name
+     * The example modules of older releases are skipped, see REMOVED_EXAMPLE_ADMIN_MODULES
      *
+     * @return array Admin module names, indexed by module name
      */
     public function getAdminModulesActionClasses()
     {
@@ -394,13 +399,15 @@ class AdminController extends LSYii_Controller
       // This function is called at least twice by page load. Once from AdminController, another one by SurveyCommonAction
         if (empty($this->aAdminModulesClasses)) {
             $aAdminModulesClasses = array();
-            $slsadminmodules = new DirectoryIterator(Yii::app()->getConfig('lsadminmodulesrootdir'));
-            Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir'));
+            $sAdminModulesRootDir = Yii::app()->getConfig('lsadminmodulesrootdir');
+            Yii::setPathOfAlias('lsadminmodules', $sAdminModulesRootDir);
 
-            foreach ($slsadminmodules as $fileinfo) {
-                if ($fileinfo->isDir() && !$fileinfo->isDot()) {
-                    $sModuleName =  $fileinfo->getFilename();
-                    $aAdminModulesClasses[$sModuleName] = $sModuleName;
+            if (is_dir($sAdminModulesRootDir)) {
+                foreach (new DirectoryIterator($sAdminModulesRootDir) as $fileinfo) {
+                    if ($fileinfo->isDir() && !$fileinfo->isDot() && !in_array($fileinfo->getFilename(), self::REMOVED_EXAMPLE_ADMIN_MODULES)) {
+                        $sModuleName =  $fileinfo->getFilename();
+                        $aAdminModulesClasses[$sModuleName] = $sModuleName;
+                    }
                 }
             }
             $this->aAdminModulesClasses = $aAdminModulesClasses;
