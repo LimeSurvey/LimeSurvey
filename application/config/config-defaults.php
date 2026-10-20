@@ -88,7 +88,6 @@ $config['blockaddingtosurveys']      = 'Y'; // Don't allow blocklisted participa
 $config['hideblacklisted']           = 'N'; // Don't show blocklisted participants
 $config['deleteblacklisted']         = 'N'; // Delete globally blocklisted participant from the database
 $config['allowunblacklist']          = 'N'; // Allow participant to unblocklist himself/herself
-$config['userideditable']            = 'N'; // Allow editing of user IDs
 
 $config['defaulttheme']              = 'fruity_twentythree'; // This setting specifys the default theme used for the 'public list' of surveys
 $config['createsample']              = true;
@@ -96,10 +95,23 @@ $config['customassetversionnumber']  = 1;        // Used to generate the path of
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
 $config['allowedthemeimageformats'] = 'gif,ico,jpg,jpeg,png'; // Image file types allowed to be uploaded in the themes section.
+/**
+ * MIME types accepted for each image file extension listed in allowedthemeimageformats.
+ * Both the MIME type detected from the file content and the one sent by the browser must match one of them.
+ * Extensions without an entry here fall back to the MIME types of the file extension map (see magic_file).
+ */
+$config['imagemimetypes'] = [
+    'gif' => ['image/gif'],
+    'ico' => ['image/x-icon', 'image/vnd.microsoft.icon', 'image/ico'],
+    'jpg' => ['image/jpeg', 'image/jpg'],
+    'jpeg' => ['image/jpeg', 'image/jpg'],
+    'png' => ['image/png'],
+    'svg' => ['image/svg+xml', 'image/svg'],
+];
 $config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,dotx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
-$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
+$config['allowedpluginuploads'] = 'gif,ico,jpg,jpeg,png,svg,webp,pdf,dat,icc,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
@@ -454,13 +466,13 @@ $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of re
 */
 
 /**
-*  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/fonts
+*  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/assets/fonts
 *  Set this to specific font-file (for example 'DejaVuSans.ttf') or set it to 'auto' and LimeSurvey tried to pick the best font depending on your survey base language
 */
 $config['chartfontfile'] = 'auto';
 /**
-*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/fonts
-*  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/fonts, an alert is sent to admin
+*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/assets/fonts
+*  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/assets/fonts, an alert is sent to admin
 */
 $config['alternatechartfontfile'] = array(
     'hi' => 'FreeSans.ttf',
@@ -703,7 +715,7 @@ $config['adminimageurl']          = $config['styleurl'] . $config['admintheme'] 
 $config['applicationurl']         = $config['publicurl'] . 'application/';
 $config['extensionsurl']          = $config['applicationurl'] . 'extensions/';
 $config['adminstyleurl']          = $config['styleurl'] . $config['admintheme'] . '/'; // Location of button bar files for admin script
-$config['userfontsurl']            = $config['uploadurl'] . '/fonts'; // Location of user's fonts
+$config['userfontsurl']           = $config['uploadurl'] . '/fonts'; // Location of user's fonts
 
 // Dir
 $config['publicdir']                = $config['rootdir']; // The directory path of the public scripts
@@ -721,9 +733,9 @@ $config['styledir']                 = $config['rootdir'] . DIRECTORY_SEPARATOR .
 $config['questiontypedir']          = $config['rootdir'] . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR . 'questionTypes';
 $config['userthemerootdir']         = $config['uploaddir'] . DIRECTORY_SEPARATOR . "themes" . DIRECTORY_SEPARATOR . "survey"; // The directory path of the user themes
 $config['usertwigextensionrootdir'] = $config['uploaddir'] . DIRECTORY_SEPARATOR . "twig" . DIRECTORY_SEPARATOR . "extensions"; // The directory path of the user custom twig extensions
-$config['customquestionthemedir']     = "themes" . DIRECTORY_SEPARATOR . "question";
-$config['userquestionthemerootdir'] = "upload" . DIRECTORY_SEPARATOR . $config['customquestionthemedir']; // The directory containing the user's question themes.
-$config['userfontsrootdir']          = $config['uploaddir'] . DIRECTORY_SEPARATOR . 'fonts'; // The directory containing the user's fonts.
+$config['customquestionthemedir']   = "themes" . DIRECTORY_SEPARATOR . "question";
+$config['userquestionthemerootdir'] = $config['uploaddir'] . DIRECTORY_SEPARATOR . $config['customquestionthemedir']; // The directory containing the user's question themes.
+$config['userfontsrootdir']         = $config['uploaddir'] . DIRECTORY_SEPARATOR . 'fonts'; // The directory containing the user's fonts.
 
 $config['lsadminmodulesrootdir']    = $config['rootdir'] . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR . "admin";
 //Overwrite files with the same name on upload?

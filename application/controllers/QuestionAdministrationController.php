@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\QuestionAggregateService;
+use LimeSurvey\Models\Services\SurveyDetailService;
 use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     PermissionDeniedException,
@@ -1907,7 +1908,16 @@ class QuestionAdministrationController extends LSBaseController
             $copyOptions['copySettings'] = (int)Yii::app()->request->getParam('copyattributes') === 1;
             $copyQuestionService = new \LimeSurvey\Models\Services\CopyQuestion($copyQuestionValues, $copyOptions);
             if ($copyQuestionService->copyQuestion()) {
-                App()->user->setFlash('success', gT("Saved copied question"));
+                $copyErrors = $copyQuestionService->getCopyErrors();
+                if (empty($copyErrors)) {
+                    App()->user->setFlash('success', gT("Saved copied question"));
+                } else {
+                    App()->user->setFlash(
+                        'warning',
+                        gT("The question was copied, but some parts of it could not be copied:")
+                            . CHtml::tag('ul', [], '<li>' . implode('</li><li>', $copyErrors) . '</li>')
+                    );
+                }
                 $newQuestion = $copyQuestionService->getNewCopiedQuestion();
                 $this->redirect(
                     $this->createUrl(
@@ -2220,6 +2230,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param array $aQids all question id's affected
      * @param int $iQuestionOrder the desired position
      * @param QuestionGroup $oQuestionGroup the desired QuestionGroup
+     * @return void
      * @throws CException
      */
     public static function changeMultipleQuestionPositionAndGroup($aQids, $iQuestionOrder, $oQuestionGroup)
@@ -2277,7 +2288,10 @@ class QuestionAdministrationController extends LSBaseController
             $oTransaction->commit();
         } catch (Exception $e) {
             $oTransaction->rollback();
+            return;
         }
+        // updateAll() bypasses Question::afterSave(), so update the survey's lastmodified timestamp here
+        (new SurveyDetailService())->touchSurveyLastModified((int) $oQuestionGroup->sid);
     }
 
     /**

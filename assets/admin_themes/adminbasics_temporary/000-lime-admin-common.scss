@@ -1113,6 +1113,14 @@ textarea,
 .uneditable-input {
     display: inline-block;
     font-size: 14px;
+}
+
+// Fields with .form-control get their border from the admin theme
+input[type="text"]:not(.form-control),
+input[type="password"]:not(.form-control),
+.ui-autocomplete-input:not(.form-control),
+textarea:not(.form-control),
+.uneditable-input:not(.form-control) {
     border: 1px solid #ccc;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;

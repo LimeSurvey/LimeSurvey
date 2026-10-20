@@ -365,10 +365,10 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
     }
 
     /**
-     * Testing that a user without superadmin / read permissions can't
-     * assign roles to a user.
+     * Testing that a user with superadmin / read but without superadmin / create permissions
+     * can assign roles to a user, but only the roles without superadmin permissions.
      */
-    public function testSuperadminCanNotAssignRoles()
+    public function testSuperadminWithoutCreateCanAssignRolesWithoutSuperadminPermission()
     {
         // Creating managing user with superadmin / import permissions.
         $managingUserName = \Yii::app()->securityManager->generateRandomString(8);
@@ -405,7 +405,14 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $assignPermission = $userManager->canAssignRole();
 
-        $this->assertFalse($assignPermission, 'A user without superadmin / create permissions should not be able to assign roles to any user.');
+        $this->assertTrue($assignPermission, 'A user with superadmin / read permissions should be able to assign roles to any user.');
+
+        $superadminRole = self::createRole(['superadmin' => ['read' => 1]]);
+        $surveysRole = self::createRole(['surveys' => ['create' => 1, 'read' => 1]]);
+        $this->assertFalse($userManager->isRoleAssignable($superadminRole), 'A user without superadmin / create permissions should not be able to assign a role with superadmin permission.');
+        $this->assertTrue($userManager->isRoleAssignable($surveysRole), 'A user with superadmin / read permissions should be able to assign a role without superadmin permission.');
+        self::deleteRole($superadminRole);
+        self::deleteRole($surveysRole);
 
         //Delete managing user.
         $userManagingUser->delete();
@@ -1039,5 +1046,189 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         $this->assertFalse($operationResult->isSuccess(), 'The operation should not have been successful.');
         $this->assertSame('error', $message->getType(), 'Unexpected message type for an unsuccessful operation.');
         $this->assertSame(gT("An error occurred while deleting the user."), $message->getMessage(), 'Unexpected message for an unsuccessful operation.');
+    }
+
+    /**
+     * Testing that a user with users / update permission can assign to a child user
+     * the roles with permissions they have, and only these roles.
+     */
+    public function testUserCanAssignOwnPermissionRolesToChildUser()
+    {
+        $managingUserName = \Yii::app()->securityManager->generateRandomString(8);
+        $userManagingUser = self::createUserWithPermissions(
+            [
+                'users_name' => $managingUserName,
+                'full_name'  => $managingUserName,
+                'email'      => $managingUserName . '@example.com'
+            ],
+            [
+                'users' => ['read' => true, 'update' => true],
+                'surveys' => ['create' => true, 'read' => true],
+            ]
+        );
+        $managingUser = new LSWebUser();
+        $managingUser->id = $userManagingUser->uid;
+
+        $targetUserName = \Yii::app()->securityManager->generateRandomString(8);
+        $targetUser = self::createUserWithPermissions([
+            'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
+            'email'      => $targetUserName . '@example.com',
+        ]);
+        \User::model()->updateByPk($targetUser->uid, ['parent_id' => $userManagingUser->uid]);
+        $targetUser->parent_id = $userManagingUser->uid;
+
+        $ownPermissionsRole = self::createRole(['surveys' => ['create' => 1, 'read' => 1]]);
+        $morePermissionsRole = self::createRole(['surveys' => ['read' => 1, 'delete' => 1]]);
+        $superadminRole = self::createRole(['superadmin' => ['read' => 1]]);
+
+        $userManager = new userManager($managingUser, $targetUser);
+        $this->assertTrue($userManager->canAssignRole(), 'A user with users / update permission should be able to assign roles to a child user.');
+        $assignableRoles = $userManager->getAssignableRoles();
+        $this->assertArrayHasKey($ownPermissionsRole->ptid, $assignableRoles, 'A role with only permissions of the managing user should be assignable.');
+        $this->assertArrayNotHasKey($morePermissionsRole->ptid, $assignableRoles, 'A role with a permission the managing user does not have should not be assignable.');
+        $this->assertArrayNotHasKey($superadminRole->ptid, $assignableRoles, 'A role with superadmin permission should not be assignable without superadmin / create permission.');
+
+        self::deleteRole($ownPermissionsRole);
+        self::deleteRole($morePermissionsRole);
+        self::deleteRole($superadminRole);
+        \Permission::model()->deleteAllByAttributes(['uid' => $userManagingUser->uid]);
+        $userManagingUser->delete();
+        $targetUser->delete();
+    }
+
+    /**
+     * Testing that a user with users / update permission can not assign roles
+     * to a user who is not a child user, or to a superadmin child user.
+     */
+    public function testUserCanNotAssignRolesToOtherOrSuperadminUser()
+    {
+        $managingUserName = \Yii::app()->securityManager->generateRandomString(8);
+        $userManagingUser = self::createUserWithPermissions(
+            [
+                'users_name' => $managingUserName,
+                'full_name'  => $managingUserName,
+                'email'      => $managingUserName . '@example.com'
+            ],
+            ['users' => ['read' => true, 'update' => true]]
+        );
+        $managingUser = new LSWebUser();
+        $managingUser->id = $userManagingUser->uid;
+
+        $otherUserName = \Yii::app()->securityManager->generateRandomString(8);
+        $otherUser = self::createUserWithPermissions([
+            'users_name' => $otherUserName,
+            'full_name'  => $otherUserName,
+            'email'      => $otherUserName . '@example.com',
+        ]);
+        $userManager = new userManager($managingUser, $otherUser);
+        $this->assertFalse($userManager->canAssignRole(), 'A user with users / update permission should not be able to assign roles to a user who is not a child user.');
+
+        $superadminUserName = \Yii::app()->securityManager->generateRandomString(8);
+        $superadminUser = self::createUserWithPermissions(
+            [
+                'users_name' => $superadminUserName,
+                'full_name'  => $superadminUserName,
+                'email'      => $superadminUserName . '@example.com',
+            ],
+            ['superadmin' => ['read' => true]]
+        );
+        \User::model()->updateByPk($superadminUser->uid, ['parent_id' => $userManagingUser->uid]);
+        $superadminUser->parent_id = $userManagingUser->uid;
+        $userManager = new userManager($managingUser, $superadminUser);
+        $this->assertFalse($userManager->canAssignRole(), 'A user without superadmin / create permission should not be able to assign roles to a superadmin.');
+
+        \Permission::model()->deleteAllByAttributes(['uid' => [$userManagingUser->uid, $superadminUser->uid]]);
+        $userManagingUser->delete();
+        $otherUser->delete();
+        $superadminUser->delete();
+    }
+
+    /**
+     * Testing that setting roles removes the individual global permissions of the user,
+     * so the user has no global permission after removing the last role.
+     * Permissions on a survey are kept.
+     */
+    public function testSetRolesRemovesIndividualGlobalPermissions()
+    {
+        $targetUserName = \Yii::app()->securityManager->generateRandomString(8);
+        $targetUser = self::createUserWithPermissions(
+            [
+                'users_name' => $targetUserName,
+                'full_name'  => $targetUserName,
+                'email'      => $targetUserName . '@example.com',
+            ],
+            ['surveys' => ['read' => true, 'create' => true]]
+        );
+        $surveyPermission = new \Permission();
+        $surveyPermission->entity = 'survey';
+        $surveyPermission->entity_id = 999999;
+        $surveyPermission->uid = $targetUser->uid;
+        $surveyPermission->permission = 'survey';
+        $surveyPermission->read_p = 1;
+        $surveyPermission->save();
+
+        $role = self::createRole(['surveys' => ['read' => 1]]);
+        $userManager = new userManager(null, $targetUser);
+
+        // Setting roles on a user without roles keeps their individual permissions
+        $this->assertTrue($userManager->setRoles([]));
+        $this->assertSame('1', (string) \Permission::model()->countByAttributes(['uid' => $targetUser->uid, 'entity' => 'global']));
+        $this->assertTrue($userManager->hasIndividualGlobalPermissions(), 'The user should have individual global permissions before a role is assigned.');
+
+        $this->assertTrue($userManager->setRoles([$role->ptid]));
+        $this->assertSame([(int) $role->ptid], array_values(array_map('intval', \CHtml::listData(\Permission::getUserRole($targetUser->uid), 'ptid', 'ptid'))));
+        $this->assertSame('0', (string) \Permission::model()->countByAttributes(['uid' => $targetUser->uid, 'entity' => 'global']), 'Assigning a role should delete the individual global permissions.');
+        $this->assertSame('1', (string) \Permission::model()->countByAttributes(['uid' => $targetUser->uid, 'entity' => 'survey']), 'Assigning a role should keep the survey permissions.');
+        $this->assertFalse($userManager->hasIndividualGlobalPermissions(), 'Survey permissions are not individual global permissions.');
+
+        $this->assertTrue($userManager->setRoles([]));
+        $this->assertEmpty(\Permission::getUserRole($targetUser->uid));
+        $this->assertFalse(\Permission::model()->hasGlobalPermission('surveys', 'create', $targetUser->uid), 'A user without roles should not get back their previous individual permissions.');
+
+        self::deleteRole($role);
+        \Permission::model()->deleteAllByAttributes(['uid' => $targetUser->uid]);
+        $targetUser->delete();
+    }
+
+    /**
+     * Create a role with the given global permissions
+     * @param array $permissions permission name => [crud => 1]
+     * @return \Permissiontemplates
+     */
+    private static function createRole(array $permissions): \Permissiontemplates
+    {
+        $roleName = \Yii::app()->securityManager->generateRandomString(12);
+        $role = new \Permissiontemplates();
+        $role->name = $roleName;
+        $role->description = $roleName;
+        $role->renewed_last = date("Y-m-d H:i:s");
+        $role->created_at = date("Y-m-d H:i:s");
+        $role->created_by = 1;
+        $role->save();
+        foreach ($permissions as $permissionName => $cruds) {
+            $permission = new \Permission();
+            $permission->entity = 'role';
+            $permission->entity_id = $role->ptid;
+            $permission->uid = 0;
+            $permission->permission = $permissionName;
+            foreach ($cruds as $crud => $value) {
+                $permission->setAttribute($crud . '_p', $value);
+            }
+            $permission->save();
+        }
+        return $role;
+    }
+
+    /**
+     * Delete a role, its permissions and its user assignments
+     * @param \Permissiontemplates $role
+     * @return void
+     */
+    private static function deleteRole(\Permissiontemplates $role)
+    {
+        \Permission::model()->deleteAllByAttributes(['entity' => 'role', 'entity_id' => $role->ptid]);
+        \UserInPermissionrole::model()->deleteAllByAttributes(['ptid' => $role->ptid]);
+        $role->delete();
     }
 }

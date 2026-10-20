@@ -47,8 +47,11 @@
             {% set sPageTitle = processString(aCurrentGroup.name,1)|striptags|trim %}
         {% endif %}
     {% endif %}
+    {# Mark pages showing answer errors in the title, so screen reader users notice them right away #}
+    {% set bPageHasErrors = aSurveyInfo.errorHtml.messages|default([])|length > 0 %}
+    {% set sFullPageTitle = (sPageTitle != '' ? sPageTitle ~ ' - ' : '') ~ processString(aSurveyInfo.surveyls_title,1)|striptags %}
     <title>
-        {% if sPageTitle != '' %}{{ sPageTitle }} - {% endif %}{{ processString(aSurveyInfo.surveyls_title,1)|striptags }}
+        {{ bPageHasErrors ? gT("Error: %s")|format(sFullPageTitle) : sFullPageTitle }}
     </title>
     {% if(imageSrc('./files/favicon.ico')) %}
         <link rel="shortcut icon" href="{{ imageSrc('./files/favicon.ico') }}" />

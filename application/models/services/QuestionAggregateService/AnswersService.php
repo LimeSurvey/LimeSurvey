@@ -113,21 +113,7 @@ class AnswersService
                 );
             }
 
-            // We use the container to create a model instance
-            // allowing us to mock the model instance via
-            // container configuration in unit tests
-            // Only reuse an existing answer if it belongs to this question.
-            // Any other ID (temp ID or foreign answer) creates a new answer.
-            $answer = is_numeric($answerId)
-                ? $this->modelAnswer->findByAttributes([
-                    'aid' => (int)$answerId,
-                    'qid' => $question->qid
-                ])
-                : null;
-            if (!$answer) {
-                $answer = DI::getContainer()
-                    ->make(Answer::class);
-            }
+            $answer = $this->findOrCreateAnswer($question, $answerId);
             $answer->setAttributes([
                 'qid'              => $question->qid,
                 'code'             => $data['code'],
@@ -165,6 +151,36 @@ class AnswersService
             return $answer->aid;
         }
         return 0;
+    }
+
+    /**
+     * Returns the existing answer to update or a new answer model.
+     *
+     * Only reuses an existing answer if it belongs to this question.
+     * Any other ID (temp ID or foreign answer) creates a new answer.
+     *
+     * @param Question $question
+     * @param mixed $answerId
+     * @return Answer
+     * @throws DependencyException
+     * @throws \DI\NotFoundException
+     */
+    private function findOrCreateAnswer(Question $question, $answerId): Answer
+    {
+        $answer = is_numeric($answerId)
+            ? $this->modelAnswer->findByAttributes([
+                'aid' => (int)$answerId,
+                'qid' => $question->qid
+            ])
+            : null;
+        if (!$answer) {
+            // We use the container to create a model instance
+            // allowing us to mock the model instance via
+            // container configuration in unit tests
+            $answer = DI::getContainer()
+                ->make(Answer::class);
+        }
+        return $answer;
     }
 
     /**
