@@ -19,7 +19,8 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
             'datestamp' => 'N',
             'ipaddr' => 'N',
             'ipanonymize' => 'N',
-            'refurl' => 'N'
+            'refurl' => 'N',
+            'savequotaexit' => 'N'
         ]);
 
         $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
@@ -30,7 +31,8 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
             'datestamp' => 'Y',
             'ipaddr' => 'Y',
             'ipanonymize' => 'Y',
-            'refurl' => 'Y'
+            'refurl' => 'Y',
+            'savequotaexit' => 'Y'
         ]);
 
         $attributes = $mockSet->survey->getAttributes();
@@ -41,6 +43,7 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
         $this->assertEquals('N', $attributes['ipaddr']);
         $this->assertEquals('N', $attributes['ipanonymize']);
         $this->assertEquals('N', $attributes['refurl']);
+        $this->assertEquals('N', $attributes['savequotaexit']);
     }
 
     public function testCanNotUpdateSomeSettingsWhenSurveyIsActiveSurveyInactive()
@@ -56,18 +59,20 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
             'datestamp' => 'N',
             'ipaddr' => 'N',
             'ipanonymize' => 'N',
-            'refurl' => 'N'
+            'refurl' => 'N',
+            'savequotaexit' => 'N'
         ]);
 
         $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
-
+ 
         $generalSettings->update(1, [
             'anonymized' => 'Y',
             'savetimings' => 'Y',
             'datestamp' => 'Y',
             'ipaddr' => 'Y',
             'ipanonymize' => 'Y',
-            'refurl' => 'Y'
+            'refurl' => 'Y',
+            'savequotaexit' => 'Y'
         ]);
 
         $attributes = $mockSet->survey->getAttributes();
@@ -78,5 +83,6 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
         $this->assertEquals('Y', $attributes['ipaddr']);
         $this->assertEquals('Y', $attributes['ipanonymize']);
         $this->assertEquals('Y', $attributes['refurl']);
+        $this->assertEquals('Y', $attributes['savequotaexit']);
     }
 }

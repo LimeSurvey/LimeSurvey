@@ -30,7 +30,11 @@ export const panelOptions = () => {
         label: t('Responses list'),
         labelEditor: t('Responses list'),
         menu: TAB_KEYS.RESPONSES,
-        activeMenus: [TAB_KEYS.RESPONSES, TAB_KEYS.STATISTICS],
+      },
+      {
+        label: t('Statistics'),
+        labelEditor: t('Statistics'),
+        menu: panelItemsKeys.statistics,
       },
     ],
   }

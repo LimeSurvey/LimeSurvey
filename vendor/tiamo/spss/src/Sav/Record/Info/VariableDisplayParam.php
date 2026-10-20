@@ -35,7 +35,7 @@ class VariableDisplayParam extends Info
 
     public function write(Buffer $buffer)
     {
-        if ($this->data !== []) {
+        if (\is_array($this->data) && (\count($this->data) !== 0)) {
             $this->dataCount = \count($this->data) * 3;
             parent::write($buffer);
             foreach ($this->data as $item) {

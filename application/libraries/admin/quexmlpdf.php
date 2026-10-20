@@ -237,6 +237,7 @@ class quexmlpdf extends pdf
     span.sectionTitle {font-size:18pt; font-weight:bold;}
     span.sectionDescription {font-size:14pt; font-weight:bold;}
     div.sectionInfo {font-style:normal; font-size:10pt; text-align:left; font-weight:normal;}
+    td.questionnaireTitle {font-size:18pt; text-align:center; font-weight:bold;}
     td.questionnaireInfo {font-size:14pt; text-align:center; font-weight:bold;}
     </style>";
 
@@ -559,7 +560,7 @@ class quexmlpdf extends pdf
     protected $backgroundColourQuestion = array(241);
 
     /**
-     * The bacground colour of a section
+     * The background colour of a section
      *
      * @var bool  Defaults to array(200,200,200).
      * @since 2010-09-20
@@ -1730,7 +1731,7 @@ class quexmlpdf extends pdf
         }
 
         $this->setBackground('question');
-        return array($x + $linelength, $y, $x + $linelength + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the posistion for banding
+        return array($x + $linelength, $y, $x + $linelength + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the position for banding
     }
 
     /**
@@ -1801,7 +1802,7 @@ class quexmlpdf extends pdf
         }
 
         $this->setBackground('question');
-        return array($x, $y, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the posistion for banding
+        return array($x, $y, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the position for banding
     }
 
 
@@ -1862,6 +1863,7 @@ class quexmlpdf extends pdf
         $sl = "";
 
         $q['id'] = $xml['id'];
+        $q['title'] = trim((string) $xml->title);
 
         foreach ($xml->questionnaireInfo as $qitmp) {
             if ($qitmp->position == 'after') {
@@ -2130,6 +2132,12 @@ class quexmlpdf extends pdf
         $this->questionnaireId = intval($questionnaire['id']);
         $this->newPage(true); //first page
 
+        //Draw the questionnaire title if exists
+        if (!empty($questionnaire['title'])) {
+            $this->SetTitle($questionnaire['title']);
+            $this->drawTitle($questionnaire['title']);
+        }
+
         //Draw questionnaireInfo before if exists
         if (isset($questionnaire['infobefore'])) {
             $this->drawInfo($questionnaire['infobefore']);
@@ -2354,6 +2362,21 @@ class quexmlpdf extends pdf
         $doc->appendChild($root);
         $doc->formatOutput = true; //make it look nice
         return $doc->saveXML();
+    }
+
+    /**
+     * Draw the questionnaire title as headline
+     *
+     * @param string $title The questionnaire title (plain text)
+     *
+     * @return void
+     */
+    protected function drawTitle($title)
+    {
+        $this->setBackground('question');
+        $this->writeHTMLCell($this->getColumnWidth(), $this->questionnaireInfoMargin, $this->getColumnX(), $this->GetY() - $this->questionBorderBottom, "<div></div>", 0, 1, true, true);
+        $html = "<table><tr><td width=\"" . $this->getColumnWidth() . "mm\" class=\"questionnaireTitle\">" . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . "</td><td></td></tr></table>";
+        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style . $html, 0, 1, true, true);
     }
 
     /**
@@ -3224,7 +3247,7 @@ class quexmlpdf extends pdf
     }
 
     /**
-     * Draw a horizontal table of respones including "eye guides"
+     * Draw a horizontal table of responses including "eye guides"
      *
      * @param array $categories The response categories
      * @param array $subquestions The subquestions if any

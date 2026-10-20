@@ -3,7 +3,7 @@ import { Button } from 'components'
 import {
   DeleteIcon,
   DownloadIcon,
-  Seprator,
+  Separator,
   // UploadIcon,
   XIcon,
 } from 'components/icons'
@@ -23,6 +23,8 @@ export const BulkActions = ({
     onUnselectAll()
   }
 
+  // The count is a styled badge, so the sentence is split around its `%s`.
+  const [selectedBefore, selectedAfter] = t('%s selected').split('%s')
   return (
     <div
       className={classNames(`bulk-actions`, {
@@ -33,10 +35,12 @@ export const BulkActions = ({
       }}
     >
       <div className="number-selected">
-        <span className="number">{selectedCount}</span> {t('selected')}
+        {selectedBefore}
+        <span className="number">{selectedCount}</span>
+        {selectedAfter}
       </div>
-      <div className="seprator">
-        <Seprator />
+      <div className="separator">
+        <Separator />
       </div>
       {/* <Button className="primary" variant="none">
         <UploadIcon className="bulk-icon primary" />

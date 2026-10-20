@@ -39,16 +39,10 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function actualizeLastUpdate()
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $config = simplexml_load_file(realpath($this->xmlFile));
         $config->metadata->lastUpdate = date("Y-m-d H:i:s");
         $config->asXML(realpath($this->xmlFile)); // Belt
         touch($this->path); // & Suspenders ;-)
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
@@ -384,6 +378,8 @@ class TemplateManifest extends TemplateConfiguration
 
         $thissurvey['aGroups'][1]["showdescription"] = true;
         $thissurvey['aGroups'][1]["aQuestions"][1]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["SGQ"]           = "1234X56X79";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["type"]          = "L";
         $thissurvey['aGroups'][1]["aQuestions"][1]["mandatory"]     = true;
 
         // If called from command line to generate Twig temp, renderPartial doesn't exist in ConsoleApplication
@@ -396,6 +392,8 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aGroups'][1]["aQuestions"][1]["attributes"]    = 'id="question42"';
 
         $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["SGQ"]           = "1234X56X78";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["type"]          = "T";
         $thissurvey['aGroups'][1]["aQuestions"][2]["mandatory"]     = false;
         if (method_exists(Yii::app()->getController(), 'renderPartial')) {
             $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = Yii::app()->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array('alt' => true), true);
@@ -885,16 +883,37 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function rename($sOldName, $sNewName)
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
         $oNewManifest = self::getManifestDOM($sConfigPath);
         self::changeNameInDOM($oNewManifest, $sNewName);
         self::changeDateInDOM($oNewManifest);
         $oNewManifest->save($sConfigPath . "/config.xml");
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
+        self::updateChildrenExtends($sOldName, $sNewName);
+    }
+
+    /**
+     * Update the <extends> node in the manifest of every custom theme (installed or not)
+     * that references $sOldName, so child themes keep resolving their renamed parent.
+     *
+     * @param string $sOldName The previous name of the parent template
+     * @param string $sNewName The new name of the parent template
+     */
+    public static function updateChildrenExtends($sOldName, $sNewName)
+    {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $aUserThemes = SurveyThemeHelper::getTemplateInFolder(Yii::app()->getConfig('userthemerootdir'));
+        foreach ($aUserThemes as $sThemeName => $sThemePath) {
+            if ($sThemeName === $sNewName || !file_exists($sThemePath . '/config.xml')) {
+                continue;
+            }
+            $oManifest = self::getManifestDOM($sThemePath);
+            $oConfig = $oManifest->getElementsByTagName('config')->item(0);
+            $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
+            $oExtendsNode = $ometadata->getElementsByTagName('extends')->item(0);
+            if ($oExtendsNode !== null && $oExtendsNode->nodeValue === $sOldName) {
+                self::changeExtendsInDom($oManifest, $sNewName);
+                $oManifest->save($sThemePath . '/config.xml');
+            }
         }
     }
 
@@ -994,9 +1013,6 @@ class TemplateManifest extends TemplateConfiguration
         $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
 
         // First we get the XML file
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $oNewManifest = self::getManifestDOM($sConfigPath);
 
         self::deleteEngineInDom($oNewManifest);
@@ -1007,10 +1023,6 @@ class TemplateManifest extends TemplateConfiguration
         self::changeExtendsInDom($oNewManifest, $sToExtends);
 
         $oNewManifest->save($sConfigPath . "/config.xml");
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
@@ -1034,11 +1046,6 @@ class TemplateManifest extends TemplateConfiguration
         }
 
         if (file_exists(realpath($this->xmlFile))) {
-            if (\PHP_VERSION_ID < 80000) {
-                $bOldEntityLoaderState = libxml_disable_entity_loader(
-                    true
-                ); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-            }
             SurveyThemeHelper::checkConfigFiles($this->xmlFile);
             $sXMLConfigFile = file_get_contents(
                 realpath($this->xmlFile)
@@ -1060,9 +1067,6 @@ class TemplateManifest extends TemplateConfiguration
                 }
 
                 $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
-                if (\PHP_VERSION_ID < 80000) {
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                }
             }
         } else {
             throw new Exception(" Error: Can't find a manifest for $this->sTemplateName in ' $this->path ' ");
@@ -1176,9 +1180,6 @@ class TemplateManifest extends TemplateConfiguration
     public function addFileReplacement($sFile, $sType)
     {
         // First we get the XML file
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $oNewManifest = new DOMDocument();
         $oNewManifest->load($this->path . "config.xml");
 
@@ -1205,9 +1206,6 @@ class TemplateManifest extends TemplateConfiguration
         $oAssetType->appendChild($oAssetElem);
         $oConfig->insertBefore($oFiles, $oOptions);
         $oNewManifest->save($this->path . "config.xml");
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
@@ -1430,16 +1428,10 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function getOptionAttributes($path)
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $file = realpath($path . "config.xml");
         if (file_exists($file)) {
             $sXMLConfigFile        = file_get_contents($file);
             $oXMLConfig = simplexml_load_string($sXMLConfigFile);
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
-            }
             $aOptions['categories'] = array();
 
             foreach ($oXMLConfig->options->children() as $key => $option) {
@@ -1462,21 +1454,22 @@ class TemplateManifest extends TemplateConfiguration
                     if ($key === 'font') {
                         $dropdownOptionsFonts = TemplateManifest::getFontDropdownOptions();
                         if (!empty($dropdownOptionsFonts)) {
-                            $fontDropdownOptions = simplexml_load_string($dropdownOptionsFonts); // The element to insert
+                            // The font options can contain several optgroups (core and user fonts), so they need a wrapper to be valid XML
+                            $fontDropdownOptions = simplexml_load_string('<fontoptions>' . $dropdownOptionsFonts . '</fontoptions>');
                             if ($fontDropdownOptions !== false) {
-                                $child_dom = dom_import_simplexml($fontDropdownOptions);
-                                // Import the child node into the parent's document
-                                $child_imported = $dropdownOptionsDom->ownerDocument->importNode($child_dom, true);
-                                // If the parent has children, insert before the first one.
-                                if ($dropdownOptionsDom->firstChild) {
-                                    $dropdownOptionsDom->insertBefore($child_imported, $dropdownOptionsDom->firstChild);
-                                } else {
-                                    // If the parent has no children, you can just append it (which makes it the first)
-                                    $dropdownOptionsDom->appendChild($child_imported);
+                                $fontDropdownOptionsDom = dom_import_simplexml($fontDropdownOptions);
+                                // Insert the font optgroups before the existing dropdown options, keeping their order
+                                $firstChild = $dropdownOptionsDom->firstChild;
+                                foreach ($fontDropdownOptionsDom->childNodes as $fontNode) {
+                                    // Import the node into the parent's document
+                                    $importedNode = $dropdownOptionsDom->ownerDocument->importNode($fontNode, true);
+                                    // Appends the node if the parent has no children
+                                    $dropdownOptionsDom->insertBefore($importedNode, $firstChild);
                                 }
                             }
                         }
                     }
+                    self::translateDropdownOptions($dropdownOptionsDom);
                     $dropdownOptionsString = $dropdownOptions->asXML();
                     $dropdownOptionsArray = [];
                     if (isset($dropdownOptions->optgroup)) {
@@ -1531,6 +1524,34 @@ class TemplateManifest extends TemplateConfiguration
         return false;
     }
 
+    /**
+     * Translates the labels of the optgroups and the texts of the options of a theme option dropdown.
+     * The option values are not changed.
+     *
+     * @param DOMElement $dropdownOptionsDom The dropdownoptions element of a theme option
+     * @return void
+     */
+    private static function translateDropdownOptions(DOMElement $dropdownOptionsDom)
+    {
+        foreach ($dropdownOptionsDom->getElementsByTagName('optgroup') as $optgroup) {
+            $label = trim($optgroup->getAttribute('label'));
+            if ($label !== '') {
+                $optgroup->setAttribute('label', gT($label, 'unescaped'));
+            }
+        }
+        foreach ($dropdownOptionsDom->getElementsByTagName('option') as $option) {
+            $text = trim($option->textContent);
+            if ($text !== '') {
+                $option->textContent = gT($text, 'unescaped');
+            }
+        }
+    }
+
+    /**
+     * Returns the HTML options of the font dropdown, grouped by font package type
+     *
+     * @return string
+     */
     public static function getFontDropdownOptions()
     {
         $fontOptions = '';
@@ -1548,9 +1569,9 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($coreFontPackages as $coreKey => $corePackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("Core") . '">';
+                $fontOptions .= '<optgroup  label="' . CHtml::encode(gT("Local server") . ' - ' . gT("Core")) . '">';
             }
-            $fontOptions .= '<option class="font-' . $coreKey . '"     value="' . $coreKey . '"     data-font-package="' . $coreKey . '"      >' . $corePackage['title'] . '</option>';
+            $fontOptions .= '<option class="font-' . CHtml::encode($coreKey) . '"     value="' . CHtml::encode($coreKey) . '"     data-font-package="' . CHtml::encode($coreKey) . '"      >' . CHtml::encode((string)$corePackage['title']) . '</option>';
         }
         if ($i > 0) {
             $fontOptions .= '</optgroup>';
@@ -1561,9 +1582,9 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($userFontPackages as $userKey => $userPackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("User") . '">';
+                $fontOptions .= '<optgroup  label="' . CHtml::encode(gT("Local server") . ' - ' . gT("User")) . '">';
             }
-            $fontOptions .= '<option class="font-' . $userKey . '"     value="' . $userKey . '"     data-font-package="' . $userKey . '"      >' . $userPackage['title'] . '</option>';
+            $fontOptions .= '<option class="font-' . CHtml::encode($userKey) . '"     value="' . CHtml::encode($userKey) . '"     data-font-package="' . CHtml::encode($userKey) . '"      >' . CHtml::encode((string)$userPackage['title']) . '</option>';
         }
         if ($i > 0) {
             $fontOptions .= '</optgroup>';

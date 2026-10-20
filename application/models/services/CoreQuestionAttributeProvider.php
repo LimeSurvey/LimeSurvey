@@ -9,6 +9,7 @@ namespace LimeSurvey\Models\Services;
 class CoreQuestionAttributeProvider extends QuestionAttributeProvider
 {
     /** @inheritdoc */
+    #[\Override]
     public function getDefinitions($options = [])
     {
         /** @var string question type */
@@ -17,7 +18,6 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
             return [];
         }
 
-        /** @var boolean */
         $advancedOnly = !empty($options['advancedOnly']);
 
         return $this->getQuestionAttributes($questionType, $advancedOnly);
@@ -45,7 +45,6 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
         }
         $advancedAttributes = $this->getAdvancedAttributesFromXml($xmlFilePath);
 
-        /** @var array<string,array> An array of question attributes */
         $attributes = array_merge($generalAttributes, $advancedAttributes);
 
         return $attributes;
@@ -64,7 +63,7 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
         $attributes = [];
 
         if (file_exists($xmlFilePath)) {
-            $extensionConfig = \ExtensionConfig::loadFromFile($xmlFilePath);
+            $extensionConfig = \ExtensionConfig::loadFromFileCached($xmlFilePath);
             $xmlAttributes = $extensionConfig->getNodeAsArray('generalattributes');
             // if only one attribute, then it doesn't return numeric index
             if (!empty($xmlAttributes) && !array_key_exists('0', $xmlAttributes['attribute'])) {
@@ -102,16 +101,13 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
         $attributes = [];
 
         if (file_exists($xmlFilePath)) {
-            $extensionConfig = \ExtensionConfig::loadFromFile($xmlFilePath);
+            $extensionConfig = \ExtensionConfig::loadFromFileCached($xmlFilePath);
             $xmlAttributes = $extensionConfig->getNodeAsArray('attributes');
             // if only one attribute, then it doesn't return numeric index
             if (!empty($xmlAttributes) && !array_key_exists('0', $xmlAttributes['attribute'])) {
                 $temp = $xmlAttributes['attribute'];
                 unset($xmlAttributes);
                 $xmlAttributes['attribute'][0] = $temp;
-            }
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
             }
         } else {
             return [];

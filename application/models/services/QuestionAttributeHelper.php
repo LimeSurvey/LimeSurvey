@@ -4,6 +4,8 @@ namespace LimeSurvey\Models\Services;
 
 class QuestionAttributeHelper
 {
+    private const USER_DEFAULTS_SETTING_PREFIX = 'question_default_values_';
+
     /**
      * Merges the 'base' attributes (ex: core question attributes) with the extended question attributes
      * (ex: question theme attributes). It also removes all attributes where extended attribute's inputType is
@@ -289,17 +291,68 @@ class QuestionAttributeHelper
      */
     public function getUserDefaultsForQuestionType($questionType)
     {
+        $userDefaultQuestionAttributes = \SettingsUser::getUserSettingValue(
+            self::USER_DEFAULTS_SETTING_PREFIX . $questionType
+        );
+        return $this->decodeUserDefaults($userDefaultQuestionAttributes);
+    }
+
+    /**
+     * Returns the current user's defaults indexed by supported question type.
+     *
+     * @return array<string,array<string,mixed>>
+     */
+    public function getUserDefaultsByQuestionType()
+    {
+        $defaultsByQuestionType = [];
+        $settingNames = array_map(
+            fn($questionType) => self::USER_DEFAULTS_SETTING_PREFIX . $questionType,
+            array_keys(\QuestionType::modelsAttributes())
+        );
+        $settings = \SettingsUser::getUserSettingsByNames(
+            $settingNames
+        );
+
+        foreach ($settings as $setting) {
+            $questionType = substr(
+                $setting->stg_name,
+                strlen(self::USER_DEFAULTS_SETTING_PREFIX)
+            );
+            $defaults = $this->decodeUserDefaults($setting->stg_value);
+            if (!empty($defaults)) {
+                $defaultsByQuestionType[$questionType] = $defaults;
+            }
+        }
+
+        return $defaultsByQuestionType;
+    }
+
+    /**
+     * Decodes stored question defaults into attribute values.
+     *
+     * @param mixed $userDefaultQuestionAttributes
+     * @return array<string,mixed>
+     */
+    private function decodeUserDefaults($userDefaultQuestionAttributes)
+    {
+        if ($userDefaultQuestionAttributes === null) {
+            return [];
+        }
+
+        $defaultValuesByCategory = json_decode((string) $userDefaultQuestionAttributes, true);
+        if (!is_array($defaultValuesByCategory)) {
+            return [];
+        }
+
         $defaultValues = [];
-        $userDefaultQuestionAttributes = \SettingsUser::getUserSettingValue('question_default_values_' . $questionType);
-        if ($userDefaultQuestionAttributes !== null) {
-            $defaultValuesByCategory = json_decode((string) $userDefaultQuestionAttributes, true);
-            foreach ($defaultValuesByCategory as $attributes) {
-                foreach ($attributes as $attribute => $value) {
-                    if (!is_array($value)) {
-                        $value = ['' => $value];
-                    }
-                    $defaultValues[$attribute] = $value;
-                }
+        foreach ($defaultValuesByCategory as $attributes) {
+            if (!is_array($attributes)) {
+                continue;
+            }
+            foreach ($attributes as $attribute => $value) {
+                $defaultValues[$attribute] = is_array($value)
+                    ? $value
+                    : ['' => $value];
             }
         }
         return $defaultValues;

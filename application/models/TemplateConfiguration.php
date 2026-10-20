@@ -224,10 +224,15 @@ class TemplateConfiguration extends TemplateConfig
         // No specific template configuration for this surveygroup => create one
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName(
+            // Clone the (possibly cached) generic instance so it is not mutated in place,
+            // which would corrupt the cached base template configuration for later calls.
+            $oTemplateConfigurationModel = clone TemplateConfiguration::getInstanceFromTemplateName(
                 $sTemplateName,
                 $abstractInstance
             );
+            // Clear the parent-template cache copied by clone(): it was resolved for the generic
+            // instance's own context and must be recomputed for this new survey group's context.
+            $oTemplateConfigurationModel->oParentTemplate = null;
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
@@ -271,10 +276,15 @@ class TemplateConfiguration extends TemplateConfig
 
         // If the TemplateConfiguration could not be found go up the inheritance hierarchy
         if (empty($oTemplateConfigurationModel)) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName(
+            // Clone the (possibly cached) generic instance so it is not mutated in place,
+            // which would corrupt the cached base template configuration for later calls.
+            $oTemplateConfigurationModel = clone TemplateConfiguration::getInstanceFromTemplateName(
                 $sTemplateName,
                 $abstractInstance
             );
+            // Clear the parent-template cache copied by clone(): it was resolved for the generic
+            // instance's own context and must be recomputed for this new survey's context.
+            $oTemplateConfigurationModel->oParentTemplate = null;
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
@@ -734,47 +744,51 @@ class TemplateConfiguration extends TemplateConfig
         ];
 
 
-        $dropdownItems[] = [
-            'title'            => gT('Extend'),
-            'url'              => $sExtendUrl,
-            'linkId'           => 'extendthis_' . $this->id,
-            'linkClass'        => 'selector--ConfirmModal ',
-            'iconClass'        => 'ri-file-copy-line text-success',
-            'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
-            'linkAttributes'   => [
-                'title'            => sprintf(gT('Type in the new name to extend %s'), $templateName),
-                'data-button-no'   => gT('Cancel'),
-                'data-button-yes'  => gT('Extend'),
-                'data-text'        => gT('Please type in the new theme name above.'),
-                'data-post'        => json_encode([
-                    "copydir" => $templateName,
-                    "action"  => "templatecopy",
-                    "newname" => [ "value" => "extends_" . $templateName,
-                                    "type" => "text",
-                                    "class" => "form-control col-md-12" ]
-                    ]),
-            ]
-        ];
+        if (Permission::model()->hasGlobalPermission('templates', 'create')) {
+            $dropdownItems[] = [
+                'title'            => gT('Extend'),
+                'url'              => $sExtendUrl,
+                'linkId'           => 'extendthis_' . $this->id,
+                'linkClass'        => 'selector--ConfirmModal ',
+                'iconClass'        => 'ri-file-copy-line text-success',
+                'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
+                'linkAttributes'   => [
+                    'title'            => sprintf(gT('Type in the new name to extend %s'), $templateName),
+                    'data-button-no'   => gT('Cancel'),
+                    'data-button-yes'  => gT('Extend'),
+                    'data-text'        => gT('Please type in the new theme name above.'),
+                    'data-post'        => json_encode([
+                        "copydir" => $templateName,
+                        "action"  => "templatecopy",
+                        "newname" => [ "value" => "extends_" . $templateName,
+                                        "type" => "text",
+                                        "class" => "form-control col-md-12" ]
+                        ]),
+                ]
+            ];
+        }
 
 
-        $dropdownItems[] = [
-            'title'            => gT('Uninstall'),
-            'url'              => $sUninstallUrl,
-            'linkId'           => 'remove_fromdb_link_' . $this->id,
-            'linkClass'        => 'selector--ConfirmModal ',
-            'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => App()->getController()->action->id !== "surveysgroups" &&
-                                    $templateName != App()->getConfig('defaulttheme'),
-            'linkAttributes'   => [
-                'title'            => gT('Uninstall this theme'),
-                'data-button-no'   => gT('Cancel'),
-                'data-button-yes'  => gT('Uninstall'),
-                'data-text'        => gT('This will reset all the specific configurations of this theme.')
-                                         . '<br>' . gT('Do you want to continue?'),
-                'data-post'        => json_encode([ "templatename" => $templateName ]),
-                'data-button-type' => "btn-danger"
-            ]
-        ];
+        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
+            $dropdownItems[] = [
+                'title'            => gT('Uninstall'),
+                'url'              => $sUninstallUrl,
+                'linkId'           => 'remove_fromdb_link_' . $this->id,
+                'linkClass'        => 'selector--ConfirmModal ',
+                'iconClass'        => 'ri-delete-bin-fill text-danger',
+                'enabledCondition' => App()->getController()->action->id !== "surveysgroups" &&
+                                        $templateName != App()->getConfig('defaulttheme'),
+                'linkAttributes'   => [
+                    'title'            => gT('Uninstall this theme'),
+                    'data-button-no'   => gT('Cancel'),
+                    'data-button-yes'  => gT('Uninstall'),
+                    'data-text'        => gT('This will reset all the specific configurations of this theme.')
+                                             . '<br>' . gT('Do you want to continue?'),
+                    'data-post'        => json_encode([ "templatename" => $templateName ]),
+                    'data-button-type' => "btn-danger"
+                ]
+            ];
+        }
 
         $dropdownItems[] = [
             'title'            => gT('Reset'),
@@ -994,6 +1008,53 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         return $aData;
+    }
+
+    /**
+     * Returns the image dropdown entry (group, filename, filepath, preview) for a given file name,
+     * matching the format used in the theme options image selectors. Used to update the selectors
+     * client-side right after an image upload, without a full page reload.
+     *
+     * The same filename can exist in several categories (theme, generalfiles, survey), so when the
+     * uploaded file's destination path is known, the entry whose real path matches it is preferred,
+     * falling back to the first filename match otherwise.
+     *
+     * @param string $fileName
+     * @param string|null $destinationFilePath absolute path where the uploaded file was stored
+     * @return array|null the dropdown entry, or null if the file is not found in the image file list.
+     */
+    public function getImageFileListEntry($fileName, $destinationFilePath = null)
+    {
+        $attributes = $this->getOptionPageAttributes();
+        $targetRealPath = empty($destinationFilePath) ? false : realpath($destinationFilePath);
+        $matchedImage = null;
+        foreach ($attributes['imageFileList'] as $image) {
+            if ($image['filename'] !== $fileName) {
+                continue;
+            }
+            if ($targetRealPath !== false) {
+                $imageRealPath = realpath(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $image['filepathOptions']);
+                if ($imageRealPath === $targetRealPath) {
+                    $matchedImage = $image;
+                    break;
+                }
+                if ($matchedImage === null) {
+                    $matchedImage = $image;
+                }
+                continue;
+            }
+            $matchedImage = $image;
+            break;
+        }
+        if ($matchedImage === null) {
+            return null;
+        }
+        return [
+            'group' => $matchedImage['group'],
+            'filename' => $matchedImage['filename'],
+            'filepath' => $matchedImage['filepath'],
+            'preview' => $matchedImage['preview'],
+        ];
     }
 
     /**
@@ -1217,14 +1278,24 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function uninstallIncorectTheme($sTemplateName)
     {
-        TemplateConfiguration::uninstall($sTemplateName);
-        App()->setFlashMessage(
-            sprintf(
-                gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
-                $sTemplateName
-            ),
-            'error'
-        );
+        if (TemplateConfiguration::uninstall($sTemplateName)) {
+            App()->setFlashMessage(
+                sprintf(
+                    gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
+                    $sTemplateName
+                ),
+                'error'
+            );
+        } else {
+            App()->setFlashMessage(
+                sprintf(
+                    gT("The “%s” theme is not compatible with this LimeSurvey version. It could not be uninstalled. Please contact %s regarding this issue."),
+                    $sTemplateName,
+                    App()->getConfig('siteadminname'),
+                ),
+                'error'
+            );
+        }
         App()->getController()->redirect(array("themeOptions/index", "#" => "surveythemes"));
         App()->end();
     }

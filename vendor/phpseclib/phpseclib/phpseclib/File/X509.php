@@ -57,37 +57,37 @@ class X509
     /**
      * Return internal array representation
      *
-     * @see \phpseclib3\File\X509::getDN()
+     * @see X509::getDN()
      */
     const DN_ARRAY = 0;
     /**
      * Return string
      *
-     * @see \phpseclib3\File\X509::getDN()
+     * @see X509::getDN()
      */
     const DN_STRING = 1;
     /**
      * Return ASN.1 name string
      *
-     * @see \phpseclib3\File\X509::getDN()
+     * @see X509::getDN()
      */
     const DN_ASN1 = 2;
     /**
      * Return OpenSSL compatible array
      *
-     * @see \phpseclib3\File\X509::getDN()
+     * @see X509::getDN()
      */
     const DN_OPENSSL = 3;
     /**
      * Return canonical ASN.1 RDNs string
      *
-     * @see \phpseclib3\File\X509::getDN()
+     * @see X509::getDN()
      */
     const DN_CANON = 4;
     /**
      * Return name hash for file indexing
      *
-     * @see \phpseclib3\File\X509::getDN()
+     * @see X509::getDN()
      */
     const DN_HASH = 5;
 
@@ -96,25 +96,25 @@ class X509
      *
      * ie. a base64-encoded PEM with a header and a footer
      *
-     * @see \phpseclib3\File\X509::saveX509()
-     * @see \phpseclib3\File\X509::saveCSR()
-     * @see \phpseclib3\File\X509::saveCRL()
+     * @see X509::saveX509()
+     * @see X509::saveCSR()
+     * @see X509::saveCRL()
      */
     const FORMAT_PEM = 0;
     /**
      * Save as DER
      *
-     * @see \phpseclib3\File\X509::saveX509()
-     * @see \phpseclib3\File\X509::saveCSR()
-     * @see \phpseclib3\File\X509::saveCRL()
+     * @see X509::saveX509()
+     * @see X509::saveCSR()
+     * @see X509::saveCRL()
      */
     const FORMAT_DER = 1;
     /**
      * Save as a SPKAC
      *
-     * @see \phpseclib3\File\X509::saveX509()
-     * @see \phpseclib3\File\X509::saveCSR()
-     * @see \phpseclib3\File\X509::saveCRL()
+     * @see X509::saveX509()
+     * @see X509::saveCSR()
+     * @see X509::saveCRL()
      *
      * Only works on CSRs. Not currently supported.
      */
@@ -124,9 +124,9 @@ class X509
      *
      * Used only by the load*() functions
      *
-     * @see \phpseclib3\File\X509::saveX509()
-     * @see \phpseclib3\File\X509::saveCSR()
-     * @see \phpseclib3\File\X509::saveCRL()
+     * @see X509::saveX509()
+     * @see X509::saveCSR()
+     * @see X509::saveCRL()
      */
     const FORMAT_AUTO_DETECT = 3;
 
@@ -268,6 +268,13 @@ class X509
      * @var ?array
      */
     private $domains = null;
+
+    /**
+     * URL fetch callback
+     *
+     * @var string|array|null
+     */
+    private static $urlFetchCallback = null;
 
     /**
      * Default Constructor.
@@ -1120,6 +1127,10 @@ class X509
     /**
      * Fetches a URL
      *
+     * If a fetch callback is set via setURLFetchCallback(), the host is resolved
+     * once and the connection is pinned to that IP (the callback judges the
+     * resolved IP, preventing DNS-rebinding bypass).
+     *
      * @param string $url
      * @return bool|string
      */
@@ -1130,25 +1141,58 @@ class X509
         }
 
         $parts = parse_url($url);
+        if ($parts === false || !isset($parts['scheme']) || !isset($parts['host'])) {
+            return false;
+        }
+        $host = $parts['host'];
+        $port = isset($parts['port']) ? $parts['port'] : 80;
+
+        if (isset(self::$urlFetchCallback)) {
+            if (filter_var($host, FILTER_VALIDATE_IP)) {
+                $ip = $host;
+                // unwrap IPv4-mapped IPv6 so the callback judges the real v4 address
+                if (preg_match('/^::ffff:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/i', $ip, $m)) {
+                    $ip = $m[1];
+                }
+            } else {
+                $records = dns_get_record($host, DNS_A | DNS_AAAA);
+                if (!$records) {
+                    return false;
+                }
+                if (isset($records[0]['ip'])) {
+                    $ip = $records[0]['ip'];
+                } elseif (isset($records[0]['ipv6'])) {
+                    $ip = $records[0]['ipv6'];
+                } else {
+                    return false;
+                }
+            }
+            if (!call_user_func(self::$urlFetchCallback, $host, $ip, $port, $parts['scheme'])) {
+                return false;
+            }
+            $target = strpos($ip, ':') !== false ? "[$ip]" : $ip;
+        } else {
+            $target = $host;
+        }
+
         $data = '';
         switch ($parts['scheme']) {
             case 'http':
-                $fsock = @fsockopen($parts['host'], isset($parts['port']) ? $parts['port'] : 80);
+                $fsock = @fsockopen($target, $port);
                 if (!$fsock) {
                     return false;
                 }
-                $path = $parts['path'];
+                $path = isset($parts['path']) ? $parts['path'] : '/';
                 if (isset($parts['query'])) {
                     $path .= '?' . $parts['query'];
                 }
                 fputs($fsock, "GET $path HTTP/1.0\r\n");
-                fputs($fsock, "Host: $parts[host]\r\n\r\n");
+                fputs($fsock, "Host: $host\r\n\r\n");
                 $line = fgets($fsock, 1024);
-                if (strlen($line) < 3) {
+                if ($line === false || strlen($line) < 3) {
                     return false;
                 }
-                preg_match('#HTTP/1.\d (\d{3})#', $line, $temp);
-                if ($temp[1] != '200') {
+                if (!preg_match('#HTTP/1.\d (\d{3})#', $line, $temp) || $temp[1] != '200') {
                     return false;
                 }
 
@@ -1167,7 +1211,8 @@ class X509
                 break;
             //case 'ftp':
             //case 'ldap':
-            //default:
+            default:
+                return false;
         }
 
         return $data;
@@ -1478,6 +1523,8 @@ class X509
 
     /**
      * Prevents URIs from being automatically retrieved
+     *
+     * @removed in phpseclib 4.0.0
      */
     public static function disableURLFetch()
     {
@@ -1486,6 +1533,8 @@ class X509
 
     /**
      * Allows URIs to be automatically retrieved
+     *
+     * @removed in phpseclib 4.0.0
      */
     public static function enableURLFetch()
     {
@@ -4075,5 +4124,15 @@ class X509
     public function setExtensionValue($id, $value, $critical = false, $replace = false)
     {
         $this->extensionValues[$id] = compact('critical', 'replace', 'value');
+    }
+
+    /**
+     * Returns the OID corresponding to a name
+     *
+     * @param ?callable $callback
+     */
+    public static function setURLFetchCallback($callback)
+    {
+        self::$urlFetchCallback = $callback;
     }
 }

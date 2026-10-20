@@ -121,6 +121,7 @@ export const ContentEditor = ({
             disabled={editorDisabled}
             onBlur={handleBlur}
             onFocus={handleFocus}
+            onKeyDown={onKeyDown}
             handleOnChange={handleOnChange}
             placeholder={placeholder}
             value={value}

@@ -1,104 +1,349 @@
-import React from 'react'
+import React, { useLayoutEffect, useRef, useState } from 'react'
 import {
-  Legend,
   Cell,
   PieChart as RechartsPieChart,
   Pie,
   ResponsiveContainer,
-  Sector,
   Tooltip,
 } from 'recharts'
 
-import { COLORS, CustomTooltip } from '../ChartsUtils'
-import { CustomLegend } from './CustomLegend'
+import {
+  COLORS,
+  CustomTooltip,
+  VALUE_TYPE,
+  getDisplayMetric,
+  shouldRenderImage,
+} from '../ChartsUtils'
 
-const renderActiveShape = ({
+// Label image frame: a fixed white box with a border, the image inset by a
+// uniform padding so every label keeps the same footprint regardless of the
+// image's aspect ratio (an SVG <image> can't take CSS border/padding).
+const LABEL_IMAGE_WIDTH = 56
+const LABEL_IMAGE_HEIGHT = 40
+const LABEL_IMAGE_PADDING = 6
+const LABEL_IMAGE_BORDER = '#d3d5da' // $g-400
+
+// Answer-name row: capped width with CSS ellipsis (rendered via foreignObject
+// since an SVG <text> can't truncate). Height fits the $font-size-xl line.
+const LABEL_MAX_WIDTH = 160
+const LABEL_NAME_HEIGHT = 32
+
+const RADIAN = Math.PI / 180
+
+// Slices start at 12 o'clock and run clockwise, so answers read in order when
+// scanned the natural way.
+const PIE_START_ANGLE = 90
+const PIE_END_ANGLE = -270
+
+// Answer-name label. Exposes the full text as a native hover tooltip only when
+// it is actually truncated (overflows the capped width), so hovering a
+// shortened label reveals the full text.
+const LabelName = ({ label, justify }) => {
+  const ref = useRef(null)
+  const [isTruncated, setIsTruncated] = useState(false)
+
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (el) setIsTruncated(el.scrollWidth > el.clientWidth)
+  }, [label])
+
+  return (
+    <div
+      className="responses-statistics-pie-label-name-wrap"
+      style={{ justifyContent: justify }}
+    >
+      <div
+        ref={ref}
+        className="responses-statistics-pie-label-name"
+        title={isTruncated ? label : undefined}
+      >
+        {label}
+      </div>
+    </div>
+  )
+}
+
+const renderActiveShapeNew = ({
   cx,
   cy,
   midAngle,
   outerRadius,
-  startAngle,
-  endAngle,
   fill,
   percent,
-  value,
   payload,
+  name,
+  valueType = VALUE_TYPE.PERCENTAGE,
+  isImage = false,
+  yOffset = 0,
 }) => {
-  const RADIAN = Math.PI / 180
-  const sin = Math.sin(-RADIAN * (midAngle ?? 1))
   const cos = Math.cos(-RADIAN * (midAngle ?? 1))
-  const sx = (cx ?? 0) + ((outerRadius ?? 0) + 10) * cos
-  const sy = (cy ?? 0) + ((outerRadius ?? 0) + 10) * sin
-  const mx = (cx ?? 0) + ((outerRadius ?? 0) + 30) * cos
-  const my = (cy ?? 0) + ((outerRadius ?? 0) + 30) * sin
-  const ex = mx + (cos >= 0 ? 1 : -1) * 22
-  const ey = my
-  const textAnchor = cos >= 0 ? 'start' : 'end'
+  const sin = Math.sin(-RADIAN * (midAngle ?? 1))
+  const isRight = cos >= 0
+  const showImage = shouldRenderImage(isImage, payload)
 
-  // Use percentage from payload if available, otherwise fall back to Recharts calculated percent
-  const displayPercentage = payload?.percentage
-    ? parseFloat(payload.percentage).toFixed(2)
-    : ((percent ?? 1) * 100).toFixed(2)
+  const r = outerRadius ?? 0
+  // Image labels are a taller stack (image + metric), so push them further out
+  // radially; otherwise the top (image) row of a bottom slice's label reaches
+  // back into the pie.
+  const elbow = r + 20 + (showImage ? 18 : 0)
+  const sx = (cx ?? 0) + r * cos
+  const sy = (cy ?? 0) + r * sin
+  const mx = (cx ?? 0) + elbow * cos
+  const my = (cy ?? 0) + elbow * sin + yOffset
+  const ex = mx + (isRight ? 26 : -26)
+  const ey = my
+
+  // The "other" slice is marked by its dashed connector rather than a label row.
+  const isOther = payload?.isOther ?? payload?.key === 'other'
+  // Top row is the answer label; `name` is recharts' nameKey value, with
+  // `payload.title` as the reliable fallback.
+  const label = payload?.title ?? name ?? ''
+  const displayMetric = getDisplayMetric(payload, valueType, percent)
+
+  // Block width is estimated from the widest row so its near edge stays clear
+  // of the connector dot.
+  const estimatedWidth = Math.max(
+    showImage ? LABEL_IMAGE_WIDTH : LABEL_MAX_WIDTH,
+    displayMetric.length * 7
+  )
+  const centerX = ex + (isRight ? 1 : -1) * (10 + estimatedWidth / 2)
+
+  // Text rows anchor to the block edge nearest the dot and flow outward, so
+  // short labels hug the dot on both sides (instead of pinning to the far edge
+  // and leaving a gap on the left). Image labels stay centered on the block.
+  const labelAnchor = showImage ? 'middle' : isRight ? 'start' : 'end'
+  const labelX = showImage
+    ? centerX
+    : centerX + (isRight ? -1 : 1) * (LABEL_MAX_WIDTH / 2)
+
+  // Image label is sourced from the row title (the image URL); recharts does
+  // not reliably pass `name` to the label renderer.
+  const imageUrl = payload?.title ?? name
+  const imageFrameX = centerX - LABEL_IMAGE_WIDTH / 2
+  const imageFrameY = ey - 8 - LABEL_IMAGE_HEIGHT / 2
 
   return (
     <g>
-      <Sector
-        cx={cx}
-        cy={cy}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        innerRadius={(outerRadius ?? 0) + 6}
-        outerRadius={(outerRadius ?? 0) + 10}
-        fill={fill}
-      />
       <path
-        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
+        d={`M${sx},${sy} L${mx},${my} L${ex},${ey}`}
         stroke={fill}
+        strokeWidth={2.5}
         fill="none"
+        strokeDasharray={isOther ? '3 3' : undefined}
       />
-      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+      <circle cx={ex} cy={ey} r={5} fill={fill} />
+
+      {showImage ? (
+        <g>
+          <rect
+            x={imageFrameX}
+            y={imageFrameY}
+            width={LABEL_IMAGE_WIDTH}
+            height={LABEL_IMAGE_HEIGHT}
+            rx={4}
+            fill="#FFFFFF"
+            stroke={LABEL_IMAGE_BORDER}
+            strokeWidth={1}
+          />
+          <image
+            href={imageUrl}
+            xlinkHref={imageUrl}
+            x={imageFrameX + LABEL_IMAGE_PADDING}
+            y={imageFrameY + LABEL_IMAGE_PADDING}
+            width={LABEL_IMAGE_WIDTH - LABEL_IMAGE_PADDING * 2}
+            height={LABEL_IMAGE_HEIGHT - LABEL_IMAGE_PADDING * 2}
+            preserveAspectRatio="xMidYMid meet"
+          >
+            <title>{imageUrl}</title>
+          </image>
+        </g>
+      ) : (
+        <foreignObject
+          x={centerX - LABEL_MAX_WIDTH / 2}
+          y={ey - 24}
+          width={LABEL_MAX_WIDTH}
+          height={LABEL_NAME_HEIGHT}
+        >
+          <LabelName
+            label={label}
+            justify={isRight ? 'flex-start' : 'flex-end'}
+          />
+        </foreignObject>
+      )}
+
       <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        textAnchor={textAnchor}
-        className="active-shape-value"
-      >{`${value}`}</text>
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        dy={18}
-        textAnchor={textAnchor}
-        className="active-shape-percent-value"
+        x={labelX}
+        y={(showImage ? ey + 6 : ey) + 18}
+        textAnchor={labelAnchor}
+        className="responses-statistics-pie-label-metric"
       >
-        {`(${displayPercentage}%)`}
+        {displayMetric}
       </text>
     </g>
   )
 }
 
-export const PieChart = ({ data }) => {
+// Vertical label-block footprint (value/image + metric rows)
+const LABEL_MIN_GAP = 48
+const LABEL_MIN_GAP_IMAGE = 58
+
+// Fixed pie size, so the chart can grow taller for stacked labels without the
+// pie growing too. Recharts adds margin.top to a numeric cy.
+const CHART_BASE_HEIGHT = 400
+const CHART_MIN_WIDTH = 700
+const CHART_MARGIN_TOP = 30
+const CHART_MARGIN_BOTTOM = 40
+const PIE_RADIUS = 130
+const PIE_CY = 150
+const PIE_CY_IN_CHART = CHART_MARGIN_TOP + PIE_CY
+
+// Space a label takes below its dot (image frame + metric row)
+const LABEL_HEIGHT_BELOW_ANCHOR = 64
+
+// Zero (or tiny) slices share the same midAngle, so their labels land on the
+// same point. Recompute every slice's label anchor with the same angle math
+// recharts uses and push down any label that would overlap the one above it
+// on the same side of the pie.
+const computeLabelYOffsets = (data, cy, outerRadius, isImage) => {
+  const total = data.reduce((sum, entry) => sum + (entry.value || 0), 0) || 1
+  let startAngle = PIE_START_ANGLE
+  const anchors = data.map((entry, index) => {
+    const span = ((entry.value || 0) / total) * 360
+    const midAngle = startAngle - span / 2
+    startAngle -= span
+    return {
+      index,
+      isRight: Math.cos(-RADIAN * midAngle) >= 0,
+      ey: cy + (outerRadius + 20) * Math.sin(-RADIAN * midAngle),
+    }
+  })
+
+  const minGap = isImage ? LABEL_MIN_GAP_IMAGE : LABEL_MIN_GAP
+  const offsets = new Array(data.length).fill(0)
+  ;[true, false].forEach((side) => {
+    anchors
+      .filter((anchor) => anchor.isRight === side)
+      .sort((a, b) => a.ey - b.ey)
+      .reduce((minY, anchor) => {
+        const y = Math.max(anchor.ey, minY)
+        offsets[anchor.index] = y - anchor.ey
+        return y + minGap
+      }, -Infinity)
+  })
+  return { offsets, anchors }
+}
+
+// Stacked labels can end up below the pie, so make the chart tall enough for
+// the lowest one.
+const computeChartHeight = (data, isImage) => {
+  const { offsets, anchors } = computeLabelYOffsets(
+    data,
+    PIE_CY_IN_CHART,
+    PIE_RADIUS,
+    isImage
+  )
+  const lowestLabelBottom = anchors.reduce(
+    (lowest, anchor) =>
+      Math.max(
+        lowest,
+        anchor.ey + offsets[anchor.index] + LABEL_HEIGHT_BELOW_ANCHOR
+      ),
+    0
+  )
+  return Math.max(
+    CHART_BASE_HEIGHT,
+    Math.ceil(lowestLabelBottom + CHART_MARGIN_BOTTOM)
+  )
+}
+
+export const PieChart = ({
+  data,
+  valueType = VALUE_TYPE.PERCENTAGE,
+  isImage = false,
+}) => {
+  const scrollRef = useRef(null)
+
+  // On narrow cards the chart is wider than the card, so keep it centered on
+  // the pie. The user can still scroll to either side. The chart still
+  // resizes a few times as it settles in, so the actual centering is done a
+  // frame later, once the size is final, instead of on every resize tick.
+  useLayoutEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+
+    let frame
+    const centerScroll = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2
+      })
+    }
+
+    centerScroll()
+    const observer = new ResizeObserver(centerScroll)
+    observer.observe(el)
+    return () => {
+      cancelAnimationFrame(frame)
+      observer.disconnect()
+    }
+  }, [])
+
+  const renderLabel = (props) => {
+    const { offsets } = computeLabelYOffsets(
+      data,
+      props.cy,
+      props.outerRadius,
+      isImage
+    )
+    return renderActiveShapeNew({
+      ...props,
+      valueType,
+      isImage,
+      yOffset: offsets[props.index] ?? 0,
+    })
+  }
+
   return (
-    <ResponsiveContainer minHeight={500} width="100%" height="100%">
-      <RechartsPieChart>
-        <Pie
-          data={data}
-          cx="50%"
-          cy="50%"
-          dataKey="value"
-          label={renderActiveShape}
-          nameKey="title"
-          fill="#8884d8"
+    <div className="responses-statistics-pie-chart" ref={scrollRef}>
+      <div style={{ minWidth: CHART_MIN_WIDTH }}>
+        <ResponsiveContainer
+          width="100%"
+          height={computeChartHeight(data, isImage)}
         >
-          {data.map((_, index) => (
-            <Cell
-              key={`peie-cell-${index}`}
-              fill={COLORS[index % COLORS.length]}
-            />
-          ))}
-        </Pie>
-        <Tooltip cursor={{ fill: '#eeeff7' }} content={CustomTooltip} />
-        <Legend content={CustomLegend} />
-      </RechartsPieChart>
-    </ResponsiveContainer>
+          <RechartsPieChart
+            margin={{
+              top: CHART_MARGIN_TOP,
+              right: 160,
+              bottom: CHART_MARGIN_BOTTOM,
+              left: 160,
+            }}
+          >
+            <Pie
+              data={data}
+              cx="50%"
+              cy={PIE_CY}
+              dataKey="value"
+              nameKey="title"
+              label={renderLabel}
+              labelLine={false}
+              outerRadius={PIE_RADIUS}
+              startAngle={PIE_START_ANGLE}
+              endAngle={PIE_END_ANGLE}
+              animationBegin={0}
+              animationDuration={600}
+              fill="#8884d8"
+            >
+              {data.map((_, index) => (
+                <Cell
+                  key={`peie-cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip cursor={{ fill: '#eeeff7' }} content={CustomTooltip} />
+          </RechartsPieChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
   )
 }

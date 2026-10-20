@@ -18,10 +18,18 @@ if (!defined('YII_DEBUG')) {
 
     // Set debug : if not set : set to default from PHP 5.3
     if (isset($settings['config']['debug'])) {
-        if ($settings['config']['debug'] > 0) {
+        $effectiveDebug = (int) $settings['config']['debug'];
+        $envDebug = getenv('LS_DEBUG');
+
+        // LS_DEBUG can reduce debug level but never increase it.
+        if ($envDebug !== false && preg_match('/^[0-2]$/', (string) $envDebug)) {
+            $effectiveDebug = min($effectiveDebug, (int) $envDebug);
+        }
+
+        if ($effectiveDebug > 0) {
             @ini_set("display_errors", 1);
             define('YII_DEBUG', true);
-            if ($settings['config']['debug'] > 1) {
+            if ($effectiveDebug > 1) {
                 error_reporting(E_ALL);
                 // @see https://www.limesurvey.org/manual/Code_quality_guide#Assertions
                 // This will not work if the process is started in production mode (see https://www.php.net/manual/en/ini.core.php#ini.zend.assertions)

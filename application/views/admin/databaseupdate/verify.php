@@ -29,6 +29,21 @@
             'type' => 'danger',
         ])
         ?>
+    <?php } elseif (isDatabaseUpdateLockHeld()) { ?>
+        <?php
+        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+            'text' => gT('A database update is already in progress (started from another session, the command line, or a scheduled task). Please wait for it to finish, then reload this page.'),
+            'type' => 'warning',
+        ])
+        ?>
+    <?php } elseif (($sIncompleteUpdate = getIncompleteDatabaseUpdateMarker()) !== null) { ?>
+        <?php
+        // The marker also exists while an update is running, so this must come after the lock check
+        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+            'text' => getIncompleteDatabaseUpdateMessage($sIncompleteUpdate),
+            'type' => 'danger',
+        ])
+        ?>
     <?php } else { ?>
         <p>
             <a class="btn btn-lg btn-primary" href="<?php echo Yii::app()->getController()->createUrl("admin/databaseupdate/sa/db/continue/yes"); ?>" role="button">

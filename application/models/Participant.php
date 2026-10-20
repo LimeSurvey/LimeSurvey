@@ -82,6 +82,8 @@ class Participant extends LSActiveRecord
             array('language', 'length', 'max' => 40),
             array('firstname, lastname, language', 'LSYii_Validators'),
             array('email', 'length', 'max' => 254),
+            array('email', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true, 'except' => 'search'),
+            array('email', 'LSYii_EmailIDNAValidator', 'allowEmpty' => true, 'allowMultiple' => true, 'except' => 'search'),
             array('blacklisted', 'length', 'max' => 1),
             // Please remove those attributes that should not be searched.
             array('participant_id, firstname, lastname, email, language, countActiveSurveys, blacklisted, owner.full_name', 'safe', 'on' => 'search'),
@@ -134,7 +136,7 @@ class Participant extends LSActiveRecord
             'title'            => gT('Add participant to survey'),
             'linkClass'        => 'action_participant_addToSurvey',
             'iconClass'        => 'ri-user-add-fill',
-            'enabledCondition' => $this->userHasPermissionToEdit(),
+            'enabledCondition' => $this->userHasPermissionToAddToSurvey(),
             'linkAttributes'   => [
                 'data-participant-id' => $this->participant_id
             ],
@@ -143,7 +145,7 @@ class Participant extends LSActiveRecord
             'title'            => gT('List active surveys'),
             'linkClass'        => 'action_participant_infoModal',
             'iconClass'        => 'ri-search-line',
-            'enabledCondition' => $this->userHasPermissionToEdit(),
+            'enabledCondition' => $this->userHasPermissionToRead(),
             'linkAttributes'   => [
                 'data-participant-id' => $this->participant_id
             ],
@@ -202,19 +204,35 @@ class Participant extends LSActiveRecord
             'created' => gT('Created on') . $this->setEncryptedAttributeLabel(0, 'Participant', 'created')
         );
         foreach ($this->allExtraAttributes as $name => $attribute) {
-            $returnArray[$name] = $attribute['defaultname'];
+            $returnArray[$name] = $attribute['localizedname'];
         }
         return $returnArray;
     }
 
     /**
-     * @return array
+     * Get all non-core CPDB attributes, keyed by their column name (ea_<attribute_id>).
+     *
+     * Each attribute additionally gets a 'localizedname' entry holding the attribute name
+     * in the current admin language, falling back to the default name if no translation exists.
+     *
+     * @return array<string, array<string, mixed>>
      */
     public function getAllExtraAttributes()
     {
         $allAttributes = ParticipantAttributeName::model()->getAllAttributes();
+        $localizedNames = CHtml::listData(
+            ParticipantAttributeNameLang::model()->findAll(
+                'lang = :lang',
+                [':lang' => Yii::app()->session['adminlang']]
+            ),
+            'attribute_id',
+            'attribute_name'
+        );
         $extraAttributes = array();
         foreach ($allAttributes as $attribute) {
+            $attribute['localizedname'] = !empty($localizedNames[$attribute['attribute_id']])
+                ? $localizedNames[$attribute['attribute_id']]
+                : $attribute['defaultname'];
             $extraAttributes["ea_" . $attribute['attribute_id']] = $attribute;
         }
         return $extraAttributes;
@@ -384,7 +402,7 @@ class Participant extends LSActiveRecord
             $col_array = [
                 "value"  => '$data->getParticipantAttribute($this->id)',
                 "id"     => $name,
-                "header" => $attribute['defaultname'] . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
+                "header" => CHtml::encode($attribute['localizedname']) . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
                 "type"   => "html",
             ];
             //textbox
@@ -1017,7 +1035,7 @@ class Participant extends LSActiveRecord
                             $token->delete();
                         }
                     }
-                    $iDeletedParticipants += $this->deleteParticipants($sParticipantsIDs, false);
+                    $iDeletedParticipants += $this->deleteParticipants(implode(",", $aParticipantsIDs), false);
                 }
             }
         }
@@ -1089,7 +1107,7 @@ class Participant extends LSActiveRecord
                                 $token->delete();
                             }
                         }
-                        $iDeletedParticipants = $this->deleteParticipants($sParticipantsIDs, false);
+                        $iDeletedParticipants = $this->deleteParticipants(implode(",", $aParticipantsIDs), false);
                     }
                 }
             }
@@ -1433,7 +1451,8 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Returns true if participant_id has ownership or shared rights over this participant false if not
+     * Returns true if the logged in user owns the given participant or the participant is shared
+     * with them or with all users (share_uid -1), false if not. Superadmins always get true.
      *
      * @param string $participant_id
      * @return bool
@@ -1461,7 +1480,7 @@ class Participant extends LSActiveRecord
             ->db
             ->createCommand()
             ->select('count(*)')
-            ->where('participant_id = :participant_id AND ( share_uid = :userid OR share_uid = 0)')
+            ->where('participant_id = :participant_id AND ( share_uid = :userid OR share_uid = -1)')
             ->from('{{participant_shares}}')
             ->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)
             ->bindParam(":userid", $userid, PDO::PARAM_INT)
@@ -2015,7 +2034,12 @@ class Participant extends LSActiveRecord
             $data = array($tokenFieldname => $value['value']);
             Yii::app()->db
                 ->createCommand()
-                ->update("{{tokens_$surveyId}}", $data, "participant_id = '$participantId'");
+                ->update(
+                    "{{tokens_" . intval($surveyId) . "}}",
+                    $data,
+                    'participant_id = :participant_id',
+                    array(':participant_id' => $participantId)
+                );
         }
         return true;
     }
@@ -2033,6 +2057,20 @@ class Participant extends LSActiveRecord
     public function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname)
     {
         $survey = Survey::model()->findByPk($surveyId);
+        if (empty($survey)) {
+            return false;
+        }
+        if (!self::isValidTokenAttributeFieldname($survey, $tokenFieldname)) {
+            return false;
+        }
+        if (!preg_match('/^[1-9][0-9]*$/', (string) $participantAttributeId)) {
+            return false;
+        }
+        $participantAttributeId = (int) $participantAttributeId;
+        if (ParticipantAttributeName::model()->findByPk($participantAttributeId) === null) {
+            return false;
+        }
+
         $val = Yii::app()->db
             ->createCommand()
             ->select($tokenFieldname)
@@ -2059,19 +2097,44 @@ class Participant extends LSActiveRecord
             if ($test['count'] > 0) {
                 Yii::app()->db
                     ->createCommand()
-                    ->update('{{participant_attribute}}', array("value" => $value2[$tokenFieldname]), "participant_id='$participantId' AND attribute_id=$participantAttributeId");
+                    ->update(
+                        '{{participant_attribute}}',
+                        array("value" => $value2[$tokenFieldname]),
+                        'participant_id = :participant_id AND attribute_id = :attribute_id',
+                        array(':participant_id' => $participantId, ':attribute_id' => $participantAttributeId)
+                    );
             } else {
                 Yii::app()->db
                     ->createCommand()
                     ->insert('{{participant_attribute}}', $data);
             }
         }
+        return true;
+    }
+
+    /**
+     * Checks that the given fieldname is a real custom attribute column of the survey
+     * participant table. Used to keep user supplied mappings out of SQL clauses.
+     *
+     * @param Survey $survey
+     * @param mixed $tokenFieldname
+     * @return boolean
+     */
+    protected static function isValidTokenAttributeFieldname($survey, $tokenFieldname)
+    {
+        if (!is_string($tokenFieldname) || !preg_match('/^attribute_[0-9]+$/', $tokenFieldname)) {
+            return false;
+        }
+        return array_key_exists($tokenFieldname, $survey->getTokenAttributes());
     }
 
     /**
      * Copies token participants to the central participant list, and also copies
      * token attribute values where applicable. It checks for matching entries using
      * firstname/lastname/email combination.
+     * Attribute values of an existing central participant are only overwritten if the
+     * current user may edit that participant (see userHasPermissionToEdit()).
+     * Note: Permission checks on the survey are the caller's responsibility.
      *
      * TODO: Most of this belongs in the participantsaction.php controller file, not
      *       here in the model file. Portions of this should be moved out at some stage.
@@ -2088,9 +2151,19 @@ class Participant extends LSActiveRecord
     {
         $survey = Survey::model()->findByPk($surveyid);
         $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participant list
-        $tokenids = json_decode((string) $tokenid_string, true);
+        // The id list may reach the session in different shapes depending on the grid widget used:
+        // a JSON-encoded array ("[1,2]"), a separator-joined string ("1,2,3") from the floating
+        // actions widget, or an actual PHP array. Normalise all of them to an array of ids.
+        if (is_array($tokenid_string)) {
+            $tokenids = $tokenid_string;
+        } else {
+            $tokenids = json_decode((string) $tokenid_string, true);
+            if (!is_array($tokenids)) {
+                $tokenids = ((string) $tokenid_string === '') ? [] : explode(',', (string) $tokenid_string);
+            }
+        }
         $duplicate = 0;
-        $sucessfull = 0;
+        $successful = 0;
         $attid = []; //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
 
         $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions ?? '');
@@ -2104,6 +2177,10 @@ class Participant extends LSActiveRecord
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
             foreach ($aAttributesToBeCreated as $key => $value) {
+                if (!isset($aTokenAttributes[$key]) || !self::isValidTokenAttributeFieldname($survey, $key)) {
+                    unset($aAttributesToBeCreated[$key]);
+                    continue;
+                }
                 $attid[$key] = $attributeService->saveParticipantAttribute($aTokenAttributes[$key], urldecode((string) $value));
             }
         }
@@ -2175,12 +2252,14 @@ class Participant extends LSActiveRecord
                 /* If there is already an existing entry, add to the duplicate count */
                 if ($existing != null) {
                     $duplicate++;
-                    if ($overwriteman && !empty($aMapped)) {
+                    // Only overwrite attribute values of central participants the user is allowed to edit
+                    $canOverwrite = $existing->userHasPermissionToEdit();
+                    if ($canOverwrite && $overwriteman && !empty($aMapped)) {
                         foreach ($aMapped as $cpdbatt => $tatt) {
                             Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
                         }
                     }
-                    if ($overwriteauto && !empty($aAutoMapped)) {
+                    if ($canOverwrite && $overwriteauto && !empty($aAutoMapped)) {
                         foreach ($aAutoMapped as $cpdbatt => $tatt) {
                             Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
                         }
@@ -2203,11 +2282,12 @@ class Participant extends LSActiveRecord
                     ];
                     $oParticipant = new Participant();
                     $oParticipant->setAttributes($writearray, false);
-                    $oParticipant->encryptSave();
+                    $oParticipant->encryptSave(false);
 
                     //Update survey participant list and insert the new UUID
                     $oTokenDynamic->participant_id = $pid;
-                    $oTokenDynamic->encryptSave();
+                    /* No rules for participant_id, no need to validate */
+                    $oTokenDynamic->encryptSave(false, ['participant_id']);
 
                     /* Now add any new attribute values */
                     if (!empty($aAttributesToBeCreated)) {
@@ -2227,7 +2307,7 @@ class Participant extends LSActiveRecord
                             Participant::model()->updateAttributeValueToken($surveyid, $pid, $cpdbatt, $tatt);
                         }
                     }
-                    $sucessfull++;
+                    $successful++;
 
                     /* Create a survey_link */
                     $oSurveyLink = new SurveyLink();
@@ -2264,7 +2344,7 @@ class Participant extends LSActiveRecord
                     ->update('{{surveys}}', ["attributedescriptions" => json_encode($aAttributes)], 'sid = ' . $surveyid);
             }
         }
-        $returndata = ['success' => $sucessfull, 'duplicate' => $duplicate, 'overwriteauto' => $overwriteauto, 'overwriteman' => $overwriteman];
+        $returndata = ['success' => $successful, 'duplicate' => $duplicate, 'overwriteauto' => $overwriteauto, 'overwriteman' => $overwriteman];
         return $returndata;
     }
 
@@ -2313,35 +2393,160 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Returns true if logged in user has edit rights to this participant
+     * Returns true if logged in user has edit rights to this participant:
+     * superadmins, users with the global participant panel update permission, the owner,
+     * and users holding an editable share of the participant (shared with them or with
+     * all users, share_uid -1).
+     * Note: Same rules as filterEditableParticipantIds() and ParticipantShare::canEditSharedParticipant().
+     *
      * @return boolean
      */
     public function userHasPermissionToEdit()
     {
-        $userId = Yii::app()->user->id;
-
-        $shared = ParticipantShare::model()->findByAttributes(
-            ['participant_id' => $this->participant_id],
-            'share_uid = :userid AND can_edit = :can_edit',
-            [':userid' => $userId, ':can_edit' => '1']
-        );
-        $owner = $this->owner_uid == $userId;
-
-        if (Permission::model()->hasGlobalPermission('superadmin') || (Permission::model()->hasGlobalPermission('participantpanel', 'update'))) {
+        if (Permission::model()->hasGlobalPermission('superadmin') || Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
             // Superadmins can do anything and users with global edit permission can to edit all participants
             return true;
-        } elseif ($shared && $shared->share_uid == -1 && $shared->can_edit) {
-            // -1 = shared with everyone
-            return true;
-        } elseif ($shared && $shared->exists('share_uid = :userid', [':userid' => $userId]) && $shared->can_edit) {
-            // Shared with this particular user
-            return true;
-        } elseif ($owner) {
+        }
+        if ($this->owner_uid == Yii::app()->user->id) {
             // User owns this participant
             return true;
-        } else {
-            return false;
         }
+        return ParticipantShare::model()->canEditSharedParticipant($this->participant_id);
+    }
+
+    /**
+     * Returns true if the logged in user may see this participant.
+     * Superadmins and users with the global participant panel read permission see all participants,
+     * other users only the ones they own or that are shared with them or with all users (share_uid -1).
+     * Note: Mirrors the visibility rules of search().
+     *
+     * @return boolean
+     */
+    public function userHasPermissionToRead()
+    {
+        if (
+            Permission::model()->hasGlobalPermission('superadmin', 'read')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'read')
+        ) {
+            return true;
+        }
+        $userId = Yii::app()->user->id;
+        if ($this->owner_uid == $userId) {
+            return true;
+        }
+        return ParticipantShare::model()->exists(
+            'participant_id = :participant_id AND (share_uid = :userid OR share_uid = -1)',
+            [':participant_id' => $this->participant_id, ':userid' => $userId]
+        );
+    }
+
+    /**
+     * Returns true if the logged in user may add this participant to a survey:
+     * users who may edit the participant, and users with the global participant panel export
+     * permission who may see the participant (adding to a survey copies the data like an export).
+     * Note: Same rules as filterParticipantIdsAddableToSurvey().
+     *
+     * @return boolean
+     */
+    public function userHasPermissionToAddToSurvey()
+    {
+        if ($this->userHasPermissionToEdit()) {
+            return true;
+        }
+        return Permission::model()->hasGlobalPermission('participantpanel', 'export')
+            && $this->userHasPermissionToRead();
+    }
+
+    /**
+     * Reduces a list of participant IDs to the participants the logged in user may add to a survey
+     * (same rules as userHasPermissionToAddToSurvey()). Empty IDs are dropped.
+     *
+     * @param string[] $participantIds
+     * @return string[]
+     */
+    public function filterParticipantIdsAddableToSurvey(array $participantIds)
+    {
+        $editableIds = $this->filterEditableParticipantIds($participantIds);
+        if (!Permission::model()->hasGlobalPermission('participantpanel', 'export')) {
+            return $editableIds;
+        }
+        return array_values(array_unique(array_merge($editableIds, $this->filterReadableParticipantIds($participantIds))));
+    }
+
+    /**
+     * Reduces a list of participant IDs to the participants the logged in user may see
+     * (same rules as userHasPermissionToRead()). Empty IDs are dropped.
+     * Superadmins and users with the global participant panel read permission get all IDs back,
+     * other users only the participants they own or that are shared with them or with all users
+     * (share_uid -1).
+     *
+     * @param string[] $participantIds
+     * @return string[]
+     */
+    public function filterReadableParticipantIds(array $participantIds)
+    {
+        $participantIds = array_values(array_filter($participantIds, function ($participantId) {
+            return is_scalar($participantId) && (string) $participantId !== '';
+        }));
+        if (
+            empty($participantIds)
+            || Permission::model()->hasGlobalPermission('superadmin', 'read')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'read')
+        ) {
+            return $participantIds;
+        }
+        $userId = (int) Yii::app()->user->id;
+        return Yii::app()->db->createCommand()
+            ->selectDistinct('p.participant_id')
+            ->from('{{participants}} p')
+            ->leftJoin(
+                '{{participant_shares}} ps',
+                "ps.participant_id = p.participant_id AND (ps.share_uid = :shareuid OR ps.share_uid = -1)",
+                [':shareuid' => $userId]
+            )
+            ->where(
+                ['and', 'p.owner_uid = :owneruid OR ps.participant_id IS NOT NULL', ['in', 'p.participant_id', $participantIds]],
+                [':owneruid' => $userId]
+            )
+            ->queryColumn();
+    }
+
+    /**
+     * Reduces a list of participant IDs to the participants the logged in user may edit
+     * (same rules as userHasPermissionToEdit()). Empty IDs are dropped.
+     * Superadmins and users with the global participant panel update permission get all IDs back,
+     * other users only the participants they own or that are shared with them or with all users
+     * (share_uid -1) with editing allowed.
+     *
+     * @param string[] $participantIds
+     * @return string[]
+     */
+    public function filterEditableParticipantIds(array $participantIds)
+    {
+        $participantIds = array_values(array_filter($participantIds, function ($participantId) {
+            return is_scalar($participantId) && (string) $participantId !== '';
+        }));
+        if (
+            empty($participantIds)
+            || Permission::model()->hasGlobalPermission('superadmin', 'read')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'update')
+        ) {
+            return $participantIds;
+        }
+        $userId = (int) Yii::app()->user->id;
+        return Yii::app()->db->createCommand()
+            ->selectDistinct('p.participant_id')
+            ->from('{{participants}} p')
+            ->leftJoin(
+                '{{participant_shares}} ps',
+                "ps.participant_id = p.participant_id AND (ps.share_uid = :shareuid OR ps.share_uid = -1) AND ps.can_edit = '1'",
+                [':shareuid' => $userId]
+            )
+            ->where(
+                ['and', 'p.owner_uid = :owneruid OR ps.participant_id IS NOT NULL', ['in', 'p.participant_id', $participantIds]],
+                [':owneruid' => $userId]
+            )
+            ->queryColumn();
     }
 
     /**

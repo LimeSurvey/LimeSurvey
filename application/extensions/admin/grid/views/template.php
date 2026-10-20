@@ -3,6 +3,7 @@
 /**
  * @var $this CLSGridView
  * @var $massiveActionTemplate string
+ * @var $showSelectionBar bool
  */
 
 $countSpan = "<span class='grid-selection-count'>0</span>";
@@ -11,6 +12,14 @@ $countSpan = "<span class='grid-selection-count'>0</span>";
 <div id="bottom-scroller" class="content-right scrolling-wrapper">
     {items}
 </div>
+<?php if ($this->lsSelectAllEnabled) : ?>
+<!-- "Select all" settings, also used when the selection bar is replaced by the floating actions bar -->
+<div class="grid-select-all-config d-none"
+     data-total-count="<?= (int) $this->dataProvider->getTotalItemCount() ?>"
+     data-select-all-disable-threshold="<?= (int) $this->lsSelectAllDisableThreshold ?>"
+     data-select-all-warning-message="<?= CHtml::encode(gT('Individual deselection is unavailable when more than {threshold} entries are selected. Reduce the selection below {threshold} to enable this feature.')) ?>"></div>
+<?php endif; ?>
+<?php if ($showSelectionBar ?? true): ?>
 <div class="grid-selection-bar"
      data-grid-id="<?= CHtml::encode($this->id) ?>"
      style="display:none;">
@@ -18,6 +27,11 @@ $countSpan = "<span class='grid-selection-count'>0</span>";
         <?= sprintf(gT('%s selected'), $countSpan) ?>
     </span>
     <span class="grid-selection-bar__divider" aria-hidden="true"></span>
+    <?php if ($this->lsSelectAllEnabled) : ?>
+    <button type="button" class="grid-selection-bar__select-all grid-select-all grid-selection-action">
+        <?= gT('Select all') ?>
+    </button>
+    <?php endif; ?>
     <button type="button" class="grid-selection-bar__deselect grid-deselect-all grid-selection-action">
         <?= gT('Deselect all') ?>
     </button>
@@ -25,6 +39,7 @@ $countSpan = "<span class='grid-selection-count'>0</span>";
         <i class="ri-close-line"></i>
     </button>
 </div>
+<?php endif; ?>
     <div class="grid-view-ls-footer">
             <div class="massive-action-container" id="massive-action-container">
                 <?= $massiveActionTemplate ?>
@@ -40,6 +55,7 @@ if (!empty($this->lsAdditionalColumns)) {
         'filteredColumns'   => $this->lsAdditionalColumnsSelected,
         'columnsData'       => $this->columns,
         'ajaxUpdate'        => $this->id,
+        'organize'          => $this->lsOrganizeColumns,
     ]);
 }
 ?>

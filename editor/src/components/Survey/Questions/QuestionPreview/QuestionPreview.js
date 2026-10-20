@@ -70,7 +70,7 @@ export const QuestionPreview = ({
       )}
     >
       <div
-        className={classNames('w-100', {
+        className={classNames('question-content w-100', {
           'w-50': question?.attributes?.image?.preview,
         })}
         data-testid="question-container"

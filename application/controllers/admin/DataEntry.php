@@ -113,8 +113,13 @@ class DataEntry extends SurveyCommonAction
 
     /**
      * Iterate Survey Method.
+     *
+     * Note: Resetting the responses and participants (unfinalizeanswers) is destructive, so it
+     * needs a POST request and the responses update permission on top of the survey activation one.
+     *
      * @param int $surveyid Given Survey ID
      * @return void
+     * @throws CHttpException
      */
     public function iteratesurvey($surveyid)
     {
@@ -125,6 +130,12 @@ class DataEntry extends SurveyCommonAction
         $aData['success'] = false;
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveyactivation', 'update')) {
             if (Yii::app()->request->getParam('unfinalizeanswers') == 'true') {
+                if (!Yii::app()->getRequest()->isPostRequest) {
+                    throw new CHttpException(405, gT("Invalid action"));
+                }
+                if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
+                    throw new CHttpException(403, gT("You do not have permission to access this page."));
+                }
                 SurveyDynamic::sid($surveyid);
                 Yii::app()->db->createCommand("DELETE from {{responses_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{responses_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
                 // Then set all remaining answers to incomplete state
@@ -259,6 +270,8 @@ class DataEntry extends SurveyCommonAction
             return;
         }
 
+        $survey = Survey::model()->findByPk($iSurveyId);
+
         if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none') {
             // Schema that serves as the base for compatibility checks.
             $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
@@ -297,9 +310,20 @@ class DataEntry extends SurveyCommonAction
                 'label' => gT('Preserve response IDs')
             );
 
+            $aData['settings']['insertmethod'] = array(
+                'type' => 'select',
+                'label' => gT("When an imported record matches an existing record ID:"),
+                'options' => array(
+                    'skip' => gT("Report and skip the new record."),
+                    'renumber' => gT("Renumber the new record."),
+                    'replace' => gT("Replace the existing record."),
+                    'replaceanswers' => gT("Replace answers in file in the existing record."),
+                ),
+                'default' => 'skip'
+            );
+
             //Get the menubar
             $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
-            $survey = Survey::model()->findByPk($iSurveyId);
 
             $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
             $aData['sidemenu']['state'] = false;
@@ -362,13 +386,40 @@ class DataEntry extends SurveyCommonAction
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
             /* @var boolean preserveIDs */
             $preserveIDs = (bool)App()->getRequest()->getPost('preserveIDs');
+            $insertMethod = App()->getRequest()->getPost('insertmethod');
+            if (!in_array($insertMethod, ['skip', 'renumber', 'replace', 'replaceanswers'], true)) {
+                $insertMethod = 'skip';
+            }
+            $skipped = 0;
+            $isPgsql = App()->db->getDriverName() === 'pgsql';
+            $rankingMap = [];
+            foreach ($survey->questions as $q) {
+                if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
+                    foreach ($q->subquestions as $s) {
+                        $rankingMap["Q{$s->parent_qid}_S{$s->qid}"] = "Q{$s->parent_qid}";
+                    }
+                }
+            }
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
                 $targetResponse = new PluginDynamic("{{responses_$iSurveyId}}");
+                $existingResponse = null;
                 if ($preserveIDs) {
-                    $targetResponse->id = $sourceResponse->id;
+                    $existingResponse = PluginDynamic::model("{{responses_$iSurveyId}}")->findByPk($sourceResponse->id);
+                    if ($existingResponse && $insertMethod === 'skip') {
+                        $skipped++;
+                        continue;
+                    }
+                    if ($existingResponse && $insertMethod === 'replaceanswers') {
+                        // Update the existing response with the answers of the archived one
+                        $targetResponse = $existingResponse;
+                    } elseif (!$existingResponse || $insertMethod === 'replace') {
+                        $targetResponse->id = $sourceResponse->id;
+                    }
                 }
+                $isUpdate = !$targetResponse->getIsNewRecord();
+                $isExplicitId = !$isUpdate && isset($targetResponse->id);
 
                 foreach ($fieldMap as $sourceField => $targetField) {
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
@@ -378,6 +429,29 @@ class DataEntry extends SurveyCommonAction
                     if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($sourceField, $encryptedAttributes, false)) {
                         $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
                     }
+                }
+                $rankingJSONs = [];
+
+                foreach ($rankingMap as $oldFieldName => $newFieldName) {
+                    if (!empty($sourceResponse[$oldFieldName])) {
+                        if (!isset($rankingJSONs[$newFieldName])) {
+                            $rankingJSONs[$newFieldName] = [];
+                        }
+
+                        $value = $sourceResponse[$oldFieldName];
+                        if (in_array($oldFieldName, $archivedEncryptedAttributes, false) && !in_array($oldFieldName, $encryptedAttributes, false)) {
+                            $value = $sourceResponse->decryptSingle($sourceResponse[$oldFieldName]);
+                        }
+                        if (!in_array($oldFieldName, $archivedEncryptedAttributes, false) && in_array($oldFieldName, $encryptedAttributes, false)) {
+                            $value = $sourceResponse->encryptSingle($sourceResponse[$oldFieldName]);
+                        }
+                        
+                        $rankingJSONs[$newFieldName][] = $value;
+                    }
+                }
+
+                foreach ($rankingJSONs as $newFieldName => $value) {
+                    $targetResponse[$newFieldName] = json_encode($value);
                 }
 
                 if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
@@ -390,23 +464,31 @@ class DataEntry extends SurveyCommonAction
 
                 $oTransaction = Yii::app()->db->beginTransaction();
                 try {
-                    if ($preserveIDs) {
-                        switchMSSQLIdentityInsert("responses_$iSurveyId", true);
+                    if ($existingResponse && $insertMethod === 'replace') {
+                        $existingResponse->delete();
                     }
-                    if ($targetResponse->save()) {
+                    if ($isExplicitId) {
+                        switchMSSQLIdentityInsert("responses_$iSurveyId", true);
+                    } elseif (!$isUpdate && $preserveIDs && $isPgsql) {
+                        // Preserved IDs may be ahead of the sequence: Sync it before letting it generate a new one
+                        $this->syncResponseIdSequence($iSurveyId);
+                    }
+                    // Never update the ID column (not allowed for identity columns on MSSQL)
+                    $attributeNames = $isUpdate ? array_diff($targetResponse->attributeNames(), ['id']) : null;
+                    if ($targetResponse->save(true, $attributeNames)) {
                         $imported++;
                         $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
                         $beforeDataEntryImport->set('iSurveyID', $iSurveyId);
                         $beforeDataEntryImport->set('oModel', $targetResponse);
                         App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
                         $oTransaction->commit();
+                        $aSRIDConversions[$iOldID] = $targetResponse->id;
                     } else {
                         $oTransaction->rollBack();
                         $responseErrors[$iOldID] = $targetResponse['id'];
                         $aWarnings[$iOldID] = CHtml::errorSummary($targetResponse, '');
                     }
-                    $aSRIDConversions[$iOldID] = $targetResponse->id;
-                    if ($preserveIDs) {
+                    if ($isExplicitId) {
                         switchMSSQLIdentityInsert("responses_$iSurveyId", false);
                     }
                 } catch (Exception $oException) {
@@ -416,7 +498,10 @@ class DataEntry extends SurveyCommonAction
                 }
                 unset($targetResponse);
             }
-            if (empty($responseErrors)) {
+            if ($preserveIDs && $isPgsql) {
+                $this->syncResponseIdSequence($iSurveyId);
+            }
+            if (empty($responseErrors) && !$skipped) {
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
             }
             $sOldTimingsTable = str_replace("responses", "timings", str_replace("timings_", "", $sourceTable->tableName()));
@@ -441,26 +526,46 @@ class DataEntry extends SurveyCommonAction
                     } else {
                         continue;
                     }
+                    // Replaced or updated responses may already have timings
+                    Yii::app()->db->createCommand()->delete("{{{$sNewTimingsTable}}}", 'id = :id', [':id' => $sRecord['id']]);
+                    switchMSSQLIdentityInsert($sNewTimingsTable, true);
                     Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}", $sRecord);
+                    switchMSSQLIdentityInsert($sNewTimingsTable, false);
                     $iRecordCountT++;
                 }
-                if (empty($responseErrors)) {
+                if (empty($responseErrors) && !$skipped) {
                     Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according %s timings were successfully imported."), $imported, $iRecordCountT);
                 }
             }
-            if (empty($responseErrors)) {
+            if (empty($responseErrors) && !$skipped) {
                 $this->getController()->redirect(["/responses/browse/", 'surveyId' => $surveyid]);
             }
             $aData = [
                 'imported' => $imported,
                 'responseErrors' => $responseErrors,
                 'aWarnings' => $aWarnings,
-                'iRecordCountT' => $iRecordCountT
+                'iRecordCountT' => $iRecordCountT,
+                'skipped' => $skipped
             ];
             $this->renderWrappedTemplate('dataentry', 'import_result', $aData);
         }
     }
 
+
+    /**
+     * Sets the PostgreSQL sequence of the response ID so that it continues after the highest existing response ID,
+     * so that responses imported with explicit IDs do not collide with generated ones.
+     * @param int $iSurveyId Survey ID
+     * @return void
+     */
+    protected function syncResponseIdSequence($iSurveyId)
+    {
+        $tableName = App()->db->tablePrefix . "responses_$iSurveyId";
+        App()->db->createCommand(
+            "SELECT pg_catalog.setval(pg_get_serial_sequence('{$tableName}', 'id'), "
+            . "(SELECT COALESCE(MAX(id), 0) + 1 FROM {{responses_$iSurveyId}}), false)"
+        )->execute();
+    }
 
     /**
      * Takes a list of tablenames and creates a nice key value array.
@@ -658,7 +763,6 @@ class DataEntry extends SurveyCommonAction
         $qidattributes = [];
         $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
         $qs = [];
-        $totalTime = 0;
         foreach ($rawQuestions as $rawQuestion) {
             $qs[$rawQuestion->qid] = $rawQuestion;
         }
@@ -900,9 +1004,10 @@ class DataEntry extends SurveyCommonAction
                         $questionInput = '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
                         $unseen = true;
                         while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid'] == $thisqid) {
+                            $isParent = isRankingQuestionParent($fname['aid'] ?? null);
                             //Let's get all the existing values into an array
-                            if ($idrow[$fname['fieldname']]) {
-                                $currentvalues[] = $idrow[$fname['fieldname']];
+                            if (isset($idrow[$fname['fieldname']]) && $isParent) {
+                                $currentvalues = json_decode($idrow[$fname['fieldname']], true);
                             }
                             // If any ranking field is not null, we mark the question as seen.
                             if (isset($idrow[$fname['fieldname']])) {
@@ -1574,12 +1679,23 @@ class DataEntry extends SurveyCommonAction
             }
         }
 
-        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+        $rawQuestions = Question::model()->findAll([
+            'condition' => 'sid = :sid',
+            'params' => [':sid' => $surveyid],
+            'order' => 'question_order ASC',
+        ]);
 
         $questions = [];
+        $subquestions = [];
 
         foreach ($rawQuestions as $rawQuestion) {
             $questions[$rawQuestion->qid] = $rawQuestion;
+            if ($rawQuestion->parent_qid) {
+                if (!isset($subquestions[$rawQuestion->parent_qid])) {
+                    $subquestions[$rawQuestion->parent_qid] = [];
+                }
+                $subquestions[$rawQuestion->parent_qid][] = $rawQuestion;
+            }
         }
 
         $thissurvey = getSurveyInfo($surveyid);
@@ -1592,7 +1708,12 @@ class DataEntry extends SurveyCommonAction
             // For questions, if the "Unseen" checkbox is checked, we must set the field to null.
             // There are some special cases we need to handle.
             if ($irow['type'] == Question::QT_R_RANKING) {
-                $unseenFieldName = "unseen:" . 'Q' . $irow['qid'];
+                $isParent = isRankingQuestionParent($irow['aid'] ?? null);
+                if ($isParent) {
+                    $unseenFieldName = "unseen:" . 'Q' . $irow['qid'];
+                } else {
+                    continue; // Skip subquestions of ranking questions, as they are handled by the parent question.
+                }
             } elseif ($irow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                 // Remove trailing "comment" from the fieldname, if present
                 $unseenFieldName = "unseen:" . preg_replace('/comment$/', '', $fieldname);
@@ -1664,6 +1785,20 @@ class DataEntry extends SurveyCommonAction
                         break;
                     }
                     $oResponse->$fieldname = $thisvalue;
+                    break;
+                case Question::QT_R_RANKING:
+                    $isParent = isRankingQuestionParent($irow['aid'] ?? null);
+                    if (!$isParent) {
+                        break;
+                    }
+                    $rankFieldBase = 'Q' . $irow['qid'];
+                    $rankSubquestions = $subquestions[$irow['qid']] ?? array();
+                    $rankValues = array();
+                    foreach ($rankSubquestions as $rankSubquestion) {
+                        $posValue = Yii::app()->request->getPost($rankFieldBase . '_S' . $rankSubquestion->qid, '');
+                        $rankValues[] = $posValue;
+                    }
+                    $oResponse->$fieldname = json_encode($rankValues);
                     break;
                 case 'submitdate':
                     if (Yii::app()->request->getPost('completed') == "N") {
@@ -1738,14 +1873,23 @@ class DataEntry extends SurveyCommonAction
 
         $insertSubaction = $subaction == 'insert';
         $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create');
-        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+        $rawQuestions = Question::model()->findAll([
+            'condition' => 'sid = :sid',
+            'params' => [':sid' => $surveyid],
+            'order' => 'question_order ASC',
+        ]);
 
         $questions = [];
-
-        $totalTime = 0;
+        $subquestions = [];
 
         foreach ($rawQuestions as $rawQuestion) {
             $questions[$rawQuestion->qid] = $rawQuestion;
+            if ($rawQuestion->parent_qid) {
+                if (!isset($subquestions[$rawQuestion->parent_qid])) {
+                    $subquestions[$rawQuestion->parent_qid] = [];
+                }
+                $subquestions[$rawQuestion->parent_qid][] = $rawQuestion;
+            }
         }
         if ($insertSubaction && $hasResponsesCreatePermission) {
             // TODO: $surveytable is unused. Remove it.
@@ -1816,7 +1960,7 @@ class DataEntry extends SurveyCommonAction
 
                     if ($errormsg) {
                         foreach ($_POST as $key => $val) {
-                            if (substr($key, 0, 4) != "save" && $key != "action" && $key != "sid" && $key != "datestamp" && $key != "ipaddr") {
+                            if (substr($key, 0, 4) != "save" && $key != "action" && $key != "sid" && $key != "datestamp" && $key != "ipaddr" && $key != "quota_exit") {
                                 $hiddenfields .= CHtml::hiddenField($key, $val);
                             }
                         }
@@ -1866,10 +2010,29 @@ class DataEntry extends SurveyCommonAction
                 $phparray = [];
                 foreach ($fieldmap as $irow) {
                     $fieldname = $irow['fieldname'];
+                    if ($irow['type'] == Question::QT_R_RANKING) {
+                        $isParent = isRankingQuestionParent($irow['aid'] ?? null);
+                        if (!$isParent) {
+                            continue;
+                        }
+                        $rankSubquestions = $subquestions[$irow['qid']] ?? array();
+                        $rankValues = array();
+                        foreach ($rankSubquestions as $rankSubquestion) {
+                            $posValue = Yii::app()->request->getPost($fieldname . '_S' . $rankSubquestion->qid, '');
+                            $rankValues[] = $posValue;
+                        }
+                        $insert_data[$fieldname] = json_encode($rankValues);
+                        continue;
+                    }
                     if (isset($_POST[$fieldname])) {
                         if ($_POST[$fieldname] == "" && ($irow['type'] == Question::QT_D_DATE || $irow['type'] == Question::QT_N_NUMERICAL || $irow['type'] == Question::QT_K_MULTIPLE_NUMERICAL)) {
                             // can't add '' in Date column
                             // Do nothing
+                        } elseif ($irow['type'] == 'quota_exit' || $irow['type'] == 'ipaddress') {
+                            // Neither field has a "seen but left blank" state like a real question does:
+                            // an empty value here means "not captured" and must be stored as NULL, not as
+                            // an empty string or the literal string "NULL".
+                            $insert_data[$fieldname] = ($_POST[$fieldname] === '') ? null : $_POST[$fieldname];
                         } elseif ($irow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
                             if (!strpos((string) $irow['fieldname'], "_Cfilecount")) {
                                 $json = $_POST[$fieldname];

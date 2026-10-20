@@ -1,94 +1,104 @@
-import React, { useEffect, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
-import { useStatistics } from 'hooks'
+import { ToggleButtons } from 'components'
+import { useAppState, useStatistics, useSurvey } from 'hooks'
+import { STATES } from 'helpers'
+import { useIsInViewport } from 'hooks/useInViewport'
 
-import { getDataWithPercentages, statisticsGraphs } from './ChartsUtils'
-import { ChartRenderer } from '../ChartRenderer'
+import { ResponsesHeader } from '../../ResponsesHeader'
+import { TAB_KEYS } from '../../utils'
+import { VALUE_TYPE } from './ChartsUtils'
+import { StatisticsContainer } from './StatisticsContainer.js'
+import { buildQuestionOptions } from './StatisticsFiltersModal/utils'
+
+const valueTypeOptions = [
+  { name: '%', value: VALUE_TYPE.PERCENTAGE },
+  { name: '#', value: VALUE_TYPE.COUNT },
+]
 
 export const ResponsesStatistics = ({
   surveyId,
   filters = {},
-  isRightBarOpen = false,
+  showFilters,
+  setShowFilters,
+  setFilters,
 }) => {
-  const { statistics, isFetching } = useStatistics(surveyId, filters)
-  const [selectedCharts, setSelectedCharts] = useState([])
-  const [formattedStatistics, setFormattedStatistics] = useState(null)
+  const {
+    statistics,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useStatistics(surveyId, filters)
+  const [valueType, setValueType] = useState(VALUE_TYPE.PERCENTAGE)
 
-  useEffect(() => {
-    const formattedStatistics = []
+  const [loadMoreRef] = useIsInViewport(null, {
+    initialInView: false,
+    rootMargin: '0px 0px 300px 0px',
+    onChange: (inView) => {
+      if (inView && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage()
+      }
+    },
+  })
+
+  // Survey data drives the filter modal's Question / Participant / language
+  // options (same source as StatisticsContainer).
+  const { survey } = useSurvey(surveyId)
+  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
+  const questionOptions = useMemo(
+    () => buildQuestionOptions(survey, activeLanguage),
+    [survey?.questionGroups, activeLanguage]
+  )
+
+  const renderContent = () => {
     if (!statistics?.length) {
-      return
+      return (
+        <div className="responses-statistics-loading">
+          {isFetching && <span className="loader"></span>}
+          <h2>
+            {isFetching
+              ? t('Loading statistics...')
+              : t(
+                  'No responses or compatible data available to display statistics.'
+                )}
+          </h2>
+        </div>
+      )
     }
 
-    const questionsChartTypes = statistics.map((statisticsData) => {
-      const questionAttributes = statisticsData?.meta?.question?.attributes
-      const dataFormatted = getDataWithPercentages(statisticsData)
-      formattedStatistics.push(dataFormatted)
-
-      if (!questionAttributes) {
-        return statisticsGraphs.DONT_SHOW
-      }
-
-      return (
-        // default to bar chart if no graph type is set
-        // chart validation is done on the backend whether chart should be shown or not
-        questionAttributes.statistics_graphtype || statisticsGraphs.BAR_CHART
-      )
-    })
-
-    setFormattedStatistics(formattedStatistics)
-    setSelectedCharts(questionsChartTypes)
-  }, [statistics])
-
-  if (!statistics?.length || !formattedStatistics || !selectedCharts.length) {
     return (
-      <div
-        style={{ height: '100vh' }}
-        className="d-flex flex-column justify-content-center align-items-center"
-      >
-        {isFetching && (
-          <span
-            style={{ width: 48, height: 48 }}
-            className="loader mb-4"
-          ></span>
-        )}
-        <h2>
-          {isFetching
-            ? t('Loading statistics...')
-            : t(
-                'No responses or compatible data available to display statistics.'
-              )}
-        </h2>
-      </div>
+      <StatisticsContainer
+        statistics={statistics}
+        surveyId={surveyId}
+        valueType={valueType}
+        filters={filters}
+      />
     )
   }
 
   return (
-    <div className="responses-statistics-body">
-      <div className="responses-charts row">
-        {statistics.map((_, index) => {
-          if (
-            selectedCharts[index] === statisticsGraphs.DONT_SHOW ||
-            selectedCharts[index] === undefined ||
-            selectedCharts[index] === null
-          ) {
-            return null
-          }
-
-          return (
-            <div
-              className={`${!isRightBarOpen ? 'col-xxl-6' : ''} col-12 mb-2`}
-              key={`responses-charts-${index}`}
-            >
-              <ChartRenderer
-                statisticsData={formattedStatistics[index]}
-                graphType={selectedCharts[index]}
-                title={statistics[index]?.title}
-              />
-            </div>
-          )
-        })}
+    <>
+      <div className="responses-statistics-toolbar">
+        <ResponsesHeader
+          setShowFilters={setShowFilters}
+          showFilters={showFilters}
+          setFilters={setFilters}
+          tabKey={TAB_KEYS.STATISTICS}
+          survey={survey}
+          questionOptions={questionOptions}
+        />
+        <ToggleButtons
+          id="statistics-value-type"
+          value={valueType}
+          onChange={setValueType}
+          toggleOptions={valueTypeOptions}
+        />
       </div>
-    </div>
+      {renderContent()}
+      <div ref={loadMoreRef} className="responses-statistics-load-more">
+        {isFetchingNextPage && <span className="loader"></span>}
+      </div>
+    </>
   )
 }

@@ -20,12 +20,17 @@ $('#InstallerConfigForm_dbengine').change(function(){
 });
 
 function checkDbType(){
-    if($('#InstallerConfigForm_dbtype').val() == '" . InstallerConfigForm::DB_TYPE_MYSQL . "') {
-        $('#InstallerConfigForm_dbengine_row').show();
-    } else if($('#InstallerConfigForm_dbtype').val() == '" . InstallerConfigForm::DB_TYPE_MYSQLI . "') {
+    var dbType = $('#InstallerConfigForm_dbtype').val();
+    if(dbType == '" . InstallerConfigForm::DB_TYPE_MYSQL . "' || dbType == '" . InstallerConfigForm::DB_TYPE_MYSQLI . "') {
         $('#InstallerConfigForm_dbengine_row').show();
     } else {
         $('#InstallerConfigForm_dbengine_row').hide();
+    }
+
+    if(dbType == '" . InstallerConfigForm::DB_TYPE_SQLSRV . "' || dbType == '" . InstallerConfigForm::DB_TYPE_MSSQL . "') {
+        $('#InstallerConfigForm_mssqlTrustServerCertificate_row').show();
+    } else {
+        $('#InstallerConfigForm_mssqlTrustServerCertificate_row').hide();
     }
 }
 
@@ -104,6 +109,12 @@ function checkDbEngine(){
             <?= CHtml::activeLabelEx($model, 'dbprefix'); ?>
             <?= CHtml::activeTextField($model, 'dbprefix', ['class' => 'form-control']); ?>
             <div class="help-block"><?= $model->attributeHints()['dbprefix'] ?></div>
+        </div>
+
+        <div id="InstallerConfigForm_mssqlTrustServerCertificate_row" class="mb-3 form-check">
+            <?= CHtml::activeCheckBox($model, 'mssqlTrustServerCertificate', ['class' => 'form-check-input']); ?>
+            <?= CHtml::activeLabelEx($model, 'mssqlTrustServerCertificate', ['class' => 'form-check-label']); ?>
+            <div class="help-block"><?= $model->attributeHints()['mssqlTrustServerCertificate'] ?></div>
         </div>
 
         <div class="row">

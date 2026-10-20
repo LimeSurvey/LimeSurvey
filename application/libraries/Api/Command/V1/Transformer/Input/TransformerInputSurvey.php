@@ -95,6 +95,10 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'refurl',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
+            'saveQuotaExit' => [
+                'key' => 'savequotaexit',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'dateCreated' => [
                 'key' => 'datecreated',
                 'date',
@@ -160,6 +164,10 @@ class TransformerInputSurvey extends Transformer
             'showGroupInfo' => 'showgroupinfo',
             'showNoAnswer' => [
                 'key' => 'shownoanswer',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'preselectNoAnswer' => [
+                'key' => 'preselectnoanswer',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'showQNumCode' => 'showqnumcode',

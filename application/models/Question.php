@@ -14,6 +14,7 @@
 */
 
 use LimeSurvey\Helpers\questionHelper;
+use LimeSurvey\Models\Services\SurveyDetailService;
 
 /**
  * Class Question
@@ -238,7 +239,7 @@ class Question extends LSActiveRecord
                 $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
         }
-        if ($this->survey->isActive) {
+        if (!empty($this->survey) && $this->survey->isActive) {
             $aRules = array_merge($aRules, $this->rulesForActiveSurvey());
         }
         /* When question exist and are already set with title, allow keep bad title */
@@ -335,19 +336,32 @@ class Question extends LSActiveRecord
 
 
     /**
-     * Fix sort order for questions in a group
-     * All questions in the group will be assigned a sequential question order,
-     * starting in the specified value
+     * Fix sort order for questions in a group (or, for a given parent question and
+     * scale, its subquestions). All matching questions will be assigned a sequential
+     * question order, starting at the specified value, ordered by their current
+     * question_order and using the question code (title) as a tiebreaker for
+     * questions that currently share the same question_order.
+     *
      * @param int $gid
-     * @param int $startingOrder   the starting question order.
+     * @param int $startingOrder the starting question order.
+     * @param int $parentQid 0 for top-level questions, or a question's qid to
+     *            reorder its subquestions instead.
+     * @param int|null $scaleId restrict to this scale_id; null to not filter by it,
+     *            matching this method's original (top-level questions only) behavior.
      */
-    public function updateQuestionOrder($gid, $startingOrder = 1)
+    public function updateQuestionOrder($gid, $startingOrder = 1, $parentQid = 0, $scaleId = null)
     {
+        $criteria = array(':gid' => $gid, ':parent_qid' => $parentQid);
+        $condition = 'gid=:gid AND parent_qid=:parent_qid';
+        if ($scaleId !== null) {
+            $condition .= ' AND scale_id=:scale_id';
+            $criteria[':scale_id'] = $scaleId;
+        }
+
         $data = Yii::app()->db->createCommand()->select('qid')
-            ->where(array('and', 'gid=:gid', 'parent_qid=0'))
+            ->where($condition, $criteria)
             ->order('question_order, title ASC')
             ->from('{{questions}}')
-            ->bindParam(':gid', $gid, PDO::PARAM_INT)
             ->query();
 
         $position = intval($startingOrder);
@@ -394,6 +408,70 @@ class Question extends LSActiveRecord
 //            //->bindParam(":language", $language, PDO::PARAM_STR)
 //            ->query();
 //    }
+
+    /**
+     * Decodes the stored value of a ranking question (a JSON array of ranked
+     * subquestion codes, rank 1 first) into a list of code strings, or null if
+     * it isn't one.
+     *
+     * Integer codes are accepted and returned as strings. Anything else that is
+     * not a non-empty JSON array of strings or integers (invalid JSON, an
+     * object, an empty array, or floats, booleans, nulls, nested arrays or
+     * objects as elements) returns null, so it never reaches ranking or
+     * subquestion-title resolution.
+     *
+     * @param mixed $rawValue The raw ranking column value
+     * @return string[]|null
+     */
+    public static function decodeRankedCodes($rawValue)
+    {
+        if (!is_string($rawValue) || $rawValue === '') {
+            return null;
+        }
+        // Not decoded as associative arrays, so a JSON object stays a stdClass and is rejected below.
+        $decoded = json_decode($rawValue);
+        if (!is_array($decoded) || $decoded === []) {
+            return null;
+        }
+        foreach ($decoded as $index => $code) {
+            if (is_int($code)) {
+                $decoded[$index] = (string) $code;
+            } elseif (!is_string($code)) {
+                return null;
+            }
+        }
+        return $decoded;
+    }
+
+    /**
+     * Returns the item texts of all ranking questions of a survey in one
+     * language, as [ranking question qid][item code] => item text.
+     *
+     * Ranking items are subquestions; exports use this to resolve ranked codes
+     * to their texts the same way as answer options.
+     *
+     * @param int $surveyId
+     * @param string $language
+     * @return array<int, array<string, string>>
+     */
+    public static function getRankingItemTexts($surveyId, $language)
+    {
+        $rows = Yii::app()->db->createCommand()
+            ->select('sq.parent_qid, sq.title, l10n.question')
+            ->from('{{questions}} sq')
+            ->join('{{questions}} q', 'q.qid = sq.parent_qid')
+            ->join('{{question_l10ns}} l10n', 'l10n.qid = sq.qid')
+            ->where(
+                'q.sid = :sid AND q.type = :type AND l10n.language = :language',
+                [':sid' => (int) $surveyId, ':type' => self::QT_R_RANKING, ':language' => $language]
+            )
+            ->queryAll();
+        $texts = [];
+        foreach ($rows as $row) {
+            $texts[(int) $row['parent_qid']][$row['title']] = $row['question'];
+        }
+        return $texts;
+    }
 
     /**
      * Return the key=>value answer for a given $qid
@@ -450,6 +528,7 @@ class Question extends LSActiveRecord
         Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(DefaultValue::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
+        SurveyURLParameter::removeTargetQuestions($questionsIds);
     }
 
     /**
@@ -467,6 +546,7 @@ class Question extends LSActiveRecord
         QuestionL10n::model()->deleteAll($qidsCriteria);
         QuotaMember::model()->deleteAll($qidsCriteria);
         Condition::model()->deleteAll($qidsCriteria);
+        SurveyURLParameter::removeTargetQuestions($ids);
 
         // delete defaultvalues and defaultvalueL10ns
         $oDefaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
@@ -480,6 +560,9 @@ class Question extends LSActiveRecord
 
         if (parent::delete()) {
             Question::model()->updateQuestionOrder($this->gid);
+            if (!empty($this->sid)) {
+                (new SurveyDetailService())->touchSurveyLastModified((int) $this->sid);
+            }
             return true;
         }
         return false;
@@ -909,8 +992,8 @@ class Question extends LSActiveRecord
                 'desc' => 't.qid desc',
             ),
             'question_order' => array(
-                'asc' => 'g.group_order asc, t.question_order asc',
-                'desc' => 'g.group_order desc,t.question_order desc',
+                'asc' => 'g.group_order asc, t.question_order asc, t.title asc',
+                'desc' => 'g.group_order desc,t.question_order desc, t.title desc',
             ),
             'title' => array(
                 'asc' => 't.title asc',
@@ -1002,18 +1085,34 @@ class Question extends LSActiveRecord
     {
         if (parent::beforeSave()) {
             /* No update when surey activated */
-            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+            $survey = Survey::model()->findByPk($this->sid);
+            $surveyIsActive = !empty($survey) && $survey->active !== 'N';
+            if ($surveyIsActive && $this->getIsNewRecord()) {
+                return false;
+            }
             if ($surveyIsActive) {
                 //don't override questiontype when survey is active, set it back to what it was...
                 $oActualValue = Question::model()->findByPk(array("qid" => $this->qid));
-                $this->type = $oActualValue->type;
-            }
-            if ($surveyIsActive && $this->getIsNewRecord()) {
-                return false;
+                if (!empty($oActualValue)) {
+                    $this->type = $oActualValue->type;
+                }
             }
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Update the survey's lastmodified timestamp after the question was saved.
+     *
+     * @return void
+     */
+    protected function afterSave()
+    {
+        parent::afterSave();
+        if (!empty($this->sid)) {
+            (new SurveyDetailService())->touchSurveyLastModified((int) $this->sid);
         }
     }
 

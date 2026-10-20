@@ -19,7 +19,9 @@
 
 #}
 
+{% set iQuestionHeadingLevel = (bShowGroupTitle is defined and bShowGroupTitle) ? 3 : 2 %}
+
 <!-- Question text -->
-<div role="heading" aria-level="2" id="question-text-container-{{ aQuestion.SGQ }}" class="{{ aSurveyInfo.class.questiontitlecontainer }}  col-12 " {{ aSurveyInfo.attr.questiontitlecontainer }} >
+<div role="heading" aria-level="{{ iQuestionHeadingLevel }}" id="question-text-container-{{ aQuestion.SGQ }}" class="{{ aSurveyInfo.class.questiontitlecontainer }}  col-12 " {{ aSurveyInfo.attr.questiontitlecontainer }} >
     {{ include('./subviews/survey/question_subviews/question_text_content.twig') }}
 </div>

@@ -16,7 +16,7 @@
                     <a href="<?= CHtml::encode($icon['url']) ?>"
                        target="<?= $icon['external'] ? '_blank' : '' ?>"
                        class="btn btn-g-800 btn-icon <?= $icon['selected'] ? 'active' : '' ?>"
-                       aria-label="<?= $icon['title'] ?>"
+                       aria-label="<?= CHtml::encode($icon['title']) ?>"
                         <?= $icon['selected'] ? 'aria-current="page" selected' : '' ?>>
                         <i class="<?= CHtml::encode($icon['ico']); ?>" aria-hidden="true"></i>
                     </a>

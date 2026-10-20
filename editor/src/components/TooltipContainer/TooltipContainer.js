@@ -7,11 +7,16 @@ export const TooltipContainer = ({
   tip,
   placement = 'top',
   showTip = true,
+  tooltipClassName = '',
 }) => {
   const id = useId()
   const overlay = useMemo(
-    () => <Tooltip id={`tooltip-${id}`}>{tip}</Tooltip>,
-    [tip]
+    () => (
+      <Tooltip id={`tooltip-${id}`} className={tooltipClassName}>
+        {tip}
+      </Tooltip>
+    ),
+    [tip, tooltipClassName]
   )
 
   return (

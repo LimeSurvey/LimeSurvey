@@ -254,7 +254,7 @@ class Permissiontemplates extends CActiveRecord
         // TODO should be static
         $cols = array(
             array(
-                'value' => "\"<input type='checkbox' class='RoleControl--selector-roleCheckbox' name='selectedRole[]' value='\".\$data->ptid.\"' />\"",
+                'value' => "\"<input type='checkbox' class='massiveActionsCheckbox RoleControl--selector-roleCheckbox' name='selectedRole[]' value='\".\$data->ptid.\"' />\"",
                 'type' => 'raw',
                 'header' => "<input type='checkbox' id='RoleControl--action-toggleAllRoles' />",
                 'filter' => false

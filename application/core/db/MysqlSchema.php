@@ -10,6 +10,10 @@ class MysqlSchema extends CMysqlSchema
          */
         $this->columnTypes['autoincrement'] = 'int(11) NOT NULL AUTO_INCREMENT';
         $this->columnTypes['longbinary'] = 'longblob';
+        /**
+         * JSON.
+         */
+        $this->columnTypes['json'] = 'json';
     }
 
     public function createTable($table, $columns, $options = null)
@@ -77,6 +81,32 @@ class MysqlSchema extends CMysqlSchema
             $sResult = parent::getColumnType($type);
         }
         return $sResult;
+    }
+
+    /**
+     * Quotes a table name for use in a query.
+     * Unlike the Yii parent, any embedded backtick is escaped by doubling it, so a
+     * name cannot break out of the quoted identifier (mantis #20741).
+     *
+     * @param string $name table name
+     * @return string the properly quoted table name
+     */
+    public function quoteSimpleTableName($name)
+    {
+        return '`' . str_replace('`', '``', (string) $name) . '`';
+    }
+
+    /**
+     * Quotes a column name for use in a query.
+     * Unlike the Yii parent, any embedded backtick is escaped by doubling it, so a
+     * name cannot break out of the quoted identifier (mantis #20741).
+     *
+     * @param string $name column name
+     * @return string the properly quoted column name
+     */
+    public function quoteSimpleColumnName($name)
+    {
+        return '`' . str_replace('`', '``', (string) $name) . '`';
     }
 
     /**

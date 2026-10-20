@@ -24,6 +24,15 @@ define('BASEPATH', '.');
 // The PHP file extension
 define('EXT', '.php');
 
+// fix for fcgi
+defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
+// NOTE: YII_DEBUG must be defined BEFORE requiring yii.php below. YiiBase.php (loaded by
+// yii.php) does `defined('YII_DEBUG') or define('YII_DEBUG', false);` as one of its first
+// statements. If that runs first, YII_DEBUG gets permanently locked to false and the
+// `defined('YII_DEBUG') or define('YII_DEBUG', true)` further down becomes a no-op
+// (PHP constants cannot be redefined), regardless of the 'debug' setting in config.php.
+defined('YII_DEBUG') or define('YII_DEBUG', true);
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'yiisoft' . DIRECTORY_SEPARATOR . 'yii' . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
 
@@ -42,7 +51,7 @@ if (isset($config['config'])) {
 unset($config['defaultController']);
 unset($config['config']);
 
-/* fix runtime path, unsure you can lauch function anywhere (if you use php /var/www/limesurvey/... : can be /root/ for config */
+/* fix runtime path, unsure you can launch function anywhere (if you use php /var/www/limesurvey/... : can be /root/ for config */
 if (!isset($config['runtimePath'])) {
     $runtimePath = $settings['tempdir'] . '/runtime';
     if (!is_dir($runtimePath) || !is_writable($runtimePath)) {
@@ -50,10 +59,6 @@ if (!isset($config['runtimePath'])) {
     }
     $config['runtimePath'] = $runtimePath;
 }
-
-// fix for fcgi
-defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
-defined('YII_DEBUG') or define('YII_DEBUG', true);
 
 /* specific for web */
 unset($config['defaultController']);

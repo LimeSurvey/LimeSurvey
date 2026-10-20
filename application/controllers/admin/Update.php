@@ -191,6 +191,14 @@ class Update extends DynamicSurveyCommonAction
                             $message = gT("Please buy/enter a new one!");
                             break;
 
+                        case 'hard_lock':
+                            $title = gT("Your update key has been locked!");
+                            $message = sprintf(
+                                gT("This usually happens if the payment for your update key is still outstanding. Please check your invoices in your LimeSurvey account or contact LimeSurvey support at %s."),
+                                'support@limesurvey.org'
+                            );
+                            break;
+
                         case 'not_found':
                             $title = gT("Unknown update key!");
                             $message = gT("Your key is unknown to the update server.");
@@ -204,6 +212,11 @@ class Update extends DynamicSurveyCommonAction
                         case 'no_server_answer':
                             $title = gT('No server answer!');
                             $message = gT("It seems that the ComfortUpdate server is not responding. Please try again in few minutes or contact the LimeSurvey team.");
+                            break;
+
+                        default:
+                            $title = gT('Unknown error');
+                            $message = gT('An unknown error occurred.') . ' ' . gT('Please contact the LimeSurvey team.');
                             break;
                     }
 

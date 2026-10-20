@@ -17,7 +17,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'iconClasses' => 'ri-delete-bin-fill text-danger',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',
-            'on-success'  => "(function(result) { LS.AjaxHelper.onSuccess(result); })",
+            'on-success'  => 'LS.AjaxHelper.onSuccess',
 
             // Modal
             'actionType'    => 'modal',

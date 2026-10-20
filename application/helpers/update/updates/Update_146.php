@@ -6,6 +6,7 @@ use Exception;
 
 class Update_146 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         upgradeSurveyTimings146();

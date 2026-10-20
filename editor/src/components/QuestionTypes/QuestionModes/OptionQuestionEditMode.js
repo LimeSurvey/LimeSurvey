@@ -1,10 +1,9 @@
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import { useMemo } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
-import { useAppState, useSurvey } from 'hooks'
+import { useAppState, useSurvey, useChildKeyboardShortcuts } from 'hooks'
 import { Entities, hasTempId, L10ns, STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { ContentEditor, DragAndDrop, TooltipContainer } from 'components'
@@ -13,6 +12,7 @@ import { ImageChoice } from 'components/QuestionTypes/ImageChoice'
 import { getQuestionTypeInfo } from '../getQuestionTypeInfo'
 import { singleChoiceThemes } from '../singleChoiceThemes'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
+import { AssessmentValueInput } from '../AssessmentValueInput'
 
 const imageThemeComponents = [
   getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
@@ -20,7 +20,7 @@ const imageThemeComponents = [
 ]
 
 export const OptionQuestionEditMode = ({
-  question: { questionThemeName, qid } = {},
+  question: { questionThemeName, showAssessmentValue } = {},
   handleChildLUpdate,
   isFocused,
   handleChildAdd,
@@ -28,6 +28,7 @@ export const OptionQuestionEditMode = ({
   handleChildDelete,
   language,
   handleChildCodeUpdate,
+  handleChildAssessmentValueUpdate,
   _children = [],
   isTitleFocused,
 }) => {
@@ -43,6 +44,14 @@ export const OptionQuestionEditMode = ({
   }
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
 
+  const { getKeyDownHandler } = useChildKeyboardShortcuts({
+    children: _children,
+    entityType: childrenInfo.entity,
+    handleChildAdd,
+    handleChildDelete,
+    isSurveyActive,
+  })
+
   const getSubquestionStyle = (draggableStyle) => ({
     userSelect: 'none',
     ...draggableStyle,
@@ -54,14 +63,10 @@ export const OptionQuestionEditMode = ({
 
   const UiComponentToRender = isImageTheme ? ImageChoice : ContentEditor
 
-  const questionHasTempId = useMemo(() => {
-    return hasTempId(qid)
-  }, [])
-
   return (
     <div>
       <DragAndDrop
-        className="children-parent"
+        className="children-parent edit-mode"
         onDragEnd={handleOnDragEnd}
         droppableId={'droppable'}
       >
@@ -72,7 +77,7 @@ export const OptionQuestionEditMode = ({
             index={index}
           >
             {(provided, snapshot) => (
-              <div>
+              <div className="w-100">
                 <div
                   ref={provided.innerRef}
                   {...provided.draggableProps}
@@ -102,7 +107,10 @@ export const OptionQuestionEditMode = ({
                       )}
                     />
                   </div>
-                  <div style={{ height: 28 }} {...provided.dragHandleProps}>
+                  <div
+                    className="question-drag-handle"
+                    {...provided.dragHandleProps}
+                  >
                     <DragIcon
                       className={classNames('text-secondary fill-current', {
                         'd-none': !isFocused,
@@ -151,14 +159,30 @@ export const OptionQuestionEditMode = ({
                       isFocused={true}
                       idPrefix={isSingleChoiceTheme ? 'a' : 'q'}
                       id={child[childrenInfo.idKey]}
-                      // Focus the child if it's a new child and also if the question is not a new question.
+                      onKeyDown={getKeyDownHandler(
+                        child[childrenInfo.idKey],
+                        index
+                      )}
+                      // Focus newly created child as long as question title is not focused.
                       focus={
-                        hasTempId(child[childrenInfo.idKey]) &&
-                        !questionHasTempId &&
-                        !isTitleFocused
+                        hasTempId(child[childrenInfo.idKey]) && !isTitleFocused
                       }
+                      showToolbar={true}
                     />
                   </div>
+                  {showAssessmentValue && (
+                    <AssessmentValueInput
+                      assessmentValue={child.assessmentValue}
+                      answerCode={child.code}
+                      onChange={(e) =>
+                        handleChildAssessmentValueUpdate({
+                          newAssessmentValue: e.target.value,
+                          childIndex: index,
+                          childArray: _children,
+                        })
+                      }
+                    />
+                  )}
                 </div>
               </div>
             )}

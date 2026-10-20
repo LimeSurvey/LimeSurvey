@@ -46,7 +46,7 @@ const displaySettings = () => {
     displayAttributes.INPUT_ON_DEMAND,
     displayAttributes.ANSWER_PREFIX,
     displayAttributes.ANSWER_SUFFIX,
-    displayAttributes.SUBQUESTION_TITLE,
+    displayAttributes.OTHER_POSITION_CODE,
     displayAttributes.RANDOM_ORDER,
     displayAttributes.KEEP_CODE_ORDER,
     displayAttributes.HIDE_TIP,

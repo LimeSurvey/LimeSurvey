@@ -19,6 +19,15 @@ use SurveyActivator;
 
 class TestHelper extends TestCase
 {
+    /* @var string keep publicurl */
+    protected static $tmpPublicUrl;
+    /* @var string keep request->baseUrl */
+    protected static $tmpBaseUrl;
+    /* @var \CUrlManager|null keep App()->urlmanager */
+    protected static $originalUrlManager;
+    /* @var string keep App()->request->hostInfo */
+    protected static $tmpHostInfo;
+
     /**
      * Import all helpers etc.
      * @return void
@@ -115,11 +124,12 @@ class TestHelper extends TestCase
             'radix' => $radix,
             'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : null),
             'savetimings' => ($thissurvey['savetimings'] == "Y"),
+            'savequotaexit' => ($thissurvey['savequotaexit'] == "Y"),
             'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
             'startlanguage' => (isset(App()->language) ? App()->language : $thissurvey['language']),
             'target' => Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $thissurvey['sid'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR,
             'tempdir' => Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR,
-            // for backward compatibilty convert timezone string to +/- hours
+            // for backward compatibility convert timezone string to +/- hours
             'timeadjust' => convertTimezoneDiffToHours(),
             'displayTimezone' => (isset($displayTimezone) ? $displayTimezone : 'UTC'),
             'token' => (isset($clienttoken) ? $clienttoken : null),
@@ -297,6 +307,7 @@ class TestHelper extends TestCase
             ->where("stg_name=:stg_name", ['stg_name' => 'DBVersion'])
             ->queryScalar();
         $this->assertEquals($versionConfig['dbversionnumber'], $currentDbVersion, 'Version in db is same as updated to');
+        $this->assertNull(\getIncompleteDatabaseUpdateMarker(), 'Incomplete update marker is removed after a successful update');
 
         return $connection;
     }
@@ -532,5 +543,43 @@ class TestHelper extends TestCase
         $property = $reflection->getProperty('_hostInfo');
         $property->setAccessible(true);
         $property->setValue(Yii::app()->getRequest(), null);
+    }
+
+    /**
+     * Save url generation configuration
+     */
+    public static function saveUrlSettings()
+    {
+        self::$tmpPublicUrl = Yii::app()->getConfig('publicurl');
+        self::$tmpBaseUrl = Yii::app()->getRequest()->baseUrl;
+        self::$tmpHostInfo = Yii::app()->getRequest()->hostInfo;
+        self::$originalUrlManager = Yii::app()->getUrlManager();
+    }
+
+    /**
+     * Set config and component to expected default
+     */
+    public static function setUrlToExpectedDefault($urlFormat = \CUrlManager::PATH_FORMAT)
+    {
+        Yii::app()->setConfig('publicurl', null);
+        $urlManager = [
+            'urlFormat' => $urlFormat,
+            'rules' => require(APPPATH . 'config/routes.php'),
+            'showScriptName' => true,
+        ];
+        Yii::app()->setComponent('urlManager', null); // Be sure to reset component
+        Yii::app()->setComponent('urlManager', $urlManager);
+    }
+
+    /**
+     * Reset url generation configuration
+     */
+    public static function resetUrlSettings()
+    {
+        Yii::app()->setConfig('publicurl', self::$tmpPublicUrl);
+        Yii::app()->getRequest()->baseUrl = self::$tmpBaseUrl;
+        Yii::app()->getRequest()->hostInfo = self::$tmpHostInfo;
+        Yii::app()->setComponent('urlManager', null); // Be sure to reset component
+        Yii::app()->setComponent('urlManager', self::$originalUrlManager);
     }
 }

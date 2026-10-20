@@ -41,7 +41,7 @@ abstract class QuestionBaseDataSet extends StaticModel
             $iSurveyId = Yii::app()->request->getParam('sid') ??
                 Yii::app()->request->getParam('surveyid') ??
                 Yii::app()->request->getParam('surveyId');
-            $this->oQuestion = $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
+            $this->oQuestion = $oQuestion = QuestionCreate::create($iSurveyId, $sQuestionType);
         }
 
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
@@ -87,14 +87,8 @@ abstract class QuestionBaseDataSet extends StaticModel
         $sXmlFilePath = App()->getConfig('rootdir') . '/application/views/survey/questions/answer/' . $sFolderName . '/config.xml';
         if (file_exists($sXmlFilePath)) {
             // load xml file
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(false);
-            }
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
-            }
         }
 
         foreach ($generalOptions as $key => $generalOption) {

@@ -26,7 +26,7 @@
             <?php
             foreach ($replFields as $stdfield => $stdfieldvalue) {
                 ?>
-                    <option value='<?php echo $stdfield;?>' title='<?php echo $stdfieldvalue;?>'><?php echo $stdfieldvalue;?></option>
+                    <option value='<?php echo htmlspecialchars($stdfield, ENT_QUOTES, 'UTF-8');?>' title='<?php echo htmlspecialchars($stdfieldvalue, ENT_QUOTES, 'UTF-8');?>'><?php echo htmlspecialchars($stdfieldvalue, ENT_QUOTES, 'UTF-8');?></option>
                     <?php
             }
             ?>
@@ -38,6 +38,11 @@
         ?>
             <optgroup label='<?php eT("Previous answer fields");?>'>
             <?php
+            if (empty($cquestions)) {
+                ?>
+                    <option value='' disabled='disabled'><?php eT('(none)');?></option>
+                    <?php
+            }
             foreach ($cquestions as $cqn) {
                 $isDisabled = "";
                 if (in_array($cqn[2], $InsertansUnsupportedtypes)) {
@@ -46,7 +51,7 @@
                     $isDisabled = " disabled='disabled'";
                 }
                 ?>
-                    <option value='<?php echo $cqn[6];?>' title='<?php echo $cqn[0];?>' <?php echo $isDisabled;?>><?php echo $cqn[0];?></option>
+                    <option value='<?php echo htmlspecialchars($cqn[6], ENT_QUOTES, 'UTF-8');?>' title='<?php echo htmlspecialchars($cqn[0], ENT_QUOTES, 'UTF-8');?>' <?php echo $isDisabled;?>><?php echo htmlspecialchars($cqn[0], ENT_QUOTES, 'UTF-8');?></option>
                     <?php
             }
             ?>

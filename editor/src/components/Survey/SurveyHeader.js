@@ -8,6 +8,7 @@ import {
   createBufferOperation,
   decodeHTMLEntities,
   L10ns,
+  RemoveHTMLTagsInString,
   ScrollToElement,
   STATES,
 } from 'helpers'
@@ -111,6 +112,12 @@ export const SurveyHeader = ({
     }
   }
 
+  const handleTitleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault()
+    }
+  }
+
   const welcomeTitle = useMemo(
     () =>
       L10ns({
@@ -190,24 +197,29 @@ export const SurveyHeader = ({
                   />
                 </TooltipContainer>
               </div>
-              <div ref={titleRef}>
-                <ContentEditor
-                  value={welcomeTitle}
-                  id="survey-header-welcome-title"
-                  className="welcome-title"
-                  update={(value) => handleUpdate({ welcomeText: value })}
-                  placeholder={t('Welcome title')}
-                  language={activeLanguage}
-                  useRichTextEditor={true}
-                  noPermissionDisabled={true}
-                  showToolTip={false}
-                  testId="survey-header-welcome-title"
-                  showToolbar={true}
-                  disabled={false}
-                  surveyHeader={true}
-                  attributeDescriptions={attributeDescriptions}
-                />
-              </div>
+              <ContentEditor
+                id="survey-header-survey-title"
+                className="welcome-screen-survey-title"
+                value={RemoveHTMLTagsInString(
+                  L10ns({
+                    prop: 'title',
+                    language: activeLanguage,
+                    l10ns: languageSettings,
+                    disabled: !hasSurveyUpdatePermission,
+                  })
+                )}
+                update={(value) =>
+                  handleUpdate({ title: RemoveHTMLTagsInString(value) })
+                }
+                placeholder={t('Survey title')}
+                language={language}
+                noPermissionDisabled={true}
+                showToolTip={false}
+                testId="survey-header-survey-title"
+                disabled={false}
+                onKeyDown={handleTitleKeyDown}
+                attributeDescriptions={attributeDescriptions}
+              />
               <ContentEditor
                 id="survey-header-welcome-description"
                 className="welcome-description"
@@ -220,7 +232,6 @@ export const SurveyHeader = ({
                 update={(value) => handleUpdate({ description: value })}
                 placeholder={t('Welcome description')}
                 language={language}
-                useRichTextEditor={true}
                 noPermissionDisabled={true}
                 showToolTip={false}
                 testId="survey-header-welcome-description"
@@ -229,15 +240,32 @@ export const SurveyHeader = ({
                 surveyHeader={true}
                 attributeDescriptions={attributeDescriptions}
               />
+              <div ref={titleRef}>
+                <ContentEditor
+                  value={welcomeTitle}
+                  id="survey-header-welcome-title"
+                  className="welcome-title"
+                  update={(value) => handleUpdate({ welcomeText: value })}
+                  placeholder={t('Welcome message')}
+                  language={activeLanguage}
+                  noPermissionDisabled={true}
+                  showToolTip={false}
+                  testId="survey-header-welcome-title"
+                  showToolbar={true}
+                  disabled={false}
+                  surveyHeader={true}
+                  attributeDescriptions={attributeDescriptions}
+                />
+              </div>
               <div className={classNames('ms-1 transition-all')}>
                 {showXQuestions && (
                   <p className="text-secondary mt-3 show-x-questions">
-                    {format(
-                      numberOfQuestions === 1
-                        ? st('There is 1 question in this survey.')
-                        : st('There are %s questions in this survey.'),
-                      numberOfQuestions
-                    )}
+                    {numberOfQuestions === 1
+                      ? st('There is 1 question in this survey.')
+                      : format(
+                          st('There are %s questions in this survey.'),
+                          numberOfQuestions
+                        )}
                   </p>
                 )}
                 {showPrivacyPolicy && (

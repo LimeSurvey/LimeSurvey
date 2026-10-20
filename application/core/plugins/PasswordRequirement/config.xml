@@ -8,7 +8,7 @@
         <lastUpdate>2022-03-07</lastUpdate>
         <author>LimeSurvey GmbH</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Core: Password requirement settings]]></description>
     </metadata>

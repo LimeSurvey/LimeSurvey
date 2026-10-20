@@ -16,8 +16,7 @@
             align-items : center;
 
             &:hover {
-                box-shadow: none;
-                @include state-border(1px, $grape90);
+              @include state-border(1px, $grape90);
             }
 
             &:focus-visible {
@@ -32,14 +31,21 @@
         }
     }
   .navbar-brand {
+    @include state-border(1px, transparent);
     font-style: normal;
     font-weight: 800;
     font-size: 15px;
     color: $navbar-color;
     width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    margin-right: 0px;
+    padding: 4px;
+    margin-right: 0;
+      &:hover {
+        @include state-border(1px, $grape90);
+      }
+      &:focus-visible {
+          @include state-border(1px, $grape-light, 0px);
+          @include inset-border(1px, $grape-light);
+      }
   }
   .navbar-brand img {
     padding-left: 3px;

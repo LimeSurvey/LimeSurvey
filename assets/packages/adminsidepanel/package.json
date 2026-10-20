@@ -2,6 +2,9 @@
   "name": "adminsidepanel",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "description": "LimeSurvey Admin Side Panel - Vanilla JS",
   "scripts": {
     "build": "npm run dev && npm run prod",
@@ -17,7 +20,7 @@
     "@babel/preset-env": "^7.22.0",
     "babel-loader": "^9.1.0",
     "css-loader": "^6.8.0",
-    "css-minimizer-webpack-plugin": "^5.0.0",
+    "css-minimizer-webpack-plugin": "^8.0.0",
     "mini-css-extract-plugin": "^2.7.0",
     "rtlcss-webpack-plugin": "^4.0.7",
     "sass": "^1.69.0",

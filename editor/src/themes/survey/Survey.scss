@@ -29,8 +29,40 @@
   }
 
   .language-box {
-    border: none !important;
-    background-color: transparent;
+    .dropdown-toggle {
+      background-color: transparent;
+      gap: 0.5rem;
+      font-weight: $font-weight-normal;
+      border: none;
+
+      i {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-normal;
+      }
+
+      &::after {
+        display: none;
+      }
+    }
+
+    .dropdown-menu {
+      padding: 8px;
+      .dropdown-item {
+        border: 1px solid transparent;
+        border-radius: 2px;
+        margin-bottom: 2px;
+      }
+
+      .dropdown-item.active,
+      .dropdown-item:active,
+      .dropdown-item:focus,
+      .dropdown-item:focus-visible,
+      .dropdown-item.is-checked {
+        border: 1px solid $grape;
+        background: transparent;
+        color: $g-900;
+      }
+    }
   }
 
   .survey-section:last-of-type {

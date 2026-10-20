@@ -100,14 +100,17 @@ class InstallerController extends CController
     /**
      * Installer::checkInstallation()
      *
-     * Based on existence of 'sample_installer_file.txt' file, check if
-     * installation should proceed further or not.
+     * Based on existence of the config.php file, check if installation should
+     * proceed further or not. If LimeSurvey is already installed, redirect to
+     * the administration with a warning message.
      * @return void
      */
     private function checkInstallation()
     {
         if (file_exists(APPPATH . 'config/config.php')) {
-            throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
+            App()->loadHelper('common');
+            App()->setFlashMessage(gT('LimeSurvey is already installed. The installer has been disabled.'), 'warning');
+            $this->redirect(array('/admin'));
         }
     }
 
@@ -285,7 +288,7 @@ class InstallerController extends CController
             //run validation, if it fails, load the view again else proceed to next step.
             if ($oModel->validate()) {
                 //saving the form data to session
-                foreach (array('dblocation', 'dbport', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
+                foreach (array('dblocation', 'dbport', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix', 'mssqlTrustServerCertificate') as $sStatusKey) {
                     Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
                 }
 
@@ -1077,6 +1080,7 @@ class InstallerController extends CController
         isset(Yii::app()->session['dblocation']) ? $model->dblocation = Yii::app()->session['dblocation'] : null;
         isset(Yii::app()->session['dbport']) ? $model->dbport = Yii::app()->session['dbport'] : null;
         isset(Yii::app()->session['dbprefix']) ? $model->dbprefix = Yii::app()->session['dbprefix'] : null;
+        isset(Yii::app()->session['mssqlTrustServerCertificate']) ? $model->mssqlTrustServerCertificate = Yii::app()->session['mssqlTrustServerCertificate'] : null;
         isset(Yii::app()->session['dbExists']) ? $model->dbExists = Yii::app()->session['databaseexist'] : null;
         return $model;
     }
@@ -1094,6 +1098,7 @@ class InstallerController extends CController
         unset(Yii::app()->session['dblocation']);
         unset(Yii::app()->session['dbport']);
         unset(Yii::app()->session['dbprefix']);
+        unset(Yii::app()->session['mssqlTrustServerCertificate']);
         unset(Yii::app()->session['dbExists']);
     }
 

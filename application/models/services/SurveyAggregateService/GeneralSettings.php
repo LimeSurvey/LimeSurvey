@@ -249,6 +249,10 @@ class GeneralSettings
                 'type' => static::FIELD_TYPE_YN,
                 'canUpdate' => $surveyNotActive
             ],
+            'savequotaexit' => [
+                'type' => static::FIELD_TYPE_YN,
+                'canUpdate' => $surveyNotActive
+            ],
             'publicgraphs' => ['type' => static::FIELD_TYPE_YN],
             'usecookie' => ['type' => static::FIELD_TYPE_YN],
             'allowregister' => ['type' => static::FIELD_TYPE_YN],
@@ -261,6 +265,7 @@ class GeneralSettings
             'showgroupinfo' => [],
             'showqnumcode' => [],
             'shownoanswer' => ['type' => static::FIELD_TYPE_YN],
+            'preselectnoanswer' => ['type' => static::FIELD_TYPE_YN],
             'showwelcome' => ['type' => static::FIELD_TYPE_YN],
             'showsurveypolicynotice' => ['default' => 0],
             'showtokenpolicy' => ['type' => static::FIELD_TYPE_YN],
@@ -400,17 +405,6 @@ class GeneralSettings
                     ? $default
                     : $value;
                 break;
-        }
-
-        if ($field == 'tokenlength') {
-            $value = (int) (
-                (
-                    ($value  < 5 || $value  > 36)
-                    && $value != -1
-                )
-                ? 15
-                : $value
-            );
         }
 
         // Convert additional_languages array to string

@@ -98,7 +98,7 @@ class Zend_Feed_Atom extends Zend_Feed_Abstract
             }
 
             $doc = new DOMDocument($this->_element->version,
-                                   $this->_element->actualEncoding);
+                                   $this->_element->encoding);
             $feed = $doc->appendChild($doc->createElement('feed'));
             $feed->appendChild($doc->importNode($element, true));
             $element = $feed;
@@ -360,7 +360,7 @@ class Zend_Feed_Atom extends Zend_Feed_Abstract
     {
         // Return a complete document including XML prologue.
         $doc = new DOMDocument($this->_element->ownerDocument->version,
-                               $this->_element->ownerDocument->actualEncoding);
+                               $this->_element->ownerDocument->encoding);
         $doc->appendChild($doc->importNode($this->_element, true));
         $doc->formatOutput = true;
 
@@ -383,7 +383,7 @@ class Zend_Feed_Atom extends Zend_Feed_Abstract
             throw new Zend_Feed_Exception('Cannot send ATOM because headers have already been sent.');
         }
 
-        header('Content-Type: application/atom+xml; charset=' . $this->_element->ownerDocument->actualEncoding);
+        header('Content-Type: application/atom+xml; charset=' . $this->_element->ownerDocument->encoding);
 
         echo $this->saveXml();
     }

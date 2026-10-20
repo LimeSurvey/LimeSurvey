@@ -419,7 +419,7 @@
             </options>
             <help>Select the type of chart to be displayed</help>
             <caption>Chart type</caption>
-            <default>0</default>
+            <default></default>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -432,7 +432,7 @@
         <attribute>
             <name>maximum_chars</name>
             <category>Input</category>
-            <sortorder>100</sortorder>
+            <sortorder>40</sortorder>
             <inputtype>integer</inputtype>
             <default></default>
             <help>Maximum characters allowed</help>
@@ -445,7 +445,7 @@
         <attribute>
             <name>min_num_value_n</name>
             <category>Input</category>
-            <sortorder>100</sortorder>
+            <sortorder>10</sortorder>
             <inputtype>text</inputtype>
             <expression>2</expression>
             <help>Minimum value of the numeric input</help>
@@ -457,7 +457,7 @@
         <attribute>
             <name>num_value_int_only</name>
             <category>Input</category>
-            <sortorder>100</sortorder>
+            <sortorder>30</sortorder>
             <inputtype>switch</inputtype>
             <options>
                 <option>
@@ -480,7 +480,7 @@
         <attribute>
             <name>max_num_value_n</name>
             <category>Input</category>
-            <sortorder>110</sortorder>
+            <sortorder>20</sortorder>
             <inputtype>text</inputtype>
             <expression>2</expression>
             <help>Maximum value of the numeric input</help>

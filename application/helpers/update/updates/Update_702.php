@@ -9,6 +9,7 @@ class Update_702 extends DatabaseUpdateBase
      * The on-screen keyboard functionality has been deprecated as modern systems
      * provide native virtual keyboards at the OS/browser level.
      */
+    #[\Override]
     public function up()
     {
         // Drop nokeyboard column from surveys table

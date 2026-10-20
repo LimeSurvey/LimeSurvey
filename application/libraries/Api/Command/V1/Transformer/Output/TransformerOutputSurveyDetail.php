@@ -16,15 +16,16 @@ use TemplateConfiguration;
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 {
     /**
-     * All these values are inherited values. For inherted values the output has to be different.
+     * All these values are inherited values. For inherited values the output has to be different.
      */
     const AFFECTED_INHERITED_SETTINGS = [
         'admin', 'adminemail', 'alloweditaftercompletion', 'allowprev', 'allowsave', 'allowregister','anonymized',
         'assessments', 'autoredirect', 'bounce_email', 'datestamp', 'emailnotificationto', 'emailresponseto',
         'format', 'googleanalyticsapikey', 'htmlemail', 'ipaddr', 'ipanonymize', 'listpublic', 'navigationdelay',
         'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl',
-        'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'showprogress', 'showqnumcode',
+        'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showprogress', 'showqnumcode',
         'showwelcome', 'showxquestions', 'template', 'tokenanswerspersistence', 'tokenlength', 'usecookie',
+        'savequotaexit'
     ];
 
     private TransformerOutputSurvey $transformerSurvey;
@@ -103,8 +104,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey = $this->transformerSurvey->transform($data);
         $survey['templateInherited'] = $data->oOptions->template;
         $survey['formatInherited'] = $data->oOptions->format;
+        $survey['isEditorCompatible'] = $data->getIsEditorCompatible();
         $survey['languages'] = $data->allLanguages;
         $survey['hasTokens'] = $data->hasTokensTable;
+        $survey['hasResponsesTable'] = (bool) $data->hasResponsesTable;
         $survey['previewLink'] = App()->createUrl(
             "survey/index",
             array(
@@ -122,6 +125,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['ownerInherited'] = $this->transformerSurveyOwner->transform(
             $data->oOptions->owner
         );
+        $survey['questionTypeDefaultAttributeValues'] = $this->questionService
+            ->getDefaultAttributeValuesByQuestionType();
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
@@ -187,7 +192,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         );
         $survey['googleAnalyticsApiKeySetting'] = $data->getGoogleanalyticsapikeysetting();
         $survey['ownersList'] = array_map(function ($user) {
-            return ['value' => $user['uid'], 'label' => $user['user'] . ' - ' . $user['full_name']];
+            return ['value' => $user['uid'], 'label' => $user['user'] . ($user['full_name'] ? ' - ' . $user['full_name'] : '')];
         }, getUserList());
         $survey['availableThemes'] = array_map(function ($template) {
             $themeConf = TemplateConfiguration::getInstanceFromTemplateName($template['name']);
@@ -245,10 +250,12 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 ),
                 $options
             );
-
             $question['scenarios'] = $this->surveyCondition->getScenariosAndConditionsOfQuestion($questionModel->qid);
 
             $question['conditiontext'] = $this->surveyCondition->getConditionText($questionModel);
+
+            $question['showAssessmentValue'] = $questionModel->survey->isAssessments
+                && $questionModel->getAllowAnswerOptions();
 
             if ($questionModel->subquestions) {
                 $question['subquestions'] = $this->transformerQuestion->transformAll(

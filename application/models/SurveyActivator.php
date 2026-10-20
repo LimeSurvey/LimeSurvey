@@ -66,6 +66,11 @@ class SurveyActivator
             return ['error' => 'plugin'];
         }
 
+        // Clear session cache (e.g. from a survey preview run in
+        // the same browser session) before building the response table.
+        $iSurveyId = $this->survey->sid;
+        unset($_SESSION['responses_' . $iSurveyId]);
+
         $this->prepareResponsesTable();
 
         if ($this->isSimulation) {
@@ -176,6 +181,9 @@ class SurveyActivator
                 case "lastpage":
                     $aTableDefinition[$aRow['fieldname']] = "integer";
                     break;
+                case "quota_exit":
+                    $aTableDefinition[$aRow['fieldname']] = "integer";
+                    break;
                 case Question::QT_N_NUMERICAL:
                 case Question::QT_K_MULTIPLE_NUMERICAL:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "decimal (30,10)");
@@ -238,8 +246,11 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_R_RANKING:
-                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
-                    break;                                                                                                                                                                                                                                                                 default:
+                    if (!str_contains($aRow['fieldname'], "_S")) {
+                        $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "json");
+                    }
+                    break;
+                default:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
             }
             if (!$this->survey->isAnonymized && !array_key_exists('token', $aTableDefinition)) {

@@ -45,6 +45,8 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     'pageSize' => $pageSize,
                     'fieldmap' => $fieldmap,
                     'filteredColumns' => $filteredColumns,
+                    'selectAllMaxCount' => $selectAllMaxCount,
+                    'numTotalAnswers' => $num_total_answers,
                 ],
                 true
             );

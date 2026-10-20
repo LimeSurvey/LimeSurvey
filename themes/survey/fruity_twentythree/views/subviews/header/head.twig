@@ -28,8 +28,29 @@
 
     {{ aSurveyInfo.metas }}
 
+    {# Page specific part of the title, so that every page of the survey gets a distinct title #}
+    {% set sIncludeContent = aSurveyInfo.include_content|default('') %}
+    {% set aPageTitles = {
+        'firstpage': gT("Welcome"),
+        'load': gT("Load unfinished survey"),
+        'save': gT("Save your unfinished survey"),
+        'clearall': gT("Answers cleared"),
+        'register': gT("Registration"),
+        'submit': gT("Thank you!"),
+        'submit_preview': gT("Responses were not saved")
+    } %}
+    {% set sPageTitle = aPageTitles[sIncludeContent]|default('') %}
+    {% if sIncludeContent == 'main' and aSurveyInfo.format != 'A' and aSurveyInfo.aGroups|default([])|length == 1 %}
+        {% set aCurrentGroup = aSurveyInfo.aGroups|first %}
+        {% if aCurrentGroup.showgroupinfo == 'N' or aCurrentGroup.showgroupinfo == 'B' %}
+            {% set sPageTitle = processString(aCurrentGroup.name,1)|striptags|trim %}
+        {% endif %}
+    {% endif %}
+    {# Mark pages showing answer errors in the title, so screen reader users notice them right away #}
+    {% set bPageHasErrors = aSurveyInfo.errorHtml.messages|default([])|length > 0 %}
+    {% set sFullPageTitle = (sPageTitle != '' ? sPageTitle ~ ' - ' : '') ~ processString(aSurveyInfo.surveyls_title,1)|striptags %}
     <title>
-        {{ processString(aSurveyInfo.surveyls_title,1) }}
+        {{ bPageHasErrors ? gT("Error: %s")|format(sFullPageTitle) : sFullPageTitle }}
     </title>
     {% if(imageSrc('./files/favicon.ico')) %}
         <link rel="shortcut icon" href="{{ imageSrc('./files/favicon.ico') }}" />

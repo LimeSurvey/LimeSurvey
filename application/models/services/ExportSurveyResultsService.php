@@ -15,6 +15,7 @@ use LimeSurvey\Models\Services\SurveyAnswerCache;
 use RuntimeException;
 use Survey;
 use SurveyDynamic;
+use Yii;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -77,8 +78,17 @@ class ExportSurveyResultsService
     /** @var int Number of responses to fetch per chunk. */
     protected $chunkSize = 500;
 
+    /** @var string[] Names of the encrypted response columns of the exported survey. */
+    protected $encryptedAttributes = [];
+
     /** @var string 'long' for full translated answers, 'short' for raw answer codes. */
     protected $answerFormat = 'long';
+
+    /** @var string CSV field separator character. */
+    protected $csvSeparator = ',';
+
+    /** @var array Filters used to scope which responses get exported. */
+    protected $filters = [];
 
     /**
      * ExportSurveyResultsService constructor.
@@ -179,6 +189,34 @@ class ExportSurveyResultsService
     }
 
     /**
+     * @param string $csvSeparator
+     * @return $this
+     */
+    public function setCsvSeparator($csvSeparator)
+    {
+        $this->csvSeparator = $csvSeparator;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCsvSeparator()
+    {
+        return $this->csvSeparator;
+    }
+
+    /**
+     * @param array $filters Same filter format as the responses list endpoint
+     * @return $this
+     */
+    public function setFilters(array $filters)
+    {
+        $this->filters = $filters;
+        return $this;
+    }
+
+    /**
      * Export survey responses to the specified format.
      *
      * @param int $surveyId The survey ID
@@ -211,6 +249,7 @@ class ExportSurveyResultsService
             'language' => $language,
             'exportType' => $exportType,
             'outputMode' => $this->outputMode,
+            'csvSeparator' => $this->csvSeparator,
         ];
 
         // Export responses using chunked writing
@@ -229,11 +268,16 @@ class ExportSurveyResultsService
     protected function exportResponsesInChunks($surveyId, $exportType, array $metadata)
     {
         $language = $metadata['language'] ?? $this->loadedSurvey->language;
+        // gT() calls (headers, Yes/No labels) follow the app language
+        App()->setLanguage($language);
 
         // Generate field map for questions (do this once)
         // force_refresh = true to bypass stale session-cached field maps
-        $this->transformerOutputSurveyResponses->fieldMap =
-            createFieldMap($this->loadedSurvey, 'full', true, false, $language);
+        $fieldMap = createFieldMap($this->loadedSurvey, 'full', true, false, $language);
+        $this->encryptedAttributes = array_keys(array_filter($fieldMap, function ($field) {
+            return ($field['encrypted'] ?? 'N') === 'Y';
+        }));
+        $this->transformerOutputSurveyResponses->fieldMap = $this->expandRankingFieldMap($fieldMap);
 
         // Pre-cache token table existence for the transformer
         $this->transformerOutputSurveyResponses->hasTokenTable =
@@ -259,6 +303,7 @@ class ExportSurveyResultsService
         $metaColumns = [];
         foreach (self::META_COLUMN_MAP as $fieldMapKey => $meta) {
             if (isset($this->transformerOutputSurveyResponses->fieldMap[$fieldMapKey])) {
+                $meta['header'] = gT($meta['header']);
                 $metaColumns[] = $meta;
             }
         }
@@ -267,11 +312,12 @@ class ExportSurveyResultsService
         $writer = $this->getExportWriter($exportType);
         $writer->init($surveyQuestions, $metadata);
 
-        $totalCount = $this->getTotalResponseCount($surveyId);
+        $filterCriteria = $this->buildFilterCriteria();
+        $totalCount = $this->getTotalResponseCount($surveyId, $filterCriteria);
         $model = SurveyDynamic::model($surveyId);
 
         for ($offset = 0; $offset < $totalCount; $offset += $this->chunkSize) {
-            $chunk = $this->fetchResponseChunkDirect($model, $offset, $this->chunkSize);
+            $chunk = $this->fetchResponseChunkDirect($model, $offset, $this->chunkSize, $filterCriteria);
 
             $timingsData = [];
             if ($hasTimings) {
@@ -292,19 +338,91 @@ class ExportSurveyResultsService
     }
 
     /**
+     * Removes each ranking question's base fieldmap entry ("Q{qid}", the JSON
+     * array of ranked subquestion codes) so it is not exported as a column of
+     * its own, and registers it with the transformer, which folds its value
+     * out into the question's per-rank fieldmap entries ("Q{qid}_S{sqid}") —
+     * one column per rank like in LimeSurvey 6.
+     *
+     * @param array $fieldMap
+     * @return array
+     */
+    private function expandRankingFieldMap(array $fieldMap)
+    {
+        $rankingFields = [];
+        foreach ($fieldMap as $fieldName => $field) {
+            if (($field['type'] ?? null) !== \Question::QT_R_RANKING || ($field['suffix'] ?? '') === '') {
+                continue;
+            }
+            $baseFieldName = 'Q' . $field['qid'];
+            $rankingFields[$baseFieldName]['ranks'][$fieldName] = (int) $field['aid'];
+        }
+        foreach (array_keys($rankingFields) as $baseFieldName) {
+            $rankingFields[$baseFieldName] += [
+                'qid' => $fieldMap[$baseFieldName]['qid'],
+                'gid' => $fieldMap[$baseFieldName]['gid'],
+                'sid' => $fieldMap[$baseFieldName]['sid'],
+            ];
+            unset($fieldMap[$baseFieldName]);
+        }
+        $this->transformerOutputSurveyResponses->rankingFields = $rankingFields;
+        return $fieldMap;
+    }
+
+    /**
+     * @param array $filters
+     * @param array $validColumns Real response table columns
+     * @throws InvalidArgumentException If a filter is malformed or unsupported
+     */
+    public function validateFilters(array $filters, array $validColumns)
+    {
+        $this->responseFilterPatcher->validate(
+            $filters,
+            $this->transformerOutputSurveyResponses->getDataMap(),
+            $validColumns
+        );
+    }
+
+    /**
+     * Builds the filter criteria using the same FilterPatcher the responses list uses.
+     *
+     * @return \LSDbCriteria|null Null when there are no filters
+     */
+    public function buildFilterCriteria()
+    {
+        if (empty($this->filters)) {
+            return null;
+        }
+
+        $dataMap = $this->transformerOutputSurveyResponses->getDataMap();
+        $sort = new \CSort();
+        $criteria = new \LSDbCriteria();
+        $this->responseFilterPatcher->apply(
+            ['filters' => $this->filters],
+            $criteria,
+            $sort,
+            $dataMap
+        );
+
+        return $criteria;
+    }
+
+    /**
      * Get the total number of responses for a survey.
      *
      * @param int $surveyId
+     * @param \CDbCriteria|null $filterCriteria
      * @return int
      * @throws RuntimeException
      */
-    protected function getTotalResponseCount($surveyId)
+    protected function getTotalResponseCount($surveyId, $filterCriteria = null)
     {
         $model = SurveyDynamic::model($surveyId);
         try {
-            return (int) $model->count();
+            return (int) $model->count($filterCriteria);
         } catch (CDbException $e) {
-            throw new RuntimeException("Unable to get response count: " . $e->getMessage());
+            Yii::log($e->getMessage(), 'error', 'application.api.export');
+            throw new RuntimeException('Unable to get response count');
         }
     }
 
@@ -314,20 +432,26 @@ class ExportSurveyResultsService
      * @param SurveyDynamic $model
      * @param int $offset
      * @param int $limit
+     * @param \CDbCriteria|null $filterCriteria
      * @return SurveyDynamic[]
      * @throws RuntimeException
      */
-    protected function fetchResponseChunkDirect($model, $offset, $limit)
+    protected function fetchResponseChunkDirect($model, $offset, $limit, $filterCriteria = null)
     {
         $criteria = new \CDbCriteria();
         $criteria->order = $model->primaryKey() . ' ASC';
         $criteria->limit = $limit;
         $criteria->offset = $offset;
 
+        if ($filterCriteria !== null) {
+            $criteria->mergeWith($filterCriteria);
+        }
+
         try {
             return $model->findAll($criteria);
         } catch (CDbException $e) {
-            throw new RuntimeException("Unable to fetch survey responses: " . $e->getMessage());
+            Yii::log($e->getMessage(), 'error', 'application.api.export');
+            throw new RuntimeException('Unable to fetch survey responses');
         }
     }
 
@@ -347,6 +471,7 @@ class ExportSurveyResultsService
         array $timingsData = [],
         array $timingFieldKeys = []
     ) {
+        $this->decryptResponses($chunk);
         $transformedResponses = $this->transformerOutputSurveyResponses->transform(
             $chunk,
             ['survey' => $this->loadedSurvey]
@@ -378,6 +503,28 @@ class ExportSurveyResultsService
         }
 
         return $transformedResponses;
+    }
+
+    /**
+     * Decrypts the encrypted response columns of a chunk of responses in place,
+     * so encrypted answers are exported as plain values.
+     *
+     * @param SurveyDynamic[] $chunk
+     * @return void
+     */
+    private function decryptResponses(array $chunk)
+    {
+        foreach ($chunk as $response) {
+            foreach ($this->encryptedAttributes as $attribute) {
+                if (!$response->hasAttribute($attribute)) {
+                    continue;
+                }
+                $value = $response->getAttribute($attribute);
+                if ($value !== null && $value !== '') {
+                    $response->setAttribute($attribute, \LSActiveRecord::decryptSingle($value));
+                }
+            }
+        }
     }
 
     /**

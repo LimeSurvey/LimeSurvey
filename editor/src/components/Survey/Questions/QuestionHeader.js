@@ -13,6 +13,7 @@ import {
 import { ContentEditor } from 'components/UIComponents'
 import { ArrowRightIcon } from 'components/icons'
 import { hasQuestionCondition } from 'components/ConditionDesigner/utils'
+import { getPlaceholdersConfig } from 'shared/getPlaceholdersConfig'
 
 import { TestValidation } from './QuestionSchema'
 
@@ -83,13 +84,15 @@ export const QuestionHeader = ({
     l10ns: question.l10ns,
   })
 
+  const { questionTitlePlaceholder } = getPlaceholdersConfig()
+
   return (
     <div
       data-testid="question-header"
       className="question-header d-flex flex-row"
     >
       <div className="questoin-header-title-container d-flex flex-column">
-        <div className="question-title d-flex align-items-center">
+        <div className="question-title question-title-row d-flex align-items-center">
           <div className="question-number d-flex align-items-center">
             <div data-testid="question-number">{questionNumber}</div>
             <ArrowRightIcon className="text-primary fill-current" />
@@ -106,15 +109,14 @@ export const QuestionHeader = ({
                 'question-title'
               )}
               innerRef={titleRef}
-              placeholder={t('Your question here')}
-              useRichTextEditor={!process.env.STORYBOOK_DEV}
+              placeholder={questionTitlePlaceholder}
+              showToolbar={true}
               update={(question) => updateTitle({ question })}
               value={questionTitle}
               testValidation={TestValidation}
               setErrors={setErrors}
               language={language}
               replaceVariables={true}
-              showToolbar={true}
               noPermissionDisabled={true}
               showToolTip={false}
               focus={focusTitle}

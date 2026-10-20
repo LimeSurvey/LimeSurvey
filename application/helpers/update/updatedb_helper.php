@@ -42,6 +42,30 @@ use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
 */
 
 /**
+ * Deletes the file cache that the web application uses (tmp/runtime/cache), including its cached table schemas.
+ *
+ * Needed when the current application does not use that cache itself: the console sets YII_DEBUG,
+ * so its cache component is a CDummyCache and flushing it leaves the web side's stale schema in place.
+ *
+ * @see https://bugs.limesurvey.org/view.php?id=20772
+ * @return void
+ */
+function flushWebFileCache()
+{
+    if (Yii::app()->cache instanceof CFileCache) {
+        // Already flushed with the application cache
+        return;
+    }
+    try {
+        $fileCache = new CFileCache();
+        $fileCache->init();
+        $fileCache->flush();
+    } catch (\Throwable $t) {
+        Yii::log('Failed to flush the file cache: ' . $t->getMessage(), 'error', 'application.db.update');
+    }
+}
+
+/**
  * Executes all required database migrations from the given previous DB version up to the configured target DB version.
  *
  * @param int $iOldDBVersion The previous database version to upgrade from.
@@ -67,8 +91,50 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         return false;
     }
 
+    // Make sure the database server meets the documented minimum requirements
+    // before starting any migration. Otherwise a migration can fail halfway
+    // through (e.g. adding a JSON column on an unsupported MariaDB version) and
+    // leave the database in an inconsistent state.
+    try {
+        $oDbConnection = Yii::app()->getDb();
+        $requirement = \LimeSurvey\Helpers\DbVersionHelper::getRequirement(
+            $oDbConnection->getDriverName(),
+            $oDbConnection->getServerVersion()
+        );
+    } catch (CDbException $e) {
+        Yii::log('Could not verify database version before update: ' . $e->getMessage(), 'error', 'application.db.update');
+        return false;
+    }
+    if (!$requirement['supported']) {
+        $message = sprintf(
+            gT('The database update was aborted because your database server does not meet the minimum requirements. %s %s or newer is required, but the server reports version %s. Please upgrade your database server and try again.'),
+            $requirement['type'],
+            $requirement['minimumLabel'],
+            $requirement['current']
+        );
+        if (!$bSilent && Yii::app()->hasComponent('user')) {
+            Yii::app()->user->setFlash('error', $message);
+        }
+        Yii::log($message, 'error', 'application.db.update');
+        return false;
+    }
+
     // Try to acquire database update lock
-    if (!getDatabaseUpdateLock()) {
+    if (!getDatabaseUpdateLock(false, $sLockError)) {
+        Yii::app()->user->setFlash('error', $sLockError ?: 'Could not acquire the database update lock.');
+        return false;
+    }
+
+    // A previous update that failed or was interrupted leaves the database half-migrated.
+    // Running the updates again on top of that can silently destroy data, so refuse it.
+    $sIncompleteUpdate = getIncompleteDatabaseUpdateMarker();
+    if ($sIncompleteUpdate !== null) {
+        $message = getIncompleteDatabaseUpdateMessage($sIncompleteUpdate);
+        if (!$bSilent && Yii::app()->hasComponent('user')) {
+            Yii::app()->user->setFlash('error', $message);
+        }
+        Yii::log($message, 'error', 'application.db.update');
+        releaseDatabaseUpdateLock();
         return false;
     }
 
@@ -111,6 +177,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $options .= ' ROW_FORMAT=DYNAMIC'; // Same than create-database
         }
     }
+    // Stays in place if the update throws or the process dies, see getIncompleteDatabaseUpdateMarker()
+    setIncompleteDatabaseUpdateMarker($iOldDBVersion);
     try {
         // Get all relevant files from updates/ folder
         $updates = getRelevantUpdates($iOldDBVersion, Yii::app()->db, $options);
@@ -118,6 +186,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // NB: safeUp() wraps up() inside a transaction and also updates DBVersion.
             $update->safeUp();
         }
+        clearIncompleteDatabaseUpdateMarker();
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         // Activate schema caching
@@ -136,12 +205,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             . htmlspecialchars($e->getMessage())
             . '</p><br />'
             . sprintf(gT('File %s, line %s.'), $file, $trace[1]['line'])
+            . '<p>'
+            . gT('Your database is probably in an inconsistent state now. Please restore the database backup you made before the update, then start the update again.')
+            . '</p>'
         );
         // Restore previous maintenance mode if it was changed
         if (!$bMaintenanceModeRestored) {
             try {
                 SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
-                $bMaintenanceModeRestored = true;
+                // @psalm-suppress UnusedVariable Read by the by-reference shutdown-function
+                // closure registered above; Psalm doesn't trace writes observed by a
+                // by-ref closure captured before this point.
             } catch (\Throwable $t) {
                 Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
             }
@@ -182,6 +256,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     if (method_exists(Yii::app()->cache, 'gc')) {
         Yii::app()->cache->gc();
     }
+    flushWebFileCache();
 
     // Inform superadmin about update
     $superadmins = User::model()->getSuperAdmins();
@@ -200,7 +275,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     if (!$bMaintenanceModeRestored) {
         try {
             SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
-            $bMaintenanceModeRestored = true;
+            // @psalm-suppress UnusedVariable Read by the by-reference shutdown-function
+            // closure registered above; Psalm doesn't trace writes observed by a
+            // by-ref closure captured before this point.
         } catch (\Throwable $t) {
             Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
         }
@@ -217,9 +294,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
  * The lock is automatically released if the current process finishes
  *
  * @param bool $bRelease If true, release the lock instead of acquiring it.
+ * @param string|null &$sError Set to a human-readable reason when acquiring the lock fails.
  * @return boolean True if the lock was established (or released), otherwise false
  */
-function getDatabaseUpdateLock($bRelease = false)
+function getDatabaseUpdateLock($bRelease = false, &$sError = null)
 {
     static $pLock = null;
     if ($bRelease) {
@@ -231,18 +309,57 @@ function getDatabaseUpdateLock($bRelease = false)
         return true;
     }
     if ($pLock !== null) {
+        $sError = 'The database update lock has already been acquired by this process.';
         return false;
     }
-    $pLock = @fopen(Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'dbupdate.lock', 'w+');
+    $sLockFile = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'dbupdate.lock';
+    $pLock = @fopen($sLockFile, 'w+');
     if (!$pLock) {
+        $sError = sprintf(
+            'Could not open the database update lock file "%s". Check that the file (and its directory) are writable by the user running this process.',
+            $sLockFile
+        );
         return false;
     }
     if (flock($pLock, LOCK_EX | LOCK_NB)) {
+        // Allow other system users (e.g. web server vs. CLI/cron) to also acquire this lock.
+        @chmod($sLockFile, 0666);
         return true;
     }
     fclose($pLock);
     $pLock = null;
+    $sError = sprintf(
+        'Another process is currently holding the database update lock ("%s"). Please wait for it to finish, or remove the lock file if you are sure no update is running.',
+        $sLockFile
+    );
     return false;
+}
+
+/**
+ * Checks whether another process currently holds the database update lock, without
+ * acquiring it. Meant for display purposes (e.g. the update confirmation screen), so a
+ * user isn't invited to start an update that would immediately fail because one is
+ * already running elsewhere (CLI, cron, another browser tab, ...).
+ *
+ * @return bool True if another process currently holds the lock.
+ */
+function isDatabaseUpdateLockHeld()
+{
+    $sLockFile = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'dbupdate.lock';
+    if (!file_exists($sLockFile)) {
+        return false;
+    }
+    $pLock = @fopen($sLockFile, 'r');
+    if (!$pLock) {
+        // Can't check (e.g. permission issue): don't block the UI over it.
+        return false;
+    }
+    $bLocked = !flock($pLock, LOCK_EX | LOCK_NB);
+    if (!$bLocked) {
+        flock($pLock, LOCK_UN);
+    }
+    fclose($pLock);
+    return $bLocked;
 }
 
 /**
@@ -251,6 +368,63 @@ function getDatabaseUpdateLock($bRelease = false)
 function releaseDatabaseUpdateLock()
 {
     getDatabaseUpdateLock(true);
+}
+
+/**
+ * Returns the marker that db_upgrade_all() writes before running the updates and removes
+ * once all of them have succeeded. If it exists while no update is running, a previous
+ * update failed or was interrupted (error, timeout, killed process) and left the database
+ * in an inconsistent state that only a backup restore can fix.
+ *
+ * @return string|null The database version the incomplete update started from, or null if there is none.
+ */
+function getIncompleteDatabaseUpdateMarker()
+{
+    $value = Yii::app()->db->createCommand()
+        ->select('stg_value')
+        ->from('{{settings_global}}')
+        ->where('stg_name = :name', [':name' => 'DBUpdateIncomplete'])
+        ->queryScalar();
+    return $value === false ? null : (string) $value;
+}
+
+/**
+ * Writes the incomplete database update marker, see getIncompleteDatabaseUpdateMarker().
+ *
+ * @param int $iOldDBVersion The database version the update starts from.
+ * @return void
+ */
+function setIncompleteDatabaseUpdateMarker($iOldDBVersion)
+{
+    clearIncompleteDatabaseUpdateMarker();
+    Yii::app()->db->createCommand()->insert(
+        '{{settings_global}}',
+        ['stg_name' => 'DBUpdateIncomplete', 'stg_value' => (string) $iOldDBVersion]
+    );
+}
+
+/**
+ * Removes the incomplete database update marker, see getIncompleteDatabaseUpdateMarker().
+ *
+ * @return void
+ */
+function clearIncompleteDatabaseUpdateMarker()
+{
+    Yii::app()->db->createCommand()->delete('{{settings_global}}', 'stg_name = :name', [':name' => 'DBUpdateIncomplete']);
+}
+
+/**
+ * Returns the message explaining that a previous database update did not complete.
+ *
+ * @param string $sOldDBVersion The database version the incomplete update started from.
+ * @return string
+ */
+function getIncompleteDatabaseUpdateMessage($sOldDBVersion)
+{
+    return sprintf(
+        gT('A previous database update (starting from database version %s) failed or was interrupted, so your database is probably in an inconsistent state. Please restore the database backup you made before the update, then start the update again.'),
+        $sOldDBVersion
+    );
 }
 
 /**
@@ -632,16 +806,10 @@ function createFieldMap450($survey): array
 
                 $answerColumnDefinition = '';
                 if (isset($questionTheme['xml_path'])) {
-                    if (PHP_VERSION_ID < 80000) {
-                        $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-                    }
                     $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $questionTheme['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
                     $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
                     if (isset($oQuestionConfig->metadata->answercolumndefinition)) {
                         $answerColumnDefinition = json_decode(json_encode($oQuestionConfig->metadata->answercolumndefinition), true)[0];
-                    }
-                    if (PHP_VERSION_ID < 80000) {
-                        libxml_disable_entity_loader($bOldEntityLoaderState);
                     }
                 }
                 $cacheMemo[$cacheKey] = $answerColumnDefinition;
@@ -1220,7 +1388,6 @@ function upgradeSurveyTables402($sMySQLCollation)
  */
 function upgradeTokenTables402($sMySQLCollation)
 {
-    $oDB = Yii::app()->db;
     if (Yii::app()->db->driverName != 'pgsql') {
         $aTables = dbGetTablesLike("tokens%");
         if (!empty($aTables)) {
@@ -1612,33 +1779,28 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     addPrimaryKey('surveys_groupsettings', array('gsid'));
 
     // insert settings for global level
-    $settings1 = new SurveysGroupsettings();
-    $settings1->setToDefault();
-    $settings1->gsid = 0;
     // get global settings from db
     $globalSetting1 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'showqnumcode'))->queryRow();
     $globalSetting2 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'showgroupinfo'))->queryRow();
     $globalSetting3 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'shownoanswer'))->queryRow();
     $globalSetting4 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'showxquestions'))->queryRow();
-    // set db values to model
-    $settings1->showqnumcode = ($globalSetting1 === false || $globalSetting1['stg_value'] == 'choose') ? 'X' : str_replace(array('both', 'number', 'code', 'none'), array('B', 'N', 'C', 'X'), (string) $globalSetting1['stg_value']);
-    $settings1->showgroupinfo = ($globalSetting2 === false || $globalSetting2['stg_value'] == 'choose') ? 'B' : str_replace(array('both', 'name', 'description', 'none'), array('B', 'N', 'D', 'X'), (string) $globalSetting2['stg_value']);
-    $settings1->shownoanswer = ($globalSetting3 === false || $globalSetting3['stg_value'] == '2') ? 'Y' : str_replace(array('1', '0'), array('Y', 'N'), (string) $globalSetting3['stg_value']);
-    $settings1->showxquestions = ($globalSetting4 === false || $globalSetting4['stg_value'] == 'choose') ? 'Y' : str_replace(array('show', 'hide'), array('Y', 'N'), (string) $globalSetting4['stg_value']);
-
-    // Quick hack to remote ipanonymize.
-    // TODO: Don't use models in updatedb_helper.
-    $attributes = $settings1->attributes;
-    unset($attributes['ipanonymize']);
-    // Same as ipanonymize, stale schema persists on model after column is removed from db,
-    // and interacts with older updates
-    if (isset($attributes['nokeyboard'])) {
-        unset($attributes['nokeyboard']);
-    }
-    /* Added in 649 update */
-    unset($attributes['showregisterpolicy']);
-    unset($attributes['showtokenpolicy']);
-
+    $globalSetting5 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'defaulttheme'))->queryRow();
+    // Plain SQL instead of the SurveysGroupsettings model: Its setToDefault() validated the default theme, which uninstalled an
+    // incompatible theme and redirected in the middle of the update. The theme is validated later when it is used.
+    // Columns not set here get their default value from the table definition above.
+    $attributes = array(
+        'gsid' => 0,
+        'owner_id' => 1,
+        'admin' => substr((string) App()->getConfig('siteadminname'), 0, 50),
+        'adminemail' => substr((string) App()->getConfig('siteadminemail'), 0, 254),
+        'format' => 'G',
+        'template' => ($globalSetting5 === false || $globalSetting5['stg_value'] === '') ? App()->getConfig('defaulttheme') : substr((string) $globalSetting5['stg_value'], 0, 100),
+        'usecaptcha' => 'N',
+        'showqnumcode' => ($globalSetting1 === false || $globalSetting1['stg_value'] == 'choose') ? 'X' : str_replace(array('both', 'number', 'code', 'none'), array('B', 'N', 'C', 'X'), (string) $globalSetting1['stg_value']),
+        'showgroupinfo' => ($globalSetting2 === false || $globalSetting2['stg_value'] == 'choose') ? 'B' : str_replace(array('both', 'name', 'description', 'none'), array('B', 'N', 'D', 'X'), (string) $globalSetting2['stg_value']),
+        'shownoanswer' => ($globalSetting3 === false || $globalSetting3['stg_value'] == '2') ? 'Y' : str_replace(array('1', '0'), array('Y', 'N'), (string) $globalSetting3['stg_value']),
+        'showxquestions' => ($globalSetting4 === false || $globalSetting4['stg_value'] == 'choose') ? 'Y' : str_replace(array('show', 'hide'), array('Y', 'N'), (string) $globalSetting4['stg_value']),
+    );
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
     //this will fail because of using model in updatedb_helper ...
@@ -2630,12 +2792,6 @@ function upgradeSurveys145()
         $aDefaultTexts = templateDefaultTexts($sLanguage, 'unescaped');
         unset($sLanguage);
         $aDefaultTexts['admin_detailed_notification'] = $aDefaultTexts['admin_detailed_notification'] . $aDefaultTexts['admin_detailed_notification_css'];
-        $sSurveyUpdateQuery = "update {{surveys_languagesettings}} set
-        email_admin_responses_subj=" . $aDefaultTexts['admin_detailed_notification_subject'] . ",
-        email_admin_responses=" . $aDefaultTexts['admin_detailed_notification'] . ",
-        email_admin_notification_subj=" . $aDefaultTexts['admin_notification_subject'] . ",
-        email_admin_notification=" . $aDefaultTexts['admin_notification'] . "
-        where surveyls_survey_id=" . $aSurveyRow['surveyls_survey_id'];
         Yii::app()->getDb()->createCommand()->update('{{surveys_languagesettings}}', array('email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
             'email_admin_responses' => $aDefaultTexts['admin_detailed_notification'],
             'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
@@ -2654,7 +2810,7 @@ function upgradeSurveyPermissions145()
     } else {
         $sTableName = '{{survey_permissions}}';
         foreach ($oPermissionResult as $aPermissionRow) {
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'assessments',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'assessments',
                 'create_p' => $aPermissionRow['define_questions'],
                 'read_p' => $aPermissionRow['define_questions'],
                 'update_p' => $aPermissionRow['define_questions'],
@@ -2662,7 +2818,7 @@ function upgradeSurveyPermissions145()
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'quotas',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'quotas',
                 'create_p' => $aPermissionRow['define_questions'],
                 'read_p' => $aPermissionRow['define_questions'],
                 'update_p' => $aPermissionRow['define_questions'],
@@ -2670,7 +2826,7 @@ function upgradeSurveyPermissions145()
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'responses',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'responses',
                 'create_p' => $aPermissionRow['browse_response'],
                 'read_p' => $aPermissionRow['browse_response'],
                 'update_p' => $aPermissionRow['browse_response'],
@@ -2680,23 +2836,23 @@ function upgradeSurveyPermissions145()
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'statistics',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'statistics',
                 'read_p' => $aPermissionRow['browse_response'],
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'survey',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'survey',
                 'read_p' => 1,
                 'delete_p' => $aPermissionRow['delete_survey'],
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveyactivation',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveyactivation',
                 'update_p' => $aPermissionRow['activate_survey'],
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveycontent',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveycontent',
                 'create_p' => $aPermissionRow['define_questions'],
                 'read_p' => $aPermissionRow['define_questions'],
                 'update_p' => $aPermissionRow['define_questions'],
@@ -2706,19 +2862,19 @@ function upgradeSurveyPermissions145()
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveylocale',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveylocale',
                 'read_p' => $aPermissionRow['edit_survey_property'],
                 'update_p' => $aPermissionRow['edit_survey_property'],
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveysettings',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'surveysettings',
                 'read_p' => $aPermissionRow['edit_survey_property'],
                 'update_p' => $aPermissionRow['edit_survey_property'],
                 'sid' => $aPermissionRow['sid'],
                 'uid' => $aPermissionRow['uid']));
 
-            $sPermissionInsertQuery = Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'tokens',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission' => 'tokens',
                 'create_p' => $aPermissionRow['activate_survey'],
                 'read_p' => $aPermissionRow['activate_survey'],
                 'update_p' => $aPermissionRow['activate_survey'],
@@ -3123,8 +3279,10 @@ function modifyPrimaryKey($sTablename, $aColumns)
 
 
 /**
+* Converts all tables and the database default to the given character set and collation (MySQL only)
 * @param string $sEncoding
 * @param string $sCollation
+* @return void
 */
 function fixMySQLCollations($sEncoding, $sCollation)
 {
@@ -3138,7 +3296,34 @@ function fixMySQLCollations($sEncoding, $sCollation)
         };
     }
     $sDatabaseName = getDBConnectionStringProperty('dbname');
-    Yii::app()->getDb()->createCommand("ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET {$sEncoding} COLLATE {$sCollation};");
+    try {
+        Yii::app()->getDb()->createCommand("ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET {$sEncoding} COLLATE {$sCollation};")->execute();
+    } catch (Exception $e) {
+        // Missing ALTER privilege on the database: Tables are created with explicit charset options anyway
+    };
+    if ($sEncoding === 'utf8mb4') {
+        fixMySQLConfigCharset();
+    }
+}
+
+/**
+* Replaces a MySQL connection charset of utf8 (utf8mb3) with utf8mb4 in config.php, if the file is writable.
+* @return void
+*/
+function fixMySQLConfigCharset()
+{
+    $sConfigFile = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
+    if (!is_file($sConfigFile) || !is_writable($sConfigFile)) {
+        return;
+    }
+    $sContent = file_get_contents($sConfigFile);
+    if ($sContent === false) {
+        return;
+    }
+    $sNewContent = preg_replace('/([\'"]charset[\'"]\s*=>\s*)([\'"])utf8(?:mb3)?\2/i', '$1$2utf8mb4$2', $sContent);
+    if ($sNewContent !== null && $sNewContent !== $sContent) {
+        file_put_contents($sConfigFile, $sNewContent, LOCK_EX);
+    }
 }
 
 /**
@@ -3220,24 +3405,31 @@ function fixPostgresSequence($tableName = null)
 {
     $oDB = Yii::app()->getDb();
     $query = "SELECT 'SELECT SETVAL(' ||
-                quote_literal(quote_ident(PGT.schemaname) || '.' || quote_ident(S.relname)) ||
+                quote_literal(quote_ident(SN.nspname) || '.' || quote_ident(S.relname)) ||
                 ', COALESCE(MAX(' ||quote_ident(C.attname)|| '), 1) ) FROM ' ||
-                quote_ident(PGT.schemaname)|| '.'||quote_ident(T.relname)|| ';'
+                quote_ident(TN.nspname)|| '.'||quote_ident(T.relname)|| ';'
             FROM pg_class AS S,
                 pg_depend AS D,
                 pg_class AS T,
                 pg_attribute AS C,
-                pg_tables AS PGT
+                pg_namespace AS SN,
+                pg_namespace AS TN
             WHERE S.relkind = 'S'
                 AND S.oid = D.objid
                 AND D.refobjid = T.oid
                 AND D.refobjid = C.attrelid
                 AND D.refobjsubid = C.attnum
-                AND T.relname = PGT.tablename";
+                AND S.relnamespace = SN.oid
+                AND T.relnamespace = TN.oid
+                AND D.classid = 'pg_class'::regclass
+                AND D.refclassid = 'pg_class'::regclass
+                AND D.deptype IN ('a', 'i')
+                AND C.atttypid IN ('int2'::regtype, 'int4'::regtype, 'int8'::regtype)
+                AND NOT C.attisdropped";
     if ($tableName != null) {
-        $query .= " AND PGT.tablename= '{{" . $tableName . "}}' ";
+        $query .= " AND T.relname = '{{" . $tableName . "}}' ";
     }
-    $query .= "ORDER BY S.relname;";
+    $query .= " ORDER BY S.relname;";
     $FixingQueries = Yii::app()->db->createCommand($query)->queryColumn();
     foreach ($FixingQueries as $fixingQuery) {
         $oDB->createCommand($fixingQuery)->execute();
@@ -3262,8 +3454,6 @@ function runAddPrimaryKeyonAnswersTable400(&$oDB)
         $oDB->createCommand()->renameTable('{{answers}}', 'answertemp');
         $oDB->createCommand()->createIndex('answer_idx_10', 'answertemp', ['qid', 'code', 'scale_id']);
 
-        $dataReader = $oDB->createCommand("SELECT qid, code, scale_id FROM answertemp group by qid, code, scale_id")->query();
-
         $oDB->createCommand()->createTable('{{answers}}', [
             'aid' =>  "pk",
             'qid' => 'integer NOT NULL',
@@ -3276,7 +3466,6 @@ function runAddPrimaryKeyonAnswersTable400(&$oDB)
         ]);
 
         $dataReader = $oDB->createCommand("SELECT qid, code, scale_id FROM answertemp group by qid, code, scale_id")->query();
-        $iCounter = 1;
         while (($row = $dataReader->read()) !== false) {
             $dataBlock = $oDB->createCommand("SELECT * FROM answertemp WHERE qid={$row['qid']} AND code='{$row['code']}' AND scale_id={$row['scale_id']}")->queryRow();
             $oDB->createCommand()->insert('{{answers}}', $dataBlock);

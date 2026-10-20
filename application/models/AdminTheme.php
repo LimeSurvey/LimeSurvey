@@ -105,9 +105,6 @@ class AdminTheme extends CFormModel
         //////////////////////
         // Config file loading
 
-        if (\PHP_VERSION_ID < 80000) {
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        }
         $sXMLConfigFile        = file_get_contents(realpath($this->path . '/config.xml')); // Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
 
         // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
@@ -119,11 +116,6 @@ class AdminTheme extends CFormModel
 
         $this->defineConstants(); // Define the (still) necessary constants
         $this->registerStylesAndScripts(); // Register all CSS and JS
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-        }
-
         return $this;
     }
 
@@ -156,10 +148,8 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('font-icomoon');
             App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style
             App()->getClientScript()->registerPackage('adminsidepanel'); // The new admin panel
-            App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
-            App()->getClientScript()->registerPackage('ckeditor'); //
-            App()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global scope
-            App()->getClientScript()->registerPackage('modaleditor');
+            // CKEditor (and the modaleditor, which depends on it) is only registered on pages
+            // that actually use an editor, via PrepareEditorScript(). See bug #19391.
         }
         App()->getClientScript()->registerPackage('select2-bootstrap');
         // Then we add the different CSS/JS files to load in arrays
@@ -262,46 +252,6 @@ class AdminTheme extends CFormModel
         return self::$instance;
     }
 
-    /**
-     * @return string[]
-     */
-    public static function getOtherAssets()
-    {
-        return array(
-            // Extension assets
-            'application/extensions/yiiwheels/assets',
-            'application/extensions/yiiwheels/widgets/box/assets',
-            'application/extensions/yiiwheels/widgets/grid/assets',
-            'application/extensions/yiiwheels/widgets/formhelpers/assets',
-            'application/extensions/yiiwheels/widgets/highcharts/assets',
-            'application/extensions/yiiwheels/widgets/maskinput/assets',
-            'application/extensions/yiiwheels/widgets/redactor/assets',
-            'application/extensions/yiiwheels/widgets/switch/assets',
-            'application/extensions/yiiwheels/widgets/datetimepicker/assets',
-            'application/extensions/yiiwheels/widgets/timeago/assets',
-            'application/extensions/yiiwheels/widgets/sparklines/assets',
-            'application/extensions/yiiwheels/widgets/datepicker/assets',
-            'application/extensions/yiiwheels/widgets/multiselect/assets',
-            'application/extensions/yiiwheels/widgets/gallery/assets',
-            'application/extensions/yiiwheels/widgets/select2/assets',
-            'application/extensions/yiiwheels/widgets/ace/assets',
-            'application/extensions/yiiwheels/widgets/modal/assets',
-            'application/extensions/yiiwheels/widgets/maskmoney/assets',
-            'application/extensions/yiiwheels/widgets/rangeslider/assets',
-            'application/extensions/yiiwheels/widgets/fileupload/assets',
-            'application/extensions/yiiwheels/widgets/typeahead/assets',
-            'application/extensions/yiiwheels/widgets/timepicker/assets',
-            'application/extensions/yiiwheels/widgets/html5editor/assets',
-            'application/extensions/yiiwheels/widgets/daterangepicker/assets',
-            'application/extensions/bootstrap/assets',
-            'application/extensions/LimeScript/assets',
-            'application/extensions/SettingsWidget/assets',
-            'application/extensions/FlashMessage/assets',
-            'application/extensions/admin/survey/question/PositionWidget/assets',
-            'application/extensions/admin/grid/MassiveActionsWidget/assets',
-            'application/extensions/admin/survey/question/PositionWidget/assets'
-        );
-    }
 
     /**
      * Return an array containing the configuration object of all templates in a given directory
@@ -311,9 +261,6 @@ class AdminTheme extends CFormModel
      */
     private static function getThemeList($sDir)
     {
-        if (\PHP_VERSION_ID < 80000) {
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        }
         $aListOfFiles = array();
         $oAdminTheme = new AdminTheme();
         if ($sDir && $pHandle = opendir($sDir)) {
@@ -336,9 +283,6 @@ class AdminTheme extends CFormModel
                 }
             }
             closedir($pHandle);
-        }
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState);
         }
         return $aListOfFiles;
     }

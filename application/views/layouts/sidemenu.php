@@ -7,17 +7,6 @@
 
 ?>
 <?php
-    // todo $showSideMenu is not used by vue sidebar.vue? normally set by $aData['sidemenu']['state']
-    $sidemenu['state'] = $sidemenu['state'] ?? true;
-if (
-        $sideMenuBehaviour == 'alwaysClosed'
-        || ($sideMenuBehaviour == 'adaptive'
-        && !$sidemenu['state'])
-) {
-    $showSideMenu = false;
-} else {
-    $showSideMenu = true;
-}
     //todo: change urls after refactoring the controllers
     $getQuestionsUrl = $this->createUrl("/surveyAdministration/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
     $getMenuUrl = $this->createUrl("/surveyAdministration/getAjaxMenuArray/", ["surveyid" => $surveyid]);
@@ -32,12 +21,6 @@ if ($activated || !$createPermission) {
     $createQuestionGroupLink = "";
     $createQuestionLink = "";
 }
-    $landOnSideMenuTab = ($sidemenu['landOnSideMenuTab'] ?? '');
-
-    // Set the active Sidemenu (for deeper navigation)
-    $isSideMenuElementActive = $sidemenu['isSideMenuElementActive'] ?? false;
-    $activeSideMenuElement   = $sidemenu['activeSideMenuElement'] ?? '';
-
     $menuObjectArray =  [
         "side" => [],
         "collapsed" => [],
@@ -76,13 +59,18 @@ if ($activated || !$createPermission) {
                     "lockOrganizerTitle" => gT("Lock question organizer"),
                     "unlockOrganizerTitle" => gT("Unlock question organizer"),
                     "collapseAll" => gT("Collapse all question groups"),
+                    "expandAll" => gT("Expand all question groups"),
                     "collapseGroup" => gT("Collapse group"),
                     "expandGroup" => gT("Expand group"),
                     "surveyLogicFile" => gT("Survey logic overview"),
                     "groupNumber" => gT("Group #%d"),
-                    "deactivateSurvey" => gT("Deactivate your survey to enable this setting"),
+                    "deactivateSurvey" => gT("Deactivate your survey to enable this functionality"),
                     "pageActionsMenu" => gT("Page actions menu"),
                     "questionActionsMenu" => gT("Question actions menu"),
+                    "moveUp" => gT("Move up"),
+                    "moveDown" => gT("Move down"),
+                    "movedToPosition" => gT('Moved to position %1$s of %2$s.', 'unescaped'),
+                    "movedToGroup" => gT('Moved to group "%1$s", position %2$s of %3$s.', 'unescaped'),
                 ]
             )
         . '};',
@@ -90,14 +78,5 @@ if ($activated || !$createPermission) {
     );
     ?>
 
-<div class="simpleWrapper ls-flex" id="vue-sidebar-container" 
-    v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}"
-    v-bind:data-collapsed="$store.state.isCollapsed">
-    <?php if ($landOnSideMenuTab !== '') : ?>
-        <sidebar land-on-tab='<?php echo $landOnSideMenuTab ?>'
-                 is-side-menu-element-active='<?php echo $isSideMenuElementActive ?>'
-                 active-side-menu-element='<?php echo $activeSideMenuElement ?>' />
-    <?php else : ?>
-        <sidebar />
-    <?php endif; ?>
-</div>
+<?php // Filled by the adminsidepanel script ?>
+<div class="simpleWrapper ls-flex" id="vue-sidebar-container"></div>

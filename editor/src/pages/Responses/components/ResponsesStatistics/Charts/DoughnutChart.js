@@ -76,7 +76,7 @@ const renderActiveShape = ({
   )
 }
 
-export const DoughnutChart = ({ data }) => {
+export const DoughnutChart = ({ data, isImage = false }) => {
   return (
     <ResponsiveContainer minHeight={500} width="100%" height="100%">
       <RechartsPieChart>
@@ -99,7 +99,7 @@ export const DoughnutChart = ({ data }) => {
           ))}
         </Pie>
         <Tooltip cursor={{ fill: '#eeeff7' }} content={CustomTooltip} />
-        <Legend content={CustomLegend} />
+        <Legend content={<CustomLegend isImage={isImage} />} />
       </RechartsPieChart>
     </ResponsiveContainer>
   )

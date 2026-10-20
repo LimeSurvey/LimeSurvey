@@ -17,7 +17,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'iconClasses' => 'ri-delete-bin-fill text-danger',
                 'text' => gT('Delete'),
                 'grid-reload' => 'yes',
-                'on-success' => "(function(result) { LS.AjaxHelper.onSuccess(result); })",
+                'on-success' => 'LS.AjaxHelper.onSuccess',
 
                 // Modal
                 'actionType' => 'modal',
@@ -66,7 +66,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'grid-reload' => 'no',
 
                 'actionType' => 'custom',
-                'custom-js' => '(function(itemIds) { LS.CPDB.onClickExport(itemIds); })'
+                'custom-js' => 'LS.CPDB.onClickExport'
             ],
             [
                 'type' => 'action',
@@ -77,7 +77,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'grid-reload' => 'no',
 
                 'actionType' => 'custom',
-                'custom-js' => '(function(itemIds) { LS.CPDB.shareMassiveAction(itemIds); })'
+                'custom-js' => 'LS.CPDB.shareMassiveAction'
             ],
             [
                 'type' => 'action',
@@ -88,7 +88,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'grid-reload' => 'no',
 
                 'actionType' => 'custom',
-                'custom-js' => '(function(itemIds) { LS.CPDB.addParticipantToSurvey(itemIds); })'
+                'custom-js' => 'LS.CPDB.addParticipantToSurvey'
             ]
 
         ],

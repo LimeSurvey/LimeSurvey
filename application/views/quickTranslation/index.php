@@ -8,7 +8,7 @@
 ?>
 
 <div class="side-body">
-    <h3><span class="ri-global-line text-success" ></span>&nbsp;&nbsp;<?php eT("Translate survey"); ?></h3>
+    <h2 class="h3"><span class="ri-global-line text-success" ></span>&nbsp;&nbsp;<?php eT("Translate survey"); ?></h2>
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php

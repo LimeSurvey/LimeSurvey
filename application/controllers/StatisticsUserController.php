@@ -65,8 +65,6 @@ class StatisticsUserController extends SurveyController
         $iSurveyID = (int)$survey->sid;
         $this->iSurveyID = $survey->sid;
 
-        //$postlang = returnglobal('lang');
-        //~ Yii::import('application.libraries.admin.progressbar',true);
         Yii::app()->loadHelper("userstatistics");
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('surveytranslator');
@@ -165,10 +163,11 @@ class StatisticsUserController extends SurveyController
         $totalrecords = 0;
         //count number of answers
         $query = "SELECT count(*) FROM " . $survey->responsesTableName;
-        //if incompleted answers should be filtert submitdate has to be not null
-        //this setting is taken from config-defaults.php
-        if (Yii::app()->getConfig("filterout_incomplete_answers") == 'complete') {
+        //filter by completion state, as set by filterout_incomplete_answers in config-defaults.php
+        if (userstatistics_helper::completionFilterState() == 'complete') {
             $query .= " WHERE " . $survey->responsesTableName . ".submitdate is not null";
+        } elseif (userstatistics_helper::completionFilterState() == 'incomplete') {
+            $query .= " WHERE " . $survey->responsesTableName . ".submitdate is null";
         }
         $result = Yii::app()->db->createCommand($query)->queryAll();
 

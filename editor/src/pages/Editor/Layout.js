@@ -104,6 +104,7 @@ const Layout = () => {
         )}
       </div>
       <RightSideBar surveyId={surveyId} />
+      <PluginSlot slotName={PLUGIN_SLOTS.EDITOR_LAYOUT_EXTRA} />
     </>
   )
 }

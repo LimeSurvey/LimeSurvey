@@ -101,7 +101,7 @@ class QuestionAttributeFunctionalTest extends TestBaseClassWeb
 
         $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
 
-        $question = QuestionCreate::getInstance(self::$surveyId, 'S');
+        $question = QuestionCreate::create(self::$surveyId, 'S');
 
         $questionAttributeFetcher->setQuestion($question);
         $questionAttributeFetcher->setTheme('browserdetect');

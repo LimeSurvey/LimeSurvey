@@ -17,7 +17,7 @@ import {
 } from './old_template_core_pre.js';
 
 /**
- * @file Default template functionnality
+ * @file Default template functionality
  * @copyright LimeSurvey <http://www.limesurvey.org>
  * @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-v3-or-Later
  */
@@ -27,7 +27,7 @@ export var TemplateCoreClass = function () {
         /**
          * Dialog and confirm
          */
-        /* showStartPopups : replace core function : allow HTML and use it. Unusuable with ajax */
+        /* showStartPopups : replace core function : allow HTML and use it. Unusable with ajax */
         showStartPopups: function () {
             if (LSvar.showpopup == 1  && $.isArray(LSvar.startPopups)) {
                 let startPopups = LSvar.startPopups.map( function (text) {
@@ -102,16 +102,16 @@ export var TemplateCoreClass = function () {
                         parent.addClass('tip-was-hidden', 1);
                     }
                     let questionContainer = $(this).parents('div.question-container');
-                    questionContainer.addClass('input-error'); /* No difference betwwen error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+                    questionContainer.addClass('input-error'); /* No difference between error after submit and error before submit : think (Shnoulle) it's better to have a difference */
                     $(this).find('span.fa-exclamation-circle').removeClass('d-none');
                 });
 
                 $(this).on('classChangeGood', function () {
-                    /* If user choose hide-tip : leave it */
-                    let parent = $(this).parents('div.hide-tip');
+                    /* If user choose hide-tip : hide it again once no other tip in the same block is still in error */
+                    let parent = $(this).parent('div.ls-questionhelp');
                     parent.removeClass('text-danger');
                     parent.addClass('text-info');
-                    if (parent.hasClass('tip-was-hidden')) {
+                    if (parent.hasClass('tip-was-hidden') && parent.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
                         parent.removeClass('tip-was-hidden').addClass('hide-tip');
                     }
                     let questionContainer = $(this).parents('div.question-container');
@@ -159,7 +159,7 @@ export var TemplateCoreClass = function () {
          * Must be before ready (event happen before ready)
          */
         hideMultipleColumn: function () {
-            $("[id^='question']").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
+            $("[id^='question'].question-container").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
                 if (event.target != this) return;
                 data = $.extend({
                     style: 'hidden'
@@ -168,7 +168,7 @@ export var TemplateCoreClass = function () {
                     $(this).closest(".list-unstyled").removeClass("ls-hidden")
                 }
             });
-            $("[id^='question']").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
+            $("[id^='question'].question-container").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
                 if (event.target != this) return;
                 data = $.extend({
                     style: 'hidden'

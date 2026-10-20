@@ -7,7 +7,7 @@ Yii::app()->getController()->renderPartial(
 
 <?= TbHtml::formTb(null, App()->createUrl('userManagement/saveUserPermissions'), 'post', ["id" => "UserManagement--modalform"]) ?>
 <div class="modal-body overflow-scroll selector--edit-permissions-container">
-    <div class="row ls-space margin top-5 bottom-5 hidden" id="UserManagement--errors">
+    <div class="row ls-space margin top-5 bottom-5 d-none" id="UserManagement--errors" role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1">
     </div>
     <input type='hidden' name='userid' value='<?php echo (isset($oUser) ? $oUser->uid : ''); ?>' />
     <table id='UserManagement--userpermissions-table' class='activecell table table-striped'>

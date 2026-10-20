@@ -64,12 +64,12 @@
             </div>
 
             <div class="mb-3">
-                <label class=" form-label" for='disablescriptwithxss'><?php eT("Disable question script for XSS restricted user:"); ?></label>
+                <label class=" form-label" for='disablescriptwithxss'><?php eT("Restrict question script for XSS restricted user:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'disablescriptwithxss',
                         'checkedOption' => (App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui') ? 1 : App()->getConfig('disablescriptwithxss'),
-                        'ariaLabel' => gT('Disable question script for XSS restricted user:'),
+                        'ariaLabel' => gT('Restrict question script for XSS restricted user:'),
                         'selectOptions' => [
                             '1' => gT('On'),
                             '0' => gT('Off'),
@@ -94,7 +94,7 @@
                         ]);
                     } else {
                         App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-                        'text' => gT("If you disable this option, users with XSS restrictions will still be able to add scripts. This may allow cross-site scripting (XSS) attacks."),
+                        'text' => gT("Turning this off lets users with XSS restrictions add scripts to questions, which may allow cross-site scripting (XSS) attacks."),
                         'type' => 'warning',
                         ]);
                     }
@@ -253,9 +253,16 @@
                     <?php eT("Reset failed login attempts of participants to make survey accessible again:"); ?>
                 </label>
                 <div class="">
-                    <a class='btn btn-large btn-warning' type="button" href='<?= \Yii::app()->createUrl('admin/globalsettings', ["sa" => "resetFailedLoginParticipants"]) ?>'>
+                    <button
+                        class='btn btn-large btn-warning'
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#confirmation-modal"
+                        data-post-url='<?= \Yii::app()->createUrl('admin/globalsettings', ["sa" => "resetFailedLoginParticipants"]) ?>'
+                        data-message="<?php eT("Do you really want to reset the failed login attempts of all participants?", 'html'); ?>"
+                    >
                         <?php eT("Reset participant attempts"); ?>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>

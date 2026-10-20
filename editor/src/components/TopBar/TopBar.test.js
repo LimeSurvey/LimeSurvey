@@ -3,10 +3,35 @@ import 'tests/mocks'
 
 import { renderWithProviders } from 'tests/testUtils'
 import { TopBar } from './TopBar'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { URLS } from 'helpers'
+import { PAGES, STATES, URLS } from 'helpers'
+import { queryClient } from 'queryClient'
 import surveyData from 'helpers/data/survey-detail.json'
+
+jest.mock('components/PublishSettings/SurveyActivationHandler', () => {
+  const React = require('react')
+
+  return React.forwardRef(function MockSurveyActivationHandler(
+    { showOverViewModal, setShowOverViewModal },
+    ref
+  ) {
+    void ref
+    return (
+      <>
+        <button
+          data-testid="overview-modal-state"
+          data-open={showOverViewModal}
+          onClick={() => setShowOverViewModal(false)}
+        />
+        <button
+          data-testid="open-overview-modal"
+          onClick={() => setShowOverViewModal(true)}
+        />
+      </>
+    )
+  })
+})
 
 describe('TopBar', () => {
   let Survey
@@ -102,5 +127,87 @@ describe('TopBar', () => {
 
     const publishSettings = screen.getByTestId('publish-settings')
     expect(publishSettings).toBeInTheDocument()
+  })
+
+  test('Overview closes on navigation and does not reopen when returning to the editor', async () => {
+    queryClient.clear()
+    Survey.active = true
+    queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
+      pageName: PAGES.EDITOR,
+      shouldAutoOpenOverview: true,
+    })
+    queryClient.setQueryData(['appState', STATES.LOADED_SURVEY_ID], Survey.sid)
+
+    await renderWithProviders(<TopBar surveyId={Survey.sid} />)
+
+    const overviewModalState = await screen.findByTestId('overview-modal-state')
+    await waitFor(() =>
+      expect(overviewModalState).toHaveAttribute('data-open', 'true')
+    )
+
+    act(() => {
+      queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
+        pageName: PAGES.RESPONSES,
+        shouldAutoOpenOverview: false,
+      })
+    })
+    await waitFor(() =>
+      expect(overviewModalState).toHaveAttribute('data-open', 'false')
+    )
+
+    act(() => {
+      queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
+        pageName: PAGES.EDITOR,
+        shouldAutoOpenOverview: true,
+      })
+    })
+
+    await waitFor(() =>
+      expect(overviewModalState).toHaveAttribute('data-open', 'false')
+    )
+  })
+
+  test('Overview does not open for an inactive survey', async () => {
+    queryClient.clear()
+    Survey.active = false
+    queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
+      pageName: PAGES.EDITOR,
+      shouldAutoOpenOverview: true,
+    })
+    queryClient.setQueryData(['appState', STATES.LOADED_SURVEY_ID], Survey.sid)
+
+    await renderWithProviders(<TopBar surveyId={Survey.sid} />)
+
+    const overviewModalState = await screen.findByTestId('overview-modal-state')
+    expect(overviewModalState).toHaveAttribute('data-open', 'false')
+  })
+
+  test('Overview does not open from a stale active survey in the cache', async () => {
+    queryClient.clear()
+    Survey.active = true
+    queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
+      pageName: PAGES.EDITOR,
+      shouldAutoOpenOverview: true,
+    })
+
+    await renderWithProviders(<TopBar surveyId={Number(Survey.sid) + 1} />)
+
+    const overviewModalState = await screen.findByTestId('overview-modal-state')
+    expect(overviewModalState).toHaveAttribute('data-open', 'false')
+  })
+
+  test('Overview does not open before the current survey request completes', async () => {
+    queryClient.clear()
+    Survey.active = true
+    queryClient.setQueryData([STATES.SURVEY], { survey: Survey })
+    queryClient.setQueryData(['appState', STATES.TOPBAR_CONFIG], {
+      pageName: PAGES.EDITOR,
+      shouldAutoOpenOverview: true,
+    })
+
+    await renderWithProviders(<TopBar surveyId={Survey.sid} />)
+
+    const overviewModalState = await screen.findByTestId('overview-modal-state')
+    expect(overviewModalState).toHaveAttribute('data-open', 'false')
   })
 })

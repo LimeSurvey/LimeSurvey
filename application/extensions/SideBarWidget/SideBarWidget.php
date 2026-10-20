@@ -34,7 +34,7 @@ class SideBarWidget extends CWidget
                 $boxData['url'] = $box->url;
                 $boxData['external'] = true;
             }
-            $boxData['title'] = $box->title;
+            $boxData['title'] = $box->getLocalizedTitle();
             $boxData['ico'] = $box->getIconName();
             $boxData['description'] = $box->desc;
             $boxData['selected'] = substr($route, 0, strlen($box->url)) === $box->url;
@@ -79,7 +79,7 @@ class SideBarWidget extends CWidget
     public function registerClientScript(): void
     {
         App()->getClientScript()->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/GridActionsWidget/assets/action_dropdown.js',
+            App()->getAssetManager()->publish(dirname(__FILE__, 2) . '/admin/grid/GridActionsWidget/assets/action_dropdown.js'),
             CClientScript::POS_END
         );
     }

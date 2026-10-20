@@ -82,7 +82,6 @@ class RenderRanking extends QuestionBaseRenderer
         });
 
         $sSelects = '';
-        $inputnames = [];
 
         // Iterate through subquestions instead of answer options
         for ($i = 1; $i <= $iMaxLine; $i++) {
@@ -130,7 +129,7 @@ class RenderRanking extends QuestionBaseRenderer
                 true
             );
 
-            $inputnames[] = $myfname;
+            $this->inputnames[] = $myfname;
         }
 
         return $sSelects;
@@ -145,8 +144,8 @@ class RenderRanking extends QuestionBaseRenderer
             $answer .= $this->getTimeSettingRender();
         }
 
-        $rankingTranslation = 'LSvar.lang.rankhelp="' . gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.", 'js') . '";';
-        $rankingTranslation .= 'LSvar.lang.rankadvancedhelp="' . gT("Drag or double-click images into order.", 'js') . '";';
+        $rankingTranslation = 'LSvar.lang.rankhelp="' . gT("Double-click or drag-and-drop items from the available items to your ranking - your highest ranking item should be at the top.", 'js') . '";';
+        $rankingTranslation .= 'LSvar.lang.rankadvancedhelp="' . gT("Drag or double-click items to put them in order.", 'js') . '";';
         $this->addScript("rankingTranslation", $rankingTranslation, CClientScript::POS_BEGIN);
         //$this->applyScripts();
 

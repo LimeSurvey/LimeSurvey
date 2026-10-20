@@ -22,6 +22,18 @@ var AdvancedRankingQuestion = function (options) {
     var relevancename= "relevance"+rankingName,
         rankingID = "javatbd" + rankingName;
 
+    // Build a map from data-value (title) to element id from the DOM
+    var buildValueToIdMap = function () {
+        var map = {};
+        $('#sortable-choice-' + questionId + ' .sortable-item').each(function () {
+            var val = $(this).data('value');
+            if (val) {
+                map[val] = $(this).attr('id');
+            }
+        });
+        return map;
+    };
+
     //define HTML snippets
     var screenReader = "<div class='visually-hidden'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankadvancedhelp + "</div>"
 
@@ -110,13 +122,14 @@ var AdvancedRankingQuestion = function (options) {
         bindActions();
     },
     
+    /**
+     * Show the rank number on ranked items only; items still in the choice list have no rank
+     */
     updateRankingNumber= function () {
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function (index,item) {
-            $(item).find('.selector__index_row').text('#'+(index+1));
+            $(item).find('.selector__index_row').text('#' + (index + 1) + ' ');
         });
-        $('#sortable-choice-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function (index,item) {
-            $(item).find('.selector__index_row').text('#'+(index+1));
-        });
+        $('#sortable-choice-' + questionId + ' .answer-item.sortable-item.ls-choice .selector__index_row').text('');
     },
     /**
      * Update answers after updating drag and drop part
@@ -135,7 +148,7 @@ var AdvancedRankingQuestion = function (options) {
             }
         });
 
-        // Update #relevance and lauch checkconditions function
+        // Update #relevance and launch checkconditions function
         $("[id^=" + relevancename + "]").val('0');
 
         $('#question' + questionId + ' .select-item select:lt(' + max_answers + ')').each(function (index) {
@@ -160,10 +173,14 @@ var AdvancedRankingQuestion = function (options) {
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function () {
             $(this).appendTo('#sortable-choice-' + questionId );
         });
+        var valueToId = buildValueToIdMap();
         $('#question' + questionId + ' .select-item select :selected').each(function (index) {
             if ($(this).val() != '') {
                 $("#" + relevancename + (index+1)).val("1");
-                $('#sortable-choice-' + questionId + ' #' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
+                var elId = valueToId[$(this).val()];
+                if (elId) {
+                    $('#sortable-choice-' + questionId + ' #' + elId).appendTo('#sortable-rank-' + questionId);
+                }
             }
         });
 

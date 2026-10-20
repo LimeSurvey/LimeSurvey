@@ -70,15 +70,9 @@ class UserManagementController extends LSBaseController
         $model->setAttributes(Yii::app()->getRequest()->getParam('User'), false);
         $aData['model'] = $model;
        // $aData['columnDefinition'] = $model->getManagementColums();
-        $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-        $aData['formUrl'] = $this->createUrl('userManagement/index');
+         $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+         $aData['formUrl'] = $this->createUrl('userManagement/index');
 
-        $aData['massiveAction'] = $this->renderPartial(
-            'massiveAction/_selector',
-            ['userid' => $model->uid],
-            true,
-            false
-        );
 
 
         $aData['topbar']['title'] = gT('User management');
@@ -93,7 +87,6 @@ class UserManagementController extends LSBaseController
             //'columnDefinition' => $aData['columnDefinition'],
             'pageSize' => $aData['pageSize'],
             'formUrl' => $aData['formUrl'],
-            'massiveAction' => $aData['massiveAction'],
         ]);
     }
 
@@ -396,6 +389,8 @@ class UserManagementController extends LSBaseController
         $action = Yii::app()->request->getParam('action');
 
         $userId = sanitize_int($userId);
+        // Only allow the two known actions
+        $action = in_array($action, ['activate', 'deactivate'], true) ? $action : 'deactivate';
 
         $aData['userId'] = $userId;
         $aData['action'] = $action;
@@ -417,7 +412,10 @@ class UserManagementController extends LSBaseController
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $userId = sanitize_int(Yii::app()->request->getParam('userid'));
-        $action = Yii::app()->request->getParam('action');
+        $action = Yii::app()->request->getParam('action', 'deactivate');
+        if (!in_array($action, ['activate', 'deactivate'], true)) {
+            throw new CHttpException(400, gT("Invalid action"));
+        }
         $oUser = User::model()->findByPk($userId);
 
         if ($oUser == null) {
@@ -734,10 +732,12 @@ class UserManagementController extends LSBaseController
             !(Permission::model()->hasGlobalPermission('users', 'update') &&
             Permission::model()->hasGlobalPermission('templates', 'update'))
         ) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors' => [gT("You do not have permission to access this page.")],
+                ]
+            ]);
         }
 
         $userId = Yii::app()->request->getPost('userid');
@@ -754,7 +754,8 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Opens the modal to add dummy users
+     * Opens the modal to edit the roles of a user
+     * Only the roles the current user is allowed to assign are offered
      *
      * @return string|null
      * @throws CException
@@ -772,17 +773,20 @@ class UserManagementController extends LSBaseController
             );
         }
 
-        $aPermissionTemplates = Permissiontemplates::model()->findAll();
+        $aAssignableRoles = $userManager->getAssignableRoles();
         $aPossibleRoles = [];
-        array_walk(
-            $aPermissionTemplates,
-            function ($oPermissionRole) use (&$aPossibleRoles) {
-                $aPossibleRoles[$oPermissionRole->ptid] = $oPermissionRole->name;
+        foreach ($aAssignableRoles as $oPermissionRole) {
+            $aPossibleRoles[$oPermissionRole->ptid] = $oPermissionRole->name;
+        }
+        $aCurrentRoles = [];
+        $aLockedRoles = [];
+        foreach ($oUser->roles as $oRole) {
+            if (isset($aAssignableRoles[$oRole->ptid])) {
+                $aCurrentRoles[] = $oRole->ptid;
+            } else {
+                $aLockedRoles[] = $oRole->name;
             }
-        );
-        $aCurrentRoles = array_map(function ($oRole) {
-            return $oRole->ptid;
-        }, $oUser->roles);
+        }
 
         return $this->renderPartial(
             'partial/addrole',
@@ -790,6 +794,8 @@ class UserManagementController extends LSBaseController
                 'oUser' => $oUser,
                 'aPossibleRoles' => $aPossibleRoles,
                 'aCurrentRoles' => $aCurrentRoles,
+                'aLockedRoles' => $aLockedRoles,
+                'hasIndividualPermissions' => $userManager->hasIndividualGlobalPermissions(),
             ]
         );
     }
@@ -814,19 +820,16 @@ class UserManagementController extends LSBaseController
                 ]
             ]);
         }
-        $aUserRoleIds = Yii::app()->request->getPost('roleselector', []);
-        $results = [];
-
-        $clearUser = Permissiontemplates::model()->clearUser($iUserId);
-        foreach ($aUserRoleIds as $iUserRoleId) {
-            if ($iUserRoleId == '') {
-                continue;
-            }
-            $results[$iUserRoleId] = Permissiontemplates::model()->applyToUser($iUserId, $iUserRoleId);
-        }
-        if (empty($aUserRoleIds)) {
-            $results['clear'] = $clearUser;
-        }
+        $aUserRoleIds = array_map('intval', (array) Yii::app()->request->getPost('roleselector', []));
+        $aAssignableRoleIds = array_keys($userManager->getAssignableRoles());
+        /* Keep the current roles the managing user is not allowed to remove */
+        $aLockedRoleIds = array_diff(
+            array_map(function ($oRole) {
+                return $oRole->ptid;
+            }, $oUser->roles),
+            $aAssignableRoleIds
+        );
+        $userManager->setRoles(array_merge($aLockedRoleIds, array_intersect($aUserRoleIds, $aAssignableRoleIds)));
         return $this->renderPartial('partial/json', [
             "data" => [
                 'success' => true,
@@ -875,16 +878,14 @@ class UserManagementController extends LSBaseController
      * Imports users from an uploaded CSV or JSON file, creating new users or updating existing ones, then redirects to the user index after adding alert message.
      *
      * @param string $importFormat Format of the uploaded file; must be "csv" or "json".
-     * @return string The rendered error partial when the current user lacks create permission; or redirect.
+     * @return string Never returns normally; always ends with a redirect.
+     * @throws CHttpException If the current user lacks permission to create users.
      * @throws LSUserException If an unsupported $importFormat is provided.
      */
     public function actionImportUsers(string $importFormat = 'csv'): string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         if (!in_array($importFormat, ['csv', 'json'])) {
             throw new LSUserException(400, gT("Invalid format"));
@@ -907,6 +908,7 @@ class UserManagementController extends LSBaseController
         $created = [];
         $updated = [];
         $hasDuplicateIdentity = false;
+        $hasInvalidUsername = false;
         $canOverwriteDuplicateEmail = false;
         $existingAttributes = User::model()->attributeNames();
         $dateAttributes = ['last_login', 'validation_key_expiration','last_forgot_email_password','expires'];
@@ -914,6 +916,11 @@ class UserManagementController extends LSBaseController
             // Unset not imported or invalid attribute
             $aNewUser = array_intersect_key($aNewUser, array_flip($existingAttributes));
             $aNewUser = array_diff_key($aNewUser, array_flip(['uid','parent_id', 'created', 'modified']));
+            $aNewUser['users_name'] = flattenText($aNewUser['users_name'] ?? '');
+            if (empty($aNewUser['users_name'])) {
+                $hasInvalidUsername = true;
+                continue;
+            }
             $oUser = User::model()->find(
                 'users_name = :name OR email = :email',
                 [
@@ -942,10 +949,12 @@ class UserManagementController extends LSBaseController
                             $oUser->setAttribute($attribute, $value);
                         }
                     }
+                    $saveAttributes = array_keys($aNewUser);
                     if (!empty($aNewUser['password']) && $aNewUser['password'] != ' ') {
                         $oUser->setPassword($aNewUser['password'], false);
+                        $saveAttributes[] = 'session_token';
                     }
-                    $save = $oUser->save(true, array_keys($aNewUser));
+                    $save = $oUser->save(true, $saveAttributes);
                     if ($save) {
                         $updated[] = $aNewUser;
                     }
@@ -971,7 +980,7 @@ class UserManagementController extends LSBaseController
                     'email' => $aNewUser['email'],
                     'lang' => $aNewUser['lang'],
                 ]);
-                if ($newUserAttributes) {
+                if (is_array($newUserAttributes) && isset($newUserAttributes['uid'])) {
                     /* Update it with other attributes */
                     $oUser = User::model()->findByPk($newUserAttributes['uid']);
                     $aNewUserExtra = array_diff_key($aNewUser, array_flip(['users_name','full_name', 'password', 'email', 'lang']));
@@ -989,6 +998,10 @@ class UserManagementController extends LSBaseController
         }
         if (count($created) || count($updated)) {
             Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
+        }
+
+        if ($hasInvalidUsername) {
+            Yii::app()->setFlashMessage(gT("A username was not supplied or the username is invalid."), 'warning');
         }
 
         if ($hasDuplicateIdentity) {
@@ -1117,11 +1130,12 @@ class UserManagementController extends LSBaseController
             $aResults[$user]['title'] = $model->users_name;
 
             // Delete the user and store the result
-            $aResults[$user]['result'] = $this->deleteUser($user);
+            $errorMessage = null;
+            $aResults[$user]['result'] = $this->deleteUser($user, $errorMessage);
 
             // If the user could not be deleted or it's the current user, add an error message
             if (!$aResults[$user]['result'] || $user == Yii::app()->user->id) {
-                $aResults[$user]['error'] = gT("You cannot delete yourself or a protected user.");
+                $aResults[$user]['error'] = $errorMessage ?? gT("You cannot delete yourself or a protected user.");
             }
         }
 
@@ -1142,12 +1156,20 @@ class UserManagementController extends LSBaseController
     /**
      * render selected items for massive action modal
      *
-     * @return void
+     * Note: Needs the global users read permission, the same as the user list grid it is used by.
+     *
+     * @return string|void
      * @throws CHttpException
      * @throws CException
      */
     public function actionRenderSelectedItems()
     {
+        if (!Permission::model()->hasGlobalPermission('users', 'read')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
         $aUsers = json_decode(App()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
@@ -1411,12 +1433,15 @@ class UserManagementController extends LSBaseController
      */
     public function actionBatchApplyRoles()
     {
-        /* Need super admin roles */
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
-        $aUserRoleIds = Yii::app()->request->getPost('roleselector');
+        $aUserRoleIds = array_map('intval', (array) Yii::app()->request->getPost('roleselector', []));
+        $aAssignableRoleIds = array_keys((new UserManager(Yii::app()->user))->getAssignableRoles());
+        if (array_diff($aUserRoleIds, $aAssignableRoleIds)) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $aResults = [];
 
         foreach ($aItems as $sItem) {
@@ -1433,9 +1458,10 @@ class UserManagementController extends LSBaseController
                 $aResults[$sItem]['result'] = false;
                 $aResults[$sItem]['error'] = gT('You are not allowed to assign a role to this user.');
             } else {
-                foreach ($aUserRoleIds as $iUserRoleId) {
-                    $aResults[$sItem]['result'] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
-                }
+                $aCurrentRoleIds = array_map(function ($oRole) {
+                    return $oRole->ptid;
+                }, $model->roles);
+                $aResults[$sItem]['result'] = $userManager->setRoles(array_merge($aCurrentRoleIds, $aUserRoleIds));
             }
         }
 
@@ -1492,10 +1518,11 @@ class UserManagementController extends LSBaseController
      * UserManager and returns the deletion result.
      *
      * @param int $uid The ID of the user to delete.
+     * @param string|null $errorMessage Set to a user-facing reason when the deletion is refused because the user owns surveys.
      * @return bool `true` if the user was deleted successfully, `false` otherwise.
      * @throws CException
      */
-    public function deleteUser(int $uid): bool
+    public function deleteUser(int $uid, ?string &$errorMessage = null): bool
     {
         if (!App()->getRequest()->getIsPostRequest()) {
             throw new CHttpException(400, gT('Your request is invalid.'));
@@ -1544,6 +1571,7 @@ class UserManagementController extends LSBaseController
         // Check if user owns a survey
         $aOwnedSurveys = Survey::model()->findAllByAttributes(['owner_id' => $userId]);
         if (count($aOwnedSurveys)) {
+            $errorMessage = gT("This user owns surveys. Delete the user individually to transfer the surveys to another user.");
             return false;
         }
 
@@ -1603,7 +1631,7 @@ class UserManagementController extends LSBaseController
         $oUser->setAttributes($aUser);
 
         if (isset($aUser['password']) && $aUser['password']) {
-            $oUser->password = password_hash((string) $aUser['password'], PASSWORD_DEFAULT);
+            $oUser->setPassword((string) $aUser['password']);
         }
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->save();
@@ -1626,6 +1654,12 @@ class UserManagementController extends LSBaseController
     {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $newUser = $this->createNewUser($aUser);
+            if ($newUser === null) {
+                return [
+                    'success' => false,
+                    'errors' => CHtml::tag("p", array(), gT("Error: User was not created"))
+                ];
+            }
             $success = true;
             $sReturnMessage = gT('User successfully created', 'unescaped');
 
@@ -1666,10 +1700,10 @@ class UserManagementController extends LSBaseController
      * @todo : move to private function
      *
      * @param array $aUser array with user details
-     * @return array returns all attributes from model user as an array
+     * @return array|null returns all attributes from model user as an array, or null when rendering an error response directly
      * @throws CException
      */
-    public function createNewUser(array $aUser): array
+    public function createNewUser(array $aUser): ?array
     {
         if (!App()->getRequest()->getIsPostRequest()) {
             throw new CHttpException(400, gT('Your request is invalid.'));

@@ -15,7 +15,7 @@
             ) ?>
             <input type="hidden" id="deleteSurveyId" name="iSurveyID" value="" />
             <div class="modal-body">
-                <p class="fw-bold">
+                <p role="heading" aria-level="3" class="fw-bold">
                     <?php eT("You are about to delete this survey"); ?> (<?php eT("ID"); ?>: <span id="deleteSurveyIdDisplay"></span>)
                 </p>
                 <p>

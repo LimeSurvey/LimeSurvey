@@ -136,6 +136,7 @@ class QuotasController extends LSBaseController
             throw new CHttpException(403, gT("You do not have permission for this survey."));
         }
         Yii::app()->loadHelper('admin.htmleditor');
+        App()->session['FileManagerContext'] = "edit:survey:{$surveyid}";
 
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $oSurvey->sid;
@@ -237,6 +238,7 @@ class QuotasController extends LSBaseController
         );
 
         Yii::app()->loadHelper('admin.htmleditor');
+        App()->session['FileManagerContext'] = "edit:survey:{$surveyid}";
         $this->aData = $aData;
         $this->render('editquota_view', [
             'oQuota' => $oQuota,
@@ -264,7 +266,13 @@ class QuotasController extends LSBaseController
 
 
     /**
+     * Show the forms to add a new answer to a quota (select question, then select answer)
+     *
+     * Note: The selected question is looked up together with the survey of the quota,
+     * and the answers are computed for the quota the permission was checked on.
+     *
      * @return void
+     * @throws CHttpException
      */
     public function actionNewAnswer()
     {
@@ -298,13 +306,17 @@ class QuotasController extends LSBaseController
             Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create')
         ) {
             $questionId = sanitize_int(Yii::app()->request->getPost('quota_qid'));
+            /* Question must belong to the survey of the quota the permission was checked on */
             $oQuestion = Question::model()
                 ->with('questionl10ns', array('language' => $oSurvey->language))
-                ->findByPk(array('qid' => $questionId));
+                ->findByAttributes(array('qid' => $questionId, 'sid' => $surveyid));
+            if (empty($oQuestion)) {
+                throw new CHttpException(404, gT("Question not found"));
+            }
 
             $aQuestionAnswers = $quotaService->getQuotaAnswers(
                 $questionId,
-                sanitize_int(Yii::app()->request->getPost('quota_id'))
+                (int) $quota->id
             );
 
             $isAllAnswersSelected = $quotaService->allAnswersSelected($oQuestion, $aQuestionAnswers);
@@ -397,28 +409,42 @@ class QuotasController extends LSBaseController
      */
     public function actionMassiveAction($action, $surveyid)
     {
+
         $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);
+        if ($oSurvey === null) {
+            $this->renderJSON(['success' => false, 'message' => gT('Survey not found')]);
+            return;
+        }
         $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
 
-        if ($quotaService->checkActionPermissions($action)) {
-            $sItems = Yii::app()->request->getPost('sItems', '');
-            $aQuotaIds = json_decode($sItems);
-            $errors = $quotaService->multipleItemsAction(
-                $aQuotaIds,
-                $action,
-                Yii::app()->request->getPost('QuotaLanguageSetting', [])
-            );
-            if (empty($errors)) {
-                eT("OK");
-            } else {
-                eT("Error");
-            }
-        } else {
-            /* 403 error ? */
-            Yii::app()->user->setFlash('error', gT("Access denied!"));
-            $this->redirect(Yii::app()->request->urlReferrer);
+        if (!$quotaService->checkActionPermissions($action)) {
+            $this->renderJSON(['success' => false, 'message' => gT('Access denied!')]);
+            return;
         }
+
+        $sItems = Yii::app()->request->getPost('sItems', '');
+        $aQuotaIds = json_decode($sItems, true);
+        $aQuotaIds = is_array($aQuotaIds) ? $aQuotaIds : [];
+
+        if (empty($aQuotaIds)) {
+            $this->renderJSON(['success' => false, 'message' => gT('No quotas selected!')]);
+            return;
+        }
+        $errors = $quotaService->multipleItemsAction(
+            $aQuotaIds,
+            $action,
+            Yii::app()->request->getPost('QuotaLanguageSetting', [])
+        );
+
+        if (empty($errors)) {
+            echo '<div class="alert alert-success mb-0">' . gT('Action completed successfully.') . '</div>';
+        } else {
+            echo '<div class="alert alert-danger mb-0">'
+                . gT('One or more errors occurred. Please check and try again.')
+                . '</div>';
+        }
+        Yii::app()->end();
     }
 
     /**
