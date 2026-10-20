@@ -1098,10 +1098,16 @@ class SurveyRuntimeHelper
         }
     }
 
+    /**
+     * Redisplay the welcome page with an error if it was submitted without accepting the survey data policy
+     *
+     * @return void
+     */
     private function checkForDataSecurityAccepted()
     {
         $this->aSurveyInfo['datasecuritynotaccepted'] = false;
-        if ($this->param['thisstep'] === '0' && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice > 0) {
+        /* thisstep is sanitized as integer by returnGlobal(), it is null if not submitted */
+        if ($this->param['thisstep'] === 0 && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice > 0) {
             $data_security_accepted = App()->request->getPost('datasecurity_accepted', false);
             $move_step = App()->request->getPost('move', false);
 

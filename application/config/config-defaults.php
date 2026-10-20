@@ -88,7 +88,6 @@ $config['blockaddingtosurveys']      = 'Y'; // Don't allow blocklisted participa
 $config['hideblacklisted']           = 'N'; // Don't show blocklisted participants
 $config['deleteblacklisted']         = 'N'; // Delete globally blocklisted participant from the database
 $config['allowunblacklist']          = 'N'; // Allow participant to unblocklist himself/herself
-$config['userideditable']            = 'N'; // Allow editing of user IDs
 
 $config['defaulttheme']              = 'fruity_twentythree'; // This setting specifys the default theme used for the 'public list' of surveys
 $config['createsample']              = true;
@@ -112,7 +111,7 @@ $config['imagemimetypes'] = [
 $config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,dotx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
-$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
+$config['allowedpluginuploads'] = 'gif,ico,jpg,jpeg,png,svg,webp,pdf,dat,icc,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
@@ -467,13 +466,13 @@ $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of re
 */
 
 /**
-*  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/fonts
+*  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/assets/fonts
 *  Set this to specific font-file (for example 'DejaVuSans.ttf') or set it to 'auto' and LimeSurvey tried to pick the best font depending on your survey base language
 */
 $config['chartfontfile'] = 'auto';
 /**
-*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/fonts
-*  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/fonts, an alert is sent to admin
+*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/assets/fonts
+*  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/assets/fonts, an alert is sent to admin
 */
 $config['alternatechartfontfile'] = array(
     'hi' => 'FreeSans.ttf',

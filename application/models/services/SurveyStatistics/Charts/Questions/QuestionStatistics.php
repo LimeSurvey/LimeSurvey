@@ -381,6 +381,8 @@ class QuestionStatistics implements StatisticsChartInterface
                 // them as `fields` to survey-responses so the comments/answers
                 // views fetch only this question's columns.
                 'fields' => $this->questionFields[(int) ($question['qid'] ?? 0)] ?? [],
+                // statistics_graphtype question setting; '' = best chart for the type.
+                'chartType' => $question['attributes']['statistics_graphtype'] ?? '',
             ];
             // Dual-scale column headers by scale id, same source and defaults
             // as the chart's per-scale titles (DualScaleProcessor).

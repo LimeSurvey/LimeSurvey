@@ -98,8 +98,7 @@
         font-weight: $font-weight-500;
         font-size: $font-size-sm;
         line-height: $line-height-20;
-        // Side padding fits the checkmark of the selected option (see below) plus a small margin
-        padding: .375rem calc(1.05em + 6px);
+        padding: .375rem 16px;
         min-width: 80px;
         min-height: auto;
     }
@@ -136,37 +135,40 @@
     }
 }
 
-// The selected option is also marked by a checkmark, so it does not rely on colour alone.
-// The labels are flex containers (which also drops the whitespace around the label text) and the
-// negative left margin cancels the checkmark's width plus gap, so the labels do not move when switching.
+// Radio button group labels are flex containers, which also drops the whitespace around the label text
 .btn-group > .btn-check + .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
-.btn-group > .btn-check:checked + .btn {
-    &:not(:has(i, svg, [class^="ri-"], [class*=" ri-"]))::before {
-        content: "";
-        flex: none;
-        width: .35em;
-        height: .7em;
-        margin-top: -.15em;
-        margin-left: -.85em;
-        margin-right: .5em;
-        border: solid currentColor;
-        border-width: 0 .15em .15em 0;
-        /*rtl:ignore*/
-        transform: rotate(45deg);
-    }
-}
-
-// Forced colours mode (e.g. Windows high contrast) drops background colours, so map the selected option to the system highlight colours
+// Forced colours mode (e.g. Windows high contrast) drops background colours, so the selected option gets the
+// system highlight colours and a checkmark. The negative left margin cancels the checkmark's width plus gap,
+// so the labels do not move when switching; the wider side padding leaves room for it plus a small margin.
 @media (forced-colors: active) {
+    .btn-group > .btn-check + .btn:not(:has(i, svg, [class^="ri-"], [class*=" ri-"])) {
+        padding-left: calc(1.05em + 6px) !important;
+        padding-right: calc(1.05em + 6px) !important;
+    }
+
     .btn-group > .btn-check:checked + .btn {
         forced-color-adjust: none;
         background-color: Highlight !important;
         border-color: Highlight !important;
         color: HighlightText !important;
+
+        &:not(:has(i, svg, [class^="ri-"], [class*=" ri-"]))::before {
+            content: "";
+            flex: none;
+            width: .35em;
+            height: .7em;
+            margin-top: -.15em;
+            margin-left: -.85em;
+            margin-right: .5em;
+            border: solid currentColor;
+            border-width: 0 .15em .15em 0;
+            /*rtl:ignore*/
+            transform: rotate(45deg);
+        }
     }
 }

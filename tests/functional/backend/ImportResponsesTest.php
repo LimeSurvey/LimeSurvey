@@ -71,4 +71,75 @@ class ImportResponsesTest extends TestBaseClass
             $this->assertEquals($responses3[0]['third'], null);
         }
     }
+
+    /**
+     * Restoring archived responses on activation must dispatch beforeDataEntryImport
+     * once per restored response, after it was written, like the other response imports.
+     */
+    public function testResponseRestoreDispatchesImportEventAfterInsert()
+    {
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_969899_ImportResponses.lsa';
+        $result = importSurveyFile($surveyFile, false);
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('newsid', $result);
+        $surveyId = $result['newsid'];
+        $survey = \Survey::model()->findByPk($surveyId);
+        $permission = \Permission::model();
+        $surveyDeactivator = new SurveyDeactivate(
+            $survey,
+            $permission,
+            new \SurveyDeactivator($survey),
+            App(),
+            \SurveyLink::model(),
+            \SavedControl::model()
+        );
+        $surveyDeactivator->setArchivedResponseSettings(\ArchivedTableSettings::model());
+        $surveyDeactivator->setArchivedTimingsSettings(\ArchivedTableSettings::model());
+        $surveyDeactivator->setArchivedTokenSettings(\ArchivedTableSettings::model());
+        $archivedCount = (int) App()->db->createCommand("select count(*) from {{responses_$surveyId}}")->queryScalar();
+        $this->assertGreaterThan(0, $archivedCount);
+        $surveyDeactivator->deactivate($surveyId, ['ok' => true], true);
+
+        $pluginManager = App()->getPluginManager();
+        $listener = new class ($pluginManager, 'importEventListener') extends \PluginBase {
+            /** @var array Per event: The survey ID, the response row count at dispatch time and the model */
+            public $events = [];
+
+            /**
+             * Records the event together with the number of responses already in the table
+             * @return void
+             */
+            public function beforeDataEntryImport()
+            {
+                $surveyId = $this->getEvent()->get('iSurveyID');
+                $this->events[] = [
+                    'surveyId' => $surveyId,
+                    'rowCount' => (int) App()->db->createCommand("select count(*) from {{responses_$surveyId}}")->queryScalar(),
+                    'model' => $this->getEvent()->get('oModel'),
+                ];
+            }
+        };
+        $pluginManager->subscribe($listener, 'beforeDataEntryImport');
+        try {
+            $surveyActivator = new SurveyActivate(
+                $survey,
+                $permission,
+                new \SurveyActivator($survey),
+                App(),
+                new SurveyAccessModeService($permission, $survey, App())
+            );
+            $surveyActivator->activate($surveyId, ['restore' => true], true);
+        } finally {
+            $pluginManager->unsubscribe($listener, 'beforeDataEntryImport');
+        }
+
+        $this->assertCount($archivedCount, $listener->events);
+        foreach ($listener->events as $index => $event) {
+            $this->assertEquals($surveyId, $event['surveyId']);
+            // The response is already written when the event is dispatched
+            $this->assertGreaterThan($index, $event['rowCount']);
+            // The model carries the restored values, not only the question answers
+            $this->assertNotEmpty($event['model']->startlanguage);
+        }
+    }
 }

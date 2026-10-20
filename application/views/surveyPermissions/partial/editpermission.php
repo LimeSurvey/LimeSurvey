@@ -22,6 +22,7 @@ Yii::app()->getController()->renderPartial(
                 </tr>
             </thead>
         <!-- Permissions -->
+        <?php $hasIndeterminate = false; ?>
         <tbody>
             <?php foreach ($aPermissions as $sPermission => $aCurrentPermissions) : ?>
                 <tr>
@@ -38,12 +39,14 @@ Yii::app()->getController()->renderPartial(
                     <?php foreach ($aCurrentPermissions['current'] as $sKey => $aValues) : ?>
                         <td class='specific-settings-block'>
                             <?php if ($aCurrentPermissions[$sKey] && !$aValues['forced']) {
+                                $hasIndeterminate = $hasIndeterminate || $aValues['indeterminate'];
                                 echo CHtml::checkBox(
                                     "set[{$aCurrentPermissions['entity']}][{$sPermission}][$sKey]",
                                     $aValues['checked'],
                                     [
                                         'value'              => 1,
                                         'data-indeterminate' => $aValues['indeterminate'],
+                                        'aria-describedby'   => $aValues['indeterminate'] ? 'permission-indeterminate-help' : null,
                                         'id'                 => CHtml::getIdByName("set[{$aCurrentPermissions['entity']}][{$sPermission}][$sKey]"),
                                         'uncheckValue'       => 0,
                                         /* See issue #14551 : https://bugs.limesurvey.org/view.php?id=14551 */
@@ -57,6 +60,11 @@ Yii::app()->getController()->renderPartial(
             <?php endforeach; ?>
             </tbody>
         </table>
+        <?php if ($hasIndeterminate) : ?>
+            <p id="permission-indeterminate-help" class="form-text">
+                <?= gT("A checkbox with a dash means that the user already has this permission in another way, for example through a global permission.") ?>
+            </p>
+        <?php endif; ?>
 
     </div>
 
