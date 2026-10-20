@@ -61,7 +61,9 @@ export const ResponsesHeader = ({
         show={showFilterModal}
         onHide={() => setShowFilterModal(false)}
         title={
-          <h2 className="responses-statistics-modal-title">{t('Filter')}</h2>
+          <span className="responses-statistics-modal-title">
+            {t('Filter')}
+          </span>
         }
         modalClassname="responses-statistics-filters-modal"
       >

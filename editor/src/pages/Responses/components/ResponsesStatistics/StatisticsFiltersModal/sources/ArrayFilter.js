@@ -30,7 +30,9 @@ export const ArrayFilter = ({ question, filter, onUpdate }) => {
   const renderColumn = ({ options, value, key, label }) => (
     <div className="responses-statistics-filters-row-field">
       {label && (
-        <span className="responses-statistics-filters-col-label">{label}</span>
+        <span className="responses-statistics-filters-row-col-label">
+          {label}
+        </span>
       )}
       <FilterSelect
         options={options}

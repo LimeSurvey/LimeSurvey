@@ -75,7 +75,7 @@
     // "Filter selection #N" caption above the source tabs.
     &-label {
       grid-column: 1 / -1;
-      font-size: $font-size-sm;
+      font-size: 12px;
       font-weight: $font-weight-500;
       color: $g-700;
     }
@@ -118,7 +118,7 @@
 
     // Caption above a dual-scale column select (the scale header labels).
     &-col-label {
-      font-size: $font-size-sm;
+      font-size: 12px;
       font-weight: $font-weight-500;
       color: $g-700;
     }
