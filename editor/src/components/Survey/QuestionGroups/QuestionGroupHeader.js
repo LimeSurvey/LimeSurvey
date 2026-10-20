@@ -5,6 +5,7 @@ import classNames from 'classnames'
 
 import {
   createBufferOperation,
+  getQuestionGroupMenuItems,
   hasTempId,
   L10ns,
   getSiteUrl,
@@ -36,38 +37,17 @@ export const QuestionGroupHeader = ({
   const { addToBuffer } = useBuffer()
 
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
 
-  const handleDuplicate = () => {
-    duplicateGroup()
-  }
+  const menuItems = getQuestionGroupMenuItems({
+    onDuplicate: () => duplicateGroup(),
+    onDelete: () => deleteGroup(),
+    isSurveyActive,
+    hasSurveyUpdatePermission,
+  })
 
-  const handleDelete = () => {
-    deleteGroup()
-  }
-
-  const menuItems = [
-    {
-      type: 'header',
-      label: t('Group actions'),
-    },
-    {
-      type: 'item',
-      label: t('Duplicate group'),
-      icon: 'ri-file-copy-line',
-      onClick: handleDuplicate,
-      disabled: { state: isSurveyActive },
-      testId: 'duplicate-button',
-    },
-    {
-      type: 'item',
-      label: t('Delete group'),
-      icon: 'ri-delete-bin-line',
-      onClick: handleDelete,
-      disabled: { state: isSurveyActive },
-      className: 'text-danger',
-      testId: 'delete-button',
-    },
-  ]
   const openQuestionGroupPreview = () => {
     const previewUrl = getSiteUrl(
       `/index.php/survey/index/action/previewgroup/sid/${surveyId}/gid/${questionGroup.gid}/lang/${language}`

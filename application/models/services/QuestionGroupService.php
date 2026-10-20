@@ -566,7 +566,9 @@ class QuestionGroupService
      */
     public function checkCreatePermission(int $surveyId)
     {
+        $survey = $this->modelSurvey->findByPk($surveyId);
         if (
+            $survey->isActive ||
             !$this->modelPermission->hasSurveyPermission(
                 $surveyId,
                 'surveycontent',
