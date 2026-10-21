@@ -548,6 +548,12 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 continue;
             }
 
+            // Sanitize and XSS filter the value like a model save does, but keep the faster direct insert
+            $questionAttribute = new QuestionAttribute();
+            $questionAttribute->setAttributes($insertdata, false);
+            $questionAttribute->validate(['value']);
+            $insertdata['value'] = $questionAttribute->value;
+
             if (
                 $iDBVersion < 156 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) &&
                 $aAllAttributes[$insertdata['attribute']]['i18n']

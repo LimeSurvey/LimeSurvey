@@ -41,6 +41,12 @@ class QuestionAttribute extends LSActiveRecord
     protected $xssFilterAttributes = ['value'];
 
     /**
+     * @var array<string,array<string,mixed>> Attribute definitions of the last validated question, by question id, type and theme.
+     * Only one question is kept: attribute rows are saved question by question (editor, import).
+     */
+    private static $attributeDefinitions = [];
+
+    /**
      * @return static
      */
     #[\Override]
@@ -96,6 +102,7 @@ class QuestionAttribute extends LSActiveRecord
     {
         return array(
             array('qid,attribute', 'required'),
+            array('value', 'sanitizeByInputType'),
             array('value', 'filterXss'),
             array('value', 'validateDateLimit'),
             array('language', 'LSYii_Validators', 'isLanguage' => true)
@@ -279,7 +286,8 @@ class QuestionAttribute extends LSActiveRecord
         $aAttributeValues = [];
         foreach ($aQuestionAttributes as $aAttribute) {
             if ($aAttribute['i18n'] == false) {
-                $aAttributeValues[$aAttribute['name']] = $aAttribute['value'];
+                // Values stored before they were sanitized on save, or by a group import, are sanitized here
+                $aAttributeValues[$aAttribute['name']] = self::sanitizeValue($aAttribute['value'], $aAttribute);
             } else {
                 foreach ($aLanguages as $language) {
                     if (isset($aAttribute[$language]['value'])) {
@@ -594,24 +602,17 @@ class QuestionAttribute extends LSActiveRecord
      */
     public function filterXss($attribute, $params)
     {
-        $question = Question::model()->find("qid=:qid", ['qid' => $this->qid]);
-        if (empty($question)) {
+        $questionAttributeDefinition = $this->getAttributeDefinition();
+        if ($questionAttributeDefinition === false) {
             return;
         }
-        $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
-        $questionAttributeFetcher->setQuestion($question);
-        $questionAttributeDefinitions = $questionAttributeFetcher->fetch();
 
         // The value will be filtered unless the attribute definition has the "xssfilter" property set to false
-        $shouldFilter = true;
-        if (isset($questionAttributeDefinitions[$this->attribute])) {
-            $questionAttributeDefinition = $questionAttributeDefinitions[$this->attribute];
-            if (array_key_exists("xssfilter", $questionAttributeDefinition) && $questionAttributeDefinition['xssfilter'] == false) {
-                $shouldFilter = false;
-            }
-        }
-
-        if (!$shouldFilter) {
+        if (
+            !empty($questionAttributeDefinition)
+            && array_key_exists("xssfilter", $questionAttributeDefinition)
+            && $questionAttributeDefinition['xssfilter'] == false
+        ) {
             return;
         }
 
@@ -619,6 +620,86 @@ class QuestionAttribute extends LSActiveRecord
         $validator = new LSYii_Validators();
         $validator->attributes = [$attribute];
         $validator->validate($this, [$attribute]);
+    }
+
+    /**
+     * Sanitize the value of this attribute according to its definition, see sanitizeValue().
+     * @param string $attribute the name of the attribute to be validated.
+     * @param array<mixed> $params additional parameters passed with rule when being executed.
+     * @return void
+     */
+    public function sanitizeByInputType($attribute, $params)
+    {
+        if (trim((string) $this->$attribute) === '') {
+            return;
+        }
+        $questionAttributeDefinition = $this->getAttributeDefinition();
+        if (!empty($questionAttributeDefinition)) {
+            $this->$attribute = self::sanitizeValue($this->$attribute, $questionAttributeDefinition);
+        }
+    }
+
+    /**
+     * Attributes with a fixed format only keep values matching their definition: integer, float and columns
+     * attributes must be numbers (otherwise emptied), switch attributes must be 0 or 1, single select and
+     * button group attributes must be one of their options (otherwise both are reset to the default value).
+     * Other attributes and attributes allowing expressions are returned unchanged.
+     * @param mixed $value the attribute value
+     * @param array<string,mixed> $definition the attribute definition (inputtype, options, default, expression)
+     * @return mixed the sanitized value
+     */
+    public static function sanitizeValue($value, array $definition)
+    {
+        if (!is_scalar($value) || empty($definition['inputtype']) || !empty($definition['expression'])) {
+            return $value;
+        }
+        $trimmedValue = trim((string) $value);
+        if ($trimmedValue === '') {
+            return $value;
+        }
+        $default = isset($definition['default']) && is_scalar($definition['default']) ? (string) $definition['default'] : '';
+        switch ($definition['inputtype']) {
+            case 'integer':
+            case 'float':
+            case 'columns':
+                // Decimals are kept for integer attributes too: older versions may have accepted them
+                return is_numeric($trimmedValue) ? $trimmedValue : '';
+            case 'switch':
+                // The switch always submits 1/0, old survey files may contain Y/N
+                $trimmedValue = strtr($trimmedValue, ['Y' => '1', 'N' => '0']);
+                return in_array($trimmedValue, ['0', '1'], true) ? $trimmedValue : $default;
+            case 'singleselect':
+            case 'buttongroup':
+                if (empty($definition['options']) || !is_array($definition['options'])) {
+                    return $value;
+                }
+                // Options are value => label, but some plugins define a plain list of values
+                $validValues = array_merge(
+                    array_map('strval', array_keys($definition['options'])),
+                    array_map('strval', array_filter($definition['options'], 'is_scalar'))
+                );
+                return in_array($trimmedValue, $validValues, true) ? $trimmedValue : $default;
+        }
+        return $value;
+    }
+
+    /**
+     * Returns the definition of this attribute for the current type and theme of its question.
+     * @return array<string,mixed>|false the definition, an empty array if the attribute is unknown, false if the question does not exist
+     */
+    private function getAttributeDefinition()
+    {
+        $question = Question::model()->find("qid=:qid", ['qid' => $this->qid]);
+        if (empty($question)) {
+            return false;
+        }
+        $cacheKey = $question->qid . '|' . $question->type . '|' . $question->question_theme_name;
+        if (!isset(self::$attributeDefinitions[$cacheKey])) {
+            $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
+            $questionAttributeFetcher->setQuestion($question);
+            self::$attributeDefinitions = [$cacheKey => $questionAttributeFetcher->fetch()];
+        }
+        return self::$attributeDefinitions[$cacheKey][$this->attribute] ?? [];
     }
 
     /**
