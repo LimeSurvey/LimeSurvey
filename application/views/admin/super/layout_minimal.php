@@ -8,7 +8,6 @@ $this->showHeaders($aData);
 //The adminmenu bar will be generated from /admin/super/adminmenu.php
 
 echo "<!-- BEGIN LAYOUT_MAIN -->";
-// Generated through /admin/super/fullpagebar_view
 $this->updatenotification();
 $this->notifications();
 

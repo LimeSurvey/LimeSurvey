@@ -119,3 +119,34 @@
     background: $grape;
   }
 }
+
+// Forced colours mode (e.g. Windows high contrast) drops background colours, so the selected
+// option gets the system highlight colours and a checkmark (options that already show an icon
+// get none). The negative left margin cancels the checkmark's width plus the flex gap (gap-2),
+// so the label does not move when switching; the wider side padding leaves room for it.
+@media (forced-colors: active) {
+  .lime-toggle-btn-group .btn-outline-lime-toggle:not(:has(i, svg)) {
+    padding-left: calc(1.05em + 6px);
+    padding-right: calc(1.05em + 6px);
+  }
+
+  .lime-toggle-btn-group .btn-check:checked + .btn-outline-lime-toggle.btn {
+    forced-color-adjust: none;
+    background-color: Highlight !important;
+    border-color: Highlight !important;
+    color: HighlightText !important;
+
+    > div:not(:has(i, svg))::before {
+      content: '';
+      display: inline-block;
+      flex: none;
+      width: 0.35em;
+      height: 0.7em;
+      margin-top: -0.15em;
+      margin-left: calc(-0.35em - 0.5rem);
+      border: solid currentColor;
+      border-width: 0 0.15em 0.15em 0;
+      transform: rotate(45deg);
+    }
+  }
+}

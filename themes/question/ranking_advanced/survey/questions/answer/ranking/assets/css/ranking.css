@@ -4,6 +4,11 @@
     border-right: 1px solid grey;
 }
 
+/* Keep an empty list usable as drop target when lists don't get the same height */
+.ranking-advanced-style .sortable-list {
+    min-height: 3em;
+}
+
 /* Styles for button ranking */
 .ranking-advanced-style .sortable-button {
     margin: 0.1em 0.3em;
@@ -38,6 +43,12 @@
     top:0;
     right:0;
     bottom: 0;
+}
+/* Shrink an image below the rank number so it doesn't overflow the square block */
+.ranking-advanced-style .display_block_group .sortable-block .selector__index_row:not(:empty) ~ img {
+    display: block;
+    width: auto;
+    max-height: calc(100% - 1.5em);
 }
 
 /* Style for the bubbles */

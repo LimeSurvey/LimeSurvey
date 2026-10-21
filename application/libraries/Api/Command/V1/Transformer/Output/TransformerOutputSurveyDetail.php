@@ -107,6 +107,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['isEditorCompatible'] = $data->getIsEditorCompatible();
         $survey['languages'] = $data->allLanguages;
         $survey['hasTokens'] = $data->hasTokensTable;
+        $survey['hasResponsesTable'] = (bool) $data->hasResponsesTable;
         $survey['previewLink'] = App()->createUrl(
             "survey/index",
             array(
@@ -252,6 +253,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $question['scenarios'] = $this->surveyCondition->getScenariosAndConditionsOfQuestion($questionModel->qid);
 
             $question['conditiontext'] = $this->surveyCondition->getConditionText($questionModel);
+
+            $question['showAssessmentValue'] = $questionModel->survey->isAssessments
+                && $questionModel->getAllowAnswerOptions();
 
             if ($questionModel->subquestions) {
                 $question['subquestions'] = $this->transformerQuestion->transformAll(

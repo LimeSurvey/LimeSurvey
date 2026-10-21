@@ -59,6 +59,10 @@ class UploaderController extends SurveyController
             // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
         }
+        // File content, delete and upload responses are not HTML: Don't append the HTML debug log (debugsql)
+        if ($sFileGetContentFiltered || $bDelete || $sMode == "upload") {
+            viewHelper::disableHtmlLogging();
+        }
         if ($sFileGetContentFiltered) {
             if (substr($sFileGetContentFiltered, 0, 6) == 'futmp_') {
                 $sFileDir = $tempdir . '/upload/';
@@ -450,7 +454,8 @@ class UploaderController extends SurveyController
             'qid' => $qid,
             'minfiles' => $minfiles,
             'maxfiles' => $maxfiles,
-            'qidattributes' => $qidattributes
+            'qidattributes' => $qidattributes,
+            'preview' => Yii::app()->session['preview']
         ];
 
         $body = '<body class="uploader">';
@@ -472,7 +477,9 @@ class UploaderController extends SurveyController
                     . "});
             });
         </script>";
-        $container = $this->renderPartial('/survey/questions/answer/file_upload/modal-container', $aData, true);
+        /* Render with twig to allow survey themes and question themes to override the modal content */
+        QuestionTemplate::getNewInstance($oQuestion);
+        $container = App()->twigRenderer->renderQuestion('/survey/questions/answer/file_upload/modal-container', $aData);
         if (App()->request->getIsAjaxRequest()) {
             /* Loaded into the survey page modal, which already has all assets: no page header or external scripts */
             echo "<script>\n" . $sNeededScriptVar . $sLangScriptVar . "\n</script>\n" . $container . $scripts;

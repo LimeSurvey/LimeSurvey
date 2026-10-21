@@ -7,6 +7,7 @@ import {
   getQuestionTypeInfo,
 } from 'components/QuestionTypes'
 import {
+  ContentEditor,
   FormCheck,
   formCheckName,
   Input,
@@ -406,11 +407,14 @@ export const ArrayParticipantMode = ({
                 className="text-center choice"
                 key={`${index}-${columns.titleKey}-th`}
               >
-                {L10ns({
-                  prop: columns.titleKey,
-                  language,
-                  l10ns: column.l10ns,
-                })}
+                <ContentEditor
+                  value={L10ns({
+                    prop: columns.titleKey,
+                    language,
+                    l10ns: column.l10ns,
+                  })}
+                  disabled={true}
+                />
               </th>
             ))}
           </tr>
@@ -423,11 +427,14 @@ export const ArrayParticipantMode = ({
                 key={`${rowIndex}-${row.titleKey}-tr`}
               >
                 <td className="choice">
-                  {L10ns({
-                    prop: rows.titleKey,
-                    language,
-                    l10ns: row.l10ns,
-                  })}
+                  <ContentEditor
+                    value={L10ns({
+                      prop: rows.titleKey,
+                      language,
+                      l10ns: row.l10ns,
+                    })}
+                    disabled={true}
+                  />
                 </td>
                 {columns.items.map((column, columnIndex) => {
                   let value =

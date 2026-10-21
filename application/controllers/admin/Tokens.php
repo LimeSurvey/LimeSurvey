@@ -212,7 +212,7 @@ class Tokens extends SurveyCommonAction
             return;
         }
 
-        if ($thissurvey['bounceprocessing'] != 'N' || ($thissurvey['bounceprocessing'] == 'G' && Yii::app()->getConfig('bounceaccounttype') != 'off')) {
+        if ($thissurvey['bounceprocessing'] == 'L' || ($thissurvey['bounceprocessing'] == 'G' && Yii::app()->getConfig('bounceaccounttype') != 'off')) {
             if (!function_exists('imap_open')) {
                 eT("The imap PHP library is not installed or not activated. Please contact your system administrator.");
                 return;
@@ -2077,6 +2077,7 @@ class Tokens extends SurveyCommonAction
                 . gT("Uploading LDAP Query") . "</strong></td></tr>\n"
                 . "\t<tr><td align='center'>\n";
             $ldapq = Yii::app()->request->getPost('ldapQueries'); // the ldap query id
+            $ldap_queries[$ldapq] = prepareLDAPQuery($ldapq);
 
             $ldap_server_id = $ldap_queries[$ldapq]['ldapServerId'];
             if (
@@ -2187,9 +2188,8 @@ class Tokens extends SurveyCommonAction
                                 if ($ldapencoding != '') {
                                     $myfirstname = @mb_convert_encoding((string) $myfirstname, "UTF-8", $ldapencoding);
                                     $mylastname = @mb_convert_encoding((string) $mylastname, "UTF-8", $ldapencoding);
-                                    foreach ($aTokenAttr as $thisattrfieldname) {
-                                        $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
-                                        @mb_convert_encoding((string) $myattrArray[$attridx], "UTF-8", $ldapencoding);
+                                    foreach ($myattrArray as $attridx => $attrvalue) {
+                                        $myattrArray[$attridx] = @mb_convert_encoding((string) $attrvalue, "UTF-8", $ldapencoding);
                                     }
                                 }
 
@@ -2822,11 +2822,21 @@ class Tokens extends SurveyCommonAction
 
     /**
      * Creates a token table if it did not exist
+     *
+     * Note: Needs the same permission as newParticipantTable(): Survey settings update or tokens create.
+     *
      * @param int $iSurveyId
      * @return void
+     * @throws CHttpException
      */
     public function startfromscratch(int $iSurveyId)
     {
+        if (
+            !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') &&
+            !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')
+        ) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $survey = Survey::model()->findByPk($iSurveyId);
         if (Yii::app()->request->getPost('createtable') !== "Y") {
             $aData = [
@@ -2927,13 +2937,17 @@ class Tokens extends SurveyCommonAction
 
     /**
      * Handle token form for addnew/edit actions
+     *
+     * Note: Private since it does no permission check of its own, it is only called by
+     * addnew() (tokens create permission) and edit() (tokens update permission).
+     *
      * @param int $iSurveyId
      * @param string $subaction
      * @param integer $iTokenId
      * @param null $deprecated in 6.5.5, used before to show partial view, move to Yii::app()->request->getIsAjaxRequest()
      * @return void
      */
-    public function handletokenform($iSurveyId, $subaction, $iTokenId = "", $deprecated = null)
+    private function handletokenform($iSurveyId, $subaction, $iTokenId = "", $deprecated = null)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         /*if (!$oSurvey->hasTokensTable) {

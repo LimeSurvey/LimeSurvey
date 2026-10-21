@@ -2,18 +2,31 @@ import { format } from 'util'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 import {
   dayJsHelper,
+  QT_1_ARRAY_DUAL,
   QT_5_POINT_CHOICE,
+  QT_A_ARRAY_5_POINT,
+  QT_B_ARRAY_10_CHOICE_QUESTIONS,
+  QT_C_ARRAY_YES_UNCERTAIN_NO,
+  QT_COLON_ARRAY_NUMBERS,
+  QT_E_ARRAY_INC_SAME_DEC,
   QT_EXCLAMATION_LIST_DROPDOWN,
+  QT_F_ARRAY,
   QT_G_GENDER,
+  QT_H_ARRAY_COLUMN,
   QT_I_LANGUAGE,
+  QT_K_MULTIPLE_NUMERICAL,
   QT_L_LIST,
   QT_M_MULTIPLE_CHOICE,
+  QT_N_NUMERICAL,
   QT_O_LIST_WITH_COMMENT,
   QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
   QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_R_RANKING,
   QT_S_SHORT_FREE_TEXT,
+  QT_SEMICOLON_ARRAY_TEXT,
   QT_T_LONG_FREE_TEXT,
   QT_U_HUGE_FREE_TEXT,
+  QT_VERTICAL_FILE_UPLOAD,
   QT_Y_YES_NO_RADIO,
 } from 'helpers'
 
@@ -86,7 +99,82 @@ export const statisticsGraphs = {
   LINE: 3,
   POLAR_AREA: 4,
   DOUGHNUT_CHART: 5,
+  STACKED_BAR: 6,
+  GROUPED_BAR: 7,
+  TABLE: 8,
+  COMMENTS: 9,
+  GRID: 10,
 }
+
+const ARRAY_POINT_CHOICE_TYPES = [
+  QT_A_ARRAY_5_POINT,
+  QT_B_ARRAY_10_CHOICE_QUESTIONS,
+  QT_C_ARRAY_YES_UNCERTAIN_NO,
+  QT_E_ARRAY_INC_SAME_DEC,
+  QT_F_ARRAY,
+  QT_H_ARRAY_COLUMN,
+]
+
+// Types whose statistics card has a Table view (free texts get a Grid instead).
+const TABLE_QUESTION_TYPES = [
+  ...CHOICE_QUESTION_TYPES,
+  ...ARRAY_POINT_CHOICE_TYPES,
+  QT_1_ARRAY_DUAL,
+  QT_COLON_ARRAY_NUMBERS,
+  QT_SEMICOLON_ARRAY_TEXT,
+  QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_R_RANKING,
+  QT_N_NUMERICAL,
+  QT_K_MULTIPLE_NUMERICAL,
+  QT_VERTICAL_FILE_UPLOAD,
+]
+
+// Types whose statistics card has a Grid view (one row per response).
+const GRID_QUESTION_TYPES = [
+  QT_S_SHORT_FREE_TEXT,
+  QT_T_LONG_FREE_TEXT,
+  QT_U_HUGE_FREE_TEXT,
+  QT_N_NUMERICAL,
+  QT_K_MULTIPLE_NUMERICAL,
+]
+
+const getChartsForType = (type) => {
+  if (type === QT_R_RANKING) {
+    return [statisticsGraphs.BAR_CHART]
+  }
+  if (CHOICE_QUESTION_TYPES.includes(type)) {
+    return [
+      statisticsGraphs.BAR_CHART,
+      statisticsGraphs.PIE_CHART,
+      statisticsGraphs.RADAR,
+      statisticsGraphs.LINE,
+      statisticsGraphs.POLAR_AREA,
+      statisticsGraphs.DOUGHNUT_CHART,
+    ]
+  }
+  if (TEXT_QUESTION_TYPES.includes(type)) {
+    return [statisticsGraphs.BAR_CHART, statisticsGraphs.PIE_CHART]
+  }
+  if (ARRAY_POINT_CHOICE_TYPES.includes(type)) {
+    return [statisticsGraphs.STACKED_BAR, statisticsGraphs.GROUPED_BAR]
+  }
+  if (type === QT_1_ARRAY_DUAL) {
+    return [statisticsGraphs.STACKED_BAR, statisticsGraphs.DOUGHNUT_CHART]
+  }
+  if (type === QT_COLON_ARRAY_NUMBERS) {
+    return [statisticsGraphs.GROUPED_BAR]
+  }
+  return []
+}
+
+// Views the statistics can open for a question type (statistics_graphtype
+// values); types without a statistics card get an empty list.
+export const getStatisticsGraphsForType = (type) => [
+  ...getChartsForType(type),
+  ...(GRID_QUESTION_TYPES.includes(type) ? [statisticsGraphs.GRID] : []),
+  ...(TABLE_QUESTION_TYPES.includes(type) ? [statisticsGraphs.TABLE] : []),
+  ...(isCommentQuestionType(type) ? [statisticsGraphs.COMMENTS] : []),
+]
 
 // The registry's type/theme strings are static (only `title` is translated),
 // so derive the lookup sets once on first use instead of rebuilding and

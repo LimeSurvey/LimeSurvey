@@ -5,4 +5,11 @@
 .previewModalWidget .currentImageContainer img {
   max-width: 100%;
 }
+/* Keep the item size when selected, so the list does not shift */
+.previewModalWidget .list-group a.list-group-item.active,
+.previewModalWidget .list-group a.list-group-item.active:hover,
+.previewModalWidget .list-group a.list-group-item.active:focus {
+  border-width: 0;
+  margin-top: 0;
+}
 /*# sourceMappingURL=previewModalWidget.src.css.map */

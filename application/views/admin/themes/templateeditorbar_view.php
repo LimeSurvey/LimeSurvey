@@ -107,15 +107,6 @@ $importModal = false;
                 ]
             ); ?>
         </div>
-<!--        @TODO unused button???-->
-        <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
-            <a class="btn btn-primary" href="#" role="button" id="save-form-button"
-               data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                <span class="ri-check-fill"></span>
-                <?php eT("Save"); ?>
-            </a>
-        <?php endif; ?>
-
     </div>
 
     <!-- Template Editor -->
@@ -125,13 +116,15 @@ $importModal = false;
             <?php
             $message = '<strong>' .
                 gT('Note: This is a standard theme.') .
-                '</strong> ' .
-                sprintf(
+                '</strong>';
+            if (Permission::model()->hasGlobalPermission('templates', 'create')) {
+                $message .= ' ' . sprintf(
                     gT('If you want to modify it %s you can extend it%s.'),
                     "<a href='#' title=\"" . gT("Extend theme") . "\""
                     . " onclick=\"javascript: copyprompt('" . gT("Please enter the name for the new theme:") . "', '" . gT("extends_") . "$templatename', '$templatename', 'copy')\">",
                     '</a>'
                 );
+            }
             $this->widget('ext.AlertWidget.AlertWidget', [
                 'text' => $message,
                 'type' => 'info',

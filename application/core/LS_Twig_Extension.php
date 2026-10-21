@@ -854,17 +854,10 @@ class LS_Twig_Extension extends AbstractExtension
             } elseif ($moveInfo['finished']) {
                 $page = 'finished';
             } else {
-                $showgroupinfo = Yii::app()->getConfig('showgroupinfo');
                 if ($survey->format == 'A') {
                     $page = 1;
                 } else {
-                    if (
-                        $showgroupinfo == 'both'
-                        || $showgroupinfo == 'name'
-                        || ($showgroupinfo == 'choose' && !isset($survey->showgroupinfo))
-                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'B')
-                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'N')
-                    ) {
+                    if (!isset($survey->showgroupinfo) || in_array($survey->showgroupinfo, ['B', 'N'])) {
                         $groupInfo = LimeExpressionManager::GetStepIndexInfo($moveInfo['seq']);
                         $groupName = isset($groupInfo['gname']) ? $groupInfo['gname'] : '';
                     }

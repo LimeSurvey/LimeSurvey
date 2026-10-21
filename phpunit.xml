@@ -60,6 +60,7 @@
       <file>tests/functional/backend/QuestionAttributeFunctionalTest.php</file>
       <file>tests/functional/frontend/MultipleChoiceNextPreviousTest.php</file>
       <file>tests/functional/frontend/RankingFilterHideShowTest.php</file>
+      <file>tests/functional/frontend/RankingAdvancedHeightsTest.php</file>
       <file>tests/functional/frontend/AnswersAlphabeticalOrderTest.php</file>
     </testsuite>
     <testsuite name="expression">
