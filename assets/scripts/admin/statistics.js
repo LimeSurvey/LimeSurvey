@@ -860,15 +860,17 @@ $(document).on('ready  pjax:scriptcomplete', function () {
         var $self = $(this),
             overlay = createOverlay(),
             // Subquestions of a question share the same table id, so use the table the button is in
-            thisTable = $self.closest('table');
+            thisTable = $self.closest('table'),
+            // Buttons are left out of the PDF; the chart and numerical browse buttons have a row of their own
+            hiddenElements = $self
+                .add(thisTable.find('.chartjs-buttons, .numericalbrowse').closest('tr'))
+                .add(thisTable.find('.statisticsbrowsebutton').not('.numericalbrowse'));
 
-        $self.css({ display: 'none' });
-        thisTable.find('.chartjs-buttons').closest('tr').css({ display: 'none' });
+        hiddenElements.css({ display: 'none' });
         createPDFworker.call(null, thisTable).then(
             function (success) {
                 overlay.remove();
-                thisTable.find('.chartjs-buttons').closest('tr').css({ display: '' });
-                $self.css({ display: '' });
+                hiddenElements.css({ display: '' });
             },
             function () { console.ls.error(arguments); }
         )
