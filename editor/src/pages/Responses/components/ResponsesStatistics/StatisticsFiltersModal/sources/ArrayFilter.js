@@ -87,7 +87,11 @@ export const ArrayFilter = ({ question, filter, onUpdate }) => {
         ) : (
           <div className="responses-statistics-filters-row-field">
             <Input
-              placeholder={t('Filter for keywords ...')}
+              placeholder={
+                question.encrypted
+                  ? t('Exact value ...')
+                  : t('Filter for keywords ...')
+              }
               value={filter.textValue}
               update={(value) => onUpdate('textValue', value)}
             />

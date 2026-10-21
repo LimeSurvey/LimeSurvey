@@ -59,10 +59,6 @@ class QuestionResolver
             throw new InvalidArgumentException("Question $qid holds no answers to filter on.");
         }
 
-        if ($this->map->isEncrypted($qid)) {
-            throw new InvalidArgumentException("Question $qid is encrypted, so it cannot be filtered.");
-        }
-
         $kind = QuestionKind::fromType($type);
         $innerJoin = ResponseFilter::JOIN_AND;
 
@@ -110,7 +106,59 @@ class QuestionResolver
                 throw new InvalidArgumentException("No resolver for question kind: $kind.");
         }
 
+        if ($this->map->isEncrypted($qid)) {
+            $conditions = $this->forEncryptedColumns($qid, $conditions);
+        }
+
         return new ResolvedFilter($filter->getJoin(), $conditions, $innerJoin);
+    }
+
+    /**
+     * Encrypted answers are stored as ciphertext with a fixed nonce, so a value
+     * always encrypts the same way: whole values can be matched once the
+     * filter's values are encrypted too, parts and orderings cannot. The
+     * classic participant list searches encrypted columns likewise.
+     *
+     * @param ResolvedCondition[] $conditions
+     * @return ResolvedCondition[]
+     * @throws InvalidArgumentException for a filter that needs more than an
+     *     exact match: a range, a date range, or a ranking position.
+     */
+    private function forEncryptedColumns(int $qid, array $conditions): array
+    {
+        return array_map(function (ResolvedCondition $condition) use ($qid): ResolvedCondition {
+            $value = $condition->getValue();
+
+            switch ($condition->getOperator()) {
+                case ResolvedCondition::OPERATOR_EQUAL:
+                    $operator = ResolvedCondition::OPERATOR_EQUAL;
+                    $value = $this->encryptValue((string) $value);
+                    break;
+                case ResolvedCondition::OPERATOR_CONTAIN:
+                    $operator = ResolvedCondition::OPERATOR_EQUAL;
+                    $value = $this->encryptValue(trim((string) $value));
+                    break;
+                case ResolvedCondition::OPERATOR_MULTI_SELECT:
+                    $operator = ResolvedCondition::OPERATOR_MULTI_SELECT;
+                    $value = array_map(fn($code) => $this->encryptValue((string) $code), (array) $value);
+                    break;
+                case ResolvedCondition::OPERATOR_NOT_EMPTY:
+                case ResolvedCondition::OPERATOR_EMPTY:
+                case ResolvedCondition::OPERATOR_NULL:
+                    return $condition;
+                default:
+                    throw new InvalidArgumentException(
+                        "Question $qid is encrypted, so it can only be filtered by an exact value."
+                    );
+            }
+
+            return new ResolvedCondition($condition->getKeys(), $operator, $value, $condition->getRelation());
+        }, $conditions);
+    }
+
+    protected function encryptValue(string $value): string
+    {
+        return (string) \LSActiveRecord::encryptSingle($value);
     }
 
     /**

@@ -16,7 +16,7 @@ class ParticipantResolverTest extends TestCase
     /** A survey's participant columns: the built-in ones plus two custom. */
     protected function setUp(): void
     {
-        $this->resolver = new ParticipantResolver([
+        $this->resolver = new class ([
             'firstname',
             'lastname',
             'email',
@@ -37,7 +37,12 @@ class ParticipantResolverTest extends TestCase
             'usesleft' => ParticipantResolver::KIND_INTEGER,
             'validfrom' => ParticipantResolver::KIND_OTHER,
             'attribute_3' => ParticipantResolver::KIND_ENCRYPTED,
-        ]);
+        ]) extends ParticipantResolver {
+            protected function encryptValue(string $value): string
+            {
+                return "enc($value)";
+            }
+        };
     }
 
     private function resolveOne(array $entry): ResolvedFilter
@@ -99,11 +104,20 @@ class ParticipantResolverTest extends TestCase
     }
 
     /** Encrypted attributes are ciphertext, so a filter on them could never match. */
-    public function testAnEncryptedAttributeIsRefused(): void
+    /**
+     * The nonce is fixed, so the whole value can be matched against the
+     * ciphertext once it is encrypted too, as the participant list does.
+     */
+    public function testAnEncryptedAttributeIsMatchedExactly(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('is encrypted');
-        $this->resolveOne(['attribute' => '{TOKEN:ATTRIBUTE_3}', 'value' => 'x']);
+        $condition = $this->singleCondition([
+            'attribute' => '{TOKEN:ATTRIBUTE_3}',
+            'value' => ' sara@example.org ',
+        ]);
+
+        $this->assertSame(['attribute_3'], $condition->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_EQUAL, $condition->getOperator());
+        $this->assertSame('enc(sara@example.org)', $condition->getValue());
     }
 
     /** Custom attributes are numbered, and unwrap the same way. */

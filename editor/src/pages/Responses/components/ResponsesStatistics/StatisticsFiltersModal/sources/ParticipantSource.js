@@ -4,6 +4,7 @@ import { Input } from 'components'
 import { getSurveyParticipantAttributes } from 'helpers'
 
 import { FilterSelect } from '../FilterSelect'
+import { EncryptedHint } from './fields'
 
 // "Completed" is already covered by the Response data tab.
 const EXCLUDED_ATTRIBUTES = ['{TOKEN:COMPLETED}']
@@ -19,11 +20,10 @@ export const ParticipantSource = ({ filter, survey, onUpdate }) => {
     .filter(([, description]) => description?.encrypted === 'Y')
     .map(([key]) => `{TOKEN:${key.toUpperCase()}}`)
   const options = getSurveyParticipantAttributes(survey).filter(
-    ({ value }) =>
-      !EXCLUDED_ATTRIBUTES.includes(value) &&
-      !encryptedAttributes.includes(value)
+    ({ value }) => !EXCLUDED_ATTRIBUTES.includes(value)
   )
   const isNumeric = NUMERIC_ATTRIBUTES.includes(filter.attribute)
+  const isEncrypted = encryptedAttributes.includes(filter.attribute)
 
   const updateAttribute = (attribute) => {
     onUpdate('attribute', attribute)
@@ -57,6 +57,7 @@ export const ParticipantSource = ({ filter, survey, onUpdate }) => {
           />
         </div>
       )}
+      {filter.attribute && isEncrypted && <EncryptedHint />}
     </div>
   )
 }

@@ -21,7 +21,7 @@ class QuestionResolverTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->resolver = new QuestionResolver(QuestionColumnMap::fromQuestionFieldMap([
+        $this->resolver = new class (QuestionColumnMap::fromQuestionFieldMap([
             '111X1X10' => $this->column(['qid' => 10, 'type' => 'N']),
             '111X1X20' => $this->column(['qid' => 20, 'type' => 'D']),
             '111X1X30' => $this->column(['qid' => 30, 'type' => 'S']),
@@ -65,7 +65,14 @@ class QuestionResolverTest extends TestCase
             'Q150_Cfilecount' => $this->column(['qid' => 150, 'type' => '|', 'aid' => 'filecount']),
             '111X1X80' => $this->column(['qid' => 80, 'type' => 'X']),
             '111X1X85' => $this->column(['qid' => 85, 'type' => 'S', 'encrypted' => 'Y']),
-        ]));
+            '111X1X86' => $this->column(['qid' => 86, 'type' => 'L', 'encrypted' => 'Y']),
+            '111X1X87' => $this->column(['qid' => 87, 'type' => 'N', 'encrypted' => 'Y']),
+        ])) extends QuestionResolver {
+            protected function encryptValue(string $value): string
+            {
+                return "enc($value)";
+            }
+        };
     }
 
     private function column(array $values): array
@@ -260,11 +267,30 @@ class QuestionResolverTest extends TestCase
     }
 
     /** Encrypted answers are ciphertext, so a filter on them could never match. */
-    public function testAnEncryptedQuestionThrows(): void
+    public function testAnEncryptedTextQuestionIsMatchedExactly(): void
+    {
+        $condition = $this->singleCondition(['qid' => 85, 'text' => ' Sara ']);
+
+        $this->assertSame(['111X1X85'], $condition->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_EQUAL, $condition->getOperator());
+        $this->assertSame('enc(Sara)', $condition->getValue());
+    }
+
+    /** Stored codes are encrypted too, so the picked codes are compared encrypted. */
+    public function testAnEncryptedChoiceQuestionEncryptsThePickedCodes(): void
+    {
+        $condition = $this->resolveOne(['qid' => 86, 'answerCodes' => ['A1', 'A2']])->getConditions()[0];
+
+        $this->assertSame(ResolvedCondition::OPERATOR_MULTI_SELECT, $condition->getOperator());
+        $this->assertSame(['enc(A1)', 'enc(A2)'], $condition->getValue());
+    }
+
+    /** Ciphertext keeps no order, so a range on it means nothing. */
+    public function testAnEncryptedNumericRangeThrows(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Question 85 is encrypted, so it cannot be filtered.');
-        $this->resolveOne(['qid' => 85, 'text' => 'anything']);
+        $this->expectExceptionMessage('Question 87 is encrypted, so it can only be filtered by an exact value.');
+        $this->resolveOne(['qid' => 87, 'numberMin' => 1, 'numberMax' => 10]);
     }
 
     /**
@@ -340,8 +366,6 @@ class QuestionResolverTest extends TestCase
         $this->assertCount(2, $conditions);
         $this->assertTrue($resolved->isInnerOr());
 
-        // IS NULL, not `= ''`: the count is an integer column, and PostgreSQL
-        // rejects comparing it to a string.
         $this->assertSame(ResolvedCondition::OPERATOR_NULL, $conditions[0]->getOperator());
         $this->assertSame('false', $conditions[0]->getValue());
         $this->assertSame(['Q150_Cfilecount'], $conditions[0]->getKeys());

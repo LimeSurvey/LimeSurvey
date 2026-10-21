@@ -72,9 +72,16 @@ describe('buildQuestionOptions', () => {
     ])
   })
 
-  // Encrypted answers are ciphertext, which the backend refuses to filter.
-  it('leaves out encrypted questions', () => {
-    expect(optionFor('S', { encrypted: true })).toBeUndefined()
-    expect(optionFor('S', { encrypted: false })).toBeDefined()
+  it('keeps encrypted questions that can be matched exactly, flagged', () => {
+    expect(optionFor('S', { encrypted: true }).encrypted).toBe(true)
+    expect(optionFor('L', { encrypted: true }).encrypted).toBe(true)
+    expect(optionFor('S', { encrypted: false }).encrypted).toBe(false)
+  })
+
+  it('leaves out encrypted questions that are filtered by range', () => {
+    expect(optionFor('N', { encrypted: true })).toBeUndefined()
+    expect(optionFor('D', { encrypted: true })).toBeUndefined()
+    expect(optionFor('R', { encrypted: true })).toBeUndefined()
+    expect(optionFor('N', { encrypted: false })).toBeDefined()
   })
 })

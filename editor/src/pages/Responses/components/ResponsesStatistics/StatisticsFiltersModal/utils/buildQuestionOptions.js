@@ -25,8 +25,21 @@ const isFilterableQuestion = (question) =>
   !EXCLUDED_TYPES.includes(question.type) &&
   question.questionThemeName !==
     getQuestionTypeInfo().BROWSER_DETECTION.theme &&
-  question.encrypted !== true &&
-  question.encrypted !== 'Y'
+  !(isEncrypted(question) && !canMatchEncrypted(question.type))
+
+const isEncrypted = (question) =>
+  question.encrypted === true || question.encrypted === 'Y'
+
+const ENCRYPTED_UNFILTERABLE_KINDS = [
+  'number',
+  'date',
+  'subNumber',
+  'ranking',
+  'fileUpload',
+]
+const canMatchEncrypted = (type) =>
+  type !== ':' && // array of numbers, filtered by range
+  !ENCRYPTED_UNFILTERABLE_KINDS.includes(getQuestionKind(type))
 
 // Image-select themes: List image select (radio, L) and Multiple choice image
 // select (M). Each option's text is an image path, so we render thumbnails
@@ -308,6 +321,7 @@ export const buildQuestionOptions = (survey, language) => {
         subquestions,
         array,
         ranking,
+        encrypted: isEncrypted(question),
       })
     })
   })

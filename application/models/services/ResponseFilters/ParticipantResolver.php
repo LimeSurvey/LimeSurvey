@@ -24,7 +24,7 @@ class ParticipantResolver
     public const KIND_TEXT = 'text';
     public const KIND_INTEGER = 'integer';
     public const KIND_OTHER = 'other';
-    /** Stored as ciphertext with a random nonce, so no comparison can match it. */
+    /** Stored as ciphertext, so only the whole value can be matched. */
     public const KIND_ENCRYPTED = 'encrypted';
 
     /** @var array<string,true> Attribute columns this survey has, lowercased. */
@@ -128,9 +128,9 @@ class ParticipantResolver
                 $operator = ResolvedCondition::OPERATOR_CONTAIN;
                 break;
             case self::KIND_ENCRYPTED:
-                throw new InvalidArgumentException(
-                    "Participant attribute '$column' is encrypted, so it cannot be filtered."
-                );
+                $operator = ResolvedCondition::OPERATOR_EQUAL;
+                $value = $this->encryptValue($value);
+                break;
             default:
                 throw new InvalidArgumentException("Participant attribute '$column' cannot be filtered.");
         }
@@ -143,6 +143,11 @@ class ParticipantResolver
                 self::RELATION
             ),
         ]);
+    }
+
+    protected function encryptValue(string $value): string
+    {
+        return (string) \LSActiveRecord::encryptSingle($value);
     }
 
     /**
