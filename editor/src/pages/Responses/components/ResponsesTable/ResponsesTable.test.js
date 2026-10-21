@@ -138,7 +138,7 @@ describe('ResponsesTable - bulk "Download files" action', () => {
     )
   })
 
-  test('reconciles a selected response\'s hasFiles status when responsesData changes without reselecting it', async () => {
+  test("reconciles a selected response's hasFiles status when responsesData changes without reselecting it", async () => {
     const user = userEvent.setup()
     const { rerender } = renderResponsesTable()
 
