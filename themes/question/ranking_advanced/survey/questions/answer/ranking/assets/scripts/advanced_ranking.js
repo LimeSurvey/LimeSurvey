@@ -83,6 +83,9 @@ var AdvancedRankingQuestion = function (options) {
         $('#question' + questionId + ' .ls-remove').remove();
         // Adapt choice and list height
         fixChoiceListHeight();
+        $(window).on('resize.sortable-' + questionId, function () {
+            fixChoiceListHeight();
+        });
     },
     fixScreenReaderCompatibility = function(){
         // Hide the default answers list but display for media oral or screen reader
@@ -192,13 +195,21 @@ var AdvancedRankingQuestion = function (options) {
     },
 
     fixChoiceListHeight = function() {
-        //Keep the target field as big as the source field
-        var minHeight = $('#sortable-choice-' + questionId).actual('height');
-        var minWidth = $('#sortable-choice-' + questionId).actual('width');
-        $('#sortable-choice-' + questionId).css('min-height', minHeight);
-        $('#sortable-rank-' + questionId).css('min-height', minHeight);
-        $('#sortable-choice-' + questionId).css('min-width', minWidth);
-        $('#sortable-rank-' + questionId).css('min-width', minWidth);
+        var choice = $('#sortable-choice-' + questionId);
+        var rank = $('#sortable-rank-' + questionId);
+        // Reset dimensions before recalculating
+        choice.add(rank).css({
+            'min-height': '',
+            'min-width': ''
+        });
+        // Keep the target field as big as the source field
+        var minHeight = choice.actual('height');
+        var minWidth = choice.actual('width');
+
+        choice.css('min-height', minHeight);
+        rank.css('min-height', minHeight);
+        choice.css('min-width', minWidth);
+        rank.css('min-width', minWidth);
 
         // if (samechoiceheight) {
         //     var maxHeight = 0;
