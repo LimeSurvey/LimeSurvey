@@ -867,6 +867,14 @@ $(document).on('ready  pjax:scriptcomplete', function () {
                 .add(thisTable.find('.statisticsbrowsebutton').not('.numericalbrowse'));
 
         hiddenElements.css({ display: 'none' });
+        // Charts are only drawn once scrolled into view, so draw it now and skip the animation to capture it complete
+        thisTable.find('.chartjs-container').loadGraph().each(function () {
+            var chart = chartjs[$(this).data('qid')];
+            if (chart) {
+                chart.stop();
+                chart.update('none');
+            }
+        });
         createPDFworker.call(null, thisTable).then(
             function (success) {
                 overlay.remove();
