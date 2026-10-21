@@ -2482,7 +2482,7 @@ class Tokens extends SurveyCommonAction
                                     $aDuplicateAttributes[$field] = $aWriteArray[$field];
                                 }
                             }
-                            $dupresult = TokenDynamic::model($iSurveyId)->countByUnencryptedAttributes($aDuplicateAttributes);
+                            $dupresult = TokenDynamic::model($iSurveyId)->countByAttributes($aDuplicateAttributes);
                             if ($dupresult > 0) {
                                 $bDuplicateFound = true;
                                 $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s)"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']));

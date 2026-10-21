@@ -36,6 +36,21 @@ class EncryptedCoreParticipantPropertiesTest extends BaseTest
     }
 
     /**
+     * Get properties from a participant found by an encrypted core property.
+     */
+    public function testGetParticipantPropertiesByEncryptedCoreProperty()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $result = $this->handler->get_participant_properties($sessionKey, self::$surveyId, array('email' => 'p1@mail.com'));
+
+        $this->assertArrayNotHasKey('status', $result, 'The participant should be found by the encrypted email.');
+        $this->assertEquals('participant', $result['firstname']);
+        $this->assertEquals('one', $result['lastname']);
+        $this->assertEquals('p1@mail.com', $result['email']);
+    }
+
+    /**
      * Set new encrypted email.
      */
     public function testSetAndGetEncryptedCorePropertyByTokenId()

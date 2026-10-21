@@ -1155,17 +1155,6 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
-     * Count the participants matching the given unencrypted attribute values.
-     * Values of encrypted attributes are encrypted before the comparison.
-     * @param array $attributes attribute name => unencrypted value
-     * @return int
-     */
-    public function countByUnencryptedAttributes($attributes)
-    {
-        return (int) $this->countByAttributes($this->encryptAttributeValues($attributes));
-    }
-
-    /**
      * Get current surveyId for other model/function
      * @return int
      */
