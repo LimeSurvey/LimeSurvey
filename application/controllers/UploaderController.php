@@ -59,6 +59,10 @@ class UploaderController extends SurveyController
             // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
         }
+        // File content, delete and upload responses are not HTML: Don't append the HTML debug log (debugsql)
+        if ($sFileGetContentFiltered || $bDelete || $sMode == "upload") {
+            viewHelper::disableHtmlLogging();
+        }
         if ($sFileGetContentFiltered) {
             if (substr($sFileGetContentFiltered, 0, 6) == 'futmp_') {
                 $sFileDir = $tempdir . '/upload/';
