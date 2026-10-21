@@ -192,13 +192,11 @@ var AdvancedRankingQuestion = function (options) {
     },
 
     fixChoiceListHeight = function() {
-        //Keep the target field as big as the source field
+        //Keep the target field as high as the source field
+        //No fixed width: The lists already fill their column, a pixel width would overflow once the viewport gets narrower
         var minHeight = $('#sortable-choice-' + questionId).actual('height');
-        var minWidth = $('#sortable-choice-' + questionId).actual('width');
         $('#sortable-choice-' + questionId).css('min-height', minHeight);
         $('#sortable-rank-' + questionId).css('min-height', minHeight);
-        $('#sortable-choice-' + questionId).css('min-width', minWidth);
-        $('#sortable-rank-' + questionId).css('min-width', minWidth);
 
         // if (samechoiceheight) {
         //     var maxHeight = 0;
