@@ -128,6 +128,23 @@ function loadanswers()
 
 
 /**
+ * Returns the label of a language in the language changer: The native name followed by the name in the current language.
+ * The name in the current language is left out if it is the same as the native name (e.g. for the current language itself).
+ *
+ * @param array $aLanguage Language data as returned by getLanguageData()
+ * @return string
+ */
+function getLanguageChangerLabel($aLanguage)
+{
+    $sNativeName = html_entity_decode((string) $aLanguage['nativedescription'], ENT_COMPAT, 'UTF-8');
+    $sName = (string) $aLanguage['description'];
+    if ($sName === '' || $sName === $sNativeName) {
+        return $sNativeName;
+    }
+    return $sNativeName . ' - ' . $sName;
+}
+
+/**
  * This function creates the language selector for a particular survey
 *
 * @param string  $sSelectedLanguage : lang to be selected (forced)
@@ -176,7 +193,7 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
 
         $aListLang = array();
         foreach ($aSurveyLangs as $sLangCode => $aSurveyLang) {
-            $aListLang[$sLangCode] = html_entity_decode((string) $aSurveyLang['nativedescription'], ENT_COMPAT, 'UTF-8') . ' - ' . $aSurveyLang['description'];
+            $aListLang[$sLangCode] = getLanguageChangerLabel($aSurveyLang);
         }
 
         $sSelected = ($sSelectedLanguage) ? $sSelectedLanguage : App()->language;
@@ -206,7 +223,7 @@ function getLanguageChangerDatasPublicList($sSelectedLanguage)
     if (count($aLanguages) > 1) {
         $sClass = "ls-language-changer-item";
         foreach ($aLanguages as $sLangCode => $aLanguage) {
-                    $aListLang[$sLangCode] = html_entity_decode((string) $aLanguage['nativedescription'], ENT_COMPAT, 'UTF-8') . ' - ' . $aLanguage['description'];
+            $aListLang[$sLangCode] = getLanguageChangerLabel($aLanguage);
         }
         $sSelected = $sSelectedLanguage;
 
