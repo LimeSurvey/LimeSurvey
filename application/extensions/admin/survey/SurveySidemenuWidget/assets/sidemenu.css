@@ -75,10 +75,6 @@
 .ri-settings-3-fill:before {
     font-size: 20px;
 }
-/* line-height must equal the glyph size, otherwise icons sit ~1px higher than the React editor's SVG icons */
-.sidebar-icons-item .btn-icon:before {
-    line-height: 1;
-}
 .sidebar-row {
     align-items: center;
     color: #1e1e1e;
