@@ -42,6 +42,11 @@ export const QuestionBodyPreview = ({
         : valueItem
     )
   }, [valueInfo.values, value])
+  // valueInfo.values may be a new array on every parent render, so compare by content
+  const valuesSignature = useMemo(
+    () => JSON.stringify(valueInfo.values ?? null),
+    [valueInfo.values]
+  )
 
   if (!QuestionViewComponent) {
     return (
@@ -60,6 +65,12 @@ export const QuestionBodyPreview = ({
 
     setChildren(children)
   }, [question.answers, question.subquestions, language])
+
+  // Drop local overrides once refreshed response values arrive from the parent
+  useEffect(() => {
+    setValue({})
+    setValueIsUpdated(false)
+  }, [valuesSignature])
 
   const handleOnValueChange = (newValue, key) => {
     if (disableUpdatingResponses) {
