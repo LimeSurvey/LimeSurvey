@@ -1,8 +1,4 @@
-import {
-  getPreviousQuestions,
-  isTrue,
-  OTHER_CODE,
-} from 'helpers'
+import { getPreviousQuestions, isTrue, OTHER_CODE } from 'helpers'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 
 import {

@@ -453,11 +453,11 @@ describe('questionConditionUpdateJoi - conditionScript validation', () => {
     expect(error).toBeDefined()
   })
 
-  it('should fail if qid is not a number', () => {
+  it('should fail if qid is not a number or string', () => {
     const invalidData = {
       ...validData,
       props: {
-        qid: 'abc',
+        qid: true,
         action: 'conditionScript',
         script: 'return answer1 == 5;',
       },
