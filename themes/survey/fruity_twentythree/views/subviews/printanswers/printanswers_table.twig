@@ -8,7 +8,7 @@
 {% endif %} 
 
 {% for groupid,group in aSurveyInfo.groupArray %}
-    {% if (aSurveyInfo.printPdf == 1) %} 
+    {% if (aSurveyInfo.printPdf == 1 and not loop.first) %} 
     <br pagebreak="true" /> 
     {% endif %}
     <groupsection class="groupSection"> 

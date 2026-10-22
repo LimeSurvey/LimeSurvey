@@ -1,13 +1,13 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
- <div class="col-lg-8">
+ <div class="{{ answerColumnClass|default('col-lg-8') }}">
     <table class="table table-condensed table-striped">
     {% for subquestionId, subquestion in question.subquestions %}
         {% if loop.first %}
             <tr>
                 <th></th>
-                {% for colname, value in question.dualscale_header %}
-                    <th><b>{{value}}</b></th>
+                {% for colname, value in subquestion.answervalues %}
+                    <th><b>{{ question.dualscale_header[loop.index0]|default('') }}</b></th>
                 {% endfor %}                    
             </tr>
         {% endif %}

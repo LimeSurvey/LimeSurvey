@@ -1,16 +1,9 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
- <div class="col-lg-8">
+ <div class="{{ answerColumnClass|default('col-lg-8') }}">
     {% for subquestionId, subquestion in question.subquestions %}
         <div class="row">
-            <div class="col-lg-4 text-end">
-                {% if subquestion.answervalue is same as("Y") %}
-                    <i class="fa fa-check-square-o"></i>
-                {% else %}
-                    {{subquestion.answervalue|escape}}
-                {% endif %}
-            </div>
-            <div class="col-lg-8 text-start">
+            <div class="col-lg-6">
                 <b>
                     {% if question.question_theme_name == 'image_select-multiplechoice' and subquestion.question|isImageUrl %}
                         <img src="{{ subquestion.question|escape('html') }}" style="max-width:150px;max-height:150px;" />
@@ -19,6 +12,13 @@
                     {% endif %}
                     {% if subquestion.qid != 'other' %} ({{subquestion.qid}}){% endif %}
                 </b>
+            </div>
+            <div class="col-lg-6">
+                {% if subquestion.answervalue is same as("Y") %}
+                    <i class="fa fa-check-square-o"></i>
+                {% else %}
+                    {{subquestion.answervalue|escape}}
+                {% endif %}
             </div>
         </div>
     {% endfor %}
