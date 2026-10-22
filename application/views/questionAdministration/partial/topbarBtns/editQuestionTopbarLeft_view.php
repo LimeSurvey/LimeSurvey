@@ -1,4 +1,24 @@
 <?php if ($oQuestion->qid !== 0) : ?>
+    <?php if ($showToolsMenu) : ?>
+        <?php $toolsDropDownItems = $this->renderPartial(
+            '/questionAdministration/partial/topbarBtns/questionToolsDropdownMenu',
+            get_defined_vars(),
+            true
+        ); ?>
+        <!-- Tools  -->
+        <?php
+        $this->widget('ext.ButtonWidget.ButtonWidget', [
+            'name' => 'ls-question-editor-tools-button',
+            'id' => 'ls-question-editor-tools-button',
+            'text' => gT('Tools'),
+            'isDropDown' => true,
+            'dropDownContent' => $toolsDropDownItems,
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+            ],
+        ]); ?>
+    <?php endif; ?>
+
     <?php
     $this->renderPartial(
         '/surveyAdministration/partial/topbar/previewOrRunButton_view',
