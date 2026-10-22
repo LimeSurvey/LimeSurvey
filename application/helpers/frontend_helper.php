@@ -383,8 +383,11 @@ function addtoarray_single($array1, $array2)
 * Marks a tokens as completed and sends a confirmation email to the participiant.
 * If $quotaexit is set to true then the user exited the survey due to a quota
 * restriction and the according token is only marked as 'Q'
+* In both cases one use of the token is consumed.
 *
 * @param boolean $quotaexit
+* @return void
+* @throws CHttpException if the access code doesn't exist
 */
 function submittokens($quotaexit = false)
 {
@@ -414,9 +417,7 @@ function submittokens($quotaexit = false)
 
     if ($quotaexit == true) {
         $token->completed = 'Q';
-        if (!$tokenused) {
-            $token->usesleft--;
-        }
+        $token->usesleft--;
     } else {
         if ($token->usesleft <= 1) {
             // Finish the token
