@@ -164,6 +164,8 @@ class SurveyResponsesExport implements CommandInterface
             return $this->responseFactory->makeError('Invalid key sent');
         } catch (PermissionDeniedException $e) {
             return $this->responseFactory->makeErrorUnauthorised();
+        } catch (InvalidArgumentException $e) {
+            return $this->responseFactory->makeErrorBadRequest($e->getMessage());
         } catch (Exception $e) {
             return $this->responseFactory->makeError($e->getMessage());
         } catch (\Throwable $e) {
