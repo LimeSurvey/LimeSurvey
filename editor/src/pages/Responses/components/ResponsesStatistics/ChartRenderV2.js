@@ -337,6 +337,8 @@ const GRAPH_VIEWS = {
 
 const getDefaultView = (availableViews, viewContext, chartType) => {
   const preferredViews = [
+    // Ranking opens on the table; only the table breaks down the ranked places.
+    viewContext.isRanking && VIEW.TABLE,
     ...(GRAPH_VIEWS[chartType] ?? []),
     viewContext.isArrayText && VIEW.TABLE,
     viewContext.isArray && !viewContext.isArrayNumbers && VIEW.STACKED_BAR,
@@ -367,6 +369,7 @@ export const ChartRendererV2 = ({
 }) => {
   const isNumerical = question?.type === QT_N_NUMERICAL
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
+  const isRanking = isRankingQuestion(question?.themeName)
   const isFileUpload = question?.type === QT_VERTICAL_FILE_UPLOAD
   const isGridable =
     isNumerical ||
@@ -376,7 +379,6 @@ export const ChartRendererV2 = ({
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
-  const isRanking = isRankingQuestion(question?.themeName)
   const hasComments = isCommentQuestionType(question?.type)
   const isChoice = CHOICE_QUESTION_TYPES.includes(question?.type)
   const isArray = (data ?? []).some((item) => Array.isArray(item?.segments))
@@ -519,6 +521,16 @@ export const ChartRendererV2 = ({
                     </TooltipContainer>
                   )
                 )}
+              </div>
+            )}
+            {isRanking && activeView?.value === VIEW.BAR_CHART && (
+              <div className="responses-statistics-chart-subtitle responses-statistics-chart-info">
+                <i className="ri-information-line" aria-hidden="true"></i>
+                <span>
+                  {t(
+                    'The bar chart shows each option’s average rank, calculated by adding all the ranks it received and dividing the total by the number of times this option was ranked. A lower average means a better ranking.'
+                  )}
+                </span>
               </div>
             )}
             <div>{activeView?.render(renderContext)}</div>

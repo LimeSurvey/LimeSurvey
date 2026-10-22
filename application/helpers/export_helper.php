@@ -1674,6 +1674,36 @@ function quexml_create_question($RowQ, $additional = false)
     return $question;
 }
 
+/**
+ * Add the text of text display questions as directives to a queXML question element
+ *
+ * The directives are inserted after the question text, as the queXML schema expects them there.
+ *
+ * @param DOMElement $question The queXML question element
+ * @param string[] $aTextDisplays Question texts of the text display questions
+ * @param string $position Directive position: "before" or "after" the question
+ * @return void
+ */
+function quexml_add_text_displays($question, $aTextDisplays, $position)
+{
+    global $dom;
+
+    $insertBefore = null;
+    foreach ($question->childNodes as $node) {
+        if ($node->nodeName != "text" && $node->nodeName != "specifier") {
+            $insertBefore = $node;
+            break;
+        }
+    }
+    foreach ($aTextDisplays as $sTextDisplay) {
+        $directive = $dom->createElement("directive");
+        $directive->appendChild($dom->createElement("position", $position));
+        $directive->appendChild($dom->createElement("text", QueXMLCleanup($sTextDisplay)));
+        $directive->appendChild($dom->createElement("administration", "self"));
+        $question->insertBefore($directive, $insertBefore);
+    }
+}
+
 
 /**
  * Export quexml survey.
@@ -1809,39 +1839,17 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
             $section->setAttribute('hidetitle', 'true');
         }
 
-        //boilerplate questions convert to sectionInfo elements
-        $Rows = App()->db->createCommand()
-            ->select('*')
-            ->from("{{questions}} q")
-            ->join('{{question_l10ns}} ql', 'q.qid=ql.qid')
-            ->where("q.sid=:sid AND q.gid=:gid AND type LIKE 'X' AND ql.language=:language", array(':sid' => $iSurveyID, ':gid' => $gid, ':language' => $quexmllang))
-            ->order('question_order ASC')
-            ->queryAll();
-
-        foreach ($Rows as $RowQ) {
-            // placeholder substitution
-            if ($EMreplace) {
-                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'], $RowQReplacements, 3, true);
-            }
-            $sectionInfo = $dom->createElement("sectionInfo");
-            $position = $dom->createElement("position", "before");
-            $text = $dom->createElement("text", QueXMLCleanup($RowQ['question']));
-            $administration = $dom->createElement("administration", "self");
-            $sectionInfo->appendChild($position);
-            $sectionInfo->appendChild($text);
-            $sectionInfo->appendChild($administration);
-            $section->appendChild($sectionInfo);
-        }
-
         //foreach question
         $Rows = App()->db->createCommand()
             ->select('*')
             ->from("{{questions}} q")
             ->join('{{question_l10ns}} ql', 'q.qid=ql.qid')
-            ->where("q.sid=:sid AND q.gid=:gid AND q.parent_qid=0 AND ql.language=:language AND q.type NOT LIKE 'X'", [':sid' => $iSurveyID, ':gid' => $gid, ':language' => $quexmllang])
+            ->where("q.sid=:sid AND q.gid=:gid AND q.parent_qid=0 AND ql.language=:language", [':sid' => $iSurveyID, ':gid' => $gid, ':language' => $quexmllang])
             ->order('question_order ASC')
             ->queryAll();
 
+        // Text display questions are printed in front of the next question to keep their position
+        $aTextDisplays = [];
         foreach ($Rows as $RowQ) {
             $type = $RowQ['type'];
             $qid = $RowQ['qid'];
@@ -1850,6 +1858,11 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
             if ($EMreplace) {
                 $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'], $RowQReplacements, 3, true);
             }
+            if ($type == Question::QT_X_TEXT_DISPLAY) {
+                $aTextDisplays[] = $RowQ['question'];
+                continue;
+            }
+            $iFirstQuestionNode = $section->childNodes->length;
             $other = false;
             if ($RowQ['other'] == 'Y') {
                 $other = true;
@@ -2058,8 +2071,39 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
 
                 $section->appendChild($question);
             }
+
+            // An array without subquestions adds no question element: Keep the text for the next one
+            $firstQuestion = $section->childNodes->item($iFirstQuestionNode);
+            if (!empty($aTextDisplays) && $firstQuestion) {
+                quexml_add_text_displays($firstQuestion, $aTextDisplays, "before");
+                $aTextDisplays = [];
+            }
         }
 
+        // Text display questions at the end of a group are printed after the last question
+        if (!empty($aTextDisplays)) {
+            $lastQuestion = null;
+            foreach ($section->childNodes as $node) {
+                if ($node->nodeName == "question") {
+                    $lastQuestion = $node;
+                }
+            }
+            if ($lastQuestion) {
+                quexml_add_text_displays($lastQuestion, $aTextDisplays, "after");
+            } else {
+                // Group without other questions: Print them as section info
+                foreach ($aTextDisplays as $sTextDisplay) {
+                    $sectionInfo = $dom->createElement("sectionInfo");
+                    $position = $dom->createElement("position", "before");
+                    $text = $dom->createElement("text", QueXMLCleanup($sTextDisplay));
+                    $administration = $dom->createElement("administration", "self");
+                    $sectionInfo->appendChild($position);
+                    $sectionInfo->appendChild($text);
+                    $sectionInfo->appendChild($administration);
+                    $section->appendChild($sectionInfo);
+                }
+            }
+        }
 
         $questionnaire->appendChild($section);
     }
@@ -2360,8 +2404,10 @@ function tokensExport($iSurveyID)
     $iInvitationStatus = App()->request->getPost('invitationstatus');
     $iReminderStatus = App()->request->getPost('reminderstatus');
     $sTokenLanguage = App()->request->getPost('tokenlanguage');
+    $bIncludeSurveyLink = (bool) App()->request->getPost('includesurveylink', 0);
 
     $oSurvey = Survey::model()->findByPk($iSurveyID);
+    $aSurveyLanguages = $oSurvey->getAllLanguages();
     $bIsNotAnonymous = ($oSurvey->anonymized == 'N' && $oSurvey->active == 'Y'); // db table exist (responses_$iSurveyID) ?
     $bIsDateStamped = ($oSurvey->datestamp == 'Y' && $oSurvey->active == 'Y'); // db table exist (responses_$iSurveyID) ?
     $attrfieldnames = getAttributeFieldNames($iSurveyID);
@@ -2453,6 +2499,9 @@ function tokensExport($iSurveyID)
             $tokenoutput .= " <" . str_replace(",", " ", (string) $attrfielddescr[$attr_name]['description']) . ">";
         }
     }
+    if ($bIncludeSurveyLink) {
+        $tokenoutput .= ',surveylink';
+    }
     $tokenoutput .= "\n";
     echo $tokenoutput;
     $tokenoutput = "";
@@ -2490,6 +2539,12 @@ function tokensExport($iSurveyID)
             if ($bFilterEmailAfterDecrypt && mb_stripos((string) $brow['email'], $sEmailFiter) === false) {
                 continue;
             }
+            // The link is built before the masking to use the unchanged access code
+            $surveyLink = '';
+            if ($bIncludeSurveyLink && (string) $brow['token'] !== '') {
+                $language = in_array($brow['language'], $aSurveyLanguages) ? $brow['language'] : $oSurvey->language;
+                $surveyLink = $oSurvey->getSurveyUrl($language, ['token' => $brow['token']]);
+            }
             if (Yii::app()->request->getPost('maskequations')) {
                 $brow = array_map('MaskFormula', $brow);
             }
@@ -2521,6 +2576,9 @@ function tokensExport($iSurveyID)
             }
             foreach ($attrfieldnames as $attr_name) {
                 $tokenoutput .= '"' . str_replace('"', '""', trim((string) $brow[$attr_name])) . '",';
+            }
+            if ($bIncludeSurveyLink) {
+                $tokenoutput .= '"' . str_replace('"', '""', $surveyLink) . '",';
             }
             $tokenoutput = substr($tokenoutput, 0, -1); // remove last comma
             $tokenoutput .= "\n";

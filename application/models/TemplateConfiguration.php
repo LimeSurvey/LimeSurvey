@@ -1496,11 +1496,8 @@ class TemplateConfiguration extends TemplateConfig
             //check for surveygroup id if a survey is given
             if ($this->sid != null) {
                 $oSurvey = Survey::model()->findByPk($this->sid);
-                // set template name from real inherited value
-                $sTemplateName = !empty($oSurvey->oOptions->template) ?
-                    $oSurvey->oOptions->template :
-                    $this->template->name;
-                $oParentTemplate = Template::getTemplateConfiguration($sTemplateName, null, $oSurvey->gsid);
+                // Inherit from the survey group configuration of this same theme, which may differ from the survey theme (e.g. set by a plugin)
+                $oParentTemplate = Template::getTemplateConfiguration($this->template_name, null, $oSurvey->gsid);
                 if (is_a($oParentTemplate, 'TemplateConfiguration')) {
                     $this->oParentTemplate = $oParentTemplate;
                     $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;

@@ -1571,7 +1571,7 @@ class questionHelper
             'category' => gT('Other'),
             'sortorder' => 134,
             "inputtype" => "text",
-            'default' => "png, gif, doc, odt, jpg, pdf, png",
+            'default' => "png, gif, doc, odt, jpg, jpeg, pdf, heic",
             "help" => gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
             "caption" => gT("Allowed file types")
         );

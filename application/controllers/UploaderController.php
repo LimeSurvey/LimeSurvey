@@ -59,6 +59,10 @@ class UploaderController extends SurveyController
             // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
         }
+        // File content, delete and upload responses are not HTML: Don't append the HTML debug log (debugsql)
+        if ($sFileGetContentFiltered || $bDelete || $sMode == "upload") {
+            viewHelper::disableHtmlLogging();
+        }
         if ($sFileGetContentFiltered) {
             if (substr($sFileGetContentFiltered, 0, 6) == 'futmp_') {
                 $sFileDir = $tempdir . '/upload/';
@@ -392,12 +396,11 @@ class UploaderController extends SurveyController
         $oEvent = new PluginEvent('beforeSurveyPage');
         $oEvent->set('surveyId', $surveyid);
         App()->getPluginManager()->dispatchEvent($oEvent);
-        if (!is_null($oEvent->get('template'))) {
-            $aSurveyInfo['templatedir'] = $oEvent->get('template');
-        }
+        /* Theme set by a plugin in beforeSurveyPage */
+        $sPluginTemplateName = $oEvent->get('template');
         $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
         $sTemplateUrl = getTemplateURL($aSurveyInfo['template']) . "/";
-        $oTemplate = Template::model()->getInstance('', $surveyid);
+        $oTemplate = Template::model()->getInstance(empty($sPluginTemplateName) ? '' : $sPluginTemplateName, $surveyid);
         $sNeededScriptVar = '
             var uploadurl = uploadurl || "' . $this->createUrl('/uploader/index/mode/upload/') . '";
             var imageurl = imageurl || "' . Yii::app()->getConfig('imageurl') . '/";

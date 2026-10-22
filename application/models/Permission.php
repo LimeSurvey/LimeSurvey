@@ -957,6 +957,28 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * Move the theme permissions of all users from a theme name to its new name (called when a theme is renamed).
+     *
+     * @param string $sOldName The previous name of the theme
+     * @param string $sNewName The new name of the theme
+     * @return void
+     */
+    public static function renameThemePermissions($sOldName, $sNewName)
+    {
+        /* Drop orphaned permissions with the new name so they don't collide with the moved ones */
+        /* On case-insensitive databases a case-only rename matches the old rows here too, so these are kept */
+        self::model()->deleteAll(
+            "entity = 'template' AND permission = :newname AND permission <> :oldname",
+            [':newname' => $sNewName, ':oldname' => $sOldName]
+        );
+        self::model()->updateAll(
+            ['permission' => $sNewName],
+            "entity = 'template' AND permission = :oldname",
+            [':oldname' => $sOldName]
+        );
+    }
+
+    /**
      * Get object with $iEntityID of type $sEntityName
      * NB: This method needs to be public so that it can be mocked.
      *
