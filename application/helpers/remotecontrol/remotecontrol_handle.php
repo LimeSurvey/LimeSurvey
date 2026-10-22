@@ -403,6 +403,76 @@ class remotecontrol_handle
     }
 
     /**
+     * Export the survey structure as LSS file (RPC function)
+     *
+     * The returned file can be imported again with import_survey.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID ID of the survey
+     * @return array|string On success: the LSS file as base64-encoded string. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION, ERR_NO_DATA.
+     */
+    public function export_survey_structure($sSessionKey, $iSurveyID)
+    {
+        $iSurveyID = (int) $iSurveyID;
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
+        }
+        if (is_null(Survey::model()->findByPk($iSurveyID))) {
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
+        }
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
+        }
+        Yii::app()->loadHelper('export');
+        $sSurveyXML = surveyGetXMLData($iSurveyID);
+        if (empty($sSurveyXML)) {
+            return array('status' => 'Error: No data from survey', 'error_code' => self::ERR_NO_DATA);
+        }
+        return base64_encode($sSurveyXML);
+    }
+
+    /**
+     * Export the survey as survey archive (LSA) file (RPC function)
+     *
+     * The archive contains the survey structure and, if they exist, the responses, the survey participants and the timings.
+     * The returned file can be imported again with import_survey.
+     * Needs the permissions to export the survey structure and the responses and,
+     * if the survey has a participant table, the permission to export the survey participants.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID ID of the survey
+     * @return array|BigFile On success: the LSA file as base64-encoded string. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION, ERR_FILE_ERROR.
+     */
+    public function export_survey_archive($sSessionKey, $iSurveyID)
+    {
+        $iSurveyID = (int) $iSurveyID;
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
+        }
+        $survey = Survey::model()->findByPk($iSurveyID);
+        if (is_null($survey)) {
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
+        }
+        if (
+            !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')
+            || !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')
+            || ($survey->hasTokensTable && !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export'))
+        ) {
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
+        }
+        Yii::app()->loadHelper('export');
+        $sArchiveFile = createSurveyArchive($iSurveyID);
+        if (!$sArchiveFile) {
+            return array('status' => 'Error: Unable to create the survey archive', 'error_code' => self::ERR_FILE_ERROR);
+        }
+        return new BigFile($sArchiveFile, true, 'base64');
+    }
+
+    /**
      * Get survey properties (RPC function)
      *
      * Get properties of a survey
