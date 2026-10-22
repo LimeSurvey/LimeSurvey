@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
-import { useFocused } from 'hooks'
+import { useBuffer, useFocused, useSurvey } from 'hooks'
+import { createBufferOperation } from 'helpers'
 import { SideBarRow } from 'components/SideBar/SideBarRow'
 import { QuestionListIcon } from 'components/icons'
 
@@ -23,6 +24,20 @@ export const RowQuestion = ({
   const { setFocused } = useFocused()
   const { surveyId } = useParams()
   const [showLogicModal, setShowLogicModal] = useState(false)
+  const { survey, update } = useSurvey(surveyId)
+  const { addToBuffer } = useBuffer()
+  const areCodesVisible = !!survey.showQNumCode?.showCode
+
+  const toggleQuestionCodes = () => {
+    const operationAttr = {
+      showQNumCode: {
+        showCode: !survey.showQNumCode?.showCode,
+        showNumber: !survey.showQNumCode?.showNumber,
+      },
+    }
+    update(operationAttr)
+    addToBuffer(createBufferOperation(surveyId).survey().update(operationAttr))
+  }
 
   return (
     <div
@@ -62,10 +77,27 @@ export const RowQuestion = ({
             disabled: { state: isSurveyActive },
           },
           {
+            type: 'divider',
+          },
+          {
             type: 'item',
             label: t('Check logic'),
             onClick: () => setShowLogicModal(true),
             testId: 'show-logic-button',
+          },
+          {
+            type: 'item',
+            label: t('Show/hide question codes'),
+            trailingIcon: areCodesVisible ? 'ri-eye-line' : 'ri-eye-off-line',
+            onClick: toggleQuestionCodes,
+            testId: 'toggle-question-codes-button',
+          },
+          {
+            // Placeholder until the numeric answer codes investigation is done
+            type: 'item',
+            label: t('Assign numeric answer codes'),
+            testId: 'assign-numeric-codes-button',
+            disabled: { state: true, tooltip: t('Coming soon') },
           },
         ]}
         icon={<QuestionListIcon />}

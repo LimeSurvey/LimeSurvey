@@ -13,6 +13,7 @@ import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 //   onClick: () => {},
 //   submenu: [], // for type 'submenu'
 //   checked: true || false, // for type 'item', shows a checkmark on the right
+//   trailingIcon: 'ri-eye-line', // for type 'item', shows an icon on the right
 // },
 
 /**
@@ -143,6 +144,7 @@ export const Dropdown = ({
               disabled = {},
               submenu,
               checked,
+              trailingIcon,
               className,
               testId,
             },
@@ -176,9 +178,18 @@ export const Dropdown = ({
                     className={classNames(className, {
                       'has-checkmark': checked !== undefined,
                       'is-checked': checked,
+                      'has-trailing-icon': trailingIcon,
                     })}
                   >
-                    {checked === undefined ? (
+                    {trailingIcon ? (
+                      <>
+                        <span>
+                          <i className={icon}></i>
+                          {label}
+                        </span>
+                        <i className={trailingIcon}></i>
+                      </>
+                    ) : checked === undefined ? (
                       <>
                         <i className={icon}></i>
                         {label}
