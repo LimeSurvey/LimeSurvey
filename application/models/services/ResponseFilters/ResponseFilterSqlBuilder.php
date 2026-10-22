@@ -133,14 +133,11 @@ class ResponseFilterSqlBuilder
             );
         }
 
-        $db = \App()->db;
-        $token = $db->quoteColumnName(
+        return ParticipantResolver::throughSubquery(
+            $this->surveyId,
+            $fragment,
             $this->columnPrefix === null ? 'token' : "{$this->columnPrefix}.token"
         );
-        $relationToken = $db->quoteColumnName("$relation.token");
-
-        return "$token IN (SELECT $relationToken FROM {{tokens_{$this->surveyId}}} $relation"
-            . " WHERE $fragment)";
     }
 
     /**

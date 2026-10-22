@@ -123,6 +123,10 @@
       color: $g-700;
     }
 
+    &-hint {
+      font-size: 12px;
+    }
+
     // Min/Max and Start/End date pairs sit side by side.
     &-range {
       display: flex;

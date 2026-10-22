@@ -3,7 +3,9 @@
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
 
 use CDbCriteria;
+use InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\ConditionHandlerFactory;
+use LimeSurvey\Models\Services\ResponseFilters\ParticipantResolver;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedCondition;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 
@@ -22,14 +24,7 @@ class ResponseFilterCriteriaBuilder
 {
     private ConditionHandlerFactory $handlers;
 
-    /**
-     * Relations that had to be joined in for the conditions to be readable.
-     *
-     * @var array<int,string>
-     */
-    private array $relations = [];
-
-    /** Passed to handlers that need to know how a column is stored. */
+    /** For the participant subquery, and for handlers that read how a column is stored. */
     private ?int $surveyId;
 
     public function __construct(?int $surveyId = null)
@@ -45,7 +40,6 @@ class ResponseFilterCriteriaBuilder
      */
     public function build(array $filters): CDbCriteria
     {
-        $this->relations = [];
         $combined = null;
 
         foreach ($filters as $filter) {
@@ -67,16 +61,6 @@ class ResponseFilterCriteriaBuilder
         }
 
         return $combined ?? new CDbCriteria();
-    }
-
-    /**
-     * Relation names used by the last build(), for the caller to join in.
-     *
-     * @return array<int,string>
-     */
-    public function getRelations(): array
-    {
-        return array_values(array_unique($this->relations));
     }
 
     /**
@@ -110,13 +94,39 @@ class ResponseFilterCriteriaBuilder
         // OR across it themselves.
         $key = count($keys) === 1 ? $keys[0] : $keys;
 
-        return $handler->execute($key, $condition->getValue());
+        $criteria = $handler->execute($key, $condition->getValue());
+
+        if ($condition->getRelation() !== null) {
+            $criteria->condition = $this->throughRelation(
+                $condition->getRelation(),
+                (string) $criteria->condition
+            );
+        }
+
+        return $criteria;
+    }
+
+    /**
+     * Ask the related table by subquery rather than by join.
+     */
+    private function throughRelation(string $relation, string $fragment): string
+    {
+        if ($relation !== ParticipantResolver::RELATION) {
+            throw new InvalidArgumentException("No criteria for filter relation: $relation.");
+        }
+
+        if ($this->surveyId === null) {
+            throw new InvalidArgumentException(
+                'A participant filter needs the survey it belongs to.'
+            );
+        }
+
+        return ParticipantResolver::throughSubquery($this->surveyId, $fragment);
     }
 
     /**
      * Name the table a condition's columns belong to, when it is not the
-     * responses table. The relation name doubles as the joined table's alias,
-     * so `tokens.email` both reads correctly and tells the caller what to join.
+     * responses table. The relation name doubles as the subquery's alias.
      *
      * @return array<int,string>
      */
@@ -126,8 +136,6 @@ class ResponseFilterCriteriaBuilder
         if ($relation === null) {
             return $condition->getKeys();
         }
-
-        $this->relations[] = $relation;
 
         return array_map(
             static function (string $key) use ($relation): string {

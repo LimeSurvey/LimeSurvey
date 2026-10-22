@@ -151,6 +151,22 @@ class ParticipantResolver
     }
 
     /**
+     * Wrap a condition on participant columns so it filters responses.
+     *
+     * @param string $tokenColumn The responses' token column, qualified when
+     *     the query joins other tables that carry one.
+     */
+    public static function throughSubquery(int $surveyId, string $fragment, string $tokenColumn = 'token'): string
+    {
+        $db = \App()->db;
+        $token = $db->quoteColumnName($tokenColumn);
+        $relationToken = $db->quoteColumnName(self::RELATION . '.token');
+
+        return "$token IN (SELECT $relationToken FROM {{tokens_$surveyId}} " . self::RELATION
+            . " WHERE $fragment)";
+    }
+
+    /**
      * Turn the attribute the modal sent into a column of this survey's
      * participant table.
      */

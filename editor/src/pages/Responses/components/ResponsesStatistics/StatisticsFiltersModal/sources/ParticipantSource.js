@@ -12,25 +12,24 @@ const EXCLUDED_ATTRIBUTES = ['{TOKEN:COMPLETED}']
 // Integer columns, matched exactly by the backend, so they take a number.
 const NUMERIC_ATTRIBUTES = ['{TOKEN:USESLEFT}', '{TOKEN:REMINDERCOUNT}']
 
+const isNumericAttribute = (attribute) => NUMERIC_ATTRIBUTES.includes(attribute)
+
 // Participant data tab: pick a participant attribute, then enter a value.
 export const ParticipantSource = ({ filter, survey, onUpdate }) => {
-  const encryptedAttributes = Object.entries(
-    survey?.attributeDescriptions || {}
-  )
-    .filter(([, description]) => description?.encrypted === 'Y')
-    .map(([key]) => `{TOKEN:${key.toUpperCase()}}`)
+  // Core fields (first name, last name, email) and custom attributes alike.
+  const encryptedAttributes = (
+    survey?.participantEncryptedAttributes || []
+  ).map((name) => `{TOKEN:${name.toUpperCase()}}`)
   const options = getSurveyParticipantAttributes(survey).filter(
     ({ value }) => !EXCLUDED_ATTRIBUTES.includes(value)
   )
-  const isNumeric = NUMERIC_ATTRIBUTES.includes(filter.attribute)
+  const isNumeric = isNumericAttribute(filter.attribute)
   const isEncrypted = encryptedAttributes.includes(filter.attribute)
 
   const updateAttribute = (attribute) => {
     onUpdate('attribute', attribute)
-    if (
-      NUMERIC_ATTRIBUTES.includes(attribute) &&
-      !/^-?\d+$/.test(String(filter.attributeValue ?? '').trim())
-    ) {
+    // A number and a text value do not carry over to each other.
+    if (isNumericAttribute(attribute) !== isNumeric) {
       onUpdate('attributeValue', '')
     }
   }

@@ -60,13 +60,6 @@ class SurveyResponses implements CommandInterface
         'refurl',
     ];
 
-    /**
-     * What the responses table is called inside the query.
-     *
-     * @see \CDbCommandBuilder::createFindCommand()
-     */
-    private const RESPONSE_TABLE_ALIAS = 't';
-
     protected Survey $survey;
     protected Permission $permission;
     protected ResponseFactory $responseFactory;
@@ -237,12 +230,6 @@ class SurveyResponses implements CommandInterface
 
         [$criteria, $sort] = $this->buildCriteria($request, $filters);
         $criteria->order = $sort->defaultOrder;
-
-        if (is_array($criteria->with) && array_key_exists(ParticipantResolver::RELATION, $criteria->with)) {
-            $criteria->join .= ' LEFT JOIN ' . $this->survey->tokensTableName . ' '
-                . ParticipantResolver::RELATION . ' ON '
-                . ParticipantResolver::RELATION . '.token = ' . self::RESPONSE_TABLE_ALIAS . '.token';
-        }
         $pagination = $this->buildPagination($request);
         $pageSize = max(1, (int) ($pagination['pageSize'] ?? 1));
         $currentPage = max(0, (int) ($pagination['currentPage'] ?? 0));
@@ -385,8 +372,7 @@ class SurveyResponses implements CommandInterface
             $criteria,
             $sort,
             $dataMap,
-            $validColumns,
-            $filterSet->hasParticipantFilter() ? self::RESPONSE_TABLE_ALIAS : ''
+            $validColumns
         );
         $this->applyFilterSet($criteria, $filterSet, $request);
         $this->applyFieldSelection($criteria, $request);
@@ -434,19 +420,6 @@ class SurveyResponses implements CommandInterface
 
         $builder = new ResponseFilterCriteriaBuilder((int) $this->getSurveyId($request));
         $criteria->mergeWith($builder->build($resolver->resolve($filterSet)));
-
-        // Participant filters read a table joined to the responses, so the
-        // relation has to be loaded for the condition to resolve. `together`
-        // forces one query: filtering on a related table cannot work if Yii
-        // loads it separately afterwards.
-        $relations = $builder->getRelations();
-        if ($relations !== []) {
-            $criteria->with = array_merge(
-                is_array($criteria->with) ? $criteria->with : [],
-                array_fill_keys($relations, [])
-            );
-            $criteria->together = true;
-        }
     }
 
     /**
@@ -476,12 +449,10 @@ class SurveyResponses implements CommandInterface
         }
 
         $fixed = array_intersect(self::FIXED_OUTPUT_COLUMNS, $validColumns);
-        $columns = array_values(array_unique(array_merge($fixed, $selected)));
-        if (!empty($criteria->with)) {
-            $criteria->select = $columns;
-            return;
-        }
-        $criteria->select = array_map([\Yii::app()->db, 'quoteColumnName'], $columns);
+        $criteria->select = array_map(
+            [\Yii::app()->db, 'quoteColumnName'],
+            array_values(array_unique(array_merge($fixed, $selected)))
+        );
     }
 
     /**

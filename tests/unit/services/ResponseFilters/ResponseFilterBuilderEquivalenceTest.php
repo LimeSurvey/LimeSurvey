@@ -157,11 +157,7 @@ class ResponseFilterBuilderEquivalenceTest extends TestCondition
         $this->assertSame([], array_diff($declared, array_keys(self::operatorSamples())));
     }
 
-    /**
-     * Responses compare `tokens.email` through a loaded relation. The aggregate
-     * scan has no relations, and joining the token table into it would multiply
-     * rows and inflate every count, so the same fragment goes in a subquery.
-     */
+    /** Both sides ask the token table by the same subquery. */
     public function testParticipantConditionsWrapTheSameFragment(): void
     {
         $filters = [self::row([self::participant('email', 'example.org')])];
@@ -169,10 +165,9 @@ class ResponseFilterBuilderEquivalenceTest extends TestCondition
         $criteria = $this->criteriaBuilder->build($filters);
         $sql = $this->sqlBuilder->build($filters);
 
-        $this->assertStringContainsString(
+        $this->assertSame(
             $this->renumberPlaceholders($criteria->condition),
-            $this->renumberPlaceholders($sql['condition']),
-            'The comparison itself should be the responses fragment, unchanged.'
+            $this->renumberPlaceholders($sql['condition'])
         );
         $this->assertStringContainsString('IN (SELECT', $sql['condition']);
         $this->assertStringContainsString('{{tokens_' . self::SURVEY_ID . '}}', $sql['condition']);

@@ -277,7 +277,7 @@ class SurveyResponsesExport implements CommandInterface
 
     /**
      * Criteria for the native exporter, which reads the responses through
-     * SurveyDynamic and can join the participants as a relation.
+     * SurveyDynamic.
      *
      * @param int $surveyId
      * @param array $resolvedFilters
@@ -285,16 +285,7 @@ class SurveyResponsesExport implements CommandInterface
      */
     protected function buildFilterCriteria(int $surveyId, array $resolvedFilters)
     {
-        $builder = new ResponseFilterCriteriaBuilder($surveyId);
-        $criteria = $builder->build($resolvedFilters);
-
-        $relations = $builder->getRelations();
-        if ($relations !== []) {
-            $criteria->with = array_fill_keys($relations, []);
-            $criteria->together = true;
-        }
-
-        return $criteria;
+        return (new ResponseFilterCriteriaBuilder($surveyId))->build($resolvedFilters);
     }
 
     /**

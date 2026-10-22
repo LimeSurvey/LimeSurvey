@@ -150,71 +150,67 @@ class ResponseFilterCriteriaBuilderTest extends TestCondition
         $this->assertSame(['Y', 'Y'], array_values($criteria->params));
     }
 
+    private function participant(string $attribute, string $value = 'x'): ResolvedCondition
+    {
+        return new ResolvedCondition(
+            [$attribute],
+            ResolvedCondition::OPERATOR_CONTAIN,
+            $value,
+            ParticipantResolver::RELATION
+        );
+    }
+
     /**
-     * Participant columns are in a joined table, so they carry its name and
-     * quote as two identifiers rather than one strange one.
+     * Participant columns are read in a subquery on the token table, so they
+     * carry its name and quote as two identifiers rather than one strange one.
      */
     public function testParticipantColumnsAreQualifiedByTheirTable(): void
     {
-        $criteria = $this->builder->build([
-            $this->row([
-                new ResolvedCondition(
-                    ['email'],
-                    ResolvedCondition::OPERATOR_CONTAIN,
-                    'example.org',
-                    ParticipantResolver::RELATION
-                ),
-            ]),
+        $criteria = (new ResponseFilterCriteriaBuilder(123456))->build([
+            $this->row([$this->participant('email', 'example.org')]),
         ]);
 
         $this->assertStringContainsString('tokens', $criteria->condition);
         $this->assertStringNotContainsString('tokens.email', $criteria->condition);
     }
 
-    /** The caller is told what to join, and told it once. */
-    public function testRelationsAreReportedForTheCallerToJoin(): void
+    /**
+     * A subquery, not a join: a joined participant is one record shared by all
+     * their responses, which then gets decrypted once per response and fails.
+     */
+    public function testParticipantConditionsAreAskedBySubquery(): void
     {
-        $participant = static function (string $attribute): ResolvedCondition {
-            return new ResolvedCondition(
-                [$attribute],
-                ResolvedCondition::OPERATOR_CONTAIN,
-                'x',
-                ParticipantResolver::RELATION
-            );
-        };
-
-        $criteria = $this->builder->build([
-            $this->row([$participant('email')]),
-            $this->row([$participant('lastname')]),
+        $criteria = (new ResponseFilterCriteriaBuilder(123456))->build([
+            $this->row([$this->participant('email', 'example.org')]),
         ]);
 
-        $this->assertNotSame('', $criteria->condition);
-        $this->assertSame([ParticipantResolver::RELATION], $this->builder->getRelations());
+        $this->assertStringContainsString('IN (SELECT', $criteria->condition);
+        $this->assertStringContainsString('{{tokens_123456}}', $criteria->condition);
+        $this->assertSame([], (array) $criteria->with);
+        $this->assertSame('', (string) $criteria->join);
     }
 
-    public function testNothingIsJoinedWhenNoFilterNeedsIt(): void
+    /** The subquery must not swallow the rows around it. */
+    public function testAParticipantRowFoldsWithTheRowsAroundIt(): void
     {
-        $this->builder->build([$this->row([$this->equals('gender', 'F')])]);
-
-        $this->assertSame([], $this->builder->getRelations());
-    }
-
-    /** Relations do not leak from one build into the next. */
-    public function testRelationsAreResetBetweenBuilds(): void
-    {
-        $this->builder->build([
-            $this->row([
-                new ResolvedCondition(
-                    ['email'],
-                    ResolvedCondition::OPERATOR_CONTAIN,
-                    'x',
-                    ParticipantResolver::RELATION
-                ),
-            ]),
+        $criteria = (new ResponseFilterCriteriaBuilder(123456))->build([
+            $this->row([$this->equals('gender', 'F')]),
+            $this->row([$this->participant('email')], ResponseFilter::JOIN_OR),
+            $this->row([$this->equals('country', 'DE')]),
         ]);
-        $this->builder->build([$this->row([$this->equals('gender', 'F')])]);
 
-        $this->assertSame([], $this->builder->getRelations());
+        $orPosition = strpos($criteria->condition, ') OR (');
+        $andPosition = strpos($criteria->condition, ') AND (');
+        $this->assertNotFalse($orPosition);
+        $this->assertNotFalse($andPosition);
+        $this->assertLessThan($andPosition, $orPosition);
+    }
+
+    public function testAParticipantFilterNeedsTheSurvey(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->builder->build([$this->row([$this->participant('email')])]);
     }
 
     /** A value that exercises each operator, keyed by the operator itself. */
