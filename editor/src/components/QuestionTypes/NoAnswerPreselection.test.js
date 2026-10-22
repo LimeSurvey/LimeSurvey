@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from 'tests/testUtils'
+import { OTHER_CODE } from 'helpers'
 
 import { FivePointChoiceQuestion } from './FivePointChoiceQuestion/FivePointChoiceQuestion'
 import { GenderQuestion } from './GenderQuestion/GenderQuestion'
@@ -109,6 +110,34 @@ describe('Single choice local value changes', () => {
       expect(isSelected(options[1])).toBe(false)
     }
   )
+
+  test('selects Other when its stored text matches a regular answer code', async () => {
+    await renderWithProviders(
+      <OptionQuestionViewMode
+        question={{
+          ...question,
+          gid: 1,
+          attributes: {},
+          other: 'Y',
+          questionThemeName:
+            getQuestionTypeInfo().SINGLE_CHOICE_LIST_RADIO.theme,
+        }}
+        language="en"
+        _children={[
+          { aid: 1, code: 'A1', l10ns: { en: { answer: 'Answer 1' } } },
+          { aid: 2, code: 'A2', l10ns: { en: { answer: 'Answer 2' } } },
+        ]}
+        participantMode={true}
+        surveySettings={{ showNoAnswer: false }}
+        values={[{ key: 'field', aid: OTHER_CODE, value: 'A1' }]}
+      />
+    )
+
+    const radios = screen.getAllByRole('radio')
+    expect(radios).toHaveLength(3)
+    expect(radios[0]).not.toBeChecked()
+    expect(radios[2]).toBeChecked()
+  })
 })
 
 describe('No answer preselection', () => {

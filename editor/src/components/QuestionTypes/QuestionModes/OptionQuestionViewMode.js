@@ -329,7 +329,13 @@ export const OptionQuestionViewMode = ({
         matchedIndex = pendingIndexRef.current
       }
 
-      if (matchedIndex === -1 && isSingleChoiceTheme && valueInfo?.value) {
+      // Skip it for stored "Other" responses, their value is the typed text and may collide with a code
+      if (
+        matchedIndex === -1 &&
+        isSingleChoiceTheme &&
+        valueInfo?.aid !== OTHER_CODE &&
+        valueInfo?.value
+      ) {
         matchedIndex = children.findIndex(
           (child) =>
             !child.isNoAnswer && child[childrenInfo.codeKey] == valueInfo.value
