@@ -10,6 +10,8 @@ import { RemoveHTMLTagsInString } from 'helpers'
 
 import { QuestionContextMenu } from './QuestionContextMenu'
 
+const noop = () => {}
+
 export const SideBarRow = ({
   icon,
   title,
@@ -23,8 +25,8 @@ export const SideBarRow = ({
   /* Also used as a test id for the menu toggle */
   menuId = '',
   provided = {},
-  onTitleClick = () => {},
-  onRowClick = () => {},
+  onRowClick = noop,
+  menuLabel = '',
   isQuestionGroup,
   isOpen: _isOpen = false,
   className = '',
@@ -95,6 +97,38 @@ export const SideBarRow = ({
     }
   }, [])
 
+  const rowType = isQuestionGroup
+    ? 'group'
+    : code !== undefined
+      ? 'question'
+      : 'pinned'
+  const isActivatable = !isQuestionGroup || onRowClick !== noop
+  const isDraggable = provided.dragHandleProps !== undefined
+  const showCodeBadge =
+    rowType === 'question' && showQNumCode?.showCode && !!code
+
+  // Portaled menu content bubbles through the React tree but is not inside the row
+  const isInsideRow = (e) => e.currentTarget.contains(e.target)
+
+  const handleRowClick = (e) => {
+    if (isInsideRow(e)) {
+      onRowClick(e)
+    }
+  }
+
+  const handleRowKeyDown = (e) => {
+    const isOwnTarget =
+      e.target === e.currentTarget ||
+      e.target.classList.contains('sidebar-row-title-container')
+    if (!isOwnTarget || !isActivatable) {
+      return
+    }
+    if (e.key === 'Enter' || (e.key === ' ' && !isDraggable)) {
+      e.preventDefault()
+      onRowClick(e)
+    }
+  }
+
   return (
     <div>
       <QuestionContextMenu
@@ -107,80 +141,73 @@ export const SideBarRow = ({
       />
 
       <div
-        onClick={onRowClick}
         onContextMenu={handleOnContextMenu}
-        data-testid={testId}
+        data-testid={isQuestionGroup ? testId : undefined}
       >
         <div
-          className={classNames(`sidebar-row ps-1 ${className}`, {
-            'focus-bg-purple text-white sidebar-row-focused': isFocused,
-          })}
-          style={{
-            ...style,
-          }}
+          className={classNames(
+            `sidebar-row sidebar-row-${rowType} ${className}`,
+            { 'sidebar-row-focused': isFocused }
+          )}
+          style={style}
+          data-testid={isQuestionGroup ? undefined : testId}
+          role={isActivatable && !isDraggable ? 'button' : undefined}
+          tabIndex={isActivatable && !isDraggable ? 0 : undefined}
+          aria-current={isFocused ? 'true' : undefined}
+          onClick={handleRowClick}
+          onKeyDown={handleRowKeyDown}
         >
-          <div
-            style={{
-              cursor:
-                provided.dragHandleProps !== undefined ? 'grab' : 'pointer',
-            }}
-            className={classNames(
-              'sidebar-row-title-container d-flex align-items-center'
-            )}
-            {...provided.dragHandleProps}
-          >
+          {isQuestionGroup && (
             <Button
               data-testid={`sidebar-row-toggler-button`}
               variant="link"
-              onClick={() => setOpen(!isOpen)}
-              className={classNames('p-0', {
+              aria-label={isOpen ? t('Collapse group') : t('Expand group')}
+              aria-expanded={isOpen}
+              onClick={(e) => {
+                e.stopPropagation()
+                setOpen(!isOpen)
+              }}
+              className={classNames('sidebar-row-arrow p-0', {
                 'rotate-270': !isOpen,
-                'd-none': !isQuestionGroup,
               })}
             >
-              <ArrowDownIcon fill={'#1E1E1E'} />
+              <ArrowDownIcon />
             </Button>
-            {typeof icon === 'string' ? (
-              <img
-                className={classNames({
-                  'question-group': !code,
-                })}
-                src={icon}
-                alt="sidebar row item icon"
-              />
-            ) : (
-              icon
-            )}
+          )}
+          <div
+            className="sidebar-row-title-container"
+            style={{ cursor: isDraggable ? 'grab' : 'pointer' }}
+            {...provided.dragHandleProps}
+          >
+            <span className="sidebar-row-icon">
+              {typeof icon === 'string' ? <img src={icon} alt="" /> : icon}
+            </span>
             <ContentEditor
               className={classNames('sidebar-row-title', {
                 'question-group': !code,
                 'question-code': showQNumCode?.showCode,
               })}
-              onClick={onTitleClick}
               data-placeholder={titlePlaceholder}
               value={RemoveHTMLTagsInString(title)}
               disabled={true}
             />
           </div>
-          <div
-            className={classNames(
-              'd-flex',
-              'flex-grow-1',
-              'align-items-center',
-              'justify-content-end'
-            )}
-          >
-            <div>
-              {!isQuestionGroup && showQNumCode?.showCode && code && (
-                // when the length is more than 5 then its shorted with dots
-                <TooltipContainer tip={code} showTip={code?.length > 5}>
-                  <div className="sidebar-row-tag mx-1 bg-white label-s">
-                    {code}
-                  </div>
-                </TooltipContainer>
-              )}
-            </div>
-            {menuItems.length > 0 ? (
+          {showCodeBadge && (
+            // when the length is more than 5 then its shorted with dots
+            <TooltipContainer tip={code} showTip={code?.length > 5}>
+              <div
+                className="sidebar-row-tag label-s"
+                data-testid="question-code-badge"
+              >
+                {code}
+              </div>
+            </TooltipContainer>
+          )}
+          {menuItems.length > 0 && (
+            <div
+              className="sidebar-row-menu"
+              onClick={(e) => e.stopPropagation()}
+            >
               <Dropdown
                 className="meatball-dropdown"
                 testId={menuId}
@@ -193,10 +220,11 @@ export const SideBarRow = ({
                   id: menuToggleId,
                   testId: menuToggleId,
                   title: '',
+                  ariaLabel: menuLabel,
                 }}
               />
-            ) : null}
-          </div>
+            </div>
+          )}
         </div>
         {isOpen && <div style={{ paddingLeft: '18px' }}>{children}</div>}
       </div>

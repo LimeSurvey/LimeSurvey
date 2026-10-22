@@ -345,19 +345,19 @@ export const SurveyStructure = () => {
               <CloseIcon className="text-black fill-current" />
             </Button>
           </SideBarHeader>
-          <div
-            data-testid="survey-structure-header"
-            className={classNames({
-              'focus-bg-purple text-white':
+          <div data-testid="survey-structure-header">
+            <RowPinned
+              title={t('Welcome')}
+              disabled={!showWelcome}
+              isFocused={
                 focused?.info?.type ===
-                getQuestionTypeInfo().WELCOME_SCREEN.type,
-            })}
-            onClick={() => {
-              scrollToElement('survey-header')
-              setFocused({ info: getQuestionTypeInfo().WELCOME_SCREEN })
-            }}
-          >
-            <RowPinned title={t('Welcome')} disabled={!showWelcome} />
+                getQuestionTypeInfo().WELCOME_SCREEN.type
+              }
+              onRowClick={() => {
+                scrollToElement('survey-header')
+                setFocused({ info: getQuestionTypeInfo().WELCOME_SCREEN })
+              }}
+            />
           </div>
           <DragDropContext
             onDragEnd={handleOnDragEnd}
@@ -424,18 +424,17 @@ export const SurveyStructure = () => {
             </Droppable>
           </DragDropContext>
           {questionGroups.length > 0 ? (
-            <div
-              data-testid="survey-structure-footer"
-              className={classNames({
-                'focus-bg-purple text-white':
-                  focused?.info?.type === getQuestionTypeInfo().END_SCREEN.type,
-              })}
-              onClick={() => {
-                scrollToElement('survey-footer-title')
-                setFocused({ info: getQuestionTypeInfo().END_SCREEN })
-              }}
-            >
-              <RowPinned title={t('End')} />
+            <div data-testid="survey-structure-footer">
+              <RowPinned
+                title={t('End')}
+                isFocused={
+                  focused?.info?.type === getQuestionTypeInfo().END_SCREEN.type
+                }
+                onRowClick={() => {
+                  scrollToElement('survey-footer-title')
+                  setFocused({ info: getQuestionTypeInfo().END_SCREEN })
+                }}
+              />
             </div>
           ) : (
             <></>

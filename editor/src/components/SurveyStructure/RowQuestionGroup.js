@@ -52,7 +52,7 @@ export const RowQuestionGroup = ({
   return (
     <>
       <SideBarRow
-        onTitleClick={() => {
+        onRowClick={() => {
           setFocused(questionGroup, groupIndex, undefined, false)
           onTitleClick()
         }}
@@ -63,6 +63,7 @@ export const RowQuestionGroup = ({
         icon={<ClipBoardIcon />}
         isQuestionGroup={true}
         menuId="group-meatball-menu"
+        menuLabel={t('Question group menu')}
         menuToggleId="meatball-menu-button"
         menuItems={[
           {

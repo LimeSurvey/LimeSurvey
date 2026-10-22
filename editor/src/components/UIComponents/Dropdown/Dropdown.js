@@ -16,7 +16,7 @@ import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 // },
 
 /**
- * toggleSettings: {title, className, variant, id}
+ * toggleSettings: {title, className, variant, id, ariaLabel}
  */
 
 const Submenu = ({
@@ -119,6 +119,7 @@ export const Dropdown = ({
         id={toggleSettings.id}
         data-testid={toggleSettings.testId}
         role="menu"
+        aria-label={toggleSettings.ariaLabel}
       >
         {toggleSettings.title}
         <i className={toggleSettings.iconClassName}></i>

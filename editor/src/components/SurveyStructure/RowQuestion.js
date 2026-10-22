@@ -26,17 +26,16 @@ export const RowQuestion = ({
 
   return (
     <div
-      className={classNames('question-body-content ', {
+      className={classNames({
         'focus-element': snapshot.isDragging,
         'opacity-25': question.attributes?.hide_question?.value,
-        'focus-bg-purple': focused.qid === question.qid,
-        'text-white': focused.qid === question.qid,
       })}
     >
       <SideBarRow
         titlePlaceholder={t("What's your question?")}
         provided={provided}
         menuToggleId="meatball-menu-button"
+        menuLabel={t('Question menu')}
         title={question.l10ns[language]?.question}
         isFocused={focused?.qid === question?.qid}
         menuItems={[

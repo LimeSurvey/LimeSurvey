@@ -57,72 +57,206 @@
 .sidebar-row {
   @include med14-c;
 
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 32px;
   margin-bottom: 6px;
+  padding: 0 8px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-right: 10px;
-  cursor: grab;
+  border-radius: $border-radius;
+  background-color: $white;
+  color: $g-800;
+  cursor: pointer;
   position: relative;
 
-  .content-editable {
+  &.sidebar-row-question {
+    background-color: $g-100;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  svg,
+  svg path {
+    fill: $g-900;
+  }
+
+  .sidebar-row-arrow,
+  .sidebar-row-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-row-arrow {
+    width: 16px;
+    height: 16px;
+    border-radius: $border-radius-xs;
+    margin-right: 4px;
+    color: $g-900;
+    text-decoration: none;
+    line-height: 1;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .sidebar-row-icon {
+    width: 24px;
+    height: 24px;
+
+    svg,
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .sidebar-row-title-container {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 32px;
+    gap: 4px;
     cursor: grab;
+    border-radius: $border-radius-xs;
+  }
+
+  .content-editable {
+    cursor: inherit;
 
     &::before {
-      cursor: grab;
+      cursor: inherit;
     }
   }
 
   .sidebar-row-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0 6px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 170px;
-    margin-left: 5px;
-    min-height: 32px;
+    text-align: left;
+    color: $g-800;
+    display: flex;
+    align-items: center;
+  }
+
+  .sidebar-row-tag {
+    @include label-s;
+
+    flex: 0 0 46px;
+    box-sizing: border-box;
+    width: 46px;
+    height: 24px;
+    margin-right: 8px;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $border-radius-xs;
+    background-color: $g-200;
+    color: $g-900;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sidebar-row-menu {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
   }
 
   .dropdown-toggler {
+    width: 24px;
+    height: 24px;
+    margin: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $border-radius-xs;
+    color: $g-900;
+    font-size: 16px;
+    line-height: 16px;
     opacity: 0;
 
-    &:hover,
-    &:focus {
+    i {
+      font-size: 16px;
+      line-height: 16px;
+    }
+  }
+
+  &:hover,
+  &:focus-within {
+    .dropdown-toggler {
       opacity: 1;
     }
+  }
+
+  // Hover feedback follows the existing dropdown item treatment (G-200)
+  &:hover:not(.sidebar-row-focused) {
+    background-color: $g-200;
+  }
+
+  .sidebar-row-arrow:hover,
+  .dropdown-toggler:hover {
+    background-color: $g-300;
   }
 
   &.sidebar-row-focused {
+    background-color: $grape;
+    color: $g-200;
+
+    svg,
+    svg path {
+      fill: $white;
+    }
+
+    .sidebar-row-title,
+    .content-editable {
+      color: $g-200;
+    }
+
+    .sidebar-row-arrow,
     .dropdown-toggler {
-      color: $white !important;
+      color: $white;
       opacity: 1;
+
+      &:hover {
+        background-color: $grapeDark;
+      }
+    }
+
+    [data-placeholder]:empty:before {
+      color: $g-200 !important;
     }
   }
 
-  .sidebar-row-tag {
-    background-color: $g-100;
-    padding: 4px 8px;
-    margin-left: 6px;
-    margin-right: 6px;
-    border-radius: 2px;
-    max-width: 70px;
-    min-width: 62px;
-    min-height: 24px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  // Keyboard focus stays visible in both default and selected states
+  &:focus-visible,
+  .sidebar-row-title-container:focus-visible,
+  .sidebar-row-arrow:focus-visible,
+  .dropdown-toggler:focus-visible {
+    outline: 2px solid $action;
+    outline-offset: -2px;
+    box-shadow: none;
   }
 
-  .sidebar-row-title-container {
-    cursor: grab;
-  }
-
-  .sidebar-meatball-menu {
-    opacity: 0;
-  }
-
-  &:hover .sidebar-meatball-menu {
-    opacity: 1;
+  &.sidebar-row-focused:focus-visible,
+  &.sidebar-row-focused .sidebar-row-title-container:focus-visible,
+  &.sidebar-row-focused .sidebar-row-arrow:focus-visible,
+  &.sidebar-row-focused .dropdown-toggler:focus-visible {
+    outline-color: $white;
   }
 }
 
