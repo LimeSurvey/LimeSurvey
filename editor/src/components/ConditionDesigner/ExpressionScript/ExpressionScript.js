@@ -6,6 +6,7 @@ import {
   useBuffer,
   useExpressionScriptValidation,
   useFocused,
+  useIsConditionRelevancePending,
   useSurvey,
 } from 'hooks'
 import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
@@ -37,6 +38,10 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
       ? ''
       : question.relevance
   )
+
+  const isRelevancePending = useIsConditionRelevancePending(question)
+  const isApplyDisabled =
+    isRelevancePending || isValidRelevanceValue(content, question)
 
   useEffect(() => {
     setContent(
@@ -136,10 +141,8 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
       <div className="p-2 m-2 d-flex justify-content-center">
         <Button
           onClick={handleApplyClick}
-          variant={
-            isValidRelevanceValue(content, question) ? 'secondary' : 'primary'
-          }
-          disabled={isValidRelevanceValue(content, question)}
+          variant={isApplyDisabled ? 'secondary' : 'primary'}
+          disabled={isApplyDisabled}
         >
           {t('Apply')}
         </Button>

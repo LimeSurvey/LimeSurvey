@@ -3,9 +3,11 @@
 namespace ls\tests\unit\objectpatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionCreate;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\ExceptionErrors;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\SurveyResponse;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapping;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\ValidationErrors;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
 use LimeSurvey\DI;
@@ -75,6 +77,40 @@ class SurveyResponseTest extends TestBaseClass
         $exceptionErrorItem = $responseObject['exceptionErrors'][0];
         $this->assertEquals('Exception message', $exceptionErrorItem->error);
         $this->assertEquals('create', $exceptionErrorItem->op);
+    }
+
+    /**
+     * @testdox response merges the additional data of every operation
+     */
+    public function testAdditionalOfEveryOperationIsMerged()
+    {
+        $surveyResponse = new SurveyResponse(
+            new TempIdMapping(),
+            new ValidationErrors(),
+            new ExceptionErrors()
+        );
+        $surveyResponse->handleResponse(
+            ['additional' => ['questionRelevance' => [12 => 'Q1 == "A1"']]]
+        );
+        $surveyResponse->handleResponse([]);
+        $surveyResponse->handleResponse(
+            ['additional' => ['questionRelevance' => [3 => '1']]]
+        );
+        $surveyResponse->handleResponse(
+            ['additional' => ['questionRelevance' => [12 => 'Q2 == "A2"']]]
+        );
+
+        $responseObject = $surveyResponse->buildResponseObject();
+
+        $this->assertSame(
+            ['questionRelevance' => [12 => 'Q2 == "A2"', 3 => '1']],
+            $responseObject['extras']
+        );
+        $this->assertArrayNotHasKey('extrasList', $responseObject);
+        $this->assertSame(
+            '{"questionRelevance":{"12":"Q2 == \\"A2\\"","3":"1"}}',
+            json_encode($responseObject['extras'])
+        );
     }
 
     private static function getResponse()

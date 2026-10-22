@@ -105,16 +105,19 @@ class SurveyResponse
     }
 
     /**
-     * Extracts additional fields
+     * Extracts additional fields into 'extras'.
+     * The additional data of every operation in the patch is merged recursively,
+     * so keyed data (e.g. questionRelevance by qid) of earlier operations is kept.
      * @param array $handleResponse
      * @return void
      */
     public function extractAdditional(array $handleResponse)
     {
         if (array_key_exists('additional', $handleResponse)) {
-            $this->additional = [
-                'extras' => $handleResponse['additional']
-            ];
+            $this->additional['extras'] = array_replace_recursive(
+                $this->additional['extras'] ?? [],
+                $handleResponse['additional']
+            );
         }
     }
 

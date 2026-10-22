@@ -319,4 +319,195 @@ describe('handleQuestionConditionOperation Tests', () => {
     expect(result.addToBuffer).toBe(false)
     expect(result.bufferOperations).toEqual(bufferOperations)
   })
+
+  describe('keeps the order of the condition operations of a question', () => {
+    const condition = (cid, value = 'A1') => ({
+      cid,
+      qid: 20,
+      cqid: 10,
+      cfieldname: 'Q10',
+      cquestions: 'Q10',
+      method: '==',
+      value,
+      action: 'insertCondition',
+    })
+    const scenarioUpdate = (scid, conditions, qid = 20) => ({
+      id: qid,
+      qid,
+      entity: 'questionCondition',
+      op: Operations.update,
+      props: { qid, scenarios: [{ scid, conditions }] },
+    })
+    const script = (qid = 20) => ({
+      id: qid,
+      qid,
+      entity: 'questionCondition',
+      op: Operations.update,
+      props: { qid, action: 'conditionScript', script: 'Q10 == "A1"' },
+    })
+    const scenarioDelete = (scid, qid = 20) => ({
+      id: qid,
+      qid,
+      entity: 'questionCondition',
+      op: Operations.delete,
+      props: { qid, scenarios: [{ scid, action: 'deleteScenario' }] },
+    })
+    const conditionDelete = (cid, qid = 20) => ({
+      id: cid,
+      qid,
+      entity: 'questionCondition',
+      op: Operations.delete,
+      props: {
+        qid,
+        scenarios: [
+          { scid: 1, conditions: [{ cid, action: 'deleteCondition' }] },
+        ],
+      },
+    })
+
+    test('merges scenario changes into the latest update of the question', () => {
+      const buffer = [scenarioUpdate(1, [condition('temp__1_1')])]
+      const result = handleQuestionConditionOperation(
+        buffer,
+        scenarioUpdate(2, [condition('temp__1_2')]),
+        buffer[0]
+      )
+
+      expect(result.addToBuffer).toBe(false)
+      expect(result.bufferOperations).toHaveLength(1)
+      expect(
+        result.bufferOperations[0].props.scenarios.map((s) => s.scid)
+      ).toEqual([1, 2])
+    })
+
+    test('does not merge a scenario change into a pending expression script', () => {
+      const buffer = [script()]
+      const operation = scenarioUpdate(1, [condition('temp__1_1')])
+      const result = handleQuestionConditionOperation(
+        buffer,
+        operation,
+        buffer[0]
+      )
+
+      expect(result.bufferOperations).toEqual([script()])
+      expect(result.newOperation).toEqual(operation)
+      expect(result.addToBuffer).toBe(true)
+    })
+
+    test('an expression script drops the pending condition operations of the question only', () => {
+      const otherQuestionUpdate = scenarioUpdate(1, [condition(5)], 30)
+      const buffer = [
+        scenarioUpdate(1, [condition('temp__1_1')]),
+        otherQuestionUpdate,
+        conditionDelete(7),
+      ]
+      const result = handleQuestionConditionOperation(
+        buffer,
+        script(),
+        buffer[0]
+      )
+
+      expect(result.bufferOperations).toEqual([otherQuestionUpdate])
+      expect(result.newOperation).toEqual(script())
+      expect(result.addToBuffer).toBe(true)
+    })
+
+    test('deleting a scenario keeps the other pending scenarios', () => {
+      const buffer = [
+        {
+          ...scenarioUpdate(1, [condition('temp__1_1')]),
+          props: {
+            qid: 20,
+            scenarios: [
+              { scid: 1, conditions: [condition('temp__1_1')] },
+              { scid: 2, conditions: [condition('temp__1_2')] },
+            ],
+          },
+        },
+      ]
+      const result = handleQuestionConditionOperation(
+        buffer,
+        scenarioDelete(2),
+        null
+      )
+
+      expect(result.bufferOperations).toHaveLength(1)
+      expect(
+        result.bufferOperations[0].props.scenarios.map((s) => s.scid)
+      ).toEqual([1])
+      expect(result.addToBuffer).toBe(true)
+    })
+
+    test('a scenario re-created after a delete is sent after the delete', () => {
+      let buffer = [scenarioUpdate(2, [condition('temp__1_1')])]
+      let result = handleQuestionConditionOperation(
+        buffer,
+        scenarioDelete(1),
+        null
+      )
+      buffer = [...result.bufferOperations, result.newOperation]
+
+      const recreated = scenarioUpdate(1, [condition('temp__2_1')])
+      result = handleQuestionConditionOperation(buffer, recreated, buffer[0])
+
+      expect(result.addToBuffer).toBe(true)
+      expect(result.newOperation).toEqual(recreated)
+      expect(result.bufferOperations).toEqual(buffer)
+    })
+
+    test('deleting a condition does not touch operations of a question whose qid equals the cid', () => {
+      const questionWithSameId = scenarioUpdate(1, [condition(99)], 7)
+      const result = handleQuestionConditionOperation(
+        [questionWithSameId],
+        conditionDelete(7),
+        null
+      )
+
+      expect(result.bufferOperations).toEqual([questionWithSameId])
+      expect(result.addToBuffer).toBe(true)
+    })
+
+    test('deleting a scenario of an unsaved question does not queue a delete', () => {
+      const buffer = [
+        {
+          ...scenarioUpdate(1, [], 'temp__77'),
+          props: {
+            qid: 'temp__77',
+            scenarios: [
+              { scid: 1, conditions: [condition('temp__1_1')] },
+              { scid: 2, conditions: [condition('temp__1_2')] },
+            ],
+          },
+        },
+      ]
+      const result = handleQuestionConditionOperation(
+        buffer,
+        scenarioDelete(2, 'temp__77'),
+        null
+      )
+
+      expect(
+        result.bufferOperations[0].props.scenarios.map((s) => s.scid)
+      ).toEqual([1])
+      expect(result.addToBuffer).toBe(false)
+    })
+
+    test('deleting a local-only condition removes it without sending a delete', () => {
+      const buffer = [
+        scenarioUpdate(1, [condition('temp__1_1'), condition('temp__1_2')]),
+      ]
+      const result = handleQuestionConditionOperation(
+        buffer,
+        conditionDelete('temp__1_2'),
+        null
+      )
+
+      expect(
+        result.bufferOperations[0].props.scenarios[0].conditions.map(
+          (c) => c.cid
+        )
+      ).toEqual(['temp__1_1'])
+      expect(result.addToBuffer).toBe(false)
+    })
+  })
 })

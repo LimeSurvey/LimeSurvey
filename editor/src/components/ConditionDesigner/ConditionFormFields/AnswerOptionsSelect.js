@@ -7,7 +7,8 @@ export const AnswerOptionsSelect = ({ index, condition, updateCondition }) => {
     () =>
       condition.answers.map(({ value, label }) => ({
         value: String(value),
-        label,
+        // Select strips non-string labels (e.g. numeric 5/10 point choices)
+        label: label == null ? '' : String(label),
       })),
     [condition.answers]
   )
