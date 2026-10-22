@@ -2973,6 +2973,7 @@ body .answer-item label::after {
 }
 
 .checkbox-item input[type="checkbox"]:checked + label::after,
+.checkbox-item .checkbox-checked + label::after,
 .checkbox-item input[type="radio"]:checked + label::after {
     background-color: $base-color;
     color:            white;

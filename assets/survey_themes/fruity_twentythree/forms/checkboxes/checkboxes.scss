@@ -63,6 +63,7 @@
 }
 
 .checkbox-item input[type="checkbox"]:checked + label::after,
+.checkbox-item .checkbox-checked + label::after,
 .checkbox-item input[type="radio"]:checked + label::after {
     font-family: "remixicon";
     content: "\eb7b";
