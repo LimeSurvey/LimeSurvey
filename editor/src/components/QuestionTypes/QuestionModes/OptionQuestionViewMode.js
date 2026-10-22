@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Entities,
   getStringPartsUsingSeperator,
@@ -84,6 +84,8 @@ export const OptionQuestionViewMode = ({
 }) => {
   const valueInfo = values?.[0] || {}
   const [selectedIndex, setSelectedIndex] = useState(-1)
+  // Index of the single choice option the user clicked last, its value may arrive later with a stale aid
+  const pendingIndexRef = useRef(-1)
   const {
     commented_checkbox,
     slider_layout,
@@ -310,12 +312,40 @@ export const OptionQuestionViewMode = ({
         setSelectedIndex(matchedIndex)
       }
     } else {
-      children.map((child, index) => {
-        if (child[childrenInfo.idKey] === valueInfo?.aid) {
-          matched = true
-          setSelectedIndex(index)
-        }
-      })
+      // Single choice: match the answer code first, since locally edited values
+      // only carry the new code (aid is stale until the response is refreshed).
+      // Fall back to aid so "Other" still selects after its value is replaced by the typed text.
+      let matchedIndex = -1
+      const pendingChild = children[pendingIndexRef.current]
+
+      // The locally clicked option wins if the value matches it (also covers "No answer", whose code is empty)
+      if (
+        isSingleChoiceTheme &&
+        pendingChild &&
+        valueInfo?.value !== undefined &&
+        valueInfo?.value !== null &&
+        String(pendingChild[childrenInfo.codeKey]) === String(valueInfo.value)
+      ) {
+        matchedIndex = pendingIndexRef.current
+      }
+
+      if (matchedIndex === -1 && isSingleChoiceTheme && valueInfo?.value) {
+        matchedIndex = children.findIndex(
+          (child) =>
+            !child.isNoAnswer && child[childrenInfo.codeKey] == valueInfo.value
+        )
+      }
+
+      if (matchedIndex === -1) {
+        matchedIndex = children.findIndex(
+          (child) => child[childrenInfo.idKey] === valueInfo?.aid
+        )
+      }
+
+      if (matchedIndex !== -1) {
+        matched = true
+        setSelectedIndex(matchedIndex)
+      }
     }
 
     if (!matched) {
@@ -411,6 +441,9 @@ export const OptionQuestionViewMode = ({
               text={getChildTitle(child.l10ns)}
               variant="outline-success"
               update={(newValue) => {
+                if (isSingleChoiceTheme) {
+                  pendingIndexRef.current = index
+                }
                 onValueChange(
                   isSingleChoiceTheme &&
                     ChildUiComponentToRender.name !== selectName
@@ -420,6 +453,9 @@ export const OptionQuestionViewMode = ({
                 )
               }}
               onClick={() => {
+                if (isSingleChoiceTheme) {
+                  pendingIndexRef.current = index
+                }
                 setSelectedIndex(index)
                 onValueChange(
                   isSingleChoiceTheme
