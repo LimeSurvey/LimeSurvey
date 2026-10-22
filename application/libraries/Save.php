@@ -94,7 +94,11 @@ class Save
     }
 
     /**
-     * Clone of savesubmit() but returns datas for twig
+     * Validate the posted save form, store the response in the saved_control table
+     * and email the resume details if an email address was given.
+     *
+     * @return array On success: 'success' => true and 'message' with the text to show to the participant,
+     *               which mentions it if the email could not be sent. Otherwise 'success' => false and 'aSaveErrors'.
      */
     function saveSurvey()
     {
@@ -111,7 +115,7 @@ class Save
         // - "value" which is the value of the response
         //We start by generating the first 5 values which are consistent for all rows.
 
-        global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $clienttoken, $thisstep;
+        global $surveyid, $thissurvey, $publicurl, $sitename, $clienttoken, $thisstep;
         $survey = Survey::model()->findByPk($surveyid);
 
         $aSaveForm  = array();
@@ -123,7 +127,6 @@ class Save
         );
 
         // Check that the required fields have been completed.
-        $errormsg = '';
         if (empty($this->saveData['identifier'])) {
             $this->aSaveErrors[] = gT("You must supply a name for this saved session.");
         }
@@ -224,13 +227,7 @@ class Save
                 $mailer->Body = $message;
                 $mailer->addAddress($this->saveData['email']);
                 if (!$mailer->sendMessage()) {
-                    $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
-                    if (Permission::model()->hasSurveyPermission($thissurvey['sid'], 'surveysettings')) {
-                        $errormsg .= sprintf(gT("Email error message %s"), $mailer->getError());
-                        if (trim((string) $thissurvey['adminemail']) == '') {
-                            $errormsg .= gT('(Reason: Administrator email address empty)');
-                        }
-                    }
+                    return array('success' => true, 'message' => gT('Your survey was saved, but the email with the details could not be sent. Please note the name and password you just used to resume the survey later.'));
                 }
             }
             return array('success' => true, 'message' => gT('Your survey was successfully saved.'));
