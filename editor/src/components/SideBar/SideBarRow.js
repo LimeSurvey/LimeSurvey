@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useRef,
+  useCallback,
+} from 'react'
 import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 import Button from 'react-bootstrap/Button'
@@ -10,25 +16,26 @@ import { RemoveHTMLTagsInString } from 'helpers'
 
 import { QuestionContextMenu } from './QuestionContextMenu'
 
+const noop = () => {}
+
 export const SideBarRow = ({
   icon,
   title,
   titlePlaceholder,
   code,
   children,
-  style,
   testId = '',
   /* Also used as a test id for the menu toggle */
   menuToggleId = '',
   /* Also used as a test id for the menu toggle */
   menuId = '',
   provided = {},
-  onTitleClick = () => {},
-  onRowClick = () => {},
+  onRowClick = noop,
+  onTitleClick = noop,
   isQuestionGroup,
   isOpen: _isOpen = false,
   className = '',
-  isFocused = false,
+  isFocused: isFocusedProp = false,
   menuItems = [],
 }) => {
   const [isOpen, setOpen] = useState(_isOpen)
@@ -95,6 +102,61 @@ export const SideBarRow = ({
     }
   }, [])
 
+  const rowRef = useRef(null)
+  const menuRef = useRef(null)
+  const [isWrapperSelected, setWrapperSelected] = useState(false)
+
+  const rowType = isQuestionGroup
+    ? 'group'
+    : code !== undefined
+      ? 'question'
+      : 'pinned'
+  const isPinned = rowType === 'pinned'
+  const isDraggable = provided.dragHandleProps !== undefined
+  const showCodeBadge =
+    rowType === 'question' && showQNumCode?.showCode && !!code
+
+  // Welcome/End selection is only expressed by the core wrapper element
+  useLayoutEffect(() => {
+    if (isPinned) {
+      setWrapperSelected(!!rowRef.current?.closest('.focus-bg-purple'))
+    }
+  })
+  const isFocused = isFocusedProp || (isPinned && isWrapperSelected)
+
+  const menuLabel = isQuestionGroup
+    ? t('Question group menu')
+    : t('Question menu')
+  useEffect(() => {
+    menuRef.current
+      ?.querySelector('.dropdown-toggler')
+      ?.setAttribute('aria-label', menuLabel)
+  })
+
+  // Portaled menu content bubbles through the React tree but is not inside the row
+  const handleRowClick = (e) => {
+    if (e.currentTarget.contains(e.target)) {
+      const handler = isQuestionGroup ? onTitleClick : onRowClick
+      handler(e)
+    }
+  }
+
+  const handleRowKeyDown = (e) => {
+    const isOwnTarget =
+      e.target === e.currentTarget ||
+      e.target.classList.contains('structure-item-main')
+    const isActivationKey = e.key === 'Enter' || (e.key === ' ' && !isDraggable)
+    if (!isOwnTarget || !isActivationKey) {
+      return
+    }
+    e.preventDefault()
+    if (isQuestionGroup) {
+      onTitleClick(e)
+    } else {
+      rowRef.current?.click()
+    }
+  }
+
   return (
     <div>
       <QuestionContextMenu
@@ -107,80 +169,74 @@ export const SideBarRow = ({
       />
 
       <div
-        onClick={onRowClick}
         onContextMenu={handleOnContextMenu}
-        data-testid={testId}
+        data-testid={isQuestionGroup ? testId : undefined}
       >
         <div
-          className={classNames(`sidebar-row ps-1 ${className}`, {
-            'focus-bg-purple text-white sidebar-row-focused': isFocused,
-          })}
-          style={{
-            ...style,
-          }}
+          className={classNames(
+            `structure-item structure-item-${rowType} ${className}`,
+            { 'structure-item-selected': isFocused }
+          )}
+          data-testid={isQuestionGroup ? undefined : testId}
+          ref={rowRef}
+          role={isPinned ? 'button' : undefined}
+          tabIndex={isPinned ? 0 : undefined}
+          aria-current={isFocused ? 'true' : undefined}
+          onClick={handleRowClick}
+          onKeyDown={handleRowKeyDown}
         >
-          <div
-            style={{
-              cursor:
-                provided.dragHandleProps !== undefined ? 'grab' : 'pointer',
-            }}
-            className={classNames(
-              'sidebar-row-title-container d-flex align-items-center'
-            )}
-            {...provided.dragHandleProps}
-          >
+          {isQuestionGroup && (
             <Button
               data-testid={`sidebar-row-toggler-button`}
               variant="link"
-              onClick={() => setOpen(!isOpen)}
-              className={classNames('p-0', {
+              aria-label={isOpen ? t('Collapse group') : t('Expand group')}
+              aria-expanded={isOpen}
+              onClick={(e) => {
+                e.stopPropagation()
+                setOpen(!isOpen)
+              }}
+              className={classNames('structure-item-arrow p-0', {
                 'rotate-270': !isOpen,
-                'd-none': !isQuestionGroup,
               })}
             >
-              <ArrowDownIcon fill={'#1E1E1E'} />
+              <ArrowDownIcon />
             </Button>
-            {typeof icon === 'string' ? (
-              <img
-                className={classNames({
-                  'question-group': !code,
-                })}
-                src={icon}
-                alt="sidebar row item icon"
-              />
-            ) : (
-              icon
-            )}
+          )}
+          <div
+            className="structure-item-main"
+            style={{ cursor: isDraggable ? 'grab' : 'pointer' }}
+            {...provided.dragHandleProps}
+          >
+            <span className="structure-item-icon">
+              {typeof icon === 'string' ? <img src={icon} alt="" /> : icon}
+            </span>
             <ContentEditor
-              className={classNames('sidebar-row-title', {
+              className={classNames('sidebar-row-title structure-item-title', {
                 'question-group': !code,
                 'question-code': showQNumCode?.showCode,
               })}
-              onClick={onTitleClick}
               data-placeholder={titlePlaceholder}
               value={RemoveHTMLTagsInString(title)}
               disabled={true}
             />
           </div>
-          <div
-            className={classNames(
-              'd-flex',
-              'flex-grow-1',
-              'align-items-center',
-              'justify-content-end'
-            )}
-          >
-            <div>
-              {!isQuestionGroup && showQNumCode?.showCode && code && (
-                // when the length is more than 5 then its shorted with dots
-                <TooltipContainer tip={code} showTip={code?.length > 5}>
-                  <div className="sidebar-row-tag mx-1 bg-white label-s">
-                    {code}
-                  </div>
-                </TooltipContainer>
-              )}
-            </div>
-            {menuItems.length > 0 ? (
+          {showCodeBadge && (
+            // when the length is more than 5 then its shorted with dots
+            <TooltipContainer tip={code} showTip={code?.length > 5}>
+              <div
+                className="structure-item-code"
+                data-testid="question-code-badge"
+              >
+                {code}
+              </div>
+            </TooltipContainer>
+          )}
+          {menuItems.length > 0 && (
+            <div
+              className="structure-item-menu"
+              ref={menuRef}
+              onClick={(e) => e.stopPropagation()}
+            >
               <Dropdown
                 className="meatball-dropdown"
                 testId={menuId}
@@ -195,8 +251,8 @@ export const SideBarRow = ({
                   title: '',
                 }}
               />
-            ) : null}
-          </div>
+            </div>
+          )}
         </div>
         {isOpen && <div style={{ paddingLeft: '18px' }}>{children}</div>}
       </div>
