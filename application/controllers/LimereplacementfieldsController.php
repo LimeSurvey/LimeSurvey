@@ -78,9 +78,7 @@ class LimeReplacementFieldsController extends LSBaseController
                     if (!empty($oQuestion->parent_qid)) {
                         $qid = (int) $oQuestion->parent_qid;
                     }
-                    if (empty($gid)) {
-                        $gid = (int) $oQuestion->gid;
-                    }
+                    $gid = (int) $oQuestion->gid;
                 }
             }
             //2: Get all other questions that occur before this question that are pre-determined answer types
