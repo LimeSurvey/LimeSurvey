@@ -957,7 +957,7 @@ class QuestionAdministrationController extends LSBaseController
             'gid'       => $gid,
             'qid'       => $qid,
             'language'  => $language,
-            'question'  => '',
+            'question'  => $this->getParentQuestionFromRequest($surveyid) ?? '',
             'relevance' => '1',
             'oldCode'   => $oldCode,
             'subquestion'  => $oSubquestion
@@ -1010,7 +1010,7 @@ class QuestionAdministrationController extends LSBaseController
             'gid'               => $gid,
             'qid'               => $qid,
             'language'          => $language,
-            'question'          => $oQuestion,
+            'question'          => $this->getParentQuestionFromRequest($surveyid) ?? $oQuestion,
             'relevance'         => '1',
             'oldCode'           => $oldCode,
         );
@@ -1018,6 +1018,26 @@ class QuestionAdministrationController extends LSBaseController
         $html .= App()->twigRenderer->renderPartial('/questionAdministration/' . $view, $aData);
         $html .= '<!-- end of Inserted Row -->';
         return $html;
+    }
+
+    /**
+     * Returns the saved parent question of a new subquestion/answer option row, taken from the "qid" request parameter.
+     * Used by the placeholder picker of the row's editor.
+     *
+     * @param int $surveyid
+     * @return Question|null null for unsaved questions or if the question doesn't belong to the survey
+     */
+    private function getParentQuestionFromRequest($surveyid)
+    {
+        $parentQid = (int) App()->getRequest()->getParam('qid');
+        if (!$parentQid) {
+            return null;
+        }
+        $parentQuestion = Question::model()->findByPk($parentQid);
+        if (!$parentQuestion || (int) $parentQuestion->sid !== (int) $surveyid || !empty($parentQuestion->parent_qid)) {
+            return null;
+        }
+        return $parentQuestion;
     }
 
     /**
