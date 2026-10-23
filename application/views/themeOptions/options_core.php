@@ -15,10 +15,10 @@ foreach ($aTemplateConfiguration['imageFileList'] as $image) {
         if ($optgroup != '') {
             $imageOptions .= '</optgroup>';
         }
-        $imageOptions .= '<optgroup label="' . $image['group'] . '">';
+        $imageOptions .= '<optgroup label="' . CHtml::encode($image['group']) . '">';
         $optgroup = $image['group'];
     }
-    $imageOptions .= '<option data-lightbox-src="' . $image['preview'] . '" value="' . $image['filepath'] . '">' . $image['filename'] . '</option>';
+    $imageOptions .= '<option data-lightbox-src="' . CHtml::encode($image['preview']) . '" value="' . CHtml::encode($image['filepath']) . '">' . CHtml::encode($image['filename']) . '</option>';
 }
 
 // Add extra info needed for theme options of type "imagefile" (preview path and filename)
@@ -51,7 +51,7 @@ foreach ($aTemplateConfiguration['imageFileList'] as $image) {
         if ($optgroup != '') {
             $backgroundImageFile .= '</optgroup>';
         }
-        $backgroundImageFile .= '<optgroup label="' . $image['group'] . '">';
+        $backgroundImageFile .= '<optgroup label="' . CHtml::encode($image['group']) . '">';
         $optgroup = $image['group'];
     }
 
@@ -62,7 +62,7 @@ foreach ($aTemplateConfiguration['imageFileList'] as $image) {
         $backgroundfileInheritFilename = $image['filename'];
     }
 
-    $backgroundImageFile .= '<option data-lightbox-src="' . $image['preview'] . '" value="' . $image['filepath'] . '">' . $image['filename'] . '</option>';
+    $backgroundImageFile .= '<option data-lightbox-src="' . CHtml::encode($image['preview']) . '" value="' . CHtml::encode($image['filepath']) . '">' . CHtml::encode($image['filename']) . '</option>';
 }
 
 $aOptionAttributes['optionAttributes']['backgroundimagefile']['dropdownoptions'] = $backgroundImageFile;
@@ -76,7 +76,7 @@ foreach ($aTemplateConfiguration['imageFileList'] as $image) {
         if ($optgroup != '') {
             $brandlogo .= '</optgroup>';
         }
-        $brandlogo .= '<optgroup label="' . $image['group'] . '">';
+        $brandlogo .= '<optgroup label="' . CHtml::encode($image['group']) . '">';
         $optgroup = $image['group'];
     }
 
@@ -86,7 +86,7 @@ foreach ($aTemplateConfiguration['imageFileList'] as $image) {
         $logofileInheritPreview = $image['preview'];
     }
 
-    $brandlogo .= '<option data-lightbox-src="' . $image['preview'] . '" value="' . $image['filepath'] . '">' . $image['filename'] . '</option>';
+    $brandlogo .= '<option data-lightbox-src="' . CHtml::encode($image['preview']) . '" value="' . CHtml::encode($image['filepath']) . '">' . CHtml::encode($image['filename']) . '</option>';
 }
 $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $brandlogo;
 ?>
@@ -259,7 +259,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                                 $lightboxSrc = $logofileInheritPreview;
                                             }
                                             if ($category === 'Images') {
-                                                $dataAttributes = 'data-lightbox-src="' . $lightboxSrc . '"';
+                                                $dataAttributes = 'data-lightbox-src="' . CHtml::encode($lightboxSrc) . '"';
                                             }
                                             ?>
 
@@ -281,7 +281,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     <?php // Fields linked to a parent option (Yes/No switch) need a class and data-parent attribute ?>
                                     <select class="form-select selector_option_value_field selector_option_value_field selector_image_selector"
                                             <?= $parentDataAttribute ?>
-                                            data-inheritvalue="<?= $sParentOption ?>"
+                                            data-inheritvalue="<?= CHtml::encode($sParentOption) ?>"
                                             id="simple_edit_options_<?= $attributeKey ?>"
                                             name="<?= $attributeKey ?>">
                                         <?php if ($bInherit) : ?>
@@ -292,7 +292,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                                 $inheritedValue = isset($sParentOption) ? $sParentOption : '';
                                             }
                                             ?>
-                                            <option value="inherit"><?= gT("Inherit") ?> [<?= gT("Inherited value:") ?> <?= $inheritedValue ?>]</option>
+                                            <option value="inherit"><?= gT("Inherit") ?> [<?= gT("Inherited value:") ?> <?= CHtml::encode($inheritedValue) ?>]</option>
                                         <?php endif; ?>
                                         <?php // Dropdown options for image files ?>
                                         <?= $imageOptions ?>
