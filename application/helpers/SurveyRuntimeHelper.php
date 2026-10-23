@@ -155,6 +155,12 @@ class SurveyRuntimeHelper
     private $bInvalidLastPage = false;
 
     /**
+     * True if an all-in-one survey was submitted without accepting the survey data policy
+     * @var boolean
+     */
+    private $bDataSecurityNotAccepted = false;
+
+    /**
      * @var array|null
      */
     private $aStepInfo = null;
@@ -1011,7 +1017,17 @@ class SurveyRuntimeHelper
 
             if (($this->sMove == 'movesubmit')) {
                 if ($this->sSurveyMode == 'survey') {
-                    $this->aMoveResult = LimeExpressionManager::NavigateForwards();
+                    if (
+                        Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice > 0
+                        && App()->request->getPost('datasecurity_accepted') !== 'on'
+                    ) {
+                        /* All in one mode has no welcome page: don't save or submit the answers before the survey data policy is accepted on the survey page */
+                        $this->aMoveResult = LimeExpressionManager::JumpTo(1, false, false, true);
+                        $this->sMove = 'movenext'; // so will re-display the survey
+                        $this->bDataSecurityNotAccepted = true;
+                    } else {
+                        $this->aMoveResult = LimeExpressionManager::NavigateForwards();
+                    }
                 } else {
                     // may be submitting from the navigation bar, in which case need to process all intervening questions
                     // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
@@ -1124,13 +1140,14 @@ class SurveyRuntimeHelper
     }
 
     /**
-     * Redisplay the welcome page with an error if it was submitted without accepting the survey data policy
+     * Redisplay the welcome page with an error if it was submitted without accepting the survey data policy.
+     * In all-in-one mode the error is shown on the survey page, see setMoveResult().
      *
      * @return void
      */
     private function checkForDataSecurityAccepted()
     {
-        $this->aSurveyInfo['datasecuritynotaccepted'] = false;
+        $this->aSurveyInfo['datasecuritynotaccepted'] = $this->bDataSecurityNotAccepted;
         /* thisstep is sanitized as integer by returnGlobal(), it is null if not submitted */
         if ($this->param['thisstep'] === 0 && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice > 0) {
             $data_security_accepted = App()->request->getPost('datasecurity_accepted', false);
