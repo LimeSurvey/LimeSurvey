@@ -358,8 +358,10 @@ class SurveyActivator
         }
         try {
             if (isset($this->tableDefinition['token'])) {
+                // unique name ensure by surveyid + datetime + random number
+                $indexname = "idx_survey_token_{$this->survey->primaryKey}_" . date('YmdHis') . "_" . rand(1, 50000);
                 Yii::app()->db->createCommand()->createIndex(
-                    "idx_survey_token_{$this->survey->primaryKey}_" . rand(1, 50000),
+                    $indexname,
                     $sTableName,
                     'token'
                 );
@@ -412,9 +414,9 @@ class SurveyActivator
                 mssql_drop_column_with_constraints($this->survey->responsesTableName, 'id');
                 $sQuery = "ALTER TABLE {$this->survey->responsesTableName} ADD [id] int identity({$iAutoNumberStart},1)";
                 Yii::app()->db->createCommand($sQuery)->execute();
-                // Add back the primaryKey
-
-                Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_' . rand(1, 50000), $this->survey->responsesTableName, 'id');
+                // Add back the primaryKey : unique name ensure by surveyid + datetime + random number
+                $indexname = "idxuniq_survey_id_{$this->survey->primaryKey}_" . date('YmdHis') . "_" . rand(1, 50000);
+                Yii::app()->db->createCommand()->addPrimaryKey($indexnam, $this->survey->responsesTableName, 'id');
             } elseif (Yii::app()->db->driverName == 'pgsql') {
                 $sQuery = "SELECT setval(pg_get_serial_sequence('{$this->survey->responsesTableName}', 'id'),{$iAutoNumberStart},false);";
                 // FIXME @ not good
