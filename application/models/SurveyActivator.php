@@ -416,7 +416,7 @@ class SurveyActivator
                 Yii::app()->db->createCommand($sQuery)->execute();
                 // Add back the primaryKey : unique name ensure by surveyid + datetime + random number
                 $indexname = "idxuniq_survey_id_{$this->survey->primaryKey}_" . date('YmdHis') . "_" . rand(1, 50000);
-                Yii::app()->db->createCommand()->addPrimaryKey($indexnam, $this->survey->responsesTableName, 'id');
+                Yii::app()->db->createCommand()->addPrimaryKey($indexname, $this->survey->responsesTableName, 'id');
             } elseif (Yii::app()->db->driverName == 'pgsql') {
                 $sQuery = "SELECT setval(pg_get_serial_sequence('{$this->survey->responsesTableName}', 'id'),{$iAutoNumberStart},false);";
                 // FIXME @ not good
