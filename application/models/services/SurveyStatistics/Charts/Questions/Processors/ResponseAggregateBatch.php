@@ -25,6 +25,8 @@ final class ResponseAggregateBatch
 
     private const MAX_MEDIANS_PER_QUERY = 100;
 
+    private const MAX_DAY_COUNTS_PER_QUERY = 50;
+
     private const KIND_VALUE = 'value';
     private const KIND_JSON_ELEMENT = 'jsonElement';
     private const KIND_BLANK = 'blank';
@@ -59,10 +61,21 @@ final class ResponseAggregateBatch
      */
     private array $medianRequests = [];
 
+    /**
+     * Per-day counts need a GROUP BY, so like medians they run as separate
+     * grouped queries after the main pass.
+     *
+     * @var array<string, string> alias => field
+     */
+    private array $dayCountRequests = [];
+
     /** @var array<string, string> dedup key => alias */
     private array $aliasIndex = [];
 
-    /** @var array<string, int|float> alias => count, or fractional sum for KIND_SUM */
+    /**
+     * @var array<string, int|float|array<string, int>> alias => count, fractional
+     * sum for KIND_SUM, or a 'Y-m-d' => count map for countByDay()
+     */
     private array $results = [];
 
     private bool $executed = false;
@@ -167,6 +180,23 @@ final class ResponseAggregateBatch
     }
 
     /**
+     * Answers per calendar day of a date column
+     */
+    public function countByDay(string $field): string
+    {
+        $key = 'day' . "\x1F" . $field;
+        if (isset($this->aliasIndex[$key])) {
+            return $this->aliasIndex[$key];
+        }
+
+        $alias = 'd' . count($this->dayCountRequests);
+        $this->aliasIndex[$key] = $alias;
+        $this->dayCountRequests[$alias] = $field;
+
+        return $alias;
+    }
+
+    /**
      * Total row count (with the response filters applied).
      */
     public function countTotal(): string
@@ -227,8 +257,52 @@ final class ResponseAggregateBatch
         }
 
         $this->executeMedians($db, $table);
+        $this->executeDayCounts($db, $table);
 
         $this->executed = true;
+    }
+
+    /**
+     * Per-day counts via one GROUP BY sub-select per field
+     */
+    private function executeDayCounts(CDbConnection $db, string $table): void
+    {
+        $selects = [];
+        foreach ($this->dayCountRequests as $alias => $field) {
+            $this->results[$alias] = [];
+            $col = $db->quoteColumnName($field);
+            $where = $this->buildWhere();
+            $where = $where === '' ? " WHERE $col IS NOT NULL" : "$where AND $col IS NOT NULL";
+            $selects[] = 'SELECT ' . $db->quoteValue($alias) . ' AS ' . $db->quoteColumnName('alias')
+                . ", CAST($col AS DATE) AS " . $db->quoteColumnName('day')
+                . ', COUNT(*) AS ' . $db->quoteColumnName('total')
+                . " FROM $table$where GROUP BY CAST($col AS DATE)";
+        }
+
+        foreach (array_chunk($selects, self::MAX_DAY_COUNTS_PER_QUERY) as $chunk) {
+            $rows = $db->createCommand(implode(' UNION ALL ', $chunk))->queryAll();
+            foreach ($rows as $row) {
+                $day = substr((string)$row['day'], 0, 10);
+                // Skips MySQL zero dates and anything else that is no real day.
+                if (!$this->isValidDay($day)) {
+                    continue;
+                }
+                $this->results[$row['alias']][$day] = (int)$row['total'];
+            }
+        }
+
+        foreach (array_keys($this->dayCountRequests) as $alias) {
+            ksort($this->results[$alias]);
+        }
+    }
+
+    private function isValidDay(string $day): bool
+    {
+        if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $day, $parts) !== 1) {
+            return false;
+        }
+
+        return checkdate((int)$parts[2], (int)$parts[3], (int)$parts[1]);
     }
 
     /**
@@ -289,9 +363,10 @@ final class ResponseAggregateBatch
 
     /**
      * Resolved value for a previously registered alias (0 before execute()).
-     * Counts are integers; KIND_SUM aggregates may be fractional.
+     * Counts are integers; KIND_SUM aggregates may be fractional; countByDay()
+     * resolves to a 'Y-m-d' => count map.
      *
-     * @return int|float
+     * @return int|float|array<string, int>
      */
     public function value(string $alias)
     {
