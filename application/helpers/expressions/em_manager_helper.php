@@ -8350,6 +8350,30 @@ class LimeExpressionManager
     }
 
     /**
+     * Set the given replacement fields while running $callback, then restore the previous state of these fields
+     * @param array $replacementFields 'replacement' => "fixed value"
+     * @param callable $callback
+     * @return mixed the return value of $callback
+     */
+    public static function withReplacementFields(array $replacementFields, callable $callback)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        $previousTempVars = array_intersect_key($LEM->tempVars, $replacementFields);
+        self::updateReplacementFields($replacementFields);
+        try {
+            return $callback();
+        } finally {
+            foreach (array_keys($replacementFields) as $key) {
+                if (array_key_exists($key, $previousTempVars)) {
+                    $LEM->tempVars[$key] = $previousTempVars[$key];
+                } else {
+                    unset($LEM->tempVars[$key]);
+                }
+            }
+        }
+    }
+
+    /**
      * Unit test strings containing expressions
      */
     public static function UnitTestProcessStringContainingExpressions()
