@@ -302,7 +302,7 @@ class SurveyRuntimeHelper
                         // Make question related replacements available in subquestion and answer option texts
                         LimeExpressionManager::updateReplacementFields(array(
                             'QID' => $ia[0],
-                            'GID' => $gid,
+                            'GID' => $ia[5], // The question's own group, may differ from $gid with randomized groups
                             'SGQ' => $ia[1],
                         ));
                         list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia);
