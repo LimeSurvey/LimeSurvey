@@ -1,0 +1,237 @@
+.structure-item {
+  @include med14-c;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 32px;
+  margin-bottom: 6px;
+  padding: 0 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: $border-radius;
+  background-color: $white;
+  color: $g-800;
+  cursor: pointer;
+  position: relative;
+
+  &.structure-item-question {
+    background-color: $g-100;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  svg,
+  svg path {
+    fill: $g-900;
+  }
+
+  .structure-item-arrow,
+  .structure-item-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .structure-item-arrow {
+    width: 16px;
+    height: 16px;
+    border-radius: $border-radius-xs;
+    margin-right: 4px;
+    color: $g-900;
+    text-decoration: none;
+    line-height: 1;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .structure-item-icon {
+    width: 24px;
+    height: 24px;
+
+    svg,
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .structure-item-main {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 32px;
+    gap: 4px;
+    cursor: grab;
+    border-radius: $border-radius-xs;
+  }
+
+  .content-editable {
+    cursor: inherit;
+
+    &::before {
+      cursor: inherit;
+    }
+  }
+
+  .structure-item-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    color: $g-800;
+    display: block;
+    line-height: 20px;
+
+    // ContentEditor wraps the text in span > div; ellipsis needs to apply to the innermost block
+    > span,
+    .content-editable {
+      display: block;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  // Tooltip wrapper around the badge must not shrink
+  > span {
+    flex-shrink: 0;
+    display: flex;
+  }
+
+  .structure-item-code {
+    @include label-s;
+
+    flex: 0 0 46px;
+    box-sizing: border-box;
+    width: 46px;
+    height: 24px;
+    margin-right: 8px;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $border-radius-xs;
+    background-color: $g-200;
+    color: $g-900;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .structure-item-menu {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .dropdown-toggler {
+    width: 24px;
+    height: 24px;
+    margin: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $border-radius-xs;
+    color: $g-900;
+    font-size: 16px;
+    line-height: 16px;
+
+    i {
+      font-size: 16px;
+      line-height: 16px;
+    }
+  }
+
+  // Hover feedback follows the existing dropdown item treatment (G-200)
+  &:hover:not(.structure-item-selected) {
+    background-color: $g-200;
+  }
+
+  .structure-item-arrow:hover,
+  .dropdown-toggler:hover {
+    background-color: $g-300;
+  }
+
+  &.structure-item-selected {
+    background-color: $grape;
+    color: $g-200;
+
+    svg,
+    svg path {
+      fill: $white;
+    }
+
+    .structure-item-title,
+    .content-editable {
+      color: $g-200;
+    }
+
+    .structure-item-arrow,
+    .dropdown-toggler {
+      color: $white;
+
+      &:hover {
+        background-color: $grapeDark;
+      }
+    }
+
+    [data-placeholder]:empty:before {
+      color: $g-200 !important;
+    }
+  }
+
+  // Keyboard focus stays visible in both default and selected states
+  &:focus-visible,
+  .structure-item-main:focus-visible,
+  .structure-item-arrow:focus-visible,
+  .dropdown-toggler:focus-visible {
+    outline: 2px solid $action;
+    outline-offset: -2px;
+    box-shadow: none;
+  }
+
+  &.structure-item-selected:focus-visible,
+  &.structure-item-selected .structure-item-main:focus-visible,
+  &.structure-item-selected .structure-item-arrow:focus-visible,
+  &.structure-item-selected .dropdown-toggler:focus-visible {
+    outline-color: $white;
+  }
+}
+
+// The core wrappers around rows paint their own selection/background;
+// the row now owns those states.
+.survey-structure {
+  // :has() keeps other panels (e.g. Settings) that reuse these classes untouched
+  .focus-bg-purple:has(.structure-item),
+  .question-body-content {
+    background-color: transparent !important;
+    border-radius: 0;
+  }
+
+  .question-body-content .structure-item {
+    margin-bottom: 0;
+  }
+
+  .question-body-content {
+    margin-bottom: 6px;
+  }
+
+  .structure-item-title.question-code,
+  .group .structure-item-title.question-code {
+    width: auto !important;
+  }
+}
