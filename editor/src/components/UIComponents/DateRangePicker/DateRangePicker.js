@@ -210,7 +210,7 @@ export const DateRangePicker = ({
                   onCommit={handleFromInput}
                   onValidityChange={setIsFromValid}
                 />
-                <span>{t('until')}</span>
+                <span aria-hidden="true">–</span>
                 <DateInput
                   label={t('End date')}
                   value={tempRange.to}

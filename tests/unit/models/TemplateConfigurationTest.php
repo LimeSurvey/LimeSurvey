@@ -136,4 +136,24 @@ class TemplateConfigurationTest extends TestBaseClass
         $output = \Yii::app()->twigRenderer->convertTwigToHtml('{{ imageSrc(virtualGeneralFile, "files/logo.png") is same as(false) ? "OK" : "" }}', $options, $templateConfiguration);
         $this->assertEquals("OK", $output);
     }
+
+    /**
+     * Issue #19572: A survey level configuration of a theme other than the survey theme
+     * (e.g. set by a plugin in beforeSurveyPage) must inherit from the survey group
+     * configuration of that same theme, not from the one of the survey theme.
+     */
+    public function testSurveyConfigurationOfOtherThemeInheritsFromSameTheme()
+    {
+        if (empty(self::$testSurvey)) {
+            self::importSurvey(self::$surveysFolder . '/limesurvey_survey_666368.lss');
+        }
+        $this->assertNotEquals('bootswatch', self::$testSurvey->oOptions->template);
+
+        $templateConfiguration = TemplateConfiguration::getInstanceFromSurveyId(self::$surveyId, 'bootswatch');
+        $parentConfiguration = $templateConfiguration->getParentConfiguration();
+        $templateConfiguration->delete();
+
+        $this->assertEquals('bootswatch', $templateConfiguration->template_name);
+        $this->assertEquals('bootswatch', $parentConfiguration->template_name);
+    }
 }

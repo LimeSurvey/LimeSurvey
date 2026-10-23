@@ -561,7 +561,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty' => true, 'allowInherit' => true),
             array('active', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
             array('gsid', 'numerical', 'min' => '0', 'allowEmpty' => true),
-            array('gsid', 'in', 'range' => array_keys(SurveysGroups::getSurveyGroupsList()), 'allowEmpty' => true, 'message' => gT("You are not allowed to use this group"), 'except' => 'activationStateChange'),
+            array('gsid', 'in', 'range' => array_keys(SurveysGroups::getSurveyGroupsList()), 'allowEmpty' => true, 'message' => gT("You are not allowed to use this group")),
             array('anonymized', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('savetimings', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('datestamp', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
@@ -1763,7 +1763,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             [
                 'header'            => gT('Responses'),
                 'name'              => 'responses',
-                'value'             => '$data->countFullAnswers',
+                'value'             => '$data->isActive ? $data->countFullAnswers : ""',
                 'headerHtmlOptions' => ['class' => 'd-md-none d-lg-table-cell'],
                 'htmlOptions'       => ['class' => 'd-md-none d-lg-table-cell has-link'],
             ],
@@ -1810,7 +1810,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'incomplete' => [
                 'modalLabel'  => gT('Partial responses'),
                 'header'      => gT('Incomplete'),
-                'value'       => '$data->countIncompleteAnswers',
+                'value'       => '$data->isActive ? $data->countIncompleteAnswers : ""',
                 'name'        => 'incomplete',
                 'htmlOptions' => ['class' => 'has-link'],
             ],
@@ -1818,14 +1818,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'modalLabel'  => gT('Full responses'),
                 'header'      => gT('Full'),
                 'name'        => 'full',
-                'value'       => '$data->countFullAnswers',
+                'value'       => '$data->isActive ? $data->countFullAnswers : ""',
                 'htmlOptions' => ['class' => 'has-link'],
             ],
             'total' => [
                 'modalLabel'  => gT('Total responses'),
                 'header'      => gT('Total'),
                 'name'        => 'total',
-                'value'       => '$data->countTotalAnswers',
+                'value'       => '$data->isActive ? $data->countTotalAnswers : ""',
                 'htmlOptions' => ['class' => 'has-link'],
             ],
             'uses_tokens' => [

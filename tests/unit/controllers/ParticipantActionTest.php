@@ -194,6 +194,118 @@ class ParticipantActionTest extends TestBaseClass
     }
 
     /**
+     * Changing the visibility of an attribute answers with a message for the user.
+     *
+     * @return void
+     */
+    public function testChangeAttributeVisibilityAnswersWithMessage()
+    {
+        $attributeName = $this->createAttributeName('FALSE', 'N');
+
+        \Yii::app()->session['loginID'] = 1;
+        ob_start();
+        $this->runParticipantsAction('changeAttributeVisibility', [
+            'attribute_id' => $attributeName->attribute_id,
+            'visible' => '1',
+        ]);
+        $response = json_decode(ob_get_clean(), true);
+
+        $this->assertTrue($response['success']);
+        $this->assertNotEmpty($response['message']);
+        $this->assertArrayNotHasKey('debug', $response);
+        $this->assertEquals('TRUE', \ParticipantAttributeName::model()->findByPk($attributeName->attribute_id)->visible);
+        $this->assertTrue($attributeName->delete());
+    }
+
+    /**
+     * Changing the encryption of an attribute answers with a message for the user,
+     * also if the attribute does not exist.
+     *
+     * @return void
+     */
+    public function testChangeAttributeEncryptedAnswersWithMessage()
+    {
+        $attributeName = $this->createAttributeName('TRUE', 'N');
+
+        \Yii::app()->session['loginID'] = 1;
+        ob_start();
+        $this->runParticipantsAction('changeAttributeEncrypted', [
+            'attribute_id' => $attributeName->attribute_id,
+            'encrypted' => '1',
+        ]);
+        $response = json_decode(ob_get_clean(), true);
+
+        $this->assertTrue($response['success']);
+        $this->assertNotEmpty($response['message']);
+        $this->assertArrayNotHasKey('debug', $response);
+        $this->assertEquals('Y', \ParticipantAttributeName::model()->findByPk($attributeName->attribute_id)->encrypted);
+        $this->assertTrue($attributeName->delete());
+
+        ob_start();
+        $this->runParticipantsAction('changeAttributeEncrypted', [
+            'attribute_id' => $attributeName->attribute_id,
+            'encrypted' => '0',
+        ]);
+        $response = json_decode(ob_get_clean(), true);
+
+        $this->assertFalse($response['success']);
+        $this->assertNotEmpty($response['message']);
+    }
+
+    /**
+     * Users who may not manage the share of a participant get a no permission answer
+     * when changing whether the share is editable.
+     *
+     * @return void
+     */
+    public function testChangeSharedEditableStatusWithoutPermission()
+    {
+        $participant = $this->createParticipant(1);
+        $share = new \ParticipantShare();
+        $share->participant_id = $participant->participant_id;
+        $share->share_uid = self::$createOnlyUser->uid;
+        $share->date_added = date('Y-m-d H:i:s');
+        $share->can_edit = 0;
+        $this->assertTrue($share->save());
+
+        \Yii::app()->session['loginID'] = self::$readOnlyUser->uid;
+        \Yii::app()->user->setId(self::$readOnlyUser->uid);
+        $called = $this->runParticipantsAction('changeSharedEditableStatus', [
+            'participant_id' => $participant->participant_id,
+            'share_uid' => self::$createOnlyUser->uid,
+            'can_edit' => '1',
+        ]);
+
+        $this->assertEquals('outputNoPermission', $called);
+        $share = \ParticipantShare::model()->findByAttributes([
+            'participant_id' => $participant->participant_id,
+            'share_uid' => self::$createOnlyUser->uid,
+        ]);
+        $this->assertEquals(0, $share->can_edit);
+        $this->assertTrue($share->delete());
+        $this->assertTrue($participant->delete());
+    }
+
+    /**
+     * Creates a custom central participant attribute.
+     *
+     * @param string $visible 'TRUE' or 'FALSE'
+     * @param string $encrypted 'Y' or 'N'
+     * @return \ParticipantAttributeName
+     */
+    private function createAttributeName($visible, $encrypted)
+    {
+        $attributeName = new \ParticipantAttributeName();
+        $attributeName->attribute_type = 'TB';
+        $attributeName->defaultname = 'switch_test';
+        $attributeName->visible = $visible;
+        $attributeName->encrypted = $encrypted;
+        $attributeName->core_attribute = 'N';
+        $this->assertTrue($attributeName->save(), 'Saved attribute');
+        return $attributeName;
+    }
+
+    /**
      * Creates a central participant.
      *
      * @param integer $ownerUid

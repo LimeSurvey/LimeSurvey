@@ -6,30 +6,17 @@ import { STATES } from 'helpers'
 import { format } from 'util'
 import { getSiteUrl } from 'helpers'
 
-export const getSurveyDatabaseAlertMessage = (
-  isSuperAdmin,
-  isToast = false
-) => {
+export const getSurveyDatabaseAlertMessage = (isSuperAdmin) => {
   const linkOpen = `<a class="grape-link" href="${getSiteUrl('/index.php/admin/checkintegrity')}">`
 
-  if (isToast) {
-    return (
-      <div className="reg14">
-        {parse(
-          format(
-            t(
-              'A problem has been detected in the survey database. You can resolve this by performing a %sdata integrity check%s or by deactivating and reactivating the survey to reset the response table.'
-            ),
-            isSuperAdmin ? linkOpen : '',
-            isSuperAdmin ? '</a>' : ''
-          )
-        )}
-      </div>
-    )
-  }
-
   const action = isSuperAdmin
-    ? format(t('Please perform a %sdata integrity check%s.'), linkOpen, '</a>')
+    ? format(
+        t(
+          'You can resolve this issue by %sperforming a data integrity check%s or by deactivating and reactivating your survey to reset the response database.'
+        ),
+        linkOpen,
+        '</a>'
+      )
     : t(
         'Please contact an administrator to perform a database integrity check or deactivate and reactivate your survey to reset the response database.'
       )
@@ -37,7 +24,7 @@ export const getSurveyDatabaseAlertMessage = (
   return (
     <div className="reg14">
       {parse(
-        `${t('A problem has been detected in the survey database.')} ${action}`
+        `${t('A problem has been detected with the survey database.')} ${action}`
       )}
     </div>
   )

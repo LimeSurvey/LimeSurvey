@@ -19682,6 +19682,10 @@ input[type=datetime-local] {
   background-color: #fff;
   color: #333641;
 }
+.sidebar .sidebar-icons .sidebar-icon .btn-icon > i {
+  font-size: 24px;
+  line-height: 1;
+}
 .sidebar .scoped-toolbuttons-left {
   flex: 2 1 auto;
   align-self: flex-end;

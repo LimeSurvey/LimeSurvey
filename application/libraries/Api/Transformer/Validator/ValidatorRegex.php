@@ -42,7 +42,7 @@ class ValidatorRegex implements ValidatorInterface
     public function validateByPattern($pattern, $value)
     {
         if ($pattern === '') {
-            return gT('Invalid pattern provided for validation.', 'unescaped');
+            return 'Invalid pattern provided for validation.';
         }
 
         $matched = true;

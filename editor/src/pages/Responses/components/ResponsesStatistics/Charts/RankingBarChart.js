@@ -185,7 +185,7 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
                 <span>
                   {rank.value === 1
                     ? format(t('%s response'), rank.value)
-                    : format(t('%s responses'), rank.value)}
+                    : format(t('%d responses'), rank.value)}
                 </span>
               </div>
             ))}
