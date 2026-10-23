@@ -64,6 +64,17 @@ class LimeReplacementFieldsController extends LSBaseController
             throw new CHttpException(403);
         }
 
+        // Subquestions use the placeholders of their parent question, the question's own group wins over the requested one
+        if ($qid) {
+            $oQuestion = Question::model()->findByPk($qid);
+            if ($oQuestion && (int) $oQuestion->sid === $surveyid) {
+                if (!empty($oQuestion->parent_qid)) {
+                    $qid = (int) $oQuestion->parent_qid;
+                }
+                $gid = (int) $oQuestion->gid;
+            }
+        }
+
         if ($newType) {
             $newTypeResponse = $this->getNewTypeResponse($fieldtype, $surveyid, $gid, $qid);
             return $this->renderPartial('/admin/super/_renderJson', ['data' => $newTypeResponse]);
@@ -72,15 +83,6 @@ class LimeReplacementFieldsController extends LSBaseController
         list($replacementFields, $isInsertAnswerEnabled) = $this->getReplacementFields($fieldtype, $surveyid);
 
         if ($isInsertAnswerEnabled === true) {
-            if ($qid) {
-                $oQuestion = Question::model()->findByPk($qid);
-                if ($oQuestion && (int) $oQuestion->sid === $surveyid) {
-                    if (!empty($oQuestion->parent_qid)) {
-                        $qid = (int) $oQuestion->parent_qid;
-                    }
-                    $gid = (int) $oQuestion->gid;
-                }
-            }
             //2: Get all other questions that occur before this question that are pre-determined answer types
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
 
