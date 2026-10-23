@@ -131,14 +131,15 @@ class UserManagementController extends LSBaseController
      */
     public function actionApplyEdit()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+        $aUser = Yii::app()->request->getParam('User');
+        $isNewUser = empty($aUser['uid']);
+        if (!Permission::model()->hasGlobalPermission('users', $isNewUser ? 'create' : 'update')) {
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                 'success' => false,
                 'errors' => gT("You do not have permission to access this page."),
             ]]);
         }
 
-        $aUser = Yii::app()->request->getParam('User');
         // Sanitize full name to prevent XSS attack
         if (isset($aUser['full_name'])) {
             $aUser['full_name'] = flattenText($aUser['full_name'], false, true);

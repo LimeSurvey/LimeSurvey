@@ -140,6 +140,11 @@ node_modules/**/src
 !/node_modules/chart.js/dist/
 !/node_modules/chart.js/LICENSE.md
 
+!/node_modules/bowser/
+/node_modules/bowser/*
+!/node_modules/bowser/es5.js
+!/node_modules/bowser/LICENSE
+
 # build dependencies of the asset sub-packages
 assets/packages/**/node_modules/
 assets/packages/**/coverage/

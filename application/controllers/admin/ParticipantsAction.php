@@ -1407,7 +1407,7 @@ class ParticipantsAction extends SurveyCommonAction
      * AJAX Method to change the blocklist status of a participant
      * Requires POST with 'participant_id' (varchar) and 'blacklist' (boolean)
      * Requires 'participantpanel' 'update' permission, ownership, or an editable share on the participant
-     * Echos JSON-encoded array with 'success' (boolean) and 'newValue' ('Y' || 'N')
+     * Echos JSON-encoded array with 'success' (boolean), 'message' (string, shown to the user) and 'newValue' ('Y' || 'N')
      * @return void
      */
     public function changeblackliststatus()
@@ -1429,9 +1429,10 @@ class ParticipantsAction extends SurveyCommonAction
         $blacklistStatus = Yii::app()->request->getPost('blacklist');
         $blacklistValue = $blacklistStatus == true ? "Y" : "N";
         $participant->blacklisted = $blacklistValue;
-        $participant->update(['blacklisted']);
+        $success = $participant->update(['blacklisted']);
         echo json_encode(array(
-            "success" => true,
+            "success" => $success,
+            "message" => $success ? gT("Participant successfully updated") : gT('Your changes could not be saved.'),
             "newValue" => $blacklistValue
         ));
     }
@@ -1476,8 +1477,10 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Echoes json
+     * AJAX method to change whether a participant attribute is shown during registration
+     * Requires POST with 'attribute_id' (int) and 'visible' (boolean)
      * Requires global 'participantpanel' 'update' permission
+     * Echoes JSON-encoded array with 'success' (boolean), 'message' (string, shown to the user) and 'newValue' ('TRUE' || 'FALSE')
      * @return void
      */
     public function changeAttributeVisibility()
@@ -1491,22 +1494,24 @@ class ParticipantsAction extends SurveyCommonAction
         $visible = Yii::app()->request->getPost('visible');
         $visible_value = ($visible ? "TRUE" : "FALSE");
         $attributeName = ParticipantAttributeName::model()->findByPk($attributeId);
+        $success = false;
         if (isset($attributeName)) {
             $attributeName->visible = $visible_value;
-            $attributeName->update(['visible']);
+            $success = $attributeName->update(['visible']);
         }
         echo json_encode(array(
-            "debug" => Yii::app()->request,
-            "debug_p1" => Yii::app()->request->getPost('attribute_id'),
-            "debug_p2" => Yii::app()->request->getPost('visible'),
-            "success" => true,
+            "success" => $success,
+            "message" => $success ? gT('Attribute was saved.') : gT('Your changes could not be saved.'),
             "newValue" => $visible_value
         ));
     }
 
     /**
-     * Echoes json
+     * AJAX method to change the encryption of a participant attribute
+     * Encrypts or decrypts the stored values of all participants in one transaction, nothing is changed if this fails
+     * Requires POST with 'attribute_id' (int) and 'encrypted' (boolean)
      * Requires global 'participantpanel' 'update' permission
+     * Echoes JSON-encoded array with 'success' (boolean), 'message' (string, shown to the user) and on success 'newValue' ('Y' || 'N')
      * @return void
      */
     public function changeAttributeEncrypted()
@@ -1520,6 +1525,13 @@ class ParticipantsAction extends SurveyCommonAction
         $encrypted = Yii::app()->request->getPost('encrypted');
         $encrypted_value = $encrypted ? 'Y' : 'N';
         $attributeName = ParticipantAttributeName::model()->findByPk($attributeId);
+        if (!isset($attributeName)) {
+            echo json_encode(array(
+                "success" => false,
+                "message" => gT('Your changes could not be saved.')
+            ));
+            return;
+        }
         $encryptedBeforeChange = $attributeName->isEncrypted();
         $attributeName->encrypted = $encrypted_value;
         $encryptedAfterChange = $attributeName->isEncrypted();
@@ -1575,14 +1587,17 @@ class ParticipantsAction extends SurveyCommonAction
             $oTransaction->commit();
         } catch (\Exception $e) {
             $oTransaction->rollback();
-            return false;
+            Yii::log('Changing the encryption of participant attribute ' . $attributeId . ' failed: ' . $e->getMessage(), CLogger::LEVEL_ERROR, 'application.controllers.admin.participants');
+            echo json_encode(array(
+                "success" => false,
+                "message" => gT('The encryption setting could not be changed. The participant data was left as it was.')
+            ));
+            return;
         }
 
         echo json_encode(array(
-            "debug" => Yii::app()->request,
-            "debug_p1" => Yii::app()->request->getPost('attribute_id'),
-            "debug_p2" => Yii::app()->request->getPost('encrypted'),
             "success" => true,
+            "message" => gT('Attribute was saved.'),
             "newValue" => $encrypted_value
         ));
     }
@@ -2593,7 +2608,10 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
+     * AJAX method to change whether the user a participant is shared with may edit it
+     * Requires POST with 'participant_id' (varchar), 'share_uid' (int) and 'can_edit' (boolean)
      * Requires ParticipantShare::isAllowedToManageShare() for the participant behind the share
+     * Echoes JSON-encoded array with 'success' (boolean), 'message' (string, shown to the user) and 'newValue'
      * @return void
      */
     public function changeSharedEditableStatus()
@@ -2603,7 +2621,7 @@ class ParticipantsAction extends SurveyCommonAction
         $share_uid = Yii::app()->request->getPost('share_uid');
 
         if (!ParticipantShare::model()->isAllowedToManageShare($participant_id)) {
-            echo json_encode(array("newValue" => $can_edit, "success" => false));
+            $this->ajaxHelper::outputNoPermission();
             return;
         }
 
@@ -2615,7 +2633,11 @@ class ParticipantsAction extends SurveyCommonAction
         } else {
             $success = false;
         }
-        echo json_encode(array("newValue" => $can_edit, "success" => $success));
+        echo json_encode(array(
+            "newValue" => $can_edit,
+            "success" => $success,
+            "message" => $success ? gT("Changes saved successfully.") : gT('Your changes could not be saved.')
+        ));
     }
 
     /**

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-10-20 16:37:13+00:00\n"
+"POT-Creation-Date: 2026-10-22 04:41:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,12 +23,12 @@ msgstr ""
 #: application/controllers/UserManagementController.php:511
 #: application/controllers/UserManagementController.php:1302
 #: application/controllers/admin/DataEntry.php:207
-#: application/controllers/admin/DataEntry.php:1950
-#: application/controllers/admin/DataEntry.php:1953
-#: application/controllers/admin/DataEntry.php:1956
-#: application/controllers/admin/DataEntry.php:2250
-#: application/controllers/admin/DataEntry.php:2261
-#: application/controllers/admin/DataEntry.php:2272
+#: application/controllers/admin/DataEntry.php:1951
+#: application/controllers/admin/DataEntry.php:1954
+#: application/controllers/admin/DataEntry.php:1957
+#: application/controllers/admin/DataEntry.php:2251
+#: application/controllers/admin/DataEntry.php:2262
+#: application/controllers/admin/DataEntry.php:2273
 #: application/controllers/survey/SurveyIndex.php:110
 #: application/controllers/survey/SurveyIndex.php:394
 #: application/controllers/survey/SurveyIndex.php:415
@@ -443,7 +443,7 @@ msgstr ""
 
 #. Shown to survey participants
 #: application/controllers/AssessmentController.php:428
-#: application/controllers/UploaderController.php:421
+#: application/controllers/UploaderController.php:424
 #: application/models/Assessment.php:106 application/models/Box.php:162
 #: application/views/questionAdministration/partial/topbarBtns/questionTopbarRight_view.php:17
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupTopbarRight_view.php:9
@@ -482,7 +482,7 @@ msgstr ""
 #: application/controllers/ResponsesController.php:877
 #: application/controllers/ResponsesController.php:1129
 #: application/controllers/ResponsesController.php:1142
-#: application/controllers/admin/DataEntry.php:1662
+#: application/controllers/admin/DataEntry.php:1663
 #: application/controllers/admin/Export.php:435
 #: application/controllers/admin/Statistics.php:113
 #: application/controllers/admin/Statistics.php:697
@@ -503,7 +503,7 @@ msgid "Please select at least one item"
 msgstr ""
 
 #: application/controllers/FailedEmailController.php:213
-#: application/controllers/admin/DataEntry.php:1667
+#: application/controllers/admin/DataEntry.php:1668
 #: application/models/services/QuestionGroupService.php:206
 msgid "Invalid ID"
 msgstr ""
@@ -1245,7 +1245,7 @@ msgstr ""
 #: application/controllers/admin/Export.php:80
 #: application/controllers/survey/SurveyIndex.php:138
 #: application/core/SurveyCommonAction.php:166
-#: application/helpers/export_helper.php:2247
+#: application/helpers/export_helper.php:2291
 #, gp-priority: high
 msgid "Invalid question ID"
 msgstr ""
@@ -1406,7 +1406,7 @@ msgstr ""
 #: application/controllers/admin/Export.php:62
 #: application/controllers/survey/SurveyIndex.php:128
 #: application/core/SurveyCommonAction.php:180
-#: application/helpers/export_helper.php:2092
+#: application/helpers/export_helper.php:2136
 #, gp-priority: high
 msgid "Invalid group ID"
 msgstr ""
@@ -1875,7 +1875,7 @@ msgid "Submission date"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:259
-#: application/controllers/admin/DataEntry.php:1167
+#: application/controllers/admin/DataEntry.php:1168
 msgid "File count"
 msgstr ""
 
@@ -1885,8 +1885,8 @@ msgstr ""
 
 #. Shown to survey participants
 #: application/controllers/ResponsesController.php:283
-#: application/controllers/UploaderController.php:408
-#: application/controllers/admin/DataEntry.php:1152
+#: application/controllers/UploaderController.php:411
+#: application/controllers/admin/DataEntry.php:1153
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:11
 #: application/models/Notification.php:166 application/models/Survey.php:1749
 #: application/models/Surveymenu.php:334
@@ -1910,8 +1910,8 @@ msgstr ""
 
 #. Shown to survey participants
 #: application/controllers/ResponsesController.php:294
-#: application/controllers/UploaderController.php:409
-#: application/controllers/admin/DataEntry.php:1155
+#: application/controllers/UploaderController.php:412
+#: application/controllers/admin/DataEntry.php:1156
 #: application/helpers/common_helper.php:1872
 #: application/helpers/common_helper.php:2182
 #: application/helpers/export_helper.php:1387
@@ -1933,8 +1933,8 @@ msgstr ""
 
 #. Shown to survey participants
 #: application/controllers/ResponsesController.php:304
-#: application/controllers/UploaderController.php:410
-#: application/controllers/admin/DataEntry.php:1158
+#: application/controllers/UploaderController.php:413
+#: application/controllers/admin/DataEntry.php:1159
 #: application/views/admin/emailtemplates/email_language_template_tab.php:131
 #: application/views/survey/questions/answer/file_upload/answer.twig:43
 #: application/views/survey/questions/answer/file_upload/answer.twig:86
@@ -2523,7 +2523,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1106
 #: application/controllers/SurveyAdministrationController.php:1239
 #: application/controllers/SurveyAdministrationController.php:3637
-#: application/controllers/UploaderController.php:420
+#: application/controllers/UploaderController.php:423
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:68
 #: application/extensions/UserPermissionsWidget/views/table.php:16
 #: application/extensions/admin/grid/FloatingActionsWidget/actions/FailedEmailMassiveActions.php:60
@@ -2706,8 +2706,8 @@ msgstr ""
 
 #. Shown to survey participants
 #: application/controllers/SurveyAdministrationController.php:1916
-#: application/helpers/frontend_helper.php:1466
-#: application/helpers/replacements_helper.php:180
+#: application/helpers/frontend_helper.php:1484
+#: application/helpers/replacements_helper.php:183
 #: themes/survey/fruity_twentythree/views/subviews/messages/welcome.twig:47
 #: themes/survey/vanilla/views/subviews/messages/welcome.twig:49
 #, gp-priority: high
@@ -2793,7 +2793,7 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:2744
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:32
 #: application/helpers/SurveyRuntimeHelper.php:1479
-#: application/helpers/frontend_helper.php:2045
+#: application/helpers/frontend_helper.php:2063
 #: application/models/services/CopySurveyResources.php:68
 #: application/models/services/FilterImportedResources.php:69
 #: application/views/admin/authentication/error.php:6
@@ -2938,8 +2938,8 @@ msgstr ""
 #. Shown to survey participants
 #: application/controllers/SurveyAdministrationController.php:3299
 #: application/controllers/admin/DataEntry.php:806
-#: application/controllers/admin/DataEntry.php:1227
-#: application/controllers/admin/DataEntry.php:1297
+#: application/controllers/admin/DataEntry.php:1228
+#: application/controllers/admin/DataEntry.php:1298
 #: application/controllers/admin/PrintableSurvey.php:288
 #: application/controllers/admin/PrintableSurvey.php:318
 #: application/controllers/admin/PrintableSurvey.php:851
@@ -2962,8 +2962,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1120
 #: application/helpers/export_helper.php:409
 #: application/helpers/export_helper.php:413
-#: application/helpers/export_helper.php:2016
-#: application/helpers/export_helper.php:2037
+#: application/helpers/export_helper.php:2029
+#: application/helpers/export_helper.php:2050
 #: application/helpers/expressions/em_manager_helper.php:3379
 #: application/helpers/expressions/em_manager_helper.php:3383
 #: application/helpers/questionHelper.php:62
@@ -3111,8 +3111,8 @@ msgstr ""
 #. Shown to survey participants
 #: application/controllers/SurveyAdministrationController.php:3301
 #: application/controllers/admin/DataEntry.php:807
-#: application/controllers/admin/DataEntry.php:1222
-#: application/controllers/admin/DataEntry.php:1295
+#: application/controllers/admin/DataEntry.php:1223
+#: application/controllers/admin/DataEntry.php:1296
 #: application/controllers/admin/PrintableSurvey.php:285
 #: application/controllers/admin/PrintableSurvey.php:312
 #: application/controllers/admin/PrintableSurvey.php:850
@@ -3142,8 +3142,8 @@ msgstr ""
 #: application/helpers/export_helper.php:399
 #: application/helpers/export_helper.php:408
 #: application/helpers/export_helper.php:412
-#: application/helpers/export_helper.php:2016
-#: application/helpers/export_helper.php:2037
+#: application/helpers/export_helper.php:2029
+#: application/helpers/export_helper.php:2050
 #: application/helpers/expressions/em_manager_helper.php:3378
 #: application/helpers/expressions/em_manager_helper.php:3382
 #: application/helpers/questionHelper.php:63
@@ -3542,7 +3542,7 @@ msgid "Cancel"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3638
-#: application/controllers/admin/DataEntry.php:1561
+#: application/controllers/admin/DataEntry.php:1562
 #: application/controllers/admin/PluginManagerController.php:375
 #: application/helpers/admin/label_helper.php:124
 #: application/models/TemplateManifest.php:165
@@ -3948,131 +3948,131 @@ msgid "Survey options for theme %s and survey group ID %s"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:116
+#: application/controllers/UploaderController.php:120
 #, gp-priority: high
 msgid "File %s deleted"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:118
+#: application/controllers/UploaderController.php:122
 #, gp-priority: high
 msgid "There was an error deleting the file."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:134
-#: application/controllers/UploaderController.php:164
+#: application/controllers/UploaderController.php:138
+#: application/controllers/UploaderController.php:168
 #, gp-priority: high
 msgid "Sorry, there was an error uploading your file."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:168
+#: application/controllers/UploaderController.php:172
 #, gp-priority: high
 msgid "Sorry, there was an error uploading your file, error code : %s."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:178
-#: application/controllers/UploaderController.php:253
+#: application/controllers/UploaderController.php:182
+#: application/controllers/UploaderController.php:257
 #, gp-priority: high
 msgid "Sorry, this file is too large. Only files up to %s KB are allowed."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:235
-#: application/controllers/UploaderController.php:243
-#: application/controllers/UploaderController.php:377
+#: application/controllers/UploaderController.php:239
+#: application/controllers/UploaderController.php:247
+#: application/controllers/UploaderController.php:381
 #: application/views/admin/super/admin_notifications.php:100
 #, gp-priority: high
 msgid "An unknown error occurred"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:265
+#: application/controllers/UploaderController.php:269
 #, gp-priority: high
 msgid "Sorry, this file extension (%s) is not allowed!"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:292
+#: application/controllers/UploaderController.php:296
 #, gp-priority: high
 msgid "Sorry, unable to check extension of this file type %s."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:309
+#: application/controllers/UploaderController.php:313
 #, gp-priority: high
 msgid "Sorry, file type %s (extension : %s) is not allowed!"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:323
-#: application/controllers/UploaderController.php:340
-#: application/controllers/UploaderController.php:367
+#: application/controllers/UploaderController.php:327
+#: application/controllers/UploaderController.php:344
+#: application/controllers/UploaderController.php:371
 #: application/helpers/remotecontrol/remotecontrol_handle.php:3680
 #, gp-priority: high
 msgid "The file has been successfully uploaded."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:354
+#: application/controllers/UploaderController.php:358
 #, gp-priority: high
 msgid "We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:381
+#: application/controllers/UploaderController.php:385
 #, gp-priority: high
 msgid "An unknown error occurred when moving file %s to %s."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:411
+#: application/controllers/UploaderController.php:414
 #, gp-priority: high
 msgid "Sorry, no more files can be uploaded!"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:412
+#: application/controllers/UploaderController.php:415
 #, gp-priority: high
 msgid "Sorry, only %s files can be uploaded for this question!"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:413
+#: application/controllers/UploaderController.php:416
 #, gp-priority: high
 msgid "Uploading"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:414
+#: application/controllers/UploaderController.php:417
 #: application/views/survey/questions/answer/file_upload/modal-container.twig:28
 #, gp-priority: high
 msgid "Select file"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:415
+#: application/controllers/UploaderController.php:418
 #, gp-priority: high
 msgid "Please upload %s more file(s)."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:416
+#: application/controllers/UploaderController.php:419
 #, gp-priority: high
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:417
-#: application/controllers/UploaderController.php:418
+#: application/controllers/UploaderController.php:420
+#: application/controllers/UploaderController.php:421
 #, gp-priority: high
 msgid "The maximum number of files has been uploaded. You may return back to survey."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:419
+#: application/controllers/UploaderController.php:422
 #, gp-priority: high
 msgid ""
 "You need to upload %s more files for this question.\n"
@@ -4080,7 +4080,7 @@ msgid ""
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/UploaderController.php:509
+#: application/controllers/UploaderController.php:512
 #, gp-priority: high
 msgid "Invalid upload question %s in survey %s"
 msgstr ""
@@ -4548,8 +4548,8 @@ msgstr ""
 
 #. Shown to survey participants
 #: application/controllers/UserRoleController.php:372
-#: application/controllers/admin/DataEntry.php:2175
-#: application/libraries/Save.php:216 application/models/Assessment.php:83
+#: application/controllers/admin/DataEntry.php:2176
+#: application/libraries/Save.php:219 application/models/Assessment.php:83
 #: application/models/ParticipantAttributeName.php:257
 #: application/models/Permissiontemplates.php:61
 #: application/models/Permissiontemplates.php:264
@@ -4797,9 +4797,9 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:76
 #: application/controllers/admin/DataEntry.php:77
 #: application/controllers/admin/DataEntry.php:668
-#: application/controllers/admin/DataEntry.php:1902
-#: application/controllers/admin/DataEntry.php:2740
-#: application/controllers/admin/DataEntry.php:2743
+#: application/controllers/admin/DataEntry.php:1903
+#: application/controllers/admin/DataEntry.php:2741
+#: application/controllers/admin/DataEntry.php:2744
 #: application/views/admin/dataentry/caption_view.php:5
 #: application/views/admin/dataentry/dataentry_header_view.php:3
 #: application/views/responses/partial/topbarBtns/leftSideButtons.php:16
@@ -4906,7 +4906,7 @@ msgstr ""
 
 #. Shown to survey participants
 #: application/controllers/admin/DataEntry.php:831
-#: application/controllers/admin/DataEntry.php:1200
+#: application/controllers/admin/DataEntry.php:1201
 #: application/helpers/expressions/em_manager_helper.php:2913
 #: application/helpers/expressions/em_manager_helper.php:3085
 #: application/views/admin/dataentry/content_view.php:492
@@ -4919,11 +4919,11 @@ msgstr ""
 
 #. Shown to survey participants
 #: application/controllers/admin/DataEntry.php:857
-#: application/controllers/admin/DataEntry.php:1251
-#: application/controllers/admin/DataEntry.php:1280
-#: application/controllers/admin/DataEntry.php:1311
-#: application/controllers/admin/DataEntry.php:1341
-#: application/controllers/admin/DataEntry.php:1377
+#: application/controllers/admin/DataEntry.php:1252
+#: application/controllers/admin/DataEntry.php:1281
+#: application/controllers/admin/DataEntry.php:1312
+#: application/controllers/admin/DataEntry.php:1342
+#: application/controllers/admin/DataEntry.php:1378
 #: application/core/QuestionTypes/5PointChoice/RenderFivePointChoice.php:50
 #: application/core/QuestionTypes/Array10ChoiceQuestions/RenderArray10ChoiceQuestion.php:166
 #: application/core/QuestionTypes/Array10ChoiceQuestions/RenderArray10ChoiceQuestion.php:232
@@ -4997,7 +4997,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:925
 #: application/controllers/admin/DataEntry.php:984
 #: application/controllers/admin/DataEntry.php:1108
-#: application/controllers/admin/DataEntry.php:1217
+#: application/controllers/admin/DataEntry.php:1218
 #: application/views/admin/dataentry/content_view.php:90
 #: application/views/admin/dataentry/content_view.php:187
 #: application/views/admin/dataentry/content_view.php:212
@@ -5021,7 +5021,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1166
 #: application/helpers/common_helper.php:1108
 #: application/helpers/export_helper.php:404
-#: application/helpers/export_helper.php:2021
+#: application/helpers/export_helper.php:2034
 #: application/helpers/expressions/em_manager_helper.php:3375
 #: application/helpers/userstatistics_helper.php:1112
 #: application/models/services/Quotas.php:134
@@ -5047,7 +5047,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1167
 #: application/helpers/common_helper.php:1105
 #: application/helpers/export_helper.php:405
-#: application/helpers/export_helper.php:2021
+#: application/helpers/export_helper.php:2034
 #: application/helpers/expressions/em_manager_helper.php:3374
 #: application/helpers/userstatistics_helper.php:1113
 #: application/models/services/Quotas.php:133
@@ -5168,7 +5168,7 @@ msgid "Your ranking"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/admin/DataEntry.php:1296
+#: application/controllers/admin/DataEntry.php:1297
 #: application/controllers/admin/PrintableSurvey.php:315
 #: application/controllers/admin/PrintableSurvey.php:935
 #: application/controllers/admin/PrintableSurvey.php:949
@@ -5177,7 +5177,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1050
 #: application/helpers/common_helper.php:1123
 #: application/helpers/export_helper.php:414
-#: application/helpers/export_helper.php:2037
+#: application/helpers/export_helper.php:2050
 #: application/helpers/expressions/em_manager_helper.php:3384
 #: application/helpers/userstatistics_helper.php:1002
 #: application/models/services/SurveyCondition.php:728
@@ -5194,7 +5194,7 @@ msgid "Uncertain"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/admin/DataEntry.php:1325
+#: application/controllers/admin/DataEntry.php:1326
 #: application/controllers/admin/PrintableSurvey.php:325
 #: application/controllers/admin/PrintableSurvey.php:965
 #: application/controllers/admin/PrintableSurvey.php:978
@@ -5203,7 +5203,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1066
 #: application/helpers/common_helper.php:1130
 #: application/helpers/export_helper.php:417
-#: application/helpers/export_helper.php:2042
+#: application/helpers/export_helper.php:2055
 #: application/helpers/expressions/em_manager_helper.php:3387
 #: application/helpers/userstatistics_helper.php:1014
 #: application/models/services/SurveyCondition.php:733
@@ -5220,7 +5220,7 @@ msgid "Increase"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/admin/DataEntry.php:1326
+#: application/controllers/admin/DataEntry.php:1327
 #: application/controllers/admin/PrintableSurvey.php:331
 #: application/controllers/admin/PrintableSurvey.php:966
 #: application/controllers/admin/PrintableSurvey.php:979
@@ -5229,7 +5229,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1067
 #: application/helpers/common_helper.php:1136
 #: application/helpers/export_helper.php:418
-#: application/helpers/export_helper.php:2042
+#: application/helpers/export_helper.php:2055
 #: application/helpers/expressions/em_manager_helper.php:3388
 #: application/helpers/userstatistics_helper.php:1015
 #: application/models/services/SurveyCondition.php:734
@@ -5246,7 +5246,7 @@ msgid "Same"
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/admin/DataEntry.php:1327
+#: application/controllers/admin/DataEntry.php:1328
 #: application/controllers/admin/PrintableSurvey.php:328
 #: application/controllers/admin/PrintableSurvey.php:967
 #: application/controllers/admin/PrintableSurvey.php:980
@@ -5255,7 +5255,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1068
 #: application/helpers/common_helper.php:1133
 #: application/helpers/export_helper.php:419
-#: application/helpers/export_helper.php:2042
+#: application/helpers/export_helper.php:2055
 #: application/helpers/expressions/em_manager_helper.php:3389
 #: application/helpers/userstatistics_helper.php:1016
 #: application/models/services/SurveyCondition.php:735
@@ -5271,134 +5271,134 @@ msgstr ""
 msgid "Decrease"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1529
+#: application/controllers/admin/DataEntry.php:1530
 msgid "Unseen or not answered"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1531
+#: application/controllers/admin/DataEntry.php:1532
 msgid "Unseen"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1574
+#: application/controllers/admin/DataEntry.php:1575
 msgid "If the field is marked as Unseen no value should be set."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1726
+#: application/controllers/admin/DataEntry.php:1727
 msgid "Question %s was marked as \"Unseen\" but a value was provided. The \"Unseen\" status has been ignored."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1752
-#: application/controllers/admin/DataEntry.php:1832
+#: application/controllers/admin/DataEntry.php:1753
+#: application/controllers/admin/DataEntry.php:1833
 msgid "Invalid datetime %s value for %s"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1763
-#: application/controllers/admin/DataEntry.php:1783
+#: application/controllers/admin/DataEntry.php:1764
+#: application/controllers/admin/DataEntry.php:1784
 msgid "Invalid numeric value for %s"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1848
+#: application/controllers/admin/DataEntry.php:1849
 msgid "The response record %s was updated."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/admin/DataEntry.php:1950
-#: application/libraries/Save.php:128
+#: application/controllers/admin/DataEntry.php:1951
+#: application/libraries/Save.php:131
 #, gp-priority: high
 msgid "You must supply a name for this saved session."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/admin/DataEntry.php:1953
-#: application/libraries/Save.php:131
+#: application/controllers/admin/DataEntry.php:1954
+#: application/libraries/Save.php:134
 #, gp-priority: high
 msgid "You must supply a password for this saved session."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/admin/DataEntry.php:1956
-#: application/libraries/Save.php:134
+#: application/controllers/admin/DataEntry.php:1957
+#: application/libraries/Save.php:137
 #, gp-priority: high
 msgid "Your passwords do not match."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2148
+#: application/controllers/admin/DataEntry.php:2149
 msgid "Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2163
+#: application/controllers/admin/DataEntry.php:2164
 msgid "A survey participant entry for the saved survey has been created, too."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/admin/DataEntry.php:2172
-#: application/libraries/Save.php:213
+#: application/controllers/admin/DataEntry.php:2173
+#: application/libraries/Save.php:216
 #, gp-priority: high
 msgid "Saved Survey Details"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2173
+#: application/controllers/admin/DataEntry.php:2174
 msgid "Thank you for saving your survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr ""
 
 #. Shown to survey participants
-#: application/controllers/admin/DataEntry.php:2176
-#: application/libraries/Save.php:218
+#: application/controllers/admin/DataEntry.php:2177
+#: application/libraries/Save.php:221
 #, gp-priority: high
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2181
+#: application/controllers/admin/DataEntry.php:2182
 msgid "An email has been sent with details about your saved survey. Please make sure to remember your password."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2183
+#: application/controllers/admin/DataEntry.php:2184
 msgid "Unable to send email about your saved survey (Error: %s)."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2251
+#: application/controllers/admin/DataEntry.php:2252
 msgid "This is a closed-access survey, so you must supply a access code.  Please contact the administrator for assistance."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2262
+#: application/controllers/admin/DataEntry.php:2263
 msgid "The provided access code is not valid or has already been used."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2273
+#: application/controllers/admin/DataEntry.php:2274
 msgid "There is already a recorded answer for this access code"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2286
+#: application/controllers/admin/DataEntry.php:2287
 msgid "Use the following link to update it:"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2290
+#: application/controllers/admin/DataEntry.php:2291
 #: application/views/responses/partial/topbarBtns/responseViewTopbarRight_view.php:9
 msgid "Edit this entry"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2303
+#: application/controllers/admin/DataEntry.php:2304
 msgid "This surveys uses anonymized responses, so you can't update your response."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2404
+#: application/controllers/admin/DataEntry.php:2405
 msgid "Only answer this if the following conditions are met:"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2411
+#: application/controllers/admin/DataEntry.php:2412
 msgid "The answer(s) must meet these validation criteria:"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2421
+#: application/controllers/admin/DataEntry.php:2422
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2703
+#: application/controllers/admin/DataEntry.php:2704
 #: application/controllers/admin/PrintableSurvey.php:1486
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2712
+#: application/controllers/admin/DataEntry.php:2713
 #: application/controllers/admin/PrintableSurvey.php:1499
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
@@ -6165,8 +6165,8 @@ msgstr ""
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/unknown_modal_type.php:38
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:72
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:72
-#: application/helpers/replacements_helper.php:301
-#: application/helpers/replacements_helper.php:419
+#: application/helpers/replacements_helper.php:304
+#: application/helpers/replacements_helper.php:422
 #: application/models/TemplateConfig.php:608
 #: application/models/TemplateConfig.php:609
 #: application/views/admin/emailtemplates/email_language_template_tab.php:180
@@ -6602,7 +6602,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:527
 #: application/core/LsDefaultDataSets.php:528
 #: application/core/LsDefaultDataSets.php:529
-#: application/extensions/admin/BoxesWidget/views/box.php:105
+#: application/extensions/admin/BoxesWidget/views/box.php:107
 #: application/helpers/questionHelper.php:406
 #: application/helpers/questionHelper.php:417
 #: application/helpers/questionHelper.php:428
@@ -7751,14 +7751,14 @@ msgstr ""
 
 #. Shown to survey participants
 #: application/controllers/survey/SurveyIndex.php:487
-#: application/libraries/Save.php:154
+#: application/libraries/Save.php:157
 #, gp-priority: high
 msgid "The answer to the security question is incorrect."
 msgstr ""
 
 #. Shown to survey participants
 #: application/controllers/survey/SurveyIndex.php:493
-#: application/helpers/frontend_helper.php:1284
+#: application/helpers/frontend_helper.php:1302
 #, gp-priority: high
 msgid "You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again."
 msgstr ""
@@ -10009,7 +10009,7 @@ msgstr ""
 #. Shown to survey participants
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:410
 #: application/core/plugins/Authdb/Authdb.php:149
-#: application/libraries/Save.php:217 application/models/User.php:190
+#: application/libraries/Save.php:220 application/models/User.php:190
 #: application/views/admin/authentication/newPassword.php:38
 #: application/views/admin/token/bounce.php:86
 #: application/views/admin/user/modifyuser.php:55
@@ -11110,18 +11110,18 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:69
+#: application/extensions/admin/BoxesWidget/views/box.php:71
 #: editor/src/components/SurveyOverview/SurveyOverview.js:171
 #: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:118
 msgid "No responses"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:72
+#: application/extensions/admin/BoxesWidget/views/box.php:74
 #: editor/src/pages/Responses/components/ResponsesStatistics/Charts/RankingBarChart.js:188
 msgid "%d responses"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:89
+#: application/extensions/admin/BoxesWidget/views/box.php:91
 #: application/models/Plugin.php:415 application/models/Survey.php:1701
 #: application/models/User.php:673
 #: application/views/quotas/viewquotas_massive_selector.php:20
@@ -11130,13 +11130,13 @@ msgstr ""
 msgid "Activate"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:97
+#: application/extensions/admin/BoxesWidget/views/box.php:99
 #: application/models/Survey.php:1695
 #: editor/src/components/SurveyOverview/SurveyOverview.js:249
 msgid "Edit survey"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:133
+#: application/extensions/admin/BoxesWidget/views/box.php:135
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:41
 #: application/views/responses/browsetimerow_view.php:22
 msgid "No surveys found."
@@ -14152,50 +14152,50 @@ msgid "Usage of + with numeric value, see manual about usage of sum."
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:300
+#: application/helpers/frontend_helper.php:317
 #, gp-priority: high
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:311
-#: application/helpers/frontend_helper.php:315
+#: application/helpers/frontend_helper.php:328
+#: application/helpers/frontend_helper.php:332
 #, gp-priority: high
 msgid "Sorry, only %s extensions are allowed!"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:326
+#: application/helpers/frontend_helper.php:343
 #, gp-priority: high
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:394
+#: application/helpers/frontend_helper.php:414
 #, gp-priority: high
 msgid "Invalid access code"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:552
+#: application/helpers/frontend_helper.php:570
 #, gp-priority: high
 msgid "Basic admin notification could not be sent because of error: %s"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:600
+#: application/helpers/frontend_helper.php:618
 #, gp-priority: high
 msgid "Detailed admin notification could not be sent because of error: %s"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:707
+#: application/helpers/frontend_helper.php:725
 #, gp-priority: high
 msgid "Original error message could not be saved."
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:742
+#: application/helpers/frontend_helper.php:760
 #: themes/survey/fruity_twentythree/views/subviews/content/submit_preview.twig:22
 #: themes/survey/fruity_twentythree/views/subviews/header/head.twig:40
 #: themes/survey/vanilla/views/subviews/content/submit_preview.twig:22
@@ -14205,37 +14205,37 @@ msgid "Responses were not saved"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:744
+#: application/helpers/frontend_helper.php:762
 #, gp-priority: high
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:748
+#: application/helpers/frontend_helper.php:766
 #, gp-priority: high
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:753
+#: application/helpers/frontend_helper.php:771
 #, gp-priority: high
 msgid "An error occurred saving a response to survey %s"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:754
+#: application/helpers/frontend_helper.php:772
 #, gp-priority: high
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:763
+#: application/helpers/frontend_helper.php:781
 #, gp-priority: high
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:767
+#: application/helpers/frontend_helper.php:785
 #: application/models/FailedEmail.php:82 application/models/FailedEmail.php:233
 #: application/views/failedEmail/partials/modal/email_error.php:7
 #: application/views/themeOptions/availablethemelist.php:50
@@ -14245,50 +14245,50 @@ msgid "Error message"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:773
+#: application/helpers/frontend_helper.php:791
 #, gp-priority: high
 msgid "Error saving results"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:779
+#: application/helpers/frontend_helper.php:797
 #, gp-priority: high
 msgid "Try to submit again"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:1297
+#: application/helpers/frontend_helper.php:1315
 #, gp-priority: high
 msgid "The access code you have provided is either not valid, or has already been used."
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:1462
-#: application/helpers/frontend_helper.php:1487
+#: application/helpers/frontend_helper.php:1480
+#: application/helpers/frontend_helper.php:1505
 #, gp-priority: high
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:1470
+#: application/helpers/frontend_helper.php:1488
 #, gp-priority: high
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:2044
+#: application/helpers/frontend_helper.php:2062
 #, gp-priority: high
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:2046
+#: application/helpers/frontend_helper.php:2064
 #, gp-priority: high
 msgid "View policy"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/frontend_helper.php:2047
+#: application/helpers/frontend_helper.php:2065
 #, gp-priority: high
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
@@ -15876,10 +15876,10 @@ msgid "Display type"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/replacements_helper.php:149
-#: application/helpers/replacements_helper.php:151
-#: application/helpers/replacements_helper.php:356
-#: application/helpers/replacements_helper.php:358
+#: application/helpers/replacements_helper.php:152
+#: application/helpers/replacements_helper.php:154
+#: application/helpers/replacements_helper.php:359
+#: application/helpers/replacements_helper.php:361
 #: themes/survey/fruity_twentythree/views/layout_survey_list.twig:175
 #: themes/survey/vanilla/views/layout_survey_list.twig:173
 #, gp-priority: high
@@ -15887,7 +15887,7 @@ msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/replacements_helper.php:182
+#: application/helpers/replacements_helper.php:185
 #: application/models/TemplateManifest.php:443
 #: editor/src/components/Survey/SurveyHeader.js:264
 #: themes/survey/fruity_twentythree/views/subviews/messages/welcome.twig:49
@@ -15897,25 +15897,25 @@ msgid "There is 1 question in this survey."
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/replacements_helper.php:184
+#: application/helpers/replacements_helper.php:187
 #, gp-priority: high
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/replacements_helper.php:218
+#: application/helpers/replacements_helper.php:221
 #, gp-priority: high
 msgid "Save as PDF"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/replacements_helper.php:218
+#: application/helpers/replacements_helper.php:221
 #, gp-priority: high
 msgid "Note: Print will not include items on this page"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/replacements_helper.php:258
+#: application/helpers/replacements_helper.php:261
 #: themes/survey/fruity_twentythree/views/subviews/content/clearall.twig:21
 #: themes/survey/fruity_twentythree/views/subviews/header/head.twig:37
 #: themes/survey/vanilla/views/subviews/content/clearall.twig:21
@@ -15925,7 +15925,7 @@ msgid "Answers cleared"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/replacements_helper.php:259
+#: application/helpers/replacements_helper.php:262
 #: themes/survey/fruity_twentythree/views/subviews/messages/assessments.twig:27
 #: themes/survey/vanilla/views/subviews/messages/assessments.twig:27
 #, gp-priority: high
@@ -15933,7 +15933,7 @@ msgid "Your assessment"
 msgstr ""
 
 #. Shown to survey participants
-#: application/helpers/replacements_helper.php:383
+#: application/helpers/replacements_helper.php:386
 #, gp-priority: high
 msgid "Unknown"
 msgstr ""
@@ -16889,43 +16889,31 @@ msgid "This is the email address used to create the current authentication token
 msgstr ""
 
 #. Shown to survey participants
-#: application/libraries/Save.php:142
+#: application/libraries/Save.php:145
 #, gp-priority: high
 msgid "You may not use slashes or ampersands in your name or password."
 msgstr ""
 
 #. Shown to survey participants
-#: application/libraries/Save.php:144
+#: application/libraries/Save.php:147
 #, gp-priority: high
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr ""
 
 #. Shown to survey participants
-#: application/libraries/Save.php:214
+#: application/libraries/Save.php:217
 #, gp-priority: high
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please make sure to remember your password - we cannot retrieve it for you."
 msgstr ""
 
 #. Shown to survey participants
-#: application/libraries/Save.php:227
+#: application/libraries/Save.php:230
 #, gp-priority: high
-msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
+msgid "Your survey was saved, but the email with the details could not be sent. Please note the name and password you just used to resume the survey later."
 msgstr ""
 
 #. Shown to survey participants
-#: application/libraries/Save.php:229
-#, gp-priority: high
-msgid "Email error message %s"
-msgstr ""
-
-#. Shown to survey participants
-#: application/libraries/Save.php:231
-#, gp-priority: high
-msgid "(Reason: Administrator email address empty)"
-msgstr ""
-
-#. Shown to survey participants
-#: application/libraries/Save.php:236
+#: application/libraries/Save.php:233
 #, gp-priority: high
 msgid "Your survey was successfully saved."
 msgstr ""
@@ -17316,11 +17304,7 @@ msgstr ""
 msgid "Missing tag %s in %s in extension config.xml"
 msgstr ""
 
-#: application/models/ExtensionConfig.php:249
-msgid "Extension %s has no updater defined in config.xml"
-msgstr ""
-
-#: application/models/ExtensionConfig.php:285
+#: application/models/ExtensionConfig.php:278
 msgid "No XML config loaded"
 msgstr ""
 
@@ -18954,7 +18938,7 @@ msgstr ""
 msgid "The “%s” theme is not compatible with this LimeSurvey version. It could not be uninstalled. Please contact %s regarding this issue."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1749
+#: application/models/TemplateConfiguration.php:1746
 msgid "No preview available"
 msgstr ""
 
@@ -19706,7 +19690,7 @@ msgstr ""
 msgid "Survey language %s could not be created."
 msgstr ""
 
-#: application/models/services/SurveyAggregateService/LanguageSettings.php:139
+#: application/models/services/SurveyAggregateService/LanguageSettings.php:140
 msgid "Failed saving language settings for survey ID %s and language %s"
 msgstr ""
 
@@ -31544,7 +31528,7 @@ msgstr ""
 msgid "%s MB"
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponsesTable/ResponsesTable.js:343
+#: editor/src/pages/Responses/components/ResponsesTable/ResponsesTable.js:380
 msgid "No files to download!"
 msgstr ""
 
