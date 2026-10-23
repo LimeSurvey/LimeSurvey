@@ -1,9 +1,38 @@
-.imageselect-horizontal {
-    width:90%;
-    margin: auto;
-    white-space: nowrap;
-    overflow: hidden;
-    position: relative;
+/*
+ * Image size and fit, set by the image settings (see answer.twig):
+ * --imageselect-width / --imageselect-height on the list, plus one imageselect-fit-* class.
+ * The img has the class fixed-width, so the general ".ls-answers img" rule of the survey themes doesn't apply.
+ */
+.imageselect-answers .imageselect-img {
+    max-width: 100%;
+    width: var(--imageselect-width, auto);
+    height: var(--imageselect-height, auto);
+    object-fit: contain;
+}
+
+.imageselect-answers.imageselect-fit-cover .imageselect-img {
+    object-fit: cover;
+}
+
+.imageselect-answers.imageselect-fit-fill .imageselect-img {
+    object-fit: fill;
+}
+
+/* Display columns: don't split an answer across two columns */
+.imageselect-answers > li {
+    break-inside: avoid;
+}
+
+/* Horizontal scroll: all answers in one row that can be scrolled */
+.imageselect-answers.imageselect-horizontal {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    overflow-x: auto;
+}
+
+.imageselect-answers.imageselect-horizontal > li {
+    flex: 0 0 auto;
 }
 
 .imageselect-list{
@@ -11,24 +40,11 @@
     padding: 4px;
 }
 
-.imageselect-horizontal .imageselect-list{
-    width: 2000%;
-    white-space: nowrap;
-    position: absolute;
-    overflow: visible;
-    left: 4px;
-    top: 4px;
-}
 .imageselect-list li.imageselect-listitem{
     padding: 0;
     margin: 6px 8px;
     border: 0;
     display: block;
-}
-
-.imageselect-horizontal li.imageselect-listitem{
-        display: inline-block;
-        height: 100%;
 }
 
 .imageselect-container{
@@ -56,6 +72,20 @@ li.imageselect-listitem .imageselect-container .imageselect-label:after{
 }
 li.imageselect-listitem .imageselect-container .imageselect-checkbox{
     position:relative /* This set a bad positoion for image (leave place for input) but leave it for theme compatbility issue ##18211 */
+}
+/*
+ * fruity_twentythree hides the real checkbox (opacity 0) and draws its own box at the top left of the container.
+ * The real checkbox must not take up space, otherwise wide images wrap below it and the drawn box ends up outside the image.
+ */
+body.fruity_twentythree li.imageselect-listitem .imageselect-container .imageselect-checkbox{
+    position: absolute;
+}
+/* Same small gap to the image edge on the side as on the top (the theme's offset expects the space of the real checkbox) */
+html:not([dir="rtl"]) body.fruity_twentythree li.imageselect-listitem .imageselect-container .imageselect-select{
+    left: 24px;
+}
+html[dir="rtl"] body.fruity_twentythree li.imageselect-listitem .imageselect-container .imageselect-select{
+    right: 24px;
 }
 li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked+label{
     border: 18px solid hsla(198,50%,30%,0.9);

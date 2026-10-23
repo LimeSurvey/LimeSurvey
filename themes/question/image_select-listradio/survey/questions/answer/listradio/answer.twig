@@ -4,14 +4,41 @@
  *
  * @var $name
  * @var $value
+ * @var $question_template_attribute.fix_width
+ * @var $question_template_attribute.fix_height
+ * @var $question_template_attribute.keep_aspect
+ * @var $question_template_attribute.crop_or_resize
+ * @var $question_template_attribute.horizontal_scroll
  */
 #}
+{#
+    Image display settings.
+    The effective values are worked out here, in one place; the markup below only uses the results.
+    When further settings are added (e.g. from the new editor), only this block needs to decide which value wins.
+    - imageselectWidth / imageselectHeight: size in px, or '' if not set
+    - imageselectFit: how the image fills that size: 'contain' (whole image, not distorted),
+      'cover' (fills the size, overflow is cut off) or 'fill' (stretched to the size)
+    - imageselectHorizontal: one horizontally scrollable row instead of a list; the columns setting is ignored
+#}
+{% set imageselectAttributes = question_template_attribute|default({}) %}
+{% set imageselectWidth = imageselectAttributes.fix_width|default('')|trim %}
+{% set imageselectWidth = (imageselectWidth matches '/^[0-9]+$/' and imageselectWidth > 1) ? imageselectWidth : '' %}
+{% set imageselectHeight = imageselectAttributes.fix_height|default('')|trim %}
+{% set imageselectHeight = (imageselectHeight matches '/^[0-9]+$/' and imageselectHeight > 1) ? imageselectHeight : '' %}
+{% set imageselectFit = 'contain' %}
+{% if imageselectAttributes.crop_or_resize|default('') == 'crop' %}
+    {% set imageselectFit = 'cover' %}
+{% elseif imageselectWidth and imageselectHeight and imageselectAttributes.keep_aspect|default('') != 'yes' %}
+    {% set imageselectFit = 'fill' %}
+{% endif %}
+{% set imageselectHorizontal = imageselectAttributes.horizontal_scroll|default('') == 'yes' %}
+{% set imageselectColumns = (not imageselectHorizontal and iNbCols > 1) ? iNbCols : 0 %}
 
 <!-- List Radio -->
 
 <!-- answer -->
 {{ sTimer }}
-<ul class="imageselect-list {{ coreClass }} list-unstyled {% if iNbCols > 1 %} ls-column-count-{{iNbCols}}{% endif %}" role="radiogroup" aria-labelledby="ls-question-text-{{ name }}"{% if iNbCols > 1 %} data-column-count={{iNbCols}}{% endif %}>
+<ul class="imageselect-list {{ coreClass }} list-unstyled imageselect-answers imageselect-fit-{{ imageselectFit }}{% if imageselectHorizontal %} imageselect-horizontal{% endif %}{% if imageselectColumns %} ls-column-count-{{ imageselectColumns }}{% endif %}" role="radiogroup" aria-labelledby="ls-question-text-{{ name }}"{% if imageselectColumns %} data-column-count={{ imageselectColumns }}{% endif %}{% if imageselectWidth or imageselectHeight %} style="{% if imageselectWidth %}--imageselect-width: {{ imageselectWidth }}px;{% endif %}{% if imageselectHeight %} --imageselect-height: {{ imageselectHeight }}px;{% endif %}"{% endif %}>
     {# rows/answer_row.php #}
     {{ sRows }}
 </ul>
