@@ -133,6 +133,9 @@ class LimeReplacementFieldsController extends LSBaseController
             if (is_null($qid) || $this->shouldAddQuestion($action, $gid, $qid, $question, $previousQuestion)) {
                 $isPreviousPageQuestion = $this->addQuestionToList($action, $gid, $question, $questionType, $surveyformat, $isPreviousPageQuestion, $questionList);
                 $previousQuestion = $question;
+            } elseif ($action == 'editanswer' && empty($qid)) {
+                // Unsaved question: eligibility depends on the group, not on the position in the fieldmap
+                continue;
             } else {
                 break;
             }
@@ -186,11 +189,16 @@ class LimeReplacementFieldsController extends LSBaseController
                     if (empty($gid)) {
                         return true;
                     }
+                    // New questions are added at the end of their group by default
+                    if ($question['gid'] == $gid) {
+                        return true;
+                    }
                     $groupOrders = $this->getGroupOrders($gid);
                     if (!isset($groupOrders[$gid], $groupOrders[$question['gid']])) {
                         return true;
                     }
-                    return $groupOrders[$question['gid']] <= $groupOrders[$gid];
+                    // Groups sharing the group_order of the current group (e.g. after imports) are not before it
+                    return $groupOrders[$question['gid']] < $groupOrders[$gid];
                 }
                 // no break
             case 'copyquestion':
