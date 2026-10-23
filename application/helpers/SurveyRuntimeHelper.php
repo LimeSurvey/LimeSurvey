@@ -358,6 +358,14 @@ class SurveyRuntimeHelper
             $step = $_SESSION[$this->LEMsessid]['step'] ?? 0;
             $notRelevantSteps = $_SESSION[$this->LEMsessid]['notRelevantSteps'] ?? 0;
             $hiddenSteps = $_SESSION[$this->LEMsessid]['hiddenSteps'] ?? 0;
+            if ($this->sSurveyMode == 'group') {
+                // Groups with only always hidden questions were skipped: Don't count the ones before the current group
+                $previousGroups = array_slice($_SESSION[$this->LEMsessid]['grouplist'] ?? [], 0, max(0, $step - 1));
+                $hiddenSteps = count(array_intersect(
+                    array_map('intval', array_column($previousGroups, 'gid')),
+                    $_SESSION[$this->LEMsessid]['hiddenGroupIds'] ?? []
+                ));
+            }
 
             if ($this->bShowEmptyGroup) {
                 $this->aSurveyInfo['progress']['currentstep'] = $totalSteps + 1;

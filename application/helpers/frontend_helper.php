@@ -1440,10 +1440,11 @@ function resetAllSessionVariables($surveyid)
 /**
  * The number of "pages" that will be presented in this survey
  * The number of pages to be presented will differ depending on the survey format
- * Set totalsteps in session
+ * Set totalsteps, totalVisibleSteps and (group by group) hiddenGroupIds in session
  * @param int $surveyid
  * @param array $thissurvey
  * @param integer $totalquestions
+ * @param integer $totalVisibleQuestions Number of questions without "Always hide this question"
  * @return void
  */
 function setTotalSteps($surveyid, array $thissurvey, $totalquestions, $totalVisibleQuestions)
@@ -1455,7 +1456,13 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions, $totalVisi
 
         case "G":
             if (isset($_SESSION['responses_' . $surveyid]['grouplist'])) {
-                $_SESSION['responses_' . $surveyid]['totalsteps'] = count($_SESSION['responses_' . $surveyid]['grouplist']);
+                $groupIds = array_map('intval', array_column($_SESSION['responses_' . $surveyid]['grouplist'], 'gid'));
+                // Groups with only always hidden questions are never shown: Don't count them for the progress bar
+                $visibleGroupIds = Survey::model()->findByPk($surveyid)->getGroupIdsWithVisibleQuestions();
+                $hiddenGroupIds = array_values(array_diff($groupIds, $visibleGroupIds));
+                $_SESSION['responses_' . $surveyid]['totalsteps'] = count($groupIds);
+                $_SESSION['responses_' . $surveyid]['totalVisibleSteps'] = count($groupIds) - count($hiddenGroupIds);
+                $_SESSION['responses_' . $surveyid]['hiddenGroupIds'] = $hiddenGroupIds;
             }
             break;
 
