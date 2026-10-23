@@ -7,6 +7,7 @@ import {
   getQuestionAttributesTitles,
   createBufferOperation,
   getDisabledQuestionTypes,
+  getQuestionById,
   errorToast,
 } from 'helpers'
 import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
@@ -54,6 +55,18 @@ export const QuestionSettings = ({ surveyId }) => {
   useEffect(() => {
     closeConditionDesignerPanels()
   }, [focused?.qid])
+
+  // The persisted focus can point to a question that isn't in the loaded
+  // survey (e.g. one from a previously opened survey) until focus is restored.
+  const isFocusedQuestionInSurvey = useMemo(
+    () =>
+      Boolean(
+        focused?.qid &&
+        survey?.questionGroups &&
+        getQuestionById(focused.qid, survey).question
+      ),
+    [focused?.qid, survey]
+  )
 
   const questionSettings = useMemo(() => {
     if (!focused?.qid) {
@@ -246,7 +259,7 @@ export const QuestionSettings = ({ surveyId }) => {
     !!questionSettingsOptions?.isAdvanced &&
     advancedQuestionSettings.length > 0
 
-  if (focused) {
+  if (isFocusedQuestionInSurvey) {
     if (conditionDesignerPanels.isConditionPanelOpen || scenarioToPatch) {
       return (
         <ConditionDesigner
@@ -357,7 +370,7 @@ export const QuestionSettings = ({ surveyId }) => {
         </>
       )}
       <div id="condition-designer">
-        {!focused ? null : (
+        {!isFocusedQuestionInSurvey ? null : (
           <>
             <AddScenario
               key={`add-scenario-${focused.qid}`}

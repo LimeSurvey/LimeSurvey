@@ -1,9 +1,17 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { format } from 'util'
 import classNames from 'classnames'
 
 import { useAppState, useBuffer } from 'hooks'
-import { STATES, createBufferOperation, getSiteUrl } from 'helpers'
+import { queryClient } from 'queryClient'
+import {
+  STATES,
+  createBufferOperation,
+  errorToast,
+  getConditionDependentQuestions,
+  getSiteUrl,
+} from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { TooltipContainer } from 'components'
 import { DeleteIcon, CopyIcon, EyeIcon } from 'components/icons'
@@ -22,6 +30,26 @@ export const QuestionFooter = ({
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   const handleRemoveQuestion = () => {
+    const survey = queryClient.getQueryData([STATES.SURVEY])?.survey
+    const dependentQuestions = getConditionDependentQuestions(
+      survey,
+      question.qid
+    )
+
+    // The server refuses to delete a question used as a condition source.
+    if (dependentQuestions.length) {
+      errorToast(
+        format(
+          t(
+            'This question cannot be deleted because conditions of other questions rely on it: %s. Remove those conditions first.'
+          ),
+          dependentQuestions.map((q) => q.title).join(', ')
+        ),
+        'center'
+      )
+      return
+    }
+
     setShowDeleteModal(true)
   }
 
