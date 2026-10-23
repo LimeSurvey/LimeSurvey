@@ -299,7 +299,17 @@ class SurveyRuntimeHelper
                         //Get the answers/inputnames
                         // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
                         // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
+                        LimeExpressionManager::updateReplacementFields(array(
+                            'QID' => $ia[0],
+                            'GID' => $ia[5],
+                            'SGQ' => $ia[1],
+                        ));
                         list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia);
+                        LimeExpressionManager::updateReplacementFields(array(
+                            'QID' => null,
+                            'GID' => null,
+                            'SGQ' => null,
+                        ));
 
                         if ($plus_qanda) {
                             $plus_qanda[] = $ia[4];
@@ -460,6 +470,7 @@ class SurveyRuntimeHelper
                 'GROUPNAME' => $aGroup['name'],
             ));
             $aGroup['gseq']        = $_gseq;
+            $aGroup['gid']         = $gid;
             // Use survey level settings
             $showgroupinfo_ = $this->aSurveyInfo['showgroupinfo'];
 

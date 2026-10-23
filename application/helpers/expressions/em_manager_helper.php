@@ -6966,7 +6966,16 @@ class LimeExpressionManager
             }
         }
         $prettyPrintValidTip = $stringToParse;
-        $validTip = $LEM->ProcessString($stringToParse, $qid, null, 1, 1, false, false);
+        $validTip = $LEM->ProcessString(
+            $stringToParse,
+            $qid,
+            ['QID' => $qid, 'GID' => $gid, 'SGQ' => 'Q' . $qid],
+            1,
+            1,
+            false,
+            false
+        );
+        self::updateReplacementFields(['QID' => null, 'GID' => null, 'SGQ' => null]);
         // TODO check for errors?
         if ((($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)) {
             $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();
