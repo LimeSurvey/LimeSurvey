@@ -441,6 +441,23 @@ export const ResponsesTable = ({
     }
   }, [data, isFetching, deepLinkResponseId])
 
+  // Rebind the open response detail to the refreshed row, so it shows the updated values.
+  useEffect(() => {
+    const openResponseId = responseViewRowInfo?.original?.id
+
+    if (!showSurveyDetails || openResponseId === undefined) {
+      return
+    }
+
+    const refreshedRow = table
+      .getRowModel()
+      .rows.find((r) => String(r?.original?.id) === String(openResponseId))
+
+    if (refreshedRow && refreshedRow !== responseViewRowInfo) {
+      setResponseViewRowInfo(refreshedRow)
+    }
+  }, [data])
+
   const handleOnSave = (valuesInfo, row) => {
     const updateValue = {}
     const responseId = row.original.id
