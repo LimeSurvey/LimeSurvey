@@ -65,6 +65,7 @@
   outline-offset: -2px;
 }
 .checkbox-item input[type="checkbox"]:checked + label::after,
+.checkbox-item .checkbox-checked + label::after,
 .checkbox-item input[type="radio"]:checked + label::after {
   font-family: "FontAwesome";
   content: "\f00c";

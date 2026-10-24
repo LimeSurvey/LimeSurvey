@@ -68,7 +68,7 @@
     }
 
     {% set checkicon = '"\\' ~  aSurveyInfo.options.checkicon   ~ '"' %}
-    .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item input[type="radio"]:checked + label::after {
+    .checkbox-item input[type="checkbox"]:checked + label::after, .checkbox-item .checkbox-checked + label::after, .checkbox-item input[type="radio"]:checked + label::after {
         content: {{ checkicon }};
     }
 
@@ -80,7 +80,8 @@
             {% set checkboxanimationduration = aSurveyInfo.options.checkboxanimationduration %}
         {% endif %}
 
-        .checkbox-item input[type="checkbox"]:checked + label::after{
+        .checkbox-item input[type="checkbox"]:checked + label::after,
+        .checkbox-item .visual-checkbox.checkbox-checked + label::after{
             animation-name: {{ aSurveyInfo.options.checkboxanimation  }};
             animation-duration: {{ checkboxanimationduration }}ms;
             animation-fill-mode: both;
@@ -91,7 +92,8 @@
             -o-transform: none;
             transform: none;
         }
-        .checkbox-item input[type="checkbox"] + label::after{
+        .checkbox-item input[type="checkbox"] + label::after,
+        .checkbox-item .visual-checkbox + label::after{
             display: none;
             -webkit-transform: none;
             -ms-transform: none;
