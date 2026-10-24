@@ -34,19 +34,25 @@
     <div class="{{ aSurveyInfo.class.modaldialog }}" {{ aSurveyInfo.attr.modaldialog }}>
         <div class="{{ aSurveyInfo.class.modalcontent }}" {{ aSurveyInfo.attr.modalcontent }} >
             <div class="{{ aSurveyInfo.class.modalheader }}" {{ aSurveyInfo.attr.modalheader }} >
-                <button  {{ aSurveyInfo.attr.modalclosebutton }} class="{{ aSurveyInfo.class.modalclosebutton }}"  ></button>
+                <button  {{ aSurveyInfo.attr.modalclosebutton }} class="{{ aSurveyInfo.class.modalclosebutton }}"><span class="visually-hidden">{{ gT('Close') }}</span></button>
                 <div class="{{ aSurveyInfo.class.modaltitle }}" {{ aSurveyInfo.attr.modaltitle }}>&nbsp;</div>
             </div>
             <div class="{{ aSurveyInfo.class.modalbody }}" {{ aSurveyInfo.attr.modalbody }}>
             </div>
             {% if(aSurveyInfo.mandNonSoft == false and aSurveyInfo.mandSoft)%}
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
-                <a id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterlink }}" data-movenext="{{ aSurveyInfo.aNavigator.aMoveNext.value }}">{{ gT("Continue without answering") }}</a>
-                <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Answer question") }}</a>
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                        <button type="button" id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterlink }}" data-movenext="{{ aSurveyInfo.aNavigator.aMoveNext.value }}">{{ gT("Continue without answering") }}</button>
+                    </li>
+                    <li class="list-inline-item">
+                        <button type="button" {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Answer question") }}</button>
+                    </li>
+                </ul>
             </div>
             {% else %}
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
-                <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Close") }}</a>
+                <button type="button" {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Close") }}</button>
             </div>
             {% endif %}
         </div>
@@ -59,14 +65,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{ gT("Exit and clear survey" ) }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ gT('Close') }}"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"><span class="visually-hidden">{{ gT('Close') }}</span></button>
             </div>
             <div class="modal-body">
                 <p>{{ gT("Please confirm you want to clear your response?") }}</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gT("Cancel") }}</button>
-                <button id="clear-all-submit" type="submit" class="btn btn-primary">{{ gT("Clear") }}</button>
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gT("Cancel") }}</button>
+                    </li>
+                    <li class="list-inline-item">
+                        <button id="clear-all-submit" type="submit" class="btn btn-primary">{{ gT("Clear") }}</button>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
