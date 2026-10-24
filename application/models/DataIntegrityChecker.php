@@ -155,6 +155,10 @@ class DataIntegrityChecker
             $aData = $this->createMissingQuestionL10ns($aDelete['missingquestionl10ns'], $aData);
         }
 
+        if (isset($aDelete['invaliddefaultvalues'])) {
+            $aData = $this->deleteInvalidDefaultValues($aDelete['invaliddefaultvalues'], $aData);
+        }
+
         if (isset($aDelete['groups'])) {
             $aData = $this->deleteGroups($aDelete['groups'], $aData);
         }
@@ -1073,6 +1077,163 @@ class DataIntegrityChecker
     }
 
     /**
+     * Finds default values that the survey never uses or that are invalid for their question,
+     * e.g. "10" as the default of a multiple choice subquestion, where only "Y" is valid.
+     * Invalid default values show an error on the question in the survey.
+     *
+     * A default value is never used when it doesn't belong to one of the question's answer fields:
+     * Questions with subquestions only use the defaults of their own subquestions, the other
+     * questions only use the default of the question itself.
+     * Only the values of question types with a fixed set of valid values or with answer options are
+     * checked, with the same rules as LimeExpressionManager::checkValidityAnswer(). Default values with
+     * an expression are not checked: Their value is only known in the survey. Special defaults (the "Other"
+     * text) and defaults of question types that don't use any default value (Array dual scale,
+     * Array (Numbers), Array (Texts), Ranking, File upload) are not checked either.
+     *
+     * Runs two queries, independent of the number of default values: The check page runs it on every load.
+     *
+     * @return array[] Default values to delete, each with a 'dvid', 'qid', 'title' and 'sid' key, and for an
+     *                 invalid value the 'id', 'language' and 'defaultvalue' of its text (null for a never used default value).
+     */
+    private function findInvalidDefaultValues()
+    {
+        $aSubquestionTypes = array();
+        $aSingleFieldTypes = array();
+        foreach (QuestionType::modelsAttributes() as $sTypeCode => $aTypeAttributes) {
+            // PHP casts numeric array keys to int; the type column is varchar, so force string
+            $sTypeCode = (string) $sTypeCode;
+            // Same question types as in createFieldMap()
+            if (empty($aTypeAttributes['subquestions'])) {
+                if ($sTypeCode !== Question::QT_VERTICAL_FILE_UPLOAD) {
+                    $aSingleFieldTypes[] = $sTypeCode;
+                }
+            } elseif ($aTypeAttributes['subquestions'] == 1 && $aTypeAttributes['answerscales'] < 2 && $sTypeCode !== Question::QT_R_RANKING) {
+                $aSubquestionTypes[] = $sTypeCode;
+            }
+        }
+        $aUsedCondition = array(
+            'or',
+            array('and', array('in', 'q.type', $aSubquestionTypes), 'sq.qid IS NOT NULL'),
+            array('and', array('in', 'q.type', $aSingleFieldTypes), 'dv.sqid = 0'),
+        );
+        $aUnusedCondition = array(
+            'or',
+            array('and', array('in', 'q.type', $aSubquestionTypes), 'sq.qid IS NULL'),
+            array('and', array('in', 'q.type', $aSingleFieldTypes), 'dv.sqid <> 0'),
+        );
+
+        $aInvalid = array();
+        $aUnusedDefaultValues = Yii::app()->db->createCommand()
+            ->select('dv.dvid, dv.qid, q.title, q.sid')
+            ->from('{{defaultvalues}} dv')
+            ->join('{{questions}} q', 'dv.qid = q.qid')
+            ->leftJoin('{{questions}} sq', 'sq.qid = dv.sqid AND sq.parent_qid = dv.qid')
+            ->where(array('and', "dv.specialtype = ''", $aUnusedCondition))
+            ->queryAll();
+        foreach ($aUnusedDefaultValues as $aDefaultValue) {
+            $aInvalid[] = array_merge($aDefaultValue, array('id' => null, 'language' => null, 'defaultvalue' => null));
+        }
+
+        // Valid values of the question types with a fixed set of values, see LimeExpressionManager::checkValidityAnswer()
+        $aFixedValues = array(
+            Question::QT_5_POINT_CHOICE => array('1', '2', '3', '4', '5'),
+            Question::QT_A_ARRAY_5_POINT => array('1', '2', '3', '4', '5'),
+            Question::QT_B_ARRAY_10_CHOICE_QUESTIONS => array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'),
+            Question::QT_C_ARRAY_YES_UNCERTAIN_NO => array('Y', 'N', 'U'),
+            Question::QT_E_ARRAY_INC_SAME_DEC => array('I', 'D', 'S'),
+            Question::QT_G_GENDER => array('M', 'F'),
+            Question::QT_Y_YES_NO_RADIO => array('Y', 'N'),
+            Question::QT_M_MULTIPLE_CHOICE => array('Y'),
+            Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => array('Y'),
+        );
+        $aInvalidValueCondition = array(
+            'or',
+            // Question types whose value is an answer option code; "-oth-" is the "Other" option of lists
+            array(
+                'and',
+                array('in', 'q.type', array(Question::QT_L_LIST, Question::QT_EXCLAMATION_LIST_DROPDOWN, Question::QT_O_LIST_WITH_COMMENT, Question::QT_F_ARRAY, Question::QT_H_ARRAY_COLUMN)),
+                'a.aid IS NULL',
+                array('or', "l.defaultvalue <> '-oth-'", "q.other <> 'Y'", array('in', 'q.type', array(Question::QT_O_LIST_WITH_COMMENT, Question::QT_F_ARRAY, Question::QT_H_ARRAY_COLUMN))),
+            ),
+        );
+        foreach ($aFixedValues as $sTypeCode => $aValues) {
+            $aInvalidValueCondition[] = array('and', array('in', 'q.type', array((string) $sTypeCode)), array('not in', 'l.defaultvalue', $aValues));
+        }
+        $aInvalidValues = Yii::app()->db->createCommand()
+            ->select('l.id, l.dvid, l.language, l.defaultvalue, dv.qid, q.title, q.sid')
+            ->from('{{defaultvalue_l10ns}} l')
+            ->join('{{defaultvalues}} dv', 'l.dvid = dv.dvid')
+            ->join('{{questions}} q', 'dv.qid = q.qid')
+            ->leftJoin('{{questions}} sq', 'sq.qid = dv.sqid AND sq.parent_qid = dv.qid')
+            ->leftJoin('{{answers}} a', 'a.qid = dv.qid AND a.scale_id = 0 AND a.code = l.defaultvalue')
+            ->where(array(
+                'and',
+                "dv.specialtype = ''",
+                "l.defaultvalue <> ''",
+                "l.defaultvalue NOT LIKE '%{%'",
+                $aUsedCondition,
+                $aInvalidValueCondition,
+            ))
+            ->queryAll();
+        return array_merge($aInvalid, $aInvalidValues);
+    }
+
+    /**
+     * Deletes default values that the survey never uses, and the texts of default values that are invalid
+     * for their question. A default value without any text left is deleted, too.
+     *
+     * Deletes in batches, so that a large number of default values doesn't need a query per default value.
+     *
+     * @param array[] $defaultValues Default values found by findInvalidDefaultValues().
+     * @param array $aData For view generation.
+     * @return array $aData with a message per deleted default value.
+     */
+    private function deleteInvalidDefaultValues(array $defaultValues, array $aData)
+    {
+        $aUnusedDvids = array();
+        $aInvalidL10nIds = array();
+        $aInvalidDvids = array();
+        foreach ($defaultValues as $defaultValue) {
+            if ($defaultValue['id'] === null) {
+                $aUnusedDvids[] = $defaultValue['dvid'];
+                $aData['messages'][] = sprintf(
+                    gT('Deleted an unused default value of question %s (ID %s) in survey %s'),
+                    CHtml::encode($defaultValue['title']),
+                    $defaultValue['qid'],
+                    $defaultValue['sid']
+                );
+            } else {
+                $aInvalidL10nIds[] = $defaultValue['id'];
+                $aInvalidDvids[$defaultValue['dvid']] = $defaultValue['dvid'];
+                $aData['messages'][] = sprintf(
+                    gT('Deleted the invalid default value %s for language %s of question %s (ID %s) in survey %s'),
+                    CHtml::encode($defaultValue['defaultvalue']),
+                    $defaultValue['language'],
+                    CHtml::encode($defaultValue['title']),
+                    $defaultValue['qid'],
+                    $defaultValue['sid']
+                );
+            }
+        }
+        $oDb = Yii::app()->db;
+        foreach (array_chunk($aUnusedDvids, 1000) as $aDvids) {
+            $oDb->createCommand()->delete('{{defaultvalue_l10ns}}', array('in', 'dvid', $aDvids));
+            $oDb->createCommand()->delete('{{defaultvalues}}', array('in', 'dvid', $aDvids));
+        }
+        foreach (array_chunk($aInvalidL10nIds, 1000) as $aIds) {
+            $oDb->createCommand()->delete('{{defaultvalue_l10ns}}', array('in', 'id', $aIds));
+        }
+        // Default values without any text left
+        foreach (array_chunk(array_values($aInvalidDvids), 1000) as $aDvids) {
+            $oDb->createCommand()->delete(
+                '{{defaultvalues}}',
+                array('and', array('in', 'dvid', $aDvids), 'NOT EXISTS (SELECT 1 FROM {{defaultvalue_l10ns}} l WHERE l.dvid = {{defaultvalues}}.dvid)')
+            );
+        }
+        return $aData;
+    }
+
+    /**
      * Finds archived table settings whose archived table no longer exists.
      *
      * Queries the plain list of archived (old_*) table names instead of calling getTable() per row:
@@ -1283,6 +1444,11 @@ class DataIntegrityChecker
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid';
         $oCriteria->condition = 'q.qid IS NULL';
         $aDelete['defaultvalues'] = DefaultValue::model()->count($oCriteria);
+
+        $aInvalidDefaultValues = $this->findInvalidDefaultValues();
+        if (!empty($aInvalidDefaultValues)) {
+            $aDelete['invaliddefaultvalues'] = $aInvalidDefaultValues;
+        }
 
         /**********************************************************************/
         /*     Check quotas                                                   */

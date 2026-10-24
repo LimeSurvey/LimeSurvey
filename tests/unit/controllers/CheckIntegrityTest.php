@@ -818,6 +818,93 @@ class CheckIntegrityTest extends TestBaseClass
     }
 
     /**
+     * Invalid default values (e.g. imported from an old survey) showed an error in the survey,
+     * so the consistency check must delete them and default values the survey never uses,
+     * while keeping valid default values and default values with an expression.
+     */
+    public function testInvalidAndUnusedDefaultValuesAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $group = self::$testSurvey->groups[0];
+        $language = self::$testSurvey->language;
+        $qid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99993, 'CIDEFAULT');
+        $subquestionQids = array();
+        foreach (array('SQ001', 'SQ002', 'SQ003') as $order => $title) {
+            $subquestionQids[] = $this->createOrderedQuestionFixture($group->gid, $qid, 0, $order, $title);
+        }
+        $listQid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99994, 'CIDEFLIST');
+        $listWithOtherQid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99995, 'CIDEFOTHER');
+        $questionQids = array($qid, $listQid, $listWithOtherQid);
+        $updateQuestions = function (array $qids, array $columns) {
+            \Yii::app()->db->createCommand()->update('{{questions}}', $columns, array('in', 'qid', $qids));
+        };
+        $updateQuestions(array_merge(array($qid), $subquestionQids), array('type' => \QuestionType::QT_M_MULTIPLE_CHOICE));
+        $updateQuestions(array($listQid, $listWithOtherQid), array('type' => \QuestionType::QT_L_LIST));
+        $updateQuestions(array($listWithOtherQid), array('other' => 'Y'));
+        $answer = new \Answer();
+        $answer->qid = $listQid;
+        $answer->code = 'A1';
+        $answer->sortorder = 1;
+        $answer->scale_id = 0;
+        $this->assertTrue($answer->save(), 'Could not save answer fixture: ' . json_encode($answer->errors));
+        $createDefaultValue = function ($qid, $sqid, $value) use ($language) {
+            $defaultValue = new \DefaultValue();
+            $defaultValue->qid = $qid;
+            $defaultValue->sqid = $sqid;
+            $defaultValue->scale_id = 0;
+            $this->assertTrue($defaultValue->save(), 'Could not save default value fixture: ' . json_encode($defaultValue->errors));
+            $defaultValueL10n = new \DefaultValueL10n();
+            $defaultValueL10n->dvid = $defaultValue->dvid;
+            $defaultValueL10n->language = $language;
+            $defaultValueL10n->defaultvalue = $value;
+            $this->assertTrue($defaultValueL10n->save(), 'Could not save default value l10n fixture: ' . json_encode($defaultValueL10n->errors));
+            return $defaultValue->dvid;
+        };
+        $keptDvids = array(
+            $createDefaultValue($qid, $subquestionQids[0], 'Y'),
+            $createDefaultValue($qid, $subquestionQids[2], '{1+1}'),
+            $createDefaultValue($listWithOtherQid, 0, '-oth-'),
+        );
+        $deletedDvids = array(
+            $createDefaultValue($qid, $subquestionQids[1], '10'),
+            $createDefaultValue($qid, 0, 'Y'),
+            $createDefaultValue($listQid, 0, 'X9'),
+        );
+        $getDvids = function () use ($questionQids) {
+            return \Yii::app()->db->createCommand()->select('dvid')->from('{{defaultvalues}}')->where(array('in', 'qid', $questionQids))->queryColumn();
+        };
+        $getL10nDvids = function () use ($keptDvids, $deletedDvids) {
+            return \Yii::app()->db->createCommand()->select('dvid')->from('{{defaultvalue_l10ns}}')
+                ->where(array('in', 'dvid', array_merge($keptDvids, $deletedDvids)))->queryColumn();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertCount(6, $getDvids(), 'Merely loading the check page (GET) deleted default values.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertEqualsCanonicalizing($keptDvids, $getDvids(), 'The consistency check did not delete exactly the invalid and the unused default values.');
+            $this->assertEqualsCanonicalizing($keptDvids, $getL10nDvids(), 'The consistency check left the texts of deleted default values behind.');
+            $this->assertStringContainsString(
+                sprintf('Deleted the invalid default value 10 for language %s of question CIDEFAULT (ID %s) in survey %s', $language, $qid, self::$surveyId),
+                $logOfFixes
+            );
+            $this->assertStringContainsString(
+                sprintf('Deleted the invalid default value X9 for language %s of question CIDEFLIST (ID %s) in survey %s', $language, $listQid, self::$surveyId),
+                $logOfFixes
+            );
+            $this->assertStringContainsString(sprintf('Deleted an unused default value of question CIDEFAULT (ID %s) in survey %s', $qid, self::$surveyId), $logOfFixes);
+        } finally {
+            foreach ($questionQids as $questionQid) {
+                $question = \Question::model()->findByPk($questionQid);
+                if ($question) {
+                    $question->delete();
+                }
+            }
+        }
+    }
+
+    /**
      * Submits the "Check data integrity" button.
      *
      * @return string[] The log of fixes.
