@@ -1833,6 +1833,14 @@ class SurveyRuntimeHelper
         $this->sLangCode       = App()->language;
     }
 
+    /**
+     * Sets up the survey session and the ExpressionManager for a group or question preview
+     * and moves to the previewed group or question.
+     *
+     * Renders an error and ends the request if the group is invalid or empty.
+     *
+     * @return void
+     */
     private function setPreview()
     {
         $this->sSurveyMode = ($this->previewgrp) ? 'group' : 'question'; // Can be great to have a survey here …
@@ -1852,6 +1860,8 @@ class SurveyRuntimeHelper
                 $sMessage = gT('Invalid group number for this survey: ') . $_gid;
                 renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
             }
+            // The previous groups are never shown: Set their relevance, else their (prefilled) values are empty in text tailoring
+            LimeExpressionManager::SetRelevanceTo($gseq);
 
             $this->aMoveResult = LimeExpressionManager::JumpTo($gseq + 1, 'group', false, true);
             if (is_null($this->aMoveResult)) {
@@ -1874,6 +1884,8 @@ class SurveyRuntimeHelper
             $_qid       = sanitize_int($this->param['qid']);
             LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions, true, $this->LEMdebugLevel);
             $qSec = LimeExpressionManager::GetQuestionSeq($_qid);
+            // The previous questions are never shown: Set their relevance, else their (prefilled) values are empty in text tailoring
+            LimeExpressionManager::SetRelevanceTo(LimeExpressionManager::GetGroupSeq(sanitize_int($this->param['gid'])));
             $this->aMoveResult = LimeExpressionManager::JumpTo($qSec + 1, 'question', false, true);
             $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
         }
