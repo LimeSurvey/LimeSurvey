@@ -13431,32 +13431,33 @@ Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
 */
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-  .ls-answers td.radio-item {
+  :where(.no-tables-mobile, .no-tables-general) .ls-answers td.radio-item {
     padding: 4px;
   }
-  .ls-answers td.radio-item {
+  :where(.no-tables-mobile, .no-tables-general) .ls-answers td.radio-item {
     padding-left: 24px;
     padding-right: 4px;
   }
-  table.ls-answers .radio-item .ls-label-xs-visibility {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .radio-item .ls-label-xs-visibility {
     line-height: initial;
     text-indent: initial;
   }
-  table.ls-answers .radio-item .ls-label-xs-visibility {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .radio-item .ls-label-xs-visibility {
     margin-left: 0;
   }
-  table.ls-answers .radio-item label.ls-label-xs-visibility::before {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .radio-item label.ls-label-xs-visibility::before {
     margin-left: -20px;
   }
-  table.ls-answers .radio-item label.ls-label-xs-visibility::after {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .radio-item label.ls-label-xs-visibility::after {
     margin-left: -18px !important;
   }
 }
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-  .radio-item label.ls-label-xs-visibility > * {
+  :where(.no-tables-mobile, .no-tables-general) .radio-item label.ls-label-xs-visibility > * {
     left: auto;
   }
 }
+
 li.radio-text-item .other-text-item {
   min-width: 9em;
 }
@@ -13562,29 +13563,28 @@ table > tbody > tr > td.ddprefix {
  * We don't have to collapse tables on pads.
  */
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-  table.ls-answers tbody {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers tbody {
     padding: 0 1em 0 1em;
   }
-  table.ls-answers tr {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers tr {
     padding: 1em;
   }
-  table.ls-answers tr th {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers tr th {
     font-size: 1.1em;
     text-align: center;
   }
-  table.ls-answers tbody {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers tbody {
     padding: 0;
   }
-  table.ls-answers tr {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers tr {
     padding: 0;
     margin-bottom: 1em;
   }
-  /* Line header ; color is h4 color */
-  table.ls-answers tr th {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers tr th {
     font-size: 1.1em;
     text-align: left;
   }
-  table.ls-answers td {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers td {
     /* Behave  like a "row" */
     min-height: 2em;
     position: relative;
@@ -13593,11 +13593,11 @@ table > tbody > tr > td.ddprefix {
     white-space: normal;
     text-align: left;
   }
-  /* Hide the first column in array-by-column */
-  .array-by-columns-table tr > *:nth-child(1) {
+  :where(.no-tables-mobile, .no-tables-general) .array-by-columns-table tr > *:nth-child(1) {
     display: none;
   }
 }
+
 /** On small phones, leave some more space */
 @media only screen and (max-width: 400px) {
   .no-more-tables tbody {
@@ -13606,19 +13606,20 @@ table > tbody > tr > td.ddprefix {
   }
 }
 @media only screen and (max-device-width: 760px) {
-  .ls-answers tbody:last-child tr:last-child {
+  :where(.no-tables-mobile, .no-tables-general) .ls-answers tbody:last-child tr:last-child {
     margin-bottom: 0;
   }
-  .ls-answers > tbody > tr > td.radio-item,
-  .ls-answers > tbody > tr > td.checkbox-item {
+  :where(.no-tables-mobile, .no-tables-general) .ls-answers > tbody > tr > td.radio-item,
+  :where(.no-tables-mobile, .no-tables-general) .ls-answers > tbody > tr > td.checkbox-item {
     min-height: 44px; /*minimal height for touching with finger */
     padding-top: 10px;
     padding-left: 28px;
   }
-  .ls-answers.table > tbody + tbody {
+  :where(.no-tables-mobile, .no-tables-general) .ls-answers.table > tbody + tbody {
     border-top: none; /*overriding Bootstrap */
   }
 }
+
 .ls-even {
   background-color: #f9f9fb;
 }
@@ -13947,10 +13948,11 @@ table.ls-answers input[type=radio] {
 }
 
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-  .checkbox-item label.ls-label-xs-visibility > * {
+  :where(.no-tables-mobile, .no-tables-general) .checkbox-item label.ls-label-xs-visibility > * {
     left: auto;
   }
 }
+
 /* Align privacy policy checkbox to top */
 #datasecurity_accepted {
   vertical-align: top;
@@ -15763,43 +15765,42 @@ body .imageselect-listitem label::after {
 /*
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
+Only when the "Wrap tables" theme option is "Small screens" or "Always on"
 */
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-  table.ls-answers, table.ls-answers thead, table.ls-answers tbody, table.ls-answers th, table.ls-answers td, table.ls-answers tr {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers, :where(.no-tables-mobile, .no-tables-general) table.ls-answers thead, :where(.no-tables-mobile, .no-tables-general) table.ls-answers tbody, :where(.no-tables-mobile, .no-tables-general) table.ls-answers th, :where(.no-tables-mobile, .no-tables-general) table.ls-answers td, :where(.no-tables-mobile, .no-tables-general) table.ls-answers tr {
     display: block;
   }
-  table.ls-answers, table.ls-answers thead, table.ls-answers tbody, table.ls-answers th, table.ls-answers td, table.ls-answers tr {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers, :where(.no-tables-mobile, .no-tables-general) table.ls-answers thead, :where(.no-tables-mobile, .no-tables-general) table.ls-answers tbody, :where(.no-tables-mobile, .no-tables-general) table.ls-answers th, :where(.no-tables-mobile, .no-tables-general) table.ls-answers td, :where(.no-tables-mobile, .no-tables-general) table.ls-answers tr {
     text-align: left;
   }
-  table.ls-answers thead {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers thead {
     display: none;
   }
-  /* We don't need it for accessibility : we already have the label */
-  table.ls-answers tbody td {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers tbody td {
     text-align: left;
   }
-  table.ls-answers .information-item:empty {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .information-item:empty {
     display: none;
   }
-  .ls-answers td.checkbox-item {
+  :where(.no-tables-mobile, .no-tables-general) .ls-answers td.checkbox-item {
     padding: 4px;
   }
-  .ls-answers td.checkbox-item {
+  :where(.no-tables-mobile, .no-tables-general) .ls-answers td.checkbox-item {
     padding-left: 24px;
     padding-right: 4px;
   }
-  table.ls-answers tbody .control-label {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers tbody .control-label {
     text-align: left;
   }
-  table.ls-answers:not(.semantic-differential-list) tbody .answertextright {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers:not(.semantic-differential-list) tbody .answertextright {
     text-align: right;
   }
-  table.ls-answers.semantic-differential-list tbody .answertextright,
-  table.ls-answers.semantic-differential-list tbody .answertext {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers.semantic-differential-list tbody .answertextright,
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers.semantic-differential-list tbody .answertext {
     text-align: left;
   }
-  /* Show the label */
-  table.ls-answers .ls-label-xs-visibility {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .ls-label-xs-visibility {
     display: block;
     position: relative;
     width: auto;
@@ -15807,44 +15808,43 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     overflow: initial;
     white-space: normal;
   }
-  table.ls-answers .ls-label-xs-visibility {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .ls-label-xs-visibility {
     left: auto;
   }
-  table.ls-answers .checkbox-item .ls-label-xs-visibility {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .checkbox-item .ls-label-xs-visibility {
     line-height: initial;
     text-indent: initial;
   }
-  table.ls-answers .checkbox-item .ls-label-xs-visibility {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .checkbox-item .ls-label-xs-visibility {
     margin-left: 0;
   }
-  table.ls-answers .ls-label-xs-visibility > * {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .ls-label-xs-visibility > * {
     position: relative;
     top: auto;
     width: auto;
     height: auto;
     overflow: auto;
   }
-  table.ls-answers .ls-label-xs-visibility > * {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .ls-label-xs-visibility > * {
     left: auto;
   }
-  table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
     margin-left: -20px;
   }
-  table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
     margin-left: -20px;
   }
-  table.ls-answers > tbody > tr:hover {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers > tbody > tr:hover {
     background-color: transparent;
   }
-  /* bs fix */
-  table.ls-answers td.visible-xs, table.ls-answers th.visible-xs {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers td.visible-xs, :where(.no-tables-mobile, .no-tables-general) table.ls-answers th.visible-xs {
     display: block !important;
   }
-  /* Don't display repeating header on mobile devices'*/
-  table.ls-answers tr.ls-heading-repeat {
+  :where(.no-tables-mobile, .no-tables-general) table.ls-answers tr.ls-heading-repeat {
     display: none;
   }
 }
+
 /* Fix for IE11 - no array question radio buttons on small screens */
 @media all and (max-width: 760px) and (-ms-high-contrast: none), (-ms-high-contrast: active) {
   table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {

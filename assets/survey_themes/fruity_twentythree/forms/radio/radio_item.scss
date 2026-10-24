@@ -177,39 +177,42 @@ table.ls-answers .radio-item .ls-label-xs-visibility {
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
 */
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
+// Only when the "Wrap tables" theme option is "Small screens" or "Always on"
+:where(.no-tables-mobile, .no-tables-general) {
+    @media only screen and (max-width: 760px),
+    (min-device-width: 768px) and (max-device-width: 1024px) {
 
-    .ls-answers td.radio-item {
-        padding: 4px;
+        .ls-answers td.radio-item {
+            padding: 4px;
+        }
+
+        .ls-answers td.radio-item {
+            padding-left: 24px;
+            padding-right: 4px;
+        }
+
+        table.ls-answers .radio-item .ls-label-xs-visibility {
+            line-height: initial;
+            text-indent: initial;
+        }
+
+        table.ls-answers .radio-item .ls-label-xs-visibility {
+            margin-left: 0;
+        }
+
+        table.ls-answers .radio-item label.ls-label-xs-visibility::before {
+            margin-left: -20px;
+        }
+
+        table.ls-answers .radio-item label.ls-label-xs-visibility::after {
+            margin-left: -18px !important;
+        }
     }
 
-    .ls-answers td.radio-item {
-        padding-left: 24px;
-        padding-right: 4px;
-    }
-
-    table.ls-answers .radio-item .ls-label-xs-visibility {
-        line-height: initial;
-        text-indent: initial;
-    }
-
-    table.ls-answers .radio-item .ls-label-xs-visibility {
-        margin-left: 0;
-    }
-
-    table.ls-answers .radio-item label.ls-label-xs-visibility::before {
-        margin-left: -20px;
-    }
-
-    table.ls-answers .radio-item label.ls-label-xs-visibility::after {
-        margin-left: -18px !important;
-    }
-}
-
-@media only screen and (max-width : 760px), (min-device-width : 768px) and (max-device-width : 1024px) {
-    .radio-item label.ls-label-xs-visibility > * {
-        left : auto;
+    @media only screen and (max-width : 760px), (min-device-width : 768px) and (max-device-width : 1024px) {
+        .radio-item label.ls-label-xs-visibility > * {
+            left : auto;
+        }
     }
 }
 
