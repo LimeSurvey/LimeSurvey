@@ -252,6 +252,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 'answertextright'        => $answertextright,
                 'options'                => $options,
                 'odd'                    => ($i % 2), // true for odd, false for even
+                'relevanceClass'         => $this->getCurrentRelevecanceClass($myfname),
             );
 
             $this->inputnames[] = $myfname;
@@ -328,6 +329,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'value'      => $value,
                     'error'      => $error,
                     'odd'        => ($i % 2), // true for odd, false for even
+                    'relevanceClass' => $this->getCurrentRelevecanceClass($myfname),
                 )
                 ];
 
