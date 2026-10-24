@@ -1351,6 +1351,21 @@ class statistics_helper
     }
 
     /**
+     * Returns the plain text question title of a chart, which "Export images" draws above the chart.
+     *
+     * @param array $outputs Question/output metadata from buildOutputList()
+     * @return string
+     */
+    protected function getChartTitle($outputs)
+    {
+        $sTitle = flattenText($outputs['qquestion'], false, true);
+        if (!empty($outputs['subquestionText'])) {
+            $sTitle .= " [" . flattenText($outputs['subquestionText'], false, true) . "]";
+        }
+        return $sTitle;
+    }
+
+    /**
      * Tally ranking counts for a question stored as a JSON array.
      *
      * @param int|string $surveyid
@@ -2077,6 +2092,7 @@ class statistics_helper
                 $aData['grawdata'] = $grawdata;
                 $aData['color'] = 0; // random truc much
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
+                $aData['chartTitle'] = $this->getChartTitle($outputs);
                 // Output graph
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_graphs', $aData, true);
             } else {
@@ -3405,6 +3421,7 @@ class statistics_helper
                 $aData['color'] = 0;
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
                 $aData['lbl'] = $lbl;
+                $aData['chartTitle'] = $this->getChartTitle($outputs);
                 ///
 
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
