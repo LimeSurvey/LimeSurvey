@@ -17236,6 +17236,9 @@ body {
 }
 .btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group):has(> .btn-check:disabled) > .btn-check:checked + .btn-outline-secondary {
   background-color: #fff;
+  border-left-color: #8146F6;
+  color: #515567;
+  opacity: 0.65;
 }
 
 .btn-group > .btn-check + .btn {
