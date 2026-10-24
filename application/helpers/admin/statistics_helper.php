@@ -3652,6 +3652,9 @@ class statistics_helper
             $sql = null;
         }
 
+        //Save the filter for the "Browse" button (applied by SurveyDynamic::search() in the responses grid)
+        Yii::app()->user->setState('sql_' . $surveyid, $sql);
+
         //only continue if we have something to output
         $bBrowse = false;
         if ($results > 0) {
