@@ -279,6 +279,22 @@
     font-weight: $font-weight-500;
   }
 
+  .responses-statistics-bar-label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    text-align: end;
+
+    .responses-statistics-chart-labels {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 16px;
+      overflow-wrap: anywhere;
+    }
+  }
+
   .responses-statistics-table-image {
     @include chart-image;
     max-width: 100px;
@@ -423,6 +439,111 @@
     .responses-statistics-chart-toggle {
       display: flex;
       justify-content: flex-end;
+
+      .lime-toggle-btn-group {
+        z-index: auto;
+      }
+
+      .btn:has(+ .responses-statistics-orientation-dropdown) {
+        padding-right: 2px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    .responses-statistics-orientation-dropdown {
+      display: flex;
+    }
+
+    .responses-statistics-orientation-toggle {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 8px 0 2px;
+      background: $white;
+      border: none;
+      border-radius: 0 2px 2px 0;
+      color: $g-750;
+
+      &::after {
+        display: none;
+      }
+
+      &:hover,
+      &:active,
+      &.show {
+        background: $white;
+        color: $g-750;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $grape;
+        outline-offset: 2px;
+      }
+
+      &[aria-expanded='true'] i {
+        transform: rotate(180deg);
+      }
+    }
+
+    .responses-statistics-orientation-menu {
+      flex-direction: column;
+      gap: 2px;
+      min-width: 250px;
+      padding: 8px;
+      background: $white;
+      border: 1px solid $g-900;
+      border-radius: $border-radius-xs;
+      box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+      z-index: 10;
+
+      &.show {
+        display: flex;
+      }
+
+      &-title {
+        padding: 4px 8px;
+        font-size: $font-size-xs;
+        color: $g-700;
+        text-transform: uppercase;
+      }
+
+      &-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 8px;
+        border: 1px solid transparent;
+        border-radius: $border-radius-xs;
+        background: none;
+        color: $g-900;
+        font-size: $font-size-xs;
+        text-align: left;
+
+        &:hover,
+        &:focus {
+          background: $g-200;
+          color: $g-900;
+        }
+
+        &:focus-visible {
+          outline: 2px solid $grape;
+          outline-offset: 1px;
+        }
+
+        &--selected {
+          border-color: $grape;
+        }
+
+        // Forced colours mode recolours all borders, so mark the selection
+        // with the system highlight colour instead.
+        @media (forced-colors: active) {
+          border-color: Canvas;
+
+          &--selected {
+            border-color: Highlight;
+          }
+        }
+      }
     }
 
     .responses-statistics-bar-image {
@@ -431,6 +552,7 @@
       box-sizing: border-box;
       width: 100%;
       height: 100%;
+      border-radius: 4px;
     }
 
     .responses-statistics-bar-chart--clickable .recharts-bar-rectangle {
@@ -546,6 +668,13 @@
 
     scrollbar-gutter: stable;
   }
+
+  &--scrollable-y {
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    scrollbar-gutter: stable;
+  }
 }
 
 @media print {
@@ -555,6 +684,11 @@
     .responses-statistics-bar-chart {
       min-width: 100% !important;
     }
+  }
+
+  .responses-statistics-bar-chart-viewport--scrollable-y {
+    max-height: none !important;
+    overflow: visible;
   }
 }
 

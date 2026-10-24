@@ -48,6 +48,11 @@ import {
 } from './ChartsUtils.js'
 import { QuestionComments } from './QuestionComments.js'
 import { CommentsModal } from './CommentsModal.js'
+import {
+  ChartOrientationMenu,
+  ORIENTATION,
+  getOrientationIconClassName,
+} from './ChartOrientationMenu.js'
 
 const VIEW = {
   BAR_CHART: 'bar-chart',
@@ -89,6 +94,7 @@ const VIEWS = [
       question,
       hasComments,
       onViewComments,
+      orientation,
     }) => {
       if (isRanking) {
         return <RankingBarChart data={data} title={question?.title} />
@@ -100,6 +106,7 @@ const VIEWS = [
           isImage={isImage}
           hasComments={hasComments}
           onViewComments={onViewComments}
+          orientation={orientation}
         />
       )
     },
@@ -403,15 +410,32 @@ export const ChartRendererV2 = ({
   const [view, setView] = useState(() =>
     getDefaultView(availableViews, viewContext, question?.chartType)
   )
+  const [orientation, setOrientation] = useState(ORIENTATION.VERTICAL)
+  const hasOrientationSwitch = !isRanking
   // `menuOnly` hides a view from the quick toggle (it stays in the meatball
   // menu); it can be a flag or a predicate of the view context.
   const isMenuOnly = ({ menuOnly }) =>
     typeof menuOnly === 'function' ? menuOnly(viewContext) : !!menuOnly
-  const toggleOptions = availableViews
-    .filter((option) => !isMenuOnly(option))
-    .map(({ value, icon }) => ({ value, icon }))
   const activeView =
     availableViews.find(({ value }) => value === view) ?? availableViews[0]
+  const isBarChartActive =
+    hasOrientationSwitch && activeView?.value === VIEW.BAR_CHART
+  const toggleOptions = availableViews
+    .filter((option) => !isMenuOnly(option))
+    .map(({ value, icon }) => ({
+      value,
+      addon:
+        value === VIEW.BAR_CHART && isBarChartActive ? (
+          <ChartOrientationMenu
+            orientation={orientation}
+            onSelect={setOrientation}
+          />
+        ) : undefined,
+      icon:
+        value === VIEW.BAR_CHART && hasOrientationSwitch
+          ? () => <i className={getOrientationIconClassName(orientation)}></i>
+          : icon,
+    }))
 
   const renderContext = {
     data,
@@ -430,6 +454,7 @@ export const ChartRendererV2 = ({
     question,
     hasComments,
     filters,
+    orientation,
     onViewComments: setCommentsAnswer,
   }
 
