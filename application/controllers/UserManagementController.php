@@ -1677,9 +1677,13 @@ class UserManagementController extends LSBaseController
                 $data = [
                     'success' => $success,
                     'message' => $sReturnMessage,
-                    'href' => Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $newUser['uid']]),
-                    'modalsize' => 'modal-lg',
                 ];
+                // Only offer the permission dialog if the current user is allowed to use it
+                $userManager = new UserManager(App()->user, User::model()->findByPk($newUser['uid']));
+                if ($userManager->canAssignPermissions()) {
+                    $data['href'] = Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $newUser['uid']]);
+                    $data['modalsize'] = 'modal-lg';
+                }
             } else {
                 $data = [
                     'success' => $success,
