@@ -229,4 +229,39 @@ class TokenDynamicTest extends TestBaseClass
         $token->setAttributes($tokenData, false);
         $this->assertFalse($token->canBeEmailed(), 'Survey can be edited after completion, the token should not be able to be emailed.');
     }
+
+    /**
+     * The survey encrypts lastname and email, the duplicate check on import must still find the participant.
+     */
+    public function testCountByAttributesWithEncryptedAttributes()
+    {
+        $token = \Token::create(self::$surveyId);
+        $token->firstname = 'Jane';
+        $token->lastname = 'Doe';
+        $token->email = 'jane.doe@example.com';
+        $this->assertTrue($token->encryptSave(true));
+
+        $otherToken = \Token::create(self::$surveyId);
+        $otherToken->firstname = 'John';
+        $otherToken->lastname = 'Doe';
+        $otherToken->email = 'jane.doe@example.com';
+        $this->assertTrue($otherToken->encryptSave(true));
+
+        $model = TokenDynamic::model(self::$surveyId);
+        $duplicateCount = (int) $model->countByAttributes([
+            'firstname' => 'Jane',
+            'lastname' => 'Doe',
+            'email' => 'jane.doe@example.com',
+        ]);
+        $otherCount = (int) $model->countByAttributes([
+            'firstname' => 'Jane',
+            'lastname' => 'Doe',
+            'email' => 'john.doe@example.com',
+        ]);
+        $token->delete();
+        $otherToken->delete();
+
+        $this->assertSame(1, $duplicateCount, 'The participant with the same encrypted attributes should be found.');
+        $this->assertSame(0, $otherCount, 'A participant with another email should not be found.');
+    }
 }

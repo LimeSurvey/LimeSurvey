@@ -283,6 +283,20 @@ class LSActiveRecord extends CActiveRecord
     }
 
     /**
+     * Overriding of Yii's countByAttributes method to provide encrypted attribute value search
+     * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
+     * An attribute value can be an array which will be used to generate an IN condition.
+     * @param mixed $condition query condition or criteria.
+     * @param array $params parameters to be bound to an SQL statement.
+     * @return string the number of rows satisfying the specified query condition.
+     */
+    public function countByAttributes($attributes, $condition = '', $params = [])
+    {
+        $attributes = $this->encryptAttributeValues($attributes);
+        return parent::countByAttributes($attributes, $condition, $params);
+    }
+
+    /**
      * @param int $iSurveyId
      * @param string $sClassName
      * @return array
