@@ -763,7 +763,7 @@ function submitfailed($errormsg = '', $query = null)
     . "</p>";
     if ($thissurvey['adminemail']) {
         $completed .= "<p>";
-        $completed .= gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.");
+        $completed .= gT("Please don't continue and contact the survey administrator.");
         $completed .= "</p>";
         if (Yii::app()->getConfig('debug') > 0 && !empty($errormsg)) {
             $completed .= 'Error message: ' . htmlspecialchars($errormsg) . '<br />';
