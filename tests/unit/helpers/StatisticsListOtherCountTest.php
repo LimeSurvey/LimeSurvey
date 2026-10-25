@@ -15,6 +15,9 @@ class StatisticsListOtherCountTest extends TestBaseClass
     /** @var \Question List question with "Other" option of the test survey */
     private static $listQuestion;
 
+    /** @var \Question Short free text question of the test survey */
+    private static $textQuestion;
+
     public static function setUpBeforeClass(): void
     {
         Yii::app()->loadHelper('admin.statistics');
@@ -27,7 +30,8 @@ class StatisticsListOtherCountTest extends TestBaseClass
         self::$testHelper->activateSurvey(self::$surveyId);
 
         self::$listQuestion = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'Q00']);
-        StatisticsListOtherCountData::insertResponses(self::$surveyId, self::$listQuestion);
+        self::$textQuestion = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'uid']);
+        StatisticsListOtherCountData::insertResponses(self::$surveyId, self::$listQuestion, self::$textQuestion);
     }
 
     /**
@@ -59,5 +63,20 @@ class StatisticsListOtherCountTest extends TestBaseClass
 
         // Chart data in answer option sort order (A1, A3, A2), then "Other" and "No answer"
         $this->assertStringContainsString('grawdata : [2,0,0,2,3]', $html, 'The statistics values are not correct.');
+    }
+
+    /**
+     * Not displayed (NULL) text answers are not counted as "No answer".
+     */
+    public function testTextQuestionCounts()
+    {
+        $fieldname = 'TQ' . self::$textQuestion->qid;
+
+        $html = (new \statistics_helper())->generate_statistics(self::$surveyId, [$fieldname], [$fieldname], 0, 'html', 'DD', 'en', false);
+        $counts = StatisticsListOtherCountData::countsFromHtml($html);
+
+        $this->assertSame(1, $counts[gT('Answer')] ?? null, 'Wrong count for answered text');
+        $this->assertSame(2, $counts[gT('No answer')] ?? null, 'Wrong count for "No answer"');
+        $this->assertSame(6, $counts[gT('Not completed or not displayed')] ?? null, 'Wrong count for not displayed answers');
     }
 }
