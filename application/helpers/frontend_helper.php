@@ -746,6 +746,8 @@ function failedEmailSuccess($id)
  *
  * Will send e-mail to adminemail if defined, including the response ID if the response was already created.
  *
+ * The e-mail is not sent if the config setting send_error_saving_results_email is false.
+ *
  * @param string $errormsg
  * @param string $query  Will be included in sent email
  * @return string Error message
@@ -790,13 +792,15 @@ function submitfailed($errormsg = '', $query = null)
                . $errormsg . "\n\n";
         }
 
-        $mailer = new \LimeMailer();
-        $mailer->emailType = "errorsavingresults";
-        $mailer->Subject = gT("Error saving results", "unescaped");
-        $mailer->Body = $email;
-        $mailer->setSurvey($surveyid);
-        $mailer->addAddress($thissurvey['adminemail']);
-        $mailer->sendMessage();
+        if (Yii::app()->getConfig('send_error_saving_results_email')) {
+            $mailer = new \LimeMailer();
+            $mailer->emailType = "errorsavingresults";
+            $mailer->Subject = gT("Error saving results", "unescaped");
+            $mailer->Body = $email;
+            $mailer->setSurvey($surveyid);
+            $mailer->addAddress($thissurvey['adminemail']);
+            $mailer->sendMessage();
+        }
     } else {
         $completed .= "<a href='javascript:location.reload()'>" . gT("Try to submit again") . "</a>\n";
     }
