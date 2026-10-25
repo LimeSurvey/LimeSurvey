@@ -818,6 +818,77 @@ class CheckIntegrityTest extends TestBaseClass
     }
 
     /**
+     * A quota without texts in the survey's base language (e.g. after a failed import) showed an
+     * error on the quota page, so the consistency check must create the missing texts: copied
+     * from another language of the quota, or the default quota message if there are none.
+     */
+    public function testQuotaWithoutTextsGetsTextsCreatedAndReportedByTheConsistencyCheck()
+    {
+        $baseLanguage = self::$testSurvey->language;
+        $additionalLanguage = self::$testSurvey->additionalLanguages[0];
+        $db = \Yii::app()->db;
+        $createQuota = function ($name) {
+            $quota = new \Quota();
+            $quota->setAttributes(array('sid' => self::$surveyId, 'name' => $name, 'qlimit' => 0, 'action' => 1, 'active' => 1, 'autoload_url' => 1), false);
+            $this->assertTrue($quota->save(false), 'Could not save quota fixture.');
+            return (int) $quota->id;
+        };
+        $partialQuotaId = $createQuota('CIQUOTAPARTIAL');
+        $emptyQuotaId = $createQuota('CIQUOTAEMPTY');
+        $db->createCommand()->insert('{{quota_languagesettings}}', array(
+            'quotals_quota_id' => $partialQuotaId,
+            'quotals_language' => $additionalLanguage,
+            'quotals_name' => 'CIQUOTAPARTIAL',
+            'quotals_message' => 'Quota full',
+            'quotals_url' => 'https://example.org/full',
+            'quotals_urldescrip' => 'Full',
+        ));
+        $getTexts = function ($quotaId) use ($db) {
+            $rows = $db->createCommand()
+                ->select('quotals_language, quotals_message, quotals_url, quotals_urldescrip')
+                ->from('{{quota_languagesettings}}')
+                ->where('quotals_quota_id = :quotaid', array(':quotaid' => $quotaId))
+                ->queryAll();
+            return array_column($rows, null, 'quotals_language');
+        };
+
+        try {
+            $this->assertNull(\Quota::model()->findByPk($partialQuotaId)->mainLanguagesetting, 'A quota without texts in the base language returned texts of the base language.');
+
+            $this->newNoRenderController()->index();
+            $this->assertCount(1, $getTexts($partialQuotaId), 'Merely loading the check page (GET) created quota texts.');
+            $this->assertCount(0, $getTexts($emptyQuotaId), 'Merely loading the check page (GET) created quota texts.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $partialTexts = $getTexts($partialQuotaId);
+            $this->assertEqualsCanonicalizing(array($baseLanguage, $additionalLanguage), array_keys($partialTexts), 'The consistency check did not create the missing base language texts of the quota.');
+            $this->assertSame(
+                array('Quota full', 'https://example.org/full', 'Full'),
+                array($partialTexts[$baseLanguage]['quotals_message'], $partialTexts[$baseLanguage]['quotals_url'], $partialTexts[$baseLanguage]['quotals_urldescrip']),
+                'The created base language texts were not copied from the existing texts of the quota.'
+            );
+            $emptyTexts = $getTexts($emptyQuotaId);
+            $this->assertEqualsCanonicalizing(self::$testSurvey->getAllLanguages(), array_keys($emptyTexts), 'The consistency check did not create texts for exactly the survey languages.');
+            foreach ($emptyTexts as $language => $texts) {
+                $this->assertSame(gT('Sorry your responses have exceeded a quota on this survey.', 'unescaped', $language), $texts['quotals_message'], 'A quota without any texts did not get the default quota message.');
+            }
+            $this->assertStringContainsString(
+                sprintf('Created missing texts for language %s of quota CIQUOTAPARTIAL (ID %s) in survey %s', $baseLanguage, $partialQuotaId, self::$surveyId),
+                $logOfFixes
+            );
+            $this->assertStringContainsString(
+                sprintf('Created missing texts for language %s of quota CIQUOTAEMPTY (ID %s) in survey %s', $additionalLanguage, $emptyQuotaId, self::$surveyId),
+                $logOfFixes
+            );
+            $this->assertNotNull(\Quota::model()->findByPk($partialQuotaId)->mainLanguagesetting, 'The created base language texts were not found.');
+        } finally {
+            $db->createCommand()->delete('{{quota_languagesettings}}', array('in', 'quotals_quota_id', array($partialQuotaId, $emptyQuotaId)));
+            $db->createCommand()->delete('{{quota}}', array('in', 'id', array($partialQuotaId, $emptyQuotaId)));
+        }
+    }
+
+    /**
      * Invalid default values (e.g. imported from an old survey) showed an error in the survey,
      * so the consistency check must delete them and default values the survey never uses,
      * while keeping valid default values and default values with an expression.

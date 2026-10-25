@@ -113,6 +113,10 @@ class DataIntegrityChecker
             $aData = $this->deleteQuotaMembers($aData);
         }
 
+        if (isset($aDelete['missingquotalanguagesettings'])) {
+            $aData = $this->createMissingQuotaLanguageSettings($aDelete['missingquotalanguagesettings'], $aData);
+        }
+
         if (isset($aDelete['assessments'])) {
             $aData = $this->deleteAssessments($aDelete['assessments'], $aData);
         }
@@ -966,14 +970,11 @@ class DataIntegrityChecker
     }
 
     /**
-     * Finds questions and subquestions that have no texts (question_l10ns row) in one
-     * of their survey's languages. Such questions can't be edited (500 error).
+     * Returns the languages (base and additional) of all surveys.
      *
-     * Runs one query per language used by any survey, instead of one per survey.
-     *
-     * @return array[] Missing texts, each with a 'qid', 'title', 'sid' and 'language' key.
+     * @return array<int, string[]> Language codes, indexed by survey ID.
      */
-    private function findMissingQuestionL10ns()
+    private function getSurveyLanguages()
     {
         $aSurveyLanguages = array();
         $aSurveys = Yii::app()->db->createCommand()
@@ -985,6 +986,131 @@ class DataIntegrityChecker
             $aLanguages[] = $aSurvey['language'];
             $aSurveyLanguages[$aSurvey['sid']] = array_filter($aLanguages);
         }
+        return $aSurveyLanguages;
+    }
+
+    /**
+     * Finds quotas that have no texts (quota_languagesettings row) in one of their
+     * survey's languages. Such quotas showed an error on the quota page, e.g. after
+     * an import that failed to insert the quota texts of the survey's base language.
+     *
+     * Runs one query per language used by any survey, instead of one per survey.
+     *
+     * @return array[] Missing texts, each with a 'quotaid', 'name', 'sid' and 'language' key.
+     */
+    private function findMissingQuotaLanguageSettings()
+    {
+        $aSurveyLanguages = $this->getSurveyLanguages();
+        if (empty($aSurveyLanguages)) {
+            return array();
+        }
+
+        $aMissing = array();
+        foreach (array_unique(array_merge(...array_values($aSurveyLanguages))) as $sLanguage) {
+            // The LIKE condition only narrows the result down, the exact match is done below
+            $aQuotas = Yii::app()->db->createCommand()
+                ->select('q.id, q.name, q.sid')
+                ->from('{{quota}} q')
+                ->join('{{surveys}} s', 's.sid = q.sid')
+                ->leftJoin('{{quota_languagesettings}} l', 'l.quotals_quota_id = q.id AND l.quotals_language = :quotalanguage', array(':quotalanguage' => $sLanguage))
+                ->where(
+                    'l.quotals_id IS NULL AND (s.language = :surveylanguage OR s.additional_languages LIKE :languagepattern)',
+                    array(':surveylanguage' => $sLanguage, ':languagepattern' => '%' . $sLanguage . '%')
+                )
+                ->queryAll();
+            foreach ($aQuotas as $aQuota) {
+                if (in_array($sLanguage, $aSurveyLanguages[$aQuota['sid']])) {
+                    $aMissing[] = array(
+                        'quotaid' => $aQuota['id'],
+                        'name' => $aQuota['name'],
+                        'sid' => $aQuota['sid'],
+                        'language' => $sLanguage,
+                    );
+                }
+            }
+        }
+        return $aMissing;
+    }
+
+    /**
+     * Creates the missing texts of quotas in their survey's languages. The texts are
+     * copied from another language of the same quota, preferring the survey's base
+     * language; quotas without any texts get the default quota message.
+     *
+     * Reads the existing texts and inserts the missing ones in batches, so that a large
+     * number of quotas doesn't need a query per quota.
+     *
+     * @param array[] $quotaLanguageSettings Missing texts, each with a 'quotaid', 'name', 'sid' and 'language' key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per created text.
+     */
+    private function createMissingQuotaLanguageSettings(array $quotaLanguageSettings, array $aData)
+    {
+        $aBaseLanguages = array();
+        foreach ($this->getSurveyLanguages() as $iSurveyId => $aLanguages) {
+            // getSurveyLanguages() adds the base language last
+            $aBaseLanguages[$iSurveyId] = end($aLanguages);
+        }
+        // Existing texts of the affected quotas, the base language's texts first
+        $aSourceTexts = array();
+        foreach (array_chunk(array_unique(array_column($quotaLanguageSettings, 'quotaid')), 1000) as $aQuotaIds) {
+            $aRows = Yii::app()->db->createCommand()
+                ->select('l.quotals_quota_id, l.quotals_language, l.quotals_name, l.quotals_message, l.quotals_url, l.quotals_urldescrip, q.sid')
+                ->from('{{quota_languagesettings}} l')
+                ->join('{{quota}} q', 'q.id = l.quotals_quota_id')
+                ->where(array('in', 'l.quotals_quota_id', $aQuotaIds))
+                ->queryAll();
+            foreach ($aRows as $aRow) {
+                $iQuotaId = $aRow['quotals_quota_id'];
+                if (!isset($aSourceTexts[$iQuotaId]) || $aRow['quotals_language'] === ($aBaseLanguages[$aRow['sid']] ?? null)) {
+                    $aSourceTexts[$iQuotaId] = $aRow;
+                }
+            }
+        }
+
+        $aInserts = array();
+        foreach ($quotaLanguageSettings as $quotaLanguageSetting) {
+            $aSource = $aSourceTexts[$quotaLanguageSetting['quotaid']] ?? array(
+                'quotals_name' => $quotaLanguageSetting['name'],
+                'quotals_message' => gT('Sorry your responses have exceeded a quota on this survey.', 'unescaped', $quotaLanguageSetting['language']),
+                'quotals_url' => '',
+                'quotals_urldescrip' => '',
+            );
+            $aInserts[] = array(
+                'quotals_quota_id' => $quotaLanguageSetting['quotaid'],
+                'quotals_language' => $quotaLanguageSetting['language'],
+                'quotals_name' => $aSource['quotals_name'],
+                'quotals_message' => $aSource['quotals_message'],
+                'quotals_url' => $aSource['quotals_url'],
+                'quotals_urldescrip' => $aSource['quotals_urldescrip'],
+            );
+            $aData['messages'][] = sprintf(
+                gT('Created missing texts for language %s of quota %s (ID %s) in survey %s'),
+                $quotaLanguageSetting['language'],
+                CHtml::encode($quotaLanguageSetting['name']),
+                $quotaLanguageSetting['quotaid'],
+                $quotaLanguageSetting['sid']
+            );
+        }
+        // Raw inserts: QuotaLanguageSetting's validation rules need a web user, which the console command has not.
+        // 300 rows of 6 values stay below the parameter limit of MSSQL (2100).
+        foreach (array_chunk($aInserts, 300) as $aBatch) {
+            Yii::app()->db->getCommandBuilder()->createMultipleInsertCommand('{{quota_languagesettings}}', $aBatch)->execute();
+        }
+        return $aData;
+    }
+
+    /**
+     * Finds questions and subquestions that have no texts (question_l10ns row) in one
+     * of their survey's languages. Such questions can't be edited (500 error).
+     *
+     * Runs one query per language used by any survey, instead of one per survey.
+     *
+     * @return array[] Missing texts, each with a 'qid', 'title', 'sid' and 'language' key.
+     */
+    private function findMissingQuestionL10ns()
+    {
+        $aSurveyLanguages = $this->getSurveyLanguages();
         if (empty($aSurveyLanguages)) {
             return array();
         }
@@ -1466,6 +1592,14 @@ class DataIntegrityChecker
         $oCriteria->join = 'LEFT JOIN {{quota}} s ON t.quotals_quota_id=s.id';
         $oCriteria->condition = '(s.id IS NULL)';
         $aDelete['quotals'] = QuotaLanguageSetting::model()->count($oCriteria);
+
+        /**********************************************************************/
+        /*     Check quotas without texts in a survey language                */
+        /**********************************************************************/
+        $aMissingQuotaLanguageSettings = $this->findMissingQuotaLanguageSettings();
+        if (!empty($aMissingQuotaLanguageSettings)) {
+            $aDelete['missingquotalanguagesettings'] = $aMissingQuotaLanguageSettings;
+        }
 
         /**********************************************************************/
         /*     Check quota members                                   */
