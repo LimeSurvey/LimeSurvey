@@ -659,9 +659,10 @@ function getGroupListLang($gid, $language, $surveyid)
 
 /**
  * Returns a user list. If 'usercontrolSameGroupPolicy' is set and set to true, only users which are in the same
- * group as me (--> logged in user) will be returned. Superadmin always gets the full list of users.
+ * group as me (--> logged in user) will be returned. Superadmins and users with the global permission to view
+ * users always get the full list of users.
  *
- * @param $outputformat string could be 'onlyuidarray' which only returns array with userids, default is 'fullinfoarray'
+ * @param string $outputformat could be 'onlyuidarray' which only returns array with userids, default is 'fullinfoarray'
  * @return array returns a list of user ids (param='onlyuidarray') or a list with full user details (e.g. uid, name, full_name etc.)
  */
 function getUserList($outputformat = 'fullinfoarray')
@@ -671,7 +672,9 @@ function getUserList($outputformat = 'fullinfoarray')
     }
     $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
     if (
-        !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
+        !Permission::model()->hasGlobalPermission('superadmin', 'read') &&
+        !Permission::model()->hasGlobalPermission('users', 'read') &&
+        isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
     ) {
         if (isset($myuid)) {
