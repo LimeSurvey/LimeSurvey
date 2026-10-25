@@ -744,7 +744,7 @@ function failedEmailSuccess($id)
  *
  * "Unexpected error"
  *
- * Will send e-mail to adminemail if defined.
+ * Will send e-mail to adminemail if defined, including the response ID if the response was already created.
  *
  * @param string $errormsg
  * @param string $query  Will be included in sent email
@@ -769,6 +769,10 @@ function submitfailed($errormsg = '', $query = null)
             $completed .= 'Error message: ' . htmlspecialchars($errormsg) . '<br />';
         }
         $email = sprintf(gT("An error occurred saving a response to survey %s", "unescaped"), $thissurvey['name'] . " - $surveyid\n\n");
+        // The response ID is only known if the response row was created before
+        if (!empty($_SESSION['responses_' . $surveyid]['srid'])) {
+            $email .= sprintf(gT("Response ID: %s", "unescaped"), $_SESSION['responses_' . $surveyid]['srid']) . "\n\n";
+        }
         $email .= gT("DATA TO BE ENTERED", "unescaped") . ":\n";
         foreach ($_SESSION['responses_' . $surveyid]['insertarray'] as $value) {
             if (isset($_SESSION['responses_' . $surveyid][$value])) {
