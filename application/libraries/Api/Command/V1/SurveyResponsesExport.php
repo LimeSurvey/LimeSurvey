@@ -9,14 +9,13 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\ResponseFactory;
 use LimeSurvey\Api\Transformer\TransformerException;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseFilterCriteriaBuilder;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ExportFilterSql;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\ExportSurveyResultsService;
 use LimeSurvey\Models\Services\ResponseFilters\ParticipantResolver;
 use LimeSurvey\Models\Services\ResponseFilters\QuestionColumnMap;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterResolver;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSet;
-use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSqlBuilder;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use Permission;
 use RuntimeException;
@@ -61,6 +60,13 @@ class SurveyResponsesExport implements CommandInterface
      * @var ExportSurveyResultsService
      */
     protected ExportSurveyResultsService $exportSurvey;
+
+    /**
+     * Turns the export's filters into criteria or SQL for the exporters.
+     *
+     * @var ExportFilterSql
+     */
+    protected ExportFilterSql $filterSql;
 
     /**
      * Allowed export formats.
@@ -148,6 +154,7 @@ class SurveyResponsesExport implements CommandInterface
         $this->survey = $survey;
         $this->responseFactory = $responseFactory;
         $this->exportSurvey = $exportSurvey;
+        $this->filterSql = new ExportFilterSql($exportSurvey);
     }
 
     /**
@@ -234,7 +241,7 @@ class SurveyResponsesExport implements CommandInterface
         }
 
         if ($resolvedFilters !== []) {
-            $exportService->setFilterCriteria($this->buildFilterCriteria($surveyId, $resolvedFilters));
+            $exportService->setFilterCriteria($this->filterSql->buildFilterCriteria($surveyId, $resolvedFilters));
         }
 
         return $exportService->exportResponses($surveyId, $type);
@@ -275,19 +282,6 @@ class SurveyResponsesExport implements CommandInterface
         );
 
         return $resolver->resolve($filterSet);
-    }
-
-    /**
-     * Criteria for the native exporter, which reads the responses through
-     * SurveyDynamic.
-     *
-     * @param int $surveyId
-     * @param array $resolvedFilters
-     * @return \CDbCriteria
-     */
-    protected function buildFilterCriteria(int $surveyId, array $resolvedFilters)
-    {
-        return (new ResponseFilterCriteriaBuilder($surveyId))->build($resolvedFilters);
     }
 
     /**
@@ -333,9 +327,11 @@ class SurveyResponsesExport implements CommandInterface
         $options->csvFieldSeparator = $csvSeparator ?: ',';
         $options->output = 'file';
 
-        $sqlFilter = $this->combineSqlFilters(
-            $this->buildLegacySqlFilter($filters),
-            $this->buildFilterSetSqlFilter($surveyId, $resolvedFilters)
+        $sqlFilter = $this->filterSql->buildLegacyCondition(
+            $surveyId,
+            $this->surveyModel->responsesTableName,
+            $filters,
+            $resolvedFilters
         );
 
         $legacyService = new \ExportSurveyResultsService();
@@ -352,104 +348,6 @@ class SurveyResponsesExport implements CommandInterface
             'filename' => 'responses_' . $surveyId . '.' . $meta['extension'],
             'mimeType' => $meta['mimeType'],
         ];
-    }
-
-    /**
-     * The legacy exporter only accepts filters as a raw SQL string, so we build
-     * the same criteria as the native export and turn it into a plain condition
-     * with the values quoted in directly.
-     *
-     * @param array $filters
-     * @return string
-     */
-    protected function buildLegacySqlFilter(array $filters): string
-    {
-        if (empty($filters)) {
-            return '';
-        }
-
-        $criteria = $this->exportSurvey->setFilters($filters)->buildFilterCriteria();
-        if ($criteria === null || empty($criteria->condition)) {
-            return '';
-        }
-
-        // Prefix columns with the responses table to avoid ambiguity with joined tables.
-        $table = $this->surveyModel->responsesTableName;
-        $condition = preg_replace_callback(
-            "/'(?:[^']|'')*'|[`\"\\[][\\w-]+[`\"\\]]/",
-            static function (array $match) use ($table): string {
-                return $match[0][0] === "'" ? $match[0] : $table . '.' . $match[0];
-            },
-            $criteria->condition
-        );
-        return $this->inlineParams($condition, $criteria->params);
-    }
-
-    /**
-     * The condition-designer filter for the legacy exporter.
-     *
-     * @param int $surveyId
-     * @param array $resolvedFilters
-     * @return string
-     */
-    protected function buildFilterSetSqlFilter(int $surveyId, array $resolvedFilters): string
-    {
-        if ($resolvedFilters === []) {
-            return '';
-        }
-
-        // The real table name, not the {{...}} form: it ends up inside a quoted
-        // column name, where the prefix is no longer expanded.
-        $table = Yii::app()->db->schema->getTable($this->surveyModel->responsesTableName);
-
-        $built = (new ResponseFilterSqlBuilder($surveyId, $table ? $table->name : null))
-            ->build($resolvedFilters);
-
-        return $built['condition'] === ''
-            ? ''
-            : $this->inlineParams($built['condition'], $built['params']);
-    }
-
-    /**
-     * The legacy exporter takes no bound values, so they are quoted into the
-     * condition itself.
-     *
-     * @param string $condition
-     * @param array $params
-     * @return string
-     */
-    protected function inlineParams(string $condition, array $params): string
-    {
-        $position = 0;
-
-        return preg_replace_callback('/\?|:[A-Za-z0-9_]+/', static function ($match) use ($params, &$position) {
-            $key = $match[0] === '?' ? $position++ : $match[0];
-            return array_key_exists($key, $params)
-                ? Yii::app()->db->quoteValue($params[$key])
-                : $match[0];
-        }, $condition);
-    }
-
-    /**
-     * Both filter kinds can be sent together, and each is self-contained, so
-     * they combine with AND.
-     *
-     * @param string ...$filters
-     * @return string
-     */
-    protected function combineSqlFilters(string ...$filters): string
-    {
-        $parts = array_values(array_filter($filters, static function ($filter) {
-            return $filter !== '';
-        }));
-
-        if (count($parts) < 2) {
-            return $parts[0] ?? '';
-        }
-
-        return implode(' AND ', array_map(static function ($part) {
-            return '(' . $part . ')';
-        }, $parts));
     }
 
     /**
