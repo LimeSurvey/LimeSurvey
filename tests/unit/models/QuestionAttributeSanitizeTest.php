@@ -61,6 +61,19 @@ class QuestionAttributeSanitizeTest extends TestBaseClass
     }
 
     /**
+     * A value that is not a string, as posted by an array input, is left to the other validation rules.
+     */
+    public function testSanitizeByInputTypeKeepsArray()
+    {
+        $questionAttribute = new \QuestionAttribute();
+        $questionAttribute->qid = self::$question->qid;
+        $questionAttribute->attribute = 'display_rows';
+        $questionAttribute->value = ['x'];
+        $questionAttribute->sanitizeByInputType('value', []);
+        $this->assertSame(['x'], $questionAttribute->value);
+    }
+
+    /**
      * @return array<string,array{mixed,array<string,mixed>,mixed}> value, definition, sanitized value
      */
     public static function definitionProvider()
@@ -71,7 +84,9 @@ class QuestionAttributeSanitizeTest extends TestBaseClass
             'button group: option' => ['lg', ['inputtype' => 'buttongroup', 'options' => ['default' => 'Default', 'lg' => 'Large'], 'default' => 'default'], 'lg'],
             'button group: invalid' => ['lg"<>', ['inputtype' => 'buttongroup', 'options' => ['default' => 'Default', 'lg' => 'Large'], 'default' => 'default'], 'default'],
             'button group: label of a keyed option' => ['Large', ['inputtype' => 'buttongroup', 'options' => ['default' => 'Default', 'lg' => 'Large'], 'default' => 'default'], 'default'],
-            'single select: plain list of options' => ['b', ['inputtype' => 'singleselect', 'options' => ['a', 'b']], 'b'],
+            'single select: key of a plain list of options' => ['1', ['inputtype' => 'singleselect', 'options' => ['a', 'b']], '1'],
+            'single select: label of a plain list of options' => ['b', ['inputtype' => 'singleselect', 'options' => ['a', 'b']], ''],
+            'single select: label of a numbered option' => ['On', ['inputtype' => 'singleselect', 'options' => [0 => 'Off', 1 => 'On'], 'default' => '0'], '0'],
             'single select: no options' => ['b"<>', ['inputtype' => 'singleselect', 'options' => null], 'b"<>'],
             'expression allowed: unchanged' => ['{Q1}', ['inputtype' => 'integer', 'expression' => 2], '{Q1}'],
             'not a string: unchanged' => [['en' => 'x'], ['inputtype' => 'integer'], ['en' => 'x']],
@@ -166,5 +181,13 @@ class QuestionAttributeSanitizeTest extends TestBaseClass
         );
         $this->assertSame('', (string) $values['display_rows']);
         $this->assertSame('1', (string) $values['hidden']);
+
+        // The theme is given after the theme attribute in the file, but the attribute is sanitized for the theme
+        $themedQuestion = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'FixedQ03']);
+        $this->assertNotNull($themedQuestion);
+        $this->assertSame('bootstrap_buttons', $themedQuestion->question_theme_name);
+        $buttonSize = \QuestionAttribute::model()->findByAttributes(['qid' => $themedQuestion->qid, 'attribute' => 'button_size']);
+        $this->assertNotNull($buttonSize);
+        $this->assertSame('default', (string) $buttonSize->value);
     }
 }

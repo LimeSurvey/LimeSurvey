@@ -55,7 +55,7 @@
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[679439]]></sid>
     <gid><![CDATA[71]]></gid>
-    <type><![CDATA[T]]></type>
+    <type><![CDATA[L]]></type>
     <title><![CDATA[FixedQ03]]></title>
     <question><![CDATA[Fixed question]]></question>
     <preg/>
@@ -114,6 +114,16 @@
    <fieldname>language</fieldname>
   </fields>
   <rows>
+   <row>
+    <qid><![CDATA[1663]]></qid>
+    <attribute><![CDATA[button_size]]></attribute>
+    <value><![CDATA[lg"<>]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[1663]]></qid>
+    <attribute><![CDATA[question_template]]></attribute>
+    <value><![CDATA[bootstrap_buttons]]></value>
+   </row>
    <row>
     <qid><![CDATA[1664]]></qid>
     <attribute><![CDATA[random_group]]></attribute>

@@ -47,6 +47,12 @@ class QuestionAttribute extends LSActiveRecord
     private static $attributeDefinitions = [];
 
     /**
+     * @var array{key: string, definition: array<string,mixed>|false}|null Definition of this attribute during one
+     * validation, so that the validation rules look up the question only once
+     */
+    private $validatedAttributeDefinition;
+
+    /**
      * @return static
      */
     #[\Override]
@@ -291,7 +297,7 @@ class QuestionAttribute extends LSActiveRecord
             } else {
                 foreach ($aLanguages as $language) {
                     if (isset($aAttribute[$language]['value'])) {
-                        $aAttributeValues[$aAttribute['name']][$language] = $aAttribute[$language]['value'];
+                        $aAttributeValues[$aAttribute['name']][$language] = self::sanitizeValue($aAttribute[$language]['value'], $aAttribute);
                     }
                 }
             }
@@ -630,7 +636,7 @@ class QuestionAttribute extends LSActiveRecord
      */
     public function sanitizeByInputType($attribute, $params)
     {
-        if (trim((string) $this->$attribute) === '') {
+        if (!is_scalar($this->$attribute) || trim((string) $this->$attribute) === '') {
             return;
         }
         $questionAttributeDefinition = $this->getAttributeDefinition();
@@ -673,14 +679,8 @@ class QuestionAttribute extends LSActiveRecord
                 if (empty($definition['options']) || !is_array($definition['options'])) {
                     return $value;
                 }
-                // Options are value => label, but some plugins define a plain list of values
+                // Options are value => label: the editors submit the key, also for a plain list of labels
                 $validValues = array_map('strval', array_keys($definition['options']));
-                if (array_is_list($definition['options'])) {
-                    $validValues = array_merge(
-                        $validValues,
-                        array_map('strval', array_filter($definition['options'], 'is_scalar'))
-                    );
-                }
                 return in_array($trimmedValue, $validValues, true) ? $trimmedValue : $default;
         }
         return $value;
@@ -692,17 +692,34 @@ class QuestionAttribute extends LSActiveRecord
      */
     private function getAttributeDefinition()
     {
+        $validationKey = $this->qid . '|' . $this->attribute;
+        if (isset($this->validatedAttributeDefinition) && $this->validatedAttributeDefinition['key'] === $validationKey) {
+            return $this->validatedAttributeDefinition['definition'];
+        }
+        $definition = false;
         $question = Question::model()->find("qid=:qid", ['qid' => $this->qid]);
-        if (empty($question)) {
-            return false;
+        if (!empty($question)) {
+            $cacheKey = $question->qid . '|' . $question->type . '|' . $question->question_theme_name;
+            if (!isset(self::$attributeDefinitions[$cacheKey])) {
+                $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
+                $questionAttributeFetcher->setQuestion($question);
+                self::$attributeDefinitions = [$cacheKey => $questionAttributeFetcher->fetch()];
+            }
+            $definition = self::$attributeDefinitions[$cacheKey][$this->attribute] ?? [];
         }
-        $cacheKey = $question->qid . '|' . $question->type . '|' . $question->question_theme_name;
-        if (!isset(self::$attributeDefinitions[$cacheKey])) {
-            $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
-            $questionAttributeFetcher->setQuestion($question);
-            self::$attributeDefinitions = [$cacheKey => $questionAttributeFetcher->fetch()];
-        }
-        return self::$attributeDefinitions[$cacheKey][$this->attribute] ?? [];
+        $this->validatedAttributeDefinition = ['key' => $validationKey, 'definition' => $definition];
+        return $definition;
+    }
+
+    /**
+     * Forgets the attribute definition of the previous validation: the question type or theme may have changed since
+     * @return boolean whether validation should be executed
+     */
+    #[\Override]
+    protected function beforeValidate()
+    {
+        $this->validatedAttributeDefinition = null;
+        return parent::beforeValidate();
     }
 
     /**

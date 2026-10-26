@@ -511,6 +511,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
         /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
         $answerOrderAttributes = [];
+        importQuestionThemeAttributes($xml, $aQIDReplacements);
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -523,16 +524,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             }
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
-            // Question theme was previously stored as a question attribute ('question_template'), but now it
-            // is a normal attribute of the Question model. So we must check if the imported question has the
-            // 'question_template' attribute and use it for overriding 'question_theme_name' instead of saving
-            // as QuestionAttribute.
+            // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {
-                $oQuestion = Question::model()->findByPk($insertdata['qid']);
-                if (!empty($oQuestion)) {
-                    $oQuestion->question_theme_name = $insertdata['value'];
-                    $oQuestion->save();
-                }
                 continue;
             }
 
@@ -1128,6 +1121,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         $aAllAttributes = questionHelper::getAttributesDefinitions();
         /** @var array<string,mixed> List of "answer order" related attributes */
         $answerOrderAttributes = [];
+        importQuestionThemeAttributes($xml, $aQIDReplacements);
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -1143,16 +1137,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 continue;
             }
 
-            // Question theme was previously stored as a question attribute ('question_template'), but now it
-            // is a normal attribute of the Question model. So we must check if the imported question has the
-            // 'question_template' attribute and use it for overriding 'question_theme_name' instead of saving
-            // as QuestionAttribute.
+            // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {
-                $oQuestion = Question::model()->findByPk($insertdata['qid']);
-                if (!empty($oQuestion)) {
-                    $oQuestion->question_theme_name = $insertdata['value'];
-                    $oQuestion->save();
-                }
                 continue;
             }
 
@@ -3137,6 +3123,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $aAllAttributes = questionHelper::getAttributesDefinitions();
         /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
         $answerOrderAttributes = [];
+        importQuestionThemeAttributes($xml, $aQIDReplacements);
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -3163,16 +3150,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
 
-            // Question theme was previously stored as a question attribute ('question_template'), but now it
-            // is a normal attribute of the Question model. So we must check if the imported question has the
-            // 'question_template' attribute and use it for overriding 'question_theme_name' instead of saving
-            // as QuestionAttribute.
+            // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {
-                $oQuestion = Question::model()->findByPk($insertdata['qid']);
-                if (!empty($oQuestion)) {
-                    $oQuestion->question_theme_name = $insertdata['value'];
-                    $oQuestion->save();
-                }
                 continue;
             }
 
@@ -3653,6 +3632,29 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         array_unshift($results['importwarnings'], "<span class='warningtitle'>" . gT('Attention: Some expressions in the imported texts were disabled because they could produce unsafe output.') . '</span>');
     }
     return $results;
+}
+
+/**
+ * Question theme was previously stored as a question attribute ('question_template'), but now it is a normal
+ * attribute of the Question model. Sets the theme of the imported questions from these rows before the other
+ * attribute rows are imported, as they are sanitized according to the attribute definitions of the theme.
+ *
+ * @param SimpleXMLElement $xml the imported survey, group or question
+ * @param array<integer,integer> $aQIDReplacements new question ids, by old question id
+ * @return void
+ */
+function importQuestionThemeAttributes(SimpleXMLElement $xml, array $aQIDReplacements)
+{
+    foreach ($xml->question_attributes->rows->row as $row) {
+        if ((string) $row->attribute !== 'question_template' || !isset($aQIDReplacements[(int) $row->qid])) {
+            continue;
+        }
+        $oQuestion = Question::model()->findByPk($aQIDReplacements[(int) $row->qid]);
+        if (!empty($oQuestion)) {
+            $oQuestion->question_theme_name = (string) $row->value;
+            $oQuestion->save();
+        }
+    }
 }
 
 /**
