@@ -1,5 +1,5 @@
 import {
-  TYPES,
+  THEME_OPTIONS_TYPES,
   handleDropdownType,
   handleButtonType,
   handleIconType,
@@ -8,6 +8,17 @@ import {
   handleTextareaType,
 } from './themeOptionTypes'
 import { handleColorPickerType } from './themeOptionTypes/handleColorPickerType'
+
+const typeHandlers = {
+  [THEME_OPTIONS_TYPES.BUTTONS]: handleButtonType,
+  [THEME_OPTIONS_TYPES.DROPDOWN]: (attribute, keyPath) =>
+    handleDropdownType(attribute, keyPath, attribute.hasFileUpload),
+  [THEME_OPTIONS_TYPES.COLORPICKER]: handleColorPickerType,
+  [THEME_OPTIONS_TYPES.ICON]: handleIconType,
+  [THEME_OPTIONS_TYPES.TEXT]: handleTextType,
+  [THEME_OPTIONS_TYPES.DURATION]: handleDurationType,
+  [THEME_OPTIONS_TYPES.TEXTAREA]: handleTextareaType,
+}
 
 export const getThemeOptions = (survey) => {
   // guard: ensure survey and themesettings exist
@@ -18,28 +29,17 @@ export const getThemeOptions = (survey) => {
   keysToMap.forEach((keyPath) => {
     const attribute = survey.themesettings[keyPath]
     const category = survey.themesettings[keyPath].category
+    const handler = typeHandlers[attribute.type]
+
+    if (!handler) {
+      return
+    }
 
     if (!options[category]) {
       options[category] = { title: t(category), settings: {} }
     }
 
-    // prepare a variable to hold the setting returned by handlers
-    let setting
-    if (attribute.type === TYPES.BUTTONS) {
-      setting = handleButtonType(attribute, keyPath)
-    } else if (attribute.type === TYPES.DROPDOWN) {
-      setting = handleDropdownType(attribute, keyPath, attribute.hasFileUpload)
-    } else if (attribute.type === TYPES.COLORPICKER) {
-      setting = handleColorPickerType(attribute, keyPath)
-    } else if (attribute.type === TYPES.ICON) {
-      setting = handleIconType(attribute, keyPath)
-    } else if (attribute.type === TYPES.TEXT) {
-      setting = handleTextType(attribute, keyPath)
-    } else if (attribute.type === TYPES.DURATION) {
-      setting = handleDurationType(attribute, keyPath)
-    } else if (attribute.type === TYPES.TEXTAREA) {
-      setting = handleTextareaType(attribute, keyPath)
-    }
+    const setting = handler(attribute, keyPath)
     setting.attribute = attribute
     options[category].settings[keyPath] = setting
     options[category].settings[keyPath].formatDisplayValue = (value) => {

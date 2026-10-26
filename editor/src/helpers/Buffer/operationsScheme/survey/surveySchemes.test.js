@@ -2,6 +2,10 @@ import { languageSettingUpdateJoi } from './languageSettingUpdateJoi'
 import { surveyUpdateJoi } from './surveyUpdateJoi'
 
 import { surveyStatusUpdateJoi } from './surveyStatusUpdateJoi'
+import {
+  getThemeSettingUpdateJoi,
+  themeSettingUpdateJoi,
+} from './themeSettingUpdateJoi'
 
 describe('LanguageSettingUpdateJoi Schema Tests', () => {
   // Valid input test
@@ -419,5 +423,61 @@ describe('SurveyStatusUpdateJoi Schema Tests', () => {
         activate: true,
       },
     })
+  })
+})
+
+describe('ThemeSettingUpdateJoi Schema Tests', () => {
+  const themesettings = {
+    headerBackgroundColor: { type: 'colorpicker' },
+    showclearall: { type: 'buttons', options: 'on|off' },
+    brandlogofile: { type: 'dropdown' },
+  }
+  const schema = getThemeSettingUpdateJoi(themesettings)
+  const buildOperation = (props) => ({
+    id: 754621,
+    op: 'update',
+    entity: 'themeSettings',
+    props: { templateName: 'custom_options_demo', ...props },
+  })
+
+  test('Accepts options declared in the theme manifest', () => {
+    const input = buildOperation({
+      headerBackgroundColor: '#2a2f38',
+      showclearall: 'off',
+      brandlogofile: null,
+    })
+
+    const { error, value } = schema.validate(input)
+    expect(error).toBeUndefined()
+    expect(value).toEqual(input)
+  })
+
+  test('Rejects options not declared in the theme manifest', () => {
+    const { error } = schema.validate(buildOperation({ unknownOption: 'x' }))
+    expect(error.message).toContain('"props.unknownOption" is not allowed')
+  })
+
+  test('Rejects button values outside the declared options', () => {
+    const { error } = schema.validate(buildOperation({ showclearall: 'maybe' }))
+    expect(error).toBeDefined()
+  })
+
+  test('Accepts any option key when no manifest is available', () => {
+    const input = buildOperation({ headerBackgroundColor: '#2a2f38' })
+
+    const { error, value } = themeSettingUpdateJoi.validate(input)
+    expect(error).toBeUndefined()
+    expect(value).toEqual(input)
+  })
+
+  test('Fails validation when "templateName" is missing', () => {
+    const { error } = themeSettingUpdateJoi.validate({
+      id: 754621,
+      op: 'update',
+      entity: 'themeSettings',
+      props: { headerBackgroundColor: '#2a2f38' },
+    })
+    expect(error).toBeDefined()
+    expect(error.message).toContain('"props.templateName" is required')
   })
 })
