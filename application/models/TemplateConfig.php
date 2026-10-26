@@ -662,7 +662,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['modalbody']         = ' modal-body ';
         $aClassAndAttributes['class']['modalfooter']       = ' modal-footer ';
         $aClassAndAttributes['class']['modalfooterlink']   = ' btn btn-outline-secondary ';
-        $aClassAndAttributes['class']['modalfooterbtn']    = ' btn btn-outline-secondary ';
+        $aClassAndAttributes['class']['modalfooterbutton'] = ' btn btn-outline-secondary ';
 
         $aClassAndAttributes['attr']['modalheader']       = ' style="min-height:40px;" '; // Todo: move to CSS
         $aClassAndAttributes['attr']['modalclosebutton']  = ' type="button" data-bs-dismiss="modal" ';
