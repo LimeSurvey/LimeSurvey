@@ -70,6 +70,7 @@ class QuestionAttributeSanitizeTest extends TestBaseClass
             'columns: invalid' => ['2"<>', ['inputtype' => 'columns'], ''],
             'button group: option' => ['lg', ['inputtype' => 'buttongroup', 'options' => ['default' => 'Default', 'lg' => 'Large'], 'default' => 'default'], 'lg'],
             'button group: invalid' => ['lg"<>', ['inputtype' => 'buttongroup', 'options' => ['default' => 'Default', 'lg' => 'Large'], 'default' => 'default'], 'default'],
+            'button group: label of a keyed option' => ['Large', ['inputtype' => 'buttongroup', 'options' => ['default' => 'Default', 'lg' => 'Large'], 'default' => 'default'], 'default'],
             'single select: plain list of options' => ['b', ['inputtype' => 'singleselect', 'options' => ['a', 'b']], 'b'],
             'single select: no options' => ['b"<>', ['inputtype' => 'singleselect', 'options' => null], 'b"<>'],
             'expression allowed: unchanged' => ['{Q1}', ['inputtype' => 'integer', 'expression' => 2], '{Q1}'],
@@ -125,7 +126,6 @@ class QuestionAttributeSanitizeTest extends TestBaseClass
     public function testCustomAttributeDefinitionOptions()
     {
         $method = new \ReflectionMethod(\QuestionTemplate::class, 'getCustomAttributeDefinition');
-        $method->setAccessible(true);
 
         $shortFormat = simplexml_load_string(
             '<attribute><name>button_size</name><inputtype>buttongroup</inputtype>'

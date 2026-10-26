@@ -674,10 +674,13 @@ class QuestionAttribute extends LSActiveRecord
                     return $value;
                 }
                 // Options are value => label, but some plugins define a plain list of values
-                $validValues = array_merge(
-                    array_map('strval', array_keys($definition['options'])),
-                    array_map('strval', array_filter($definition['options'], 'is_scalar'))
-                );
+                $validValues = array_map('strval', array_keys($definition['options']));
+                if (array_is_list($definition['options'])) {
+                    $validValues = array_merge(
+                        $validValues,
+                        array_map('strval', array_filter($definition['options'], 'is_scalar'))
+                    );
+                }
                 return in_array($trimmedValue, $validValues, true) ? $trimmedValue : $default;
         }
         return $value;
