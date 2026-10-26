@@ -6,6 +6,11 @@ use ls\tests\TestBaseClass;
 
 class TemplateExtractFilterTest extends TestBaseClass
 {
+    /**
+     * Loads the template helper that defines templateExtractFilter().
+     *
+     * @return void
+     */
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -13,7 +18,8 @@ class TemplateExtractFilterTest extends TestBaseClass
     }
 
     /**
-     * Theme files with ordinary names, including spaces and brackets, are extracted.
+     * Theme files with ordinary names, including spaces, brackets and apostrophes, are extracted.
+     * Backslashes are allowed, because some ZIP tools on Windows use them as folder separators.
      */
     public function testAllowsRegularThemeFiles()
     {
@@ -22,7 +28,9 @@ class TemplateExtractFilterTest extends TestBaseClass
             ['name' => 'files/', 'is_folder' => true],
             ['name' => 'files/logo.png', 'is_folder' => false],
             ['name' => 'files/logo (1).png', 'is_folder' => false],
+            ['name' => "files/O'Brien-logo.png", 'is_folder' => false],
             ['name' => 'css/custom.css', 'is_folder' => false],
+            ['name' => 'css\\custom.css', 'is_folder' => false],
             ['name' => 'views/subviews/content/main.twig', 'is_folder' => false],
             ['name' => 'LICENSE', 'is_folder' => false],
         ];
@@ -33,15 +41,13 @@ class TemplateExtractFilterTest extends TestBaseClass
     }
 
     /**
-     * Files and folders with HTML-special, backslash or control characters in their path are skipped.
+     * Files and folders with < > " or control characters in their path are skipped.
      */
     public function testSkipsUnsafeNames()
     {
         $cases = [
             ['name' => 'files/a"b.png', 'is_folder' => false],
-            ['name' => "files/it's.png", 'is_folder' => false],
             ['name' => 'files/<b>.png', 'is_folder' => false],
-            ['name' => 'files/a\\b.png', 'is_folder' => false],
             ['name' => "files/a\x01b.png", 'is_folder' => false],
             ['name' => 'a"b/', 'is_folder' => true],
             ['name' => 'a"b/logo.png', 'is_folder' => false],

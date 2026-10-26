@@ -201,10 +201,10 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 <!-- colorpicker type -->
                                 <div class="input-group">
                                     <div class="input-group-text style__colorpicker">
-                                        <input type="color" name="<?= $attributeKey ?>_picker" data-value="<?= $sParentOption ?>" class="selector__colorpicker-inherit-value"/>
+                                        <input type="color" name="<?= $attributeKey ?>_picker" data-value="<?= CHtml::encode($sParentOption) ?>" class="selector__colorpicker-inherit-value"/>
                                     </div>
                                     <?php // An inherited color is shown as an empty field with a placeholder, see themeoptions-core.js ?>
-                                    <input id="<?= $attributeKey ?>" type="text" name="<?= $attributeKey ?>" data-inheritvalue="<?= $sParentOption ?>" value=""
+                                    <input id="<?= $attributeKey ?>" type="text" name="<?= $attributeKey ?>" data-inheritvalue="<?= CHtml::encode($sParentOption) ?>" value=""
                                            <?php if ($bInherit) : ?>placeholder="<?= gT("Inherit") ?> [<?= gT("Inherited value:") ?> <?= CHtml::encode($sParentOption) ?>]"<?php endif; ?>
                                            class="selector_option_value_field selector__color-picker form-control simple_edit_options_<?= $attributeKey ?>"/>
                                     <?php if ($bInherit && isset($sParentOption)) : ?>
@@ -246,7 +246,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 <!-- dropdown type -->
                                 <div class="col-12">
                                     <select class="<?= $classValue ?>" <?= $parentDataAttribute ?>
-                                            data-inheritvalue="<?= ($attributeKey === 'font' && isset($sPackagesToLoad) ? htmlspecialchars($sPackagesToLoad) : $sParentOption) ?>"
+                                            data-inheritvalue="<?= ($attributeKey === 'font' && isset($sPackagesToLoad) ? htmlspecialchars($sPackagesToLoad) : CHtml::encode($sParentOption)) ?>"
                                             id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>">
                                         <?php if ($bInherit) : ?>
                                             <?php
@@ -304,7 +304,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     <select class="selector_option_value_field form-select simple_edit_options_checkicon" <?= $parentDataAttribute ?>
                                             id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>">
                                         <?php if ($bInherit) : ?>
-                                            <option value="inherit"><?= gT("Inherit") ?> [<?= gT("Inherited value:") ?> <?= ($sParentOption ?? '') ?>]</option>
+                                            <option value="inherit"><?= gT("Inherit") ?> [<?= gT("Inherited value:") ?> <?= CHtml::encode($sParentOption ?? '') ?>]</option>
                                         <?php endif; ?>
                                         <?php // dropdown options from config.xml file ?>
                                         <?= $aOptionAttributes['optionAttributes'][$attributeKey]['dropdownoptions'] ?>
@@ -312,13 +312,13 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     <div class="input-group-text selector__<?= $attributeKey ?>-preview">
                                         (
                                         <?php if ($attribute['library'] === 'remixicon') : ?>
-                                            <i class="ri-" data-inheritvalue="<?= $sParentOption ?>">
-                                                &#x<?= $sParentOption ?>
+                                            <i class="ri-" data-inheritvalue="<?= CHtml::encode($sParentOption ?? '') ?>">
+                                                &#x<?= CHtml::encode($sParentOption ?? '') ?>
                                             </i>
                                         <?php else : ?>
-                                            <i class="fa" data-inheritvalue="<?= $sParentOption ?>"
+                                            <i class="fa" data-inheritvalue="<?= CHtml::encode($sParentOption ?? '') ?>"
                                                style=" background-color: #328637; color: white; width: 16px; height: 16px;  padding: 3px; font-size: 11px; ">
-                                                &#x<?= $sParentOption ?>
+                                                &#x<?= CHtml::encode($sParentOption ?? '') ?>
                                             </i>
                                         <?php endif; ?>
                                         )
@@ -347,7 +347,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 <div class="col-12">
                                     <input type="text" class="form-control selector-numerical-input selector_text_option_value_field selector_radio_childfield"
                                            <?= $parentDataAttribute ?> id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>"
-                                           title="<?= gT("Inherited value:") ?> <?= $sParentOption ?>"/>
+                                           title="<?= gT("Inherited value:") ?> <?= CHtml::encode($sParentOption) ?>"/>
                                 </div>
                             <?php endif; ?>
                         </div>

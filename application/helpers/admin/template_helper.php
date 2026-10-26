@@ -123,15 +123,16 @@ function is_template_editable($templatename)
 
 /**
 * This is a callback function that ensures only files are extracted that have a valid extension
-* and whose path contains no HTML-special, backslash or control characters
+* and whose path contains no < > " or control characters
 *
 * @param array $file File info from ZipExtractor, with at least the 'name' and 'is_folder' keys
 * @return int Return 1 for yes (file can be extracted), 0 for no
 */
 function templateExtractFilter($file)
 {
-    // File names are listed in the theme options, so don't allow names that could break out of HTML
-    if (preg_match('/[<>"\'\\\\\x00-\x1F\x7F]/', (string) $file['name'])) {
+    // File names are listed in the theme options, so don't allow names that could break out of HTML.
+    // Backslashes stay allowed, because some ZIP tools on Windows use them as folder separators.
+    if (preg_match('/[<>"\x00-\x1F\x7F]/', (string) $file['name'])) {
         return 0;
     }
     $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads') . ',' . Yii::app()->getConfig('allowedthemeimageformats'));
