@@ -251,7 +251,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * @inheritdoc With allow to delete all related models and data and test Permission.
-     * @param bool $recursive
+     * @param bool $recursive Also delete all related models and data
+     * @return bool False if the current user may not delete the survey or the delete failed
      **/
     public function delete($recursive = true)
     {
@@ -340,6 +341,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             Quota::model()->deleteQuota(array('sid' => $this->sid), true);
             // Remove all related plugin settings
             PluginSetting::model()->deleteAllByAttributes(array("model" => 'Survey', "model_id" => $this->sid));
+            // Remove the survey-specific theme options
+            TemplateConfiguration::model()->deleteAllByAttributes(array('sid' => $this->sid));
             // Delete all uploaded files.
             rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $this->sid);
             // Delete all failed email notifications

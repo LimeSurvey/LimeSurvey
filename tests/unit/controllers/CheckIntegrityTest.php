@@ -742,6 +742,34 @@ class CheckIntegrityTest extends TestBaseClass
         }
     }
 
+    /** Verifies that survey theme options of a deleted survey are only deleted, and reported, by the consistency check. */
+    public function testOrphanThemeConfigurationsAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $bogusSid = 999999917;
+        \Yii::app()->db->createCommand()->insert('{{template_configuration}}', array(
+            'template_name' => 'vanilla',
+            'sid' => $bogusSid,
+            'options' => 'inherit',
+        ));
+        $countThemeConfigurations = function ($condition, array $params = array()) {
+            return (int) \Yii::app()->db->createCommand()->select('count(*)')->from('{{template_configuration}}')->where($condition, $params)->queryScalar();
+        };
+        $themeConfigurationsWithoutSurvey = $countThemeConfigurations('sid IS NULL');
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame(1, $countThemeConfigurations('sid = :sid', array(':sid' => $bogusSid)), 'Merely loading the check page (GET) deleted the theme options of a deleted survey.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(0, $countThemeConfigurations('sid = :sid', array(':sid' => $bogusSid)), 'The consistency check did not delete the theme options of a deleted survey.');
+            $this->assertStringContainsString('survey theme option(s) of surveys that no longer exist', $logOfFixes);
+            $this->assertSame($themeConfigurationsWithoutSurvey, $countThemeConfigurations('sid IS NULL'), 'The consistency check deleted theme options that do not belong to a survey.');
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{template_configuration}}', 'sid = :sid', array(':sid' => $bogusSid));
+        }
+    }
+
     /**
      * A subquestion whose group does not exist (but whose parent question is fine) must
      * get its parent's group back instead of being deleted as a question without group.

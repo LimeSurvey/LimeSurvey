@@ -133,6 +133,11 @@ class DataIntegrityChecker
             $aData = $this->deleteSurveys($aDelete['surveys'], $aData);
         }
 
+        // Also run when surveys were deleted above: their theme options are only orphaned now
+        if (isset($aDelete['orphanthemeconfigurations']) || isset($aDelete['surveys'])) {
+            $aData = $this->deleteOrphanThemeConfigurations($aData);
+        }
+
         if (isset($aDelete['surveylanguagesettings'])) {
             $aData = $this->deleteSurveyLanguageSettings($aDelete['surveylanguagesettings'], $aData);
         }
@@ -856,6 +861,36 @@ class DataIntegrityChecker
     }
 
     /**
+     * Returns the criteria matching survey theme options of surveys that no longer exist.
+     *
+     * A survey later created with the same ID would otherwise get these stale options.
+     * Theme options of a theme itself or of a survey group have no sid and are never matched.
+     *
+     * @return CDbCriteria
+     */
+    private function getOrphanThemeConfigurationsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = 'sid IS NOT NULL AND sid NOT IN (SELECT s.sid FROM {{surveys}} s)';
+        return $oCriteria;
+    }
+
+    /**
+     * Deletes survey theme options of surveys that no longer exist.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message if any theme options were deleted.
+     */
+    private function deleteOrphanThemeConfigurations(array $aData)
+    {
+        $count = TemplateConfiguration::model()->deleteAll($this->getOrphanThemeConfigurationsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u survey theme option(s) of surveys that no longer exist'), $count);
+        }
+        return $aData;
+    }
+
+    /**
      * Deactivates active surveys whose response table is missing.
      *
      * @param array[] $surveys Surveys to deactivate, each with a 'sid' key.
@@ -1445,6 +1480,14 @@ class DataIntegrityChecker
         $iCount = SurveysGroupsettings::model()->count($this->getOrphanSurveyGroupSettingsCriteria());
         if ($iCount > 0) {
             $aDelete['orphansurveygroupsettings'] = $iCount;
+        }
+
+        /**********************************************************************/
+        /*     Check survey theme options of deleted surveys                  */
+        /**********************************************************************/
+        $iCount = TemplateConfiguration::model()->count($this->getOrphanThemeConfigurationsCriteria());
+        if ($iCount > 0) {
+            $aDelete['orphanthemeconfigurations'] = $iCount;
         }
 
         /**********************************************************************/
