@@ -15617,6 +15617,12 @@ body .imageselect-listitem label::after {
   background-color: transparent;
 }
 
+/* Dual scale dropdown: The scale header inside the cell is only shown when the table is stacked and its thead hidden */
+table.ls-answers .dropdown-item > .leftheader,
+table.ls-answers .dropdown-item > .rightheader {
+  display: none !important;
+}
+
 /*
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
@@ -15624,6 +15630,10 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
   table.ls-answers, table.ls-answers thead, table.ls-answers tbody, table.ls-answers th, table.ls-answers td, table.ls-answers tr {
     display: block;
+  }
+  table.ls-answers .dropdown-item > .leftheader,
+  table.ls-answers .dropdown-item > .rightheader {
+    display: block !important;
   }
   table.ls-answers, table.ls-answers thead, table.ls-answers tbody, table.ls-answers th, table.ls-answers td, table.ls-answers tr {
     text-align: right;
@@ -15761,6 +15771,10 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 .no-tables-general table.ls-answers thead:not(.ls-hidden) {
   display: none;
 }
+.no-tables-general table.ls-answers .dropdown-item > .leftheader,
+.no-tables-general table.ls-answers .dropdown-item > .rightheader {
+  display: block !important;
+}
 .no-tables-general table.ls-answers tbody td {
   text-align: right;
   height: auto;
@@ -15868,6 +15882,10 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   .no-tables-mobile table.ls-answers thead,
   .no-tables-mobile table.ls-answers thead:not(.ls-hidden) {
     display: none;
+  }
+  .no-tables-mobile table.ls-answers .dropdown-item > .leftheader,
+  .no-tables-mobile table.ls-answers .dropdown-item > .rightheader {
+    display: block !important;
   }
   .no-tables-mobile table.ls-answers tbody td {
     text-align: right;
