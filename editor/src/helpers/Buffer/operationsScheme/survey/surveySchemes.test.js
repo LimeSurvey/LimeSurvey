@@ -1,3 +1,4 @@
+import { OperationsBuffer } from '../../OperationsBuffer'
 import { languageSettingUpdateJoi } from './languageSettingUpdateJoi'
 import { surveyUpdateJoi } from './surveyUpdateJoi'
 
@@ -479,5 +480,30 @@ describe('ThemeSettingUpdateJoi Schema Tests', () => {
     })
     expect(error).toBeDefined()
     expect(error.message).toContain('"props.templateName" is required')
+  })
+
+  test('OperationsBuffer.addOperation strips options not declared in the manifest', () => {
+    const consoleError = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+    const buffer = new OperationsBuffer()
+
+    buffer.addOperation(
+      buildOperation({
+        headerBackgroundColor: '#2a2f38',
+        unknownOption: 'x',
+      }),
+      true,
+      false,
+      { themesettings }
+    )
+
+    expect(buffer.getOperations()).toEqual([
+      {
+        ...buildOperation({ headerBackgroundColor: '#2a2f38' }),
+        error: false,
+      },
+    ])
+    consoleError.mockRestore()
   })
 })

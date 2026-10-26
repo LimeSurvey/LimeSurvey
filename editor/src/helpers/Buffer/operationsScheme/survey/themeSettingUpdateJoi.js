@@ -40,17 +40,17 @@ export const getThemeSettingUpdateJoi = (themesettings) => {
       )
     : {}
 
+  const propsJoi = Joi.object({
+    templateName: Joi.string().required(),
+    ...optionKeys,
+  })
+
   return Joi.object({
     id: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
     op: Joi.string().valid(Operations.update).required(),
     entity: Joi.string().valid(Entities.themeSettings).required(),
     error: Joi.boolean().optional(),
-    props: Joi.object({
-      templateName: Joi.string().required(),
-      ...optionKeys,
-    })
-      .unknown(!themesettings)
-      .required(),
+    props: (themesettings ? propsJoi : propsJoi.unknown(true)).required(),
   })
 }
 
