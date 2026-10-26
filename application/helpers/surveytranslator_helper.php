@@ -68,7 +68,7 @@ function getDateFormatData($iDateFormat = 0, $sLanguageCode = 'en')
  * Returns the languages supported by LimeSurvey and their locale metadata.
  *
  * @param boolean $bOrderByNative If true, order the returned array by native language name instead of by (English) description
- * @param string $sLanguageCode Cache key for the language active when the descriptions are translated
+ * @param string|null $sLanguageCode Cache key for the language active when the descriptions are translated
  * @return array Array keyed by language code. Entries include descriptions, writing direction, and date and number formats;
  *               optional metadata includes CLDR and Moment.js locales and 'fdow' (0 = Sunday through 6 = Saturday)
  */
@@ -77,6 +77,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
 
     static $result = array();
 
+    // Callers pass the session language, which can be unset
+    $sLanguageCode = (string) $sLanguageCode;
     if (isset($result[$sLanguageCode][$bOrderByNative])) {
         return $result[$sLanguageCode][$bOrderByNative];
     }

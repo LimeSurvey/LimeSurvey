@@ -7,9 +7,10 @@
         <lastUpdate>2026-10-17</lastUpdate>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
+        <documentationUrl>https://www.limesurvey.org/manual/ExpressionQuestionForAll_plugin</documentationUrl>
         <version>1.1.0</version>
         <license>GPL</license>
-        <description><![CDATA[Adds QCODE with its question attributes (QCODE.question, QCODE.qid, QCODE.gid, QCODE.type, QCODE.relevance, QCODE.mandatory…) for questions with subquestions to ExpressionScript. <a href="https://manual.limesurvey.org/ExpressionQuestionForAll">More information in LimeSurvey manual.</a>]]></description>
+        <description><![CDATA[Adds QCODE with its question attributes (QCODE.question, QCODE.qid, QCODE.gid, QCODE.type, QCODE.relevance, QCODE.mandatory…) for questions with subquestions to ExpressionScript. <a href="https://www.limesurvey.org/manual/ExpressionQuestionForAll_plugin">More information in LimeSurvey manual.</a>]]></description>
     </metadata>
 
     <!-- Set priority before question.help -->

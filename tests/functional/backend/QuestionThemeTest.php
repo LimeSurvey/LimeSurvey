@@ -200,10 +200,10 @@ class QuestionThemeTest extends TestBaseClassWeb
             );
             $button->click();
 
-            // Wait for save to complete: the page reloads and the save button becomes clickable again.
+            // Wait for the Ajax save to complete: the success alert only shows after the server responded.
             self::$webDriver->wait(20)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#save-button-create-question')
+                WebDriverExpectedCondition::visibilityOfElementLocated(
+                    WebDriverBy::cssSelector('#notif-container .alert-success')
                 )
             );
 
@@ -211,8 +211,10 @@ class QuestionThemeTest extends TestBaseClassWeb
             \Yii::app()->db->setActive(false);
             \Yii::app()->db->setActive(true);
 
-            // Poll database until the attribute is saved (up to 10 seconds).
+            // Poll database until both attributes are saved (up to 10 seconds). They are written
+            // one by one without a transaction, so min can already exist while max does not yet.
             $rangeSliderMin = null;
+            $rangeSliderMax = null;
             for ($i = 0; $i < 10; $i++) {
                 $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
                     [
@@ -220,7 +222,13 @@ class QuestionThemeTest extends TestBaseClassWeb
                         'attribute' => 'range_slider_min'
                     ]
                 );
-                if ($rangeSliderMin !== null) {
+                $rangeSliderMax = QuestionAttribute::model()->findByAttributes(
+                    [
+                        'qid' => self::$testSurvey->questions[0]->qid,
+                        'attribute' => 'range_slider_max'
+                    ]
+                );
+                if ($rangeSliderMin !== null && $rangeSliderMax !== null) {
                     break;
                 }
                 sleep(1);
@@ -229,14 +237,7 @@ class QuestionThemeTest extends TestBaseClassWeb
             }
             $this->assertNotNull($rangeSliderMin, 'range_slider_min attribute not found in DB after polling');
             $this->assertEquals('1', $rangeSliderMin->value);
-
-            $rangeSliderMax = QuestionAttribute::model()->findByAttributes(
-                [
-                    'qid' => self::$testSurvey->questions[0]->qid,
-                    'attribute' => 'range_slider_max'
-                ]
-            );
-            $this->assertNotNull($rangeSliderMax, 'range_slider_max attribute not found in DB');
+            $this->assertNotNull($rangeSliderMax, 'range_slider_max attribute not found in DB after polling');
             $this->assertEquals('10', $rangeSliderMax->value);
         } catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);

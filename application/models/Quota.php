@@ -26,8 +26,8 @@
  * @property integer $autoload_url Whether URL is automatically redirected if quota is triggered (0/1)
  *
  * @property QuotaLanguageSetting[] $languagesettings Indexed by language code
- * @property QuotaLanguageSetting $mainLanguagesetting
- * @property QuotaLanguageSetting $currentLanguageSetting
+ * @property QuotaLanguageSetting|null $mainLanguagesetting
+ * @property QuotaLanguageSetting|null $currentLanguageSetting
  * @property Survey $survey
  * @property QuotaMember[] $quotaMembers
  *
@@ -121,11 +121,13 @@ class Quota extends LSActiveRecord
     }
 
     /**
-     * @return QuotaLanguageSetting
+     * Returns the texts of the quota in the survey's base language.
+     *
+     * @return QuotaLanguageSetting|null Null if the quota has no texts in the base language
      */
     public function getMainLanguagesetting()
     {
-        return $this->languagesettings[$this->survey->language];
+        return $this->languagesettings[$this->survey->language] ?? null;
     }
 
     /**
@@ -206,7 +208,7 @@ class Quota extends LSActiveRecord
 
     /**
      * Get the QuotaLanguageSetting for current language
-     * @return QuotaLanguageSetting
+     * @return QuotaLanguageSetting|null Null if the quota has no texts in the current and the base language
      */
     public function getCurrentLanguageSetting()
     {

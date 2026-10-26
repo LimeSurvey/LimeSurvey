@@ -235,8 +235,10 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 $counter++;
             }
 
-            if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
-                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
+            // The labels are only stored as serie names, which the cache hash ignores
+            $sCacheID = "graph" . $iSurveyID . $sLanguageCode . $iQuestionID . "_" . md5(implode("\n", $lblout));
+            if ($cache->IsInCache($sCacheID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
+                $cachefilename = basename((string) $cache->GetFileFromCache($sCacheID, $DataSet->GetData()));
             } else {
                 $graph = new pChart(1, 1);
                 $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
@@ -268,8 +270,8 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
                 $graph->drawLegend(510, 30, $DataSet->GetDataDescription(), 250, 250, 250);
 
-                $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData(), $graph);
-                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
+                $cache->WriteToCache($sCacheID, $DataSet->GetData(), $graph);
+                $cachefilename = basename((string) $cache->GetFileFromCache($sCacheID, $DataSet->GetData()));
                 unset($graph);
             }
         }    //end if (bar chart)

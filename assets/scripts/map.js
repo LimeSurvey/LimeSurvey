@@ -55,10 +55,7 @@ function isvalidCoord(val,type){
 // OSMap functions
 function OSGeoInitialize(question,latLng){
         var tileServerURL = {
-            OSM : "//{s}.tile.openstreetmap.org/{z}/{x}/{y}",
-            HUM : "//{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}",
-            CYC : "//{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}",
-            TRA : "//{s}.tile.thunderforest.com/transport/{z}/{x}/{y}"
+            OSM : "//{s}.tile.openstreetmap.org/{z}/{x}/{y}"
         };
         var name = question.substr(0,question.length - 2);
         // tiles layers def
@@ -75,36 +72,6 @@ function OSGeoInitialize(question,latLng){
             subdomains: ["a", "b", "c"],
             attribution: 'Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
         });
-        var mapCYC = L.tileLayer(tileServerURL.CYC+".png", {
-            maxZoom: 19,
-            subdomains: ["a", "b", "c"],
-            attribution: 'Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
-        });
-        var mapHOT = L.layerGroup([L.tileLayer(tileServerURL.HUM+".png", {
-            maxZoom: 20,
-            subdomains: ["a", "b", "c"],
-        }), L.tileLayer(tileServerURL+".png", {
-            maxZoom: 19,
-            subdomains: ["a", "b", "c"],
-            attribution: 'Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
-        })]);
-        var mapTRA = L.layerGroup([L.tileLayer(tileServerURL.TRA+".png", {
-            maxZoom: 19,
-            subdomains: ["a", "b", "c"],
-        }), L.tileLayer(tileServerURL+".png", {
-            maxZoom: 19,
-            subdomains: ["a", "b", "c"],
-            attribution: 'Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
-        })]);
-
-        var baseLayers = {
-            "Street Map": mapOSM,
-            "Humanitarian": mapHOT,
-            "Cyclemap": mapCYC,
-            "Traffic Map" : mapTRA
-        };
-        var overlays = {
-        };
         var map = L.map("map_"+name, {
             zoom:MapOption.zoomLevel,
             minZoom:1,
@@ -143,10 +110,6 @@ function OSGeoInitialize(question,latLng){
 
         var marker = new L.marker([lat,lng], {title:'Current Location',id:1,draggable:'true'});
         map.addLayer(marker);
-
-        var layerControl = L.control.layers(baseLayers, overlays, {
-          collapsed: true
-        }).addTo(map);
 
         map.on('click',
             function(e) {

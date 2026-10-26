@@ -7,6 +7,7 @@
         <last_update>2019-03-18</last_update>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
+        <documentationUrl>https://www.limesurvey.org/manual/MailSenderToFrom_plugin</documentationUrl>
         <version>1.0.0</version>
         <license>MIT</license>
         <description><![CDATA[Force sender, From etc … to be the mail set for sending email. Some SMTP server need smtp user as From and Return-Path.]]></description>

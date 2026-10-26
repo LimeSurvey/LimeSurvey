@@ -6,6 +6,7 @@ import { queryClient } from 'queryClient'
 import { useAppState, useBuffer, useErrors, useFocused, useSurvey } from 'hooks'
 import {
   EntitiesType,
+  Operations,
   OperationsBuffer,
   STATES,
   errorToast,
@@ -78,6 +79,8 @@ export const SurveyLogicProvider = ({ children }) => {
     }
 
     const readyOperations = operationsBuffer.getOperations({ ready: true })
+    // surveyRefreshRequired is only updated on the next render, too late for finallyCallback
+    let deleteRefused = false
 
     const beforeCallback = () => {
       // Clear ready buffer items
@@ -175,6 +178,23 @@ export const SurveyLogicProvider = ({ children }) => {
         mapResult.operationsBuffer
       )
 
+      // A refused delete already removed the item locally: Drop the operation
+      // and reload the survey to show the item again.
+      const refusedDeletes = exceptionErrors.filter(
+        (error) => error.op === Operations.delete
+      )
+      refusedDeletes.forEach((error) => {
+        mapResult.operationsBuffer.removeOperation(
+          error.id,
+          error.op,
+          error.entity
+        )
+      })
+      if (refusedDeletes.length) {
+        deleteRefused = true
+        setSurveyRefreshRequired(true)
+      }
+
       update({ ...mapResult.survey })
       refetchQuestionsFieldNamesMap()
       setBuffer(mapResult.operationsBuffer.getOperations(), RandomNumber())
@@ -192,7 +212,12 @@ export const SurveyLogicProvider = ({ children }) => {
         queryKey: [STATES.SURVEY_RESPONSES, surveyId],
       })
 
-      if (!result.operationsApplied) {
+      // The message of a refused delete is shown by itself, a reload is not needed
+      const onlyDeletesRefused =
+        refusedDeletes.length &&
+        !validationErrors.length &&
+        exceptionErrors.length === refusedDeletes.length
+      if (!result.operationsApplied && !onlyDeletesRefused) {
         errorToast(
           t(
             'Sorry, we encountered an issue while saving the changes. Please try refreshing the page!'
@@ -226,7 +251,10 @@ export const SurveyLogicProvider = ({ children }) => {
       const pendingOperations = new OperationsBuffer(
         queryClient.getQueryData([STATES.BUFFER])
       )
-      if (pendingOperations.isEmpty() && surveyRefreshRequired) {
+      if (
+        pendingOperations.isEmpty() &&
+        (surveyRefreshRequired || deleteRefused)
+      ) {
         fetchSurvey(surveyId)
         setSurveyRefreshRequired(false)
       }

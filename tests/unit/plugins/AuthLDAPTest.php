@@ -59,7 +59,6 @@ class AuthLDAPTest extends TestBaseClass
     private function callPrivate($method, array $args)
     {
         $reflectionMethod = new \ReflectionMethod(self::$plugin, $method);
-        $reflectionMethod->setAccessible(true);
         return $reflectionMethod->invokeArgs(self::$plugin, $args);
     }
 

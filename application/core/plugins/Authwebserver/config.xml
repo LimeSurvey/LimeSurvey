@@ -7,6 +7,7 @@
         <lastUpdate>2018-02-03</lastUpdate>
         <author>Menno Dekker</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
+        <documentationUrl>https://www.limesurvey.org/manual/Authwebserver_plugin</documentationUrl>
         <version>1.0.0</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Core: Webserver authentication]]></description>

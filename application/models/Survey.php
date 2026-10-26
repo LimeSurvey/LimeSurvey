@@ -2296,6 +2296,22 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Get the IDs of the groups that contain at least one question without "Always hide this question"
+     * @return int[]
+     */
+    public function getGroupIdsWithVisibleQuestions()
+    {
+        $gids = Yii::app()->db->createCommand()
+            ->selectDistinct('t.gid')
+            ->from('{{questions}} t')
+            ->leftJoin('{{question_attributes}} qa', 'qa.qid = t.qid AND qa.attribute = :hidden', [':hidden' => 'hidden'])
+            ->where('t.sid = :sid AND t.parent_qid = 0', [':sid' => $this->sid])
+            ->andWhere('qa.value IS NULL OR qa.value != :hidden_value', [':hidden_value' => '1'])
+            ->queryColumn();
+        return array_map('intval', $gids);
+    }
+
+    /**
      * Get the count of questions that do not need input (skipping text-display etc.)
      * @return int
      */
