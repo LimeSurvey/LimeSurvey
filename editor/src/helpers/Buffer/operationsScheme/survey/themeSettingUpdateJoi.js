@@ -1,6 +1,6 @@
 import Joi from 'joi'
 
-import { THEME_OPTIONS_TYPES } from 'components/SurveySettings/Settings/themeOptionTypes'
+import { THEME_OPTIONS_TYPES } from 'components/SurveySettings/Settings/themeOptionTypes/types'
 import { Operations, Entities } from 'helpers/Buffer'
 
 const getOptionValueJoi = (attribute = {}) => {
