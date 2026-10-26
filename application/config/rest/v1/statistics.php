@@ -2,6 +2,7 @@
 
 use LimeSurvey\Libraries\Api\Command\V1\SurveyStatisticsGlance;
 use LimeSurvey\Libraries\Api\Rest\V1\SchemaFactory\SchemaFactorySurveyStatistics;
+use LimeSurvey\Libraries\Api\Rest\V1\SchemaFactory\SchemaFactorySurveyStatisticsDateValues;
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{SchemaFactoryError,
     SchemaFactorySurveyPatch,
     SchemaFactorySurveyStatisticsGlance,
@@ -9,6 +10,7 @@ use LimeSurvey\Api\Rest\V1\SchemaFactory\{SchemaFactoryError,
     SchemaFactorySurveyTemplate};
 use LimeSurvey\Libraries\Api\Command\V1\Statistics;
 use LimeSurvey\Libraries\Api\Command\V1\StatisticsOverview;
+use LimeSurvey\Libraries\Api\Command\V1\StatisticsDateValues;
 
 $errorSchema = (new SchemaFactoryError())->make();
 $surveyPatchSchema = (new SchemaFactorySurveyPatch())->make();
@@ -98,5 +100,38 @@ $rest['v1/statistics/$id'] = [
     ]
 ];
 
+$rest['v1/statistics-date-values/$id'] = [
+    'GET' => [
+        'tag' => 'survey',
+        'description' => 'Answers of a Date/time question per day and time',
+        'commandClass' => StatisticsDateValues::class,
+        'auth' => true,
+        'params' => [
+            'qid' => ['type' => 'integer'],
+            'minId' => ['type' => 'integer'],
+            'maxId' => ['type' => 'integer'],
+            'completed' => ['type' => 'bool'],
+            'search' => ['type' => 'array'],
+        ],
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+                'content' => null,
+                'schema' => (new SchemaFactorySurveyStatisticsDateValues())->make()
+            ],
+            'bad-request' => [
+                'code' => 400,
+                'description' => 'Bad request',
+                'schema' => $errorSchema
+            ],
+            'unauthorized' => [
+                'code' => 401,
+                'description' => 'Unauthorized',
+                'schema' => $errorSchema
+            ]
+        ]
+    ]
+];
 
 return $rest;

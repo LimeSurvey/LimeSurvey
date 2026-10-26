@@ -373,6 +373,34 @@ final class ResponseAggregateBatch
         return $this->results[$alias] ?? 0;
     }
 
+    /**
+     * Every distinct stored value of a column with its count, ordered by
+     * value, with the same response filters as the aggregates.
+     *
+     * @return array<string, int> stored value => count
+     */
+    public function groupedValues(string $field): array
+    {
+        $db = $this->getDb();
+        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
+        $col = $db->quoteColumnName($field);
+        $where = $this->buildWhere();
+        $where = $where === '' ? " WHERE $col IS NOT NULL" : "$where AND $col IS NOT NULL";
+
+        $rows = $db->createCommand(
+            "SELECT $col AS " . $db->quoteColumnName('value')
+            . ', COUNT(*) AS ' . $db->quoteColumnName('total')
+            . " FROM $table$where GROUP BY $col ORDER BY $col"
+        )->queryAll();
+
+        $counts = [];
+        foreach ($rows as $row) {
+            $counts[(string)$row['value']] = (int)$row['total'];
+        }
+
+        return $counts;
+    }
+
     private function register(string $kind, string $field, string $value, bool $numeric = false): string
     {
         $key = $kind . "\x1F" . $field . "\x1F" . $value . "\x1F" . ($numeric ? 'n' : '');

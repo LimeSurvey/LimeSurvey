@@ -70,3 +70,23 @@ export const formatTime = (time, localeCode) => {
 
 export const formatResponseCount = (count) =>
   count === 1 ? t('1 response') : format(t('%s responses'), count)
+
+export const sliceByRange = (days, from, to) =>
+  Object.keys(days ?? {})
+    .filter((day) => day >= from && day <= to)
+    .sort()
+    .flatMap((day) => {
+      const times = Object.keys(days[day]).sort()
+      const ordered = [
+        ...times.filter((time) => time !== ''),
+        ...times.filter((time) => time === ''),
+      ]
+      return ordered.map((time) => ({
+        date: day,
+        time: time === '' ? null : time,
+        count: days[day][time],
+      }))
+    })
+
+export const sumCounts = (rows) =>
+  rows.reduce((total, row) => total + row.count, 0)

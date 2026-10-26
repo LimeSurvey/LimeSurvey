@@ -58,6 +58,7 @@ export const STATES = {
   SURVEY_RESPONSE_FILES: 'survey_response_files',
   SURVEY_RESPONSE_COMMENTS: 'survey_response_comments',
   SURVEY_STATISTICS: 'survey_statistics',
+  SURVEY_STATISTICS_DATE_VALUES: 'survey_statistics_date_values',
   EDITOR_HELP_APPEARED: 'editor_help_appeared',
   USER_PERMISSIONS: 'user_permissions',
   HAS_RESPONSES_READ_PERMISSION: 'has_responses_read_permission',

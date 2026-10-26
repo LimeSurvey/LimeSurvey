@@ -143,12 +143,63 @@
     table-layout: fixed;
   }
 
+  // Right-aligned counts keep their share of the width, and their column
+  // title sits above them (the header content is a flex box).
+  .ls-table .ls-table__actions-cell {
+    width: auto;
+
+    .ls-table__header-content {
+      justify-content: flex-end;
+    }
+  }
+
   &-no-time {
     color: $g-700;
   }
 }
 
-// Load more modal: close button on the right, like the ranking modal.
-.responses-statistics-date-table-modal .modal-close-button {
+// Date modals: close button on the right, like the ranking modal.
+.responses-statistics-date-table-modal .modal-close-button,
+.responses-statistics-date-modal .modal-close-button {
   margin-left: auto;
+}
+
+// Day breakdown modal.
+.responses-statistics-date-modal {
+  // Undo the global fit-content minimum, which would stretch the modal to
+  // the table's full width, like the Load more modal does.
+  .modal-dialog {
+    min-width: 0;
+    width: auto;
+    max-width: min(800px, calc(100vw - 48px));
+  }
+
+  // The close button sits on the title's line, not on a row of its own.
+  .modal-header {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    padding: 0;
+  }
+
+  .responses-statistics-modal-body {
+    padding-top: 24px;
+  }
+
+  .responses-statistics-modal-title {
+    margin-bottom: 16px;
+    padding-right: 32px;
+  }
+
+  &-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  &-label {
+    color: $g-900;
+    font-size: $font-size-sm;
+  }
 }

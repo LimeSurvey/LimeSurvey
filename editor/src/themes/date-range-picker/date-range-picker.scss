@@ -254,3 +254,42 @@
     }
   }
 }
+
+// Single-date field (DatePickerField): the range picker's date input whose
+// calendar icon opens the calendar.
+.date-range-picker.date-picker-field {
+  width: 200px;
+  background-color: transparent;
+
+  .date-range-input {
+    border: 2px solid $g-700;
+    border-radius: 4px;
+    background-color: $white;
+
+    &:focus-within {
+      border-color: $grape;
+    }
+
+    &.is-invalid {
+      border-color: $error;
+    }
+  }
+
+  .date-range-input-icon {
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .date-range-error {
+    padding: 4px 0 0;
+    background-color: transparent;
+  }
+
+  .date-picker-field-popover {
+    z-index: 1060;
+  }
+
+  .date-picker-field-popover .date-range-calendar {
+    width: 430px;
+  }
+}

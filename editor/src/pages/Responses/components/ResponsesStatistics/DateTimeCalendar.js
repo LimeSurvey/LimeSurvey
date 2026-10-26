@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { DayButton, DayPicker } from '@daypicker/react'
 import {
   addMonths,
@@ -11,6 +11,7 @@ import classNames from 'classnames'
 
 import { useDayPickerSetup } from 'components/UIComponents/DateRangePicker/DateRangeCalendar'
 
+import { DateTimeDayModal } from './DateTimeDayModal.js'
 import {
   formatDay,
   formatResponseCount,
@@ -20,13 +21,18 @@ import {
 
 /**
  * Calendar view of a Date/time question: the range of entered dates above a
- * month grid whose days show how many answers entered that date.
+ * month grid whose days show how many answers entered that date. A day with
+ * answers of a question that records times opens its time breakdown.
  */
 export const DateTimeCalendar = ({
+  surveyId,
+  question = {},
+  filters,
   stats,
   calendarState = {},
   onCalendarStateChange,
 }) => {
+  const [breakdownDay, setBreakdownDay] = useState(null)
   const { locale, formatters, components, weekStartsOn } = useDayPickerSetup()
   const days = useMemo(() => stats?.days ?? {}, [stats])
   const earliest = stats?.earliest ?? null
@@ -47,6 +53,18 @@ export const DateTimeCalendar = ({
 
   const goTo = (dayKey) =>
     update({ month: startOfMonth(toDate(dayKey)), selectedDate: dayKey })
+
+  const handleDayClick = (date, modifiers) => {
+    if (question.hasTime && !modifiers.outside && days[toDayKey(date)]) {
+      setBreakdownDay(toDayKey(date))
+    }
+  }
+
+  // Picking another day in the breakdown moves the calendar along with it.
+  const changeBreakdownDay = (dayKey) => {
+    setBreakdownDay(dayKey)
+    goTo(dayKey)
+  }
 
   const endsMidWeek = (endOfMonth(month).getDay() + 7 - weekStartsOn) % 7 !== 6
   const nextMonthLabel = endsMidWeek
@@ -171,6 +189,7 @@ export const DateTimeCalendar = ({
         labels={labels}
         selected={selected}
         onSelect={(date) => date && update({ selectedDate: toDayKey(date) })}
+        onDayClick={handleDayClick}
         month={month}
         onMonthChange={(newMonth) => update({ month: newMonth })}
         startMonth={startMonth}
@@ -179,6 +198,15 @@ export const DateTimeCalendar = ({
         modifiersClassNames={{
           hasResponses: 'responses-statistics-calendar-day--has-responses',
         }}
+      />
+
+      <DateTimeDayModal
+        surveyId={surveyId}
+        question={question}
+        filters={filters}
+        day={breakdownDay}
+        onDayChange={changeBreakdownDay}
+        onHide={() => setBreakdownDay(null)}
       />
     </div>
   )

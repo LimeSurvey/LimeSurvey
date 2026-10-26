@@ -97,6 +97,26 @@ const flattenAnswers = (responses) =>
     }))
   })
 
+// Statistics filter query (minId, maxId, completed, search), shared by every
+// statistics endpoint so they all filter the same way.
+const buildStatisticsFilterQuery = (filters = {}) => {
+  let { completed, minId, maxId, search } = filters
+
+  // Ensure minId is not greater than maxId, if provided.
+  if (Number(minId) > Number(maxId) && maxId) {
+    minId = maxId
+  }
+
+  const minIdIsNumber = typeof minId === 'number'
+  const maxIdIsNumber = typeof maxId === 'number'
+
+  const searchParams = (Array.isArray(search) ? search : [])
+    .map((term) => `&search[]=${encodeURIComponent(term)}`)
+    .join('')
+
+  return `${typeof completed === 'boolean' ? `completed=${completed}` : ''}${minIdIsNumber ? `&minId=${minId}` : ''}${maxIdIsNumber ? `&maxId=${maxId}` : ''}${searchParams}`
+}
+
 export class StatisticsService {
   constructor(auth, surveyId, baseUrl) {
     this.auth = auth
@@ -113,26 +133,22 @@ export class StatisticsService {
     pageSize = 15,
     language
   ) => {
-    let { completed, minId, maxId, search } = filters
-
-    // Ensure minId is not greater than maxId, if provided.
-    if (Number(minId) > Number(maxId) && maxId) {
-      minId = maxId
-    }
-
-    const minIdIsNumber = typeof minId === 'number'
-    const maxIdIsNumber = typeof maxId === 'number'
-
-    const searchParams = (Array.isArray(search) ? search : [])
-      .map((term) => `&search[]=${encodeURIComponent(term)}`)
-      .join('')
-
     const languageParam = language
       ? `&language=${encodeURIComponent(language)}`
       : ''
 
-    const queryFilters = `${typeof completed === 'boolean' ? `completed=${completed}` : ''}${minIdIsNumber ? `&minId=${minId}` : ''}${maxIdIsNumber ? `&maxId=${maxId}` : ''}${searchParams}${languageParam}&page=${page}&pageSize=${pageSize}`
+    const queryFilters = `${buildStatisticsFilterQuery(filters)}${languageParam}&page=${page}&pageSize=${pageSize}`
     return await this.restClient.get(`statistics/${sid}?${queryFilters}`)
+  }
+
+  /**
+   * Answers of a Date/time question grouped by day and time:
+   * { hasTime, total, days: { 'YYYY-MM-DD': { 'HH:mm:ss': count } } }.
+   */
+  getDateTimeValues = async (sid, qid, filters) => {
+    return await this.restClient.get(
+      `statistics-date-values/${sid}?qid=${qid}&${buildStatisticsFilterQuery(filters)}`
+    )
   }
 
   getSurveyStatisticsAtGlance = async (sid) => {

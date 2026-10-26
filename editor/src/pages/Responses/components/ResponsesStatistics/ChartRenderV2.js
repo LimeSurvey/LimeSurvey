@@ -74,8 +74,18 @@ const VIEWS = [
     label: () => t('Calendar'),
     icon: () => <i className="ri-calendar-line"></i>,
     isAvailable: ({ isDate }) => isDate,
-    render: ({ data, calendarState, onCalendarStateChange }) => (
+    render: ({
+      data,
+      surveyId,
+      question,
+      filters,
+      calendarState,
+      onCalendarStateChange,
+    }) => (
       <DateTimeCalendar
+        surveyId={surveyId}
+        question={question}
+        filters={filters}
         stats={data?.[0]?.stats}
         calendarState={calendarState}
         onCalendarStateChange={onCalendarStateChange}

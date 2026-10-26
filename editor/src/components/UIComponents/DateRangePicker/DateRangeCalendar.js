@@ -42,6 +42,7 @@ export const useDayPickerSetup = () => {
 }
 
 export const DateRangeCalendar = ({
+  mode = 'range',
   selected,
   month,
   onMonthChange,
@@ -54,7 +55,7 @@ export const DateRangeCalendar = ({
   return (
     <div className="date-range-calendar">
       <DayPicker
-        mode="range"
+        mode={mode}
         captionLayout="dropdown"
         navLayout="around"
         showOutsideDays

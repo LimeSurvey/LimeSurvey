@@ -5,7 +5,11 @@ import { useElementClick } from './useElementClick'
 const FOCUSABLE_SELECTOR =
   'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
 
-export const useDateRangePopover = (onDismiss) => {
+// positionOffset: how far up and left of the trigger the popover opens.
+export const useDateRangePopover = (
+  onDismiss,
+  { positionOffset = 120 } = {}
+) => {
   const [showPicker, setShowPicker] = useState(false)
   const [position, setPosition] = useState({ top: 0, left: 0 })
   const triggerRef = useRef(null)
@@ -32,7 +36,6 @@ export const useDateRangePopover = (onDismiss) => {
 
   const openPicker = () => {
     const rect = triggerRef.current.getBoundingClientRect()
-    const positionOffset = 120
 
     setPosition({
       top: rect.bottom - positionOffset,

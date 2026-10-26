@@ -11,8 +11,12 @@ export const DateInput = ({
   onCommit,
   onValidityChange = () => {},
   label,
+  locale,
+  onIconClick,
+  iconRef,
 }) => {
-  const formatted = value ? format(value, dateFormat) : ''
+  const localeOptions = locale ? { locale } : undefined
+  const formatted = value ? format(value, dateFormat, localeOptions) : ''
   const [text, setText] = useState(formatted)
   const [isInvalid, setIsInvalid] = useState(false)
 
@@ -34,7 +38,7 @@ export const DateInput = ({
       return
     }
 
-    const parsed = parse(text.trim(), dateFormat, new Date())
+    const parsed = parse(text.trim(), dateFormat, new Date(), localeOptions)
     const inBounds =
       isValid(parsed) &&
       !isBefore(parsed, startOfDay(minDate)) &&
@@ -53,7 +57,7 @@ export const DateInput = ({
         aria-label={label}
         aria-invalid={isInvalid}
         title={isInvalid ? t('Invalid date.') : undefined}
-        placeholder={format(new Date(), dateFormat)}
+        placeholder={format(new Date(), dateFormat, localeOptions)}
         value={text}
         onChange={(e) => {
           setText(e.target.value)
@@ -62,9 +66,21 @@ export const DateInput = ({
         onBlur={commit}
         onKeyDown={(e) => e.key === 'Enter' && commit()}
       />
-      <span className="date-range-input-icon">
-        <Calendar3 size={14} />
-      </span>
+      {onIconClick ? (
+        <button
+          ref={iconRef}
+          type="button"
+          className="date-range-input-icon"
+          aria-label={t('Open calendar')}
+          onClick={onIconClick}
+        >
+          <Calendar3 size={14} />
+        </button>
+      ) : (
+        <span className="date-range-input-icon">
+          <Calendar3 size={14} />
+        </span>
+      )}
     </div>
   )
 }
