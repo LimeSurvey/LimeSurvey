@@ -47,6 +47,12 @@ class QuestionAttribute extends LSActiveRecord
     private static $attributeDefinitions = [];
 
     /**
+     * @var array{subscriptions: array, attributes: array}|null Result of the newQuestionAttributes event, with the
+     * subscriptions it was dispatched to: the event is dispatched again only when plugins are (un)loaded
+     */
+    private static $pluginAttributes = null;
+
+    /**
      * @var array{key: string, definition: array<string,mixed>|false}|null Definition of this attribute during one
      * validation, so that the validation rules look up the question only once
      */
@@ -590,14 +596,24 @@ class QuestionAttribute extends LSActiveRecord
      *      'help' : an help
      *  ]
      *
+     * The event is dispatched once per request: the attributes don't depend on a question.
+     *
      * @return array the event attributes as array or an empty array
      */
     public static function getOwnQuestionAttributesViaPlugin()
     {
-        $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
-        $result = App()->getPluginManager()->dispatchEvent($event);
+        $pluginManager = App()->getPluginManager();
+        $subscriptions = $pluginManager->getSubscriptions('newQuestionAttributes');
+        if (self::$pluginAttributes === null || self::$pluginAttributes['subscriptions'] !== $subscriptions) {
+            $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
+            $result = $pluginManager->dispatchEvent($event);
+            self::$pluginAttributes = [
+                'subscriptions' => $subscriptions,
+                'attributes' => (array) $result->get('questionAttributes'),
+            ];
+        }
 
-        return (array) $result->get('questionAttributes');
+        return self::$pluginAttributes['attributes'];
     }
 
     /**

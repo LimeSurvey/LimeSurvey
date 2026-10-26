@@ -56,4 +56,27 @@ class QuestionAttributeTest extends BaseModelTestCase
         $questionAttribute->validateDateLimit('value', []);
         $this->assertFalse($questionAttribute->hasErrors('value'));
     }
+
+    /**
+     * The newQuestionAttributes event is dispatched once, not for every question type or question,
+     * and again when the plugins subscribed to it change.
+     */
+    public function testPluginAttributesEventIsDispatchedOnce()
+    {
+        require_once __DIR__ . '/../../data/plugins/NewQuestionAttributesPlugin.php';
+        $pluginManager = App()->getPluginManager();
+        $plugin = new \NewQuestionAttributesPlugin($pluginManager, 0);
+        $plugin->init();
+        try {
+            $provider = new \LimeSurvey\Models\Services\PluginQuestionAttributeProvider();
+            $this->assertArrayHasKey('testAttribute', $provider->getDefinitions(['questionType' => 'S']));
+            $this->assertArrayHasKey('testAttributeForArray', $provider->getDefinitions(['questionType' => 'F']));
+            $this->assertArrayHasKey('testAttribute', \QuestionAttribute::getOwnQuestionAttributesViaPlugin());
+            $this->assertSame(1, $plugin->dispatchCount);
+        } finally {
+            $pluginManager->unsubscribe($plugin, 'newQuestionAttributes');
+        }
+        $this->assertArrayNotHasKey('testAttribute', \QuestionAttribute::getOwnQuestionAttributesViaPlugin());
+        $this->assertSame(1, $plugin->dispatchCount);
+    }
 }
