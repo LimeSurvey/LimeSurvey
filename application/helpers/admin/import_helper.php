@@ -1121,7 +1121,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         $aAllAttributes = questionHelper::getAttributesDefinitions();
         /** @var array<string,mixed> List of "answer order" related attributes */
         $answerOrderAttributes = [];
-        importQuestionThemeAttributes($xml, $aQIDReplacements);
+        importQuestionThemeAttributes($xml, $aQIDReplacements, $aLanguagesSupported);
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -3641,12 +3641,17 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
  *
  * @param SimpleXMLElement $xml the imported survey, group or question
  * @param array<integer,integer> $aQIDReplacements new question ids, by old question id
+ * @param string[]|null $aLanguagesSupported if set, rows in other languages are skipped like the other attribute rows
  * @return void
  */
-function importQuestionThemeAttributes(SimpleXMLElement $xml, array $aQIDReplacements)
+function importQuestionThemeAttributes(SimpleXMLElement $xml, array $aQIDReplacements, ?array $aLanguagesSupported = null)
 {
     foreach ($xml->question_attributes->rows->row as $row) {
         if ((string) $row->attribute !== 'question_template' || !isset($aQIDReplacements[(int) $row->qid])) {
+            continue;
+        }
+        $sLanguage = (string) $row->language;
+        if ($aLanguagesSupported !== null && $sLanguage !== '' && !in_array($sLanguage, $aLanguagesSupported)) {
             continue;
         }
         $oQuestion = Question::model()->findByPk($aQIDReplacements[(int) $row->qid]);
