@@ -59,10 +59,11 @@ export const TopBarActions = ({
   }
 
   const handleToggleQuestionCodes = () => {
+    const next = !survey.showQNumCode?.showCode
     const operationAttr = {
       showQNumCode: {
-        showCode: !survey.showQNumCode?.showCode,
-        showNumber: !survey.showQNumCode?.showNumber,
+        showCode: next,
+        showNumber: next,
       },
     }
     update(operationAttr)
