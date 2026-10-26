@@ -7,15 +7,21 @@ import { renderWithProviders } from 'tests/testUtils'
 import { RowQuestion } from './RowQuestion'
 
 let mockShowCode = true
+let mockShowNumber = true
 const mockUpdate = jest.fn()
 jest.mock('hooks/useSurvey', () => ({
   useSurvey: () => ({
     survey: {
       ...require('helpers/data/survey-detail.json').survey,
-      showQNumCode: { showCode: mockShowCode, showNumber: mockShowCode },
+      showQNumCode: { showCode: mockShowCode, showNumber: mockShowNumber },
     },
     update: mockUpdate,
   }),
+}))
+
+const mockSetFocused = jest.fn()
+jest.mock('hooks/useFocused', () => ({
+  useFocused: () => ({ setFocused: mockSetFocused, focused: {} }),
 }))
 
 const question = {
@@ -50,7 +56,9 @@ const setup = async (props = {}) => {
 describe('RowQuestion menu', () => {
   beforeEach(() => {
     mockShowCode = true
+    mockShowNumber = true
     mockUpdate.mockClear()
+    mockSetFocused.mockClear()
   })
 
   test('renders heading, items in order, and separator', async () => {
@@ -95,13 +103,22 @@ describe('RowQuestion menu', () => {
   })
 
   test('toggle updates the survey and menu clicks do not activate the row', async () => {
-    const onRowClick = jest.fn()
     await setup()
     await userEvent.click(screen.getByTestId('toggle-question-codes-button'))
     expect(mockUpdate).toHaveBeenCalledWith({
-      showQNumCode: { showCode: false, showNumber: false },
+      showQNumCode: { showCode: false, showNumber: true },
     })
-    expect(onRowClick).not.toHaveBeenCalled()
+    expect(mockSetFocused).not.toHaveBeenCalled()
+  })
+
+  test('toggle flips only showCode and preserves showNumber', async () => {
+    mockShowCode = false
+    mockShowNumber = true
+    await setup()
+    await userEvent.click(screen.getByTestId('toggle-question-codes-button'))
+    expect(mockUpdate).toHaveBeenCalledWith({
+      showQNumCode: { showCode: true, showNumber: true },
+    })
   })
 
   test('Escape closes the menu and focuses the toggle', async () => {
