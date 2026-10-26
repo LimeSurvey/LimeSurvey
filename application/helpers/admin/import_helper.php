@@ -129,7 +129,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             // now translate any links
             if ($bTranslateLinksFields) {
                 $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
-                $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+                if (isset($insertdata['description'])) {
+                    $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+                }
             }
             if (isset($aGIDReplacements[$insertdata['gid']])) {
                 $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
@@ -415,7 +417,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             // now translate any links
             if ($bTranslateLinksFields) {
                 $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-                $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                if (isset($insertdata['help'])) {
+                    $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                }
             }
 
             if (isset($aQIDReplacements[$insertdata['qid']])) {
@@ -983,7 +987,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             // now translate any links
             if ($options['translinkfields']) {
                 $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-                $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                if (isset($insertdata['help'])) {
+                    $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                }
             }
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
@@ -2559,6 +2565,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!isset($xml->group_l10ns->rows->row)) {
                 if (!in_array($insertdata['language'] ?? null, $aLanguagesSupported)) {
                     continue;
+                }
+                if (!isset($insertdata['description'])) {
+                    $insertdata['description'] = '';
                 }
                 // now translate any links
                 if ($bTranslateInsertansTags) {
