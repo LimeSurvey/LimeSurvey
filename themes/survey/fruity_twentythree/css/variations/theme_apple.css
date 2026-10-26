@@ -11813,6 +11813,16 @@ body .answer-item label::after {
   line-height: 1;
 }
 
+.suffix-prefix-force .ls-input-sized .ls-input-group-extra {
+  width: initial;
+}
+
+.suffix-prefix-force .ls-input-sized .ls-input-group {
+  width: auto;
+  max-width: 100%;
+  table-layout: fixed;
+}
+
 /* Survey list (home page) : break line in btn for long survey title*/
 .surveytitle.btn {
   white-space: normal;

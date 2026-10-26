@@ -253,6 +253,7 @@ class RenderArray10ChoiceQuestion extends QuestionBaseRenderer
                 'sDisplayStyle' => '', // return_display_style() is disabled and always returned an empty string
                 'odd'           => ($j % 2),
                 'answer_tds'    => $answer_tds,
+                'relevanceClass' => $this->getCurrentRelevecanceClass($myfname),
             )
         );
     }

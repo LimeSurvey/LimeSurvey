@@ -1270,9 +1270,9 @@ class Tokens extends SurveyCommonAction
         foreach ($aMandatoryAttributes['columns'] as $key => $attribute) {
             $aAttributesDesc[$key] = array(
                 'coreattribute' => true,
-                'mandatory' => $key == 'email' ? true : false,
+                'mandatory' => $key == 'email' ? 'Y' : 'N',
                 'encrypted' => $attribute,
-                'show_register' => true,
+                'show_register' => 'Y',
                 'description' => gT('Mandatory attribute'),
                 'cpdbmap' => ''
             );

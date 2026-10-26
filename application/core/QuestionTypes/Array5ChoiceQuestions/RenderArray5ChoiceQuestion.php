@@ -288,6 +288,7 @@ class RenderArray5ChoiceQuestion extends QuestionBaseRenderer
             'answer_tds'    => $answer_tds,
             'odd'           => ($j % 2),
             'myfname'       => $myfname,
+            'relevanceClass' => $this->getCurrentRelevecanceClass($myfname),
             'answertext'    => $answertext,
             'answerwidth'   => $answerwidth,
             'value'         => $value,

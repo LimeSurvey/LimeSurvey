@@ -1820,6 +1820,9 @@ class ExpressionManager
                     } else {
                         if (!($this->RDP_isValidVariable($token[0]))) {
                             $this->RDP_AddError(self::gT("Undefined variable"), $token);
+                        } elseif ($this->GetVarAttribute($token[0], 'anonymized', false)) {
+                            // Participant attributes are always empty in anonymized surveys
+                            $this->RDP_AddWarning(new EMWarningAnonymizedParticipantAttribute($token));
                         }
                     }
                     break;

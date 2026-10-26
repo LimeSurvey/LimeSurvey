@@ -131,14 +131,15 @@ class UserManagementController extends LSBaseController
      */
     public function actionApplyEdit()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+        $aUser = Yii::app()->request->getParam('User');
+        $isNewUser = empty($aUser['uid']);
+        if (!Permission::model()->hasGlobalPermission('users', $isNewUser ? 'create' : 'update')) {
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                 'success' => false,
                 'errors' => gT("You do not have permission to access this page."),
             ]]);
         }
 
-        $aUser = Yii::app()->request->getParam('User');
         // Sanitize full name to prevent XSS attack
         if (isset($aUser['full_name'])) {
             $aUser['full_name'] = flattenText($aUser['full_name'], false, true);
@@ -1676,9 +1677,13 @@ class UserManagementController extends LSBaseController
                 $data = [
                     'success' => $success,
                     'message' => $sReturnMessage,
-                    'href' => Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $newUser['uid']]),
-                    'modalsize' => 'modal-lg',
                 ];
+                // Only offer the permission dialog if the current user is allowed to use it
+                $userManager = new UserManager(App()->user, User::model()->findByPk($newUser['uid']));
+                if ($userManager->canAssignPermissions()) {
+                    $data['href'] = Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $newUser['uid']]);
+                    $data['modalsize'] = 'modal-lg';
+                }
             } else {
                 $data = [
                     'success' => $success,

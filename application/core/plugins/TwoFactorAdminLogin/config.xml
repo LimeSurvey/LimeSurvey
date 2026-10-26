@@ -7,6 +7,7 @@
         <lastUpdate>2026-10-06</lastUpdate>
         <author>LimeSurvey GmbH</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
+        <documentationUrl>https://www.limesurvey.org/manual/TwoFactorAdminLogin</documentationUrl>
         <version>1.4.0</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Use a TOTP based 2 factor authentication on logging in into the admin portal.]]></description>

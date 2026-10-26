@@ -452,6 +452,11 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
      * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmClassChange
      */
     triggerEmClassChangeTemplate: function triggerEmClassChangeTemplate() {
+      /* The first ExpressionScript run (checkconditions in survey_runtime.js, same ready event) happens before the participant answered anything */
+      var initialRun = true;
+      setTimeout(function () {
+        initialRun = false;
+      }, 0);
       $('.ls-em-tip').each(function () {
         $(this).on('classChangeError', function () {
           /* If user choose hide-tip : leave it */
@@ -460,8 +465,11 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
             parent.removeClass('hide-tip', 1);
             parent.addClass('tip-was-hidden', 1);
           }
-          var questionContainer = $(this).parents('div.question-container');
-          questionContainer.addClass('input-error'); /* No difference between error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+          /* Don't flag untouched questions on page load: After a failed submit the server already sets input-error */
+          if (!initialRun) {
+            var questionContainer = $(this).parents('div.question-container');
+            questionContainer.addClass('input-error');
+          }
           $(this).find('span.fa-exclamation-circle').removeClass('d-none');
         });
         $(this).on('classChangeGood', function () {
@@ -472,8 +480,14 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
           if (parent.hasClass('tip-was-hidden') && parent.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
             parent.removeClass('tip-was-hidden').addClass('hide-tip');
           }
-          var questionContainer = $(this).parents('div.question-container');
-          questionContainer.removeClass('input-error'); /* Not working with mandatory question ... */
+          /* Keep input-error set by the server after a failed submit until the participant changes something */
+          if (!initialRun) {
+            var questionContainer = $(this).parents('div.question-container');
+            /* Only once no other tip of the question is still in error: This tip's own ls-em-error is removed after this handler */
+            if (questionContainer.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
+              questionContainer.removeClass('input-error'); /* Not working with mandatory question ... */
+            }
+          }
           $(this).find('span.fa-exclamation-circle').addClass('d-none');
         });
       });

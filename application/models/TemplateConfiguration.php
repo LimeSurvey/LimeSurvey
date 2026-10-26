@@ -1503,11 +1503,8 @@ class TemplateConfiguration extends TemplateConfig
             //check for surveygroup id if a survey is given
             if ($this->sid != null) {
                 $oSurvey = Survey::model()->findByPk($this->sid);
-                // set template name from real inherited value
-                $sTemplateName = !empty($oSurvey->oOptions->template) ?
-                    $oSurvey->oOptions->template :
-                    $this->template->name;
-                $oParentTemplate = Template::getTemplateConfiguration($sTemplateName, null, $oSurvey->gsid);
+                // Inherit from the survey group configuration of this same theme, which may differ from the survey theme (e.g. set by a plugin)
+                $oParentTemplate = Template::getTemplateConfiguration($this->template_name, null, $oSurvey->gsid);
                 if (is_a($oParentTemplate, 'TemplateConfiguration')) {
                     $this->oParentTemplate = $oParentTemplate;
                     $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
@@ -1690,18 +1687,12 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function sanitizeImagePathsOnJson($attribute, $params)
     {
-        $excludedOptions = [
-            'cssframework'
-        ];
         // Validates all options of the theme. Not only classic ones which are expected to hold a path,
         // as other options may hold a path as well (eg. custom theme options)
         $decodedOptions = json_decode((string) $this->$attribute, true);
         if (is_array($decodedOptions)) {
             Yii::import('application.helpers.SurveyThemeHelper');
-            foreach ($decodedOptions as $option => &$value) {
-                if (in_array($option, $excludedOptions)) {
-                    continue;
-                }
+            foreach ($decodedOptions as &$value) {
                 $value = SurveyThemeHelper::sanitizePathInOption($value, $this->template_name, $this->sid);
             }
             $this->$attribute = json_encode($decodedOptions);

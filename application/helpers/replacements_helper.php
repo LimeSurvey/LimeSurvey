@@ -120,7 +120,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
      * If templatereplace is called from the template editor, a $oTemplate is provided.
      */
     if ($oTemplate === '') {
-        $oTemplate = Template::model()->getInstance($templatename);
+        // In a survey, keep the current survey theme instance (it may have been set by a plugin in beforeSurveyPage)
+        $oTemplate = empty($surveyid)
+            ? Template::model()->getInstance($templatename)
+            : Template::model()->getInstance('', $surveyid);
     }
 
     // surveyformat

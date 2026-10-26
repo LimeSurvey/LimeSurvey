@@ -3,7 +3,7 @@
 namespace ls\tests;
 
 /**
- * Tests for the per-request cache of ExtensionConfig::loadFromFileCached().
+ * Tests for ExtensionConfig.
  */
 class ExtensionConfigTest extends TestBaseClass
 {
@@ -95,5 +95,30 @@ class ExtensionConfigTest extends TestBaseClass
 
         $this->writeConfig('1.0.0');
         $this->assertSame('1.0.0', \ExtensionConfig::loadFromFileCached($this->configFile)->getVersion());
+    }
+
+    /**
+     * A config.xml without <updaters> tag creates no version fetchers instead of failing.
+     *
+     * @return void
+     */
+    public function testMissingUpdatersCreatesNoVersionFetchers()
+    {
+        $config = new \ExtensionConfig(simplexml_load_string('<config><metadata><name>Test</name></metadata></config>'));
+        $this->assertSame([], $config->createVersionFetchers());
+    }
+
+    /**
+     * Disabled updaters create no version fetchers.
+     *
+     * @return void
+     */
+    public function testDisabledUpdatersCreateNoVersionFetchers()
+    {
+        $config = new \ExtensionConfig(simplexml_load_string(
+            '<config><metadata><name>Test</name></metadata>'
+            . '<updaters disabled="disabled"><updater><type>rest</type></updater></updaters></config>'
+        ));
+        $this->assertSame([], $config->createVersionFetchers());
     }
 }

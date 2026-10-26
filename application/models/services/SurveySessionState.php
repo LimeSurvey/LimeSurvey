@@ -280,6 +280,26 @@ class SurveySessionState
     }
 
     /**
+     * Returns the IDs of the groups that contain only always hidden questions
+     * (group by group surveys only).
+     *
+     * @return int[]
+     */
+    public function getHiddenGroupIds(): array
+    {
+        return $this->getArray('hiddenGroupIds');
+    }
+
+    /**
+     * @param int[] $hiddenGroupIds
+     * @return void
+     */
+    public function setHiddenGroupIds(array $hiddenGroupIds): void
+    {
+        $this->set('hiddenGroupIds', $hiddenGroupIds);
+    }
+
+    /**
      * Returns the ID of the response row, once one has been created.
      *
      * @return int|null

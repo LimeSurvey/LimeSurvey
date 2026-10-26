@@ -273,8 +273,9 @@ class Export extends SurveyCommonAction
         //function.
         $options = new FormattingOptions();
         $options->selectedColumns = Yii::app()->request->getPost('colselect');
-        $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from'));
-        $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to'));
+        // An emptied range field falls back to the lowest/highest response ID
+        $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from')) ?? SurveyDynamic::model($iSurveyID)->getMinId();
+        $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to')) ?? SurveyDynamic::model($iSurveyID)->getMaxId();
         $options->aResponses = nice_addslashes(Yii::app()->request->getPost('responses_id'));
         $options->answerFormat = $sAnswerFormat;
         $options->convertY = $bConvertY;

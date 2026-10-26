@@ -155,7 +155,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
     private function renderTextarea(array $aCommonData)
     {
         //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
-        $drows = $this->getQuestionAttribute('display_rows');
+        $drows = intval($this->getQuestionAttribute('display_rows'));
 
         $dispVal = "";
         $mSessionValue = $this->getLegacySessionValue($this->sSGQA);
