@@ -264,9 +264,38 @@ div[class*=" col-"] {
     display: block;
 }
 #questionexplorer {
-    overflow: auto;
     background-color: #fff;
-    min-height: 100vh;
+    min-height: 100%;
+}
+
+// Keep the sidebar in view below the sticky topbar with its own scrollbar, so scrolling
+// to the editor doesn't take the opened question out of view on long surveys
+@media (min-width: 769px) {
+    #vue-apps-main-container > #vue-sidebar-container {
+        position: sticky;
+        top: var(--ls-sidebar-top, 0px);
+        align-self: flex-start;
+        height: calc(100vh - var(--ls-sidebar-top, 0px));
+
+        #sidebar,
+        .mainContentContainer {
+            height: 100%;
+        }
+
+        .mainMenu {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        #sidemenu-container,
+        #questionexplorer-container,
+        #quickmenu-container {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+        }
+    }
 }
 .question-question-list-item .dropdown-menu li a.disabled {
     opacity: 0.5;

@@ -24,6 +24,7 @@ class QuestionExplorer {
         this.dragStartGroupOrder = null; // Group gids in display order at dragstart
         this.dragStartQuestionOrder = null; // Question qids per group in display order at dragstart
         this.pendingFocusSelector = null; // Element to refocus after a keyboard move re-renders the list
+        this.scrolledToActive = null; // Opened question/group the list was last scrolled to
     }
 
     /**
@@ -103,7 +104,7 @@ class QuestionExplorer {
             ['asc']
         );
 
-        var html = '<div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">';
+        var html = '<div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane pt-2">';
 
         // Toolbar buttons
         html += '<div class="ls-flex-row button-sub-bar mb-2">';
@@ -157,6 +158,31 @@ class QuestionExplorer {
         UIHelpers.redoTooltips();
         this.initQuestionTooltips();
         this.restoreFocus();
+        this.scrollActiveIntoView();
+    }
+
+    /**
+     * Scroll the opened question (or group) into view once each time it changes,
+     * so it is visible next to the editor even far down a long survey
+     */
+    scrollActiveIntoView() {
+        var qid = StateManager.get('lastQuestionOpen');
+        var key = qid ? 'q' + qid : 'g' + StateManager.get('lastQuestionGroupOpen');
+        // A hidden tab can't be measured; try again when it's shown
+        if (key === this.scrolledToActive || this.container.offsetParent === null) return;
+        var item = qid
+            ? this.container.querySelector('.question-question-list-item.activated')
+            : this.container.querySelector('.questiongroup-list-group > li.activated > .q-group');
+        // The questions may not be loaded yet
+        if (!item) return;
+        this.scrolledToActive = key;
+
+        var box = this.container.getBoundingClientRect();
+        var boxBottom = Math.min(box.bottom, window.innerHeight);
+        var rect = item.getBoundingClientRect();
+        if (rect.top < box.top || rect.bottom > boxBottom) {
+            this.container.scrollTop += rect.top - box.top - (boxBottom - box.top - rect.height) / 2;
+        }
     }
 
     /**

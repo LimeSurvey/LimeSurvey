@@ -755,6 +755,7 @@ class QuestionExplorer {
     this.dragStartGroupOrder = null; // Group gids in display order at dragstart
     this.dragStartQuestionOrder = null; // Question qids per group in display order at dragstart
     this.pendingFocusSelector = null; // Element to refocus after a keyboard move re-renders the list
+    this.scrolledToActive = null; // Opened question/group the list was last scrolled to
   }
 
   /**
@@ -825,7 +826,7 @@ class QuestionExplorer {
     var orderedQuestionGroups = LS.ld.orderBy(questiongroups, function (a) {
       return _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].parseIntOr(a.group_order, 999999);
     }, ['asc']);
-    var html = '<div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">';
+    var html = '<div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane pt-2">';
 
     // Toolbar buttons
     html += '<div class="ls-flex-row button-sub-bar mb-2">';
@@ -873,6 +874,28 @@ class QuestionExplorer {
     _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].redoTooltips();
     this.initQuestionTooltips();
     this.restoreFocus();
+    this.scrollActiveIntoView();
+  }
+
+  /**
+   * Scroll the opened question (or group) into view once each time it changes,
+   * so it is visible next to the editor even far down a long survey
+   */
+  scrollActiveIntoView() {
+    var qid = _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].get('lastQuestionOpen');
+    var key = qid ? 'q' + qid : 'g' + _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].get('lastQuestionGroupOpen');
+    // A hidden tab can't be measured; try again when it's shown
+    if (key === this.scrolledToActive || this.container.offsetParent === null) return;
+    var item = qid ? this.container.querySelector('.question-question-list-item.activated') : this.container.querySelector('.questiongroup-list-group > li.activated > .q-group');
+    // The questions may not be loaded yet
+    if (!item) return;
+    this.scrolledToActive = key;
+    var box = this.container.getBoundingClientRect();
+    var boxBottom = Math.min(box.bottom, window.innerHeight);
+    var rect = item.getBoundingClientRect();
+    if (rect.top < box.top || rect.bottom > boxBottom) {
+      this.container.scrollTop += rect.top - box.top - (boxBottom - box.top - rect.height) / 2;
+    }
   }
 
   /**
@@ -2153,6 +2176,8 @@ class Sidebar {
     this.handlePjaxSend = this.handlePjaxSend.bind(this);
     this.handlePjaxRefresh = this.handlePjaxRefresh.bind(this);
     this.handleStateChange = this.handleStateChange.bind(this);
+    this.observeTopbar = this.observeTopbar.bind(this);
+    this.topbarObserver = null;
   }
 
   /**
@@ -2189,7 +2214,7 @@ class Sidebar {
     }
     this.render();
     this.bindEvents();
-    this.calculateHeight();
+    this.observeTopbar();
 
     // Initial data load - check if menus are already loaded from basemenus
     const sidemenus = _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].get('sidemenus');
@@ -2249,12 +2274,22 @@ class Sidebar {
   }
 
   /**
-   * Calculate sidebar height based on viewport
+   * Keep the sticky sidebar right below the sticky topbar, whose height differs per page
+   * and changes e.g. when the question editor is opened
    */
-  calculateHeight() {
-    const height = $('#in_survey_common').height();
-    if (height) {
-      _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].commit('changeSideBarHeight', height);
+  observeTopbar() {
+    if (this.topbarObserver) {
+      this.topbarObserver.disconnect();
+    }
+    const topbar = document.querySelector('.topbar.sticky-top');
+    const updateTop = () => {
+      const top = topbar && topbar.offsetParent !== null ? topbar.offsetHeight : 0;
+      this.container.style.setProperty('--ls-sidebar-top', top + 'px');
+    };
+    updateTop();
+    if (topbar && window.ResizeObserver) {
+      this.topbarObserver = new ResizeObserver(updateTop);
+      this.topbarObserver.observe(topbar);
     }
   }
 
@@ -2265,14 +2300,6 @@ class Sidebar {
     const width = _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].getComputed('isCollapsed') ? 98 : this.sideBarWidth;
     // Ensure we always return a number by parsing if needed
     return typeof width === 'string' ? parseInt(width) : width;
-  }
-
-  /**
-   * Calculate sidebar menu height
-   */
-  calculateSideBarMenuHeight() {
-    const currentSideBar = _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].get('sideBarHeight');
-    return LS.ld.min([currentSideBar, Math.floor(screen.height * 2)]) + 'px';
   }
 
   /**
@@ -2494,9 +2521,6 @@ class Sidebar {
    * Bind event handlers
    */
   bindEvents() {
-    // Window resize
-    window.addEventListener('resize', LS.ld.debounce(() => this.calculateHeight(), 300));
-
     // Body mouse move for resize
     $('body').on('mousemove', this.handleMouseMove);
 
@@ -2506,6 +2530,7 @@ class Sidebar {
     $(document).on('vue-redraw', this.handleVueRedraw);
     $(document).on('pjax:send', this.handlePjaxSend);
     $(document).on('pjax:refresh', this.handlePjaxRefresh);
+    $(document).on('pjax:scriptcomplete', this.observeTopbar);
 
     // EventBus equivalent for updateSideBar
     $(document).on('updateSideBar', this.handleUpdateSideBar);
@@ -2606,17 +2631,17 @@ class Sidebar {
       html += this.renderStateToggle(isCollapsed, currentTab, isRTL);
 
       // Side menu content
-      html += '<div id="sidemenu-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorSettingsButton" style="display: ' + (!isCollapsed && currentTab === 'settings' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
+      html += '<div id="sidemenu-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorSettingsButton" style="display: ' + (!isCollapsed && currentTab === 'settings' ? 'block' : 'none') + ';"></div>';
 
       // Question explorer content
-      html += '<div id="questionexplorer-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorStructureButton" style="display: ' + (!isCollapsed && currentTab === 'questiontree' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
+      html += '<div id="questionexplorer-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorStructureButton" style="display: ' + (!isCollapsed && currentTab === 'questiontree' ? 'block' : 'none') + ';"></div>';
 
       // Quick menu (collapsed state)
       html += '<div id="quickmenu-container" style="display: ' + (isCollapsed ? 'block' : 'none') + ';"></div>';
 
       // Resize handle
       if (_UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].useMobileView() && !this.smallScreenHidden || !_UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].useMobileView()) {
-        html += '<div class="resize-handle ls-flex-column" style="height: ' + this.calculateSideBarMenuHeight() + ';">';
+        html += '<div class="resize-handle ls-flex-column">';
         if (!isCollapsed) {
           html += '<button class="btn resize-btn" type="button">' + '<svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">' + '<path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>' + '</svg>' + '</button>';
         }
@@ -2840,7 +2865,6 @@ function createDefaultState(userid, surveyid) {
     maxHeight: 0,
     inSurveyViewHeight: 1000,
     sideBodyHeight: '100%',
-    sideBarHeight: 400,
     currentUser: userid,
     currentTab: 'settings',
     sidebarwidth: sidebarWidth,
@@ -2892,9 +2916,6 @@ function createMutations(StateManager) {
     },
     changeMaxHeight: function (newHeight) {
       StateManager.set('maxHeight', newHeight);
-    },
-    changeSideBarHeight: function (newHeight) {
-      StateManager.set('sideBarHeight', newHeight);
     },
     changeInSurveyViewHeight: function (newHeight) {
       StateManager.set('inSurveyViewHeight', newHeight);
