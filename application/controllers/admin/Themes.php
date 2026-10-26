@@ -786,7 +786,7 @@ JAVASCRIPT
      */
     public function delete()
     {
-        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
+        $templatename = Yii::app()->request->getPost('templatename', '');
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             Yii::app()->loadHelper("admin.template");
 
@@ -827,9 +827,15 @@ JAVASCRIPT
         $this->getController()->redirect(array("themeOptions/index"));
     }
 
+    /**
+     * Deletes the folder of a broken survey theme (one listed as invalid by TemplateConfig::getTemplatesWithNoDb())
+     *
+     * @access public
+     * @return void
+     */
     public function deleteBrokenTheme()
     {
-        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
+        $templatename = Yii::app()->request->getPost('templatename', '');
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             // First we check that the theme is really broken
@@ -861,19 +867,19 @@ JAVASCRIPT
      */
     public function deleteAvailableTheme()
     {
-        $templatename = trim(App()->request->getPost('templatename', ''));
-        $templatename = CHtml::decode($templatename);
+        $templatename = CHtml::decode(App()->request->getPost('templatename', ''));
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            $completeFileName = realpath(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename);
-            /* If retuirn false, not a dir or not inside userthemerootdir: try to hack : throw a 403 for security */
-            if (!is_dir($completeFileName) || strpos($completeFileName, Yii::app()->getConfig('userthemerootdir')) !== 0) {
+            $themeRootDir = realpath(Yii::app()->getConfig('userthemerootdir'));
+            $completeFileName = realpath($themeRootDir . DIRECTORY_SEPARATOR . $templatename);
+            /* Must be exactly this theme's directory directly inside userthemerootdir, anything else is a hacking attempt: Throw a 403 */
+            if (!is_dir($completeFileName) || $completeFileName !== $themeRootDir . DIRECTORY_SEPARATOR . $templatename) {
                 throw new CHttpException(403, "Disable for security reasons.");
             }
             // CheckIfTemplateExists check if the template is installed....
                 Yii::import('application.helpers.SurveyThemeHelper');
             if (! Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
-                if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
+                if (rmdirr($completeFileName)) {
                     App()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
                 } else {
                     App()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
@@ -1431,7 +1437,7 @@ JAVASCRIPT
             $extConfig = ExtensionConfig::loadFromZip($src);
             return $extConfig->getName();
         } else {
-            return sanitize_dirname(pathinfo((string) $_FILES['the_file']['name'], PATHINFO_FILENAME));
+            return trim(sanitize_dirname(pathinfo((string) $_FILES['the_file']['name'], PATHINFO_FILENAME)));
         }
     }
 
