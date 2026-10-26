@@ -1,50 +1,54 @@
-import { getPresets, isSameRange } from 'helpers/dateRangeUtils'
+import classNames from 'classnames'
+
+const DAY_COUNT_LABELS = {
+  upTo: () => t('Days up to today'),
+  from: () => t('Days starting today'),
+}
 
 export const DateRangePresets = ({
-  tempRange,
+  presets,
+  trailingPresets = [],
+  dayCountKeys,
+  isPresetActive,
   dayCounts,
   onPresetSelect,
   onDayCountChange,
 }) => {
-  const presets = getPresets()
-  const hasDayCount = !!(dayCounts.upTo || dayCounts.from)
+  const renderPreset = (preset) => (
+    <button
+      key={preset.key ?? preset.label}
+      type="button"
+      className={classNames('date-range-preset', {
+        active: isPresetActive(preset),
+      })}
+      onClick={() => onPresetSelect(preset)}
+    >
+      {preset.label}
+    </button>
+  )
 
   return (
     <div className="date-range-presets">
-      {presets.map(({ label, range: presetRange }) => (
-        <button
-          key={label}
-          type="button"
-          className={`date-range-preset ${
-            !hasDayCount && isSameRange(tempRange, presetRange) ? 'active' : ''
-          }`}
-          onClick={() => onPresetSelect(presetRange)}
-        >
-          {label}
-        </button>
-      ))}
+      {presets.map(renderPreset)}
       <div className="date-range-day-counts">
-        <label className="date-range-days-input">
-          <input
-            type="number"
-            min="1"
-            placeholder="-"
-            value={dayCounts.upTo}
-            onChange={onDayCountChange('upTo')}
-          />
-          <span>{t('Days up to today')}</span>
-        </label>
-        <label className="date-range-days-input">
-          <input
-            type="number"
-            min="1"
-            placeholder="-"
-            value={dayCounts.from}
-            onChange={onDayCountChange('from')}
-          />
-          <span>{t('Days starting today')}</span>
-        </label>
+        {dayCountKeys.map((key) => (
+          <label key={key} className="date-range-days-input">
+            <input
+              type="number"
+              min="1"
+              placeholder="-"
+              value={dayCounts[key]}
+              onChange={onDayCountChange(key)}
+            />
+            <span>{DAY_COUNT_LABELS[key]()}</span>
+          </label>
+        ))}
       </div>
+      {trailingPresets.length > 0 && (
+        <div className="date-range-trailing-presets">
+          {trailingPresets.map(renderPreset)}
+        </div>
+      )}
     </div>
   )
 }

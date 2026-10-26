@@ -70,6 +70,15 @@
     border-top: 1px solid $g-400;
   }
 
+  .date-range-trailing-presets {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px solid $g-400;
+  }
+
   .date-range-days-input {
     display: flex;
     align-items: center;
