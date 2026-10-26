@@ -228,6 +228,7 @@ class SurveyRuntimeHelper
                 $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
                 if ($oSurveyResponse && $oSurveyResponse->hasAttribute('token')) {
                     $oSurveyResponse->token = $tokenValue;
+                    $oSurveyResponse->save();
                 }
                 if (isset($_SESSION[$this->LEMsessid]['filltoken'])) {
                     unset($_SESSION[$this->LEMsessid]['filltoken']);
@@ -235,8 +236,6 @@ class SurveyRuntimeHelper
                 if (isset($_SESSION[$this->LEMsessid]['token'])) {
                     $_SESSION[$this->LEMsessid]['tokenused'] = $_SESSION[$this->LEMsessid]['token'];
                 }
-                $oSurveyResponse->save();
-                $survey = Survey::model()->findByPk($surveyid);
             }
             // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
@@ -1748,8 +1747,8 @@ class SurveyRuntimeHelper
                     $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
                     if ($oSurveyResponse && $oSurveyResponse->hasAttribute('token')) {
                         $oSurveyResponse->token = Yii::app()->request->getPost('token');
+                        $oSurveyResponse->save();
                     }
-                    $oSurveyResponse->save();
                 } else {
                     $_SESSION[$this->LEMsessid]['filltoken'] = Yii::app()->request->getPost('token');
                 }
