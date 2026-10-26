@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Dropdown as BootstrapDropdown } from 'react-bootstrap'
 import classNames from 'classnames'
@@ -13,6 +13,8 @@ import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 //   onClick: () => {},
 //   submenu: [], // for type 'submenu'
 //   checked: true || false, // for type 'item', shows a checkmark on the right
+//   trailingIcon: 'ri-eye-line', // for type 'item', icon class shown on the right
+//   hideIconSpace: true, // for type 'item', no placeholder space for a missing left icon
 // },
 
 /**
@@ -91,6 +93,9 @@ const DropdownMenuPortal = React.forwardRef(
   }
 )
 
+const DROPDOWN_OPEN_EVENT = 'ls-dropdown-open'
+let dropdownIdCounter = 0
+
 export const Dropdown = ({
   menuItems = [],
   className = '',
@@ -106,14 +111,60 @@ export const Dropdown = ({
   },
 }) => {
   const [openSubmenu, setOpenSubmenu] = useState(null)
+  const [show, setShow] = useState(false)
+  const idRef = useRef(`dropdown-${++dropdownIdCounter}`)
+  const toggleRef = useRef(null)
+  const menuRef = useRef(null)
+
+  // Only one dropdown is open at a time: opening one closes all others.
+  useEffect(() => {
+    const onOtherOpen = (e) => {
+      if (e.detail !== idRef.current) setShow(false)
+    }
+    window.addEventListener(DROPDOWN_OPEN_EVENT, onOtherOpen)
+    return () => window.removeEventListener(DROPDOWN_OPEN_EVENT, onOtherOpen)
+  }, [])
+
+  useEffect(() => {
+    if (!show) return
+    const onMouseDown = (e) => {
+      const inToggle = toggleRef.current?.contains(e.target)
+      const inMenu = menuRef.current?.contains(e.target)
+      if (!inToggle && !inMenu) setShow(false)
+    }
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShow(false)
+        toggleRef.current?.focus()
+      }
+    }
+    document.addEventListener('mousedown', onMouseDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', onMouseDown)
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [show])
+
+  const handleToggle = (nextShow) => {
+    if (nextShow) {
+      window.dispatchEvent(
+        new CustomEvent(DROPDOWN_OPEN_EVENT, { detail: idRef.current })
+      )
+    }
+    setShow(nextShow)
+  }
 
   return (
     <BootstrapDropdown
+      show={show}
+      onToggle={handleToggle}
       className={classNames('lsr-dropdown', className)}
       align={align}
       data-testid={testId}
     >
       <BootstrapDropdown.Toggle
+        ref={toggleRef}
         variant={toggleSettings.variant}
         className="button me-2 dropdown-toggler"
         id={toggleSettings.id}
@@ -124,6 +175,7 @@ export const Dropdown = ({
         <i className={toggleSettings.iconClassName}></i>
       </BootstrapDropdown.Toggle>
       <BootstrapDropdown.Menu
+        ref={menuRef}
         {...(portalMenu
           ? {
               as: DropdownMenuPortal,
@@ -143,6 +195,8 @@ export const Dropdown = ({
               disabled = {},
               submenu,
               checked,
+              trailingIcon,
+              hideIconSpace,
               className,
               testId,
             },
@@ -176,9 +230,22 @@ export const Dropdown = ({
                     className={classNames(className, {
                       'has-checkmark': checked !== undefined,
                       'is-checked': checked,
+                      'has-trailing-icon': !!trailingIcon,
+                      'no-icon-space': hideIconSpace,
                     })}
                   >
-                    {checked === undefined ? (
+                    {trailingIcon ? (
+                      <>
+                        <span>
+                          {icon && <i className={icon}></i>}
+                          {label}
+                        </span>
+                        <i
+                          className={trailingIcon}
+                          data-testid={testId && `${testId}-trailing-icon`}
+                        ></i>
+                      </>
+                    ) : checked === undefined ? (
                       <>
                         <i className={icon}></i>
                         {label}
