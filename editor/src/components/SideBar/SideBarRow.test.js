@@ -125,4 +125,80 @@ describe('SideBarRow', () => {
     expect(await screen.findByText('Delete')).toBeInTheDocument()
     expect(onRowClick).not.toHaveBeenCalled()
   })
+
+  test('non-draggable row main is keyboard focusable and activates on Enter/Space', async () => {
+    const onRowClick = jest.fn()
+    await renderWithProviders(
+      <SideBarRow
+        title="Q"
+        code="Q1"
+        testId="row"
+        onRowClick={onRowClick}
+        menuItems={menuItems}
+      />
+    )
+    const main = (await screen.findByTestId('row')).querySelector(
+      '.structure-item-main'
+    )
+    expect(main).toHaveAttribute('role', 'button')
+    expect(main).toHaveAttribute('tabIndex', '0')
+    main.focus()
+    expect(main).toHaveFocus()
+    await userEvent.keyboard('{Enter}')
+    await userEvent.keyboard(' ')
+    expect(onRowClick).toHaveBeenCalledTimes(2)
+  })
+
+  test('non-draggable group main activates onTitleClick via keyboard', async () => {
+    const onTitleClick = jest.fn()
+    await renderWithProviders(
+      <SideBarRow
+        title="Group"
+        isQuestionGroup
+        testId="group"
+        onTitleClick={onTitleClick}
+        menuItems={menuItems}
+      />
+    )
+    const main = (await screen.findByTestId('group')).querySelector(
+      '.structure-item-main'
+    )
+    expect(main).toHaveAttribute('role', 'button')
+    main.focus()
+    await userEvent.keyboard('{Enter}')
+    expect(onTitleClick).toHaveBeenCalledTimes(1)
+  })
+
+  test('draggable row main keeps dragHandleProps role and tabIndex', async () => {
+    await renderWithProviders(
+      <SideBarRow
+        title="Q"
+        code="Q1"
+        testId="row"
+        menuItems={menuItems}
+        provided={{
+          dragHandleProps: {
+            'role': 'link',
+            'tabIndex': -1,
+            'data-rbd-drag-handle-draggable-id': 'q1',
+          },
+        }}
+      />
+    )
+    const main = (await screen.findByTestId('row')).querySelector(
+      '.structure-item-main'
+    )
+    expect(main).toHaveAttribute('role', 'link')
+    expect(main).toHaveAttribute('tabIndex', '-1')
+    expect(main).toHaveAttribute('data-rbd-drag-handle-draggable-id', 'q1')
+  })
+
+  test('pinned row main is not a nested button', async () => {
+    await renderWithProviders(<SideBarRow title="Welcome" testId="row" />)
+    const main = (await screen.findByTestId('row')).querySelector(
+      '.structure-item-main'
+    )
+    expect(main).not.toHaveAttribute('role')
+    expect(main).not.toHaveAttribute('tabIndex')
+  })
 })

@@ -205,6 +205,9 @@ export const SideBarRow = ({
           <div
             className="structure-item-main"
             style={{ cursor: isDraggable ? 'grab' : 'pointer' }}
+            // Pinned rows are focusable on the outer element; draggable rows get role/tabIndex from dragHandleProps
+            role={!isDraggable && !isPinned ? 'button' : undefined}
+            tabIndex={!isDraggable && !isPinned ? 0 : undefined}
             {...provided.dragHandleProps}
           >
             <span className="structure-item-icon">
