@@ -120,7 +120,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
                     'question'               => $sSubquestionText,
                     'numbersonly'            => $this->numbersonly,
                     'maxlength'              => $this->maxlength,
-                    'rows'                   => $this->getQuestionAttribute('display_rows'),
+                    'rows'                   => intval($this->getQuestionAttribute('display_rows')),
                     'inputsize'              => $this->inputsize,
                     'extraclass'             => $this->extraclass,
                     'prefix'                 => $this->prefix,

@@ -39,10 +39,10 @@ class RenderHugeFreeText extends QuestionBaseRenderer
         $inputsize = null;
         $placeholder = "";
 
-        $drows = $this->setDefaultIfEmpty(
+        $drows = intval($this->setDefaultIfEmpty(
             $this->getQuestionAttribute('display_rows'),
             ($this->oQuestion->type == Question::QT_T_LONG_FREE_TEXT  ? 4 : 30)
-        );
+        ));
 
         if ($this->oQuestion->survey->nokeyboard == 'Y') {
             $this->includeKeypad();

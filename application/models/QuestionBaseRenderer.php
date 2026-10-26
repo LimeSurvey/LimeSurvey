@@ -130,7 +130,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         //Render timer
         $disable_next = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_next']['value'], 0);
         $disable_prev = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_prev']['value'], 0);
-        $time_limit_action = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_action']['value'], 1);
+        $time_limit_action = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_action']['value'], 1));
         $time_limit_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message']['value'], gT("Your time to answer this question has expired"));
         $time_limit_warning = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning']['value'], 0));
         $time_limit_warning_2 = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2']['value'], 0));
