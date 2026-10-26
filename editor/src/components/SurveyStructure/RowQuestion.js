@@ -2,7 +2,10 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
-import { useFocused } from 'hooks'
+import { useBuffer, useFocused, useSurvey } from 'hooks'
+import { createBufferOperation, Toast } from 'helpers'
+import { ExclamationMark } from 'components/icons'
+import SmallCheckMarkIcon from 'components/icons/SmallCheckMarkIcon'
 import { SideBarRow } from 'components/SideBar/SideBarRow'
 import { QuestionListIcon } from 'components/icons'
 
@@ -19,9 +22,48 @@ export const RowQuestion = ({
   snapshot,
   focused,
   isSurveyActive,
+  assignNumericAnswerCodes,
 }) => {
   const { setFocused } = useFocused()
   const { surveyId } = useParams()
+  const { survey, update } = useSurvey(surveyId)
+  const { addToBuffer } = useBuffer()
+  const areCodesVisible = !!survey.showQNumCode?.showCode
+  const hasAnswerOptions = (question.answers?.length ?? 0) > 0
+
+  const toggleQuestionCodes = () => {
+    const operationAttr = {
+      showQNumCode: {
+        showCode: !survey.showQNumCode?.showCode,
+        showNumber: !survey.showQNumCode?.showNumber,
+      },
+    }
+    update(operationAttr)
+    addToBuffer(createBufferOperation(surveyId).survey().update(operationAttr))
+  }
+
+  const handleAssignNumericCodes = () => {
+    const toastOptions = { position: 'top-center', duration: 5000 }
+    try {
+      const changed = assignNumericAnswerCodes(question)
+      Toast({
+        ...toastOptions,
+        message: changed
+          ? t('Numeric answer codes assigned.')
+          : t('Answer options already use numeric codes.'),
+        className: 'import-survey-toast import-survey-toast--success',
+        leftIcon: <SmallCheckMarkIcon />,
+        rightIcon: '',
+      })
+    } catch (e) {
+      Toast({
+        ...toastOptions,
+        message: t('Numeric answer codes could not be assigned.'),
+        className: 'import-survey-toast import-survey-toast--error',
+        leftIcon: <ExclamationMark />,
+      })
+    }
+  }
   const [showLogicModal, setShowLogicModal] = useState(false)
 
   return (
@@ -61,11 +103,33 @@ export const RowQuestion = ({
             testId: 'delete-button',
             disabled: { state: isSurveyActive },
           },
+          { type: 'divider' },
           {
             type: 'item',
             label: t('Check logic'),
             onClick: () => setShowLogicModal(true),
             testId: 'show-logic-button',
+            hideIconSpace: true,
+          },
+          {
+            type: 'item',
+            label: t('Show/hide question codes'),
+            onClick: toggleQuestionCodes,
+            testId: 'toggle-question-codes-button',
+            trailingIcon: areCodesVisible ? 'ri-eye-line' : 'ri-eye-off-line',
+          },
+          {
+            type: 'item',
+            label: t('Assign numeric answer codes'),
+            onClick: handleAssignNumericCodes,
+            testId: 'assign-numeric-codes-button',
+            hideIconSpace: true,
+            disabled: {
+              state: !hasAnswerOptions || isSurveyActive,
+              tooltip: isSurveyActive
+                ? t('Not available while the survey is active.')
+                : t('This question type has no answer options.'),
+            },
           },
         ]}
         icon={<QuestionListIcon />}

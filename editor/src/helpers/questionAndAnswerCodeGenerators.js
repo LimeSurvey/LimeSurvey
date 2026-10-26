@@ -54,3 +54,19 @@ export const getNextAnswerCode = (question, initialCode = null) => {
   const newNumeric = maxCode.numeric + 1
   return `${maxCode.prefix}${newNumeric.toString().padStart(3, '0')}`
 }
+
+/**
+ * Numbers answer options 1..n (no prefix) per scale, following sortOrder.
+ * Idempotent: already numbered answers keep their code.
+ */
+export const getNumericAnswerCodes = (answers = []) => {
+  const counters = {}
+  const sorted = [...answers].sort((a, b) => a.sortOrder - b.sortOrder)
+  const codes = new Map()
+  sorted.forEach((answer) => {
+    const scale = answer.scaleId ?? 0
+    counters[scale] = (counters[scale] || 0) + 1
+    codes.set(answer, String(counters[scale]))
+  })
+  return answers.map((answer) => ({ ...answer, code: codes.get(answer) }))
+}
