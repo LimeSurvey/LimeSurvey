@@ -83,7 +83,7 @@ class RenderFileUpload extends QuestionBaseRenderer
             'scriptloc' => Yii::app()->getController()->createUrl('/uploader/index/mode/upload/'),
             'showTitle' => $this->getQuestionAttribute('show_title'),
             'showComment' => $this->getQuestionAttribute('show_comment'),
-            'uploadButtonLabel' => ngT("Upload file|Upload files", $this->getQuestionAttribute('max_num_of_files'))
+            'uploadButtonLabel' => gTPlural("Upload file", "Upload files", $this->getQuestionAttribute('max_num_of_files'))
         ));
 
         $this->registerAssets();

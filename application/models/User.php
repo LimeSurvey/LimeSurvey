@@ -438,32 +438,32 @@ class User extends LSActiveRecord
         $resultDefaultRules = "";
         if ((int) $settings['min'] > 0) {
             if ($length < $settings['min']) {
-                $resultDefaultRules = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $settings['min']), $settings['min']);
+                $resultDefaultRules = sprintf(gTPlural('Password must be at least %d character long', 'Password must be at least %d characters long', $settings['min']), $settings['min']);
             }
         }
         if ((int) $settings['max'] > 0) {
             if ($length > $settings['max']) {
-                $resultDefaultRules = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $settings['max']), $settings['max']);
+                $resultDefaultRules = sprintf(gTPlural('Password must be at most %d character long', 'Password must be at most %d characters long', $settings['max']), $settings['max']);
             }
         }
         if ((int) $settings['lower'] > 0) {
             if ($lowercase < $settings['lower']) {
-                $resultDefaultRules = sprintf(ngT('Password must include at least %d lowercase letter|Password must include at least %d lowercase letters', $settings['lower']), $settings['lower']);
+                $resultDefaultRules = sprintf(gTPlural('Password must include at least %d lowercase letter', 'Password must include at least %d lowercase letters', $settings['lower']), $settings['lower']);
             }
         }
         if ((int) $settings['upper'] > 0) {
             if ($uppercase < $settings['upper']) {
-                $resultDefaultRules = sprintf(ngT('Password must include at least %d uppercase letter|Password must include at least %d uppercase letters', $settings['upper']), $settings['upper']);
+                $resultDefaultRules = sprintf(gTPlural('Password must include at least %d uppercase letter', 'Password must include at least %d uppercase letters', $settings['upper']), $settings['upper']);
             }
         }
         if ((int) $settings['numeric'] > 0) {
             if ($number < $settings['numeric']) {
-                $resultDefaultRules = sprintf(ngT('Password must include at least %d number|Password must include at least %d numbers', $settings['numeric']), $settings['numeric']);
+                $resultDefaultRules = sprintf(gTPlural('Password must include at least %d number', 'Password must include at least %d numbers', $settings['numeric']), $settings['numeric']);
             }
         }
         if ((int) $settings['symbol'] > 0) {
             if ($specialChars < $settings['symbol']) {
-                $resultDefaultRules = sprintf(ngT('Password must include at least %d special character|Password must include at least %d special characters', $settings['symbol']), $settings['symbol']);
+                $resultDefaultRules = sprintf(gTPlural('Password must include at least %d special character', 'Password must include at least %d special characters', $settings['symbol']), $settings['symbol']);
             }
         }
         $passwordOk = ($resultDefaultRules === '');
@@ -524,29 +524,29 @@ class User extends LSActiveRecord
         $settings =  Yii::app()->getConfig("passwordValidationRules");
         $txt = gT('A password must meet the following requirements: ');
         if ((int) $settings['min'] > 0) {
-            $txt .= sprintf(ngT('At least %d character long.|At least %d characters long.', $settings['min']), $settings['min']) . ' ';
+            $txt .= sprintf(gTPlural('At least %d character long.', 'At least %d characters long.', $settings['min']), $settings['min']) . ' ';
         }
         if ((int) $settings['max'] > 0) {
-            $txt .= sprintf(ngT('At most %d character long.|At most %d characters long.', $settings['max']), $settings['max']) . ' ';
+            $txt .= sprintf(gTPlural('At most %d character long.', 'At most %d characters long.', $settings['max']), $settings['max']) . ' ';
         }
         if ((int) $settings['min'] > 0 && (int) $settings['max'] > 0) {
             if ($settings['min'] == $settings['max']) {
-                $txt .= sprintf(ngT('Exactly %d character long.|Exactly %d characters long.', $settings['min']), $settings['min']) . ' ';
+                $txt .= sprintf(gTPlural('Exactly %d character long.', 'Exactly %d characters long.', $settings['min']), $settings['min']) . ' ';
             } elseif ($settings['min'] < $settings['max']) {
                 $txt .= sprintf(gT('Between %d and %d characters long.'), $settings['min'], $settings['max']) . ' ';
             }
         }
         if ((int) $settings['lower'] > 0) {
-            $txt .= sprintf(ngT('At least %d lower case letter.|At least %d lower case letters.', $settings['lower']), $settings['lower']) . ' ';
+            $txt .= sprintf(gTPlural('At least %d lower case letter.', 'At least %d lower case letters.', $settings['lower']), $settings['lower']) . ' ';
         }
         if ((int) $settings['upper'] > 0) {
-            $txt .= sprintf(ngT('At least %d upper case letter.|At least %d upper case letters.', $settings['upper']), $settings['upper']) . ' ';
+            $txt .= sprintf(gTPlural('At least %d upper case letter.', 'At least %d upper case letters.', $settings['upper']), $settings['upper']) . ' ';
         }
         if ((int) $settings['numeric'] > 0) {
-            $txt .= sprintf(ngT('At least %d number.|At least %d numbers.', $settings['numeric']), $settings['numeric']) . ' ';
+            $txt .= sprintf(gTPlural('At least %d number.', 'At least %d numbers.', $settings['numeric']), $settings['numeric']) . ' ';
         }
         if ((int) $settings['symbol'] > 0) {
-            $txt .= sprintf(ngT('At least %d special character.|At least %d special characters.', $settings['symbol']), $settings['symbol']) . ' ';
+            $txt .= sprintf(gTPlural('At least %d special character.', 'At least %d special characters.', $settings['symbol']), $settings['symbol']) . ' ';
         }
         return($txt);
     }

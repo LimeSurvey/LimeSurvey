@@ -327,6 +327,31 @@ class Template extends LSActiveRecord
     }
 
     /**
+     * Find an existing theme (installed or only present as folder) whose name matches case-insensitively.
+     * Theme names must be unique regardless of case: Most databases compare them case-insensitively,
+     * and so do the filesystems of Windows and macOS.
+     *
+     * @param string $sTemplateName The name to check
+     * @param string $sIgnoreName An existing theme name to ignore (e.g. the theme being renamed)
+     * @return string|null The name of the conflicting theme, or null if there is none
+     */
+    public static function findNameConflict($sTemplateName, $sIgnoreName = '')
+    {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $aExistingNames = array_merge(
+            array_keys(self::getTemplateList()),
+            array_keys(self::getAllTemplatesDirectories())
+        );
+        foreach ($aExistingNames as $sExistingName) {
+            $sExistingName = (string) $sExistingName;
+            if ($sExistingName !== $sIgnoreName && strcasecmp($sExistingName, (string) $sTemplateName) === 0) {
+                return $sExistingName;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Get the template path for any template : test if template exists
      *
      * @param string $sTemplateName

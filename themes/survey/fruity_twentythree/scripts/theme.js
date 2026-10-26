@@ -80,6 +80,50 @@ var A11yHandles = {
     }
   }
 };
+
+/**
+ * Hides the keyboard focus ring while the participant uses a mouse or touch, and shows it again
+ * as soon as they navigate with the keyboard. The mode is kept across pages in the session storage.
+ * Without JavaScript the class is never set, so the focus ring always stays visible.
+ */
+var initNavigationMode = function initNavigationMode() {
+  var pointerClass = 'ls-pointer-nav';
+  var storageKey = 'lsNavigationMode';
+  // Keys that move the focus or change a choice
+  var navigationKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', ' '];
+  var textEntrySelector = 'textarea, [contenteditable]:not([contenteditable="false"]), ' + 'input:not([type="radio"]):not([type="checkbox"]):not([type="button"]):not([type="submit"])' + ':not([type="reset"]):not([type="image"]):not([type="range"]):not([type="file"]):not([type="color"])';
+  var setMode = function setMode(mode) {
+    document.documentElement.classList.toggle(pointerClass, mode === 'pointer');
+    try {
+      sessionStorage.setItem(storageKey, mode);
+    } catch (e) {
+      // Storage can be unavailable (private mode, blocked site data): The mode then only lasts for this page
+    }
+  };
+  try {
+    if (sessionStorage.getItem(storageKey) === 'pointer') {
+      document.documentElement.classList.add(pointerClass);
+    }
+  } catch (e) {
+    // See setMode()
+  }
+  document.addEventListener('pointerdown', function () {
+    setMode('pointer');
+  }, true);
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Tab') {
+      setMode('keyboard');
+      return;
+    }
+    // Arrow keys, Space etc. inside a text field edit the text instead of navigating
+    if (navigationKeys.includes(event.key) && !(event.target.matches && event.target.matches(textEntrySelector))) {
+      setMode('keyboard');
+    }
+  }, true);
+};
+
+// Document-level listeners: Register only once, they survive the ajax page loads
+initNavigationMode();
 $(document).on('ready pjax:scriptcomplete', function () {
   A11yHandles.initLiveRegion();
   A11yHandles.handleTooltip();
@@ -1044,15 +1088,37 @@ var NavbarScripts = exports.NavbarScripts = function NavbarScripts() {
     element.innerHTML = '';
     element.innerHTML = replacementContent;
   };
+
+  /**
+   * Moves the keyboard focus to the first element of the menu matching the selector
+   * Replacing the menu content destroys the focused link, which would otherwise drop the focus to the page body
+   * @param {string} selector
+   */
+  var focusMenuItem = function focusMenuItem(selector) {
+    var item = document.querySelector('#main-dropdown ' + selector);
+    if (item) {
+      item.focus();
+    }
+  };
   var initNavbarEvents = function initNavbarEvents() {
-    $(document).on('click', '[data-navtargetid]', function () {
+    // Submenu that is currently shown, so the focus can return to its opener on "Back"
+    var openedSubmenuId = null;
+    $(document).on('click', '[data-navtargetid]', function (event) {
+      event.preventDefault();
+      openedSubmenuId = $(this).data('navtargetid');
       replaceContent(getContentByElementId('main-dropdown'), 'back-content');
       //replace menu content with submenu content
-      replaceContent(getContentByElementId($(this).data('navtargetid')), 'main-dropdown');
+      replaceContent(getContentByElementId(openedSubmenuId), 'main-dropdown');
+      focusMenuItem('.back-link');
     });
-    $(document).on('click', '.back-link', function () {
+    $(document).on('click', '.back-link', function (event) {
+      event.preventDefault();
       // switch menu content back to original content (this currently works only with one level nested elements)
       replaceContent(getContentByElementId('back-content'), 'main-dropdown');
+      if (openedSubmenuId) {
+        focusMenuItem('[data-navtargetid="' + openedSubmenuId + '"]');
+      }
+      openedSubmenuId = null;
     });
   };
   return {

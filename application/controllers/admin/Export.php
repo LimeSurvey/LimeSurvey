@@ -166,6 +166,16 @@ class Export extends SurveyCommonAction
             }
 
             $data['SingleResponse'] = intval(App()->getRequest()->getParam('id'));
+            $data['responseIds'] = (string) App()->getRequest()->getParam('responseIds');
+            // "Select all" in the responses grid posts a flag with the grid filters instead of the response ids
+            if ($data['responseIds'] === '' && App()->getRequest()->getPost('selectAll')) {
+                $excludedIds = json_decode((string) App()->getRequest()->getPost('excludedItems', '[]'), true);
+                $data['responseIds'] = implode(',', SurveyDynamic::getIdsByGridFilter(
+                    $iSurveyID,
+                    (string) App()->getRequest()->getPost('filterQuery', ''),
+                    is_array($excludedIds) ? $excludedIds : []
+                ));
+            }
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
             $data['selectinc'] = $selectinc;

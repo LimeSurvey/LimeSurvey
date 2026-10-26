@@ -334,9 +334,10 @@ class LSYii_Application extends CWebApplication
      *
      * @access public
      * @param string $sLanguage
+     * @param bool $persistInSession Whether to store the language in session['_lang']
      * @return void
      */
-    public function setLanguage($sLanguage)
+    public function setLanguage($sLanguage, $persistInSession = true)
     {
         // This method is also called from AdminController and LSUser
         // But if a param is defined, it should always have the priority
@@ -346,7 +347,9 @@ class LSYii_Application extends CWebApplication
         }
 
         $sLanguage = \LSYii_Validators::languageCodeFilter($sLanguage);
-        App()->session['_lang'] = $sLanguage; // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
+        if ($persistInSession) {
+            App()->session['_lang'] = $sLanguage; // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
+        }
         parent::setLanguage($sLanguage);
     }
 
