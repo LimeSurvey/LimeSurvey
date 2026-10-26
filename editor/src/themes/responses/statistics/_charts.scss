@@ -190,55 +190,6 @@
     }
   }
 
-  .responses-statistics-chart-header {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-
-    .responses-statistics-chart-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-
-      &-main {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 4px;
-        flex: 1;
-      }
-
-      &-actions {
-        flex-shrink: 0;
-      }
-
-      &-index {
-        color: $grape;
-        font-size: $font-size-xs;
-      }
-
-      &-key {
-        color: $g-700;
-        font-size: $font-size-xs;
-      }
-
-      &-text {
-        font-size: $font-size-md;
-      }
-
-      &-help {
-        flex-basis: 100%;
-        padding: 0 26px;
-        color: $g-700;
-        font-size: $font-size-xs;
-        line-height: $line-height-16;
-        min-height: $line-height-16;
-        margin: 0;
-      }
-    }
-  }
-
   .responses-statistics-chart-subtitle {
     color: $g-700;
     font-size: $font-size-sm;
@@ -595,6 +546,57 @@
       &:hover {
         color: $g-700;
       }
+    }
+  }
+}
+
+.responses-statistics-body .responses-statistics-chart-header,
+.responses-statistics-modal .responses-statistics-chart-header {
+  font-family: $ibm-font-family;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .responses-statistics-chart-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+
+    &-main {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+    }
+
+    &-actions {
+      flex-shrink: 0;
+    }
+
+    &-index {
+      color: $grape;
+      font-size: $font-size-xs;
+    }
+
+    &-key {
+      color: $g-700;
+      font-size: $font-size-xs;
+    }
+
+    &-text {
+      font-size: $font-size-md;
+    }
+
+    &-help {
+      flex-basis: 100%;
+      padding: 0 26px;
+      color: $g-700;
+      font-size: $font-size-xs;
+      line-height: $line-height-16;
+      min-height: $line-height-16;
+      margin: 0;
     }
   }
 }

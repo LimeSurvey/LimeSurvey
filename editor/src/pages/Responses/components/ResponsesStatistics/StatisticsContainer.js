@@ -42,6 +42,8 @@ const StatisticsChartCard = memo(function StatisticsChartCard({
       fields: item?.meta?.question?.fields,
       scaleHeaders: item?.meta?.question?.scaleHeaders,
       chartType: item?.meta?.question?.chartType,
+      hasTime: item?.meta?.question?.hasTime,
+      encrypted: item?.meta?.question?.encrypted,
       index: index,
     }),
     [item, index]

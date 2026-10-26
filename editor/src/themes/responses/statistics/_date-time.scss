@@ -1,0 +1,154 @@
+@import '../../date-range-picker/day-picker';
+
+// Date/time question: calendar view with the range of entered dates.
+.responses-statistics-calendar {
+  padding: 8px 24px 0;
+
+  &-range {
+    margin-bottom: 24px;
+  }
+
+  &-range-label {
+    display: block;
+    margin-bottom: 8px;
+    color: $g-900;
+    font-size: $font-size-sm;
+  }
+
+  &-range-fields {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px 24px;
+  }
+
+  &-range-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 180px;
+
+    .form-control[readonly] {
+      border: 1px solid $g-400;
+      border-radius: 4px;
+      background-color: $g-100;
+      color: $g-900;
+      font-size: $font-size-sm;
+      cursor: default;
+    }
+  }
+
+  &-range-until {
+    padding-top: 8px;
+    color: $g-900;
+    font-size: $font-size-sm;
+  }
+
+  &-range-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: $g-700;
+    font-size: $font-size-xs;
+
+    &--end {
+      align-self: flex-end;
+    }
+
+    &:hover:not(:disabled) {
+      color: $g-900;
+    }
+
+    &:disabled {
+      color: $g-400;
+      cursor: not-allowed;
+    }
+  }
+
+  .rdp-root {
+    --rdp-accent-color: #{$g-900};
+    --rdp-accent-background-color: transparent;
+    --rdp-selected-border: none;
+    --rdp-day-width: auto;
+    --rdp-day-height: 60px;
+    --rdp-day_button-width: min(100%, 144px);
+    --rdp-day_button-height: 50px;
+    --rdp-day_button-border-radius: 25px;
+    --rdp-outside-opacity: 1;
+    --rdp-disabled-opacity: 1;
+    --rdp-nav-height: 44px;
+    --rdp-nav_button-width: 28px;
+    --rdp-nav_button-height: 28px;
+
+    font-size: $font-size-sm;
+    color: $g-900;
+  }
+
+  @include ls-day-picker;
+
+  .rdp-dropdowns {
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .rdp-day_button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    border: 1px solid transparent;
+  }
+
+  .responses-statistics-calendar-next-month {
+    padding: 0 0 8px 12px;
+  }
+
+  &-day-count {
+    color: $g-700;
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  // Days with answers.
+  .responses-statistics-calendar-day--has-responses:not(.rdp-outside)
+    .rdp-day_button {
+    border-color: $g-900;
+    font-weight: $font-weight-500;
+  }
+
+  .rdp-selected {
+    font-size: inherit;
+  }
+
+  // Selected keeps its dark fill on hover.
+  .rdp-selected .rdp-day_button {
+    border-color: $g-900;
+
+    &:hover {
+      background-color: $g-900;
+    }
+
+    .responses-statistics-calendar-day-count {
+      color: $white;
+    }
+  }
+}
+
+.responses-statistics-date-table {
+  .ls-table {
+    table-layout: fixed;
+  }
+
+  &-no-time {
+    color: $g-700;
+  }
+}
+
+// Load more modal: close button on the right, like the ranking modal.
+.responses-statistics-date-table-modal .modal-close-button {
+  margin-left: auto;
+}

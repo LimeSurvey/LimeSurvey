@@ -11,8 +11,6 @@ class DateProcessor extends AbstractQuestionProcessor
         $field = $this->rt;
         $encrypted = self::isEncrypted($this->question);
 
-        // Datetime columns must be counted in numeric-column mode: MySQL 8
-        // rejects comparing them to ''. Encrypted answers are plain text.
         $answered = $this->read($this->batch->countNonEmpty($field, !$encrypted));
 
         $item = [

@@ -9,21 +9,17 @@ const formatters = {
     dateLib.format(weekday, 'ccc'),
 }
 
-export const DateRangeCalendar = ({
-  selected,
-  month,
-  onMonthChange,
-  onSelect,
-  minDate,
-  maxDate,
-}) => {
+/**
+ * DayPicker setup shared by the app's calendars
+ */
+export const useDayPickerSetup = () => {
   const { i18n } = useTranslation()
   const locale = useMemo(
     () => getDayPickerLocale(i18n?.language),
     [i18n?.language]
   )
 
-  const calendarComponents = useMemo(() => {
+  const components = useMemo(() => {
     const monthLabelFormat = new Intl.DateTimeFormat(locale.code, {
       month: 'short',
       year: 'numeric',
@@ -42,6 +38,19 @@ export const DateRangeCalendar = ({
     }
   }, [locale.code])
 
+  return { locale, formatters, components, weekStartsOn: WEEK_STARTS_ON }
+}
+
+export const DateRangeCalendar = ({
+  selected,
+  month,
+  onMonthChange,
+  onSelect,
+  minDate,
+  maxDate,
+}) => {
+  const { locale, components, weekStartsOn } = useDayPickerSetup()
+
   return (
     <div className="date-range-calendar">
       <DayPicker
@@ -50,9 +59,9 @@ export const DateRangeCalendar = ({
         navLayout="around"
         showOutsideDays
         locale={locale}
-        weekStartsOn={WEEK_STARTS_ON}
+        weekStartsOn={weekStartsOn}
         formatters={formatters}
-        components={calendarComponents}
+        components={components}
         selected={selected}
         onSelect={onSelect}
         month={month}
