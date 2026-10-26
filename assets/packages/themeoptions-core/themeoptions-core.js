@@ -556,11 +556,17 @@ $(function () {
         $('#lightbox-modal').modal('show');
     });
 
+    // Icon values are hexadecimal code points, show them as text so other values can't add markup
+    var iconCharacter = function (hexCode) {
+        hexCode = String(hexCode);
+        var codePoint = parseInt(hexCode, 16);
+        return /^[0-9a-f]{1,6}$/i.test(hexCode) && codePoint <= 0x10FFFF ? String.fromCodePoint(codePoint) : '';
+    };
+
     $('.simple_edit_options_checkicon').on('change', function () {
-        $(this).siblings('.selector__checkicon-preview').find('i').html('&#x' + $(this).val() + ';');
-        if ($(this).val() == 'inherit') {
-            $(this).siblings('.selector__checkicon-preview').find('i').html('&#x' + $(this).siblings('.selector__checkicon-preview').find('i').data('inheritvalue') + ';');
-        }
+        var preview = $(this).siblings('.selector__checkicon-preview').find('i');
+        var hexCode = $(this).val() == 'inherit' ? preview.attr('data-inheritvalue') : $(this).val();
+        preview.text(iconCharacter(hexCode));
     });
 });
 $(function () {
