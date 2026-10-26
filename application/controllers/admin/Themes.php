@@ -401,7 +401,7 @@ class Themes extends SurveyCommonAction
                 // Successfully unpacked
                 $aExtractResult = $zipExtractor->getExtractResult();
                 foreach ($aExtractResult as $sFile) {
-                    if ($sFile['status'] == 'skipped' && !$sFile['is_folder']) {
+                    if ($sFile['status'] == 'skipped') {
                         $aErrorFilesInfo[] = array(
                             "filename" => $sFile['name'],
                         );
