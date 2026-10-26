@@ -2679,7 +2679,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     $url = $baseUrl;
                     $params = [$urlManager->routeVar => $alias] + $params;
                 } else {
-                    $url = $baseUrl . '/' . $alias;
+                    // Keep index.php in the URL like createPublicUrl() does, so the alias also works without URL rewriting
+                    $scriptName = $urlManager->showScriptName ? 'index.php/' : '';
+                    $url = $baseUrl . '/' . $scriptName . $alias;
                 }
                 $query = $urlManager->createPathInfo($params, '=', '&');
                 if (!empty($query)) {
