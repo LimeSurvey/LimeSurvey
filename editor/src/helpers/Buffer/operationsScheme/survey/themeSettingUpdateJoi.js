@@ -41,8 +41,8 @@ export const getThemeSettingUpdateJoi = (themesettings) => {
     : {}
 
   const propsJoi = Joi.object({
-    templateName: Joi.string().required(),
     ...optionKeys,
+    templateName: Joi.string().required(),
   })
 
   return Joi.object({
