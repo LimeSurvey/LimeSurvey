@@ -22,6 +22,7 @@ class QuestionExplorer {
         this.lastDragenterGid = null; // Prevent duplicate dragenter processing
         this.lastDragenterQid = null; // Prevent duplicate dragenter processing
         this.dragStartGroupOrder = null; // Group gids in display order at dragstart
+        this.dragStartQuestionOrder = null; // Question qids per group in display order at dragstart
         this.pendingFocusSelector = null; // Element to refocus after a keyboard move re-renders the list
     }
 
@@ -786,6 +787,70 @@ class QuestionExplorer {
     }
 
     /**
+     * Move the dragged question into the place of the hovered question or
+     * group header, computed from the order at dragstart so the result does not
+     * depend on the path the pointer took
+     *
+     * The structure is treated as one list of group headers, each followed by
+     * its questions. Hovering an item below the dragged question puts it after
+     * that item, hovering one above puts it before, so hovering a group header
+     * from below moves the question to the end of the previous group.
+     *
+     * @param {string} targetType 'q' for a question, 'g' for a group header
+     * @param {number} targetId qid or gid of the hovered item
+     * @returns {void}
+     */
+    placeDraggedQuestion(targetType, targetId) {
+        var startOrder = this.dragStartQuestionOrder;
+        if (!startOrder || !this.draggedQuestion) return;
+        var draggedQid = this.draggedQuestion.qid;
+
+        var items = [];
+        startOrder.forEach(function(group) {
+            items.push({type: 'g', id: group.gid});
+            group.qids.forEach(function(qid) { items.push({type: 'q', id: qid}); });
+        });
+        var draggedIndex = items.findIndex(function(item) { return item.type === 'q' && item.id === draggedQid; });
+        var targetIndex = items.findIndex(function(item) { return item.type === targetType && item.id === targetId; });
+        if (draggedIndex === -1 || targetIndex === -1) return;
+
+        var dragged = items.splice(draggedIndex, 1)[0];
+        // Nothing can go before the first group header
+        items.splice(Math.max(targetIndex, 1), 0, dragged);
+
+        var newOrder = [];
+        items.forEach(function(item) {
+            if (item.type === 'g') {
+                newOrder.push({gid: item.id, qids: []});
+            } else {
+                newOrder[newOrder.length - 1].qids.push(item.id);
+            }
+        });
+
+        var questiongroups = StateManager.get('questiongroups') || [];
+        var targetGid = newOrder.find(function(group) { return group.qids.indexOf(draggedQid) !== -1; }).gid;
+        var targetGroup = questiongroups.find(function(g) { return g.gid === targetGid; });
+        if (!targetGroup) return;
+
+        if (this.draggedQuestionsGroup !== targetGroup) {
+            LS.ld.remove(this.draggedQuestionsGroup.questions, function(q) { return q.qid === draggedQid; });
+            targetGroup.questions = targetGroup.questions || [];
+            targetGroup.questions.push(this.draggedQuestion);
+            this.draggedQuestion.gid = targetGid;
+            this.draggedQuestionsGroup = targetGroup;
+        }
+        newOrder.forEach(function(orderedGroup) {
+            var group = questiongroups.find(function(g) { return g.gid === orderedGroup.gid; });
+            LS.ld.each(group ? group.questions : [], function(q) {
+                q.question_order = orderedGroup.qids.indexOf(q.qid) + 1;
+            });
+        });
+        StateManager.commit('updateQuestiongroups', questiongroups);
+        this.orderChanged = !LS.ld.isEqual(newOrder, startOrder);
+        // Don't re-render during drag - wait for dragend
+    }
+
+    /**
      * Bind drag events - matching Vue drag methods exactly
      * IMPORTANT: Avoid calling renderExplorer() during active drag to maintain smooth operation
      */
@@ -860,30 +925,11 @@ class QuestionExplorer {
 
                 this.addActive(questiongroupObject.gid);
 
-                if (this.draggedQuestion.gid !== questiongroupObject.gid) {
-                    var removedFromInitial = LS.ld.remove(this.draggedQuestionsGroup.questions, (q) => {
-                        return q.qid === this.draggedQuestion.qid;
-                    });
-
-                    if (removedFromInitial.length > 0) {
-                        this.draggedQuestion.question_order = null;
-                        questiongroupObject.questions.push(this.draggedQuestion);
-                        this.draggedQuestion.gid = questiongroupObject.gid;
-
-                        if (questiongroupObject.group_order > this.draggedQuestionsGroup.group_order) {
-                            this.draggedQuestion.question_order = 0;
-                            LS.ld.each(questiongroupObject.questions, function(q) {
-                                q.question_order = parseInt(q.question_order) + 1;
-                            });
-                        } else {
-                            this.draggedQuestion.question_order = this.draggedQuestionsGroup.questions.length + 1;
-                        }
-
-                        this.draggedQuestionsGroup = questiongroupObject;
-                        StateManager.commit('updateQuestiongroups', questiongroups);
-                        this.orderChanged = true; // Mark that order has changed
-                        // Don't re-render during drag - wait for dragend
-                    }
+                // Only the group header is a drop slot, question items are handled below
+                if ($(e.target).closest('.q-group').length) {
+                    $container.find('.question-question-list-item').removeClass('dragged');
+                    this.lastDragenterQid = null; // Re-entering the previous question must place it again
+                    this.placeDraggedQuestion('g', gid);
                 }
             }
         });
@@ -901,6 +947,10 @@ class QuestionExplorer {
                 this.questionDragging = true;
                 this.orderChanged = false; // Reset flag at start of drag
                 this.lastDragenterQid = null; // Reset dragenter tracking
+                // The list is not re-rendered during the drag, so drop slots refer to this order
+                this.dragStartQuestionOrder = this.orderedGroups(questiongroups).map((g) => {
+                    return {gid: g.gid, qids: this.orderedQuestions(g).map(function(q) { return q.qid; })};
+                });
                 e.originalEvent.dataTransfer.setData('application/node', 'node');
                 // Add dragged class directly without re-rendering
                 $(e.currentTarget).closest('.question-question-list-item').addClass('dragged');
@@ -913,6 +963,7 @@ class QuestionExplorer {
                 this.questionDragging = false;
                 this.draggedQuestion = null;
                 this.draggedQuestionsGroup = null;
+                this.dragStartQuestionOrder = null;
                 // Only trigger order update if order actually changed
                 if (this.orderChanged && this.onOrderChange) {
                     this.onOrderChange();
@@ -940,20 +991,7 @@ class QuestionExplorer {
 
                 if (window.SideMenuData.isActive && this.draggedQuestion.gid !== gid) return;
 
-                var questiongroups = StateManager.get('questiongroups') || [];
-                var group = questiongroups.find(function(g) { return g.gid === gid; });
-
-                if (group && group.questions) {
-                    var questionObject = group.questions.find(function(q) { return q.qid === qid; });
-                    if (questionObject && questionObject.qid !== this.draggedQuestion.qid) {
-                        var orderSwap = questionObject.question_order;
-                        questionObject.question_order = this.draggedQuestion.question_order;
-                        this.draggedQuestion.question_order = orderSwap;
-                        StateManager.commit('updateQuestiongroups', questiongroups);
-                        this.orderChanged = true; // Mark that order has changed
-                        // Don't re-render during drag - wait for dragend
-                    }
-                }
+                this.placeDraggedQuestion('q', qid);
             }
         });
 
