@@ -41,7 +41,7 @@
             {% if(aSurveyInfo.mandNonSoft == false and aSurveyInfo.mandSoft)%}
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
             <ul class="list-inline">
-                <li class="list-inline-item"><button id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Continue without answering") }}</button>
+                <li class="list-inline-item"><button id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterbutton }}">{{ gT("Continue without answering") }}</button>
                 <script>
                     {% if (intval(aSurveyInfo.options.showpopups) > 0) %}$(".ls-softmandatory-input").hide();{% endif %}
                     $("#{{ aSurveyInfo.id.mandatorySoftModal }}").on('click', function() {
@@ -49,12 +49,12 @@
                         $("#ls-button-submit").trigger('click');
                     });
                 </script></li>
-                <li class="list-inline-item"><button {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Answer question") }}</button></li>
+                <li class="list-inline-item"><button {{ aSurveyInfo.attr.modalfooterbutton }}  class="{{ aSurveyInfo.class.modalfooterbutton }}">{{ gT("Answer question") }}</button></li>
             </ul>
             </div>
             {% else %}
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
-                <button {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Close") }}</button>
+                <button {{ aSurveyInfo.attr.modalfooterbutton }}  class="{{ aSurveyInfo.class.modalfooterbutton }}">{{ gT("Close") }}</button>
             </div>
             {% endif %}
         </div>
