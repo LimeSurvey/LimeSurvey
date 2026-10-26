@@ -751,9 +751,10 @@ class QuestionExplorer {
     this.draggedQuestionsGroup = null;
     this.orderChanged = false; // Track if order actually changed during drag
     this.lastDragenterGid = null; // Prevent duplicate dragenter processing
-    this.lastDragenterQid = null; // Prevent duplicate dragenter processing
     this.dragStartGroupOrder = null; // Group gids in display order at dragstart
     this.dragStartQuestionOrder = null; // Question qids per group in display order at dragstart
+    this.dragQuestionOrder = null; // Question qids per group with the dragged question at its current place
+    this.$draggedQuestionItem = null; // List item of the dragged question, moved along during the drag
     this.pendingFocusSelector = null; // Element to refocus after a keyboard move re-renders the list
     this.scrolledToActive = null; // Opened question/group the list was last scrolled to
   }
@@ -1528,25 +1529,25 @@ class QuestionExplorer {
   }
 
   /**
-   * Move the dragged question into the place of the hovered question or
-   * group header, computed from the order at dragstart so the result does not
-   * depend on the path the pointer took
+   * Move the dragged question right before or after the hovered question or
+   * group header
    *
    * The structure is treated as one list of group headers, each followed by
-   * its questions. Hovering an item below the dragged question puts it after
-   * that item, hovering one above puts it before, so hovering a group header
-   * from below moves the question to the end of the previous group.
+   * its questions, so before a group header is the end of the previous group
+   * and after it the start of that group. Only the dragged question changes
+   * place, the other questions keep their order.
    *
    * @param {string} targetType 'q' for a question, 'g' for a group header
    * @param {number} targetId qid or gid of the hovered item
-   * @returns {void}
+   * @param {string} position 'before' or 'after' the hovered item
+   * @returns {boolean} whether the dragged question changed place
    */
-  placeDraggedQuestion(targetType, targetId) {
-    var startOrder = this.dragStartQuestionOrder;
-    if (!startOrder || !this.draggedQuestion) return;
+  placeDraggedQuestion(targetType, targetId, position) {
+    var currentOrder = this.dragQuestionOrder;
+    if (!currentOrder || !this.draggedQuestion) return false;
     var draggedQid = this.draggedQuestion.qid;
     var items = [];
-    startOrder.forEach(function (group) {
+    currentOrder.forEach(function (group) {
       items.push({
         type: 'g',
         id: group.gid
@@ -1561,13 +1562,14 @@ class QuestionExplorer {
     var draggedIndex = items.findIndex(function (item) {
       return item.type === 'q' && item.id === draggedQid;
     });
+    if (draggedIndex === -1) return false;
+    var dragged = items.splice(draggedIndex, 1)[0];
     var targetIndex = items.findIndex(function (item) {
       return item.type === targetType && item.id === targetId;
     });
-    if (draggedIndex === -1 || targetIndex === -1) return;
-    var dragged = items.splice(draggedIndex, 1)[0];
+    if (targetIndex === -1) return false;
     // Nothing can go before the first group header
-    items.splice(Math.max(targetIndex, 1), 0, dragged);
+    items.splice(Math.max(position === 'after' ? targetIndex + 1 : targetIndex, 1), 0, dragged);
     var newOrder = [];
     items.forEach(function (item) {
       if (item.type === 'g') {
@@ -1579,6 +1581,7 @@ class QuestionExplorer {
         newOrder[newOrder.length - 1].qids.push(item.id);
       }
     });
+    if (LS.ld.isEqual(newOrder, currentOrder)) return false;
     var questiongroups = _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].get('questiongroups') || [];
     var targetGid = newOrder.find(function (group) {
       return group.qids.indexOf(draggedQid) !== -1;
@@ -1586,7 +1589,7 @@ class QuestionExplorer {
     var targetGroup = questiongroups.find(function (g) {
       return g.gid === targetGid;
     });
-    if (!targetGroup) return;
+    if (!targetGroup) return false;
     if (this.draggedQuestionsGroup !== targetGroup) {
       LS.ld.remove(this.draggedQuestionsGroup.questions, function (q) {
         return q.qid === draggedQid;
@@ -1595,6 +1598,8 @@ class QuestionExplorer {
       targetGroup.questions.push(this.draggedQuestion);
       this.draggedQuestion.gid = targetGid;
       this.draggedQuestionsGroup = targetGroup;
+      // Keep the group open after the drop, so the question stays visible
+      this.addActive(targetGid);
     }
     newOrder.forEach(function (orderedGroup) {
       var group = questiongroups.find(function (g) {
@@ -1605,8 +1610,60 @@ class QuestionExplorer {
       });
     });
     _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].commit('updateQuestiongroups', questiongroups);
-    this.orderChanged = !LS.ld.isEqual(newOrder, startOrder);
-    // Don't re-render during drag - wait for dragend
+    this.dragQuestionOrder = newOrder;
+    this.orderChanged = !LS.ld.isEqual(newOrder, this.dragStartQuestionOrder);
+    return true;
+  }
+
+  /**
+   * Move the dragged question's list item to its current place in the drag
+   * order, so the question itself shows where it will be dropped
+   *
+   * The element is moved instead of re-rendering the list, which would
+   * remove the drag source and end the drag. A collapsed group gets a
+   * question list for it.
+   *
+   * @param {jQuery} $container the question explorer container
+   * @returns {void}
+   */
+  moveDraggedQuestionElement($container) {
+    var draggedQid = this.draggedQuestion.qid;
+    var group = this.dragQuestionOrder.find(function (g) {
+      return g.qids.indexOf(draggedQid) !== -1;
+    });
+    var $group = $container.find('.questiongroup-list-group > .list-group-item[data-gid="' + group.gid + '"]');
+    var $list = $group.children('.question-question-list');
+    if (!$list.length) {
+      $list = $('<ul class="list-group background-muted padding-left question-question-list" style="padding-right:15px"></ul>').appendTo($group);
+    }
+    var nextQid = group.qids[group.qids.indexOf(draggedQid) + 1];
+    var $next = nextQid === undefined ? $() : $list.children('.question-question-list-item[data-qid="' + nextQid + '"]');
+    if ($next.length) {
+      this.$draggedQuestionItem.insertBefore($next);
+    } else {
+      this.$draggedQuestionItem.appendTo($list);
+    }
+  }
+
+  /**
+   * Move the dragged question next to the question or group header under
+   * the pointer: Before it in the upper half, after it in the lower half
+   *
+   * Using the half keeps the list from flipping back and forth when the
+   * hovered item shifts under the pointer by the move.
+   *
+   * @param {jQuery} $container the question explorer container
+   * @param {Event} e the dragover event of the hovered item
+   * @param {string} targetType 'q' for a question, 'g' for a group header
+   * @param {number} targetId qid or gid of the hovered item
+   * @returns {void}
+   */
+  dragQuestionOver($container, e, targetType, targetId) {
+    var rect = e.currentTarget.getBoundingClientRect();
+    var position = e.originalEvent.clientY < rect.top + rect.height / 2 ? 'before' : 'after';
+    if (this.placeDraggedQuestion(targetType, targetId, position)) {
+      this.moveDraggedQuestionElement($container);
+    }
   }
 
   /**
@@ -1689,13 +1746,6 @@ class QuestionExplorer {
       } else if (this.questionDragging && this.draggedQuestion && questiongroupObject) {
         if (window.SideMenuData.isActive) return;
         this.addActive(questiongroupObject.gid);
-
-        // Only the group header is a drop slot, question items are handled below
-        if ($(e.target).closest('.q-group').length) {
-          $container.find('.question-question-list-item').removeClass('dragged');
-          this.lastDragenterQid = null; // Re-entering the previous question must place it again
-          this.placeDraggedQuestion('g', gid);
-        }
       }
     });
 
@@ -1714,8 +1764,6 @@ class QuestionExplorer {
         this.draggedQuestionsGroup = group;
         this.questionDragging = true;
         this.orderChanged = false; // Reset flag at start of drag
-        this.lastDragenterQid = null; // Reset dragenter tracking
-        // The list is not re-rendered during the drag, so drop slots refer to this order
         this.dragStartQuestionOrder = this.orderedGroups(questiongroups).map(g => {
           return {
             gid: g.gid,
@@ -1724,9 +1772,10 @@ class QuestionExplorer {
             })
           };
         });
+        this.dragQuestionOrder = this.dragStartQuestionOrder;
         e.originalEvent.dataTransfer.setData('application/node', 'node');
         // Add dragged class directly without re-rendering
-        $(e.currentTarget).closest('.question-question-list-item').addClass('dragged');
+        this.$draggedQuestionItem = $(e.currentTarget).closest('.question-question-list-item').addClass('dragged');
       }
     });
 
@@ -1737,6 +1786,8 @@ class QuestionExplorer {
         this.draggedQuestion = null;
         this.draggedQuestionsGroup = null;
         this.dragStartQuestionOrder = null;
+        this.dragQuestionOrder = null;
+        this.$draggedQuestionItem = null;
         // Only trigger order update if order actually changed
         if (this.orderChanged && this.onOrderChange) {
           this.onOrderChange();
@@ -1746,22 +1797,24 @@ class QuestionExplorer {
       }
     });
 
-    // Question dragenter - matching dragoverQuestion
+    // Question dragenter: Keep the group dragenter from treating questions as its drop slots
     $container.on('dragenter.qe', '.question-question-list-item', e => {
       e.preventDefault();
       e.stopPropagation();
-      var qid = $(e.currentTarget).data('qid');
-      var gid = $(e.currentTarget).data('gid');
+    });
 
-      // Skip duplicate dragenter events for same target (fires multiple times for child elements)
-      if (this.questionDragging && qid === this.lastDragenterQid) return;
-      this.lastDragenterQid = qid;
+    // Question dragover: Move the dragged question next to the hovered question
+    $container.on('dragover.qe', '.question-question-list-item', e => {
+      var qid = $(e.currentTarget).data('qid');
+      if (this.questionDragging && this.draggedQuestion && qid !== this.draggedQuestion.qid) {
+        this.dragQuestionOver($container, e, 'q', qid);
+      }
+    });
+
+    // Group header dragover: Move the dragged question to the end of the previous group or the start of this one
+    $container.on('dragover.qe', '.q-group', e => {
       if (this.questionDragging && this.draggedQuestion) {
-        // Highlight the drop destination
-        $container.find('.question-question-list-item').removeClass('dragged');
-        $(e.currentTarget).addClass('dragged');
-        if (window.SideMenuData.isActive && this.draggedQuestion.gid !== gid) return;
-        this.placeDraggedQuestion('q', qid);
+        this.dragQuestionOver($container, e, 'g', $(e.currentTarget).data('gid'));
       }
     });
 

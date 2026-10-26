@@ -293,7 +293,6 @@ div[class*=" col-"].nofloat {
 
 .list-group-item.dragged,
 .question-question-list-item.dragged {
-  opacity: 0.5;
   background-color: #f0f0f0;
 }
 
