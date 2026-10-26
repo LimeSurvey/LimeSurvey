@@ -1399,7 +1399,8 @@ class LimeExpressionManager
                             break;
                     }
 
-                    if (isset($this->knownVars[$rowdivid]['SQrelevance']) && $this->knownVars[$rowdivid]['SQrelevance'] != '') {
+                    // Single-field types like Yes/No have no row ID
+                    if ($rowdivid !== null && isset($this->knownVars[$rowdivid]['SQrelevance']) && $this->knownVars[$rowdivid]['SQrelevance'] != '') {
                         $subQrels[] = [
                             'qtype'    => $type,
                             'type'     => 'SQ_relevance',
@@ -4173,9 +4174,11 @@ class LimeExpressionManager
     public static function QuestionIsRelevant($qid)
     {
         $LEM =& LimeExpressionManager::singleton();
-        $qrel = (isset($_SESSION[$LEM->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] : 1);
+        // No survey session when called from outside a survey (e.g. the response table)
+        $sessid = (string) $LEM->sessid;
+        $qrel = (isset($_SESSION[$sessid]['relevanceStatus'][$qid]) ? $_SESSION[$sessid]['relevanceStatus'][$qid] : 1);
         $gseq = (isset($LEM->questionId2groupSeq[$qid]) ? $LEM->questionId2groupSeq[$qid] : -1);
-        $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
+        $grel = (isset($_SESSION[$sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
         return ($grel && $qrel);
     }
 
@@ -4200,13 +4203,15 @@ class LimeExpressionManager
     public static function GroupIsIrrelevantOrHidden($gseq)
     {
         $LEM =& LimeExpressionManager::singleton();
+        // No survey session when called from outside a survey (e.g. the response table)
+        $sessid = (string) $LEM->sessid;
 
         // We check again if it should really be false...
-        if (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) && $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] == false) {
+        if (isset($_SESSION[$sessid]['relevanceStatus']['G' . $gseq]) && $_SESSION[$sessid]['relevanceStatus']['G' . $gseq] == false) {
             $LEM->_ProcessGroupRelevance($gseq);
         }
 
-        $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq])) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1;   // group-level relevance based upon grelevance equation
+        $grel = (isset($_SESSION[$sessid]['relevanceStatus']['G' . $gseq])) ? $_SESSION[$sessid]['relevanceStatus']['G' . $gseq] : 1;   // group-level relevance based upon grelevance equation
         $gshow = (isset($LEM->indexGseq[$gseq]['show'])) ? $LEM->indexGseq[$gseq]['show'] : true;   // default to true?
 
         return !($grel && $gshow);

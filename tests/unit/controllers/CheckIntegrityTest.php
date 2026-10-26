@@ -49,7 +49,6 @@ class CheckIntegrityTest extends TestBaseClass
     private function callMethod($method, array $args)
     {
         $reflection = new \ReflectionMethod(\DataIntegrityChecker::class, $method);
-        $reflection->setAccessible(true);
         return $reflection->invokeArgs($this->integrityChecker, $args);
     }
 
