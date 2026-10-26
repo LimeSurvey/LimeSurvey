@@ -17236,6 +17236,9 @@ body {
 }
 .btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group):has(> .btn-check:disabled) > .btn-check:checked + .btn-outline-secondary {
   background-color: #fff;
+  border-left-color: #8146F6;
+  color: #515567;
+  opacity: 0.65;
 }
 
 .btn-group > .btn-check + .btn {
@@ -19706,6 +19709,10 @@ input[type=datetime-local] {
   background-color: #fff;
   color: #333641;
 }
+.sidebar .sidebar-icons .sidebar-icon .btn-icon > i {
+  font-size: 24px;
+  line-height: 1;
+}
 .sidebar .scoped-toolbuttons-right {
   flex: 2 1 auto;
   align-self: flex-end;
@@ -20264,7 +20271,6 @@ table [class^=ri-], table [class*=" ri-"] {
   vertical-align: middle;
 }
 .grid-view-ls .table td input[type=checkbox]:after {
-  margin-top: -3px;
   margin-right: -3px;
 }
 .grid-view-ls .table td .longtext-content {
@@ -21165,7 +21171,6 @@ input[type=checkbox]:after {
   display: block;
   width: 18px;
   height: 18px;
-  margin-top: -2px;
   margin-right: 5px;
   border: 2px solid #1E1E1E;
   border-radius: 2px;
@@ -21176,7 +21181,7 @@ input[type=checkbox]:after {
 input[type=checkbox]:checked:before {
   content: "";
   position: absolute;
-  top: 0;
+  top: 2px;
   left: 6px;
   display: table;
   width: 6px;
@@ -21192,7 +21197,7 @@ input[type=checkbox]:checked:before {
 input[type=checkbox]:indeterminate:before {
   content: "";
   position: absolute;
-  top: 6px;
+  top: 8px;
   left: 2px;
   display: table;
   width: 12px;
@@ -21238,7 +21243,6 @@ input[type=checkbox]:checked:after {
   display: block;
   width: 18px;
   height: 18px;
-  margin-top: -2px;
   margin-right: 5px;
   border: 2px solid #1E1E1E;
   border-radius: 2px;
@@ -21249,7 +21253,7 @@ input[type=checkbox]:checked:after {
 .checkbox input[type=checkbox]:checked:before {
   content: "";
   position: absolute;
-  top: 0;
+  top: 2px;
   left: 6px;
   display: table;
   width: 6px;
@@ -21265,7 +21269,7 @@ input[type=checkbox]:checked:after {
 .checkbox input[type=checkbox]:indeterminate:before {
   content: "";
   position: absolute;
-  top: 6px;
+  top: 8px;
   left: 2px;
   display: table;
   width: 12px;
@@ -21311,7 +21315,6 @@ input[type=checkbox]:checked:after {
   display: block;
   width: 18px;
   height: 18px;
-  margin-top: -2px;
   margin-right: 5px;
   border: 2px solid #1E1E1E;
   border-radius: 2px;
@@ -21322,7 +21325,7 @@ input[type=checkbox]:checked:after {
 .checkbox-inline input[type=checkbox]:checked:before {
   content: "";
   position: absolute;
-  top: 0;
+  top: 2px;
   left: 6px;
   display: table;
   width: 6px;
@@ -21338,7 +21341,7 @@ input[type=checkbox]:checked:after {
 .checkbox-inline input[type=checkbox]:indeterminate:before {
   content: "";
   position: absolute;
-  top: 6px;
+  top: 8px;
   left: 2px;
   display: table;
   width: 12px;
