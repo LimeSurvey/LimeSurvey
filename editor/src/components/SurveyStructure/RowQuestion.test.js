@@ -106,12 +106,12 @@ describe('RowQuestion menu', () => {
     await setup()
     await userEvent.click(screen.getByTestId('toggle-question-codes-button'))
     expect(mockUpdate).toHaveBeenCalledWith({
-      showQNumCode: { showCode: false, showNumber: true },
+      showQNumCode: { showCode: false, showNumber: false },
     })
     expect(mockSetFocused).not.toHaveBeenCalled()
   })
 
-  test('toggle flips only showCode and preserves showNumber', async () => {
+  test('toggle sets showCode and showNumber to the same value when diverged', async () => {
     mockShowCode = false
     mockShowNumber = true
     await setup()
