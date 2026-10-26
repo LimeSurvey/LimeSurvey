@@ -1,19 +1,19 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
- <div class="col-lg-8">
+ <div class="{{ answerColumnClass|default('col-lg-8') }}">
     {% for subquestionId, subquestion in question.subquestions %}
         <div class="row">
-            <div class="col-lg-4 text-end">
+            <div class="col-lg-5">
+                <b>{{subquestion.question}} ({{subquestion.qid}})</b>
+            </div>
+            <div class="col-lg-2">
                 {% if subquestion.answervalue is same as("Y") %}
                     <i class="ri-checkbox-line"></i>
                 {% else %}
                     {{subquestion.answervalue|escape}}
                 {% endif %}
             </div>
-            <div class="col-lg-4 text-start">
-                <b>{{subquestion.question}} ({{subquestion.qid}})</b>
-            </div>
-            <div class="col-lg-4 text-start">
+            <div class="col-lg-5">
                     {{subquestion.comment.answervalue|escape}}
             </div>
         </div>

@@ -1,13 +1,13 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
- <div class="col-lg-8">
+ <div class="{{ answerColumnClass|default('col-lg-8') }}">
     {% for subquestionId, subquestion in question.subquestions %}
         <div class="row">
-            <div class="col-lg-4 text-end">
-                {{subquestion.answervalue}}
-            </div>
-            <div class="col-lg-8 text-start">
+            <div class="col-lg-6">
                 <b>{{subquestion.question}} ({{subquestion.qid}})</b>
+            </div>
+            <div class="col-lg-6">
+                {{subquestion.answervalue}}
             </div>
         </div>
     {% endfor %}
