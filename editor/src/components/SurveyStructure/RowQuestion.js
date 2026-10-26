@@ -32,10 +32,11 @@ export const RowQuestion = ({
   const hasAnswerOptions = (question.answers?.length ?? 0) > 0
 
   const toggleQuestionCodes = () => {
+    const next = !survey.showQNumCode?.showCode
     const operationAttr = {
       showQNumCode: {
-        ...survey.showQNumCode,
-        showCode: !survey.showQNumCode?.showCode,
+        showCode: next,
+        showNumber: next,
       },
     }
     update(operationAttr)
