@@ -744,7 +744,6 @@ class QuestionAttribute extends LSActiveRecord
      * Forgets the attribute definition of the previous validation: the question type or theme may have changed since
      * @return boolean whether validation should be executed
      */
-    #[\Override]
     protected function beforeValidate()
     {
         $this->validatedAttributeDefinition = null;
