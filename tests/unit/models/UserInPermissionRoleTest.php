@@ -17,10 +17,16 @@ class UserInPermissionRoleTest extends BaseModelTestCase
         /* Create different user due to usage of static in Permission model */
         $userName = \Yii::app()->securityManager->generateRandomString(28);
         $userIdNoRoles = \User::insertUser($userName, $newPassword, 'John Doe', 1, $userName . '@example.org');
+        $this->assertFalse($userIdNoRoles instanceof \User, 'Failed to create user: ' . ($userIdNoRoles instanceof \User ? json_encode($userIdNoRoles->getErrors()) : ''));
+        $userIdNoRoles = (int) $userIdNoRoles;
         $userName = \Yii::app()->securityManager->generateRandomString(28);
         $userIdSuperadminView = \User::insertUser($userName, $newPassword, 'John Doe', 1, $userName . '@example.org');
+        $this->assertFalse($userIdSuperadminView instanceof \User, 'Failed to create user: ' . ($userIdSuperadminView instanceof \User ? json_encode($userIdSuperadminView->getErrors()) : ''));
+        $userIdSuperadminView = (int) $userIdSuperadminView;
         $userName = \Yii::app()->securityManager->generateRandomString(28);
         $userIdSuperadminCreate = \User::insertUser($userName, $newPassword, 'John Doe', 1, $userName . '@example.org');
+        $this->assertFalse($userIdSuperadminCreate instanceof \User, 'Failed to create user: ' . ($userIdSuperadminCreate instanceof \User ? json_encode($userIdSuperadminCreate->getErrors()) : ''));
+        $userIdSuperadminCreate = (int) $userIdSuperadminCreate;
 
         // User don't have any peermission
         $this->assertFalse(\Permission::model()->hasGlobalPermission('auth_db', 'read', $userIdNoRoles));

@@ -7,6 +7,9 @@
 /* @var string $partial */
 /* @var array $users */
 /* @var array $aDateFormatDetails */
+/* @var TemplateConfiguration $themeConf */
+/* @var string $inheritedThemeName */
+/* @var array $aTemplateList */
 
 $optionsOnOff = [
     'Y' => gT('On', 'unescaped'),
@@ -52,6 +55,9 @@ Yii::app()->getClientScript()->registerScript(
                                 'optionsOnOff' => $optionsOnOff,
                                 'bShowAllOptions' => false,
                                 'users' => $users,
+                                'themeConf' => $themeConf,
+                                'inheritedThemeName' => $inheritedThemeName,
+                                'aTemplateList' => $aTemplateList,
                             ]
                         ); ?>
                     </div>

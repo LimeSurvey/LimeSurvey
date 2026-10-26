@@ -4,7 +4,7 @@ namespace ls\tests;
 
 use FailedLoginAttempt;
 
-class FailedLoginAttempTest extends TestBaseClass
+class FailedLoginAttemptTest extends TestBaseClass
 {
     public function testAddDeleteAttemp()
     {

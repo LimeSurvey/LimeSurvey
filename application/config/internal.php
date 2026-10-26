@@ -16,10 +16,7 @@ if (!file_exists(dirname(__FILE__) . '/config.php')) {
     $userConfig = require(dirname(__FILE__) . '/config.php');
 }
 
-if (!date_default_timezone_set(@date_default_timezone_get())) {
-    date_default_timezone_set('Europe/London');
-}
-
+date_default_timezone_set('UTC'); 
 
 if (function_exists('mb_internal_encoding')) {
     // Needed to substring arabic etc
@@ -48,6 +45,7 @@ $internalConfig = array(
         'node_modules_decimal' => realpath(__DIR__ . '/../../node_modules/decimal.js'),
         'node_modules_jquery_actual' => realpath(__DIR__ . '/../../node_modules/jquery.actual'),
         'node_modules.chartjs' => realpath(__DIR__ . '/../../node_modules/chart.js/dist'),
+        'node_modules.moment.min' => realpath(__DIR__ . '/../../node_modules/moment/min'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
         'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 
@@ -71,10 +69,11 @@ $internalConfig = array(
     */
     'modules' => array(
 
-        //Root Modules are real Yii Modules and can be initiate like this:
+        /* Root Modules are real Yii Modules and can be initiate like this:
         'HelloWorld' => array(
           'class' => 'modules.root.HelloWorld.HelloWorldModule',
         ),
+        */
 
         /* Here you can unlock Gii
         'gii'=>array(
@@ -105,7 +104,6 @@ $internalConfig = array(
         'yiistrap_fork.widgets.*',
         'yiistrap_fork.helpers.*',
         'yiistrap_fork.behaviors.*',
-        'yiistrap_fork.components.*',
         'yiiwheels.widgets.select2.WhSelect2',
         'vendor.Twig.*',
         'vendor.sodium.*',
@@ -115,10 +113,6 @@ $internalConfig = array(
     ),
     'preload' => array('log', 'ETwigViewRenderer'),
     'components' => array(
-        // yiistrap_fork configuration
-        'bootstrap5' => array(
-            'class' => 'yiistrap_fork.components.TbApi',
-        ),
         // yiiwheels configuration
         'yiiwheels' => array(
             'class' => 'yiiwheels.YiiWheels',
@@ -183,12 +177,16 @@ $internalConfig = array(
                 ),
 
                 // Log file saved in /tmp/runtime/plugin.log
+                // Only uncomment this section if you want to log plugin activities
+                // because the log could contain sensitive information
+                /*
                 'plugin' => array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'trace, info, error, warning',
                     'logFile' => 'plugin.log',
                     'categories' => 'plugin.*'  // The category will be the name of the plugin
                 ),
+                */
             )
         ),
         'cache' => array(
@@ -247,8 +245,8 @@ $internalConfig = array(
                 'LS_Twig_Extension',
                 '\Twig\Extension\SandboxExtension',
                 '\Twig\Extension\StringLoaderExtension',
-                '\Twig\Extension\DebugExtension',
-                // 'Twig_Extension_Escaper' // In the future, this extenstion could be use to build a powerfull XSS filter
+                'LS_Twig_Debug_Extension',
+                // 'Twig_Extension_Escaper' // In the future, this extension could be used to build a powerful XSS filter
             ),
             'globals' => array(
                 'html' => 'CHtml'
@@ -287,6 +285,7 @@ $internalConfig = array(
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
                 'getLanguageRTL'          => 'LS_Twig_Extension::getLanguageRTL',
+                'getHtmlLangAttributeValue' => 'getHtmlLangAttributeValue',
 
                 'intval'                  => 'intval',
                 'empty'                   => 'LS_Twig_Extension::isEmpty',
@@ -326,6 +325,7 @@ $internalConfig = array(
                 't'     => 'gT',
                 'gT'    => 'gT',
                 'isAbsoluteUrl' => 'check_absolute_url',
+                'isImageUrl' => 'check_image_url',
             ),
 
             'sandboxConfig' => array(
@@ -355,7 +355,8 @@ $internalConfig = array(
                     'upper',
                     'striptags',
                     'number_format',
-                    'isAbsoluteUrl'
+                    'isAbsoluteUrl',
+                    'isImageUrl'
                 ),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox", "tag"),
@@ -369,7 +370,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
                     'TemplateConfiguration'             =>  array("sTemplateurl"),
-                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'nokeyboard', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice', 'aOptions', 'isListPublic', 'sSurveyUrl', 'localizedTitle'),
+                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice', 'aOptions', 'isListPublic', 'sSurveyUrl', 'localizedTitle'),
                     'SurveyLanguageSetting' => array('surveyls_description', 'surveyls_welcometext', 'surveyls_endtext', 'surveyls_policy_notice', 'surveyls_policy_error', 'surveyls_policy_notice_label', 'surveyls_title'),
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'relevance', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid', 'questionType', 'questionl10ns', 'survey', 'text', 'scenario', 'answer', 'code', 'comment'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance'),
@@ -411,6 +412,7 @@ $internalConfig = array(
                     'getExpressionManagerOutput',
                     'getTextDisplayWidget',
                     'getLanguageNameFromCode',
+                    'getHtmlLangAttributeValue',
                     'getAllQuestionClasses',
                     'checkPermission',
                     'intval',
@@ -466,7 +468,7 @@ $internalConfig = array(
 
 
 
-$result = CMap::mergeArray($internalConfig, $userConfig);
+$result = \LimeSurvey\Helpers\ConfigMergeHelper::merge($internalConfig, $userConfig);
 /**
  * Some workarounds for erroneous settings in user config.php.
  * seems not to be used anymore...

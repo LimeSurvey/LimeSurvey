@@ -4,7 +4,6 @@ namespace LimeSurvey\PluginManager;
 
 interface iPlugin
 {
-
     /**
      * Should return the description for this plugin
      * Constructor for the plugin

@@ -9,6 +9,7 @@ class Update_621 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         if (\Yii::app()->db->driverName == 'mysql') {

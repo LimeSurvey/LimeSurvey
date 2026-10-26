@@ -6,6 +6,8 @@ use App;
 
 /**
  * Test core : LSMessageSource
+ *
+ * @group navigation
  */
 class LSMessageSourceTest extends TestBaseClass
 {

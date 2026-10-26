@@ -27,7 +27,7 @@ class SurveyIntegrity
     }
     /**
      * Add needed language if needed in related SurveyLanguageSetting
-     * Remove uneeded language if needed in related SurveyLanguageSetting
+     * Remove unneeded language if needed in related SurveyLanguageSetting
      * @return void
      */
     public function fixSurveyLanguageSetting()
@@ -63,7 +63,7 @@ class SurveyIntegrity
     /**
      * Function to find and fix potential issue inside current survey, mpore fix to be added
      * - fixes missing groups, questions, answers, quotas & assessments for languages on a survey
-     * - Remove invalid question in this survey : exist in another la,guage but not in primary
+     * - Remove invalid question in this survey : exist in another language but not in primary
      * @return void
      */
     public function fixSurveyIntegrity()

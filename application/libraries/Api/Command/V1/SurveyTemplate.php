@@ -52,7 +52,7 @@ class SurveyTemplate implements CommandInterface
      * Run survey template command
      *
      * Supports GET and POST, with the sid at the end of the endpoint,
-     * lookin like rest/v1/survey-template/571271
+     * looking like rest/v1/survey-template/571271
      *
      * If it's a GET request, then language is not specified, so it is inferred from the survey's default language and falling back to en if not found
      *
@@ -89,7 +89,8 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
-        $language = (($request->getData('language') ?? $survey->language) ?? 'en');
+        $language = $request->getData('language', $survey->language);
+        $language = $language ?? 'en';
         $languageSettings = $this
             ->surveyLanguageSetting
             ->find('surveyls_survey_id = :sid and surveyls_language = :language', [
@@ -149,7 +150,7 @@ class SurveyTemplate implements CommandInterface
      */
     private function getTemplateData($surveyId, $language)
     {
-        // @todo This shouldnt require a HTTP request we should be able to
+        // @todo This shouldn't require a HTTP request we should be able to
         // - render survey content internally. To handle this correctly
         // - we should refactor the survey view functionality to make it
         // - reusable (move it out of the controllers).
@@ -159,11 +160,9 @@ class SurveyTemplate implements CommandInterface
         $this->session->close();
 
         $ch = curl_init();
-        $root = (
-            !empty($_SERVER['HTTPS'])
-            ? 'https'
-            : 'http'
-        ) . '://' . ($_SERVER['HTTP_HOST'] ?? '');
+        // Use the trusted, server-side base URL instead of the client-supplied
+        // Host header to prevent server-side request forgery (SSRF).
+        $root = App()->getBaseUrl(true);
         curl_setopt(
             $ch,
             CURLOPT_URL,
@@ -184,7 +183,6 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
-        curl_close(($ch));
         return $result;
     }
 }

@@ -119,7 +119,7 @@ class Zend_Db_Adapter_Pdo_Mssql extends Zend_Db_Adapter_Pdo_Abstract
 
         // use all remaining parts in the DSN
         foreach ($dsn as $key => $val) {
-            $dsn[$key] = "$key=$val";
+            $dsn[$key] = "{$key}={$val}";
         }
 
         $dsn = $this->_pdoType . ':' . implode(';', $dsn);

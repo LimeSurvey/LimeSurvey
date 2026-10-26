@@ -1182,14 +1182,14 @@
 
      // Shadow
      $Poly = array($XPos+1,$YPos+1,$XPos + 9,$YPos - $TextOffset,$XPos + 8,$YPos + $TextOffset + 2);
-     imagefilledpolygon($this->Picture,$Poly,3,$C_Shadow);
+     imagefilledpolygon($this->Picture,$Poly,$C_Shadow);
      $this->drawLine($XPos,$YPos+1,$XPos + 9,$YPos - $TextOffset - .2,$R-$ShadowFactor,$G-$ShadowFactor,$B-$ShadowFactor);
      $this->drawLine($XPos,$YPos+1,$XPos + 9,$YPos + $TextOffset + 2.2,$R-$ShadowFactor,$G-$ShadowFactor,$B-$ShadowFactor);
      $this->drawFilledRectangle($XPos + 9,$YPos - $TextOffset-.2,$XPos + 13 + $TextWidth,$YPos + $TextOffset + 2.2,$R-$ShadowFactor,$G-$ShadowFactor,$B-$ShadowFactor);
 
      // Label background
      $Poly = array($XPos,$YPos,$XPos + 8,$YPos - $TextOffset - 1,$XPos + 8,$YPos + $TextOffset + 1);
-     imagefilledpolygon($this->Picture,$Poly,3,$C_Label);
+     imagefilledpolygon($this->Picture,$Poly,$C_Label);
      $this->drawLine($XPos-1,$YPos,$XPos + 8,$YPos - $TextOffset - 1.2,$R,$G,$B);
      $this->drawLine($XPos-1,$YPos,$XPos + 8,$YPos + $TextOffset + 1.2,$R,$G,$B);
      $this->drawFilledRectangle($XPos + 8,$YPos - $TextOffset - 1.2,$XPos + 12 + $TextWidth,$YPos + $TextOffset + 1.2,$R,$G,$B);
@@ -1367,7 +1367,7 @@
          $Points[] = $XPos; $Points[] = $YPos2;
          $Points[] = $XPos; $Points[] = $YPos1;
 
-         imagefilledpolygon($this->Layers[0],$Points,4,$C_Graph);
+         imagefilledpolygon($this->Layers[0],$Points,$C_Graph);
         }
 
        $LastYPos1 = $YPos1;
@@ -1684,7 +1684,7 @@
            $aPoints[] = $YZero;
 
            $C_Graph =$this->AllocateColor($this->Layers[0],$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"]);
-           imagefilledpolygon($this->Layers[0],$aPoints,4,$C_Graph);
+           imagefilledpolygon($this->Layers[0],$aPoints,$C_Graph);
           }
 
          if ( !isset($Missing[floor($X)]) || $YLast == NULL )
@@ -1721,7 +1721,7 @@
            $aPoints[] = $YZero;
 
            $C_Graph =$this->AllocateColor($this->Layers[0],$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"]);
-           imagefilledpolygon($this->Layers[0],$aPoints,4,$C_Graph);
+           imagefilledpolygon($this->Layers[0],$aPoints,$C_Graph);
           }
 
          if ( $YIn[$klo] != "" && $YIn[$khi] != "" || $YLast == NULL )
@@ -1738,7 +1738,7 @@
        if ( !$AroundZero )
         {
          $C_Graph =$this->AllocateColor($this->Layers[0],$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"]);
-         imagefilledpolygon($this->Layers[0],$Points,$PointsCount,$C_Graph);
+         imagefilledpolygon($this->Layers[0],$Points,$C_Graph);
         }
 
        imagecopymerge($this->Picture,$this->Layers[0],$this->GArea_X1,$this->GArea_Y1,0,0,$LayerWidth,$LayerHeight,$Alpha);
@@ -1821,7 +1821,7 @@
              $Points[] = $YZero;
 
              $C_Graph = $this->AllocateColor($this->Layers[0],$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"]);
-             imagefilledpolygon($this->Layers[0],$Points,4,$C_Graph);
+             imagefilledpolygon($this->Layers[0],$Points,$C_Graph);
             }
            $YLast = $YPos;
           }
@@ -1835,7 +1835,7 @@
        if ( $AroundZero == FALSE )
         {
          $C_Graph = $this->AllocateColor($this->Layers[0],$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"]);
-         imagefilledpolygon($this->Layers[0],$aPoints,$PointsCount,$C_Graph);
+         imagefilledpolygon($this->Layers[0],$aPoints,$C_Graph);
         }
 
        imagecopymerge($this->Picture,$this->Layers[0],$this->GArea_X1,$this->GArea_Y1,0,0,$LayerWidth,$LayerHeight,$Alpha);
@@ -2068,7 +2068,8 @@
     }
 
    /* This function draw radar axis centered on the graph area */
-   function drawRadarAxis($Data,$DataDescription,$Mosaic=TRUE,$BorderOffset=10,$A_R=60,$A_G=60,$A_B=60,$S_R=200,$S_G=200,$S_B=200,$MaxValue=-1)
+   /* $Step is the value difference between two rings of the spider web */
+   function drawRadarAxis($Data,$DataDescription,$Mosaic=TRUE,$BorderOffset=10,$A_R=60,$A_G=60,$A_B=60,$S_R=200,$S_G=200,$S_B=200,$MaxValue=-1,$Step=1)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawRadarAxis",$DataDescription);
@@ -2099,7 +2100,7 @@
      if ( $Mosaic )
       {
        $RadiusScale = $Radius / $MaxValue;
-       for ( $t=1; $t<=$MaxValue-1; $t++)
+       for ( $t=$Step; $t<=$MaxValue-$Step; $t+=$Step)
         {
          $TRadius  = $RadiusScale * $t;
          $LastX1   = -1;
@@ -2109,10 +2110,10 @@
            $Angle = -90 + $i * 360/$Points;
            $X1 = cos($Angle * 3.1418 / 180 ) * $TRadius + $XCenter;
            $Y1 = sin($Angle * 3.1418 / 180 ) * $TRadius + $YCenter;
-           $X2 = cos($Angle * 3.1418 / 180 ) * ($TRadius+$RadiusScale) + $XCenter;
-           $Y2 = sin($Angle * 3.1418 / 180 ) * ($TRadius+$RadiusScale) + $YCenter;
+           $X2 = cos($Angle * 3.1418 / 180 ) * ($TRadius+$RadiusScale*$Step) + $XCenter;
+           $Y2 = sin($Angle * 3.1418 / 180 ) * ($TRadius+$RadiusScale*$Step) + $YCenter;
 
-           if ( $t % 2 == 1 && $LastX1 != -1)
+           if ( intdiv($t,$Step) % 2 == 1 && $LastX1 != -1)
             {
              $Plots   = [];
              $Plots[] = $X1; $Plots[] = $Y1;
@@ -2121,7 +2122,7 @@
              $Plots[] = $LastX1; $Plots[] = $LastY1;
 
              $C_Graph = $this->AllocateColor($this->Picture,250,250,250);
-             imagefilledpolygon($this->Picture,$Plots,(count($Plots)+1)/2,$C_Graph);
+             imagefilledpolygon($this->Picture,$Plots,$C_Graph);
             }
 
            $LastX1 = $X1; $LastY1= $Y1;
@@ -2132,7 +2133,7 @@
 
 
      /* Draw the spider web */
-     for ( $t=1; $t<=$MaxValue; $t++)
+     for ( $t=$Step; $t<=$MaxValue; $t+=$Step)
       {
        $TRadius = ( $Radius / $MaxValue ) * $t;
        $LastX   = -1;
@@ -2182,7 +2183,7 @@
       }
 
      /* Write the values */
-     for ( $t=1; $t<=$MaxValue; $t++)
+     for ( $t=$Step; $t<=$MaxValue; $t+=$Step)
       {
        $TRadius = ( $Radius / $MaxValue ) * $t;
 
@@ -2333,7 +2334,7 @@
          imagecolortransparent($this->Layers[0],$C_White);
 
          $C_Graph = $this->AllocateColor($this->Layers[0],$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"]);
-         imagefilledpolygon($this->Layers[0],$Plots,(count($Plots)+1)/2,$C_Graph);
+         imagefilledpolygon($this->Layers[0],$Plots,$C_Graph);
 
          imagecopymerge($this->Picture,$this->Layers[0],$this->GArea_X1,$this->GArea_Y1,0,0,$LayerWidth,$LayerHeight,$Alpha);
          imagedestroy($this->Layers[0]);
@@ -2439,7 +2440,7 @@
      foreach ($PolyPlots as $Key => $Value)
       { 
        $C_GraphLo = $this->AllocateColor($this->Picture,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"]);
-       imagefilledpolygon($this->Picture,$PolyPlots[$Key],(count($PolyPlots[$Key])+1)/2,$C_GraphLo);
+       imagefilledpolygon($this->Picture,$PolyPlots[$Key],$C_GraphLo);
       }
 
      $this->drawCircle($XPos-.5,$YPos-.5,$Radius,$R,$G,$B);
@@ -2579,7 +2580,7 @@
        else
         $C_GraphLo = $this->AllocateColor($this->Picture,$this->ShadowRColor,$this->ShadowGColor,$this->ShadowBColor);
 
-       imagefilledpolygon($this->Picture,$PolyPlots[$Key],(count($PolyPlots[$Key])+1)/2,$C_GraphLo);
+       imagefilledpolygon($this->Picture,$PolyPlots[$Key],$C_GraphLo);
       }
      $this->ShadowActive = $ShadowStatus;
     }
@@ -2690,7 +2691,8 @@
      foreach($iValues as $Key => $Value)
       {
        $C_GraphLo = $this->AllocateColor($this->Picture,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"],-20);
-       imagefilledpolygon($this->Picture,$BotPlots[$Key],(count($BotPlots[$Key])+1)/2,$C_GraphLo);
+       /** @psalm-suppress TooFewArguments */
+       imagefilledpolygon($this->Picture,$BotPlots[$Key],$C_GraphLo);
 
        if ( $EnhanceColors ) { $En = -10; } else { $En = 0; }
  
@@ -2714,7 +2716,8 @@
            else
             $Plots[] = $Value2+$i;
           }
-         imagefilledpolygon($this->Picture,$Plots,(count($Plots)+1)/2,$C_GraphLo);
+         /** @psalm-suppress TooFewArguments */
+         imagefilledpolygon($this->Picture,$Plots,$C_GraphLo);
 
          $Index       = count($Plots);
          if ($EnhanceColors ) {$ColorFactor = -20 + ($SpliceHeight - $i) * $ColorRatio; } else { $ColorFactor = 0; }
@@ -2729,7 +2732,8 @@
      for($Key=count($iValues)-1;$Key>=0;$Key--)
       { 
        $C_GraphLo = $this->AllocateColor($this->Picture,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"]);
-       imagefilledpolygon($this->Picture,$TopPlots[$Key],(count($TopPlots[$Key])+1)/2,$C_GraphLo);
+       /** @psalm-suppress TooFewArguments */
+       imagefilledpolygon($this->Picture,$TopPlots[$Key],$C_GraphLo);
 
        if ( $EnhanceColors ) { $En = 10; } else { $En = 0; }
        for($j=0;$j<=count($aTopPlots[$Key])-4;$j=$j+2)
@@ -3139,7 +3143,7 @@
      if ( $G < 0 ) { $G = 0; } if ( $G > 255 ) { $G = 255; }
      if ( $B < 0 ) { $B = 0; } if ( $B > 255 ) { $B = 255; }
 
-     return(imagecolorallocate($Picture,$R,$G,$B));
+     return(imagecolorallocate($Picture,(int)$R,(int)$G,(int)$B));
     }
 
    /* Add a border to the picture */

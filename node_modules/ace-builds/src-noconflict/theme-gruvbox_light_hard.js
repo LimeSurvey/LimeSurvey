@@ -6,7 +6,7 @@ ace.define("ace/theme/gruvbox_light_hard",["require","exports","module","ace/the
 exports.cssClass = "ace-gruvbox-light-hard";
 exports.cssText = require("./gruvbox_light_hard-css");
 var dom = require("../lib/dom");
-dom.importCssString(exports.cssText, exports.cssClass);
+dom.importCssString(exports.cssText, exports.cssClass, false);
 
 });                (function() {
                     ace.require(["ace/theme/gruvbox_light_hard"], function(m) {

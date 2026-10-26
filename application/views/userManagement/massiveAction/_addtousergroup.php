@@ -11,7 +11,7 @@ $aUsergoups = UserGroup::model()->findAll();
                     <?php foreach ($aUsergoups as $oUsergroup) {
                         if (
                             Permission::model()->hasGlobalPermission('usergroups', 'update')
-                            || $oUsergroup->requestEditGroup($oUsergroup->ugid, Yii::app()->session['loginID']) 
+                            || $oUsergroup->requestEditGroup($oUsergroup->ugid, Yii::app()->session['loginID'])
                         ) {
                             echo "<option value='" . $oUsergroup->ugid . "'>" . $oUsergroup->name . "</option>";
                         }

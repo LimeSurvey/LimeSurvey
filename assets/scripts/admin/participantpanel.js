@@ -12,7 +12,7 @@ LS.CPDB = (function() {
      * @param {object} data
      * @param {string} actionButtonClass
      * @param {string} formId
-     * @oaram {string} gridViewId
+     * @param {string} gridViewId
      * @return
      */
     runBaseModal = function(url, data, actionButtonClass, formId, gridViewId, callback){
@@ -23,7 +23,16 @@ LS.CPDB = (function() {
          * @todo
          */
         var secondSuccess = function(result) {
+            // Keep the modal open on validation errors, so the user can correct the input
+            if (result && result.error) {
+                window.LS.ajaxAlerts(result.error.message, 'danger', {showCloseButton: true});
+                return;
+            }
             $(baseModal).modal('hide');
+            if (result && result.hasPermission === false) {
+                window.LS.ajaxAlerts(result.noPermissionText, 'danger', {showCloseButton: true});
+                return;
+            }
             $.fn.yiiGridView.update(gridViewId,{});
             callback(result);
         };
@@ -33,6 +42,10 @@ LS.CPDB = (function() {
          * @todo
          */
         var firstSuccess = function(json){
+            if (json && json.hasPermission === false) {
+                window.LS.ajaxAlerts(json.noPermissionText, 'danger', {showCloseButton: true});
+                return;
+            }
             $(baseModal).find('.modal-content').html(json.result);
             $(baseModal).modal('show');
             $(baseModal).find('.'+actionButtonClass).on('click', function(e) {
@@ -59,6 +72,48 @@ LS.CPDB = (function() {
             success: firstSuccess,
             error: function(){ console.ls.log(arguments) }
         });
+    },
+
+    /**
+     * Saves the new value of a Yes/No switch immediately and tells the user whether it worked.
+     * On failure the switch is set back to its previous value.
+     * @param {HTMLInputElement} changedInput - The radio input that was just checked
+     * @param {string} params - Url encoded POST parameters, without CSRF token
+     * @return void
+     */
+    saveSwitchValue = function(changedInput, params) {
+        // Yes/No group: The other radio input of the group holds the previous value
+        let previousInput = changedInput.closest('.btn-group').querySelector('input:not(:checked)');
+        let onFailure = function(message) {
+            if (previousInput) {
+                previousInput.checked = true;
+            }
+            window.LS.ajaxAlerts(message || translate_saveFailed, 'danger', {showCloseButton: true});
+        };
+        let xhttp = new XMLHttpRequest();
+        xhttp.open("POST", editValueParticipantPanel, true);
+        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhttp.onload = function() {
+            let response = null;
+            try {
+                response = JSON.parse(xhttp.responseText);
+            } catch (e) {
+                response = null;
+            }
+            if (xhttp.status !== 200 || !response) {
+                onFailure();
+            } else if (response.hasPermission === false) {
+                onFailure(response.noPermissionText);
+            } else if (response.success !== true) {
+                onFailure(response.message);
+            } else {
+                window.LS.ajaxAlerts(response.message, 'success', {showCloseButton: true});
+            }
+        };
+        xhttp.onerror = function() {
+            onFailure();
+        };
+        xhttp.send(params + "&YII_CSRF_TOKEN=" + LS.data.csrfToken);
     },
 
     /**
@@ -304,19 +359,17 @@ LS.CPDB = (function() {
             changeBlacklistButton.addEventListener("change", (event) => {
                 let params = "actionTarget=changeBlacklistStatus"
                     + "&participant_id=" + event.target.closest("tr").dataset.participant_id
-                    + "&blacklist=" + event.target.value
-                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
-                let xhttp = new XMLHttpRequest();
-                xhttp.open("POST", editValueParticipantPanel, true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.send(params);
+                    + "&blacklist=" + event.target.value;
+                saveSwitchValue(event.target, params);
             });
         }
 
         $('#pageSizeParticipantView').on("change", function(){
             $.fn.yiiGridView.update('list_central_participants',{ data:{ pageSizeParticipantView: $(this).val() }});
         });
-        bindListItemclick();
+        if (typeof bindListItemclick === 'function') {
+            bindListItemclick();
+        }
 
         if($('#export').hasClass('d-none')){
             $('#export').removeClass('d-none');
@@ -362,12 +415,8 @@ LS.CPDB = (function() {
             changeAttributeVisibilityButton.addEventListener("change", (event) => {
                 let params = "actionTarget=changeAttributeVisibility"
                     + "&attribute_id=" + event.target.closest("tr").dataset.attribute_id
-                    + "&visible=" + event.target.value
-                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
-                let xhttp = new XMLHttpRequest();
-                xhttp.open("POST", editValueParticipantPanel, true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.send(params);
+                    + "&visible=" + event.target.value;
+                saveSwitchValue(event.target, params);
             });
         }
 
@@ -376,12 +425,8 @@ LS.CPDB = (function() {
             changeAttributeEncryptedButton.addEventListener("change", (event) => {
                 let params = "actionTarget=changeAttributeEncrypted"
                     + "&attribute_id=" + event.target.closest("tr").dataset.attribute_id
-                    + "&encrypted=" + event.target.value
-                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
-                let xhttp = new XMLHttpRequest();
-                xhttp.open("POST", editValueParticipantPanel, true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.send(params);
+                    + "&encrypted=" + event.target.value;
+                saveSwitchValue(event.target, params);
             });
         }
 
@@ -395,8 +440,8 @@ LS.CPDB = (function() {
     },
     //JS-bindings especially for the sharePanel
     sharePanel = function() {
-        $('#action_toggleAllParticipantShare').on('click', function() {
-            $('.selector_participantShareCheckbox').prop('checked', $('#action_toggleAllParticipantShare').prop('checked'));
+        $('#action_toggleAllParticipant').on('click', function(){
+            $('.selector_participantCheckbox').prop('checked', $('#action_toggleAllParticipant').prop('checked'));
         });
 
         let changeSharedEditableStatusButtons = document.querySelectorAll('.action_changeEditableStatus input');
@@ -405,12 +450,8 @@ LS.CPDB = (function() {
                 let params = "actionTarget=changeSharedEditableStatus"
                     + "&participant_id=" + event.target.closest("tr").dataset.participant_id
                     + "&can_edit=" + event.target.value
-                    + "&share_uid=" + event.target.closest('tr').dataset.share_uid
-                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
-                let xhttp = new XMLHttpRequest();
-                xhttp.open("POST", editValueParticipantPanel, true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.send(params);
+                    + "&share_uid=" + event.target.closest('tr').dataset.share_uid;
+                saveSwitchValue(event.target, params);
             });
         }
 

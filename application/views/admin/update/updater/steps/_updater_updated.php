@@ -1,10 +1,12 @@
 <?php
+
 /**
  * This file display the Updater Update Message
  */
+
 ?>
 <?php
-    $urlContinue = Yii::app()->createUrl("admin/update", array("update"=>'welcome', 'destinationBuild'=>$destinationBuild));
+    $urlContinue = Yii::app()->createUrl("admin/update", array("update" => 'welcome', 'destinationBuild' => $destinationBuild));
 ?>
 <h3 class="maintitle"><?php eT("ComfortUpdate needs to be updated");?></h3>
 <div class="updater-background">

@@ -60,8 +60,10 @@ class PluginManager extends \CApplicationComponent
 
     /**
      * Creates the plugin manager.  Loads all active plugins.
-     * If $plugin->save() is used in this method, it can lead to an infinite event loop,
-     * since beforeSave tries to get the PluginManager, which executes init() again.
+     * The plugin manager is registered as application component before the plugins are loaded,
+     * since Yii registers it only after init() and any App()->getPluginManager() call while loading
+     * (plugin init(), afterPluginLoad, model events, permission checks) would create a new
+     * plugin manager, which executes init() again, endlessly.
      *
      * @return void
      */
@@ -79,30 +81,10 @@ class PluginManager extends \CApplicationComponent
             $class = $this->api;
             $this->api = new $class();
         }
-        $this->loadPlugins();
-    }
-    /**
-     * Return a list of installed plugins, but only if the files are still there
-     * @deprecated unused in 5.3.8
-     * This prevents errors when a plugin was installed but the files were removed
-     * from the server.
-     *
-     * @return array
-     */
-    public function getInstalledPlugins()
-    {
-        $pluginModel = Plugin::model();
-        $records = $pluginModel->findAll(['order' => 'priority DESC']);
-
-        $plugins = array();
-
-        foreach ($records as $record) {
-            // Only add plugins we can find
-            if ($this->loadPlugin($record->name, $record->id, $record->active) !== false) {
-                $plugins[$record->id] = $record;
-            }
+        if (Yii::app()->getComponent('pluginManager', false) === null) {
+            Yii::app()->setComponent('pluginManager', $this);
         }
-        return $plugins;
+        $this->loadPlugins();
     }
 
     /**
@@ -194,7 +176,7 @@ class PluginManager extends \CApplicationComponent
             !$withoutNamespace && $withNamespace
         ) {
             $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
-        } else if (!($withoutNamespace || $withNamespace)) {
+        } elseif (!($withoutNamespace || $withNamespace)) {
             $relativePath = App()->getConfig('rootdir') . "/application/libraries/PluginManager/Storage/{$storageClass}.php";
             if (file_exists($relativePath)) {
                 require_once $relativePath;
@@ -253,6 +235,16 @@ class PluginManager extends \CApplicationComponent
                 }
             }
         }
+    }
+
+    /**
+     * Whether at least one plugin is subscribed to the given event.
+     * @param string $eventName
+     * @return boolean
+     */
+    public function hasSubscribers($eventName)
+    {
+        return !empty($this->subscriptions[$eventName]);
     }
 
     /**
@@ -329,6 +321,21 @@ class PluginManager extends \CApplicationComponent
                                         'message' => $ex->getMessage(),
                                         'file'  => $ex->getFile()
                                     ];
+                                    if (empty($plugin)) {
+                                        // Plugin is not installed: Only list it as faulty, without saving anything,
+                                        // so it is loaded again on next scan (e.g. after the plugin files were fixed).
+                                        if (App()->getConfig('debug') >= 2) {
+                                            throw $ex;
+                                        }
+                                        $result[$pluginName] = [
+                                            'pluginName' => $pluginName,
+                                            'load_error' => 1,
+                                            'load_error_message' => $error['message'] . ' ' . $error['file'],
+                                            'isCompatible' => false,
+                                            'pluginType' => $pluginType,
+                                        ];
+                                        continue;
+                                    }
                                     $saveResult = Plugin::handlePluginLoadError($plugin, $pluginName, $error);
                                     if (!$saveResult) {
                                         // If handlePluginLoadError return 0 because debug is set
@@ -453,7 +460,7 @@ class PluginManager extends \CApplicationComponent
      * @param string $pluginName
      * @param int $id Identifier used for identifying a specific plugin instance.
      * @param boolean $init launch init function (if exist)
-     * If ommitted will return the first instantiated plugin with the given name.
+     * If omitted will return the first instantiated plugin with the given name.
      * @return iPlugin|null The plugin or null when missing
      */
     public function loadPlugin($pluginName, $id = null, $init = true)
@@ -493,6 +500,11 @@ class PluginManager extends \CApplicationComponent
                 'file'  => $ex->getFile()
             ];
             $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
+            if (empty($plugin)) {
+                // Plugin is not installed: Nothing to mark as faulty.
+                $this->shutdownObject->disable();
+                throw $ex;
+            }
             $saveResult = Plugin::handlePluginLoadError($plugin, $pluginName, $error);
             if (!$saveResult) {
                 // If handlePluginLoadError return 0 because debug is set
@@ -544,7 +556,7 @@ class PluginManager extends \CApplicationComponent
         } else {
             // Log it?
         }
-        $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this)); // Alow plugins to do stuff after all plugins are loaded
+        $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this)); // Allow plugins to do stuff after all plugins are loaded
     }
 
     /**
@@ -621,11 +633,11 @@ class PluginManager extends \CApplicationComponent
      * Get plugin description.
      * First look in config.xml, then in plugin class.
      * @param string $class
-     * @param ExtensionConfig $extensionConfig
+     * @param ?ExtensionConfig $extensionConfig
      * @return string
      * @todo Localization.
      */
-    protected function getPluginDescription(string $class, \ExtensionConfig $extensionConfig = null)
+    protected function getPluginDescription(string $class, ?ExtensionConfig $extensionConfig = null)
     {
         $desc = null;
 
@@ -648,11 +660,11 @@ class PluginManager extends \CApplicationComponent
      * Get plugin name.
      * First look in config.xml, then in plugin class.
      * @param string $class
-     * @param ExtensionConfig $extensionConfig
+     * @param ?ExtensionConfig $extensionConfig
      * @return string
      * @todo Localization.
      */
-    protected function getPluginName(string $class, \ExtensionConfig $extensionConfig = null)
+    protected function getPluginName(string $class, ?ExtensionConfig $extensionConfig = null)
     {
         $name = null;
 
@@ -717,6 +729,7 @@ class PluginManager extends \CApplicationComponent
             'UpdateCheck',
             'AzureOAuthSMTP',
             'GoogleOAuthSMTP',
+            'ReactEditor',
         ];
     }
 

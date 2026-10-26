@@ -1,6 +1,6 @@
 
 <div class="selector__toggle_<?=$this->widgetsJsName?>">
-    <?=viewHelper::flatEllipsizeText($this->textToDisplay,true,$this->abbreviationSize,$this->abbreviationSign)?>
+    <?=viewHelper::flatEllipsizeText($this->textToDisplay, true, $this->abbreviationSize, $this->abbreviationSign)?>
 </div>
 <div class="selector__toggle_<?=$this->widgetsJsName?> d-none">
     <?=$this->textToDisplay?>

@@ -12,7 +12,7 @@
         <th><?php eT('Status');?></th>
     </thead>
     <tbody>
-        <?php foreach($aResults as $iQid => $result):?>
+        <?php foreach ($aResults as $iQid => $result) :?>
             <tr>
                 <td>
                     <?php echo $iQid;?>
@@ -20,11 +20,11 @@
                 <td>
                     <?php echo $result['question'];?>
                 </td>
-                <?php if ($result['result']['status'] === true):?>
+                <?php if ($result['result']['status'] === true) :?>
                     <td class="text-success">
                         <?php echo $result['result']['message']; ?>
                     </td>
-                <?php else: ?>
+                <?php else : ?>
                     <td class="text-danger">
                         <?php echo $result['result']['message']; ?>
                     </td>

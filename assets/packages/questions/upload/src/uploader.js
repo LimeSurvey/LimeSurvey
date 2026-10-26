@@ -1,5 +1,6 @@
 import './ajaxupload.js';
 import './modaldialog.js';
+import { applyImagePreviewFallback, PLACEHOLDER_HTML } from './previewfallback.js';
 
 "use strict"
 var uploadHandler = function (qid, options) {
@@ -20,9 +21,11 @@ var uploadHandler = function (qid, options) {
         var previewContainer = $('<div class="file-preview"></div>');
 
         if (isValueInArray(image_extensions, item.ext.toLowerCase())) {
-            previewContainer.append('<img src="' + options.uploadurl + '/filegetcontents/' + item.filename + '" class="uploaded" />');
+            var $previewImage = $('<img src="' + options.uploadurl + '/filegetcontents/' + item.filename + '" class="uploaded" />');
+            applyImagePreviewFallback($previewImage);
+            previewContainer.append($previewImage);
         } else {
-            previewContainer.append('<div class="upload-placeholder"></div>');
+            previewContainer.append(PLACEHOLDER_HTML);
         }
 
         previewContainer.append('<span class="file-name">' + escapeHtml(item.name) + '</span>');
@@ -91,9 +94,9 @@ var uploadHandler = function (qid, options) {
     var doFileUpload = function () {
         var fieldname = options.sFieldName;
         /* Load the previously uploaded files */
-        var filecount = $('#java' + fieldname + '_filecount').val();
+        var filecount = $('#java' + fieldname + '_Cfilecount').val();
 
-        $('#java' + fieldname + '_filecount').val(filecount);
+        $('#java' + fieldname + '_Cfilecount').val(filecount);
 
         var image_extensions = ['gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico', 'heic'];
         if (filecount > 0) {
@@ -130,7 +133,7 @@ var uploadHandler = function (qid, options) {
             },
             onSubmit: function (file, ext) {
                 var maxfiles = parseInt($('#' + fieldname + '_maxfiles').val());
-                var filecount = parseInt($('#java' + fieldname + '_filecount').val());
+                var filecount = parseInt($('#java' + fieldname + '_Cfilecount').val());
                 var allowed_filetypes = $('#' + fieldname + '_allowed_filetypes').val().split(",");
 
                 /* If maximum number of allowed filetypes have already been uploaded,
@@ -192,11 +195,11 @@ var uploadHandler = function (qid, options) {
                     }
                     renderPreviewItem(fieldname, metadata, count);
 
-                    var filecount = parseInt($('#java' + fieldname + '_filecount').val());
+                    var filecount = parseInt($('#java' + fieldname + '_Cfilecount').val());
                     var minfiles = parseInt($('#' + fieldname + '_minfiles').val());
                     filecount++;
                     var maxfiles = parseInt($('#' + fieldname + '_maxfiles').val());
-                    $('#java' + fieldname + '_filecount').val(filecount);
+                    $('#java' + fieldname + '_Cfilecount').val(filecount);
 
                     if (filecount < minfiles)
                         $('#uploadstatus').html(options.uploadLang.errorNeedMore.replace('%s', (minfiles - filecount)));
@@ -252,12 +255,12 @@ var uploadHandler = function (qid, options) {
     }
 
     const copyJSON = function(filecount, fieldname, show_title, show_comment, pos) {
-        $('#java'+fieldname+'_filecount').val(filecount).trigger('updated');
+        $('#java'+fieldname+'_Cfilecount').val(filecount).trigger('updated');
         window['uploadQuestionController_' + fieldname].displayUploadedFiles(filecount, fieldname, show_title, show_comment, pos);
     };
 
     var saveAndExit = function (fieldname, show_title, show_comment, pos) {
-        var filecount = parseInt($('#java' + fieldname + '_filecount').val());
+        var filecount = parseInt($('#java' + fieldname + '_Cfilecount').val());
         var minfiles = parseInt($('#' + fieldname + '_minfiles').val());
 
         if (minfiles != 0 && filecount < minfiles && showpopups) {
@@ -278,7 +281,7 @@ var uploadHandler = function (qid, options) {
         var filename = $("#" + fieldname + "_filename_" + count).val();
         var name = $("#" + fieldname + "_name_" + count).val();
 
-        var filecount = parseInt($('#java' + fieldname + '_filecount').val());
+        var filecount = parseInt($('#java' + fieldname + '_Cfilecount').val());
         var licount = parseInt($('#' + fieldname + '_licount').val());
 
         $.ajax({
@@ -299,7 +302,7 @@ var uploadHandler = function (qid, options) {
                 }, 5000);
                 $("#" + fieldname + "_li_" + count).hide();
                 filecount--;
-                $('#java' + fieldname + '_filecount').val(filecount);
+                $('#java' + fieldname + '_Cfilecount').val(filecount);
                 file_index = $("#" + fieldname + "_file_index_" + count).val();
                 for (j = count; j <= licount; j++) {
                     if ($('#' + fieldname + '_li_' + j).is(":visible")) {

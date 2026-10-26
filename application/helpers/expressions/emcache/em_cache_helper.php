@@ -149,7 +149,6 @@ class EmCacheHelper
      * True if all conditions are met to use the emcache.
      *
      * @return boolean
-     * @todo check ajaxmode
      */
     public static function useCache()
     {
@@ -189,7 +188,7 @@ class EmCacheHelper
         }
 
         // Don't use emcache with randomization.
-        if ($_SESSION['survey_' . self::$surveyinfo['sid']]['randomized']) {
+        if ($_SESSION['responses_' . self::$surveyinfo['sid']]['randomized']) {
             return false;
         }
 

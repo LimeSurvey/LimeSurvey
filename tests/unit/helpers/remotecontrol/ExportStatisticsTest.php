@@ -1,11 +1,13 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
+
+use ls\tests\DummyController;
 
 /**
  * Tests for the LimeSurvey remote API.
  */
-class RemoteControlExportStatisticsTest extends BaseTest
+class ExportStatisticsTest extends BaseTest
 {
     public static function setUpBeforeClass(): void
     {
@@ -53,17 +55,14 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $this->assertSame($q1Data[3][2], '20.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
-        $this->assertSame($q1Data[4][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
+        $this->assertSame($q1Data[4][0], 'Not completed or not displayed', 'The Answer text is incorrect for this option.');
         $this->assertSame($q1Data[4][1], '0', 'The Count is incorrect for this option.');
         $this->assertSame($q1Data[4][2], '0.00%', 'The Percentage is incorrect for this option.');
 
-        // A row is left empty.
-        $this->assertEmpty($q1Data[5], 'This row should be empty.');
-
         // Total row.
-        $this->assertSame($q1Data[6][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
-        $this->assertSame($q1Data[6][1], '10', 'The Count is incorrect for this option.');
-        $this->assertSame($q1Data[6][2], '100.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($q1Data[5][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
+        $this->assertSame($q1Data[5][1], '10', 'The Count is incorrect for this option.');
+        $this->assertSame($q1Data[5][2], '100.00%', 'The Percentage is incorrect for this option.');
     }
 
     public function testSurveyWithThreeQuestions()
@@ -102,17 +101,14 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $this->assertSame($q1Data[3][2], '30.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
-        $this->assertSame($q1Data[4][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
+        $this->assertSame($q1Data[4][0], 'Not completed or not displayed', 'The Answer text is incorrect for this option.');
         $this->assertSame($q1Data[4][1], '0', 'The Count is incorrect for this option.');
         $this->assertSame($q1Data[4][2], '0.00%', 'The Percentage is incorrect for this option.');
 
-        // A row is left empty.
-        $this->assertEmpty($q1Data[5], 'This row should be empty.');
-
         // Total row.
-        $this->assertSame($q1Data[6][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
-        $this->assertSame($q1Data[6][1], '10', 'The Count is incorrect for this option.');
-        $this->assertSame($q1Data[6][2], '100.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($q1Data[5][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
+        $this->assertSame($q1Data[5][1], '10', 'The Count is incorrect for this option.');
+        $this->assertSame($q1Data[5][2], '100.00%', 'The Percentage is incorrect for this option.');
 
         // Q01
         $q1Data = $this->getTableData($htmlStatistics, 'quid_' . $questions[1]->qid);
@@ -153,17 +149,14 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $this->assertSame($q1Data[6][2], '20.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
-        $this->assertSame($q1Data[7][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
+        $this->assertSame($q1Data[7][0], 'Not completed or not displayed', 'The Answer text is incorrect for this option.');
         $this->assertSame($q1Data[7][1], '0', 'The Count is incorrect for this option.');
         $this->assertSame($q1Data[7][2], '0.00%', 'The Percentage is incorrect for this option.');
 
-        // A row is left empty.
-        $this->assertEmpty($q1Data[8], 'This row should be empty.');
-
         // Total row.
-        $this->assertSame($q1Data[9][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
-        $this->assertSame($q1Data[9][1], '10', 'The Count is incorrect for this option.');
-        $this->assertSame($q1Data[9][2], '100.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($q1Data[8][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
+        $this->assertSame($q1Data[8][1], '10', 'The Count is incorrect for this option.');
+        $this->assertSame($q1Data[8][2], '100.00%', 'The Percentage is incorrect for this option.');
 
         // Q02
         $q1Data = $this->getTableData($htmlStatistics, 'quid_' . $questions[2]->qid);
@@ -189,17 +182,14 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $this->assertSame($q1Data[3][2], '20.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
-        $this->assertSame($q1Data[4][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
+        $this->assertSame($q1Data[4][0], 'Not completed or not displayed', 'The Answer text is incorrect for this option.');
         $this->assertSame($q1Data[4][1], '0', 'The Count is incorrect for this option.');
         $this->assertSame($q1Data[4][2], '0.00%', 'The Percentage is incorrect for this option.');
 
-        // A row is left empty.
-        $this->assertEmpty($q1Data[5], 'This row should be empty.');
-
         // Total row.
-        $this->assertSame($q1Data[6][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
-        $this->assertSame($q1Data[6][1], '10', 'The Count is incorrect for this option.');
-        $this->assertSame($q1Data[6][2], '100.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($q1Data[5][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
+        $this->assertSame($q1Data[5][1], '10', 'The Count is incorrect for this option.');
+        $this->assertSame($q1Data[5][2], '100.00%', 'The Percentage is incorrect for this option.');
     }
 
     /**
@@ -234,7 +224,10 @@ class RemoteControlExportStatisticsTest extends BaseTest
 
         // Get the table.
         $doc = new \DOMDocument();
+        $previous = libxml_use_internal_errors(true);
         $doc->loadHtml($htmlStatistics);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
 
         $table = $doc->getElementById($tableHtmlId);
 
@@ -242,11 +235,10 @@ class RemoteControlExportStatisticsTest extends BaseTest
             return $options;
         }
 
-        $thead = $table->getElementsByTagName('thead')->item(0);
-        // The td tags should be identified with the opening tbody tag but it is not added by export_statistics.
-        $table->removeChild($thead);
+        $tbody = $table->getElementsByTagName('tbody')->item(0);
+        $this->assertNotNull($tbody, 'The statistics table has no tbody element.');
 
-        $rows = $table->getElementsByTagName('tr');
+        $rows = $tbody->getElementsByTagName('tr');
 
         foreach ($rows as $rowKey => $row) {
             $tds = $row->getElementsByTagName('td');

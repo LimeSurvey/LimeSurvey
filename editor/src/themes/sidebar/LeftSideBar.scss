@@ -1,0 +1,10 @@
+.modal-close-button {
+  color: $g-800 !important;
+  font-size: 28px;
+  margin-right: 10px;
+  margin-top: 10px;
+
+  &:hover {
+    color: $g-800;
+  }
+}

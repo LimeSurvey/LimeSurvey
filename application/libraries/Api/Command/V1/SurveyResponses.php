@@ -6,6 +6,8 @@ use CDbException;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyResponseFiles;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyRequestTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\SurveyAnswerCache;
 use Permission;
@@ -18,10 +20,40 @@ use LimeSurvey\Api\Command\{CommandInterface,
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
 
+/**
+ * Returns the responses of a survey, one entry per response with its answers.
+ *
+ * Filtering and sorting go through the generic {@see FilterPatcher}, whose
+ * filter keys are validated against the survey field map so any filter method
+ * (equal, contain, multi-select, …) can target nested question/subquestion
+ * columns. A `fields` param additionally restricts the SELECT to a caller-chosen
+ * subset of response columns; when it is omitted every column is returned.
+ * With `unnestFiles`, a single file upload column is listed one row per file
+ * instead (see {@see SurveyResponseFiles}).
+ */
 class SurveyResponses implements CommandInterface
 {
     use AuthPermissionTrait;
     use ResponseMappingTrait;
+    use SurveyRequestTrait;
+
+    /**
+     * Response columns always loaded regardless of field selection, because
+     * the transformed output (id, completed flag, dates, language, token, …)
+     * depends on them. Intersected with the survey's real columns before use.
+     */
+    private const FIXED_OUTPUT_COLUMNS = [
+        'id',
+        'submitdate',
+        'startdate',
+        'datestamp',
+        'startlanguage',
+        'lastpage',
+        'seed',
+        'token',
+        'ipaddr',
+        'refurl',
+    ];
 
     protected Survey $survey;
     protected Permission $permission;
@@ -29,6 +61,7 @@ class SurveyResponses implements CommandInterface
     protected FilterPatcher $responseFilterPatcher;
     protected TransformerOutputSurveyResponses $transformerOutputSurveyResponses;
     protected SurveyAnswerCache $answerCache;
+    protected SurveyResponseFiles $surveyResponseFiles;
 
     /**
      * Constructor
@@ -39,6 +72,7 @@ class SurveyResponses implements CommandInterface
      * @param ResponseFactory $responseFactory
      * @param TransformerOutputSurveyResponses $transformerOutputSurveyResponses
      * @param SurveyAnswerCache $answerCache
+     * @param SurveyResponseFiles $surveyResponseFiles
      */
     public function __construct(
         Survey $survey,
@@ -46,7 +80,8 @@ class SurveyResponses implements CommandInterface
         FilterPatcher $responseFilterPatcher,
         ResponseFactory $responseFactory,
         TransformerOutputSurveyResponses $transformerOutputSurveyResponses,
-        SurveyAnswerCache $answerCache
+        SurveyAnswerCache $answerCache,
+        SurveyResponseFiles $surveyResponseFiles
     ) {
         $this->survey = $survey;
         $this->permission = $permission;
@@ -54,10 +89,11 @@ class SurveyResponses implements CommandInterface
         $this->responseFilterPatcher = $responseFilterPatcher;
         $this->transformerOutputSurveyResponses = $transformerOutputSurveyResponses;
         $this->answerCache = $answerCache;
+        $this->surveyResponseFiles = $surveyResponseFiles;
     }
 
     /**
-     * Run survey detail command
+     * Run survey responses command
      *
      * @param Request $request
      * @return Response
@@ -65,11 +101,11 @@ class SurveyResponses implements CommandInterface
     public function run(Request $request)
     {
         try {
-            $data = $this->process($request);
-
-            return $this->responseFactory->makeSuccess(['responses' => $data]);
+            return $this->responseFactory->makeSuccess($this->process($request));
         } catch (TransformerException $e) {
             return $this->responseFactory->makeError('Invalid key sent');
+        } catch (\InvalidArgumentException $e) {
+            return $this->responseFactory->makeErrorBadRequest($e->getMessage());
         } catch (PermissionDeniedException $e) {
             return $this->responseFactory->makeErrorUnauthorised();
         }
@@ -79,6 +115,7 @@ class SurveyResponses implements CommandInterface
      * @param Request $request
      * @return array
      * @throws TransformerException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function process(Request $request): array
     {
@@ -89,6 +126,14 @@ class SurveyResponses implements CommandInterface
 
         $this->getSurvey($request);
         $model = $this->getSurveyDynamicModel($request);
+        $language = $this->getLanguage($request);
+        $this->transformerOutputSurveyResponses->fieldMap =
+            createFieldMap($this->survey, 'full', true, false, $language);
+
+        if ($request->getData('unnestFiles')) {
+            return $this->processFiles($request, $model);
+        }
+
         [$criteria, $sort] = $this->buildCriteria($request);
         $pagination = $this->buildPagination($request);
         $dataProvider = new \LSCActiveDataProvider(
@@ -103,117 +148,281 @@ class SurveyResponses implements CommandInterface
         try {
             $surveyResponses = $dataProvider->getData();
         } catch (CDbException $e) {
-            // Since questions keys are column, if there's an invalid key sent,
-            // an exception will be thrown which will result in an error 500.
+            // Question keys map to columns, so an invalid field would raise an
+            // exception (and otherwise a 500). Surface it as an invalid key.
             throw new TransformerException();
         }
 
-        $this->transformerOutputSurveyResponses->fieldMap =
-            createFieldMap($this->survey, 'full', true, false);
-
-        $data = [];
-        $data['responses'] = $this->transformerOutputSurveyResponses->transform(
+        $responses = $this->transformerOutputSurveyResponses->transform(
             $surveyResponses,
             ['survey' => $this->survey]
         );
-        $data['surveyQuestions'] = $this->getQuestionFieldMap();
-        $data['_meta'] = [
-            'pagination' => [
-                'pageSize' => $pagination['pageSize'],
-                'currentPage' => $pagination['currentPage'],
-                'totalItems' => $dataProvider->getTotalItemCount(),
-                'totalPages' => ceil(
-                    $dataProvider->getTotalItemCount()
-                    / ($pagination['pageSize'] ?? 1)
-                )
-            ],
-            'filters' => $request->getData('filters', []),
-            'sort' => $request->getData('sort', []),
-        ];
+        $surveyQuestions = $this->getQuestionFieldMap();
+        $this->answerCache->load((int) $surveyId, $language);
+        $responses = $this->mapResponsesToQuestions($responses, $surveyQuestions);
+        $timingFields = $this->appendTimingData($responses);
+        $totalItems = $dataProvider->getTotalItemCount();
+        $pageSize = max(1, $pagination['pageSize'] ?? 1);
 
-        $this->answerCache->load((int) $surveyId, $this->survey->language);
-        $data['responses'] = $this->mapResponsesToQuestions(
-            $data['responses'],
-            $data['surveyQuestions']
+        return [
+            'responses' => $responses,
+            'surveyQuestions' => $surveyQuestions,
+            'timingFields' => $timingFields,
+            '_meta' => [
+                'pagination' => [
+                    'pageSize' => $pageSize,
+                    'currentPage' => $pagination['currentPage'],
+                    'totalItems' => $totalItems,
+                    'totalPages' => (int) ceil($totalItems / $pageSize),
+                ],
+                'filters' => $request->getData('filters', []),
+                'sort' => $request->getData('sort', []),
+            ],
+        ];
+    }
+
+    /**
+     * Lists the uploaded files of the single file upload column in `fields`,
+     * paginated by file. `contain` filters on that column become search terms
+     * matched per file; every other filter narrows the responses as usual.
+     *
+     * @param Request $request
+     * @param \SurveyDynamic $model
+     * @return array
+     * @throws \InvalidArgumentException
+     */
+    protected function processFiles(Request $request, \SurveyDynamic $model): array
+    {
+        $fileColumns = array_keys(array_filter(
+            array_intersect_key(
+                $this->transformerOutputSurveyResponses->fieldMap,
+                array_flip((array) $request->getData('fields', []))
+            ),
+            static fn($field) => ($field['type'] ?? '') === \Question::QT_VERTICAL_FILE_UPLOAD
+                && ($field['aid'] ?? '') !== 'filecount'
+        ));
+        if (count($fileColumns) !== 1) {
+            throw new \InvalidArgumentException('unnestFiles requires exactly one file upload field.');
+        }
+        $column = $fileColumns[0];
+
+        $terms = [];
+        $filters = [];
+        foreach ((array) $request->getData('filters', []) as $filter) {
+            $isFileSearch = strtolower((string) ($filter['filterMethod'] ?? '')) === 'contain'
+                && in_array($column, (array) ($filter['key'] ?? []), true);
+            if (!$isFileSearch) {
+                $filters[] = $filter;
+                continue;
+            }
+            foreach ((array) ($filter['value'] ?? []) as $value) {
+                $value = is_scalar($value) ? trim((string) $value) : '';
+                if ($value !== '') {
+                    $terms[] = $value;
+                }
+            }
+        }
+
+        [$criteria, $sort] = $this->buildCriteria($request, $filters);
+        $criteria->order = $sort->defaultOrder;
+        $pagination = $this->buildPagination($request);
+        $pageSize = max(1, (int) ($pagination['pageSize'] ?? 1));
+        $currentPage = max(0, (int) ($pagination['currentPage'] ?? 0));
+
+        $result = $this->surveyResponseFiles->list(
+            $model,
+            $criteria,
+            $column,
+            ($this->transformerOutputSurveyResponses->fieldMap[$column]['encrypted'] ?? 'N') === 'Y',
+            array_values(array_unique($terms)),
+            $currentPage,
+            $pageSize
         );
 
-        return $data;
+        return [
+            'files' => $result['files'],
+            '_meta' => [
+                'pagination' => [
+                    'pageSize' => $pageSize,
+                    'currentPage' => $currentPage,
+                    'totalItems' => $result['totalItems'],
+                    'totalPages' => (int) ceil($result['totalItems'] / $pageSize),
+                ],
+                'filters' => $request->getData('filters', []),
+                'sort' => $request->getData('sort', []),
+            ],
+        ];
     }
 
-    protected function getSurvey(Request $request): void
+    /**
+     * Adds timing values to the responses and returns the metadata needed to
+     * build timing columns in API clients.
+     *
+     * Timings are stored in a separate table, so fetching them after response
+     * pagination keeps the response count and pagination unchanged.
+     *
+     * Returns an empty array without changing responses when Save timings is
+     * disabled or the timings table is missing. Otherwise, each response gains
+     * a timings entry, which is empty when no matching timing data is found.
+     *
+     * @param array $responses Response rows updated in place.
+     * @return array Timing field metadata, or an empty array when timings are unavailable.
+     * @throws CDbException If a database query fails.
+     */
+    protected function appendTimingData(array &$responses): array
     {
-        $survey = $this->survey->findByPk($this->getSurveyId($request));
-        if ($survey === null) {
-            throw new \RuntimeException('Survey not found');
+        if (!$this->survey->isSaveTimings || !$this->survey->hasTimingsTable) {
+            return [];
         }
-        $this->survey = $survey;
+
+        $timingFields = $this->getTimingFields();
+        $timingsByResponse = $this->getTimingsByResponse(
+            array_column($responses, 'id'),
+            array_column($timingFields, 'fieldname')
+        );
+
+        $responses = array_map(
+            static function (array $response) use ($timingsByResponse): array {
+                $responseId = (int)($response['id'] ?? 0);
+                $response['timings'] = $timingsByResponse[$responseId] ?? [];
+                return $response;
+            },
+            $responses
+        );
+
+        return $timingFields;
     }
 
-    protected function getSurveyId(Request $request): string
+    /**
+     * @return array
+     */
+    private function getTimingFields(): array
     {
-        $surveyId = (string)$request->getData('_id');
-        if (!is_numeric($surveyId)) {
-            throw new \InvalidArgumentException("Invalid survey ID");
+        return array_values(createTimingsFieldMap(
+            $this->survey->sid,
+            'full',
+            false,
+            false,
+            $this->survey->language
+        ));
+    }
+
+    /**
+     * @param array $responseIds
+     * @param array $fieldNames
+     * @return array
+     */
+    private function getTimingsByResponse(array $responseIds, array $fieldNames): array
+    {
+        if ($responseIds === []) {
+            return [];
         }
 
-        return $surveyId;
+        $model = \SurveyTimingDynamic::model($this->survey->sid);
+        $fieldNames = array_values(array_intersect(
+            $fieldNames,
+            $model->getTableSchema()->getColumnNames()
+        ));
+
+        if ($fieldNames === []) {
+            return [];
+        }
+
+        $criteria = new \CDbCriteria();
+        $criteria->addInCondition('id', $responseIds);
+        $records = $model->findAll($criteria);
+        $timings = [];
+
+        foreach ($records as $record) {
+            $timings[(int)$record->getAttribute('id')] = array_map(
+                static fn($value) => is_numeric($value) ? (float)$value : null,
+                $record->getAttributes($fieldNames)
+            );
+        }
+
+        return $timings;
     }
 
-    protected function getSurveyDynamicModel(Request $request): \SurveyDynamic
-    {
-        return \SurveyDynamic::model($this->getSurveyId($request));
-    }
-
-    protected function buildCriteria(Request $request): array
+    /**
+     * Build the criteria and sort from the generic filter/sort engine. The
+     * survey's real columns are passed so filter keys can be validated against
+     * them (and nested question/subquestion columns filtered at query level).
+     *
+     * @param Request $request
+     * @param array|null $filters Overrides the request's filters
+     * @return array{0: \LSDbCriteria, 1: \CSort}
+     */
+    protected function buildCriteria(Request $request, ?array $filters = null): array
     {
         $searchParams = [];
-        $searchParams['filters'] = $request->getData('filters', null);
+        $searchParams['filters'] = $filters ?? $request->getData('filters', null);
         $searchParams['sort'] = $request->getData('sort', null);
         $dataMap = $this->transformerOutputSurveyResponses->getDataMap();
+        $validColumns = array_keys($this->transformerOutputSurveyResponses->fieldMap);
         $sort = new \CSort();
         $criteria = new \LSDbCriteria();
         $this->responseFilterPatcher->apply(
             $searchParams,
             $criteria,
             $sort,
-            $dataMap
+            $dataMap,
+            $validColumns
         );
+        $this->applyFieldSelection($criteria, $request);
 
         return [$criteria, $sort];
     }
 
-    protected function buildPagination(Request $request): array
+    /**
+     * Restrict the SELECT to a caller-provided subset of response columns.
+     *
+     * Only columns that exist in the survey's field map are honoured; the
+     * fixed system columns the transformed output relies on (id, dates,
+     * language, token, …) are always kept so selecting question columns never
+     * strips the metadata each response needs. When the fields param is
+     * missing or empty every column is returned; a nonempty list matching no
+     * real column is rejected as a bad request.
+     *
+     * @param \LSDbCriteria $criteria
+     * @param Request $request
+     */
+    protected function applyFieldSelection(\LSDbCriteria $criteria, Request $request): void
     {
-        $pagination = $request->getData('page');
-        $paginationDefault = [
-            'pageSize' => 15,
-            'currentPage' => 0,
-        ];
-
-        if ($pagination) {
-            $paginationRequiredKeys = ['currentPage', 'pageSize'];
-
-            if (
-                isset($pagination['pageSize'])
-                && (int)$pagination['pageSize'] == 0
-            ) {
-                $pagination['pageSize'] = $paginationDefault['pageSize'];
-            }
-
-            if (
-                !empty(
-                    array_diff_key(
-                        array_flip($paginationRequiredKeys),
-                        $pagination
-                    )
-                )
-            ) {
-                return array_merge($paginationDefault, $pagination);
-            }
-
-            return $pagination;
+        $fields = $request->getData('fields');
+        if (!is_array($fields) || empty($fields)) {
+            return;
         }
 
-        return $paginationDefault;
+        $validColumns = array_keys($this->transformerOutputSurveyResponses->fieldMap);
+        $selected = array_values(array_intersect($fields, $validColumns));
+        if (empty($selected)) {
+            throw new \InvalidArgumentException('No valid fields requested');
+        }
+
+        $fixed = array_intersect(self::FIXED_OUTPUT_COLUMNS, $validColumns);
+        // Quote explicitly: Yii implodes an array select without quoting, and
+        // dual-scale column names contain `#`, which starts a MySQL comment.
+        $criteria->select = array_map(
+            [\Yii::app()->db, 'quoteColumnName'],
+            array_values(array_unique(array_merge($fixed, $selected)))
+        );
+    }
+
+    /**
+     * Resolve the requested language, falling back to the survey base language
+     * when none (or an unknown one) is requested.
+     *
+     * @param Request $request
+     * @return string
+     */
+    protected function getLanguage(Request $request): string
+    {
+        $language = (string) $request->getData('language', '');
+        $availableLanguages = $this->survey->getAllLanguages();
+        if ($language === '' || !in_array($language, $availableLanguages, true)) {
+            return $this->survey->language;
+        }
+
+        return $language;
     }
 }

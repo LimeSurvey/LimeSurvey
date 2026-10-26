@@ -1,6 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers;
+
+use ls\tests\TestBaseClass;
 
 /**
  * Tests for the LimeSurvey remote API.

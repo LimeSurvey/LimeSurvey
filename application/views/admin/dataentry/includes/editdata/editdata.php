@@ -21,7 +21,8 @@
             <label for='closerecord'>".gT("Finalize response submission")."</label>
         </td>
     </tr>
-    <input type='hidden' name='closedate' value='<?php echo dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')); ?>' />
+    <!-- Store in UTC for database. All DB timestamps are stored as UTC. -->
+    <input type='hidden' name='closedate' value='<?php echo gmdate("Y-m-d H:i"); ?>' />
     <tr>
         <td align='left'>
             <input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' />
@@ -35,7 +36,9 @@
         <tr>
             <td align='right'><?php eT("Identifier:"); ?></td>
             <td>
-                <input type='text' name='save_identifier' <?php if (returnGlobal('identifier')) { ?> value="<?php echo CHtml::encode(returnGlobal('identifier')); ?>" <?php } ?> />
+                <input type='text' name='save_identifier' <?php if (returnGlobal('identifier')) {
+                    ?> value="<?php echo CHtml::encode(returnGlobal('identifier')); ?>" <?php
+                                                          } ?> />
             </td>
         </tr>
     </table>

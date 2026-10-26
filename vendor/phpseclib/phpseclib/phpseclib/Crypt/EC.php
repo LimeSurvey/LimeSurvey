@@ -180,6 +180,7 @@ abstract class EC extends AsymmetricKey
                     // OPENSSL_KEYTYPE_X25519 introduced in PHP 8.4.0
                     'OpenSSL'   => defined('OPENSSL_KEYTYPE_X25519'),
                 ];
+                break;
             // OPENSSL_KEYTYPE_X448 introduced in PHP 8.4.0
             case 'Curve448':
                 $providers = ['OpenSSL' => defined('OPENSSL_KEYTYPE_X448')];
@@ -541,7 +542,7 @@ abstract class EC extends AsymmetricKey
     /**
      * Determines the signature padding mode
      *
-     * Valid values are: ASN1, SSH2, Raw
+     * Valid values are: ASN1, IEEE, SSH2, Raw
      *
      * @param string $format
      */

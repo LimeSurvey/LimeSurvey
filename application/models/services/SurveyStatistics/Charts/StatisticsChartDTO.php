@@ -40,6 +40,16 @@ class StatisticsChartDTO
         $this->meta = $meta;
     }
 
+    public function getMeta(): array
+    {
+        return $this->meta;
+    }
+
+    public function setMeta(array $meta): void
+    {
+        $this->meta = $meta;
+    }
+
     /**
      * Convert the DTO into an associative array for API responses.
      *

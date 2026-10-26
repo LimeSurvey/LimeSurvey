@@ -17,4 +17,4 @@ echo count($data) . " question(s) in your database contain conditions.  Below is
 echo "<pre>";
 print_r($data);
 echo "</pre>";
-?>
+

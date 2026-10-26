@@ -9,6 +9,12 @@
         {
             var lang = editor.lang.limereplacementfields,
             generalLabel = editor.lang.common.generalTab;
+
+            function getReplacementFieldsSelect( dialog )
+            {
+                return $( dialog.getElement().$ ).find( '#cquestions' );
+            }
+
             return {
                 title : lang.title,
                 minWidth : 400,
@@ -30,18 +36,22 @@
                                 html : CKEDITOR.ajax.load(editor.config.LimeReplacementFieldsUrl),
                                 setup : function( element )
                                 {
+                                    var replacementFieldsSelect = getReplacementFieldsSelect( this.getDialog() );
+
                                     if ( isEdit )
                                     {
-                                        $('#cquestions').val( element.getText().slice( 1, -1 ) );
+                                        replacementFieldsSelect.val( element.getText().slice( 1, -1 ) );
                                     }
                                     else
                                     {
-                                        $("#cquestions")[0].selectedIndex = 0;
+                                        replacementFieldsSelect[0].selectedIndex = 0;
                                     }
                                 },
                                 commit : function( element )
                                 {
-                                    var text = '{' + $('#cquestions').val() + '}';
+                                    var replacementFieldsSelect = getReplacementFieldsSelect( this.getDialog() );
+
+                                    var text = '{' + replacementFieldsSelect.val() + '}';
                                     // The limereplacementfields must be recreated.
                                     CKEDITOR.plugins.limereplacementfields.createlimereplacementfields( editor, element, text );
                                 }
@@ -50,7 +60,8 @@
                     }
                 ],
                 onFocus : function() {
-                    $('#cquestions').focus();
+                    var replacementFieldsSelect = getReplacementFieldsSelect( this );
+                    replacementFieldsSelect.focus();
                 },
                 onShow : function()
                 {

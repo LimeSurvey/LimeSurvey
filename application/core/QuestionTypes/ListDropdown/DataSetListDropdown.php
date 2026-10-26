@@ -2,5 +2,4 @@
 
 class DataSetListDropdown extends QuestionBaseDataSet
 {
-
 }

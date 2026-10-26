@@ -75,6 +75,11 @@ var TemplateCoreClass = function () {
          * @see core/package/limesurvey/survey.js:triggerEmClassChange
          */
         triggerEmClassChangeTemplate: function () {
+            /* The first ExpressionScript run (checkconditions in survey_runtime.js, same ready event) happens before the participant answered anything */
+            var initialRun = true;
+            setTimeout(function () {
+                initialRun = false;
+            }, 0);
             $('.ls-em-tip').each(function () {
                 $(this).on('classChangeError', function () {
                     /* If user choose hide-tip : leave it */
@@ -83,20 +88,29 @@ var TemplateCoreClass = function () {
                         $parent.removeClass('hide-tip', 1);
                         $parent.addClass('tip-was-hidden', 1);
                     }
-                    $questionContainer = $(this).parents('div.question-container');
-                    $questionContainer.addClass('input-error'); /* No difference betwwen error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+                    /* Don't flag untouched questions on page load: After a failed submit the server already sets input-error */
+                    if (!initialRun) {
+                        $questionContainer = $(this).parents('div.question-container');
+                        $questionContainer.addClass('input-error');
+                    }
                 });
 
                 $(this).on('classChangeGood', function () {
-                    /* If user choose hide-tip : leave it */
-                    $parent = $(this).parents('div.hide-tip');
+                    /* If user choose hide-tip : hide it again once no other tip in the same block is still in error */
+                    $parent = $(this).parent('div.ls-questionhelp');
                     $parent.removeClass('text-danger');
                     $parent.addClass('text-info');
-                    if ($parent.hasClass('tip-was-hidden')) {
+                    if ($parent.hasClass('tip-was-hidden') && $parent.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
                         $parent.removeClass('tip-was-hidden').addClass('hide-tip');
                     }
-                    $questionContainer = $(this).parents('div.question-container');
-                    $questionContainer.removeClass('input-error'); /* Not working with mandatory question ... */
+                    /* Keep input-error set by the server after a failed submit until the participant changes something */
+                    if (!initialRun) {
+                        $questionContainer = $(this).parents('div.question-container');
+                        /* Only once no other tip of the question is still in error: This tip's own ls-em-error is removed after this handler */
+                        if ($questionContainer.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
+                            $questionContainer.removeClass('input-error'); /* Not working with mandatory question ... */
+                        }
+                    }
                 });
             });
 

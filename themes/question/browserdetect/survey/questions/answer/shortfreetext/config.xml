@@ -30,6 +30,8 @@
     <compatibility>
         <version>4.0</version>
         <version>5.0</version>
+        <version>6.0</version>
+        <version>7.0</version>
     </compatibility>
 
     <!--
@@ -42,7 +44,6 @@
             <filename>css/browserdetect.css</filename>
         </css>
         <js>
-            <filename>scripts/bowser.min.js</filename>
             <filename>scripts/proxydetect.js</filename>
             <filename>scripts/browserdetect.js</filename>
         </js>
@@ -60,7 +61,7 @@
             </options>
             <default>no</default>
             <help>Show also the platform information of the participant</help>
-            <caption>Show Platform information: </caption>
+            <caption>Show platform information:</caption>
         </attribute>
     </attributes>
 

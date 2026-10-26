@@ -1,4 +1,24 @@
-ace.define("ace/ext/textarea",["require","exports","module","ace/lib/event","ace/lib/useragent","ace/ace"], function(require, exports, module){"use strict";
+ace.define("ace/ext/textarea",["require","exports","module","ace/ext/textarea","ace/lib/event","ace/lib/useragent","ace/ace"], function(require, exports, module){/**
+ * ## Textarea transformation extension
+ *
+ * Transforms HTML textarea elements into fully-featured Ace editor instances while maintaining form compatibility
+ * and providing an interactive settings panel. Handles automatic resizing, form submission integration, and
+ * preserves the original textarea's styling properties. Includes a visual settings interface for configuring
+ * editor options like themes, modes, keybindings, and display preferences through an overlay panel.
+ *
+ * **Usage:**
+ * ```javascript
+ * var ace = require("ace/ext/textarea");
+ * var editor = ace.transformTextarea(textareaElement, {
+ *   mode: "javascript",
+ *   theme: "monokai",
+ *   wrap: true
+ * });
+ * ```
+ *
+ * @module
+ */
+"use strict";
 var event = require("../lib/event");
 var UA = require("../lib/useragent");
 var ace = require("../ace");

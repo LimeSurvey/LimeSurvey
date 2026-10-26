@@ -1,0 +1,81 @@
+// --- Filter dropdown (label + bootstrap select inside the modals) ------------
+.responses-statistics-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+
+  &-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-normal;
+    color: $g-900;
+  }
+
+  // Style the bootstrap dropdown toggle like a select control.
+  &-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 220px;
+    max-width: 280px;
+    padding: 6px 12px;
+    border: 1px solid $g-400;
+    border-radius: $border-radius;
+    color: $g-900;
+    font-size: $font-size-sm;
+    background: $white;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: $g-900 !important;
+      background: $white !important;
+      border-color: $g-400 !important;
+      box-shadow: none !important;
+    }
+  }
+
+  &-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    // Allow the label to shrink so it can be truncated with an ellipsis.
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  // Long answer labels truncate instead of stretching the select.
+  &-text {
+    @include truncate;
+  }
+
+  &-swatch {
+    @include swatch;
+  }
+
+  .dropdown-menu {
+    max-width: 320px;
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    font-size: $font-size-sm;
+    border: 1px solid transparent;
+    border-radius: $border-radius-xs;
+
+    &:hover {
+      background-color: $g-200;
+      color: $g-900;
+    }
+
+    &:focus {
+      background-color: $g-200;
+      color: $g-900;
+      border-color: $grape;
+    }
+  }
+}

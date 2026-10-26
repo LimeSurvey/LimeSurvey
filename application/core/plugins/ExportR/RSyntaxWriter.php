@@ -41,7 +41,7 @@ class RSyntaxWriter extends Writer
 
         // R specific stuff
         Yii::app()->loadHelper("export");
-        
+
         $tmpFieldmap = SPSSFieldMap($survey->id, 'V', $sLanguageCode);
         $fieldmap = [];
         foreach ($tmpFieldmap as $field => $values) {

@@ -103,14 +103,14 @@ class UserGroupController extends LSBaseController
     {
         $ugid = (int)$ugid;
         if (empty($ugid)) {
-            throw new CHttpException(400, gT('GroupId missing'));
+            throw new CHttpException(400, gT('Group ID missing'));
         }
 
         $userGroup = UserGroup::model()->findByPk($ugid);
         if (empty($userGroup)) {
             throw new CHttpException(404, gT("User group not found."));
         }
-        /* Check Permssion to view */
+        /* Check Permission to view */
         if (
             !(
                 Permission::model()->hasGlobalPermission('superadmin', 'read') // superadmin
@@ -148,7 +148,7 @@ class UserGroupController extends LSBaseController
 
             $aUsers = User::model()->findAll(['join' => "LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id", 'condition' => "id IS NULL ORDER BY users_name"]);
             $aNewUserListData = CHtml::listData($aUsers, 'uid', function ($user) {
-                return \CHtml::encode($user->users_name) . " (" . \CHtml::encode($user->full_name) . ')';
+                return $user->getDisplayName();
             });
             // Remove group owner because an owner is automatically member of a group
             // TODO: Is this still right on 6.0?
@@ -393,7 +393,7 @@ class UserGroupController extends LSBaseController
         $aRet = [];
 
         if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
-            $aRet['errorMsg'] = gT('Access denied');
+            $aRet['errorMsg'] = gT('Access denied!');
             $aRet['redirectPath'] = 'userGroup/viewGroup/ugid/' . $userGroupId;
             return $aRet;
         }
@@ -488,13 +488,13 @@ class UserGroupController extends LSBaseController
                 App()->user->setFlash('success', $emailSendingResults);
             } catch (Exception $e) {
                 // TODO: Show error message?
-                App()->user->setFlash('error', gT("Error: no email has been send."));
+                App()->user->setFlash('error', gT("Error: No email has been sent."));
             }
             $this->redirect($redirectUrl);
             App()->end(); // redirect end : add it here for clarity
         }
 
-        $aData['topbar']['title'] = gT('Mail to all Members');
+        $aData['topbar']['title'] = gT('Mail to all members');
         $aData['topbar']['backLink'] = App()->createUrl('userGroup/index');
         $aData['topbar']['rightButtons'] = $this->renderPartial(
             'partial/topbarBtns_mail/rightSideButtons',

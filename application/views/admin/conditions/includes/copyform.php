@@ -1,7 +1,7 @@
-<?php echo CHtml::form($url, 'post', array('id'=>"copyconditions",'name'=>"copyconditions")); ?>
+<?php echo CHtml::form($url, 'post', array('id' => "copyconditions",'name' => "copyconditions")); ?>
     <h3><?php eT("Copy conditions"); ?></h3>
 
-    <?php if (count($conditionsList)): ?>
+    <?php if (count($conditionsList)) : ?>
         <script type='text/javascript'>
             $(document).ready(function () {
                 // TODO
@@ -14,7 +14,7 @@
             <div class='condition-tbl-right'>
                 <select class='form-select' name='copyconditionsto[]' id='copytomultiselect'  multiple='multiple' >
 
-                    <?php foreach ($pquestions as $pq): ?>
+                    <?php foreach ($pquestions as $pq) : ?>
                         <option value='<?php echo $pq['fieldname']; ?>'><?php echo $pq['text']; ?></option>
                     <?php endforeach; ?>
                 </select>
@@ -29,7 +29,7 @@
             <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
         </div>
 
-    <?php else: ?>
+    <?php else : ?>
         <div class='messagebox ui-corner-all'>
             <div class='partialheader'>
                 <?php eT("There are no existing conditions in this survey."); ?>

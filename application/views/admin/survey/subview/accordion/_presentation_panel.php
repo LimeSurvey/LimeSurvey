@@ -36,44 +36,182 @@ $optionsQuestionIndex = array(
 if ($bShowInherited) {
     $optionsQuestionIndex['-1'] = $oSurveyOptions->questionindex . " ᴵ";
 }
+
+$sEffectiveShowNoAnswer = isset($oSurvey->oOptions->shownoanswer)
+    ? $oSurvey->oOptions->shownoanswer
+    : $oSurvey->shownoanswer;
+$bDisableNoAnswerPreselection = $sEffectiveShowNoAnswer !== 'Y';
+$mInheritedShowNoAnswer = $oSurvey->shownoanswer === 'I'
+    ? $sEffectiveShowNoAnswer === 'Y'
+    : null;
+
+App()->getClientScript()->registerScript(
+    'toggle-no-answer-preselection',
+    "
+    (function () {
+        var inheritedShowNoAnswer = " . CJavaScript::encode($mInheritedShowNoAnswer) . ";
+        var showNoAnswerInputs = document.querySelectorAll('input[name=\"shownoanswer\"]');
+        var preselectInputs = document.querySelectorAll('#preselectnoanswer input[name=\"preselectnoanswer\"]');
+        var preservedValue = document.getElementById('preselectnoanswer-disabled-value');
+        var preselectGroup = document.getElementById('preselectnoanswer');
+        var disabledMessage = " . CJavaScript::encode(gT('Enable “No answer” to configure this setting.')) . ";
+
+        function updateNoAnswerPreselectionState() {
+            var selectedShowNoAnswer = document.querySelector('input[name=\"shownoanswer\"]:checked');
+            var showNoAnswer = selectedShowNoAnswer && (
+                selectedShowNoAnswer.value === 'Y'
+                || (selectedShowNoAnswer.value === 'I' && inheritedShowNoAnswer !== false)
+            );
+            var selectedPreselection = document.querySelector(
+                '#preselectnoanswer input[name=\"preselectnoanswer\"]:checked'
+            );
+
+            preselectInputs.forEach(function (input) {
+                input.disabled = !showNoAnswer;
+            });
+
+            if (preservedValue) {
+                preservedValue.disabled = Boolean(showNoAnswer);
+                if (selectedPreselection) {
+                    preservedValue.value = selectedPreselection.value;
+                }
+            }
+
+            if (preselectGroup) {
+                preselectGroup.setAttribute('aria-disabled', String(!showNoAnswer));
+                preselectGroup.setAttribute('title', showNoAnswer ? '' : disabledMessage);
+            }
+        }
+
+        showNoAnswerInputs.forEach(function (input) {
+            input.addEventListener('change', updateNoAnswerPreselectionState);
+        });
+        updateNoAnswerPreselectionState();
+    }());
+    ",
+    LSYii_ClientScript::POS_READY
+);
+
+// The question index always allows jumping back to previous groups, so "Allow backward navigation" then only shows or hides the "Previous" button
+$iEffectiveQuestionIndex = (int) (isset($oSurvey->oOptions->questionindex)
+    ? $oSurvey->oOptions->questionindex
+    : $oSurvey->questionindex);
+$bQuestionIndexEnabled = $iEffectiveQuestionIndex > 0;
+$mInheritedQuestionIndex = $oSurvey->questionindex == -1
+    ? $iEffectiveQuestionIndex
+    : null;
+$sAllowPrevLabel = gT('Allow backward navigation');
+$sShowPrevLabel = gT('Show “Previous” button');
+
+App()->getClientScript()->registerScript(
+    'toggle-allow-prev-label',
+    "
+    (function () {
+        var inheritedQuestionIndex = " . CJavaScript::encode($mInheritedQuestionIndex) . ";
+        var questionIndexInputs = document.querySelectorAll('input[name=\"questionindex\"]');
+        var allowPrevLabel = document.getElementById('allowprev-label');
+        var allowPrevHelp = document.getElementById('allowprev-help');
+        var allowPrevText = " . CJavaScript::encode($sAllowPrevLabel) . ";
+        var showPrevText = " . CJavaScript::encode($sShowPrevLabel) . ";
+
+        function updateAllowPrevLabel() {
+            var selectedQuestionIndex = document.querySelector('input[name=\"questionindex\"]:checked');
+            var questionIndex = 0;
+            if (selectedQuestionIndex) {
+                questionIndex = selectedQuestionIndex.value === '-1'
+                    ? Number(inheritedQuestionIndex)
+                    : Number(selectedQuestionIndex.value);
+            }
+            var labelText = questionIndex > 0 ? showPrevText : allowPrevText;
+
+            if (allowPrevLabel) {
+                allowPrevLabel.textContent = labelText;
+            }
+            if (allowPrevHelp) {
+                allowPrevHelp.classList.toggle('d-none', questionIndex <= 0);
+            }
+        }
+
+        questionIndexInputs.forEach(function (input) {
+            input.addEventListener('change', updateAllowPrevLabel);
+        });
+        updateAllowPrevLabel();
+    }());
+    ",
+    LSYii_ClientScript::POS_READY
+);
 ?>
 
 <!-- Presentation panel -->
 <div id='presentation-panel'>
     <div class="row">
         <h1>
-            <?php eT('Show...'); ?>
+            <?php eT('Display'); ?>
         </h1>
         <div class="col-12 col-lg-6">
             <!-- Show "No answer" -->
             <div class="mb-3">
-                <label class="form-label" for="shownoanswer"><?php eT('... “no answer”'); ?></label>
+                <label id="shownoanswer-label" class="form-label"><?php eT('Show “No answer”'); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'shownoanswer',
+                            'ariaLabelledBy' => 'shownoanswer-label',
                             'checkedOption' => $oSurvey->shownoanswer,
-                            'ariaLabel' => gT('no answer'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->shownoanswer . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
+                </div>
+            </div>
+
+            <!-- Preselect "No answer" -->
+            <div class="mb-3">
+                <label id="preselectnoanswer-label" class="form-label"><?php eT('Preselect “No answer”'); ?></label>
+                <div>
+                    <?php $this->widget(
+                        'ext.ButtonGroupWidget.ButtonGroupWidget',
+                        array(
+                            'name' => 'preselectnoanswer',
+                            'ariaLabelledBy' => 'preselectnoanswer-label',
+                            'checkedOption' => $oSurvey->preselectnoanswer,
+                            'selectOptions' => ($bShowInherited) ?
+                                array_merge(
+                                    $optionsOnOff,
+                                    array('I' => $oSurveyOptions->preselectnoanswer . " ᴵ")
+                                ) : $optionsOnOff,
+                            'htmlOptions' => array(
+                                'disabled' => $bDisableNoAnswerPreselection,
+                                'title' => $bDisableNoAnswerPreselection
+                                    ? gT('Enable “No answer” to configure this setting.')
+                                    : '',
+                            )
+                        )
+                    ); ?>
+                    <?= CHtml::hiddenField(
+                        'preselectnoanswer',
+                        $oSurvey->preselectnoanswer,
+                        array(
+                            'id' => 'preselectnoanswer-disabled-value',
+                            'disabled' => !$bDisableNoAnswerPreselection,
+                        )
+                    ) ?>
                 </div>
             </div>
 
             <!-- Show "There are X questions in this survey" -->
             <div class="mb-3">
-                <label class="form-label" for="showxquestions">
-                    <?php eT('... “There are X questions in this survey”'); ?></label>
+                <label id="showxquestions-label" class="form-label">
+                    <?php eT('Show “There are X questions in this survey”'); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'showxquestions',
+                            'ariaLabelledBy' => 'showxquestions-label',
                             'checkedOption' => $oSurvey->showxquestions,
-                            'ariaLabel' => gT('There are X questions in this survey'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showxquestions . " ᴵ")) : $optionsOnOff
                         )
@@ -99,7 +237,7 @@ if ($bShowInherited) {
 
             <!-- Show group name and/or group description -->
             <div class="mb-3">
-                <label class="form-label" for="showgroupinfo"><?php eT('... group name and description'); ?></label>
+                <label class="form-label" for="showgroupinfo"><?php eT('Group name and description'); ?></label>
                 <div class="col-12 col-lg-8">
                     <select id="showgroupinfo" name="showgroupinfo" class="form-select">
                         <?php if ($bShowInherited) { ?>
@@ -131,7 +269,7 @@ if ($bShowInherited) {
 
             <!-- Show question number and/or code -->
             <div class="mb-3">
-                <label class="form-label" for="showqnumcode"><?php eT('... question number and code'); ?></label>
+                <label class="form-label" for="showqnumcode"><?php eT('Question number and code'); ?></label>
                 <div class="col-12 col-lg-8">
                     <select class="form-select" id="showqnumcode" name="showqnumcode">
                         <?php if ($bShowInherited) { ?>
@@ -151,72 +289,54 @@ if ($bShowInherited) {
         <div class="col-12 col-lg-6">
             <!-- Show welcome screen -->
             <div class="mb-3">
-                <label class=" form-label" for='showwelcome'><?php eT("... welcome screen"); ?></label>
+                <label id="showwelcome-label" class="form-label"><?php eT("Show welcome screen"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'showwelcome',
+                            'ariaLabelledBy' => 'showwelcome-label',
                             'checkedOption' => $oSurvey->showwelcome,
-                            'ariaLabel' => gT('welcome screen'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showwelcome . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
-                </div>
-            </div>
-
-            <!-- Show on-screen keyboard -->
-            <div class="mb-3">
-                <label class=" form-label" for='nokeyboard'><?php eT("... on-screen keyboard"); ?></label>
-                <div class="">
-                    <?php $this->widget(
-                        'ext.ButtonGroupWidget.ButtonGroupWidget',
-                        array(
-                            'name' => 'nokeyboard',
-                            'checkedOption' => $oSurvey->nokeyboard,
-                            'ariaLabel' => gT('on-screen keyboard'),
-                            'selectOptions' => ($bShowInherited) ?
-                                array_merge($optionsOnOff, array('I' => $oSurveyOptions->nokeyboard . " ᴵ")) : $optionsOnOff
-                        )
-                    );
-                    ?>
+                                                                ?>
                 </div>
             </div>
 
             <!-- Show progress bar -->
             <div class="mb-3">
-                <label class=" form-label" for='showprogress'><?php eT("... progress bar"); ?></label>
+                <label id="showprogress-label" class="form-label"><?php eT("Show progress bar"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'showprogress',
+                            'ariaLabelledBy' => 'showprogress-label',
                             'checkedOption' => $oSurvey->showprogress,
-                            'ariaLabel' => gT('progress bar'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showprogress . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
 
             <!-- Show question index -->
             <div class="mb-3">
-                <label class="form-label" for='questionindex'><?php eT("... question index, allow jumping"); ?></label>
+                <label id="questionindex-label" class="form-label"><?php eT("Show question index and allow jumping"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'questionindex',
+                            'ariaLabelledBy' => 'questionindex-label',
                             'checkedOption' => $oSurvey->questionindex,
-                            'ariaLabel' => gT('question index, allow jumping'),
                             'selectOptions' => $optionsQuestionIndex
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
 
@@ -230,7 +350,7 @@ if ($bShowInherited) {
             <?php $navigationdelay = $oSurvey->navigationdelay; ?>
             <div class="row mb-3">
                 <div class="col-12 col-lg-8">
-                    <label class="form-label" for='navigationdelay'><?php eT("Navigation delay (seconds):"); ?></label>
+                    <label id="navigationdelay-label" class="form-label" for='navigationdelay'><?php eT("Navigation delay (seconds):"); ?></label>
                     <?php // NB: Do NOT use === when comparing navigationdelay to '-1', it won't work with Postgresql.?>
                     <input class="form-control inherit-edit <?= ($bShowInherited && $navigationdelay == '-1' ? 'd-none' : 'd-block') ?>"
                            type='text' size='10' id='navigationdelay' name='navigationdelay'
@@ -239,11 +359,12 @@ if ($bShowInherited) {
                            type='text' size='10' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay ?? ""); ?>" readonly/>
                 </div>
                 <div class="col-12 col-lg-4 <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
-                    <label class="form-label col-12" for='navigationdelay'><?php eT("Inherit"); ?></label>
+                    <label id="navigationdelaybutton-label" class="form-label col-12"><?php eT("Inherit"); ?></label>
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         [
                             'name' => 'navigationdelaybutton',
+                            'ariaLabelledBy' => 'navigationdelay-label navigationdelaybutton-label',
                             // NB: Do NOT use === when comparing navigationdelay with '-1', it won't work with Postgresql.
                             'checkedOption' => ($bShowInherited && $navigationdelay == '-1' ? 'Y' : 'N'),
                             'selectOptions' => $optionsOnOff,
@@ -256,19 +377,19 @@ if ($bShowInherited) {
             </div>
             <!-- Automatically load URL -->
             <div class="mb-3">
-                <label class=" form-label" for='autoredirect'><?php eT("Automatically load end URL when survey complete:"); ?></label>
+                <label id="autoredirect-label" class="form-label"><?php eT("Automatically load end URL when survey complete:"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'autoredirect',
+                            'ariaLabelledBy' => 'autoredirect-label',
                             'checkedOption' => $oSurvey->autoredirect,
-                            'ariaLabel' => gT('Automatically load end URL when survey complete'),
                             'selectOptions' => ($bShowInherited)
                                 ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->autoredirect . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
         </div>
@@ -276,35 +397,41 @@ if ($bShowInherited) {
         <div class="col-12 col-lg-6">
             <!-- Allow backward navigation: -->
             <div class="mb-3">
-                <label class=" form-label" for='allowprev'><?php eT("Allow backward navigation:"); ?></label>
+                <label class="form-label" id="allowprev-label"><?= CHtml::encode($bQuestionIndexEnabled ? $sShowPrevLabel : $sAllowPrevLabel) ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'allowprev',
+                            'ariaLabelledBy' => 'allowprev-label',
                             'checkedOption' => $oSurvey->allowprev,
-                            'ariaLabel' => gT('Allow backward navigation'),
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->allowprev . " ᴵ")) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->allowprev . " ᴵ")) : $optionsOnOff,
+                            'htmlOptions' => array(
+                                'aria-describedby' => 'allowprev-help',
+                            )
                         )
                     );
-                    ?>
+                                                            ?>
+                </div>
+                <div id="allowprev-help" class="form-text <?= $bQuestionIndexEnabled ? '' : 'd-none' ?>">
+                    <?php eT('Participants can always go back using the question index while it is enabled.'); ?>
                 </div>
             </div>
             <!-- Participants may print answers -->
             <div class="mb-3">
-                <label class=" form-label" for='printanswers'><?php eT("Participants may print answers:"); ?></label>
+                <label id="printanswers-label" class="form-label"><?php eT("Participants may print answers:"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'printanswers',
+                            'ariaLabelledBy' => 'printanswers-label',
                             'checkedOption' => $oSurvey->printanswers,
-                            'ariaLabel' => gT('Participants may print answers'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->printanswers . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                ?>
                 </div>
             </div>
         </div>
@@ -315,19 +442,19 @@ if ($bShowInherited) {
         <div class="col-12 col-lg-4 col-xl-3">
             <!-- Public statistics -->
             <div class="mb-3">
-                <label class=" form-label" for='publicstatistics'><?php eT("Public statistics:"); ?></label>
+                <label id="publicstatistics-label" class="form-label"><?php eT("Public statistics:"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'publicstatistics',
+                            'ariaLabelledBy' => 'publicstatistics-label',
                             'checkedOption' => $oSurvey->publicstatistics,
-                            'ariaLabel' => gT('Public statistics'),
                             'selectOptions' => ($bShowInherited) ?
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicstatistics . " ᴵ")) : $optionsOnOff
                         )
                     );
-                    ?>
+                                                                    ?>
                 </div>
             </div>
         </div>
@@ -336,19 +463,19 @@ if ($bShowInherited) {
             <!-- Show graphs in public statistics -->
             <div class="mb-3">
                 <div>
-                    <label class=" form-label" for='publicgraphs'><?php eT("Show graphs in public statistics:"); ?></label>
+                    <label id="publicgraphs-label" class="form-label"><?php eT("Show graphs in public statistics:"); ?></label>
                 </div>
                 <?php $this->widget(
                     'ext.ButtonGroupWidget.ButtonGroupWidget',
                     array(
                         'name' => 'publicgraphs',
+                        'ariaLabelledBy' => 'publicgraphs-label',
                         'checkedOption' => $oSurvey->publicgraphs,
-                        'ariaLabel' => gT('Show graphs in public statistics:'),
                         'selectOptions' => ($bShowInherited) ?
                             array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicgraphs . " ᴵ")) : $optionsOnOff
                     )
                 );
-                ?>
+                                                                    ?>
             </div>
         </div>
     </div>

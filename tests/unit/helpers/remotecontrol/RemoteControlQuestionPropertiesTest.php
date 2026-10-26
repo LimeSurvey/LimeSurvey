@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
 
 /**
  * Tests for the LimeSurvey remote API.
@@ -386,7 +386,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $englishSubquestionsResult = array_values($result['subquestions']);
 
-        $this->assertEquals($subquestions, $subquestionsResult, 'The returned subquestions are not correct.');
+        $this->assertEquals($englishSubquestions, $englishSubquestionsResult, 'The returned subquestions are not correct.');
 
         $spanishSubquestions = array(
             array(

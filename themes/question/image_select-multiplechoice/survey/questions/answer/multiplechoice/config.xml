@@ -30,6 +30,8 @@
     <compatibility>
         <version>4.0</version>
         <version>5.0</version>
+        <version>6.0</version>
+        <version>7.0</version>
     </compatibility>
 
     <!--
@@ -57,7 +59,7 @@
             </options>
             <default>no</default>
             <help>Show an horizontal scroll for the images instead of a vertical list. Needs JavaScript enabled.</help>
-            <caption>Horizontal scroll: </caption>
+            <caption>Horizontal scroll:</caption>
         </attribute>
 
 
@@ -86,7 +88,7 @@
             </options>
             <default>resize</default>
             <help>Crop images to fit into size. Needs JavaScript enabled.</help>
-            <caption>Crop or Resize</caption>
+            <caption>Crop or resize</caption>
         </attribute>
 
         <attribute>

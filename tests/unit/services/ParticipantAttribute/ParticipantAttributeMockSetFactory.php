@@ -10,10 +10,10 @@ use ParticipantAttributeValue;
 class ParticipantAttributeMockSetFactory
 {
     /**
-     * @param ParticipantAttributeMockSet|null $init
+     * @param ?ParticipantAttributeMockSet $init
      * @return ParticipantAttributeMockSet
      */
-    public function make(ParticipantAttributeMockSet $init = null)
+    public function make(?ParticipantAttributeMockSet $init = null)
     {
         $mockSet = new ParticipantAttributeMockSet();
 

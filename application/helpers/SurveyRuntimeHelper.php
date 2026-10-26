@@ -5,7 +5,7 @@ use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -25,7 +25,7 @@ class SurveyRuntimeHelper
      * Those private variables are just a step to make easier refactorisation
      * of this file, to have a global overview about what is set in this
      * helper, and to move easily piece of code to new methods:
-     * The methods get/set the private variables, and defore calling
+     * The methods get/set the private variables, and before calling
      * get_defined_vars, variables are created from those private variables.
      * It's just a first step. get_defined_vars should be removed, and most of
      * the private variables here should be moved to the correct object:
@@ -115,12 +115,12 @@ class SurveyRuntimeHelper
     private $sSurveyMode = null;
 
     /**
-     * Few options comming from thissurvey, App->getConfig, LEM. Could be
+     * Few options coming from thissurvey, App->getConfig, LEM. Could be
      * replaced by $oSurvey + relations ; the one coming from LEM and
      * getConfig should be public variable on the surveyModel, set via
      * public methods (active, allowsave, anonymized, assessments,
      * datestamp, deletenonvalues, ipaddr, radix, refurl, savetimings,
-     * surveyls_dateformat, startlanguage, target, tempdir,timeadjust)
+     * surveyls_dateformat, startlanguage, target, tempdir, displayTimeZone )
      * @var array|null
      */
     private $aSurveyOptions = null;
@@ -200,7 +200,7 @@ class SurveyRuntimeHelper
         extract($args);
 
         ///////////////////////////////////////////////////////////
-        // 1: We check if token and/or captcha form shouls be shown
+        // 1: We check if token and/or captcha form should be shown
         if ((!isset($_SESSION[$this->LEMsessid]['step'])) || (Yii::app()->request->getParam('filltoken') === 'true')) {
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
@@ -210,7 +210,7 @@ class SurveyRuntimeHelper
             if (EmCacheHelper::useCache()) {
                 $this->aSurveyInfo['emcache'] = true;
             }
-            if (intval($_SESSION[$this->LEMsessid]['filltoken'] ?? 0)) {
+            if (isset($_SESSION[$this->LEMsessid]['filltoken'])) {
                 $this->aSurveyInfo['filltoken'] = true;
             }
             $this->checkQuotas(); // check quotas (then the process will stop here)
@@ -276,12 +276,12 @@ class SurveyRuntimeHelper
 
                     // Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
                     if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid)) {
-                        // In question by question mode, we only procceed current question
+                        // In question by question mode, we only proceed current question
                         if ($this->sSurveyMode == 'question' && $ia[0] != $this->aStepInfo['qid']) {
                             continue;
                         }
 
-                        // In group by group mode, we only procceed current group
+                        // In group by group mode, we only proceed current group
                         if ($this->sSurveyMode == 'group' && $ia[5] != $this->aStepInfo['gid']) {
                             if (isset($_SESSION[$this->LEMsessid]['fieldmap-' . $this->iSurveyid . '-randMaster'])) {
                                 // This is a randomized survey, don't continue.
@@ -303,7 +303,7 @@ class SurveyRuntimeHelper
 
                         if ($plus_qanda) {
                             $plus_qanda[] = $ia[4];
-                            $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
+                            $plus_qanda[] = $ia[6]; // adds mandatory identifier for adding mandatory class to question wrapping div
 
                             // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
                             if (isset($ia[10])) {
@@ -475,8 +475,7 @@ class SurveyRuntimeHelper
                     $qid             = $qa[4];
                     $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
                     $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
-                    $lastgrouparray  = explode("X", (string) $qa[7]);
-                    $lastgroup       = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
+                    $lastgroup = 'G' . $qa[6]; // id of the last group, derived from question id
                     $lastanswer      = $qa[7];
 
                     if ($qinfo['hidden'] && $qinfo['info']['type'] != '*') {
@@ -552,7 +551,7 @@ class SurveyRuntimeHelper
         }
 
         /**
-         *  ExpressionScript Engine Scrips and inputs
+         *  ExpressionScript Engine Scripts and inputs
          */
         $step = $_SESSION[$this->LEMsessid]['step'] ?? '';
         $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = "<!-- emScriptsAndHiddenInputs -->";
@@ -661,7 +660,7 @@ class SurveyRuntimeHelper
     {
         $this->initFirstStep(); // If it's the first time user load this survey, will init session and LEM
         $this->initTotalAndMaxSteps();
-        $this->checkIfUseBrowserNav(); // Check if user used browser navigation, or relaoded page
+        $this->checkIfUseBrowserNav(); // Check if user used browser navigation, or reloaded page
         if ($this->sMove != 'clearcancel' && $this->sMove != 'confirmquota') {
             $this->checkPrevStep(); // Check if prev step is set, else set it
             $this->setMoveResult();
@@ -751,7 +750,7 @@ class SurveyRuntimeHelper
     }
 
     /**
-     * Retreives dew options comming from thissurvey, App->getConfig, LEM.
+     * Retrieves few options coming from thissurvey, App->getConfig, LEM.
      * TODO: move to survey model
      *
      */
@@ -760,7 +759,6 @@ class SurveyRuntimeHelper
         global $clienttoken;
 
         $radix         = $this->getRadix();
-        $timeadjust    = Yii::app()->getConfig("timeadjust");
 
         $this->aSurveyOptions = array(
             'active'                      => ($this->aSurveyInfo['active'] == 'Y'),
@@ -774,11 +772,14 @@ class SurveyRuntimeHelper
             'radix'                       => $radix,
             'refurl'                      => (($this->aSurveyInfo['refurl'] == "Y" && isset($_SESSION[$this->LEMsessid]['refurl'])) ? $_SESSION[$this->LEMsessid]['refurl'] : null),
             'savetimings'                 => ($this->aSurveyInfo['savetimings'] == "Y"),
+            'savequotaexit'               => (($this->aSurveyInfo['savequotaexit'] ?? 'N') == "Y"),
             'surveyls_dateformat'         => $this->aSurveyInfo['surveyls_dateformat'] ?? 1,
             'startlanguage'               => (App()->language ?? $this->aSurveyInfo['language']),
             'target'                      => Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $this->aSurveyInfo['sid'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR,
             'tempdir'                     => Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR,
-            'timeadjust'                  => $timeadjust,
+            'displayTimezone'             => Yii::app()->getConfig('displayTimezone'),
+            // for backward compatibility convert timezone string to +/- hours
+            'timeadjust'                  => convertTimezoneDiffToHours(),
             'token'                       => $clienttoken,
         );
     }
@@ -865,7 +866,8 @@ class SurveyRuntimeHelper
     private function checkIfUseBrowserNav()
     {
         // Possibility to suppress the warning when Ajax is used to get survey content.
-        if (isset($_GET['ignorebrowsernavigationwarning'])
+        if (
+            isset($_GET['ignorebrowsernavigationwarning'])
             || isset($_SESSION[$this->LEMsessid]['ignorebrowsernavigationwarning'])
         ) {
             $_SESSION[$this->LEMsessid]['ignorebrowsernavigationwarning'] = 1;
@@ -888,23 +890,29 @@ class SurveyRuntimeHelper
                 $this->LEMskipReprocessing = true;
                 $this->sMove                = "movenext"; // so will re-display the survey
                 $this->bInvalidLastPage     = true;
-                $this->backpopup           = gT("Please use the survey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."); // TODO: twig
+                $this->backpopup           = gT("Please use the survey navigation buttons or index. It appears you attempted to use the browser back button to re-submit a page."); // TODO: twig
             }
         }
     }
 
     /**
-     * Check quotas
+     * Handle the moves sent from the quota page: confirm (end survey) or return to the survey.
+     * When a quota is confirmed and still matched, the quota page is rendered and the application ends.
+     *
+     * @return void
      */
     private function checkQuotas()
     {
-        /* quota submitted */
+        /* quota confirmed: close the survey (checkCompletedQuota renders the page and ends the application) */
         if ($this->sMove == 'confirmquota') {
             Quotas::checkCompletedQuota($this->iSurveyid);
+            /* quota not matched: show the current page again (initMove skips the move for confirmquota) */
+            $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false);
+            $this->setStep();
         }
-        /* quota submitted */
+        /* return to the survey from the quota page: without processing POST, the re-posted quota fields would trigger the quota again */
         if ($this->sMove == 'returnfromquota') {
-            LimeExpressionManager::JumpTo($this->param['thisstep']);
+            LimeExpressionManager::JumpTo($this->param['thisstep'], false, false);
         }
     }
 
@@ -1075,7 +1083,7 @@ class SurveyRuntimeHelper
             if ($this->aMoveResult['finished'] != true) {
                 $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1; // step is index base 1
                 $_SESSION[$this->LEMsessid]['notRelevantSteps'] = $this->aMoveResult['notRelevantSteps'] ?? 0;
-                $_SESSION[$this->LEMsessid]['hiddenSteps'] = $this->aMoveResult['hiddenSteps']?? 0;
+                $_SESSION[$this->LEMsessid]['hiddenSteps'] = $this->aMoveResult['hiddenSteps'] ?? 0;
                 $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
             }
         }
@@ -1096,10 +1104,16 @@ class SurveyRuntimeHelper
         }
     }
 
+    /**
+     * Redisplay the welcome page with an error if it was submitted without accepting the survey data policy
+     *
+     * @return void
+     */
     private function checkForDataSecurityAccepted()
     {
         $this->aSurveyInfo['datasecuritynotaccepted'] = false;
-        if ($this->param['thisstep'] === '0' && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice > 0) {
+        /* thisstep is sanitized as integer by returnGlobal(), it is null if not submitted */
+        if ($this->param['thisstep'] === 0 && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice > 0) {
             $data_security_accepted = App()->request->getPost('datasecurity_accepted', false);
             $move_step = App()->request->getPost('move', false);
 
@@ -1125,7 +1139,7 @@ class SurveyRuntimeHelper
             if ($this->aSurveyInfo === null) {
                 $this->aSurveyInfo = getSurveyInfo($this->iSurveyid, App()->getLanguage());
             }
-            $this->LEMsessid = 'survey_' . $this->iSurveyid;
+            $this->LEMsessid = 'responses_' . $this->iSurveyid;
             if ($this->aSurveyInfo['active'] == "Y" && isset($_SESSION[$this->LEMsessid])) {
                 $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false); // by jumping to current step, saves data so far
             }
@@ -1396,7 +1410,7 @@ class SurveyRuntimeHelper
     /**
      * Check in a string if it uses expressions to replace them
      * @param string|null $sString the string to evaluate
-     * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
+     * @param integer $iRecursionLevel - the number of times to recursively substitute values in this string
      * @param boolean $static - return static string
      * @return string
      * @todo : find/get current qid for processing string
@@ -1432,7 +1446,7 @@ class SurveyRuntimeHelper
         $this->LEMskipReprocessing    = $LEMskipReprocessing ?? null;
         $this->thissurvey             = $thissurvey ?? null;
         $this->iSurveyid              = $surveyid ?? null;
-        $this->LEMsessid              = $this->iSurveyid ? 'survey_' . $this->iSurveyid : null;
+        $this->LEMsessid              = $this->iSurveyid ? 'responses_' . $this->iSurveyid : null;
         $this->aSurveyOptions         = $surveyOptions ?? null;
         $this->aMoveResult            = $moveResult ?? null;
         $this->sMove                  = $move ?? null;
@@ -1514,7 +1528,7 @@ class SurveyRuntimeHelper
     private function manageClearAll()
     {
         global $token;
-        $sessionSurvey = Yii::app()->session["survey_{$this->iSurveyid}"];
+        $sessionSurvey = Yii::app()->session["responses_{$this->iSurveyid}"];
         if (App()->request->getPost('confirm-clearall') != 'confirm') {
             /* Save current response, and come back to survey if clearll is not confirmed */
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true, false);
@@ -1552,9 +1566,9 @@ class SurveyRuntimeHelper
             }
 
             if (!empty(App()->getLanguage())) {
-                $restartparam['lang'] = sanitize_languagecode(App()->getLanguage());
+                $restartparam['lang'] = \LSYii_Validators::languageCodeFilter(App()->getLanguage());
             } else {
-                $s_lang = Yii::app()->session['survey_' . $this->iSurveyid]['s_lang'] ?? 'en';
+                $s_lang = Yii::app()->session['responses_' . $this->iSurveyid]['s_lang'] ?? 'en';
                 $restartparam['lang'] = $s_lang;
             }
 
@@ -1598,7 +1612,7 @@ class SurveyRuntimeHelper
 
         $scenarios = array(
             "tokenRequired"   => ($this->aSurveyInfo['active'] === 'Y') && (($accessMode === SurveyAccessModeService::$ACCESS_TYPE_CLOSED) || (Yii::app()->request->getParam('filltoken') === 'true')),
-            "captchaRequired" => (Survey::model()->findByPk($this->iSurveyid)->isCaptchaEnabled('surveyaccessscreen') && !isset($_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen']))
+            "captchaRequired" => (Survey::model()->findByPk($this->iSurveyid)->isCaptchaEnabled('surveyaccessscreen') && !isset($_SESSION['responses_' . $this->iSurveyid]['captcha_surveyaccessscreen']))
         );
 
         /**
@@ -1626,7 +1640,7 @@ class SurveyRuntimeHelper
         if ($scenarios['captchaRequired']) {
             //Check if the Captcha was correct
             $captcha                        = Yii::app()->getController()->createAction('captcha');
-            $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity',''), false);
+            $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity', ''), false);
         } else {
             $subscenarios['captchaCorrect'] = true;
         }
@@ -1679,7 +1693,7 @@ class SurveyRuntimeHelper
                 }
                 $renderCaptcha = 'main';
             } else {
-                $_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen'] = true;
+                $_SESSION['responses_' . $this->iSurveyid]['captcha_surveyaccessscreen'] = true;
                 $renderCaptcha = 'correct';
             }
         }
@@ -1757,7 +1771,7 @@ class SurveyRuntimeHelper
         extract($args);
 
         $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid, App()->getLanguage());
-        if (isset($args['popuppreview']) && $args['popuppreview']) {
+        if (($args['popuppreview'] ?? false) === true) {
             $this->aSurveyInfo['showxquestions'] = 'N';
             $this->aSurveyInfo['shownoanswer'] = 'N';
             $this->aSurveyInfo['showwelcome'] = 'N';
@@ -1774,6 +1788,7 @@ class SurveyRuntimeHelper
         $this->setSurveyMode();
         $this->setSurveyOptions();
 
+        $this->aSurveyOptions['previewmode'] = $args['previewmode'];
         $this->previewgrp      = (isset($this->param['action']) && $this->param['action'] == 'previewgroup') ? true : false;
         $this->previewquestion = (isset($this->param['action']) && $this->param['action'] == 'previewquestion') ? true : false;
 
@@ -1810,7 +1825,7 @@ class SurveyRuntimeHelper
 
             $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1; // step is index base 1?
             $_SESSION[$this->LEMsessid]['notRelevantSteps'] = $this->aMoveResult['notRelevantSteps'] ?? 0;
-            $_SESSION[$this->LEMsessid]['hiddenSteps'] = $this->aMoveResult['hiddenSteps']?? 0;
+            $_SESSION[$this->LEMsessid]['hiddenSteps'] = $this->aMoveResult['hiddenSteps'] ?? 0;
 
             $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
 
@@ -1829,6 +1844,14 @@ class SurveyRuntimeHelper
     }
 
 
+    /**
+     * Sets the display data for the current survey group or completion step.
+     *
+     * For non-preview group and question modes, an unavailable navigation
+     * step renders a restart error and ends the request.
+     *
+     * @return void
+     */
     private function setGroup()
     {
         if (!$this->previewgrp && !$this->previewquestion) {
@@ -1839,6 +1862,13 @@ class SurveyRuntimeHelper
             } elseif ($this->sSurveyMode != 'survey') {
                 if ($this->sSurveyMode != 'group') {
                     $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
+                }
+                if (empty($this->aStepInfo)) {
+                    // The ExpressionManager state no longer matches the session (eg: survey structure was
+                    // changed in the admin interface while this preview/test session was open): bug #17107
+                    $sMessage = gT('We are sorry but your survey structure has expired/changed - please restart.');
+                    renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
+                    Yii::app()->end();
                 }
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];

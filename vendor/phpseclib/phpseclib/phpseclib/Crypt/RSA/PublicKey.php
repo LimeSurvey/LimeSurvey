@@ -17,7 +17,6 @@ use phpseclib3\Crypt\Hash;
 use phpseclib3\Crypt\Random;
 use phpseclib3\Crypt\RSA;
 use phpseclib3\Crypt\RSA\Formats\Keys\PSS;
-use phpseclib3\Exception\BadConfigurationException;
 use phpseclib3\Exception\UnsupportedAlgorithmException;
 use phpseclib3\Exception\UnsupportedFormatException;
 use phpseclib3\File\ASN1;
@@ -229,7 +228,11 @@ final class PublicKey extends RSA implements Common\PublicKey
         // be output.
 
         $emLen = ($emBits + 7) >> 3; // ie. ceil($emBits / 8);
-        $sLen = $this->sLen !== null ? $this->sLen : $this->hLen;
+        if (static::$autoSaltLength) {
+            $sLen = 0;
+        } else {
+            $sLen = $this->sLen !== null ? $this->sLen : $this->hLen;
+        }
 
         $mHash = $this->hash->hash($m);
         if ($emLen < $this->hLen + $sLen + 2) {
@@ -249,11 +252,17 @@ final class PublicKey extends RSA implements Common\PublicKey
         $dbMask = $this->mgf1($h, $emLen - $this->hLen - 1);
         $db = $maskedDB ^ $dbMask;
         $db[0] = ~chr(256 - (1 << ($emBits & 7))) & $db[0];
-        $temp = $emLen - $this->hLen - $sLen - 2;
-        if (substr($db, 0, $temp) != str_repeat(chr(0), $temp) || ord($db[$temp]) != 1) {
+
+        // PS is a run of zero bytes terminated by a single 0x01
+        $psLen = strspn($db, "\0");
+        if ($psLen == strlen($db) || $db[$psLen] != chr(0x01)) {
             return false;
         }
-        $salt = substr($db, $temp + 1); // should be $sLen long
+        if (!static::$autoSaltLength && $psLen != $emLen - $this->hLen - $sLen - 2) {
+            return false;
+        }
+
+        $salt = substr($db, $psLen + 1); // should be $sLen long
         $m2 = "\0\0\0\0\0\0\0\0" . $mHash . $salt;
         $h2 = $this->hash->hash($m2);
         return hash_equals($h, $h2);
@@ -302,44 +311,6 @@ final class PublicKey extends RSA implements Common\PublicKey
      */
     public function verify($message, $signature)
     {
-        /*
-        https://datatracker.ietf.org/doc/html/rfc4055#page-6 says the following:
-
-           There are two possible encodings for the AlgorithmIdentifier
-           parameters field associated with these object identifiers.  The two
-           alternatives arise from the loss of the OPTIONAL associated with the
-           algorithm identifier parameters when the 1988 syntax for
-           AlgorithmIdentifier was translated into the 1997 syntax.  Later the
-           OPTIONAL was recovered via a defect report, but by then many people
-           thought that algorithm parameters were mandatory.  Because of this
-           history some implementations encode parameters as a NULL element
-           while others omit them entirely.  The correct encoding is to omit the
-           parameters field; however, when RSASSA-PSS and RSAES-OAEP were
-           defined, it was done using the NULL parameters rather than absent
-           parameters.
-
-           All implementations MUST accept both NULL and absent parameters as
-           legal and equivalent encodings.
-
-        OpenSSL does NOT accept both - it REQUIRES NULL be present. phpseclib, however,
-        DOES accept both. at first, it didn't. at first, not knowing why some small number
-        of PKCS1 signatures ommitted NULL, i added the SIGNATURE_RELAXED_PKCS1 mode on
-        2015-08-26. https://phpseclib.com/docs/rsa#rsasignature_relaxed_pkcs1 talks more
-        about that mode. later, on 2021-04-05, there was CVE-2021-30130. consequently,
-        the SIGNATURE_PKCS1 mode was updated to accept either NULL or non-NULL.
-
-        because phpseclib accepts PKCS1 signatures that OpenSSL doesn't, OpenSSL isn't
-        used for PKCS1. if the OpenSSL extension is installed then it'll be used to perform
-        unpadded RSA (ie. modular exponentation), however, the actual PKCS1 construction
-        takes place in PHP code vs OpenSSL.
-
-        see https://security.stackexchange.com/questions/110330/encoding-of-optional-null-in-der
-        for an additional reference
-        */
-        if ($this->signaturePadding === self::SIGNATURE_PKCS1 && isset(self::$forcedEngine) && self::$forcedEngine !== 'PHP') {
-            throw new BadConfigurationException('Engine OpenSSL is forced but unavailable for RSA PKCS1 signature verification');
-        }
-
         $result = $this->handleOpenSSL('openssl_verify', $message, $signature);
         if ($result !== null) {
             return $result;

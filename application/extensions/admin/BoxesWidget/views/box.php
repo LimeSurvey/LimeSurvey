@@ -38,6 +38,7 @@
         <?php if ($item['type'] == BoxesWidget::TYPE_PRODUCT) : ?>
             <div class="box-widget-card align-middle d-inline-block"
                  data-url="<?php echo $item['link'] ?>"
+                 role="link"
                  tabindex="0">
                 <div class="box-widget-card-body">
                     <div class="box-widget-card-header">
@@ -64,7 +65,9 @@
                         <div class="box-widget-card-footer-items">
                             <div class="box-widget-card-footer-response">
                                 <?php
-                                if ($item['survey']->countFullAnswers == 0) {
+                                if (!$item['survey']->isActive) {
+                                    $responsesInfo = '';
+                                } elseif ($item['survey']->countFullAnswers == 0) {
                                     $responsesInfo = gT('No responses');
                                 } else {
                                     $responsesInfo = sprintf(
@@ -80,8 +83,8 @@
                                     ($item['survey']->active === "N")
                                     && ($item['survey']->groupsCount > 0)
                                     && ($item['survey']->getQuestionsCount() > 0)
-    ) :
-                                    ?>
+) :
+    ?>
                                     <a href="<?= App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $item['survey']->sid) ?? '#' ?>"
                                        class="active"
                                        data-bs-toggle="tooltip"

@@ -14,7 +14,7 @@
 {% set max_buttons_row = (question_template_attribute.max_buttons_row == 'default' or question_template_attribute.max_buttons_row is empty) ? 'col-md-2' : question_template_attribute.max_buttons_row %}
 
 <!-- answer_row -->
-<div id="javatbd{{ myfname }}" class="bootstrap-buttons-div col-12 {{ max_buttons_row }}">
+<li id="javatbd{{ myfname }}" class="bootstrap-buttons-div col-12 {{ max_buttons_row }}">
     <div class="form-check col-12 {% if checkedState!='' %} active {% endif %}">
         <input
             class="btn-check visually-hidden button-item"
@@ -27,5 +27,5 @@
         <label class="btn btn-primary w-100 {{ button_size_class }}" for="answer{{ name }}{{ code }}"> {{ processString(answer) }}
         </label>
     </div>
-</div>
+</li>
 <!-- end of answer_row -->

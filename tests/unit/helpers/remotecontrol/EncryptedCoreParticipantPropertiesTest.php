@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
 
 class EncryptedCoreParticipantPropertiesTest extends BaseTest
 {

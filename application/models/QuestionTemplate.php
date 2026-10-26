@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -14,6 +14,14 @@
   */
 
 
+/**
+ * Class QuestionTemplate
+ *
+ * Handles question-level template overrides. Each question can have its own
+ * template that replaces default views and registers custom CSS/JS assets.
+ *
+ * @see QuestionTheme
+ */
 class QuestionTemplate extends CFormModel
 {
     // Main variables
@@ -95,9 +103,9 @@ class QuestionTemplate extends CFormModel
 
 
     /**
-     * Check if the question template offer a specific replacement for that view file.
-     * @param string $sView
-     * @return mixed
+     * Check if the question template offers a specific replacement for the given view file.
+     * @param string $sView The view name to check
+     * @return bool True if the template provides a replacement for the view
      */
     public function checkIfTemplateHasView($sView)
     {
@@ -197,8 +205,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     * Return true if the core css should be loaded.
-     * @return null|boolean
+     * Return true if the core JavaScript should be loaded.
+     * @return bool|null
      */
     public function templateLoadsCoreJs()
     {
@@ -216,8 +224,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     * Return true if the core css should be loaded.
-     * @return null|boolean
+     * Return true if the core CSS should be loaded.
+     * @return bool|null
      */
     public function templateLoadsCoreCss()
     {
@@ -236,7 +244,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Return true if the core packages should be loaded.
-     * @return null|boolean
+     * @return bool|null
      */
     public function templateLoadsCorePackage()
     {
@@ -255,7 +263,9 @@ class QuestionTemplate extends CFormModel
 
 
     /**
-     * In the future, could retrieve data from DB
+     * Load and parse the question template XML configuration.
+     * Sets template paths, engine flags (JS/CSS/package loading), and custom attributes.
+     * @return void
      */
     public function setConfig()
     {
@@ -304,7 +314,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     *
+     * Register custom CSS and JavaScript assets defined in the question template config.
+     * @return void
      */
     public function registerAssets()
     {
@@ -342,6 +353,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
+     * Returns the URL of the assets folder of the question template
+     *
      * @return string
      */
     public function getTemplateUrl()
@@ -359,14 +372,16 @@ class QuestionTemplate extends CFormModel
             if (is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName/")) {
                 $this->sTemplateUrl = "$sBaseUrl/$sCoreQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             } elseif (is_dir("$sUserQTemplateRootDir/$sTemplateFolderName/")) {
-                $this->sTemplateUrl = "$sBaseUrl/$sUserQTemplateRootDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
+                $sUserQTemplateDir = QuestionTheme::getPathRelativeToRootDir($sUserQTemplateRootDir);
+                $this->sTemplateUrl = "$sBaseUrl/$sUserQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             }
         }
         return $this->sTemplateUrl;
     }
 
     /**
-     * @return array
+     * Return the custom attributes defined by the question template.
+     * @return array|null Array of attribute name => value pairs, or null if no custom attributes
      */
     public function getCustomAttributes()
     {
@@ -378,15 +393,13 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Called from admin, to generate the template list for a given question type
-     * @param string $type
-     * @return array
-     * @todo Move to QuestionTheme?
-     * @todo This is not the same as QuestionTheme::findQuestionMetaDataForAllTypes() which is the database layer
-     * @todo this should check the filestructure instead of the database as this is the filestructure layer
+     * Reads the installed question themes from the database on purpose: Themes that are
+     * only present in the file system are not installed and must not be selectable.
+     * @param string $type The question type
+     * @return array<string, array{title: string, preview: string}> Keyed by theme name ('core' for the base theme)
      */
     public static function getQuestionTemplateList($type)
     {
-        // todo: incorrect, this should check the filestructure instead of the database as this is the filestructure layer
         /** @var QuestionTheme[] */
         $questionThemes = QuestionTheme::model()->findAllByAttributes(
             [],

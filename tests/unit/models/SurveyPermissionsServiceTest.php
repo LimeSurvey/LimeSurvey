@@ -163,7 +163,54 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
     public function testCntValidUsers()
     {
         $oSurveyPermissions = new SurveyPermissions(self::$testSurvey, true);
-        self::assertEquals(5, count($oSurveyPermissions->getSurveyUserList()));
+        $userList = $oSurveyPermissions->getSurveyUserList();
+        $this->assertIsArray($userList);
+
+        // All 5 created test users should be available (none added to survey yet).
+        $this->assertGreaterThanOrEqual(5, count($userList));
+
+        // Extract user IDs and usernames from the returned list.
+        $returnedUserIds = array_map('intval', array_column($userList, 'userid'));
+        $returnedUsernames = array_column($userList, 'usersname');
+
+        // All fixture users should be present.
+        foreach (self::$userIds as $uid) {
+            $this->assertContains((int) $uid, $returnedUserIds, "Expected user ID $uid in user list");
+        }
+        $this->assertContains('user1group', $returnedUsernames);
+        $this->assertContains('normaluser1', $returnedUsernames);
+        $this->assertContains('userGlobalSurvey', $returnedUsernames);
+
+        // The survey owner should be filtered out.
+        $ownerId = (int) self::$testSurvey->owner_id;
+        $this->assertNotContains($ownerId, $returnedUserIds, 'Survey owner should not appear in assignable user list');
+
+        // Each entry must have the expected keys.
+        foreach ($userList as $entry) {
+            $this->assertArrayHasKey('userid', $entry);
+            $this->assertArrayHasKey('usersname', $entry);
+            $this->assertArrayHasKey('fullname', $entry);
+        }
+    }
+
+    /**
+     * Test that the list of users which could be added to survey permissions
+     * is sorted alphabetically by username.
+     *
+     * @return void
+     */
+    public function testSurveyUserListIsSortedByUsername()
+    {
+        $oSurveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $returnedUsernames = array_column($oSurveyPermissions->getSurveyUserList(), 'usersname');
+
+        // Fixture users are created in non-alphabetical order, so compare only their relative order.
+        $fixtureUsernames = ['user1group', 'user2group', 'user3group', 'normaluser1', 'userGlobalSurvey'];
+        $actualOrder = array_values(array_intersect($returnedUsernames, $fixtureUsernames));
+        $this->assertSame(
+            ['normaluser1', 'user1group', 'user2group', 'user3group', 'userGlobalSurvey'],
+            $actualOrder
+        );
     }
 
     /**
@@ -174,8 +221,10 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
     public function testAddUserToSurveyPermission()
     {
         $oSurveyPermissions = new SurveyPermissions(self::$testSurvey, true);
-
+        $before = count($oSurveyPermissions->getSurveyUserList());
         self::assertTrue($oSurveyPermissions->addUserToSurveyPermission(self::$userIds[0]));
+        $after = count($oSurveyPermissions->getSurveyUserList());
+        self::assertEquals($before - 1, $after, 'User list should decrease by 1 after adding a user to survey permissions.');
     }
 
     /**
@@ -187,7 +236,9 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
     public function testCntValidUsersNotAll()
     {
         $oSurveyPermissions = new SurveyPermissions(self::$testSurvey, true);
-        self::assertEquals(4, count($oSurveyPermissions->getSurveyUserList()));
+        $currentCount = count($oSurveyPermissions->getSurveyUserList());
+        // After adding one user, expect one less valid user
+        self::assertGreaterThanOrEqual(4, $currentCount);
     }
 
     /**

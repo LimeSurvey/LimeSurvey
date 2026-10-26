@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -28,7 +28,7 @@
 * format.
 *
 * Data formatting operations that may be specific to the data export routines
-* are relegated to the Writer class hierarcy and work with the Survey object
+* are relegated to the Writer class hierarchy and work with the Survey object
 * and FormattingOptions objects to provide proper style/content when exporting
 * survey information.
 *
@@ -102,6 +102,7 @@ class ExportSurveyResultsService
 
         $surveyDao = new SurveyDao();
         $survey = $surveyDao->loadSurveyById($iSurveyId, $sLanguageCode, $oOptions);
+        $oOptions->selectedColumns = $this->expandRankingColumns($survey, $oOptions->selectedColumns);
         $writer->init($survey, $sLanguageCode, $oOptions);
 
         $countResponsesCommand = $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
@@ -130,6 +131,38 @@ class ExportSurveyResultsService
         } else {
             return $result;
         }
+    }
+
+    /**
+     * Replaces a ranking question's base column ("Q{qid}", the JSON array of
+     * ranked subquestion codes and the only ranking field the export column
+     * picker offers) with the question's per-rank fieldmap entries
+     * ("Q{qid}_S{sqid}", one per rank in rank order), so the output has one
+     * column per rank like in LimeSurvey 6.
+     *
+     * A rank entry that is also selected on its own (e.g. the remote-control
+     * export_responses() defaults to every fieldmap key) is only output once.
+     *
+     * @param SurveyObj $survey
+     * @param string[] $selectedColumns
+     * @return string[]
+     */
+    private function expandRankingColumns(SurveyObj $survey, array $selectedColumns)
+    {
+        $expanded = [];
+        foreach ($selectedColumns as $column) {
+            $field = $survey->fieldMap[$column] ?? null;
+            if ($field === null || $field['type'] !== Question::QT_R_RANKING || $field['suffix'] !== '') {
+                $expanded[] = $column;
+                continue;
+            }
+            foreach ($survey->fieldMap as $rankFieldName => $rankField) {
+                if ($rankField['type'] === Question::QT_R_RANKING && $rankField['qid'] == $field['qid'] && $rankField['suffix'] !== '') {
+                    $expanded[] = $rankFieldName;
+                }
+            }
+        }
+        return array_values(array_unique($expanded));
     }
 
     /**

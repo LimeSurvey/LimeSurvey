@@ -190,7 +190,7 @@ class Zend_Pdf_Resource_Image_Png extends Zend_Pdf_Resource_Image
                     fseek($imageFile, 4, SEEK_CUR); //4 Byte Ending Sequence
                     break;
 
-                case 'IEND';
+                case 'IEND':
                     break 2; //End the loop too
 
                 default:

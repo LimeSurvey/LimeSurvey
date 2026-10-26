@@ -32,8 +32,14 @@
         border-top       : 2px solid $active-green;
         border-bottom    : 2px solid $white;
     }
-    .nav-link.active:focus {
-        box-shadow: none;
+
+    .nav-link.active {
+        &:focus {
+            box-shadow : none;
+        }
+        &:focus-visible {
+            @include inset-border(2px, $active-green);
+        }
     }
 }
 .tab-content {

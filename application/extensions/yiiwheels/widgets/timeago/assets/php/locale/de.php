@@ -1,10 +1,11 @@
 <?php
+
 // German
 return array (
     'prefixAgo' => "vor",
     'prefixFromNow' => "in",
-    'suffixAgo' => NULL,
-    'suffixFromNow' => NULL,
+    'suffixAgo' => null,
+    'suffixFromNow' => null,
     'seconds' => "wenigen Sekunden",
     'minute' => "etwa einer Minute",
     'minutes' => "%d Minuten",

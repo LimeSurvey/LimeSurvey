@@ -27,6 +27,8 @@
     <compatibility>
         <version>4.0</version>
         <version>5.0</version>
+        <version>6.0</version>
+        <version>7.0</version>
     </compatibility>
 
     <!--
@@ -594,7 +596,7 @@
             </options>
             <help>Select the type of chart to be displayed</help>
             <caption>Chart type</caption>
-            <default>0</default>
+            <default></default>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

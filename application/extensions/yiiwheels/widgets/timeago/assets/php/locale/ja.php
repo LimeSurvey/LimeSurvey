@@ -1,7 +1,8 @@
 <?php
+
 // Japanese
 return array (
-    'prefixAgo' => NULL,
+    'prefixAgo' => null,
     'prefixFromNow' =>  "今から",
     'suffixAgo' => "前",
     'suffixFromNow' => "後",

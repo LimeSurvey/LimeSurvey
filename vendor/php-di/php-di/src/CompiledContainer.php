@@ -30,67 +30,54 @@ abstract class CompiledContainer extends Container
      */
     protected const METHOD_MAPPING = [];
 
-    /**
-     * @var InvokerInterface
-     */
-    private $factoryInvoker;
+    private ?InvokerInterface $factoryInvoker = null;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get($name)
+    public function get(string $id) : mixed
     {
         // Try to find the entry in the singleton map
-        if (isset($this->resolvedEntries[$name]) || array_key_exists($name, $this->resolvedEntries)) {
-            return $this->resolvedEntries[$name];
+        if (isset($this->resolvedEntries[$id]) || array_key_exists($id, $this->resolvedEntries)) {
+            return $this->resolvedEntries[$id];
         }
 
-        $method = static::METHOD_MAPPING[$name] ?? null;
+        /** @psalm-suppress UndefinedConstant */
+        $method = static::METHOD_MAPPING[$id] ?? null;
 
         // If it's a compiled entry, then there is a method in this class
         if ($method !== null) {
             // Check if we are already getting this entry -> circular dependency
-            if (isset($this->entriesBeingResolved[$name])) {
-                throw new DependencyException("Circular dependency detected while trying to resolve entry '$name'");
+            if (isset($this->entriesBeingResolved[$id])) {
+                $idList = implode(' -> ', [...array_keys($this->entriesBeingResolved), $id]);
+                throw new DependencyException("Circular dependency detected while trying to resolve entry '$id': Dependencies: " . $idList);
             }
-            $this->entriesBeingResolved[$name] = true;
+            $this->entriesBeingResolved[$id] = true;
 
             try {
                 $value = $this->$method();
             } finally {
-                unset($this->entriesBeingResolved[$name]);
+                unset($this->entriesBeingResolved[$id]);
             }
 
             // Store the entry to always return it without recomputing it
-            $this->resolvedEntries[$name] = $value;
+            $this->resolvedEntries[$id] = $value;
 
             return $value;
         }
 
-        return parent::get($name);
+        return parent::get($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function has($name)
+    public function has(string $id) : bool
     {
-        if (! is_string($name)) {
-            throw new \InvalidArgumentException(sprintf(
-                'The name parameter must be of type string, %s given',
-                is_object($name) ? get_class($name) : gettype($name)
-            ));
-        }
-
         // The parent method is overridden to check in our array, it avoids resolving definitions
-        if (isset(static::METHOD_MAPPING[$name])) {
+        /** @psalm-suppress UndefinedConstant */
+        if (isset(static::METHOD_MAPPING[$id])) {
             return true;
         }
 
-        return parent::has($name);
+        return parent::has($id);
     }
 
-    protected function setDefinition(string $name, Definition $definition)
+    protected function setDefinition(string $name, Definition $definition) : void
     {
         // It needs to be forbidden because that would mean get() must go through the definitions
         // every time, which kinds of defeats the performance gains of the compiled container
@@ -100,7 +87,7 @@ abstract class CompiledContainer extends Container
     /**
      * Invoke the given callable.
      */
-    protected function resolveFactory($callable, $entryName, array $extraParameters = [])
+    protected function resolveFactory($callable, $entryName, array $extraParameters = []) : mixed
     {
         // Initialize the factory resolver
         if (! $this->factoryInvoker) {

@@ -2,5 +2,4 @@
 
 class DataSetMultipleChoice extends QuestionBaseDataSet
 {
-
 }

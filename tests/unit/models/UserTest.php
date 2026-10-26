@@ -14,6 +14,8 @@ class UserTest extends BaseModelTestCase
         //Create user.
         $newPassword = createPassword();
         $userId = \User::insertUser('test_user', $newPassword, 'John Doe', 1, 'jd@mail.com');
+        $this->assertFalse($userId instanceof \User, 'Failed to create user: ' . ($userId instanceof \User ? json_encode($userId->getErrors()) : ''));
+        $userId = (int) $userId;
 
         //Assign superadmin permissions.
         \Permission::model()->setGlobalPermission($userId, 'superadmin', array('read_p'));
@@ -73,6 +75,8 @@ class UserTest extends BaseModelTestCase
         //Create user.
         $newPassword = createPassword();
         $userId = \User::insertUser('test_user', $newPassword, 'John Doe', 1, 'jd@mail.com');
+        $this->assertFalse($userId instanceof \User, 'Failed to create user: ' . ($userId instanceof \User ? json_encode($userId->getErrors()) : ''));
+        $userId = (int) $userId;
 
         //Add new user id to forcedsuperadmin array.
         $tempForcedSuperAdmins = App()->getConfig('forcedsuperadmin');

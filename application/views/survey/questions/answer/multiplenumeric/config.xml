@@ -27,6 +27,8 @@
     <compatibility>
         <version>4.0</version>
         <version>5.0</version>
+        <version>6.0</version>
+        <version>7.0</version>
     </compatibility>
 
     <!--
@@ -109,7 +111,7 @@
         <attribute>
             <name>equals_num_value</name>
             <category>Input</category>
-            <sortorder>100</sortorder>
+            <sortorder>70</sortorder>
             <inputtype>text</inputtype>
             <expression>2</expression>
             <help>Multiple numeric inputs sum must equal this value</help>
@@ -236,7 +238,7 @@
             </options>
             <help>Select the type of chart to be displayed</help>
             <caption>Chart type</caption>
-            <default>0</default>
+            <default></default>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -315,7 +317,7 @@
         <attribute>
             <name>max_num_value</name>
             <category>Input</category>
-            <sortorder>100</sortorder>
+            <sortorder>60</sortorder>
             <inputtype>text</inputtype>
             <expression>2</expression>
             <help>Maximum sum value of multiple numeric input</help>
@@ -327,7 +329,7 @@
         <attribute>
             <name>max_num_value_n</name>
             <category>Input</category>
-            <sortorder>110</sortorder>
+            <sortorder>20</sortorder>
             <inputtype>text</inputtype>
             <expression>2</expression>
             <help>Maximum value of the numeric input</help>
@@ -339,7 +341,7 @@
         <attribute>
             <name>maximum_chars</name>
             <category>Input</category>
-            <sortorder>100</sortorder>
+            <sortorder>40</sortorder>
             <inputtype>integer</inputtype>
             <default></default>
             <help>Maximum characters allowed</help>
@@ -364,7 +366,7 @@
         <attribute>
             <name>min_num_value</name>
             <category>Input</category>
-            <sortorder>100</sortorder>
+            <sortorder>50</sortorder>
             <inputtype>text</inputtype>
             <expression>2</expression>
             <help>The sum of the multiple numeric inputs must be greater than this value</help>
@@ -376,7 +378,7 @@
         <attribute>
             <name>min_num_value_n</name>
             <category>Input</category>
-            <sortorder>100</sortorder>
+            <sortorder>10</sortorder>
             <inputtype>text</inputtype>
             <expression>2</expression>
             <help>Minimum value of the numeric input</help>
@@ -388,7 +390,7 @@
         <attribute>
             <name>num_value_int_only</name>
             <category>Input</category>
-            <sortorder>100</sortorder>
+            <sortorder>30</sortorder>
             <inputtype>switch</inputtype>
             <options>
                 <option>
@@ -959,7 +961,7 @@
         <attribute>
             <name>value_range_allows_missing</name>
             <category>Input</category>
-            <sortorder>100</sortorder>
+            <sortorder>80</sortorder>
             <inputtype>switch</inputtype>
             <options>
                 <option>

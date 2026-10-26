@@ -11,7 +11,7 @@ class XmlTranslationCommand extends CConsoleCommand
     public function actionIndex()
     {
         echo "This command will take all config.xml files \n";
-        echo "in the followin directories:\n \n";
+        echo "in the following directories:\n \n";
         echo " * " . realpath(dirname(__FILE__) . "/../views/survey/questions/answer") . "\n";
         echo " * " . realpath(dirname(__FILE__) . '/../../themes/question') . "\n \n";
         echo "And it will generate php files with the strings to be translated \n";
@@ -33,7 +33,6 @@ class XmlTranslationCommand extends CConsoleCommand
 
             $sDirPath = $dirInfo->getRealPath();
             $this->generateFiles($sDirPath . '/survey/questions/answer', 'theme');
-
         }
     }
 
@@ -70,12 +69,9 @@ class XmlTranslationCommand extends CConsoleCommand
             $currentAttributeCategory = '';
 
             foreach ($attributes->attribute as $attribute) {
-
                 if ($currentAttributeCategory != (string)$attribute->category) {
-
                     $currentAttributeCategory = (string)$attribute->category;
                     fwrite($fileHandler, PHP_EOL . '//' . $currentAttributeCategory . ' attributes.' . PHP_EOL);
-
                 }
 
                 if (! empty($attribute->help)) {
@@ -87,15 +83,12 @@ class XmlTranslationCommand extends CConsoleCommand
                 }
 
                 if (! empty($attribute->options)) {
-
                     foreach ($attribute->options->children() as $option) {
-
                         if (! empty($option->text)) {
                             fwrite($fileHandler, 'gT("' . $option->text . '");' . PHP_EOL);
                         } else {
                             fwrite($fileHandler, 'gT("' . $option . '");' . PHP_EOL);
                         }
-
                     }
                 }
             }

@@ -25,23 +25,25 @@ PrepareEditorScript(false, $this);
 <!-- security notice -->
 <div class="row mb-3">
     <div class="col-lg-6">
-        <label class="form-label" id="showsurveypolicynotice-label"><?php eT("Show privacy policy text with mandatory checkbox:"); ?></label>
+        <label class="form-label" id="showsurveypolicynotice-label">
+            <?php eT("Show privacy policy text with mandatory checkbox:"); ?>
+        </label>
         <div>
             <div class="btn-group" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="showsurveypolicynotice-label">
                 <input class="btn-check" type="radio" id="showsurveypolicynotice_0" name="showsurveypolicynotice"
                        value="0" <?= $oSurvey->showsurveypolicynotice == 0 ? 'checked' : '' ?> autocomplete="off">
                 <label for="showsurveypolicynotice_0" class="btn btn-outline-secondary">
-                    <?= gT("Don't show"); ?>
+                    <?= gT("Off"); ?>
                 </label>
                 <input class="btn-check" type="radio" id="showsurveypolicynotice_1" name="showsurveypolicynotice"
                        value="1" <?= $oSurvey->showsurveypolicynotice == 1 ? 'checked' : '' ?> autocomplete="off">
                 <label for="showsurveypolicynotice_1" class="btn btn-outline-secondary">
-                    <?= gT("Inline text"); ?>
+                    <?= gT("Inline"); ?>
                 </label>
                 <input class="btn-check" type="radio" id="showsurveypolicynotice_2" name="showsurveypolicynotice"
                        value="2" <?= $oSurvey->showsurveypolicynotice == 2 ? 'checked' : '' ?> autocomplete="off">
                 <label for="showsurveypolicynotice_2" class="btn btn-outline-secondary">
-                    <?= gT("Collapsible text"); ?>
+                    <?= gT("Popup/Collapsible"); ?>
                 </label>
             </div>
         </div>
@@ -49,7 +51,7 @@ PrepareEditorScript(false, $this);
 </div>
 <div class="row mb-3">
     <div class="col-sm-6">
-        <label class="form-label" id="showtokenpolicy-label"><?php eT("Show privacy policy on token form:"); ?></label>
+        <label class="form-label" id="showtokenpolicy-label"><?php eT("Show privacy policy on access code form:"); ?></label>
         <div>
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                 'name'          => 'showtokenpolicy',

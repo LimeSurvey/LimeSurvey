@@ -1,6 +1,6 @@
 {#
     LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v2 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -33,7 +33,7 @@
         <div class='{{ aSurveyInfo.class.submitwrappertext }}' {{ aSurveyInfo.attr.submitwrappertext }}>
             {% block endtext %}
             {% if (aSurveyInfo.aCompleted.showDefault == true) %}
-                <p class="{{ aSurveyInfo.class.submitwrappertextHeading }}" {{ aSurveyInfo.attr.submitwrappertextpa }}>{{ gT("Thank you.") }}</p>
+                <p class="{{ aSurveyInfo.class.submitwrappertextHeading }}" {{ aSurveyInfo.attr.submitwrappertextpa }}>{{ gT("Thank you!") }}</p>
                 <p class="{{ aSurveyInfo.class.submitwrappertextContent }}" {{ aSurveyInfo.attr.submitwrappertextpb }}>{{ gT("Your survey responses have been recorded.") }}</p>
             {% else %}
                 {{ aSurveyInfo.aCompleted.sEndText }}
@@ -52,7 +52,7 @@
             {% if (aSurveyInfo.aCompleted.aPrintAnswers.show == true) %}
                 <!--  Link to Print Answer Preview -->
                 <div class="{{ aSurveyInfo.class.submitwrapperdiva }}" {{ aSurveyInfo.attr.submitwrapperdiv }}>
-                    <a href="{{ aSurveyInfo.aCompleted.aPrintAnswers.sUrl }}" title={{ aSurveyInfo.aCompleted.aPrintAnswers.sTitle }} class="{{ aSurveyInfo.class.submitwrapperdivaa }}" {{ aSurveyInfo.attr.submitwrapperdivaa }}>
+                    <a href="{{ aSurveyInfo.aCompleted.aPrintAnswers.sUrl }}" title="{{ aSurveyInfo.aCompleted.aPrintAnswers.sTitle }}" class="{{ aSurveyInfo.class.submitwrapperdivaa }}" {{ aSurveyInfo.attr.submitwrapperdivaa }}>
                         <span class="ri-printer-line"></span> {{ gT("Print your answers.") }}
                     </a>
                 </div>
@@ -64,7 +64,7 @@
             {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
                 <!-- Link to Public statistics -->
                 <div class="{{ aSurveyInfo.class.submitwrapperdivb }}" {{ aSurveyInfo.attr.submitwrapperdivb }}>
-                    <a href="{{ aSurveyInfo.aCompleted.aPublicStatistics.sUrl }}" title={{ aSurveyInfo.aCompleted.aPublicStatistics.sTitle }} class="{{ aSurveyInfo.class.submitwrapperdivba }}" {{ aSurveyInfo.attr.submitwrapperdivba }}>
+                    <a href="{{ aSurveyInfo.aCompleted.aPublicStatistics.sUrl }}" title="{{ aSurveyInfo.aCompleted.aPublicStatistics.sTitle }}" class="{{ aSurveyInfo.class.submitwrapperdivba }}" {{ aSurveyInfo.attr.submitwrapperdivba }}>
                         {{ gT("View the statistics for this survey.") }}
                     </a>
                 </div>

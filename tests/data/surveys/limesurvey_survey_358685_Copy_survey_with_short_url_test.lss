@@ -162,7 +162,6 @@
    <fieldname>showprogress</fieldname>
    <fieldname>questionindex</fieldname>
    <fieldname>navigationdelay</fieldname>
-   <fieldname>nokeyboard</fieldname>
    <fieldname>alloweditaftercompletion</fieldname>
    <fieldname>googleanalyticsstyle</fieldname>
    <fieldname>googleanalyticsapikey</fieldname>
@@ -214,7 +213,6 @@
     <showprogress><![CDATA[I]]></showprogress>
     <questionindex><![CDATA[-1]]></questionindex>
     <navigationdelay><![CDATA[-1]]></navigationdelay>
-    <nokeyboard><![CDATA[I]]></nokeyboard>
     <alloweditaftercompletion><![CDATA[I]]></alloweditaftercompletion>
     <googleanalyticsstyle/>
     <googleanalyticsapikey/>

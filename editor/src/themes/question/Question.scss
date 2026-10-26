@@ -1,0 +1,274 @@
+.question {
+  // Single source of truth for the question layout:
+  // title, description and body all start at the content inset,
+  // the question number hangs in the inset, right before the title.
+  --question-content-inset: 45px;
+  --question-number-gap: 8px;
+
+  padding: 28px;
+  padding-top: 38px;
+
+  .question-content {
+    padding-left: var(--question-content-inset);
+  }
+
+  .question-header,
+  .questoin-header-title-container {
+    min-width: 100%;
+    .content-editor.question-title {
+      @include reg24;
+    }
+  }
+
+  .question-title-row {
+    position: relative;
+  }
+
+  .title-default-heading {
+    width: 100%;
+  }
+
+  .star-rating {
+    cursor: pointer;
+  }
+
+  .star-rating-counter {
+    font-size: $font-size-lg;
+  }
+
+  .star-rating.active-rate {
+    .star-rating-counter {
+      color: $grape !important;
+    }
+  }
+
+  // Out of flow, so it never shifts the title. As an abspos child of a flex
+  // container it is still vertically centered by the row's align-items.
+  .question-number {
+    @include label-s;
+    color: $grape;
+    position: absolute;
+    right: 100%;
+    margin-right: var(--question-number-gap);
+    white-space: nowrap;
+  }
+
+  .question-description {
+    margin: 16px 0;
+    padding-bottom: 8px;
+
+    .question-description-content-editor {
+      width: 100%;
+      @include label-m;
+      .content-editable {
+        padding-left: 0;
+      }
+    }
+  }
+
+  .question-body-container {
+    &:has(.array-question) {
+      overflow-x: auto;
+    }
+  }
+
+  .question-body {
+    font-size: 16px;
+    padding-bottom: 16px;
+    overflow-x: visible;
+
+    .error-message {
+      @include med14-c;
+      @extend .text-danger;
+      margin-bottom: 0.5rem;
+      a {
+        @extend .text-danger;
+      }
+    }
+  }
+
+  // Edit-only controls (e.g. the remove button) are the first item of their
+  // row and sit inside the content area, so they start at the content inset.
+  .remove-option-button-parent {
+    display: flex;
+    align-items: center;
+
+    .remove-option-button {
+      cursor: pointer;
+    }
+  }
+
+  // Bootstrap indents .form-check by 1.5em and pulls the input back by
+  // -1.5em, but em resolves against different font sizes (checkboxes use
+  // $font-size-xl), which shifts checkboxes 12px left. Our .form-check is
+  // a flex row with a gap, so neither offset is needed.
+  .form-check {
+    padding-left: 0;
+
+    .form-check-input {
+      margin-left: 0;
+    }
+  }
+
+  // Disabled ContentEditors used as the row label (e.g. multiple short
+  // texts) must start at the content inset like radios/checkboxes do.
+  .children-parent
+    .child
+    > .content-editor.child-ui-component
+    .content-editable {
+    padding-left: 0;
+  }
+}
+
+.question-footer {
+  padding-left: 2rem;
+  padding-right: 2rem;
+
+  img {
+    cursor: pointer;
+    transition: transform $transition-duration;
+  }
+
+  .footer-icon {
+    font-size: $font-size-base;
+    color: $g-700;
+    font-weight: $font-weight-300;
+  }
+
+  .footer-icon.active-icon {
+    color: $grape;
+  }
+
+  .question-type-selector {
+    max-width: max-content;
+    min-width: 200px !important;
+    text-align: center;
+    padding: 2spx 10px;
+    cursor: pointer;
+    border: #25003e solid 1px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: $font-size-sm;
+    border-radius: 3px;
+  }
+}
+
+.question-description {
+  width: 90%;
+}
+
+.dropzone {
+  min-height: 160px;
+  min-width: 260px;
+}
+
+.children-parent {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  text-align: left;
+  gap: 24px;
+  width: 100%;
+
+  .child-ui-component {
+    width: max-content;
+    max-width: 300px;
+  }
+  &.edit-mode {
+    .child-ui-component {
+      max-width: none;
+      // Let only the text column shrink/wrap; min-width: 0 allows it to go
+      // below its max-content width instead of squeezing its siblings.
+      flex: 0 1 auto;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .child {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+
+    // Fixed-size controls (remove button, drag handle, code tag, assessment
+    // value) must never shrink, otherwise their spacing varies per row.
+    > :not(.child-ui-component) {
+      flex-shrink: 0;
+    }
+
+    // Design: remove X -> 4px -> drag icon -> 16px -> content.
+    > .remove-option-button-parent {
+      margin-right: -12px;
+    }
+
+    // Keep the 28px hit/focus area, but lay it out as the 14px icon.
+    > .question-drag-handle {
+      margin-inline: -7px;
+    }
+  }
+}
+
+.error-focus {
+  border-radius: 2px;
+  background: $white;
+  box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+  outline: 2px solid $error;
+  z-index: 10;
+}
+
+.question-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: $border-radius-xs;
+
+  &:focus-visible {
+    outline: 2px solid $g-700;
+    outline-offset: -2px;
+  }
+}
+
+.question-code {
+  width: 79px;
+}
+
+.select-option,
+.choice,
+.other-suffix {
+  @include choice;
+  outline: none;
+
+  &:has(:checked) {
+    .single-choice-form-label {
+      color: $active-green;
+    }
+  }
+}
+
+.add-choice-button {
+  color: $grape;
+  font-family: 'IBM Plex Sans';
+  font-size: $font-size-sm;
+  font-style: $font-style-base;
+  font-weight: $font-weight-500;
+  line-height: 20px;
+  letter-spacing: -0.21px;
+}
+
+.added-choice-number {
+  color: $grape;
+  font-family: 'IBM Plex Sans';
+  font-size: $font-size-sm;
+  font-style: $font-style-base;
+  font-weight: $font-weight-500;
+  line-height: 20px;
+  letter-spacing: -0.21px;
+}

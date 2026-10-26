@@ -6,18 +6,19 @@
      *
      */
 
+$fileMaxSizeHintId = $importModal . '-file-max-size-hint';
 ?>
 <div class="modal fade" tabindex="-1" role="dialog" id="<?php echo $importModal;?>">
     <div class="modal-dialog">
         <div class="modal-content">
             <?php echo CHtml::form(
-                    array('admin/themes/sa/upload'),
-                    'post',
-                    array(
-                            'id'=>$importTemplate,
-                            'name'=>$importTemplate,
-                            'enctype'=>'multipart/form-data',
-                            'onsubmit'=>'return window.LS.validatefilename(this,"'.gT('Please select a file to import!', 'js').'");'
+                array('admin/themes/sa/upload'),
+                'post',
+                array(
+                            'id' => $importTemplate,
+                            'name' => $importTemplate,
+                            'enctype' => 'multipart/form-data',
+                            'onsubmit' => 'return window.LS.validatefilename(this,"' . gT('Please select a file to import!', 'js') . '");'
                     )
             ); ?>
             <?php
@@ -36,9 +37,16 @@
                         <label for='the_file' class="form-label">
                             <?php eT("Select theme ZIP file:") ?>
                         </label>
-                        <input id='the_file' class="form-control" name='the_file' type="file" accept='.zip' />
-                        <div class="form-text mt-2">
-                            <?php printf(gT('(Maximum file size: %01.2f MB)'),getMaximumFileUploadSize()/1024/1024); ?>
+                        <input
+                            id='the_file'
+                            class="form-control"
+                            name='the_file'
+                            type="file"
+                            accept='.zip'
+                            aria-describedby="<?php echo CHtml::encode($fileMaxSizeHintId); ?>"
+                        />
+                        <div class="form-text mt-2" id="<?php echo CHtml::encode($fileMaxSizeHintId); ?>">
+                            <?php printf(gT('(Maximum file size: %01.2f MB)'), getMaximumFileUploadSize() / 1024 / 1024); ?>
                         </div>
                     </div>
                 </div>

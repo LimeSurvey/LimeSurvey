@@ -110,7 +110,7 @@ class Zend_Db_Adapter_Pdo_Sqlsrv extends Zend_Db_Adapter_Pdo_Abstract
 
 
             foreach ($dsn as $key => $val) {
-                $dsn[$key] = "$key=$val";
+                $dsn[$key] = "{$key}={$val}";
             }
 
             $dsn = $this->_pdoType . ':' . implode(';', $dsn);

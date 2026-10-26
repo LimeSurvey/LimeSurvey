@@ -7,6 +7,7 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_325 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->dropTable('{{templates}}');
@@ -73,7 +74,7 @@ class Update_325 extends DatabaseUpdateBase
                     'Louis Gac',
                     'louis.gac@limesurvey.org',
                     'https://www.limesurvey.org/',
-                    'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+                    'Copyright (C) 2007-2026 The LimeSurvey Project Team\\r\\nAll rights reserved.',
                     'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
                     '1.0',
                     '3.0',
@@ -99,7 +100,7 @@ class Update_325 extends DatabaseUpdateBase
                     'Louis Gac',
                     'louis.gac@limesurvey.org',
                     'https://www.limesurvey.org/',
-                    'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+                    'Copyright (C) 2007-2026 The LimeSurvey Project Team\\r\\nAll rights reserved.',
                     'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
                     '1.0',
                     '3.0',
@@ -125,7 +126,7 @@ class Update_325 extends DatabaseUpdateBase
                     'Louis Gac',
                     'louis.gac@limesurvey.org',
                     'https://www.limesurvey.org/',
-                    'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+                    'Copyright (C) 2007-2026 The LimeSurvey Project Team\\r\\nAll rights reserved.',
                     'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
                     '1.0',
                     '3.0',

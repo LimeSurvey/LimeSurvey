@@ -1,0 +1,9 @@
+// Statistics styles, split into partials for maintainability. Order matches the
+// original single file (_base defines the shared mixins used by the rest), so
+// the compiled CSS is unchanged.
+@import 'statistics/base';
+@import 'statistics/comments';
+@import 'statistics/tables';
+@import 'statistics/filters';
+@import 'statistics/filter-select';
+@import 'statistics/charts';

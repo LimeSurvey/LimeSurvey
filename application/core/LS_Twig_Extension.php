@@ -3,7 +3,7 @@
 /**
  * This extension is needed to add complex functions to twig, needing specific process (like accessing config datas).
  * Most of the calls to internal functions don't need to be set here, but can be directly added to the internal config file.
- * For example, the calls to encode, gT and eT don't need any extra parameters or process, so they are added as filters in the congif/internal.php:
+ * For example, the calls to encode, gT and eT don't need any extra parameters or process, so they are added as filters in the config/internal.php:
  *
  * 'filters' => array(
  *     'jencode' => 'CJSON::encode',
@@ -18,7 +18,7 @@
  *      eg:
  *          static public function foo($bar)
  *          {
- *              return procces($bar);
+ *              return process($bar);
  *          }
  *
  * 2. Add it in config/internal.php as a function, and as an allowed function in the sandbox
@@ -220,8 +220,8 @@ class LS_Twig_Extension extends AbstractExtension
 
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
         $sType           = $lemQuestionInfo['info']['type'];
-        $aSGQA           = explode('X', (string) $lemQuestionInfo['sgqa']);
-        $iSurveyId       = $aSGQA[0];
+        $question        = Question::model()->findByPk($iQid);
+        $iSurveyId       = $question->sid;
 
         $aQuestionClass  = Question::getQuestionClass($sType);
 
@@ -252,7 +252,7 @@ class LS_Twig_Extension extends AbstractExtension
             $aQuestionClass .= ' mandatory';
         }
 
-        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['survey_' . $iSurveyId]['maxstep'] != $_SESSION['survey_' . $iSurveyId]['step']) {
+        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['responses_' . $iSurveyId]['maxstep'] != $_SESSION['responses_' . $iSurveyId]['step']) {
             $aQuestionClass .= ' missing';
         }
 
@@ -281,11 +281,18 @@ class LS_Twig_Extension extends AbstractExtension
     }
 
     /**
-     * @param string $sRessource
+     * Publish a file or directory to the public assets folder.
+     * Exposed to the Twig sandbox, so only paths inside a theme root directory are allowed.
+     * @param string $sRessource absolute path of the file or directory to publish
+     * @return string|false the published asset URL, false if the path is invalid or outside the theme root directories
      */
     public static function assetPublish($sRessource)
     {
-        return App()->assetManager->publish($sRessource);
+        $sRealPath = realpath((string) $sRessource);
+        if ($sRealPath === false || !self::isInThemeRootDir($sRealPath)) {
+            return false;
+        }
+        return App()->assetManager->publish($sRealPath);
     }
 
     /**
@@ -305,7 +312,7 @@ class LS_Twig_Extension extends AbstractExtension
 
     /**
      * @var $sImagePath  string                 the image path relative to the template root
-     * @var $default     string|false                 an alternative image if the provided one cant be found
+     * @var $default     string|false                 an alternative image if the provided one can't be found
      * @return string|false
      */
     public static function imageSrc($sImagePath, $default = false)
@@ -319,7 +326,6 @@ class LS_Twig_Extension extends AbstractExtension
             // If it's not a virtual path, only paths relative to a theme (and within the theme) are allowed.
             // Recurrence on templates to find the file
             $oTemplate = self::getTemplateForRessource($sImagePath);
-            $sUrlImgAsset =  $sImagePath;
 
             if ($oTemplate) {
                 $sFullPath = $oTemplate->path . $sImagePath;
@@ -340,7 +346,7 @@ class LS_Twig_Extension extends AbstractExtension
             return false;
         }
 
-        $sUrlImgAsset = self::assetPublish($sFullPath);
+        $sUrlImgAsset = App()->assetManager->publish($sFullPath);
         return $sUrlImgAsset;
     }
 
@@ -360,28 +366,33 @@ class LS_Twig_Extension extends AbstractExtension
             }
             return false;
         }
-        // Reccurence on templates to find the file
+        // Recurrence on templates to find the file
         $oTemplate = self::getTemplateForRessource($resourcePath);
         if (empty($oTemplate)) {
             /* Didn't allow file out of template (diff with image) */
             return false;
         }
         $sFullPath = $oTemplate->path . $resourcePath;
-        $resourceAsset = self::assetPublish($sFullPath);
+        $resourceAsset = App()->assetManager->publish($sFullPath);
         return $resourceAsset;
     }
 
 
     /**
-     * Get the parsed output of the expression manger for a specific string
+     * Get the parsed output of the expression manager for a specific string
      *
      * @param String $sInString
+     * @param array $replacementFields - optional replacement values
      * @return String
      */
-    public static function getExpressionManagerOutput($sInString)
+    public static function getExpressionManagerOutput($sInString, $replacementFields = [])
     {
-        templatereplace(flattenText($sInString));
-        return LimeExpressionManager::GetLastPrettyPrintExpression();
+        templatereplace(flattenText($sInString), $replacementFields);
+        $output = LimeExpressionManager::GetLastPrettyPrintExpression();
+        if (!empty($replacementFields)) {
+            LimeExpressionManager::unsetTempVars(array_keys($replacementFields));
+        }
+        return $output;
     }
 
     /**
@@ -434,13 +445,12 @@ class LS_Twig_Extension extends AbstractExtension
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 return false;
-                break;
             }
             $oRTemplate = $oMotherTemplate;
         }
         $sRessourcePath = realpath($oRTemplate->path . $sRessource);
         $sTemplatePath = realpath($oRTemplate->path);
-        if (substr($sTemplatePath, 0, strlen($sTemplatePath)) !== $sTemplatePath) {
+        if ($sRessourcePath === false || strpos($sRessourcePath, $sTemplatePath . DIRECTORY_SEPARATOR) !== 0) {
             return false;
         }
         return $oRTemplate;
@@ -708,6 +718,22 @@ class LS_Twig_Extension extends AbstractExtension
     }
 
     /**
+     * Check if a resolved path is inside the standard or user theme root directory.
+     * @param string $sRealPath
+     * @return bool
+     */
+    private static function isInThemeRootDir(string $sRealPath): bool
+    {
+        foreach (['standardthemerootdir', 'userthemerootdir'] as $sConfig) {
+            $sRoot = realpath((string) App()->getConfig($sConfig));
+            if ($sRoot !== false && strpos($sRealPath, $sRoot . DIRECTORY_SEPARATOR) === 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Fixed allowlist of configuration keys considered safe for exposure to templates.
      *
      * The array contains the configuration key names that are permitted to be read
@@ -773,7 +799,7 @@ class LS_Twig_Extension extends AbstractExtension
         $oResponses = SurveyDynamic::model($iSurveyID)->findAll(
             array(
                                 'condition' => 'token = :token',
-                                'params'    => array( ':token' => $_SESSION['survey_' . $iSurveyID]['token']),
+                                'params'    => array( ':token' => $_SESSION['responses_' . $iSurveyID]['token']),
                             )
         );
 
@@ -828,17 +854,10 @@ class LS_Twig_Extension extends AbstractExtension
             } elseif ($moveInfo['finished']) {
                 $page = 'finished';
             } else {
-                $showgroupinfo = Yii::app()->getConfig('showgroupinfo');
                 if ($survey->format == 'A') {
                     $page = 1;
                 } else {
-                    if (
-                        $showgroupinfo == 'both'
-                        || $showgroupinfo == 'name'
-                        || ($showgroupinfo == 'choose' && !isset($survey->showgroupinfo))
-                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'B')
-                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'N')
-                    ) {
+                    if (!isset($survey->showgroupinfo) || in_array($survey->showgroupinfo, ['B', 'N'])) {
                         $groupInfo = LimeExpressionManager::GetStepIndexInfo($moveInfo['seq']);
                         $groupName = isset($groupInfo['gname']) ? $groupInfo['gname'] : '';
                     }

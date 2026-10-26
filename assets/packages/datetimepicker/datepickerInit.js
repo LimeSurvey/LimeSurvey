@@ -1,12 +1,12 @@
 var pickers = {};
 
 /**
- * returns a basic config object
+ * Builds a Tempus Dominus configuration from normalized data-attribute options.
  *
- * @param options object with options extracted from elements data-attributes
- * @param locale
- * @param dateFormat
- * @returns {{localization: {locale}, display: {components: {clock: boolean}, icons: {date: string, next: string, previous: string, today: string, clear: string, time: string, up: string, down: string, close: string}}}}
+ * @param options Options extracted from an element's data attributes; `startoftheweek` is a day index from 0 (Sunday) to 6 (Saturday)
+ * @param locale Locale passed to Tempus Dominus
+ * @param dateFormat Date format used to determine whether to display the clock
+ * @returns Tempus Dominus configuration object
  */
 function getConfig(options, locale, dateFormat) {
     let clock = dateFormat.indexOf('HH:mm') !== -1;
@@ -19,11 +19,13 @@ function getConfig(options, locale, dateFormat) {
     let mindate = getValueFromConfigObject(options, 'mindate', undefined);
     let maxdate = getValueFromConfigObject(options, 'maxdate', undefined);
     let theme = getValueFromConfigObject(options, 'theme', 'auto');
+    let startofweek = parseInt(getValueFromConfigObject(options, 'startoftheweek', 0), 10);
 
     return {
         allowInputToggle: allowinputtoggle,
         localization: {
-            locale: locale
+            locale: locale,
+            startOfTheWeek: startofweek
         },
         stepping: stepping,
         restrictions: {
@@ -158,7 +160,7 @@ function fixAllowInputToggle(id) {
  */
 function getOptionsFromElement(element) {
     const availableOptions = [
-        'format', 'locale', 'allowinputtoggle', 'showclear', 'showtoday', 'showclose', 'sidebyside', 'stepping', 'mindate', 'maxdate', 'theme',
+        'format', 'locale', 'allowinputtoggle', 'showclear', 'showtoday', 'showclose', 'sidebyside', 'stepping', 'mindate', 'maxdate', 'theme', 'startoftheweek',
         ];
     const options = {};
 

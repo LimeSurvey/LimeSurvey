@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\DI;
 use LimeSurvey\Models\Services\CopySurveyOptions;
 use LimeSurvey\Models\Services\CopySurveyResources;
 use LimeSurvey\Models\Services\FileUploadService;
@@ -7,6 +8,7 @@ use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
 use LimeSurvey\Models\Services\SurveyDetailService;
+use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 
 /**
  * Class SurveyAdministrationController
@@ -50,6 +52,7 @@ class SurveyAdministrationController extends LSBaseController
                     'getCurrentEditorValues',
                     'getDataSecTextSettings',
                     'getDateFormatOptions',
+                    'getAllSurveyIds',
                     'updateAccessMode',
                     ''
                 ],
@@ -66,7 +69,7 @@ class SurveyAdministrationController extends LSBaseController
     public function filters()
     {
         return [
-            'postOnly + copy'
+            'postOnly + copy, fixNumbering'
         ];
     }
 
@@ -85,10 +88,14 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * This part comes from renderWrappedTemplate
+     * Prepare controller state before rendering a view.
      *
-     * @param string $view
-     * @return bool
+     * Sets the controller layout based on whether a survey context is present, initializes
+     * the LimeExpressionManager for the current survey when applicable, and registers
+     * editor-related client scripts unless the request is an Ajax request.
+     *
+     * @param string $view The view name about to be rendered.
+     * @return bool True to continue with rendering, false to abort.
      */
     protected function beforeRender($view)
     {
@@ -252,6 +259,8 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Delete multiple survey
      *
+     * Note: The survey title is only shown for surveys the user may read.
+     *
      * @return void
      * @throws CException
      */
@@ -262,7 +271,7 @@ class SurveyAdministrationController extends LSBaseController
         foreach ($aSurveys as $iSurveyID) {
             $iSurveyID = sanitize_int($iSurveyID);
             $oSurvey = Survey::model()->findByPk($iSurveyID);
-            $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+            $aResults[$iSurveyID]['title'] = $this->getMassActionSurveyTitle($oSurvey);
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
                 $aResults[$iSurveyID]['result'] = Survey::model()->deleteSurvey($iSurveyID);
             } else {
@@ -282,6 +291,8 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Render selected items for massive action
      *
+     * Note: The survey title is only shown for surveys the user may read.
+     *
      * @return void
      */
     public function actionRenderItemsSelected()
@@ -294,7 +305,10 @@ class SurveyAdministrationController extends LSBaseController
                 continue;
             }
             $oSurvey = Survey::model()->findByPk($iSurveyID);
-            $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+            if (empty($oSurvey)) {
+                continue;
+            }
+            $aResults[$iSurveyID]['title'] = $this->getMassActionSurveyTitle($oSurvey);
             $aResults[$iSurveyID]['result'] = 'selected';
         }
 
@@ -303,9 +317,64 @@ class SurveyAdministrationController extends LSBaseController
             array(
                 'aResults' => $aResults,
                 'successLabel' => gT('Selected'),
-                'tableLabels' => $tableLabels
+                'tableLabels' => $tableLabels,
+                'caption'     => gT('Selected surveys'),
             )
         );
+    }
+
+    /**
+     * Returns all survey IDs matching the current filter as a JSON array.
+     * Used by the "Select all" button in the floating actions bar to select
+     * all surveys across pagination.
+     *
+     * @return void
+     */
+    public function actionGetAllSurveyIds()
+    {
+        if (!Yii::app()->request->isAjaxRequest) {
+            throw new CHttpException(400, 'Invalid request');
+        }
+
+        $model = new Survey('search');
+
+        // Reset active attribute to '' so search() does not filter by the DB column default ('N').
+        // This mirrors ListSurveysWidget which explicitly sets $this->model->active = "".
+        $model->active = '';
+
+        // Apply Survey[...] grid filters (e.g. searched_value)
+        $filters = Yii::app()->request->getParam('Survey', []);
+        if (is_array($filters)) {
+            $model->setAttributes($filters, false);
+        }
+
+        // Apply the status filter that ListSurveysWidget reads from $_GET['active']
+        $activeFilter = Yii::app()->request->getParam('active', '');
+        if (!empty($activeFilter)) {
+            $model->active = $activeFilter;
+        }
+
+        // Apply survey-group filter
+        $gsid = Yii::app()->request->getParam('gsid', '');
+        if (!empty($gsid)) {
+            $model->gsid = (int) $gsid;
+        }
+
+        // Fetch every matching ID in a single unbounded query.
+        // getData() only returns one page, so a large fixed pageSize can still miss
+        // rows on larger installations.  Disabling pagination removes the LIMIT/OFFSET
+        // entirely so all matching survey IDs are always returned.
+        $dataProvider = $model->search();
+        $dataProvider->setPagination(false);
+        $surveys = $dataProvider->getData();
+
+        $ids = array_map(static function ($survey) {
+            return (int) $survey->sid;
+        }, $surveys);
+
+        header('Content-Type: application/json');
+        echo json_encode(array_values($ids));
+        Yii::app()->end();
     }
 
     /**
@@ -366,8 +435,13 @@ class SurveyAdministrationController extends LSBaseController
             $iQuestionNumber++;
             $iGroupNumber = $oQuestion->gid;
         }
+        // updateAll() bypasses Question::afterSave(), so update the survey's lastmodified timestamp here
+        (new SurveyDetailService())->touchSurveyLastModified((int) $iSurveyID);
+        /* Expression text need to be update from condition */
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
+        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
+        LimeExpressionManager::SetDirtyFlag();
         Yii::app()->setFlashMessage(gT("Question codes were successfully regenerated."));
-        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         $this->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
     }
 
@@ -379,20 +453,21 @@ class SurveyAdministrationController extends LSBaseController
     public function actionNewSurvey()
     {
         if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         $survey = new Survey();
         // set 'inherit' values to survey attributes
         $survey->setToInherit();
 
-        App()->getClientScript()->registerPackage('jquery-json');
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin.htmleditor');
 
         $aData = $this->generalTabNewSurvey();
         $aData = array_merge($aData, $this->getGeneralTemplateData(0));
-        $aData['esrow'] =  $this->fetchSurveyInfo('newsurvey');
+        $esrow = $survey->attributes;
+        $esrow['googleanalyticsapikeysetting'] = $survey->getGoogleanalyticsapikeysetting();
+        $aData['esrow'] = $esrow;
 
         $aData['oSurvey'] = $survey;
         $aData['bShowAllOptions'] = true;
@@ -590,7 +665,7 @@ class SurveyAdministrationController extends LSBaseController
                 Permission::model()
             );
             if ($newSurvey) {
-                //create examlpe group and example question
+                //create example group and example question
                 $iNewGroupID = $this->createSampleGroup($newSurvey->sid);
                 $iNewQuestionID = $this->createSampleQuestion($newSurvey->sid, $iNewGroupID);
 
@@ -607,7 +682,7 @@ class SurveyAdministrationController extends LSBaseController
                 $this->redirect(Yii::app()->request->urlReferrer);
             }
         } else {
-            App()->setFlashMessage(gT('Access denied'), 'error');
+            App()->setFlashMessage(gT('Access denied!'), 'error');
             $this->redirect(Yii::app()->request->urlReferrer);
         }
     }
@@ -635,7 +710,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         $iSurveyID = sanitize_int(Yii::app()->request->getPost('surveyid'));
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
@@ -682,7 +757,14 @@ class SurveyAdministrationController extends LSBaseController
                 $zip->close();
 
                 // now read tempdir and copy authorized files only
-                $folders = array('flash', 'files', 'images');
+                $folders = array('files', 'images');
+                $hasResourceFolders = false;
+                foreach ($folders as $folder) {
+                    if (is_dir($extractdir . "/" . $folder)) {
+                        $hasResourceFolders = true;
+                        break;
+                    }
+                }
 
                 $filteredImportedResources = new FilterImportedResources();
 
@@ -704,7 +786,9 @@ class SurveyAdministrationController extends LSBaseController
                 if (empty($aErrorFilesInfo) && empty($aImportedFilesInfo)) {
                     Yii::app()->user->setFlash(
                         'error',
-                        gT("This ZIP archive contains no valid Resources files. Import failed.")
+                        $hasResourceFolders
+                            ? gT("This ZIP archive contains no valid Resources files. Import failed.")
+                            : gT("The ZIP archive must contain a 'files' and/or an 'images' folder at its top level, with the resource files placed inside. Import failed.")
                     );
                     $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'resources'));
                 }
@@ -734,7 +818,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @param int $sid Given Survey ID
      *
-     * is still used in sidemenu Text elemnts (see vue.js ajaxcall)
+     * is still used in sidemenu Text elements (see vue.js ajaxcall)
      *
      * @return void
      * @throws CException
@@ -781,7 +865,7 @@ class SurveyAdministrationController extends LSBaseController
         ];
 
         if ($oSurvey == null) {
-            $defaultLanguage = App()->getConfig('defaultlang');
+            $defaultLanguage = Yii::app()->getConfig('defaultlang');
             $aLanguageDetails = getLanguageDetails($defaultLanguage);
             $aLanguages = [$defaultLanguage => getLanguageCodefromLanguage($defaultLanguage)];
             $aReturner["surveyTitle"][$defaultLanguage] = "";
@@ -860,6 +944,8 @@ class SurveyAdministrationController extends LSBaseController
      * Change survey group for multiple survey at once.
      * Called from survey list massive actions
      *
+     * Note: The survey title is only shown for surveys the user may read.
+     *
      * @return void
      * @throws CException
      */
@@ -873,7 +959,7 @@ class SurveyAdministrationController extends LSBaseController
 
         foreach ($aSIDs as $iSurveyID) {
             $oSurvey = Survey::model()->findByPk((int)$iSurveyID);
-            $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+            $aResults[$iSurveyID]['title'] = $this->getMassActionSurveyTitle($oSurvey);
             /* Permission must be checked with current SurveyGroup, SurveyGroup give Surveys Permission, see mantis issue #19169 */
             if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
                 $aResults[$iSurveyID]['result'] = false;
@@ -944,7 +1030,7 @@ class SurveyAdministrationController extends LSBaseController
         $iSurveyID = sanitize_int($surveyid);
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -967,6 +1053,11 @@ class SurveyAdministrationController extends LSBaseController
         if (count($aGroups)) {
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
+                // Cast identifiers to int so the JSON stays consistent with jQuery's
+                // numeric .data() conversion on the client (see issue 20625).
+                $curGroup['gid'] = (int) $curGroup['gid'];
+                $curGroup['sid'] = (int) $curGroup['sid'];
+                $curGroup['group_order'] = (int) $curGroup['group_order'];
                 $curGroup['group_name'] = viewHelper::flatEllipsizeText($group->questiongroupl10ns[$baselang]->group_name, true, 150);
                 $curGroup['groupDropdown'] = [];
                 $condarray = getGroupDepsForConditions($surveyid, "all", $group->gid, "by-targgid");
@@ -981,7 +1072,7 @@ class SurveyAdministrationController extends LSBaseController
                         "gid" => $group['gid'],
                         'parent_qid' => 0
                     ),
-                    array('order' => 'question_order ASC')
+                    array('order' => 'question_order ASC, title ASC')
                 );
 
                 if ($configData['hasSurveyContentReadPermission']) {
@@ -1055,6 +1146,13 @@ class SurveyAdministrationController extends LSBaseController
                 foreach ($group->aQuestions as $question) {
                     if (is_object($question)) {
                         $curQuestion = $question->attributes;
+                        // Cast identifiers to int so the JSON stays consistent with jQuery's
+                        // numeric .data() conversion on the client (see issue 20625).
+                        $curQuestion['qid'] = (int) $curQuestion['qid'];
+                        $curQuestion['gid'] = (int) $curQuestion['gid'];
+                        $curQuestion['sid'] = (int) $curQuestion['sid'];
+                        $curQuestion['parent_qid'] = (int) $curQuestion['parent_qid'];
+                        $curQuestion['question_order'] = (int) $curQuestion['question_order'];
                         $curQuestion['link'] = $this->createUrl(
                             "questionAdministration/view",
                             ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid' => $question->qid]
@@ -1297,6 +1395,7 @@ class SurveyAdministrationController extends LSBaseController
         $iSurveyId = (int)$sid;
         $changes = Yii::app()->request->getPost('changes');
         $aSuccess = [];
+        $aErrors = [];
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
             return $this->renderPartial(
@@ -1331,7 +1430,12 @@ class SurveyAdministrationController extends LSBaseController
             $oSurveyLanguageSetting->surveyls_urldescription = $contentChange['endUrlDescription'];
             $oSurveyLanguageSetting->surveyls_dateformat = $contentChange['dateFormat'];
             $oSurveyLanguageSetting->surveyls_numberformat = $contentChange['decimalDivider'];
-            $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
+            $aSuccess[$sLanguage] = LSYii_Validators::refuseChangedExpressionsDuring(function () use ($oSurveyLanguageSetting) {
+                return $oSurveyLanguageSetting->save();
+            });
+            foreach ($oSurveyLanguageSetting->getErrors() as $aAttributeErrors) {
+                $aErrors = array_merge($aErrors, $aAttributeErrors);
+            }
             unset($oSurveyLanguageSetting);
         }
 
@@ -1348,7 +1452,8 @@ class SurveyAdministrationController extends LSBaseController
             [
                 'data' => [
                     "success" => $success,
-                    "message" => ($success ? gT("Survey texts were saved successfully.") : gT("Error saving survey texts"))
+                    "message" => ($success ? gT("Survey texts were saved successfully.") : gT("Error saving survey texts")),
+                    "errors" => array_values(array_unique($aErrors))
                 ]
             ],
             false,
@@ -1395,7 +1500,7 @@ class SurveyAdministrationController extends LSBaseController
         ];
 
         if ($oSurvey == null) {
-            $defaultLanguage = App()->getConfig('defaultlang');
+            $defaultLanguage = Yii::app()->getConfig('defaultlang');
             $aLanguages = [$defaultLanguage => getLanguageCodefromLanguage($defaultLanguage)];
             $aReturner["datasecmessage"][$defaultLanguage] = "";
             $aReturner["datasecerror"][$defaultLanguage] = "";
@@ -1519,15 +1624,24 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Apply current theme options for imported survey theme
      *
-     * @param int $iSurveyID The survey ID of imported survey
+     * Note: Requires surveysettings update permission on the survey, like changeTemplate().
+     *
+     * @param int $surveyid The survey ID of imported survey
      *
      * @return void
+     * @throws CHttpException
      */
     public function actionApplythemeoptions(int $surveyid = 0)
     {
         $iSurveyID = $surveyid;
         if ((int)$iSurveyID > 0 && Yii::app()->request->isPostRequest) {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
+            if (empty($oSurvey)) {
+                throw new CHttpException(404, gT("Survey not found."));
+            }
+            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
+                throw new CHttpException(403, gT("You do not have permission to access this page."));
+            }
             $sTemplateName = $oSurvey->template;
             $aThemeOptions = json_decode(App()->request->getPost('themeoptions', ''));
 
@@ -1565,6 +1679,7 @@ class SurveyAdministrationController extends LSBaseController
         $iSurveyID = (int)Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
+        $fileData = null;
         if (
             Permission::model()->hasSurveyPermission(
                 $iSurveyID,
@@ -1589,6 +1704,15 @@ class SurveyAdministrationController extends LSBaseController
                     $message = $returnedData['uploadResultMessage'];
                     $debug = $returnedData['debug'];
                     $success = $returnedData['success'];
+                    // Return the uploaded file's dropdown entry so the image selectors can be updated client-side.
+                    if ($success) {
+                        $templateName = App()->request->getPost('templatename');
+                        $themeConfiguration = Template::model()->getInstance($templateName, $iSurveyID);
+                        if ($themeConfiguration !== null && method_exists($themeConfiguration, 'getImageFileListEntry')) {
+                            $uploadedFilePath = $destDir . DIRECTORY_SEPARATOR . $returnedData['fileName'];
+                            $fileData = $themeConfiguration->getImageFileListEntry($returnedData['fileName'], $uploadedFilePath);
+                        }
+                    }
                 } else {
                     $message = sprintf(
                         gT("Incorrect permissions in your %s folder."),
@@ -1611,7 +1735,8 @@ class SurveyAdministrationController extends LSBaseController
                 'data' => [
                     'success' => $success,
                     'message' => $message,
-                    'debug' => $debug
+                    'debug' => $debug,
+                    'file' => $fileData
                 ]
             ),
         );
@@ -1653,7 +1778,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         $iSurveyID = $this->getSurveyIdFromGetRequest();
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         $diContainer = \LimeSurvey\DI::getContainer();
@@ -1676,7 +1801,7 @@ class SurveyAdministrationController extends LSBaseController
         if ($ok == '') {
             $aData['date'] = $date;
             $aData['dbprefix'] = Yii::app()->db->tablePrefix;
-            $aData['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_survey_{$iSurveyID}_{$date}";
+            $aData['sNewSurveyTableName'] = Yii::app()->db->tablePrefix . "old_responses_{$iSurveyID}_{$date}";
             $aData['step1'] = true;
         } else {
             try {
@@ -1694,13 +1819,7 @@ class SurveyAdministrationController extends LSBaseController
                 $aData['nostep'] = true;
                 $this->aData = $aData;
             } else {
-                if (!$result["surveyTableExists"]) {
-                    $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
-                    $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
-                }
-
                 $aData = $result['aData'];
-
                 $aData['sidemenu']['state'] = false;
             }
         }
@@ -1714,10 +1833,15 @@ class SurveyAdministrationController extends LSBaseController
      * This can happen if question 1 have subquestion code 1 and
      * have question 11 in same survey and group (then same SGQA).
      *
+     * Note: Requires a POST request and surveycontent update permission, only works on
+     * inactive surveys and the question must belong to the survey. Non-AJAX requests are
+     * redirected back to the survey overview.
+     *
      * @todo: maybe this one could not happen anymore ?
      *
      * @return array|false|string|string[]|null
      * @throws CException
+     * @throws CHttpException
      */
     public function actionFixNumbering()
     {
@@ -1727,9 +1851,30 @@ class SurveyAdministrationController extends LSBaseController
 
         $success = false;
         if (($surveyId > 0) && ($questionId > 0)) {
+            $survey = Survey::model()->findByPk($surveyId);
+            if (empty($survey)) {
+                throw new CHttpException(404, gT("Survey not found."));
+            }
+            if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
+                throw new CHttpException(403, gT("You do not have permission to access this page."));
+            }
+            if ($survey->isActive) {
+                throw new CHttpException(400, gT("The survey is already active."));
+            }
+            $question = Question::model()->findByAttributes(['qid' => $questionId, 'sid' => $surveyId]);
+            if (empty($question)) {
+                throw new CHttpException(404, gT("Invalid question ID"));
+            }
             App()->loadHelper('admin.activate');
             fixNumbering($questionId, $surveyId);
             $success = true;
+        }
+
+        if (!Yii::app()->request->isAjaxRequest) {
+            if ($success) {
+                Yii::app()->setFlashMessage(gT("The question numbering was fixed."), 'success');
+            }
+            $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
         }
 
         return $this->renderPartial(
@@ -1757,7 +1902,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         $surveyId = (int) Yii::app()->request->getPost('surveyId');
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveyactivation', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         $oSurvey = Survey::model()->findByPk($surveyId);
@@ -1830,7 +1975,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         $surveyId = (int) App()->request->getPost('surveyId');
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveyactivation', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
@@ -1927,7 +2072,7 @@ class SurveyAdministrationController extends LSBaseController
         //todo: delete should always be a post-request
         $iSurveyID = $this->getSurveyIdFromGetRequest();
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         $aData = [];
@@ -1981,12 +2126,30 @@ class SurveyAdministrationController extends LSBaseController
                 );
             }
         } else {
-            Yii::app()->user->setFlash('error', gT('Access denied'));
+            Yii::app()->user->setFlash('error', gT('Access denied!'));
         }
 
         $this->redirect($this->createUrl('admin/globalsettings'));
     }
 
+    /**
+     * Load a survey whose options hold the values inherited from its survey group,
+     * as needed by the survey settings screens.
+     *
+     * A separate, uncached survey instance is used: The instance cached by Survey::findByPk()
+     * is shared with getSurveyInfo() and must keep the survey's effective option values.
+     *
+     * @param int $iSurveyID Survey ID
+     * @return Survey|null Null if the survey does not exist
+     */
+    protected function loadSurveyWithInheritedOptions($iSurveyID)
+    {
+        $survey = Survey::model()->findByPkNoCache($iSurveyID);
+        if ($survey) {
+            $survey->setOptionsFromDatabase();
+        }
+        return $survey;
+    }
 
     /**
      * New system of rendering content
@@ -2014,15 +2177,12 @@ class SurveyAdministrationController extends LSBaseController
     {
         $iSurveyID = (int) $surveyid;
         $menuaction = (string) $subaction;
-        $survey = Survey::model()->findByPk($iSurveyID);
+        $survey = $this->loadSurveyWithInheritedOptions($iSurveyID);
         $aData['oSurvey'] = $survey;
-        // set values from database to survey attributes
 
         if (empty($survey)) {
             throw new Exception('Found no survey with id ' . $iSurveyID);
         }
-
-        $survey->setOptionsFromDatabase();
 
         //Get all languages
         $grplangs = $survey->additionalLanguages;
@@ -2046,14 +2206,14 @@ class SurveyAdministrationController extends LSBaseController
             ));
         }
 
-        $templateData = array_merge($this->getGeneralTemplateData($iSurveyID), $templateData);
+        $templateData = array_merge($this->getGeneralTemplateData($survey), $templateData);
 
-        // For Text Elemnts Tab.
+        // For Text elements Tab.
         if ($menuaction === 'surveytexts') {
             $temp = [];
             $languages = $survey->allLanguages;
             foreach ($languages as $i => $language) {
-                $temp = $this->getGeneralTemplateData($iSurveyID);
+                $temp = $this->getGeneralTemplateData($survey);
 
                 App()->loadHelper('database');
                 App()->loadHelper('surveytranslator');
@@ -2084,14 +2244,6 @@ class SurveyAdministrationController extends LSBaseController
             $aData['aTabTitles']   = $aTabTitles;
             $aData['moreInfo'] = $temp;
         }
-
-        App()->getClientScript()->registerPackage('jquery-json');
-
-        // override survey settings if global settings exist
-        $templateData['showqnumcode']   = getGlobalSetting('showqnumcode') !== 'choose' ? getGlobalSetting('showqnumcode') : $survey->showqnumcode;
-        $templateData['shownoanswer']   = getGlobalSetting('shownoanswer') !== 'choose' ? getGlobalSetting('shownoanswer') : $survey->shownoanswer;
-        $templateData['showgroupinfo']  = getGlobalSetting('showgroupinfo') !== '2' ? getGlobalSetting('showgroupinfo') : $survey->showgroupinfo;
-        $templateData['showxquestions'] = getGlobalSetting('showxquestions') !== 'choose' ? getGlobalSetting('showxquestions') : $survey->showxquestions;
 
         //Start collecting aData
         $aData['surveyid'] = $iSurveyID;
@@ -2172,7 +2324,7 @@ class SurveyAdministrationController extends LSBaseController
         );
 
         if (!$userHasPermissionToUpdate) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
@@ -2221,15 +2373,25 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
+     * Returns the URL parameters (panel integration) of a survey as JSON.
+     *
+     * Note: Requires surveysettings read permission on the survey.
+     *
      * @param int $surveyid Given Survey ID.
      *
      * @return void
-     * @todo   Add TypeDoc.
+     * @throws CHttpException
      */
     public function actionGetUrlParamsJSON($surveyid)
     {
         $iSurveyID = (int) $surveyid;
-        $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (empty($oSurvey)) {
+            throw new CHttpException(404, gT("Survey not found."));
+        }
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $iSurveyID]);
         $aData = array(
             'rows' => []
@@ -2238,11 +2400,7 @@ class SurveyAdministrationController extends LSBaseController
             $row = $oSurveyParameter->attributes;
 
             if ($oSurveyParameter->targetqid != '') {
-                $row['questionTitle'] = $oSurveyParameter->question->title . ": " . ellipsize(flattenText($oSurveyParameter->question->questionl10ns[$sBaseLanguage]->question, false, true), 43, .70);
-            }
-
-            if ($oSurveyParameter->targetsqid != '') {
-                $row['questionTitle'] .= (' - ' . ellipsize(flattenText($oSurveyParameter->subquestion->questionl10ns[$sBaseLanguage]->question, false, true), 30, .75));
+                $row['questionTitle'] = $oSurveyParameter->getQuestionTitle();
             }
 
             $row['qid'] = $oSurveyParameter->targetqid;
@@ -2268,7 +2426,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         //everybody who has permission to create surveys
         if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
         $surveyId = sanitize_int(App()->request->getPost('surveyIdToCopy'));
@@ -2278,7 +2436,7 @@ class SurveyAdministrationController extends LSBaseController
             $this->redirect(App()->request->urlReferrer);
         }
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'export')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
 
@@ -2314,31 +2472,8 @@ class SurveyAdministrationController extends LSBaseController
         if ($copiedSurvey !== null) {
             $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $copiedSurvey->sid]);
             $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $copiedSurvey->sid;
-            $questionGroupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
-
-            // Make the link point to the first group/question if available
-            if (!empty($questionGroupList)) {
-                $oFirstGroup = $questionGroupList[0];
-                $oFirstQuestion = Question::model()->primary()->findByAttributes(
-                    ['gid' => $oFirstGroup->gid],
-                    ['order' => 'question_order ASC']
-                );
-
-                $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
-                    $copiedSurvey->sid,
-                    $oFirstGroup->gid,
-                    !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
-                    'structure'
-                );
-            }
         }
 
-        if ($copiedSurvey !== null) {
-            $copiedSurvey->setOptions();
-            if ($copiedSurvey->hasNewEditor) {
-                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
-            }
-        }
         $this->aData = $aData;
 
         $this->render('copySurveyResult_view', $this->aData);
@@ -2377,6 +2512,9 @@ class SurveyAdministrationController extends LSBaseController
         $option = $request->getPost('resetResponseStartId');
         $optionsDataContainer->setResetResponseStartId(isset($option) && $option == "1");
 
+        $option = $request->getPost('copySurveyUrlParameters');
+        $optionsDataContainer->setUrlParameters(isset($option) && $option == "1");
+
         $newTitle = $request->getPost('copysurveytitle');
         if (is_string($newTitle) && trim($newTitle) !== '') {
             $optionsDataContainer->setNewTitle(trim($newTitle));
@@ -2399,7 +2537,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         //everybody who has permission to create surveys
         if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
 
@@ -2417,7 +2555,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['bFailed'] = false;
 
-        $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(30) . '.' . $sExtension;
+        $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(30) . '.' . $sExtension;
         if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
             $aData['sErrorMessage'] = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024) . '<br>';
             $aData['bFailed'] = true;
@@ -2459,7 +2597,7 @@ class SurveyAdministrationController extends LSBaseController
         if (!$aData['bFailed'] && isset($aImportResults)) {
             $aData['aImportResults'] = $aImportResults;
             if (isset($aImportResults['newsid'])) {
-                // Set link pointing to survey administration overview. This link will be updated if the survey has groups
+                // Set link pointing to survey administration overview
                 $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $aImportResults['newsid']]);
                 $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $aImportResults['newsid'];
             }
@@ -2470,32 +2608,8 @@ class SurveyAdministrationController extends LSBaseController
             $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $aImportResults['newsid']]);
 
             $this->resetExpressionManager($oSurvey, $aGrouplist);
-
-            // Make the link point to the first group/question if available
-            if (!empty($aGrouplist)) {
-                $oFirstGroup = $aGrouplist[0];
-                $oFirstQuestion = Question::model()->primary()->findByAttributes(
-                    ['gid' => $oFirstGroup->gid],
-                    ['order' => 'question_order ASC']
-                );
-
-                $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
-                    $aImportResults['newsid'],
-                    $oFirstGroup->gid,
-                    !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
-                    'structure'
-                );
-            }
         }
 
-        if (isset($aImportResults['newsid'])) {
-            if (!isset($oSurvey)) {
-                $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-            }
-            if ($oSurvey->hasNewEditor) {
-                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $aImportResults['newsid']]);
-            }
-        }
         $this->aData = $aData;
         $this->render('importSurvey_view', $this->aData);
     }
@@ -2563,6 +2677,8 @@ class SurveyAdministrationController extends LSBaseController
      * Action to set expiry date to multiple surveys.
      *  (ajax request)
      *
+     * Note: The survey title is only shown for surveys the user may read.
+     *
      * @return void
      * @throws CException
      */
@@ -2584,9 +2700,12 @@ class SurveyAdministrationController extends LSBaseController
         foreach ($aSIDs as $sid) {
             if ((int)$sid > 0) {
                 $survey = Survey::model()->findByPk($sid);
+                if (empty($survey)) {
+                    continue;
+                }
                 $survey->expires = $expires;
                 $aResults[$survey->primaryKey]['title'] = ellipsize(
-                    $survey->correct_relation_defaultlanguage->surveyls_title,
+                    $this->getMassActionSurveyTitle($survey),
                     30
                 );
                 if (!Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')) {
@@ -2664,6 +2783,24 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         return (int) $surveyId;
+    }
+
+    /**
+     * Returns the survey title to show in a mass action result table.
+     *
+     * Note: Returns an empty string if the survey does not exist or the current user
+     * has no survey read permission, so mass actions do not reveal titles of foreign surveys.
+     *
+     * @param Survey|null $survey The survey
+     *
+     * @return string
+     */
+    private function getMassActionSurveyTitle($survey): string
+    {
+        if (empty($survey) || !Permission::model()->hasSurveyPermission($survey->sid, 'survey', 'read')) {
+            return '';
+        }
+        return (string) ($survey->correct_relation_defaultlanguage->surveyls_title ?? '');
     }
 
     /**
@@ -2815,12 +2952,21 @@ class SurveyAdministrationController extends LSBaseController
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
         $beforeSurveySettings->set('survey', $survey->sid);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
-        $aData['pluginSettings'] = $beforeSurveySettings->get('surveysettings');
+        $pluginSettings = $beforeSurveySettings->get('surveysettings');
+        if (is_array($pluginSettings)) {
+            // Sort the plugin panels by their displayed name, keeping the plugin IDs as keys
+            uasort($pluginSettings, function ($a, $b) {
+                return strnatcasecmp((string) ($a['name'] ?? ''), (string) ($b['name'] ?? ''));
+            });
+        }
+        $aData['pluginSettings'] = $pluginSettings;
         return $aData;
     }
 
     /**
      * Update the theme of a survey
+     *
+     * Note: The survey title in the returned results is only set if the user may read the survey.
      *
      * @param int $iSurveyID Survey ID
      * @param string $template The survey theme name
@@ -2840,7 +2986,7 @@ class SurveyAdministrationController extends LSBaseController
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
             if (!empty($bReturn)) {
-                $aResults[$iSurveyID]['title'] = $survey->correct_relation_defaultlanguage->surveyls_title;
+                $aResults[$iSurveyID]['title'] = $this->getMassActionSurveyTitle($survey);
                 $aResults[$iSurveyID]['result'] = false;
                 $aResults[$iSurveyID]['error'] = gT("User does not have valid permissions");
                 return $aResults;
@@ -2849,7 +2995,7 @@ class SurveyAdministrationController extends LSBaseController
             }
         } elseif (!Permission::model()->hasGlobalPermission('templates', 'read') && !Permission::model()->hasTemplatePermission($template)) {
             if (!empty($bReturn)) {
-                $aResults[$iSurveyID]['title'] = $survey->correct_relation_defaultlanguage->surveyls_title;
+                $aResults[$iSurveyID]['title'] = $this->getMassActionSurveyTitle($survey);
                 $aResults[$iSurveyID]['result'] = false;
                 $aResults[$iSurveyID]['error'] = gT("User does not have permission to use this theme");
                 return $aResults;
@@ -2869,7 +3015,7 @@ class SurveyAdministrationController extends LSBaseController
         TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);
 
         if (!empty($bReturn)) {
-            $aResults[$iSurveyID]['title'] = $survey->correct_relation_defaultlanguage->surveyls_title;
+            $aResults[$iSurveyID]['title'] = $this->getMassActionSurveyTitle($survey);
             $aResults[$iSurveyID]['result'] = true;
             return $aResults;
         }
@@ -2954,25 +3100,22 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();
 
-        $editorEnabled = App()->getConfig('editorEnabled') ?? false;
-        if (!$editorEnabled) {
-            $this->createSampleSubquestion(
-                1,
-                $iSurveyID,
-                $iGroupID,
-                $oQuestion->qid,
-                $sLanguage,
-                gT('Option A')
-            );
-            $this->createSampleSubquestion(
-                2,
-                $iSurveyID,
-                $iGroupID,
-                $oQuestion->qid,
-                $sLanguage,
-                gT('Option B')
-            );
-        }
+        $this->createSampleSubquestion(
+            1,
+            $iSurveyID,
+            $iGroupID,
+            $oQuestion->qid,
+            $sLanguage,
+            gT('Option A')
+        );
+        $this->createSampleSubquestion(
+            2,
+            $iSurveyID,
+            $iGroupID,
+            $oQuestion->qid,
+            $sLanguage,
+            gT('Option B')
+        );
 
         return $oQuestion->qid;
     }
@@ -3039,6 +3182,21 @@ class SurveyAdministrationController extends LSBaseController
         $oSurvey = $aData['oSurvey'];
         $activated = $aSurveyInfo['active'];
 
+        /** Send a alert if Survey seems to be active but don't have response table */
+        if ($oSurvey->isActive && !$oSurvey->hasResponsesTable) {
+            $alertstring = "<p class='mb-1'>" . gT("A problem has been detected with the survey database.") . "</p>";
+            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                $alertstring .= "<p class='mb-0'>" . sprintf(
+                    gT("You can resolve this issue by %sperforming a data integrity check%s or by deactivating and reactivating your survey to reset the response database."),
+                    '<a href="' . CHtml::encode(App()->createUrl("admin/checkintegrity")) . '">',
+                    '</a>'
+                ) . "</p>";
+            } else {
+                $alertstring .= "<p class='mb-0'>" . gT("Please contact an administrator to perform a database integrity check or deactivate and reactivate your survey to reset the response database.") . "</p>";
+            }
+            App()->setFlashMessage($alertstring, 'danger');
+        }
+
         $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
         $sumcount3 = Question::model()->countByAttributes($condition); //Checked
         $sumcount2 = QuestionGroup::model()->countByAttributes(array('sid' => $iSurveyID));
@@ -3072,7 +3230,7 @@ class SurveyAdministrationController extends LSBaseController
             $surveysummary2[] = gT("Responses will be date stamped.");
         }
         if ($oSurvey->isIpAddr) {
-            $surveysummary2[] = gT("IP Addresses will be logged");
+            $surveysummary2[] = gT("IP addresses will be saved.");
         }
         if ($oSurvey->isRefUrl) {
             $surveysummary2[] = gT("Referrer URL will be saved.");
@@ -3092,11 +3250,15 @@ class SurveyAdministrationController extends LSBaseController
         if ($oSurvey->emailresponseto != '') {
             $surveysummary2[] = gT("Detailed email notification with response data is sent to:") . ' ' . htmlspecialchars((string)$aSurveyInfo['emailresponseto']);
         }
+        if ($oSurvey->isSaveQuotaExit) {
+            $surveysummary2[] = gT("Matched quota ID will be saved.");
+        }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if (trim((string)$oSurvey->startdate) != '') {
             Yii::import('application.libraries.Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($oSurvey->startdate, 'Y-m-d H:i:s');
+            $startdate = getDateOfUTC(($oSurvey->startdate));
+            $datetimeobj = new Date_Time_Converter($startdate, 'Y-m-d H:i:s');
             $aData['startdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['startdate'] = "-";
@@ -3104,7 +3266,8 @@ class SurveyAdministrationController extends LSBaseController
 
         if (trim((string)$oSurvey->expires) != '') {
             Yii::import('application.libraries.Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($oSurvey->expires, 'Y-m-d H:i:s');
+            $expires = getDateOfUTC(($oSurvey->expires));
+            $datetimeobj = new Date_Time_Converter($expires, 'Y-m-d H:i:s');
             $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['expdate'] = "-";
@@ -3140,7 +3303,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['activated'] = $activated;
         if ($oSurvey->isActive) {
-            $aData['surveydb'] = Yii::app()->db->tablePrefix . "survey_" . $iSurveyID;
+            $aData['surveydb'] = Yii::app()->db->tablePrefix . "responses_" . $iSurveyID;
         }
 
         $aData['warnings'] = [];
@@ -3175,32 +3338,6 @@ class SurveyAdministrationController extends LSBaseController
         $aData['subviewData'] = $aData;
 
         Yii::app()->getClientScript()->registerPackage('surveysummary');
-    }
-
-    /**
-     * Load survey information based on $action.
-     * survey::_fetchSurveyInfo()
-     *
-     * @param string $action Given Action
-     * @param int $iSurveyID Given Survey ID
-     *
-     * @return void | array
-     *
-     * @deprecated use Survey objects instead
-     */
-    private function fetchSurveyInfo($action, $iSurveyID = null)
-    {
-        if ($action == 'newsurvey') {
-            $oSurvey = new Survey();
-        } elseif ($action == 'editsurvey' && $iSurveyID) {
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-        }
-
-        if (isset($oSurvey)) {
-            $attribs = $oSurvey->attributes;
-            $attribs['googleanalyticsapikeysetting'] = $oSurvey->getGoogleanalyticsapikeysetting();
-            return $attribs;
-        }
     }
 
     /**
@@ -3241,15 +3378,21 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Returns Data for general template.
      *
-     * @param int $iSurveyID Given Survey ID
+     * @param int|Survey $survey Given Survey ID, or an already loaded survey (e.g. one holding the inherited option values)
      *
      * @return array
      */
-    private function getGeneralTemplateData($iSurveyID)
+    private function getGeneralTemplateData($survey)
     {
         $aData = [];
+        if ($survey instanceof Survey) {
+            $oSurvey = $survey;
+            $iSurveyID = (int) $survey->sid;
+        } else {
+            $iSurveyID = (int) $survey;
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+        }
         $aData['surveyid'] = $iSurveyID;
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (empty($oSurvey)) {
             $oSurvey = new Survey();
         }
@@ -3322,7 +3465,7 @@ class SurveyAdministrationController extends LSBaseController
         $aLanguageData = [];
 
         foreach ($survey->allLanguages as $i => $sLang) {
-            $aLanguageData = $this->getGeneralTemplateData($survey->sid);
+            $aLanguageData = $this->getGeneralTemplateData($survey);
             // this one is created to get the right default texts fo each language
             Yii::app()->loadHelper('database');
             Yii::app()->loadHelper('surveytranslator');
@@ -3361,6 +3504,11 @@ class SurveyAdministrationController extends LSBaseController
     protected function generalTabEditSurvey($survey)
     {
         $aData['survey'] = $survey;
+
+        // Prepare theme configuration data for the view
+        $themeService = DI::getContainer()->get(SurveyThemeConfiguration::class);
+        $aData = array_merge($aData, $themeService->getThemeViewData($survey->template, $survey->oOptions ?? null));
+
         return $aData;
     }
 
@@ -3485,8 +3633,8 @@ class SurveyAdministrationController extends LSBaseController
                 'No parameters defined' => gT('No parameters defined'),
                 'Search prompt' => gT('Search:'),
                 'Progress' => gT('Showing _START_ to _END_ of _TOTAL_ entries'),
-                'No, cancel' => gT('No, cancel'),
-                'Yes, delete' => gT('Yes, delete'),
+                'No, cancel' => gT('Cancel'),
+                'Yes, delete' => gT('Delete'),
                 'Save' => gT('Save'),
                 'Cancel' => gT('Cancel'),
             ],
@@ -3514,6 +3662,10 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Method to save URL Params (Panel Integration)
      *
+     * Note: The parameter is always stored in the survey from the request, an existing
+     * parameter must belong to it and target questions must be part of it.
+     *
+     * @return string|void
      * @throws CException
      */
     public function actionSaveUrlParam()
@@ -3536,14 +3688,7 @@ class SurveyAdministrationController extends LSBaseController
 
         // Based on Database::actionUpdateSurveyLocaleSettings()
         $paramData['parameter'] = trim($paramData['parameter'] ?? '');
-        if (
-            $paramData['parameter'] == ''
-            || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $paramData['parameter'])
-            || $paramData['parameter'] == 'sid'
-            || $paramData['parameter'] == 'newtest'
-            || $paramData['parameter'] == 'token'
-            || $paramData['parameter'] == 'lang'
-        ) {
+        if (!SurveyURLParameter::isValidParameterName($paramData['parameter'])) {
             return $this->renderPartial(
                 '/admin/super/_renderJson',
                 ['data' => ['success' => false, 'message' => gT("Invalid URL parameter")]]
@@ -3557,13 +3702,27 @@ class SurveyAdministrationController extends LSBaseController
             $paramData['targetsqid'] = null;
         }
 
+        // The target question must belong to this survey
+        foreach (['targetqid', 'targetsqid'] as $targetAttribute) {
+            if (
+                !empty($paramData[$targetAttribute])
+                && !Question::model()->countByAttributes(['qid' => (int)$paramData[$targetAttribute], 'sid' => $surveyId])
+            ) {
+                return $this->renderPartial(
+                    '/admin/super/_renderJson',
+                    ['data' => ['success' => false, 'message' => gT("Invalid question ID")]]
+                );
+            }
+        }
+
         $paramId = !empty($paramData['id']) ? sanitize_int($paramData['id']) : null;
+        // Never let the request move the parameter to another survey
+        $paramData['sid'] = $surveyId;
         if (empty($paramId)) {
             $URLParam = new SurveyURLParameter();
-            $paramData['sid'] = $surveyId;
         } else {
             $URLParam = SurveyURLParameter::model()->findByPk($paramId);
-            if (empty($URLParam || $URLParam->sid != $surveyId)) {
+            if (empty($URLParam) || $URLParam->sid != $surveyId) {
                 return $this->renderPartial(
                     '/admin/super/_renderJson',
                     ['data' => ['success' => false, 'message' => gT("URL parameter not found")]]
@@ -3589,6 +3748,8 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Method to delete URL Params (Panel Integration)
      *
+     * Note: Only parameters belonging to the survey from the request can be deleted.
+     *
      * @return void
      * @throws CDbException
      * @throws CHttpException
@@ -3596,7 +3757,7 @@ class SurveyAdministrationController extends LSBaseController
     public function actionDeleteUrlParam()
     {
         $surveyId = sanitize_int(Yii::app()->request->getPost('surveyId'));
-        $redirectUrl = ['surveyAdministration/rendersidemenulink/', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
+        $redirectUrl = ['surveyAdministration/rendersidemenulink', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
         $paramId = Yii::app()->request->getPost('urlParamId');
         if (empty($paramId)) {
             throw new CHttpException(400, gT('Invalid request'));
@@ -3607,7 +3768,7 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         $paramId = sanitize_int($paramId);
-        $URLParam = SurveyURLParameter::model()->findByPk($paramId);
+        $URLParam = SurveyURLParameter::model()->findByAttributes(['id' => $paramId, 'sid' => $surveyId]);
         if (empty($URLParam)) {
             throw new CHttpException(400, gT("URL parameter not found"));
         }

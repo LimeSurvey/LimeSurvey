@@ -3,7 +3,7 @@
 
 /*
  * LimeSurvey (tm)
- * Copyright (C) 2012-2016 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2012-2016 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v3 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -552,7 +552,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   function deleteSubquestionInput(e) {
     e.preventDefault();
     const target = e.target;
-    // 1.) Check if there is at least one answe
+    // 1.) Check if there is at least one answer
     const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
     if (countanswers > 1) {
       // NB: Only answer options use position. Subquestions use id.
@@ -601,7 +601,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   function deleteAnswerOptionInput(e) {
     e.preventDefault();
     const target = e.target;
-    // 1.) Check if there is at least one answe
+    // 1.) Check if there is at least one answer
     const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
     if (countanswers > 1) {
       // NB: Only answer options use position. Subquestions use id.
@@ -702,19 +702,23 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
 
     // We build the datas for the request
-    // TODO: Use object instead of string.
-    let datas = `surveyid=${data.surveyid}`;
-    datas += `&gid=${data.gid}`;
-    datas += `&qid=${data.qid}`;
-    datas += `&codes=${codesJson}`;
-    datas += `&scale_id=${scaleId}`;
-    datas += '&position=0';
-    datas += `&languages=${languages}`;
+    const params = $.param({
+      surveyid: data.surveyid,
+      gid: data.gid,
+      qid: data.qid,
+      scale_id: scaleId,  // jshint ignore:line
+      position: 0,
+      languages,
+    });
+    // Codes are posted: On long lists they would exceed the maximum URL length
+    const datas = {
+      codes: codesJson,
+    };
 
     // We get the HTML of the different rows to insert  (one by language)
     $.ajax({
-      type: 'GET',
-      url: url,
+      type: 'POST',
+      url: url + (url.indexOf('?') === -1 ? '?' : '&') + params,
       data: datas,
       success(arrayofhtml) {
         // arrayofhtml is a json object containing the different HTML row by language
@@ -1220,7 +1224,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           numericSuffix = `${currentCharacter}${numericSuffix}`; // store it in a string
           n++;
         } else {
-          numeric = false; // At first non numeric character found, the loop is stoped
+          numeric = false; // At first non numeric character found, the loop is stopped
         }
     }
     // Sometimes "0" is interpreted as NaN so test if it's just a missing Zero
@@ -1463,7 +1467,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {Promise}
    */
   function ajaxcheckdup() {
-    check = true; // set check to true everytime on call
+    check = true; // set check to true every time on call
     return $.getJSON(languageJson.lanameurl, (data) => {
       $.each(data, (key, val) => {
         $('#saveaslabelModal').modal('hide');
@@ -1613,7 +1617,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         if (data.responseJSON) {
           LS.LsGlobalNotifier.createAlert(data.responseJSON.message, 'danger', {showCloseButton: true});
         } else {
-          alert('Internal eror from Ajax call');
+          alert('Internal error from Ajax call');
           throw 'abort';
         }
       }

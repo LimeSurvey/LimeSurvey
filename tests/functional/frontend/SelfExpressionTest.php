@@ -9,6 +9,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
  * Tests issue #14998, a problem with emcache and 'self.NAOK' expressions.
  *
  * @since 2019-07-01
+ * @group expression
  */
 class SelfExpressionTest extends TestBaseClassWeb
 {
@@ -71,7 +72,7 @@ class SelfExpressionTest extends TestBaseClassWeb
             sleep(1);
 
             /** @var string */
-            $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['Q00']->qid;
+            $sgqa = 'Q' . $questions['Q00']->qid;
 
             /** @var RemoteWebElement */
             $textarea = $web->findElement(WebDriverBy::id('answer' . $sgqa));
@@ -89,7 +90,7 @@ class SelfExpressionTest extends TestBaseClassWeb
             sleep(1);
 
             /** @var string */
-            $sgqa2 = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['Q01']->qid;
+            $sgqa2 = 'Q' . $questions['Q01']->qid;
 
             /** @var RemoteWebElement */
             $textarea2 = $web->findElement(WebDriverBy::id('answer' . $sgqa2));

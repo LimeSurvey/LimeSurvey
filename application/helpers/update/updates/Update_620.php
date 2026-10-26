@@ -9,6 +9,7 @@ class Update_620 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()

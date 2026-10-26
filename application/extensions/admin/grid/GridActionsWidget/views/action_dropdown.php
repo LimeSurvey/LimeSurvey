@@ -25,7 +25,8 @@
                     foreach ($dropdownItem['submenu_items'] as $subItem) { ?>
                         <li>
                             <?php
-                            $this->render('dropdown_item',
+                            $this->render(
+                                'dropdown_item',
                                 [
                                     'tooltip' => $subItem['tooltip'] ?? '',
                                     'title' => $subItem['title'],
@@ -44,7 +45,8 @@
                 <?php
             } else { ?>
                 <li>
-                <?php $this->render('dropdown_item',
+                <?php $this->render(
+                    'dropdown_item',
                     [
                         'tooltip' => $dropdownItem['tooltip'] ?? '',
                         'title' => $dropdownItem['title'],

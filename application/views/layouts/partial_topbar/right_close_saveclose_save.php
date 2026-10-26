@@ -1,4 +1,5 @@
 <?php
+
 /** @var bool $isReturnBtn */
 /** @var bool $isCloseBtn */
 /** @var bool $isSaveAndCloseBtn */

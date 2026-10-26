@@ -2,5 +2,4 @@
 
 class DataSetEquation extends QuestionBaseDataSet
 {
-
 }

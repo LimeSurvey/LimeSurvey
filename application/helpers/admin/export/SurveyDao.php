@@ -12,9 +12,11 @@ class SurveyDao
      * on language codes.
      *
      * @param int $id
+     * @param $lang
+     * @param FormattingOptions $oOptions
      * @return SurveyObj
      */
-    public function loadSurveyById($id, $lang = null, FormattingOptions $oOptions = null)
+    public function loadSurveyById($id, $lang = null, ?FormattingOptions $oOptions = null)
     {
         $survey = new SurveyObj();
 
@@ -53,6 +55,15 @@ class SurveyDao
             }
             $survey->answers[$aAnswer->question->qid][$aAnswer->scale_id][$aAnswer->code] = $answer;
         }
+        // Ranking items are subquestions: add their texts so ranked codes resolve like answer options
+        foreach (Question::getRankingItemTexts($intId, $lang) as $rankingQid => $itemTexts) {
+            foreach ($itemTexts as $code => $text) {
+                if (!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1) {
+                    $text = stripTagsFull($text);
+                }
+                $survey->answers[$rankingQid][0][$code] = $text;
+            }
+        }
         //Load language settings for requested language
         $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = ' . $intId . ' AND surveyls_language = \'' . $lang . '\';';
         $recordSet = Yii::app()->db->createCommand($sQuery)->query();
@@ -77,7 +88,7 @@ class SurveyDao
      * @param SurveyObj $survey
      * @param int $iMinimum
      * @param int $iMaximum
-     * @param string $sFilter An optional filter for the results, i  string or arry of string
+     * @param string $sFilter An optional filter for the results, is a string or an array of strings
      * @param string $completionState all, complete or incomplete
      * @param array $aFields If empty all, otherwise only select the selected fields from the survey response table
      * @param string $sResponsesId
@@ -90,7 +101,17 @@ class SurveyDao
         $aSelectFields = Yii::app()->db->schema->getTable($oSurvey->responsesTableName)->getColumnNames();
         // Get info about the survey
         if (!empty($aFields)) {
-            $aSelectFields = array_intersect($aFields, $aSelectFields);
+            // Per-rank-position ranking fields ("Q{qid}_S{sqid}") have no column of
+            // their own: their values are decoded from the base "Q{qid}" JSON column
+            // (see Writer::write()), so that column must stay selected whenever one
+            // of its rank fields is requested.
+            $aRankingBaseFields = [];
+            foreach ($aFields as $sField) {
+                if (isset($survey->fieldMap[$sField]) && $survey->fieldMap[$sField]['type'] === Question::QT_R_RANKING && $survey->fieldMap[$sField]['suffix'] !== '') {
+                    $aRankingBaseFields[] = 'Q' . $survey->fieldMap[$sField]['qid'];
+                }
+            }
+            $aSelectFields = array_intersect(array_merge($aFields, $aRankingBaseFields), $aSelectFields);
         }
         // Always add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
         foreach ($aSelectFields as &$sField) {
@@ -108,18 +129,18 @@ class SurveyDao
                 $sField = "tokentable." . $sField;
             }
             $aSelectFields = array_merge($aSelectFields, array_diff($aTokenFields, ['tokentable.token']));
-            //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.token'));
-            //$aSelectFields[]='{{survey_' . $survey->id . '}}.token';
+            //$aSelectFields=array_diff($aSelectFields, array('{{responses_{$survey->id}}}.token'));
+            //$aSelectFields[]='{{responses_' . $survey->id . '}}.token';
         }
         if ($survey->info['savetimings'] == "Y") {
-            $oRecordSet->leftJoin("{{survey_" . $survey->id . "_timings}} survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
-            $aTimingFields = Yii::app()->db->schema->getTable("{{survey_" . $survey->id . "_timings}}")->getColumnNames();
+            $oRecordSet->leftJoin("{{timings_" . $survey->id . "}} timings", "{{responses_" . $survey->id . "}}.id = timings.id");
+            $aTimingFields = Yii::app()->db->schema->getTable("{{timings_" . $survey->id . "}}")->getColumnNames();
             foreach ($aTimingFields as &$sField) {
-                $sField = "survey_timings." . $sField;
+                $sField = "timings." . $sField;
             }
-            $aSelectFields = array_merge($aSelectFields, array_diff($aTimingFields, ['survey_timings.id']));
-            //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.id'));
-            //$aSelectFields[]='{{survey_' . $survey->id . '}}.id';
+            $aSelectFields = array_merge($aSelectFields, array_diff($aTimingFields, ['timings.id']));
+            //$aSelectFields=array_diff($aSelectFields, array('{{responses_{$survey->id}}}.id'));
+            //$aSelectFields[]='{{responses_' . $survey->id . '}}.id';
         }
         if (empty($sResponsesId)) {
             $aParams = [

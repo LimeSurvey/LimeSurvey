@@ -113,6 +113,7 @@ class SaveService
     public function save($surveyId, $input)
     {
         $data = $this->normaliseInput($surveyId, $input);
+        $isNewQuestion = empty($data['question']['qid']);
 
         $question = $this->questionService
             ->save($data);
@@ -121,6 +122,10 @@ class SaveService
             $question->qid,
             $data['questionL10n']
         );
+
+        if ($isNewQuestion) {
+            $this->attributesService->saveUserDefaults($question);
+        }
 
         $this->attributesService
             ->saveAdvanced(
@@ -179,6 +184,8 @@ class SaveService
         // / questionI10N  needs to be updatecd in the interface to questionL10n
         $data['questionL10n']     = $input['questionI10N'] ?? [];
         $data['advancedSettings'] = $input['advancedSettings'] ?? [];
+        $data['loadCurrentAdvancedSettings'] =
+            $input['loadCurrentAdvancedSettings'] ?? false;
         $data['answeroptions']    = $input['answeroptions'] ?? null;
         $data['subquestions']     = $input['subquestions'] ?? null;
 

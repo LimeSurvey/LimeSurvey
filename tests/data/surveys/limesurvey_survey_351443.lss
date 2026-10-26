@@ -20,7 +20,7 @@
     <cid><![CDATA[2751]]></cid>
     <qid><![CDATA[3864]]></qid>
     <cqid><![CDATA[3869]]></cqid>
-    <cfieldname><![CDATA[351443X26X3869]]></cfieldname>
+    <cfieldname><![CDATA[Q3869]]></cfieldname>
     <method><![CDATA[!=]]></method>
     <value><![CDATA[Y]]></value>
     <scenario><![CDATA[1]]></scenario>
@@ -29,7 +29,7 @@
     <cid><![CDATA[2787]]></cid>
     <qid><![CDATA[4009]]></qid>
     <cqid><![CDATA[3869]]></cqid>
-    <cfieldname><![CDATA[351443X26X3869]]></cfieldname>
+    <cfieldname><![CDATA[Q3869]]></cfieldname>
     <method><![CDATA[!=]]></method>
     <value><![CDATA[Y]]></value>
     <scenario><![CDATA[1]]></scenario>
@@ -38,7 +38,7 @@
     <cid><![CDATA[2753]]></cid>
     <qid><![CDATA[3869]]></qid>
     <cqid><![CDATA[3863]]></cqid>
-    <cfieldname><![CDATA[351443X26X3863]]></cfieldname>
+    <cfieldname><![CDATA[Q3863]]></cfieldname>
     <method><![CDATA[<]]></method>
     <value><![CDATA[9000]]></value>
     <scenario><![CDATA[1]]></scenario>
@@ -47,7 +47,7 @@
     <cid><![CDATA[2749]]></cid>
     <qid><![CDATA[3858]]></qid>
     <cqid><![CDATA[3869]]></cqid>
-    <cfieldname><![CDATA[351443X26X3869]]></cfieldname>
+    <cfieldname><![CDATA[Q3869]]></cfieldname>
     <method><![CDATA[!=]]></method>
     <value><![CDATA[Y]]></value>
     <scenario><![CDATA[1]]></scenario>
@@ -56,7 +56,7 @@
     <cid><![CDATA[2750]]></cid>
     <qid><![CDATA[3859]]></qid>
     <cqid><![CDATA[3869]]></cqid>
-    <cfieldname><![CDATA[351443X26X3869]]></cfieldname>
+    <cfieldname><![CDATA[Q3869]]></cfieldname>
     <method><![CDATA[!=]]></method>
     <value><![CDATA[Y]]></value>
     <scenario><![CDATA[1]]></scenario>
@@ -142,7 +142,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[((351443X26X3869.NAOK != "Y"))]]></relevance>
+    <relevance><![CDATA[((Q3869.NAOK != "Y"))]]></relevance>
    </row>
    <row>
     <qid><![CDATA[3859]]></qid>
@@ -160,7 +160,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[((351443X26X3869.NAOK != "Y"))]]></relevance>
+    <relevance><![CDATA[((Q3869.NAOK != "Y"))]]></relevance>
    </row>
    <row>
     <qid><![CDATA[3863]]></qid>
@@ -196,7 +196,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[((351443X26X3869.NAOK != "Y"))]]></relevance>
+    <relevance><![CDATA[((3869.NAOK != "Y"))]]></relevance>
    </row>
    <row>
     <qid><![CDATA[3869]]></qid>
@@ -214,7 +214,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[(((!is_empty(351443X26X3863.NAOK) && (351443X26X3863.NAOK < 9000))))]]></relevance>
+    <relevance><![CDATA[(((!is_empty(Q3863.NAOK) && (Q3863.NAOK < 9000))))]]></relevance>
    </row>
    <row>
     <qid><![CDATA[4009]]></qid>
@@ -232,7 +232,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[((351443X26X3869.NAOK != "Y"))]]></relevance>
+    <relevance><![CDATA[((Q3869.NAOK != "Y"))]]></relevance>
     <modulename/>
    </row>
   </rows>

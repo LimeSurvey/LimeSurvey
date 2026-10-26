@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -41,7 +41,7 @@ class RegisterController extends LSYii_Controller
      */
     private $sMessage;
     /**
-     * The message to diplay after sending the register email
+     * The message to display after sending the register email
      */
     private $sMailMessage;
 
@@ -106,7 +106,7 @@ class RegisterController extends LSYii_Controller
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         } elseif (!$oSurvey->getIsAllowRegister() || !tableExists("{{tokens_{$iSurveyId}}}")) {
             throw new CHttpException(404, "The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
-        } elseif (!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'))) {
+        } elseif (!is_null($oSurvey->expires) && $oSurvey->expires < gmdate("Y-m-d H:i:s")) {
             $this->redirect(array('survey/index', 'sid' => $iSurveyId, 'lang' => $sLanguage));
         }
         /* Fix language according to existing language in survey */
@@ -180,7 +180,7 @@ class RegisterController extends LSYii_Controller
         //Check that the email is a valid style address
         if ($aFieldValue['sEmail'] == "") {
             $this->aRegisterErrors[] = gT("You must enter a valid email. Please try again.");
-        } elseif (!validateEmailAddress(trim((string) $aFieldValue['sEmail']))) {
+        } elseif (!LimeMailer::validateAddress(trim((string) $aFieldValue['sEmail']))) {
             $this->aRegisterErrors[] = gT("The email you used is not valid. Please try again.");
         }
         //Check and validate attribute
@@ -309,9 +309,9 @@ class RegisterController extends LSYii_Controller
 
         $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt(); // Reload the token (needed if just created)
         // Make sure enough time has passed since the last email was sent
-        $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+        $now = gmdate("Y-m-d H:i");
         $delay = Yii::app()->getConfig('registrationEmailDelay');
-        if (!empty($oToken->sent) && $oToken->sent != "N" && dateShift($oToken->sent, "Y-m-d H:i", $delay) > $now) {
+        if (!empty($oToken->sent) && $oToken->sent != "N" && dateShiftRelative($oToken->sent, "Y-m-d H:i", $delay) > $now) {
             return false;
         }
 
@@ -330,11 +330,11 @@ class RegisterController extends LSYii_Controller
             Token::model($iSurveyId)->updateByPk($iTokenId, array('sent' => $now));
             $aMessage['mail-message'] = $this->sMailMessage;
         } else {
-            $aMessage['mail-message-error'] = gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.");
+            $aMessage['mail-message-error'] = gT("You are registered but an error occurred when trying to send the email - please contact the survey administrator.");
         }
         $aMessage['mail-contact'] = sprintf(gT("Survey administrator %s (%s)"), $aSurveyInfo['adminname'], $aSurveyInfo['adminemail']);
         $this->sMessage = $this->renderPartial('/survey/system/message', array('aMessage' => $aMessage), true);
-        // Always return true : if we come here, we always trye to send an email
+        // Always return true : if we come here, we always try to send an email
         return true;
     }
 
@@ -364,12 +364,12 @@ class RegisterController extends LSYii_Controller
                 $this->aRegisterErrors[] = gT("This email address cannot be used because it was opted out of this survey.");
                 }
             } elseif (!$oToken->emailstatus && $oToken->emailstatus != "OK") {
-                $this->aRegisterErrors[] = gT("This email address is already registered but email to that adress could not be delivered.");
+                $this->aRegisterErrors[] = gT("This email address is already registered but email to that address could not be delivered.");
             } else {
                 $this->sMailMessage = gT("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
-                $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+                $now = gmdate("Y-m-d H:i");
                 $delay = Yii::app()->getConfig('registrationEmailDelay');
-                if (!empty($oToken->sent) && $oToken->sent != "N" && dateShift($oToken->sent, "Y-m-d H:i", $delay) > $now) {
+                if (!empty($oToken->sent) && $oToken->sent != "N" && dateShiftRelative($oToken->sent, "Y-m-d H:i", $delay) > $now) {
                     $this->sMailMessage = gT("The address you have entered is already registered. An email has already been sent previously. A new email will not be sent yet. Please try again later.");
                     $this->sendRegistrationEmail = false;
                 }
@@ -458,7 +458,7 @@ class RegisterController extends LSYii_Controller
     public function getStartDate($iSurveyId)
     {
         $aSurveyInfo = getSurveyInfo($iSurveyId, Yii::app()->language);
-        if (empty($aSurveyInfo['startdate']) || dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")) >= $aSurveyInfo['startdate']) {
+        if (empty($aSurveyInfo['startdate']) || gmdate("Y-m-d H:i:s") >= $aSurveyInfo['startdate']) {
                     return;
         }
         Yii::app()->loadHelper("surveytranslator");

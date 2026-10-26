@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -23,7 +23,7 @@ if (!defined('BASEPATH')) {
 function CheckForDBUpgrades($subaction = null)
 {
     $dbversionnumber = Yii::app()->getConfig('dbversionnumber');
-    $currentDBVersion = GetGlobalSetting('DBVersion');
+    $currentDBVersion = Yii::app()->getConfig('DBVersion');
     if (intval($dbversionnumber) > intval($currentDBVersion)) {
         Yii::app()->loadHelper('update.updatedb');
         if (isset($subaction) && $subaction == "yes") {
@@ -51,7 +51,7 @@ function CheckForDBUpgrades($subaction = null)
                             'htmlOptions' => ['class' => "flash-$key"]
                         ], true) . "\n";
                 }
-                $data = $msg . "<p><a href='" . Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db") . "'>" . gT("Please fix this error in your database and try again") . "</a></p></div> ";
+                $data = $msg . "<p><a href='" . Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db") . "'>" . gT("Back to the database update page") . "</a></p></div> ";
             }
             return $data;
         } else {

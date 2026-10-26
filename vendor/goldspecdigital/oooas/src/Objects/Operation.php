@@ -107,7 +107,7 @@ class Operation extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function get(string $objectId = null): self
+    public static function get(?string $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_GET);
     }
@@ -116,7 +116,7 @@ class Operation extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function put(string $objectId = null): self
+    public static function put(?string $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_PUT);
     }
@@ -125,7 +125,7 @@ class Operation extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function post(string $objectId = null): self
+    public static function post(?string $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_POST);
     }
@@ -134,7 +134,7 @@ class Operation extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function delete(string $objectId = null): self
+    public static function delete(?string $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_DELETE);
     }
@@ -143,7 +143,7 @@ class Operation extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function head(string $objectId = null): self
+    public static function head(?string $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_HEAD);
     }
@@ -152,7 +152,7 @@ class Operation extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function patch(string $objectId = null): self
+    public static function patch(?string $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_PATCH);
     }
@@ -161,7 +161,7 @@ class Operation extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function trace(string $objectId = null): self
+    public static function trace(?string $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_TRACE);
     }

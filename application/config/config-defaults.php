@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -73,23 +73,21 @@ $config['printanswershonorsconditions'] = 1; // If set to 1, only relevant answe
 $config['repeatheadings']            = '25'; // The number of answers to show before repeating the headings in array (flexible) questions. Set to 0 to turn this feature off
 $config['minrepeatheadings']         = 3; // The minimum number of remaining answers that are required before repeating the headings in array (flexible) questions.
 $config['defaultlang']               = 'en'; // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
-$config['timeadjust']                = 0; // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
+$config['displayTimezone']           = ''; // Timezone (for example 'Europe/Berlin') which is used to displayed any date/time information in the application - if empty defaults to UTC
 
-$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouput in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
+$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be output in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
 $config['maxdbsizeforbackup']        = 0; // The maximum database size in MB that is backed up up by ComfortUpdate - 0 means that the default will be determined by the ComfortUpdate server (currently 50 MB)
 $config['allowexportalldb']          = 0; // Default 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported (use carefully)
 $config['maxDatabaseSizeForDump']    = 256; // Maximum database size in megabytes to be able to download without errors
 
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
-$config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
-$config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
+$config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numerical order for comparison operators in conditions. If you need string comparison operators, set this parameter to 1
 $config['blacklistallsurveys']       = 'N'; // Blocklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']       = 'N'; // Blocklist participant for any new added survey once the global field is set
 $config['blockaddingtosurveys']      = 'Y'; // Don't allow blocklisted participants to be added to new survey
 $config['hideblacklisted']           = 'N'; // Don't show blocklisted participants
 $config['deleteblacklisted']         = 'N'; // Delete globally blocklisted participant from the database
 $config['allowunblacklist']          = 'N'; // Allow participant to unblocklist himself/herself
-$config['userideditable']            = 'N'; // Allow editing of user IDs
 
 $config['defaulttheme']              = 'fruity_twentythree'; // This setting specifys the default theme used for the 'public list' of surveys
 $config['createsample']              = true;
@@ -97,24 +95,27 @@ $config['customassetversionnumber']  = 1;        // Used to generate the path of
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
 $config['allowedthemeimageformats'] = 'gif,ico,jpg,jpeg,png'; // Image file types allowed to be uploaded in the themes section.
-$config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
-$config['allowedfileuploads'] = [
-    //Documents
-    'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',
-    //Images - as mentioned above be very careful if you want to allow SVG files
-    'png', 'bmp', 'gif', 'jpg', 'jpeg', 'tif',
-    // Iphone file extensions (version 11 and above)
-    'heif', 'heic', 'heifs', 'heics', 'avci', 'avcs', 'avif', 'avifs',
-    //soundfiles
-    'wav', 'mp3', 'flac', 'aac', 'm4a', 'opus', 'ogg', 'wma', 'mka',
-    //videos
-    'mp4', 'avi', 'mkv', 'mpeg', 'mpg', 'wmv', 'h264', 'h265', 'mov', 'webm', 'divx', 'xvid',
+/**
+ * MIME types accepted for each image file extension listed in allowedthemeimageformats.
+ * Both the MIME type detected from the file content and the one sent by the browser must match one of them.
+ * Extensions without an entry here fall back to the MIME types of the file extension map (see magic_file).
+ */
+$config['imagemimetypes'] = [
+    'gif' => ['image/gif'],
+    'ico' => ['image/x-icon', 'image/vnd.microsoft.icon', 'image/ico'],
+    'jpg' => ['image/jpeg', 'image/jpg'],
+    'jpeg' => ['image/jpeg', 'image/jpg'],
+    'png' => ['image/png'],
+    'svg' => ['image/svg+xml', 'image/svg'],
 ];
+$config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,dotx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
-$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
+$config['allowedpluginuploads'] = 'gif,ico,jpg,jpeg,png,svg,webp,pdf,dat,icc,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
+
+$config['showserverconfigurationcheck'] = true; // Show the server configuration check (memory_limit, max_input_vars, post_max_size, upload_max_filesize) on the 'Check data integrity' page. Set to false to hide it, e.g. if your hosting does not allow you to change these PHP settings.
 
 $config['maximum_unzipped_size'] = '500000000'; // Max size after zip unarchiving in bytes.
 
@@ -153,7 +154,7 @@ $config['strip_query_from_referer_url'] = false;
 $config['defaulthtmleditormode'] = 'inline';
 
 // surveyPreview_require_Auth
-// Enforce Authentication to the LS system before beeing able to preview a survey (testing a non active survey)
+// Enforce Authentication to the LS system before being able to preview a survey (testing a non active survey)
 // Default is true
 $config['surveyPreview_require_Auth'] = true;
 
@@ -163,6 +164,15 @@ $config['surveyPreview_require_Auth'] = true;
 // The user can call the limesurvey login at /limesurvey/admin and pass username and
 // a one time password which was previously written into the users table (column one_time_pw) by
 // an external application.
+// The column value is a PHP password_hash() hash of the one time password (same algorithm as
+// the normal password field), optionally followed by a colon and an identifier of the actor
+// the password was issued to (e.g. a support agent id), as "<passwordHash>:<actorId>". When
+// present, the actor identifier is recorded in the audit log (plugin AuditLog) against the
+// resulting login, so third-party access can be told apart from a regular login. A value
+// without a colon is treated as a hash with no actor identifier.
+// For backward compatibility, a plain SHA-256 hex digest is still accepted instead of a
+// password_hash() hash, but this is OBSOLETE and will be removed in version 8.x; it
+// should not be used for new integrations.
 // This setting has to be turned on to enable the usage of one time passwords (default = off).
 $config['use_one_time_passwords'] = false;
 
@@ -197,7 +207,7 @@ $config['auth_webserver'] = false;
 // Enable username mapping
 // This parameter is an array mapping username from the webserver to username
 // defined in LimeSurvey
-// Can be usefull if you have no way to add an 'admin' user to the database
+// Can be useful if you have no way to add an 'admin' user to the database
 // used by the webserver, then you could map your true loginame to admin with
 // $config['auth_webserver_user_map'] = array ('mylogin' => 'admin');
 $config['auth_webserver_user_map'] = array();
@@ -314,7 +324,7 @@ $config['demoMode'] = false;
 * Prefill the login mask using the parameters 'defaultuser' and  'default pass'. This works only if demo mode (demoMode) is activated.
 * Also a notice will be shown that the user knows that he can just login by using the Login button.
 *
-* @var $config['demoModePrefill']  boolan  If set to true prefill the login mask
+* @var $config['demoModePrefill']  boolean  If set to true prefill the login mask
 */
 $config['demoModePrefill'] = false;
 
@@ -363,7 +373,7 @@ $config['standard_themes_readonly'] = true;
 
 /**
 * When this settings is true/1 (default = false/0) then the printable survey option will show a reference
-* to the "lime_survey_12345" table which stores the survey answers.
+* to the "lime_responses_12345" table which stores the survey answers.
 * It will show a code like "12345X22X333name":
 * 12345 = surveyID
 * 22 = groupID
@@ -441,7 +451,7 @@ $config['quexmlshowprintablehelp'] = false;
 // QueXML-PDF: If set to true, each question in the PDF will be identified by the question title instead of the section and number
 $config['quexmlusequestiontitleasid'] = false;
 
-// QueXML: If set to true, the Data/Time answers will be formated with the survey's date format
+// QueXML: If set to true, the Date/Time answers will be formatted with the survey's date format
 $config['quexmlkeepsurveydateformat'] = false;
 
 // QueXML: Width of the question title column in MM
@@ -456,13 +466,13 @@ $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of re
 */
 
 /**
-*  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/fonts
+*  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/assets/fonts
 *  Set this to specific font-file (for example 'DejaVuSans.ttf') or set it to 'auto' and LimeSurvey tried to pick the best font depending on your survey base language
 */
 $config['chartfontfile'] = 'auto';
 /**
-*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/fonts
-*  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/fonts, an alert is sent to admin
+*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/assets/fonts
+*  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/assets/fonts, an alert is sent to admin
 */
 $config['alternatechartfontfile'] = array(
     'hi' => 'FreeSans.ttf',
@@ -487,42 +497,6 @@ $config['chartfontsize'] = 10;
 * Recommended: 7
 */
 $config['updatecheckperiod'] = 7;
-
-
-/**
-* @var $showxquestions string allows you to control whether or not
-* {THEREAREXQUESTIONS} is displayed (if it is included in a theme)
-*   hide = always hide {THEREAREXQUESTIONS}
-*   show = always show {THEREAREXQUESTIONS}
-*   choose = allow survey admins to choose
-*/
-$config['showxquestions'] = 'choose';
-
-
-/**
-* @var $showgroupinfo string allows you to control whether or not
-* {GROUPNAME} and/or {GROUPDESCRIPTION} are displayed (if they are
-* included in a theme)
-*   none = always hide both title and description
-*   name = always {GROUPNAME} only
-*   description = always show {GROUPDESCRIPTION} only
-*   both = always show both {GROUPNAME} and {GROUPDESCRIPTION}
-*   choose = allow survey admins to choose
-*/
-$config['showgroupinfo'] = 'choose';
-
-
-/**
-* @var $showqnumcode string allows you to control whether or not
-* {QUESTION_NUMBER} and/or {QUESTION_CODE} are displayed (if they
-* are included in a theme)
-*   none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
-*   code = always show {QUESTION_CODE} only
-*   number = always show {QUESTION_NUMBER} only
-*   both = always show both {QUESTION_NUMBER} and {QUESTION_CODE}
-*   choose = allow survey admins to choose
-*/
-$config['showqnumcode'] = 'choose';
 
 
 /**
@@ -643,11 +617,22 @@ $config['restrictToLanguages'] = '';
 * @var string
 */
 $config['RPCInterface'] = 'off';
+
+/**
+* This parameter enables/disables the 'Access-Control-Allow-Origin: *' header on the RPC interface
+* Set to 1 to allow browser-based applications on other domains to use the RPC interface (CORS)
+* Set to 0 if the RPC interface is only used by server-side scripts or from the same domain
+* Can be changed in Global settings > Interfaces
+* @var integer
+*/
 $config['add_access_control_header'] = 1;
 
 /**
 * This parameter sets the default session expiration time in seconds
 * Default is 2 hours
+* Note: If you use table-based sessions (see config.php) with MySQL/MariaDB, make sure the server setting
+* max_allowed_packet is big enough: The session of a participant taking a very large survey can grow to 15 MB
+* and more, and a session bigger than max_allowed_packet is silently not saved. We recommend at least 64M.
 * @var integer
 */
 $config['iSessionExpirationTime'] = 7200;
@@ -711,7 +696,7 @@ if (!isset($argv[0]) && Yii::app() != null) {
 
 $config['assets'] = 'assets/';
 
-// URL defintions
+// URL definitions
 $config['homeurl']                = $config['publicurl'] . 'admin'; // The website location (url) of the admin scripts
 $config['tempurl']                = $config['publicurl'] . 'tmp';
 $config['imageurl']               = $config['publicurl'] . 'assets/images'; // Location of button bar files for admin script
@@ -730,7 +715,7 @@ $config['adminimageurl']          = $config['styleurl'] . $config['admintheme'] 
 $config['applicationurl']         = $config['publicurl'] . 'application/';
 $config['extensionsurl']          = $config['applicationurl'] . 'extensions/';
 $config['adminstyleurl']          = $config['styleurl'] . $config['admintheme'] . '/'; // Location of button bar files for admin script
-$config['userfontsurl']            = $config['uploadurl'] . '/fonts'; // Location of user's fonts
+$config['userfontsurl']           = $config['uploadurl'] . '/fonts'; // Location of user's fonts
 
 // Dir
 $config['publicdir']                = $config['rootdir']; // The directory path of the public scripts
@@ -748,9 +733,9 @@ $config['styledir']                 = $config['rootdir'] . DIRECTORY_SEPARATOR .
 $config['questiontypedir']          = $config['rootdir'] . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR . 'questionTypes';
 $config['userthemerootdir']         = $config['uploaddir'] . DIRECTORY_SEPARATOR . "themes" . DIRECTORY_SEPARATOR . "survey"; // The directory path of the user themes
 $config['usertwigextensionrootdir'] = $config['uploaddir'] . DIRECTORY_SEPARATOR . "twig" . DIRECTORY_SEPARATOR . "extensions"; // The directory path of the user custom twig extensions
-$config['customquestionthemedir']     = "themes" . DIRECTORY_SEPARATOR . "question";
-$config['userquestionthemerootdir'] = "upload" . DIRECTORY_SEPARATOR . $config['customquestionthemedir']; // The directory containing the user's question themes.
-$config['userfontsrootdir']          = $config['uploaddir'] . DIRECTORY_SEPARATOR . 'fonts'; // The directory containing the user's fonts.
+$config['customquestionthemedir']   = "themes" . DIRECTORY_SEPARATOR . "question";
+$config['userquestionthemerootdir'] = $config['uploaddir'] . DIRECTORY_SEPARATOR . $config['customquestionthemedir']; // The directory containing the user's question themes.
+$config['userfontsrootdir']         = $config['uploaddir'] . DIRECTORY_SEPARATOR . 'fonts'; // The directory containing the user's fonts.
 
 $config['lsadminmodulesrootdir']    = $config['rootdir'] . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR . "admin";
 //Overwrite files with the same name on upload?
@@ -792,7 +777,7 @@ $config['defaultthemeteeditormode'] = 'default';
 // Side Menu behaviout
 $config['sideMenuBehaviour'] = 'adaptive';
 
-// Hide update key
+// Hide update key except for the first and last letters
 $config['hide_update_key'] = false;
 
 /**
@@ -846,8 +831,11 @@ $config['passwordValidationRules'] = array(
     'symbol' => 0,
 );
 
-// Enable or disable single page application editor
-$config['editorEnabled'] = false;
+// Allowed host of the LimeSurvey instance, avoid Host Header Injection in some case
+// For security purpose : Host Header Injection in password reset function
+// You can set an array of string, for example : ['example.limesurvey.org','limesurvey.example.org']
+// Send a 400 error if the server host is not in this list.
+$config['allowedHosts'] = null;
 
 /**
  * Default breadcrumb mode:
@@ -889,5 +877,7 @@ $config['allow_unserialize_attachments'] = false;
 // If you want to allow 'securesetting', set this to ['securesetting']
 // @see https://bugs.limesurvey.org/view.php?id=20495
 $config['twig_getConfig_extraallowlist'] = null;
+
+$config['editorEnabled'] = true;
 
 return $config;

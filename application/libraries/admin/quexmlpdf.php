@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -33,7 +33,6 @@ require('pdf.php');
 */
 class quexmlpdf extends pdf
 {
-
     /**
      * Define an inch in MM
      *
@@ -101,16 +100,6 @@ class quexmlpdf extends pdf
      * @see write1DBarcode
      */
     protected $barcodeType = 'I25';
-
-    /**
-     * The x position in MM of the barcode
-     *
-     * @var bool  Defaults to 138.
-     * @since 2010-09-20
-     * @deprecated
-     * @see $barcodeMarginX
-     */
-    //protected $barcodeX = 138;
 
     /**
      * The distance between the right hand page border and
@@ -188,15 +177,6 @@ class quexmlpdf extends pdf
     protected $questionTitleSuffix = ".";
 
     /**
-     * Width of question text in MM
-     *
-     * @var mixed  Defaults to 120.
-     * @since 2010-09-20
-     * @deprecated
-     */
-    //protected $questionTextWidth = 120;
-
-    /**
      * Right margin of question text in MM
      *
      * @var mixed  Defaults to 40.
@@ -250,13 +230,14 @@ class quexmlpdf extends pdf
     td.questionSpecifier {font-weight:normal; font-size:12pt;}
     td.vasLabel {font-weight:bold; font-size:10pt; text-align:center;}
     td.questionHelp {font-weight:normal; text-align:right; font-style:italic; font-size:8pt;}
-    td.questionHelpAfter {text-align:center; font-weight:bold; font-size:10pt;}
-    td.questionHelpBefore {text-align:center; font-weight:bold; font-size:12pt;}
+    td.questionHelpAfter {text-align:left; font-weight:bold; font-size:10pt;}
+    td.questionHelpBefore {text-align:left; font-weight:bold; font-size:12pt;}
     td.responseAboveText {font-weight:normal; font-style:normal; text-align:left; font-size:12pt;}
     td.matrixResponseGroupLabel {font-weight:normal; font-style:normal; text-align:left; font-size:12pt;}
     span.sectionTitle {font-size:18pt; font-weight:bold;}
     span.sectionDescription {font-size:14pt; font-weight:bold;}
     div.sectionInfo {font-style:normal; font-size:10pt; text-align:left; font-weight:normal;}
+    td.questionnaireTitle {font-size:18pt; text-align:center; font-weight:bold;}
     td.questionnaireInfo {font-size:14pt; text-align:center; font-weight:bold;}
     </style>";
 
@@ -441,16 +422,6 @@ class quexmlpdf extends pdf
     protected $barcodeResponseHeight = 6;
 
     /**
-     * The maximum number of text responses per line
-     *
-     * @var mixed  Defaults to 24.
-     * @since 2010-09-20
-     * @deprecated
-     * @see $textResponseMarginX
-     */
-    //protected $textResponsesPerLine = 24;
-
-    /**
      * The left hand margin of text responses to auto calculate responses
      * per line (mm)
      *
@@ -458,16 +429,6 @@ class quexmlpdf extends pdf
      * @since 2011-10-25
      */
     protected $textResponseMarginX = 13;
-
-    /**
-     * Maximum number of text responses boxes where the label should appear on the same line
-     *
-     * @var mixed  Defaults to 16.
-     * @since 2010-09-20
-     * @deprecated
-     * @see $labelTextResponsesSameLineMarginX
-     */
-    //protected $labelTextResponsesSameLine = 16;
 
     /**
      * The left hand margin of text responses to auto calculated responses
@@ -501,16 +462,6 @@ class quexmlpdf extends pdf
      * @since 2010-09-20
      */
     protected $longTextResponseHeightMultiplier = 1;
-
-    /**
-     * Width of a long text response box
-     *
-     * @var mixed  Defaults to 145.
-     * @since 2010-09-20
-     * @deprecated
-     * @see drawLongText() for the new calculation of long text box width
-     */
-    //protected $longTextResponseWidth = 145;
 
     /**
      * Default number of characters to store in a long text field
@@ -609,7 +560,7 @@ class quexmlpdf extends pdf
     protected $backgroundColourQuestion = array(241);
 
     /**
-     * The bacground colour of a section
+     * The background colour of a section
      *
      * @var bool  Defaults to array(200,200,200).
      * @since 2010-09-20
@@ -1780,7 +1731,7 @@ class quexmlpdf extends pdf
         }
 
         $this->setBackground('question');
-        return array($x + $linelength, $y, $x + $linelength + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the posistion for banding
+        return array($x + $linelength, $y, $x + $linelength + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the position for banding
     }
 
     /**
@@ -1851,7 +1802,7 @@ class quexmlpdf extends pdf
         }
 
         $this->setBackground('question');
-        return array($x, $y, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the posistion for banding
+        return array($x, $y, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the position for banding
     }
 
 
@@ -1912,6 +1863,7 @@ class quexmlpdf extends pdf
         $sl = "";
 
         $q['id'] = $xml['id'];
+        $q['title'] = trim((string) $xml->title);
 
         foreach ($xml->questionnaireInfo as $qitmp) {
             if ($qitmp->position == 'after') {
@@ -2180,6 +2132,12 @@ class quexmlpdf extends pdf
         $this->questionnaireId = intval($questionnaire['id']);
         $this->newPage(true); //first page
 
+        //Draw the questionnaire title if exists
+        if (!empty($questionnaire['title'])) {
+            $this->SetTitle($questionnaire['title']);
+            $this->drawTitle($questionnaire['title']);
+        }
+
         //Draw questionnaireInfo before if exists
         if (isset($questionnaire['infobefore'])) {
             $this->drawInfo($questionnaire['infobefore']);
@@ -2404,6 +2362,21 @@ class quexmlpdf extends pdf
         $doc->appendChild($root);
         $doc->formatOutput = true; //make it look nice
         return $doc->saveXML();
+    }
+
+    /**
+     * Draw the questionnaire title as headline
+     *
+     * @param string $title The questionnaire title (plain text)
+     *
+     * @return void
+     */
+    protected function drawTitle($title)
+    {
+        $this->setBackground('question');
+        $this->writeHTMLCell($this->getColumnWidth(), $this->questionnaireInfoMargin, $this->getColumnX(), $this->GetY() - $this->questionBorderBottom, "<div></div>", 0, 1, true, true);
+        $html = "<table><tr><td width=\"" . $this->getColumnWidth() . "mm\" class=\"questionnaireTitle\">" . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . "</td><td></td></tr></table>";
+        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style . $html, 0, 1, true, true);
     }
 
     /**
@@ -3274,7 +3247,7 @@ class quexmlpdf extends pdf
     }
 
     /**
-     * Draw a horizontal table of respones including "eye guides"
+     * Draw a horizontal table of responses including "eye guides"
      *
      * @param array $categories The response categories
      * @param array $subquestions The subquestions if any

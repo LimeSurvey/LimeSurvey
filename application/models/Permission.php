@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -282,7 +282,7 @@ class Permission extends LSActiveRecord
                 // Make sure that he owns the user he wants to give global permissions for
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
                 if (!$oUser) {
-                    die('You are not allowed to set permisisons for this user');
+                    die('You are not allowed to set permissions for this user');
                 }
                 $aFilteredPermissions = array();
                 foreach ($aBasePermissions as $PermissionName => $aPermission) {
@@ -470,17 +470,6 @@ class Permission extends LSActiveRecord
 
     /**
      * @param array $data
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        foreach ($data as $item) {
-            $this->insertSomeRecords($item);
-        }
-    }
-
-    /**
-     * @param array $data
      * @return bool
      */
     public function insertSomeRecords($data)
@@ -553,7 +542,7 @@ class Permission extends LSActiveRecord
             return true;
         }
 
-        /* Always return false for unknow sCRUD */
+        /* Always return false for unknown sCRUD */
         // TODO: should not be necessary
         if (!in_array($sCRUD, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
             return false;
@@ -710,6 +699,7 @@ class Permission extends LSActiveRecord
      */
     public function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
+        $iUserID = $this->getUserId($iUserID);
         if (isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID])) {
             return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID];
         }
@@ -731,7 +721,7 @@ class Permission extends LSActiveRecord
      * @param integer $roleId
      * @param string $sPermission
      * @param string $sCRUD The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
-     * @return bool allowed permssion
+     * @return bool allowed permission
      */
     public function roleHasPermission($iRoleId, $sPermission, $sCRUD = 'read')
     {
@@ -899,7 +889,7 @@ class Permission extends LSActiveRecord
                 'create' => false,
                 'delete' => false,
                 'export' => false,
-                'title' => gT("Settings & Plugins"),
+                'title' => gT("Settings & plugins"),
                 'description' => gT("Permission to view and update global settings & plugins and to delete and import plugins"),
                 'warning' => gT("This permission allows an admin to change security relevant settings. Please make sure to assign this only to trusted persons."),
                 'img' => 'ri-earth-fill',
@@ -964,6 +954,28 @@ class Permission extends LSActiveRecord
         }
 
         return $results;
+    }
+
+    /**
+     * Move the theme permissions of all users from a theme name to its new name (called when a theme is renamed).
+     *
+     * @param string $sOldName The previous name of the theme
+     * @param string $sNewName The new name of the theme
+     * @return void
+     */
+    public static function renameThemePermissions($sOldName, $sNewName)
+    {
+        /* Drop orphaned permissions with the new name so they don't collide with the moved ones */
+        /* On case-insensitive databases a case-only rename matches the old rows here too, so these are kept */
+        self::model()->deleteAll(
+            "entity = 'template' AND permission = :newname AND permission <> :oldname",
+            [':newname' => $sNewName, ':oldname' => $sOldName]
+        );
+        self::model()->updateAll(
+            ['permission' => $sNewName],
+            "entity = 'template' AND permission = :oldname",
+            [':oldname' => $sOldName]
+        );
     }
 
     /**

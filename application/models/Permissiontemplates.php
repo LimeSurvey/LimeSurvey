@@ -51,6 +51,22 @@ class Permissiontemplates extends CActiveRecord
     }
 
     /**
+     * @inheritdoc
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels(): array
+    {
+        return [
+            'ptid' => 'ID',
+            'name' => gT('Name'),
+            'description' => gT('Description'),
+            'renewed_last' => gT('Last renewed'),
+            'created_at' => gT('Created at'),
+            'created_by' => gT('Created by'),
+        ];
+    }
+
+    /**
      * Collects and maps the connected userids to userobjects
      *
      * @return array filled with usermodels
@@ -76,7 +92,7 @@ class Permissiontemplates extends CActiveRecord
      * @param int $ptid Permissiontemplates id
      * @return boolean
      */
-    public function applyToUser(int $iUserId, int $ptid = null): bool
+    public function applyToUser(int $iUserId, ?int $ptid = null): bool
     {
         if ($ptid == null) {
             $ptid = $this->ptid;
@@ -238,11 +254,10 @@ class Permissiontemplates extends CActiveRecord
         // TODO should be static
         $cols = array(
             array(
-                'class'               => 'CCheckBoxColumn',
-                'selectableRows'      => 2,
-                'name'                => 'ptid',
-                'checkBoxHtmlOptions' => array('name' => 'selectedRole[]', 'class' => 'RoleControl--selector-roleCheckbox'),
-                'header'              => "<input type='checkbox' id='RoleControl--action-toggleAllRoles' />",
+                'value' => "\"<input type='checkbox' class='massiveActionsCheckbox RoleControl--selector-roleCheckbox' name='selectedRole[]' value='\".\$data->ptid.\"' />\"",
+                'type' => 'raw',
+                'header' => "<input type='checkbox' id='RoleControl--action-toggleAllRoles' />",
+                'filter' => false
             ),
             array(
                 "name" => 'name',

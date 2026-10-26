@@ -1,4 +1,17 @@
-ace.define("ace/ext/beautify",["require","exports","module","ace/token_iterator"], function(require, exports, module){// [WIP]
+ace.define("ace/ext/beautify",["require","exports","module","ace/token_iterator"], function(require, exports, module){/**
+ * ## Code beautification and formatting extension.
+ *
+ * **This extension is considered outdated.** For better formatting support with modern language servers
+ * and advanced formatting capabilities, consider using [ace-linters](https://github.com/mkslanc/ace-linters)
+ * which provides comprehensive language support including formatting, linting, and IntelliSense features.
+ *
+ * This legacy extension provides basic formatting for HTML, CSS, JavaScript, and PHP code with support for
+ * proper indentation, whitespace management, line breaks, and bracket alignment. It handles various language
+ * constructs including HTML tags, CSS selectors, JavaScript operators, control structures, and maintains
+ * consistent code style throughout the document.
+ *
+ * @module
+ */
 "use strict";
 var TokenIterator = require("../token_iterator").TokenIterator;
 function is(token, type) {

@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_315 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
 

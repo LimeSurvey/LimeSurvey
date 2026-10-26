@@ -33,7 +33,7 @@ class MultipleChoiceWithExpressionTest extends TestBaseClassWeb
 
         // Get questions.
         $survey = \Survey::model()->findByPk(self::$surveyId);
-        $questionObjects = $survey->groups[0]->questions;
+        $questionObjects = \Question::model()->findAll("sid = :sid", [":sid" => self::$surveyId]);
         $questions = [];
         foreach ($questionObjects as $q) {
             $questions[$q->title] = $q;
@@ -42,7 +42,7 @@ class MultipleChoiceWithExpressionTest extends TestBaseClassWeb
         foreach ($questions['Q1']->subquestions as $subq) {
             $subquestions[$subq->title] = $subq;
         }
-        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['Q1']->qid . '123'; // 123 = first subquestion title.
+        $sgqa = 'Q' . $questions['Q1']->qid . '_S' . $questions['123']->qid; // 123 = first subquestion title.
 
         try {
             // Get first page.

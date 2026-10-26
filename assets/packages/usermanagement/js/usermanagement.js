@@ -123,7 +123,7 @@ var UserManagement = function () {
                         return;
                     }
                     $("#usermanagement-modal-doalog").offset({ top: 10 });
-                    $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger');
+                    $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger').focus();
                 },
                 error: function (request, status, error) {
                     if (request && request.responseJSON && request.responseJSON.message) {
@@ -133,7 +133,7 @@ var UserManagement = function () {
                                 'danger',
                                 {showCloseButton: true, timeout: 10000}
                             )
-                        ).removeClass('d-none');
+                        ).removeClass('d-none').focus();
                     } else {
                         alert('An error occured while trying to save, please reload the page Code:1571926261195');
                     }
@@ -168,13 +168,30 @@ var UserManagement = function () {
         });
     };
 
+    /**
+     * Show the permissions the user already has in another way (e.g. by a global permission)
+     * as indeterminate when they are not set here
+     *
+     * @param {jQuery} checkboxes
+     */
+    var updateIndeterminatePermissions = function (checkboxes) {
+        checkboxes.filter('[data-indeterminate=1]').each(function () {
+            this.indeterminate = !this.checked;
+        });
+    };
+
     var wirePermissions = function () {
         var tableObject = $('#UserManagement--userpermissions-table');
+
+        updateIndeterminatePermissions(tableObject.find('input:checkbox'));
+        tableObject.find('input:checkbox[data-indeterminate=1]').on('change', function () {
+            updateIndeterminatePermissions($(this));
+        });
 
         $(".general-row-selector").on('click', function () {
             $(this).removeClass('incomplete-selection');
             bChecked = this.checked;
-            $(this).closest('tr').find('input').prop('checked', bChecked);
+            updateIndeterminatePermissions($(this).closest('tr').find('input').prop('checked', bChecked));
         });
 
         $('.specific-permission-selector').on('click', function () {

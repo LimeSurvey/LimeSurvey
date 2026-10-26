@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -15,6 +15,9 @@
 
 class AdminController extends LSYii_Controller
 {
+    /** Example admin modules removed from the release: Leftovers in installations upgraded over an older release are not loaded */
+    private const REMOVED_EXAMPLE_ADMIN_MODULES = ['HelloWorld', 'globalsettings'];
+
     public $sTemplate = null; // this is needed for the preview rendering inside the questioneditor
     public $layout = false;
     public $aAdminModulesClasses = array();
@@ -33,7 +36,6 @@ class AdminController extends LSYii_Controller
     protected function customInit()
     {
         parent::customInit();
-        App()->getComponent('bootstrap');
         $this->sessioncontrol();
 
         $this->user_id = Yii::app()->user->getId();
@@ -107,7 +109,7 @@ class AdminController extends LSYii_Controller
             }
             $sURL = $sURL['url'];
         } else {
-            $sTitle = gT('Main Admin Screen');
+            $sTitle = gT('Main admin screen');
             $sURL = $this->createUrl('/admin');
         }
         $sOutput .= '<input type="submit" value="' . $sTitle . '" onclick=\'window.open("' . $sURL . '", "_top")\' /><br /><br />' . "\n";
@@ -135,7 +137,7 @@ class AdminController extends LSYii_Controller
             if (Yii::app()->request->getPost('lang') == 'auto') {
                 $sLanguage = getBrowserLanguage();
             } else {
-                $sLanguage = sanitize_languagecode(Yii::app()->request->getPost('lang'));
+                $sLanguage = \LSYii_Validators::languageCodeFilter(Yii::app()->request->getPost('lang'));
             }
             Yii::app()->session['adminlang'] = $sLanguage;
         }
@@ -158,7 +160,7 @@ class AdminController extends LSYii_Controller
     {
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}')) {
-            $sDBVersion = getGlobalSetting('DBVersion');
+            $sDBVersion = Yii::app()->getConfig('DBVersion');
         }
         if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
             // Try a silent update first
@@ -188,7 +190,7 @@ class AdminController extends LSYii_Controller
 
                 $this->redirect(array('/admin/authentication/sa/login'));
             } elseif (!empty($this->user_id) && $action != "remotecontrol") {
-                if (Yii::app()->session['session_hash'] != hash('sha256', getGlobalSetting('SessionName') . Yii::app()->user->getName() . Yii::app()->user->getId())) {
+                if (Yii::app()->session['session_hash'] != hash('sha256', Yii::app()->getConfig('SessionName') . Yii::app()->user->getName() . Yii::app()->user->getId())) {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();
                     $this->redirect(array('/admin/authentication/sa/login'));
@@ -218,7 +220,8 @@ class AdminController extends LSYii_Controller
                 $this->currentModuleAction = $action; // For subviews rendering, see: AdminController::renderPartial()
 
                 // Since module's class has the same name has core class, we need to load the core and module classes with namespace
-                Yii::import('application\\controllers\\admin\\' . $action, true);
+                // The core class is loaded by its file name, which can differ in case from the action ID
+                Yii::import($aOverridenCoreActions[$action]['core'], true);
                 $sActionModuleClass = 'lsadminmodules\\' . $action . '\controller\\' . $action;
                 Yii::import($sActionModuleClass, true);
             }
@@ -228,7 +231,7 @@ class AdminController extends LSYii_Controller
 
     /**
      * If a module override the views of a controller, renderPartial needs to check module view directories.
-     * This work recusively with infinite depth of subdirectories.
+     * This work recursively with infinite depth of subdirectories.
      *
      * @param string $view name of the view to be rendered. See {@link getViewFile} for details
      * about how the view script is resolved.
@@ -244,15 +247,17 @@ class AdminController extends LSYii_Controller
     public function renderPartial($view, $data = null, $return = false, $processOutput = false)
     {
         if (!empty($this->currentModuleAction)) {
-          // Standard: the views are stored in a folder that has the same name as the controler file.
+          // Standard: the views are stored in a folder that has the same name as the controller file.
           // TODO: check if it is the case for all controllers, if not normalize it, so 3rd party coder can easily extend any LS Core controller/action/view.
-            $sParsedView = explode(DIRECTORY_SEPARATOR, $view);
+          // Views of the action are rendered as /admin/<action>/<view>, its subviews as ./<action>/<view>
+            $sView = preg_replace('#^/admin/#', './', $view);
+            $sParsedView = explode('/', $sView);
             $sAction = (empty($sParsedView[1])) ? '' : $sParsedView[1];
 
           // We allow a module to override only the controller views.
             if ($sAction == $this->currentModuleAction) {
               // Convert the view path to module view alias .
-                $sModulePath = 'lsadminmodules.' . $sAction . '.views' . substr(ltrim(str_replace(DIRECTORY_SEPARATOR, '.', $view), '.'), strlen($sAction)) ;
+                $sModulePath = 'lsadminmodules.' . $sAction . '.views' . substr(ltrim(str_replace('/', '.', $sView), '.'), strlen($sAction)) ;
 
                 if (file_exists(\Yii::getPathOfAlias($sModulePath) . '.php')) {
                     $view = $sModulePath;
@@ -280,7 +285,7 @@ class AdminController extends LSYii_Controller
             $aActions[$action] = "application.controllers.admin.{$class}";
         }
 
-        // But now, they can be in a module added by a third pary developer.
+        // But now, they can be in a module added by a third party developer.
         $aModuleActions = $this->getModulesActions();
 
         // We keep a trace of the overridden actions and their path. It will be used in the rendering logic (SurveyCommonAction, renderPartial, etc)
@@ -297,23 +302,30 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-     * This function is very similiar to AdminController::actions()
+     * This function is very similar to AdminController::actions()
      * Routes all the modules actions to their respective places
+     *
+     * A module overriding a core action declares its class in the lsadminmodules\<action>\controller namespace,
+     * a module adding a new action declares a global class.
      *
      * todo REFACTORING we don't have to refactore this method ...
      *
      * @access public
-     * @return array
+     * @return array Action IDs mapped to the class name or path alias of the module action class
      */
     public function getModulesActions()
     {
         $aActions = $this->getAdminModulesActionClasses();
-        $aAdminModulesClasses = array();
+        $aCoreActions = $this->getActionClasses();
 
       // lsadminmodules alias is defined in AdminController::init()
       // Notice that the file and the directory name must be the same.
         foreach ($aActions as $action => $class) {
-            $aActions[$action] = 'lsadminmodules\\' . $action . '\controller\\' . $action;
+            if (isset($aCoreActions[$action])) {
+                $aActions[$action] = 'lsadminmodules\\' . $action . '\controller\\' . $action;
+            } else {
+                $aActions[$action] = 'lsadminmodules.' . $action . '.controller.' . $action;
+            }
         }
 
         return $aActions;
@@ -349,7 +361,7 @@ class AdminController extends LSYii_Controller
             'export'           => 'Export',
             'expressions'      => 'Expressions',
             'validate'         => 'ExpressionValidate',
-            'globalsettings'   => 'GlobalSettings',
+            'globalsettings'   => 'globalsettings',
             'htmleditorpop'    => 'HtmlEditorPop',
             'surveysgroups'    => 'SurveysGroupsController',
             'limereplacementfields' => 'limereplacementfields',
@@ -372,8 +384,6 @@ class AdminController extends LSYii_Controller
             'notification'     => 'NotificationController',
             'menus'            => 'SurveymenuController',
             'menuentries'      => 'SurveymenuEntryController',
-            'tutorials'        => 'TutorialsController',
-            'tutorialentries'  => 'TutorialEntryController',
             'extensionupdater' => 'ExtensionUpdaterController',
         ];
     }
@@ -381,8 +391,10 @@ class AdminController extends LSYii_Controller
     /**
      * This function returns an array similar to getActionClasses()
      * It will generate it by reading the directories names inside of lsadminmodulesrootdir
-     * So, by convention, admin module action class must be indentical to directory name
+     * So, by convention, admin module action class must be identical to directory name
+     * The example modules of older releases are skipped, see REMOVED_EXAMPLE_ADMIN_MODULES
      *
+     * @return array Admin module names, indexed by module name
      */
     public function getAdminModulesActionClasses()
     {
@@ -390,13 +402,15 @@ class AdminController extends LSYii_Controller
       // This function is called at least twice by page load. Once from AdminController, another one by SurveyCommonAction
         if (empty($this->aAdminModulesClasses)) {
             $aAdminModulesClasses = array();
-            $slsadminmodules = new DirectoryIterator(Yii::app()->getConfig('lsadminmodulesrootdir'));
-            Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir'));
+            $sAdminModulesRootDir = Yii::app()->getConfig('lsadminmodulesrootdir');
+            Yii::setPathOfAlias('lsadminmodules', $sAdminModulesRootDir);
 
-            foreach ($slsadminmodules as $fileinfo) {
-                if ($fileinfo->isDir() && !$fileinfo->isDot()) {
-                    $sModuleName =  $fileinfo->getFilename();
-                    $aAdminModulesClasses[$sModuleName] = $sModuleName;
+            if (is_dir($sAdminModulesRootDir)) {
+                foreach (new DirectoryIterator($sAdminModulesRootDir) as $fileinfo) {
+                    if ($fileinfo->isDir() && !$fileinfo->isDot() && !in_array($fileinfo->getFilename(), self::REMOVED_EXAMPLE_ADMIN_MODULES)) {
+                        $sModuleName =  $fileinfo->getFilename();
+                        $aAdminModulesClasses[$sModuleName] = $sModuleName;
+                    }
                 }
             }
             $this->aAdminModulesClasses = $aAdminModulesClasses;
@@ -413,9 +427,10 @@ class AdminController extends LSYii_Controller
      * @access protected
      * @param bool $meta
      * @param bool $return
+     * @param array $pageData Optional page data (e.g. topbar, title_bar) to set document title for screen readers
      * @return string|null
      */
-    public function getAdminHeader($meta = false, $return = false)
+    public function getAdminHeader($meta = false, $return = false, $pageData = [])
     {
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
@@ -446,7 +461,7 @@ class AdminController extends LSYii_Controller
         $aData['sitename'] = Yii::app()->getConfig("sitename");
 
         if (!empty(Yii::app()->session['dateformat'])) {
-                    $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
+            $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
         }
 
         // Register admin theme package with asset manager
@@ -454,6 +469,13 @@ class AdminController extends LSYii_Controller
 
         $aData['sAdmintheme'] = $oAdminTheme->name;
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
+
+        $aData['pageTitle'] = null;
+        if (!empty($pageData['topbar'] ?? null) && !empty($pageData['topbar']['title'] ?? null)) {
+            $aData['pageTitle'] = strip_tags((string) $pageData['topbar']['title']);
+        } elseif (!empty($pageData['title_bar'] ?? null) && !empty($pageData['title_bar']['title'] ?? null)) {
+            $aData['pageTitle'] = strip_tags((string) $pageData['title_bar']['title']);
+        }
 
             //foreach ($aData['aPackageStyles'] as &$filename)
             //{

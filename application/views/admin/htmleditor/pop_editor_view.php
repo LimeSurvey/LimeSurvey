@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 <html>
     <head>
-        <title><?php printf(gT('Editing %s'), $sFieldText); ?></title>
+        <title><?php printf(gT('Editing %s'), CHtml::encode($sFieldText)); ?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="noindex, nofollow" />
         <?php
@@ -80,9 +80,9 @@
                 function CKeditor_OnComplete( evt )
                 {
                     var editor = evt.editor;
-                    editor.setData(window.opener.document.getElementById("<?php echo $sFieldName; ?>").value);
+                    editor.setData(window.opener.document.getElementById(<?php echo CJavaScript::encode($sFieldName, true); ?>).value);
                     editor.execCommand('maximize');
-                    window.status='LimeSurvey <?php eT('Editing', 'js') . ' ' . 'javascriptEscape(' . $sFieldText . ', true)'; ?>';
+                    window.status=<?php echo CJavaScript::encode(sprintf(gT('Editing %s', 'unescaped'), $sFieldText)); ?>;
                 }
 
                 function html_transfert()
@@ -91,18 +91,18 @@
 
                     <?php
                     if (in_array($sFieldType, array('editanswer', 'addanswer', 'editlabel', 'addlabel'))) {
-                    ?>
+                        ?>
                     var editedtext = oEditor.getData().replace(new RegExp( "\n", "g" ),'');
                     var editedtext = oEditor.getData().replace(new RegExp( "\r", "g" ),'');
-                    <?php
+                        <?php
                     } else {
-                    ?>
+                        ?>
                     var editedtext = oEditor.getData('no strip new line'); // adding a parameter avoids stripping \n
-                    <?php
+                        <?php
                     }
                     ?>
 
-                    window.opener.document.getElementById('<?php echo $sFieldName; ?>').value = editedtext;
+                    window.opener.document.getElementById(<?php echo CJavaScript::encode($sFieldName, true); ?>).value = editedtext;
                 }
 
 
@@ -110,9 +110,9 @@
                 {
                     html_transfert();
 
-                    window.opener.document.getElementById('<?php echo $sFieldName; ?>').readOnly= false;
-                    window.opener.document.getElementById('<?php echo $sControlIdEna; ?>').style.display='';
-                    window.opener.document.getElementById('<?php echo $sControlIdDis; ?>').style.display='none';
+                    window.opener.document.getElementById(<?php echo CJavaScript::encode($sFieldName, true); ?>).readOnly= false;
+                    window.opener.document.getElementById(<?php echo CJavaScript::encode($sControlIdEna, true); ?>).style.display='';
+                    window.opener.document.getElementById(<?php echo CJavaScript::encode($sControlIdDis, true); ?>).style.display='none';
                     window.opener.focus();
                     return true;
                 }

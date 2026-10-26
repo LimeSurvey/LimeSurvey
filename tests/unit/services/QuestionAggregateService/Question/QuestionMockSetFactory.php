@@ -15,6 +15,7 @@ use LimeSurvey\Models\Services\Proxy\{
 };
 
 use LimeSurvey\Models\Services\QuestionAggregateService\L10nService;
+use LimeSurvey\Models\Services\QuestionAttributeHelper;
 
 /**
  * Question Editor Mock Factory
@@ -26,7 +27,7 @@ class QuestionMockSetFactory
     /**
      * @param ?QuestionMockSet $init
      */
-    public function make(QuestionMockSet $init = null): QuestionMockSet
+    public function make(?QuestionMockSet $init = null): QuestionMockSet
     {
         $mockSet = new QuestionMockSet;
 
@@ -49,6 +50,10 @@ class QuestionMockSetFactory
         $mockSet->l10nService = ($init && isset($init->l10nService))
             ? $init->l10nService
             : $this->getMockL10nService();
+
+        $mockSet->questionAttributeHelper = ($init && isset($init->questionAttributeHelper))
+            ? $init->questionAttributeHelper
+            : $this->getMockQuestionAttributeHelper();
 
         $mockSet->proxySettingsUser = ($init && isset($init->proxySettingsUser))
             ? $init->proxySettingsUser
@@ -74,6 +79,12 @@ class QuestionMockSetFactory
     private function getMockL10nService(): L10nService
     {
         return Mockery::mock(L10nService::class)
+            ->makePartial();
+    }
+
+    private function getMockQuestionAttributeHelper(): QuestionAttributeHelper
+    {
+        return Mockery::mock(QuestionAttributeHelper::class)
             ->makePartial();
     }
 

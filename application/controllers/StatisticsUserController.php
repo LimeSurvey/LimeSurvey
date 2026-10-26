@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -65,8 +65,6 @@ class StatisticsUserController extends SurveyController
         $iSurveyID = (int)$survey->sid;
         $this->iSurveyID = $survey->sid;
 
-        //$postlang = returnglobal('lang');
-        //~ Yii::import('application.libraries.admin.progressbar',true);
         Yii::app()->loadHelper("userstatistics");
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('surveytranslator');
@@ -131,7 +129,7 @@ class StatisticsUserController extends SurveyController
         if ($sLanguage == null || !in_array($sLanguage, $survey->allLanguages)) {
             $sLanguage = $survey->language;
         } else {
-            $sLanguage = sanitize_languagecode($sLanguage);
+            $sLanguage = \LSYii_Validators::languageCodeFilter($sLanguage);
         }
         //set survey language for translations
         SetSurveyLanguage($iSurveyID, $sLanguage);
@@ -165,10 +163,11 @@ class StatisticsUserController extends SurveyController
         $totalrecords = 0;
         //count number of answers
         $query = "SELECT count(*) FROM " . $survey->responsesTableName;
-        //if incompleted answers should be filtert submitdate has to be not null
-        //this setting is taken from config-defaults.php
-        if (Yii::app()->getConfig("filterout_incomplete_answers") == 'complete') {
+        //filter by completion state, as set by filterout_incomplete_answers in config-defaults.php
+        if (userstatistics_helper::completionFilterState() == 'complete') {
             $query .= " WHERE " . $survey->responsesTableName . ".submitdate is not null";
+        } elseif (userstatistics_helper::completionFilterState() == 'incomplete') {
+            $query .= " WHERE " . $survey->responsesTableName . ".submitdate is null";
         }
         $result = Yii::app()->db->createCommand($query)->queryAll();
 
@@ -242,7 +241,7 @@ class StatisticsUserController extends SurveyController
         foreach ($filters as $flt) {
             //SGQ identifier
             $type = $flt['type'];
-            $SGQidentifier = $this->iSurveyID . 'X' . $flt->gid . 'X' . $flt->qid;
+            $SGQidentifier = 'Q' . $flt->qid;
 
             //let's switch through the question type for each question
             switch ($type) {
@@ -254,7 +253,7 @@ class StatisticsUserController extends SurveyController
                         'order'     => 'question_order'
                     ]);
                     foreach ($results as $row) {
-                        $allfields[] = $flt->type . $SGQidentifier . $row->title;
+                        $allfields[] = $flt->type . $SGQidentifier . "_S" . $row->qid;
                     }
                     break;
                 case Question::QT_A_ARRAY_5_POINT: // Array of 5 point choice questions
@@ -269,7 +268,7 @@ class StatisticsUserController extends SurveyController
                         'order'     => 'question_order'
                     ]);
                     foreach ($results as $row) {
-                        $allfields[] = $SGQidentifier . $row->title;
+                        $allfields[] = $SGQidentifier . "_S" . $row->qid;
                     }
                     break;
                 // all "free text" types (T, U, S)  get the same prefix ("T")
@@ -292,20 +291,19 @@ class StatisticsUserController extends SurveyController
                     ]);
                     foreach ($resultsScale0 as $rowScale0) {
                         foreach ($resultsScale1 as $rowScale1) {
-                            $allfields[] = $SGQidentifier . $rowScale0['title'] . "_" . $rowScale1['title'];
+                            $allfields[] = $SGQidentifier . "_S" . $rowScale0->qid . "_S" . $rowScale1->qid;
                         }
                     }
                     break;
                 case Question::QT_R_RANKING: // Ranking
-                    $results = Answer::model()->with('answerl10ns')->findAll([
-                        'condition' => 'language=:language AND qid=:qid',
-                        'params'    => [':language' => $this->sLanguage, ':qid' => $flt->qid],
-                        'order'     => 'sortorder'
+                    // Ranking questions now use subquestions for ranking items
+                    $results = Question::model()->with('questionl10ns')->findAll([
+                        'condition' => 'language=:language AND parent_qid=:parent_qid',
+                        'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid],
+                        'order'     => 'question_order'
                     ]);
-                    $count = count($results);
-                    //loop through all answers. if there are 3 items to rate there will be 3 statistics
-                    for ($i = 1; $i <= $count; $i++) {
-                        $allfields[] = $flt->type . $SGQidentifier . $i . "-" . strlen($i);
+                    foreach ($results as $subQuestion) {
+                        $allfields[] = 'R' . $SGQidentifier . '_S' . $subQuestion->qid;
                     }
                     break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
@@ -319,8 +317,8 @@ class StatisticsUserController extends SurveyController
                     ]);
                     //loop through answers
                     foreach ($results as $row) {
-                        $allfields[] = $SGQidentifier . $row['title'] . "#0";
-                        $allfields[] = $SGQidentifier . $row['title'] . "#1";
+                        $allfields[] = $SGQidentifier . "_S" . $row['qid'] . "#0";
+                        $allfields[] = $SGQidentifier . "_S" . $row['qid'] . "#1";
                     }    //end WHILE -> loop through all answers
                     break;
 

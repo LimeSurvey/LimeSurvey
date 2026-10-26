@@ -2,5 +2,4 @@
 
 class DataSetFileUpload extends QuestionBaseDataSet
 {
-
 }

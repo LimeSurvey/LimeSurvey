@@ -8,6 +8,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
  * Small example test from workshop.
  *
  * @see https://bugs.limesurvey.org/view.php?id=15336
+ * @group admin
  */
 class NoGreenBarTest extends TestBaseClassWeb
 {

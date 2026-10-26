@@ -9,21 +9,33 @@ Yii::app()->getController()->renderPartial(
 <?php $form = $this->beginWidget('TbActiveForm', array(
     'id' => 'UserManagement--modalform',
     'action' => App()->createUrl('userManagement/SaveRole'),
-    'enableAjaxValidation'=>false,
-    'enableClientValidation'=>false,
+    'enableAjaxValidation' => false,
+    'enableClientValidation' => false,
 ));?>
 
 <div class="modal-body selector--edit-role-container">
     <div class="form">
-        <div class="row ls-space margin top-5 bottom-5 hidden" id="UserManagement--errors">
+        <div class="row ls-space margin top-5 bottom-5 d-none" id="UserManagement--errors" role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1">
         </div>
         <input type="hidden" name="userid" value="<?= $oUser->uid ?>"/>
         <?php
-        $this->widget('ext.AlertWidget.AlertWidget', [
-            'text'        => gT("Note: Adding role(s) to a user will overwrite any individual user permissions!"),
-            'type'        => 'info',
-            'htmlOptions' => ['class' => 'col-12']
-        ]);
+        if ($hasIndividualPermissions) {
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text'        => gT("This user has individual permissions. If you assign a role, all of them will be removed and replaced by the permissions of the role."),
+                'type'        => 'warning',
+                'htmlOptions' => ['class' => 'col-12']
+            ]);
+        }
+        if (!empty($aLockedRoles)) {
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text'        => sprintf(
+                    gT("This user also has the following roles, which you are not allowed to change: %s"),
+                    CHtml::encode(implode(', ', $aLockedRoles))
+                ),
+                'type'        => 'warning',
+                'htmlOptions' => ['class' => 'col-12']
+            ]);
+        }
         ?>
         <div class="mb-3">
             <label for="roleselector"><?= gT("Select role(s):") ?></label>

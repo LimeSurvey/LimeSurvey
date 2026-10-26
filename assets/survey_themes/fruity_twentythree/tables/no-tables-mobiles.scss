@@ -21,7 +21,9 @@
     table.ls-answers th,
     table.ls-answers td,
     table.ls-answers tr {
-      display: block;
+      &:not(.ls-hidden) {
+        display: block;
+      }
     }
 
     & table.ls-answers,
@@ -33,8 +35,9 @@
       text-align: left;
     }
 
-    table.ls-answers thead {
-      display: none
+    table.ls-answers thead,
+    table.ls-answers thead:not(.ls-hidden) {
+      display: none;
     }
 
     /* We don't need it for accessibility : we already have the label */

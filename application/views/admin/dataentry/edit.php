@@ -1,1 +1,3 @@
-<?php include('includes/editdata/'.$part.'.php'); ?>
+<?php
+
+include('includes/editdata/' . $part . '.php');

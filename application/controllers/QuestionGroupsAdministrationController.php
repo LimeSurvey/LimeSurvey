@@ -43,11 +43,15 @@ class QuestionGroupsAdministrationController extends LSBaseController
     }
 
     /**
-     * This part comes from renderWrappedTemplate
-     *
-     * @param string $view
-     * @return bool
-     */
+         * Prepare controller data and client assets before rendering a view.
+         *
+         * Ensures top-bar defaults, loads the survey model and configures the expression
+         * manager when a survey id is present, sets the question editor layout, and
+         * registers editor-related client script packages only for non-AJAX requests.
+         *
+         * @param string $view The view name to be rendered.
+         * @return bool `true` if rendering should proceed, `false` otherwise.
+         */
     protected function beforeRender($view)
     {
         // Set topbar type if not already set
@@ -80,6 +84,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
     /**
      * Renders the html for the question group view.
      *
+     * Note: The group must belong to the given survey (checked in QuestionGroupService::getQuestionGroupObject()).
+     *
      * @param int $surveyid    survey ID is important here for new questiongroups without groupid
      * @param int $gid
      * @param string $landOnSideMenuTab
@@ -106,9 +112,12 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
+
+        SettingsUser::setUserSetting('last_question_gid', $gid, null, 'Survey', $surveyid);
+
         $aData = $this->setSurveyIdAndObject([], $surveyid);
         $aData['gid'] = $gid;
         $aData['condarray'] = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
@@ -150,16 +159,19 @@ class QuestionGroupsAdministrationController extends LSBaseController
     /**
      * Renders the html for the question group edit.
      *
+     * Note: The group must belong to the given survey.
+     *
      * @param int $surveyid    survey ID is important here if group does not exist
      * @param int $gid
      * @param string $landOnSideMenuTab
      *
-     * * @return void
+     * @return void
+     * @throws CHttpException
      */
     public function actionEdit(int $surveyid, $gid, $landOnSideMenuTab = 'structure')
     {
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
         $aData = $this->setSurveyIdAndObject([], $surveyid);
@@ -170,7 +182,14 @@ class QuestionGroupsAdministrationController extends LSBaseController
         //todo: this action should not be used for new groups, use actionAdd instead
         $aData['gid'] =  $gid = ($gid === null || $gid === '') ? null : (int)$gid;
         $questionGroupService = $this->getQuestionGroupServiceClass();
-        $aData['oQuestionGroup'] = $oQuestionGroup = $questionGroupService->getQuestionGroupObject($surveyid, $gid);
+        try {
+            $aData['oQuestionGroup'] = $oQuestionGroup = $questionGroupService->getQuestionGroupObject($surveyid, $gid);
+        } catch (NotFoundException $e) {
+            throw new CHttpException(404, gT("Invalid group ID"));
+        }
+        if ($gid !== null) {
+            SettingsUser::setUserSetting('last_question_gid', $gid, null, 'Survey', $surveyid);
+        }
         $aData = $this->setLanguageData($aData);
         $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
         if ($gid !== null) {
@@ -218,7 +237,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     public function actionAdd(int $surveyid, string $landOnSideMenuTab = 'structure')
     {
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
 
@@ -262,6 +281,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['sidemenu']['state'] = false;
         $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
 
+        // Unsaved group, so the breadcrumb shows "New question group"
+        $aData['oQuestionGroup'] = new QuestionGroup();
+        $aData['oQuestionGroup']->sid = $surveyid;
+
         $this->aData = $aData;
 
         $this->render('addGroup_view', $this->aData);
@@ -284,7 +307,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 'import'
             )
         ) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(
                 $this->createUrl(
                     'questionAdministration/listQuestions/',
@@ -353,7 +376,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $this->aData = $aData;
             $this->render('importGroup_view', $aData);
         } else {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(
                 $this->createUrl(
                     'questionAdministration/listQuestions/',
@@ -451,8 +474,11 @@ class QuestionGroupsAdministrationController extends LSBaseController
      *
      * todo: is this function still in use?
      *
+     * Note: Requires surveycontent update permission, and only groups of the given survey are returned.
+     *
      * @param int $surveyid
      * @param null $iQuestionGroupId
+     * @return void
      */
     public function actionLoadQuestionGroup($surveyid, $iQuestionGroupId = null)
     {
@@ -463,9 +489,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 'success' => false,
                 'message' => 'No permission'
             ]);
+            return;
         }
 
-        $oQuestionGroup = QuestionGroup::model()->findByPk($iQuestionGroupId);
+        $oQuestionGroup = QuestionGroup::model()->findByAttributes(['gid' => (int)$iQuestionGroupId, 'sid' => $surveyid]);
         $oSurvey = Survey::model()->findByPk($surveyid);
 
         $aLanguages = [];
@@ -545,6 +572,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
      *
      * Returns all questions that belong to the group.
      *
+     * Note: Requires surveycontent read permission on the group's survey.
+     *
      * @param $iQuestionGroupId integer ID of question group
      *
      * @return void
@@ -555,6 +584,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $oQuestionGroup = QuestionGroup::model()->findByPk($iQuestionGroupId);
         if ($oQuestionGroup == null || (!Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read'))) {
             $this->renderJSON([]);
+            return;
         }
         $aQuestions = [];
         $aAllQuestions = $oQuestionGroup->questions;
@@ -570,9 +600,12 @@ class QuestionGroupsAdministrationController extends LSBaseController
      *
      * Creates and updates question groups
      *
+     * Note: An existing group is only updated if it belongs to the given survey.
+     *
      * @param integer $sid ID of survey
      *
      * @throws CException
+     * @throws CHttpException
      *
      * @return void
      *
@@ -586,16 +619,24 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $sScenario = App()->request->getPost('scenario', '');
         $iSurveyId = (int)$sid;
 
-        $oQuestionGroup = isset($questionGroupData['gid']) ? QuestionGroup::model()->findByPk($questionGroupData['gid']) : null;
+        $oQuestionGroup = null;
+        if (!empty($questionGroupData['gid'])) {
+            $oQuestionGroup = QuestionGroup::model()->findByAttributes(
+                ['gid' => (int)$questionGroupData['gid'], 'sid' => $iSurveyId]
+            );
+            if ($oQuestionGroup == null) {
+                throw new CHttpException(404, gT("Invalid group ID"));
+            }
+        }
 
         //permission check ...
         if ($oQuestionGroup == null) {
             if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create')) {
-                App()->user->setFlash('error', gT("Access denied"));
+                App()->user->setFlash('error', gT("Access denied!"));
                 $this->redirect(App()->request->urlReferrer);
             }
         } elseif (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
 
@@ -680,7 +721,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 array(
                     'data' => [
                         'success' => false,
-                        'message' => gT("Access denied"),
+                        'message' => gT("Access denied!"),
                         'DEBUG'   => ['POST' => $_POST, 'grouparray' => []]
                     ],
                 ),

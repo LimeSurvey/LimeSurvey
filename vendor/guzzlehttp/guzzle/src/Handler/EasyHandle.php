@@ -31,6 +31,17 @@ final class EasyHandle
     public $headers = [];
 
     /**
+     * @var array Valid trailer lines, retained only when an on_trailers
+     *            callback is configured
+     */
+    public $trailers = [];
+
+    /**
+     * @var bool Whether this handle was configured with CURLOPT_PIPEWAIT
+     */
+    public $usesPipewait = false;
+
+    /**
      * @var ResponseInterface|null Received response (if any)
      */
     public $response;
@@ -49,6 +60,19 @@ final class EasyHandle
      * @var int cURL error number (if any)
      */
     public $errno = 0;
+
+    /**
+     * @var string|null Effective CURLOPT_PROXY value the handle was created with (if any)
+     */
+    public $effectiveProxy;
+
+    /**
+     * Proxy tunnel or SOCKS proxy section signature for connection-reuse
+     * isolation, or null when the request does not require sectioning.
+     *
+     * @var string|null
+     */
+    public $proxyTunnelSignature;
 
     /**
      * @var \Throwable|null Exception during on_headers (if any)
@@ -74,7 +98,7 @@ final class EasyHandle
 
         $normalizedKeys = Utils::normalizeHeaderKeys($headers);
 
-        if (!empty($this->options['decode_content']) && isset($normalizedKeys['content-encoding'])) {
+        if (isset($this->options['decode_content']) && $this->options['decode_content'] !== false && isset($normalizedKeys['content-encoding'])) {
             $headers['x-encoded-content-encoding'] = $headers[$normalizedKeys['content-encoding']];
             unset($headers[$normalizedKeys['content-encoding']]);
             if (isset($normalizedKeys['content-length'])) {

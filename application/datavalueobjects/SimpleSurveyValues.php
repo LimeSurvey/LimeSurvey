@@ -15,7 +15,6 @@ namespace LimeSurvey\Datavalueobjects;
  */
 class SimpleSurveyValues
 {
-
     /** @var string language selected by user */
     public $baseLanguage;
 

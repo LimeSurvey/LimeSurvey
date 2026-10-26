@@ -28,7 +28,7 @@ $googleAnalyticsOptions = array(
 $googleAnalyticsStyleOptions = array(
     "0" => gT("Off", 'unescaped'),
     "1" => gT("Default", 'unescaped'),
-    "2" => gT("Survey-SID/Group", 'unescaped')
+    "2" => gT("Survey ID/group ID", 'unescaped')
 );
 ?>
 <!-- Notification panel -->
@@ -38,8 +38,7 @@ $googleAnalyticsStyleOptions = array(
             <div class="col-12 col-lg-6 ls-flex-column">
                 <div class="card card-primary ">
                     <div class="card-body d-flex">
-                        <?php eT("Please note that you need to deactivate this survey
-                         if you want to change any of the settings below."); ?>
+                        <?php eT("Please note that you need to deactivate this survey if you want to change the disabled settings below."); ?>
                     </div>
                     <div class="card-footer d-flex">
                         <a class="btn btn-danger" href="<?php echo $this->createUrl("surveyAdministration/deactivate/surveyid/$oSurvey->sid"); ?>" role="button">
@@ -56,13 +55,13 @@ $googleAnalyticsStyleOptions = array(
         <div class="col-12 col-lg-6 position-relative">
             <!-- Date Stamp -->
             <div class="ex-form-group mb-3">
-                <label class=" form-label" for='datestamp'><?php eT("Date stamp:"); ?></label>
+                <label id="datestamp-label" class="form-label"><?php eT("Date stamp:"); ?></label>
                 <div class="">
                     <?php
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'datestamp',
+                        'ariaLabelledBy' => 'datestamp-label',
                         'checkedOption'         => $oSurvey->datestamp,
-                        'ariaLabel' => gT('Date stamp:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->datestamp . " ᴵ"])
                             : $optionsOnOff
@@ -73,13 +72,13 @@ $googleAnalyticsStyleOptions = array(
 
             <!-- Save IP Address -->
             <div class="ex-form-group mb-3">
-                <label class=" form-label" for='ipaddr'><?php eT("Save IP address:"); ?></label>
+                <label id="ipaddr-label" class="form-label"><?php eT("Save IP address:"); ?></label>
                 <div class="">
                     <?php
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'ipaddr',
+                        'ariaLabelledBy' => 'ipaddr-label',
                         'checkedOption' => $oSurvey->ipaddr,
-                        'ariaLabel' => gT('Save IP address:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->ipaddr . " ᴵ"])
                             : $optionsOnOff,
@@ -90,13 +89,13 @@ $googleAnalyticsStyleOptions = array(
 
             <!-- Save Anonymize IP Address -->
             <div class="ex-form-group mb-3">
-                <label class=" form-label" for='ipanonymize'><?php eT("Anonymize IP address:"); ?></label>
+                <label id="ipanonymize-label" class="form-label"><?php eT("Anonymize IP address:"); ?></label>
                 <div>
                     <?php
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'ipanonymize',
+                        'ariaLabelledBy' => 'ipanonymize-label',
                         'checkedOption' => $oSurvey->ipanonymize,
-                        'ariaLabel' => gT('Anonymize IP address:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->ipanonymize . " ᴵ"])
                             : $optionsOnOff,
@@ -107,13 +106,13 @@ $googleAnalyticsStyleOptions = array(
 
             <!-- Save referrer URL -->
             <div class="ex-form-group mb-3">
-                <label class=" form-label" for='refurl'><?php eT("Save referrer URL:"); ?></label>
+                <label id="refurl-label" class="form-label"><?php eT("Save referrer URL:"); ?></label>
                 <div>
                     <?php
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'refurl',
+                        'ariaLabelledBy' => 'refurl-label',
                         'checkedOption' => $oSurvey->refurl,
-                        'ariaLabel' => gT('Save referrer URL:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->refurl . " ᴵ"])
                             : $optionsOnOff,
@@ -124,14 +123,30 @@ $googleAnalyticsStyleOptions = array(
 
             <!-- Save timings -->
             <div class="ex-form-group mb-3">
-                <label class=" form-label" for='savetimings'><?php eT("Save timings:"); ?></label>
+                <label id="savetimings-label" class="form-label"><?php eT("Save timings:"); ?></label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'savetimings',
+                        'ariaLabelledBy' => 'savetimings-label',
                         'checkedOption' => $oSurvey->savetimings,
-                        'ariaLabel' => gT('Save timings:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->savetimings . " ᴵ"])
+                            : $optionsOnOff,
+                    ]); ?>
+                </div>
+            </div>
+
+            <!-- Save quota exit -->
+            <div class="ex-form-group mb-3">
+                <label id="savequotaexit-label" class="form-label"><?php eT("Save quota exit:"); ?></label>
+                <div>
+                    <?php
+                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'savequotaexit',
+                        'ariaLabelledBy' => 'savequotaexit-label',
+                        'checkedOption' => $oSurvey->savequotaexit,
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->savequotaexit . " ᴵ"])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -145,12 +160,12 @@ $googleAnalyticsStyleOptions = array(
 
             <!-- Enable assessment mode -->
             <div class="ex-form-group mb-3">
-                <label class=" form-label" for='assessments'><?php eT("Enable assessment mode:"); ?></label>
+                <label id="assessments-label" class="form-label"><?php eT("Enable assessment mode:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'assessments',
+                        'ariaLabelledBy' => 'assessments-label',
                         'checkedOption' => $oSurvey->assessments,
-                        'ariaLabel' => gT('Enable assessment mode:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->assessments . " ᴵ"])
                             : $optionsOnOff,
@@ -160,12 +175,12 @@ $googleAnalyticsStyleOptions = array(
 
             <!-- Participant may save and resume  -->
             <div class="ex-form-group mb-3">
-                <label class=" form-label" for='allowsave'><?php eT("Participant may save and resume later:"); ?></label>
+                <label id="allowsave-label" class="form-label"><?php eT("Participant may save and resume later:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'allowsave',
+                        'ariaLabelledBy' => 'allowsave-label',
                         'checkedOption' => $oSurvey->allowsave,
-                        'ariaLabel' => gT('Participant may save and resume later:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->allowsave . " ᴵ"])
                             : $optionsOnOff,
@@ -177,7 +192,7 @@ $googleAnalyticsStyleOptions = array(
                 <?php $emailnotificationto = $oSurvey->emailnotificationto; ?>
                 <div class="row">
                     <div class="col-12 col-lg-8 content-right">
-                        <label class=" form-label" for='emailnotificationto'><?php eT("Send basic admin notification email to:"); ?></label>
+                        <label id="emailnotificationto-label" class=" form-label" for='emailnotificationto'><?php eT("Send basic admin notification email to:"); ?></label>
                         <input class="form-control inherit-edit 
                             <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'd-none' : 'd-block'); ?>" type='
                             <?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto'
@@ -188,9 +203,10 @@ $googleAnalyticsStyleOptions = array(
                          <?= htmlspecialchars((string) $oSurveyOptions->emailnotificationto ?? '') ?>" readonly />
                     </div>
                     <div class="col-12 col-lg-4 content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
-                        <label class=" form-label content-center col-12" for='emailnotificationto'><?php eT("Inherit:"); ?></label>
+                        <label id="emailnotificationtobutton-label" class="form-label content-center col-12"><?php eT("Inherit:"); ?></label>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'emailnotificationtobutton',
+                            'ariaLabelledBy' => 'emailnotificationto-label emailnotificationtobutton-label',
                             'ariaLabel' => gT('Inherit:'),
                             'checkedOption' => ($bShowInherited && $emailnotificationto === 'inherit' ? 'Y' : 'N'),
                             'selectOptions' => $optionsOnOff,
@@ -207,7 +223,7 @@ $googleAnalyticsStyleOptions = array(
                 <?php $emailresponseto = $oSurvey->emailresponseto; ?>
                 <div class="row">
                     <div class="col-12 col-lg-8 content-right">
-                        <label class=" form-label" for='emailresponseto'><?php eT("Send detailed admin notification email to:"); ?></label>
+                        <label id="emailresponseto-label" class=" form-label" for='emailresponseto'><?php eT("Send detailed admin notification email to:"); ?></label>
                         <input class="form-control inherit-edit
                             <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'd-none' : 'd-block'); ?>" type='
                             <?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='emailresponseto' name='emailresponseto'
@@ -218,12 +234,12 @@ $googleAnalyticsStyleOptions = array(
                             <?= htmlspecialchars((string) $oSurveyOptions->emailresponseto ?? '') ?>" readonly />
                     </div>
                     <div class="col-12 col-lg-4 content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
-                        <label class=" form-label content-center col-12" for='emailresponseto'><?php eT("Inherit:"); ?></label>
+                        <label id="emailresponsetobutton-label" class="form-label content-center col-12"><?php eT("Inherit:"); ?></label>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'emailresponsetobutton',
+                            'ariaLabelledBy' => 'emailresponseto-label emailresponsetobutton-label',
                             'checkedOption' => ($bShowInherited && $emailresponseto === 'inherit' ? 'Y' : 'N'),
                             'selectOptions' => $optionsOnOff,
-                            'ariaLabel' => gT('Inherit:'),
                             'htmlOptions'   => [
                                 'class' => 'text-option-inherit'
                             ]
@@ -235,14 +251,14 @@ $googleAnalyticsStyleOptions = array(
             <?php if ($bShowAllOptions === true) { ?>
                 <!-- GoogleAnalytics settings to be used -->
                 <div class="ex-form-group mb-3">
-                    <label class=" form-label" for="googleanalyticsapikeysetting">
+                    <label id="googleanalyticsapikeysetting-label" class="form-label">
                         <?php echo gT('Google Analytics settings:'); ?>
                     </label>
                     <div>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'googleanalyticsapikeysetting',
+                            'ariaLabelledBy' => 'googleanalyticsapikeysetting-label',
                             'checkedOption' => $oSurvey->googleanalyticsapikeysetting,
-                            'ariaLabel' => gT('Google Analytics settings:'),
                             'selectOptions' => $googleAnalyticsOptions,
                         ]); ?>
                     </div>
@@ -260,12 +276,12 @@ $googleAnalyticsStyleOptions = array(
                 </div>
                 <!-- Google Analytics style -->
                 <div class="ex-form-group mb-3">
-                    <label class=" form-label" for='googleanalyticsstyle'><?php eT("Google Analytics style:"); ?></label>
+                    <label id="googleanalyticsstyle-label" class="form-label"><?php eT("Google Analytics style:"); ?></label>
                     <div>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'googleanalyticsstyle',
+                            'ariaLabelledBy' => 'googleanalyticsstyle-label',
                             'checkedOption' => $oSurvey->googleanalyticsstyle,
-                            'ariaLabel' => gT('Google Analytics style:'),
                             'selectOptions' => $googleAnalyticsStyleOptions,
                         ]); ?>
                     </div>

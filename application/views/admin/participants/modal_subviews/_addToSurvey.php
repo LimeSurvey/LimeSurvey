@@ -1,7 +1,6 @@
 <?php $this->beginWidget('CActiveForm', array(
     'action' => App()->createUrl('/admin/participants/sa/attributeMap'),
-    ), 'post'
-); ?>
+    ), 'post'); ?>
     <div class="modal-header">
         <h2 class="modal-title h5" id="participant_edit_modal"><?php echo ngT('Add participant to survey|Add participants to survey', $count); ?></h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
