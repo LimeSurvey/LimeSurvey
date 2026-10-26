@@ -10046,7 +10046,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 ++$i;
                 $subQeqn = '&nbsp;';
-                if (isset($LEM->subQrelInfo[$qid][$rowdivid])) {
+                // Ranking: The rank fields are named after the first ranking items, but the filters with these row ids belong to the items (shown below)
+                if ($q['info']['type'] != Question::QT_R_RANKING && isset($LEM->subQrelInfo[$qid][$rowdivid])) {
                     $sq = $LEM->subQrelInfo[$qid][$rowdivid];
                     $subQeqn = viewHelper::stripTagsEM($sq['prettyPrintEqn']);   // {' . $sq['eqn'] . '}';  // $sq['prettyPrintEqn'];
                     if ($sq['hasErrors']) {
@@ -10085,17 +10086,24 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
 
             //////
-            // SHOW ANSWER OPTIONS FOR ENUMERATED LISTS, AND FOR MULTIFLEXI
+            // SHOW ANSWER OPTIONS FOR ENUMERATED LISTS, AND FOR MULTIFLEXI, AND RANKING ITEMS
             //////
             $answerRows = '';
-            if (isset($LEM->qans[$qid]) || isset($LEM->multiflexiAnswers[$qid])) {
-                $_scale = -1;
-                if (isset($LEM->multiflexiAnswers[$qid])) {
-                    $ansList = $LEM->multiflexiAnswers[$qid];
-                } else {
-                    $ansList = $LEM->qans[$qid];
+            $ansList = [];
+            $rankingItemQids = [];
+            if (isset($LEM->multiflexiAnswers[$qid])) {
+                $ansList = $LEM->multiflexiAnswers[$qid];
+            } elseif (isset($LEM->qans[$qid])) {
+                $ansList = $LEM->qans[$qid];
+            } elseif ($q['info']['type'] == Question::QT_R_RANKING) {
+                // The ranking items are subquestions without value: List them like answer options, with their filter
+                foreach (getSubQuestions($sid, $qid, $_SESSION['LEMlang']) as $rankingItem) {
+                    $ansList['0~' . $rankingItem['title']] = '|' . $rankingItem['question'];
+                    $rankingItemQids[$rankingItem['title']] = $rankingItem['qid'];
                 }
-
+            }
+            if (!empty($ansList)) {
+                $_scale = -1;
                 foreach ($ansList as $ans => $value) {
                     $ansInfo = explode('~', (string) $ans);
                     $valParts = explode('|', (string) $value);
@@ -10109,8 +10117,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
                     $subQeqn = '';
                     $rowdivid = $sgqas[0] . $ansInfo[1];
-                    if ($q['info']['type'] == Question::QT_R_RANKING) {
-                        $rowdivid = 'Q' . $qid . $ansInfo[1];
+                    $valueText = '[VALUE: ' . $valInfo[0] . ']';
+                    if (isset($rankingItemQids[$ansInfo[1]])) {
+                        $rowdivid = 'Q' . $qid . '_S' . $rankingItemQids[$ansInfo[1]];
+                        $valueText = '';
                     }
                     if (isset($LEM->subQrelInfo[$qid][$rowdivid])) {
                         $sq = $LEM->subQrelInfo[$qid][$rowdivid];
@@ -10132,7 +10142,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $answerRows .= "<tr class='LEManswer'>"
                         . "<td>A[" . $ansInfo[0] . "]-" . $i++ . "</td>"
                         . "<td><b>" . $ansInfo[1] . "</b></td>"
-                        . "<td>[VALUE: " . $valInfo[0] . "]" . $subQeqn . "</td>"
+                        . "<td>" . $valueText . $subQeqn . "</td>"
                         . "<td>" . $sAnswerText . "</td>"
                         . "</tr>\n";
                 }
