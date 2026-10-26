@@ -770,6 +770,39 @@ class CheckIntegrityTest extends TestBaseClass
         }
     }
 
+    /** Verifies that duplicate survey theme options are only deleted, and reported, by the consistency check, keeping the oldest one. */
+    public function testDuplicateThemeConfigurationsAreOnlyDeletedAndReportedByTheConsistencyCheckKeepingTheOldest()
+    {
+        $templateName = 'fruity_twentythree';
+        $insertedIds = array();
+        foreach (array('{"container":"off"}', '{"container":"on"}') as $options) {
+            \Yii::app()->db->createCommand()->insert('{{template_configuration}}', array(
+                'template_name' => $templateName,
+                'sid' => self::$surveyId,
+                'options' => $options,
+            ));
+            $insertedIds[] = (int) \Yii::app()->db->getLastInsertID();
+        }
+        $getIds = function () use ($templateName) {
+            return array_map('intval', \Yii::app()->db->createCommand()->select('id')->from('{{template_configuration}}')
+                ->where('sid = :sid AND template_name = :template_name', array(':sid' => self::$surveyId, ':template_name' => $templateName))
+                ->order('id')->queryColumn());
+        };
+        $idsBefore = $getIds();
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame($idsBefore, $getIds(), 'Merely loading the check page (GET) deleted duplicate theme options.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(array($idsBefore[0]), $getIds(), 'The consistency check did not keep only the oldest theme options of the survey and theme.');
+            $this->assertStringContainsString('duplicate survey theme option(s)', $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{template_configuration}}', array('in', 'id', $insertedIds));
+        }
+    }
+
     /**
      * A subquestion whose group does not exist (but whose parent question is fine) must
      * get its parent's group back instead of being deleted as a question without group.

@@ -138,6 +138,10 @@ class DataIntegrityChecker
             $aData = $this->deleteOrphanThemeConfigurations($aData);
         }
 
+        if (isset($aDelete['duplicatethemeconfigurations'])) {
+            $aData = $this->deleteDuplicateThemeConfigurations($aData);
+        }
+
         if (isset($aDelete['surveylanguagesettings'])) {
             $aData = $this->deleteSurveyLanguageSettings($aDelete['surveylanguagesettings'], $aData);
         }
@@ -891,6 +895,42 @@ class DataIntegrityChecker
     }
 
     /**
+     * Returns the criteria matching duplicate survey theme options: All but the oldest
+     * row of each survey and theme.
+     *
+     * Duplicates came from a survey ID being used again after its survey was deleted. Only
+     * one row is ever used, and on MySQL this is the oldest one, which the theme options
+     * editor also saves into, so that one is kept.
+     * The derived table lets MySQL read the table it deletes from.
+     *
+     * @return CDbCriteria
+     */
+    private function getDuplicateThemeConfigurationsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = 'sid IS NOT NULL AND id NOT IN ('
+            . 'SELECT kept.min_id FROM ('
+            . 'SELECT MIN(tc.id) AS min_id FROM {{template_configuration}} tc WHERE tc.sid IS NOT NULL GROUP BY tc.sid, tc.template_name'
+            . ') kept)';
+        return $oCriteria;
+    }
+
+    /**
+     * Deletes duplicate survey theme options, keeping the oldest row of each survey and theme.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message if any theme options were deleted.
+     */
+    private function deleteDuplicateThemeConfigurations(array $aData)
+    {
+        $count = TemplateConfiguration::model()->deleteAll($this->getDuplicateThemeConfigurationsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u duplicate survey theme option(s), keeping the oldest one of each survey and theme'), $count);
+        }
+        return $aData;
+    }
+
+    /**
      * Deactivates active surveys whose response table is missing.
      *
      * @param array[] $surveys Surveys to deactivate, each with a 'sid' key.
@@ -1488,6 +1528,10 @@ class DataIntegrityChecker
         $iCount = TemplateConfiguration::model()->count($this->getOrphanThemeConfigurationsCriteria());
         if ($iCount > 0) {
             $aDelete['orphanthemeconfigurations'] = $iCount;
+        }
+        $iCount = TemplateConfiguration::model()->count($this->getDuplicateThemeConfigurationsCriteria());
+        if ($iCount > 0) {
+            $aDelete['duplicatethemeconfigurations'] = $iCount;
         }
 
         /**********************************************************************/
