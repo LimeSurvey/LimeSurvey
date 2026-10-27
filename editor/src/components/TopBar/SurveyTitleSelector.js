@@ -55,7 +55,7 @@ export const SurveyTitleSelector = ({
 
   return (
     <div
-      data-error={getError(survey.sid, Entities.languageSetting)}
+      data-error={getError(null, Entities.languageSetting)}
       className="d-flex align-items-center text-align-center top-bar-select align-middle"
       id="top-bar-select"
     >

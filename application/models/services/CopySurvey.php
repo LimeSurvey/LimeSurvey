@@ -17,6 +17,7 @@ use QuestionL10n;
 use Survey;
 use Permission;
 use SurveyLanguageSetting;
+use SurveysGroupsettings;
 use SurveyURLParameter;
 use Template;
 use TemplateConfiguration;
@@ -81,11 +82,14 @@ class CopySurvey
         $destinationSurvey->datecreated = date("Y-m-d H:i:s");
         $destinationSurvey->lastmodified = date("Y-m-d H:i:s");
         $destinationSurvey->attributedescriptions = $this->sourceSurvey->attributedescriptions;
+        $this->ensureUsableSurveyGroup($copySurveyResult, $destinationSurvey);
         $transaction = App()->db->beginTransaction();
 
         try {
             if (!$destinationSurvey->save()) {
-                throw new \Exception(gT("Failed to copy survey"));
+                throw new \Exception(
+                    gT("Failed to copy survey") . ': ' . implode(' ', array_merge(...array_values($destinationSurvey->getErrors())))
+                );
             }
 
             $this->copySurveyThemeConfigurations($destinationSurvey);
@@ -457,21 +461,11 @@ class CopySurvey
         $mappedSubquestionIds = [];
         $cntCopiedQuestions = 0;
         foreach ($questions as $question) {
-            $copyQuestionValues = new CopyQuestionValues();
-            $copyQuestionValues->setSourceSurveyId($this->sourceSurvey->sid);
-            $copyQuestionValues->setQuestiontoCopy($question);
-            $copyQuestionValues->setQuestionGroupId($mapping['questionGroupIds'][$question->gid]);
-            $copyQuestionValues->setOSurvey($destinationSurvey);
-            $copyQuestionValues->setQuestionCode($question->title);
-            $copyQuestionValues->setQuestionPositionInGroup($question->question_order);
-            $copyQuestionTextValues = [];
-            $questionLanguages = QuestionL10n::model()->findAllByAttributes(['qid' => $question->qid]);
-            foreach ($questionLanguages as $questionL10n) {
-                $questionText = $questionL10n->question ?? '';
-                $questionHelp = $questionL10n->help ?? '';
-                $copyQuestionTextValues[$questionL10n->language] = new \LimeSurvey\Datavalueobjects\CopyQuestionTextValues($questionText, $questionHelp);
-            }
-            $copyQuestionValues->setQuestionL10nData($copyQuestionTextValues);
+            $copyQuestionValues = $this->getCopyQuestionValues(
+                $question,
+                $destinationSurvey,
+                $mapping['questionGroupIds'][$question->gid]
+            );
             $optionsCopyQuestion['copySubquestions'] = true;
             $optionsCopyQuestion['copyAnswerOptions'] = $this->options->isAnswerOptions();
             $optionsCopyQuestion['copyDefaultAnswers'] = false; //we have to do it separately here (id-mapping)
@@ -479,6 +473,13 @@ class CopySurvey
             $optionsCopyQuestion['adjustLinks'] = $this->options->isResourcesAndLinks();
             $copyQuestion = new CopyQuestion($copyQuestionValues, $optionsCopyQuestion);
             if ($copyQuestion->copyQuestion($destinationSurvey->sid)) {
+                foreach ($copyQuestion->getCopyErrors() as $copyError) {
+                    $copyResults->setWarnings(sprintf(
+                        gT("Question '%s': %s"),
+                        \CHtml::encode($question->title),
+                        $copyError
+                    ));
+                }
                 $destinationQuestion = $copyQuestion->getNewCopiedQuestion();
                 //change sid and gip for the new question
                 $destinationQuestion->sid = $destinationSurvey->sid;
@@ -503,6 +504,35 @@ class CopySurvey
         $this->copyDefaultAnswers($mappingQuestionIds, $mappedSubquestionIds);
 
         return $mapping;
+    }
+
+    /**
+     * Collects the values needed to copy a question (including its texts) to the destination survey.
+     *
+     * @param Question $question the question to copy
+     * @param Survey $destinationSurvey
+     * @param int $destinationGroupId id of the question group in the destination survey
+     * @return CopyQuestionValues
+     */
+    private function getCopyQuestionValues($question, $destinationSurvey, $destinationGroupId)
+    {
+        $copyQuestionValues = new CopyQuestionValues();
+        $copyQuestionValues->setSourceSurveyId($this->sourceSurvey->sid);
+        $copyQuestionValues->setQuestiontoCopy($question);
+        $copyQuestionValues->setQuestionGroupId($destinationGroupId);
+        $copyQuestionValues->setOSurvey($destinationSurvey);
+        $copyQuestionValues->setQuestionCode($question->title);
+        $copyQuestionValues->setQuestionPositionInGroup($question->question_order);
+        $copyQuestionTextValues = [];
+        $questionLanguages = QuestionL10n::model()->findAllByAttributes(['qid' => $question->qid]);
+        foreach ($questionLanguages as $questionL10n) {
+            $questionText = $questionL10n->question ?? '';
+            $questionHelp = $questionL10n->help ?? '';
+            $copyQuestionTextValues[$questionL10n->language] = new \LimeSurvey\Datavalueobjects\CopyQuestionTextValues($questionText, $questionHelp);
+        }
+        $copyQuestionValues->setQuestionL10nData($copyQuestionTextValues);
+
+        return $copyQuestionValues;
     }
 
     /**
@@ -548,6 +578,44 @@ class CopySurvey
         }
 
         return $destinationSurvey;
+    }
+
+    /**
+     * Moves the destination survey to the default survey group if the current
+     * user is not allowed to use the survey group of the source survey.
+     *
+     * Settings inherited from the source survey group are replaced by their effective
+     * values, so the copy behaves like the source survey despite the changed group.
+     *
+     * @param CopySurveyResult $copySurveyResult Result container receiving a warning when the group is changed
+     * @param Survey $destinationSurvey The survey copy, not yet saved
+     * @return void
+     */
+    private function ensureUsableSurveyGroup(CopySurveyResult $copySurveyResult, Survey $destinationSurvey): void
+    {
+        if ($destinationSurvey->validate(['gsid'])) {
+            return;
+        }
+        $destinationSurvey->clearErrors('gsid');
+
+        $sourceOptions = $this->sourceSurvey->oOptions;
+        if ($sourceOptions === null) {
+            $this->sourceSurvey->setOptions($this->sourceSurvey->gsid);
+            $sourceOptions = $this->sourceSurvey->oOptions;
+        }
+        foreach (SurveysGroupsettings::model()->attributeNames() as $attribute) {
+            if (in_array($attribute, ['gsid', 'owner_id'])) {
+                continue;
+            }
+            if ($destinationSurvey->hasAttribute($attribute) && property_exists($sourceOptions, $attribute)) {
+                $destinationSurvey->$attribute = $sourceOptions->$attribute;
+            }
+        }
+        $destinationSurvey->gsid = 1;
+
+        $copySurveyResult->setWarnings(
+            gT("You are not allowed to use the survey group of the source survey, therefore the copy was placed in the default survey group. Settings inherited from the source survey group were applied directly to the copy.")
+        );
     }
 
     /**

@@ -157,6 +157,9 @@ export const Select = ({
               ...base,
               color: '#6E748C',
               minWidth: 'fit-content',
+              // 1px less than the react-select default to make up for the 2px border, so the select is 38px high
+              paddingTop: '7px',
+              paddingBottom: '7px',
             }),
             control: (baseStyles) => ({
               ...baseStyles,

@@ -73,7 +73,7 @@ export const TopBar = ({
     let updatedTitle = RemoveHTMLTagsInString(title).replaceAll('&nbsp;', '')
     updatedTitle = (updatedTitle.trim() === '') === '' ? '' : updatedTitle
 
-    const operation = createBufferOperation(survey.sid)
+    const operation = createBufferOperation(null)
       .languageSetting()
       .update({
         [activeLanguage]: {

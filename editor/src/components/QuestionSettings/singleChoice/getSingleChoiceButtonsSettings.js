@@ -7,6 +7,7 @@ import {
   getLogicAttributes,
   getDisplayAttributes,
   getGeneralAttributes,
+  getThemeAttributes,
 } from '../attributes'
 
 const simpleSettings = () => {
@@ -88,7 +89,11 @@ const timerSettings = () => {
 }
 
 const themeOptionsSettings = () => {
-  return []
+  const themeAttributes = getThemeAttributes()
+  return [
+    themeAttributes.BUTTON_SIZE,
+    themeAttributes.MAXIMUM_NUMBER_OF_BUTTONS_IN_A_ROW,
+  ]
 }
 
 const fileMetaDataSettings = () => {

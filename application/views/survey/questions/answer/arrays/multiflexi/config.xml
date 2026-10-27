@@ -258,9 +258,9 @@
             <name>multiflexible_step</name>
             <category>Display</category>
             <sortorder>111</sortorder>
-            <inputtype>integer</inputtype>
+            <inputtype>float</inputtype>
             <default>1</default>
-            <min>1</min>
+            <min>0</min>
             <help>Step value</help>
             <caption>Step value</caption>
             <i18n></i18n>
@@ -601,7 +601,7 @@
             </options>
             <help>Select the type of chart to be displayed</help>
             <caption>Chart type</caption>
-            <default>0</default>
+            <default></default>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

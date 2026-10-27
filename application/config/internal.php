@@ -69,10 +69,11 @@ $internalConfig = array(
     */
     'modules' => array(
 
-        //Root Modules are real Yii Modules and can be initiate like this:
+        /* Root Modules are real Yii Modules and can be initiate like this:
         'HelloWorld' => array(
           'class' => 'modules.root.HelloWorld.HelloWorldModule',
         ),
+        */
 
         /* Here you can unlock Gii
         'gii'=>array(
@@ -467,7 +468,7 @@ $internalConfig = array(
 
 
 
-$result = CMap::mergeArray($internalConfig, $userConfig);
+$result = \LimeSurvey\Helpers\ConfigMergeHelper::merge($internalConfig, $userConfig);
 /**
  * Some workarounds for erroneous settings in user config.php.
  * seems not to be used anymore...

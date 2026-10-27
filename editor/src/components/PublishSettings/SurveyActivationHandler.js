@@ -225,6 +225,10 @@ const SurveyActivationHandler = forwardRef(
       if (extraData?.expire) {
         surveyUpdateFields.expires = extraData.expire
       }
+      // activation creates the responses table on the backend
+      if (isSurveyActiveAfterOperation) {
+        surveyUpdateFields.hasResponsesTable = true
+      }
       update(surveyUpdateFields)
 
       const isLastSwitchAPauseOperation =

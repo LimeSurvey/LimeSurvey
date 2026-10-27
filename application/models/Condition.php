@@ -258,8 +258,12 @@ class Condition extends LSActiveRecord
     }
 
     /**
+     * Returns the question-based conditions of one scenario of a question,
+     * ordered by question so conditions on the same field are adjacent
+     * (the condition editor joins adjacent conditions on the same field with "or")
+     *
      * @param int $qid
-     * @param $language
+     * @param string $language
      * @param Condition $scenarionr
      * @return array
      */
@@ -270,6 +274,7 @@ class Condition extends LSActiveRecord
         $quotedQL10ns = $db->quoteTableName('questionl10ns');
         $quotedLanguage = $db->quoteColumnName('language');
         $quotedQGL10ns = $db->quoteTableName('questiongroupl10ns');
+        $quotedGroup = $db->quoteTableName('group');
 
         $results = Condition::model()->with(array(
             'questions' => array(
@@ -288,7 +293,8 @@ class Condition extends LSActiveRecord
             ))->findAll(
                 array(
                     'select' => 't.cid, t.scenario, t.cqid, t.cfieldname, t.method, t.value',
-                    'condition' => 't.qid = ' . $qid . ' and scenario = ' . $scenarionr['scenario'] . ' and cfieldname NOT LIKE \'{%\''
+                    'condition' => 't.qid = ' . $qid . ' and scenario = ' . $scenarionr['scenario'] . ' and cfieldname NOT LIKE \'{%\'',
+                    'order' => $quotedGroup . '.group_order, questions.question_order, t.cfieldname, t.value, t.cid'
                 )
             );
 

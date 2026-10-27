@@ -82,12 +82,10 @@
                                 </div>
 
                                 <div class=" {{ aSurveyInfo.class.navigatorcolr }} col-6 text-end " {{ aSurveyInfo.attr.navigatorcolr }}>
-                                    <!-- Button submit -->
-                                    {# submit button is disabled to behave the same as in LS2: no "Submit" button if quota exceeded
+                                    <!-- Button end survey: confirm the quota, closes the survey as screened out -->
                                     <button  {{ aSurveyInfo.attr.navigatorcolrbutton}} class=" {{ aSurveyInfo.class.navigatorcolrbutton}}  btn btn-lg btn-primary " accesskey="n">
-                                        {{ gT("Submit") }}
+                                        {{ gT("End survey") }}
                                     </button>
-                                    #}
                                 </div>
                             </div>
 

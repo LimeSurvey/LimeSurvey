@@ -31,22 +31,24 @@ trait OpHandlerQuestionTrait
         $object = $answers ? 'answers' : 'subquestions';
         $idField = $answers ? 'aid' : 'qid';
         foreach ($data as $subQueDataArray) {
-            foreach ($subQueDataArray as $subQueData) {
+            foreach ($subQueDataArray as $scaleId => $subQueData) {
                 if (
                     isset($subQueData['tempId'])
                     && isset($subQueData['code'])
                 ) {
-                    $tempIds[$subQueData['code']] = $subQueData['tempId'];
+                    $tempIds[(int)$scaleId . ':' . $subQueData['code']] =
+                        $subQueData['tempId'];
                 }
             }
         }
         if (count($tempIds) > 0) {
             $question->refresh();
             foreach ($question->$object as $subquestion) {
-                if (array_key_exists($subquestion->$title, $tempIds)) {
+                $key = (int)$subquestion->scale_id . ':' . $subquestion->$title;
+                if (array_key_exists($key, $tempIds)) {
                     $mapping[$object . 'Map'][] = [
                         new TempIdMapItem(
-                            $tempIds[$subquestion->$title],
+                            $tempIds[$key],
                             $subquestion->$idField,
                             $idField
                         )

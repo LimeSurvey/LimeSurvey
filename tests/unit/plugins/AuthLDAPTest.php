@@ -59,7 +59,6 @@ class AuthLDAPTest extends TestBaseClass
     private function callPrivate($method, array $args)
     {
         $reflectionMethod = new \ReflectionMethod(self::$plugin, $method);
-        $reflectionMethod->setAccessible(true);
         return $reflectionMethod->invokeArgs(self::$plugin, $args);
     }
 
@@ -86,5 +85,46 @@ class AuthLDAPTest extends TestBaseClass
         $this->assertNull($newUserId);
         $this->assertSame(\AuthLDAP::ERROR_ALREADY_EXISTING_USER, $event->get('errorCode'));
         $this->assertSame(1, (int) \User::model()->count('LOWER(users_name) = :name', [':name' => 'authldapcasetest']));
+    }
+
+    /**
+     * Users added in user management are only created by AuthLDAP when they are of LDAP type
+     */
+    public function testCreateNewUserOnlyHandlesLdapUserType()
+    {
+        $event = new \PluginEvent('createNewUser');
+        $event->set('preCollectedUserArray', ['users_name' => 'authldapcasetest', 'user_type' => 'DB']);
+        self::$plugin->setEvent($event)->createNewUser();
+        $this->assertNull($event->get('errorCode'));
+
+        // Fails without an LDAP server because the username already exists, which shows it was handled
+        $event = new \PluginEvent('createNewUser');
+        $event->set('preCollectedUserArray', ['users_name' => 'authldapcasetest', 'user_type' => 'LDAP']);
+        self::$plugin->setEvent($event)->createNewUser();
+        $this->assertSame(\AuthLDAP::ERROR_ALREADY_EXISTING_USER, $event->get('errorCode'));
+    }
+
+    /**
+     * A failing STARTTLS returns the LDAP error instead of an empty message (shown as invalid password)
+     */
+    public function testFailingStartTlsReturnsLdapError()
+    {
+        $settings = ['server' => 'ldap://127.0.0.1', 'ldapport' => '1', 'ldaptls' => '1', 'ldapversion' => '3'];
+        foreach ($settings as $key => $value) {
+            $this->callPrivate('set', [$key, $value]);
+        }
+        try {
+            $result = $this->callPrivate('createConnection', []);
+        } finally {
+            \PluginSetting::model()->deleteAllByAttributes(
+                ['plugin_id' => self::$plugin->getId(), 'key' => array_keys($settings)]
+            );
+        }
+        $this->assertIsArray($result);
+        $this->assertSame(100, $result['errorCode']);
+        $this->assertSame(
+            sprintf(gT('Could not start TLS on the LDAP connection: %s'), "Can't contact LDAP server"),
+            $result['errorMessage']
+        );
     }
 }

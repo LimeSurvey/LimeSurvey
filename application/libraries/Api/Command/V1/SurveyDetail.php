@@ -119,7 +119,8 @@ class SurveyDetail implements CommandInterface
                 $this->surveyDetailService->saveCache((int)$surveyId, $survey);
             }
         }
-
+        /* Don't get it from cache */
+        $survey['hasResponsesTable'] = (bool) $surveyModel->hasResponsesTable;
         return $this->responseFactory
             ->makeSuccess(['survey' => $survey]);
     }

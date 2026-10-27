@@ -15,6 +15,17 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     public ?bool $hasTokenTable = null;
 
     /**
+     * Ranking questions to fold out into one answer entry per rank.
+     * Keyed by the raw response attribute ("Q{qid}", the JSON-array column
+     * actually stored in the database), each entry: ['qid', 'gid', 'sid',
+     * 'ranks' => [rank fieldmap key ("Q{qid}_S{sqid}") => rank (1-based)]].
+     * Populated by ExportSurveyResultsService::expandRankingFieldMap().
+     *
+     * @var array<string, array{qid: int, gid: int, sid: int, ranks: array<string, int>}>
+     */
+    public array $rankingFields = [];
+
+    /**
      * Construct
      */
     public function __construct()
@@ -88,6 +99,13 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 
     /**
      * Parses SGQA-keyed response attributes into structured answer entries.
+     *
+     * Ranking questions (listed in $this->rankingFields) are stored as a
+     * single JSON array column (the ranked list of subquestion codes,
+     * ordered by rank); those are decoded and folded out into one answer
+     * entry per rank fieldmap key instead of a single entry holding the raw
+     * JSON. Invalid values leave every rank empty.
+     *
      * @param array $attributes
      * @return array
      */
@@ -108,6 +126,18 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
                     "sid"   => $survey,
                     "value" => $value
                 ];
+            } elseif (isset($this->rankingFields[$key])) {
+                $ranking = $this->rankingFields[$key];
+                $rankedCodes = \Question::decodeRankedCodes($value);
+                foreach ($ranking['ranks'] as $rankFieldKey => $rank) {
+                    $answers[$rankFieldKey] = [
+                        "key"   => $rankFieldKey,
+                        "id"    => $ranking['qid'],
+                        "gid"   => $ranking['gid'],
+                        "sid"   => $ranking['sid'],
+                        "value" => $rankedCodes[$rank - 1] ?? null,
+                    ];
+                }
             } elseif (!empty($this->fieldMap[$key]) && str_starts_with($key, "Q")) {
                 $answers[$key] = [
                     "key"   => $key,

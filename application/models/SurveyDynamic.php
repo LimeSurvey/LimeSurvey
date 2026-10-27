@@ -396,12 +396,12 @@ class SurveyDynamic extends LSActiveRecord
         $oFieldMap = json_decode(base64_decode($base64jsonFieldMap));
         $value     = $this->$colName;
 
-        $sFullValue = viewHelper::flatten(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
+        $sFullValue = viewHelper::responseValueToText(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage), $value);
         if (strlen((string) $sFullValue) > 50) {
-            $sElipsizedValue = ellipsize($sFullValue, $this->ellipsize_question_value);
-            $sValue          = '<span data-bs-toggle="tooltip" data-bs-placement="left" title="' . quoteText($sFullValue) . '">' . $sElipsizedValue . '</span>';
+            $sElipsizedValue = ellipsize($sFullValue, $this->ellipsize_question_value, 1, '…', false);
+            $sValue          = '<span data-bs-toggle="tooltip" data-bs-placement="left" title="' . quoteText($sFullValue) . '">' . CHtml::encode($sElipsizedValue) . '</span>';
         } else {
-            $sValue          = $sFullValue;
+            $sValue          = CHtml::encode($sFullValue);
         }
 
         // Upload question
@@ -731,6 +731,50 @@ class SurveyDynamic extends LSActiveRecord
             ),
         ));
         return $dataProvider;
+    }
+
+    /**
+     * Returns the ids of all responses matching the filters of the responses grid,
+     * as used by "Select all" massive actions.
+     *
+     * @param int $surveyId
+     * @param string $filterQuery Serialized filter inputs of the responses grid
+     * @param array $excludedIds Response ids deselected by the user
+     * @param int|null $limit Maximum number of responses (lowest ids first), null for no limit
+     * @return array
+     */
+    public static function getIdsByGridFilter(int $surveyId, string $filterQuery, array $excludedIds = [], ?int $limit = null): array
+    {
+        $model = self::model($surveyId);
+        $model->bEncryption = true;
+
+        parse_str($filterQuery, $parsedFilterQuery);
+        $filters = $parsedFilterQuery['SurveyDynamic'] ?? null;
+        $filters = is_array($filters) ? $filters : [];
+        $model->setAttributes($filters, false);
+        // These filters are no table columns, so setAttributes() skips them
+        foreach (['completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter'] as $filterName) {
+            $model->$filterName = $filters[$filterName] ?? null;
+        }
+
+        $criteria = $model->search()->criteria;
+        $criteria->select = 't.id';
+        if ($limit !== null) {
+            $criteria->order = 't.id ASC';
+            $criteria->limit = $limit;
+        }
+
+        $responseIds = $model->getCommandBuilder()
+            ->createFindCommand($model->tableSchema, $criteria)
+            ->queryColumn();
+        if (empty($excludedIds)) {
+            return $responseIds;
+        }
+
+        $excludedIds = array_flip(array_map('strval', $excludedIds));
+        return array_values(array_filter($responseIds, function ($responseId) use ($excludedIds) {
+            return !isset($excludedIds[(string) $responseId]);
+        }));
     }
 
     /**
