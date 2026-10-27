@@ -46,7 +46,9 @@ class SchemaFactorySurveyDetail
                     $questionGroupSchema
                 ),
                 Schema::string('created_at')
-                    ->format(Schema::FORMAT_DATE_TIME)
+                    ->format(Schema::FORMAT_DATE_TIME),
+                Schema::boolean('hasResponsesTable')
+                    ->default(false),
             )
         );
 

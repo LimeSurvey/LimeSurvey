@@ -565,7 +565,7 @@ class LS_Twig_Extension extends AbstractExtension
     /**
      * Get html text and remove whole not clean string
      * @param string $string to flatten
-     * @param boolean $encode html entities
+     * @param boolean $encode html special chars, existing html entities are kept as they are (no double encoding)
      * @return string
      */
     public static function flatString($string, $encode = false)
@@ -582,7 +582,8 @@ class LS_Twig_Extension extends AbstractExtension
         $string = preg_replace('/\s+/', ' ', $string);
 
         if ($encode) {
-            return \CHtml::encode($string);
+            // Texts saved from the HTML editor or the XSS filter are already entity-encoded (e.g. &amp;)
+            return htmlspecialchars($string, ENT_QUOTES, Yii::app()->charset, false);
         }
         return $string;
     }
@@ -854,17 +855,10 @@ class LS_Twig_Extension extends AbstractExtension
             } elseif ($moveInfo['finished']) {
                 $page = 'finished';
             } else {
-                $showgroupinfo = Yii::app()->getConfig('showgroupinfo');
                 if ($survey->format == 'A') {
                     $page = 1;
                 } else {
-                    if (
-                        $showgroupinfo == 'both'
-                        || $showgroupinfo == 'name'
-                        || ($showgroupinfo == 'choose' && !isset($survey->showgroupinfo))
-                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'B')
-                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'N')
-                    ) {
+                    if (!isset($survey->showgroupinfo) || in_array($survey->showgroupinfo, ['B', 'N'])) {
                         $groupInfo = LimeExpressionManager::GetStepIndexInfo($moveInfo['seq']);
                         $groupName = isset($groupInfo['gname']) ? $groupInfo['gname'] : '';
                     }

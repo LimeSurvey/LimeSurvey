@@ -31,10 +31,11 @@ class OpHandlerResponseMultiSelectConditionTest extends TestCondition
 
         $criteria = $handler->execute('status', 'active');
 
+        $paramName = array_key_first($criteria->params);
         // Condition
-        $this->assertFieldConditions($criteria->condition, '[0] IN (:value0)', ['status']);
+        $this->assertFieldConditions($criteria->condition, "[0] IN ($paramName)", ['status']);
         // Params
-        $this->assertSame([':value0' => 'active'], $criteria->params);
+        $this->assertSame([$paramName => 'active'], $criteria->params);
     }
 
     public function testExecuteWithMultipleValuesBuildsOrChain(): void
@@ -42,13 +43,14 @@ class OpHandlerResponseMultiSelectConditionTest extends TestCondition
         $handler = new MultiSelectConditionHandler();
 
         $criteria = $handler->execute('category', ['A', 'B', 'C']);
+        $paramNames = array_keys($criteria->params);
         $this->assertFieldConditions(
             $criteria->condition,
-            '[0] IN (:value0, :value1, :value2)',
+            '[0] IN (' . implode(', ', $paramNames) . ')',
             ['category']
         );
         $this->assertSame(
-            [':value0' => 'A', ':value1' => 'B', ':value2' => 'C'],
+            array_combine($paramNames, ['A', 'B', 'C']),
             $criteria->params
         );
     }
@@ -59,12 +61,31 @@ class OpHandlerResponseMultiSelectConditionTest extends TestCondition
 
         $criteria = $handler->execute('sta`tus; DROP TABLE users--', 'ok');
 
+        $paramName = array_key_first($criteria->params);
         $this->assertFieldConditions(
             $criteria->condition,
-            '[0] IN (:value0)',
+            "[0] IN ($paramName)",
             ['statusDROPTABLEusers--']
         );
-        $this->assertSame([':value0' => 'ok'], $criteria->params);
+        $this->assertSame([$paramName => 'ok'], $criteria->params);
+    }
+
+    /**
+     * Regression: two multi-select filters merged into one criteria must keep
+     * both bound values. Placeholder names used to be index-based (:value0),
+     * so mergeWith()'s array_merge silently dropped the first value.
+     */
+    public function testTwoMergedFiltersKeepBothValues(): void
+    {
+        $handler = new MultiSelectConditionHandler();
+
+        $merged = new \CDbCriteria();
+        $merged->mergeWith($handler->execute('colour', ['red']));
+        $merged->mergeWith($handler->execute('size', ['large']));
+
+        $this->assertCount(2, $merged->params);
+        $this->assertContains('red', $merged->params);
+        $this->assertContains('large', $merged->params);
     }
 
     public function testExecuteWithEmptyArrayProducesNoCondition(): void

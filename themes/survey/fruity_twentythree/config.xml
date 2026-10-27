@@ -105,9 +105,9 @@
         <checkicon type="icon" library="remixicon" category="Colors" width="4" title="Check icon">EB7A
             <!--  When adding new items, please keep them ordered alphabetically -->
             <dropdownoptions>
-                <option value="EB7A"> Check </option>
-                <option value="EB80"> Check circle </option>
-                <option value="EB82"> Check square </option>
+                <option value="EB7A">Checkmark</option>
+                <option value="EB80">Checkmark in circle</option>
+                <option value="EB82">Checkmark in square</option>
             </dropdownoptions>
         </checkicon>
 
@@ -448,6 +448,8 @@
                 <pdf>
                     <screen_title type="data" role="title" twig="on"><![CDATA[ {{gT('PDF')}} ]]></screen_title>
                     <file type="view" role="layout">layout_print.twig</file>
+                    <file type="view" role="subview">./subviews/print/print_group.twig</file>
+                    <file type="view" role="subview">./subviews/print/print_question.twig</file>
                 </pdf>
 
                 <quotas>
@@ -505,7 +507,7 @@
                         <![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
                     <showsurveypolicynotice>2</showsurveypolicynotice>
                     <datasecurity_notice_label type="data" twig="on">
-                        <![CDATA[ <a href='#data-security-modal-' data-bs-toggle='collapse'> {{ gT('Show privacy policy') }} </a>  ]]></datasecurity_notice_label>
+                        <![CDATA[ {STARTPOLICYLINK}{{ gT('Show privacy policy') }}{ENDPOLICYLINK} ]]></datasecurity_notice_label>
                     <datasecurity_notice type="data" twig="on">
                         <![CDATA[ {{ gT("Your privacy policy text is shown here.") }} ]]></datasecurity_notice>
                 </survey>

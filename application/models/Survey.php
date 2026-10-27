@@ -251,7 +251,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * @inheritdoc With allow to delete all related models and data and test Permission.
-     * @param bool $recursive
+     * @param bool $recursive Also delete all related models and data
+     * @return bool False if the current user may not delete the survey or the delete failed
      **/
     public function delete($recursive = true)
     {
@@ -274,6 +275,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             if (tableExists("{{tokens_" . $this->sid . "}}")) {
                 Yii::app()->db->createCommand()->dropTable("{{tokens_" . $this->sid . "}}");
             }
+            // Delete the archived (old_*) tables of this survey and their settings
+            $this->deleteArchivedTables();
 
             /* Remove User/global settings part : need Question and QuestionGroup*/
             // Settings specific for this survey
@@ -338,6 +341,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             Quota::model()->deleteQuota(array('sid' => $this->sid), true);
             // Remove all related plugin settings
             PluginSetting::model()->deleteAllByAttributes(array("model" => 'Survey', "model_id" => $this->sid));
+            // Remove the survey-specific theme options
+            TemplateConfiguration::model()->deleteAllByAttributes(array('sid' => $this->sid));
             // Delete all uploaded files.
             rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $this->sid);
             // Delete all failed email notifications
@@ -351,6 +356,38 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return true;
     }
 
+
+    /**
+     * Returns the names of all archived tables of this survey (old_responses_<sid>_<date>,
+     * old_timings_<sid>_<date>, old_tokens_<sid>_<date>, old_questions_<sid>_<date> and
+     * legacy old_survey_<sid>_<date>), created when the survey was deactivated.
+     *
+     * @return string[] Full (prefixed) table names
+     */
+    public function getArchivedTableNames()
+    {
+        Yii::app()->loadHelper('database');
+        $sDBPrefix = Yii::app()->db->tablePrefix;
+        // The LIKE pattern is only a coarse prefilter ('_' is a wildcard there), the regex does the exact match
+        $sPattern = '/^' . preg_quote((string) $sDBPrefix, '/') . 'old_[a-z]+_' . (int) $this->sid . '_/';
+        $aTables = Yii::app()->db->createCommand(dbSelectTablesLike('{{old_}}%'))->queryColumn();
+        return array_values(array_filter($aTables, function ($sTableName) use ($sPattern) {
+            return (bool) preg_match($sPattern, (string) $sTableName);
+        }));
+    }
+
+    /**
+     * Drops all archived tables of this survey and deletes the related archived table settings.
+     *
+     * @return void
+     */
+    private function deleteArchivedTables()
+    {
+        foreach ($this->getArchivedTableNames() as $sTableName) {
+            Yii::app()->db->createCommand()->dropTable($sTableName);
+        }
+        ArchivedTableSettings::model()->deleteAllByAttributes(['survey_id' => $this->sid]);
+    }
 
     /**
      * The Survey languagesettings in currently active language. Falls back to the surveys' default language if the current language is not available.
@@ -527,7 +564,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty' => true, 'allowInherit' => true),
             array('active', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
             array('gsid', 'numerical', 'min' => '0', 'allowEmpty' => true),
-            array('gsid', 'in', 'range' => array_keys(SurveysGroups::getSurveyGroupsList()), 'allowEmpty' => true, 'message' => gT("You are not allowed to use this group"), 'except' => 'activationStateChange'),
+            array('gsid', 'in', 'range' => array_keys(SurveysGroups::getSurveyGroupsList()), 'allowEmpty' => true, 'message' => gT("You are not allowed to use this group")),
             array('anonymized', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('savetimings', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('datestamp', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
@@ -567,7 +604,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('googleanalyticsstyle', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '3', 'allowEmpty' => true),
             array('autonumber_start', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('tokenlength', 'default', 'value' => 15),
-            array('tokenlength', 'numerical', 'integerOnly' => true, 'allowEmpty' => false, 'min' => '-1', 'max' => Token::MAX_LENGTH, 'tooBig' => gT('Token length cannot be bigger than {max} characters.')),
+            array('tokenlength', 'numerical', 'integerOnly' => true, 'allowEmpty' => false),
+            array('tokenlength', 'in', 'range' => self::getValidTokenLengths(), 'skipOnError' => true, 'message' => self::getInvalidTokenLengthMessage()),
             array('bouncetime', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('navigationdelay', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('template', 'filter', 'filter' => array($this, 'filterTemplateSave')),
@@ -617,6 +655,23 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $this->setOptions($this->gsid);
     }
 
+    /**
+     * Get the allowed access code lengths: -1 (inherit) or Token::MIN_LENGTH to Token::MAX_LENGTH
+     * @return int[]
+     */
+    public static function getValidTokenLengths()
+    {
+        return array_merge([-1], range(Token::MIN_LENGTH, Token::MAX_LENGTH));
+    }
+
+    /**
+     * Get the validation error message for an access code length outside the allowed range
+     * @return string
+     */
+    public static function getInvalidTokenLengthMessage()
+    {
+        return sprintf(gT('Access code length must be between %d and %d.'), Token::MIN_LENGTH, Token::MAX_LENGTH);
+    }
 
     /**
      * filterTemplateSave to fix some template name
@@ -625,14 +680,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function filterTemplateSave($sTemplateName)
     {
-        if (!Permission::model()->hasTemplatePermission($sTemplateName)) {
-            // Reset to default only if different from actual value
+        // Make sure the user has permission to use the template.
+        // 'inherit' is always permitted — the dropdown shows it without any permission check
+        if ($sTemplateName !== 'inherit' && !Permission::model()->hasTemplatePermission($sTemplateName)) {
+            // For new records we can just set it to inherit, for existing ones we keep the old value.
             if (!$this->isNewRecord) {
-                $oSurvey = self::model()->findByPk($this->sid);
-                if ($oSurvey->template != $sTemplateName) {
-                    // No need to test !is_null($oSurvey)
-                    $sTemplateName = Yii::app()->getConfig('defaulttheme');
-                }
+                $oSurvey = self::model()->findByPkNoCache($this->sid);
+                $sTemplateName = $oSurvey->template ?? 'inherit';
             } else {
                 $sTemplateName = 'inherit';
             }
@@ -1088,6 +1142,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Finds a single active record with the specified primary key, skipping the cache used by findByPk.
+     * @param mixed $pk primary key value(s). Use array for multiple primary keys. For composite key, each key value must be an array (column name=>column value).
+     * @param mixed $condition query condition or criteria.
+     * @param array $params parameters to be bound to an SQL statement.
+     * @return static|null the record found. Null if none is found.
+     */
+    public function findByPkNoCache($pk, $condition = '', $params = array())
+    {
+        return parent::findByPk($pk, $condition, $params);
+    }
+
+    /**
      * findByPk uses a cache to store a result. Use this method to force clearing that cache.
      */
     public function resetCache(): void
@@ -1278,6 +1344,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         return ($this->active === 'Y');
     }
+
     /**
      * @return bool
      */
@@ -1499,39 +1566,50 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * @return int|string
+     * Count the submitted answers
+     * @return int
      */
     public function getCountFullAnswers()
     {
-        $sResponseTable = $this->responsesTableName;
-        if ($this->active != 'Y') {
+        if (!$this->isActive || !$this->hasResponsesTable) {
             return 0;
-        } else {
-            $answers = Yii::app()->db->createCommand()
-                ->select('count(*)')
-                ->from($sResponseTable)
-                ->where('submitdate IS NOT NULL')
-                ->queryScalar();
-            return $answers;
         }
+        return Yii::app()->db->createCommand()
+            ->select('count(*)')
+            ->from($this->responsesTableName)
+            ->where('submitdate IS NOT NULL')
+            ->queryScalar();
     }
 
     /**
+     * Count the not submitted answers
      * @return int
      */
     public function getCountIncompleteAnswers()
     {
-        $table = $this->responsesTableName;
-        if ($this->active != 'Y') {
+        if (!$this->isActive || !$this->hasResponsesTable) {
             return 0;
-        } else {
-            $answers = Yii::app()->db->createCommand()
-                ->select('count(*)')
-                ->from($table)
-                ->where('submitdate IS NULL')
-                ->queryScalar();
-            return $answers;
         }
+        return Yii::app()->db->createCommand()
+            ->select('count(*)')
+            ->from($this->responsesTableName)
+            ->where('submitdate IS NULL')
+            ->queryScalar();
+    }
+
+    /**
+     * Count the total answers, submitted ot not.
+     * @return int
+     */
+    public function getCountTotalAnswers()
+    {
+        if (!$this->isActive || !$this->hasResponsesTable) {
+            return 0;
+        }
+        return Yii::app()->db->createCommand()
+            ->select('count(*)')
+            ->from($this->responsesTableName)
+            ->queryScalar();
     }
 
     /**
@@ -1541,23 +1619,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getDecodedAttributedescriptions()
     {
         return decodeTokenAttributes($this->attributedescriptions ?? '');
-    }
-
-    /**
-     * @return int
-     */
-    public function getCountTotalAnswers()
-    {
-        $table = $this->responsesTableName;
-        if ($this->active != 'Y') {
-            return 0;
-        } else {
-            $answers = Yii::app()->db->createCommand()
-                ->select('count(*)')
-                ->from($table)
-                ->queryScalar();
-            return $answers;
-        }
     }
 
     /**
@@ -1705,7 +1766,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             [
                 'header'            => gT('Responses'),
                 'name'              => 'responses',
-                'value'             => '$data->countFullAnswers',
+                'value'             => '$data->isActive ? $data->countFullAnswers : ""',
                 'headerHtmlOptions' => ['class' => 'd-md-none d-lg-table-cell'],
                 'htmlOptions'       => ['class' => 'd-md-none d-lg-table-cell has-link'],
             ],
@@ -1750,21 +1811,24 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'htmlOptions'       => ['class' => 'd-md-none d-lg-table-cell has-link'],
             ],
             'incomplete' => [
+                'modalLabel'  => gT('Partial responses'),
                 'header'      => gT('Incomplete'),
-                'value'       => '$data->countIncompleteAnswers',
+                'value'       => '$data->isActive ? $data->countIncompleteAnswers : ""',
                 'name'        => 'incomplete',
                 'htmlOptions' => ['class' => 'has-link'],
             ],
             'full' => [
+                'modalLabel'  => gT('Full responses'),
                 'header'      => gT('Full'),
                 'name'        => 'full',
-                'value'       => '$data->countFullAnswers',
+                'value'       => '$data->isActive ? $data->countFullAnswers : ""',
                 'htmlOptions' => ['class' => 'has-link'],
             ],
             'total' => [
+                'modalLabel'  => gT('Total responses'),
                 'header'      => gT('Total'),
                 'name'        => 'total',
-                'value'       => '$data->countTotalAnswers',
+                'value'       => '$data->isActive ? $data->countTotalAnswers : ""',
                 'htmlOptions' => ['class' => 'has-link'],
             ],
             'uses_tokens' => [
@@ -1827,6 +1891,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'creation_date' => array(
                 'asc' => 't.datecreated asc',
                 'desc' => 't.datecreated desc',
+            ),
+
+            'lastModified' => array(
+                'asc' => 't.lastmodified asc',
+                'desc' => 't.lastmodified desc',
             ),
 
             'owner' => array(
@@ -2230,6 +2299,22 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Get the IDs of the groups that contain at least one question without "Always hide this question"
+     * @return int[]
+     */
+    public function getGroupIdsWithVisibleQuestions()
+    {
+        $gids = Yii::app()->db->createCommand()
+            ->selectDistinct('t.gid')
+            ->from('{{questions}} t')
+            ->leftJoin('{{question_attributes}} qa', 'qa.qid = t.qid AND qa.attribute = :hidden', [':hidden' => 'hidden'])
+            ->where('t.sid = :sid AND t.parent_qid = 0', [':sid' => $this->sid])
+            ->andWhere('qa.value IS NULL OR qa.value != :hidden_value', [':hidden_value' => '1'])
+            ->queryColumn();
+        return array_map('intval', $gids);
+    }
+
+    /**
      * Get the count of questions that do not need input (skipping text-display etc.)
      * @return int
      */
@@ -2594,7 +2679,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     $url = $baseUrl;
                     $params = [$urlManager->routeVar => $alias] + $params;
                 } else {
-                    $url = $baseUrl . '/' . $alias;
+                    // Keep index.php in the URL like createPublicUrl() does, so the alias also works without URL rewriting
+                    $scriptName = $urlManager->showScriptName ? 'index.php/' : '';
+                    $url = $baseUrl . '/' . $scriptName . $alias;
                 }
                 $query = $urlManager->createPathInfo($params, '=', '&');
                 if (!empty($query)) {

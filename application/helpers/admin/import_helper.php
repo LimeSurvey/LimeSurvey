@@ -129,7 +129,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             // now translate any links
             if ($bTranslateLinksFields) {
                 $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
-                $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+                if (isset($insertdata['description'])) {
+                    $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+                }
             }
             if (isset($aGIDReplacements[$insertdata['gid']])) {
                 $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
@@ -187,13 +189,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 unset($insertdata['language']);
             }
 
-            if (!$bTranslateLinksFields) {
-                $sScenario = 'archiveimport';
-            } else {
-                $sScenario = 'import';
-            }
-
-            $oQuestion = new Question($sScenario);
+            // The group is added to an existing survey, so question codes must always be checked for uniqueness
+            $oQuestion = new Question('import');
             $oQuestion->setAttributes($insertdata, false);
 
             if (!isset($aQIDReplacements[$iOldQID])) {
@@ -420,7 +417,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             // now translate any links
             if ($bTranslateLinksFields) {
                 $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-                $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                if (isset($insertdata['help'])) {
+                    $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                }
             }
 
             if (isset($aQIDReplacements[$insertdata['qid']])) {
@@ -516,6 +515,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
         /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
         $answerOrderAttributes = [];
+        importQuestionThemeAttributes($xml, $aQIDReplacements);
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -528,16 +528,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             }
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
-            // Question theme was previously stored as a question attribute ('question_template'), but now it
-            // is a normal attribute of the Question model. So we must check if the imported question has the
-            // 'question_template' attribute and use it for overriding 'question_theme_name' instead of saving
-            // as QuestionAttribute.
+            // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {
-                $oQuestion = Question::model()->findByPk($insertdata['qid']);
-                if (!empty($oQuestion)) {
-                    $oQuestion->question_theme_name = $insertdata['value'];
-                    $oQuestion->save();
-                }
                 continue;
             }
 
@@ -552,6 +544,12 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 $answerOrderAttributes[$insertdata['qid']][$insertdata['attribute']] = $insertdata['value'];
                 continue;
             }
+
+            // Sanitize and XSS filter the value like a model save does, but keep the faster direct insert
+            $questionAttribute = new QuestionAttribute();
+            $questionAttribute->setAttributes($insertdata, false);
+            $questionAttribute->validate(['value']);
+            $insertdata['value'] = $questionAttribute->value;
 
             if (
                 $iDBVersion < 156 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) &&
@@ -989,7 +987,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             // now translate any links
             if ($options['translinkfields']) {
                 $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-                $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                if (isset($insertdata['help'])) {
+                    $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                }
             }
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
@@ -1127,6 +1127,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         $aAllAttributes = questionHelper::getAttributesDefinitions();
         /** @var array<string,mixed> List of "answer order" related attributes */
         $answerOrderAttributes = [];
+        importQuestionThemeAttributes($xml, $aQIDReplacements, $aLanguagesSupported);
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -1142,16 +1143,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 continue;
             }
 
-            // Question theme was previously stored as a question attribute ('question_template'), but now it
-            // is a normal attribute of the Question model. So we must check if the imported question has the
-            // 'question_template' attribute and use it for overriding 'question_theme_name' instead of saving
-            // as QuestionAttribute.
+            // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {
-                $oQuestion = Question::model()->findByPk($insertdata['qid']);
-                if (!empty($oQuestion)) {
-                    $oQuestion->question_theme_name = $insertdata['value'];
-                    $oQuestion->save();
-                }
                 continue;
             }
 
@@ -2060,6 +2053,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
     $tableName = "{{responses_$surveyId}}";
     $importedResponses = 0;
     $batchData = [];
+    $batchModels = [];
     $survey = Survey::model()->findByPk($surveyId);
     $rankingMap = [];
     foreach ($survey->questions as $q) {
@@ -2146,15 +2140,13 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
             $dataRow[$additionalField] = $archivedResponse->{$additionalField};
         }
 
-        $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
-        $beforeDataEntryImport->set('iSurveyID', $surveyId);
-        $beforeDataEntryImport->set('oModel', $targetResponse);
-        App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
-
         if ($targetResponse->validate()) {
             $batchData[] = $dataRow;
+            // The inserted values are the data row: Hand them to plugins with the model
+            $targetResponse->setAttributes($dataRow, false);
+            $batchModels[] = $targetResponse;
         }
-        if (count($batchData) % 500 === 0) {
+        if (count($batchData) === 500) {
             if ($preserveIDs) {
                 switchMSSQLIdentityInsert("responses_$surveyId", true);
             }
@@ -2164,7 +2156,9 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
             if ($preserveIDs) {
                 switchMSSQLIdentityInsert("responses_$surveyId", false);
             }
+            dispatchDataEntryImportEvents($surveyId, $batchModels);
             $batchData = [];
+            $batchModels = [];
         }
 
         unset($targetResponse);
@@ -2180,8 +2174,28 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         if ($preserveIDs) {
             switchMSSQLIdentityInsert("responses_$surveyId", false);
         }
+        dispatchDataEntryImportEvents($surveyId, $batchModels);
     }
     return $importedResponses;
+}
+
+/**
+ * Dispatches the beforeDataEntryImport event for each imported response
+ *
+ * Like the other response imports, the event is dispatched after the response was written.
+ *
+ * @param int $surveyId survey ID
+ * @param PluginDynamic[] $models the imported responses
+ * @return void
+ */
+function dispatchDataEntryImportEvents(int $surveyId, array $models)
+{
+    foreach ($models as $model) {
+        $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+        $beforeDataEntryImport->set('iSurveyID', $surveyId);
+        $beforeDataEntryImport->set('oModel', $model);
+        App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+    }
 }
 
 
@@ -2331,6 +2345,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
         if (isset($insertdata['tokenlength']) && $insertdata['tokenlength'] > Token::MAX_LENGTH) {
             $insertdata['tokenlength'] = Token::MAX_LENGTH;
+        }
+        if (isset($insertdata['tokenlength']) && !in_array((int) $insertdata['tokenlength'], Survey::getValidTokenLengths())) {
+            $insertdata['tokenlength'] = Token::DEFAULT_LENGTH;
         }
 
         // Fix survey group when not copying
@@ -2549,6 +2566,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 if (!in_array($insertdata['language'] ?? null, $aLanguagesSupported)) {
                     continue;
                 }
+                if (!isset($insertdata['description'])) {
+                    $insertdata['description'] = '';
+                }
                 // now translate any links
                 if ($bTranslateInsertansTags) {
                     $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
@@ -2570,8 +2590,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             if (!isset($aGIDReplacements[$oldgid])) {
                 $questionGroup = new QuestionGroup();
-                $questionGroup->attributes = $insertdata;
                 $questionGroup->sid = $iNewSID;
+                unset($insertdata['sid']);
+                $questionGroup->attributes = $insertdata;
                 if (!$questionGroup->save()) {
                     throw new Exception(gT("Error") . ": Failed to insert data [3]<br /> " . json_encode($questionGroup->getErrors()));
                 }
@@ -3111,6 +3132,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $aAllAttributes = questionHelper::getAttributesDefinitions();
         /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
         $answerOrderAttributes = [];
+        importQuestionThemeAttributes($xml, $aQIDReplacements);
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -3137,16 +3159,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
 
-            // Question theme was previously stored as a question attribute ('question_template'), but now it
-            // is a normal attribute of the Question model. So we must check if the imported question has the
-            // 'question_template' attribute and use it for overriding 'question_theme_name' instead of saving
-            // as QuestionAttribute.
+            // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {
-                $oQuestion = Question::model()->findByPk($insertdata['qid']);
-                if (!empty($oQuestion)) {
-                    $oQuestion->question_theme_name = $insertdata['value'];
-                    $oQuestion->save();
-                }
                 continue;
             }
 
@@ -3630,6 +3644,34 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 }
 
 /**
+ * Question theme was previously stored as a question attribute ('question_template'), but now it is a normal
+ * attribute of the Question model. Sets the theme of the imported questions from these rows before the other
+ * attribute rows are imported, as they are sanitized according to the attribute definitions of the theme.
+ *
+ * @param SimpleXMLElement $xml the imported survey, group or question
+ * @param array<integer,integer> $aQIDReplacements new question ids, by old question id
+ * @param string[]|null $aLanguagesSupported if set, rows in other languages are skipped like the other attribute rows
+ * @return void
+ */
+function importQuestionThemeAttributes(SimpleXMLElement $xml, array $aQIDReplacements, ?array $aLanguagesSupported = null)
+{
+    foreach ($xml->question_attributes->rows->row as $row) {
+        if ((string) $row->attribute !== 'question_template' || !isset($aQIDReplacements[(int) $row->qid])) {
+            continue;
+        }
+        $sLanguage = (string) $row->language;
+        if ($aLanguagesSupported !== null && $sLanguage !== '' && !in_array($sLanguage, $aLanguagesSupported)) {
+            continue;
+        }
+        $oQuestion = Question::model()->findByPk($aQIDReplacements[(int) $row->qid]);
+        if (!empty($oQuestion)) {
+            $oQuestion->question_theme_name = (string) $row->value;
+            $oQuestion->save();
+        }
+    }
+}
+
+/**
  * This function checks if there are set wrong values ('Y' or 'N') into table
  * question_attributes. These are set to 1 and 0 if needed.
  *
@@ -3764,9 +3806,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
-    if (\PHP_VERSION_ID < 80000) {
-        libxml_disable_entity_loader(true);
-    }
+ 
     $rankings = [];
     foreach ($survey->questions as $q) {
         if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
@@ -3799,73 +3839,76 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                 $sFieldname = $aFieldReMap[$sFieldname];
                             }
                             $resolvedFieldname = $sFieldname;
-                            if (!$oXMLReader->isEmptyElement) {
+                            // An empty element is an empty string, a NULL value has no element at all
+                            $bEmptyElement = $oXMLReader->isEmptyElement;
+                            $sValue = '';
+                            if (!$bEmptyElement) {
                                 $oXMLReader->read();
-                                if (in_array($sFieldname, $DestinationFields)) {
-                                    // some old response tables contain invalid column names due to old bugs
-                                    $aInsertData[$sFieldname] = $oXMLReader->value;
-                                } else {
-                                    if (strpos($sFieldname, 'Q') !== 0) {
-                                        if (!$qidMetadata) {
-                                            $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $iSurveyID]);
-                                            foreach ($rawQuestions as $rawQuestion) {
-                                                if (!isset($qidMetadata[$rawQuestion->gid])) {
-                                                    $qidMetadata[$rawQuestion->gid] = [];
-                                                }
-                                                $qid = ($rawQuestion->parent_qid ? $rawQuestion->parent_qid : $rawQuestion->qid);
-                                                if (!isset($qidMetadata[$rawQuestion->gid][$qid])) {
-                                                    $qidMetadata[$rawQuestion->gid][$qid] = [];
-                                                }
-                                                $qidMetadata[$rawQuestion->gid][$qid][] = $rawQuestion;
+                                $sValue = $oXMLReader->value;
+                            }
+                            if (in_array($sFieldname, $DestinationFields)) {
+                                // some old response tables contain invalid column names due to old bugs
+                                $aInsertData[$sFieldname] = $sValue;
+                            } else {
+                                // Old SGQA field names (SIDXGIDXQID...) from archives created before LimeSurvey 7
+                                if (preg_match('/^\d+X\d+X/', $sFieldname)) {
+                                    if (!$qidMetadata) {
+                                        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $iSurveyID]);
+                                        foreach ($rawQuestions as $rawQuestion) {
+                                            if (!isset($qidMetadata[$rawQuestion->gid])) {
+                                                $qidMetadata[$rawQuestion->gid] = [];
                                             }
-                                        }
-                                        $fieldnameParts = explode("X", $sFieldname);
-                                        $oldGid = $fieldnameParts[1];
-                                        $newSid = $iSurveyID;
-                                        $newGid = substr($aFieldReMap["G" . $oldGid], 1);
-                                        array_shift($fieldnameParts);
-                                        array_shift($fieldnameParts);
-                                        $fieldnameEnd = implode("X", $fieldnameParts);
-                                        $endIndex = 0;
-                                        while (($endIndex < strlen($fieldnameEnd)) && (is_numeric($fieldnameEnd[$endIndex]))) {
-                                            if (!isset($aFieldReMap["Q" . substr($fieldnameEnd, 0, $endIndex + 1)])) {
-                                                $endIndex++;
-                                                continue;
+                                            $qid = ($rawQuestion->parent_qid ? $rawQuestion->parent_qid : $rawQuestion->qid);
+                                            if (!isset($qidMetadata[$rawQuestion->gid][$qid])) {
+                                                $qidMetadata[$rawQuestion->gid][$qid] = [];
                                             }
-                                            $qidCandidate = substr($aFieldReMap["Q" . substr($fieldnameEnd, 0, $endIndex + 1)], 1);
-                                            $oldFieldName =
-                                                $newSid .
-                                                "X" .
-                                                $newGid .
-                                                "X" .
-                                                $qidCandidate;
-                                            if (strlen($fieldnameEnd) > $endIndex + 1) {
-                                                $oldFieldName .= substr($fieldnameEnd, $endIndex + 1);
-                                            }
-                                            if (!isset($qidMetadata[$newGid][$qidCandidate])) {
-                                                $endIndex++;
-                                                continue;
-                                            }
-                                            $resolvedFieldname = getFieldName("{{responses_" . $newSid . "}}", $oldFieldName, $qidMetadata[$newGid][$qidCandidate], $newSid, $newGid);
-                                            $aInsertData[$resolvedFieldname] = $oXMLReader->value;
-                                            $endIndex++;
+                                            $qidMetadata[$rawQuestion->gid][$qid][] = $rawQuestion;
                                         }
                                     }
+                                    $fieldnameParts = explode("X", $sFieldname);
+                                    $oldGid = $fieldnameParts[1];
+                                    $newSid = $iSurveyID;
+                                    $newGid = substr($aFieldReMap["G" . $oldGid], 1);
+                                    array_shift($fieldnameParts);
+                                    array_shift($fieldnameParts);
+                                    $fieldnameEnd = implode("X", $fieldnameParts);
+                                    $endIndex = 0;
+                                    while (($endIndex < strlen($fieldnameEnd)) && (is_numeric($fieldnameEnd[$endIndex]))) {
+                                        if (!isset($aFieldReMap["Q" . substr($fieldnameEnd, 0, $endIndex + 1)])) {
+                                            $endIndex++;
+                                            continue;
+                                        }
+                                        $qidCandidate = substr($aFieldReMap["Q" . substr($fieldnameEnd, 0, $endIndex + 1)], 1);
+                                        $oldFieldName =
+                                            $newSid .
+                                            "X" .
+                                            $newGid .
+                                            "X" .
+                                            $qidCandidate;
+                                        if (strlen($fieldnameEnd) > $endIndex + 1) {
+                                            $oldFieldName .= substr($fieldnameEnd, $endIndex + 1);
+                                        }
+                                        if (!isset($qidMetadata[$newGid][$qidCandidate])) {
+                                            $endIndex++;
+                                            continue;
+                                        }
+                                        $resolvedFieldname = getFieldName("{{responses_" . $newSid . "}}", $oldFieldName, $qidMetadata[$newGid][$qidCandidate], $newSid, $newGid);
+                                        $aInsertData[$resolvedFieldname] = $sValue;
+                                        $endIndex++;
+                                    }
                                 }
+                            }
+                            if (!$bEmptyElement) {
                                 $root = explode("_", $resolvedFieldname)[0];
                                 if (in_array($root, $rankings)) {
                                     if (!isset($aInsertData[$root])) {
                                         $aInsertData[$root] = [];
                                     }
                                     if (!is_string($aInsertData[$root])) {
-                                        $aInsertData[$root][] = $oXMLReader->value;
+                                        $aInsertData[$root][] = $sValue;
                                     }
                                 }
                                 $oXMLReader->read();
-                            } else {
-                                if (in_array($sFieldname, $DestinationFields)) {
-                                    $aInsertData[$sFieldname] = '';
-                                }
                             }
                         }
                         foreach ($rankings as $ranking) {
@@ -5156,6 +5199,10 @@ function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQ
 
 /**
  * Fixes old fieldname references
+ *
+ * Field roots that don't occur in the text are skipped, because collecting the
+ * matching questions for every root would make large survey imports very slow.
+ *
  * @param mixed $convertedValue the input
  * @param mixed $allImportedQuestions the cached questions
  * @param mixed $oldNewFieldRoot the old and new fieldname mappings in the old format
@@ -5167,6 +5214,10 @@ function fixText($convertedValue, $allImportedQuestions, $oldNewFieldRoot)
         return $convertedValue;
     }
     foreach ($oldNewFieldRoot as $old => $new) {
+        // Nothing to replace for this root: Skip the expensive question lookup below
+        if (strpos($convertedValue, (string) $old) === false && strpos($convertedValue, (string) $new) === false) {
+            continue;
+        }
         $parts = explode("X", $new);
         $sid = $parts[0];
         $gid = $parts[1];

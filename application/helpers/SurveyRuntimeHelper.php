@@ -155,6 +155,12 @@ class SurveyRuntimeHelper
     private $bInvalidLastPage = false;
 
     /**
+     * True if an all-in-one survey was submitted without accepting the survey data policy
+     * @var boolean
+     */
+    private $bDataSecurityNotAccepted = false;
+
+    /**
      * @var array|null
      */
     private $aStepInfo = null;
@@ -210,7 +216,7 @@ class SurveyRuntimeHelper
             if (EmCacheHelper::useCache()) {
                 $this->aSurveyInfo['emcache'] = true;
             }
-            if (intval($_SESSION[$this->LEMsessid]['filltoken'] ?? 0)) {
+            if (isset($_SESSION[$this->LEMsessid]['filltoken'])) {
                 $this->aSurveyInfo['filltoken'] = true;
             }
             $this->checkQuotas(); // check quotas (then the process will stop here)
@@ -222,6 +228,7 @@ class SurveyRuntimeHelper
                 $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
                 if ($oSurveyResponse && $oSurveyResponse->hasAttribute('token')) {
                     $oSurveyResponse->token = $tokenValue;
+                    $oSurveyResponse->save();
                 }
                 if (isset($_SESSION[$this->LEMsessid]['filltoken'])) {
                     unset($_SESSION[$this->LEMsessid]['filltoken']);
@@ -229,8 +236,6 @@ class SurveyRuntimeHelper
                 if (isset($_SESSION[$this->LEMsessid]['token'])) {
                     $_SESSION[$this->LEMsessid]['tokenused'] = $_SESSION[$this->LEMsessid]['token'];
                 }
-                $oSurveyResponse->save();
-                $survey = Survey::model()->findByPk($surveyid);
             }
             // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
@@ -299,7 +304,17 @@ class SurveyRuntimeHelper
                         //Get the answers/inputnames
                         // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
                         // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
+                        LimeExpressionManager::updateReplacementFields(array(
+                            'QID' => $ia[0],
+                            'GID' => $ia[5],
+                            'SGQ' => $ia[1],
+                        ));
                         list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia);
+                        LimeExpressionManager::updateReplacementFields(array(
+                            'QID' => null,
+                            'GID' => null,
+                            'SGQ' => null,
+                        ));
 
                         if ($plus_qanda) {
                             $plus_qanda[] = $ia[4];
@@ -348,6 +363,14 @@ class SurveyRuntimeHelper
             $step = $_SESSION[$this->LEMsessid]['step'] ?? 0;
             $notRelevantSteps = $_SESSION[$this->LEMsessid]['notRelevantSteps'] ?? 0;
             $hiddenSteps = $_SESSION[$this->LEMsessid]['hiddenSteps'] ?? 0;
+            if ($this->sSurveyMode == 'group') {
+                // Groups with only always hidden questions were skipped: Don't count the ones before the current group
+                $previousGroups = array_slice($_SESSION[$this->LEMsessid]['grouplist'] ?? [], 0, max(0, $step - 1));
+                $hiddenSteps = count(array_intersect(
+                    array_map('intval', array_column($previousGroups, 'gid')),
+                    $_SESSION[$this->LEMsessid]['hiddenGroupIds'] ?? []
+                ));
+            }
 
             if ($this->bShowEmptyGroup) {
                 $this->aSurveyInfo['progress']['currentstep'] = $totalSteps + 1;
@@ -460,6 +483,7 @@ class SurveyRuntimeHelper
                 'GROUPNAME' => $aGroup['name'],
             ));
             $aGroup['gseq']        = $_gseq;
+            $aGroup['gid']         = $gid;
             // Use survey level settings
             $showgroupinfo_ = $this->aSurveyInfo['showgroupinfo'];
 
@@ -896,17 +920,23 @@ class SurveyRuntimeHelper
     }
 
     /**
-     * Check quotas
+     * Handle the moves sent from the quota page: confirm (end survey) or return to the survey.
+     * When a quota is confirmed and still matched, the quota page is rendered and the application ends.
+     *
+     * @return void
      */
     private function checkQuotas()
     {
-        /* quota submitted */
+        /* quota confirmed: close the survey (checkCompletedQuota renders the page and ends the application) */
         if ($this->sMove == 'confirmquota') {
             Quotas::checkCompletedQuota($this->iSurveyid);
+            /* quota not matched: show the current page again (initMove skips the move for confirmquota) */
+            $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false);
+            $this->setStep();
         }
-        /* quota submitted */
+        /* return to the survey from the quota page: without processing POST, the re-posted quota fields would trigger the quota again */
         if ($this->sMove == 'returnfromquota') {
-            LimeExpressionManager::JumpTo($this->param['thisstep']);
+            LimeExpressionManager::JumpTo($this->param['thisstep'], false, false);
         }
     }
 
@@ -986,7 +1016,17 @@ class SurveyRuntimeHelper
 
             if (($this->sMove == 'movesubmit')) {
                 if ($this->sSurveyMode == 'survey') {
-                    $this->aMoveResult = LimeExpressionManager::NavigateForwards();
+                    if (
+                        Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice > 0
+                        && App()->request->getPost('datasecurity_accepted') !== 'on'
+                    ) {
+                        /* All in one mode has no welcome page: don't save or submit the answers before the survey data policy is accepted on the survey page */
+                        $this->aMoveResult = LimeExpressionManager::JumpTo(1, false, false, true);
+                        $this->sMove = 'movenext'; // so will re-display the survey
+                        $this->bDataSecurityNotAccepted = true;
+                    } else {
+                        $this->aMoveResult = LimeExpressionManager::NavigateForwards();
+                    }
                 } else {
                     // may be submitting from the navigation bar, in which case need to process all intervening questions
                     // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
@@ -1098,10 +1138,17 @@ class SurveyRuntimeHelper
         }
     }
 
+    /**
+     * Redisplay the welcome page with an error if it was submitted without accepting the survey data policy.
+     * In all-in-one mode the error is shown on the survey page, see setMoveResult().
+     *
+     * @return void
+     */
     private function checkForDataSecurityAccepted()
     {
-        $this->aSurveyInfo['datasecuritynotaccepted'] = false;
-        if ($this->param['thisstep'] === '0' && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice > 0) {
+        $this->aSurveyInfo['datasecuritynotaccepted'] = $this->bDataSecurityNotAccepted;
+        /* thisstep is sanitized as integer by returnGlobal(), it is null if not submitted */
+        if ($this->param['thisstep'] === 0 && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice > 0) {
             $data_security_accepted = App()->request->getPost('datasecurity_accepted', false);
             $move_step = App()->request->getPost('move', false);
 
@@ -1700,8 +1747,8 @@ class SurveyRuntimeHelper
                     $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
                     if ($oSurveyResponse && $oSurveyResponse->hasAttribute('token')) {
                         $oSurveyResponse->token = Yii::app()->request->getPost('token');
+                        $oSurveyResponse->save();
                     }
-                    $oSurveyResponse->save();
                 } else {
                     $_SESSION[$this->LEMsessid]['filltoken'] = Yii::app()->request->getPost('token');
                 }
@@ -1785,6 +1832,14 @@ class SurveyRuntimeHelper
         $this->sLangCode       = App()->language;
     }
 
+    /**
+     * Sets up the survey session and the ExpressionManager for a group or question preview
+     * and moves to the previewed group or question.
+     *
+     * Renders an error and ends the request if the group is invalid or empty.
+     *
+     * @return void
+     */
     private function setPreview()
     {
         $this->sSurveyMode = ($this->previewgrp) ? 'group' : 'question'; // Can be great to have a survey here …
@@ -1804,6 +1859,8 @@ class SurveyRuntimeHelper
                 $sMessage = gT('Invalid group number for this survey: ') . $_gid;
                 renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
             }
+            // The previous groups are never shown: Set their relevance, else their (prefilled) values are empty in text tailoring
+            LimeExpressionManager::SetRelevanceTo($gseq);
 
             $this->aMoveResult = LimeExpressionManager::JumpTo($gseq + 1, 'group', false, true);
             if (is_null($this->aMoveResult)) {
@@ -1826,6 +1883,8 @@ class SurveyRuntimeHelper
             $_qid       = sanitize_int($this->param['qid']);
             LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions, true, $this->LEMdebugLevel);
             $qSec = LimeExpressionManager::GetQuestionSeq($_qid);
+            // The previous questions are never shown: Set their relevance, else their (prefilled) values are empty in text tailoring
+            LimeExpressionManager::SetRelevanceTo(LimeExpressionManager::GetGroupSeq(sanitize_int($this->param['gid'])));
             $this->aMoveResult = LimeExpressionManager::JumpTo($qSec + 1, 'question', false, true);
             $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
         }

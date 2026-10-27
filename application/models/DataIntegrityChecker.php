@@ -60,6 +60,30 @@ class DataIntegrityChecker
             'messages' => array(),
             'warnings' => array(),
         );
+        if (isset($aDelete['orphanuserpermissions']) || isset($aDelete['orphansurveypermissions'])) {
+            $aData = $this->deleteOrphanPermissions($aData);
+        }
+
+        if (isset($aDelete['surveyswithoutsurveygroup'])) {
+            $aData = $this->moveSurveysToDefaultSurveyGroup($aDelete['surveyswithoutsurveygroup'], $aData);
+        }
+
+        if (isset($aDelete['orphansurveygroupsettings'])) {
+            $aData = $this->deleteOrphanSurveyGroupSettings($aData);
+        }
+
+        if (isset($aDelete['surveyswithoutresponsetable'])) {
+            $aData = $this->deactivateSurveysWithoutResponseTable($aDelete['surveyswithoutresponsetable'], $aData);
+        }
+
+        if (isset($aDelete['orphanresponsetables'])) {
+            $aData = $this->archiveOrphanResponseTables($aDelete['orphanresponsetables'], $aData);
+        }
+
+        if (isset($aDelete['orphanparticipanttables'])) {
+            $aData = $this->archiveOrphanParticipantTables($aDelete['orphanparticipanttables'], $aData);
+        }
+
         // TMSW Condition->Relevance:  Update this to process relevance instead
         if (isset($aDelete['conditions'])) {
             $aData = $this->deleteConditions($aDelete['conditions'], $aData);
@@ -89,6 +113,10 @@ class DataIntegrityChecker
             $aData = $this->deleteQuotaMembers($aData);
         }
 
+        if (isset($aDelete['missingquotalanguagesettings'])) {
+            $aData = $this->createMissingQuotaLanguageSettings($aDelete['missingquotalanguagesettings'], $aData);
+        }
+
         if (isset($aDelete['assessments'])) {
             $aData = $this->deleteAssessments($aDelete['assessments'], $aData);
         }
@@ -105,16 +133,43 @@ class DataIntegrityChecker
             $aData = $this->deleteSurveys($aDelete['surveys'], $aData);
         }
 
+        // Also run when surveys were deleted above: their theme options are only orphaned now
+        if (isset($aDelete['orphanthemeconfigurations']) || isset($aDelete['surveys'])) {
+            $aData = $this->deleteOrphanThemeConfigurations($aData);
+        }
+
+        if (isset($aDelete['duplicatethemeconfigurations'])) {
+            $aData = $this->deleteDuplicateThemeConfigurations($aData);
+        }
+
         if (isset($aDelete['surveylanguagesettings'])) {
             $aData = $this->deleteSurveyLanguageSettings($aDelete['surveylanguagesettings'], $aData);
+        }
+
+        if (isset($aDelete['missingsurveylanguagesettings'])) {
+            $aData = $this->restoreSurveyLanguageSettings($aDelete['missingsurveylanguagesettings'], $aData);
         }
 
         if (isset($aDelete['questions'])) {
             $aData = $this->deleteQuestions($aDelete['questions'], $aData);
         }
 
+        // After deleteQuestions(), so subquestions deleted together with their parent are skipped
+        if (isset($aDelete['mismatchedsubquestions'])) {
+            $aData = $this->fixMismatchedSubquestions($aDelete['mismatchedsubquestions'], $aData);
+        }
+
         if (isset($aDelete['question_l10ns'])) {
             $aData = $this->deleteQuestionL10ns($aDelete['question_l10ns'], $aData);
+        }
+
+        // After deleteQuestions(), so no texts are created for questions deleted in this pass
+        if (isset($aDelete['missingquestionl10ns'])) {
+            $aData = $this->createMissingQuestionL10ns($aDelete['missingquestionl10ns'], $aData);
+        }
+
+        if (isset($aDelete['invaliddefaultvalues'])) {
+            $aData = $this->deleteInvalidDefaultValues($aDelete['invaliddefaultvalues'], $aData);
         }
 
         if (isset($aDelete['groups'])) {
@@ -135,6 +190,12 @@ class DataIntegrityChecker
 
         if (isset($aDelete['orphantokentables'])) {
             $aData = $this->deleteOrphanTokenTables($aDelete['orphantokentables'], $aData);
+        }
+
+        // Also run when old tables were dropped above: their archived table settings are
+        // only orphaned now, which the upfront check could not have counted yet.
+        if (isset($aDelete['archivedtablesettings']) || isset($aDelete['orphansurveytables']) || isset($aDelete['orphantokentables'])) {
+            $aData = $this->deleteOrphanArchivedTableSettings($aData);
         }
 
         if (!empty($aDelete['groupOrderDuplicates'])) {
@@ -684,38 +745,798 @@ class DataIntegrityChecker
         return $aData;
     }
 
+    /**
+     * Returns the criteria matching permissions (other than role permissions) of users
+     * that no longer exist.
+     *
+     * Uses a subquery instead of a join so the same criteria work for both counting
+     * and deleting on every supported database.
+     *
+     * @return CDbCriteria
+     */
+    private function getOrphanUserPermissionsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = "entity <> 'role' AND uid NOT IN (SELECT u.uid FROM {{users}} u)";
+        return $oCriteria;
+    }
+
+    /**
+     * Returns the criteria matching survey permissions of surveys that no longer exist.
+     *
+     * @return CDbCriteria
+     */
+    private function getOrphanSurveyPermissionsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = "entity = 'survey' AND entity_id NOT IN (SELECT s.sid FROM {{surveys}} s)";
+        return $oCriteria;
+    }
+
+    /**
+     * Deletes permissions of users and surveys that no longer exist.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message per kind of deleted permissions.
+     */
+    private function deleteOrphanPermissions(array $aData)
+    {
+        $count = Permission::model()->deleteAll($this->getOrphanUserPermissionsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u permission(s) of users that no longer exist'), $count);
+        }
+        $count = Permission::model()->deleteAll($this->getOrphanSurveyPermissionsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u permission(s) of surveys that no longer exist'), $count);
+        }
+        return $aData;
+    }
+
+    /**
+     * Returns the surveys whose survey group no longer exists.
+     *
+     * Without its survey group a survey has no settings to inherit, so most of its
+     * inherited settings are missing when it is opened.
+     *
+     * @return array[] Each with a 'sid' and a 'gsid' key.
+     */
+    private function findSurveysWithoutSurveyGroup()
+    {
+        return Yii::app()->db->createCommand()
+            ->select('sid, gsid')
+            ->from('{{surveys}}')
+            ->where('gsid NOT IN (SELECT sg.gsid FROM {{surveys_groups}} sg)')
+            ->order('sid')
+            ->queryAll();
+    }
+
+    /**
+     * Moves surveys whose survey group no longer exists to the default survey group.
+     *
+     * @param array[] $surveys Surveys to move, each with a 'sid' and a 'gsid' key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per moved survey and a warning per failed one.
+     */
+    private function moveSurveysToDefaultSurveyGroup(array $surveys, array $aData)
+    {
+        if (SurveysGroups::model()->findByPk(1) === null) {
+            $aData['warnings'][] = gT('Unable to move surveys of missing survey groups because the default survey group is missing');
+            return $aData;
+        }
+        foreach ($surveys as $survey) {
+            if (Survey::model()->updateByPk($survey['sid'], array('gsid' => 1))) {
+                $aData['messages'][] = sprintf(gT('Moved survey %s to the default survey group because its survey group %s no longer exists'), $survey['sid'], $survey['gsid']);
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to move survey %s to the default survey group'), $survey['sid']);
+            }
+        }
+        return $aData;
+    }
+
+    /**
+     * Returns the criteria matching survey group settings of survey groups that no
+     * longer exist.
+     *
+     * The global survey settings (gsid 0) have no survey group and the settings of the
+     * default survey group (gsid 1) are never deleted.
+     *
+     * @return CDbCriteria
+     */
+    private function getOrphanSurveyGroupSettingsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = 'gsid > 1 AND gsid NOT IN (SELECT sg.gsid FROM {{surveys_groups}} sg)';
+        return $oCriteria;
+    }
+
+    /**
+     * Deletes survey group settings of survey groups that no longer exist.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message if any setting was deleted.
+     */
+    private function deleteOrphanSurveyGroupSettings(array $aData)
+    {
+        $count = SurveysGroupsettings::model()->deleteAll($this->getOrphanSurveyGroupSettingsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u survey group setting(s) of survey groups that no longer exist'), $count);
+        }
+        return $aData;
+    }
+
+    /**
+     * Returns the criteria matching survey theme options of surveys that no longer exist.
+     *
+     * A survey later created with the same ID would otherwise get these stale options.
+     * Theme options of a theme itself or of a survey group have no sid and are never matched.
+     *
+     * @return CDbCriteria
+     */
+    private function getOrphanThemeConfigurationsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = 'sid IS NOT NULL AND sid NOT IN (SELECT s.sid FROM {{surveys}} s)';
+        return $oCriteria;
+    }
+
+    /**
+     * Deletes survey theme options of surveys that no longer exist.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message if any theme options were deleted.
+     */
+    private function deleteOrphanThemeConfigurations(array $aData)
+    {
+        $count = TemplateConfiguration::model()->deleteAll($this->getOrphanThemeConfigurationsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u survey theme option(s) of surveys that no longer exist'), $count);
+        }
+        return $aData;
+    }
+
+    /**
+     * Returns the criteria matching duplicate survey theme options: All but the oldest
+     * row of each survey and theme.
+     *
+     * Duplicates came from a survey ID being used again after its survey was deleted. Only
+     * one row is ever used, and on MySQL this is the oldest one, which the theme options
+     * editor also saves into, so that one is kept.
+     * The derived table lets MySQL read the table it deletes from.
+     *
+     * @return CDbCriteria
+     */
+    private function getDuplicateThemeConfigurationsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = 'sid IS NOT NULL AND id NOT IN ('
+            . 'SELECT kept.min_id FROM ('
+            . 'SELECT MIN(tc.id) AS min_id FROM {{template_configuration}} tc WHERE tc.sid IS NOT NULL GROUP BY tc.sid, tc.template_name'
+            . ') kept)';
+        return $oCriteria;
+    }
+
+    /**
+     * Deletes duplicate survey theme options, keeping the oldest row of each survey and theme.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message if any theme options were deleted.
+     */
+    private function deleteDuplicateThemeConfigurations(array $aData)
+    {
+        $count = TemplateConfiguration::model()->deleteAll($this->getDuplicateThemeConfigurationsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u duplicate survey theme option(s), keeping the oldest one of each survey and theme'), $count);
+        }
+        return $aData;
+    }
+
+    /**
+     * Deactivates active surveys whose response table is missing.
+     *
+     * @param array[] $surveys Surveys to deactivate, each with a 'sid' key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per deactivated survey.
+     */
+    private function deactivateSurveysWithoutResponseTable(array $surveys, array $aData)
+    {
+        foreach ($surveys as $survey) {
+            if (Survey::model()->updateByPk($survey['sid'], array('active' => 'N'))) {
+                $aData['messages'][] = sprintf(gT('Deactivated survey %s because its response table is missing'), $survey['sid']);
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to deactivate survey %s'), $survey['sid']);
+            }
+        }
+        return $aData;
+    }
+
+    /**
+     * Archives response and timings tables of surveys that are missing or inactive,
+     * the same way deactivating a survey does.
+     *
+     * @param array[] $tables Tables to archive, each with a 'sid' and a 'type' ('response' or 'timings') key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per archived table and a warning per failed rename.
+     */
+    private function archiveOrphanResponseTables(array $tables, array $aData)
+    {
+        $datestamp = time();
+        $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
+        $DBDate = date('Y-m-d H:i:s', $datestamp);
+        $userID = Yii::app()->user->getId();
+        foreach ($tables as $table) {
+            $iSurveyID = $table['sid'];
+            if ($table['type'] == 'timings') {
+                $sOldTable = "timings_{$iSurveyID}";
+                $sNewTable = "old_timings_{$iSurveyID}_{$date}";
+                $sProperties = '';
+            } else {
+                $sOldTable = "responses_{$iSurveyID}";
+                $sNewTable = "old_responses_{$iSurveyID}_{$date}";
+                $sProperties = json_encode(Response::getEncryptedAttributes($iSurveyID));
+            }
+            try {
+                Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+            } catch (CDbException $e) {
+                $aData['warnings'][] = sprintf(gT('Unable to rename table %s: %s'), $sOldTable, $e->getMessage());
+                continue;
+            }
+            $archivedTableSettings = new ArchivedTableSettings();
+            $archivedTableSettings->survey_id = $iSurveyID;
+            $archivedTableSettings->user_id = $userID;
+            $archivedTableSettings->tbl_name = $sNewTable;
+            $archivedTableSettings->tbl_type = $table['type'];
+            $archivedTableSettings->created = $DBDate;
+            $archivedTableSettings->properties = $sProperties;
+            $archivedTableSettings->save();
+            $aData['messages'][] = sprintf(gT('Archived table %s of missing or inactive survey %s as %s'), $sOldTable, $iSurveyID, $sNewTable);
+        }
+        return $aData;
+    }
+
+    /**
+     * Archives survey participant list tables of surveys that no longer exist.
+     *
+     * @param array[] $tables Tables to archive, each with a 'sid' key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per archived table and a warning per failed rename.
+     */
+    private function archiveOrphanParticipantTables(array $tables, array $aData)
+    {
+        foreach ($tables as $table) {
+            $iSurveyID = $table['sid'];
+            $sDate = (string) date('YmdHis') . rand(1, 1000);
+            $sOldTable = "tokens_{$iSurveyID}";
+            $sNewTable = "old_tokens_{$iSurveyID}_{$sDate}";
+            try {
+                Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+            } catch (CDbException $e) {
+                $aData['warnings'][] = sprintf(gT('Unable to rename table %s: %s'), $sOldTable, $e->getMessage());
+                continue;
+            }
+            $aData['messages'][] = sprintf(gT('Archived survey participant list of missing survey %s as %s'), $iSurveyID, $sNewTable);
+        }
+        return $aData;
+    }
+
+    /**
+     * Creates the missing language settings (survey texts) of survey languages, with
+     * an empty title and the language's default date format.
+     *
+     * @param array[] $languageSettings Missing settings, each with a 'sid' and a 'language' key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per restored setting and a warning per failed one.
+     */
+    private function restoreSurveyLanguageSettings(array $languageSettings, array $aData)
+    {
+        foreach ($languageSettings as $languageSetting) {
+            $languagedetails = getLanguageDetails($languageSetting['language']);
+            $oLanguageSettings = new SurveyLanguageSetting();
+            $oLanguageSettings->surveyls_survey_id = $languageSetting['sid'];
+            $oLanguageSettings->surveyls_language = $languageSetting['language'];
+            $oLanguageSettings->surveyls_title = '';
+            $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
+            if ($oLanguageSettings->save()) {
+                $aData['messages'][] = sprintf(gT('Restored missing survey texts for language %s in survey %s'), $languageSetting['language'], $languageSetting['sid']);
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to restore survey texts for language %s in survey %s'), $languageSetting['language'], $languageSetting['sid']);
+            }
+        }
+        return $aData;
+    }
+
+    /**
+     * Returns the languages (base and additional) of all surveys.
+     *
+     * @return array<int, string[]> Language codes, indexed by survey ID.
+     */
+    private function getSurveyLanguages()
+    {
+        $aSurveyLanguages = array();
+        $aSurveys = Yii::app()->db->createCommand()
+            ->select('sid, language, additional_languages')
+            ->from('{{surveys}}')
+            ->queryAll();
+        foreach ($aSurveys as $aSurvey) {
+            $aLanguages = explode(' ', trim((string) $aSurvey['additional_languages']));
+            $aLanguages[] = $aSurvey['language'];
+            $aSurveyLanguages[$aSurvey['sid']] = array_filter($aLanguages);
+        }
+        return $aSurveyLanguages;
+    }
+
+    /**
+     * Finds quotas that have no texts (quota_languagesettings row) in one of their
+     * survey's languages. Such quotas showed an error on the quota page, e.g. after
+     * an import that failed to insert the quota texts of the survey's base language.
+     *
+     * Runs one query per language used by any survey, instead of one per survey.
+     *
+     * @return array[] Missing texts, each with a 'quotaid', 'name', 'sid' and 'language' key.
+     */
+    private function findMissingQuotaLanguageSettings()
+    {
+        $aSurveyLanguages = $this->getSurveyLanguages();
+        if (empty($aSurveyLanguages)) {
+            return array();
+        }
+
+        $aMissing = array();
+        foreach (array_unique(array_merge(...array_values($aSurveyLanguages))) as $sLanguage) {
+            // The LIKE condition only narrows the result down, the exact match is done below
+            $aQuotas = Yii::app()->db->createCommand()
+                ->select('q.id, q.name, q.sid')
+                ->from('{{quota}} q')
+                ->join('{{surveys}} s', 's.sid = q.sid')
+                ->leftJoin('{{quota_languagesettings}} l', 'l.quotals_quota_id = q.id AND l.quotals_language = :quotalanguage', array(':quotalanguage' => $sLanguage))
+                ->where(
+                    'l.quotals_id IS NULL AND (s.language = :surveylanguage OR s.additional_languages LIKE :languagepattern)',
+                    array(':surveylanguage' => $sLanguage, ':languagepattern' => '%' . $sLanguage . '%')
+                )
+                ->queryAll();
+            foreach ($aQuotas as $aQuota) {
+                if (in_array($sLanguage, $aSurveyLanguages[$aQuota['sid']])) {
+                    $aMissing[] = array(
+                        'quotaid' => $aQuota['id'],
+                        'name' => $aQuota['name'],
+                        'sid' => $aQuota['sid'],
+                        'language' => $sLanguage,
+                    );
+                }
+            }
+        }
+        return $aMissing;
+    }
+
+    /**
+     * Creates the missing texts of quotas in their survey's languages. The texts are
+     * copied from another language of the same quota, preferring the survey's base
+     * language; quotas without any texts get the default quota message.
+     *
+     * Reads the existing texts and inserts the missing ones in batches, so that a large
+     * number of quotas doesn't need a query per quota.
+     *
+     * @param array[] $quotaLanguageSettings Missing texts, each with a 'quotaid', 'name', 'sid' and 'language' key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per created text.
+     */
+    private function createMissingQuotaLanguageSettings(array $quotaLanguageSettings, array $aData)
+    {
+        $aBaseLanguages = array();
+        foreach ($this->getSurveyLanguages() as $iSurveyId => $aLanguages) {
+            // getSurveyLanguages() adds the base language last
+            $aBaseLanguages[$iSurveyId] = end($aLanguages);
+        }
+        // Existing texts of the affected quotas, the base language's texts first
+        $aSourceTexts = array();
+        foreach (array_chunk(array_unique(array_column($quotaLanguageSettings, 'quotaid')), 1000) as $aQuotaIds) {
+            $aRows = Yii::app()->db->createCommand()
+                ->select('l.quotals_quota_id, l.quotals_language, l.quotals_name, l.quotals_message, l.quotals_url, l.quotals_urldescrip, q.sid')
+                ->from('{{quota_languagesettings}} l')
+                ->join('{{quota}} q', 'q.id = l.quotals_quota_id')
+                ->where(array('in', 'l.quotals_quota_id', $aQuotaIds))
+                ->queryAll();
+            foreach ($aRows as $aRow) {
+                $iQuotaId = $aRow['quotals_quota_id'];
+                if (!isset($aSourceTexts[$iQuotaId]) || $aRow['quotals_language'] === ($aBaseLanguages[$aRow['sid']] ?? null)) {
+                    $aSourceTexts[$iQuotaId] = $aRow;
+                }
+            }
+        }
+
+        $aInserts = array();
+        foreach ($quotaLanguageSettings as $quotaLanguageSetting) {
+            $aSource = $aSourceTexts[$quotaLanguageSetting['quotaid']] ?? array(
+                'quotals_name' => $quotaLanguageSetting['name'],
+                'quotals_message' => gT('Sorry your responses have exceeded a quota on this survey.', 'unescaped', $quotaLanguageSetting['language']),
+                'quotals_url' => '',
+                'quotals_urldescrip' => '',
+            );
+            $aInserts[] = array(
+                'quotals_quota_id' => $quotaLanguageSetting['quotaid'],
+                'quotals_language' => $quotaLanguageSetting['language'],
+                'quotals_name' => $aSource['quotals_name'],
+                'quotals_message' => $aSource['quotals_message'],
+                'quotals_url' => $aSource['quotals_url'],
+                'quotals_urldescrip' => $aSource['quotals_urldescrip'],
+            );
+            $aData['messages'][] = sprintf(
+                gT('Created missing texts for language %s of quota %s (ID %s) in survey %s'),
+                $quotaLanguageSetting['language'],
+                CHtml::encode($quotaLanguageSetting['name']),
+                $quotaLanguageSetting['quotaid'],
+                $quotaLanguageSetting['sid']
+            );
+        }
+        // Raw inserts: QuotaLanguageSetting's validation rules need a web user, which the console command has not.
+        // 300 rows of 6 values stay below the parameter limit of MSSQL (2100).
+        foreach (array_chunk($aInserts, 300) as $aBatch) {
+            Yii::app()->db->getCommandBuilder()->createMultipleInsertCommand('{{quota_languagesettings}}', $aBatch)->execute();
+        }
+        return $aData;
+    }
+
+    /**
+     * Finds questions and subquestions that have no texts (question_l10ns row) in one
+     * of their survey's languages. Such questions can't be edited (500 error).
+     *
+     * Runs one query per language used by any survey, instead of one per survey.
+     *
+     * @return array[] Missing texts, each with a 'qid', 'title', 'sid' and 'language' key.
+     */
+    private function findMissingQuestionL10ns()
+    {
+        $aSurveyLanguages = $this->getSurveyLanguages();
+        if (empty($aSurveyLanguages)) {
+            return array();
+        }
+
+        $aMissing = array();
+        foreach (array_unique(array_merge(...array_values($aSurveyLanguages))) as $sLanguage) {
+            // The LIKE condition only narrows the result down, the exact match is done below
+            $aQuestions = Yii::app()->db->createCommand()
+                ->select('q.qid, q.title, q.sid')
+                ->from('{{questions}} q')
+                ->join('{{surveys}} s', 's.sid = q.sid')
+                ->leftJoin('{{question_l10ns}} l', 'l.qid = q.qid AND l.language = :l10nlanguage', array(':l10nlanguage' => $sLanguage))
+                ->where(
+                    'l.id IS NULL AND (s.language = :surveylanguage OR s.additional_languages LIKE :languagepattern)',
+                    array(':surveylanguage' => $sLanguage, ':languagepattern' => '%' . $sLanguage . '%')
+                )
+                ->queryAll();
+            foreach ($aQuestions as $aQuestion) {
+                if (in_array($sLanguage, $aSurveyLanguages[$aQuestion['sid']])) {
+                    $aMissing[] = array(
+                        'qid' => $aQuestion['qid'],
+                        'title' => $aQuestion['title'],
+                        'sid' => $aQuestion['sid'],
+                        'language' => $sLanguage,
+                    );
+                }
+            }
+        }
+        return $aMissing;
+    }
+
+    /**
+     * Creates empty texts for questions and subquestions that have none in one of
+     * their survey's languages.
+     *
+     * @param array[] $questionL10ns Missing texts, each with a 'qid', 'title', 'sid' and 'language' key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per created text.
+     */
+    private function createMissingQuestionL10ns(array $questionL10ns, array $aData)
+    {
+        foreach ($questionL10ns as $questionL10n) {
+            // Skip questions deleted earlier in this pass, e.g. subquestions of a deleted question
+            $exists = Yii::app()->db->createCommand()
+                ->select('count(*)')
+                ->from('{{questions}}')
+                ->where('qid = :qid', array(':qid' => $questionL10n['qid']))
+                ->queryScalar();
+            if (!$exists) {
+                continue;
+            }
+            // Raw insert: QuestionL10n's validation rules need a web user, which the console command has not
+            Yii::app()->db->createCommand()->insert('{{question_l10ns}}', array(
+                'qid' => $questionL10n['qid'],
+                'question' => '',
+                'help' => '',
+                'language' => $questionL10n['language'],
+            ));
+            $aData['messages'][] = sprintf(
+                gT('Created empty texts for language %s of question %s (ID %s) in survey %s'),
+                $questionL10n['language'],
+                CHtml::encode($questionL10n['title']),
+                $questionL10n['qid'],
+                $questionL10n['sid']
+            );
+        }
+        return $aData;
+    }
+
+    /**
+     * Sets the group and question type of subquestions to their parent question's.
+     *
+     * @param array[] $subquestions Subquestions to fix, each with a 'qid' key and the
+     *                              parent question's 'gid' and 'type'.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per fixed subquestion.
+     */
+    private function fixMismatchedSubquestions(array $subquestions, array $aData)
+    {
+        foreach ($subquestions as $subquestion) {
+            $updated = Question::model()->updateByPk(
+                $subquestion['qid'],
+                array('gid' => $subquestion['gid'], 'type' => $subquestion['type'])
+            );
+            if ($updated) {
+                $aData['messages'][] = sprintf(gT('Fixed group and question type of subquestion %s to match its parent question'), $subquestion['qid']);
+            }
+        }
+        return $aData;
+    }
+
+    /**
+     * Finds default values that the survey never uses or that are invalid for their question,
+     * e.g. "10" as the default of a multiple choice subquestion, where only "Y" is valid.
+     * Invalid default values show an error on the question in the survey.
+     *
+     * A default value is never used when it doesn't belong to one of the question's answer fields:
+     * Questions with subquestions only use the defaults of their own subquestions, the other
+     * questions only use the default of the question itself.
+     * Only the values of question types with a fixed set of valid values or with answer options are
+     * checked, with the same rules as LimeExpressionManager::checkValidityAnswer(). Default values with
+     * an expression are not checked: Their value is only known in the survey. Special defaults (the "Other"
+     * text) and defaults of question types that don't use any default value (Array dual scale,
+     * Array (Numbers), Array (Texts), Ranking, File upload) are not checked either.
+     *
+     * Runs two queries, independent of the number of default values: The check page runs it on every load.
+     *
+     * @return array[] Default values to delete, each with a 'dvid', 'qid', 'title' and 'sid' key, and for an
+     *                 invalid value the 'id', 'language' and 'defaultvalue' of its text (null for a never used default value).
+     */
+    private function findInvalidDefaultValues()
+    {
+        $aSubquestionTypes = array();
+        $aSingleFieldTypes = array();
+        foreach (QuestionType::modelsAttributes() as $sTypeCode => $aTypeAttributes) {
+            // PHP casts numeric array keys to int; the type column is varchar, so force string
+            $sTypeCode = (string) $sTypeCode;
+            // Same question types as in createFieldMap()
+            if (empty($aTypeAttributes['subquestions'])) {
+                if ($sTypeCode !== Question::QT_VERTICAL_FILE_UPLOAD) {
+                    $aSingleFieldTypes[] = $sTypeCode;
+                }
+            } elseif ($aTypeAttributes['subquestions'] == 1 && $aTypeAttributes['answerscales'] < 2 && $sTypeCode !== Question::QT_R_RANKING) {
+                $aSubquestionTypes[] = $sTypeCode;
+            }
+        }
+        $aUsedCondition = array(
+            'or',
+            array('and', array('in', 'q.type', $aSubquestionTypes), 'sq.qid IS NOT NULL'),
+            array('and', array('in', 'q.type', $aSingleFieldTypes), 'dv.sqid = 0'),
+        );
+        $aUnusedCondition = array(
+            'or',
+            array('and', array('in', 'q.type', $aSubquestionTypes), 'sq.qid IS NULL'),
+            array('and', array('in', 'q.type', $aSingleFieldTypes), 'dv.sqid <> 0'),
+        );
+
+        $aInvalid = array();
+        $aUnusedDefaultValues = Yii::app()->db->createCommand()
+            ->select('dv.dvid, dv.qid, q.title, q.sid')
+            ->from('{{defaultvalues}} dv')
+            ->join('{{questions}} q', 'dv.qid = q.qid')
+            ->leftJoin('{{questions}} sq', 'sq.qid = dv.sqid AND sq.parent_qid = dv.qid')
+            ->where(array('and', "dv.specialtype = ''", $aUnusedCondition))
+            ->queryAll();
+        foreach ($aUnusedDefaultValues as $aDefaultValue) {
+            $aInvalid[] = array_merge($aDefaultValue, array('id' => null, 'language' => null, 'defaultvalue' => null));
+        }
+
+        // Valid values of the question types with a fixed set of values, see LimeExpressionManager::checkValidityAnswer()
+        $aFixedValues = array(
+            Question::QT_5_POINT_CHOICE => array('1', '2', '3', '4', '5'),
+            Question::QT_A_ARRAY_5_POINT => array('1', '2', '3', '4', '5'),
+            Question::QT_B_ARRAY_10_CHOICE_QUESTIONS => array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'),
+            Question::QT_C_ARRAY_YES_UNCERTAIN_NO => array('Y', 'N', 'U'),
+            Question::QT_E_ARRAY_INC_SAME_DEC => array('I', 'D', 'S'),
+            Question::QT_G_GENDER => array('M', 'F'),
+            Question::QT_Y_YES_NO_RADIO => array('Y', 'N'),
+            Question::QT_M_MULTIPLE_CHOICE => array('Y'),
+            Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => array('Y'),
+        );
+        $aInvalidValueCondition = array(
+            'or',
+            // Question types whose value is an answer option code; "-oth-" is the "Other" option of lists
+            array(
+                'and',
+                array('in', 'q.type', array(Question::QT_L_LIST, Question::QT_EXCLAMATION_LIST_DROPDOWN, Question::QT_O_LIST_WITH_COMMENT, Question::QT_F_ARRAY, Question::QT_H_ARRAY_COLUMN)),
+                'a.aid IS NULL',
+                array('or', "l.defaultvalue <> '-oth-'", "q.other <> 'Y'", array('in', 'q.type', array(Question::QT_O_LIST_WITH_COMMENT, Question::QT_F_ARRAY, Question::QT_H_ARRAY_COLUMN))),
+            ),
+        );
+        foreach ($aFixedValues as $sTypeCode => $aValues) {
+            $aInvalidValueCondition[] = array('and', array('in', 'q.type', array((string) $sTypeCode)), array('not in', 'l.defaultvalue', $aValues));
+        }
+        $aInvalidValues = Yii::app()->db->createCommand()
+            ->select('l.id, l.dvid, l.language, l.defaultvalue, dv.qid, q.title, q.sid')
+            ->from('{{defaultvalue_l10ns}} l')
+            ->join('{{defaultvalues}} dv', 'l.dvid = dv.dvid')
+            ->join('{{questions}} q', 'dv.qid = q.qid')
+            ->leftJoin('{{questions}} sq', 'sq.qid = dv.sqid AND sq.parent_qid = dv.qid')
+            ->leftJoin('{{answers}} a', 'a.qid = dv.qid AND a.scale_id = 0 AND a.code = l.defaultvalue')
+            ->where(array(
+                'and',
+                "dv.specialtype = ''",
+                "l.defaultvalue <> ''",
+                "l.defaultvalue NOT LIKE '%{%'",
+                $aUsedCondition,
+                $aInvalidValueCondition,
+            ))
+            ->queryAll();
+        return array_merge($aInvalid, $aInvalidValues);
+    }
+
+    /**
+     * Deletes default values that the survey never uses, and the texts of default values that are invalid
+     * for their question. A default value without any text left is deleted, too.
+     *
+     * Deletes in batches, so that a large number of default values doesn't need a query per default value.
+     *
+     * @param array[] $defaultValues Default values found by findInvalidDefaultValues().
+     * @param array $aData For view generation.
+     * @return array $aData with a message per deleted default value.
+     */
+    private function deleteInvalidDefaultValues(array $defaultValues, array $aData)
+    {
+        $aUnusedDvids = array();
+        $aInvalidL10nIds = array();
+        $aInvalidDvids = array();
+        foreach ($defaultValues as $defaultValue) {
+            if ($defaultValue['id'] === null) {
+                $aUnusedDvids[] = $defaultValue['dvid'];
+                $aData['messages'][] = sprintf(
+                    gT('Deleted an unused default value of question %s (ID %s) in survey %s'),
+                    CHtml::encode($defaultValue['title']),
+                    $defaultValue['qid'],
+                    $defaultValue['sid']
+                );
+            } else {
+                $aInvalidL10nIds[] = $defaultValue['id'];
+                $aInvalidDvids[$defaultValue['dvid']] = $defaultValue['dvid'];
+                $aData['messages'][] = sprintf(
+                    gT('Deleted the invalid default value %s for language %s of question %s (ID %s) in survey %s'),
+                    CHtml::encode($defaultValue['defaultvalue']),
+                    $defaultValue['language'],
+                    CHtml::encode($defaultValue['title']),
+                    $defaultValue['qid'],
+                    $defaultValue['sid']
+                );
+            }
+        }
+        $oDb = Yii::app()->db;
+        foreach (array_chunk($aUnusedDvids, 1000) as $aDvids) {
+            $oDb->createCommand()->delete('{{defaultvalue_l10ns}}', array('in', 'dvid', $aDvids));
+            $oDb->createCommand()->delete('{{defaultvalues}}', array('in', 'dvid', $aDvids));
+        }
+        foreach (array_chunk($aInvalidL10nIds, 1000) as $aIds) {
+            $oDb->createCommand()->delete('{{defaultvalue_l10ns}}', array('in', 'id', $aIds));
+        }
+        // Default values without any text left
+        foreach (array_chunk(array_values($aInvalidDvids), 1000) as $aDvids) {
+            $oDb->createCommand()->delete(
+                '{{defaultvalues}}',
+                array('and', array('in', 'dvid', $aDvids), 'NOT EXISTS (SELECT 1 FROM {{defaultvalue_l10ns}} l WHERE l.dvid = {{defaultvalues}}.dvid)')
+            );
+        }
+        return $aData;
+    }
+
+    /**
+     * Finds archived table settings whose archived table no longer exists.
+     *
+     * Queries the plain list of archived (old_*) table names instead of calling getTable() per row:
+     * getTable() loads and permanently caches a full CDbTableSchema (all columns, indexes, FKs)
+     * for the rest of the request, so calling it once per archived table setting could retain
+     * thousands of heavy schema objects in memory on installations with many archived tables.
+     * The list is not taken from the (request-cached) schema either, so tables dropped earlier
+     * in the same request are not counted as existing.
+     *
+     * @return ArchivedTableSettings[]
+     */
+    private function findOrphanArchivedTableSettings()
+    {
+        $sDBPrefix = Yii::app()->db->tablePrefix;
+        $aOrphans = array();
+        $aExistingTables = array_flip(Yii::app()->db->createCommand(dbSelectTablesLike('{{old_}}%'))->queryColumn());
+        foreach (ArchivedTableSettings::model()->findAll() as $archivedTableSetting) {
+            if (!isset($aExistingTables[$sDBPrefix . $archivedTableSetting->tbl_name])) {
+                $aOrphans[] = $archivedTableSetting;
+            }
+        }
+        return $aOrphans;
+    }
+
+    /**
+     * Deletes archived table settings whose archived table no longer exists.
+     *
+     * Re-queries the live state, so it also catches settings of tables dropped earlier
+     * in the same pass.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message if any setting was deleted.
+     */
+    private function deleteOrphanArchivedTableSettings(array $aData)
+    {
+        $count = 0;
+        foreach ($this->findOrphanArchivedTableSettings() as $archivedTableSetting) {
+            if ($archivedTableSetting->delete()) {
+                $count++;
+            }
+        }
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u archived table setting(s) whose archived table no longer exists'), $count);
+        }
+        return $aData;
+    }
 
     /**
      * This function checks the LimeSurvey database for logical consistency and returns an according array
      * containing all issues in the particular tables.
+     *
+     * Only detects issues and never changes any data: all repairs are done by
+     * applyAutomaticFixes(), so each one is reported in its log of fixes and merely
+     * opening the check page has no side effects.
+     *
      * @return array Array with all found issues.
      * @throws CDbException
      */
     public function checkintegrity()
     {
         $aFullOldSIDs = array();
-        // Delete survey and global permissions if the user does not exist
-        $oCriteria = new CDbCriteria();
-        $oCriteria->join = 'LEFT JOIN {{users}} u ON {{permissions}}.uid=u.uid';
-        $oCriteria->addCondition('u.uid IS NULL');
-        $oCriteria->addCondition("{{permissions}}.entity <> 'role'");
-        if (App()->db->driverName == 'pgsql') {
-            $oCriteria->join = 'USING {{users}} u';
-            $oCriteria->addCondition('{{permissions}}.uid=u.uid');
-        }
-        Permission::model()->deleteAll($oCriteria);
+        $aDelete = array();
 
-        // Delete survey permissions if the survey does not exist
-        $oCriteria = new CDbCriteria();
-        $oCriteria->join = 'LEFT JOIN {{surveys}} s ON {{permissions}}.entity_id=s.sid';
-        $oCriteria->condition = "(s.sid IS NULL AND entity='survey')";
-        if (App()->db->driverName == 'pgsql') {
-            $oCriteria->join = 'USING {{surveys}} s';
-            $oCriteria->condition = "{{permissions}}.entity_id=s.sid AND (s.sid IS NULL AND entity='survey')";
+        /**********************************************************************/
+        /*     Check permissions of deleted users and surveys                 */
+        /**********************************************************************/
+        $iCount = Permission::model()->count($this->getOrphanUserPermissionsCriteria());
+        if ($iCount > 0) {
+            $aDelete['orphanuserpermissions'] = $iCount;
         }
-        Permission::model()->deleteAll($oCriteria);
+        $iCount = Permission::model()->count($this->getOrphanSurveyPermissionsCriteria());
+        if ($iCount > 0) {
+            $aDelete['orphansurveypermissions'] = $iCount;
+        }
 
-        // Deactivate surveys that have a missing response table
+        /**********************************************************************/
+        /*     Check surveys and survey group settings of deleted groups      */
+        /**********************************************************************/
+        $aSurveysWithoutSurveyGroup = $this->findSurveysWithoutSurveyGroup();
+        if (!empty($aSurveysWithoutSurveyGroup)) {
+            $aDelete['surveyswithoutsurveygroup'] = $aSurveysWithoutSurveyGroup;
+        }
+        $iCount = SurveysGroupsettings::model()->count($this->getOrphanSurveyGroupSettingsCriteria());
+        if ($iCount > 0) {
+            $aDelete['orphansurveygroupsettings'] = $iCount;
+        }
+
+        /**********************************************************************/
+        /*     Check survey theme options of deleted surveys                  */
+        /**********************************************************************/
+        $iCount = TemplateConfiguration::model()->count($this->getOrphanThemeConfigurationsCriteria());
+        if ($iCount > 0) {
+            $aDelete['orphanthemeconfigurations'] = $iCount;
+        }
+        $iCount = TemplateConfiguration::model()->count($this->getDuplicateThemeConfigurationsCriteria());
+        if ($iCount > 0) {
+            $aDelete['duplicatethemeconfigurations'] = $iCount;
+        }
+
+        /**********************************************************************/
+        /*     Check active surveys with a missing response table             */
+        /**********************************************************************/
         $survey = new SurveyLight();
         $oSurveys = $survey->findAll(array('order' => 'sid'));
         $oDB = Yii::app()->getDb();
@@ -724,89 +1545,10 @@ class DataIntegrityChecker
 
         foreach ($oSurveys as $oSurvey) {
             if ($oSurvey->isActive && !$oSurvey->hasResponsesTable) {
-                Survey::model()->updateByPk($oSurvey->sid, array('active' => 'N'));
+                $aDelete['surveyswithoutresponsetable'][] = array('sid' => $oSurvey->sid);
             }
         }
 
-        /**
-         * Check for active surveys if questions are in the correct group
-         * This will only run if an additional URL parameter checkResponseTableFields=y is set
-         * This is to prevent this costly check from running on every page load
-         */
-        if (Yii::app()->request->getParam('checkResponseTableFields') == 'y') {
-            foreach ($oSurveys as $oSurvey) {
-                // This actually clears the schema cache, not just refreshes it
-                $oDB->schema->refresh();
-                $rawQuestions = Question::model()->findAll('sid = :sid', [':sid' => $oSurvey->sid]);
-                $questions = [];
-                foreach ($rawQuestions as $rawQuestion) {
-                    $questions[$rawQuestion->qid] = $rawQuestion;
-                }
-                // We get the active surveys
-                if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
-                    $model    = SurveyDynamic::model($oSurvey->sid);
-                    $aColumns = $model->getMetaData()->columns;
-                    $aQids    = array();
-
-                    // We get the columns of the responses table
-                    foreach ($aColumns as $oColumn) {
-                        // Question columns start with the SID
-                        if (strpos((string) $oColumn->name, (string)$oSurvey->sid) !== false) {
-                            // Fields are separated by '_' — extract the question id from the first segment
-                            $qid = substr(explode("_", (string) $oColumn->Name)[0], 1);
-
-                            if (isset($questions[$qid])) {
-                                $sGid = $questions[$qid]->gid;
-
-                                // QID field can be more than just QID, like: 886other or 886A1
-                                // So we clean it by finding the first alphabetical character
-                                $sQID = $qid;
-                                // Here, we get the question as defined in backend
-                                try {
-                                    $oQuestion = Question::model()->findByAttributes(['qid' => $sQID , 'sid' => $oSurvey->sid]);
-                                } catch (Exception $e) {
-                                    // QID potentially invalid , see #17458, reset $oQuestion
-                                    $oQuestion = null;
-                                }
-                                if (is_a($oQuestion, 'Question')) {
-                                    // We check if its GID is the same as the one defined in the column name
-                                    if ($oQuestion->gid != $sGid) {
-                                        // If not, we change the column name
-                                        $sNvColName = $oColumn->Name;
-
-                                        if (array_key_exists($sNvColName, $aColumns)) {
-                                            // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
-                                            // So we'll change the group of the question question group table (so in admin interface, not in frontend)
-                                            $oQuestion->gid = $sGid;
-                                            $oQuestion->save();
-                                        } else {
-                                            $oTransaction = $oDB->beginTransaction();
-                                            $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name, $sNvColName);
-                                            $oTransaction->commit();
-                                        }
-                                    }
-                                } else {
-                                    // QID not found: The function to split the fieldname into the SGQA data is not 100% reliable
-                                    // So for certain question types (for example Text Array) the field name cannot be properly derived
-                                    // In this case just ignore the field - see also https://bugs.limesurvey.org/view.php?id=15642
-                                    // There is still a extremely  low chance that an unwanted rename happens if a collision like this happens in the same survey
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            $oDB->schema->refresh();
-            $oDB->schemaCachingDuration = 3600;
-            $oDB->schema->getTables();
-            $oDB->active = false;
-            $oDB->active = true;
-            User::model()->refreshMetaData();
-            Yii::app()->db->schema->getTable('{{surveys}}', true);
-            Yii::app()->db->schema->getTable('{{templates}}', true);
-            Survey::model()->refreshMetaData();
-        }
         /* Check method before using #14596 */
         if (method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
@@ -819,10 +1561,7 @@ class DataIntegrityChecker
 
         unset($oSurveys);
 
-        // Fix subquestions
-        fixSubquestions();
-
-        /*** Check for active survey tables with missing survey entry or where survey entry is inactive and rename them ***/
+        /*** Check for active survey tables with missing survey entry or where survey entry is inactive ***/
         $sDBPrefix = Yii::app()->db->tablePrefix;
         $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{responses}}\_%'))->queryColumn();
         $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}} where active='Y'")->queryColumn();
@@ -835,36 +1574,12 @@ class DataIntegrityChecker
             if (isset($aTableName[1]) && ctype_digit($aTableName[1])) {
                 $iSurveyID = $aTableName[1];
                 if (!in_array($iSurveyID, $sSurveyIDs)) {
-                    $datestamp = time();
-                    $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
-                    $DBDate = date('Y-m-d H:i:s', $datestamp);
-                    $userID = Yii::app()->user->getId();
                     // Check if it's really a responses_XXX table mantis #14938
                     if (empty($aTableName[2])) {
-                        $sOldTable = "responses_{$iSurveyID}";
-                        $sNewTable = "old_responses_{$iSurveyID}_{$date}";
-                        Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
-                        $archivedTokenSettings = new ArchivedTableSettings();
-                        $archivedTokenSettings->survey_id = $iSurveyID;
-                        $archivedTokenSettings->user_id = $userID;
-                        $archivedTokenSettings->tbl_name = $sNewTable;
-                        $archivedTokenSettings->tbl_type = 'response';
-                        $archivedTokenSettings->created = $DBDate;
-                        $archivedTokenSettings->properties = json_encode(Response::getEncryptedAttributes($iSurveyID));
-                        $archivedTokenSettings->save();
+                        $aDelete['orphanresponsetables'][] = array('sid' => $iSurveyID, 'type' => 'response');
                     }
                     if (!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
-                        $sOldTable = "timings_{$iSurveyID}";
-                        $sNewTable = "old_timings_{$iSurveyID}_{$date}";
-                        Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
-                        $archivedTokenSettings = new ArchivedTableSettings();
-                        $archivedTokenSettings->survey_id = $iSurveyID;
-                        $archivedTokenSettings->user_id = $userID;
-                        $archivedTokenSettings->tbl_name = $sNewTable;
-                        $archivedTokenSettings->tbl_type = 'timings';
-                        $archivedTokenSettings->created = $DBDate;
-                        $archivedTokenSettings->properties = '';
-                        $archivedTokenSettings->save();
+                        $aDelete['orphanresponsetables'][] = array('sid' => $iSurveyID, 'type' => 'timings');
                     }
                 }
             }
@@ -879,10 +1594,7 @@ class DataIntegrityChecker
             $iSurveyID  = (int) substr($sTableName, strpos($sTableName, '_') + 1);
             if (isset($aTableName[1]) && ctype_digit($aTableName[1]) && empty($aTableName[2])) { // Check if it's really a token_XXX table mantis #14938
                 if (!in_array($iSurveyID, $sSurveyIDs)) {
-                    $sDate = (string) date('YmdHis') . rand(1, 1000);
-                    $sOldTable = "tokens_{$iSurveyID}";
-                    $sNewTable = "old_tokens_{$iSurveyID}_{$sDate}";
-                    Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+                    $aDelete['orphanparticipanttables'][] = array('sid' => $iSurveyID);
                 }
             }
         }
@@ -893,7 +1605,6 @@ class DataIntegrityChecker
         $okQuestion = array();
         $sQuery = 'SELECT cqid,cid,cfieldname,qid FROM {{conditions}}';
         $aConditions = Yii::app()->db->createCommand($sQuery)->queryAll();
-        $aDelete = array();
         foreach ($aConditions as $condition) {
             if ($condition['cqid'] != 0) {
                 // skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
@@ -947,6 +1658,11 @@ class DataIntegrityChecker
         $oCriteria->condition = 'q.qid IS NULL';
         $aDelete['defaultvalues'] = DefaultValue::model()->count($oCriteria);
 
+        $aInvalidDefaultValues = $this->findInvalidDefaultValues();
+        if (!empty($aInvalidDefaultValues)) {
+            $aDelete['invaliddefaultvalues'] = $aInvalidDefaultValues;
+        }
+
         /**********************************************************************/
         /*     Check quotas                                                   */
         /**********************************************************************/
@@ -963,6 +1679,14 @@ class DataIntegrityChecker
         $oCriteria->join = 'LEFT JOIN {{quota}} s ON t.quotals_quota_id=s.id';
         $oCriteria->condition = '(s.id IS NULL)';
         $aDelete['quotals'] = QuotaLanguageSetting::model()->count($oCriteria);
+
+        /**********************************************************************/
+        /*     Check quotas without texts in a survey language                */
+        /**********************************************************************/
+        $aMissingQuotaLanguageSettings = $this->findMissingQuotaLanguageSettings();
+        if (!empty($aMissingQuotaLanguageSettings)) {
+            $aDelete['missingquotalanguagesettings'] = $aMissingQuotaLanguageSettings;
+        }
 
         /**********************************************************************/
         /*     Check quota members                                   */
@@ -1020,30 +1744,18 @@ class DataIntegrityChecker
         foreach ($answers as $answer) {
             $aDelete['answer_l10ns'][] = array('id' => $answer['id'], 'aid' => $answer['aid'], 'reason' => gT('No parent answer'));
         }
-        /***************************************************************************/
-        /*   Check survey languagesettings and restore them if they don't exist    */
-        /***************************************************************************/
-
+        /**********************************************************************/
+        /*     Check missing survey languagesettings                          */
+        /**********************************************************************/
         $surveyModel = new SurveyLight();
         $surveys = $surveyModel->findAll();
         foreach ($surveys as $survey) {
             $aLanguages = $survey->additionalLanguages;
             $aLanguages[] = $survey->language;
-            $languages = Yii::app()->db->createCommand("select surveyls_language from {{surveys_languagesettings}} where surveyls_survey_id=" . $survey->sid)->queryColumn();
+            $languages = Yii::app()->db->createCommand("select surveyls_language from {{surveys_languagesettings}} where surveyls_survey_id=" . (int) $survey->sid)->queryColumn();
             foreach ($aLanguages as $langname) {
                 if (!in_array($langname, $languages)) {
-                    $oLanguageSettings = new SurveyLanguageSetting();
-                    $languagedetails = getLanguageDetails($langname);
-                    $insertdata = array(
-                        'surveyls_survey_id' => $survey->sid,
-                        'surveyls_language' => $langname,
-                        'surveyls_title' => '',
-                        'surveyls_dateformat' => $languagedetails['dateformat']
-                    );
-                    foreach ($insertdata as $k => $v) {
-                        $oLanguageSettings->$k = $v;
-                    }
-                    $oLanguageSettings->save();
+                    $aDelete['missingsurveylanguagesettings'][] = array('sid' => $survey->sid, 'language' => $langname);
                 }
             }
         }
@@ -1065,7 +1777,9 @@ class DataIntegrityChecker
         $oCriteria = new CDbCriteria();
         $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
         $oCriteria->join = "LEFT JOIN {{surveys}} s ON t.sid=s.sid LEFT JOIN $quotedGroups g ON t.gid=g.gid";
-        $oCriteria->condition = '(g.gid IS NULL) OR (s.sid IS NULL)';
+        // A subquestion's group is taken from its parent question when fixing mismatched
+        // subquestions (see below), so a missing group alone is no reason to delete it.
+        $oCriteria->condition = '(g.gid IS NULL AND t.parent_qid = 0) OR (s.sid IS NULL)';
         $questions = Question::model()->findAll($oCriteria);
         foreach ($questions as $question) {
             $aDelete['questions'][] = array('qid' => $question['qid'], 'reason' => gT('No matching group') . " ({$question['gid']})");
@@ -1081,6 +1795,14 @@ class DataIntegrityChecker
         $questions = QuestionL10n::model()->resetScope()->findAll($oCriteria);
         foreach ($questions as $question) {
             $aDelete['question_l10ns'][] = array('id' => $question['id'], 'qid' => $question['qid'], 'reason' => gT('No parent question'));
+        }
+
+        /**********************************************************************/
+        /*     Check questions without texts in a survey language             */
+        /**********************************************************************/
+        $aMissingQuestionL10ns = $this->findMissingQuestionL10ns();
+        if (!empty($aMissingQuestionL10ns)) {
+            $aDelete['missingquestionl10ns'] = $aMissingQuestionL10ns;
         }
 
         /**********************************************************************/
@@ -1127,6 +1849,20 @@ class DataIntegrityChecker
                     'reason' => gT('The question type does not allow subquestions')
                 );
             }
+        }
+
+        // Subquestions whose group or question type differ from their parent question's.
+        // Subquestions of a type that does not allow them are already flagged above for deletion.
+        $oCommand = Yii::app()->db->createCommand()
+            ->select('sq.qid, q.gid, q.type')
+            ->from('{{questions}} sq')
+            ->join('{{questions}} q', 'sq.parent_qid = q.qid')
+            ->where('sq.parent_qid > 0 AND (sq.gid <> q.gid OR sq.type <> q.type)');
+        if (!empty($aTypesWithoutSubquestions)) {
+            $oCommand->andWhere(array('not in', 'q.type', $aTypesWithoutSubquestions));
+        }
+        foreach ($oCommand->queryAll() as $aMismatchedSubquestion) {
+            $aDelete['mismatchedsubquestions'][] = $aMismatchedSubquestion;
         }
 
         // Answer options belonging to a question whose type does not allow answer options
@@ -1323,6 +2059,14 @@ class DataIntegrityChecker
             }
         }
 
+        /**********************************************************************/
+        /*     Check archived table settings without archived table           */
+        /**********************************************************************/
+        $aOrphanArchivedTableSettings = $this->findOrphanArchivedTableSettings();
+        if (!empty($aOrphanArchivedTableSettings)) {
+            $aDelete['archivedtablesettings'] = $aOrphanArchivedTableSettings;
+        }
+
         if (
             $aDelete['defaultvalues'] == 0 && $aDelete['quotamembers'] == 0 &&
             $aDelete['quotas'] == 0 && $aDelete['quotals'] == 0 && count($aDelete) == 4
@@ -1343,19 +2087,6 @@ class DataIntegrityChecker
             }
             if (isset($aOldSurveyTableAsk)) {
                 $aDelete['redundantsurveytables'] = $aOldSurveyTableAsk;
-            }
-        }
-
-        // delete archivedTableSettings without archived table
-        // Use getTableNames() (a plain list of table name strings) instead of getTable() per row:
-        // getTable() loads and permanently caches a full CDbTableSchema (all columns, indexes, FKs)
-        // for the rest of the request, so calling it once per archived table setting could retain
-        // thousands of heavy schema objects in memory on installations with many archived tables.
-        $archivedTableSettings = ArchivedTableSettings::model()->findAll();
-        $aExistingTables = array_flip(Yii::app()->db->schema->getTableNames());
-        foreach ($archivedTableSettings as $archivedTableSetting) {
-            if (!isset($aExistingTables[$sDBPrefix . $archivedTableSetting->tbl_name])) {
-                $archivedTableSetting->delete();
             }
         }
 

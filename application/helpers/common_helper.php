@@ -659,9 +659,10 @@ function getGroupListLang($gid, $language, $surveyid)
 
 /**
  * Returns a user list. If 'usercontrolSameGroupPolicy' is set and set to true, only users which are in the same
- * group as me (--> logged in user) will be returned. Superadmin always gets the full list of users.
+ * group as me (--> logged in user) will be returned. Superadmins and users with the global permission to view
+ * users always get the full list of users.
  *
- * @param $outputformat string could be 'onlyuidarray' which only returns array with userids, default is 'fullinfoarray'
+ * @param string $outputformat could be 'onlyuidarray' which only returns array with userids, default is 'fullinfoarray'
  * @return array returns a list of user ids (param='onlyuidarray') or a list with full user details (e.g. uid, name, full_name etc.)
  */
 function getUserList($outputformat = 'fullinfoarray')
@@ -671,7 +672,9 @@ function getUserList($outputformat = 'fullinfoarray')
     }
     $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
     if (
-        !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
+        !Permission::model()->hasGlobalPermission('superadmin', 'read') &&
+        !Permission::model()->hasGlobalPermission('users', 'read') &&
+        isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
     ) {
         if (isset($myuid)) {
@@ -765,8 +768,8 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
     if (isset($staticSurveyInfo[$surveyid][$languagecode])) {
         $thissurvey = $staticSurveyInfo[$surveyid][$languagecode];
     } else {
-        $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
-        $resultBaseLanguage = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $oSurvey->language));
+        $result = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        $resultBaseLanguage = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $oSurvey->language));
         if (is_null($result)) {
             // When additional language was added, but not saved it does not exists
             // We should revert to the base language then
@@ -774,7 +777,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $result = $resultBaseLanguage;
         }
         if ($result) {
-            $aSurveyAttributes = array_replace($result->survey->attributes, $aSurveyOptions);
+            $aSurveyAttributes = array_replace($oSurvey->attributes, $aSurveyOptions);
             $thissurvey = array_merge($aSurveyAttributes, $result->attributes);
             $thissurvey['name'] = $thissurvey['surveyls_title'];
             if (($languagecode != $oSurvey->language) && empty($thissurvey['name']) || $thissurvey['name'] == '') {
@@ -810,7 +813,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $thissurvey['email_confirm'] = $thissurvey['surveyls_email_confirm'];
             $thissurvey['email_register_subj'] = $thissurvey['surveyls_email_register_subj'];
             $thissurvey['email_register'] = $thissurvey['surveyls_email_register'];
-            $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
+            $thissurvey['attributedescriptions'] = $oSurvey->tokenAttributes;
             $thissurvey['attributecaptions'] = $result->attributeCaptions;
             $thissurvey['googleanalyticsapikey'] = $oSurvey->getGoogleanalyticsapikey();
             $thissurvey['hastokenstable'] = $oSurvey->hasTokensTable;
@@ -825,10 +828,10 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
                 $thissurvey['urldescrip'] = $thissurvey['surveyls_url'];
             }
 
-            if ($result->survey->owner_id == -1 && !empty($oSurvey->oOptions->owner_id)) {
+            if ($oSurvey->owner_id == -1 && !empty($oSurvey->oOptions->owner_id)) {
                 $thissurvey['owner_username'] = User::model()->find("uid=:uid", array(':uid' => $oSurvey->oOptions->owner_id))['users_name'];
-            } elseif (!empty($result->survey->owner->users_name)) {
-                $thissurvey['owner_username'] = $result->survey->owner->users_name;
+            } elseif (!empty($oSurvey->owner->users_name)) {
+                $thissurvey['owner_username'] = $oSurvey->owner->users_name;
             } else {
                 $thissurvey['owner_username'] = '';
             }
@@ -1209,14 +1212,14 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
 }
 
 /**
- * This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
- * It can be used for the generation of statistics. Derived from StatisticsUserController
+ * Generates the list of statistics field names (e.g. "KQ12_S34") for the questions of a survey,
+ * as expected by statistics_helper::generate_statistics(). Derived from StatisticsUserController
  * @param int $iSurveyID Id of the Survey in question
  * @param array $aFilters an array which is the result of a query in Questions model
- * @param string $sLanguage
- * @return array The summary
+ * @param string|null $sLanguage
+ * @return string[] The statistics field names
  */
-function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
+function getStatisticsFieldNames($iSurveyID, $aFilters, $sLanguage)
 {
     $allfields = [];
     foreach ($aFilters as $flt) {
@@ -1235,7 +1238,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
-                    $myfield2 = $flt['type'] . $myfield . reset($row);
+                    $myfield2 = $flt['type'] . $myfield . "_S" . $row['qid'];
                     $allfields[] = $myfield2;
                 }
                 break;
@@ -1268,7 +1271,8 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 foreach ($result as $row) {
                     $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 1", 'question_order');
                     foreach ($fresult as $frow) {
-                        $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
+                        // Array (Text) fields are handled like free text fields ("T" prefix)
+                        $myfield2 = ($flt['type'] == Question::QT_SEMICOLON_ARRAY_TEXT ? "T" : "") . $myfield . "_S" . $row['qid'] . "_S" . $frow['qid'];
                         $allfields[] = $myfield2;
                     }
                 }
@@ -1276,12 +1280,9 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
             case Question::QT_R_RANKING: // Ranking
                 //get some answers
                 $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
-                //get number of answers
                 //loop through all answers. if there are 3 items to rate there will be 3 statistics
-                $i = 0;
                 foreach ($result as $row) {
-                    $i++;
-                    $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
+                    $myfield2 = "R" . $myfield . "_S" . $row['qid'] . "-" . strlen((string) $row['qid']);
                     $allfields[] = $myfield2;
                 }
 
@@ -1295,10 +1296,10 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 //loop through answers
                 foreach ($result as $row) {
                     //----------------- LABEL 1 ---------------------
-                    $myfield2 = $myfield . reset($row) . "#0";
+                    $myfield2 = $myfield . "_S" . $row['qid'] . "#0";
                     $allfields[] = $myfield2;
                     //----------------- LABEL 2 ---------------------
-                    $myfield2 = $myfield . reset($row) . "#1";
+                    $myfield2 = $myfield . "_S" . $row['qid'] . "#1";
                     $allfields[] = $myfield2;
                 }   //end WHILE -> loop through all answers
                 break;
@@ -1317,6 +1318,19 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
     }
 
     return $allfields;
+}
+
+/**
+ * Generates the list of statistics field names for the questions of a survey
+ * @deprecated Use getStatisticsFieldNames() instead
+ * @param int $iSurveyID Id of the Survey in question
+ * @param array $aFilters an array which is the result of a query in Questions model
+ * @param string|null $sLanguage
+ * @return string[] The statistics field names
+ */
+function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
+{
+    return getStatisticsFieldNames($iSurveyID, $aFilters, $sLanguage);
 }
 
 /**
@@ -2026,7 +2040,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                 $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                 $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
-                $fieldmap[$fieldname]['SQrelevance'] = $arow['relevance'];
+                // No SQrelevance: This is the question itself, not a subquestion
             }
             foreach ($abrows as $abrow) {
                 $i++;
@@ -5304,12 +5318,15 @@ function aEncodingsArray()
 * @param    integer $iMaxLength       max length of string
 * @param    integer   $fPosition       int (1|0) or float, .5, .2, etc for position to split
 * @param    string  $sEllipsis      ellipsis ; Default '...'
+* @param    boolean $bStripTags     strip tags first; false for plain text, where a '<' is not the start of a tag
 * @return    string        ellipsized string
 */
-function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;')
+function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;', $bStripTags = true)
 {
-    // Strip tags
-    $sString = trim(strip_tags($sString));
+    if ($bStripTags) {
+        $sString = strip_tags($sString);
+    }
+    $sString = trim($sString);
     // Is the string long enough to ellipsize?
     if (mb_strlen($sString, 'UTF-8') <= $iMaxLength + 3) {
         return $sString;
@@ -5802,20 +5819,6 @@ function switchMSSQLIdentityInsert($table, $state)
             // it won't have any effect
             Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT ' . Yii::app()->db->tablePrefix . $table . ' OFF');
         }
-    }
-}
-
-/**
- * Helper to filter the contents of a .zip file uploaded into the file manager
- */
-function resourceExtractFilter($p_event, &$p_header)
-{
-    $aAllowExtensions = Yii::app()->getConfig('allowedfileuploads');
-    $info = pathinfo((string) $p_header['filename']);
-    if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'], $aAllowExtensions)) {
-        return 1;
-    } else {
-        return 0;
     }
 }
 

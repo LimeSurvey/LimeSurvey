@@ -816,6 +816,55 @@ var createOverlay = function () {
     return overlay;
 };
 
+/**
+ * Returns a copy of the chart canvas with the question title drawn above the chart
+ * @param {HTMLCanvasElement} chartCanvas
+ * @param {string} title
+ * @return {HTMLCanvasElement}
+ */
+var addTitleToChartImage = function (chartCanvas, title) {
+    if (!title) {
+        return chartCanvas;
+    }
+    // The canvas is scaled up on high-DPI screens, so scale the title with it
+    var scale = chartCanvas.clientWidth ? chartCanvas.width / chartCanvas.clientWidth : 1,
+        fontSize = Math.round(16 * scale),
+        lineHeight = Math.round(fontSize * 1.3),
+        padding = Math.round(10 * scale),
+        font = 'bold ' + fontSize + 'px ' + window.getComputedStyle(document.body).fontFamily,
+        imageCanvas = document.createElement('canvas'),
+        context = imageCanvas.getContext('2d'),
+        lines = [],
+        line = '';
+
+    // Wrap the title to the width of the chart
+    context.font = font;
+    title.split(/\s+/).forEach(function (word) {
+        var testLine = line ? line + ' ' + word : word;
+        if (line && context.measureText(testLine).width > chartCanvas.width - 2 * padding) {
+            lines.push(line);
+            line = word;
+        } else {
+            line = testLine;
+        }
+    });
+    lines.push(line);
+
+    imageCanvas.width = chartCanvas.width;
+    imageCanvas.height = chartCanvas.height + lines.length * lineHeight + 2 * padding;
+    // Resizing the canvas resets the context settings
+    context.fillStyle = '#ffffff';
+    context.fillRect(0, 0, imageCanvas.width, imageCanvas.height);
+    context.font = font;
+    context.fillStyle = '#000000';
+    context.textBaseline = 'top';
+    lines.forEach(function (text, index) {
+        context.fillText(text, padding, padding + index * lineHeight);
+    });
+    context.drawImage(chartCanvas, 0, lines.length * lineHeight + 2 * padding);
+    return imageCanvas;
+};
+
 var exportImages = function () {
     var zip = new JSZip(),
         overlay = createOverlay();
@@ -824,7 +873,8 @@ var exportImages = function () {
     $('.chartjs-container').each(function (i, container) {
         var canvasElements = $(container).find('canvas');
         if (canvasElements.length > 0) {
-            var canvas = canvasElements.get(0);
+            // attr() instead of data(): data() would turn a numeric title into a number
+            var canvas = addTitleToChartImage(canvasElements.get(0), $(container).attr('data-title'));
             var imgData = canvas.toDataURL();
             imgData = imgData.replace(/^data:image\/(png|jpg);base64,/, "");
             zip.file($(container).data('qid') + '.png', imgData, { base64: true });
@@ -859,15 +909,26 @@ $(document).on('ready  pjax:scriptcomplete', function () {
 
         var $self = $(this),
             overlay = createOverlay(),
-            thisTable = $('#' + $self.data('questionId'));
+            // Subquestions of a question share the same table id, so use the table the button is in
+            thisTable = $self.closest('table'),
+            // Buttons are left out of the PDF; the chart and numerical browse buttons have a row of their own
+            hiddenElements = $self
+                .add(thisTable.find('.chartjs-buttons, .numericalbrowse').closest('tr'))
+                .add(thisTable.find('.statisticsbrowsebutton').not('.numericalbrowse'));
 
-        $self.css({ display: 'none' });
-        thisTable.find('.chartjs-buttons').closest('tr').css({ display: 'none' });
+        hiddenElements.css({ display: 'none' });
+        // Charts are only drawn once scrolled into view, so draw it now and skip the animation to capture it complete
+        thisTable.find('.chartjs-container').loadGraph().each(function () {
+            var chart = chartjs[$(this).data('qid')];
+            if (chart) {
+                chart.stop();
+                chart.update('none');
+            }
+        });
         createPDFworker.call(null, thisTable).then(
             function (success) {
                 overlay.remove();
-                thisTable.find('.chartjs-buttons').closest('tr').css({ display: '' });
-                $self.css({ display: '' });
+                hiddenElements.css({ display: '' });
             },
             function () { console.ls.error(arguments); }
         )

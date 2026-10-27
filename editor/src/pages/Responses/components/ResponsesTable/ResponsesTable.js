@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
@@ -7,7 +7,6 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
 } from '@tanstack/react-table'
-import { debounce } from 'lodash'
 import classNames from 'classnames'
 
 import { PaginationButtons } from 'components'
@@ -37,20 +36,17 @@ import { ResponsesTableBody } from './ResponsesTableBody'
  */
 export const ResponsesTable = ({
   survey,
-  showFilters,
   sortedColumnId,
   sorting,
+  filterSet,
   setSorting,
   responsesData,
-  onFiltersChange = () => {},
   handleResponsesDelete = () => {},
   handleAttachmentsDelete = () => {},
   handleResponsesUpdate = () => {},
   pagination,
   setPagination,
   isFetching = false,
-  columnsFilters,
-  setColumnsFilters,
   surveyQuestions = [],
   hidePaginationButtons = false,
   hideActions = false,
@@ -65,6 +61,8 @@ export const ResponsesTable = ({
   const [columns, setColumns] = useState([])
   const [rowSelection, setRowSelection] = useState({})
   const [persistentSelection, setPersistentSelection] = useState({})
+  const [persistentSelectionHasFiles, setPersistentSelectionHasFiles] =
+    useState({})
   const clickedRowRef = useRef({})
   const isBulkActionRef = useRef(false)
   const openedDeepLinkRef = useRef(null)
@@ -117,6 +115,24 @@ export const ResponsesTable = ({
 
       return updated
     })
+
+    // Track, per response id, whether it has files, so bulk actions (like
+    // "Download files") can be evaluated against the whole selection
+    // instead of only the last clicked row.
+    setPersistentSelectionHasFiles((prev) => {
+      const updated = { ...prev }
+
+      data.forEach((row) => {
+        const id = row?.id === undefined ? '' : String(row.id)
+        if (!newSelection[id]) {
+          delete updated[id]
+        } else {
+          updated[id] = !!row.hasFiles
+        }
+      })
+
+      return updated
+    })
   }
 
   const table = useReactTable({
@@ -158,23 +174,6 @@ export const ResponsesTable = ({
       return row?.id === undefined ? index : row?.id
     },
   })
-
-  useEffect(() => {
-    if (!columnsFilters || firstLoad) {
-      return
-    }
-
-    handleOnFilterChange(columnsFilters)
-  }, [columnsFilters])
-
-  const handleOnFilterChange = useCallback(
-    debounce((columnsFilters) => {
-      onFiltersChange(columnsFilters)
-      // redirect to the first page when filters change
-      setPagination({ ...pagination, pageIndex: 0 })
-    }, 1000),
-    [survey.sid]
-  )
 
   useEffect(() => {
     if (!responsesData || !survey.sid) {
@@ -301,11 +300,13 @@ export const ResponsesTable = ({
     setColumnsOrder(columns.map((c) => c?.id))
   }, [columns])
 
-  // Reset selection when sorting or filters change (dataset identity changes)
+  // Reset selection when sorting or the filter changes (dataset identity
+  // changes).
   useEffect(() => {
     setRowSelection({})
     setPersistentSelection({})
-  }, [sorting, columnsFilters])
+    setPersistentSelectionHasFiles({})
+  }, [sorting, filterSet])
 
   // Restore checkboxes from persistentSelection when page data changes
   useEffect(() => {
@@ -318,6 +319,20 @@ export const ResponsesTable = ({
       }
     })
     setRowSelection(restoredSelection)
+
+    // Reconcile hasFiles for already-selected responses against the latest
+    // data, in case it changed (e.g. attachments deleted) without the
+    // selection itself changing.
+    setPersistentSelectionHasFiles((prev) => {
+      const updated = { ...prev }
+      data.forEach((row) => {
+        const id = row?.id === undefined ? '' : String(row.id)
+        if (persistentSelection[id]) {
+          updated[id] = !!row.hasFiles
+        }
+      })
+      return updated
+    })
   }, [data])
 
   const handleResponseDelete = () => {
@@ -328,11 +343,13 @@ export const ResponsesTable = ({
   const handleDownloadAllFiles = (isBulkActions = true) => {
     const row = clickedRowRef.current
     const currentSelectedRowId = row.original?.id
-    const hasFiles = row.original?.hasFiles
     const selectedRowsIds = Object.keys(persistentSelection)
     const responseIdsToDownload = isBulkActions
       ? selectedRowsIds
       : [currentSelectedRowId]
+    const hasFiles = isBulkActions
+      ? selectedRowsIds.some((id) => persistentSelectionHasFiles[id])
+      : row.original?.hasFiles
 
     if (hasFiles) {
       window.open(
@@ -403,6 +420,23 @@ export const ResponsesTable = ({
       showSurveyPreview(row)
     }
   }, [data, isFetching, deepLinkResponseId])
+
+  // Rebind the open response detail to the refreshed row, so it shows the updated values.
+  useEffect(() => {
+    const openResponseId = responseViewRowInfo?.original?.id
+
+    if (!showSurveyDetails || openResponseId === undefined) {
+      return
+    }
+
+    const refreshedRow = table
+      .getRowModel()
+      .rows.find((r) => String(r?.original?.id) === String(openResponseId))
+
+    if (refreshedRow && refreshedRow !== responseViewRowInfo) {
+      setResponseViewRowInfo(refreshedRow)
+    }
+  }, [data])
 
   const handleOnSave = (valuesInfo, row) => {
     const updateValue = {}
@@ -501,10 +535,7 @@ export const ResponsesTable = ({
             <ResponsesTableBody
               cellQuestionInfoRef={cellQuestionInfoRef}
               clickedRowRef={clickedRowRef}
-              columnsFilters={columnsFilters}
-              setColumnsFilters={setColumnsFilters}
               setShowQuestionComponent={setShowQuestionComponent}
-              showFilters={showFilters}
               sid={survey.sid}
               sortedColumnId={sortedColumnId}
               table={table}

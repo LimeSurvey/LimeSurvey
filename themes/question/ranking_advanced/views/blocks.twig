@@ -4,9 +4,7 @@
         <strong class="sortable-subtitle sortable-rank-subtitle">{{choice_title}}</strong>
         <!-- @todo : move htmlblock at the good place -->      
         <div id="sortable-choice-{{qId}}" class="sortable-choice sortable-list ls-flex wrap ls-flex-row display_block_group ">
-            {% set index = 0 %}
             {% for ansrow in  answers %}
-                {% set index = index + 1 %}
                 <div id="javatbd{{rankingName}}_S{{ansrow.sqid}}" class="ls-choice answer-item sortable-item sortable-enable sortable-button ls-flex sortable-block grabable" data-value="{{ansrow.title}}">
                     <div class="sortable-block-content">
                     {% if show_handle is same as('yes') %} 
@@ -20,8 +18,7 @@
                     {% else %}
                     {% endif %}
                     {% if show_number is same as('yes') %} 
-                        <b class="selector__index_row">#{{index}}</b>
-                        &nbsp;
+                        <b class="selector__index_row"></b>
                     {% endif %}
                     {{ansrow.answer}}
                     </div>
