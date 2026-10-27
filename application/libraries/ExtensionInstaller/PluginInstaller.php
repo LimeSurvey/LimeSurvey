@@ -41,11 +41,11 @@ class PluginInstaller extends ExtensionInstaller
 
         if ($this->fileFetcher->move($destdir)) {
             [$result, $errorMessage] = $pluginManager->installUploadedPlugin($destdir);
-            if ($result) {
-                // Do nothing.
-            } else {
+            if (!$result) {
                 throw new Exception($errorMessage);
             }
+            // Remove temporary files.
+            $this->fileFetcher->abort();
         } else {
             throw new Exception('Could not move files.');
         }
@@ -81,6 +81,8 @@ class PluginInstaller extends ExtensionInstaller
         if ($this->fileFetcher->move($destdir)) {
             $plugin->version = $config->getVersion();
             $plugin->update();
+            // Remove temporary files.
+            $this->fileFetcher->abort();
         } else {
             throw new Exception('Could not move files.');
         }

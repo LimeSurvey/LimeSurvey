@@ -129,7 +129,7 @@ class TestHelper extends TestCase
             'startlanguage' => (isset(App()->language) ? App()->language : $thissurvey['language']),
             'target' => Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $thissurvey['sid'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR,
             'tempdir' => Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR,
-            // for backward compatibilty convert timezone string to +/- hours
+            // for backward compatibility convert timezone string to +/- hours
             'timeadjust' => convertTimezoneDiffToHours(),
             'displayTimezone' => (isset($displayTimezone) ? $displayTimezone : 'UTC'),
             'token' => (isset($clienttoken) ? $clienttoken : null),
@@ -307,6 +307,7 @@ class TestHelper extends TestCase
             ->where("stg_name=:stg_name", ['stg_name' => 'DBVersion'])
             ->queryScalar();
         $this->assertEquals($versionConfig['dbversionnumber'], $currentDbVersion, 'Version in db is same as updated to');
+        $this->assertNull(\getIncompleteDatabaseUpdateMarker(), 'Incomplete update marker is removed after a successful update');
 
         return $connection;
     }
@@ -540,7 +541,6 @@ class TestHelper extends TestCase
         // setter does not allow setting it to null.
         $reflection = new \ReflectionClass("CHttpRequest");
         $property = $reflection->getProperty('_hostInfo');
-        $property->setAccessible(true);
         $property->setValue(Yii::app()->getRequest(), null);
     }
 

@@ -62,7 +62,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             sleep(1);
 
             //activate survey in open-access mode
-            //modal has been opend, activate survey in open-access mode
+            //modal has been opened, activate survey in open-access mode
             $overview = self::$webDriver->wait(20)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('saveactivateBtn')
@@ -171,7 +171,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             );
             $overview->click();
 
-            //modal has been opend, activate survey in open-access mode
+            //modal has been opened, activate survey in open-access mode
             $overview = self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::visibilityOfElementLocated(
                     WebDriverBy::id('saveactivateBtn')

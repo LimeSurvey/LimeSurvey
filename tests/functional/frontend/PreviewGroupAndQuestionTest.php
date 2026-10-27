@@ -71,7 +71,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             $this->assertTrue(self::$webDriver->findById('question'.$questions['G2Q01']['qid'])->isDisplayed());
             /* Check if 2nd question in group is not visible */
             $this->assertFalse(self::$webDriver->findById('question'.$questions['G2Q02']['qid'])->isDisplayed());
-            /* Check if 3nd question in group is not visible */
+            /* Check if 3rd question in group is not visible */
             $this->assertFalse(self::$webDriver->findById('question'.$questions['G2Q03']['qid'])->isDisplayed());
             /* Check if 4th question in group is not visible */
             $this->assertFalse(self::$webDriver->findById('question'.$questions['G2Q04']['qid'])->isDisplayed());
@@ -108,10 +108,16 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
         try {
             self::$webDriver->get($url);
             sleep(1);
-            /* Check if 3nd question in group is not visible */
+            /* Check if 3rd question in group is not visible */
             $this->assertTrue(
                 self::$webDriver->findElement(WebDriverBy::id('question'.$questions['G2Q03']['qid']))->isDisplayed(),
                 "Prefilling url broken when preview group"
+            );
+            /* Check the prefilled value of a previous group is used in text tailoring */
+            $this->assertEquals(
+                'Y',
+                self::$webDriver->findElement(WebDriverBy::cssSelector('.prefilled-q02'))->getText(),
+                "Prefilled value missing in text tailoring when preview group"
             );
         } catch (NoSuchElementException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
@@ -143,7 +149,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
         try {
             self::$webDriver->get($url);
             sleep(1);
-            /* Check question is visble */
+            /* Check question is visible */
             $this->assertTrue(
                 self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G3Q02']->qid))->isDisplayed(),
                 "Question preview force relevance broken"
@@ -207,7 +213,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
         try {
             self::$webDriver->get($url);
             sleep(1);
-            /* Check question is visble */
+            /* Check question is visible */
             $this->assertTrue(
                 self::$webDriver->findElement(WebDriverBy::id('question'.$questions['G3Q02']->qid))->isDisplayed(),
                 "Question preview force relevance broken"
@@ -223,6 +229,12 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             $this->assertTrue(
                 self::$webDriver->findElement(WebDriverBy::id('javatbd'.$secondLineSGQA))->isDisplayed(),
                 "Question preview force relevance broken"
+            );
+            /* Check the prefilled value of a previous group is used in text tailoring */
+            $this->assertEquals(
+                'Y',
+                self::$webDriver->findElement(WebDriverBy::cssSelector('.prefilled-q03'))->getText(),
+                "Prefilled value missing in text tailoring when preview question"
             );
         } catch (NoSuchElementException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();

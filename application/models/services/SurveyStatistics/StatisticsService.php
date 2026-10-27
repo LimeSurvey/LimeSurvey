@@ -4,6 +4,7 @@ namespace LimeSurvey\Models\Services\SurveyStatistics;
 
 use InvalidArgumentException;
 use LimeSurvey\Models\Services\Exception\NotFoundException;
+use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\DailyActivity\DailyActivityStatistics;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\QuestionStatistics;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
@@ -37,6 +38,9 @@ class StatisticsService
 
     /** @var StatisticsResponseFilters $filters */
     private StatisticsResponseFilters $filters;
+
+    /** @var ResolvedFilter[] The filter the user built in the modal, resolved */
+    private array $resolvedFilters = [];
 
     /** @var array{page: int, pageSize: int}|null Pagination to apply to charts supporting it */
     private ?array $pagination = null;
@@ -89,6 +93,21 @@ class StatisticsService
     }
 
     /**
+     * The survey loaded by setSurvey(), so a caller needing its field map or
+     * its participant table does not fetch it again.
+     */
+    public function getSurvey(): ?Survey
+    {
+        return $this->survey;
+    }
+
+    /** The language setSurvey() settled on, which may be the survey default. */
+    public function getLanguage(): string
+    {
+        return $this->language;
+    }
+
+    /**
      * Set response filters to apply to all chart processors.
      * @param StatisticsResponseFilters $filters
      * @return void
@@ -96,6 +115,20 @@ class StatisticsService
     public function setFilters(StatisticsResponseFilters $filters): void
     {
         $this->filters = $filters;
+    }
+
+    /**
+     * The condition-designer filter, already resolved to response columns.
+     *
+     * Applies on top of setFilters(): the two are independent conditions and
+     * combine with AND.
+     *
+     * @param ResolvedFilter[] $filters
+     * @return void
+     */
+    public function setResolvedFilters(array $filters): void
+    {
+        $this->resolvedFilters = $filters;
     }
 
     /**
@@ -174,6 +207,10 @@ class StatisticsService
 
             if (!empty($this->filters) && count($this->filters->getFilters()) > 0) {
                 $chartObj->setFilters($this->filters);
+            }
+
+            if ($this->resolvedFilters !== [] && method_exists($chartObj, 'setResolvedFilters')) {
+                $chartObj->setResolvedFilters($this->resolvedFilters);
             }
 
             if ($this->pagination !== null && method_exists($chartObj, 'setPagination')) {

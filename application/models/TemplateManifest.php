@@ -1454,21 +1454,22 @@ class TemplateManifest extends TemplateConfiguration
                     if ($key === 'font') {
                         $dropdownOptionsFonts = TemplateManifest::getFontDropdownOptions();
                         if (!empty($dropdownOptionsFonts)) {
-                            $fontDropdownOptions = simplexml_load_string($dropdownOptionsFonts); // The element to insert
+                            // The font options can contain several optgroups (core and user fonts), so they need a wrapper to be valid XML
+                            $fontDropdownOptions = simplexml_load_string('<fontoptions>' . $dropdownOptionsFonts . '</fontoptions>');
                             if ($fontDropdownOptions !== false) {
-                                $child_dom = dom_import_simplexml($fontDropdownOptions);
-                                // Import the child node into the parent's document
-                                $child_imported = $dropdownOptionsDom->ownerDocument->importNode($child_dom, true);
-                                // If the parent has children, insert before the first one.
-                                if ($dropdownOptionsDom->firstChild) {
-                                    $dropdownOptionsDom->insertBefore($child_imported, $dropdownOptionsDom->firstChild);
-                                } else {
-                                    // If the parent has no children, you can just append it (which makes it the first)
-                                    $dropdownOptionsDom->appendChild($child_imported);
+                                $fontDropdownOptionsDom = dom_import_simplexml($fontDropdownOptions);
+                                // Insert the font optgroups before the existing dropdown options, keeping their order
+                                $firstChild = $dropdownOptionsDom->firstChild;
+                                foreach ($fontDropdownOptionsDom->childNodes as $fontNode) {
+                                    // Import the node into the parent's document
+                                    $importedNode = $dropdownOptionsDom->ownerDocument->importNode($fontNode, true);
+                                    // Appends the node if the parent has no children
+                                    $dropdownOptionsDom->insertBefore($importedNode, $firstChild);
                                 }
                             }
                         }
                     }
+                    self::translateDropdownOptions($dropdownOptionsDom);
                     $dropdownOptionsString = $dropdownOptions->asXML();
                     $dropdownOptionsArray = [];
                     if (isset($dropdownOptions->optgroup)) {
@@ -1523,6 +1524,34 @@ class TemplateManifest extends TemplateConfiguration
         return false;
     }
 
+    /**
+     * Translates the labels of the optgroups and the texts of the options of a theme option dropdown.
+     * The option values are not changed.
+     *
+     * @param DOMElement $dropdownOptionsDom The dropdownoptions element of a theme option
+     * @return void
+     */
+    private static function translateDropdownOptions(DOMElement $dropdownOptionsDom)
+    {
+        foreach ($dropdownOptionsDom->getElementsByTagName('optgroup') as $optgroup) {
+            $label = trim($optgroup->getAttribute('label'));
+            if ($label !== '') {
+                $optgroup->setAttribute('label', gT($label, 'unescaped'));
+            }
+        }
+        foreach ($dropdownOptionsDom->getElementsByTagName('option') as $option) {
+            $text = trim($option->textContent);
+            if ($text !== '') {
+                $option->textContent = gT($text, 'unescaped');
+            }
+        }
+    }
+
+    /**
+     * Returns the HTML options of the font dropdown, grouped by font package type
+     *
+     * @return string
+     */
     public static function getFontDropdownOptions()
     {
         $fontOptions = '';
@@ -1540,9 +1569,9 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($coreFontPackages as $coreKey => $corePackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("Core") . '">';
+                $fontOptions .= '<optgroup  label="' . CHtml::encode(gT("Local server") . ' - ' . gT("Core")) . '">';
             }
-            $fontOptions .= '<option class="font-' . $coreKey . '"     value="' . $coreKey . '"     data-font-package="' . $coreKey . '"      >' . $corePackage['title'] . '</option>';
+            $fontOptions .= '<option class="font-' . CHtml::encode($coreKey) . '"     value="' . CHtml::encode($coreKey) . '"     data-font-package="' . CHtml::encode($coreKey) . '"      >' . CHtml::encode((string)$corePackage['title']) . '</option>';
         }
         if ($i > 0) {
             $fontOptions .= '</optgroup>';
@@ -1553,9 +1582,9 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($userFontPackages as $userKey => $userPackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("User") . '">';
+                $fontOptions .= '<optgroup  label="' . CHtml::encode(gT("Local server") . ' - ' . gT("User")) . '">';
             }
-            $fontOptions .= '<option class="font-' . $userKey . '"     value="' . $userKey . '"     data-font-package="' . $userKey . '"      >' . $userPackage['title'] . '</option>';
+            $fontOptions .= '<option class="font-' . CHtml::encode($userKey) . '"     value="' . CHtml::encode($userKey) . '"     data-font-package="' . CHtml::encode($userKey) . '"      >' . CHtml::encode((string)$userPackage['title']) . '</option>';
         }
         if ($i > 0) {
             $fontOptions .= '</optgroup>';

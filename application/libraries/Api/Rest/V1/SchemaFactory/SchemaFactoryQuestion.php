@@ -12,8 +12,8 @@ class SchemaFactoryQuestion
      *
      * The returned object schema is titled "Question" and includes predefined fields such as
      * qid, parentQid, sid, type, title, preg, other, mandatory, encrypted, sortOrder, scaleId,
-     * sameDefault, questionThemeName, moduleName, gid, relevance, sameScript, and an "l10ns"
-     * object that accepts arbitrary locale-keyed entries.
+     * sameDefault, questionThemeName, moduleName, gid, relevance, sameScript, showAssessmentValue,
+     * and an "l10ns" object that accepts arbitrary locale-keyed entries.
      *
      * @param \GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract ...$properties Additional schema properties to append to the Question schema.
      * @return \GoldSpecDigital\ObjectOrientedOAS\Objects\Schema The constructed Question schema.
@@ -44,6 +44,7 @@ class SchemaFactoryQuestion
                 Schema::string('relevance')->default(null),
                 Schema::string('sameScript')->default(null),
                 Schema::boolean('mandatory')->default(null),
+                Schema::boolean('showAssessmentValue')->default(null),
                 Schema::create('l10ns')
                     ->additionalProperties(
                         (new SchemaFactoryQuestionL10ns())->make()

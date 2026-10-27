@@ -9,12 +9,18 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\ResponseFactory;
 use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ExportFilterSql;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\ExportSurveyResultsService;
+use LimeSurvey\Models\Services\ResponseFilters\ParticipantResolver;
+use LimeSurvey\Models\Services\ResponseFilters\QuestionColumnMap;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterResolver;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSet;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use Permission;
 use RuntimeException;
 use Survey;
+use Yii;
 
 class SurveyResponsesExport implements CommandInterface
 {
@@ -56,11 +62,79 @@ class SurveyResponsesExport implements CommandInterface
     protected ExportSurveyResultsService $exportSurvey;
 
     /**
+     * Turns the export's filters into criteria or SQL for the exporters.
+     *
+     * @var ExportFilterSql
+     */
+    protected ExportFilterSql $filterSql;
+
+    /**
      * Allowed export formats.
+     * 'csv' and 'html' are handled by the fast, chunked ExportSurveyResultsService.
+     * The rest are delegated to the legacy plugin-based writers (see legacyFormatMap).
      *
      * @var string[]
      */
-    private array $allowedFormats = ['csv', 'html'];
+    private array $allowedFormats = [
+        'csv', 'html', 'pdf', 'excel', 'word', 'json', 'spss', 'stata', 'r_syntax', 'r_data',
+    ];
+
+    /**
+     * Maps API format keys to the legacy export plugin keys registered via the
+     * 'listExportPlugins' event (Authdb core plugin, ExportSPSSsav, ExportSTATAxml, ExportR).
+     *
+     * @var array<string, string>
+     */
+    private array $legacyFormatMap = [
+        'pdf' => 'pdf',
+        'excel' => 'xls',
+        'word' => 'doc',
+        'json' => 'json',
+        'spss' => 'spsssav',
+        'stata' => 'stataxml',
+        'r_syntax' => 'rsyntax',
+        'r_data' => 'rdata',
+    ];
+
+    /**
+     * File extension and MIME type per legacy plugin key.
+     *
+     * @var array<string, array{extension: string, mimeType: string}>
+     */
+    private array $legacyFormatMeta = [
+        'pdf' => ['extension' => 'pdf', 'mimeType' => 'application/pdf'],
+        'xls' => [
+            'extension' => 'xlsx',
+            'mimeType' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ],
+        'doc' => ['extension' => 'doc', 'mimeType' => 'application/msword'],
+        'json' => ['extension' => 'json', 'mimeType' => 'application/json'],
+        'spsssav' => ['extension' => 'sav', 'mimeType' => 'application/octet-stream'],
+        'stataxml' => ['extension' => 'xml', 'mimeType' => 'application/xml'],
+        'rsyntax' => ['extension' => 'R', 'mimeType' => 'text/plain'],
+        'rdata' => ['extension' => 'dat', 'mimeType' => 'text/plain'],
+    ];
+
+    /**
+     * Export formats handled by the fast chunked ExportSurveyResultsService.
+     *
+     * @var string[]
+     */
+    private array $nativeFormats = ['csv', 'html'];
+
+    /**
+     * Valid answer format values.
+     *
+     * @var string[]
+     */
+    private array $validAnswerFormats = ['long', 'short'];
+
+    /**
+     * Valid CSV field separators.
+     *
+     * @var string[]
+     */
+    private array $validCsvSeparators = [',', ';', "\t"];
 
     /**
      * SurveyResponsesExport constructor.
@@ -80,6 +154,7 @@ class SurveyResponsesExport implements CommandInterface
         $this->survey = $survey;
         $this->responseFactory = $responseFactory;
         $this->exportSurvey = $exportSurvey;
+        $this->filterSql = new ExportFilterSql($exportSurvey);
     }
 
     /**
@@ -96,8 +171,13 @@ class SurveyResponsesExport implements CommandInterface
             return $this->responseFactory->makeError('Invalid key sent');
         } catch (PermissionDeniedException $e) {
             return $this->responseFactory->makeErrorUnauthorised();
+        } catch (InvalidArgumentException $e) {
+            return $this->responseFactory->makeErrorBadRequest($e->getMessage());
         } catch (Exception $e) {
             return $this->responseFactory->makeError($e->getMessage());
+        } catch (\Throwable $e) {
+            Yii::log($e->getMessage(), 'error', 'application.api.export');
+            return $this->responseFactory->makeError('Unable to export responses');
         }
     }
 
@@ -128,20 +208,153 @@ class SurveyResponsesExport implements CommandInterface
             throw new RuntimeException('Survey is not active - no responses are available.');
         }
 
-        [$type, $language] = $this->getExportRequestData($request);
+        [$type, $language, $answerFormat, $csvSeparator, $filters] = $this->getExportRequestData($request);
 
-        // Use file output mode for better memory efficiency with large exports
-        return $this->exportSurvey
+        $resolvedFilters = $this->resolveFilterSet($request, $surveyId, $language);
+
+        if (!in_array($type, $this->nativeFormats)) {
+            return $this->exportViaLegacyExporter(
+                $surveyId,
+                $type,
+                $language,
+                $answerFormat,
+                $csvSeparator,
+                $filters,
+                $resolvedFilters
+            );
+        }
+
+        $exportService = $this->exportSurvey
             ->setLanguage($language)
-            ->setOutputMode('file')
-            ->exportResponses($surveyId, $type);
+            ->setOutputMode('file');
+
+        if ($answerFormat) {
+            $exportService->setAnswerFormat($answerFormat);
+        }
+
+        if ($csvSeparator) {
+            $exportService->setCsvSeparator($csvSeparator);
+        }
+
+        if (!empty($filters)) {
+            $exportService->setFilters($filters);
+        }
+
+        if ($resolvedFilters !== []) {
+            $exportService->setFilterCriteria($this->filterSql->buildFilterCriteria($surveyId, $resolvedFilters));
+        }
+
+        return $exportService->exportResponses($surveyId, $type);
+    }
+
+    /**
+     * Read the condition-designer filter and resolve it against the survey's
+     * field map, as the responses list and the statistics tab do.
+     *
+     * @param Request $request
+     * @param int $surveyId
+     * @param string|null $language
+     * @return \LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter[]
+     *
+     * @throws InvalidArgumentException on a filter this survey cannot answer.
+     * @throws PermissionDeniedException when a participant filter is sent by a
+     *     caller who may not read the survey's participants.
+     */
+    protected function resolveFilterSet(Request $request, int $surveyId, ?string $language): array
+    {
+        $filterSet = ResponseFilterSet::fromRequestValue($request->getData('filterSet', null));
+        if ($filterSet->isEmpty()) {
+            return [];
+        }
+
+        if (
+            $filterSet->hasParticipantFilter()
+            && !$this->permission->hasSurveyPermission($surveyId, 'tokens')
+        ) {
+            throw new PermissionDeniedException();
+        }
+
+        $resolver = new ResponseFilterResolver(
+            QuestionColumnMap::fromQuestionFieldMap(
+                createFieldMap($this->surveyModel, 'full', false, false, $language)
+            ),
+            ParticipantResolver::fromSurvey($this->surveyModel)
+        );
+
+        return $resolver->resolve($filterSet);
+    }
+
+    /**
+     * Export via the legacy plugin-based writer system (Authdb, ExportSPSSsav,
+     * ExportSTATAxml, ExportR core plugins), for formats not yet reimplemented
+     * in ExportSurveyResultsService.
+     *
+     * @param int $surveyId
+     * @param string $type
+     * @param string|null $language
+     * @param string|null $answerFormat
+     * @param string|null $csvSeparator
+     * @param array $filters
+     * @return array The export data with filePath/filename/mimeType
+     *
+     * @throws RuntimeException
+     */
+    protected function exportViaLegacyExporter(
+        int $surveyId,
+        string $type,
+        ?string $language,
+        ?string $answerFormat,
+        ?string $csvSeparator,
+        array $filters = [],
+        array $resolvedFilters = []
+    ): array {
+        Yii::app()->loadHelper('admin.exportresults');
+
+        $legacyType = $this->legacyFormatMap[$type] ?? $type;
+
+        $fieldMap = createFieldMap($this->surveyModel, 'full', true, false, $language);
+        if ($this->surveyModel->savetimings === 'Y') {
+            $fieldMap += createTimingsFieldMap($surveyId, 'full', true, false, $language);
+        }
+
+        $options = new \FormattingOptions();
+        $options->selectedColumns = array_keys($fieldMap);
+        $options->responseMinRecord = \SurveyDynamic::model($surveyId)->getMinId();
+        $options->responseMaxRecord = \SurveyDynamic::model($surveyId)->getMaxId();
+        $options->responseCompletionState = 'all';
+        $options->headingFormat = 'full';
+        $options->answerFormat = $answerFormat ?: 'long';
+        $options->csvFieldSeparator = $csvSeparator ?: ',';
+        $options->output = 'file';
+
+        $sqlFilter = $this->filterSql->buildLegacyCondition(
+            $surveyId,
+            $this->surveyModel->responsesTableName,
+            $filters,
+            $resolvedFilters
+        );
+
+        $legacyService = new \ExportSurveyResultsService();
+        $filePath = $legacyService->exportResponses($surveyId, $language, $legacyType, $options, $sqlFilter);
+
+        if (!$filePath || !file_exists($filePath)) {
+            throw new RuntimeException('Export format not available: ' . $type);
+        }
+
+        $meta = $this->legacyFormatMeta[$legacyType] ?? ['extension' => 'dat', 'mimeType' => 'application/octet-stream'];
+
+        return [
+            'filePath' => $filePath,
+            'filename' => 'responses_' . $surveyId . '.' . $meta['extension'],
+            'mimeType' => $meta['mimeType'],
+        ];
     }
 
     /**
      * Read and validate export-related parameters from the request.
      *
      * @param Request $request
-     * @return array [type, language]
+     * @return array [type, language, answerFormat, csvSeparator]
      * @throws InvalidArgumentException
      */
     protected function getExportRequestData(Request $request): array
@@ -152,8 +365,33 @@ class SurveyResponsesExport implements CommandInterface
         }
 
         $language = $request->getData('language', $this->surveyModel ? $this->surveyModel->language : null);
+        if (!is_string($language) || !in_array($language, $this->surveyModel->getAllLanguages(), true)) {
+            throw new InvalidArgumentException('Invalid language specified');
+        }
 
-        return [$type, $language];
+        // Optional answer format (long/short)
+        $answerFormat = $request->getData('answerFormat', null);
+        if ($answerFormat && !in_array($answerFormat, $this->validAnswerFormats)) {
+            throw new InvalidArgumentException('Invalid answer format specified');
+        }
+
+        // Optional CSV field separator
+        $csvSeparator = $request->getData('csvSeparator', null);
+        if ($csvSeparator && !in_array($csvSeparator, $this->validCsvSeparators)) {
+            throw new InvalidArgumentException('Invalid CSV field separator specified');
+        }
+
+        // filters only get applied when the user picked "filtered data"
+        $filters = $request->getData('filters', []);
+        if (!is_array($filters)) {
+            throw new InvalidArgumentException('Invalid filters specified');
+        }
+        $this->exportSurvey->validateFilters(
+            $filters,
+            \SurveyDynamic::model($this->surveyModel->sid)->getTableSchema()->getColumnNames()
+        );
+
+        return [$type, $language, $answerFormat, $csvSeparator, $filters];
     }
 
     /**

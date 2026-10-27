@@ -80,6 +80,50 @@ var A11yHandles = {
     }
   }
 };
+
+/**
+ * Hides the keyboard focus ring while the participant uses a mouse or touch, and shows it again
+ * as soon as they navigate with the keyboard. The mode is kept across pages in the session storage.
+ * Without JavaScript the class is never set, so the focus ring always stays visible.
+ */
+var initNavigationMode = function initNavigationMode() {
+  var pointerClass = 'ls-pointer-nav';
+  var storageKey = 'lsNavigationMode';
+  // Keys that move the focus or change a choice
+  var navigationKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', ' '];
+  var textEntrySelector = 'textarea, [contenteditable]:not([contenteditable="false"]), ' + 'input:not([type="radio"]):not([type="checkbox"]):not([type="button"]):not([type="submit"])' + ':not([type="reset"]):not([type="image"]):not([type="range"]):not([type="file"]):not([type="color"])';
+  var setMode = function setMode(mode) {
+    document.documentElement.classList.toggle(pointerClass, mode === 'pointer');
+    try {
+      sessionStorage.setItem(storageKey, mode);
+    } catch (e) {
+      // Storage can be unavailable (private mode, blocked site data): The mode then only lasts for this page
+    }
+  };
+  try {
+    if (sessionStorage.getItem(storageKey) === 'pointer') {
+      document.documentElement.classList.add(pointerClass);
+    }
+  } catch (e) {
+    // See setMode()
+  }
+  document.addEventListener('pointerdown', function () {
+    setMode('pointer');
+  }, true);
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Tab') {
+      setMode('keyboard');
+      return;
+    }
+    // Arrow keys, Space etc. inside a text field edit the text instead of navigating
+    if (navigationKeys.includes(event.key) && !(event.target.matches && event.target.matches(textEntrySelector))) {
+      setMode('keyboard');
+    }
+  }, true);
+};
+
+// Document-level listeners: Register only once, they survive the ajax page loads
+initNavigationMode();
 $(document).on('ready pjax:scriptcomplete', function () {
   A11yHandles.initLiveRegion();
   A11yHandles.handleTooltip();
@@ -334,7 +378,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.TemplateCoreClass = void 0;
 var _old_template_core_pre = require("./old_template_core_pre.js");
 /**
- * @file Default template functionnality
+ * @file Default template functionality
  * @copyright LimeSurvey <http://www.limesurvey.org>
  * @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-v3-or-Later
  */
@@ -344,7 +388,7 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
     /**
      * Dialog and confirm
      */
-    /* showStartPopups : replace core function : allow HTML and use it. Unusuable with ajax */
+    /* showStartPopups : replace core function : allow HTML and use it. Unusable with ajax */
     showStartPopups: function showStartPopups() {
       if (LSvar.showpopup == 1 && $.isArray(LSvar.startPopups)) {
         var startPopups = LSvar.startPopups.map(function (text) {
@@ -408,6 +452,11 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
      * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmClassChange
      */
     triggerEmClassChangeTemplate: function triggerEmClassChangeTemplate() {
+      /* The first ExpressionScript run (checkconditions in survey_runtime.js, same ready event) happens before the participant answered anything */
+      var initialRun = true;
+      setTimeout(function () {
+        initialRun = false;
+      }, 0);
       $('.ls-em-tip').each(function () {
         $(this).on('classChangeError', function () {
           /* If user choose hide-tip : leave it */
@@ -416,8 +465,11 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
             parent.removeClass('hide-tip', 1);
             parent.addClass('tip-was-hidden', 1);
           }
-          var questionContainer = $(this).parents('div.question-container');
-          questionContainer.addClass('input-error'); /* No difference betwwen error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+          /* Don't flag untouched questions on page load: After a failed submit the server already sets input-error */
+          if (!initialRun) {
+            var questionContainer = $(this).parents('div.question-container');
+            questionContainer.addClass('input-error');
+          }
           $(this).find('span.fa-exclamation-circle').removeClass('d-none');
         });
         $(this).on('classChangeGood', function () {
@@ -428,8 +480,14 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
           if (parent.hasClass('tip-was-hidden') && parent.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
             parent.removeClass('tip-was-hidden').addClass('hide-tip');
           }
-          var questionContainer = $(this).parents('div.question-container');
-          questionContainer.removeClass('input-error'); /* Not working with mandatory question ... */
+          /* Keep input-error set by the server after a failed submit until the participant changes something */
+          if (!initialRun) {
+            var questionContainer = $(this).parents('div.question-container');
+            /* Only once no other tip of the question is still in error: This tip's own ls-em-error is removed after this handler */
+            if (questionContainer.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
+              questionContainer.removeClass('input-error'); /* Not working with mandatory question ... */
+            }
+          }
           $(this).find('span.fa-exclamation-circle').addClass('d-none');
         });
       });
@@ -900,7 +958,7 @@ function triggerEmClassChange() {
  *  Ask confirmation on click on .needconfirm
  */
 function activateConfirmButton() {
-  /* With ajax mode : using $(document).on attache X times the same event */
+  /* With ajax mode : using $(document).on attaches X times the same event */
   $("button[data-confirmedby]").on('click', function (event) {
     var btnConfirm = $(this);
     var cbConfirm = $(this).parent().find("[name='" + $(this).data('confirmedby') + "']");
@@ -1029,15 +1087,37 @@ var NavbarScripts = exports.NavbarScripts = function NavbarScripts() {
     element.innerHTML = '';
     element.innerHTML = replacementContent;
   };
+
+  /**
+   * Moves the keyboard focus to the first element of the menu matching the selector
+   * Replacing the menu content destroys the focused link, which would otherwise drop the focus to the page body
+   * @param {string} selector
+   */
+  var focusMenuItem = function focusMenuItem(selector) {
+    var item = document.querySelector('#main-dropdown ' + selector);
+    if (item) {
+      item.focus();
+    }
+  };
   var initNavbarEvents = function initNavbarEvents() {
-    $(document).on('click', '[data-navtargetid]', function () {
+    // Submenu that is currently shown, so the focus can return to its opener on "Back"
+    var openedSubmenuId = null;
+    $(document).on('click', '[data-navtargetid]', function (event) {
+      event.preventDefault();
+      openedSubmenuId = $(this).data('navtargetid');
       replaceContent(getContentByElementId('main-dropdown'), 'back-content');
       //replace menu content with submenu content
-      replaceContent(getContentByElementId($(this).data('navtargetid')), 'main-dropdown');
+      replaceContent(getContentByElementId(openedSubmenuId), 'main-dropdown');
+      focusMenuItem('.back-link');
     });
-    $(document).on('click', '.back-link', function () {
+    $(document).on('click', '.back-link', function (event) {
+      event.preventDefault();
       // switch menu content back to original content (this currently works only with one level nested elements)
       replaceContent(getContentByElementId('back-content'), 'main-dropdown');
+      if (openedSubmenuId) {
+        focusMenuItem('[data-navtargetid="' + openedSubmenuId + '"]');
+      }
+      openedSubmenuId = null;
     });
   };
   return {

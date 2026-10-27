@@ -26,8 +26,8 @@
  * @property integer $autoload_url Whether URL is automatically redirected if quota is triggered (0/1)
  *
  * @property QuotaLanguageSetting[] $languagesettings Indexed by language code
- * @property QuotaLanguageSetting $mainLanguagesetting
- * @property QuotaLanguageSetting $currentLanguageSetting
+ * @property QuotaLanguageSetting|null $mainLanguagesetting
+ * @property QuotaLanguageSetting|null $currentLanguageSetting
  * @property Survey $survey
  * @property QuotaMember[] $quotaMembers
  *
@@ -121,13 +121,20 @@ class Quota extends LSActiveRecord
     }
 
     /**
-     * @return QuotaLanguageSetting
+     * Returns the texts of the quota in the survey's base language.
+     *
+     * @return QuotaLanguageSetting|null Null if the quota has no texts in the base language
      */
     public function getMainLanguagesetting()
     {
-        return $this->languagesettings[$this->survey->language];
+        return $this->languagesettings[$this->survey->language] ?? null;
     }
 
+    /**
+     * Count the completed responses matching all members of this quota
+     *
+     * @return int|string|null Number of completed responses, null if the response table or a member column is missing
+     */
     public function getCompleteCount()
     {
         if (!tableExists("responses_{$this->sid}")) {
@@ -139,18 +146,24 @@ class Quota extends LSActiveRecord
             // Keep a list of fields for easy reference
             $aQuotaColumns = array();
             foreach ($this->quotaMembers as $member) {
-                if (!in_array($member->memberInfo['fieldname'], $aExistingColumnName)) {
+                $aMemberInfo = $member->memberInfo;
+                if (!in_array($aMemberInfo['fieldname'], $aExistingColumnName)) {
                     \Yii::log(
                         sprintf(
                             "Invalid quota member %s",
-                            $member->memberInfo['fieldname']
+                            $aMemberInfo['fieldname']
                         ),
                         'warning',
                         'application.model.Quota'
                     );
                     return null;
                 }
-                $aQuotaColumns[$member->memberInfo['fieldname']][] = $member->memberInfo['value'];
+                $sValue = $aMemberInfo['value'];
+                // Answers of encrypted questions are stored encrypted: Compare with the encrypted value
+                if ($member->question->encrypted === 'Y') {
+                    $sValue = LSActiveRecord::encryptSingle($sValue);
+                }
+                $aQuotaColumns[$aMemberInfo['fieldname']][] = $sValue;
             }
 
             $oCriteria = new CDbCriteria();
@@ -195,7 +208,7 @@ class Quota extends LSActiveRecord
 
     /**
      * Get the QuotaLanguageSetting for current language
-     * @return QuotaLanguageSetting
+     * @return QuotaLanguageSetting|null Null if the quota has no texts in the current and the base language
      */
     public function getCurrentLanguageSetting()
     {

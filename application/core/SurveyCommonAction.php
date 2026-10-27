@@ -74,9 +74,16 @@ class SurveyCommonAction extends CAction
 
         // Get the action classes from the admin controller as the urls necessarily do not equal the class names. Eg. survey -> surveyaction
         // Merges it with actions from admin modules
-        $aActions = array_merge(App()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses());
+        $aCoreActions = App()->getController()->getActionClasses();
+        $aActions = array_merge($aCoreActions, Yii::app()->getController()->getAdminModulesActionClasses());
 
-        if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower((string) $aActions[$this->getId()]) || !$oMethod->isPublic()) {
+        // The method can be declared by the action class itself, or by the core action class an admin module overrides
+        $aAllowedClasses = [strtolower(get_class($this))];
+        if (!empty($aCoreActions[$this->getId()])) {
+            $aAllowedClasses[] = strtolower((string) $aCoreActions[$this->getId()]);
+        }
+
+        if (empty($aActions[$this->getId()]) || !in_array(strtolower($oMethod->getDeclaringClass()->name), $aAllowedClasses) || !$oMethod->isPublic()) {
             // Either action doesn't exist in our allowlist, or the method class doesn't equal the action class or the method isn't public
             // So let us get the last possible default method, ie. index
             if (!$oClass->hasMethod($sDefault)) {
@@ -472,7 +479,7 @@ class SurveyCommonAction extends CAction
      */
     protected function showadminmenu($aData)
     {
-        // We don't wont the admin menu to be shown in login page
+        // We don't want the admin menu to be shown in login page
         if (!Yii::app()->user->isGuest) {
             if (!(Yii::app()->getConfig('ssl_disable_alert')) && strtolower(Yii::app()->getConfig('force_ssl') != 'on') && \Permission::model()->hasGlobalPermission("superadmin")) {
                 $not = new UniqueNotification(array(

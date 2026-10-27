@@ -177,4 +177,120 @@ class ImportTest extends TestBaseClass
             }
         }
     }
+
+    /**
+     * Test that importing a question only imports the languages that the question file
+     * and the survey have in common, so no orphaned translations are left in the database (see #16908).
+     *
+     * @return void
+     */
+    public function testImportQuestionOnlyImportsSurveyLanguages(): void
+    {
+        \Yii::app()->session['loginID'] = 1;
+        \Survey::model()->resetCache();
+
+        try {
+            // Target survey uses English (base) and German, the question file has English, German and French
+            $result = importSurveyFile(self::$surveysFolder . '/limesurvey_survey_import_question_test.lss', false);
+            $survey = \Survey::model()->findByPk($result['newsid']);
+            $survey->additional_languages = 'de';
+            $this->assertTrue($survey->save());
+
+            $questionResult = XMLImportQuestion(
+                self::$surveysFolder . '/limesurvey_question_16908_three_languages.lsq',
+                $survey->sid,
+                $survey->groups[0]->gid,
+                ['autorename' => true, 'translinkfields' => true]
+            );
+            $this->assertArrayNotHasKey('fatalerror', $questionResult);
+            $qid = $questionResult['newqid'];
+            $subQuestion = \Question::model()->findByAttributes(['parent_qid' => $qid]);
+            $this->assertNotNull($subQuestion);
+            $answer = \Answer::model()->findByAttributes(['qid' => $qid]);
+            $this->assertNotNull($answer);
+            $defaultValue = \DefaultValue::model()->findByAttributes(['qid' => $qid]);
+            $this->assertNotNull($defaultValue);
+
+            $languagesOf = function (array $models): array {
+                $languages = array_map(function ($model) {
+                    return $model->language;
+                }, $models);
+                sort($languages);
+                return $languages;
+            };
+            $expected = ['de', 'en'];
+
+            $this->assertSame($expected, $languagesOf(\QuestionL10n::model()->findAllByAttributes(['qid' => $qid])), 'Question texts');
+            $this->assertSame($expected, $languagesOf(\QuestionL10n::model()->findAllByAttributes(['qid' => $subQuestion->qid])), 'Subquestion texts');
+            $this->assertSame($expected, $languagesOf(\AnswerL10n::model()->findAllByAttributes(['aid' => $answer->aid])), 'Answer texts');
+            $this->assertSame($expected, $languagesOf(\DefaultValueL10n::model()->findAllByAttributes(['dvid' => $defaultValue->dvid])), 'Default values');
+            // QuestionAttribute::findAll() indexes the result by attribute name, so query the languages directly
+            $attributeLanguages = \Yii::app()->db->createCommand()
+                ->select('language')
+                ->from('{{question_attributes}}')
+                ->where('qid = :qid AND attribute = :attribute', [':qid' => $qid, ':attribute' => 'em_validation_q_tip'])
+                ->order('language')
+                ->queryColumn();
+            $this->assertSame($expected, $attributeLanguages, 'Translated question attributes');
+            // Attributes without a language are still imported
+            $this->assertNotNull(\QuestionAttribute::model()->findByAttributes(['qid' => $qid, 'attribute' => 'hidden']));
+        } finally {
+            if (isset($survey) && $survey) {
+                \Yii::app()->session['loginID'] = 1;
+                $survey->delete();
+            }
+        }
+    }
+
+    /**
+     * Importing responses from an archive created before LimeSurvey 7 (old SGQA column names)
+     * must keep empty answers as empty strings and missing (NULL) answers as NULL.
+     */
+    public function testImportOldResponsesKeepsEmptyValues(): void
+    {
+        \Yii::app()->session['loginID'] = 1;
+        \Yii::app()->loadHelper('admin.activate');
+        $file = self::$surveysFolder . '/limesurvey_survey_932686_multiple_choice_empty_values.lss';
+        // Question "Select" (qid 5599) was not answered, question "Filtered" (qid 5603) was filtered out (no elements)
+        $responsesFile = self::$tempFolder . '/import_old_responses_empty_values.lsr';
+        file_put_contents(
+            $responsesFile,
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            . '<document><LimeSurveyDocType>Responses</LimeSurveyDocType><DBVersion>499</DBVersion>'
+            . '<languages><language>en</language></languages><responses><rows><row>'
+            . '<id><![CDATA[1]]></id><submitdate><![CDATA[2020-01-01 00:00:00]]></submitdate>'
+            . '<lastpage><![CDATA[1]]></lastpage><startlanguage><![CDATA[en]]></startlanguage>'
+            . '<startdate><![CDATA[2020-01-01 00:00:00]]></startdate><datestamp><![CDATA[2020-01-01 00:00:00]]></datestamp>'
+            . '<_932686X537X5599SQ001/><_932686X537X5599SQ002><![CDATA[Y]]></_932686X537X5599SQ002>'
+            . '</row></rows></responses></document>'
+        );
+
+        try {
+            $result = XMLImportSurvey($file, null, null, null, true, false);
+            $survey = \Survey::model()->findByPk($result['newsid']);
+            (new \SurveyActivator($survey))->activate();
+
+            $responseResult = XMLImportResponses($responsesFile, $survey->sid, $result['FieldReMap']);
+            $this->assertSame(1, $responseResult['responses']);
+
+            $response = \Yii::app()->db->createCommand()
+                ->select('*')
+                ->from($survey->responsesTableName)
+                ->queryRow();
+            $values = [];
+            foreach (\Question::model()->findAll('sid = :sid AND parent_qid > 0', [':sid' => $survey->sid]) as $subQuestion) {
+                $values[$subQuestion->parent->title . '_' . $subQuestion->title] = $response['Q' . $subQuestion->parent_qid . '_S' . $subQuestion->qid];
+            }
+            $this->assertSame('', $values['Select_SQ001'], 'Unanswered option must stay an empty string');
+            $this->assertSame('Y', $values['Select_SQ002']);
+            $this->assertNull($values['Select_SQ003'], 'Option without value must stay NULL');
+            $this->assertNull($values['Filtered_SQ001'], 'Filtered option must stay NULL');
+        } finally {
+            unlink($responsesFile);
+            if (isset($survey) && $survey) {
+                \Yii::app()->session['loginID'] = 1;
+                $survey->delete();
+            }
+        }
+    }
 }

@@ -108,4 +108,20 @@ class QuestionTest extends BaseModelTestCase
         $themeName = $question->questionThemeNameValidator();
         $this->assertSame('multiplechoice', $themeName, 'Question theme was not auto corrected and derived from the type\'s default theme.');
     }
+
+    /**
+     * An invalid question code is replaced by its cleaned up version, not by a random code.
+     */
+    public function testGetNewTitleCleansInvalidCode()
+    {
+        $question = new Question('import');
+        $question->sid = 999999;
+        $question->parent_qid = 0;
+
+        $question->title = 'Q_1';
+        $this->assertSame('Q1', $question->getNewTitle());
+
+        $question->title = '1_a';
+        $this->assertSame('q1a', $question->getNewTitle());
+    }
 }

@@ -67,6 +67,27 @@ export const Setting = ({
     return undefined
   }
 
+  // Distinguishes an attribute that has no value yet (e.g. a new question)
+  // from one that was explicitly emptied, so components can show their default.
+  const isAttributeUnset = (attributePath, languageBased) => {
+    const attribute = attributePath
+      .split('.')
+      .reduce((acc, key) => acc?.[key], question)
+
+    if (attribute === undefined || attribute === null) {
+      return true
+    }
+
+    if (typeof attribute === 'object') {
+      return (
+        attribute[language] === undefined &&
+        (languageBased || attribute[''] === undefined)
+      )
+    }
+
+    return false
+  }
+
   const getFullAttributeValueFromPath = (attributePath) => {
     const path = attributePath.split('.')
     return path.reduce((acc, key) => acc[key], question) || ''
@@ -180,19 +201,32 @@ export const Setting = ({
           attribute.attributePath,
           attribute.languageBased
         )
-        const isDisabled =
-          ([
-            'questionThemeName',
-            'encrypted',
-            'attributes.save_as_default',
-            'defaultAttributeValuesActions',
-            'other',
-          ].includes(attribute.attributePath) ||
-            attribute.disableWhenActive) &&
-          isSurveyActive
-            ? true
-            : attribute.action &&
-              (isTempId(question.qid) || !hasSurveyUpdatePermission)
+
+        const ATTRIBUTES_DISABLED_WHEN_ACTIVE = [
+          'questionThemeName',
+          'encrypted',
+          'attributes.save_as_default',
+          'defaultAttributeValuesActions',
+          'other',
+        ]
+
+        const showDefaultValue =
+          attribute.props?.defaultValue !== undefined &&
+          !attribute.props?.value &&
+          isAttributeUnset(attribute.attributePath, attribute.languageBased)
+
+        const isDisabledWhenActive =
+          ATTRIBUTES_DISABLED_WHEN_ACTIVE.includes(attribute.attributePath) ||
+          attribute.disableWhenActive
+
+        const isDisabledByActiveSurvey = isDisabledWhenActive && isSurveyActive
+
+        const isActionAttribute = !!attribute.action
+        const isActionDisabled =
+          isActionAttribute &&
+          (isTempId(question.qid) || !hasSurveyUpdatePermission)
+
+        const isDisabled = isDisabledByActiveSurvey || isActionDisabled
 
         const options =
           typeof attribute.getOptions === 'function'
@@ -227,11 +261,13 @@ export const Setting = ({
                 noPermissionDisabled={true}
                 hasSurveyUpdatePermission={hasSurveyUpdatePermission}
                 value={
-                  value
-                    ? value
-                    : attributeProps.value
-                      ? attributeProps.value
-                      : ''
+                  showDefaultValue
+                    ? undefined
+                    : value
+                      ? value
+                      : attributeProps.value
+                        ? attributeProps.value
+                        : ''
                 }
                 name={attribute.attributePath}
                 update={(value) =>

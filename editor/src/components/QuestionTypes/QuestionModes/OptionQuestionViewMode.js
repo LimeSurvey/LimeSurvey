@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Entities,
   getStringPartsUsingSeperator,
@@ -72,7 +72,7 @@ const insertOtherByPosition = (
   items.push(otherItem)
 }
 
-// todo: add input fields for mutliple numerical/texts
+// todo: add input fields for multiple numerical/texts
 export const OptionQuestionViewMode = ({
   question: { questionThemeName, qid, gid, attributes, mandatory, other } = {},
   language,
@@ -84,6 +84,8 @@ export const OptionQuestionViewMode = ({
 }) => {
   const valueInfo = values?.[0] || {}
   const [selectedIndex, setSelectedIndex] = useState(-1)
+  // Index of the single choice option the user clicked last, its value may arrive later with a stale aid
+  const pendingIndexRef = useRef(-1)
   const {
     commented_checkbox,
     slider_layout,
@@ -226,7 +228,7 @@ export const OptionQuestionViewMode = ({
         )
       }
 
-      // incase of a dropdown question, we only need one select
+      // in case of a dropdown question, we only need one select
       return [{ options: selectOptions }]
     } else {
       if (!mandatory && isSingleChoiceTheme && surveySettings.showNoAnswer) {
@@ -281,8 +283,8 @@ export const OptionQuestionViewMode = ({
     })
 
     if (isMultipleChoiceNumerical && hasSliderLayout) {
-      const seperator = getAttributeValue(slider_separator) || '|'
-      const { value } = getStringPartsUsingSeperator(text, seperator)
+      const separator = getAttributeValue(slider_separator) || '|'
+      const { value } = getStringPartsUsingSeperator(text, separator)
       return value
     }
 
@@ -292,26 +294,76 @@ export const OptionQuestionViewMode = ({
   useEffect(() => {
     let matched = false
     if (UiComponentToRender.name === selectName) {
-      children[0]?.options.map((option, index) => {
-        if (option.value === valueInfo?.aid) {
-          matched = true
-          setSelectedIndex(index)
-        }
-      })
+      const options = children[0]?.options ?? []
+      // Match the answer code first. Fall back to aid so "Other" still
+      // selects after the stored value is replaced by the typed text.
+      let matchedIndex = options.findIndex(
+        (option) => option.value == valueInfo?.value
+      )
+
+      if (matchedIndex === -1) {
+        matchedIndex = options.findIndex(
+          (option) => option.value == valueInfo?.aid
+        )
+      }
+
+      if (matchedIndex !== -1) {
+        matched = true
+        setSelectedIndex(matchedIndex)
+      }
     } else {
-      children.map((child, index) => {
-        if (child[childrenInfo.idKey] === valueInfo?.aid) {
-          matched = true
-          setSelectedIndex(index)
-        }
-      })
+      // Single choice: match the answer code first, since locally edited values
+      // only carry the new code (aid is stale until the response is refreshed).
+      // Fall back to aid so "Other" still selects after its value is replaced by the typed text.
+      let matchedIndex = -1
+      const pendingChild = children[pendingIndexRef.current]
+
+      // The locally clicked option wins if the value matches it (also covers "No answer", whose code is empty)
+      if (
+        isSingleChoiceTheme &&
+        pendingChild &&
+        valueInfo?.value !== undefined &&
+        valueInfo?.value !== null &&
+        String(pendingChild[childrenInfo.codeKey]) === String(valueInfo.value)
+      ) {
+        matchedIndex = pendingIndexRef.current
+      }
+
+      // Skip it for stored "Other" responses, their value is the typed text and may collide with a code
+      if (
+        matchedIndex === -1 &&
+        isSingleChoiceTheme &&
+        valueInfo?.aid !== OTHER_CODE &&
+        valueInfo?.value
+      ) {
+        matchedIndex = children.findIndex(
+          (child) =>
+            !child.isNoAnswer && child[childrenInfo.codeKey] == valueInfo.value
+        )
+      }
+
+      if (matchedIndex === -1) {
+        matchedIndex = children.findIndex(
+          (child) => child[childrenInfo.idKey] === valueInfo?.aid
+        )
+      }
+
+      if (matchedIndex !== -1) {
+        matched = true
+        setSelectedIndex(matchedIndex)
+      }
     }
 
     if (!matched) {
       const noAnswerIndex = children.findIndex((child) => child.isNoAnswer)
       setSelectedIndex(surveySettings.preselectNoAnswer ? noAnswerIndex : -1)
     }
-  }, [children, surveySettings.preselectNoAnswer, valueInfo?.aid])
+  }, [
+    children,
+    surveySettings.preselectNoAnswer,
+    valueInfo?.aid,
+    valueInfo?.value,
+  ])
 
   const shouldShowInput =
     (isMultipleChoiceWithComments &&
@@ -336,8 +388,13 @@ export const OptionQuestionViewMode = ({
       const child = children[i]
 
       valuesInOrder.push(
-        values?.find((value) => {
-          return value[childrenInfo.idKey] == child[childrenInfo.idKey]
+        values?.find((value = {}) => {
+          const valueIsOther = value.key?.endsWith('_Cother')
+
+          return (
+            value[childrenInfo.idKey] == child[childrenInfo.idKey] ||
+            (valueIsOther && child.isOther)
+          )
         })
       )
     }
@@ -355,7 +412,11 @@ export const OptionQuestionViewMode = ({
   }
 
   return (
-    <div className="children-parent">
+    <div
+      className={`children-parent${
+        isMultipleShortTexts ? ' multiple-short-texts' : ''
+      }`}
+    >
       {children?.map((child, index) => {
         const ChildUiComponentToRender =
           child.isOther && UiComponentToRender === ImageChoice
@@ -386,6 +447,9 @@ export const OptionQuestionViewMode = ({
               text={getChildTitle(child.l10ns)}
               variant="outline-success"
               update={(newValue) => {
+                if (isSingleChoiceTheme) {
+                  pendingIndexRef.current = index
+                }
                 onValueChange(
                   isSingleChoiceTheme &&
                     ChildUiComponentToRender.name !== selectName
@@ -395,6 +459,9 @@ export const OptionQuestionViewMode = ({
                 )
               }}
               onClick={() => {
+                if (isSingleChoiceTheme) {
+                  pendingIndexRef.current = index
+                }
                 setSelectedIndex(index)
                 onValueChange(
                   isSingleChoiceTheme

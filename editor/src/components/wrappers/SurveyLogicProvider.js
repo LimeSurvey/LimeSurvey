@@ -6,6 +6,7 @@ import { queryClient } from 'queryClient'
 import { useAppState, useBuffer, useErrors, useFocused, useSurvey } from 'hooks'
 import {
   EntitiesType,
+  Operations,
   OperationsBuffer,
   STATES,
   errorToast,
@@ -16,6 +17,11 @@ import {
   RandomNumber,
 } from 'helpers'
 
+/**
+ * Render children while loading the route's survey and saving buffered edits.
+ * Reconcile patch results with local survey state, surface errors, and invalidate
+ * response queries after receiving a patch result.
+ */
 export const SurveyLogicProvider = ({ children }) => {
   const { surveyId } = useParams()
   const { setFocused, groupIndex, questionIndex } = useFocused()
@@ -73,6 +79,8 @@ export const SurveyLogicProvider = ({ children }) => {
     }
 
     const readyOperations = operationsBuffer.getOperations({ ready: true })
+    // surveyRefreshRequired is only updated on the next render, too late for finallyCallback
+    let deleteRefused = false
 
     const beforeCallback = () => {
       // Clear ready buffer items
@@ -83,6 +91,10 @@ export const SurveyLogicProvider = ({ children }) => {
     }
 
     // currentBuffer
+    /**
+     * Apply a patch result's ID mappings and errors to the survey and buffer,
+     * update save status, and invalidate responses even if no operations applied.
+     */
     const thenCallback = (result) => {
       const survey = queryClient.getQueryData([STATES.SURVEY]).survey
       const focused = queryClient.getQueryData([STATES.FOCUSED_ENTITY]).focused
@@ -166,6 +178,23 @@ export const SurveyLogicProvider = ({ children }) => {
         mapResult.operationsBuffer
       )
 
+      // A refused delete already removed the item locally: Drop the operation
+      // and reload the survey to show the item again.
+      const refusedDeletes = exceptionErrors.filter(
+        (error) => error.op === Operations.delete
+      )
+      refusedDeletes.forEach((error) => {
+        mapResult.operationsBuffer.removeOperation(
+          error.id,
+          error.op,
+          error.entity
+        )
+      })
+      if (refusedDeletes.length) {
+        deleteRefused = true
+        setSurveyRefreshRequired(true)
+      }
+
       update({ ...mapResult.survey })
       refetchQuestionsFieldNamesMap()
       setBuffer(mapResult.operationsBuffer.getOperations(), RandomNumber())
@@ -178,9 +207,21 @@ export const SurveyLogicProvider = ({ children }) => {
       )
       setErrorsFromPatchResponse([...validationErrors, ...exceptionErrors])
 
-      if (!result.operationsApplied) {
+      // Refresh responses after survey metadata changes.
+      queryClient.invalidateQueries({
+        queryKey: [STATES.SURVEY_RESPONSES, surveyId],
+      })
+
+      // The message of a refused delete is shown by itself, a reload is not needed
+      const onlyDeletesRefused =
+        refusedDeletes.length &&
+        !validationErrors.length &&
+        exceptionErrors.length === refusedDeletes.length
+      if (!result.operationsApplied && !onlyDeletesRefused) {
         errorToast(
-          'Sorry, we encountered an issue while saving the changes. Please try refreshing the page!'
+          t(
+            'Sorry, we encountered an issue while saving the changes. Please try refreshing the page!'
+          )
         )
       }
     }
@@ -207,7 +248,13 @@ export const SurveyLogicProvider = ({ children }) => {
       setIsPatchSurveyRunning(false)
 
       // maybe there's some delayed operations.
-      if (operationsBuffer.isEmpty() && surveyRefreshRequired) {
+      const pendingOperations = new OperationsBuffer(
+        queryClient.getQueryData([STATES.BUFFER])
+      )
+      if (
+        pendingOperations.isEmpty() &&
+        (surveyRefreshRequired || deleteRefused)
+      ) {
         fetchSurvey(surveyId)
         setSurveyRefreshRequired(false)
       }

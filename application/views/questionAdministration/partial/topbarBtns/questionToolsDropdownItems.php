@@ -1,7 +1,7 @@
 <?php if ($hasSurveyContentUpdatePermission) :?>
     <!-- Conditions -->
     <li>
-        <a class="dropdown-item" id="conditions_button" href="<?php echo Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
+        <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
             <span class="ri-git-branch-fill icon"></span>
             <?php eT("Condition designer"); ?>
         </a>
@@ -11,7 +11,7 @@
 <?php if ($hasSurveyContentUpdatePermission && $hasdefaultvalues > 0) :?>
     <!-- Default Values -->
     <li>
-        <a class="dropdown-item" id="default_value_button" href="<?php echo Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
+        <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
             <span class="ri-grid-line"></span>
             <?php eT("Edit default answers"); ?>
         </a>
@@ -31,7 +31,7 @@
 <?php if ($hasSurveyContentCreatePermission && ($oSurvey->active != 'Y')) :?>
     <!-- Copy -->
     <li>
-        <a class="dropdown-item" id="copy_button" href='<?php echo Yii::App()->createUrl("questionAdministration/copyQuestion/surveyId/{$oQuestion->sid}/questionGroupId/{$oQuestion->gid}/questionId/{$oQuestion->qid}");?>'>
+        <a class="dropdown-item" href='<?php echo Yii::App()->createUrl("questionAdministration/copyQuestion/surveyId/{$oQuestion->sid}/questionGroupId/{$oQuestion->gid}/questionId/{$oQuestion->qid}");?>'>
             <span class="ri-file-copy-line icon"></span>
             <?php eT("Copy"); ?>
         </a>

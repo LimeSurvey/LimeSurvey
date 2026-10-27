@@ -11,11 +11,11 @@
  */
 #}
 {% if sumRemainingEqn %}
-    <li class="mb-3 ls-group-remaining ls-group-dynamic">
-        <div class="control-label col-12 col-md-{{sLabelWidth}}">
+    <li class="mb-3 ls-group-remaining ls-group-dynamic row">
+        <div class="control-label col-12 col-md-{{sLabelWidth}}{% if sLabelWidth == 0 %} d-none{% endif %}">
             {{ gT('Remaining') }}:
         </div>
-        <div class="ls-input-group col-12 col-md-{{sInputContainerWidth}} {% if sLabelWidth == 0 %} d-none{% endif %}">
+        <div class="ls-input-group col-12 col-md-{{sInputContainerWidth}}">
             {% if prefix %}
                 <div class="ls-input-group-extra prefix-text prefix">
                     {{ processString(prefix) }}
@@ -42,7 +42,7 @@
         </div>
     </li>
     <li class="mb-3 ls-group-total ls-group-dynamic row">
-        <div class="control-label col-12 col-md-{{sLabelWidth}}">
+        <div class="control-label col-12 col-md-{{sLabelWidth}}{% if sLabelWidth == 0 %} d-none{% endif %}">
             {{ gT('Total:') }}
         </div>
        <div class="ls-input-group col-12 col-md-{{sInputContainerWidth}}">
