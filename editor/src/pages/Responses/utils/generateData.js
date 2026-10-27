@@ -91,6 +91,10 @@ export const generateData = (responses, language, generatedColumns) => {
         !answer.actual_aid && !answer.sqid && answer.key?.includes('comment')
       const maybeOther =
         !answer.actual_aid && !answer.sqid && answer.key?.endsWith('other')
+      const isOtherChecked =
+        !answer.actual_aid &&
+        !answer.sqid &&
+        answer.key?.endsWith('_Cotherchecked')
 
       answer.aid = actual_aid
       // When "Other" is selected in single-choice, value is '-oth-' but has no real aid
@@ -127,7 +131,16 @@ export const generateData = (responses, language, generatedColumns) => {
           responseId: response.id,
         })
       } else {
-        if (maybeOther) {
+        if (isOtherChecked) {
+          const otherItem = getMultipleChoiceOtherItem(
+            cell,
+            idName,
+            response,
+            question
+          )
+          otherItem.checked = value === 'Y'
+          otherItem.otherChecked = { value, key: answer.key }
+        } else if (maybeOther) {
           if (isQuestionWithAnswers(question.questionThemeName)) {
             // Single-choice: this is the Other text field ? attach to the '-oth-' cell item.
             // If no such item exists (e.g. dropdown where main field is blank), promote it.
@@ -150,17 +163,18 @@ export const generateData = (responses, language, generatedColumns) => {
             }
           } else {
             // Multiple-choice: value IS the text the respondent typed; non-empty means checked
-            cell.push({
-              value: value,
-              key: answer.key,
-              aid: null,
-              [idName]: OTHER_CODE,
-              qid: OTHER_CODE,
-              checked: !!value,
-              otherText: { value, key: answer.key },
-              responseId: response.id,
-              questionThemeName: question.questionThemeName,
-            })
+            const otherItem = getMultipleChoiceOtherItem(
+              cell,
+              idName,
+              response,
+              question
+            )
+            otherItem.value = value
+            otherItem.key = answer.key
+            otherItem.otherText = { value, key: answer.key }
+            if (!otherItem.otherChecked) {
+              otherItem.checked = !!value
+            }
           }
         } else if (maybeComment) {
           value = !questionAnswer
@@ -217,6 +231,24 @@ export const generateData = (responses, language, generatedColumns) => {
   })
 
   return data
+}
+
+const getMultipleChoiceOtherItem = (cell, idName, response, question) => {
+  let otherItem = cell.find((c) => c.qid === OTHER_CODE)
+  if (!otherItem) {
+    otherItem = {
+      value: '',
+      key: '',
+      aid: null,
+      [idName]: OTHER_CODE,
+      qid: OTHER_CODE,
+      checked: false,
+      responseId: response.id,
+      questionThemeName: question.questionThemeName,
+    }
+    cell.push(otherItem)
+  }
+  return otherItem
 }
 
 const handleFileUploadQuestionType = (

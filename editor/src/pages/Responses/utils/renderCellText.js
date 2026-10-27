@@ -52,15 +52,22 @@ export const renderCellText = ({
     (question.attributes?.other_replace_text?.[baseLanguage] || t('Other')) +
     ': '
 
-  if (!value && !answerTitle && !comment?.value) {
+  const isCheckedOther = subquestionTitle === undefined && isOtherKey && checked
+
+  if (!value && !answerTitle && !comment?.value && !isCheckedOther) {
     return <></>
   }
 
   if (!subquestionTitle && !answerTitle && !comment?.value) {
     return (
       <span>
-        {' '}
-        {isOtherKey ? otherReplaceText : ''} {value}
+        {isCheckedOther && <i className="ri-check-line text-success"></i>}{' '}
+        {isOtherKey
+          ? value
+            ? otherReplaceText
+            : otherReplaceText.replace(/:\s*$/, '')
+          : ''}{' '}
+        {value}
       </span>
     )
   }

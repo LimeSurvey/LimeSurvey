@@ -450,6 +450,13 @@ export const OptionQuestionViewMode = ({
                 if (isSingleChoiceTheme) {
                   pendingIndexRef.current = index
                 }
+                if (child.isOther && value?.otherChecked) {
+                  onValueChange(newValue ? 'Y' : '', value.otherChecked.key)
+                  if (!newValue && value.otherText?.key) {
+                    onValueChange('', value.otherText.key)
+                  }
+                  return
+                }
                 onValueChange(
                   isSingleChoiceTheme &&
                     ChildUiComponentToRender.name !== selectName
@@ -555,14 +562,21 @@ export const OptionQuestionViewMode = ({
                     ? valueInfo?.otherText?.value
                     : value?.otherText?.value
                 }
-                update={(newValue) =>
+                update={(newValue) => {
                   onValueChange(
                     newValue,
                     isSingleChoiceTheme
                       ? valueInfo?.otherText?.key
                       : value?.otherText?.key
                   )
-                }
+                  if (
+                    !isSingleChoiceTheme &&
+                    value?.otherChecked &&
+                    newValue?.trim()
+                  ) {
+                    onValueChange('Y', value.otherChecked.key)
+                  }
+                }}
               />
             )}
             {child.isOther && otherSuffix && (

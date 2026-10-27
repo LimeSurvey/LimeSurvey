@@ -1366,6 +1366,23 @@ class statistics_helper
     }
 
     /**
+     * Multiple choice Other is selected when it has text, or when its stored tick is set
+     *
+     * @param SurveyDynamic $responseModel
+     * @param string $otherColumn the Other text column, Q{qid}_Cother
+     * @return string condition to add after the "has text" condition, empty when the response table has no tick column
+     */
+    protected function getOtherCheckedCondition($responseModel, $otherColumn)
+    {
+        $column = $otherColumn . 'checked';
+        if ($responseModel->getTableSchema()->getColumn($column) === null) {
+            return '';
+        }
+        $checkedValue = getEncryptedCondition($responseModel, $column, 'Y');
+        return " OR " . Yii::app()->db->quoteColumnName($column) . " = '$checkedValue'";
+    }
+
+    /**
      * Tally ranking counts for a question stored as a JSON array.
      *
      * @param int|string $surveyid
@@ -1476,7 +1493,8 @@ class statistics_helper
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
                     } else {
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " <> ''" ;
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE (" . Yii::app()->db->quoteColumnName($al[2]) . " <> ''"
+                            . $this->getOtherCheckedCondition($responseModel, $al[2]) . ")";
                     }
                 }
 
@@ -2228,8 +2246,9 @@ class statistics_helper
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='{$othEncrypted}'";
                     } else {
                         //get data - select a count of responses where no answer is provided
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE (";
                         $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($al[2]) . " LIKE '')";
+                        $query .= $this->getOtherCheckedCondition($responseModel, $al[2]) . ")";
                     }
                 }
 

@@ -312,7 +312,13 @@ echo viewHelper::getViewTestTag('dataEntryView');
                                 ;
                             }
                             if ($deqrow['other'] == "Y") { ?>
-                                <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>_Cother' />
+                                <?php if (!empty($hasOtherChecked)) { ?>
+                                    <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname; ?>_Cotherchecked' id='answer<?php echo $fieldname; ?>_Cotherchecked' value='Y' />
+                                    <label for='answer<?php echo $fieldname; ?>_Cotherchecked'><?php eT("Other", 'html', $sDataEntryLanguage); ?></label>
+                                    <input type='text' name='<?php echo $fieldname; ?>_Cother' aria-label='<?php eT("Other", 'html', $sDataEntryLanguage); ?>' />
+                                <?php } else { ?>
+                                    <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>_Cother' />
+                                <?php } ?>
                             <?php } ?>
                     </td></tr></table>
 
@@ -322,7 +328,13 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     /><label for='answer<?php echo $fieldname . '_S' . $mearow['qid']; ?>'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></label><br />
                     <?php }
                     if ($deqrow['other'] == "Y") { ?>
-                        <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>_Cother' />
+                        <?php if (!empty($hasOtherChecked)) { ?>
+                            <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname; ?>_Cotherchecked' id='answer<?php echo $fieldname; ?>_Cotherchecked' value='Y' />
+                            <label for='answer<?php echo $fieldname; ?>_Cotherchecked'><?php eT("Other", 'html', $sDataEntryLanguage); ?></label>
+                            <input type='text' name='<?php echo $fieldname; ?>_Cother' aria-label='<?php eT("Other", 'html', $sDataEntryLanguage); ?>' />
+                        <?php } else { ?>
+                            <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>_Cother' />
+                        <?php } ?>
                     <?php }
                 }?>
         </div><?php
