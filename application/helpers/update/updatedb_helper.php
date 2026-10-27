@@ -3242,7 +3242,9 @@ function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn = null)
 */
 function addPrimaryKey($sTablename, $aColumns)
 {
-    return Yii::app()->db->createCommand()->addPrimaryKey('PK_' . $sTablename . '_' . randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'), '{{' . $sTablename . '}}', $aColumns);
+    // unique name ensure by tablename + datetime + random string : datetime needed for old table (token, survey etc ..)
+    $indexname = "PK_{$sTablename}_" . date('YmdHis') . "_" . randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+    return Yii::app()->db->createCommand()->addPrimaryKey($indexname, '{{' . $sTablename . '}}', $aColumns);
 }
 
 /**

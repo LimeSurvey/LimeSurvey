@@ -24,6 +24,9 @@ class SurveyActivator
     /** @var boolean */
     public $isSimulation = false;
 
+    /** @var string[] */
+    public $tableWarnings = [];
+
     /**
      * @param Survey $survey
      */
@@ -101,7 +104,8 @@ class SurveyActivator
         $aResult = array(
             'status' => 'OK',
             'pluginFeedback' => $event->get('pluginFeedback'),
-            'isAllowRegister' => $survey->isAllowRegister
+            'isAllowRegister' => $survey->isAllowRegister,
+            'tableWarnings' => $this->tableWarnings
         );
         if (!$this->createSurveyDirectory()) {
             $aResult['warning'] = 'nouploadsurveydir';
@@ -356,19 +360,20 @@ class SurveyActivator
             }
             return false;
         }
-        try {
-            if (isset($this->tableDefinition['token'])) {
+        if (isset($this->tableDefinition['token'])) {
+            try {
                 // unique name ensure by surveyid + datetime + random number
-                $indexname = "idx_survey_token_{$this->survey->primaryKey}_" . date('YmdHis') . "_" . rand(1, 50000);
+                $indexname = "idx_survey_token_{$this->survey->primaryKey}_" . date('YmdHis') . "_" . randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
                 Yii::app()->db->createCommand()->createIndex(
                     $indexname,
                     $sTableName,
                     'token'
                 );
+            } catch (\Exception $e) {
+                Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTable');
+                $this->tableWarnings[] = sprintf(gT("Unable to create index on token with message %s"), $e->getMessage());
             }
-        } catch (\Exception $e) {
         }
-
         $this->createResponseTableKeys();
         return true;
     }
@@ -415,16 +420,29 @@ class SurveyActivator
                 $sQuery = "ALTER TABLE {$this->survey->responsesTableName} ADD [id] int identity({$iAutoNumberStart},1)";
                 Yii::app()->db->createCommand($sQuery)->execute();
                 // Add back the primaryKey : unique name ensure by surveyid + datetime + random number
-                $indexname = "idxuniq_survey_id_{$this->survey->primaryKey}_" . date('YmdHis') . "_" . bin2hex(random_bytes(4));
-                Yii::app()->db->createCommand()->addPrimaryKey($indexname, $this->survey->responsesTableName, 'id');
+                $indexname = "PK_{$this->survey->responsesTableName}_" . date('YmdHis') . "_" . randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+                try {
+                    App()->db->createCommand()->addPrimaryKey($indexname, $this->survey->responsesTableName, 'id');
+                } catch (\Exception $e) {
+                    Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTableKeys');
+                    $this->tableWarnings[] = sprintf(gT("Unable to create primary key with message %s"), $e->getMessage());
+                }
             } elseif (Yii::app()->db->driverName == 'pgsql') {
                 $sQuery = "SELECT setval(pg_get_serial_sequence('{$this->survey->responsesTableName}', 'id'),{$iAutoNumberStart},false);";
-                // FIXME @ not good
-                @Yii::app()->db->createCommand($sQuery)->execute();
+                try {
+                    Yii::app()->db->createCommand($sQuery)->execute();
+                } catch (\Exception $e) {
+                    Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTableKeys');
+                    $this->tableWarnings[] = sprintf(gT("Unable to create primary key with message %s"), $e->getMessage());
+                }
             } else {
                 $sQuery = "ALTER TABLE {$this->survey->responsesTableName} AUTO_INCREMENT = {$iAutoNumberStart}";
-                // FIXME @ not good
-                @Yii::app()->db->createCommand($sQuery)->execute();
+                try {
+                    Yii::app()->db->createCommand($sQuery)->execute();
+                } catch (\Exception $e) {
+                    Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTableKeys');
+                    $this->tableWarnings[] = sprintf(gT("Unable to create primary key with message %s"), $e->getMessage());
+                }
             }
         }
     }

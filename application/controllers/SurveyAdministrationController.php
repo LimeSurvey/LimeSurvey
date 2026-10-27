@@ -2017,6 +2017,10 @@ class SurveyAdministrationController extends LSBaseController
             $this->render('surveyActivation/_activation_error', $data);
         } else {
             $warning = (isset($result['warning'])) ? true : false;
+            /* Add potential table warnings */
+            foreach($result['tableWarnings'] as $tableWarning) {
+                 App()->user->setFlash('error', $tableWarning);
+            }
             $allowregister = $result['isAllowRegister']; //todo: where to ask for this one here
 
             $openAccessMode = Yii::app()->request->getPost('openAccessMode', null);
