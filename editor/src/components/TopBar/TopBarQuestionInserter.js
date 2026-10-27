@@ -38,7 +38,11 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
   )
   const { survey, update, language } = useSurvey(surveyID)
   const { addToBuffer } = useBuffer()
-  const { answerPrefix, subquestionPrefix } = useCodePrefixes()
+  const {
+    answerPrefix,
+    subquestionPrefix,
+    isLoading: arePrefixesLoading,
+  } = useCodePrefixes()
   const { setFocused, groupIndex } = useFocused()
   const questionGroupToAddQuestion = clickedQuestionGroupIndex
     ? survey?.questionGroups[clickedQuestionGroupIndex]
@@ -149,6 +153,9 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       questionTypeInfo.type === getQuestionTypeInfo().QUESTION_GROUP.type
     ) {
       addQuestionGroup()
+      return
+    } else if (arePrefixesLoading) {
+      // Prefixes resolve to '' while loading; wait so a configured prefix isn't skipped.
       return
     }
 
