@@ -68,6 +68,22 @@
     }
   }
 
+  // Opens the range breakdown; on the fields' line, next to the inputs.
+  &-range-picker-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 0 0;
+    border: none;
+    background: none;
+    color: $grape;
+    font-size: $font-size-sm;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .rdp-root {
     --rdp-accent-color: #{$g-900};
     --rdp-accent-background-color: transparent;

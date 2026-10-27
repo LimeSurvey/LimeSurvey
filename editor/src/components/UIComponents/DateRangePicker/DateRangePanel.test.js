@@ -91,7 +91,23 @@ describe('DateRangePanel', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Today' }))
     expect(screen.queryByLabelText('End date')).not.toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Custom range' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Select week' }))
+    expect(screen.getByLabelText('End date')).toBeInTheDocument()
+  })
+
+  test('starts with one input and no preset when nothing is picked', () => {
+    renderPanel({ ...getStatisticsPresets(), collapseSingleDay: true })
+
+    expect(screen.queryByLabelText('End date')).not.toBeInTheDocument()
+    expect(document.querySelector('.date-range-preset.active')).toBeNull()
+
+    clickDay('January 14th, 2026')
+    expect(screen.queryByLabelText('End date')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Custom range' })).toHaveClass(
+      'active'
+    )
+
+    clickDay('January 20th, 2026')
     expect(screen.getByLabelText('End date')).toBeInTheDocument()
   })
 

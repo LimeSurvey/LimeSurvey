@@ -13,7 +13,6 @@ export const DateInput = ({
   label,
   locale,
   onIconClick,
-  iconRef,
 }) => {
   const localeOptions = locale ? { locale } : undefined
   const formatted = value ? format(value, dateFormat, localeOptions) : ''
@@ -68,7 +67,6 @@ export const DateInput = ({
       />
       {onIconClick ? (
         <button
-          ref={iconRef}
           type="button"
           className="date-range-input-icon"
           aria-label={t('Open calendar')}

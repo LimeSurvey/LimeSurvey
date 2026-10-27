@@ -29,8 +29,8 @@ export const DateRangePanel = ({
   presets,
   trailingPresets = [],
   dayCountKeys = ['upTo', 'from'],
-  minDate,
-  maxDate,
+  minDate = new Date('1900-01-01T00:00'),
+  maxDate = new Date('2100-12-31T23:59'),
   dateFormat,
   locale,
   separator = '–',
@@ -38,7 +38,7 @@ export const DateRangePanel = ({
   confirmRequiresDate = false,
   onConfirm,
   onCancel,
-  onClear,
+  onClear = () => {},
 }) => {
   const presetList = presets ?? getPresets()
   const rangeModeKey =
@@ -50,7 +50,10 @@ export const DateRangePanel = ({
     initialMonth ?? initialRange.from ?? new Date()
   )
   const [dayCounts, setDayCounts] = useState(EMPTY_DAY_COUNTS)
-  const [activeKey, setActiveKey] = useState(rangeModeKey)
+  // Nothing is highlighted until something is picked.
+  const [activeKey, setActiveKey] = useState(
+    initialRange.from ? rangeModeKey : null
+  )
   const [isFromValid, setIsFromValid] = useState(true)
   const [isToValid, setIsToValid] = useState(true)
   const hasInvalidInput = !isFromValid || !isToValid
@@ -58,12 +61,14 @@ export const DateRangePanel = ({
   const selectionMode =
     [...presetList, ...trailingPresets].find(({ key }) => key === activeKey)
       ?.mode ?? 'range'
+  // The end date input shows up once the range has an end of its own.
   const isSingleDay =
     collapseSingleDay &&
-    activeKey === null &&
-    !!tempRange.from &&
-    !!tempRange.to &&
-    isSameDay(tempRange.from, tempRange.to)
+    !(
+      tempRange.from &&
+      tempRange.to &&
+      !isSameDay(tempRange.from, tempRange.to)
+    )
 
   const clampDate = (date) =>
     min([max([date, startOfDay(minDate)]), startOfDay(maxDate)])
@@ -182,7 +187,7 @@ export const DateRangePanel = ({
   const handleClear = () => {
     setTempRange(EMPTY_RANGE)
     setDayCounts(EMPTY_DAY_COUNTS)
-    setActiveKey(rangeModeKey)
+    setActiveKey(null)
     onClear()
   }
 
