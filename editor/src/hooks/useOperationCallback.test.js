@@ -62,4 +62,19 @@ describe('useOperationCallback', () => {
         .has(`${operation.entity}_${operation.op}`)
     ).toBe(false)
   })
+
+  test('calls onError for all operations of a failed request', () => {
+    // patchSurvey resolves with the normalized axios error on HTTP errors
+    const { callback, onError } = subscribeAndTrigger({
+      code: 'SERVER_ERROR',
+      message: 'Server error',
+      httpStatus: 500,
+    })
+
+    expect(callback).not.toHaveBeenCalled()
+    expect(onError).toHaveBeenCalledWith({
+      ...operation,
+      error: 'Server error',
+    })
+  })
 })

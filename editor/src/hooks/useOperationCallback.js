@@ -49,17 +49,23 @@ export const useOperationCallback = () => {
       ...(results?.exceptionErrors || []),
     ]
 
+    const requestFailed = typeof results?.operationsApplied !== 'number'
+
     operations.forEach((operation) => {
       const key = `${operation.entity}_${operation.op}`
 
       if (currentSubscriptions.has(key)) {
         const matchingSubscriptions = currentSubscriptions.get(key)
-        const failedOperation = failedOperations.find(
-          (failed) =>
-            String(failed.id) === String(operation.id) &&
-            failed.entity === operation.entity &&
-            failed.op === operation.op
-        )
+        // A failed request (e.g. a PHP error in a plugin) resolves with the
+        // normalized axios error instead of a patch result: All operations failed
+        const failedOperation = requestFailed
+          ? { ...operation, error: results?.message }
+          : failedOperations.find(
+              (failed) =>
+                String(failed.id) === String(operation.id) &&
+                failed.entity === operation.entity &&
+                failed.op === operation.op
+            )
 
         matchingSubscriptions.forEach((subscription) => {
           if (!failedOperation) {

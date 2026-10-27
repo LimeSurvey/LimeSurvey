@@ -5,6 +5,7 @@ import { queryClient } from 'queryClient'
 
 import { useAppState, useBuffer, useErrors, useFocused, useSurvey } from 'hooks'
 import {
+  Entities,
   EntitiesType,
   Operations,
   OperationsBuffer,
@@ -194,6 +195,18 @@ export const SurveyLogicProvider = ({ children }) => {
         deleteRefused = true
         setSurveyRefreshRequired(true)
       }
+
+      // A refused survey status change (e.g. activation blocked by a plugin) is
+      // not retried automatically: Drop it, so the user can trigger it again.
+      exceptionErrors
+        .filter((error) => error.entity === Entities.surveyStatus)
+        .forEach((error) => {
+          mapResult.operationsBuffer.removeOperation(
+            error.id,
+            error.op,
+            error.entity
+          )
+        })
 
       update({ ...mapResult.survey })
       refetchQuestionsFieldNamesMap()
