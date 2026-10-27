@@ -569,11 +569,7 @@ export const OptionQuestionViewMode = ({
                       ? valueInfo?.otherText?.key
                       : value?.otherText?.key
                   )
-                  if (
-                    !isSingleChoiceTheme &&
-                    value?.otherChecked &&
-                    newValue
-                  ) {
+                  if (!isSingleChoiceTheme && value?.otherChecked && newValue) {
                     onValueChange('Y', value.otherChecked.key)
                   }
                 }}
