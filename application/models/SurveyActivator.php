@@ -425,7 +425,7 @@ class SurveyActivator
                 Yii::app()->db->createCommand($sQuery)->execute();
             } catch (\Exception $e) {
                 Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTableKeys');
-                $this->tableWarnings[] = sprintf(gT("Unable to create primary key with message %s"), $e->getMessage());
+                $this->tableWarnings[] = sprintf(gT("Unable to set the start value of the response numbering with message %s"), $e->getMessage());
             }
         }
     }
