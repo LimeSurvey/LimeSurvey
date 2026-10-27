@@ -31,8 +31,9 @@ trait ValidateTrait
                     isset($data['code'])
                     && isset($codes[$scaleId])
                     && in_array(
-                        $data['code'],
-                        $codes[$scaleId]
+                        (string) $data['code'],
+                        $codes[$scaleId],
+                        true
                     )
                 ) {
                     throw new PersistErrorException(
@@ -40,7 +41,8 @@ trait ValidateTrait
                     );
                 }
                 if (isset($data['code'])) {
-                    $codes[$scaleId][] = $data['code'];
+                    // Strict string comparison: numeric codes like '01' and '1' are different codes.
+                    $codes[$scaleId][] = (string) $data['code'];
                 }
             }
         }

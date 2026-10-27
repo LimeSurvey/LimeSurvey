@@ -17,7 +17,13 @@ import {
   getNextSubQuestionCode,
   isTrue,
 } from 'helpers'
-import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
+import {
+  useAppState,
+  useBuffer,
+  useCodePrefixes,
+  useFocused,
+  useSurvey,
+} from 'hooks'
 
 export const TopBarQuestionInserter = ({ surveyID }) => {
   const [, setIsAddingQuestionOrGroup] = useAppState(
@@ -32,6 +38,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
   )
   const { survey, update, language } = useSurvey(surveyID)
   const { addToBuffer } = useBuffer()
+  const { answerPrefix, subquestionPrefix } = useCodePrefixes()
   const { setFocused, groupIndex } = useFocused()
   const questionGroupToAddQuestion = clickedQuestionGroupIndex
     ? survey?.questionGroups[clickedQuestionGroupIndex]
@@ -188,14 +195,14 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       answers.push(
         getAnswerExample({
           qid: questionId,
-          code: getNextAnswerCode(null, 0),
+          code: getNextAnswerCode(null, 0, answerPrefix),
           language,
           sortOrder: 1,
           languages: survey.languages,
         }),
         getAnswerExample({
           qid: questionId,
-          code: getNextAnswerCode(null, 1),
+          code: getNextAnswerCode(null, 1, answerPrefix),
           sortOrder: 2,
           languages: survey.languages,
         })
@@ -208,7 +215,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
           sortOrder: 1,
           parentQid: questionId,
           type: getQuestionTypeInfo().LONG_TEXT.type,
-          title: getNextSubQuestionCode(null, 0),
+          title: getNextSubQuestionCode(null, 0, subquestionPrefix),
           questionThemeName: getQuestionTypeInfo().LONG_TEXT.theme,
           gid: questionGroupToAddQuestion.gid,
           sid: questionGroupToAddQuestion.sid,
@@ -219,7 +226,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
           languages: survey.languages,
           parentQid: questionId,
           type: getQuestionTypeInfo().LONG_TEXT.type,
-          title: getNextSubQuestionCode(null, 1),
+          title: getNextSubQuestionCode(null, 1, subquestionPrefix),
           questionThemeName: getQuestionTypeInfo().LONG_TEXT.theme,
           gid: questionGroupToAddQuestion.gid,
           sid: questionGroupToAddQuestion.sid,
@@ -231,14 +238,14 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       answers.push(
         getAnswerExample({
           qid: questionId,
-          code: getNextAnswerCode(null, 2),
+          code: getNextAnswerCode(null, 2, answerPrefix),
           languages: survey.languages,
           sortOrder: 3,
           scaleId: SCALE_2,
         }),
         getAnswerExample({
           qid: questionId,
-          code: getNextAnswerCode(null, 3),
+          code: getNextAnswerCode(null, 3, answerPrefix),
           languages: survey.languages,
           sortOrder: 4,
           scaleId: SCALE_2,
@@ -253,7 +260,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
           languages: survey.languages,
           parentQid: questionId,
           type: getQuestionTypeInfo().LONG_TEXT.type,
-          title: getNextSubQuestionCode(null, 2),
+          title: getNextSubQuestionCode(null, 2, subquestionPrefix),
           questionThemeName: getQuestionTypeInfo().LONG_TEXT.theme,
           gid: questionGroupToAddQuestion.gid,
           sid: questionGroupToAddQuestion.sid,
@@ -264,7 +271,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
           languages: survey.languages,
           parentQid: questionId,
           type: getQuestionTypeInfo().LONG_TEXT.type,
-          title: getNextSubQuestionCode(null, 3),
+          title: getNextSubQuestionCode(null, 3, subquestionPrefix),
           questionThemeName: getQuestionTypeInfo().LONG_TEXT.theme,
           gid: questionGroupToAddQuestion.gid,
           sid: questionGroupToAddQuestion.sid,

@@ -1214,6 +1214,15 @@ function populateDatabase($oDB)
             'stg_name' => 'welcome_page_widget',
             'stg_value' => 'box-widget',
         ]);
+        // New installations default to purely numeric answer option and subquestion codes (empty prefixes).
+        // A missing setting is treated as an empty prefix too; there is no AO/SQ fallback.
+        foreach (['answeroptionprefix', 'subquestionprefix'] as $prefixSetting) {
+            $oDB->createCommand()->insert('{{settings_user}}', [
+                'uid' => 1,
+                'stg_name' => $prefixSetting,
+                'stg_value' => '',
+            ]);
+        }
     } catch (Exception $e) {
         $oTransaction->rollback();
         throw new CHttpException(500, $e->getMessage());

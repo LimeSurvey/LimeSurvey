@@ -3148,7 +3148,8 @@ class SurveyAdministrationController extends LSBaseController
         $subQuestion->sid = $surveyId;
         $subQuestion->gid = $groupId;
         $subQuestion->type = Question::QT_T_LONG_FREE_TEXT;
-        $subQuestion->title = 'SQ00' . $number;
+        $prefix = SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? '';
+        $subQuestion->title = $prefix === '' ? (string) $number : $prefix . '00' . $number;
         $subQuestion->question_order = $number;
         $subQuestion->relevance = 1;
         $subQuestion->save();

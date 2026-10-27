@@ -1537,7 +1537,7 @@ class Question extends LSActiveRecord
     /**
      * Used by question create form.
      * The code is the user's subquestion prefix followed by a zero-padded number (e.g. SQ001),
-     * or just "1" if the prefix is empty, so purely numeric codes have no leading zeros.
+     * or just "1" if the prefix is empty or not set (no letter fallback), so purely numeric codes have no leading zeros.
      *
      * @return Question
      */
@@ -1545,7 +1545,7 @@ class Question extends LSActiveRecord
     {
         $question = new Question();
         $question->qid = 0;
-        $prefix = SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ';
+        $prefix = SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? '';
         $question->title = $prefix === '' ? '1' : $prefix . '001';
         $question->relevance = 1;
         return $question;
@@ -1554,7 +1554,7 @@ class Question extends LSActiveRecord
     /**
      * Used by question create form.
      * The code is the user's answer option prefix followed by a zero-padded number (e.g. AO01),
-     * or just "1" if the prefix is empty, so purely numeric codes have no leading zeros.
+     * or just "1" if the prefix is empty or not set (no letter fallback), so purely numeric codes have no leading zeros.
      *
      * @return Answer
      */
@@ -1564,7 +1564,7 @@ class Question extends LSActiveRecord
         // TODO: Assuming no collision.
         $answer->aid = 'new' . rand(1, 100000);
         $answer->sortorder = 0;
-        $prefix = SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? 'AO';
+        $prefix = SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? '';
         $answer->code = $prefix === '' ? '1' : $prefix . '01';
 
         $l10n = [];
