@@ -196,9 +196,7 @@ class CheckIntegrityTest extends TestBaseClass
             // unit test does not provide; only fixintegrity()'s DB side effects are under
             // test here, so the trailing render call is stubbed out.
             $noRenderController = new class('dummy', 'fixintegrity') extends \CheckIntegrity {
-                protected function renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
-                {
-                }
+                protected function renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array(), $sRenderFile = false) {}
             };
             $noRenderController->fixintegrity();
         } finally {
@@ -774,20 +772,21 @@ class CheckIntegrityTest extends TestBaseClass
     public function testDuplicateThemeConfigurationsAreOnlyDeletedAndReportedByTheConsistencyCheckKeepingTheOldest()
     {
         $templateName = 'fruity_twentythree';
-        $insertedIds = array();
+        $getIds = function () use ($templateName) {
+            return array_map('intval', \Yii::app()->db->createCommand()->select('id')->from('{{template_configuration}}')
+                ->where('sid = :sid AND template_name = :template_name', array(':sid' => self::$surveyId, ':template_name' => $templateName))
+                ->order('id')->queryColumn());
+        };
+        $preexistingIds = $getIds();
         foreach (array('{"container":"off"}', '{"container":"on"}') as $options) {
             \Yii::app()->db->createCommand()->insert('{{template_configuration}}', array(
                 'template_name' => $templateName,
                 'sid' => self::$surveyId,
                 'options' => $options,
             ));
-            $insertedIds[] = (int) \Yii::app()->db->getLastInsertID();
         }
-        $getIds = function () use ($templateName) {
-            return array_map('intval', \Yii::app()->db->createCommand()->select('id')->from('{{template_configuration}}')
-                ->where('sid = :sid AND template_name = :template_name', array(':sid' => self::$surveyId, ':template_name' => $templateName))
-                ->order('id')->queryColumn());
-        };
+        // getLastInsertID() without a sequence name fails on PostgreSQL
+        $insertedIds = array_values(array_diff($getIds(), $preexistingIds));
         $idsBefore = $getIds();
 
         try {
