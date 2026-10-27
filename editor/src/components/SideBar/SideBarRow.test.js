@@ -91,11 +91,13 @@ describe('SideBarRow', () => {
 
   test('group arrow exposes aria-expanded and does not activate the row', async () => {
     const onRowClick = jest.fn()
+    const onTitleClick = jest.fn()
     await renderWithProviders(
       <SideBarRow
         title="Group"
         isQuestionGroup
         onRowClick={onRowClick}
+        onTitleClick={onTitleClick}
         menuItems={menuItems}
       />
     )
@@ -104,6 +106,7 @@ describe('SideBarRow', () => {
     await userEvent.click(arrow)
     expect(arrow).toHaveAttribute('aria-expanded', 'true')
     expect(onRowClick).not.toHaveBeenCalled()
+    expect(onTitleClick).not.toHaveBeenCalled()
   })
 
   test('menu toggle opens the menu without activating the row', async () => {
