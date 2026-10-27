@@ -119,7 +119,17 @@ class UserManagementController extends LSBaseController
 
         $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword, 'dateformatdetails' => $dateformatdetails]);
+        // The login methods can only be chosen when adding a user and when there is more than one
+        $loginMethods = $oUser->isNewRecord ? $this->getAvailableLoginMethods() : [];
+        if (count($loginMethods) < 2) {
+            $loginMethods = [];
+        }
+        return $this->renderPartial('partial/addedituser', [
+            'oUser' => $oUser,
+            'randomPassword' => $randomPassword,
+            'dateformatdetails' => $dateformatdetails,
+            'loginMethods' => $loginMethods,
+        ]);
     }
 
     /**
@@ -131,14 +141,15 @@ class UserManagementController extends LSBaseController
      */
     public function actionApplyEdit()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+        $aUser = Yii::app()->request->getParam('User');
+        $isNewUser = empty($aUser['uid']);
+        if (!Permission::model()->hasGlobalPermission('users', $isNewUser ? 'create' : 'update')) {
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                 'success' => false,
                 'errors' => gT("You do not have permission to access this page."),
             ]]);
         }
 
-        $aUser = Yii::app()->request->getParam('User');
         // Sanitize full name to prevent XSS attack
         if (isset($aUser['full_name'])) {
             $aUser['full_name'] = flattenText($aUser['full_name'], false, true);
@@ -218,13 +229,22 @@ class UserManagementController extends LSBaseController
             //retrieve the raw password
             $aUser['rawPassword'] = $aUser['password'];
 
-            $passwordSetByUser = Yii::app()->request->getParam('preset_password');
-            if ($passwordSetByUser == 0) { //in this case admin has not set a password, email with link will be sent
-                $data = $this->createAdminUser($aUser);
-            } else {
-                //in this case admin has set a password, no email will be send ..just create user with given credentials
-                $data = $this->createAdminUser($aUser, false);
+            $loginMethods = $this->getPostedLoginMethods();
+            if (empty($loginMethods)) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    "data" => [
+                        'success' => false,
+                        'errors'  => gT('Please select at least one login method.'),
+                    ]
+                ]);
             }
+            // LDAP users are looked up in the LDAP directory by the AuthLDAP plugin, all others are created by Authdb
+            $aUser['user_type'] = in_array('auth_ldap', $loginMethods) ? 'LDAP' : 'DB';
+
+            // Without a database login, a password link is of no use
+            $passwordSetByUser = Yii::app()->request->getParam('preset_password');
+            $sendEmail = $passwordSetByUser == 0 && in_array('auth_db', $loginMethods);
+            $data = $this->createAdminUser($aUser, $sendEmail, $loginMethods);
 
             return App()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => $data
@@ -732,10 +752,12 @@ class UserManagementController extends LSBaseController
             !(Permission::model()->hasGlobalPermission('users', 'update') &&
             Permission::model()->hasGlobalPermission('templates', 'update'))
         ) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors' => [gT("You do not have permission to access this page.")],
+                ]
+            ]);
         }
 
         $userId = Yii::app()->request->getPost('userid');
@@ -752,7 +774,8 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Opens the modal to add dummy users
+     * Opens the modal to edit the roles of a user
+     * Only the roles the current user is allowed to assign are offered
      *
      * @return string|null
      * @throws CException
@@ -770,17 +793,20 @@ class UserManagementController extends LSBaseController
             );
         }
 
-        $aPermissionTemplates = Permissiontemplates::model()->findAll();
+        $aAssignableRoles = $userManager->getAssignableRoles();
         $aPossibleRoles = [];
-        array_walk(
-            $aPermissionTemplates,
-            function ($oPermissionRole) use (&$aPossibleRoles) {
-                $aPossibleRoles[$oPermissionRole->ptid] = $oPermissionRole->name;
+        foreach ($aAssignableRoles as $oPermissionRole) {
+            $aPossibleRoles[$oPermissionRole->ptid] = $oPermissionRole->name;
+        }
+        $aCurrentRoles = [];
+        $aLockedRoles = [];
+        foreach ($oUser->roles as $oRole) {
+            if (isset($aAssignableRoles[$oRole->ptid])) {
+                $aCurrentRoles[] = $oRole->ptid;
+            } else {
+                $aLockedRoles[] = $oRole->name;
             }
-        );
-        $aCurrentRoles = array_map(function ($oRole) {
-            return $oRole->ptid;
-        }, $oUser->roles);
+        }
 
         return $this->renderPartial(
             'partial/addrole',
@@ -788,6 +814,8 @@ class UserManagementController extends LSBaseController
                 'oUser' => $oUser,
                 'aPossibleRoles' => $aPossibleRoles,
                 'aCurrentRoles' => $aCurrentRoles,
+                'aLockedRoles' => $aLockedRoles,
+                'hasIndividualPermissions' => $userManager->hasIndividualGlobalPermissions(),
             ]
         );
     }
@@ -812,19 +840,16 @@ class UserManagementController extends LSBaseController
                 ]
             ]);
         }
-        $aUserRoleIds = Yii::app()->request->getPost('roleselector', []);
-        $results = [];
-
-        $clearUser = Permissiontemplates::model()->clearUser($iUserId);
-        foreach ($aUserRoleIds as $iUserRoleId) {
-            if ($iUserRoleId == '') {
-                continue;
-            }
-            $results[$iUserRoleId] = Permissiontemplates::model()->applyToUser($iUserId, $iUserRoleId);
-        }
-        if (empty($aUserRoleIds)) {
-            $results['clear'] = $clearUser;
-        }
+        $aUserRoleIds = array_map('intval', (array) Yii::app()->request->getPost('roleselector', []));
+        $aAssignableRoleIds = array_keys($userManager->getAssignableRoles());
+        /* Keep the current roles the managing user is not allowed to remove */
+        $aLockedRoleIds = array_diff(
+            array_map(function ($oRole) {
+                return $oRole->ptid;
+            }, $oUser->roles),
+            $aAssignableRoleIds
+        );
+        $userManager->setRoles(array_merge($aLockedRoleIds, array_intersect($aUserRoleIds, $aAssignableRoleIds)));
         return $this->renderPartial('partial/json', [
             "data" => [
                 'success' => true,
@@ -873,16 +898,14 @@ class UserManagementController extends LSBaseController
      * Imports users from an uploaded CSV or JSON file, creating new users or updating existing ones, then redirects to the user index after adding alert message.
      *
      * @param string $importFormat Format of the uploaded file; must be "csv" or "json".
-     * @return string The rendered error partial when the current user lacks create permission; or redirect.
+     * @return string Never returns normally; always ends with a redirect.
+     * @throws CHttpException If the current user lacks permission to create users.
      * @throws LSUserException If an unsupported $importFormat is provided.
      */
     public function actionImportUsers(string $importFormat = 'csv'): string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         if (!in_array($importFormat, ['csv', 'json'])) {
             throw new LSUserException(400, gT("Invalid format"));
@@ -1430,12 +1453,15 @@ class UserManagementController extends LSBaseController
      */
     public function actionBatchApplyRoles()
     {
-        /* Need super admin roles */
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
-        $aUserRoleIds = Yii::app()->request->getPost('roleselector');
+        $aUserRoleIds = array_map('intval', (array) Yii::app()->request->getPost('roleselector', []));
+        $aAssignableRoleIds = array_keys((new UserManager(Yii::app()->user))->getAssignableRoles());
+        if (array_diff($aUserRoleIds, $aAssignableRoleIds)) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $aResults = [];
 
         foreach ($aItems as $sItem) {
@@ -1452,9 +1478,10 @@ class UserManagementController extends LSBaseController
                 $aResults[$sItem]['result'] = false;
                 $aResults[$sItem]['error'] = gT('You are not allowed to assign a role to this user.');
             } else {
-                foreach ($aUserRoleIds as $iUserRoleId) {
-                    $aResults[$sItem]['result'] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
-                }
+                $aCurrentRoleIds = array_map(function ($oRole) {
+                    return $oRole->ptid;
+                }, $model->roles);
+                $aResults[$sItem]['result'] = $userManager->setRoles(array_merge($aCurrentRoleIds, $aUserRoleIds));
             }
         }
 
@@ -1637,13 +1664,14 @@ class UserManagementController extends LSBaseController
      *
      * @param array $aUser array with attributes from user model
      * @param boolean $sendEmail true if email should be send, false otherwise
+     * @param string[]|null $loginMethods The auth_* permissions the new user gets, null to keep the ones set by the authentication plugin
      *
      * @return array
      *
      * @throws CException
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    private function createAdminUser(array $aUser, bool $sendEmail = true): array
+    private function createAdminUser(array $aUser, bool $sendEmail = true, ?array $loginMethods = null): array
     {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $newUser = $this->createNewUser($aUser);
@@ -1652,6 +1680,9 @@ class UserManagementController extends LSBaseController
                     'success' => false,
                     'errors' => CHtml::tag("p", array(), gT("Error: User was not created"))
                 ];
+            }
+            if ($loginMethods !== null) {
+                $this->setLoginMethods((int) $newUser['uid'], $loginMethods);
             }
             $success = true;
             $sReturnMessage = gT('User successfully created', 'unescaped');
@@ -1669,9 +1700,13 @@ class UserManagementController extends LSBaseController
                 $data = [
                     'success' => $success,
                     'message' => $sReturnMessage,
-                    'href' => Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $newUser['uid']]),
-                    'modalsize' => 'modal-lg',
                 ];
+                // Only offer the permission dialog if the current user is allowed to use it
+                $userManager = new UserManager(App()->user, User::model()->findByPk($newUser['uid']));
+                if ($userManager->canAssignPermissions()) {
+                    $data['href'] = Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $newUser['uid']]);
+                    $data['modalsize'] = 'modal-lg';
+                }
             } else {
                 $data = [
                     'success' => $success,
@@ -1686,6 +1721,66 @@ class UserManagementController extends LSBaseController
             'success' => false,
             'errors' => CHtml::tag("p", array(), gT("Error: User was not created"))
         ];
+    }
+
+    /**
+     * Returns the login methods of the active authentication plugins
+     *
+     * @return array<string, string> Title of the login method indexed by its auth_* global permission
+     */
+    private function getAvailableLoginMethods(): array
+    {
+        $loginMethods = [];
+        foreach (Permission::getGlobalBasePermissions() as $permission => $permissionData) {
+            if (strpos((string) $permission, 'auth_') === 0) {
+                $loginMethods[$permission] = $permissionData['title'];
+            }
+        }
+        return $loginMethods;
+    }
+
+    /**
+     * Returns the login methods selected in the add user form
+     *
+     * Only login methods of active authentication plugins are returned. When the form did not offer
+     * a choice, the new user gets the internal database login.
+     *
+     * @return string[] The auth_* global permissions
+     */
+    private function getPostedLoginMethods(): array
+    {
+        $postedLoginMethods = App()->getRequest()->getPost('login_methods');
+        if (!is_array($postedLoginMethods)) {
+            return ['auth_db'];
+        }
+        return array_values(array_intersect(
+            array_keys($this->getAvailableLoginMethods()),
+            array_map('strval', $postedLoginMethods)
+        ));
+    }
+
+    /**
+     * Gives a new user exactly the selected login methods
+     *
+     * Removes the login methods the authentication plugin set on creation but which were not selected.
+     *
+     * @param int $userId
+     * @param string[] $loginMethods The auth_* global permissions
+     * @return void
+     */
+    private function setLoginMethods(int $userId, array $loginMethods): void
+    {
+        foreach (array_keys($this->getAvailableLoginMethods()) as $loginMethod) {
+            Permission::model()->deleteAllByAttributes([
+                'uid' => $userId,
+                'entity' => 'global',
+                'entity_id' => 0,
+                'permission' => $loginMethod,
+            ]);
+            if (in_array($loginMethod, $loginMethods)) {
+                Permission::model()->setGlobalPermission($userId, $loginMethod);
+            }
+        }
     }
 
     /**

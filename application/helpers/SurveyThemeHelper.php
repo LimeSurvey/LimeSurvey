@@ -17,7 +17,9 @@
  * About Theme Options Path Treatment - Theme Options Path Prefix
  * =========================
  *
- * Path sanitization is applied to all Theme Options ('options' attribute) that match an existing path or a "virtual" path.
+ * Path sanitization is applied to all Theme Options ('options' attribute) that match an existing path
+ * or a "virtual" path, as long as the value is a "virtual" path or has an image file extension.
+ * Other values are left untouched.
  *
  * The paths allowed in Theme Options are restricted to three categories:
  *
@@ -77,6 +79,20 @@ class SurveyThemeHelper
     public static function isVirtualPath($value)
     {
         return !empty(self::getVirtualPathPrefix($value));
+    }
+
+    /**
+     * Returns true if $value ends with one of the allowed theme image file extensions
+     * (see the 'allowedthemeimageformats' setting).
+     * It doesn't check if the file exists.
+     *
+     * @param string $value
+     * @return boolean
+     */
+    public static function hasImageExtension($value)
+    {
+        $extension = strtolower(pathinfo($value, PATHINFO_EXTENSION));
+        return in_array($extension, LSYii_ImageValidator::getAllowedExtensions(), true);
     }
 
     /**
@@ -436,6 +452,11 @@ class SurveyThemeHelper
         }
         // If the value starts with 'invalid:', skip it.
         if (stripos($value, 'invalid:', 0) === 0) {
+            return $value;
+        }
+        // Only image paths are handled. Other values (eg. a CSS file path in a custom theme option)
+        // are kept as they are, otherwise they would be turned into an image virtual path.
+        if (!self::isVirtualPath($value) && !self::hasImageExtension($value)) {
             return $value;
         }
         // Validation A - If option value is a path that matches a virtual path, transform the value to the virtual path

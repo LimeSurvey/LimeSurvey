@@ -10,6 +10,7 @@
  * @var $sChartname
  * @var $grawdata
  * @var $color
+ * @var $chartTitle
  *
  */
  // TODO: move to controller
@@ -25,6 +26,7 @@
                 data-qid="<?php echo $qqid; // the question id ?>"
                 data-type="<?php echo $charttype; // the chart start type (bar, donut, etc.) ?>"
                 data-color="<?php echo $color; // the background color for bar, etc. ?>"
+                data-title="<?php echo CHtml::encode($chartTitle); // the question title for the exported image ?>"
             >
 
             <?php if (array_sum($grawdata_percent) < 1) :?>

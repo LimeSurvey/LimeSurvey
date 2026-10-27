@@ -435,6 +435,8 @@ class SurveyAdministrationController extends LSBaseController
             $iQuestionNumber++;
             $iGroupNumber = $oQuestion->gid;
         }
+        // updateAll() bypasses Question::afterSave(), so update the survey's lastmodified timestamp here
+        (new SurveyDetailService())->touchSurveyLastModified((int) $iSurveyID);
         /* Expression text need to be update from condition */
         LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
@@ -1817,13 +1819,7 @@ class SurveyAdministrationController extends LSBaseController
                 $aData['nostep'] = true;
                 $this->aData = $aData;
             } else {
-                if (!$result["surveyTableExists"]) {
-                    $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
-                    $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
-                }
-
                 $aData = $result['aData'];
-
                 $aData['sidemenu']['state'] = false;
             }
         }
@@ -2136,6 +2132,24 @@ class SurveyAdministrationController extends LSBaseController
         $this->redirect($this->createUrl('admin/globalsettings'));
     }
 
+    /**
+     * Load a survey whose options hold the values inherited from its survey group,
+     * as needed by the survey settings screens.
+     *
+     * A separate, uncached survey instance is used: The instance cached by Survey::findByPk()
+     * is shared with getSurveyInfo() and must keep the survey's effective option values.
+     *
+     * @param int $iSurveyID Survey ID
+     * @return Survey|null Null if the survey does not exist
+     */
+    protected function loadSurveyWithInheritedOptions($iSurveyID)
+    {
+        $survey = Survey::model()->findByPkNoCache($iSurveyID);
+        if ($survey) {
+            $survey->setOptionsFromDatabase();
+        }
+        return $survey;
+    }
 
     /**
      * New system of rendering content
@@ -2163,15 +2177,12 @@ class SurveyAdministrationController extends LSBaseController
     {
         $iSurveyID = (int) $surveyid;
         $menuaction = (string) $subaction;
-        $survey = Survey::model()->findByPk($iSurveyID);
+        $survey = $this->loadSurveyWithInheritedOptions($iSurveyID);
         $aData['oSurvey'] = $survey;
-        // set values from database to survey attributes
 
         if (empty($survey)) {
             throw new Exception('Found no survey with id ' . $iSurveyID);
         }
-
-        $survey->setOptionsFromDatabase();
 
         //Get all languages
         $grplangs = $survey->additionalLanguages;
@@ -2195,14 +2206,14 @@ class SurveyAdministrationController extends LSBaseController
             ));
         }
 
-        $templateData = array_merge($this->getGeneralTemplateData($iSurveyID), $templateData);
+        $templateData = array_merge($this->getGeneralTemplateData($survey), $templateData);
 
         // For Text elements Tab.
         if ($menuaction === 'surveytexts') {
             $temp = [];
             $languages = $survey->allLanguages;
             foreach ($languages as $i => $language) {
-                $temp = $this->getGeneralTemplateData($iSurveyID);
+                $temp = $this->getGeneralTemplateData($survey);
 
                 App()->loadHelper('database');
                 App()->loadHelper('surveytranslator');
@@ -2941,7 +2952,14 @@ class SurveyAdministrationController extends LSBaseController
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
         $beforeSurveySettings->set('survey', $survey->sid);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
-        $aData['pluginSettings'] = $beforeSurveySettings->get('surveysettings');
+        $pluginSettings = $beforeSurveySettings->get('surveysettings');
+        if (is_array($pluginSettings)) {
+            // Sort the plugin panels by their displayed name, keeping the plugin IDs as keys
+            uasort($pluginSettings, function ($a, $b) {
+                return strnatcasecmp((string) ($a['name'] ?? ''), (string) ($b['name'] ?? ''));
+            });
+        }
+        $aData['pluginSettings'] = $pluginSettings;
         return $aData;
     }
 
@@ -3164,6 +3182,21 @@ class SurveyAdministrationController extends LSBaseController
         $oSurvey = $aData['oSurvey'];
         $activated = $aSurveyInfo['active'];
 
+        /** Send a alert if Survey seems to be active but don't have response table */
+        if ($oSurvey->isActive && !$oSurvey->hasResponsesTable) {
+            $alertstring = "<p class='mb-1'>" . gT("A problem has been detected with the survey database.") . "</p>";
+            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                $alertstring .= "<p class='mb-0'>" . sprintf(
+                    gT("You can resolve this issue by %sperforming a data integrity check%s or by deactivating and reactivating your survey to reset the response database."),
+                    '<a href="' . CHtml::encode(App()->createUrl("admin/checkintegrity")) . '">',
+                    '</a>'
+                ) . "</p>";
+            } else {
+                $alertstring .= "<p class='mb-0'>" . gT("Please contact an administrator to perform a database integrity check or deactivate and reactivate your survey to reset the response database.") . "</p>";
+            }
+            App()->setFlashMessage($alertstring, 'danger');
+        }
+
         $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
         $sumcount3 = Question::model()->countByAttributes($condition); //Checked
         $sumcount2 = QuestionGroup::model()->countByAttributes(array('sid' => $iSurveyID));
@@ -3277,10 +3310,10 @@ class SurveyAdministrationController extends LSBaseController
         if ($activated == "N" && $sumcount3 == 0) {
             $aData['warnings'][] = gT("Survey cannot be activated yet.");
             if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'][] = "<span class='statusentryhighlight'>[" . gT("You need to add question groups") . "]</span>";
+                $aData['warnings'][] = gT("You need to add question groups");
             }
             if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'][] = "<span class='statusentryhighlight'>" . gT("You need to add questions") . "</span>";
+                $aData['warnings'][] = gT("You need to add questions");
             }
         }
         $aData['hints'] = $surveysummary2;
@@ -3345,15 +3378,21 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Returns Data for general template.
      *
-     * @param int $iSurveyID Given Survey ID
+     * @param int|Survey $survey Given Survey ID, or an already loaded survey (e.g. one holding the inherited option values)
      *
      * @return array
      */
-    private function getGeneralTemplateData($iSurveyID)
+    private function getGeneralTemplateData($survey)
     {
         $aData = [];
+        if ($survey instanceof Survey) {
+            $oSurvey = $survey;
+            $iSurveyID = (int) $survey->sid;
+        } else {
+            $iSurveyID = (int) $survey;
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+        }
         $aData['surveyid'] = $iSurveyID;
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (empty($oSurvey)) {
             $oSurvey = new Survey();
         }
@@ -3426,7 +3465,7 @@ class SurveyAdministrationController extends LSBaseController
         $aLanguageData = [];
 
         foreach ($survey->allLanguages as $i => $sLang) {
-            $aLanguageData = $this->getGeneralTemplateData($survey->sid);
+            $aLanguageData = $this->getGeneralTemplateData($survey);
             // this one is created to get the right default texts fo each language
             Yii::app()->loadHelper('database');
             Yii::app()->loadHelper('surveytranslator');

@@ -212,7 +212,7 @@ class Tokens extends SurveyCommonAction
             return;
         }
 
-        if ($thissurvey['bounceprocessing'] != 'N' || ($thissurvey['bounceprocessing'] == 'G' && Yii::app()->getConfig('bounceaccounttype') != 'off')) {
+        if ($thissurvey['bounceprocessing'] == 'L' || ($thissurvey['bounceprocessing'] == 'G' && Yii::app()->getConfig('bounceaccounttype') != 'off')) {
             if (!function_exists('imap_open')) {
                 eT("The imap PHP library is not installed or not activated. Please contact your system administrator.");
                 return;
@@ -1270,9 +1270,9 @@ class Tokens extends SurveyCommonAction
         foreach ($aMandatoryAttributes['columns'] as $key => $attribute) {
             $aAttributesDesc[$key] = array(
                 'coreattribute' => true,
-                'mandatory' => $key == 'email' ? true : false,
+                'mandatory' => $key == 'email' ? 'Y' : 'N',
                 'encrypted' => $attribute,
-                'show_register' => true,
+                'show_register' => 'Y',
                 'description' => gT('Mandatory attribute'),
                 'cpdbmap' => ''
             );
@@ -2077,6 +2077,7 @@ class Tokens extends SurveyCommonAction
                 . gT("Uploading LDAP Query") . "</strong></td></tr>\n"
                 . "\t<tr><td align='center'>\n";
             $ldapq = Yii::app()->request->getPost('ldapQueries'); // the ldap query id
+            $ldap_queries[$ldapq] = prepareLDAPQuery($ldapq);
 
             $ldap_server_id = $ldap_queries[$ldapq]['ldapServerId'];
             if (
@@ -2187,9 +2188,8 @@ class Tokens extends SurveyCommonAction
                                 if ($ldapencoding != '') {
                                     $myfirstname = @mb_convert_encoding((string) $myfirstname, "UTF-8", $ldapencoding);
                                     $mylastname = @mb_convert_encoding((string) $mylastname, "UTF-8", $ldapencoding);
-                                    foreach ($aTokenAttr as $thisattrfieldname) {
-                                        $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
-                                        @mb_convert_encoding((string) $myattrArray[$attridx], "UTF-8", $ldapencoding);
+                                    foreach ($myattrArray as $attridx => $attrvalue) {
+                                        $myattrArray[$attridx] = @mb_convert_encoding((string) $attrvalue, "UTF-8", $ldapencoding);
                                     }
                                 }
 

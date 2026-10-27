@@ -200,14 +200,8 @@ class uploader {
         }
 
         // COOKIES INIT
-        $ip = '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)';
-        $ip = '/^' . implode('\.', array($ip, $ip, $ip, $ip)) . '$/';
-        if (preg_match($ip, (string) $_SERVER['HTTP_HOST']) ||
-            preg_match('/^[^\.]+$/', (string) $_SERVER['HTTP_HOST'])
-        )
-            $this->config['cookieDomain'] = "";
-        elseif (!strlen((string) $this->config['cookieDomain']))
-            $this->config['cookieDomain'] = $_SERVER['HTTP_HOST'];
+        // An empty cookieDomain sets host-only cookies. Never fall back to HTTP_HOST: It can contain a port,
+        // which makes the browser reject the cookies and breaks the file manager.
         if (!strlen((string) $this->config['cookiePath']))
             $this->config['cookiePath'] = "/";
 
@@ -283,7 +277,7 @@ class uploader {
         if (!$this->config['disabled']) { // IF BROWSER IS ENABLED
             // TRY TO CREATE UPLOAD DIRECTORY IF NOT EXISTS
             if (!$this->config['disabled'] && !is_dir($this->config['uploadDir']))
-                @mkdir($this->config['uploadDir'], $this->config['dirPerms']);
+                @mkdir($this->config['uploadDir'], $this->config['dirPerms'], true);
 
             // CHECK & MAKE DEFAULT .htaccess
             if (isset($this->config['_check4htaccess']) &&

@@ -128,6 +128,23 @@ function loadanswers()
 
 
 /**
+ * Returns the label of a language in the language changer: The native name followed by the name in the current language.
+ * The name in the current language is left out if it is the same as the native name (e.g. for the current language itself).
+ *
+ * @param array $aLanguage Language data as returned by getLanguageData()
+ * @return string
+ */
+function getLanguageChangerLabel($aLanguage)
+{
+    $sNativeName = html_entity_decode((string) $aLanguage['nativedescription'], ENT_COMPAT, 'UTF-8');
+    $sName = (string) $aLanguage['description'];
+    if ($sName === '' || $sName === $sNativeName) {
+        return $sNativeName;
+    }
+    return $sNativeName . ' - ' . $sName;
+}
+
+/**
  * This function creates the language selector for a particular survey
 *
 * @param string  $sSelectedLanguage : lang to be selected (forced)
@@ -176,7 +193,7 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
 
         $aListLang = array();
         foreach ($aSurveyLangs as $sLangCode => $aSurveyLang) {
-            $aListLang[$sLangCode] = html_entity_decode((string) $aSurveyLang['nativedescription'], ENT_COMPAT, 'UTF-8') . ' - ' . $aSurveyLang['description'];
+            $aListLang[$sLangCode] = getLanguageChangerLabel($aSurveyLang);
         }
 
         $sSelected = ($sSelectedLanguage) ? $sSelectedLanguage : App()->language;
@@ -206,7 +223,7 @@ function getLanguageChangerDatasPublicList($sSelectedLanguage)
     if (count($aLanguages) > 1) {
         $sClass = "ls-language-changer-item";
         foreach ($aLanguages as $sLangCode => $aLanguage) {
-                    $aListLang[$sLangCode] = html_entity_decode((string) $aLanguage['nativedescription'], ENT_COMPAT, 'UTF-8') . ' - ' . $aLanguage['description'];
+            $aListLang[$sLangCode] = getLanguageChangerLabel($aLanguage);
         }
         $sSelected = $sSelectedLanguage;
 
@@ -366,8 +383,11 @@ function addtoarray_single($array1, $array2)
 * Marks a tokens as completed and sends a confirmation email to the participiant.
 * If $quotaexit is set to true then the user exited the survey due to a quota
 * restriction and the according token is only marked as 'Q'
+* In both cases one use of the token is consumed.
 *
 * @param boolean $quotaexit
+* @return void
+* @throws CHttpException if the access code doesn't exist
 */
 function submittokens($quotaexit = false)
 {
@@ -397,9 +417,7 @@ function submittokens($quotaexit = false)
 
     if ($quotaexit == true) {
         $token->completed = 'Q';
-        if (!$tokenused) {
-            $token->usesleft--;
-        }
+        $token->usesleft--;
     } else {
         if ($token->usesleft <= 1) {
             // Finish the token
@@ -726,7 +744,9 @@ function failedEmailSuccess($id)
  *
  * "Unexpected error"
  *
- * Will send e-mail to adminemail if defined.
+ * Will send e-mail to adminemail if defined, including the response ID if the response was already created.
+ *
+ * The e-mail is not sent if the config setting send_error_saving_results_email is false.
  *
  * @param string $errormsg
  * @param string $query  Will be included in sent email
@@ -745,12 +765,16 @@ function submitfailed($errormsg = '', $query = null)
     . "</p>";
     if ($thissurvey['adminemail']) {
         $completed .= "<p>";
-        $completed .= gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.");
+        $completed .= gT("Please don't continue and contact the survey administrator.");
         $completed .= "</p>";
         if (Yii::app()->getConfig('debug') > 0 && !empty($errormsg)) {
             $completed .= 'Error message: ' . htmlspecialchars($errormsg) . '<br />';
         }
         $email = sprintf(gT("An error occurred saving a response to survey %s", "unescaped"), $thissurvey['name'] . " - $surveyid\n\n");
+        // The response ID is only known if the response row was created before
+        if (!empty($_SESSION['responses_' . $surveyid]['srid'])) {
+            $email .= sprintf(gT("Response ID: %s", "unescaped"), $_SESSION['responses_' . $surveyid]['srid']) . "\n\n";
+        }
         $email .= gT("DATA TO BE ENTERED", "unescaped") . ":\n";
         foreach ($_SESSION['responses_' . $surveyid]['insertarray'] as $value) {
             if (isset($_SESSION['responses_' . $surveyid][$value])) {
@@ -768,13 +792,15 @@ function submitfailed($errormsg = '', $query = null)
                . $errormsg . "\n\n";
         }
 
-        $mailer = new \LimeMailer();
-        $mailer->emailType = "errorsavingresults";
-        $mailer->Subject = gT("Error saving results", "unescaped");
-        $mailer->Body = $email;
-        $mailer->setSurvey($surveyid);
-        $mailer->addAddress($thissurvey['adminemail']);
-        $mailer->sendMessage();
+        if (Yii::app()->getConfig('send_error_saving_results_email')) {
+            $mailer = new \LimeMailer();
+            $mailer->emailType = "errorsavingresults";
+            $mailer->Subject = gT("Error saving results", "unescaped");
+            $mailer->Body = $email;
+            $mailer->setSurvey($surveyid);
+            $mailer->addAddress($thissurvey['adminemail']);
+            $mailer->sendMessage();
+        }
     } else {
         $completed .= "<a href='javascript:location.reload()'>" . gT("Try to submit again") . "</a>\n";
     }
@@ -1399,12 +1425,17 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
 
 /**
  * Resets all session variables for this survey
+ * The session ID is regenerated for guests to prevent session fixation. A logged-in
+ * user already got a new session ID on login, and regenerating it on every survey
+ * preview would log the user out when a request is aborted (e.g. rapid page reload).
  * @param int $surveyid
  * @return void
  */
 function resetAllSessionVariables($surveyid)
 {
-    Yii:app()->session->regenerateID(true);
+    if (Yii::app()->user->isGuest) {
+        Yii::app()->session->regenerateID(true);
+    }
     unset($_SESSION['responses_' . $surveyid]['grouplist']);
     unset($_SESSION['responses_' . $surveyid]['fieldarray']);
     unset($_SESSION['responses_' . $surveyid]['insertarray']);
@@ -1417,10 +1448,11 @@ function resetAllSessionVariables($surveyid)
 /**
  * The number of "pages" that will be presented in this survey
  * The number of pages to be presented will differ depending on the survey format
- * Set totalsteps in session
+ * Set totalsteps, totalVisibleSteps and (group by group) hiddenGroupIds in session
  * @param int $surveyid
  * @param array $thissurvey
  * @param integer $totalquestions
+ * @param integer $totalVisibleQuestions Number of questions without "Always hide this question"
  * @return void
  */
 function setTotalSteps($surveyid, array $thissurvey, $totalquestions, $totalVisibleQuestions)
@@ -1432,7 +1464,13 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions, $totalVisi
 
         case "G":
             if (isset($_SESSION['responses_' . $surveyid]['grouplist'])) {
-                $_SESSION['responses_' . $surveyid]['totalsteps'] = count($_SESSION['responses_' . $surveyid]['grouplist']);
+                $groupIds = array_map('intval', array_column($_SESSION['responses_' . $surveyid]['grouplist'], 'gid'));
+                // Groups with only always hidden questions are never shown: Don't count them for the progress bar
+                $visibleGroupIds = Survey::model()->findByPk($surveyid)->getGroupIdsWithVisibleQuestions();
+                $hiddenGroupIds = array_values(array_diff($groupIds, $visibleGroupIds));
+                $_SESSION['responses_' . $surveyid]['totalsteps'] = count($groupIds);
+                $_SESSION['responses_' . $surveyid]['totalVisibleSteps'] = count($groupIds) - count($hiddenGroupIds);
+                $_SESSION['responses_' . $surveyid]['hiddenGroupIds'] = $hiddenGroupIds;
             }
             break;
 

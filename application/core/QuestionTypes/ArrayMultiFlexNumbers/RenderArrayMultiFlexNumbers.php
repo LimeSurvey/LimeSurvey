@@ -418,7 +418,8 @@ class RenderArrayMultiFlexNumbers extends QuestionBaseRenderer
             'answer_tds'        => $answer_tds,
             'rightTd'           => $rightTd,
             'odd'               => ($j % 2),
-            'layout'            => $this->layout
+            'layout'            => $this->layout,
+            'relevanceClass'    => $this->getCurrentRelevecanceClass($myfname),
         ));
     }
 

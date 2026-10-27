@@ -98,15 +98,17 @@ class WhHtml5Editor extends CInputWidget
             $cs->registerCssFile($assetsUrl . '/css/wysiwyg-color.css');
         }
 
-        $cs->registerScriptFile($assetsUrl . '/js/wysihtml5-0.3.0.js');
-        $cs->registerScriptFile($assetsUrl . '/js/bootstrap-wysihtml5.js');
+        // Register at the page bottom, the head is not reloaded by pjax
+        $cs->registerScriptFile($assetsUrl . '/js/wysihtml5-0.3.0.js', CClientScript::POS_END);
+        $cs->registerScriptFile($assetsUrl . '/js/bootstrap-wysihtml5.js', CClientScript::POS_END);
 
         if (in_array(@$this->pluginOptions['locale'], array('de-DE', 'es-ES', 'fr', 'fr-NL', 'pt-BR', 'sv-SE'))) {
             $cs->registerScriptFile(
-                $assetsUrl . '/js/locale/bootstrap-wysihtml5.' . $this->pluginOptions['locale'] . '.js'
+                $assetsUrl . '/js/locale/bootstrap-wysihtml5.' . $this->pluginOptions['locale'] . '.js',
+                CClientScript::POS_END
             );
         } elseif (in_array($this->lang, array('de-DE', 'es-ES', 'fr', 'fr-NL', 'pt-BR', 'sv-SE'))) {
-            $cs->registerScriptFile($assetsUrl . '/js/locale/bootstrap-wysihtml5.' . $this->lang . '.js');
+            $cs->registerScriptFile($assetsUrl . '/js/locale/bootstrap-wysihtml5.' . $this->lang . '.js', CClientScript::POS_END);
             $this->pluginOptions['locale'] = $this->lang;
         }
 
@@ -115,7 +117,8 @@ class WhHtml5Editor extends CInputWidget
         /* initialize plugin */
         $selector = '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId());
 
-        $this->getApi()->registerPlugin('wysihtml5', $selector, $this->pluginOptions);
+        // Run the init only once pjax has loaded the script files
+        $this->getApi()->registerPlugin('wysihtml5', $selector, $this->pluginOptions, LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
     /**

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
@@ -27,26 +27,30 @@ import { TAB_KEYS } from './utils'
 import { ResponsesOverview } from './components/Overview/ResponsesOverview'
 import { panelItemsKeys } from './Sidebars'
 import { RightSideBar } from './Sidebars/RightSideBar'
+import {
+  buildQuestionOptions,
+  toFilterSet,
+} from './components/ResponsesStatistics/StatisticsFiltersModal/utils'
 
 export const Responses = () => {
   const { t } = useTranslation()
   const { surveyId, menu } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
   const deepLinkResponseId = searchParams.get('id')
-  const [filters, setFilters] = useState({})
   const [pagination, setPagination] = useState(() => ({
     pageIndex: Math.max(Number(searchParams.get('page')) - 1, 0),
     pageSize: Number(searchParams.get('size')) || 10,
   }))
   const [globalFilter, setGlobalFilter] = useState('')
   const [sorting, setSorting] = useState([])
-  const [showTableFilters, setShowTableFilters] = useState(false)
   const [showStatisticsFilters, setShowStatisticsFilters] = useState(false)
-  const [columnsFilters, setColumnsFilters] = useState([])
   const [tabKey, setTabKey] = useState(TAB_KEYS.RESPONSES)
   const [statisticsFilters, setStatisticsFilters] = useState({})
   const [showExportModal, setShowExportModal] = useState(false)
   const exportOptionsRef = useRef(null)
+
+  const [appliedFilters, setAppliedFilters] = useState([])
+  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
   const [hasResponsesUpdatePermission] = useAppState(
     STATES.HAS_RESPONSES_UPDATE_PERMISSION
   )
@@ -57,14 +61,20 @@ export const Responses = () => {
     refetchQuestionsFieldNamesMap,
   } = useSurvey(surveyId)
   const { fetchAllLanguages } = useSetAllLanguages()
+
+  // The applied filter in the shape the backend accepts. Memoised so the
+  // query key only changes when the filter itself does.
+  const filterSet = useMemo(() => toFilterSet(appliedFilters), [appliedFilters])
+
   const {
     responses,
     isFetching,
     mutateOperations,
+    error: responsesError,
     exportResponses,
     isExporting,
     findResponsePageIndex,
-  } = useResponses(surveyId, pagination, filters, sorting)
+  } = useResponses(surveyId, pagination, sorting, filterSet)
   const locatedDeepLinkRef = useRef(null)
 
   // Responses page isn't wrapped by EditorContextController, so fetch languages here
@@ -74,6 +84,43 @@ export const Responses = () => {
       fetchAllLanguages(survey.languages)
     }
   }, [survey.sid])
+
+  // A filter the server cannot honour — an attribute this survey does not
+  // have, a question from another survey — comes back as a bad request with
+  // the reason. Show it, and leave the tab on what it already had.
+  const showFilterError = useCallback((error) => {
+    Toast({
+      message: error.message,
+      className: 'generic-toast error-left-mark',
+      id: 'responses-filter-error',
+    })
+  }, [])
+
+  useEffect(() => {
+    if (responsesError) {
+      showFilterError(responsesError)
+    }
+  }, [responsesError, showFilterError])
+
+  // A narrower filter can leave the current page past the end of the results,
+  // which would show an empty table on a page that no longer exists. Only a
+  // filter the user changed counts: the page a shared link asks for is read
+  // once on mount, and resetting it here would always land on page 1.
+  const filterSetOnMount = useRef(filterSet)
+  useEffect(() => {
+    if (filterSetOnMount.current === filterSet) {
+      return
+    }
+
+    setPagination((current) =>
+      current.pageIndex === 0 ? current : { ...current, pageIndex: 0 }
+    )
+  }, [filterSet])
+
+  const questionOptions = useMemo(
+    () => buildQuestionOptions(survey, activeLanguage),
+    [survey?.questionGroups, activeLanguage]
+  )
 
   useEffect(() => {
     if (menu === panelItemsKeys.statistics) {
@@ -104,7 +151,8 @@ export const Responses = () => {
 
     const exportPayload = {
       ...exportData.options,
-      filters: exportData.options.responseType === 'filtered' ? filters : {},
+      filterSet:
+        exportData.options.responseType === 'filtered' ? filterSet : [],
     }
 
     try {
@@ -228,10 +276,6 @@ export const Responses = () => {
       .catch(() => showDeepLinkNotFound())
   }, [responses, isFetching, deepLinkResponseId, tabKey])
 
-  const onFiltersChange = (filters) => {
-    setFilters(filters)
-  }
-
   const handleResponsesDelete = (ids) => {
     const operations = []
 
@@ -286,9 +330,12 @@ export const Responses = () => {
             filters={statisticsFilters}
             surveyId={surveyId}
             isRightBar={showStatisticsFilters}
-            showFilters={showStatisticsFilters}
-            setShowFilters={setShowStatisticsFilters}
-            setFilters={setStatisticsFilters}
+            survey={survey}
+            questionOptions={questionOptions}
+            appliedFilters={appliedFilters}
+            setAppliedFilters={setAppliedFilters}
+            filterSet={filterSet}
+            onFilterError={showFilterError}
           />
         )
       case panelItemsKeys.list:
@@ -298,14 +345,12 @@ export const Responses = () => {
               responsesData={responses}
               globalFilter={globalFilter}
               setGlobalFilter={setGlobalFilter}
-              setShowFilters={setShowTableFilters}
-              showFilters={showTableFilters}
               setSorting={setSorting}
               sorting={sorting}
               sortedColumnId={sortedColumnId}
+              filterSet={filterSet}
               survey={survey}
               onPaginationChange={onPaginationChange}
-              onFiltersChange={onFiltersChange}
               onSortChange={onSortChange}
               handleResponsesDelete={handleResponsesDelete}
               handleAttachmentsDelete={handleAttachmentsDelete}
@@ -313,8 +358,6 @@ export const Responses = () => {
               pagination={pagination}
               setPagination={setPagination}
               isFetching={isFetching}
-              columnsFilters={columnsFilters}
-              setColumnsFilters={setColumnsFilters}
               disableUpdatingResponses={!hasResponsesUpdatePermission}
               deepLinkResponseId={deepLinkResponseId}
               onResponseModalOpen={handleResponseModalOpen}
@@ -334,20 +377,32 @@ export const Responses = () => {
     }
   }
 
+  // Nothing to show yet. When the very first request is the one that failed
+  // there are no earlier rows to fall back on, and a loader that never resolves
+  // would read as "still working" — so the reason takes its place. The Toaster
+  // lives here too, or the message the effect above raises has nowhere to go.
   if (!survey?.sid || !responses) {
     return (
-      <>
-        <div
-          style={{ height: '100vh' }}
-          className="d-flex flex-column justify-content-center align-items-center"
-        >
-          <span
-            style={{ width: 48, height: 48 }}
-            className="loader mb-4"
-          ></span>
-          <h1 className="">{t('Loading responses...')}</h1>
-        </div>
-      </>
+      <div
+        style={{ height: '100vh' }}
+        className="d-flex flex-column justify-content-center align-items-center"
+      >
+        <Toaster />
+        {responsesError ? (
+          <>
+            <h1 className="">{t('Responses could not be loaded')}</h1>
+            <p className="mt-2">{responsesError.message}</p>
+          </>
+        ) : (
+          <>
+            <span
+              style={{ width: 48, height: 48 }}
+              className="loader mb-4"
+            ></span>
+            <h1 className="">{t('Loading responses...')}</h1>
+          </>
+        )}
+      </div>
     )
   }
 
@@ -391,10 +446,11 @@ export const Responses = () => {
           {tabKey !== TAB_KEYS.STATISTICS && (
             <div className="mb-3">
               <ResponsesHeader
-                setShowFilters={setShowTableFilters}
-                showFilters={showTableFilters}
-                setFilters={setColumnsFilters}
                 tabKey={tabKey}
+                survey={survey}
+                questionOptions={questionOptions}
+                appliedFilters={appliedFilters}
+                setAppliedFilters={setAppliedFilters}
               />
             </div>
           )}

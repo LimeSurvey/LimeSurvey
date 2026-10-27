@@ -24,7 +24,6 @@ export function createDefaultState(userid, surveyid) {
         maxHeight: 0,
         inSurveyViewHeight: 1000,
         sideBodyHeight: '100%',
-        sideBarHeight: 400,
         currentUser: userid,
         currentTab: 'settings',
         sidebarwidth: sidebarWidth,
@@ -76,9 +75,6 @@ export function createMutations(StateManager) {
         },
         changeMaxHeight: function(newHeight) {
             StateManager.set('maxHeight', newHeight);
-        },
-        changeSideBarHeight: function(newHeight) {
-            StateManager.set('sideBarHeight', newHeight);
         },
         changeInSurveyViewHeight: function(newHeight) {
             StateManager.set('inSurveyViewHeight', newHeight);

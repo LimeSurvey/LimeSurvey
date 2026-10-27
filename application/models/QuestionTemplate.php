@@ -303,7 +303,10 @@ class QuestionTemplate extends CFormModel
                             $oAttributeValue = QuestionAttribute::model()->find("qid=:qid and attribute=:custom_attribute", array('qid' => $oQuestion->qid, 'custom_attribute' => $attribute_name));
                         }
                         if (is_object($oAttributeValue)) {
-                            $this->aCustomAttributes[$attribute_name] = $oAttributeValue->value;
+                            $this->aCustomAttributes[$attribute_name] = QuestionAttribute::sanitizeValue(
+                                $oAttributeValue->value,
+                                self::getCustomAttributeDefinition($oCustomAttribute)
+                            );
                         } else {
                             $this->aCustomAttributes[$attribute_name] = (string) $oCustomAttribute->default;
                         }
@@ -353,6 +356,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
+     * Returns the URL of the assets folder of the question template
+     *
      * @return string
      */
     public function getTemplateUrl()
@@ -370,7 +375,8 @@ class QuestionTemplate extends CFormModel
             if (is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName/")) {
                 $this->sTemplateUrl = "$sBaseUrl/$sCoreQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             } elseif (is_dir("$sUserQTemplateRootDir/$sTemplateFolderName/")) {
-                $this->sTemplateUrl = "$sBaseUrl/$sUserQTemplateRootDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
+                $sUserQTemplateDir = QuestionTheme::getPathRelativeToRootDir($sUserQTemplateRootDir);
+                $this->sTemplateUrl = "$sBaseUrl/$sUserQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             }
         }
         return $this->sTemplateUrl;
@@ -386,6 +392,35 @@ class QuestionTemplate extends CFormModel
             return $this->aCustomAttributes;
         }
         return null;
+    }
+
+    /**
+     * Returns the definition of a custom attribute from the theme configuration, as needed by
+     * QuestionAttribute::sanitizeValue()
+     * @param SimpleXMLElement $oCustomAttribute the attribute node of the theme configuration
+     * @return array{inputtype: string, options: array<string,string>, default: string, expression: string}
+     */
+    private static function getCustomAttributeDefinition($oCustomAttribute)
+    {
+        $options = [];
+        if (isset($oCustomAttribute->options->option)) {
+            foreach ($oCustomAttribute->options->option as $oOption) {
+                $options[(string) $oOption->value] = (string) $oOption->text;
+            }
+        } elseif (isset($oCustomAttribute->options)) {
+            // Short format: <options><value>Label</value></options>
+            foreach ($oCustomAttribute->options->children() as $oOption) {
+                if ($oOption->getName() !== 'comment') {
+                    $options[$oOption->getName()] = (string) $oOption;
+                }
+            }
+        }
+        return [
+            'inputtype' => (string) $oCustomAttribute->inputtype,
+            'options' => $options,
+            'default' => (string) $oCustomAttribute->default,
+            'expression' => (string) $oCustomAttribute->expression,
+        ];
     }
 
     /**

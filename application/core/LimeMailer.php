@@ -149,7 +149,6 @@ class LimeMailer extends PHPMailer
         $emailmethod = Yii::app()->getConfig('emailmethod');
         $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
         $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
-        $emailsmtppassword = LSActiveRecord::decryptSingle(Yii::app()->getConfig("emailsmtppassword"));
         $emailsmtpdebug = Yii::app()->getConfig("emailsmtpdebug");
         $emailsmtpssl = Yii::app()->getConfig("emailsmtpssl");
         $defaultlang = Yii::app()->getConfig("defaultlang");
@@ -201,7 +200,7 @@ class LimeMailer extends PHPMailer
                     $this->SMTPSecure = $emailsmtpssl;
                 }
                 $this->Username = $emailsmtpuser;
-                $this->Password = $emailsmtppassword;
+                $this->Password = $this->getSmtpPassword();
                 if (trim((string) $emailsmtpuser) != "") {
                     $this->SMTPAuth = true;
                 }
@@ -225,6 +224,22 @@ class LimeMailer extends PHPMailer
             $this->Sender = Yii::app()->getConfig('siteadminbounce');
         }
         $this->eventName = 'beforeEmail';
+    }
+
+    /**
+     * Get the decrypted SMTP password from the global settings
+     * A password that can't be decrypted (e.g. because the encryption keys changed since it was saved) is logged
+     * and replaced by an empty password, so sending fails with a mailer error instead of an exception
+     * @return string
+     */
+    private function getSmtpPassword()
+    {
+        try {
+            return LSActiveRecord::decryptSingle(Yii::app()->getConfig("emailsmtppassword"));
+        } catch (SodiumException $e) {
+            Yii::log('Unable to decrypt the SMTP password: ' . $e->getMessage(), CLogger::LEVEL_ERROR, 'application.LimeMailer');
+            return '';
+        }
     }
 
     /**

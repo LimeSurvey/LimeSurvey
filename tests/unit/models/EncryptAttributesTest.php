@@ -318,7 +318,6 @@ class EncryptAttributesTest extends TestBaseClass
         // Simulate the survey session: the last submitted page updated this answer
         $LEM = \LimeExpressionManager::singleton();
         $updatedValuesProperty = new \ReflectionProperty(\LimeExpressionManager::class, 'updatedValues');
-        $updatedValuesProperty->setAccessible(true);
         $originalUpdatedValues = $updatedValuesProperty->getValue($LEM);
         $updatedValuesProperty->setValue($LEM, [$sgqa => ['type' => 'T', 'value' => 'Answer from last page']]);
 
@@ -329,5 +328,14 @@ class EncryptAttributesTest extends TestBaseClass
         } finally {
             $updatedValuesProperty->setValue($LEM, $originalUpdatedValues);
         }
+    }
+
+    /**
+     * A survey that no longer exists has no encrypted attributes (e.g. when
+     * the data integrity check archives the responses table of a deleted survey).
+     */
+    public function testGetEncryptedAttributesOfMissingSurveyIsEmpty()
+    {
+        $this->assertSame([], \Response::getEncryptedAttributes(999999999));
     }
 }

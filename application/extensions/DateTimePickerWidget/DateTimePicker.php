@@ -192,6 +192,7 @@ class DateTimePicker extends CInputWidget
     {
         $localeScript = '';
         $locale = $this->getValue('locale', $this->pluginOptions, 'en');
+        $startOfTheWeek = (int) $this->getValue('startOfTheWeek', $this->pluginOptions, 0);
         $dateFormat = CHtml::encode($this->format);
         $tooltips = $this->getConvertedTempusOptions($this->getTranslatedTooltips());
         foreach ($tooltips as $key => $tooltip) {
@@ -199,6 +200,7 @@ class DateTimePicker extends CInputWidget
         }
         $localeScript .= "      dayViewHeaderFormat: { month: 'long', year: 'numeric' },\n" .
             "      locale: '$locale',\n" .
+            "      startOfTheWeek: $startOfTheWeek,\n" .
             "      format: '$dateFormat',\n";
 
         // Try to guess the right hour cycle from the format

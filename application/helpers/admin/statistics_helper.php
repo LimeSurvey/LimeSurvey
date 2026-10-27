@@ -12,262 +12,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-
-/**
-*
-*  Generate a chart for a question
-*  @param int $iQuestionID      ID of the question
-*  @param int $iSurveyID        ID of the survey
-*  @param mixed $type           Type of the chart to be created - null produces bar chart, any other value produces pie chart
-*  @param array $lbl            An array containing the labels for the chart items
-*  @param mixed $gdata          An array containing the percentages for the chart items
-*  @param mixed $grawdata       An array containing the raw count for the chart items
-*  @param pCache $cache          An object containing [Hashkey] and [CacheFolder]
-*  @param mixed $sLanguageCode  Language Code
-*  @param string $sQuestionType The question type
-*  @return                false|string
-*/
-function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $cache, $sLanguageCode, $sQuestionType)
-{
-    /* This is a lazy solution to bug #6389. A better solution would be to find out how
-    the "T" gets passed to this function from the statistics.js file in the first place! */
-    if (substr($iSurveyID, 0, 1) == "T") {
-        $iSurveyID = substr($iSurveyID, 1);
-    }
-    static $bErrorGenerate = false;
-
-    if ($bErrorGenerate) {
-        return false;
-    }
-    $rootdir = Yii::app()->getConfig("rootdir");
-    $chartfontfile = Yii::app()->getConfig("chartfontfile");
-    $chartfontsize = Yii::app()->getConfig("chartfontsize");
-    $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");
-    $cachefilename = "";
-
-    $adminThemePath = AdminTheme::getInstance()->path;
-
-    /* Set the fonts for the chart */
-    if ($chartfontfile == 'auto') {
-        // Tested with ar,be,el,fa,hu,he,is,lt,mt,sr, and en (english)
-        // Not working for hi, si, zh, th, ko, ja : see $config['alternatechartfontfile'] to add some specific language font
-        $chartfontfile = 'DejaVuSans.ttf';
-        if (array_key_exists($sLanguageCode, $alternatechartfontfile)) {
-            $neededfontfile = $alternatechartfontfile[$sLanguageCode];
-            if (is_file($rootdir . "/fonts/" . $neededfontfile)) {
-                $chartfontfile = $neededfontfile;
-            } else {
-                Yii::app()->setFlashMessage(sprintf(gT('The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory to generate the charts.'), $neededfontfile), 'error');
-                $bErrorGenerate = true; // Don't do a graph again.
-                return false;
-            }
-        }
-    }
-    if (count($lbl) > 72) {
-        $DataSet = array(1 => array(1 => 1));
-        if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet) && Yii::app()->getConfig('debug') < 2) {
-            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
-        } else {
-            $graph = new pChart(690, 200);
-            $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
-            $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-            $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-            $graph->drawTitle(0, 0, gT('Sorry, but this question has too many answer options to be shown properly in a graph.', 'unescaped'), 30, 30, 30, 690, 200);
-            $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet, $graph);
-            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
-            unset($graph);
-        }
-        return  $cachefilename;
-    }
-    if (array_sum($gdata) == 0) {
-        $DataSet = array(1 => array(1 => 1));
-        if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet) && Yii::app()->getConfig('debug') < 2) {
-            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
-        } else {
-            $graph = new pChart(690, 200);
-            $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
-            $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-            $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-            $graph->drawTitle(0, 0, gT('Sorry, but this question has no responses yet so a graph cannot be shown.', 'unescaped'), 30, 30, 30, 690, 200);
-            $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet, $graph);
-            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
-            unset($graph);
-        }
-        return  $cachefilename;
-    }
-
-    if (array_sum($gdata) > 0) {
-        //Make sure that the percentages add up to more than 0
-        $i = 0;
-        foreach ($gdata as $data) {
-            if ($data != 0) {
-                $i++;
-            }
-        }
-
-        /* Totatllines is the number of entries to show in the key and we need to reduce the font
-        and increase the size of the chart if there are lots of them (ie more than 15) */
-        $totallines = $i;
-        if ($totallines > 15) {
-            $gheight = 320 + (6.7 * ($totallines - 15));
-        } else {
-            $gheight = 320;
-        }
-
-        if (!$type) {
-            // Bar chart
-            $DataSet = new pData();
-            $counter = 0;
-            $maxyvalue = 0;
-            foreach ($grawdata as $datapoint) {
-                $DataSet->AddPoint(array($datapoint), 'Serie' . $counter);
-                $DataSet->AddSerie("Serie" . $counter);
-
-                $counter++;
-                if ($datapoint > $maxyvalue) {
-                    $maxyvalue = $datapoint;
-                }
-            }
-
-            $lblout = array();
-            if ($sLanguageCode == 'ar') {
-                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
-
-                foreach ($lbl as $kkey => $kval) {
-                    if (preg_match("^[A-Za-z]^", $kkey)) {
-                        //auto detect if english
-                        $lblout[] = $kkey . ' (' . $kval . ')';
-                    } else {
-                        $lblout[] = $Arabic->utf8Glyphs($kkey . ' )' . $kval . '(');
-                    }
-                }
-            } elseif (getLanguageRTL($sLanguageCode)) {
-                foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = UTF8Strrev($kkey . ' )' . $kval . '(');
-                }
-            } else {
-                foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = $kkey . ' (' . $kval . ')';
-                }
-            }
-
-            $counter = 0;
-            foreach ($lblout as $sLabelName) {
-                $DataSet->SetSerieName(html_entity_decode($sLabelName, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8'), "Serie" . $counter);
-                $counter++;
-            }
-
-            if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
-                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
-            } else {
-                $graph = new pChart(1, 1);
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $legendsize = $graph->getLegendBoxSize($DataSet->GetDataDescription());
-
-                if ($legendsize[1] < 320) {
-                    $gheight = 420;
-                } else {
-                    $gheight = $legendsize[1] + 100;
-                }
-                $graph = new pChart(690 + $legendsize[0], $gheight);
-                $graph->drawFilledRectangle(0, 0, 690 + $legendsize[0], $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $graph->setGraphArea(50, 30, 500, $gheight - 60);
-                $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
-                $graph->drawRoundedRectangle(5, 5, 525 + $legendsize[0], $gheight - 5, 5, 230, 230, 230);
-                $graph->drawGraphArea(254, 254, 254, true);
-                $graph->drawScale($DataSet->GetData(), $DataSet->GetDataDescription(), SCALE_START0, 150, 150, 150, true, 90, 0, true, 5, false);
-                $graph->drawGrid(4, true, 230, 230, 230, 50);
-                // Draw the 0 line
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $graph->drawTreshold(0, 143, 55, 72, true, true);
-
-                // Draw the bar graph
-                $graph->drawBarGraph($DataSet->GetData(), $DataSet->GetDataDescription(), false);
-                //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
-                // Finish the graph
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $graph->drawLegend(510, 30, $DataSet->GetDataDescription(), 250, 250, 250);
-
-                $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData(), $graph);
-                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
-                unset($graph);
-            }
-        }    //end if (bar chart)
-
-        //Pie Chart
-        else {
-            // this block is to remove the items with value == 0
-            // and an inelegant way to remove comments from List with Comments questions
-            $i = 0;
-            $j = 0;
-            $labelTmp = array();
-            while (isset($gdata[$i])) {
-                $aHelperArray = array_keys($lbl);
-                if ($gdata[$i] == 0 || ($sQuestionType == Question::QT_O_LIST_WITH_COMMENT && substr($aHelperArray[$i], 0, strlen(gT("Comments"))) == gT("Comments"))) {
-                    array_splice($gdata, $i, 1);
-                } else {
-                    $i++;
-                    $labelTmp = $labelTmp + array_slice($lbl, $j, 1, true); // Preserve numeric keys for the labels!
-                }
-                $j++;
-            }
-            $lbl = $labelTmp;
-
-            if ($sLanguageCode == 'ar') {
-                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
-                foreach ($lbl as $kkey => $kval) {
-                    if (preg_match("^[A-Za-z]^", $kkey)) {
-                        //auto detect if english
-                        $lblout[] = $kkey . ' (' . $kval . ')';
-                    } else {
-                        $lblout[] = $Arabic->utf8Glyphs($kkey . ' )' . $kval . '(');
-                    }
-                }
-            } elseif (getLanguageRTL($sLanguageCode)) {
-                foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = UTF8Strrev(html_entity_decode($kkey, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8') . ' )' . $kval . '(');
-                }
-            } else {
-                foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = html_entity_decode($kkey, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8') . ' (' . $kval . ')';
-                }
-            }
-
-
-            //create 3D pie chart
-            $DataSet = new pData();
-            $DataSet->AddPoint($gdata, "Serie1");
-            $DataSet->AddPoint($lblout, "Serie2");
-            $DataSet->AddAllSeries();
-            $DataSet->SetAbsciseLabelSerie("Serie2");
-
-            if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
-                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
-            } else {
-                $gheight = ceil($gheight);
-                $graph = new pChart(690, $gheight);
-                $graph->drawFilledRectangle(0, 0, 690, $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
-                $graph->drawFilledRoundedRectangle(7, 7, 687, $gheight - 3, 5, 254, 255, 254);
-                $graph->drawRoundedRectangle(5, 5, 689, $gheight - 1, 5, 230, 230, 230);
-
-                // Draw the pie chart
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $graph->drawPieGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 225, round($gheight / 2), 170, PIE_PERCENTAGE, true, 50, 20, 5);
-                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
-                $graph->drawPieLegend(430, 12, $DataSet->GetData(), $DataSet->GetDataDescription(), 250, 250, 250);
-                $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData(), $graph);
-                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
-                unset($graph);
-            }
-        }    //end else -> pie charts
-    }
-
-    return $cachefilename;
-}
-
+Yii::import('application.helpers.statisticschart_helper', true);
 
 /**
 * Return data to populate a Google Map
@@ -1606,6 +1351,21 @@ class statistics_helper
     }
 
     /**
+     * Returns the plain text question title of a chart, which "Export images" draws above the chart.
+     *
+     * @param array $outputs Question/output metadata from buildOutputList()
+     * @return string
+     */
+    protected function getChartTitle($outputs)
+    {
+        $sTitle = flattenText($outputs['qquestion'], false, true);
+        if (!empty($outputs['subquestionText'])) {
+            $sTitle .= " [" . flattenText($outputs['subquestionText'], false, true) . "]";
+        }
+        return $sTitle;
+    }
+
+    /**
      * Tally ranking counts for a question stored as a JSON array.
      *
      * @param int|string $surveyid
@@ -1711,7 +1471,8 @@ class statistics_helper
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
-                        $columnName = $al[2];
+                        // '-oth-' is stored in the answer column, the _Cother column holds the other text
+                        $columnName = $cn;
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
                     } else {
@@ -2332,6 +2093,7 @@ class statistics_helper
                 $aData['grawdata'] = $grawdata;
                 $aData['color'] = 0; // random truc much
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
+                $aData['chartTitle'] = $this->getChartTitle($outputs);
                 // Output graph
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_graphs', $aData, true);
             } else {
@@ -2460,7 +2222,8 @@ class statistics_helper
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
-                        $columnName = $cn . "_Cother";
+                        // '-oth-' is stored in the answer column, the _Cother column holds the other text
+                        $columnName = $cn;
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='{$othEncrypted}'";
                     } else {
@@ -3510,7 +3273,17 @@ class statistics_helper
                         $graphLbl[] = key($lbl);
                         reset($lbl);
                     }
-                    $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $graphLbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
+                    $iChartType = (int) ($aattr['statistics_graphtype'] ?? 0);
+                    // The chart type selected for the statistics overrides the question setting
+                    $sForcedChartType = Yii::app()->request->getPost('charttype', 'default');
+                    if ($sForcedChartType != 'default') {
+                        $iChartType = (int) $sForcedChartType;
+                    }
+                    // Pie, polar area and doughnut charts make no sense for multiple choice questions
+                    if (!$bAllowPieChart && in_array($iChartType, array(1, 4, 5))) {
+                        $iChartType = 0;
+                    }
+                    $cachefilename = createChart($qqid, $qsid, $iChartType, $graphLbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 }
 
                 if ($cachefilename || $outputType == 'html') {
@@ -3650,6 +3423,7 @@ class statistics_helper
                 $aData['color'] = 0;
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
                 $aData['lbl'] = $lbl;
+                $aData['chartTitle'] = $this->getChartTitle($outputs);
                 ///
 
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
@@ -3896,6 +3670,9 @@ class statistics_helper
         if (!isset($sql) || !$sql) {
             $sql = null;
         }
+
+        //Save the filter for the "Browse" button (applied by SurveyDynamic::search() in the responses grid)
+        Yii::app()->user->setState('sql_' . $surveyid, $sql);
 
         //only continue if we have something to output
         $bBrowse = false;
