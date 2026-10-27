@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import { useBuffer, useFocused, useSurvey } from 'hooks'
 import { createBufferOperation, Toast } from 'helpers'
-import { ExclamationMark } from 'components/icons'
+import { ExclamationMark, InformationIcon } from 'components/icons'
 import SmallCheckMarkIcon from 'components/icons/SmallCheckMarkIcon'
 import { SideBarRow } from 'components/SideBar/SideBarRow'
 import { QuestionListIcon } from 'components/icons'
@@ -49,11 +49,17 @@ export const RowQuestion = ({
       const changed = assignNumericAnswerCodes(question)
       Toast({
         ...toastOptions,
-        message: changed
-          ? t('Numeric answer codes assigned.')
-          : t('Answer options already use numeric codes.'),
-        className: 'import-survey-toast import-survey-toast--success',
-        leftIcon: <SmallCheckMarkIcon />,
+        ...(changed
+          ? {
+              message: t('Numeric answer codes assigned.'),
+              className: 'import-survey-toast import-survey-toast--success',
+              leftIcon: <SmallCheckMarkIcon />,
+            }
+          : {
+              message: t('Answer options already use numeric codes.'),
+              className: 'import-survey-toast import-survey-toast--info',
+              leftIcon: <InformationIcon />,
+            }),
         rightIcon: '',
       })
     } catch (e) {
