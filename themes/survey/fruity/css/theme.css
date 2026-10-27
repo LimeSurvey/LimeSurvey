@@ -771,7 +771,8 @@ body .checkbox-item label::after {
 }
 
 /* Remove borders when checkbox is checked */
-.checkbox-item input[type="checkbox"]:checked + label::before{
+.checkbox-item input[type="checkbox"]:checked + label::before,
+.checkbox-item .checkbox-checked + label::before{
     border: none;
     background-color: transparent;
     outline: none;
