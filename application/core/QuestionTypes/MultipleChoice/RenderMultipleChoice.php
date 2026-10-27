@@ -199,6 +199,8 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'checkedState'               => (
                 $mSessionValue != '' || LimeExpressionManager::isOtherCheckedWithoutValue($myfname) ? CHECKED : ''
             ),
+            'otherMandatoryTipId'        => $this->getOtherMandatoryTipId(),
+            'otherInvalid'               => $this->isOtherInvalid(),
             'relevanceClass'             => $this->getCurrentRelevecanceClass($myfname),
             'other'                      => true,
             'anscount'                   => $this->getQuestionCount(),
@@ -208,6 +210,26 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         );
     }
 
+
+    /**
+     * Id of the "please specify" mandatory tip while it is shown, else empty. The Other text field is described by it.
+     * @return string
+     */
+    protected function getOtherMandatoryTipId()
+    {
+        $status = LimeExpressionManager::GetQuestionStatus($this->oQuestion->qid);
+        return !empty($status['mandViolation']) && isMandatoryMessageShown() ? 'mandatory-other-' . $this->oQuestion->qid : '';
+    }
+
+    /**
+     * The submit was blocked because Other is ticked without text
+     * @return bool
+     */
+    protected function isOtherInvalid()
+    {
+        return $this->getOtherMandatoryTipId() !== ''
+            && LimeExpressionManager::isOtherCheckedWithoutValue($this->sSGQA . '_Cother');
+    }
 
     public function render($sCoreClasses = '')
     {
@@ -234,6 +256,8 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'otherTextRight'   => $otherTextRight,
             'otherInputSize'   => $otherInputSize,
             'otherMaxLength'   => $otherMaxLength,
+            'otherMandatoryTipId' => $this->getOtherMandatoryTipId(),
+            'otherInvalid'     => $this->isOtherInvalid(),
         ), true);
 
         $this->registerAssets();

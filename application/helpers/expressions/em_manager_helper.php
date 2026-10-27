@@ -223,6 +223,14 @@ class LimeExpressionManager
      */
     private $qid2code;
     /**
+     * Mapping of the Other SGQA of a multiple choice question to the column storing its tick.
+     * Only for questions whose response table has that column. It is not an expression variable.
+     *
+     * @example ['Q150_Cother'] = 'Q150_Cotherchecked'
+     * @var array
+     */
+    private $other2otherChecked = [];
+    /**
      * array of mappings of JavaScript Variable names to Question number (qid)
      *
      * @example ['java38612X13X161other'] = '161'
@@ -3322,6 +3330,7 @@ class LimeExpressionManager
         $this->qcode2sgqa = [];
         $this->tempVars = [];
         $this->qid2code = [];    // List of codes for each question - needed to know which to NULL if a question is irrelevant
+        $this->other2otherChecked = [];
         $this->jsVar2qid = [];
         $this->qcode2sgq = [];
         $this->alias2varName = [];
@@ -3417,6 +3426,10 @@ class LimeExpressionManager
             }
             $sgqa = $fielddata['fieldname'];
             $type = $fielddata['type'];
+            if (($fielddata['aid'] ?? '') === 'otherchecked') {
+                $this->other2otherChecked["Q{$fielddata['qid']}_Cother"] = $sgqa;
+                continue;
+            }
             $mandatory = $fielddata['mandatory'];
             $groupNum = (isset($fielddata['gid']) ? $fielddata['gid'] : '');
             $aid = (isset($fielddata['aid']) ? $fielddata['aid'] : '');
@@ -7172,6 +7185,9 @@ class LimeExpressionManager
                 $_SESSION[$LEM->sessid][$sq] = null;
                 $updatedValues[$sq] = null;
                 $LEM->updatedValues[$sq] = null;
+                if (isset($LEM->other2otherChecked[$sq])) {
+                    $LEM->setOtherCheckedValue($sq, null, $updatedValues);
+                }
             }
         }
         // Regardless of whether relevant or hidden, always set a $_SESSION for quanda_helper, use default value if exist
@@ -9159,6 +9175,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     ];
                     $updatedValues[$sq] = $_update;
                     $LEM->updatedValues[$sq] = $_update;
+                    if (isset($LEM->other2otherChecked[$sq])) {
+                        $otherChecked = trim((string) $value) !== '' || !empty($_POST[$sq . 'cbox']);
+                        $LEM->setOtherCheckedValue($sq, $otherChecked ? 'Y' : '', $updatedValues);
+                    }
                 } else {  // irrelevant, so database will be NULLed separately
                     // Must unset the value, rather than setting to '', so that EM can reuse the default value as needed.
                     unset($_SESSION[$LEM->sessid][$sq]);
@@ -9168,6 +9188,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     ];
                     $updatedValues[$sq] = $_update;
                     $LEM->updatedValues[$sq] = $_update;
+                    if (isset($LEM->other2otherChecked[$sq])) {
+                        $LEM->setOtherCheckedValue($sq, null, $updatedValues);
+                    }
                 }
             }
         }
@@ -9178,11 +9201,37 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
+     * Set the tick of the Other option, in session and in the values to save
+     * @param string $sq the Other SGQA, a key of $other2otherChecked
+     * @param string|null $value 'Y', '' or null when irrelevant
+     * @param array $updatedValues
+     */
+    private function setOtherCheckedValue($sq, $value, &$updatedValues)
+    {
+        $otherChecked = $this->other2otherChecked[$sq];
+        $_SESSION[$this->sessid][$otherChecked] = $value;
+        $_update = [
+            'type'  => Question::QT_M_MULTIPLE_CHOICE,
+            'value' => $value,
+        ];
+        $updatedValues[$otherChecked] = $_update;
+        $this->updatedValues[$otherChecked] = $_update;
+    }
+
+    /**
+     * Other is ticked but its text is empty. Uses the stored tick when the response table has the column,
+     * else only the current request (the tick is not stored).
      * @param string $sq
      * @return boolean
      */
     public static function isOtherCheckedWithoutValue($sq)
     {
+        $LEM =& LimeExpressionManager::singleton();
+        if (isset($LEM->other2otherChecked[$sq])) {
+            $values = $_SESSION[$LEM->sessid] ?? [];
+            return ($values[$LEM->other2otherChecked[$sq]] ?? '') === 'Y'
+                && trim((string) ($values[$sq] ?? '')) === '';
+        }
         if (empty($_POST[$sq . 'cbox'])) {
             return false;
         }
