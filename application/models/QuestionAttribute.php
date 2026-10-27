@@ -59,6 +59,12 @@ class QuestionAttribute extends LSActiveRecord
     private $validatedAttributeDefinition;
 
     /**
+     * @var array<int,array<string,array>> Results of getQuestionAttributes() in this request, by question id and
+     * json encoded language, see useRequestCache()
+     */
+    private static $requestCache = [];
+
+    /**
      * @return static
      */
     #[\Override]
@@ -249,8 +255,8 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * Returns Question attribute array name=>value
-     * --> returns result from emCache if it is set OR
-     * --> build the returned array and set the emCache to it
+     * --> returns result from the request cache (survey runtime only) or the emCache if it is set OR
+     * --> build the returned array and set both caches to it
      *
      * --get attributes from XML-Files
      * --get additional attributes from extended theme
@@ -269,14 +275,20 @@ class QuestionAttribute extends LSActiveRecord
         if ($receivedIDOnly) {
             $iQuestionID = intval($q);
         } else {
-            $iQuestionID = $q->qid;
+            $iQuestionID = (int) $q->qid;
         }
-        static $survey = '';
-        // Limit the size of the attribute cache due to memory usage
-        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
+        $requestCacheKey = json_encode($sLanguage);
+        $useRequestCache = self::useRequestCache();
+        if ($useRequestCache && isset(self::$requestCache[$iQuestionID][$requestCacheKey])) {
+            return self::$requestCache[$iQuestionID][$requestCacheKey];
+        }
+        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . $requestCacheKey;
         if (class_exists('EmCacheHelper', false) && EmCacheHelper::useCache()) {
             $value = EmCacheHelper::get($cacheKey);
             if ($value !== false) {
+                if ($useRequestCache) {
+                    self::$requestCache[$iQuestionID][$requestCacheKey] = $value;
+                }
                 return $value;
             }
         }
@@ -312,8 +324,64 @@ class QuestionAttribute extends LSActiveRecord
         if (class_exists('EmCacheHelper', false) && EmCacheHelper::useCache()) {
             EmCacheHelper::set($cacheKey, $aAttributeValues);
         }
+        if ($useRequestCache) {
+            self::$requestCache[$iQuestionID][$requestCacheKey] = $aAttributeValues;
+        }
 
         return $aAttributeValues;
+    }
+
+    /**
+     * True if getQuestionAttributes() may keep its results for the rest of the request: Only in the survey
+     * runtime, where the same question is asked for several times per page and attributes are not changed.
+     * Admin pages save attributes and read them back in the same request, so they always read the database.
+     *
+     * @return boolean
+     */
+    private static function useRequestCache()
+    {
+        $app = Yii::app();
+        if (!($app instanceof CWebApplication) || $app->getController() === null) {
+            return false;
+        }
+        return get_class($app->getController()) === 'SurveyController';
+    }
+
+    /**
+     * Forget the attribute values getQuestionAttributes() kept for this request.
+     *
+     * @param int|null $iQuestionID Only forget this question, null for all questions
+     * @return void
+     */
+    public static function clearRequestCache($iQuestionID = null)
+    {
+        if ($iQuestionID === null) {
+            self::$requestCache = [];
+        } else {
+            unset(self::$requestCache[(int) $iQuestionID]);
+        }
+    }
+
+    /**
+     * Forget the kept attribute values of this question after one of its attributes was saved.
+     *
+     * @return void
+     */
+    protected function afterSave()
+    {
+        parent::afterSave();
+        self::clearRequestCache($this->qid);
+    }
+
+    /**
+     * Forget the kept attribute values of this question after one of its attributes was deleted.
+     *
+     * @return void
+     */
+    protected function afterDelete()
+    {
+        parent::afterDelete();
+        self::clearRequestCache($this->qid);
     }
 
     /**
