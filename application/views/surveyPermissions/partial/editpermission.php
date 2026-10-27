@@ -36,15 +36,15 @@ Yii::app()->getController()->renderPartial(
                             role="img"
                             data-bs-toggle="tooltip"
                             data-bs-placement="right"
-                            title="<?= CHtml::encode($aCurrentPermissions['description']) ?>"
-                            aria-label="<?= CHtml::encode($aCurrentPermissions['description']) ?>"
+                            title="<?= $aCurrentPermissions['description'] ?>"
+                            aria-label="<?= $aCurrentPermissions['description'] ?>"
                         ></i>
                     </td>
                     <td
                         tabindex="0"
                         data-bs-toggle="tooltip"
                         data-bs-placement="right"
-                        title="<?= CHtml::encode($aCurrentPermissions['description']) ?>"
+                        title="<?= $aCurrentPermissions['description'] ?>"
                     ><?= $aCurrentPermissions['title'] ?></td>
                     <!-- checkbox  -->
                     <td>

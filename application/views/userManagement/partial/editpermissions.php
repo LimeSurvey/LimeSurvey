@@ -37,8 +37,8 @@ Yii::app()->getController()->renderPartial(
                             role="img"
                             data-bs-toggle="tooltip"
                             data-bs-placement="right"
-                            title="<?= CHtml::encode($aCRUDPermissions['description']) ?>"
-                            aria-label="<?= CHtml::encode($aCRUDPermissions['description']) ?>"
+                            title="<?= $aCRUDPermissions['description'] ?>"
+                            aria-label="<?= $aCRUDPermissions['description'] ?>"
                         ></i>
                     </div>
                 </td>
@@ -49,7 +49,7 @@ Yii::app()->getController()->renderPartial(
                         tabindex="0"
                         data-bs-toggle="tooltip"
                         data-bs-placement="right"
-                        title="<?= CHtml::encode($aCRUDPermissions['description']) ?>"
+                        title="<?= $aCRUDPermissions['description'] ?>"
                     >
                         <?php if ($sPermissionKey == 'superadmin') {
                             ?> <span class='warning'> <?php
@@ -66,8 +66,8 @@ Yii::app()->getController()->renderPartial(
                             role="img"
                             data-bs-toggle="tooltip"
                             data-bs-placement="right"
-                            title="<?= CHtml::encode($aCRUDPermissions['warning']) ?>"
-                            aria-label="<?= CHtml::encode($aCRUDPermissions['warning']) ?>"
+                            title="<?= $aCRUDPermissions['warning'] ?>"
+                            aria-label="<?= $aCRUDPermissions['warning'] ?>"
                         ></i>
                     <?php endif; ?>
                 </td>
