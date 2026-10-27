@@ -412,37 +412,20 @@ class SurveyActivator
 
         //if there is an autonumber_start field, start auto numbering here
         if ($iAutoNumberStart !== false && $iAutoNumberStart > 0) {
+            $tableName = $this->survey->responsesTableName;
             if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-                if (!function_exists('fixNumbering')) {
-                    Yii::app()->loadHelper("admin.activate"); // needed for mssql_drop_column_with_constraints
-                }
-                mssql_drop_column_with_constraints($this->survey->responsesTableName, 'id');
-                $sQuery = "ALTER TABLE {$this->survey->responsesTableName} ADD [id] int identity({$iAutoNumberStart},1)";
-                Yii::app()->db->createCommand($sQuery)->execute();
-                // Add back the primaryKey : unique name ensure by surveyid + datetime + random number
-                $indexname = "PK_{$this->survey->responsesTableName}_" . date('YmdHis') . "_" . randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
-                try {
-                    App()->db->createCommand()->addPrimaryKey($indexname, $this->survey->responsesTableName, 'id');
-                } catch (\Exception $e) {
-                    Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTableKeys');
-                    $this->tableWarnings[] = sprintf(gT("Unable to create primary key with message %s"), $e->getMessage());
-                }
+                // @see https://learn.microsoft.com/en-us/sql/t-sql/database-console-commands/dbcc-checkident-transact-sql
+                $sQuery = "DBCC CHECKIDENT ('{$tableName}', RESEED, {$iAutoNumberStart})";
             } elseif (Yii::app()->db->driverName == 'pgsql') {
-                $sQuery = "SELECT setval(pg_get_serial_sequence('{$this->survey->responsesTableName}', 'id'),{$iAutoNumberStart},false);";
-                try {
-                    Yii::app()->db->createCommand($sQuery)->execute();
-                } catch (\Exception $e) {
-                    Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTableKeys');
-                    $this->tableWarnings[] = sprintf(gT("Unable to create primary key with message %s"), $e->getMessage());
-                }
+                $sQuery = "SELECT setval(pg_get_serial_sequence('{$tableName}', 'id'),{$iAutoNumberStart},false);";
             } else {
-                $sQuery = "ALTER TABLE {$this->survey->responsesTableName} AUTO_INCREMENT = {$iAutoNumberStart}";
-                try {
-                    Yii::app()->db->createCommand($sQuery)->execute();
-                } catch (\Exception $e) {
-                    Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTableKeys');
-                    $this->tableWarnings[] = sprintf(gT("Unable to create primary key with message %s"), $e->getMessage());
-                }
+                $sQuery = "ALTER TABLE {$tableName} AUTO_INCREMENT = {$iAutoNumberStart}";
+            }
+            try {
+                Yii::app()->db->createCommand($sQuery)->execute();
+            } catch (\Exception $e) {
+                Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTableKeys');
+                $this->tableWarnings[] = sprintf(gT("Unable to create primary key with message %s"), $e->getMessage());
             }
         }
     }
