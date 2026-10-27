@@ -38,7 +38,6 @@ class QuestionBaseRendererRelevanceClassTest extends TestBaseClass
 
         $setProperty = function (string $name, $value) use ($renderer) {
             $property = new \ReflectionProperty(\QuestionBaseRenderer::class, $name);
-            $property->setAccessible(true);
             $property->setValue($renderer, $value);
         };
         $setProperty('aQuestionAttributes', $attributes);

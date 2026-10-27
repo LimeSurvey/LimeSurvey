@@ -6,7 +6,14 @@ import { FILE_UPLOADED } from '../utils'
 import { FilterSelect } from '../FilterSelect'
 import { ArrayFilter } from './ArrayFilter'
 import { RankingFilter } from './RankingFilter'
-import { DateRangeField, FileUploadedToggle, NumberRangeField } from './fields'
+import {
+  DateRangeField,
+  EncryptedHint,
+  FileUploadedToggle,
+  NumberRangeField,
+} from './fields'
+
+const TYPED_VALUE_KINDS = ['text', 'subText', 'arrayGrid']
 
 // Render an image-select answer option as a thumbnail. Falls back to the text
 // label for the "Other" pseudo-answer, which carries no image.
@@ -46,6 +53,10 @@ export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
     [questionOptions, filter.questionQid]
   )
 
+  const textPlaceholder = selectedQuestion?.encrypted
+    ? t('Exact value ...')
+    : t('Contains ...')
+
   // Multiselect needs the selected option objects, not just their values.
   const answerValue = useMemo(() => {
     if (!selectedQuestion) return []
@@ -61,7 +72,7 @@ export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
         return (
           <div className="responses-statistics-filters-row-field">
             <Input
-              placeholder={t('Contains ...')}
+              placeholder={textPlaceholder}
               value={filter.textValue}
               update={(value) => onUpdate('textValue', value)}
             />
@@ -105,7 +116,7 @@ export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
         return (
           <div className="responses-statistics-filters-row-field">
             <Input
-              placeholder={t('Contains ...')}
+              placeholder={textPlaceholder}
               value={filter.textValue}
               update={(value) => onUpdate('textValue', value)}
             />
@@ -203,6 +214,8 @@ export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
       </div>
 
       {selectedQuestion && renderValueField()}
+      {selectedQuestion?.encrypted &&
+        TYPED_VALUE_KINDS.includes(selectedQuestion.kind) && <EncryptedHint />}
     </div>
   )
 }

@@ -13,10 +13,12 @@ export const QuestionComments = ({
   questionCode,
   fields,
   answerOptions = [],
+  filterSet = [],
   onViewComments,
 }) => {
   const { comments, isLoading } = useQuestionComments(surveyId, questionCode, {
     fields,
+    filterSet,
   })
 
   const optionByAnswer = useMemo(

@@ -108,6 +108,73 @@ class SurveyThemeHelperTest extends TestBaseClass
     }
 
     /**
+     * A theme option holding the path of a non-image theme file (e.g. a CSS variation of a custom theme)
+     * must be kept as it is, and not be turned into an image virtual path.
+     *
+     * @return void
+     */
+    public function testNonImageThemeFilePathInOptionIsKeptAsIs()
+    {
+        $this->assertSame(
+            'css/theme.css',
+            \SurveyThemeHelper::sanitizePathInOption('css/theme.css', 'vanilla')
+        );
+    }
+
+    /**
+     * A theme option holding the path of an image inside the theme is turned into a virtual path.
+     *
+     * @return void
+     */
+    public function testImageThemeFilePathInOptionIsConvertedToVirtualPath()
+    {
+        $this->assertSame(
+            'image::theme::files/logo.png',
+            \SurveyThemeHelper::sanitizePathInOption('files/logo.png', 'vanilla')
+        );
+    }
+
+    /**
+     * A theme option holding the path of an image outside the allowed folders is marked as invalid.
+     *
+     * @return void
+     */
+    public function testImageFilePathOutsideThemeInOptionIsMarkedInvalid()
+    {
+        $this->assertSame(
+            'invalid:assets/images/caret-down.png',
+            \SurveyThemeHelper::sanitizePathInOption('assets/images/caret-down.png', 'vanilla')
+        );
+    }
+
+    /**
+     * Saving theme options keeps non-image file paths and converts image paths, for any option name.
+     *
+     * @return void
+     */
+    public function testSanitizeImagePathsOnJsonOnlyConvertsImagePaths()
+    {
+        $templateConfiguration = new \TemplateConfiguration();
+        $templateConfiguration->template_name = 'vanilla';
+        $templateConfiguration->options = json_encode([
+            'theme' => 'css/theme.css',
+            'cssframework' => 'css/theme.css',
+            'brandlogofile' => 'files/logo.png',
+        ]);
+
+        $templateConfiguration->sanitizeImagePathsOnJson('options', []);
+
+        $this->assertSame(
+            [
+                'theme' => 'css/theme.css',
+                'cssframework' => 'css/theme.css',
+                'brandlogofile' => 'image::theme::files/logo.png',
+            ],
+            json_decode($templateConfiguration->options, true)
+        );
+    }
+
+    /**
      * Writes the given XML to a temporary config file.
      *
      * @param string $xml The config XML

@@ -626,8 +626,11 @@ class Quotas
             true
         );
 
-        // Datas for twig view
+        // Datas for twig view: Start from the survey info, so themes can use it like on the other pages
+        $thissurvey = $aSurveyInfo;
         $thissurvey['sid'] = $surveyid;
+        // Avoid showing the progress bar
+        $thissurvey['aCompleted'] = true;
         $thissurvey['aQuotas'] = [];
         $thissurvey['aQuotas']['sMessage'] = $sMessage;
         $thissurvey['aQuotas']['bShowNavigator'] = !$closeSurvey;

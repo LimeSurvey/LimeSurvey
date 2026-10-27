@@ -66,7 +66,7 @@ class SurveyActivator
         $this->setMySQLDefaultEngine(Yii::app()->getConfig('mysqlEngine'));
 
         if (!$this->showEventMessages($event)) {
-            return ['error' => 'plugin'];
+            return ['error' => 'plugin', 'message' => $event->get('message')];
         }
 
         // Clear session cache (e.g. from a survey preview run in

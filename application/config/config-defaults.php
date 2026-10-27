@@ -127,6 +127,7 @@ $config['showpopups']         = 2; // Show popup messages if mandatory or condit
 
 $config['maxemails']          = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 $config['sendingrate']        = 60; // Number of seconds to wait until the next email batch is sent
+$config['send_error_saving_results_email'] = true; // Send the answers to the survey administrator email if a response could not be saved
 
 // Experimental parameters, only change if you know what you're doing
 //

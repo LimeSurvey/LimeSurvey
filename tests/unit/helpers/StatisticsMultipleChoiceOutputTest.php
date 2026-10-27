@@ -55,7 +55,6 @@ class StatisticsMultipleChoiceOutputTest extends TestBaseClass
     {
         $language = \Survey::model()->findByPk(self::$surveyId)->language;
         $method = new \ReflectionMethod(\statistics_helper::class, 'buildOutputList');
-        $method->setAccessible(true);
 
         return $method->invoke(new \statistics_helper(), $rt, $language, self::$surveyId, 'html', '', $language);
     }

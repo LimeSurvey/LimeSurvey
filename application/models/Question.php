@@ -291,7 +291,7 @@ class Question extends LSActiveRecord
                 'except' => 'archiveimport'
             );
             $aRules[] = array(
-                'title', 'match', 'pattern' => '/^[a-zA-z0-9]*$/',
+                'title', 'match', 'pattern' => '/^[a-zA-Z0-9]*$/',
                 'message' => gT('Subquestion codes may only contain alphanumeric characters.'),
                 'except' => 'archiveimport'
             );
@@ -885,6 +885,7 @@ class Question extends LSActiveRecord
         if (is_numeric(substr($sNewTitle, 0, 1))) {
             $sNewTitle = 'q' . $sNewTitle;
         }
+        $this->title = $sNewTitle;
         /* Maybe there are another question with same title try to fix it 10 times */
         $attempts = 0;
         while (!$this->validate(array('title'))) {
