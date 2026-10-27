@@ -17,6 +17,9 @@ class StatisticsResponseFilters
 
     /** @var bool|null */
     private $completed = null;
+    private ?string $completion = null;
+    /** @var list<array{key: string, filterMethod: string, value: mixed}> */
+    private array $conditions = [];
 
     /** @var string[] */
     private $searchTerms = [];
@@ -69,6 +72,45 @@ class StatisticsResponseFilters
         return $this;
     }
 
+    public function setCompletion(string $completion): self
+    {
+        if (!in_array($completion, ['all', 'completed', 'incomplete', 'screened_out'], true)) {
+            throw new InvalidArgumentException('Invalid completion filter');
+        }
+        $this->completion = $completion === 'all' ? null : $completion;
+        return $this;
+    }
+
+    public function setConditions(array $conditions): self
+    {
+        if (count($conditions) > 20) {
+            throw new InvalidArgumentException('No more than 20 response conditions are allowed');
+        }
+        foreach ($conditions as $condition) {
+            if (!is_array($condition)
+                || !isset($condition['key'], $condition['filterMethod'], $condition['value'])
+                || !is_string($condition['key'])
+                || !is_string($condition['filterMethod'])
+                || !in_array($condition['filterMethod'], ['equal', 'multi-select', 'range'], true)
+            ) {
+                throw new InvalidArgumentException('Invalid response condition');
+            }
+            $values = $condition['filterMethod'] === 'equal' ? [$condition['value']] : $condition['value'];
+            if (!is_array($values) || !$values || count($values) > 50
+                || ($condition['filterMethod'] === 'range' && count($values) !== 2)
+            ) {
+                throw new InvalidArgumentException('Invalid response condition values');
+            }
+            foreach ($values as $value) {
+                if (!is_scalar($value) || mb_strlen((string)$value) > 250) {
+                    throw new InvalidArgumentException('Response condition values must be short scalar values');
+                }
+            }
+        }
+        $this->conditions = array_values($conditions);
+        return $this;
+    }
+
     /**
      * Free-text search terms, response matches when every term appears
      * (case-insensitively) in at least one of its text answer columns.
@@ -110,7 +152,7 @@ class StatisticsResponseFilters
     }
 
     /**
-     * @return array<string, int|bool|string[]|null>
+     * @return array<string, int|bool|string|list<string>|list<array{key: string, filterMethod: string, value: mixed}>>
      */
     public function getFilters(): array
     {
@@ -119,7 +161,9 @@ class StatisticsResponseFilters
                 'minId' => $this->minId,
                 'maxId' => $this->maxId,
                 'completed' => $this->completed,
+                'completion' => $this->completion,
                 'search' => $this->searchTerms ?: null,
+                'conditions' => $this->conditions ?: null,
             ],
             static function ($value): bool {
                 return $value !== null;

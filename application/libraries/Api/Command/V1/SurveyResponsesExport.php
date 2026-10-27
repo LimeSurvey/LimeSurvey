@@ -210,6 +210,11 @@ class SurveyResponsesExport implements CommandInterface
 
         [$type, $language, $answerFormat, $csvSeparator, $filters] = $this->getExportRequestData($request);
 
+        $completion = $request->getData('completion', 'all');
+        if (!is_string($completion)) {
+            throw new InvalidArgumentException('Invalid completion filter.');
+        }
+
         $resolvedFilters = $this->resolveFilterSet($request, $surveyId, $language);
 
         if (!in_array($type, $this->nativeFormats)) {
@@ -226,6 +231,7 @@ class SurveyResponsesExport implements CommandInterface
 
         $exportService = $this->exportSurvey
             ->setLanguage($language)
+            ->setCompletionFilter($completion)
             ->setOutputMode('file');
 
         if ($answerFormat) {

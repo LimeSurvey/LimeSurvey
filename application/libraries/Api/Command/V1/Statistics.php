@@ -22,7 +22,6 @@ use LimeSurvey\Api\Command\{
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use DI\FactoryInterface;
-use Yii;
 
 class Statistics implements CommandInterface
 {
@@ -79,7 +78,7 @@ class Statistics implements CommandInterface
         try {
             $this->statisticsService->setSurvey($surveyId, $request->getData('language'));
 
-            if ($this->getFilters()->count() > 0) {
+            if ($this->getFilters($request)->count() > 0) {
                 $this->statisticsService->setFilters($this->filters);
             }
 
@@ -88,8 +87,8 @@ class Statistics implements CommandInterface
             );
 
             $this->statisticsService->setPagination(
-                $this->getPage(),
-                $this->getPageSize()
+                $this->getPage($request),
+                $this->getPageSize($request)
             );
 
             $statistics = $this->statisticsService->run();
@@ -150,21 +149,20 @@ class Statistics implements CommandInterface
         return $resolver->resolve($filterSet);
     }
 
-    private function getPage(): int
+    private function getPage(Request $request): int
     {
-        $page = Yii::app()->getRequest()->getQueryParams()['page'] ?? 0;
+        $page = $request->getData('page', 0);
         return max(0, (int)$page);
     }
 
-    private function getPageSize(): int
+    private function getPageSize(Request $request): int
     {
-        $pageSize = Yii::app()->getRequest()->getQueryParams()['pageSize'] ?? self::DEFAULT_PAGE_SIZE;
+        $pageSize = $request->getData('pageSize', self::DEFAULT_PAGE_SIZE);
         return min(self::MAX_PAGE_SIZE, max(1, (int)$pageSize));
     }
 
-    public function getFilters(): StatisticsResponseFilters
+    public function getFilters(Request $request): StatisticsResponseFilters
     {
-        $params = Yii::app()->getRequest()->getQueryParams();
         $filterMap = [
             'minId' => 'setMinId',
             'maxId' => 'setMaxId',
@@ -172,17 +170,35 @@ class Statistics implements CommandInterface
         ];
 
         foreach ($filterMap as $key => $method) {
-            $value = $params[$key] ?? null;
+            $value = $request->getData($key);
             if ($value !== null) {
                 $this->filters->$method(
-                    $key === 'completed' ? $value === 'true' : (int)$value
+                    // REST passes query strings, MCP passes JSON booleans
+                    $key === 'completed' ? ($value === true || $value === 'true') : (int)$value
                 );
             }
         }
 
-        $search = $params['search'] ?? null;
+        $search = $request->getData('search');
         if ($search !== null) {
             $this->filters->setSearchTerms(is_array($search) ? $search : [$search]);
+        }
+        $conditions = $request->getData('conditions');
+        if ($conditions !== null) {
+            if (!is_array($conditions)) {
+                throw new InvalidArgumentException('conditions must be an array');
+            }
+            $this->filters->setConditions($conditions);
+        }
+        $completion = $request->getData('completion');
+        if ($completion !== null) {
+            if (!is_string($completion)) {
+                throw new InvalidArgumentException('completion must be a string');
+            }
+            if ($completion !== 'all' && $request->getData('completed') !== null) {
+                throw new InvalidArgumentException('Use either completed or completion, not both.');
+            }
+            $this->filters->setCompletion($completion);
         }
 
         return $this->filters;

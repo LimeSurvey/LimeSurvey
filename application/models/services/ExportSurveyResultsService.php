@@ -5,6 +5,7 @@ namespace LimeSurvey\Models\Services;
 use CDbException;
 use InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\CompletionFilter;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
 use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
 use LimeSurvey\Models\Services\Export\ExportAnswerFormatter;
@@ -35,6 +36,7 @@ class ExportSurveyResultsService
         'datestamp'     => ['key' => 'dateLastAction',  'header' => 'Date last action'],
         'ipaddr'        => ['key' => 'ipAddr',         'header' => 'IP address'],
         'refurl'        => ['key' => 'refUrl',         'header' => 'Referrer URL'],
+        'quota_exit'    => ['key' => 'quotaExit',      'header' => 'Quota exit'],
     ];
 
     protected $supportedExportTypes = ['csv', 'html'];
@@ -83,6 +85,16 @@ class ExportSurveyResultsService
 
     /** @var string 'long' for full translated answers, 'short' for raw answer codes. */
     protected $answerFormat = 'long';
+    protected string $completionFilter = 'all';
+
+    public function setCompletionFilter(string $completion): self
+    {
+        if (!in_array($completion, ['all', 'completed', 'incomplete', 'screened_out'], true)) {
+            throw new InvalidArgumentException('Invalid completion filter.');
+        }
+        $this->completionFilter = $completion;
+        return $this;
+    }
 
     /** @var string CSV field separator character. */
     protected $csvSeparator = ',';
@@ -317,8 +329,9 @@ class ExportSurveyResultsService
 
         // Compute active meta columns from fieldMap
         $metaColumns = [];
+        $model = SurveyDynamic::model($surveyId);
         foreach (self::META_COLUMN_MAP as $fieldMapKey => $meta) {
-            if (isset($this->transformerOutputSurveyResponses->fieldMap[$fieldMapKey])) {
+            if (isset($model->getTableSchema()->columns[$fieldMapKey])) {
                 $meta['header'] = gT($meta['header']);
                 $metaColumns[] = $meta;
             }
@@ -329,8 +342,15 @@ class ExportSurveyResultsService
         $writer->init($surveyQuestions, $metadata);
 
         $filterCriteria = $this->buildFilterCriteria();
+        if ($filterCriteria === null) {
+            $filterCriteria = new \CDbCriteria();
+        }
+        CompletionFilter::apply(
+            $filterCriteria,
+            $this->completionFilter,
+            array_keys($model->getTableSchema()->columns)
+        );
         $totalCount = $this->getTotalResponseCount($surveyId, $filterCriteria);
-        $model = SurveyDynamic::model($surveyId);
 
         for ($offset = 0; $offset < $totalCount; $offset += $this->chunkSize) {
             $chunk = $this->fetchResponseChunkDirect($model, $offset, $this->chunkSize, $filterCriteria);
@@ -478,6 +498,20 @@ class ExportSurveyResultsService
         } catch (CDbException $e) {
             Yii::log($e->getMessage(), 'error', 'application.api.export');
             throw new RuntimeException('Unable to fetch survey responses');
+        }
+    }
+
+    protected function fetchFilteredResponseChunk($model, int $offset, int $limit, \CDbCriteria $filter): array
+    {
+        $criteria = clone $filter;
+        $criteria->order = $model->primaryKey() . ' ASC';
+        $criteria->limit = $limit;
+        $criteria->offset = $offset;
+
+        try {
+            return $model->findAll($criteria);
+        } catch (CDbException $e) {
+            throw new RuntimeException("Unable to fetch survey responses: " . $e->getMessage());
         }
     }
 

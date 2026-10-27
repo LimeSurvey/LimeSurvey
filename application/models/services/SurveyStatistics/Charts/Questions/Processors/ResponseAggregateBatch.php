@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
 use CDbConnection;
+use InvalidArgumentException;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSqlBuilder;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
@@ -26,6 +27,7 @@ final class ResponseAggregateBatch
     public const MAX_EXPRESSIONS_PER_QUERY = 1500;
 
     private const MAX_MEDIANS_PER_QUERY = 100;
+    private const MAX_PARAMS_PER_QUERY = 2000;
 
     private const KIND_VALUE = 'value';
     private const KIND_JSON_ELEMENT = 'jsonElement';
@@ -268,7 +270,8 @@ final class ResponseAggregateBatch
             }
         }
 
-        foreach (array_chunk($selects, self::MAX_MEDIANS_PER_QUERY, true) as $chunk) {
+        $paramsPerSelect = count($params[0] ?? []);
+        foreach (array_chunk($selects, self::medianChunkSize($paramsPerSelect), true) as $chunk) {
             $chunkParams = [];
             foreach (array_keys($chunk) as $index) {
                 $chunkParams += $params[$index];
@@ -282,6 +285,13 @@ final class ResponseAggregateBatch
         }
     }
 
+    private static function medianChunkSize(int $paramsPerSelect): int
+    {
+        return $paramsPerSelect === 0
+            ? self::MAX_MEDIANS_PER_QUERY
+            : max(1, min(self::MAX_MEDIANS_PER_QUERY, intdiv(self::MAX_PARAMS_PER_QUERY, $paramsPerSelect)));
+    }
+
     /**
      * @return array{0: string, 1: array<string,mixed>}
      */
@@ -289,7 +299,7 @@ final class ResponseAggregateBatch
     {
         $col = $db->quoteColumnName($request['field']);
         $isNumericCell = $this->numericCellCheck($db, $request['field'], !empty($request['numeric']));
-        [$where, $whereParams] = $this->buildWhere();
+        [$where, $whereParams] = $this->buildWhere('_' . $alias);
         $where = $where === '' ? " WHERE $isNumericCell" : "$where AND $isNumericCell";
 
         $skip = intdiv($count - 1, 2);
@@ -483,9 +493,10 @@ final class ResponseAggregateBatch
      * condition, and the legacy one keeps its meaning.
      *
      * @return array{0: string, 1: array<string,mixed>} Clause, and the values
-     *     the caller has to bind.
+     *     the caller has to bind. The suffix keeps placeholders unique when
+     *     several selects are merged into one statement.
      */
-    private function buildWhere(): array
+    private function buildWhere(string $suffix = ''): array
     {
         $conditions = $this->legacyConditions();
         $params = [];
@@ -494,6 +505,15 @@ final class ResponseAggregateBatch
         if ($resolved['condition'] !== '') {
             $conditions[] = '(' . $resolved['condition'] . ')';
             $params = $resolved['params'];
+        }
+
+        if ($this->filters !== null && !empty($this->filters->getFilters()['conditions'])) {
+            [$responseConditions, $conditionParams] = $this->buildResponseConditions(
+                $this->filters->getFilters()['conditions'],
+                $suffix
+            );
+            $conditions = array_merge($conditions, $responseConditions);
+            $params += $conditionParams;
         }
 
         return [$conditions ? (' WHERE ' . implode(' AND ', $conditions)) : '', $params];
@@ -516,6 +536,10 @@ final class ResponseAggregateBatch
         if (isset($filters['completed'])) {
             $conditions[] = 'submitdate IS' . ($filters['completed'] ? ' NOT ' : ' ') . 'NULL';
         }
+        $completionCondition = $this->buildCompletionCondition($filters);
+        if ($completionCondition !== null) {
+            $conditions[] = $completionCondition;
+        }
 
         if (isset($filters['minId'])) {
             $conditions[] = 'id >= ' . (int)$filters['minId'];
@@ -530,6 +554,56 @@ final class ResponseAggregateBatch
         }
 
         return $conditions;
+    }
+
+    private function buildCompletionCondition(array $filters): ?string
+    {
+        if (!isset($filters['completion'])) {
+            return null;
+        }
+        if ($filters['completion'] === 'screened_out') {
+            if (!isset(SurveyDynamic::model($this->surveyId)->getTableSchema()->columns['quota_exit'])) {
+                throw new InvalidArgumentException('This survey has no quota exit column');
+            }
+            return 'quota_exit IS NOT NULL AND quota_exit <> 0';
+        }
+        return 'submitdate IS ' . ($filters['completion'] === 'completed' ? 'NOT ' : '') . 'NULL';
+    }
+
+    /**
+     * @return array{0: string[], 1: array<string,mixed>}
+     */
+    private function buildResponseConditions(array $filters, string $suffix = ''): array
+    {
+        $schema = SurveyDynamic::model($this->surveyId)->getTableSchema();
+        $conditions = [];
+        $params = [];
+        foreach ($filters as $index => $filter) {
+            $field = $filter['key'] === 'quotaExit' ? 'quota_exit' : $filter['key'];
+            if (!isset($schema->columns[$field])) {
+                throw new InvalidArgumentException('Unknown response column: ' . $field);
+            }
+            $col = $this->getDb()->quoteColumnName($field);
+            $values = $filter['filterMethod'] === 'equal' ? [$filter['value']] : array_values($filter['value']);
+            $holders = [];
+            foreach ($values as $position => $value) {
+                $holder = ':condition' . $suffix . '_' . $index . '_' . $position;
+                $holders[] = $holder;
+                $params[$holder] = $value;
+            }
+            switch ($filter['filterMethod']) {
+                case 'equal':
+                    $conditions[] = "$col = $holders[0]";
+                    break;
+                case 'multi-select':
+                    $conditions[] = "$col IN (" . implode(', ', $holders) . ')';
+                    break;
+                case 'range':
+                    $conditions[] = "$col BETWEEN $holders[0] AND $holders[1]";
+                    break;
+            }
+        }
+        return [$conditions, $params];
     }
 
     /**
