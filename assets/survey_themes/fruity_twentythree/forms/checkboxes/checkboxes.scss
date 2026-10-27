@@ -83,6 +83,7 @@
     margin-top: 7px;
 }
 .checkbox-item input[type="checkbox"]:disabled + label,
+.ls-disabled .visual-checkbox + label,
 .checkbox-item input[type="radio"]:disabled + label {
     opacity: 0.65;
 }
