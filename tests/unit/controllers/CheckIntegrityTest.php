@@ -49,7 +49,6 @@ class CheckIntegrityTest extends TestBaseClass
     private function callMethod($method, array $args)
     {
         $reflection = new \ReflectionMethod(\DataIntegrityChecker::class, $method);
-        $reflection->setAccessible(true);
         return $reflection->invokeArgs($this->integrityChecker, $args);
     }
 
@@ -743,6 +742,67 @@ class CheckIntegrityTest extends TestBaseClass
         }
     }
 
+    /** Verifies that survey theme options of a deleted survey are only deleted, and reported, by the consistency check. */
+    public function testOrphanThemeConfigurationsAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $bogusSid = 999999917;
+        \Yii::app()->db->createCommand()->insert('{{template_configuration}}', array(
+            'template_name' => 'vanilla',
+            'sid' => $bogusSid,
+            'options' => 'inherit',
+        ));
+        $countThemeConfigurations = function ($condition, array $params = array()) {
+            return (int) \Yii::app()->db->createCommand()->select('count(*)')->from('{{template_configuration}}')->where($condition, $params)->queryScalar();
+        };
+        $themeConfigurationsWithoutSurvey = $countThemeConfigurations('sid IS NULL');
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame(1, $countThemeConfigurations('sid = :sid', array(':sid' => $bogusSid)), 'Merely loading the check page (GET) deleted the theme options of a deleted survey.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(0, $countThemeConfigurations('sid = :sid', array(':sid' => $bogusSid)), 'The consistency check did not delete the theme options of a deleted survey.');
+            $this->assertStringContainsString('survey theme option(s) of surveys that no longer exist', $logOfFixes);
+            $this->assertSame($themeConfigurationsWithoutSurvey, $countThemeConfigurations('sid IS NULL'), 'The consistency check deleted theme options that do not belong to a survey.');
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{template_configuration}}', 'sid = :sid', array(':sid' => $bogusSid));
+        }
+    }
+
+    /** Verifies that duplicate survey theme options are only deleted, and reported, by the consistency check, keeping the oldest one. */
+    public function testDuplicateThemeConfigurationsAreOnlyDeletedAndReportedByTheConsistencyCheckKeepingTheOldest()
+    {
+        $templateName = 'fruity_twentythree';
+        $insertedIds = array();
+        foreach (array('{"container":"off"}', '{"container":"on"}') as $options) {
+            \Yii::app()->db->createCommand()->insert('{{template_configuration}}', array(
+                'template_name' => $templateName,
+                'sid' => self::$surveyId,
+                'options' => $options,
+            ));
+            $insertedIds[] = (int) \Yii::app()->db->getLastInsertID();
+        }
+        $getIds = function () use ($templateName) {
+            return array_map('intval', \Yii::app()->db->createCommand()->select('id')->from('{{template_configuration}}')
+                ->where('sid = :sid AND template_name = :template_name', array(':sid' => self::$surveyId, ':template_name' => $templateName))
+                ->order('id')->queryColumn());
+        };
+        $idsBefore = $getIds();
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame($idsBefore, $getIds(), 'Merely loading the check page (GET) deleted duplicate theme options.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(array($idsBefore[0]), $getIds(), 'The consistency check did not keep only the oldest theme options of the survey and theme.');
+            $this->assertStringContainsString('duplicate survey theme option(s)', $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{template_configuration}}', array('in', 'id', $insertedIds));
+        }
+    }
+
     /**
      * A subquestion whose group does not exist (but whose parent question is fine) must
      * get its parent's group back instead of being deleted as a question without group.
@@ -813,6 +873,164 @@ class CheckIntegrityTest extends TestBaseClass
             $question = \Question::model()->findByPk($qid);
             if ($question) {
                 $question->delete();
+            }
+        }
+    }
+
+    /**
+     * A quota without texts in the survey's base language (e.g. after a failed import) showed an
+     * error on the quota page, so the consistency check must create the missing texts: copied
+     * from another language of the quota, or the default quota message if there are none.
+     */
+    public function testQuotaWithoutTextsGetsTextsCreatedAndReportedByTheConsistencyCheck()
+    {
+        $baseLanguage = self::$testSurvey->language;
+        $additionalLanguage = self::$testSurvey->additionalLanguages[0];
+        $db = \Yii::app()->db;
+        $createQuota = function ($name) {
+            $quota = new \Quota();
+            $quota->setAttributes(array('sid' => self::$surveyId, 'name' => $name, 'qlimit' => 0, 'action' => 1, 'active' => 1, 'autoload_url' => 1), false);
+            $this->assertTrue($quota->save(false), 'Could not save quota fixture.');
+            return (int) $quota->id;
+        };
+        $partialQuotaId = $createQuota('CIQUOTAPARTIAL');
+        $emptyQuotaId = $createQuota('CIQUOTAEMPTY');
+        $db->createCommand()->insert('{{quota_languagesettings}}', array(
+            'quotals_quota_id' => $partialQuotaId,
+            'quotals_language' => $additionalLanguage,
+            'quotals_name' => 'CIQUOTAPARTIAL',
+            'quotals_message' => 'Quota full',
+            'quotals_url' => 'https://example.org/full',
+            'quotals_urldescrip' => 'Full',
+        ));
+        $getTexts = function ($quotaId) use ($db) {
+            $rows = $db->createCommand()
+                ->select('quotals_language, quotals_message, quotals_url, quotals_urldescrip')
+                ->from('{{quota_languagesettings}}')
+                ->where('quotals_quota_id = :quotaid', array(':quotaid' => $quotaId))
+                ->queryAll();
+            return array_column($rows, null, 'quotals_language');
+        };
+
+        try {
+            $this->assertNull(\Quota::model()->findByPk($partialQuotaId)->mainLanguagesetting, 'A quota without texts in the base language returned texts of the base language.');
+
+            $this->newNoRenderController()->index();
+            $this->assertCount(1, $getTexts($partialQuotaId), 'Merely loading the check page (GET) created quota texts.');
+            $this->assertCount(0, $getTexts($emptyQuotaId), 'Merely loading the check page (GET) created quota texts.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $partialTexts = $getTexts($partialQuotaId);
+            $this->assertEqualsCanonicalizing(array($baseLanguage, $additionalLanguage), array_keys($partialTexts), 'The consistency check did not create the missing base language texts of the quota.');
+            $this->assertSame(
+                array('Quota full', 'https://example.org/full', 'Full'),
+                array($partialTexts[$baseLanguage]['quotals_message'], $partialTexts[$baseLanguage]['quotals_url'], $partialTexts[$baseLanguage]['quotals_urldescrip']),
+                'The created base language texts were not copied from the existing texts of the quota.'
+            );
+            $emptyTexts = $getTexts($emptyQuotaId);
+            $this->assertEqualsCanonicalizing(self::$testSurvey->getAllLanguages(), array_keys($emptyTexts), 'The consistency check did not create texts for exactly the survey languages.');
+            foreach ($emptyTexts as $language => $texts) {
+                $this->assertSame(gT('Sorry your responses have exceeded a quota on this survey.', 'unescaped', $language), $texts['quotals_message'], 'A quota without any texts did not get the default quota message.');
+            }
+            $this->assertStringContainsString(
+                sprintf('Created missing texts for language %s of quota CIQUOTAPARTIAL (ID %s) in survey %s', $baseLanguage, $partialQuotaId, self::$surveyId),
+                $logOfFixes
+            );
+            $this->assertStringContainsString(
+                sprintf('Created missing texts for language %s of quota CIQUOTAEMPTY (ID %s) in survey %s', $additionalLanguage, $emptyQuotaId, self::$surveyId),
+                $logOfFixes
+            );
+            $this->assertNotNull(\Quota::model()->findByPk($partialQuotaId)->mainLanguagesetting, 'The created base language texts were not found.');
+        } finally {
+            $db->createCommand()->delete('{{quota_languagesettings}}', array('in', 'quotals_quota_id', array($partialQuotaId, $emptyQuotaId)));
+            $db->createCommand()->delete('{{quota}}', array('in', 'id', array($partialQuotaId, $emptyQuotaId)));
+        }
+    }
+
+    /**
+     * Invalid default values (e.g. imported from an old survey) showed an error in the survey,
+     * so the consistency check must delete them and default values the survey never uses,
+     * while keeping valid default values and default values with an expression.
+     */
+    public function testInvalidAndUnusedDefaultValuesAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $group = self::$testSurvey->groups[0];
+        $language = self::$testSurvey->language;
+        $qid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99993, 'CIDEFAULT');
+        $subquestionQids = array();
+        foreach (array('SQ001', 'SQ002', 'SQ003') as $order => $title) {
+            $subquestionQids[] = $this->createOrderedQuestionFixture($group->gid, $qid, 0, $order, $title);
+        }
+        $listQid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99994, 'CIDEFLIST');
+        $listWithOtherQid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99995, 'CIDEFOTHER');
+        $questionQids = array($qid, $listQid, $listWithOtherQid);
+        $updateQuestions = function (array $qids, array $columns) {
+            \Yii::app()->db->createCommand()->update('{{questions}}', $columns, array('in', 'qid', $qids));
+        };
+        $updateQuestions(array_merge(array($qid), $subquestionQids), array('type' => \QuestionType::QT_M_MULTIPLE_CHOICE));
+        $updateQuestions(array($listQid, $listWithOtherQid), array('type' => \QuestionType::QT_L_LIST));
+        $updateQuestions(array($listWithOtherQid), array('other' => 'Y'));
+        $answer = new \Answer();
+        $answer->qid = $listQid;
+        $answer->code = 'A1';
+        $answer->sortorder = 1;
+        $answer->scale_id = 0;
+        $this->assertTrue($answer->save(), 'Could not save answer fixture: ' . json_encode($answer->errors));
+        $createDefaultValue = function ($qid, $sqid, $value) use ($language) {
+            $defaultValue = new \DefaultValue();
+            $defaultValue->qid = $qid;
+            $defaultValue->sqid = $sqid;
+            $defaultValue->scale_id = 0;
+            $this->assertTrue($defaultValue->save(), 'Could not save default value fixture: ' . json_encode($defaultValue->errors));
+            $defaultValueL10n = new \DefaultValueL10n();
+            $defaultValueL10n->dvid = $defaultValue->dvid;
+            $defaultValueL10n->language = $language;
+            $defaultValueL10n->defaultvalue = $value;
+            $this->assertTrue($defaultValueL10n->save(), 'Could not save default value l10n fixture: ' . json_encode($defaultValueL10n->errors));
+            return $defaultValue->dvid;
+        };
+        $keptDvids = array(
+            $createDefaultValue($qid, $subquestionQids[0], 'Y'),
+            $createDefaultValue($qid, $subquestionQids[2], '{1+1}'),
+            $createDefaultValue($listWithOtherQid, 0, '-oth-'),
+        );
+        $deletedDvids = array(
+            $createDefaultValue($qid, $subquestionQids[1], '10'),
+            $createDefaultValue($qid, 0, 'Y'),
+            $createDefaultValue($listQid, 0, 'X9'),
+        );
+        $getDvids = function () use ($questionQids) {
+            return \Yii::app()->db->createCommand()->select('dvid')->from('{{defaultvalues}}')->where(array('in', 'qid', $questionQids))->queryColumn();
+        };
+        $getL10nDvids = function () use ($keptDvids, $deletedDvids) {
+            return \Yii::app()->db->createCommand()->select('dvid')->from('{{defaultvalue_l10ns}}')
+                ->where(array('in', 'dvid', array_merge($keptDvids, $deletedDvids)))->queryColumn();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertCount(6, $getDvids(), 'Merely loading the check page (GET) deleted default values.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertEqualsCanonicalizing($keptDvids, $getDvids(), 'The consistency check did not delete exactly the invalid and the unused default values.');
+            $this->assertEqualsCanonicalizing($keptDvids, $getL10nDvids(), 'The consistency check left the texts of deleted default values behind.');
+            $this->assertStringContainsString(
+                sprintf('Deleted the invalid default value 10 for language %s of question CIDEFAULT (ID %s) in survey %s', $language, $qid, self::$surveyId),
+                $logOfFixes
+            );
+            $this->assertStringContainsString(
+                sprintf('Deleted the invalid default value X9 for language %s of question CIDEFLIST (ID %s) in survey %s', $language, $listQid, self::$surveyId),
+                $logOfFixes
+            );
+            $this->assertStringContainsString(sprintf('Deleted an unused default value of question CIDEFAULT (ID %s) in survey %s', $qid, self::$surveyId), $logOfFixes);
+        } finally {
+            foreach ($questionQids as $questionQid) {
+                $question = \Question::model()->findByPk($questionQid);
+                if ($question) {
+                    $question->delete();
+                }
             }
         }
     }

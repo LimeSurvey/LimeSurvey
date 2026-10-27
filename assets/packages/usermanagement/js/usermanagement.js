@@ -276,6 +276,33 @@ var UserManagement = function () {
         });
     };
 
+    var wireLoginMethods = function () {
+        var $loginMethods = $('#UserManagement--login-methods');
+        if ($loginMethods.length === 0) {
+            return;
+        }
+        var updateLoginMethods = function () {
+            var ldapLogin = $('#User_Form_login_method_auth_ldap').prop('checked') === true;
+            var dbLogin = $('#User_Form_login_method_auth_db').prop('checked') === true;
+            // LDAP users get full name and email address from the LDAP directory
+            $('#UserManagement--ldap-hint').toggleClass('d-none', !ldapLogin);
+            $('#User_Form_email').prop('required', !ldapLogin);
+            $('label[for=User_Form_email] span.required').toggleClass('d-none', ldapLogin);
+            if (ldapLogin) {
+                $('#User_Form_full_name, #User_Form_email').attr('aria-describedby', 'UserManagement--ldap-hint');
+            } else {
+                $('#User_Form_full_name, #User_Form_email').removeAttr('aria-describedby');
+            }
+            // A password is only needed for the internal database login
+            if (!dbLogin) {
+                $('#utility_set_password_no').prop('checked', true).trigger('change');
+            }
+            $('#utility_set_password').toggleClass('d-none', !dbLogin);
+        };
+        $loginMethods.find('input[type=checkbox]').on('change', updateLoginMethods);
+        updateLoginMethods();
+    };
+
     var wireRoleSet = function () {
         $('#UserManagement--modalform').find('select').each(
             function(i,item) {
@@ -324,6 +351,7 @@ var UserManagement = function () {
     var applyModalHtml = function (html) {
         $('#UserManagement-action-modal').find('.modal-content').html(html);
         wirePasswordOptions();
+        wireLoginMethods();
         wirePermissions();
         wireTemplatePermissions();
         wireRoleSet();

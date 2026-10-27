@@ -992,7 +992,7 @@ class TokenDynamic extends LSActiveRecord
                 'onclick' => "window.LS.gridButton.postGridAction(event,$(this))",
             ],
             'enabledCondition' => $permission_participantpanel_read
-                && self::model(self::$sid)->count("participant_id is not null")
+                && !empty($this->participant_id)
         ];
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);

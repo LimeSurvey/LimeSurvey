@@ -24,12 +24,10 @@ class SurveyResponsesTest extends TestBaseClass
         $reflection = new ReflectionClass(SurveyResponses::class);
         $command = $reflection->newInstanceWithoutConstructor();
         $surveyProperty = $reflection->getProperty('survey');
-        $surveyProperty->setAccessible(true);
         $surveyProperty->setValue($command, $survey);
 
         $responses = [['id' => 1]];
         $method = $reflection->getMethod('appendTimingData');
-        $method->setAccessible(true);
         $arguments = [&$responses];
 
         $this->assertSame([], $method->invokeArgs($command, $arguments));

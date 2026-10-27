@@ -403,7 +403,7 @@ class Participant extends LSActiveRecord
                 "value"  => '$data->getParticipantAttribute($this->id)',
                 "id"     => $name,
                 "header" => CHtml::encode($attribute['localizedname']) . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
-                "type"   => "html",
+                "type"   => "longtext",
             ];
             //textbox
             if ($attribute['attribute_type'] === "TB") {

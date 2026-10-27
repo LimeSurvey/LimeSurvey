@@ -33,7 +33,6 @@ class SurveyThemeConfigurationTest extends TestBaseClass
     {
         $service = new SurveyThemeConfiguration(new \Permission());
         $reflection = new \ReflectionMethod($service, $method);
-        $reflection->setAccessible(true);
         return $reflection->invokeArgs($service, $args);
     }
 
@@ -121,7 +120,6 @@ class SurveyThemeConfigurationTest extends TestBaseClass
             'fontcolor' => '#444444',
         ];
         $method = new \ReflectionMethod(SurveyThemeConfiguration::class, 'addInheritedValueLabels');
-        $method->setAccessible(true);
         $method->invokeArgs(new SurveyThemeConfiguration(new \Permission()), [&$optionAttributes, $parentOptions]);
 
         $this->assertSame('Grape', $optionAttributes['optionAttributes']['cssframework']['inheritedvaluelabel']);

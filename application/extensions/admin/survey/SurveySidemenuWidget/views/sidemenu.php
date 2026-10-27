@@ -17,7 +17,8 @@ $hasTranslationsPermission = Permission::model()->hasSurveyPermission($sid, 'tra
                         ['route' => 'survey/' . $sid]
                     ) . "'",
                     'tooltip' => gT('Survey structure'),
-                    'iconClass' => 'ri-bar-chart-horizontal-line'
+                    'icon' => 'ri-bar-chart-horizontal-line',
+                    'iconSize' => 20
                 ],
             ];
             // Survey settings
@@ -27,7 +28,8 @@ $hasTranslationsPermission = Permission::model()->hasSurveyPermission($sid, 'tra
                     'onClick' => "window.location='" . $settingsUrl . "'",
                     'tooltip' => gT('Survey settings'),
                     'activePanel' => $this->activePanel == 'survey-settings-panel',
-                    'iconClass' => 'ri-settings-3-fill'
+                    'icon' => 'ri-settings-3-fill',
+                    'iconSize' => 20
                 ];
             }
             // Survey presentation
@@ -37,7 +39,7 @@ $hasTranslationsPermission = Permission::model()->hasSurveyPermission($sid, 'tra
                     'onClick' => "window.location='" . $presentationUrl . "'",
                     'tooltip' => gT('Survey presentation'),
                     'activePanel' => $this->activePanel == 'survey-presentation-panel',
-                    'iconClass' => 'ri-paint-fill'
+                    'icon' => 'ri-paint-fill'
                 ];
             }
             // Survey menu
@@ -47,7 +49,7 @@ $hasTranslationsPermission = Permission::model()->hasSurveyPermission($sid, 'tra
                     'onClick' => "window.location='" . $menuUrl . "'",
                     'tooltip' => gT('Survey menu'),
                     'activePanel' => $this->activePanel == 'survey-menu-panel',
-                    'iconClass' => 'ri-file-text-line'
+                    'icon' => 'ri-file-text-line'
                 ];
             }
             // Survey permissions
@@ -60,7 +62,7 @@ $hasTranslationsPermission = Permission::model()->hasSurveyPermission($sid, 'tra
                     ) . "'",
                     'tooltip' => gT('Survey permissions'),
                     'activePanel' => $this->activePanel == 'survey-permissions-panel',
-                    'iconClass' => 'ri-group-line'
+                    'icon' => 'ri-group-line'
                 ];
             }
             // Quick translation
@@ -78,7 +80,7 @@ $hasTranslationsPermission = Permission::model()->hasSurveyPermission($sid, 'tra
                             'Currently there are no additional languages configured for this survey.'
                         ),
                     'activePanel' => $this->activePanel == 'survey-quick-translation',
-                    'iconClass' => 'ri-translate-2'
+                    'icon' => 'ri-translate-2'
                 ];
             }
 

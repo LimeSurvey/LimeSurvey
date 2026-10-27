@@ -23,7 +23,7 @@
         <!-- Group description -->
         <div class="{{ aSurveyInfo.class.groupdesc }} row space-col" {{ aSurveyInfo.attr.groupdesc }}>
             <div class="col-12 well">
-            {{ processString(aGroup.description) }}
+            {{ processString(aGroup.description, false, 3, {'GID': aGroup.gid}) }}
             </div>
         </div>
     {% endif %}
