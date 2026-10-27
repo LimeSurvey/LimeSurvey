@@ -3,6 +3,7 @@ import 'tests/mocks'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from 'tests/testUtils'
+import { Toast } from 'helpers/Alert'
 
 import { RowQuestion } from './RowQuestion'
 
@@ -17,6 +18,11 @@ jest.mock('hooks/useSurvey', () => ({
     },
     update: mockUpdate,
   }),
+}))
+
+jest.mock('helpers/Alert', () => ({
+  ...jest.requireActual('helpers/Alert'),
+  Toast: jest.fn(),
 }))
 
 const mockSetFocused = jest.fn()
@@ -134,6 +140,30 @@ describe('RowQuestion menu', () => {
     const { assignNumericAnswerCodes } = await setup()
     await userEvent.click(screen.getByTestId('assign-numeric-codes-button'))
     expect(assignNumericAnswerCodes).toHaveBeenCalledWith(question)
+  })
+
+  test('assign numeric codes shows a success toast when codes changed', async () => {
+    Toast.mockClear()
+    await setup()
+    await userEvent.click(screen.getByTestId('assign-numeric-codes-button'))
+    expect(Toast).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Numeric answer codes assigned.',
+        className: 'import-survey-toast import-survey-toast--success',
+      })
+    )
+  })
+
+  test('assign numeric codes shows an info toast when nothing changed', async () => {
+    Toast.mockClear()
+    await setup({ assignNumericAnswerCodes: jest.fn(() => false) })
+    await userEvent.click(screen.getByTestId('assign-numeric-codes-button'))
+    expect(Toast).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Answer options already use numeric codes.',
+        className: 'import-survey-toast import-survey-toast--info',
+      })
+    )
   })
 
   test('assign numeric codes is disabled for active surveys', async () => {
