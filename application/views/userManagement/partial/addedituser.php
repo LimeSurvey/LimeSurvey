@@ -1,5 +1,6 @@
 <?php
 /** @var  User $oUser */
+/** @var array<string, string> $loginMethods Login methods to choose from when adding a user, empty for no choice */
 
 $modalTitle = $oUser->isNewRecord ? gT('Add user') : gT('Edit user');
 $buttonTitle = $oUser->isNewRecord ? gT('Add') : gT('Save');
@@ -33,6 +34,26 @@ Yii::app()->getController()->renderPartial(
 
         <?php echo $form->error($oUser, 'users_name'); ?>
     </div>
+    <?php if (!empty($loginMethods)) : ?>
+        <input type="hidden" name="login_methods[]" value="">
+        <fieldset class="mb-3" id="UserManagement--login-methods">
+            <legend class="form-label fs-6"><?= gT("Allowed login methods") ?></legend>
+            <?php foreach ($loginMethods as $loginMethod => $loginMethodTitle) : ?>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="login_methods[]"
+                           id="User_Form_login_method_<?= CHtml::encode($loginMethod) ?>"
+                           value="<?= CHtml::encode($loginMethod) ?>"
+                           <?= $loginMethod === 'auth_db' ? 'checked' : '' ?>>
+                    <label class="form-check-label" for="User_Form_login_method_<?= CHtml::encode($loginMethod) ?>">
+                        <?= CHtml::encode($loginMethodTitle) ?>
+                    </label>
+                </div>
+            <?php endforeach; ?>
+            <div class="form-text d-none" id="UserManagement--ldap-hint">
+                <?= gT("The user must exist in the LDAP directory. Full name and email address are taken from there unless you enter them below.") ?>
+            </div>
+        </fieldset>
+    <?php endif; ?>
     <div class="mb-3">
         <?php echo $form->labelEx($oUser, 'full_name', ['for' => 'User_Form_full_name']); ?>
         <?php echo $form->textField($oUser, 'full_name', ['id' => 'User_Form_full_name']); ?>

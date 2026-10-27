@@ -113,6 +113,10 @@ class DataIntegrityChecker
             $aData = $this->deleteQuotaMembers($aData);
         }
 
+        if (isset($aDelete['missingquotalanguagesettings'])) {
+            $aData = $this->createMissingQuotaLanguageSettings($aDelete['missingquotalanguagesettings'], $aData);
+        }
+
         if (isset($aDelete['assessments'])) {
             $aData = $this->deleteAssessments($aDelete['assessments'], $aData);
         }
@@ -127,6 +131,15 @@ class DataIntegrityChecker
 
         if (isset($aDelete['surveys'])) {
             $aData = $this->deleteSurveys($aDelete['surveys'], $aData);
+        }
+
+        // Also run when surveys were deleted above: their theme options are only orphaned now
+        if (isset($aDelete['orphanthemeconfigurations']) || isset($aDelete['surveys'])) {
+            $aData = $this->deleteOrphanThemeConfigurations($aData);
+        }
+
+        if (isset($aDelete['duplicatethemeconfigurations'])) {
+            $aData = $this->deleteDuplicateThemeConfigurations($aData);
         }
 
         if (isset($aDelete['surveylanguagesettings'])) {
@@ -153,6 +166,10 @@ class DataIntegrityChecker
         // After deleteQuestions(), so no texts are created for questions deleted in this pass
         if (isset($aDelete['missingquestionl10ns'])) {
             $aData = $this->createMissingQuestionL10ns($aDelete['missingquestionl10ns'], $aData);
+        }
+
+        if (isset($aDelete['invaliddefaultvalues'])) {
+            $aData = $this->deleteInvalidDefaultValues($aDelete['invaliddefaultvalues'], $aData);
         }
 
         if (isset($aDelete['groups'])) {
@@ -848,6 +865,72 @@ class DataIntegrityChecker
     }
 
     /**
+     * Returns the criteria matching survey theme options of surveys that no longer exist.
+     *
+     * A survey later created with the same ID would otherwise get these stale options.
+     * Theme options of a theme itself or of a survey group have no sid and are never matched.
+     *
+     * @return CDbCriteria
+     */
+    private function getOrphanThemeConfigurationsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = 'sid IS NOT NULL AND sid NOT IN (SELECT s.sid FROM {{surveys}} s)';
+        return $oCriteria;
+    }
+
+    /**
+     * Deletes survey theme options of surveys that no longer exist.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message if any theme options were deleted.
+     */
+    private function deleteOrphanThemeConfigurations(array $aData)
+    {
+        $count = TemplateConfiguration::model()->deleteAll($this->getOrphanThemeConfigurationsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u survey theme option(s) of surveys that no longer exist'), $count);
+        }
+        return $aData;
+    }
+
+    /**
+     * Returns the criteria matching duplicate survey theme options: All but the oldest
+     * row of each survey and theme.
+     *
+     * Duplicates came from a survey ID being used again after its survey was deleted. Only
+     * one row is ever used, and on MySQL this is the oldest one, which the theme options
+     * editor also saves into, so that one is kept.
+     * The derived table lets MySQL read the table it deletes from.
+     *
+     * @return CDbCriteria
+     */
+    private function getDuplicateThemeConfigurationsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = 'sid IS NOT NULL AND id NOT IN ('
+            . 'SELECT kept.min_id FROM ('
+            . 'SELECT MIN(tc.id) AS min_id FROM {{template_configuration}} tc WHERE tc.sid IS NOT NULL GROUP BY tc.sid, tc.template_name'
+            . ') kept)';
+        return $oCriteria;
+    }
+
+    /**
+     * Deletes duplicate survey theme options, keeping the oldest row of each survey and theme.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message if any theme options were deleted.
+     */
+    private function deleteDuplicateThemeConfigurations(array $aData)
+    {
+        $count = TemplateConfiguration::model()->deleteAll($this->getDuplicateThemeConfigurationsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u duplicate survey theme option(s), keeping the oldest one of each survey and theme'), $count);
+        }
+        return $aData;
+    }
+
+    /**
      * Deactivates active surveys whose response table is missing.
      *
      * @param array[] $surveys Surveys to deactivate, each with a 'sid' key.
@@ -962,14 +1045,11 @@ class DataIntegrityChecker
     }
 
     /**
-     * Finds questions and subquestions that have no texts (question_l10ns row) in one
-     * of their survey's languages. Such questions can't be edited (500 error).
+     * Returns the languages (base and additional) of all surveys.
      *
-     * Runs one query per language used by any survey, instead of one per survey.
-     *
-     * @return array[] Missing texts, each with a 'qid', 'title', 'sid' and 'language' key.
+     * @return array<int, string[]> Language codes, indexed by survey ID.
      */
-    private function findMissingQuestionL10ns()
+    private function getSurveyLanguages()
     {
         $aSurveyLanguages = array();
         $aSurveys = Yii::app()->db->createCommand()
@@ -981,6 +1061,131 @@ class DataIntegrityChecker
             $aLanguages[] = $aSurvey['language'];
             $aSurveyLanguages[$aSurvey['sid']] = array_filter($aLanguages);
         }
+        return $aSurveyLanguages;
+    }
+
+    /**
+     * Finds quotas that have no texts (quota_languagesettings row) in one of their
+     * survey's languages. Such quotas showed an error on the quota page, e.g. after
+     * an import that failed to insert the quota texts of the survey's base language.
+     *
+     * Runs one query per language used by any survey, instead of one per survey.
+     *
+     * @return array[] Missing texts, each with a 'quotaid', 'name', 'sid' and 'language' key.
+     */
+    private function findMissingQuotaLanguageSettings()
+    {
+        $aSurveyLanguages = $this->getSurveyLanguages();
+        if (empty($aSurveyLanguages)) {
+            return array();
+        }
+
+        $aMissing = array();
+        foreach (array_unique(array_merge(...array_values($aSurveyLanguages))) as $sLanguage) {
+            // The LIKE condition only narrows the result down, the exact match is done below
+            $aQuotas = Yii::app()->db->createCommand()
+                ->select('q.id, q.name, q.sid')
+                ->from('{{quota}} q')
+                ->join('{{surveys}} s', 's.sid = q.sid')
+                ->leftJoin('{{quota_languagesettings}} l', 'l.quotals_quota_id = q.id AND l.quotals_language = :quotalanguage', array(':quotalanguage' => $sLanguage))
+                ->where(
+                    'l.quotals_id IS NULL AND (s.language = :surveylanguage OR s.additional_languages LIKE :languagepattern)',
+                    array(':surveylanguage' => $sLanguage, ':languagepattern' => '%' . $sLanguage . '%')
+                )
+                ->queryAll();
+            foreach ($aQuotas as $aQuota) {
+                if (in_array($sLanguage, $aSurveyLanguages[$aQuota['sid']])) {
+                    $aMissing[] = array(
+                        'quotaid' => $aQuota['id'],
+                        'name' => $aQuota['name'],
+                        'sid' => $aQuota['sid'],
+                        'language' => $sLanguage,
+                    );
+                }
+            }
+        }
+        return $aMissing;
+    }
+
+    /**
+     * Creates the missing texts of quotas in their survey's languages. The texts are
+     * copied from another language of the same quota, preferring the survey's base
+     * language; quotas without any texts get the default quota message.
+     *
+     * Reads the existing texts and inserts the missing ones in batches, so that a large
+     * number of quotas doesn't need a query per quota.
+     *
+     * @param array[] $quotaLanguageSettings Missing texts, each with a 'quotaid', 'name', 'sid' and 'language' key.
+     * @param array $aData For view generation.
+     * @return array $aData with a message per created text.
+     */
+    private function createMissingQuotaLanguageSettings(array $quotaLanguageSettings, array $aData)
+    {
+        $aBaseLanguages = array();
+        foreach ($this->getSurveyLanguages() as $iSurveyId => $aLanguages) {
+            // getSurveyLanguages() adds the base language last
+            $aBaseLanguages[$iSurveyId] = end($aLanguages);
+        }
+        // Existing texts of the affected quotas, the base language's texts first
+        $aSourceTexts = array();
+        foreach (array_chunk(array_unique(array_column($quotaLanguageSettings, 'quotaid')), 1000) as $aQuotaIds) {
+            $aRows = Yii::app()->db->createCommand()
+                ->select('l.quotals_quota_id, l.quotals_language, l.quotals_name, l.quotals_message, l.quotals_url, l.quotals_urldescrip, q.sid')
+                ->from('{{quota_languagesettings}} l')
+                ->join('{{quota}} q', 'q.id = l.quotals_quota_id')
+                ->where(array('in', 'l.quotals_quota_id', $aQuotaIds))
+                ->queryAll();
+            foreach ($aRows as $aRow) {
+                $iQuotaId = $aRow['quotals_quota_id'];
+                if (!isset($aSourceTexts[$iQuotaId]) || $aRow['quotals_language'] === ($aBaseLanguages[$aRow['sid']] ?? null)) {
+                    $aSourceTexts[$iQuotaId] = $aRow;
+                }
+            }
+        }
+
+        $aInserts = array();
+        foreach ($quotaLanguageSettings as $quotaLanguageSetting) {
+            $aSource = $aSourceTexts[$quotaLanguageSetting['quotaid']] ?? array(
+                'quotals_name' => $quotaLanguageSetting['name'],
+                'quotals_message' => gT('Sorry your responses have exceeded a quota on this survey.', 'unescaped', $quotaLanguageSetting['language']),
+                'quotals_url' => '',
+                'quotals_urldescrip' => '',
+            );
+            $aInserts[] = array(
+                'quotals_quota_id' => $quotaLanguageSetting['quotaid'],
+                'quotals_language' => $quotaLanguageSetting['language'],
+                'quotals_name' => $aSource['quotals_name'],
+                'quotals_message' => $aSource['quotals_message'],
+                'quotals_url' => $aSource['quotals_url'],
+                'quotals_urldescrip' => $aSource['quotals_urldescrip'],
+            );
+            $aData['messages'][] = sprintf(
+                gT('Created missing texts for language %s of quota %s (ID %s) in survey %s'),
+                $quotaLanguageSetting['language'],
+                CHtml::encode($quotaLanguageSetting['name']),
+                $quotaLanguageSetting['quotaid'],
+                $quotaLanguageSetting['sid']
+            );
+        }
+        // Raw inserts: QuotaLanguageSetting's validation rules need a web user, which the console command has not.
+        // 300 rows of 6 values stay below the parameter limit of MSSQL (2100).
+        foreach (array_chunk($aInserts, 300) as $aBatch) {
+            Yii::app()->db->getCommandBuilder()->createMultipleInsertCommand('{{quota_languagesettings}}', $aBatch)->execute();
+        }
+        return $aData;
+    }
+
+    /**
+     * Finds questions and subquestions that have no texts (question_l10ns row) in one
+     * of their survey's languages. Such questions can't be edited (500 error).
+     *
+     * Runs one query per language used by any survey, instead of one per survey.
+     *
+     * @return array[] Missing texts, each with a 'qid', 'title', 'sid' and 'language' key.
+     */
+    private function findMissingQuestionL10ns()
+    {
+        $aSurveyLanguages = $this->getSurveyLanguages();
         if (empty($aSurveyLanguages)) {
             return array();
         }
@@ -1073,6 +1278,163 @@ class DataIntegrityChecker
     }
 
     /**
+     * Finds default values that the survey never uses or that are invalid for their question,
+     * e.g. "10" as the default of a multiple choice subquestion, where only "Y" is valid.
+     * Invalid default values show an error on the question in the survey.
+     *
+     * A default value is never used when it doesn't belong to one of the question's answer fields:
+     * Questions with subquestions only use the defaults of their own subquestions, the other
+     * questions only use the default of the question itself.
+     * Only the values of question types with a fixed set of valid values or with answer options are
+     * checked, with the same rules as LimeExpressionManager::checkValidityAnswer(). Default values with
+     * an expression are not checked: Their value is only known in the survey. Special defaults (the "Other"
+     * text) and defaults of question types that don't use any default value (Array dual scale,
+     * Array (Numbers), Array (Texts), Ranking, File upload) are not checked either.
+     *
+     * Runs two queries, independent of the number of default values: The check page runs it on every load.
+     *
+     * @return array[] Default values to delete, each with a 'dvid', 'qid', 'title' and 'sid' key, and for an
+     *                 invalid value the 'id', 'language' and 'defaultvalue' of its text (null for a never used default value).
+     */
+    private function findInvalidDefaultValues()
+    {
+        $aSubquestionTypes = array();
+        $aSingleFieldTypes = array();
+        foreach (QuestionType::modelsAttributes() as $sTypeCode => $aTypeAttributes) {
+            // PHP casts numeric array keys to int; the type column is varchar, so force string
+            $sTypeCode = (string) $sTypeCode;
+            // Same question types as in createFieldMap()
+            if (empty($aTypeAttributes['subquestions'])) {
+                if ($sTypeCode !== Question::QT_VERTICAL_FILE_UPLOAD) {
+                    $aSingleFieldTypes[] = $sTypeCode;
+                }
+            } elseif ($aTypeAttributes['subquestions'] == 1 && $aTypeAttributes['answerscales'] < 2 && $sTypeCode !== Question::QT_R_RANKING) {
+                $aSubquestionTypes[] = $sTypeCode;
+            }
+        }
+        $aUsedCondition = array(
+            'or',
+            array('and', array('in', 'q.type', $aSubquestionTypes), 'sq.qid IS NOT NULL'),
+            array('and', array('in', 'q.type', $aSingleFieldTypes), 'dv.sqid = 0'),
+        );
+        $aUnusedCondition = array(
+            'or',
+            array('and', array('in', 'q.type', $aSubquestionTypes), 'sq.qid IS NULL'),
+            array('and', array('in', 'q.type', $aSingleFieldTypes), 'dv.sqid <> 0'),
+        );
+
+        $aInvalid = array();
+        $aUnusedDefaultValues = Yii::app()->db->createCommand()
+            ->select('dv.dvid, dv.qid, q.title, q.sid')
+            ->from('{{defaultvalues}} dv')
+            ->join('{{questions}} q', 'dv.qid = q.qid')
+            ->leftJoin('{{questions}} sq', 'sq.qid = dv.sqid AND sq.parent_qid = dv.qid')
+            ->where(array('and', "dv.specialtype = ''", $aUnusedCondition))
+            ->queryAll();
+        foreach ($aUnusedDefaultValues as $aDefaultValue) {
+            $aInvalid[] = array_merge($aDefaultValue, array('id' => null, 'language' => null, 'defaultvalue' => null));
+        }
+
+        // Valid values of the question types with a fixed set of values, see LimeExpressionManager::checkValidityAnswer()
+        $aFixedValues = array(
+            Question::QT_5_POINT_CHOICE => array('1', '2', '3', '4', '5'),
+            Question::QT_A_ARRAY_5_POINT => array('1', '2', '3', '4', '5'),
+            Question::QT_B_ARRAY_10_CHOICE_QUESTIONS => array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'),
+            Question::QT_C_ARRAY_YES_UNCERTAIN_NO => array('Y', 'N', 'U'),
+            Question::QT_E_ARRAY_INC_SAME_DEC => array('I', 'D', 'S'),
+            Question::QT_G_GENDER => array('M', 'F'),
+            Question::QT_Y_YES_NO_RADIO => array('Y', 'N'),
+            Question::QT_M_MULTIPLE_CHOICE => array('Y'),
+            Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => array('Y'),
+        );
+        $aInvalidValueCondition = array(
+            'or',
+            // Question types whose value is an answer option code; "-oth-" is the "Other" option of lists
+            array(
+                'and',
+                array('in', 'q.type', array(Question::QT_L_LIST, Question::QT_EXCLAMATION_LIST_DROPDOWN, Question::QT_O_LIST_WITH_COMMENT, Question::QT_F_ARRAY, Question::QT_H_ARRAY_COLUMN)),
+                'a.aid IS NULL',
+                array('or', "l.defaultvalue <> '-oth-'", "q.other <> 'Y'", array('in', 'q.type', array(Question::QT_O_LIST_WITH_COMMENT, Question::QT_F_ARRAY, Question::QT_H_ARRAY_COLUMN))),
+            ),
+        );
+        foreach ($aFixedValues as $sTypeCode => $aValues) {
+            $aInvalidValueCondition[] = array('and', array('in', 'q.type', array((string) $sTypeCode)), array('not in', 'l.defaultvalue', $aValues));
+        }
+        $aInvalidValues = Yii::app()->db->createCommand()
+            ->select('l.id, l.dvid, l.language, l.defaultvalue, dv.qid, q.title, q.sid')
+            ->from('{{defaultvalue_l10ns}} l')
+            ->join('{{defaultvalues}} dv', 'l.dvid = dv.dvid')
+            ->join('{{questions}} q', 'dv.qid = q.qid')
+            ->leftJoin('{{questions}} sq', 'sq.qid = dv.sqid AND sq.parent_qid = dv.qid')
+            ->leftJoin('{{answers}} a', 'a.qid = dv.qid AND a.scale_id = 0 AND a.code = l.defaultvalue')
+            ->where(array(
+                'and',
+                "dv.specialtype = ''",
+                "l.defaultvalue <> ''",
+                "l.defaultvalue NOT LIKE '%{%'",
+                $aUsedCondition,
+                $aInvalidValueCondition,
+            ))
+            ->queryAll();
+        return array_merge($aInvalid, $aInvalidValues);
+    }
+
+    /**
+     * Deletes default values that the survey never uses, and the texts of default values that are invalid
+     * for their question. A default value without any text left is deleted, too.
+     *
+     * Deletes in batches, so that a large number of default values doesn't need a query per default value.
+     *
+     * @param array[] $defaultValues Default values found by findInvalidDefaultValues().
+     * @param array $aData For view generation.
+     * @return array $aData with a message per deleted default value.
+     */
+    private function deleteInvalidDefaultValues(array $defaultValues, array $aData)
+    {
+        $aUnusedDvids = array();
+        $aInvalidL10nIds = array();
+        $aInvalidDvids = array();
+        foreach ($defaultValues as $defaultValue) {
+            if ($defaultValue['id'] === null) {
+                $aUnusedDvids[] = $defaultValue['dvid'];
+                $aData['messages'][] = sprintf(
+                    gT('Deleted an unused default value of question %s (ID %s) in survey %s'),
+                    CHtml::encode($defaultValue['title']),
+                    $defaultValue['qid'],
+                    $defaultValue['sid']
+                );
+            } else {
+                $aInvalidL10nIds[] = $defaultValue['id'];
+                $aInvalidDvids[$defaultValue['dvid']] = $defaultValue['dvid'];
+                $aData['messages'][] = sprintf(
+                    gT('Deleted the invalid default value %s for language %s of question %s (ID %s) in survey %s'),
+                    CHtml::encode($defaultValue['defaultvalue']),
+                    $defaultValue['language'],
+                    CHtml::encode($defaultValue['title']),
+                    $defaultValue['qid'],
+                    $defaultValue['sid']
+                );
+            }
+        }
+        $oDb = Yii::app()->db;
+        foreach (array_chunk($aUnusedDvids, 1000) as $aDvids) {
+            $oDb->createCommand()->delete('{{defaultvalue_l10ns}}', array('in', 'dvid', $aDvids));
+            $oDb->createCommand()->delete('{{defaultvalues}}', array('in', 'dvid', $aDvids));
+        }
+        foreach (array_chunk($aInvalidL10nIds, 1000) as $aIds) {
+            $oDb->createCommand()->delete('{{defaultvalue_l10ns}}', array('in', 'id', $aIds));
+        }
+        // Default values without any text left
+        foreach (array_chunk(array_values($aInvalidDvids), 1000) as $aDvids) {
+            $oDb->createCommand()->delete(
+                '{{defaultvalues}}',
+                array('and', array('in', 'dvid', $aDvids), 'NOT EXISTS (SELECT 1 FROM {{defaultvalue_l10ns}} l WHERE l.dvid = {{defaultvalues}}.dvid)')
+            );
+        }
+        return $aData;
+    }
+
+    /**
      * Finds archived table settings whose archived table no longer exists.
      *
      * Queries the plain list of archived (old_*) table names instead of calling getTable() per row:
@@ -1158,6 +1520,18 @@ class DataIntegrityChecker
         $iCount = SurveysGroupsettings::model()->count($this->getOrphanSurveyGroupSettingsCriteria());
         if ($iCount > 0) {
             $aDelete['orphansurveygroupsettings'] = $iCount;
+        }
+
+        /**********************************************************************/
+        /*     Check survey theme options of deleted surveys                  */
+        /**********************************************************************/
+        $iCount = TemplateConfiguration::model()->count($this->getOrphanThemeConfigurationsCriteria());
+        if ($iCount > 0) {
+            $aDelete['orphanthemeconfigurations'] = $iCount;
+        }
+        $iCount = TemplateConfiguration::model()->count($this->getDuplicateThemeConfigurationsCriteria());
+        if ($iCount > 0) {
+            $aDelete['duplicatethemeconfigurations'] = $iCount;
         }
 
         /**********************************************************************/
@@ -1284,6 +1658,11 @@ class DataIntegrityChecker
         $oCriteria->condition = 'q.qid IS NULL';
         $aDelete['defaultvalues'] = DefaultValue::model()->count($oCriteria);
 
+        $aInvalidDefaultValues = $this->findInvalidDefaultValues();
+        if (!empty($aInvalidDefaultValues)) {
+            $aDelete['invaliddefaultvalues'] = $aInvalidDefaultValues;
+        }
+
         /**********************************************************************/
         /*     Check quotas                                                   */
         /**********************************************************************/
@@ -1300,6 +1679,14 @@ class DataIntegrityChecker
         $oCriteria->join = 'LEFT JOIN {{quota}} s ON t.quotals_quota_id=s.id';
         $oCriteria->condition = '(s.id IS NULL)';
         $aDelete['quotals'] = QuotaLanguageSetting::model()->count($oCriteria);
+
+        /**********************************************************************/
+        /*     Check quotas without texts in a survey language                */
+        /**********************************************************************/
+        $aMissingQuotaLanguageSettings = $this->findMissingQuotaLanguageSettings();
+        if (!empty($aMissingQuotaLanguageSettings)) {
+            $aDelete['missingquotalanguagesettings'] = $aMissingQuotaLanguageSettings;
+        }
 
         /**********************************************************************/
         /*     Check quota members                                   */

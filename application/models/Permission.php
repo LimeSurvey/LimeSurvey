@@ -691,17 +691,19 @@ class Permission extends LSActiveRecord
      * Checks if a user has a certain permission in the given survey
      * Note: This function automatically also takes global permissions into account
      *
-     * @param $iSurveyID integer The survey ID
-     * @param $sPermission string Name of the permission
-     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-     * @param $iUserID integer User ID - if not given the one of the current user is used
+     * @param integer $iSurveyID The survey ID
+     * @param string $sPermission Name of the permission
+     * @param string $sCRUD The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
+     * @param integer|null $iUserID User ID - if not given the one of the current user is used
      * @return bool True if user has the permission
      */
     public function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
         $iUserID = $this->getUserId($iUserID);
-        if (isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID])) {
-            return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID];
+        // Guests have no user ID
+        $sUserKey = (string) $iUserID;
+        if (isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$sUserKey])) {
+            return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$sUserKey];
         }
         if (!isset(self::$aCachedSurveyPermissions[$iSurveyID])) {
             self::$aCachedSurveyPermissions[$iSurveyID] = [];
@@ -710,10 +712,10 @@ class Permission extends LSActiveRecord
             self::$aCachedSurveyPermissions[$iSurveyID][$sPermission] = [];
         }
         if (!isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD])) {
-            self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$iUserID] = [];
+            self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD] = [];
         }
         $oSurvey = Survey::Model()->findByPk($iSurveyID);
-        return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID] = ($oSurvey ? $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID) : false);
+        return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$sUserKey] = ($oSurvey ? $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID) : false);
     }
 
     /**

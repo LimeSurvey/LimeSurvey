@@ -1,15 +1,13 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { ToggleButtons } from 'components'
-import { useAppState, useStatistics, useSurvey } from 'hooks'
-import { STATES } from 'helpers'
+import { useStatistics } from 'hooks'
 import { useIsInViewport } from 'hooks/useInViewport'
 
 import { ResponsesHeader } from '../../ResponsesHeader'
 import { TAB_KEYS } from '../../utils'
 import { VALUE_TYPE } from './ChartsUtils'
 import { StatisticsContainer } from './StatisticsContainer.js'
-import { buildQuestionOptions } from './StatisticsFiltersModal/utils'
 
 const valueTypeOptions = [
   { name: '%', value: VALUE_TYPE.PERCENTAGE },
@@ -19,18 +17,28 @@ const valueTypeOptions = [
 export const ResponsesStatistics = ({
   surveyId,
   filters = {},
-  showFilters,
-  setShowFilters,
-  setFilters,
+  survey,
+  questionOptions = [],
+  appliedFilters = [],
+  setAppliedFilters,
+  filterSet = [],
+  onFilterError,
 }) => {
   const {
     statistics,
+    error,
     isFetching,
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
-  } = useStatistics(surveyId, filters)
+  } = useStatistics(surveyId, filters, filterSet)
   const [valueType, setValueType] = useState(VALUE_TYPE.PERCENTAGE)
+
+  useEffect(() => {
+    if (error) {
+      onFilterError?.(error)
+    }
+  }, [error, onFilterError])
 
   const [loadMoreRef] = useIsInViewport(null, {
     initialInView: false,
@@ -41,15 +49,6 @@ export const ResponsesStatistics = ({
       }
     },
   })
-
-  // Survey data drives the filter modal's Question / Participant / language
-  // options (same source as StatisticsContainer).
-  const { survey } = useSurvey(surveyId)
-  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
-  const questionOptions = useMemo(
-    () => buildQuestionOptions(survey, activeLanguage),
-    [survey?.questionGroups, activeLanguage]
-  )
 
   const renderContent = () => {
     if (!statistics?.length) {
@@ -73,6 +72,7 @@ export const ResponsesStatistics = ({
         surveyId={surveyId}
         valueType={valueType}
         filters={filters}
+        filterSet={filterSet}
       />
     )
   }
@@ -81,12 +81,11 @@ export const ResponsesStatistics = ({
     <>
       <div className="responses-statistics-toolbar">
         <ResponsesHeader
-          setShowFilters={setShowFilters}
-          showFilters={showFilters}
-          setFilters={setFilters}
           tabKey={TAB_KEYS.STATISTICS}
           survey={survey}
           questionOptions={questionOptions}
+          appliedFilters={appliedFilters}
+          setAppliedFilters={setAppliedFilters}
         />
         <ToggleButtons
           id="statistics-value-type"

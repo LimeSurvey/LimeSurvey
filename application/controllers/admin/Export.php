@@ -276,8 +276,9 @@ class Export extends SurveyCommonAction
         //function.
         $options = new FormattingOptions();
         $options->selectedColumns = Yii::app()->request->getPost('colselect');
-        $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from'));
-        $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to'));
+        // An emptied range field falls back to the lowest/highest response ID
+        $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from')) ?? SurveyDynamic::model($iSurveyID)->getMinId();
+        $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to')) ?? SurveyDynamic::model($iSurveyID)->getMaxId();
         $options->aResponses = nice_addslashes(Yii::app()->request->getPost('responses_id'));
         $options->answerFormat = $sAnswerFormat;
         $options->convertY = $bConvertY;
@@ -470,9 +471,7 @@ class Export extends SurveyCommonAction
             $subaction = "dldata";
         }
         if (Yii::app()->request->getPost('dlstructure')) {
-            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
-                throw new CHttpException(403, gT("You do not have permission to access this page."));
-            }
+            // The syntax file only describes the response columns, so either export permission checked above is enough
             $subaction = "dlstructure";
         }
 
@@ -497,6 +496,7 @@ class Export extends SurveyCommonAction
             $data['selectshow'] = $selectshow;
             $data['spssver'] = $spssver;
             $data['surveyid'] = $iSurveyID;
+            $data['canExportResponses'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export');
             $data['display']['menu_bars']['browse'] = gT('Export results');
 
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above

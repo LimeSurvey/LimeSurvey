@@ -119,7 +119,17 @@ class UserManagementController extends LSBaseController
 
         $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword, 'dateformatdetails' => $dateformatdetails]);
+        // The login methods can only be chosen when adding a user and when there is more than one
+        $loginMethods = $oUser->isNewRecord ? $this->getAvailableLoginMethods() : [];
+        if (count($loginMethods) < 2) {
+            $loginMethods = [];
+        }
+        return $this->renderPartial('partial/addedituser', [
+            'oUser' => $oUser,
+            'randomPassword' => $randomPassword,
+            'dateformatdetails' => $dateformatdetails,
+            'loginMethods' => $loginMethods,
+        ]);
     }
 
     /**
@@ -219,13 +229,22 @@ class UserManagementController extends LSBaseController
             //retrieve the raw password
             $aUser['rawPassword'] = $aUser['password'];
 
-            $passwordSetByUser = Yii::app()->request->getParam('preset_password');
-            if ($passwordSetByUser == 0) { //in this case admin has not set a password, email with link will be sent
-                $data = $this->createAdminUser($aUser);
-            } else {
-                //in this case admin has set a password, no email will be send ..just create user with given credentials
-                $data = $this->createAdminUser($aUser, false);
+            $loginMethods = $this->getPostedLoginMethods();
+            if (empty($loginMethods)) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    "data" => [
+                        'success' => false,
+                        'errors'  => gT('Please select at least one login method.'),
+                    ]
+                ]);
             }
+            // LDAP users are looked up in the LDAP directory by the AuthLDAP plugin, all others are created by Authdb
+            $aUser['user_type'] = in_array('auth_ldap', $loginMethods) ? 'LDAP' : 'DB';
+
+            // Without a database login, a password link is of no use
+            $passwordSetByUser = Yii::app()->request->getParam('preset_password');
+            $sendEmail = $passwordSetByUser == 0 && in_array('auth_db', $loginMethods);
+            $data = $this->createAdminUser($aUser, $sendEmail, $loginMethods);
 
             return App()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => $data
@@ -1645,13 +1664,14 @@ class UserManagementController extends LSBaseController
      *
      * @param array $aUser array with attributes from user model
      * @param boolean $sendEmail true if email should be send, false otherwise
+     * @param string[]|null $loginMethods The auth_* permissions the new user gets, null to keep the ones set by the authentication plugin
      *
      * @return array
      *
      * @throws CException
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    private function createAdminUser(array $aUser, bool $sendEmail = true): array
+    private function createAdminUser(array $aUser, bool $sendEmail = true, ?array $loginMethods = null): array
     {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $newUser = $this->createNewUser($aUser);
@@ -1660,6 +1680,9 @@ class UserManagementController extends LSBaseController
                     'success' => false,
                     'errors' => CHtml::tag("p", array(), gT("Error: User was not created"))
                 ];
+            }
+            if ($loginMethods !== null) {
+                $this->setLoginMethods((int) $newUser['uid'], $loginMethods);
             }
             $success = true;
             $sReturnMessage = gT('User successfully created', 'unescaped');
@@ -1677,9 +1700,13 @@ class UserManagementController extends LSBaseController
                 $data = [
                     'success' => $success,
                     'message' => $sReturnMessage,
-                    'href' => Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $newUser['uid']]),
-                    'modalsize' => 'modal-lg',
                 ];
+                // Only offer the permission dialog if the current user is allowed to use it
+                $userManager = new UserManager(App()->user, User::model()->findByPk($newUser['uid']));
+                if ($userManager->canAssignPermissions()) {
+                    $data['href'] = Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $newUser['uid']]);
+                    $data['modalsize'] = 'modal-lg';
+                }
             } else {
                 $data = [
                     'success' => $success,
@@ -1694,6 +1721,66 @@ class UserManagementController extends LSBaseController
             'success' => false,
             'errors' => CHtml::tag("p", array(), gT("Error: User was not created"))
         ];
+    }
+
+    /**
+     * Returns the login methods of the active authentication plugins
+     *
+     * @return array<string, string> Title of the login method indexed by its auth_* global permission
+     */
+    private function getAvailableLoginMethods(): array
+    {
+        $loginMethods = [];
+        foreach (Permission::getGlobalBasePermissions() as $permission => $permissionData) {
+            if (strpos((string) $permission, 'auth_') === 0) {
+                $loginMethods[$permission] = $permissionData['title'];
+            }
+        }
+        return $loginMethods;
+    }
+
+    /**
+     * Returns the login methods selected in the add user form
+     *
+     * Only login methods of active authentication plugins are returned. When the form did not offer
+     * a choice, the new user gets the internal database login.
+     *
+     * @return string[] The auth_* global permissions
+     */
+    private function getPostedLoginMethods(): array
+    {
+        $postedLoginMethods = App()->getRequest()->getPost('login_methods');
+        if (!is_array($postedLoginMethods)) {
+            return ['auth_db'];
+        }
+        return array_values(array_intersect(
+            array_keys($this->getAvailableLoginMethods()),
+            array_map('strval', $postedLoginMethods)
+        ));
+    }
+
+    /**
+     * Gives a new user exactly the selected login methods
+     *
+     * Removes the login methods the authentication plugin set on creation but which were not selected.
+     *
+     * @param int $userId
+     * @param string[] $loginMethods The auth_* global permissions
+     * @return void
+     */
+    private function setLoginMethods(int $userId, array $loginMethods): void
+    {
+        foreach (array_keys($this->getAvailableLoginMethods()) as $loginMethod) {
+            Permission::model()->deleteAllByAttributes([
+                'uid' => $userId,
+                'entity' => 'global',
+                'entity_id' => 0,
+                'permission' => $loginMethod,
+            ]);
+            if (in_array($loginMethod, $loginMethods)) {
+                Permission::model()->setGlobalPermission($userId, $loginMethod);
+            }
+        }
     }
 
     /**

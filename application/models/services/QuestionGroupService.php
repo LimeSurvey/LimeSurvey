@@ -14,7 +14,8 @@ use LimeSurvey\Models\Services\{
     Proxy\ProxyQuestionGroup,
     Exception\PersistErrorException,
     Exception\NotFoundException,
-    Exception\PermissionDeniedException
+    Exception\PermissionDeniedException,
+    Exception\QuestionGroupHasConditionsException
 };
 
 /**
@@ -167,10 +168,17 @@ class QuestionGroupService
      * @param int $surveyId the survey ID
      * @return int|null number of deleted rows
      * @throws PermissionDeniedException
+     * @throws QuestionGroupHasConditionsException if questions of other groups have conditions on this group
      */
     public function deleteGroup(int $questionGroupId, int $surveyId)
     {
         $this->checkDeletePermission($surveyId);
+        // Deleting the group would leave these conditions behind, pointing to questions that no longer exist
+        if ($this->proxyQuestionGroup->hasDependentConditions($questionGroupId, $surveyId)) {
+            throw new QuestionGroupHasConditionsException(
+                gT('Group can not be deleted, because of depending conditions')
+            );
+        }
         $this->proxyExpressionManager->revertUpgradeConditionsToRelevance($surveyId);
 
         $deletedGroups = $this->proxyQuestionGroup->deleteQuestionGroupWithDependency(
