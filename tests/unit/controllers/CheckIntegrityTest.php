@@ -781,7 +781,7 @@ class CheckIntegrityTest extends TestBaseClass
                 'sid' => self::$surveyId,
                 'options' => $options,
             ));
-            $insertedIds[] = (int) \Yii::app()->db->getLastInsertID();
+            $insertedIds[] = (int) getLastInsertID('{{template_configuration}}');
         }
         $getIds = function () use ($templateName) {
             return array_map('intval', \Yii::app()->db->createCommand()->select('id')->from('{{template_configuration}}')
