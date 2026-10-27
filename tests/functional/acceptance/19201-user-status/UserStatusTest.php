@@ -61,6 +61,23 @@ class UserStatusTest extends TestBaseClassWeb
     }
 
     /**
+     * Returns the entry with the given title from a grid row's action dropdown.
+     *
+     * Looks the entry up by its text, so the test does not depend on the order
+     * of the dropdown entries.
+     *
+     * @param int $dropdownId Numeric part of the dropdown id (dropdown_<id>)
+     * @param string $title Visible text of the dropdown entry
+     * @return \Facebook\WebDriver\WebDriverElement The <li> element of the entry
+     */
+    private function findDropdownMenuItem(int $dropdownId, string $title)
+    {
+        return self::$webDriver->findElement(
+            WebDriverBy::xpath('//ul[@id="dropdownmenu_' . $dropdownId . '"]/li[normalize-space(.)="' . $title . '"]')
+        );
+    }
+
+    /**
      * Verifies that the "Deactivate" action for the superadmin is rendered as a
      * disabled, non-interactive link in the action dropdown.
      *
@@ -88,9 +105,7 @@ class UserStatusTest extends TestBaseClassWeb
             $parts = explode('_', $id);
             $this->assertCount(2, $parts);
 
-            // Get belonging <ul>
-            $dropdownMenuItems = $web->findManyByCss('#dropdownmenu_' . (int) $parts[1] . ' li');
-            $deactiveElement = $dropdownMenuItems[1];
+            $deactiveElement = $this->findDropdownMenuItem((int) $parts[1], 'Deactivate');
             $deactiveElementAnchor = $deactiveElement
                 ->findElement(
                     WebDriverBy::cssSelector('a')
@@ -158,9 +173,7 @@ class UserStatusTest extends TestBaseClassWeb
         $parts = explode('_', $id);
         $this->assertCount(2, $parts);
 
-        // Get belonging <ul>
-        $dropdownMenuItems = $web->findManyByCss('#dropdownmenu_' . (int) $parts[1] . ' li');
-        $deactiveElement = $dropdownMenuItems[1];
+        $deactiveElement = $this->findDropdownMenuItem((int) $parts[1], 'Deactivate');
         $deactiveElementAnchor = $deactiveElement
             ->findElement(
                 WebDriverBy::cssSelector('a')
