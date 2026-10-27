@@ -135,7 +135,7 @@ export const SideBarRow = ({
 
   // Portaled menu content bubbles through the React tree but is not inside the row
   const handleRowClick = (e) => {
-    if (e.currentTarget.contains(e.target)) {
+    if (!e.defaultPrevented && e.currentTarget.contains(e.target)) {
       const handler = isQuestionGroup ? onTitleClick : onRowClick
       handler(e)
     }
