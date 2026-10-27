@@ -36,7 +36,11 @@ export const useQuestionChildren = ({
   language,
 }) => {
   const { addToBuffer } = useBuffer()
-  const { answerPrefix, subquestionPrefix } = useCodePrefixes()
+  const {
+    answerPrefix,
+    subquestionPrefix,
+    isLoading: arePrefixesLoading,
+  } = useCodePrefixes()
   const [children, setChildren] = useState([])
 
   const isSingleChoiceTheme = singleChoiceThemes.includes(
@@ -91,6 +95,10 @@ export const useQuestionChildren = ({
   }
 
   const handleChildAdd = (childArray = [], entityType, props = {}) => {
+    // Prefixes resolve to '' while loading; wait so a configured prefix isn't skipped.
+    if (arePrefixesLoading) {
+      return
+    }
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
 
     const newChild =
