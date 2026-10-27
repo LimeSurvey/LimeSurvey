@@ -561,25 +561,31 @@ class DataIntegrityChecker
     }
 
     /**
-     * This function deletes QuotaMember by join on question
+     * This function deletes quota members without related question, survey or quota
      * @param array $aData for view generation
      * @return array
      */
     private function deleteQuotaMembers(array $aData)
     {
         $oCriteria = new CDbCriteria();
-        $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid LEFT JOIN {{surveys}} s ON t.sid=s.sid';
-        $oCriteria->condition = '(q.qid IS NULL) OR (s.sid IS NULL)';
-        $count = 0;
-        $aRecords = QuotaMember::model()->findAll($oCriteria);
-        foreach ($aRecords as $aRecord) {
-            $deleted = QuotaMember::model()->deleteAllByAttributes($aRecord);
-            $count += $deleted;
-        }
+        $oCriteria->condition = $this->getOrphanedQuotaMembersCondition('{{quota_members}}');
+        $count = QuotaMember::model()->deleteAll($oCriteria);
         if ($count > 0) {
             $aData['messages'][] = sprintf(gT('Deleted %u orphaned quota rule(s)'), $count);
         }
         return $aData;
+    }
+
+    /**
+     * Returns the SQL condition matching quota members without related question, survey or quota
+     * @param string $tableAlias Alias or name of the quota members table in the query
+     * @return string
+     */
+    private function getOrphanedQuotaMembersCondition($tableAlias)
+    {
+        return "NOT EXISTS (SELECT 1 FROM {{questions}} q WHERE q.qid = {$tableAlias}.qid)"
+            . " OR NOT EXISTS (SELECT 1 FROM {{surveys}} s WHERE s.sid = {$tableAlias}.sid)"
+            . " OR NOT EXISTS (SELECT 1 FROM {{quota}} qu WHERE qu.id = {$tableAlias}.quota_id)";
     }
 
     /**
@@ -1692,8 +1698,7 @@ class DataIntegrityChecker
         /*     Check quota members                                   */
         /**********************************************************************/
         $oCriteria = new CDbCriteria();
-        $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid LEFT JOIN {{surveys}} s ON t.sid=s.sid';
-        $oCriteria->condition = '(q.qid IS NULL) OR (s.sid IS NULL)';
+        $oCriteria->condition = $this->getOrphanedQuotaMembersCondition('t');
 
         $aDelete['quotamembers'] = QuotaMember::model()->count($oCriteria);
 

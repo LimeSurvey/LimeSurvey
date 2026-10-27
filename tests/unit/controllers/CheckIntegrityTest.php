@@ -212,6 +212,42 @@ class CheckIntegrityTest extends TestBaseClass
         );
     }
 
+    /** Verifies that quota members without a related quota are detected and deleted, and valid ones are kept. */
+    public function testQuotaMembersWithoutQuotaAreDetectedAndDeleted()
+    {
+        $question = \Question::model()->find('sid = :sid AND parent_qid = 0', array(':sid' => self::$surveyId));
+
+        $quota = new \Quota();
+        $quota->sid = self::$surveyId;
+        $quota->name = 'Valid quota';
+        $quota->qlimit = 1;
+        $quota->action = 1;
+        $this->assertTrue($quota->save(), 'Could not save quota fixture: ' . json_encode($quota->errors));
+
+        $command = \Yii::app()->db->createCommand();
+        $command->insert('{{quota_members}}', array('sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => $quota->id, 'code' => 'A1'));
+        $validMemberId = \Yii::app()->db->getLastInsertID();
+        // Left over from a deleted quota
+        $command->insert('{{quota_members}}', array('sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => 999999904, 'code' => 'A2'));
+        $missingQuotaMemberId = \Yii::app()->db->getLastInsertID();
+        // Imported from a file referencing a quota that was not in it
+        $command->insert('{{quota_members}}', array('sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => null, 'code' => 'A3'));
+        $nullQuotaMemberId = \Yii::app()->db->getLastInsertID();
+
+        try {
+            $aDelete = $this->integrityChecker->checkintegrity();
+            $this->assertGreaterThanOrEqual(2, $aDelete['quotamembers'], 'Quota members without a quota were not detected.');
+
+            $this->callMethod('deleteQuotaMembers', array(array()));
+
+            $this->assertNull(\QuotaMember::model()->findByPk($missingQuotaMemberId), 'Quota member of a missing quota was not deleted.');
+            $this->assertNull(\QuotaMember::model()->findByPk($nullQuotaMemberId), 'Quota member without quota ID was not deleted.');
+            $this->assertNotNull(\QuotaMember::model()->findByPk($validMemberId), 'Valid quota member was deleted.');
+        } finally {
+            \Quota::model()->deleteQuota(array('id' => $quota->id));
+        }
+    }
+
     public function testIndexDoesNotRunTheConsistencyCheck()
     {
         $group = self::$testSurvey->groups[0];

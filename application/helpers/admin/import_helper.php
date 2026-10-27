@@ -3417,6 +3417,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     // Import quota_members ------------------------------------------------------
     if (isset($xml->quota_members)) {
+        $skippedQuotaMembers = 0;
         foreach ($xml->quota_members->rows->row as $row) {
             $quotaMember = new QuotaMember();
             $insertdata = array();
@@ -3426,11 +3427,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!isset($insertdata['quota_id']) || (int)$insertdata['quota_id'] < 1) {
                 continue;
             }
+            // Skip quota rules left over from deleted quotas or questions in the source survey
+            if (!isset($aQuotaReplacements[(int) $insertdata['quota_id']]) || !isset($aQIDReplacements[(int) ($insertdata['qid'] ?? 0)])) {
+                $skippedQuotaMembers++;
+                continue;
+            }
             $insertdata['sid'] = $iNewSID; // remap the survey ID
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
-            if (isset($insertdata['quota_id'])) {
-                $insertdata['quota_id'] = $aQuotaReplacements[(int) $insertdata['quota_id']]; // remap the qid
-            }
+            $insertdata['quota_id'] = $aQuotaReplacements[(int) $insertdata['quota_id']]; // remap the quota id
             unset($insertdata['id']);
             // now translate any links
             $quotaMember->setAttributes($insertdata, false);
@@ -3450,6 +3454,12 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             $results['quotamembers']++;
         }
+        if ($skippedQuotaMembers > 0) {
+            $results['importwarnings'][] = sprintf(
+                gT("Quota rules not imported because their quota or question is missing in the survey file: %s"),
+                $skippedQuotaMembers
+            );
+        }
     }
 
     // Batch process INSERTANS conversions to minimize database writes
@@ -3463,10 +3473,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             foreach ($row as $key => $value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-            if (!isset($insertdata['quotals_quota_id']) || (int)$insertdata['quotals_quota_id'] < 1) {
+            // Skip language settings of quotas that are missing in the survey file
+            if (!isset($insertdata['quotals_quota_id']) || !isset($aQuotaReplacements[(int) $insertdata['quotals_quota_id']])) {
                 continue;
             }
-            $insertdata['quotals_quota_id'] = $aQuotaReplacements[(int) $insertdata['quotals_quota_id']]; // remap the qid
+            $insertdata['quotals_quota_id'] = $aQuotaReplacements[(int) $insertdata['quotals_quota_id']]; // remap the quota id
             unset($insertdata['quotals_id']);
             $quotaLanguagesSetting = new QuotaLanguageSetting('import');
             $quotaLanguagesSetting->setAttributes($insertdata, false);
