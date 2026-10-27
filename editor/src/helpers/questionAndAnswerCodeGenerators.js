@@ -68,12 +68,7 @@ const buildChildCode = (prefix, numeric, padWidth, maxLength) => {
  * - Existing codes win: the next code continues the greatest one, keeping its
  *   prefix and, for purely numeric codes, its width (1 -> 2, 009 -> 010).
  */
-const getNextChildCode = ({
-  existingCodes,
-  seed,
-  prefix,
-  maxLength,
-}) => {
+const getNextChildCode = ({ existingCodes, seed, prefix, maxLength }) => {
   const configuredPrefix = sanitizePrefix(prefix)
   const usedCodes = new Set(existingCodes.map((c) => String(c).toLowerCase()))
 
