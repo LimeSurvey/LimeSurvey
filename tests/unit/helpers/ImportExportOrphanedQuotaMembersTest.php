@@ -120,7 +120,7 @@ class ImportExportOrphanedQuotaMembersTest extends TestBaseClass
             '{{quota_members}}',
             ['sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => 999999905, 'code' => 'X']
         );
-        $orphanId = Yii::app()->db->getLastInsertID();
+        $orphanId = getLastInsertID('{{quota_members}}');
 
         try {
             $xml = simplexml_load_string(surveyGetXMLData(self::$surveyId));

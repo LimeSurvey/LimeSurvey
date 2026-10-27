@@ -226,13 +226,13 @@ class CheckIntegrityTest extends TestBaseClass
 
         $command = \Yii::app()->db->createCommand();
         $command->insert('{{quota_members}}', array('sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => $quota->id, 'code' => 'A1'));
-        $validMemberId = \Yii::app()->db->getLastInsertID();
+        $validMemberId = getLastInsertID('{{quota_members}}');
         // Left over from a deleted quota
         $command->insert('{{quota_members}}', array('sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => 999999904, 'code' => 'A2'));
-        $missingQuotaMemberId = \Yii::app()->db->getLastInsertID();
+        $missingQuotaMemberId = getLastInsertID('{{quota_members}}');
         // Imported from a file referencing a quota that was not in it
         $command->insert('{{quota_members}}', array('sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => null, 'code' => 'A3'));
-        $nullQuotaMemberId = \Yii::app()->db->getLastInsertID();
+        $nullQuotaMemberId = getLastInsertID('{{quota_members}}');
 
         try {
             $aDelete = $this->integrityChecker->checkintegrity();
