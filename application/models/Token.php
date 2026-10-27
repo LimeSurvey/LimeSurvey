@@ -158,7 +158,6 @@ abstract class Token extends Dynamic
     public static function createTable($surveyId, array $extraFields = array())
     {
         $surveyId = intval($surveyId);
-
         // Specify case sensitive collations for the token
         $sCollation = '';
         if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli') {
@@ -191,7 +190,6 @@ abstract class Token extends Dynamic
             'validuntil' => 'datetime',
             'mpid' => 'integer'
         );
-
         foreach ($extraFields as $extraField) {
             $fields[$extraField] = 'text';
         }
@@ -214,16 +212,18 @@ abstract class Token extends Dynamic
              * complaining about duplicates when renaming the table and trying to use the same index again
              * on a new token table (for example on reactivation)
              */
-            $db->createCommand()->createIndex("idx_token_token_{$surveyId}_" . rand(1, 50000), $sTableName, 'token');
+            $tokenindexname = "idx_token_{$sTableName}_" . date('YmdHis') . "_" . randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+            $db->createCommand()->createIndex($tokenindexname, $sTableName, 'token');
 
+            $mailindexname = "idx_email_{$sTableName}_" . date('YmdHis') . "_" . randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
             // MSSQL does not support indexes on text fields so not needed here
             switch (Yii::app()->db->driverName) {
                 case 'mysql':
                 case 'mysqli':
-                    $db->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
+                    $db->createCommand()->createIndex($mailindexname, $sTableName, 'email(30)', false);
                     break;
                 case 'pgsql':
-                    $db->createCommand()->createIndex('idx_email_' . $surveyId . '_' . rand(1, 50000), $sTableName, 'email', false);
+                    $db->createCommand()->createIndex($mailindexname, $sTableName, 'email', false);
                     break;
             }
         } catch (CDbException $ex) {
