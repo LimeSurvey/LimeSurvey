@@ -4309,7 +4309,7 @@ class statistics_helper
     private static function getMultiAnswered($surveyid, $answersList, $noncompleted)
     {
         $criteria = new CDbCriteria();
-        foreach ($answersList as $al) {
+        foreach (self::addOtherCheckedColumns($surveyid, $answersList) as $al) {
             $quotedColumnName = App()->db->quoteColumnName($al[2]);
             // Answered
             if ($noncompleted > 1) {
@@ -4350,7 +4350,7 @@ class statistics_helper
     private static function getMultiNotDisplayed($surveyid, $answersList, $noncompleted)
     {
         $criteria = new CDbCriteria();
-        foreach ($answersList as $al) {
+        foreach (self::addOtherCheckedColumns($surveyid, $answersList) as $al) {
             $quotedColumnName = App()->db->quoteColumnName($al[2]);
             if ($noncompleted > 1) {
                 // database can use blob due to encryption
@@ -4377,5 +4377,24 @@ class statistics_helper
             $criteria->addCondition("submitdate IS NOT NULL");
         }
         return SurveyDynamic::model($surveyid)->count($criteria);
+    }
+
+    /**
+     * Add the stored tick of a multiple choice Other after its text column, when the response table has it
+     * @param integer $surveyid
+     * @param array $answersList @see getMultiAnswered()
+     * @return array
+     */
+    private static function addOtherCheckedColumns($surveyid, $answersList)
+    {
+        $tableSchema = SurveyDynamic::model($surveyid)->getTableSchema();
+        $result = [];
+        foreach ($answersList as $al) {
+            $result[] = $al;
+            if (substr((string) $al[2], -7) === '_Cother' && $tableSchema->getColumn($al[2] . 'checked') !== null) {
+                $result[] = [$al[0], $al[1], $al[2] . 'checked'];
+            }
+        }
+        return $result;
     }
 }

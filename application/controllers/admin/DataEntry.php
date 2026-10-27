@@ -501,7 +501,7 @@ class DataEntry extends SurveyCommonAction
             if ($preserveIDs && $isPgsql) {
                 $this->syncResponseIdSequence($iSurveyId);
             }
-            $this->fillOtherCheckedFromText($iSurveyId, $targetSchema, $fieldMap);
+            $this->fillOtherCheckedFromText($iSurveyId, $targetSchema, $fieldMap, array_values($aSRIDConversions));
             if (empty($responseErrors) && !$skipped) {
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
             }
@@ -1647,14 +1647,18 @@ class DataEntry extends SurveyCommonAction
 
     /**
      * Imported responses from a table without the tick column of multiple choice Other: text always ticks Other.
-     * One query per Other column, not per response.
+     * One query per Other column and per 1000 responses, not per response.
      * @param integer $iSurveyId
      * @param CDbTableSchema $targetSchema
      * @param array $fieldMap imported source column => target column
+     * @param integer[] $importedIds ids of the imported responses, other responses are not changed
      * @return void
      */
-    private function fillOtherCheckedFromText($iSurveyId, $targetSchema, array $fieldMap)
+    private function fillOtherCheckedFromText($iSurveyId, $targetSchema, array $fieldMap, array $importedIds)
     {
+        if (empty($importedIds)) {
+            return;
+        }
         $db = Yii::app()->db;
         $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
         foreach ($targetSchema->getColumnNames() as $checkedColumn) {
@@ -1668,11 +1672,14 @@ class DataEntry extends SurveyCommonAction
             $checked = in_array($checkedColumn, $encryptedAttributes, false) ? LSActiveRecord::encryptSingle('Y') : 'Y';
             $quotedChecked = $db->quoteColumnName($checkedColumn);
             $quotedOther = $db->quoteColumnName($otherColumn);
-            $db->createCommand()->update(
-                "{{responses_$iSurveyId}}",
-                [$checkedColumn => $checked],
-                "($quotedChecked IS NULL OR $quotedChecked = '') AND $quotedOther IS NOT NULL AND $quotedOther <> ''"
-            );
+            foreach (array_chunk($importedIds, 1000) as $ids) {
+                $db->createCommand()->update(
+                    "{{responses_$iSurveyId}}",
+                    [$checkedColumn => $checked],
+                    "($quotedChecked IS NULL OR $quotedChecked = '') AND $quotedOther IS NOT NULL AND $quotedOther <> ''"
+                    . " AND " . $db->quoteColumnName('id') . " IN (" . implode(',', array_map('intval', $ids)) . ")"
+                );
+            }
         }
     }
 
@@ -1688,7 +1695,7 @@ class DataEntry extends SurveyCommonAction
             return $value;
         }
         $otherText = Yii::app()->request->getPost("Q{$field['qid']}_Cother", '');
-        return ($value === 'Y' || trim((string) $otherText) !== '') ? 'Y' : '';
+        return ($value === 'Y' || (string) $otherText !== '') ? 'Y' : '';
     }
 
     /**

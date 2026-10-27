@@ -314,8 +314,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
                             if ($deqrow['other'] == "Y") { ?>
                                 <?php if (!empty($hasOtherChecked)) { ?>
                                     <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname; ?>_Cotherchecked' id='answer<?php echo $fieldname; ?>_Cotherchecked' value='Y' />
-                                    <label for='answer<?php echo $fieldname; ?>_Cotherchecked'><?php eT("Other", 'html', $sDataEntryLanguage); ?></label>
-                                    <input type='text' name='<?php echo $fieldname; ?>_Cother' aria-label='<?php eT("Other", 'html', $sDataEntryLanguage); ?>' />
+                                    <label for='answer<?php echo $fieldname; ?>_Cotherchecked'><?php echo gT("Other", 'html', $sDataEntryLanguage); ?></label>
+                                    <input type='text' name='<?php echo $fieldname; ?>_Cother' aria-label='<?php echo gT("Other", 'html', $sDataEntryLanguage); ?>' />
                                 <?php } else { ?>
                                     <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>_Cother' />
                                 <?php } ?>
@@ -330,8 +330,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     if ($deqrow['other'] == "Y") { ?>
                         <?php if (!empty($hasOtherChecked)) { ?>
                             <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname; ?>_Cotherchecked' id='answer<?php echo $fieldname; ?>_Cotherchecked' value='Y' />
-                            <label for='answer<?php echo $fieldname; ?>_Cotherchecked'><?php eT("Other", 'html', $sDataEntryLanguage); ?></label>
-                            <input type='text' name='<?php echo $fieldname; ?>_Cother' aria-label='<?php eT("Other", 'html', $sDataEntryLanguage); ?>' />
+                            <label for='answer<?php echo $fieldname; ?>_Cotherchecked'><?php echo gT("Other", 'html', $sDataEntryLanguage); ?></label>
+                            <input type='text' name='<?php echo $fieldname; ?>_Cother' aria-label='<?php echo gT("Other", 'html', $sDataEntryLanguage); ?>' />
                         <?php } else { ?>
                             <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>_Cother' />
                         <?php } ?>

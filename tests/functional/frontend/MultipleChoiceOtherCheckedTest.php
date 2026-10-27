@@ -260,8 +260,8 @@ class MultipleChoiceOtherCheckedTest extends TestBaseClassWeb
             $web->get($this->getSurveyUrl());
             $this->next($web, 'q2');
             if ($withOption) {
-                $optionA = \Question::model()->findByAttributes(['parent_qid' => $this->questions['q2']->qid, 'title' => 'SQ001']);
-                $web->findByCss('label[for="answerQ' . $this->questions['q2']->qid . '_S' . $optionA->qid . '"]')->click();
+                $firstOption = \Question::model()->findByAttributes(['parent_qid' => $this->questions['q2']->qid, 'title' => 'SQ001']);
+                $web->findByCss('label[for="answerQ' . $this->questions['q2']->qid . '_S' . $firstOption->qid . '"]')->click();
             }
             $web->findById('label-' . $other . '-other')->click();
             $web->next();

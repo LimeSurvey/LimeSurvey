@@ -9176,7 +9176,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $updatedValues[$sq] = $_update;
                     $LEM->updatedValues[$sq] = $_update;
                     if (isset($LEM->other2otherChecked[$sq])) {
-                        $otherChecked = trim((string) $value) !== '' || !empty($_POST[$sq . 'cbox']);
+                        $otherChecked = (string) $value !== '' || !empty($_POST[$sq . 'cbox']);
                         $LEM->setOtherCheckedValue($sq, $otherChecked ? 'Y' : '', $updatedValues);
                     }
                 } else {  // irrelevant, so database will be NULLed separately
@@ -9230,7 +9230,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         if (isset($LEM->other2otherChecked[$sq])) {
             $values = $_SESSION[$LEM->sessid] ?? [];
             return ($values[$LEM->other2otherChecked[$sq]] ?? '') === 'Y'
-                && trim((string) ($values[$sq] ?? '')) === '';
+                && (string) ($values[$sq] ?? '') === '';
         }
         if (empty($_POST[$sq . 'cbox'])) {
             return false;
