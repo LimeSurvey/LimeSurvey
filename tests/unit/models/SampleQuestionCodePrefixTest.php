@@ -19,7 +19,8 @@ class SampleQuestionCodePrefixTest extends TestBaseClass
         $originalUserId = $user->getState('__id');
         $originalLoginId = \Yii::app()->session['loginID'];
         $originalSettings = $db->createCommand()
-            ->select('*')
+            // Without the identity "id" column: MSSQL rejects explicit identity inserts.
+            ->select('uid, entity, entity_id, stg_name, stg_value')
             ->from('{{settings_user}}')
             ->where(['and', 'uid=1', ['in', 'stg_name', self::PREFIX_SETTINGS]])
             ->queryAll();
