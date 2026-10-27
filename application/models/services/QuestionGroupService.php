@@ -91,6 +91,7 @@ class QuestionGroupService
             $questionGroup,
             $input['questionGroupI10N']
         );
+        $this->proxyExpressionManager->flushEmCache();
 
         return $questionGroup;
     }
