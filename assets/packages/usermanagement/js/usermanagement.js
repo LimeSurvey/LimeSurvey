@@ -258,7 +258,7 @@ var UserManagement = function () {
     };
 
     var wireMassPermissions = function () {
-        wirePermissions('#massive-actions-modal-usermanagement--identity-gridPanel-batchPermissions-2');
+        wirePermissions('#massive-actions-modal-usermanagement--identity-gridPanel-batchPermissions-1');
 
         var oCheckedItems = $('#usermanagement--identity-gridPanel').yiiGridView('getChecked', $('.listActions').data('pk'));
         $('#hereBeUserIds').html('');
@@ -398,7 +398,7 @@ var UserManagement = function () {
             $.fn.yiiGridView.update('usermanagement--identity-gridPanel', {});
         });
 
-        $(document).on('shown.bs.modal', '#massive-actions-modal-usermanagement--identity-gridPanel-batchPermissions-2', function () {
+        $(document).on('shown.bs.modal', '#massive-actions-modal-usermanagement--identity-gridPanel-batchPermissions-1', function () {
             wireMassPermissions();
         });
     };
