@@ -170,6 +170,7 @@ const SurveyActivationHandler = forwardRef(
         operation: Operations.update,
         callback: (extraData) =>
           onSwitchComplete(isSurveyActiveAfterOperation, switchType, extraData),
+        onError: () => setSurveyPublishRunning(false),
       })
       runStatusSwitchOperation(switchType)
     }
