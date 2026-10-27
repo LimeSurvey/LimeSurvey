@@ -367,6 +367,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @return void
      */
+    #[\Override]
     protected function afterSave()
     {
         parent::afterSave();
@@ -378,6 +379,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @return void
      */
+    #[\Override]
     protected function afterDelete()
     {
         parent::afterDelete();
