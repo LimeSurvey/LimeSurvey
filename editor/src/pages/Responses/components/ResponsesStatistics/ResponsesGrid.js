@@ -23,6 +23,7 @@ export const ResponsesGrid = ({
   title = '',
   fields,
   filters,
+  filterSet = [],
   twoColumns = false,
 }) => {
   const [containerRef, isInView] = useIsInViewport(null, {
@@ -56,6 +57,7 @@ export const ResponsesGrid = ({
     enabled: shouldLoad,
     fields,
     filters,
+    filterSet,
     search,
   })
 

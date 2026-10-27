@@ -34,6 +34,7 @@ export const ArrayTextTable = ({
   questionCode,
   fields,
   filters,
+  filterSet = [],
   searchable = false,
   scaleHeaders,
 }) => {
@@ -67,6 +68,7 @@ export const ArrayTextTable = ({
     enabled: shouldLoad,
     fields,
     filters,
+    filterSet,
     search,
   })
 

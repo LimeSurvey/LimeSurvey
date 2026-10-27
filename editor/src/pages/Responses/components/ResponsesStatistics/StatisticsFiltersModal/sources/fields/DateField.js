@@ -11,7 +11,13 @@ import { dayJsHelper } from 'helpers'
 // date; clicking the input or the calendar icon opens MUI's calendar. The
 // calendar is portaled to <body> and positioned with fixed coords so it floats
 // above the scrollable modal instead of being clipped by it.
-export const DateField = ({ value, placeholder, onChange }) => {
+export const DateField = ({
+  value,
+  placeholder,
+  onChange,
+  minDate = null,
+  maxDate = null,
+}) => {
   const [open, setOpen] = useState(false)
   const [position, setPosition] = useState({ top: 0, left: 0 })
   const anchorRef = useRef(null)
@@ -92,7 +98,12 @@ export const DateField = ({ value, placeholder, onChange }) => {
             style={{ top: position.top, left: position.left }}
           >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateCalendar value={selected} onChange={handleSelect} />
+              <DateCalendar
+                value={selected}
+                onChange={handleSelect}
+                {...(minDate && { minDate: dayJsHelper(minDate) })}
+                {...(maxDate && { maxDate: dayJsHelper(maxDate) })}
+              />
             </LocalizationProvider>
           </div>,
           document.body
