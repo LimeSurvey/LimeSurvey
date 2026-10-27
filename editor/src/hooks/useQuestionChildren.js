@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { omit } from 'lodash'
 import { useQuery } from '@tanstack/react-query'
 import { useBuffer } from './useBuffer'
+import { useCodePrefixes } from './useCodePrefixes'
 import {
   Entities,
   SCALE_1,
@@ -35,6 +36,7 @@ export const useQuestionChildren = ({
   language,
 }) => {
   const { addToBuffer } = useBuffer()
+  const { answerPrefix, subquestionPrefix } = useCodePrefixes()
   const [children, setChildren] = useState([])
 
   const isSingleChoiceTheme = singleChoiceThemes.includes(
@@ -103,7 +105,8 @@ export const useQuestionChildren = ({
                     ? childArray.filter((a) => a.scaleId === props.scaleId)
                     : childArray,
               },
-              null
+              null,
+              answerPrefix
             ),
             languages: surveySettings.languages,
             ...props,
@@ -121,7 +124,8 @@ export const useQuestionChildren = ({
                     ? childArray.filter((sq) => sq.scaleId === props.scaleId)
                     : childArray,
               },
-              null
+              null,
+              subquestionPrefix
             ),
             ...props,
           })

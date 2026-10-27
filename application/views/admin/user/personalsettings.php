@@ -399,7 +399,7 @@ echo $oQuestionSelector->getModal();
                                 <?php echo TbHtml::label(gT("Non-numerical answer option prefix:"), 'answeroptionprefix', ['class' => " form-label"]); ?>
                                 <?php echo TbHtml::textField(
                                     'answeroptionprefix',
-                                    ($aUserSettings['answeroptionprefix'] ?? 'AO'),
+                                    ($aUserSettings['answeroptionprefix'] ?? ''),
                                     [
                                         'class'            => "form-control",
                                         'pattern'          => "[A-Za-z]{0,3}",
@@ -409,7 +409,7 @@ echo $oQuestionSelector->getModal();
                                     ]
                                 ); ?>
                                 <div id="answeroptionprefix-help" class="form-text">
-                                    <?php eT("Enter up to 3 letters (A-Z)."); ?>
+                                    <?php eT("Enter up to 3 letters (A-Z), or leave empty for purely numeric codes."); ?>
                                 </div>
                             </div>
                         </div>
@@ -419,7 +419,7 @@ echo $oQuestionSelector->getModal();
                                 <?php echo TbHtml::label(gT("Non-numerical subquestions prefix:"), 'subquestionprefix', ['class' => " form-label"]); ?>
                                 <?php echo TbHtml::textField(
                                     'subquestionprefix',
-                                    ($aUserSettings['subquestionprefix'] ?? 'SQ'),
+                                    ($aUserSettings['subquestionprefix'] ?? ''),
                                     [
                                         'class'            => "form-control",
                                         'pattern'          => "[A-Za-z]{0,3}",
@@ -430,7 +430,7 @@ echo $oQuestionSelector->getModal();
                                 );
 ?>
                                 <div id="subquestionprefix-help" class="form-text">
-                                    <?php eT("Enter up to 3 letters (A-Z)."); ?>
+                                    <?php eT("Enter up to 3 letters (A-Z), or leave empty for purely numeric codes."); ?>
                                 </div>
                             </div>
                         </div>

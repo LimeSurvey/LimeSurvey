@@ -158,4 +158,28 @@ class ExpressionManagerTest extends TestBaseClass
             $this->assertEquals($expected, $result);
         }
     }
+
+    /**
+     * Purely numeric answer/subquestion codes (default empty prefixes) with leading zeros.
+     */
+    public function testNumericCodesWithLeadingZeros()
+    {
+        $expressions = array(
+            "'007'" => '007', // The text of a padded code is kept.
+            "'01' == '01'" => 1,
+            "'01' == '02'" => '',
+            "'1' == '2'" => '',
+            "'001' == '001'" => 1,
+            "strlen('007')" => 3,
+            "'A' == '01'" => '',
+            // Numeric strings compare numerically: padded and unpadded codes are indistinguishable.
+            "'01' == '1'" => 1,
+        );
+
+        foreach ($expressions as $expression => $expected) {
+            $result = $this->em->sProcessStringContainingExpressions('{' . $expression . '}');
+            $this->assertEquals($expected, $result, $expression);
+            $this->assertSame((string) $expected, (string) $result, $expression);
+        }
+    }
 }
