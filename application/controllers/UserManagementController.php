@@ -659,11 +659,35 @@ class UserManagementController extends LSBaseController
             $aBasePermissions = $aFilteredPermissions;
         }
 
+        // Only the permissions set on the user itself are shown as checked, not the ones coming from a role
+        $aUserPermissions = [];
+        $oUserPermissions = Permission::model()->findAllByAttributes([
+            'uid' => $oUser->uid,
+            'entity' => 'global',
+            'entity_id' => 0,
+        ]);
+        foreach ($oUserPermissions as $oUserPermission) {
+            $aUserPermissions[$oUserPermission->permission] = $oUserPermission;
+        }
+
+        // Saving removes the roles of the user, so their names are shown in the warning and the confirmation
+        $aRoleNames = [];
+        $aRoleIds = CHtml::listData(Permission::getUserRole($oUser->uid), 'ptid', 'ptid');
+        if (!empty($aRoleIds)) {
+            $aRoleNames = CHtml::listData(
+                Permissiontemplates::model()->findAllByPk(array_values($aRoleIds)),
+                'ptid',
+                'name'
+            );
+        }
+
         return $this->renderPartial(
             'partial/editpermissions',
             [
                 "oUser" => $oUser,
                 "aBasePermissions" => $aBasePermissions,
+                "aUserPermissions" => $aUserPermissions,
+                "aRoleNames" => $aRoleNames,
             ]
         );
     }
@@ -816,6 +840,7 @@ class UserManagementController extends LSBaseController
                 'aCurrentRoles' => $aCurrentRoles,
                 'aLockedRoles' => $aLockedRoles,
                 'hasIndividualPermissions' => $userManager->hasIndividualGlobalPermissions(),
+                'hasRoles' => !empty($oUser->roles),
             ]
         );
     }
