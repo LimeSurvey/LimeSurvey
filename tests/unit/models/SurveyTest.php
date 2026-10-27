@@ -462,7 +462,7 @@ class SurveyTest extends TestBaseClass
         Yii::app()->setConfig('publicurl', 'http://example.com');
 
         $url = self::$testSurvey->getSurveyUrl('ar');
-        $this->assertSame('http://example.com/my-arabic-survey', $url, 'Unexpected url. The url does not correspond with a public survey url.');
+        $this->assertSame('http://example.com/index.php/my-arabic-survey', $url, 'Unexpected url. The url does not correspond with a public survey url.');
 
         // No alias assert.
         $url = self::$testSurvey->getSurveyUrl('ar', array(), false);
@@ -534,10 +534,10 @@ class SurveyTest extends TestBaseClass
         Yii::app()->setConfig('publicurl', 'http://example.com');
 
         $arAliasUrl = self::$testSurvey->getSurveyUrl('ar');
-        $this->assertSame($arAliasUrl, 'http://example.com/my-survey?lang=ar', 'Unexpected url. The url does not correspond with a public survey url.');
+        $this->assertSame($arAliasUrl, 'http://example.com/index.php/my-survey?lang=ar', 'Unexpected url. The url does not correspond with a public survey url.');
 
         $deAliasUrl = self::$testSurvey->getSurveyUrl('de');
-        $this->assertSame($deAliasUrl, 'http://example.com/my-survey?lang=de', 'Unexpected url. The url does not correspond with a public survey url.');
+        $this->assertSame($deAliasUrl, 'http://example.com/index.php/my-survey?lang=de', 'Unexpected url. The url does not correspond with a public survey url.');
 
         // No alias assert.
         $arUrl = self::$testSurvey->getSurveyUrl('ar', array(), false);
