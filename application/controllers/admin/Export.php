@@ -471,9 +471,7 @@ class Export extends SurveyCommonAction
             $subaction = "dldata";
         }
         if (Yii::app()->request->getPost('dlstructure')) {
-            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
-                throw new CHttpException(403, gT("You do not have permission to access this page."));
-            }
+            // The syntax file only describes the response columns, so either export permission checked above is enough
             $subaction = "dlstructure";
         }
 
@@ -498,6 +496,7 @@ class Export extends SurveyCommonAction
             $data['selectshow'] = $selectshow;
             $data['spssver'] = $spssver;
             $data['surveyid'] = $iSurveyID;
+            $data['canExportResponses'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export');
             $data['display']['menu_bars']['browse'] = gT('Export results');
 
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
