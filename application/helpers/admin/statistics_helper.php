@@ -2700,7 +2700,7 @@ class statistics_helper
             if ($noncompleted < 2) {
                 $criteria = new CDbCriteria();
                 if ($noncompleted) {
-                    foreach ($outputs['alist'] as $al) {
+                    foreach (self::addOtherCheckedColumns($surveyid, $outputs['alist']) as $al) {
                         $quotedColumnName = App()->db->quoteColumnName($al[2]);
                         switch ($sDatabaseType) {
                             case 'mssql':
@@ -2715,7 +2715,7 @@ class statistics_helper
                     }
                     $fname = gT("Not completed");
                 } else {
-                    foreach ($outputs['alist'] as $al) {
+                    foreach (self::addOtherCheckedColumns($surveyid, $outputs['alist']) as $al) {
                         $quotedColumnName = App()->db->quoteColumnName($al[2]);
                         switch ($sDatabaseType) {
                             case 'mssql':

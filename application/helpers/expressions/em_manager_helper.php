@@ -7100,6 +7100,9 @@ class LimeExpressionManager
                 $_SESSION[$LEM->sessid][$sgqa] = null;
                 $updatedValues[$sgqa] = null;
                 $LEM->updatedValues[$sgqa] = null;
+                if (isset($LEM->other2otherChecked[$sgqa])) {
+                    $LEM->setOtherCheckedValue($sgqa, null, $updatedValues);
+                }
             }
         } elseif ($qInfo['type'] == Question::QT_ASTERISK_EQUATION) {
             // Process relevant equations, even if hidden, and write the result to the database
