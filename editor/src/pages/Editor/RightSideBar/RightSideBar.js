@@ -8,7 +8,7 @@ import { WelcomeSettings } from 'components/WelcomeSettings/WelcomeSettings'
 import { GroupSettings } from 'components/GroupSettings/GroupSettings'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 import { EndScreenSettings } from 'components/EndScreenSettings/EndScreenSettings'
-import { QuestionSettingsv2 } from 'components/QuestionSettings/QuestionSettingsV2'
+import { QuestionSettings } from 'components/QuestionSettings/QuestionSettings'
 
 export const RightSideBar = ({ surveyId }) => {
   const { panel } = useParams()
@@ -38,7 +38,7 @@ export const RightSideBar = ({ surveyId }) => {
         <GroupSettings gid={focused.gid} />
       )}
       {focused && questionIndex != null && (
-        <QuestionSettingsv2 focused={focused} surveyId={surveyId} />
+        <QuestionSettings surveyId={surveyId} />
       )}
       {focused?.info?.type === getQuestionTypeInfo().WELCOME_SCREEN.type && (
         <WelcomeSettings surveyId={surveyId} />
