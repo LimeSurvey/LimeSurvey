@@ -426,6 +426,14 @@ export const OptionQuestionViewMode = ({
         const value = isSingleChoiceTheme
           ? childrenValuesInOrder[0]
           : childrenValuesInOrder[index]
+        const isOtherWithTick =
+          !isSingleChoiceTheme && child.isOther && value?.otherChecked
+        const toggleOther = (checked) => {
+          onValueChange(checked ? 'Y' : '', value.otherChecked.key)
+          if (!checked && value.otherText?.key) {
+            onValueChange('', value.otherText.key)
+          }
+        }
 
         return (
           <div
@@ -450,11 +458,8 @@ export const OptionQuestionViewMode = ({
                 if (isSingleChoiceTheme) {
                   pendingIndexRef.current = index
                 }
-                if (child.isOther && value?.otherChecked) {
-                  onValueChange(newValue ? 'Y' : '', value.otherChecked.key)
-                  if (!newValue && value.otherText?.key) {
-                    onValueChange('', value.otherText.key)
-                  }
+                if (isOtherWithTick) {
+                  toggleOther(newValue)
                   return
                 }
                 onValueChange(
@@ -470,6 +475,10 @@ export const OptionQuestionViewMode = ({
                   pendingIndexRef.current = index
                 }
                 setSelectedIndex(index)
+                if (isOtherWithTick) {
+                  toggleOther(!value.checked)
+                  return
+                }
                 onValueChange(
                   isSingleChoiceTheme
                     ? child[childrenInfo.codeKey]
