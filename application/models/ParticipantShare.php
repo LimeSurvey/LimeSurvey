@@ -281,6 +281,8 @@ class ParticipantShare extends LSActiveRecord
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.
+     * Users without superadmin or global participant panel read permission only get the
+     * shares of participants they own.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
     public function search()
@@ -324,6 +326,16 @@ class ParticipantShare extends LSActiveRecord
 
         // This condition is necessary to filter out participants that got deleted, but the share entry is not
         $criteria->addCondition('participant.participant_id = t.participant_id');
+
+        // Superadmins and users with global participant panel read permission see all shares,
+        // everybody else only the shares of participants they own
+        if (
+            !Permission::model()->hasGlobalPermission('superadmin', 'read')
+            && !Permission::model()->hasGlobalPermission('participantpanel', 'read')
+        ) {
+            $criteria->addCondition('participant.owner_uid = :shareOwnerUid');
+            $criteria->params[':shareOwnerUid'] = (int) App()->user->id;
+        }
 
         $criteria->compare('share_uid', $this->share_uid);
         $criteria->compare('date_added', $this->date_added, true);
@@ -454,9 +466,10 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
-     * Returns true if the user is allowed to edit the participant
+     * Returns true if the participant is shared with the logged in user or with all users
+     * (share_uid -1) and the share allows editing.
      *
-     * @param $participent_id
+     * @param string $participent_id
      *
      * @return boolean
      */
@@ -464,7 +477,7 @@ class ParticipantShare extends LSActiveRecord
     {
         $participent = $this->findByAttributes(
             ['participant_id' => $participent_id],
-            'can_edit = :can_edit AND share_uid = :userid',
+            'can_edit = :can_edit AND (share_uid = :userid OR share_uid = -1)',
             [
                 ':userid' => App()->user->id,
                 ':can_edit' => '1'

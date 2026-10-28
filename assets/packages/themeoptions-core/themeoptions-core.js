@@ -70,7 +70,7 @@ var ThemeOptions = function () {
                 $(item).val((inheritPossible ? 'inherit' : false));
             }
 
-            optionObject[$(item).attr('name')] = $(item).val();
+            optionObject[$(item).attr('name')] = getOptionFieldValue(item);
         });
 
         globalForm.find('.selector_image_selector').each(function (i, item) {
@@ -121,10 +121,19 @@ var ThemeOptions = function () {
     // Utility Methods
     // -- small utilities i.g. for images or similar, or very specialized functions
 
+    // Color picker text fields are left empty when the value is inherited, so they show the translated placeholder instead of "inherit"
+    var getOptionFieldValue = function (item) {
+        if ($(item).hasClass('selector__color-picker') && $(item).val() === '' && inheritPossible) {
+            return 'inherit';
+        }
+        return $(item).val();
+    };
+
     var applyColorPickerValue = function (item) {
         if ($(item).hasClass('selector__color-picker')) {
             console.ls.log($(item).data('inheritvalue'), $(item).val(), item);
             if ($(item).val() === 'inherit') {
+                $(item).val('');
                 $(item).closest('.input-group').find('.selector__colorpicker-inherit-value').val($(item).data('inheritvalue')).trigger('change');
             } else {
                 $(item).closest('.input-group').find('.selector__colorpicker-inherit-value').val($(item).val()).trigger('change');
@@ -386,7 +395,7 @@ var ThemeOptions = function () {
             var colorField = $(this).closest('.input-group').find('.selector__color-picker');
             console.ls.log(colorField, colorField.data('inheritvalue'));
             $(this).closest('.input-group').find('.selector__colorpicker-inherit-value').val(colorField.data('inheritvalue')).trigger('change');
-            colorField.attr('type', 'text').val('inherit');
+            colorField.attr('type', 'text').val('');
             optionObject[colorField.attr('name')] = 'inherit';
             updateFieldSettings();
         });
@@ -556,11 +565,17 @@ $(function () {
         $('#lightbox-modal').modal('show');
     });
 
+    // Icon values are hexadecimal code points, show them as text so other values can't add markup
+    var iconCharacter = function (hexCode) {
+        hexCode = String(hexCode);
+        var codePoint = parseInt(hexCode, 16);
+        return /^[0-9a-f]{1,6}$/i.test(hexCode) && codePoint <= 0x10FFFF ? String.fromCodePoint(codePoint) : '';
+    };
+
     $('.simple_edit_options_checkicon').on('change', function () {
-        $(this).siblings('.selector__checkicon-preview').find('i').html('&#x' + $(this).val() + ';');
-        if ($(this).val() == 'inherit') {
-            $(this).siblings('.selector__checkicon-preview').find('i').html('&#x' + $(this).siblings('.selector__checkicon-preview').find('i').data('inheritvalue') + ';');
-        }
+        var preview = $(this).siblings('.selector__checkicon-preview').find('i');
+        var hexCode = $(this).val() == 'inherit' ? preview.attr('data-inheritvalue') : $(this).val();
+        preview.text(iconCharacter(hexCode));
     });
 });
 $(function () {

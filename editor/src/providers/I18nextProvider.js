@@ -1,7 +1,7 @@
 import { useAppState, useAuth, useUserService } from 'hooks'
 import { I18nextProvider } from 'react-i18next'
 import { STATES } from '../helpers'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 export const I18Provider = ({ i18n, children, language }) => {
   const auth = useAuth()
@@ -84,23 +84,25 @@ export const I18Provider = ({ i18n, children, language }) => {
     }
   }, [auth.token, language])
 
+  const loadingTranslations = (
+    <div
+      data-testid="editor"
+      style={{ height: '100vh' }}
+      className="d-flex flex-column justify-content-center align-items-center"
+    >
+      <span style={{ width: 48, height: 48 }} className="loader mb-4"></span>
+      <h1>Loading translations...</h1>
+    </div>
+  )
+
   if (!isTranslationLoaded) {
-    return (
-      <>
-        <div
-          data-testid="editor"
-          style={{ height: '100vh' }}
-          className="d-flex flex-column justify-content-center align-items-center"
-        >
-          <span
-            style={{ width: 48, height: 48 }}
-            className="loader mb-4"
-          ></span>
-          <h1>Loading translations...</h1>
-        </div>
-      </>
-    )
+    return loadingTranslations
   }
 
-  return <I18nextProvider i18n={i18nInstance}>{children}</I18nextProvider>
+  // useTranslation() suspends until the translations are loaded
+  return (
+    <I18nextProvider i18n={i18nInstance}>
+      <Suspense fallback={loadingTranslations}>{children}</Suspense>
+    </I18nextProvider>
+  )
 }

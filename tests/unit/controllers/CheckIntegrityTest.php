@@ -49,7 +49,6 @@ class CheckIntegrityTest extends TestBaseClass
     private function callMethod($method, array $args)
     {
         $reflection = new \ReflectionMethod(\DataIntegrityChecker::class, $method);
-        $reflection->setAccessible(true);
         return $reflection->invokeArgs($this->integrityChecker, $args);
     }
 
@@ -544,6 +543,514 @@ class CheckIntegrityTest extends TestBaseClass
         $this->assertFalse($dropped);
         $this->assertCount(1, $aData['warnings'], 'A failed drop should be reported as a warning.');
         $this->assertStringContainsString($tableName, $aData['warnings'][0]);
+    }
+
+    /**
+     * Missing survey language settings caused a "texts for one or more survey languages
+     * could not be found" error pointing to this tool, which then claimed no errors were
+     * found: they were silently restored while merely loading the check page.
+     */
+    public function testMissingSurveyLanguageSettingsAreOnlyRestoredAndReportedByTheConsistencyCheck()
+    {
+        $language = self::$testSurvey->language;
+        $condition = 'surveyls_survey_id = :sid AND surveyls_language = :language';
+        $params = array(':sid' => self::$surveyId, ':language' => $language);
+        $original = \Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}')->where($condition, $params)->queryRow();
+        $this->assertNotEmpty($original, 'The survey fixture has no language settings for its base language.');
+        \Yii::app()->db->createCommand()->delete('{{surveys_languagesettings}}', $condition, $params);
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertFalse(
+                \Yii::app()->db->createCommand()->select('count(*)')->from('{{surveys_languagesettings}}')->where($condition, $params)->queryScalar() > 0,
+                'Merely loading the check page (GET) restored the missing survey language settings.'
+            );
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertTrue(
+                \Yii::app()->db->createCommand()->select('count(*)')->from('{{surveys_languagesettings}}')->where($condition, $params)->queryScalar() > 0,
+                'The consistency check did not restore the missing survey language settings.'
+            );
+            $this->assertStringContainsString(
+                sprintf('Restored missing survey texts for language %s in survey %s', $language, self::$surveyId),
+                $logOfFixes,
+                'Restoring the missing survey language settings was not reported in the log of fixes.'
+            );
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{surveys_languagesettings}}', $condition, $params);
+            \Yii::app()->db->createCommand()->insert('{{surveys_languagesettings}}', $original);
+        }
+    }
+
+    /** Verifies that permissions of deleted users are only deleted, and reported, by the consistency check. */
+    public function testOrphanUserPermissionsAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $bogusUid = 999999911;
+        \Yii::app()->db->createCommand()->insert('{{permissions}}', array(
+            'entity' => 'global',
+            'entity_id' => 0,
+            'uid' => $bogusUid,
+            'permission' => 'surveys',
+            'create_p' => 0,
+            'read_p' => 1,
+            'update_p' => 0,
+            'delete_p' => 0,
+            'import_p' => 0,
+            'export_p' => 0,
+        ));
+        $countPermissions = function () use ($bogusUid) {
+            return (int) \Yii::app()->db->createCommand()->select('count(*)')->from('{{permissions}}')->where('uid = :uid', array(':uid' => $bogusUid))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame(1, $countPermissions(), 'Merely loading the check page (GET) deleted the permission of a deleted user.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(0, $countPermissions(), 'The consistency check did not delete the permission of a deleted user.');
+            $this->assertStringContainsString('permission(s) of users that no longer exist', $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{permissions}}', 'uid = :uid', array(':uid' => $bogusUid));
+        }
+    }
+
+    /** Verifies that an active survey without a response table is only deactivated, and reported, by the consistency check. */
+    public function testActiveSurveyWithoutResponseTableIsOnlyDeactivatedAndReportedByTheConsistencyCheck()
+    {
+        $this->assertFalse($this->tableExistsRaw(\Yii::app()->db->tablePrefix . 'responses_' . self::$surveyId), 'The survey fixture unexpectedly has a response table.');
+        \Yii::app()->db->createCommand()->update('{{surveys}}', array('active' => 'Y'), 'sid = :sid', array(':sid' => self::$surveyId));
+        $getActive = function () {
+            return \Yii::app()->db->createCommand()->select('active')->from('{{surveys}}')->where('sid = :sid', array(':sid' => self::$surveyId))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame('Y', $getActive(), 'Merely loading the check page (GET) deactivated the survey.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame('N', $getActive(), 'The consistency check did not deactivate the survey without a response table.');
+            $this->assertStringContainsString(sprintf('Deactivated survey %s because its response table is missing', self::$surveyId), $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->update('{{surveys}}', array('active' => 'N'), 'sid = :sid', array(':sid' => self::$surveyId));
+        }
+    }
+
+    /** Verifies that a participant list of a deleted survey is only archived, and reported, by the consistency check. */
+    public function testOrphanParticipantListIsOnlyArchivedAndReportedByTheConsistencyCheck()
+    {
+        $dbPrefix = \Yii::app()->db->tablePrefix;
+        $bogusSid = 999999912;
+        $tokensTable = $dbPrefix . 'tokens_' . $bogusSid;
+        \Yii::app()->db->createCommand()->createTable($tokensTable, array('tid' => 'pk'));
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertTrue($this->tableExistsRaw($tokensTable), 'Merely loading the check page (GET) archived the participant list of a deleted survey.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertFalse($this->tableExistsRaw($tokensTable), 'The consistency check did not archive the participant list of a deleted survey.');
+            $this->assertStringContainsString(sprintf('Archived survey participant list of missing survey %s', $bogusSid), $logOfFixes);
+        } finally {
+            $this->dropTableIfPresent($tokensTable);
+            $archivedTables = \Yii::app()->db->createCommand(\dbSelectTablesLike('{{old_tokens_' . $bogusSid . '}}%'))->queryColumn();
+            foreach ($archivedTables as $archivedTable) {
+                \Yii::app()->db->createCommand()->dropTable($archivedTable);
+            }
+        }
+    }
+
+    /** Verifies that archived table settings without their table are only deleted, and reported, by the consistency check. */
+    public function testOrphanArchivedTableSettingsAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $tableName = 'old_responses_999999913_20200101120000';
+        \Yii::app()->db->createCommand()->insert('{{archived_table_settings}}', array(
+            'survey_id' => 999999913,
+            'user_id' => 1,
+            'tbl_name' => $tableName,
+            'tbl_type' => 'response',
+            'created' => '2020-01-01 12:00:00',
+            'properties' => '',
+        ));
+        $countSettings = function () use ($tableName) {
+            return (int) \Yii::app()->db->createCommand()->select('count(*)')->from('{{archived_table_settings}}')->where('tbl_name = :name', array(':name' => $tableName))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame(1, $countSettings(), 'Merely loading the check page (GET) deleted the archived table settings.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(0, $countSettings(), 'The consistency check did not delete archived table settings without their table.');
+            $this->assertStringContainsString('archived table setting(s) whose archived table no longer exists', $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{archived_table_settings}}', 'tbl_name = :name', array(':name' => $tableName));
+        }
+    }
+
+    /** Verifies that a survey of a deleted survey group is only moved to the default survey group, and reported, by the consistency check. */
+    public function testSurveyOfADeletedSurveyGroupIsOnlyMovedToTheDefaultGroupAndReportedByTheConsistencyCheck()
+    {
+        $bogusGsid = 999999915;
+        $originalGsid = \Yii::app()->db->createCommand()->select('gsid')->from('{{surveys}}')->where('sid = :sid', array(':sid' => self::$surveyId))->queryScalar();
+        \Yii::app()->db->createCommand()->update('{{surveys}}', array('gsid' => $bogusGsid), 'sid = :sid', array(':sid' => self::$surveyId));
+        $getGsid = function () {
+            return (int) \Yii::app()->db->createCommand()->select('gsid')->from('{{surveys}}')->where('sid = :sid', array(':sid' => self::$surveyId))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame($bogusGsid, $getGsid(), 'Merely loading the check page (GET) moved the survey of a deleted survey group.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(1, $getGsid(), 'The consistency check did not move the survey of a deleted survey group to the default survey group.');
+            $this->assertStringContainsString(sprintf('Moved survey %s to the default survey group because its survey group %s no longer exists', self::$surveyId, $bogusGsid), $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->update('{{surveys}}', array('gsid' => $originalGsid), 'sid = :sid', array(':sid' => self::$surveyId));
+        }
+    }
+
+    /** Verifies that survey group settings of a deleted survey group are only deleted, and reported, by the consistency check. */
+    public function testOrphanSurveyGroupSettingsAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $bogusGsid = 999999916;
+        $settings = new \SurveysGroupsettings();
+        $settings->gsid = $bogusGsid;
+        $settings->setToInherit();
+        $this->assertTrue($settings->save(), 'Could not save survey group settings: ' . json_encode($settings->getErrors()));
+        $countSettings = function () use ($bogusGsid) {
+            return (int) \Yii::app()->db->createCommand()->select('count(*)')->from('{{surveys_groupsettings}}')->where('gsid = :gsid', array(':gsid' => $bogusGsid))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame(1, $countSettings(), 'Merely loading the check page (GET) deleted the survey group settings of a deleted survey group.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(0, $countSettings(), 'The consistency check did not delete the survey group settings of a deleted survey group.');
+            $this->assertStringContainsString('survey group setting(s) of survey groups that no longer exist', $logOfFixes);
+            $this->assertNotNull(\SurveysGroupsettings::model()->findByPk(0), 'The consistency check deleted the global survey settings.');
+            $this->assertNotNull(\SurveysGroupsettings::model()->findByPk(1), 'The consistency check deleted the default survey group settings.');
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{surveys_groupsettings}}', 'gsid = :gsid', array(':gsid' => $bogusGsid));
+        }
+    }
+
+    /** Verifies that survey theme options of a deleted survey are only deleted, and reported, by the consistency check. */
+    public function testOrphanThemeConfigurationsAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $bogusSid = 999999917;
+        \Yii::app()->db->createCommand()->insert('{{template_configuration}}', array(
+            'template_name' => 'vanilla',
+            'sid' => $bogusSid,
+            'options' => 'inherit',
+        ));
+        $countThemeConfigurations = function ($condition, array $params = array()) {
+            return (int) \Yii::app()->db->createCommand()->select('count(*)')->from('{{template_configuration}}')->where($condition, $params)->queryScalar();
+        };
+        $themeConfigurationsWithoutSurvey = $countThemeConfigurations('sid IS NULL');
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame(1, $countThemeConfigurations('sid = :sid', array(':sid' => $bogusSid)), 'Merely loading the check page (GET) deleted the theme options of a deleted survey.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(0, $countThemeConfigurations('sid = :sid', array(':sid' => $bogusSid)), 'The consistency check did not delete the theme options of a deleted survey.');
+            $this->assertStringContainsString('survey theme option(s) of surveys that no longer exist', $logOfFixes);
+            $this->assertSame($themeConfigurationsWithoutSurvey, $countThemeConfigurations('sid IS NULL'), 'The consistency check deleted theme options that do not belong to a survey.');
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{template_configuration}}', 'sid = :sid', array(':sid' => $bogusSid));
+        }
+    }
+
+    /** Verifies that duplicate survey theme options are only deleted, and reported, by the consistency check, keeping the oldest one. */
+    public function testDuplicateThemeConfigurationsAreOnlyDeletedAndReportedByTheConsistencyCheckKeepingTheOldest()
+    {
+        $templateName = 'fruity_twentythree';
+        $insertedIds = array();
+        foreach (array('{"container":"off"}', '{"container":"on"}') as $options) {
+            \Yii::app()->db->createCommand()->insert('{{template_configuration}}', array(
+                'template_name' => $templateName,
+                'sid' => self::$surveyId,
+                'options' => $options,
+            ));
+            $insertedIds[] = (int) \Yii::app()->db->getLastInsertID();
+        }
+        $getIds = function () use ($templateName) {
+            return array_map('intval', \Yii::app()->db->createCommand()->select('id')->from('{{template_configuration}}')
+                ->where('sid = :sid AND template_name = :template_name', array(':sid' => self::$surveyId, ':template_name' => $templateName))
+                ->order('id')->queryColumn());
+        };
+        $idsBefore = $getIds();
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame($idsBefore, $getIds(), 'Merely loading the check page (GET) deleted duplicate theme options.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(array($idsBefore[0]), $getIds(), 'The consistency check did not keep only the oldest theme options of the survey and theme.');
+            $this->assertStringContainsString('duplicate survey theme option(s)', $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{template_configuration}}', array('in', 'id', $insertedIds));
+        }
+    }
+
+    /**
+     * A subquestion whose group does not exist (but whose parent question is fine) must
+     * get its parent's group back instead of being deleted as a question without group.
+     */
+    public function testSubquestionWithAMissingGroupIsRepairedAndReportedInsteadOfDeleted()
+    {
+        $group = self::$testSurvey->groups[0];
+        $parentQid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99991, 'CISQPARENT');
+        \Yii::app()->db->createCommand()->update('{{questions}}', array('type' => \QuestionType::QT_F_ARRAY), 'qid = :qid', array(':qid' => $parentQid));
+        $subquestionQid = $this->createOrderedQuestionFixture($group->gid, $parentQid, 0, 1, 'SQ001');
+        \Yii::app()->db->createCommand()->update(
+            '{{questions}}',
+            array('gid' => 999999914, 'type' => \QuestionType::QT_F_ARRAY),
+            'qid = :qid',
+            array(':qid' => $subquestionQid)
+        );
+        $getSubquestionGid = function () use ($subquestionQid) {
+            return \Yii::app()->db->createCommand()->select('gid')->from('{{questions}}')->where('qid = :qid', array(':qid' => $subquestionQid))->queryScalar();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertEquals(999999914, $getSubquestionGid(), 'Merely loading the check page (GET) changed the subquestion.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertEquals($group->gid, $getSubquestionGid(), 'The consistency check did not give the subquestion its parent question\'s group back.');
+            $this->assertStringContainsString(sprintf('Fixed group and question type of subquestion %s', $subquestionQid), $logOfFixes);
+        } finally {
+            $parentQuestion = \Question::model()->findByPk($parentQid);
+            if ($parentQuestion) {
+                $parentQuestion->delete();
+            }
+            \Yii::app()->db->createCommand()->delete('{{questions}}', 'qid = :qid', array(':qid' => $subquestionQid));
+        }
+    }
+
+    /**
+     * A question without texts in a survey language could not be edited (500 error),
+     * so the consistency check must create empty texts for every missing language.
+     */
+    public function testQuestionWithoutTextsGetsEmptyTextsCreatedAndReportedByTheConsistencyCheck()
+    {
+        $group = self::$testSurvey->groups[0];
+        $qid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99992, 'CINOL10N');
+        \Yii::app()->db->createCommand()->delete('{{question_l10ns}}', 'qid = :qid', array(':qid' => $qid));
+        $getL10ns = function () use ($qid) {
+            return \Yii::app()->db->createCommand()->select('language, question')->from('{{question_l10ns}}')->where('qid = :qid', array(':qid' => $qid))->queryAll();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertEmpty($getL10ns(), 'Merely loading the check page (GET) created question texts.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $l10ns = $getL10ns();
+            $surveyLanguages = self::$testSurvey->getAllLanguages();
+            $this->assertEqualsCanonicalizing($surveyLanguages, array_column($l10ns, 'language'), 'The consistency check did not create texts for exactly the survey languages.');
+            $this->assertSame(array(''), array_values(array_unique(array_column($l10ns, 'question'))), 'The created question texts are not empty.');
+            foreach ($surveyLanguages as $language) {
+                $this->assertStringContainsString(
+                    sprintf('Created empty texts for language %s of question CINOL10N (ID %s) in survey %s', $language, $qid, self::$surveyId),
+                    $logOfFixes
+                );
+            }
+        } finally {
+            $question = \Question::model()->findByPk($qid);
+            if ($question) {
+                $question->delete();
+            }
+        }
+    }
+
+    /**
+     * A quota without texts in the survey's base language (e.g. after a failed import) showed an
+     * error on the quota page, so the consistency check must create the missing texts: copied
+     * from another language of the quota, or the default quota message if there are none.
+     */
+    public function testQuotaWithoutTextsGetsTextsCreatedAndReportedByTheConsistencyCheck()
+    {
+        $baseLanguage = self::$testSurvey->language;
+        $additionalLanguage = self::$testSurvey->additionalLanguages[0];
+        $db = \Yii::app()->db;
+        $createQuota = function ($name) {
+            $quota = new \Quota();
+            $quota->setAttributes(array('sid' => self::$surveyId, 'name' => $name, 'qlimit' => 0, 'action' => 1, 'active' => 1, 'autoload_url' => 1), false);
+            $this->assertTrue($quota->save(false), 'Could not save quota fixture.');
+            return (int) $quota->id;
+        };
+        $partialQuotaId = $createQuota('CIQUOTAPARTIAL');
+        $emptyQuotaId = $createQuota('CIQUOTAEMPTY');
+        $db->createCommand()->insert('{{quota_languagesettings}}', array(
+            'quotals_quota_id' => $partialQuotaId,
+            'quotals_language' => $additionalLanguage,
+            'quotals_name' => 'CIQUOTAPARTIAL',
+            'quotals_message' => 'Quota full',
+            'quotals_url' => 'https://example.org/full',
+            'quotals_urldescrip' => 'Full',
+        ));
+        $getTexts = function ($quotaId) use ($db) {
+            $rows = $db->createCommand()
+                ->select('quotals_language, quotals_message, quotals_url, quotals_urldescrip')
+                ->from('{{quota_languagesettings}}')
+                ->where('quotals_quota_id = :quotaid', array(':quotaid' => $quotaId))
+                ->queryAll();
+            return array_column($rows, null, 'quotals_language');
+        };
+
+        try {
+            $this->assertNull(\Quota::model()->findByPk($partialQuotaId)->mainLanguagesetting, 'A quota without texts in the base language returned texts of the base language.');
+
+            $this->newNoRenderController()->index();
+            $this->assertCount(1, $getTexts($partialQuotaId), 'Merely loading the check page (GET) created quota texts.');
+            $this->assertCount(0, $getTexts($emptyQuotaId), 'Merely loading the check page (GET) created quota texts.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $partialTexts = $getTexts($partialQuotaId);
+            $this->assertEqualsCanonicalizing(array($baseLanguage, $additionalLanguage), array_keys($partialTexts), 'The consistency check did not create the missing base language texts of the quota.');
+            $this->assertSame(
+                array('Quota full', 'https://example.org/full', 'Full'),
+                array($partialTexts[$baseLanguage]['quotals_message'], $partialTexts[$baseLanguage]['quotals_url'], $partialTexts[$baseLanguage]['quotals_urldescrip']),
+                'The created base language texts were not copied from the existing texts of the quota.'
+            );
+            $emptyTexts = $getTexts($emptyQuotaId);
+            $this->assertEqualsCanonicalizing(self::$testSurvey->getAllLanguages(), array_keys($emptyTexts), 'The consistency check did not create texts for exactly the survey languages.');
+            foreach ($emptyTexts as $language => $texts) {
+                $this->assertSame(gT('Sorry your responses have exceeded a quota on this survey.', 'unescaped', $language), $texts['quotals_message'], 'A quota without any texts did not get the default quota message.');
+            }
+            $this->assertStringContainsString(
+                sprintf('Created missing texts for language %s of quota CIQUOTAPARTIAL (ID %s) in survey %s', $baseLanguage, $partialQuotaId, self::$surveyId),
+                $logOfFixes
+            );
+            $this->assertStringContainsString(
+                sprintf('Created missing texts for language %s of quota CIQUOTAEMPTY (ID %s) in survey %s', $additionalLanguage, $emptyQuotaId, self::$surveyId),
+                $logOfFixes
+            );
+            $this->assertNotNull(\Quota::model()->findByPk($partialQuotaId)->mainLanguagesetting, 'The created base language texts were not found.');
+        } finally {
+            $db->createCommand()->delete('{{quota_languagesettings}}', array('in', 'quotals_quota_id', array($partialQuotaId, $emptyQuotaId)));
+            $db->createCommand()->delete('{{quota}}', array('in', 'id', array($partialQuotaId, $emptyQuotaId)));
+        }
+    }
+
+    /**
+     * Invalid default values (e.g. imported from an old survey) showed an error in the survey,
+     * so the consistency check must delete them and default values the survey never uses,
+     * while keeping valid default values and default values with an expression.
+     */
+    public function testInvalidAndUnusedDefaultValuesAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $group = self::$testSurvey->groups[0];
+        $language = self::$testSurvey->language;
+        $qid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99993, 'CIDEFAULT');
+        $subquestionQids = array();
+        foreach (array('SQ001', 'SQ002', 'SQ003') as $order => $title) {
+            $subquestionQids[] = $this->createOrderedQuestionFixture($group->gid, $qid, 0, $order, $title);
+        }
+        $listQid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99994, 'CIDEFLIST');
+        $listWithOtherQid = $this->createOrderedQuestionFixture($group->gid, 0, 0, 99995, 'CIDEFOTHER');
+        $questionQids = array($qid, $listQid, $listWithOtherQid);
+        $updateQuestions = function (array $qids, array $columns) {
+            \Yii::app()->db->createCommand()->update('{{questions}}', $columns, array('in', 'qid', $qids));
+        };
+        $updateQuestions(array_merge(array($qid), $subquestionQids), array('type' => \QuestionType::QT_M_MULTIPLE_CHOICE));
+        $updateQuestions(array($listQid, $listWithOtherQid), array('type' => \QuestionType::QT_L_LIST));
+        $updateQuestions(array($listWithOtherQid), array('other' => 'Y'));
+        $answer = new \Answer();
+        $answer->qid = $listQid;
+        $answer->code = 'A1';
+        $answer->sortorder = 1;
+        $answer->scale_id = 0;
+        $this->assertTrue($answer->save(), 'Could not save answer fixture: ' . json_encode($answer->errors));
+        $createDefaultValue = function ($qid, $sqid, $value) use ($language) {
+            $defaultValue = new \DefaultValue();
+            $defaultValue->qid = $qid;
+            $defaultValue->sqid = $sqid;
+            $defaultValue->scale_id = 0;
+            $this->assertTrue($defaultValue->save(), 'Could not save default value fixture: ' . json_encode($defaultValue->errors));
+            $defaultValueL10n = new \DefaultValueL10n();
+            $defaultValueL10n->dvid = $defaultValue->dvid;
+            $defaultValueL10n->language = $language;
+            $defaultValueL10n->defaultvalue = $value;
+            $this->assertTrue($defaultValueL10n->save(), 'Could not save default value l10n fixture: ' . json_encode($defaultValueL10n->errors));
+            return $defaultValue->dvid;
+        };
+        $keptDvids = array(
+            $createDefaultValue($qid, $subquestionQids[0], 'Y'),
+            $createDefaultValue($qid, $subquestionQids[2], '{1+1}'),
+            $createDefaultValue($listWithOtherQid, 0, '-oth-'),
+        );
+        $deletedDvids = array(
+            $createDefaultValue($qid, $subquestionQids[1], '10'),
+            $createDefaultValue($qid, 0, 'Y'),
+            $createDefaultValue($listQid, 0, 'X9'),
+        );
+        $getDvids = function () use ($questionQids) {
+            return \Yii::app()->db->createCommand()->select('dvid')->from('{{defaultvalues}}')->where(array('in', 'qid', $questionQids))->queryColumn();
+        };
+        $getL10nDvids = function () use ($keptDvids, $deletedDvids) {
+            return \Yii::app()->db->createCommand()->select('dvid')->from('{{defaultvalue_l10ns}}')
+                ->where(array('in', 'dvid', array_merge($keptDvids, $deletedDvids)))->queryColumn();
+        };
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertCount(6, $getDvids(), 'Merely loading the check page (GET) deleted default values.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertEqualsCanonicalizing($keptDvids, $getDvids(), 'The consistency check did not delete exactly the invalid and the unused default values.');
+            $this->assertEqualsCanonicalizing($keptDvids, $getL10nDvids(), 'The consistency check left the texts of deleted default values behind.');
+            $this->assertStringContainsString(
+                sprintf('Deleted the invalid default value 10 for language %s of question CIDEFAULT (ID %s) in survey %s', $language, $qid, self::$surveyId),
+                $logOfFixes
+            );
+            $this->assertStringContainsString(
+                sprintf('Deleted the invalid default value X9 for language %s of question CIDEFLIST (ID %s) in survey %s', $language, $listQid, self::$surveyId),
+                $logOfFixes
+            );
+            $this->assertStringContainsString(sprintf('Deleted an unused default value of question CIDEFAULT (ID %s) in survey %s', $qid, self::$surveyId), $logOfFixes);
+        } finally {
+            foreach ($questionQids as $questionQid) {
+                $question = \Question::model()->findByPk($questionQid);
+                if ($question) {
+                    $question->delete();
+                }
+            }
+        }
+    }
+
+    /**
+     * Submits the "Check data integrity" button.
+     *
+     * @return string[] The log of fixes.
+     */
+    private function runFixIntegrity()
+    {
+        $noRenderController = $this->newNoRenderController();
+        $_POST['ok'] = 'Y';
+        try {
+            $noRenderController->fixintegrity();
+        } finally {
+            unset($_POST['ok']);
+        }
+        $this->assertEmpty($noRenderController->capturedData['consistencyCheckWarnings'], 'The consistency check reported warnings: ' . implode(' ', $noRenderController->capturedData['consistencyCheckWarnings']));
+        return $noRenderController->capturedData['consistencyCheckMessages'];
     }
 
     /**

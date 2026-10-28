@@ -10,7 +10,7 @@
 ?>
 
 <div data-bs-toggle="tooltip" title="<?= $tooltip ?? '' ?>">
-    <a id="<?= $linkId ?? '' ?>"
+    <a <?= !empty($linkId) ? 'id="' . $linkId . '"' : '' ?>
        class="dropdown-item <?= $enabledCondition ? "" : "disabled" ?> <?= $linkClass ?? '' ?>"
        href="<?= $url ?? '#' ?>"
        role="button"

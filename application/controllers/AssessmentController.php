@@ -29,6 +29,7 @@ class AssessmentController extends LSBaseController
 
     /**
      * This part comes from renderWrappedTemplate
+     * Also sets the survey ID for the ExpressionScript engine, which the layout needs
      *
      * @param string $view View
      *
@@ -39,6 +40,7 @@ class AssessmentController extends LSBaseController
         if (isset($this->aData['surveyid'])) {
             $this->aData['oSurvey'] = $this->aData['oSurvey'] ?? Survey::model()->findByPk($this->aData['surveyid']);
             $this->layout = 'layout_questioneditor';
+            LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
         }
 
         return parent::beforeRender($view);
@@ -268,14 +270,18 @@ class AssessmentController extends LSBaseController
      *
      * Gets the data for the assessment from db and gives it back to the modal view to show the values.
      *
+     * Note: The assessment is looked up by id and sid together, so the permission checked
+     * on the survey also covers the returned assessment.
+     *
      * @param int $surveyid
      * @return void
      */
     public function actionEdit($surveyid)
     {
-        $iAsessementId = App()->request->getParam('id');
-        $oAssessments = Assessment::model()->findAll("id=:id", [':id' => $iAsessementId]);
-        if ($oAssessments !== null && Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'update')) {
+        $iSurveyID = sanitize_int($surveyid);
+        $iAsessementId = sanitize_int(App()->request->getParam('id'));
+        $oAssessments = Assessment::model()->findAll("id=:id AND sid=:sid", [':id' => $iAsessementId, ':sid' => $iSurveyID]);
+        if (!empty($oAssessments) && Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update')) {
             $aData = [];
             $aData['editData'] = $oAssessments[0]->attributes;
             foreach ($oAssessments as $oAssessment) {

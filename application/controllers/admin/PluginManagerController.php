@@ -160,6 +160,7 @@ class PluginManagerController extends SurveyCommonAction
             [
                 'showUpload' => false,
                 'scanFilesUrl' => $scanFilesUrl,
+                'extraMenus' => [],
             ],
             true
         );
@@ -835,7 +836,7 @@ function pluginExtractFilter($file)
     if (
         $file['is_folder']
         || !isset($info['extension'])
-        || in_array($info['extension'], $aAllowExtensions)
+        || in_array(strtolower($info['extension']), $aAllowExtensions)
     ) {
         return 1;
     } else {

@@ -27,6 +27,7 @@ export const TopBar = ({
   showShareActionButton = false,
   showExportResponsesButton = false,
   showExportStatisticsButton = false,
+  onExportResponsesClick,
 }) => {
   const { survey, update, surveyList } = useSurvey(surveyId)
   const { getError } = useErrors()
@@ -72,7 +73,7 @@ export const TopBar = ({
     let updatedTitle = RemoveHTMLTagsInString(title).replaceAll('&nbsp;', '')
     updatedTitle = (updatedTitle.trim() === '') === '' ? '' : updatedTitle
 
-    const operation = createBufferOperation(survey.sid)
+    const operation = createBufferOperation(null)
       .languageSetting()
       .update({
         [activeLanguage]: {
@@ -156,6 +157,7 @@ export const TopBar = ({
         showShareActionButton={showShareActionButton}
         showExportResponsesButton={showExportResponsesButton}
         showExportStatisticsButton={showExportStatisticsButton}
+        onExportResponsesClick={onExportResponsesClick}
         showPublishSettings={showPublishSettings}
         triggerPublish={triggerPublish}
         isAddingQuestionOrGroup={isAddingQuestionOrGroup}

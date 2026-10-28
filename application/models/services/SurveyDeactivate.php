@@ -111,14 +111,11 @@ class SurveyDeactivate
             return $result;
         }
         $result["surveyTableExists"] = tableExists('responses_' . $iSurveyID);
-        if (!$result["surveyTableExists"]) {
-            return $result;
-        }
         if (!is_array($params) || (($params['ok'] ?? '') == '')) {
             $aData['surveyid'] = $iSurveyID;
             $aData['date'] = $date;
             $aData['dbprefix'] = $this->app->db->tablePrefix;
-            $aData['sNewSurveyTableName'] = $this->app->db->tablePrefix . "old_responses_{$iSurveyID}_{$date}";
+            $aData['sNewSurveyTableName'] = $result["surveyTableExists"] ? $this->app->db->tablePrefix . "old_responses_{$iSurveyID}_{$date}" : null;
             $aData['step1'] = true;
         } else {
             require_once "application/helpers/admin/import_helper.php";
@@ -256,34 +253,39 @@ class SurveyDeactivate
         $this->surveyLink->deleteLinksBySurvey($iSurveyID);
         // IF there are any records in the saved_control table related to this survey, they have to be deleted
         $this->savedControl->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
-        $sOldSurveyTableName = $this->app->db->tablePrefix . "responses_{$iSurveyID}";
-        $sNewSurveyTableName = $this->app->db->tablePrefix . "old_responses_{$surveyDate}";
-        $aData['sNewSurveyTableName'] = $sNewSurveyTableName;
 
-        $query = "SELECT id FROM " . $this->app->db->quoteTableName($sOldSurveyTableName) . " ORDER BY id desc";
-        $sLastID = $this->app->db->createCommand($query)->limit(1)->queryScalar();
-        //Update the autonumber_start in the survey properties
-        $new_autonumber_start = $sLastID + 1;
-        $survey = $this->survey->findByAttributes(array('sid' => $iSurveyID));
-        $survey->autonumber_start = $new_autonumber_start;
-        $survey->save();
-        if ($this->app->db->getDriverName() == 'pgsql') {
-            $idDefault = $this->app->db->createCommand("SELECT pg_get_expr(pg_attrdef.adbin, pg_attrdef.adrelid) FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$sOldSurveyTableName' and pg_attribute.attname='id'")->queryScalar();
-            if (preg_match("/nextval\('(responses_\d+_id_seq\d*)'::regclass\)/", (string) $idDefault, $matches)) {
-                $oldSeq = $matches[1];
-                $this->app->db->createCommand()->renameTable($oldSeq, $sNewSurveyTableName . '_id_seq');
-                $setsequence = "ALTER TABLE " . $this->app->db->quoteTableName($sOldSurveyTableName) . " ALTER COLUMN id SET DEFAULT nextval('{{{$sNewSurveyTableName}}}_id_seq'::regclass);";
-                $this->app->db->createCommand($setsequence)->query();
+        $aData['sNewSurveyTableName'] = null;
+        if (tableExists('responses_' . $iSurveyID)) {
+            $sOldSurveyTableName = $this->app->db->tablePrefix . "responses_{$iSurveyID}";
+            $sNewSurveyTableName = $this->app->db->tablePrefix . "old_responses_{$surveyDate}";
+            $aData['sNewSurveyTableName'] = $sNewSurveyTableName;
+            $query = "SELECT id FROM " . $this->app->db->quoteTableName($sOldSurveyTableName) . " ORDER BY id desc";
+            $sLastID = $this->app->db->createCommand($query)->limit(1)->queryScalar();
+            //Update the autonumber_start in the survey properties
+            $new_autonumber_start = $sLastID + 1;
+            $survey = $this->survey->findByAttributes(array('sid' => $iSurveyID));
+            $survey->autonumber_start = $new_autonumber_start;
+            // Skip validation: An invalid survey setting must not stop the deactivation half-way
+            $survey->save(false);
+        
+            if ($this->app->db->getDriverName() == 'pgsql') {
+                $idDefault = $this->app->db->createCommand("SELECT pg_get_expr(pg_attrdef.adbin, pg_attrdef.adrelid) FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$sOldSurveyTableName' and pg_attribute.attname='id'")->queryScalar();
+                if (preg_match("/nextval\('(responses_\d+_id_seq\d*)'::regclass\)/", (string) $idDefault, $matches)) {
+                    $oldSeq = $matches[1];
+                    $this->app->db->createCommand()->renameTable($oldSeq, $sNewSurveyTableName . '_id_seq');
+                    $setsequence = "ALTER TABLE " . $this->app->db->quoteTableName($sOldSurveyTableName) . " ALTER COLUMN id SET DEFAULT nextval('{{{$sNewSurveyTableName}}}_id_seq'::regclass);";
+                    $this->app->db->createCommand($setsequence)->query();
+                }
             }
-        }
 
-        $this->app->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
-        $this->archiveTable($iSurveyID, $userID, "old_responses_{$surveyDate}", 'response', $DBDate, json_encode(Response::getEncryptedAttributes($iSurveyID)));
+            $this->app->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
+            $this->archiveTable($iSurveyID, $userID, "old_responses_{$surveyDate}", 'response', $DBDate, json_encode(Response::getEncryptedAttributes($iSurveyID)));
+        }
         // Load the active record again, as there have been sporadic errors with the dataset not being updated
         $survey = $this->survey->findByAttributes(array('sid' => $iSurveyID));
-        $survey->scenario = 'activationStateChange';
         $survey->active = 'N';
-        $survey->save();
+        // Skip validation: The tables are already archived, so an invalid setting must not keep the survey active
+        $survey->save(false);
     }
 
     /**

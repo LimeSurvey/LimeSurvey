@@ -72,6 +72,20 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
+     * Determines whether the given table name refers to an "orphaned_" backup table
+     * created by this update (a snapshot of a legacy response table that had
+     * orphaned columns). Such tables are left in place for the administrator and
+     * must never be migrated themselves - otherwise every re-run of a failed update
+     * would back them up again, nesting the prefix until the name gets too long.
+     * @param string $tableName
+     * @return bool
+     */
+    protected function isOrphanedBackupTableName(string $tableName): bool
+    {
+        return strpos($tableName, 'orphaned_') === 0;
+    }
+
+    /**
      * equivalent of getSubQuestions
      * Returns all subquestions for a survey+question in the given language.
      *
@@ -2010,6 +2024,9 @@ class Update_700 extends DatabaseUpdateBase
         $scripts = [];
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
         foreach ($responsesTables as $responsesTable) {
+            if ($this->isOrphanedBackupTableName($responsesTable['old_name'])) {
+                continue;
+            }
             $scripts[$responsesTable['old_name']] = [
                 'new_name' => $responsesTable['new_name'],
                 'old_name' => $responsesTable['old_name'],
@@ -2022,6 +2039,9 @@ class Update_700 extends DatabaseUpdateBase
         }
         $timingsTables = $this->db->createCommand($this->scriptMapping['timings'])->queryAll();
         foreach ($timingsTables as $timingsTable) {
+            if ($this->isOrphanedBackupTableName($timingsTable['old_name'])) {
+                continue;
+            }
             $scripts[$timingsTable['old_name']] = [
                 'new_name' => $timingsTable['new_name'],
                 'old_name' => $timingsTable['old_name'],
@@ -2046,6 +2066,9 @@ class Update_700 extends DatabaseUpdateBase
                 }
             }
             $tableName = $field['TABLE_NAME'];
+            if ($this->isOrphanedBackupTableName($tableName)) {
+                continue;
+            }
             if (!isset($fieldMap[$field['TABLE_NAME']])) {
                 $fieldMap[$field['TABLE_NAME']] = [];
             }
@@ -2138,8 +2161,10 @@ class Update_700 extends DatabaseUpdateBase
             // If there are orphaned columns, snapshot the legacy table as-is (full structure +
             // data, untouched) *before* compactLegacyRankingValues() gets a chance to mutate it
             $scripts[$TABLE_NAME]['BACKUP_ORPHANED'] = null;
-            if (count($orphanedColumns)) {
-                $orphanedTableName = 'orphaned_' . $TABLE_NAME;
+            // A backup left behind by an earlier, failed run of this update already holds the
+            // untouched legacy data (this run's copy may meanwhile have been compacted), so keep it.
+            $orphanedTableName = 'orphaned_' . $TABLE_NAME;
+            if (count($orphanedColumns) && $this->db->schema->getTable($orphanedTableName, true) === null) {
                 $scripts[$TABLE_NAME]['BACKUP_ORPHANED'] = in_array(Yii::app()->db->getDriverName(), [
                     'mssql',
                     'sqlsrv',
@@ -2148,10 +2173,25 @@ class Update_700 extends DatabaseUpdateBase
                     ? "SELECT * INTO {$orphanedTableName} FROM {$TABLE_NAME}"
                     : "CREATE TABLE {$orphanedTableName} AS SELECT * FROM {$TABLE_NAME}";
             }
-            try {
-                if ($scripts[$TABLE_NAME]['BACKUP_ORPHANED'] !== null) {
+            if ($scripts[$TABLE_NAME]['BACKUP_ORPHANED'] !== null) {
+                // The backup is a convenience only: If it cannot be created (e.g. MySQL/MariaDB
+                // refusing a table with too many columns), skip it instead of failing the update
+                setTransactionBookmark('orphanedbackup');
+                try {
                     $this->db->createCommand($scripts[$TABLE_NAME]['BACKUP_ORPHANED'])->execute();
+                } catch (\Exception $ex) {
+                    rollBackToTransactionBookmark('orphanedbackup');
+                    if ($this->db->schema->getTable($orphanedTableName, true) !== null) {
+                        $this->db->createCommand()->dropTable($orphanedTableName);
+                    }
+                    Yii::log(
+                        "Could not create backup table {$orphanedTableName}, skipping it: " . $ex->getMessage(),
+                        \CLogger::LEVEL_WARNING,
+                        'application.update'
+                    );
                 }
+            }
+            try {
                 // The INSERT below copies the legacy rows one-to-one, so ranking answers that
                 // can no longer be mapped to a subquestion title have to be removed - and the
                 // following ranks shifted one column to the left - while the legacy table is
@@ -2164,7 +2204,7 @@ class Update_700 extends DatabaseUpdateBase
                 }
                 $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
                 // The legacy working copy has now been fully migrated into the new table (its
-                // untouched twin, if orphaned columns existed, was preserved separately above),
+                // untouched twin, if orphaned columns existed, was preserved above where possible),
                 // so it is always safe to drop here.
                 $this->db->createCommand()->dropTable($TABLE_NAME);
             } catch (\Exception $ex) {

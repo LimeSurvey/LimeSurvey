@@ -55,6 +55,38 @@ class ExpressionManagerCoreTest extends TestBaseClass
     }
 
     /**
+     * A non-breaking space (as inserted by the HTML editor) is whitespace between tokens.
+     *
+     * @see https://bugs.limesurvey.org/view.php?id=18493
+     * @return void
+     */
+    public function testNonBreakingSpaceIsWhitespace(): void
+    {
+        $em = new \ExpressionManager();
+        $result = $em->RDP_Evaluate("1\u{00A0}OR 0");
+        $this->assertTrue($result, 'Expression should evaluate without errors (errors: ' . implode('; ', array_column($em->GetErrors(), 0)) . ')');
+        $this->assertTrue($em->GetResult());
+
+        $em = new \ExpressionManager();
+        $result = $em->RDP_Evaluate("1\u{00A0}\u{00A0}+ 2");
+        $this->assertTrue($result, 'Expression should evaluate without errors (errors: ' . implode('; ', array_column($em->GetErrors(), 0)) . ')');
+        $this->assertEquals(3, $em->GetResult());
+    }
+
+    /**
+     * Non-breaking spaces inside a quoted string are kept.
+     *
+     * @return void
+     */
+    public function testNonBreakingSpaceInStringIsKept(): void
+    {
+        $em = new \ExpressionManager();
+        $result = $em->RDP_Evaluate("\"a\u{00A0}b\"");
+        $this->assertTrue($result);
+        $this->assertSame("a\u{00A0}b", $em->GetResult());
+    }
+
+    /**
      * @dataProvider expressionProvider
      */
     public function testExpressionEvaluation(string $varValue, string $expression, bool $expected): void

@@ -16,7 +16,9 @@
             <div class="card-body d-flex">
                 <ul>
                     <li><?php eT("Responses are no longer available in LimeSurvey."); ?></li>
-                    <li><?php printf(gT("The responses table has been renamed to: %s"), "<b>" . $sNewSurveyTableName . "</b>"); ?></li>
+                    <?php if (!empty($sNewSurveyTableName)) { ?>
+                        <li><?php printf(gT("The responses table has been renamed to: %s"), "<b>" . $sNewSurveyTableName . "</b>"); ?></li>
+                    <?php } ?>
                     <?php if (isset($toldtable) && $toldtable) { ?>
                     <li><?php printf(gT("The participant list associated with this survey has been renamed to: %s "), $tnewtable);?></li>
                     <?php } ?>

@@ -5,6 +5,9 @@ namespace ls\tests\unit\services\QuestionGroup;
 use LimeSurvey\Models\Services\Exception\NotFoundException;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\Exception\PersistErrorException;
+use LimeSurvey\Models\Services\Exception\QuestionGroupHasConditionsException;
+use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
+use LimeSurvey\Models\Services\Proxy\ProxyQuestionGroup;
 use LimeSurvey\Models\Services\QuestionGroupService;
 use ls\tests\TestBaseClass;
 use Mockery;
@@ -46,6 +49,27 @@ class QuestionGroupExceptionsTest extends TestBaseClass
             PermissionDeniedException::class
         );
         $questionGroupService = $this->getMockedServiceForPermissionDeniedException();
+        $questionGroupService->deleteGroup(1, 1);
+    }
+
+    /**
+     * @testdox deleteGroup() throws QuestionGroupHasConditionsException
+     */
+    public function testDeleteThrowsExceptionQuestionGroupHasConditions()
+    {
+        $this->expectException(
+            QuestionGroupHasConditionsException::class
+        );
+        $mockSetFactory = new QuestionGroupMockSetFactory();
+        $mockSet = $mockSetFactory->make();
+        $mockSet->proxyQuestionGroup = Mockery::mock(ProxyQuestionGroup::class);
+        $mockSet->proxyQuestionGroup->shouldReceive('hasDependentConditions')
+            ->andReturn(true);
+        $mockSet->proxyQuestionGroup->shouldNotReceive('deleteQuestionGroupWithDependency');
+        $mockSet->proxyExpressionManager = Mockery::mock(ProxyExpressionManager::class);
+        $mockSet->proxyExpressionManager->shouldNotReceive('revertUpgradeConditionsToRelevance');
+
+        $questionGroupService = (new QuestionGroupFactory())->make($mockSet);
         $questionGroupService->deleteGroup(1, 1);
     }
 

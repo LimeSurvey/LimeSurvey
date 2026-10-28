@@ -115,6 +115,26 @@ class SurveyURLParameter extends LSActiveRecord
     }
 
     /**
+     * Remove the target question from all URL parameters that point to one of the given questions.
+     *
+     * The parameters themselves are kept, because they can still be used without a target
+     * question (e.g. passed through to the end URL).
+     *
+     * @param int[] $questionIds IDs of the deleted questions and/or subquestions
+     * @return int The number of updated URL parameters
+     */
+    public static function removeTargetQuestions(array $questionIds): int
+    {
+        if (empty($questionIds)) {
+            return 0;
+        }
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition('targetqid', $questionIds);
+        $criteria->addInCondition('targetsqid', $questionIds, 'OR');
+        return self::model()->updateAll(['targetqid' => null, 'targetsqid' => null], $criteria);
+    }
+
+    /**
      * @param array $aData
      * @return mixed
      */
@@ -223,14 +243,21 @@ class SurveyURLParameter extends LSActiveRecord
         );
     }
 
+    /**
+     * Get the code and text of the target question (and subquestion) for display.
+     *
+     * @return string Empty if the parameter has no (existing) target question
+     */
     public function getQuestionTitle()
     {
         $baseLanguage = Survey::model()->findByPk($this->sid)->language;
         $title = '';
-        if ($this->targetqid != '') {
-            $title = $this->question->title . ": " . ellipsize(flattenText($this->question->questionl10ns[$baseLanguage]->question, false, true), 43, .70);
+        // The target question may not exist anymore if it was deleted before this was handled
+        if ($this->targetqid == '' || empty($this->question)) {
+            return $title;
         }
-        if ($this->targetsqid != '') {
+        $title = $this->question->title . ": " . ellipsize(flattenText($this->question->questionl10ns[$baseLanguage]->question, false, true), 43, .70);
+        if ($this->targetsqid != '' && !empty($this->subquestion)) {
             $title .= (' - ' . ellipsize(flattenText($this->subquestion->questionl10ns[$baseLanguage]->question, false, true), 30, .75));
         }
         return $title;

@@ -461,12 +461,14 @@ class Plugin extends LSActiveRecord
     }
 
     /**
-     * @param Plugin|null $plugin
+     * Marks an installed plugin as faulty, unless debug mode is set.
+     *
+     * @param Plugin $plugin The installed plugin
      * @param string $pluginName
      * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
      * @return int Rows affected, always 0 for debug >=2
      */
-    public static function handlePluginLoadError($plugin, $pluginName, array $error)
+    public static function handlePluginLoadError(Plugin $plugin, $pluginName, array $error)
     {
         if (App()->getConfig('debug') >= 2) {
             return 0;
@@ -475,28 +477,17 @@ class Plugin extends LSActiveRecord
     }
 
     /**
-     * @param Plugin|null $plugin
+     * Marks an installed plugin as faulty. Plugins that are not installed are never saved,
+     * they are just reported as faulty when scanning the plugin folders.
+     *
+     * @param Plugin $plugin The installed plugin
      * @param string $pluginName
      * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
      * @return int Rows affected
      */
-    public static function setPluginLoadError($plugin, $pluginName, array $error)
+    public static function setPluginLoadError(Plugin $plugin, $pluginName, array $error)
     {
-        if ($plugin) {
-            $result = $plugin->setLoadError($error);
-        } else {
-            $result = Yii::app()->db->createCommand()
-                ->insert(
-                    '{{plugins}}',
-                    [
-                        'name' => $pluginName,
-                        'active' => 0,
-                        'load_error' => 1,
-                        'load_error_message' => addslashes($error['message'] . ' ' . $error['file'])
-                    ]
-                );
-        }
-        return $result;
+        return $plugin->setLoadError($error);
     }
 
     /**

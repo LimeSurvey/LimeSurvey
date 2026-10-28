@@ -20,6 +20,9 @@
  * @property boolean $isMysql whether the db type is mysql or mysqli
  * @property boolean $isMSSql whether the db type is one of MS Sql types
  * @property float|integer $memoryLimit
+ * @property integer $maxInputVars
+ * @property float|integer $postMaxSize
+ * @property float|integer $uploadMaxFilesize
  * @property boolean $hasMinimumRequirements
  * @property boolean $isConfigDirWriteable
  * @property boolean $isUploadDirWriteable
@@ -40,6 +43,12 @@ class InstallerConfigForm extends CFormModel
     public const DB_TYPE_ODBC = 'odbc';
 
     public const MINIMUM_MEMORY_LIMIT = 128;
+    /** @var int Recommended value for the PHP setting max_input_vars, lower values can silently truncate large forms */
+    public const RECOMMENDED_MAX_INPUT_VARS = 5000;
+    /** @var int Recommended value in MB for the PHP setting post_max_size, if a request exceeds it all POST data is dropped */
+    public const RECOMMENDED_POST_MAX_SIZE = 32;
+    /** @var int Recommended value in MB for the PHP setting upload_max_filesize, it limits survey imports and file uploads */
+    public const RECOMMENDED_UPLOAD_MAX_FILESIZE = 32;
     public const MINIMUM_PHP_VERSION = '8.1.29';
 
     // Database
@@ -150,6 +159,15 @@ class InstallerConfigForm extends CFormModel
     /** @var bool */
     public $isConfigPresent = false;
 
+    /** @var bool Whether the PHP setting max_input_vars is at least the recommended value */
+    public $isMaxInputVarsOK = false;
+
+    /** @var bool Whether the PHP setting post_max_size is at least the recommended value */
+    public $isPostMaxSizeOK = false;
+
+    /** @var bool Whether the PHP setting upload_max_filesize is at least the recommended value */
+    public $isUploadMaxFilesizeOK = false;
+
 
     /**
      * InstallerConfigForm constructor.
@@ -233,6 +251,9 @@ class InstallerConfigForm extends CFormModel
         $this->isPhpCurlPresent = extension_loaded('curl');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
         $this->isCollatorPresent = class_exists('Collator');
+        $this->isMaxInputVarsOK = $this->getMaxInputVars() >= self::RECOMMENDED_MAX_INPUT_VARS;
+        $this->isPostMaxSizeOK = $this->getPostMaxSize() == 0 || $this->getPostMaxSize() >= self::RECOMMENDED_POST_MAX_SIZE;
+        $this->isUploadMaxFilesizeOK = $this->getUploadMaxFilesize() == 0 || $this->getUploadMaxFilesize() >= self::RECOMMENDED_UPLOAD_MAX_FILESIZE;
 
         if (function_exists('gd_info')) {
             $gdInfo = gd_info();
@@ -295,6 +316,33 @@ class InstallerConfigForm extends CFormModel
     public function getMemoryLimit()
     {
         return convertPHPSizeToBytes(ini_get('memory_limit')) / 1024 / 1024;
+    }
+
+    /**
+     * Current value of the PHP setting max_input_vars
+     * @return int
+     */
+    public function getMaxInputVars()
+    {
+        return (int) ini_get('max_input_vars');
+    }
+
+    /**
+     * Current value of the PHP setting post_max_size in MB, 0 means unlimited
+     * @return float|int
+     */
+    public function getPostMaxSize()
+    {
+        return convertPHPSizeToBytes(ini_get('post_max_size')) / 1024 / 1024;
+    }
+
+    /**
+     * Current value of the PHP setting upload_max_filesize in MB, 0 means unlimited
+     * @return float|int
+     */
+    public function getUploadMaxFilesize()
+    {
+        return convertPHPSizeToBytes(ini_get('upload_max_filesize')) / 1024 / 1024;
     }
 
     /**

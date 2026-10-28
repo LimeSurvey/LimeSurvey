@@ -197,6 +197,11 @@ class Authdb extends AuthPluginBase
         return hash_equals(hash('sha256', $onepass), $storedHash);
     }
 
+    /**
+     * Authenticate the user against the internal database, by password or one-time password
+     *
+     * @return void
+     */
     public function newUserSession()
     {
         // Do nothing if this user is not Authdb type
@@ -244,6 +249,7 @@ class Authdb extends AuthPluginBase
                 $user->one_time_pw = '';
                 $user->save();
                 $identity->oneTimePasswordActorId = $actorId;
+                $identity->usedOneTimePassword = true;
                 $this->setAuthSuccess($user);
                 return;
             }

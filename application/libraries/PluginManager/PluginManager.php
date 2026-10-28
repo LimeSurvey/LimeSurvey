@@ -60,8 +60,10 @@ class PluginManager extends \CApplicationComponent
 
     /**
      * Creates the plugin manager.  Loads all active plugins.
-     * If $plugin->save() is used in this method, it can lead to an infinite event loop,
-     * since beforeSave tries to get the PluginManager, which executes init() again.
+     * The plugin manager is registered as application component before the plugins are loaded,
+     * since Yii registers it only after init() and any App()->getPluginManager() call while loading
+     * (plugin init(), afterPluginLoad, model events, permission checks) would create a new
+     * plugin manager, which executes init() again, endlessly.
      *
      * @return void
      */
@@ -78,6 +80,9 @@ class PluginManager extends \CApplicationComponent
         if (!is_object($this->api)) {
             $class = $this->api;
             $this->api = new $class();
+        }
+        if (Yii::app()->getComponent('pluginManager', false) === null) {
+            Yii::app()->setComponent('pluginManager', $this);
         }
         $this->loadPlugins();
     }
@@ -316,6 +321,21 @@ class PluginManager extends \CApplicationComponent
                                         'message' => $ex->getMessage(),
                                         'file'  => $ex->getFile()
                                     ];
+                                    if (empty($plugin)) {
+                                        // Plugin is not installed: Only list it as faulty, without saving anything,
+                                        // so it is loaded again on next scan (e.g. after the plugin files were fixed).
+                                        if (App()->getConfig('debug') >= 2) {
+                                            throw $ex;
+                                        }
+                                        $result[$pluginName] = [
+                                            'pluginName' => $pluginName,
+                                            'load_error' => 1,
+                                            'load_error_message' => $error['message'] . ' ' . $error['file'],
+                                            'isCompatible' => false,
+                                            'pluginType' => $pluginType,
+                                        ];
+                                        continue;
+                                    }
                                     $saveResult = Plugin::handlePluginLoadError($plugin, $pluginName, $error);
                                     if (!$saveResult) {
                                         // If handlePluginLoadError return 0 because debug is set
@@ -480,6 +500,11 @@ class PluginManager extends \CApplicationComponent
                 'file'  => $ex->getFile()
             ];
             $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
+            if (empty($plugin)) {
+                // Plugin is not installed: Nothing to mark as faulty.
+                $this->shutdownObject->disable();
+                throw $ex;
+            }
             $saveResult = Plugin::handlePluginLoadError($plugin, $pluginName, $error);
             if (!$saveResult) {
                 // If handlePluginLoadError return 0 because debug is set

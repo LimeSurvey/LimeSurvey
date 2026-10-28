@@ -119,27 +119,7 @@ class SurveyActivate
             $preserveIDs = true;
         }
         require_once "application/helpers/admin/import_helper.php";
-        $deactivatedArchives = getDeactivatedArchives($surveyId);
-        $archives = [];
-        foreach ($deactivatedArchives as $key => $deactivatedArchive) {
-            $candidates = explode(",", $deactivatedArchive);
-            sort($candidates);
-            $found = false;
-            if ($timestamp) {
-                foreach ($candidates as $candidate) {
-                    if (!$found) {
-                        $exploded = explode("_", $candidate);
-                        if ($exploded[count($exploded) - 1] == $timestamp) {
-                            $found = true;
-                            $archives[$key] = $candidate;
-                        }
-                    }
-                }
-            }
-            if (!$found) {
-                $archives[$key] = $candidates[count($candidates) - 1];
-            }
-        }
+        $archives = $this->getArchivesToRestore($surveyId, $timestamp);
         if (is_array($archives) && isset($archives['responses']) && isset($archives['questions'])) {
             //Recover survey
             $qParts = explode("_", $archives['questions']);
@@ -172,5 +152,39 @@ class SurveyActivate
         } else {
             return false; //not recoverable
         }
+    }
+
+    /**
+     * Picks the archive table to restore for each archived table type (responses, questions, tokens, timings ...)
+     *
+     * @param int $surveyId
+     * @param int|null $timestamp Archive suffix in YmdHis format, not Unix time.
+     *     Each table type falls back to its latest archive if no match is found or no suffix is supplied.
+     * @return array<string,string> archive table name indexed by table type
+     */
+    private function getArchivesToRestore(int $surveyId, $timestamp = null): array
+    {
+        $deactivatedArchives = getDeactivatedArchives($surveyId);
+        $archives = [];
+        foreach ($deactivatedArchives as $key => $deactivatedArchive) {
+            $candidates = explode(",", $deactivatedArchive);
+            sort($candidates);
+            $found = false;
+            if ($timestamp) {
+                foreach ($candidates as $candidate) {
+                    if (!$found) {
+                        $exploded = explode("_", $candidate);
+                        if ($exploded[count($exploded) - 1] == $timestamp) {
+                            $found = true;
+                            $archives[$key] = $candidate;
+                        }
+                    }
+                }
+            }
+            if (!$found) {
+                $archives[$key] = $candidates[count($candidates) - 1];
+            }
+        }
+        return $archives;
     }
 }

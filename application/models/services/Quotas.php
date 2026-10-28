@@ -414,12 +414,13 @@ class Quotas
      */
     public static function checkCompletedQuota(int $surveyid, array $updatedValues = [], bool $return = false)
     {
+        $sessionState = SurveySessionState::forSurvey($surveyid);
         /* Check if session is set */
-        if (!isset(App()->session['responses_' . $surveyid]['srid'])) {
+        if ($sessionState->getResponseId() === null) {
             return;
         }
         /* Check if Response is already submitted : only when "do" the quota: allow to send information about quota */
-        $oResponse = Response::model($surveyid)->findByPk(App()->session['responses_' . $surveyid]['srid']);
+        $oResponse = Response::model($surveyid)->findByPk($sessionState->getResponseId());
         if (!$return && !$oResponse) {
             // Session points to a response row that no longer exists: bail out before it reaches updateResponseQuotaExit().
             killSurveySession($surveyid);
@@ -430,6 +431,8 @@ class Quotas
         }
         // EM call 2 times quotas with 3 lines of php code, then use static.
         static $aMatchedQuotas;
+        // Posted quota fields, kept with the matched quotas: needed when rendering the quota page from the second call
+        static $aPostedQuotaFields = [];
         if (is_null($aMatchedQuotas)) {
             $aMatchedQuotas = [];
             /** @var Quota[] $aQuotas */
@@ -465,7 +468,7 @@ class Quotas
                 foreach ($oQuota->quotaMembers as $oQuotaMember) {
                     $aQuotaMember = $oQuotaMember->getMemberInfo();
                     $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
-                    $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']] = isset($_SESSION['responses_' . $surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['responses_' . $surveyid]['relevanceStatus'][$aQuotaMember['qid']];
+                    $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']] = $sessionState->hasRelevance($aQuotaMember['qid']) && $sessionState->getRelevance($aQuotaMember['qid']);
                     $aQuotaQid[] = $aQuotaMember['qid'];
                 }
                 $aQuotaQid = array_unique($aQuotaQid);
@@ -473,8 +476,8 @@ class Quotas
                 // Filter
                 // For each field : test if actual responses is in quota (and is relevant)
                 foreach ($aQuotaFields as $sFieldName => $aValues) {
-                    $bInQuota = isset($_SESSION['responses_' . $surveyid][$sFieldName])
-                        && in_array($_SESSION['responses_' . $surveyid][$sFieldName], $aValues);
+                    $bInQuota = $sessionState->hasFieldValue($sFieldName)
+                        && in_array($sessionState->getFieldValue($sFieldName), $aValues);
                     if ($bInQuota && $aQuotaRelevantFieldnames[$sFieldName]) {
                         $iMatchedAnswers++;
                     }
@@ -537,8 +540,8 @@ class Quotas
         }
         // Now we have all the information we need about the quotas and their status.
         // We need to construct the page and do all needed action
-        $aSurveyInfo = getSurveyInfo($surveyid, $_SESSION['responses_' . $surveyid]['s_lang']);
-        $sClientToken = $_SESSION['responses_' . $surveyid]['token'] ?? "";
+        $aSurveyInfo = getSurveyInfo($surveyid, $sessionState->getLanguage());
+        $sClientToken = $sessionState->getToken() ?? "";
         // $redata for templatereplace
         $aDataReplacement = [
             'thissurvey'  => $aSurveyInfo,
@@ -550,7 +553,7 @@ class Quotas
         // If a token is used then mark the token as completed, do it before event : this allow plugin to update token information
         $event = new PluginEvent('afterSurveyQuota');
         $event->set('surveyId', $surveyid);
-        $event->set('responseId', $_SESSION['responses_' . $surveyid]['srid']); // We always have a responseId
+        $event->set('responseId', $sessionState->get('srid')); // We always have a responseId
         $event->set('aMatchedQuotas', $aMatchedQuotas); // Give all the matched quota : the first is the active
         App()->getPluginManager()->dispatchEvent($event);
         $blocks = [];
@@ -567,16 +570,16 @@ class Quotas
         $sUrl = $event->get('url', $aMatchedQuota['quotals_url']);
         $sUrlDescription = $event->get('urldescrip', $aMatchedQuota['quotals_urldescrip']);
         $sAction = (int) $event->get('action', $aMatchedQuota['action']);
-        // close the survey only when the action is a terminate type or when confirmquota is called as move action
-        /**
-         * @todo: 2026-01-05: Is confirmquota action still used?
-         *        The "confirmquota" button was commented out on commit 9e678fb (Ticket #14652)
-         */
-        $closeSurvey = ($sAction !== Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS || App()->getRequest()->getPost('move') === 'confirmquota');
+        // Participant confirmed the soft terminate quota with the "End survey" button of the quota page
+        $bSoftQuotaConfirmed = $sAction === Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS
+            && App()->getRequest()->getPost('move') === 'confirmquota';
+        // close the survey only when the action is a terminate type or when the soft terminate is confirmed
+        $closeSurvey = ($sAction !== Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS || $bSoftQuotaConfirmed);
         $sAutoloadUrl = $event->get('autoloadurl', $aMatchedQuota['autoload_url']);
-        // If action is Terminate, stamp the quota id in the response and marks tokens as completed
+        // If action is Terminate (or a confirmed soft terminate), stamp the quota id in the response and marks tokens as completed
         if (
-            in_array($sAction, [
+            $bSoftQuotaConfirmed
+            || in_array($sAction, [
                 Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS,
                 Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS,
                 Quota::TERMINATE_ALL_PAGES
@@ -624,24 +627,30 @@ class Quotas
             true
         );
 
-        // Datas for twig view
+        // Datas for twig view: Start from the survey info, so themes can use it like on the other pages
+        $thissurvey = $aSurveyInfo;
         $thissurvey['sid'] = $surveyid;
+        // Avoid showing the progress bar
+        $thissurvey['aCompleted'] = true;
         $thissurvey['aQuotas'] = [];
         $thissurvey['aQuotas']['sMessage'] = $sMessage;
         $thissurvey['aQuotas']['bShowNavigator'] = !$closeSurvey;
         $thissurvey['aQuotas']['sClientToken'] = $sClientToken;
         $thissurvey['aQuotas']['sQuotaStep'] = 'returnfromquota';
-        $thissurvey['aQuotas']['aPostedQuotaFields'] = $aPostedQuotaFields ?? '';
+        $thissurvey['aQuotas']['aPostedQuotaFields'] = $aPostedQuotaFields;
         $thissurvey['aQuotas']['sPluginBlocks'] = implode("\n", $blocks);
         $thissurvey['aQuotas']['sUrlDescription'] = $sUrlDescription;
         $thissurvey['aQuotas']['sUrl'] = $sUrl;
         $thissurvey['active'] = 'Y';
-        $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="' . $surveyid . '" />
-                                              <input type="hidden" name="token"    value="' . $thissurvey['aQuotas']['sClientToken'] . '" />
-                                              <input type="hidden" name="thisstep" value="' . ($_SESSION['responses_' . $surveyid]['step'] ?? 0) . '" />';
+        $thissurvey['aQuotas']['hiddeninputs'] = CHtml::hiddenField('sid', $surveyid, ['id' => false])
+            . CHtml::hiddenField('token', $thissurvey['aQuotas']['sClientToken'], ['id' => false])
+            . CHtml::hiddenField('thisstep', $sessionState->getStep() ?? 0, ['id' => false]);
         if (!empty($thissurvey['aQuotas']['aPostedQuotaFields'])) {
+            // Re-post the quota fields: the "End survey" (confirmquota) move needs them to match the quota again
             foreach ($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post) {
-                $thissurvey['aQuotas']['hiddeninputs'] .= '<input type="hidden" name="' . $field . '"   value="' . $post . '" />';
+                if (is_scalar($post)) {
+                    $thissurvey['aQuotas']['hiddeninputs'] .= CHtml::hiddenField($field, $post, ['id' => false]);
+                }
             }
         }
 

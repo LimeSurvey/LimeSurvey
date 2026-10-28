@@ -41,6 +41,11 @@ class CopyQuestion
     private array $copyOptions = [];
 
     /**
+     * @var string[] HTML safe messages about parts of the question that could not be copied
+     */
+    private array $copyErrors = [];
+
+    /**
      * CopyQuestion constructor.
      *
      * @param CopyQuestionValues $copyQuestionValues
@@ -77,22 +82,22 @@ class CopyQuestion
             );
 
             //copy subquestions
-            if (isset($this->copyOptions['copySubquestions']) && $this->copyOptions['copySubquestions']) {
+            if (!empty($this->copyOptions['copySubquestions'])) {
                 $this->copyQuestionsSubQuestions($this->copyQuestionValues->getQuestiontoCopy()->qid, $surveyId);
             }
 
             //copy answer options
-            if (isset($this->copyOptions['copyAnswerOptions']) && $this->copyOptions['copyAnswerOptions']) {
+            if (!empty($this->copyOptions['copyAnswerOptions'])) {
                 $this->copyQuestionsAnswerOptions($this->copyQuestionValues->getQuestiontoCopy()->qid);
             }
 
             //copy default answers
-            if (isset($this->copyOptions['copyDefaultAnswers']) && $this->copyOptions['copyDefaultAnswers']) {
+            if (!empty($this->copyOptions['copyDefaultAnswers'])) {
                 $this->copyQuestionsDefaultAnswers($this->copyQuestionValues->getQuestiontoCopy()->qid);
             }
 
             //copy question settings (generalsettings and advanced settings)
-            if (isset($this->copyOptions['copySettings']) && $this->copyOptions['copySettings']) {
+            if (!empty($this->copyOptions['copySettings'])) {
                 $this->copyQuestionsSettings($this->copyQuestionValues->getQuestiontoCopy()->qid, $surveyId);
             }
         }
@@ -156,7 +161,7 @@ class CopyQuestion
                 if (isset($newQuestionL10nData[$questionL10n->language])) {
                     $copyLanguage->question = $newQuestionL10nData[$questionL10n->language]->getQuestionText();
                     $copyLanguage->help = $newQuestionL10nData[$questionL10n->language]->getHelp();
-                    if ($surveyId !== null && isset($this->copyOptions['adjustLinks']) && $this->copyOptions['adjustLinks']) {
+                    if ($surveyId !== null && !empty($this->copyOptions['adjustLinks'])) {
                         $copyLanguage->question = translateLinks(
                             'survey',
                             $this->copyQuestionValues->getSourceSurveyId(),
@@ -171,7 +176,14 @@ class CopyQuestion
                         );
                     }
                 }
-                $allLanguagesAreCopied = $allLanguagesAreCopied && $copyLanguage->save();
+                if (!$copyLanguage->save()) {
+                    $allLanguagesAreCopied = false;
+                    $this->addSaveErrors(
+                        $copyLanguage,
+                        gT("The question text for language '%s' could not be copied: %s"),
+                        $questionL10n->language
+                    );
+                }
             }
         }
 
@@ -207,11 +219,19 @@ class CopyQuestion
             if ($surveyId !== null) {
                 $copiedSubquestion->sid = $surveyId;
             }
-            $areSubquestionsCopied = $areSubquestionsCopied && $copiedSubquestion->save();
+            if (!$copiedSubquestion->save()) {
+                $areSubquestionsCopied = false;
+                $this->addSaveErrors(
+                    $copiedSubquestion,
+                    gT("Subquestion '%s' could not be copied: %s"),
+                    $subquestion->title
+                );
+                continue;
+            }
             $this->mappedSubquestionIds[$subquestion->qid] = $copiedSubquestion->qid; // map old subquestion id to new subquestion id
             foreach ($subquestion->questionl10ns as $subquestLanguage) {
                 $substituteSurveyInQuestionText = $subquestLanguage->question;
-                if ($surveyId !== null && isset($this->copyOptions['adjustLinks']) && $this->copyOptions['adjustLinks']) {
+                if ($surveyId !== null && !empty($this->copyOptions['adjustLinks'])) {
                     $substituteSurveyInQuestionText = translateLinks(
                         'survey',
                         $this->copyQuestionValues->getSourceSurveyId(), //oldID
@@ -226,7 +246,15 @@ class CopyQuestion
                 $newSubquestLanguage->script = $subquestLanguage->script;
                 $newSubquestLanguage->qid = $copiedSubquestion->qid;
                 $newSubquestLanguage->language = $subquestLanguage->language;
-                $newSubquestLanguage->save();
+                if (!$newSubquestLanguage->save()) {
+                    $areSubquestionsCopied = false;
+                    $this->addSaveErrors(
+                        $newSubquestLanguage,
+                        gT("The text of subquestion '%s' for language '%s' could not be copied: %s"),
+                        $subquestion->title,
+                        $subquestLanguage->language
+                    );
+                }
             }
         }
 
@@ -258,14 +286,27 @@ class CopyQuestion
             $copiedAnswerOption->attributes = $answerOption->attributes;
             $copiedAnswerOption->aid = null;
             $copiedAnswerOption->qid = $this->newQuestion->qid;
-            if ($copiedAnswerOption->save()) {
-                //copy the languages
-                foreach ($answerOption->answerl10ns as $answerLanguage) {
-                    $copiedAnswerOptionLanguage = new \AnswerL10n();
-                    $copiedAnswerOptionLanguage->attributes = $answerLanguage->attributes;
-                    $copiedAnswerOptionLanguage->id = null;
-                    $copiedAnswerOptionLanguage->aid = $copiedAnswerOption->aid;
-                    $copiedAnswerOptionLanguage->save();
+            if (!$copiedAnswerOption->save()) {
+                $this->addSaveErrors(
+                    $copiedAnswerOption,
+                    gT("Answer option '%s' could not be copied: %s"),
+                    $answerOption->code
+                );
+                continue;
+            }
+            //copy the languages
+            foreach ($answerOption->answerl10ns as $answerLanguage) {
+                $copiedAnswerOptionLanguage = new \AnswerL10n();
+                $copiedAnswerOptionLanguage->attributes = $answerLanguage->attributes;
+                $copiedAnswerOptionLanguage->id = null;
+                $copiedAnswerOptionLanguage->aid = $copiedAnswerOption->aid;
+                if (!$copiedAnswerOptionLanguage->save()) {
+                    $this->addSaveErrors(
+                        $copiedAnswerOptionLanguage,
+                        gT("The text of answer option '%s' for language '%s' could not be copied: %s"),
+                        $answerOption->code,
+                        $answerLanguage->language
+                    );
                 }
             }
         }
@@ -286,16 +327,24 @@ class CopyQuestion
             $copiedDefaultAnswer->attributes = $defaultAnswer->attributes;
             $copiedDefaultAnswer->qid = $this->newQuestion->qid;
             $copiedDefaultAnswer->dvid = null;
-            if ($copiedDefaultAnswer->save()) {
-                //copy languages if needed
-                $defaultValLanguages = \DefaultValueL10n::model()
-                  ->findAllByAttributes(['dvid' => $defaultAnswer->dvid]);
-                foreach ($defaultValLanguages as $defaultAnswerL10n) {
-                    $copieDefaultAnswerLanguage = new \DefaultValueL10n();
-                    $copieDefaultAnswerLanguage->attributes = $defaultAnswerL10n->attributes;
-                    $copieDefaultAnswerLanguage->dvid = $copiedDefaultAnswer->dvid;
-                    $copieDefaultAnswerLanguage->id = null;
-                    $copieDefaultAnswerLanguage->save();
+            if (!$copiedDefaultAnswer->save()) {
+                $this->addSaveErrors($copiedDefaultAnswer, gT("A default answer could not be copied: %s"));
+                continue;
+            }
+            //copy languages if needed
+            $defaultValLanguages = \DefaultValueL10n::model()
+              ->findAllByAttributes(['dvid' => $defaultAnswer->dvid]);
+            foreach ($defaultValLanguages as $defaultAnswerL10n) {
+                $copieDefaultAnswerLanguage = new \DefaultValueL10n();
+                $copieDefaultAnswerLanguage->attributes = $defaultAnswerL10n->attributes;
+                $copieDefaultAnswerLanguage->dvid = $copiedDefaultAnswer->dvid;
+                $copieDefaultAnswerLanguage->id = null;
+                if (!$copieDefaultAnswerLanguage->save()) {
+                    $this->addSaveErrors(
+                        $copieDefaultAnswerLanguage,
+                        gT("A default answer for language '%s' could not be copied: %s"),
+                        $defaultAnswerL10n->language
+                    );
                 }
             }
         }
@@ -340,7 +389,14 @@ class CopyQuestion
                         $settingToCopy->value, //the original value
                     );
                 }
-                $areSettingsCopied = $areSettingsCopied && $newSetting->save();
+                if (!$newSetting->save()) {
+                    $areSettingsCopied = false;
+                    $this->addSaveErrors(
+                        $newSetting,
+                        gT("Question setting '%s' could not be copied: %s"),
+                        $settingToCopy->attribute
+                    );
+                }
             }
         }
 
@@ -355,5 +411,42 @@ class CopyQuestion
     public function getNewCopiedQuestion()
     {
         return $this->newQuestion;
+    }
+
+    /**
+     * Returns the messages about parts of the question (subquestions, answer options, texts, settings ...)
+     * that could not be copied although the question itself was copied.
+     *
+     * @return string[] HTML safe messages
+     */
+    public function getCopyErrors()
+    {
+        return $this->copyErrors;
+    }
+
+    /**
+     * Adds the validation errors of a model that could not be saved to the copy errors.
+     *
+     * @param \CActiveRecord $model the model that could not be saved
+     * @param string $format translated (HTML escaped) message, its last %s placeholder receives the validation errors
+     * @param string ...$args values for the other placeholders of $format, they get HTML encoded
+     *
+     * @return void
+     */
+    private function addSaveErrors($model, $format, ...$args)
+    {
+        $validationErrors = [];
+        foreach ($model->getErrors() as $attributeErrors) {
+            foreach ($attributeErrors as $attributeError) {
+                // Some validation messages are already HTML escaped (gT()), don't encode them twice
+                $validationErrors[] = htmlspecialchars($attributeError, ENT_QUOTES, 'UTF-8', false);
+            }
+        }
+        if (empty($validationErrors)) {
+            $validationErrors[] = gT("Unknown error");
+        }
+        $args = array_map([\CHtml::class, 'encode'], $args);
+        $args[] = implode(' ', $validationErrors);
+        $this->copyErrors[] = vsprintf($format, $args);
     }
 }

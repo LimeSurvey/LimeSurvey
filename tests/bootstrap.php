@@ -256,39 +256,48 @@ define('PHP_ENV', 'test');
 $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 
+// PHPUnit sets this global before it loads the bootstrap in a test that runs in a separate process
+// (@runTestsInSeparateProcesses), but only after loading it in the main process.
+$isIsolatedTestProcess = isset($GLOBALS['__PHPUNIT_BOOTSTRAP']);
+// PHPUnit fails a test in a separate process if that process writes anything to STDERR.
+$stderr = $isIsolatedTestProcess ? fopen('php://memory', 'w') : STDERR;
+
 // Enable if phpunit fails.
 $forceDebug = false;
 if ($forceDebug) {
     // Set env variable as to have test cases to enable error reporting.
     // Seems setting it globally here is not enough
     putenv('RUNNER_DEBUG=1');
-    fwrite(STDERR, 'Set $forceDebug=false in tests/bootstrap.php to reduce the logging.' . "\n");
+    fwrite($stderr, 'Set $forceDebug=false in tests/bootstrap.php to reduce the logging.' . "\n");
 }
 $isDebug = getenv('RUNNER_DEBUG', false);
-fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No') . "\n");
+fwrite($stderr, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No') . "\n");
 if ($isDebug) {
     define('YII_DEBUG', true);
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
 } else {
-   fwrite(STDERR, 'Set $forceDebug=true in tests/bootstrap.php to enable more logging.' . "\n");
+   fwrite($stderr, 'Set $forceDebug=true in tests/bootstrap.php to enable more logging.' . "\n");
 }
-fwrite(STDERR, "\n");
+fwrite($stderr, "\n");
 
-if (file_exists($configFile)) {
+// The main process restores the config at shutdown; a separate test process must not take its backup.
+if (file_exists($configFile) && !$isIsolatedTestProcess) {
     copy($configFile, $configBackupFile);
 }
 
 // Dont use customer error handler in unit-tests
 restore_error_handler();
 
-register_shutdown_function(
-    function () {
-        $configFile = __DIR__ . '/application/config/config.php';
-        $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
+if (!$isIsolatedTestProcess) {
+    register_shutdown_function(
+        function () {
+            $configFile = __DIR__ . '/application/config/config.php';
+            $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 
-        @unlink($configFile);
-        @rename($configBackupFile, $configFile);
-    }
-);
+            @unlink($configFile);
+            @rename($configBackupFile, $configFile);
+        }
+    );
+}

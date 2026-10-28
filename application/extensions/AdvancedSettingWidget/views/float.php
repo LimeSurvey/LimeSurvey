@@ -6,6 +6,7 @@
     <?php endif; ?>
     <input
         type="number" 
+        step="any"
         class="form-control" 
         name="<?= $inputBaseName ?>"
         id="<?= CHtml::getIdByName($inputBaseName); ?>"

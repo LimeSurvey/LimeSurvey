@@ -408,17 +408,6 @@ class GeneralSettings
                 break;
         }
 
-        if ($field == 'tokenlength') {
-            $value = (int) (
-                (
-                    ($value  < 5 || $value  > 36)
-                    && $value != -1
-                )
-                ? 15
-                : $value
-            );
-        }
-
         // Convert additional_languages array to string
         if (
             $field == 'additional_languages'

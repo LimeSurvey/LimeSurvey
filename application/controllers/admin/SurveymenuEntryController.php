@@ -58,15 +58,6 @@ class SurveymenuEntryController extends SurveyCommonAction
         }
         $data['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
         $data['pageTitle'] = gT('Menu entries');
-        $data['fullpagebar'] = [
-            'menus' => [
-                'buttons' => [
-                    'addMenuEntry' => true,
-                    'reset'        => true,
-                    'reorder'      => true,
-                ],
-            ],
-        ];
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
     }

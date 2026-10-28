@@ -29,16 +29,17 @@
         && $hasSurveyExportPermission
         && (!$oSurvey->hasTokensTable || $hasTokensExportPermission)
     ) {
-        $aExportItemsArray["surveyarchive"] = ($oSurvey->isActive)
+        // Inactive surveys can be archived too, as long as there are participants to archive
+        $aExportItemsArray["surveyarchive"] = ($oSurvey->isActive || $oSurvey->hasTokens())
         ? [
             "key" => "surveyarchive",
             "title" => "" . gT("Survey archive (.lsa)", 'json'),
             "detailpage" => "
-            <p>" . gT("This export is intended to create a complete backup of an active survey for archival purposes.", 'json') . "</p>
+            <p>" . gT("This export is intended to create a complete backup of a survey for archival purposes.", 'json') . "</p>
             <p>" . gT("It will include the following data in a ZIP file ending with '.lsa'.", 'json') . "</p>
             <ul>
                 <li>" . gT("Survey structure", 'json') . "</li>
-                <li>" . gT("Response data (Attention: Doesn't include files uploaded in a file upload question. These have to be exported separately.)", 'json') . "</li>
+                <li>" . gT("Response data of active surveys (Attention: Doesn't include files uploaded in a file upload question. These have to be exported separately.)", 'json') . "</li>
                 <li>" . gT("Survey participant data (if available)", 'json') . "</li>
                 <li>" . gT("Timings (if activated)", 'json') . "</li>
             </ul>
@@ -48,7 +49,7 @@
         ]
         : [
             "key" => "surveyarchive",
-            "title" => "" . gT("Survey archive - only available for active surveys", 'json'),
+            "title" => "" . gT("Survey archive - only available for active surveys or surveys with participants", 'json'),
             "detailpage" => "",
             "href" => '#',
             "htmlclasses" => 'disabled',
@@ -160,9 +161,16 @@
         'currentSelected' => gT("Export"),
         'iconPosition' => "front",
         'itemsArray' => $aExportItemsArray,
-        'value' => '',
+        // Preselect the first export format so the Export button works right away
+        'value' => array_key_first($aExportItemsArray),
         'debug' => YII_DEBUG,
         'optionArray' => [
+            'onModalOpen' => [
+                // Show title and details of the preselected format
+                "
+                $('.selector__Item--select-exportTypeSelector.mark-as-selected').first().trigger('click');
+                "
+            ],
             'onModalClose' => [
                 "
                 $('#selector__exportTypeSelector--buttonText').html('" . gT("Export") . "');

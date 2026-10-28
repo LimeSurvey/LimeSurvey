@@ -90,7 +90,7 @@ class SurveyListMassiveActions
                         'keepopen' => 'yes',
                         'sModalTitle' => gT('Export survey archive'),
                         'htmlModalBody' =>
-                            gT('This will export the survey archive (.lsa) for all selected active surveys. They will be provided in a single ZIP archive.')
+                            gT('This will export the survey archive (.lsa) for all selected surveys that are active or have participants. They will be provided in a single ZIP archive.')
                             . ' ' . gT('Continue?'),
                     ],
                     [

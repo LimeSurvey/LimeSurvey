@@ -108,23 +108,61 @@ function doRatingStar(qID) {
             var thischoice = $(this).data('star');
             //toggle the em-action on the hidden input
             answersList.find("input[type=radio]").prop('checked', false);
-            answersList.find("input[value='" + thischoice + "']").prop('checked', true).trigger('change');
-            //clean up classes
-            $(this).siblings('.star-rating').removeClass("star-thisrated").removeClass("star-rated").removeClass("star-rated-on");
-            //mark the chosen star
-            $(this).addClass("star-rated").addClass("star-thisrated").addClass("star-rated-on");
-            //iterate through the siblings to mark the stars lower than the current
-            $(this).siblings('.star-rating').each(function () {
-                if ($(this).data("star") < thischoice) {
-                    $(this).addClass("star-rated").addClass("star-rated-on");
-                }
-            });
-            // if cancel, remove all classes
             if ($(this).hasClass('star-cancel')) {
-                $(this).siblings('.star-rating').removeClass("star-rated-on").removeClass("star-rated");
                 answersList.find('.noanswer-item').find("input[type=radio]").prop('checked', true).trigger('change');
+            } else {
+                answersList.find("input[value='" + thischoice + "']").prop('checked', true).trigger('change');
             }
+        });
 
+    /**
+     * Get the star matching a hidden radio button, the "no answer" radio button matches the cancel star
+     *
+     * @param {HTMLElement} radio
+     * @return {jQuery}
+     */
+    var getStarFromRadio = function (radio) {
+        if ($(radio).val() === "") {
+            return starElements.filter('.star-cancel');
+        }
+        return starElements.filter("[data-star='" + $(radio).val() + "']").not('.star-cancel');
+    };
+
+    /**
+     * Mark the given star as chosen and light all stars lower than it
+     *
+     * @param {jQuery} star
+     */
+    var markStar = function (star) {
+        var thischoice = star.data('star');
+        //clean up classes
+        star.siblings('.star-rating').removeClass("star-thisrated").removeClass("star-rated").removeClass("star-rated-on");
+        //mark the chosen star
+        star.addClass("star-rated").addClass("star-thisrated").addClass("star-rated-on");
+        //iterate through the siblings to mark the stars lower than the current
+        star.siblings('.star-rating').each(function () {
+            if ($(this).data("star") < thischoice) {
+                $(this).addClass("star-rated").addClass("star-rated-on");
+            }
+        });
+        // if cancel, remove all classes
+        if (star.hasClass('star-cancel')) {
+            star.siblings('.star-rating').removeClass("star-rated-on").removeClass("star-rated");
+        }
+    };
+
+    //Keep the stars in sync with the hidden radio buttons, which remain usable by keyboard
+    answersList.find("input[type=radio]")
+        .on("change", function () {
+            if ($(this).prop('checked')) {
+                markStar(getStarFromRadio(this));
+            }
+        })
+        .on("focus", function () {
+            getStarFromRadio(this).addClass("star-focused");
+        })
+        .on("blur", function () {
+            starElements.removeClass("star-focused");
         });
 
     //hide the standard-items

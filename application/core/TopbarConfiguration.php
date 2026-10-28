@@ -322,6 +322,10 @@ class TopbarConfiguration
         $hasTokensDeletePermission = Permission::model()->hasSurveyPermission($sid, 'tokens', 'delete');
         $hasSurveySettingsUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update');
 
+        Yii::app()->loadConfig('ldap');
+        $ldapQueries = Yii::app()->getConfig('ldap_queries');
+        $isLdapImportAvailable = function_exists('ldap_connect') && !empty($ldapQueries) && is_array($ldapQueries);
+
         return array(
             'oSurvey' => $survey,
             'hasTokensReadPermission'   => $hasTokensReadPermission,
@@ -331,6 +335,7 @@ class TopbarConfiguration
             'hasTokensUpdatePermission' => $hasTokensUpdatePermission,
             'hasTokensDeletePermission' => $hasTokensDeletePermission,
             'hasSurveySettingsUpdatePermission' => $hasSurveySettingsUpdatePermission,
+            'isLdapImportAvailable' => $isLdapImportAvailable,
             'tokenexists' => $survey->hasTokensTable
         );
     }

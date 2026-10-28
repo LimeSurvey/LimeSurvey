@@ -19,8 +19,6 @@
 ?>
 
 <!-- _statisticsoutput_gross_total -->
-<tr>
-
     <tr>
         <td align='right'>
             <strong>

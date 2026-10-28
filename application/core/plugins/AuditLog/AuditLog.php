@@ -102,21 +102,28 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         ),
         'separatorSurveySettings' => array(
             'type' => 'separator',
-            'title' => 'Survey settings',
+            'title' => 'Surveys',
         ),
         'AuditLog_Log_SurveySettings' => array(
             'type' => 'boolean',
             'label' => 'Settings changed',
             'default' => '1',
         ),
+        'AuditLog_Log_SurveyDelete' => array(
+            'type' => 'boolean',
+            'label' => 'Survey deleted',
+            'default' => '1',
+        ),
     );
 
 
+    /**
+     * Subscribes to the events that are logged, and to the events needed for the plugin and survey settings
+     */
     public function init()
     {
-        $this->subscribe('beforeSurveySettings');
-        $this->subscribe('newSurveySettings');
         $this->subscribe('beforeSurveySettingsSave');
+        $this->subscribe('beforeSurveyDelete');
         $this->subscribe('beforeActivate');
         $this->subscribe('beforeUserSave');
         $this->subscribe('beforeUserDelete');
@@ -251,7 +258,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $iSurveyID = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_DataEntryCreate') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_DataEntryCreate')) {
             return;
         }
 
@@ -277,7 +284,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $iSurveyID = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_DataEntryUpdate') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_DataEntryUpdate')) {
             return;
         }
 
@@ -317,7 +324,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $iSurveyID = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_DataEntryDelete') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_DataEntryDelete')) {
             return;
         }
 
@@ -342,7 +349,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $iSurveyID = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_DataEntryImport') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_DataEntryImport')) {
             return;
         }
 
@@ -370,7 +377,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $iSurveyID = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_TokenSave') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_TokenSave')) {
             return;
         }
 
@@ -408,7 +415,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $iSurveyID = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_TokenDelete') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_TokenDelete')) {
             return;
         }
 
@@ -454,7 +461,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $surveyId = $event->get('iSurveyID');
-        if (!$this->checkSetting('AuditLog_Log_TokenDelete') || !$this->get('auditing', 'Survey', $surveyId, true)) {
+        if (!$this->checkSetting('AuditLog_Log_TokenDelete')) {
             return;
         }
 
@@ -647,46 +654,16 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-    * This event is fired by the administration panel to gather extra settings
-    * available for a survey.
-    * The plugin should return setting meta data.
-    */
-    public function beforeSurveySettings()
-    {
-        $pluginsettings = $this->getPluginSettings(true);
-
-        $event = $this->getEvent();
-        $event->set("surveysettings.{$this->id}", array(
-            'name' => get_class($this),
-            'settings' => array(
-                'auditing' => array(
-                    'type' => 'select',
-                    'options' => array(0 => 'No',
-                        1 => 'Yes'),
-                    'default' => 1,
-                    'tab' => 'notification', // @todo: Setting no used yet
-                    'category' => 'Auditing for person-related data', // @todo: Setting no used yet
-                    'label' => 'Audit log for this survey:',
-                    'current' => $this->get('auditing', 'Survey', $event->get('survey'))
-                )
-            )
-        ));
-    }
-
-    public function newSurveySettings()
-    {
-        $event = $this->getEvent();
-        foreach ($event->get('settings') as $name => $value) {
-                $this->set($name, $value, 'Survey', $event->get('survey'));
-        }
-    }
-
+     * Function catches if the settings of a survey were changed
+     * Only the changed attributes are saved, with their old and new values
+     * - the bounce account password is masked for security reasons
+     */
     public function beforeSurveySettingsSave()
     {
         $event = $this->getEvent();
         $oModifiedSurvey = $event->get('modifiedSurvey');
         $iSurveyID = $oModifiedSurvey->sid;
-        if (!$this->checkSetting('AuditLog_Log_SurveySettings') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+        if (!$this->checkSetting('AuditLog_Log_SurveySettings')) {
             return;
         }
 
@@ -696,6 +673,11 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             $oldSurvey = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
 
             $oldAttributes = $oldSurvey->getAttributes();
+            // If the bounce account password has changed then indicate that it has changed but assign fake values
+            if ($newAttributes['bounceaccountpass'] != $oldAttributes['bounceaccountpass']) {
+                $oldAttributes['bounceaccountpass'] = '*MASKED*OLD*PASSWORD*';
+                $newAttributes['bounceaccountpass'] = '*MASKED*NEW*PASSWORD*';
+            }
             $diff = array_diff_assoc($newAttributes, $oldAttributes);
             if (count($diff) > 0) {
                 $oAutoLog = $this->api->newModel($this, 'log');
@@ -709,6 +691,52 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
                 $oAutoLog->fields = implode(',', array_keys($diff));
                 $oAutoLog->save();
             }
+        }
+    }
+
+    /**
+     * Function catches if a survey was deleted
+     * The survey attributes and its titles in all languages are saved
+     * - only the bounce account password is masked for security reasons
+     * If the entry cannot be saved, the error is written to the plugin log and the survey is still deleted
+     */
+    public function beforeSurveyDelete()
+    {
+        if (!$this->checkSetting('AuditLog_Log_SurveyDelete')) {
+            return;
+        }
+        $oSurvey = $this->getEvent()->get('model');
+        // A failing entry must not block the deletion (e.g. bulk delete or RemoteControl)
+        try {
+            $oCurrentUser = $this->api->getCurrentUser();
+
+            $aOldValues = $oSurvey->getAttributes();
+            // Indicate that a bounce account password was set but assign a fake value
+            if (!empty($aOldValues['bounceaccountpass'])) {
+                $aOldValues['bounceaccountpass'] = '*MASKED*PASSWORD*';
+            }
+            $aOldValues['titles'] = array();
+            foreach ($oSurvey->languagesettings as $sLanguage => $oLanguageSetting) {
+                $aOldValues['titles'][$sLanguage] = $oLanguageSetting->surveyls_title;
+            }
+
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->uid = $oCurrentUser ? $oCurrentUser->uid : null;
+            $oAutoLog->entity = 'survey';
+            $oAutoLog->entityid = $oSurvey->sid;
+            $oAutoLog->action = 'delete';
+            $oAutoLog->oldvalues = json_encode($aOldValues, JSON_INVALID_UTF8_SUBSTITUTE);
+            $oAutoLog->fields = implode(',', array_keys($aOldValues));
+            $oAutoLog->save();
+        } catch (Exception $e) {
+            $this->log(
+                sprintf(
+                    'Could not save the audit log entry for deleting survey %d: %s',
+                    $oSurvey->sid,
+                    $e->getMessage()
+                ),
+                CLogger::LEVEL_ERROR
+            );
         }
     }
 }

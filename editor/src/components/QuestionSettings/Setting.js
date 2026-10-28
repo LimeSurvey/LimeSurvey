@@ -101,6 +101,27 @@ export const Setting = ({
     return undefined
   }
 
+  // Distinguishes an attribute that has no value yet (e.g. a new question)
+  // from one that was explicitly emptied, so components can show their default.
+  const isAttributeUnset = (attributePath, languageBased) => {
+    const attribute = attributePath
+      .split('.')
+      .reduce((acc, key) => acc?.[key], question)
+
+    if (attribute === undefined || attribute === null) {
+      return true
+    }
+
+    if (typeof attribute === 'object') {
+      return (
+        attribute[language] === undefined &&
+        (languageBased || attribute[''] === undefined)
+      )
+    }
+
+    return false
+  }
+
   const getFullAttributeValueFromPath = (attributePath) => {
     return getRawValueFromPath(attributePath) || ''
   }
@@ -229,6 +250,11 @@ export const Setting = ({
           'other',
         ]
 
+        const showDefaultValue =
+          attribute.props?.defaultValue !== undefined &&
+          !attribute.props?.value &&
+          isAttributeUnset(attribute.attributePath, attribute.languageBased)
+
         const isDisabledWhenActive =
           ATTRIBUTES_DISABLED_WHEN_ACTIVE.includes(attribute.attributePath) ||
           attribute.disableWhenActive
@@ -275,11 +301,13 @@ export const Setting = ({
                 noPermissionDisabled={true}
                 hasSurveyUpdatePermission={hasSurveyUpdatePermission}
                 value={
-                  value
-                    ? value
-                    : attributeProps.value
-                      ? attributeProps.value
-                      : ''
+                  showDefaultValue
+                    ? undefined
+                    : value
+                      ? value
+                      : attributeProps.value
+                        ? attributeProps.value
+                        : ''
                 }
                 name={attribute.attributePath}
                 update={(value) =>

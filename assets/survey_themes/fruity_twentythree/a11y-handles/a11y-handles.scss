@@ -1,0 +1,44 @@
+// Keyboard accessibility: Visible focus indicator and skip link
+
+$focus-ring-color  : $g-900;
+$focus-ring-width  : 2px;
+$focus-ring-offset : 2px;
+
+@mixin focus-ring {
+    // !important: Several Bootstrap and theme component rules remove the outline on focus with a higher specificity
+    outline        : $focus-ring-width solid $focus-ring-color !important;
+    outline-offset : $focus-ring-offset !important;
+}
+
+// ls-pointer-nav is set by a11y-handles.js while the participant uses a mouse or touch,
+// so e.g. clicking into a text field doesn't show the ring. Without JavaScript the ring is always shown.
+html:not(.ls-pointer-nav) {
+    // Browsers apply :focus-visible to keyboard focus and to text fields, not to buttons or links clicked with the mouse
+    :focus-visible {
+        @include focus-ring;
+    }
+
+    // Radio buttons and checkboxes are hidden and drawn by the label: Mark the drawn control
+    input[type="radio"]:focus-visible + label::before,
+    input[type="checkbox"]:focus-visible + label::before,
+    // Radio buttons and checkboxes displayed as buttons
+    .btn-check:focus-visible + .btn,
+    // Image select: Mark the image
+    .imageselect-checkbox:focus-visible + .imageselect-label,
+    // Overrides the browser default ring that bootstrap-select sets with !important
+    .bootstrap-select > .btn.dropdown-toggle:focus-visible {
+        @include focus-ring;
+    }
+}
+
+// Skip link: Only visible when focused, shown above the fixed navbar
+.skip-link.visually-hidden-focusable:focus,
+.skip-link.visually-hidden-focusable:focus-within {
+    position         : fixed;
+    top              : 0.5rem;
+    left             : 0.5rem;
+    z-index          : $zindex-fixed + 1;
+    padding          : 0.5rem 1rem;
+    background-color : $white;
+    color            : $g-900;
+}
