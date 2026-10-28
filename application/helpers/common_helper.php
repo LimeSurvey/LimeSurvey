@@ -1425,8 +1425,12 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     $currentQuestion = null;
                     $excludeSubquestion = false;
                     foreach ($questions as $question) {
-                        if ($question->title === $code) {
+                        if ($question->parent_qid && $question->title === $code) {
+                            // A subquestion with exactly this code (e.g. a subquestion coded "other") wins over the "other"/"comment" suffixes
                             $currentQuestion = $question;
+                            $commentText = false;
+                            $excludeSubquestion = false;
+                            break;
                         } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
                             $currentQuestion = $question;
                             $commentText = $code;
