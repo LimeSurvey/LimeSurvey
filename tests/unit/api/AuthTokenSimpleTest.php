@@ -74,7 +74,8 @@ class AuthTokenSimpleTest extends TestBaseClass
                 new SessionUtil,
                 new FormatterDateTimeToJson
             );
-            $result = $authTokenSimple->login('admin', $plainToken);
+            // The token belongs to user 1, whatever its name is
+            $result = $authTokenSimple->login(\User::model()->findByPk(1)->users_name, $plainToken);
             $session = \Session::model()->findByPk($result['token']);
             $this->assertSame((int) $apiToken->id, (int) $session->api_token_id);
 
