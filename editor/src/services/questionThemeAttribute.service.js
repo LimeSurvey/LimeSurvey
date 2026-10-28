@@ -8,6 +8,6 @@ export class QuestionThemeAttributeService {
   }
 
   getAttributes = async () => {
-    return await this.restClient.get('questionThemeAttribute/attributes')
+    return await this.restClient.get('questionThemeAttribute')
   }
 }

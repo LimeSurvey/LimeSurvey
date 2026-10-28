@@ -17,7 +17,7 @@ export const useQuestionAttributes = () => {
     queryKey: [STATES.QUESTION_THEME_ATTRIBUTES],
     queryFn: () => questionThemeAttributeService.getAttributes(),
     staleTime: Infinity,
-    cacheTime: Infinity,
+    gcTime: Infinity,
   })
 
   return { attributes, isFetching }
