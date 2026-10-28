@@ -11,16 +11,6 @@
             <component>ImageAttributes</component>
         </attribute>
         <attribute>
-            <name>page_break</name>
-            <component>ToggleButtons</component>
-            <caption>Page break in printable view</caption>
-            <optionsPreset>yesNo</optionsPreset>
-            <default>0</default>
-            <props>
-                <id>insert-page-break-in-printable-view</id>
-            </props>
-        </attribute>
-        <attribute>
             <name>input_on_demand</name>
             <component>ToggleButtons</component>
             <caption>Input on demand</caption>

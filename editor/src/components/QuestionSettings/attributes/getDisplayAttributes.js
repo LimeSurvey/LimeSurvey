@@ -20,16 +20,6 @@ export const getDisplayAttributes = () => ({
     attributePath: 'attributes.image',
     props: {},
   },
-  PAGE_BREAK_IN_PRINTABLE_VIEW: {
-    component: ToggleButtons,
-    attributePath: 'attributes.page_break',
-    props: {
-      id: 'insert-page-break-in-printable-view',
-      labelText: t('Page break in printable view'),
-      toggleOptions: getYesNoOptions(),
-      defaultValue: '0',
-    },
-  },
   INPUT_ON_DEMAND: {
     component: ToggleButtons,
     attributePath: 'attributes.input_on_demand',

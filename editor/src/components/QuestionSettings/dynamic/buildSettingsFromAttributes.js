@@ -211,6 +211,7 @@ export const buildSettingsFromAttributes = (attributes = {}) => {
     if (!definitions.has(attribute.name)) {
       return
     }
+
     const title = getTabTitle(attribute.tab)
     tabs[title] = tabs[title] || []
     tabs[title].push(definitions.get(attribute.name))
