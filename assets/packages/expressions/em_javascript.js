@@ -962,11 +962,14 @@ function LEMeq(a,b)
  * @param {*} a
  * @param {string} op
  * @param {*} b
- * @param {boolean} forceString One of the values is a string constant: compare numbers as text
+ * @param {boolean} aMayBeString a is a string constant or joined with +: if it is a string, compare numbers as text
+ * @param {boolean} bMayBeString Same for b
  * @return {boolean}
  */
-function LEMcompare(a, op, b, forceString)
+function LEMcompare(a, op, b, aMayBeString, bMayBeString)
 {
+    // As PHP, which compares numbers as text when one is a string constant or a result of + that joined strings
+    var forceString = (aMayBeString && typeof a === 'string') || (bMayBeString && typeof b === 'string');
     // e.g. Decimal
     if (a !== null && typeof a === 'object') {
         a = String(a);

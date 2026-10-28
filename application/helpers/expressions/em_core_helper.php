@@ -1438,10 +1438,16 @@ class ExpressionManager
                 foreach ($comparisonEnds[$i] as $id) {
                     if (isset($comparisonsInJs[$id])) {
                         $comparison = $comparisons[$id];
-                        // As in RDP_EvaluateBinary(), a string constant makes numbers compared as text
-                        $forceString = $this->isStringConstant($tokens, $comparison[0], $comparison[1] - 1)
-                            || $this->isStringConstant($tokens, $comparison[1] + 1, $comparison[2]);
-                        $stringParts[] = $forceString ? ', true)' : ')';
+                        // As in RDP_EvaluateBinary(), a string constant or a string joined with + makes numbers compared as text
+                        $leftMayBeString = $this->isStringConstant($tokens, $comparison[0], $comparison[1] - 1)
+                            || $this->isPlusExpression($tokens, $comparison[0], $comparison[1] - 1);
+                        $rightMayBeString = $this->isStringConstant($tokens, $comparison[1] + 1, $comparison[2])
+                            || $this->isPlusExpression($tokens, $comparison[1] + 1, $comparison[2]);
+                        if ($leftMayBeString || $rightMayBeString) {
+                            $stringParts[] = ', ' . ($leftMayBeString ? 'true' : 'false') . ', ' . ($rightMayBeString ? 'true' : 'false') . ')';
+                        } else {
+                            $stringParts[] = ')';
+                        }
                     }
                 }
             }
@@ -1492,6 +1498,56 @@ class ExpressionManager
             }
         }
         return $strings == 1;
+    }
+
+    /**
+     * Check if the tokens from $from to $to are an expression with + as last operation, e.g. Q1 + "" or (Q1 * 2 + Q2)
+     * @param array $tokens The expression tokens
+     * @param integer $from Index of the first token
+     * @param integer $to Index of the last token
+     * @return boolean
+     */
+    private function isPlusExpression(array $tokens, $from, $to)
+    {
+        // Remove parentheses around the whole expression
+        while ($from < $to && $tokens[$from][2] == 'LP' && $tokens[$to][2] == 'RP') {
+            $depth = 0;
+            for ($i = $from; $i < $to; ++$i) {
+                if ($tokens[$i][2] == 'LP') {
+                    ++$depth;
+                } elseif ($tokens[$i][2] == 'RP') {
+                    --$depth;
+                }
+                if ($depth == 0) {
+                    break;
+                }
+            }
+            if ($i < $to) {
+                break; // the first parenthesis is closed before the end, e.g. (a) + (b)
+            }
+            ++$from;
+            --$to;
+        }
+        // + and - have the lowest precedence within an operand of a comparison, so the last one outside of parentheses is done last
+        $lastOperator = null;
+        $depth = 0;
+        for ($i = $from; $i <= $to; ++$i) {
+            if ($tokens[$i][2] == 'LP') {
+                ++$depth;
+            } elseif ($tokens[$i][2] == 'RP') {
+                --$depth;
+            } elseif (
+                $depth == 0
+                && $i > $from
+                && $tokens[$i][2] == 'BINARYOP'
+                && ($tokens[$i][0] == '+' || $tokens[$i][0] == '-')
+                && !in_array($tokens[$i - 1][2], array('BINARYOP', 'NOT'))
+            ) {
+                // Not a sign like in 2 * -3
+                $lastOperator = $tokens[$i][0];
+            }
+        }
+        return $lastOperator === '+';
     }
 
     /**

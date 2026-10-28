@@ -52,6 +52,11 @@ class ExpressionCompareJavaScriptTest extends TestBaseClass
         'if(Q1.NAOK > 2, "big", "small")',
         'sum(Q1.NAOK, 1) > 2',
         'is_empty(Q1.NAOK) == 0',
+        'Q1.NAOK + "" < 20 + ""',
+        '(Q1.NAOK + "") > "2" + ""',
+        '"" + Q1.NAOK + 1 > 2',
+        'Q1.NAOK * 2 + 1 > 2',
+        '5 + 2 * -1 > Q1.NAOK',
         'staticlen("ab") > 1 and Q1.NAOK > 2',
         'Q1.NAOK > staticlen("abc" > "a")',
     ];
