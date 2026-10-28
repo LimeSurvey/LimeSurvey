@@ -208,7 +208,7 @@ class User extends LSActiveRecord
     /**
      * @inheritDoc
      * Delete user in related model after deletion
-     * return void
+     * @return void
      **/
     protected function afterDelete()
     {
@@ -233,6 +233,10 @@ class User extends LSActiveRecord
             "uid = :uid",
             [":uid" => $this->uid]
         );
+        /* API tokens, one by one to delete their permissions and sessions too */
+        foreach (UserApiToken::model()->findAllByAttributes(['uid' => $this->uid]) as $apiToken) {
+            $apiToken->delete();
+        }
     }
 
     /**

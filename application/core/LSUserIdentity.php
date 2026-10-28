@@ -61,6 +61,21 @@ class LSUserIdentity extends CUserIdentity
     public $oneTimePasswordActorId = null;
 
     /**
+     * True if the login comes from RemoteControl or the REST API.
+     * Only then an API token can be used instead of the password.
+     *
+     * @var bool
+     */
+    public $isApiLogin = false;
+
+    /**
+     * ID of the API token used to log in, null if the login was done with the password.
+     *
+     * @var int|null
+     */
+    public $apiTokenId = null;
+
+    /**
      * Whether the user authenticated with a verified one-time password (see Authdb::newUserSession()).
      *
      * @var bool
@@ -105,7 +120,10 @@ class LSUserIdentity extends CUserIdentity
 
         /* Plugin action(s) : need a plugin */
         if ($result->isValid()) {
-            if (is_null($this->plugin)) {
+            if ($this->isApiLogin && UserApiToken::isTokenFormat($this->password)) {
+                // API tokens are checked by the core and replace the authentication plugin, including its second factor
+                $result = $this->authenticateApiToken();
+            } elseif (is_null($this->plugin)) {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
                 // Delegate actual authentication to plugin
@@ -161,10 +179,11 @@ class LSUserIdentity extends CUserIdentity
      * Dispatch the beforeSuccessfulLogin event, letting plugins refuse the login (by setting
      * 'result' to an invalid LSAuthResult) or require a second authentication step (by setting
      * 'secondFactorPlugin' to their plugin name).
+     * A login with an API token never needs a second step: the token replaces it.
      *
      * @param User $user The authenticated user
      * @param LSAuthResult $result The current, valid, authentication result
-     * @return LSAuthResult
+     * @return LSAuthResult The result to use: invalid if a plugin refused the login or the second step is not supported
      */
     protected function beforeSuccessfulLogin($user, $result)
     {
@@ -178,7 +197,7 @@ class LSUserIdentity extends CUserIdentity
             return $pluginResult;
         }
         $secondFactorPlugin = $event->get('secondFactorPlugin');
-        if (empty($secondFactorPlugin)) {
+        if (empty($secondFactorPlugin) || $this->apiTokenId !== null) {
             return $result;
         }
         if (!$this->secondFactorSupported) {
@@ -207,6 +226,25 @@ class LSUserIdentity extends CUserIdentity
         $this->secondFactorPlugin = null;
         $this->errorCode = self::ERROR_NONE;
         $this->errorMessage = '';
+    }
+
+    /**
+     * Authenticate with an API token sent instead of the password.
+     *
+     * @return LSAuthResult The result of the authentication
+     */
+    protected function authenticateApiToken()
+    {
+        $user = User::findByUsername($this->username);
+        $apiToken = $user === null ? null : UserApiToken::model()->findValidToken($user->uid, $this->password);
+        if ($apiToken === null) {
+            return new LSAuthResult(self::ERROR_PASSWORD_INVALID);
+        }
+        $apiToken->markUsed();
+        $this->id = $user->uid;
+        $this->user = $user;
+        $this->apiTokenId = (int) $apiToken->id;
+        return new LSAuthResult(self::ERROR_NONE);
     }
 
     public function getConfig()

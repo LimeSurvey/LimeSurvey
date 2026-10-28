@@ -221,12 +221,167 @@ class UserAction extends SurveyCommonAction
 
         $aData['surveymenu_data']['model'] = $oSurveymenu;
         $aData['surveymenuentry_data']['model'] = $oSurveymenuEntries;
+
+        // API tokens, the token created just before is shown once
+        $aData['apiTokens'] = UserApiToken::model()->findAllByAttributes(['uid' => $oUser->uid], ['order' => 'created DESC']);
+        $aData['newApiToken'] = Yii::app()->session['newApiToken'] ?? null;
+        unset(Yii::app()->session['newApiToken']);
         // Render personal settings view
         if (isset($_POST['saveandclose'])) {
             $this->getController()->redirect(array("admin/user/sa/index"));
         } else {
             $this->renderWrappedTemplate('user', 'personalsettings', $aData);
         }
+    }
+
+    /**
+     * Create or edit an API token of the current user, including its permissions
+     *
+     * A new token is shown once on the personal settings page after it was created.
+     *
+     * @param int $tokenid ID of the token to edit, 0 to create a new token
+     * @return void
+     * @throws CHttpException If the token doesn't exist or belongs to another user
+     */
+    public function apitoken($tokenid = 0)
+    {
+        $apiToken = $this->getApiTokenForCurrentUser((int) $tokenid);
+        $request = App()->request;
+
+        if ($request->getIsPostRequest()) {
+            $personalSettingsUrl = App()->createUrl('admin/user/sa/personalsettings') . '#api-tokens';
+            if (App()->getConfig('demoMode')) {
+                App()->setFlashMessage(gT("You can't create or change API tokens if demo mode is active."), 'error');
+                $this->getController()->redirect($personalSettingsUrl);
+            }
+            $name = trim((string) $request->getPost('name', ''));
+            if ($name === '') {
+                App()->setFlashMessage(gT("Please enter a name for the API token."), 'error');
+                $this->getController()->redirect(['admin/user/sa/apitoken', 'tokenid' => (int) $apiToken->id]);
+            }
+            $permissions = $request->getPost('ApiTokenPermission', []);
+            $transaction = App()->db->beginTransaction();
+            try {
+                if ($apiToken->isNewRecord) {
+                    $lifetime = (int) $request->getPost('lifetime', 90);
+                    if (!in_array($lifetime, UserApiToken::LIFETIMES, true)) {
+                        $lifetime = 90;
+                    }
+                    [$apiToken, $plainToken] = UserApiToken::createForUser($apiToken->uid, $name, $lifetime);
+                } else {
+                    $apiToken->name = $name;
+                    if (!$apiToken->save()) {
+                        throw new CException(CHtml::errorSummary($apiToken, ''));
+                    }
+                }
+                $apiToken->setPermissions(is_array($permissions) ? $permissions : []);
+                $transaction->commit();
+            } catch (CException $exception) {
+                $transaction->rollback();
+                App()->setFlashMessage(gT("The API token could not be saved."), 'error');
+                $this->getController()->redirect($personalSettingsUrl);
+            }
+            if (isset($plainToken)) {
+                App()->session['newApiToken'] = $plainToken;
+                App()->setFlashMessage(gT("The API token was created."));
+            } else {
+                App()->setFlashMessage(gT("The API token was saved."));
+            }
+            $this->getController()->redirect($personalSettingsUrl);
+        }
+
+        $globalPermissions = $apiToken->getPermissionGrid('global');
+        $surveyPermissions = [];
+        if (!$apiToken->isNewRecord) {
+            foreach ($apiToken->getSurveysWithPermissions() as $survey) {
+                $surveyPermissions[$survey->sid] = [
+                    'survey' => $survey,
+                    'permissions' => $apiToken->getPermissionGrid('survey', $survey->sid),
+                ];
+            }
+        }
+        $aData = [
+            'apiToken' => $apiToken,
+            'globalPermissions' => $globalPermissions,
+            'surveyPermissions' => $surveyPermissions,
+            'surveyOptions' => Survey::model()->permission(App()->user->id)->with('languagesettings')->findAll(['order' => 't.sid']),
+        ];
+        $aData['topbar']['title'] = $apiToken->isNewRecord ? gT('Create API token') : gT('Edit API token');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'backUrl' => App()->createUrl('admin/user/sa/personalsettings') . '#api-tokens',
+                'isSaveBtn' => true,
+                'isSaveAndCloseBtn' => false,
+                'formIdSave' => 'apitoken-form',
+            ],
+            true
+        );
+        $this->renderWrappedTemplate('user', 'apitoken', $aData);
+    }
+
+    /**
+     * Render the permission grid of a survey for the API token form, when a survey is added to the token
+     *
+     * @param int $surveyid The survey ID
+     * @return void
+     * @throws CHttpException If the survey doesn't exist or the user can't read it
+     */
+    public function apitokensurveypermissions($surveyid = 0)
+    {
+        $survey = Survey::model()->findByPk((int) $surveyid);
+        if (!$survey || !Permission::model()->hasSurveyPermission($survey->sid, 'survey', 'read')) {
+            throw new CHttpException(404, gT("The survey you selected does not exist"));
+        }
+        $apiToken = new UserApiToken();
+        $apiToken->uid = (int) App()->user->id;
+        $this->getController()->renderPartial('/admin/user/_apitokensurvey', [
+            'survey' => $survey,
+            'permissions' => $apiToken->getPermissionGrid('survey', $survey->sid),
+        ]);
+    }
+
+    /**
+     * Revoke an API token of the current user. Sessions opened with the token end immediately.
+     *
+     * @return void
+     * @throws CHttpException If the request is not a POST request, or the token doesn't exist or belongs to another user
+     */
+    public function revokeapitoken()
+    {
+        if (!App()->request->getIsPostRequest()) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+        $apiToken = $this->getApiTokenForCurrentUser((int) App()->request->getPost('tokenid'));
+        if ($apiToken->isNewRecord || !$apiToken->delete()) {
+            App()->setFlashMessage(gT("The API token could not be revoked."), 'error');
+        } else {
+            App()->setFlashMessage(gT("The API token was revoked."));
+        }
+        $this->getController()->redirect(App()->createUrl('admin/user/sa/personalsettings') . '#api-tokens');
+    }
+
+    /**
+     * Get an API token of the current user, or a new unsaved one
+     *
+     * @param int $tokenId ID of the token, 0 for a new token
+     * @return UserApiToken The token
+     * @throws CHttpException If the token doesn't exist or belongs to another user
+     */
+    private function getApiTokenForCurrentUser($tokenId)
+    {
+        $userId = (int) App()->user->id;
+        if ($tokenId === 0) {
+            $apiToken = new UserApiToken();
+            $apiToken->uid = $userId;
+            return $apiToken;
+        }
+        $apiToken = UserApiToken::model()->findByAttributes(['id' => $tokenId, 'uid' => $userId]);
+        if ($apiToken === null) {
+            throw new CHttpException(404, gT("API token not found."));
+        }
+        return $apiToken;
     }
 
      /**

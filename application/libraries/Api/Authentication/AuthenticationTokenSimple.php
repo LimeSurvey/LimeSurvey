@@ -9,6 +9,8 @@ use LSUserIdentity;
 use PluginEvent;
 use CDbCriteria;
 use Session;
+use User;
+use UserApiToken;
 use Yii;
 
 class AuthenticationTokenSimple implements AuthenticationInterface
@@ -32,10 +34,12 @@ class AuthenticationTokenSimple implements AuthenticationInterface
     }
 
     /**
-     * Login with username and password
+     * Login with username and password, or with username and API token
+     *
+     * A session opened with an API token only has the permissions of the token.
      *
      * @param string $username
-     * @param string $password
+     * @param string $password The password or an API token
      * @return array<array-key, mixed>
      */
     public function login($username, $password)
@@ -44,6 +48,7 @@ class AuthenticationTokenSimple implements AuthenticationInterface
         $plugin = 'Authdb';
         $identity = new LSUserIdentity($username, $password);
         $identity->setPlugin($plugin);
+        $identity->isApiLogin = true;
         $event = new PluginEvent('remoteControlLogin');
         $event->set('identity', $identity);
         $event->set('plugin', $plugin);
@@ -57,7 +62,7 @@ class AuthenticationTokenSimple implements AuthenticationInterface
             }
             throw new ExceptionInvalidUser('Invalid user name or password');
         } else {
-            $session = $this->createSession($username);
+            $session = $this->createSession($username, $identity->apiTokenId);
             return $this->getTokenData(
                 $session,
                 $identity->getId()
@@ -96,11 +101,15 @@ class AuthenticationTokenSimple implements AuthenticationInterface
         if (!$existingSession || empty($existingSession->data)) {
             throw new ExceptionInvalidUser('Invalid token');
         }
+        $user = User::findByUsername($existingSession->data);
+        if (!$user || !UserApiToken::activateForSession($existingSession, $user)) {
+            throw new ExceptionInvalidUser('Invalid token');
+        }
 
         /** @var \LSYii_Application */
         $app = Yii::app();
 
-        $session = $this->createSession($existingSession->data);
+        $session = $this->createSession($existingSession->data, $existingSession->api_token_id);
         $result = $this->getTokenData(
             $session,
             $app->user->id
@@ -117,9 +126,10 @@ class AuthenticationTokenSimple implements AuthenticationInterface
      * Create session key
      *
      * @param string $username The username
+     * @param int|null $apiTokenId ID of the API token the session is opened with, null if the password was used
      * @return Session
      */
-    public function createSession($username)
+    public function createSession($username, $apiTokenId = null)
     {
         $this->sessionUtil->jumpStartSession($username);
         $sessionKey = (string) Yii::app()->securityManager
@@ -128,6 +138,7 @@ class AuthenticationTokenSimple implements AuthenticationInterface
         $session->id = $sessionKey;
         $session->expire = time() + (60 * 60 * 24 * 7);
         $session->data = $username;
+        $session->api_token_id = $apiTokenId;
         $session->save();
         return $session;
     }
@@ -138,8 +149,11 @@ class AuthenticationTokenSimple implements AuthenticationInterface
      * Check if the session key is valid. If yes returns true,
      * otherwise false and sends an error message with error code 1
      *
+     * If the session was opened with an API token, the permissions are limited to the ones of the token
+     * from now on. The session is no longer valid once the token is revoked or expired.
+     *
      * @param string $token
-     * @return bool
+     * @return bool True if the session key is valid
      */
     public function isAuthenticated($token)
     {
@@ -152,7 +166,8 @@ class AuthenticationTokenSimple implements AuthenticationInterface
             return false;
         } else {
             $this->sessionUtil->jumpStartSession($oResult->data);
-            return true;
+            $user = User::findByUsername($oResult->data);
+            return $user !== null && UserApiToken::activateForSession($oResult, $user);
         }
     }
 

@@ -21,3 +21,30 @@ function showHiddenRow(selector) {
        }
     );
 }
+
+// Show the tab given in the URL, e.g. #api-tokens after creating an API token
+$(function () {
+    if (!window.location.hash) {
+        return;
+    }
+    var tab = document.querySelector('.nav-tabs a[href="' + window.location.hash.replace(/"/g, '') + '"]');
+    if (tab) {
+        bootstrap.Tab.getOrCreateInstance(tab).show();
+    }
+});
+
+$(document).on('click', '#apitoken-copy', function () {
+    var $button = $(this);
+    var token = $('#apitoken-new').val();
+    navigator.clipboard.writeText(token).then(function () {
+        $('#apitoken-copy-status').text($button.data('copied-text'));
+    }, function () {
+        $('#apitoken-new').trigger('focus').trigger('select');
+    });
+});
+
+$(document).on('click', '.apitoken-revoke', function (e) {
+    if (!window.confirm($(this).data('confirm-text'))) {
+        e.preventDefault();
+    }
+});

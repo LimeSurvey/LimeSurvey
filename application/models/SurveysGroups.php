@@ -424,6 +424,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
          * criteria limits results to groups the user owns, groups or surveys the user has read permission
          * for, the default group (gsid = 1), and groups marked as always available. If the user has
          * global read permission, the returned criteria is unrestricted.
+         * If the current API session was opened with an API token, the groups are also limited to the ones of the token.
          *
          * @return CDbCriteria The permission-based criteria for filtering survey groups.
          */
@@ -450,6 +451,12 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             $criteriaPerm->compare('t.gsid', '1', false, 'OR');
             /* survey group set as available */
             $criteriaPerm->compare('t.alwaysavailable', '1', false, 'OR'); // Is public
+        }
+        /* Limit to the survey groups of the API token the current API session was opened with */
+        $apiToken = UserApiToken::getScopeFor();
+        $readableGroupIds = $apiToken ? $apiToken->getReadableSurveyGroupIds() : null;
+        if ($readableGroupIds !== null) {
+            $criteriaPerm->addInCondition('t.gsid', $readableGroupIds);
         }
         return $criteriaPerm;
     }

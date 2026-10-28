@@ -5,6 +5,8 @@
  *
  * @var $currentPreselectedQuestiontype string
  * @var $oQuestionSelector              PreviewModalWidget
+ * @var $apiTokens                      UserApiToken[]
+ * @var $newApiToken                    string|null The API token created just before, shown once
  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -95,6 +97,7 @@ echo $oQuestionSelector->getModal();
                 <li role="presentation" class="nav-item"><a id="tab-your-personal-settings" class="nav-link" href="#your-personal-settings" role="tab" data-bs-toggle="tab" aria-controls="your-personal-settings" aria-selected="false" tabindex="-1"><?php eT("Personal settings"); ?></a></li>
                 <li role="presentation" class="nav-item"><a id="tab-your-personal-menues" class="nav-link" href="#your-personal-menues" role="tab" data-bs-toggle="tab" aria-controls="your-personal-menues" aria-selected="false" tabindex="-1"><?php eT("Personalized menus"); ?></a></li>
                 <li role="presentation" class="nav-item"><a id="tab-your-personal-menueentries" class="nav-link" href="#your-personal-menueentries" role="tab" data-bs-toggle="tab" aria-controls="your-personal-menueentries" aria-selected="false" tabindex="-1"><?php eT("Personalized menu entries"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-api-tokens" class="nav-link" href="#api-tokens" role="tab" data-bs-toggle="tab" aria-controls="api-tokens" aria-selected="false" tabindex="-1"><?php eT("API tokens"); ?></a></li>
             </ul>
             <div class="tab-content">
 
@@ -538,11 +541,17 @@ echo $oQuestionSelector->getModal();
                 <div role="tabpanel" class="tab-pane fade" id="your-personal-menueentries" aria-labelledby="tab-your-personal-menueentries" tabindex="0">
                     <?php $this->renderPartial('/admin/surveymenu_entries/shortlist', $surveymenuentry_data); ?>
                 </div>
+                <div role="tabpanel" class="tab-pane fade" id="api-tokens" aria-labelledby="tab-api-tokens" tabindex="0">
+                    <?php $this->renderPartial('/admin/user/_apitokens', ['apiTokens' => $apiTokens, 'newApiToken' => $newApiToken]); ?>
+                </div>
             </div>
         </div>
     </div>
     <!-- Buttons -->
     <?php echo TbHtml::submitButton(gT("Save settings", 'unescaped'), ['class' => 'd-none']); ?>
+    <?php echo TbHtml::endForm(); ?>
+    <?php /* Outside of the settings form: the revoke buttons of the API tokens submit this form */ ?>
+    <?php echo TbHtml::form(['admin/user/sa/revokeapitoken'], 'post', ['id' => 'apitoken-revoke-form']); ?>
     <?php echo TbHtml::endForm(); ?>
 
 </div>
