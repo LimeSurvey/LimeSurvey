@@ -55,7 +55,7 @@ class ExpressionCompareJavaScriptTest extends TestBaseClass
         'Q1.NAOK + "" < 20 + ""',
         '(Q1.NAOK + "") > "2" + ""',
         '"" + Q1.NAOK + 1 > 2',
-        'Q1.NAOK * 2 + 1 > 2',
+        '2 * 3 + 1 > Q1.NAOK',
         '5 + 2 * -1 > Q1.NAOK',
         'staticlen("ab") > 1 and Q1.NAOK > 2',
         'Q1.NAOK > staticlen("abc" > "a")',
@@ -69,7 +69,6 @@ class ExpressionCompareJavaScriptTest extends TestBaseClass
         \Yii::import('application.helpers.expressions.em_manager_helper', true);
         $lem = \LimeExpressionManager::singleton();
         $knownVars = new \ReflectionProperty($lem, 'knownVars');
-        $knownVars->setAccessible(true);
         $savedKnownVars = $knownVars->getValue($lem);
         $cases = [];
         try {
@@ -142,12 +141,14 @@ class ExpressionCompareJavaScriptTest extends TestBaseClass
             $script .= "currentValue = " . json_encode($case['value']) . "; results.push(" . $case['js'] . ");\n";
         }
         $script .= "console.log(JSON.stringify(results));\n";
-        $file = tempnam(sys_get_temp_dir(), 'emcompare') . '.js';
+        $tempFile = tempnam(sys_get_temp_dir(), 'emcompare');
+        $file = $tempFile . '.js';
         file_put_contents($file, $script);
         try {
             exec('node ' . escapeshellarg($file) . ' 2>&1', $output, $exitCode);
         } finally {
             unlink($file);
+            unlink($tempFile);
         }
         $this->assertSame(0, $exitCode, implode("\n", $output));
         return json_decode(implode('', $output), true);
