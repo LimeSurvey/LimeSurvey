@@ -957,6 +957,155 @@ function LEMeq(a,b)
 }
 
 /**
+ * Compare two values with ==, !=, <, <=, > or >= like the PHP side does (ExpressionManager::RDP_EvaluateBinary()),
+ * so questions are shown and hidden the same way as when the answers are saved. JavaScript turns '' into 0, so 3 > '' would be true.
+ * @param {*} a
+ * @param {string} op
+ * @param {*} b
+ * @param {boolean} forceString One of the values is a string constant: compare numbers as text
+ * @return {boolean}
+ */
+function LEMcompare(a, op, b, forceString)
+{
+    // e.g. Decimal
+    if (a !== null && typeof a === 'object') {
+        a = String(a);
+    }
+    if (b !== null && typeof b === 'object') {
+        b = String(b);
+    }
+    var bothNumeric = LEMphpIsNumericArg(a) && LEMphpIsNumericArg(b);
+    var bothString = (!LEMphpBool(a) || !LEMphpIsNumericArg(a)) && (!LEMphpBool(b) || !LEMphpIsNumericArg(b));
+    if (forceString && bothNumeric) {
+        bothNumeric = false;
+        bothString = true;
+        a = LEMphpString(a);
+        b = LEMphpString(b);
+    }
+    if (op == '==' || op == '!=') {
+        return LEMphpLooseCompare(a, op, b);
+    }
+    if (!bothNumeric && !bothString) {
+        return false;
+    }
+    var zeroAndEmpty = (LEMphpLooseCompare(a, '==', '0') && LEMphpLooseCompare(b, '==', ''))
+        || (LEMphpLooseCompare(a, '==', '') && LEMphpLooseCompare(b, '==', '0'));
+    if (op == '<=' && zeroAndEmpty) {
+        return true;
+    }
+    if (op == '>' && zeroAndEmpty) {
+        return false;
+    }
+    if (!bothNumeric && bothString) {
+        // As strcmp()
+        a = LEMphpString(a);
+        b = LEMphpString(b);
+        switch (op) {
+            case '<': return a < b;
+            case '<=': return a <= b;
+            case '>': return a > b;
+            case '>=': return a >= b;
+        }
+        return false;
+    }
+    return LEMphpLooseCompare(a, op, b);
+}
+
+/**
+ * Compare two values like PHP 8 does with ==, !=, <, <=, > and >=
+ * @param {*} a
+ * @param {string} op
+ * @param {*} b
+ * @return {boolean}
+ */
+function LEMphpLooseCompare(a, op, b)
+{
+    if ((a === null || typeof a === 'undefined') && typeof b === 'string') {
+        a = '';
+    }
+    if ((b === null || typeof b === 'undefined') && typeof a === 'string') {
+        b = '';
+    }
+    if (typeof a === 'boolean' || typeof b === 'boolean' || a === null || b === null || typeof a === 'undefined' || typeof b === 'undefined') {
+        a = +LEMphpBool(a);
+        b = +LEMphpBool(b);
+    } else if ((typeof a === 'number' || LEMphpIsNumericString(a)) && (typeof b === 'number' || LEMphpIsNumericString(b))) {
+        a = Number(a);
+        b = Number(b);
+    } else {
+        a = LEMphpString(a);
+        b = LEMphpString(b);
+    }
+    switch (op) {
+        case '==': return a == b;
+        case '!=': return a != b;
+        case '<': return a < b;
+        case '<=': return a <= b;
+        case '>': return a > b;
+        case '>=': return a >= b;
+    }
+    return false;
+}
+
+/**
+ * A value that ExpressionManager::getMismatchInformation() takes as a number
+ * @param {*} v
+ * @return {boolean}
+ */
+function LEMphpIsNumericArg(v)
+{
+    if (typeof v === 'string') {
+        return v !== '' && LEMphpIsNumericString(v);
+    }
+    return typeof v !== 'object' || v === null;
+}
+
+/**
+ * Same as PHP is_numeric() for a string
+ * @param {*} v
+ * @return {boolean}
+ */
+function LEMphpIsNumericString(v)
+{
+    return typeof v === 'string' && /^[ \t\n\r\v\f]*[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?[ \t\n\r\v\f]*$/.test(v);
+}
+
+/**
+ * Same as a cast to boolean in PHP: '0' is false
+ * @param {*} v
+ * @return {boolean}
+ */
+function LEMphpBool(v)
+{
+    if (typeof v === 'string') {
+        return v !== '' && v !== '0';
+    }
+    if (typeof v === 'number') {
+        return v !== 0;
+    }
+    return !!v;
+}
+
+/**
+ * Same as a cast to string in PHP
+ * @param {*} v
+ * @return {string}
+ */
+function LEMphpString(v)
+{
+    if (v === null || typeof v === 'undefined' || v === false) {
+        return '';
+    }
+    if (v === true) {
+        return '1';
+    }
+    if (typeof v === 'number' && !isFinite(v)) {
+        return isNaN(v) ? 'NAN' : (v > 0 ? 'INF' : '-INF');
+    }
+    return String(v);
+}
+
+/**
  * Return the value for data element jsName, treating it as blank if its question is irrelevant on the current page.
  * Also convert the string 'false' to '' to cope with a JavaScript type casting issue
  * @param {string} alias
