@@ -407,6 +407,9 @@
                     <attribute>other</attribute>
                 </condition>
             </dependsOn>
+            <onDependsToggle>
+                <keepValue />
+            </onDependsToggle>
             <options>
                 <option>
                     <value>beginning</value>
@@ -440,7 +443,7 @@
                 </condition>
             </dependsOn>
             <onDependsToggle>
-                <onFalse></onFalse>
+                <keepValue />
             </onDependsToggle>
             <props>
                 <dataTestId>other-position-code</dataTestId>

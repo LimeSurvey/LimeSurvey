@@ -163,23 +163,28 @@ describe('buildSettingsFromAttributes', () => {
     expect(hideTip.returnValues).toBeUndefined()
   })
 
-  test('keeps the default reset behaviour unless keepValue is enabled', () => {
-    const build = (keepValue) =>
+  test('keeps the default reset behaviour unless keepValue is present', () => {
+    const build = (onDependsToggle) =>
       findSection(
         buildSettingsFromAttributes({
           other: backendAttributes.other,
           other_position_code: {
             ...backendAttributes.other_position_code,
             dependsOn: [{ attribute: 'other' }],
-            onDependsToggle: { onFalse: '', keepValue },
+            onDependsToggle,
           },
         }),
         'Display'
       ).attributes[0].onDependsToggle
 
-    expect(build('1')).toEqual({ onFalse: '', keepValue: true })
-    expect(build('true')).toEqual({ onFalse: '', keepValue: true })
-    expect(build('0')).toEqual({ onFalse: '' })
+    // <keepValue /> and <keepValue></keepValue> are both sent as ''
+    expect(build({ keepValue: '' })).toEqual({ onFalse: '', keepValue: true })
+    expect(build({ keepValue: '1' })).toEqual({ onFalse: '', keepValue: true })
+    expect(build({ keepValue: '0' })).toEqual({ onFalse: '' })
+    expect(build({ keepValue: 'false' })).toEqual({ onFalse: '' })
+    expect(build({ onFalse: '' })).toEqual({ onFalse: '' })
+    // an empty <onDependsToggle /> is sent as ''
+    expect(build('')).toEqual({ onFalse: '' })
     expect(build(undefined)).toEqual({ onFalse: '' })
   })
 
