@@ -359,6 +359,11 @@
             <name>other_replace_text</name>
             <component>Input</component>
             <caption>Label for 'Other:' option</caption>
+            <dependsOn>
+                <condition>
+                    <attribute>other</attribute>
+                </condition>
+            </dependsOn>
             <props>
                 <id>label-for-other-option</id>
                 <dataTestId>label-for-other-option</dataTestId>
@@ -369,6 +374,11 @@
             <name>other_input_size</name>
             <component>Input</component>
             <caption>'Other:' text input box size</caption>
+            <dependsOn>
+              <condition>
+                  <attribute>other</attribute>
+              </condition>
+            </dependsOn>
             <props>
                 <type>number</type>
                 <dataTestId>other-input-size</dataTestId>
@@ -378,6 +388,11 @@
             <name>other_maximum_chars</name>
             <component>Input</component>
             <caption>'Other:' option maximum characters</caption>
+            <dependsOn>
+                <condition>
+                    <attribute>other</attribute>
+                </condition>
+            </dependsOn>
             <props>
                 <type>number</type>
                 <dataTestId>other-maximum-chars</dataTestId>
@@ -387,6 +402,11 @@
             <name>other_position</name>
             <component>Select</component>
             <caption>Position for 'Other:' option</caption>
+            <dependsOn>
+                <condition>
+                    <attribute>other</attribute>
+                </condition>
+            </dependsOn>
             <options>
                 <option>
                     <value>beginning</value>
