@@ -28,6 +28,14 @@ body > .bootstrap-select {
         line-height    : $line-height-20;
         letter-spacing : -0.21px;
 
+        &:focus,
+        &:active,
+        &:active:focus,
+        &.show,
+        &.show:focus {
+            box-shadow : none;
+        }
+
         .filter-option {
             text-align : left;
         }
