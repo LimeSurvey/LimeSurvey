@@ -1411,6 +1411,7 @@ class remotecontrol_handle
                 return array('status' => 'Error: Invalid group ID', 'error_code' => self::ERR_INVALID_GROUP);
             }
             if (Permission::model()->hasSurveyPermission($oGroup->sid, 'surveycontent', 'update')) {
+                EmCacheHelper::flushAtEndOfRequest();
                 $aResult = array();
                 // Remove fields that may not be modified
                 unset($aGroupData['sid']);
@@ -1967,6 +1968,7 @@ class remotecontrol_handle
                     return array('status' => 'Error: Invalid language', 'error_code' => self::ERR_INVALID_LANGUAGE);
                 }
 
+                EmCacheHelper::flushAtEndOfRequest();
                 $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
                 if (!isset($oQuestion)) {
                     return array('status' => 'Error: Invalid questionid', 'error_code' => self::ERR_INVALID_QUESTION);
@@ -3369,10 +3371,12 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey to insert responses
-     * @param array $aResponseData The actual response
+     * @param array $aResponseData The actual response: Keys are the response table column names
+     *              as returned by get_fieldmap (e.g. 'Q12' or 'Q12_S13'), not question codes or IDs.
+     *              Unknown keys are ignored, but if none of the keys is a question column the response is not added.
      * @return int|array On success: the inserted response ID. On failure: array with 'status' and 'error_code' keys.
      *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_RESPONSE_TABLE,
-     *              ERR_NO_PERMISSION, ERR_FILE_ERROR, ERR_CREATION_FAILED.
+     *              ERR_NO_PERMISSION, ERR_INVALID_COLUMNS, ERR_FILE_ERROR, ERR_CREATION_FAILED.
      * @todo Need to clean up return array, especially the case when response was added but file not uploaded.
      * @todo See discussion: https://bugs.limesurvey.org/view.php?id=13794
      */
@@ -3421,6 +3425,16 @@ class remotecontrol_handle
             SurveyDynamic::sid($iSurveyID);
             $survey_dynamic = new SurveyDynamic();
             $aBasicDestinationFields = $survey_dynamic->tableSchema->columnNames;
+            $aInvalidFields = array_diff_key($aResponseData, array_flip($aBasicDestinationFields));
+            if (!empty($aInvalidFields)) {
+                // Unknown keys are dropped, but without any question column the response would be empty: Most likely question codes or IDs were used instead of column names
+                $aQuestionFields = array_filter(createFieldMap($oSurvey, 'short', false, false, $oSurvey->language), function ($aField) {
+                    return !empty($aField['qid']);
+                });
+                if (empty(array_intersect_key($aResponseData, $aQuestionFields))) {
+                    return array('status' => 'Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields)), 'error_code' => self::ERR_INVALID_COLUMNS);
+                }
+            }
             $aResponseData = array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
             $survey_dynamic->setAttributes($aResponseData, false);
 
@@ -3468,7 +3482,8 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey to update response
-     * @param array $aResponseData The actual response
+     * @param array $aResponseData The actual response: Keys are the response table column names
+     *              as returned by get_fieldmap (e.g. 'Q12' or 'Q12_S13'), not question codes or IDs
      * @return array|bool TRUE on success. On failure: array with 'status' and 'error_code' keys.
      *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_SURVEY_NOT_ACTIVE,
      *              ERR_EDIT_NOT_ALLOWED, ERR_NO_RESPONSE_TABLE, ERR_NO_PERMISSION, ERR_MISSING_IDENTIFIER,

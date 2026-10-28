@@ -3,6 +3,7 @@
 use LimeSurvey\Models\Services\{
     QuestionGroupService,
     Exception\NotFoundException,
+    Exception\PermissionDeniedException,
     Exception\QuestionGroupHasConditionsException
 };
 
@@ -424,6 +425,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 );
             } catch (QuestionGroupHasConditionsException $e) {
                 $sErrorMessage = $e->getMessage();
+            } catch (PermissionDeniedException $e) {
+                $sErrorMessage = Survey::model()->findByPk($iSurveyId)->isActive
+                    ? gT("It is not possible to add/delete groups if the survey is active.")
+                    : gT("Access denied!");
             }
         }
         if ($asJson !== false) {

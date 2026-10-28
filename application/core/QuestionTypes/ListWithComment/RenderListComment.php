@@ -91,7 +91,7 @@ class RenderListComment extends QuestionBaseRenderer
             'name'              => $this->sSGQA . '_Ccomment',
             'tarows'            => floor($tarows),
             'has_comment_saved' => $sessionState->hasFieldValue($fname2) && $sessionState->getFieldValue($fname2),
-            'comment_saved'     => htmlspecialchars((string) $sessionState->getFieldValue($fname2)),
+            'comment_saved'     => (string) $sessionState->getFieldValue($fname2),
             'java_name'         => 'java' . $this->sSGQA,
             'java_id'           => 'java' . $this->sSGQA,
             'java_value'        => $this->mSessionValue

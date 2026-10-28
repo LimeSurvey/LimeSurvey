@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
@@ -7,7 +7,6 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
 } from '@tanstack/react-table'
-import { debounce } from 'lodash'
 import classNames from 'classnames'
 
 import { PaginationButtons } from 'components'
@@ -37,20 +36,17 @@ import { ResponsesTableBody } from './ResponsesTableBody'
  */
 export const ResponsesTable = ({
   survey,
-  showFilters,
   sortedColumnId,
   sorting,
+  filterSet,
   setSorting,
   responsesData,
-  onFiltersChange = () => {},
   handleResponsesDelete = () => {},
   handleAttachmentsDelete = () => {},
   handleResponsesUpdate = () => {},
   pagination,
   setPagination,
   isFetching = false,
-  columnsFilters,
-  setColumnsFilters,
   surveyQuestions = [],
   hidePaginationButtons = false,
   hideActions = false,
@@ -180,23 +176,6 @@ export const ResponsesTable = ({
   })
 
   useEffect(() => {
-    if (!columnsFilters || firstLoad) {
-      return
-    }
-
-    handleOnFilterChange(columnsFilters)
-  }, [columnsFilters])
-
-  const handleOnFilterChange = useCallback(
-    debounce((columnsFilters) => {
-      onFiltersChange(columnsFilters)
-      // redirect to the first page when filters change
-      setPagination({ ...pagination, pageIndex: 0 })
-    }, 1000),
-    [survey.sid]
-  )
-
-  useEffect(() => {
     if (!responsesData || !survey.sid) {
       return
     }
@@ -321,12 +300,13 @@ export const ResponsesTable = ({
     setColumnsOrder(columns.map((c) => c?.id))
   }, [columns])
 
-  // Reset selection when sorting or filters change (dataset identity changes)
+  // Reset selection when sorting or the filter changes (dataset identity
+  // changes).
   useEffect(() => {
     setRowSelection({})
     setPersistentSelection({})
     setPersistentSelectionHasFiles({})
-  }, [sorting, columnsFilters])
+  }, [sorting, filterSet])
 
   // Restore checkboxes from persistentSelection when page data changes
   useEffect(() => {
@@ -555,10 +535,7 @@ export const ResponsesTable = ({
             <ResponsesTableBody
               cellQuestionInfoRef={cellQuestionInfoRef}
               clickedRowRef={clickedRowRef}
-              columnsFilters={columnsFilters}
-              setColumnsFilters={setColumnsFilters}
               setShowQuestionComponent={setShowQuestionComponent}
-              showFilters={showFilters}
               sid={survey.sid}
               sortedColumnId={sortedColumnId}
               table={table}

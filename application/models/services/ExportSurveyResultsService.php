@@ -90,6 +90,9 @@ class ExportSurveyResultsService
     /** @var array Filters used to scope which responses get exported. */
     protected $filters = [];
 
+    /** @var \CDbCriteria|null Criteria the caller resolved, used instead of $filters. */
+    protected $filterCriteria = null;
+
     /**
      * ExportSurveyResultsService constructor.
      *
@@ -213,6 +216,19 @@ class ExportSurveyResultsService
     public function setFilters(array $filters)
     {
         $this->filters = $filters;
+        return $this;
+    }
+
+    /**
+     * The condition-designer filter is resolved against the survey field map,
+     * which this service does not have, so the caller passes the criteria.
+     *
+     * @param \CDbCriteria|null $criteria
+     * @return $this
+     */
+    public function setFilterCriteria($criteria)
+    {
+        $this->filterCriteria = $criteria;
         return $this;
     }
 
@@ -390,19 +406,29 @@ class ExportSurveyResultsService
      */
     public function buildFilterCriteria()
     {
-        if (empty($this->filters)) {
-            return null;
+        $criteria = null;
+
+        if (!empty($this->filters)) {
+            $dataMap = $this->transformerOutputSurveyResponses->getDataMap();
+            $sort = new \CSort();
+            $criteria = new \LSDbCriteria();
+            $this->responseFilterPatcher->apply(
+                ['filters' => $this->filters],
+                $criteria,
+                $sort,
+                $dataMap
+            );
         }
 
-        $dataMap = $this->transformerOutputSurveyResponses->getDataMap();
-        $sort = new \CSort();
-        $criteria = new \LSDbCriteria();
-        $this->responseFilterPatcher->apply(
-            ['filters' => $this->filters],
-            $criteria,
-            $sort,
-            $dataMap
-        );
+        if ($this->filterCriteria === null) {
+            return $criteria;
+        }
+
+        if ($criteria === null) {
+            return $this->filterCriteria;
+        }
+
+        $criteria->mergeWith($this->filterCriteria);
 
         return $criteria;
     }

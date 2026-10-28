@@ -230,15 +230,12 @@ class SurveyRuntimeHelper
                 $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $this->sessionState()->getResponseId()]);
                 if ($oSurveyResponse && $oSurveyResponse->hasAttribute('token')) {
                     $oSurveyResponse->token = $tokenValue;
+                    $oSurveyResponse->save();
                 }
                 $this->sessionState()->removeFillToken();
                 if ($this->sessionState()->getToken() !== null) {
                     $this->sessionState()->setTokenUsed($this->sessionState()->getToken());
                 }
-                if ($oSurveyResponse) {
-                    $oSurveyResponse->save();
-                }
-                $survey = Survey::model()->findByPk($surveyid);
             }
             // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
@@ -1784,8 +1781,8 @@ class SurveyRuntimeHelper
                     $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $this->sessionState()->getResponseId()]);
                     if ($oSurveyResponse && $oSurveyResponse->hasAttribute('token')) {
                         $oSurveyResponse->token = $postedToken;
+                        $oSurveyResponse->save();
                     }
-                    $oSurveyResponse->save();
                 } else {
                     $this->sessionState()->setFillToken($postedToken);
                 }

@@ -88,6 +88,23 @@ class AuthLDAPTest extends TestBaseClass
     }
 
     /**
+     * Users added in user management are only created by AuthLDAP when they are of LDAP type
+     */
+    public function testCreateNewUserOnlyHandlesLdapUserType()
+    {
+        $event = new \PluginEvent('createNewUser');
+        $event->set('preCollectedUserArray', ['users_name' => 'authldapcasetest', 'user_type' => 'DB']);
+        self::$plugin->setEvent($event)->createNewUser();
+        $this->assertNull($event->get('errorCode'));
+
+        // Fails without an LDAP server because the username already exists, which shows it was handled
+        $event = new \PluginEvent('createNewUser');
+        $event->set('preCollectedUserArray', ['users_name' => 'authldapcasetest', 'user_type' => 'LDAP']);
+        self::$plugin->setEvent($event)->createNewUser();
+        $this->assertSame(\AuthLDAP::ERROR_ALREADY_EXISTING_USER, $event->get('errorCode'));
+    }
+
+    /**
      * A failing STARTTLS returns the LDAP error instead of an empty message (shown as invalid password)
      */
     public function testFailingStartTlsReturnsLdapError()
