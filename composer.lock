@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "740b9c68f789118d0be3b35f0ffc7644",
+    "content-hash": "e11ad73440a2f3f1a471b2d6996c0aa8",
     "packages": [
         {
             "name": "anper/iuliia",
@@ -8622,7 +8622,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.2",
+        "php": "^8.2.35",
         "composer": "2.10.3"
     },
     "platform-dev": {},
