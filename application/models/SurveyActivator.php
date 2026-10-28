@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * Service class to activate survey.
  * @todo Move to models/services/survey/ folder.
@@ -63,13 +65,13 @@ class SurveyActivator
         $this->setMySQLDefaultEngine(Yii::app()->getConfig('mysqlEngine'));
 
         if (!$this->showEventMessages($event)) {
-            return ['error' => 'plugin'];
+            return ['error' => 'plugin', 'message' => $event->get('message')];
         }
 
         // Clear session cache (e.g. from a survey preview run in
         // the same browser session) before building the response table.
         $iSurveyId = $this->survey->sid;
-        unset($_SESSION['responses_' . $iSurveyId]);
+        SurveySessionState::forSurvey((int) $iSurveyId)->clear();
 
         $this->prepareResponsesTable();
 
@@ -94,9 +96,9 @@ class SurveyActivator
         }
 
         $survey = Survey::model()->findByAttributes(array('sid' => $this->survey->primaryKey));
-        $survey->scenario = 'activationStateChange';
         $survey->active = 'Y';
-        $survey->save();
+        // Skip validation: The tables already exist, so an invalid setting must not keep the survey inactive
+        $survey->save(false);
 
         $aResult = array(
             'status' => 'OK',

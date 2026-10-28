@@ -23,6 +23,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  */
 class LSUserIdentity extends CUserIdentity
 {
+    const ERROR_SECOND_FACTOR_REQUIRED = 97;
     const ERROR_IP_LOCKED_OUT = 98;
     const ERROR_UNKNOWN_HANDLER = 99;
 
@@ -59,6 +60,38 @@ class LSUserIdentity extends CUserIdentity
      */
     public $oneTimePasswordActorId = null;
 
+    /**
+     * Whether the user authenticated with a verified one-time password (see Authdb::newUserSession()).
+     *
+     * @var bool
+     */
+    public $usedOneTimePassword = false;
+
+    /**
+     * Whether the caller can show a second authentication step (e.g. a 2FA key form) after the
+     * credentials were accepted. Only the interactive admin login supports it; for any other
+     * caller (RemoteControl, REST API) a login needing a second factor is refused.
+     *
+     * @var bool
+     */
+    public $secondFactorSupported = false;
+
+    /**
+     * Name of the plugin that requires a second authentication step for this login, set
+     * during the beforeSuccessfulLogin event. Null if no second step is needed.
+     *
+     * @var string|null
+     */
+    public $secondFactorPlugin = null;
+
+    /**
+     * Authenticate the user through the auth plugin set in $plugin.
+     * If a plugin requires a second authentication step and the caller supports it, no session
+     * is created: authenticate() returns false with ERROR_SECOND_FACTOR_REQUIRED, and the caller
+     * must call completeLogin() once the second step succeeded.
+     *
+     * @return bool Whether the user is now logged in
+     */
     public function authenticate()
     {
         // First initialize the result, we can later retrieve it to get the exact error code/message
@@ -97,13 +130,20 @@ class LSUserIdentity extends CUserIdentity
                 $result->setError(self::ERROR_USERNAME_INVALID);
             }
         }
+        /* Let plugins refuse the login or require a second authentication step */
+        if ($result->isValid()) {
+            $result = $this->beforeSuccessfulLogin($user, $result);
+        }
+        if ($result->isValid() && !is_null($this->secondFactorPlugin)) {
+            // Credentials are valid, but the login is only completed after the second step
+            $this->errorCode = self::ERROR_SECOND_FACTOR_REQUIRED;
+            $this->errorMessage = '';
+            return false;
+        }
+
         /* All action and test done : finalize */
         if ($result->isValid()) {
-            // Perform postlogin
-            regenerateCSRFToken();
-            $this->postLogin();
-            // Reset counter after successful login
-            FailedLoginAttempt::model()->deleteAttempts(FailedLoginAttempt::TYPE_LOGIN);
+            $this->completeLogin();
         } else {
             // Log a failed attempt
             FailedLoginAttempt::model()->addAttempt(FailedLoginAttempt::TYPE_LOGIN);
@@ -115,6 +155,58 @@ class LSUserIdentity extends CUserIdentity
         $this->errorMessage = $result->getMessage();
 
         return $result->isValid();
+    }
+
+    /**
+     * Dispatch the beforeSuccessfulLogin event, letting plugins refuse the login (by setting
+     * 'result' to an invalid LSAuthResult) or require a second authentication step (by setting
+     * 'secondFactorPlugin' to their plugin name).
+     *
+     * @param User $user The authenticated user
+     * @param LSAuthResult $result The current, valid, authentication result
+     * @return LSAuthResult
+     */
+    protected function beforeSuccessfulLogin($user, $result)
+    {
+        $event = new PluginEvent('beforeSuccessfulLogin', $this);
+        $event->set('identity', $this);
+        $event->set('user', $user);
+        App()->getPluginManager()->dispatchEvent($event);
+
+        $pluginResult = $event->get('result');
+        if ($pluginResult instanceof LSAuthResult && !$pluginResult->isValid()) {
+            return $pluginResult;
+        }
+        $secondFactorPlugin = $event->get('secondFactorPlugin');
+        if (empty($secondFactorPlugin)) {
+            return $result;
+        }
+        if (!$this->secondFactorSupported) {
+            return new LSAuthResult(
+                self::ERROR_SECOND_FACTOR_REQUIRED,
+                gT('This account uses two-factor authentication, which is not supported by this login method.')
+            );
+        }
+        $this->secondFactorPlugin = $secondFactorPlugin;
+        return $result;
+    }
+
+    /**
+     * Log the user in: create the session and reset the failed login attempts.
+     * Called by authenticate(), or by the caller once a required second authentication step succeeded.
+     * Needs $id and $user to be set.
+     *
+     * @return void
+     */
+    public function completeLogin()
+    {
+        regenerateCSRFToken();
+        $this->postLogin();
+        // Reset counter after successful login
+        FailedLoginAttempt::model()->deleteAttempts(FailedLoginAttempt::TYPE_LOGIN);
+        $this->secondFactorPlugin = null;
+        $this->errorCode = self::ERROR_NONE;
+        $this->errorMessage = '';
     }
 
     public function getConfig()

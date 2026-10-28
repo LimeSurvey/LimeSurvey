@@ -1,5 +1,8 @@
 <?php
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * Twig view renderer, LimeSurvey overload
  *
@@ -318,8 +321,9 @@ window.addEventListener('message', function(event) {
             if (empty($aData['bIsThemeEditor'])) {
                 $aData = array_merge($aData, $this->getQuestionTemplateData($oQuestionModel));
                 $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
-                $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
-                $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
+                $surveyId = ExpressionManagerSessionState::current()->getSurveyId();
+                $sBaseLanguage = Survey::model()->findByPk($surveyId)->language;
+                $aData['surveyInfo'] = getSurveyInfo($surveyId, $sBaseLanguage);
                 $aData['this'] = App()->getController();
             } else {
                 $aData['question_template_attribute'] = null;
@@ -529,8 +533,9 @@ window.addEventListener('message', function(event) {
 
             //  aData and surveyInfo variables are accessible from question type twig files
             $aData['aData'] = $aData;
-            $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
-            $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
+            $surveyId = ExpressionManagerSessionState::current()->getSurveyId();
+            $sBaseLanguage = Survey::model()->findByPk($surveyId)->language;
+            $aData['surveyInfo'] = getSurveyInfo($surveyId, $sBaseLanguage);
             $aData['this'] = App()->getController();
 
             $aData['question_template_attribute'] = null;
@@ -789,7 +794,7 @@ window.addEventListener('message', function(event) {
             // button won't be rendered on welcome and final page because 'srid' key doesn't exist on those pages
             // additionally checks for submit page to compensate when srid is needed to render other views
             if (
-                isset($_SESSION['responses_' . $surveyid]['srid'])
+                SurveySessionState::forSurvey((int) $surveyid)->getResponseId() !== null
                 && isset($aData['aSurveyInfo']['active']) && $aData['aSurveyInfo']['active'] == 'Y'
                 && isset($aData['aSurveyInfo']['include_content']) && $aData['aSurveyInfo']['include_content'] !== 'submit'
                 && isset($aData['aSurveyInfo']['include_content']) && $aData['aSurveyInfo']['include_content'] !== 'submit_preview'
@@ -816,6 +821,7 @@ window.addEventListener('message', function(event) {
      * files are for now here, in this function.
      *
      * @todo move all the display logic to surveyRuntime so we don't need this function here
+     * @param array $aData
      * @param TemplateConfiguration $oTemplate
      * @return array
      */
@@ -858,12 +864,9 @@ window.addEventListener('message', function(event) {
             $aData["aSurveyInfo"]['welcomeimage'] = $oSurvey ? ($oSurvey->welcomeImageSettings ?: []) : [];
 
             // NB: Session is flushed at submit, so sid is not defined here.
-            if (
-                isset($_SESSION['responses_' . $aData['aSurveyInfo']['sid']]) &&
-                isset($_SESSION['responses_' . $aData['aSurveyInfo']['sid']]['totalquestions'])
-            ) {
-                $aData["aSurveyInfo"]['iTotalquestions'] = $_SESSION['responses_' .
-                $aData['aSurveyInfo']['sid']]['totalVisibleQuestions'];
+            $sessionState = SurveySessionState::forSurvey((int) $aData['aSurveyInfo']['sid']);
+            if ($sessionState->getTotalQuestions() !== null) {
+                $aData["aSurveyInfo"]['iTotalquestions'] = $sessionState->getTotalVisibleQuestions();
             }
 
             // Add the survey theme options

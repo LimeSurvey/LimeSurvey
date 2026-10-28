@@ -104,4 +104,13 @@ class ProxyExpressionManager
     {
         LimeExpressionManager::SetDirtyFlag();
     }
+
+    /**
+     * @see \EmCacheHelper::flushAtEndOfRequest
+     * @return void
+     */
+    public function flushEmCache()
+    {
+        EmCacheHelper::flushAtEndOfRequest();
+    }
 }

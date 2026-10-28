@@ -53,7 +53,7 @@ Notes
 2. saved table no longer exists.
 */
 
-
+use LimeSurvey\Models\Services\SurveySessionState;
 
 class Save
 {
@@ -66,12 +66,19 @@ class Save
      */
     public $saveData = null;
 
+    /**
+     * Returns the data for the "save so far" form.
+     *
+     * @param int $iSurveyId
+     * @return array
+     */
     function getSaveFormDatas($iSurveyId)
     {
         //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
         //~ global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
-        $thisstep    = $_SESSION['responses_' . $iSurveyId]['step'] ?? 0;
-        $clienttoken = $_SESSION['responses_' . $iSurveyId]['token'] ?? '';
+        $sessionState = SurveySessionState::forSurvey((int) $iSurveyId);
+        $thisstep    = $sessionState->getStep() ?? 0;
+        $clienttoken = $sessionState->getToken() ?? '';
         $survey = Survey::model()->findByPk($iSurveyId);
 
         $aSaveForm['aErrors'] = $this->aSaveErrors;
@@ -94,7 +101,11 @@ class Save
     }
 
     /**
-     * Clone of savesubmit() but returns datas for twig
+     * Validate the posted save form, store the response in the saved_control table
+     * and email the resume details if an email address was given.
+     *
+     * @return array On success: 'success' => true and 'message' with the text to show to the participant,
+     *               which mentions it if the email could not be sent. Otherwise 'success' => false and 'aSaveErrors'.
      */
     function saveSurvey()
     {
@@ -111,8 +122,9 @@ class Save
         // - "value" which is the value of the response
         //We start by generating the first 5 values which are consistent for all rows.
 
-        global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $clienttoken, $thisstep;
+        global $surveyid, $thissurvey, $publicurl, $sitename, $clienttoken, $thisstep;
         $survey = Survey::model()->findByPk($surveyid);
+        $sessionState = SurveySessionState::forSurvey((int) $surveyid);
 
         $aSaveForm  = array();
         $this->saveData = array(
@@ -123,7 +135,6 @@ class Save
         );
 
         // Check that the required fields have been completed.
-        $errormsg = '';
         if (empty($this->saveData['identifier'])) {
             $this->aSaveErrors[] = gT("You must supply a name for this saved session.");
         }
@@ -148,8 +159,8 @@ class Save
         if ($survey->isCaptchaEnabled('saveandloadscreen')) {
             if (
                 !Yii::app()->request->getPost('loadsecurity')
-                || !isset($_SESSION['responses_' . $surveyid]['secanswer'])
-                || Yii::app()->request->getPost('loadsecurity') != $_SESSION['responses_' . $surveyid]['secanswer']
+                || $sessionState->getSecurityAnswer() === null
+                || Yii::app()->request->getPost('loadsecurity') != $sessionState->getSecurityAnswer()
             ) {
                 $this->aSaveErrors[] = gT("The answer to the security question is incorrect.");
             }
@@ -157,18 +168,18 @@ class Save
         $this->launchSaveFormEvent($surveyid, 'validate');
         if (empty($this->aSaveErrors)) {
             //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
-            if (!isset($_SESSION['responses_' . $surveyid]['srid'])) {
+            if ($sessionState->getResponseId() === null) {
                 $today = gmdate("Y-m-d H:i:s");
                 $sdata = array(
                     "datestamp"     => $today,
                     "ipaddr"        => getIPAddress(),
-                    "startlanguage" => $_SESSION['responses_' . $surveyid]['s_lang'],
-                    "refurl"        => ($_SESSION['responses_' . $surveyid]['refurl'] ?? getenv('HTTP_REFERER'))
+                    "startlanguage" => $sessionState->getLanguage(),
+                    "refurl"        => ($sessionState->getRefUrl() ?? getenv('HTTP_REFERER'))
                 );
 
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)) {
                     $srid = getLastInsertID($survey->responsesTableName);
-                    $_SESSION['responses_' . $surveyid]['srid'] = $srid;
+                    $sessionState->set('srid', $srid);
                 } else {
                     // TODO: $this->aSaveErrors
                     $this->aSaveErrors[] = "Unable to insert record into survey table.";
@@ -178,7 +189,7 @@ class Save
             //CREATE ENTRY INTO "saved_control"
             $saved_control                 = new SavedControl();
             $saved_control->sid            = $surveyid;
-            $saved_control->srid           = $_SESSION['responses_' . $surveyid]['srid'];
+            $saved_control->srid           = $sessionState->getResponseId();
             $saved_control->identifier     = $this->saveData['identifier'];
             $saved_control->access_code    = password_hash($this->saveData['clearpassword'], PASSWORD_DEFAULT);
             $saved_control->email          = $this->saveData['email'];
@@ -187,22 +198,21 @@ class Save
             $saved_control->status         = 'S';
             $saved_control->saved_date     = gmdate("Y-m-d H:i:s");
 
-            if (isset($_SESSION['responses_' . $surveyid]['refurl'])) {
-                $saved_control->refurl = $_SESSION['responses_' . $surveyid]['refurl'];
+            if ($sessionState->getRefUrl() !== null) {
+                $saved_control->refurl = $sessionState->getRefUrl();
             } else {
                 $saved_control->refurl = getenv("HTTP_REFERER");
             }
 
             if ($saved_control->save()) {
                 $scid = getLastInsertID('{{saved_control}}');
-                $_SESSION['responses_' . $surveyid]['scid'] = $scid;
+                $sessionState->setSavedControlId((int) $scid);
             } else {
                 // TODO: $this->aSaveErrors
                 $this->aSaveErrors[] = "Unable to insert record into saved_control table.";
             }
 
-            $_SESSION['responses_' . $surveyid]['holdname'] = $this->saveData['identifier']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
-            $_SESSION['responses_' . $surveyid]['holdpass'] = $this->saveData['clearpassword']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
+            $sessionState->set('holdname', $this->saveData['identifier']); //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
 
             //Email if needed
             if ($this->saveData['email'] && LimeMailer::validateAddress($this->saveData['email'])) {
@@ -224,13 +234,7 @@ class Save
                 $mailer->Body = $message;
                 $mailer->addAddress($this->saveData['email']);
                 if (!$mailer->sendMessage()) {
-                    $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
-                    if (Permission::model()->hasSurveyPermission($thissurvey['sid'], 'surveysettings')) {
-                        $errormsg .= sprintf(gT("Email error message %s"), $mailer->getError());
-                        if (trim((string) $thissurvey['adminemail']) == '') {
-                            $errormsg .= gT('(Reason: Administrator email address empty)');
-                        }
-                    }
+                    return array('success' => true, 'message' => gT('Your survey was saved, but the email with the details could not be sent. Please note the name and password you just used to resume the survey later.'));
                 }
             }
             return array('success' => true, 'message' => gT('Your survey was successfully saved.'));
@@ -277,7 +281,7 @@ class Save
 //we show the whole survey on one page - we don't have to save time for group/question
             $query = "UPDATE " . $survey->timingsTableName . " SET "
             . "interviewtime = (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " . $passedTime
-            . " WHERE id = " . $_SESSION['responses_' . $thissurvey['sid']]['srid'];
+            . " WHERE id = " . SurveySessionState::forSurvey((int) $thissurvey['sid'])->getResponseId();
         } else {
             $aColumnNames = SurveyTimingDynamic::model($thissurvey['sid'])->getTableSchema()->columnNames;
             $setField .= "time";
@@ -288,7 +292,7 @@ class Save
             $query = "UPDATE " . $survey->timingsTableName . " SET "
             . "interviewtime =  (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " . $passedTime . ","
             . $setField . " =  (CASE WHEN $setField IS NULL THEN 0 ELSE $setField END) + " . $passedTime
-            . " WHERE id = " . $_SESSION['responses_' . $thissurvey['sid']]['srid'];
+            . " WHERE id = " . SurveySessionState::forSurvey((int) $thissurvey['sid'])->getResponseId();
         }
         Yii::app()->db->createCommand($query)->execute();
     }

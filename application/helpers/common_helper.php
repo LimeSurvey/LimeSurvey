@@ -1,5 +1,8 @@
 <?php
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
+use LimeSurvey\Models\Services\SurveySessionState;
+
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -698,9 +701,10 @@ function getGroupListLang($gid, $language, $surveyid)
 
 /**
  * Returns a user list. If 'usercontrolSameGroupPolicy' is set and set to true, only users which are in the same
- * group as me (--> logged in user) will be returned. Superadmin always gets the full list of users.
+ * group as me (--> logged in user) will be returned. Superadmins and users with the global permission to view
+ * users always get the full list of users.
  *
- * @param $outputformat string could be 'onlyuidarray' which only returns array with userids, default is 'fullinfoarray'
+ * @param string $outputformat could be 'onlyuidarray' which only returns array with userids, default is 'fullinfoarray'
  * @return array returns a list of user ids (param='onlyuidarray') or a list with full user details (e.g. uid, name, full_name etc.)
  */
 function getUserList($outputformat = 'fullinfoarray')
@@ -710,7 +714,9 @@ function getUserList($outputformat = 'fullinfoarray')
     }
     $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
     if (
-        !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
+        !Permission::model()->hasGlobalPermission('superadmin', 'read') &&
+        !Permission::model()->hasGlobalPermission('users', 'read') &&
+        isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
     ) {
         if (isset($myuid)) {
@@ -804,8 +810,8 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
     if (isset($staticSurveyInfo[$surveyid][$languagecode])) {
         $thissurvey = $staticSurveyInfo[$surveyid][$languagecode];
     } else {
-        $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
-        $resultBaseLanguage = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $oSurvey->language));
+        $result = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        $resultBaseLanguage = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $oSurvey->language));
         if (is_null($result)) {
             // When additional language was added, but not saved it does not exists
             // We should revert to the base language then
@@ -813,7 +819,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $result = $resultBaseLanguage;
         }
         if ($result) {
-            $aSurveyAttributes = array_replace($result->survey->attributes, $aSurveyOptions);
+            $aSurveyAttributes = array_replace($oSurvey->attributes, $aSurveyOptions);
             $thissurvey = array_merge($aSurveyAttributes, $result->attributes);
             $thissurvey['name'] = $thissurvey['surveyls_title'];
             if (($languagecode != $oSurvey->language) && empty($thissurvey['name']) || $thissurvey['name'] == '') {
@@ -849,7 +855,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $thissurvey['email_confirm'] = $thissurvey['surveyls_email_confirm'];
             $thissurvey['email_register_subj'] = $thissurvey['surveyls_email_register_subj'];
             $thissurvey['email_register'] = $thissurvey['surveyls_email_register'];
-            $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
+            $thissurvey['attributedescriptions'] = $oSurvey->tokenAttributes;
             $thissurvey['attributecaptions'] = $result->attributeCaptions;
             $thissurvey['googleanalyticsapikey'] = $oSurvey->getGoogleanalyticsapikey();
             $thissurvey['hastokenstable'] = $oSurvey->hasTokensTable;
@@ -864,10 +870,10 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
                 $thissurvey['urldescrip'] = $thissurvey['surveyls_url'];
             }
 
-            if ($result->survey->owner_id == -1 && !empty($oSurvey->oOptions->owner_id)) {
+            if ($oSurvey->owner_id == -1 && !empty($oSurvey->oOptions->owner_id)) {
                 $thissurvey['owner_username'] = User::model()->find("uid=:uid", array(':uid' => $oSurvey->oOptions->owner_id))['users_name'];
-            } elseif (!empty($result->survey->owner->users_name)) {
-                $thissurvey['owner_username'] = $result->survey->owner->users_name;
+            } elseif (!empty($oSurvey->owner->users_name)) {
+                $thissurvey['owner_username'] = $oSurvey->owner->users_name;
             } else {
                 $thissurvey['owner_username'] = '';
             }
@@ -2304,10 +2310,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     if ($questionid === false) {
         // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-        if (isset(Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
-            $masterFieldmap = Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
-            $mfieldmap = Yii::app()->session['responses_' . $surveyid][$masterFieldmap];
-
+        $mfieldmap = SurveySessionState::forSurvey((int) $surveyid)->getRandomizedFieldMap();
+        if ($mfieldmap !== null) {
             foreach ($mfieldmap as $fieldname => $mf) {
                 if (isset($fieldmap[$fieldname])) {
                     // This array holds the keys of translatable attributes
@@ -5183,19 +5187,20 @@ function getLabelSets($languages = null)
 
 /**
  * get the header
- * @param bool $meta : not used in any call (2016-10-18)
+ * @param bool $meta Not used in any call (2016-10-18)
  * @return string
  */
 function getHeader($meta = false)
 {
     /* Todo : move this to layout/public.html */
-    $surveyid = Yii::app()->session['LEMsid'];
+    $surveyid = ExpressionManagerSessionState::current()->getSurveyId();
     $oSurvey = Survey::model()->findByPk($surveyid);
     Yii::app()->loadHelper('surveytranslator');
 
     // Set Language // TODO remove one of the Yii::app()->session see bug #5901
-    if (Yii::app()->session['responses_' . $surveyid]['s_lang']) {
-        $languagecode = Yii::app()->session['responses_' . $surveyid]['s_lang'];
+    $sessionLanguage = SurveySessionState::forSurvey((int) $surveyid)->getLanguage();
+    if ($sessionLanguage) {
+        $languagecode = $sessionLanguage;
     } elseif (isset($surveyid) && $surveyid && $oSurvey) {
         $languagecode = $oSurvey->language;
     } else {
