@@ -70,10 +70,13 @@ var UserManagement = function () {
         $('#submitForm').append(
             '<i class="ri-loader-2-fill remix-pulse UserManagement-spinner"></i>'
         ).prop('disabled', true);
+        var status = $('#UserManagement-action-modal-status');
+        status.text(status.data('loading-text'));
     };
     var stopSubmit = function () {
         $('.UserManagement-spinner').remove();
         $('#submitForm').prop('disabled', false);
+        $('#UserManagement-action-modal-status').text('');
     };
 
     /**
@@ -170,6 +173,7 @@ var UserManagement = function () {
                     $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger').focus();
                 },
                 error: function (request, status, error) {
+                    $('#UserManagement-action-modal-status').text('');
                     if (request && request.responseJSON && request.responseJSON.message) {
                         $('#UserManagement--errors').html(
                             LS.LsGlobalNotifier.createAlert(
