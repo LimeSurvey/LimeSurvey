@@ -364,6 +364,9 @@
                     <attribute>other</attribute>
                 </condition>
             </dependsOn>
+            <onDependsToggle>
+                <keepValue />
+            </onDependsToggle>
             <props>
                 <id>label-for-other-option</id>
                 <dataTestId>label-for-other-option</dataTestId>
@@ -375,10 +378,13 @@
             <component>Input</component>
             <caption>'Other:' text input box size</caption>
             <dependsOn>
-              <condition>
-                  <attribute>other</attribute>
-              </condition>
+                <condition>
+                    <attribute>other</attribute>
+                </condition>
             </dependsOn>
+            <onDependsToggle>
+                <keepValue />
+            </onDependsToggle>
             <props>
                 <type>number</type>
                 <dataTestId>other-input-size</dataTestId>
@@ -393,6 +399,9 @@
                     <attribute>other</attribute>
                 </condition>
             </dependsOn>
+            <onDependsToggle>
+                <keepValue />
+            </onDependsToggle>
             <props>
                 <type>number</type>
                 <dataTestId>other-maximum-chars</dataTestId>

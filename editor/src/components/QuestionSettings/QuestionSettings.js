@@ -65,7 +65,6 @@ export const QuestionSettings = ({ surveyId, settings }) => {
     }
 
     if (settings?.length) {
-      console.log(settings)
       return settings
     }
 

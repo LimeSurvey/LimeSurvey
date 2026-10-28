@@ -74,6 +74,12 @@ class QuestionAttributesDetail implements CommandInterface
         }
 
         $attributes = \QuestionAttribute::getQuestionAttributesSettings($type);
+        $advancedAttributes = \QuestionAttribute::getQuestionAttributesSettings($type, true);
+
+        // General attributes come with default settings (category "Attribute"), mark them like the XML path does
+        foreach (array_keys(array_diff_key($attributes, $advancedAttributes)) as $name) {
+            $attributes[$name] = ['name' => $name, 'general' => true];
+        }
 
         if (!empty($theme) && $theme !== \Question::DEFAULT_QUESTION_THEME) {
             $additionalAttributes = \QuestionTheme::getAdditionalAttrFromExtendedTheme($theme, $type);
