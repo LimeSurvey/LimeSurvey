@@ -10,6 +10,9 @@ export const PLUGIN_SLOTS = {
   SHARING_OVERVIEW_CARD_BOTTOM: 'sharingoverview:card:bottom',
   SHARING_OVERVIEW_SOCIAL_MEDIA_CARD_BOTTOM:
     'sharingoverview:socialmediacard:bottom',
+  // Next to "Customize link" in the sharing overview alias card.
+  // Props: hasUpdatePermission, surveyId, selectedLanguage, link, alias
+  SHARING_OVERVIEW_ALIAS_CARD_ACTIONS: 'sharingoverview:aliascard:actions',
   TRANSLATIONS_PANEL: 'translations:panel:content',
   FEEDBACK_FORM_OPEN: 'feedback:form:open',
   CONTENT_EDITOR: 'content:editor:extra', // extra logic for editable content ( contentEditable & tinymce)

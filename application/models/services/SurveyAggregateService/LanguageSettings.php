@@ -116,6 +116,7 @@ class LanguageSettings
                 continue;
             }
 
+            /** @var SurveyLanguageSetting $surveyLanguageSetting */
             $surveyLanguageSetting = $this->modelSurveyLanguageSetting
                 ->findByPk(
                     array(

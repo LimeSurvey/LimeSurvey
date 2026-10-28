@@ -64,6 +64,7 @@ class UserDetail implements CommandInterface
 
         $user = $this->transformerOutputSurveyOwner->transform($userModel);
         $user['timezone'] = \Yii::app()->getConfig('displayTimezone') ?: 'UTC';
+        $user['isSuperAdmin'] = (bool) $this->permission->hasGlobalPermission('superadmin', 'read', $userId);
 
         return $this->responseFactory->makeSuccess($user);
     }

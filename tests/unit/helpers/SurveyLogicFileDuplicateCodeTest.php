@@ -66,7 +66,7 @@ class SurveyLogicFileDuplicateCodeTest extends TestBaseClass
         $this->assertStringContainsString('3 questions contain errors that need to be corrected.', $result['html']);
         foreach (self::$duplicatedCodes as $code) {
             $this->assertMatchesRegularExpression(
-                "/<td class='danger'>Q-\d+<\/td><td><b><span class='highlighterror' title='This variable name has already been used.' [^>]*>{$code}<\/span>/",
+                "/<td class='danger'>Q-\d+<\/td><td><b>{$code}<\/b>.*?<br><em class='badge bg-danger text-wrap text-start'>This variable name has already been used\.<\/em> \[<a target='_blank' href='[^']*\/qid\/\d+'>Question ID \d+<\/a>\]/s",
                 $result['html']
             );
         }
@@ -101,7 +101,7 @@ class SurveyLogicFileDuplicateCodeTest extends TestBaseClass
         $this->assertCount(4, $result['errors']);
         $this->assertStringContainsString('4 questions contain errors that need to be corrected.', $result['html']);
         $this->assertMatchesRegularExpression(
-            "/<td class='danger'>Q-\d+<\/td><td><b><span class='highlighterror' title='Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated.' [^>]*>Fixed_Q01<\/span>/",
+            "/<td class='danger'>Q-\d+<\/td><td><b>Fixed_Q01<\/b>.*?<br><em class='badge bg-danger text-wrap text-start'>Starting in 2\.05, variable names should only contain letters and numbers; and may not start with a number\. This variable name is deprecated\.<\/em><br><em class='badge bg-danger'>/s",
             $result['html']
         );
     }

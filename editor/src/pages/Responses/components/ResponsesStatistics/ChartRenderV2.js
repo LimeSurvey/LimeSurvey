@@ -217,13 +217,21 @@ const VIEWS = [
     icon: () => <i className="ri-list-check"></i>,
     isAvailable: ({ isGridable, isMultiNumerical }) =>
       isGridable || isMultiNumerical,
-    render: ({ surveyId, question, filters, isNumerical, isMultiNumerical }) =>
+    render: ({
+      surveyId,
+      question,
+      filters,
+      filterSet,
+      isNumerical,
+      isMultiNumerical,
+    }) =>
       isMultiNumerical ? (
         <MultiNumericalGrid
           surveyId={surveyId}
           questionCode={question?.code}
           fields={question?.fields}
           filters={filters}
+          filterSet={filterSet}
         />
       ) : (
         <ResponsesGrid
@@ -232,6 +240,7 @@ const VIEWS = [
           title={question?.title}
           fields={question?.fields}
           filters={filters}
+          filterSet={filterSet}
           twoColumns={isNumerical}
         />
       ),
@@ -254,6 +263,7 @@ const VIEWS = [
       surveyId,
       question,
       filters,
+      filterSet,
     }) =>
       isFileUpload ? (
         <FileUploadTable
@@ -262,6 +272,7 @@ const VIEWS = [
           questionCode={question?.code}
           fields={question?.fields}
           filters={filters}
+          filterSet={filterSet}
         />
       ) : isArrayText || isText || isDualScale || isMultiNumerical ? (
         <ArrayTextTable
@@ -269,6 +280,7 @@ const VIEWS = [
           questionCode={question?.code}
           fields={question?.fields}
           filters={filters}
+          filterSet={filterSet}
           searchable={isText || isMultiNumerical}
           scaleHeaders={question?.scaleHeaders}
         />
@@ -281,12 +293,13 @@ const VIEWS = [
     label: () => t('Comments'),
     icon: () => <i className="ri-message-2-line"></i>,
     isAvailable: ({ hasComments }) => hasComments,
-    render: ({ surveyId, question, data, onViewComments }) => (
+    render: ({ surveyId, question, data, filterSet, onViewComments }) => (
       <QuestionComments
         surveyId={surveyId}
         questionCode={question?.code}
         fields={question?.fields}
         answerOptions={data}
+        filterSet={filterSet}
         onViewComments={onViewComments}
       />
     ),
@@ -331,6 +344,8 @@ const GRAPH_VIEWS = {
 
 const getDefaultView = (availableViews, viewContext, chartType) => {
   const preferredViews = [
+    // Ranking opens on the table; only the table breaks down the ranked places.
+    viewContext.isRanking && VIEW.TABLE,
     ...(GRAPH_VIEWS[chartType] ?? []),
     viewContext.isArrayText && VIEW.TABLE,
     viewContext.isArray && !viewContext.isArrayNumbers && VIEW.STACKED_BAR,
@@ -357,9 +372,11 @@ export const ChartRendererV2 = ({
   question = {},
   valueType,
   filters = {},
+  filterSet = [],
 }) => {
   const isNumerical = question?.type === QT_N_NUMERICAL
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
+  const isRanking = isRankingQuestion(question?.themeName)
   const isFileUpload = question?.type === QT_VERTICAL_FILE_UPLOAD
   const isGridable =
     isNumerical ||
@@ -369,7 +386,6 @@ export const ChartRendererV2 = ({
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
-  const isRanking = isRankingQuestion(question?.themeName)
   const hasComments = isCommentQuestionType(question?.type)
   const isChoice = CHOICE_QUESTION_TYPES.includes(question?.type)
   const isArray = (data ?? []).some((item) => Array.isArray(item?.segments))
@@ -453,6 +469,7 @@ export const ChartRendererV2 = ({
     hasComments,
     filters,
     orientation,
+    filterSet,
     onViewComments: setCommentsAnswer,
   }
 
@@ -531,6 +548,16 @@ export const ChartRendererV2 = ({
                 )}
               </div>
             )}
+            {isRanking && activeView?.value === VIEW.BAR_CHART && (
+              <div className="responses-statistics-chart-subtitle responses-statistics-chart-info">
+                <i className="ri-information-line" aria-hidden="true"></i>
+                <span>
+                  {t(
+                    'The bar chart shows each option’s average rank, calculated by adding all the ranks it received and dividing the total by the number of times this option was ranked. A lower average means a better ranking.'
+                  )}
+                </span>
+              </div>
+            )}
             <div>{activeView?.render(renderContext)}</div>
             {toggleOptions.length > 1 && (
               <div className="responses-statistics-chart-toggle">
@@ -561,6 +588,7 @@ export const ChartRendererV2 = ({
           questionTitle={question?.title}
           fields={question?.fields}
           answerOptions={data}
+          filterSet={filterSet}
           initialAnswer={commentsAnswer ?? ''}
         />
       )}

@@ -11,7 +11,10 @@ import {
   SURVEY_MENU_TITLES,
   PAGES,
 } from 'helpers'
-import { getSurveyPauseToastOptions } from 'components'
+import {
+  getSurveyPauseToastOptions,
+  getSurveyDatabaseToastOptions,
+} from 'components'
 import ThemeOptionsPreview from 'components/ThemeOptions/ThemeOptionsPreview'
 
 import Layout from './Layout'
@@ -26,9 +29,14 @@ export const Editor = () => {
   const { survey = {} } = useSurvey(surveyId)
   const { ready } = useTranslation()
   const [, setTopbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
+  const [userDetails] = useAppState(STATES.USER_DETAIL, {})
+  const [loadedSurveyId] = useAppState(STATES.LOADED_SURVEY_ID, null, {
+    meta: { persist: false },
+  })
 
   const surveyActivationHandlerRef = useRef(null)
   const expiryToastRanForSurvey = useRef(null)
+  const databaseAlertRanForSurvey = useRef(null)
 
   const [activeLanguage = undefined] = useAppState(
     STATES.ACTIVE_LANGUAGE,
@@ -49,6 +57,17 @@ export const Editor = () => {
     }
   }, [survey.expires, survey.sid])
 
+  const isSuperAdmin = userDetails?.isSuperAdmin
+
+  const tryToOpenSurveyDatabaseAlert = useCallback(() => {
+    const shouldShowSurveyDatabaseAlert =
+      survey.active && !survey.hasResponsesTable
+
+    if (shouldShowSurveyDatabaseAlert) {
+      Toast(getSurveyDatabaseToastOptions({ isSuperAdmin }))
+    }
+  }, [survey.active, survey.hasResponsesTable, isSuperAdmin])
+
   useEffect(() => {
     if (expiryToastRanForSurvey.current === survey.sid) return
 
@@ -60,6 +79,31 @@ export const Editor = () => {
     tryToOpenExpiryToast()
     expiryToastRanForSurvey.current = survey.sid
   }, [survey.sid, surveyId, tryToOpenExpiryToast])
+
+  useEffect(() => {
+    if (databaseAlertRanForSurvey.current === survey.sid) return
+
+    // only try to open when fresh survey data is loaded
+    const isCurrentSurveyLoaded = Number(loadedSurveyId) === Number(surveyId)
+
+    if (
+      !survey.sid ||
+      surveyId != survey.sid ||
+      !isCurrentSurveyLoaded ||
+      isSuperAdmin === undefined
+    ) {
+      return
+    }
+
+    tryToOpenSurveyDatabaseAlert()
+    databaseAlertRanForSurvey.current = survey.sid
+  }, [
+    survey.sid,
+    surveyId,
+    loadedSurveyId,
+    isSuperAdmin,
+    tryToOpenSurveyDatabaseAlert,
+  ])
 
   useEffect(() => {
     setTopbarConfig({

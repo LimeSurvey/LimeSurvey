@@ -63,7 +63,7 @@ class SurveyActivator
         $this->setMySQLDefaultEngine(Yii::app()->getConfig('mysqlEngine'));
 
         if (!$this->showEventMessages($event)) {
-            return ['error' => 'plugin'];
+            return ['error' => 'plugin', 'message' => $event->get('message')];
         }
 
         // Clear session cache (e.g. from a survey preview run in
@@ -94,9 +94,9 @@ class SurveyActivator
         }
 
         $survey = Survey::model()->findByAttributes(array('sid' => $this->survey->primaryKey));
-        $survey->scenario = 'activationStateChange';
         $survey->active = 'Y';
-        $survey->save();
+        // Skip validation: The tables already exist, so an invalid setting must not keep the survey inactive
+        $survey->save(false);
 
         $aResult = array(
             'status' => 'OK',

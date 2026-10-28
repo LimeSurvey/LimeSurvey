@@ -299,6 +299,26 @@ class viewHelper
     }
 
     /**
+     * Return a response value as plain text for display in the administration
+     *
+     * A value that getExtendedAnswer() returned unchanged is stored as entered by the participant: it is plain text,
+     * a '<' in it is not the start of a HTML tag. Other values contain answer or subquestion texts, which can be HTML:
+     * these are flattened.
+     * The returned text is not HTML escaped.
+     *
+     * @param string|null $sExtendedValue The value returned by getExtendedAnswer()
+     * @param string|null $sRawValue The value stored in the response table
+     * @return string
+     */
+    public static function responseValueToText($sExtendedValue, $sRawValue)
+    {
+        if ((string) $sExtendedValue === (string) $sRawValue) {
+            return (string) $sRawValue;
+        }
+        return html_entity_decode(self::flatten((string) $sExtendedValue), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    }
+
+    /**
      * Show clean string, leaving ONLY tag for Expression
      * @param string : Html to clean
      * @return string

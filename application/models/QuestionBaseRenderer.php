@@ -123,7 +123,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         //Render timer
         $disable_next = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_next']['value'], 0);
         $disable_prev = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_prev']['value'], 0);
-        $time_limit_action = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_action']['value'], 1);
+        $time_limit_action = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_action']['value'], 1));
         $time_limit_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message']['value'], gT("Your time to answer this question has expired"));
         $time_limit_warning = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning']['value'], 0));
         $time_limit_warning_2 = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2']['value'], 0));
@@ -367,11 +367,21 @@ abstract class QuestionBaseRenderer extends StaticModel
         $sExcludeAllOther = $this->setDefaultIfEmpty($this->getQuestionAttribute('exclude_all_others'), false);
         /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
         if ($sExcludeAllOther !== false) {
-            foreach (explode(';', (string) $sExcludeAllOther) as $sExclude) {
-                $sExclude = $this->sSGQA . $sExclude;
+            foreach (explode(';', (string) $sExcludeAllOther) as $sExcludeCode) {
+                $sExcludeCode = trim($sExcludeCode);
+                $sExcludeField = null;
+                foreach ($this->aSubQuestions[0] ?? [] as $oSubQuestion) {
+                    if ($oSubQuestion->title === $sExcludeCode) {
+                        $sExcludeField = $this->sSGQA . '_S' . $oSubQuestion->qid;
+                        break;
+                    }
+                }
+                if ($sExcludeField === null) {
+                    continue;
+                }
                 if (
-                    (!isset($aSurveySessionArray['relevanceStatus'][$sExclude]) || $aSurveySessionArray['relevanceStatus'][$sExclude])
-                    && (isset($aSurveySessionArray[$sExclude]) && $aSurveySessionArray[$sExclude] == "Y")
+                    (!isset($aSurveySessionArray['relevanceStatus'][$sExcludeField]) || $aSurveySessionArray['relevanceStatus'][$sExcludeField])
+                    && ($aSurveySessionArray[$sExcludeField] ?? '') === "Y"
                 ) {
                     return "ls-irrelevant ls-disabled";
                 }

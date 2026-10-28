@@ -191,6 +191,53 @@ class SurveyGetSurveyUrlTest extends TestBaseClass
     }
 
     /**
+     * In path format the alias URL contains index.php when showScriptName is enabled,
+     * so it also works on servers without URL rewriting.
+     *
+     * @return void
+     */
+    public function testAliasUrlIncludesScriptNameWhenShowScriptNameIsEnabled()
+    {
+        $this->setAliases(['en' => 'Hogwarts']);
+        $this->assertStringEndsWith('/index.php/Hogwarts', $this->getAliasUrlInPathFormat(true));
+    }
+
+    /**
+     * In path format the alias URL has no index.php when showScriptName is disabled.
+     *
+     * @return void
+     */
+    public function testAliasUrlOmitsScriptNameWhenShowScriptNameIsDisabled()
+    {
+        $this->setAliases(['en' => 'Hogwarts']);
+        $url = $this->getAliasUrlInPathFormat(false);
+        $this->assertStringEndsWith('/Hogwarts', $url);
+        $this->assertStringNotContainsString('index.php', $url);
+    }
+
+    /**
+     * Get the 'en' alias URL with the URL manager temporarily set to path format
+     * and the given showScriptName setting.
+     *
+     * @param bool $showScriptName
+     * @return string
+     */
+    private function getAliasUrlInPathFormat(bool $showScriptName): string
+    {
+        $urlManager = \Yii::app()->getUrlManager();
+        $originalUrlFormat = $urlManager->getUrlFormat();
+        $originalShowScriptName = $urlManager->showScriptName;
+        $urlManager->setUrlFormat(\CUrlManager::PATH_FORMAT);
+        $urlManager->showScriptName = $showScriptName;
+        try {
+            return self::$testSurvey->getSurveyUrl('en');
+        } finally {
+            $urlManager->setUrlFormat($originalUrlFormat);
+            $urlManager->showScriptName = $originalShowScriptName;
+        }
+    }
+
+    /**
      * Repeated calls must not leak state between each other.
      *
      * @return void
