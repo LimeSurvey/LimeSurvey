@@ -1734,7 +1734,7 @@ class TemplateConfiguration extends TemplateConfig
                     $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder . '/preview.png';
                     $this->sPreviewImgTag = '<img src="' .
                         $previewUrl .
-                        '" alt="template preview" height="200" class="img-thumbnail p-0 rounded-0" />';
+                        '" alt="' . CHtml::encode(sprintf(gT('%s template preview'), $this->template->title)) . '" height="200" class="img-thumbnail p-0 rounded-0" />';
                 }
             } else {
                 $this->sPreviewImgTag = '<em>' . gT('No preview available') . '</em>';
