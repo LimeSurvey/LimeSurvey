@@ -354,7 +354,7 @@ class questionHelper
         // Map Options
 
         self::$attributes["location_city"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'readonly_when_active' => true,
             'category' => gT('Location'),
             'sortorder' => 100,
@@ -366,7 +366,7 @@ class questionHelper
         );
 
         self::$attributes["location_state"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'readonly_when_active' => true,
             'category' => gT('Location'),
             'sortorder' => 100,
@@ -378,7 +378,7 @@ class questionHelper
         );
 
         self::$attributes["location_postal"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'readonly_when_active' => true,
             'category' => gT('Location'),
             'sortorder' => 100,
@@ -390,7 +390,7 @@ class questionHelper
         );
 
         self::$attributes["location_country"] = array(
-            "types" => "S",
+            "types" => Question::QT_J_MAP,
             'readonly_when_active' => true,
             'category' => gT('Location'),
             'sortorder' => 100,
@@ -402,7 +402,7 @@ class questionHelper
         );
 
         self::$attributes["statistics_showmap"] = array(
-            "types" => "S",
+            "types" => Question::QT_J_MAP,
             'category' => gT('Statistics'),
             'inputtype' => 'switch',
             'sortorder' => 100,
@@ -424,7 +424,7 @@ class questionHelper
         );
 
         self::$attributes["statistics_graphtype"] = array(
-            "types" => '15ABCDEFGHIKLMNOQRSTUWXYZ!:;|*',
+            "types" => '15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
             'category' => gT('Statistics'),
             'inputtype' => 'singleselect',
             'sortorder' => 102,
@@ -438,26 +438,25 @@ class questionHelper
             ),
             'help' => gT("Select the type of chart to be displayed"),
             'caption' => gT("Chart type"),
-            'default' => 0
+            'default' => ''
         );
 
         self::$attributes["location_mapservice"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'category' => gT('Location'),
             'sortorder' => 90,
             'inputtype' => 'buttongroup',
             'options' => array(
-                0 => gT('Off'),
                 100 => gT('OpenStreetMap via MapQuest', 'unescaped'),
                 1 => gT('Google Maps', 'unescaped')
             ),
-            'default' => 0,
-            "help" => gT("Activate this to show a map above the input field where the user can select a location"),
+            'default' => 100,
+            "help" => gT("Which map provider to show for this question"),
             "caption" => gT("Use mapping service")
         );
 
         self::$attributes["location_mapwidth"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'category' => gT('Location'),
             'sortorder' => 102,
             'inputtype' => 'text',
@@ -467,7 +466,7 @@ class questionHelper
         );
 
         self::$attributes["location_mapheight"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'category' => gT('Location'),
             'sortorder' => 103,
             'inputtype' => 'text',
@@ -477,7 +476,7 @@ class questionHelper
         );
 
         self::$attributes["location_nodefaultfromip"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'category' => gT('Location'),
             'sortorder' => 91,
             'inputtype' => 'singleselect',
@@ -488,7 +487,7 @@ class questionHelper
         );
 
         self::$attributes["location_defaultcoordinates"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'category' => gT('Location'),
             'sortorder' => 101,
             'inputtype' => 'text',
@@ -498,7 +497,7 @@ class questionHelper
         );
 
         self::$attributes["location_mapzoom"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'category' => gT('Location'),
             'sortorder' => 101,
             'inputtype' => 'text',
@@ -1571,7 +1570,7 @@ class questionHelper
             'category' => gT('Other'),
             'sortorder' => 134,
             "inputtype" => "text",
-            'default' => "png, gif, doc, odt, jpg, pdf, png",
+            'default' => "png, gif, doc, odt, jpg, jpeg, pdf, heic",
             "help" => gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
             "caption" => gT("Allowed file types")
         );

@@ -191,6 +191,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
      *
      * @param array $aCommonData Values shared by all variants, as built in render()
      * @return string Rendered HTML
+     * @deprecated Use the Map question type (RenderMap). Kept for custom Short Text themes that define location settings.
      */
     private function renderMapService(array $aCommonData)
     {
@@ -283,6 +284,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
      *
      * @param array $aCommonData Values shared by all variants, as built in render()
      * @return string Rendered HTML
+     * @deprecated Use the Map question type (RenderMap). Kept for custom Short Text themes that define location settings.
      */
     private function renderLeafletMap(array $aCommonData)
     {
@@ -418,6 +420,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
      *
      * @param string $sIPAddress IP address to look up
      * @return array{0: float, 1: float}|false|null [latitude, longitude], false if the lookup failed, null if no API key is set
+     * @deprecated Duplicated in RenderMap, only used by the deprecated map variants.
      */
     private function getLatLongFromIp($sIPAddress)
     {
@@ -429,7 +432,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
                 $lat = (float) $oXML->{'latitude'};
                 $lng = (float) $oXML->{'longitude'};
 
-                return(array($lat, $lng));
+                return (array($lat, $lng));
             } else {
                 return false;
             }

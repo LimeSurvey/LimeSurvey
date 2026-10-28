@@ -61,6 +61,17 @@ $checkbox-selectors: 'input[type="checkbox"]', '.checkbox input[type="checkbox"]
             border-color: transparent;
         }
 
+        // Before :focus-visible so the focus border is kept
+        &:indeterminate:after {
+            background-color: $g-900;
+            border-color: $g-900;
+        }
+
+        &:disabled:indeterminate:after {
+            background-color: $g-600;
+            border-color: transparent;
+        }
+
         &:focus-visible {
             outline: none;
 

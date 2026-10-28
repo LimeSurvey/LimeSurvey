@@ -34,6 +34,135 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.6.0 (build 261013) to 7.7.0 (build 261020) October 20, 2026
++New feature: Ability to export the ready-made survey URL when exporting participants (#5110) (Carsten Schmitz)
++New feature #JD-172 : Organize columns on the survey list (#5401) (Adil Moumni Abdou)
++New feature #JD-129: Add plugin slot to the public survey link card (#5438) (Razvan Pandor)
+-Fixed issue: text color on active "no answer"-button in new editor (twilligls)
+-Fixed issue: [security] Broken access control vulnerability in the question conditions designer. Severity: Medium (CVSS 4.3, AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N). An authenticated administrator with permission to edit the content of any one survey could delete or modify conditions of questions in other surveys. Affects versions 3.0.0 and later. (#5443) (Carsten Schmitz)
+-Fixed issue: The survey side menu showed the settings panel instead of the permissions or quick translation panel after saving or choosing a language (Carsten Schmitz)
+-Fixed issue: Survey participants could continue past the welcome page without accepting the survey data policy if the theme did not prevent it (Carsten Schmitz)
+-Fixed issue: Setting userideditable in config.php had no effect (Carsten Schmitz)
+-Fixed issue: Question texts with special characters (e.g. ü, ş) could end in a broken character in the "Copy conditions" question list (Carsten Schmitz)
+-Fixed issue: Installing a plugin from a ZIP file left out some of its files, e.g. SVG or PDF files, mPDF data files or files with an upper-case extension (Carsten Schmitz)
+-Fixed issue: In debug mode, the data integrity check failed with an error when archiving the responses table of a deleted survey (Carsten Schmitz)
+-Fixed issue: Firefox console showed over 100 "Glyph bbox was incorrect" warnings for the FontAwesome icon font (Carsten Schmitz)
+-Fixed issue: Creating a new survey menu on PostgreSQL failed with a database error (Carsten Schmitz)
+-Fixed issue: After upgrading from an old version, emojis and other 4-byte characters could get mangled on MySQL because the connection charset and the database default stayed utf8 (Carsten Schmitz)
+-Fixed issue: Admin modules extending a core admin page failed to load on case-sensitive file systems, and could not replace its views (Carsten Schmitz)
+-Fixed issue: "Enter access code" link was still shown after entering an access code in an open survey (Carsten Schmitz)
+-Fixed issue #JD-185: Preserve answer options when converting a question to Array dual scale type (#5412) (Adil Moumni Abdou)
+-Fixed issue #JD-137: Clarified confusing options for the 'Show in statistics' question setting (#5418) (Stefan K)
+-Fixed issue #JD-128: Ranking chart adjustments in new statistics (#5314) (SaraDimoska)
+-Fixed issue #CT-2014: Fix exclusion logic for subquestions in relevance check (#5431) (Rami S. Zaki)
+-Fixed issue #AT-2320: input-group button sizing and border for classic subquestion and answer editor (#5437) (Tim Willig)
+-Fixed issue #AT-2317: Maximum number of buttons in a row and Button size settings were ignored for Bootstrap Buttons question type (#5420) (Tim Willig)
+-Fixed issue #AT-2310: Improve Array questions table display (#5411) (Rami S. Zaki)
+-Fixed issue #AT-1986, AT-1987: file upload question type attributes in new editor (#5435) (Tim Willig)
+-Fixed issue #9774: Answer options hidden by an array filter could still be saved in list and ranking questions without JavaScript (Carsten Schmitz)
+-Fixed issue #9652: Question with default value and validation showed a validation error when it became visible through a condition (Carsten Schmitz)
+-Fixed issue #20779: Importing a large survey takes a long time and can run into a gateway timeout (Carsten Schmitz)
+-Fixed issue #20774: Untranslated survey saving error message (#5440) (haythem chibani)
+-Fixed issue #20773: Deprecated package react-date-range replaced with customized @daypicker/react (#5439) (haythem chibani)
+-Fixed issue #20772: After a database update from the command line, admin pages could show "500 Database error" for up to an hour (Carsten Schmitz)
+-Fixed issue #20771: A database update that failed or was interrupted could be run again and silently destroy data (Carsten Schmitz)
+-Fixed issue #20767: Surveys could not be opened in the new editor and theme options failed to load when a user font was installed (Carsten Schmitz)
+-Fixed issue #20764: "All" string is untranslated in Survey Statistics Expert view. (#5426) (Richard Aljaste)
+-Fixed issue #20763: Untranslated texts in panel integration panel & expert statistics pages (#5427) (haythem chibani)
+-Fixed issue #20763: "Search:" string is untranslated in Integration panel view. (#5425) (Richard Aljaste)
+-Fixed issue #20734: When DB has an issue, user is unable to fix it (#5367) (Denis Chenu)
+-Fixed issue #20719: Access mode button text is untranslated on state change (#5342) (Richard Aljaste)
+-Fixed issue #20713: Ranking question answers exported as codes instead of full text (#5335) (Carsten Schmitz)
+-Fixed issue #20322: Survey list cannot be sorted by last modified date, and editing questions or groups does not change it (#5390) (Carsten Schmitz)
+-Fixed issue #19539: Opening the assessments page directly after login showed an internal server error (Carsten Schmitz)
+-Fixed issue #19449: Users with read-only permission on survey content could not see the group and question preview buttons (Carsten Schmitz)
+-Fixed issue #19439: Calender (date picker) starts with Sunday instead of Monday, even when language is set to German (#5297) (Carsten Schmitz)
+-Fixed issue #19432: Custom admin module pages like the HelloWorld example failed with a fatal error or showed the wrong page (Carsten Schmitz)
+-Fixed issue #19414: Administrators without superadmin rights could not assign any role to their users (Carsten Schmitz)
+-Fixed issue #19405: Users with read-only access to the central participant database could not list a participant's active surveys or add it to a survey (Carsten Schmitz)
+-Fixed issue #19386: Empty answers in survey archives created before LimeSurvey 7 were imported as NULL (Carsten Schmitz)
+-Fixed issue #19366: Survey title was not shown in the queXML PDF export (Carsten Schmitz)
+-Fixed issue #19360: Survey settings had labels pointing to no form field, so clicking a setting name did nothing and the page was invalid HTML (Carsten Schmitz)
+-Fixed issue #19322: "Remaining:" label and value were not aligned in Multiple numerical input questions (Carsten Schmitz)
+-Fixed issue #19312: Survey logic file did not say why a question code was flagged as error (Carsten Schmitz)
+-Fixed issue #19280: Survey could not be used comfortably with keyboard only in Fruity TwentyThree (no visible focus, focus lost in menu, no skip link) (Carsten Schmitz)
+-Fixed issue #19197: Iframes added in the HTML editor always got a sandbox attribute that blocked forms, popups and other interaction, and it could not be removed (Carsten Schmitz)
+-Fixed issue #19054: Public statistics ignored the chart type set for a question and only showed bar or pie charts (Carsten Schmitz)
+-Fixed issue #19048: Plugin settings panels in survey settings were not sorted alphabetically (Carsten Schmitz)
+-Fixed issue #18975: Administrators were logged out when rapidly reloading a survey, group or question preview (Carsten Schmitz)
+-Fixed issue #18933: The user list in survey permissions was empty for administrators who are not superadmins, with no explanation why (Carsten Schmitz)
+-Fixed issue #18908: Deleting the default survey theme in the theme editor made all surveys using it unreachable (Carsten Schmitz)
+-Fixed issue #18907: Themes whose names differed only by case were each listed twice and could not be uninstalled (Carsten Schmitz)
+-Fixed issue #18864: Turning off backward navigation had no effect while the question index was enabled, without any hint why (Carsten Schmitz)
+-Fixed issue #18825: Users without permission to create themes saw the "Clear frontend cache" button in global settings, which only led to an error page (Carsten Schmitz)
+-Fixed issue #18813: The statistics summary table of each question was invalid HTML (Carsten Schmitz)
+-Fixed issue #18770: A mandatory question that depended on an Equation question with a leading space in its text could be skipped, and its answer was lost on the next page (Carsten Schmitz)
+-Fixed issue #18623: Array questions in the Vanilla theme showed a dark border at the top and below the header row (Carsten Schmitz)
+-Fixed issue #18576: Page size options set in config.php were added to the default options, so the rows-per-page dropdown showed duplicates and some entries set the wrong page size (Carsten Schmitz)
+-Fixed issue #18533: Downloading a single uploaded file from the responses could fail with an access error, e.g. on Windows servers (Carsten Schmitz)
+-Fixed issue #18515: Saving a participant with an invalid email address showed no error while the Additional attributes tab was open (Carsten Schmitz)
+-Fixed issue #18397: When copying a question, subquestions and answer options that could not be copied were dropped without an error message (Carsten Schmitz)
+-Fixed issue #18394: Creating or copying a question could end in a PHP error if the question was validated before its survey was set (Carsten Schmitz)
+-Fixed issue #18379: Statistics filters for encrypted questions could be used for searches that can't work on encrypted data (Carsten Schmitz)
+-Fixed issue #18364: Saving theme permissions after losing the needed rights showed a cryptic error code instead of a permission error (Carsten Schmitz)
+-Fixed issue #18265: Plugins received the beforeDataEntryImport event before restored responses were saved, and also for responses that were not restored (Carsten Schmitz)
+-Fixed issue #18264: Importing responses from an archived table with "Preserve response IDs" failed when a response with the same ID already existed (Carsten Schmitz)
+-Fixed issue #18138: Survey settings pages used the survey group's theme and settings instead of the survey's own (Carsten Schmitz)
+-Fixed issue #18125: Reminder/invitation date was saved as today's date or the first date change was lost when editing a participant (Carsten Schmitz)
+-Fixed issue #17977: Public statistics changed to completed/incomplete responses only after an administrator set this filter in the admin statistics, or when a visitor added completionstate to the URL (Carsten Schmitz)
+-Fixed issue #17854: LDAP login with a failing TLS connection showed an invalid password message or an error page instead of the connection problem (Carsten Schmitz)
+-Fixed issue #17782: Survey side menu showed entries the user had no permission for (Carsten Schmitz)
+-Fixed issue #17683: Participant attributes stayed empty after an LDAP import when the attribute name in ldap.php contained capital letters (Carsten Schmitz)
+-Fixed issue #17682: The [List] link on the LDAP participant import result page did nothing, and skipped records with an invalid email address were always listed without explanation (Carsten Schmitz)
+-Fixed issue #17679: When a survey page was opened again or reloaded, equations and other expressions on the page showed NAN or stopped updating (Carsten Schmitz)
+-Fixed issue #17669: Long words in Bootstrap buttons answer options ran over the button border (Carsten Schmitz)
+-Fixed issue #17664: When the session had expired, the file upload window opened empty and could not be closed (Carsten Schmitz)
+-Fixed issue #17551: Advanced ranking question showed rank numbers on unranked items (Carsten Schmitz)
+-Fixed issue #17497: Topbar and full page bar mechanisms were not harmonized (Carsten Schmitz)
+-Fixed issue #17300: Selected option of button groups was shown by colour only and could not be seen at all in forced colours (high contrast) mode (Carsten Schmitz)
+-Fixed issue #17248: Two plugin API functions had no description in the API documentation (Carsten Schmitz)
+-Fixed issue #17196: Adding a label after renaming label codes created a duplicate code and code changes were not shown in the other language tabs (Carsten Schmitz)
+-Fixed issue #17127: In the theme options, the inherited value of the theme variation was empty (Carsten Schmitz)
+-Fixed issue #17124: Text answers containing "<" followed by a letter were cut off in the response list, the response view and the SPSS/R export (Carsten Schmitz)
+-Fixed issue #16791: Character counts with strlen() were too high while typing when the answer contained umlauts or other accented characters (Carsten Schmitz)
+-Fixed issue #16684: Participants could get a "session expired" message after finishing a survey when they clicked "Next" again while the last page was still being processed (Carsten Schmitz)
+-Fixed issue #16632: ComfortUpdate shows "Unknown error" instead of a clear message when the update key is locked (Carsten Schmitz)
+-Fixed issue #16567: "Start bounce processing" was enabled although bounce processing was disabled in the global settings (Carsten Schmitz)
+-Fixed issue #15947: Survey quota - set survey to "finished" (#5368) (Carsten Schmitz)
+-Fixed issue #15803: No warning shown when comparing numeric result with string result (#5303) (Carsten Schmitz)
+-Fixed issue #15360: Privacy policy link in the theme editor preview did not open the policy (Carsten Schmitz)
+-Fixed issue #15320: Uploaded files of all responses matching the current filter could not be downloaded at once (Carsten Schmitz)
+-Fixed issue #14558: Survey permissions a user already had through a global permission looked the same as permissions that were not set (Carsten Schmitz)
+-Fixed issue #14467: Survey logic check did not warn about conditions that use a later question (Carsten Schmitz)
+-Fixed issue #14373: Help text of ranking questions referred to a left/right layout or to images that participants did not always see (Carsten Schmitz)
+-Fixed issue #14234: After restoring the default survey menus, the menu entries list showed an error or entries without a menu (Carsten Schmitz)
+-Fixed issue #14200: Question attributes like .gid, .type or .relevance were not available in expressions for questions with subquestions (Carsten Schmitz)
+-Fixed issue #13986: Statistics PDF export ignored the chart type set for a question or selected for the statistics and only showed bar or pie charts (Carsten Schmitz)
+-Fixed issue #13545: JavaScript in a question text was shown as text in the question labels of the condition designer (Carsten Schmitz)
+#Updated translation: Turkish by c_schmitz, kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa, translations_bot
+#Updated translation: Polish by c_schmitz, elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Montenegrin by lauraspr
+#Updated translation: Mongolian by amidral
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by c_schmitz, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by superuser_does
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz, Cubitus
+#Updated translation: French (France) by c_schmitz, arnaud21, DenisChenu, fgervais, pasglop, sim.eesp
+#Updated translation: Finnish by c_schmitz, Jmantysalo
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Czech by c_schmitz, jelen1, twilllig, VBraun
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by c_schmitz
+#Updated translation: Catalan by c_schmitz, qualitatuvic
+
+
 Changes from 7.5.1 (build 261007) to 7.6.0 (build 261013) October 13, 2026
 +New feature #JD-60: Import complete surveys from the React editor (#5228) (Adil Moumni Abdou)
 +New feature #JD-16: File upload question type in statistics (#5295) (Stefan K)

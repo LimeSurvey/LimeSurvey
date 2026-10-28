@@ -47,6 +47,7 @@ function eT($sToTranslate, $sEscapeMode = 'html')
 
 /**
  * Translation helper function for plural forms
+ * @deprecated Use gTPlural(), translators get only one field for both forms of "singular|plural"
  * @param string $sTextToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
@@ -59,6 +60,7 @@ function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 
 /**
  * Translation helper function for plural forms which outputs right away
+ * @deprecated Use eTPlural(), translators get only one field for both forms of "singular|plural"
  * @param string $sToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
@@ -66,6 +68,43 @@ function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 function neT($sToTranslate, $iCount, $sEscapeMode = 'html')
 {
     echo ngT($sToTranslate, $iCount, $sEscapeMode);
+}
+
+/**
+ * Translation helper function for gettext plural forms (msgid / msgid_plural)
+ *
+ * Unlike ngT(), translators get one field per plural form of their language.
+ * Placeholders are not replaced, use sprintf(), e.g.
+ * sprintf(gTPlural('%d file', '%d files', $count), $count)
+ *
+ * @param string $sSingular The source text for one item
+ * @param string $sPlural The source text for several items
+ * @param integer $iCount The number of items, selects the plural form
+ * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
+ * @param string|null $sLanguage Defaults to the application language
+ * @return string
+ */
+function gTPlural($sSingular, $sPlural, $iCount, $sEscapeMode = 'html', $sLanguage = null)
+{
+    return quoteText(
+        App()->getMessages()->translatePlural($sSingular, $sPlural, (int)$iCount, $sLanguage),
+        $sEscapeMode
+    );
+}
+
+/**
+ * As gTPlural(), but echoes directly
+ *
+ * @param string $sSingular The source text for one item
+ * @param string $sPlural The source text for several items
+ * @param integer $iCount The number of items, selects the plural form
+ * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
+ * @param string|null $sLanguage Defaults to the application language
+ * @return void
+ */
+function eTPlural($sSingular, $sPlural, $iCount, $sEscapeMode = 'html', $sLanguage = null)
+{
+    echo gTPlural($sSingular, $sPlural, $iCount, $sEscapeMode, $sLanguage);
 }
 
 
@@ -1258,6 +1297,7 @@ function getStatisticsFieldNames($iSurveyID, $aFilters, $sLanguage)
             case Question::QT_T_LONG_FREE_TEXT: // Long free text
             case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
             case Question::QT_S_SHORT_FREE_TEXT: // Short free text
+            case Question::QT_J_MAP: // Map
                 $myfield = "T$myfield";
                 $allfields[] = $myfield;
                 break;
@@ -1466,6 +1506,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                 case \Question::QT_G_GENDER:
                 case \Question::QT_I_LANGUAGE:
                 case \Question::QT_S_SHORT_FREE_TEXT:
+                case \Question::QT_J_MAP:
                 case \Question::QT_T_LONG_FREE_TEXT:
                 case \Question::QT_U_HUGE_FREE_TEXT:
                 case \Question::QT_X_TEXT_DISPLAY:
@@ -5315,12 +5356,15 @@ function aEncodingsArray()
 * @param    integer $iMaxLength       max length of string
 * @param    integer   $fPosition       int (1|0) or float, .5, .2, etc for position to split
 * @param    string  $sEllipsis      ellipsis ; Default '...'
+* @param    boolean $bStripTags     strip tags first; false for plain text, where a '<' is not the start of a tag
 * @return    string        ellipsized string
 */
-function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;')
+function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;', $bStripTags = true)
 {
-    // Strip tags
-    $sString = trim(strip_tags($sString));
+    if ($bStripTags) {
+        $sString = strip_tags($sString);
+    }
+    $sString = trim($sString);
     // Is the string long enough to ellipsize?
     if (mb_strlen($sString, 'UTF-8') <= $iMaxLength + 3) {
         return $sString;

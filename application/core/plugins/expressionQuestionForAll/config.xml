@@ -4,12 +4,12 @@
         <name>expressionQuestionForAll</name>
         <type>plugin</type>
         <creationDate>2019-07-24</creationDate>
-        <lastUpdate>2021-01-26</lastUpdate>
+        <lastUpdate>2026-10-17</lastUpdate>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
         <license>GPL</license>
-        <description><![CDATA[Adds QCODE.question for questions with subquestions for ExpressionScript Engine. <a href="https://manual.limesurvey.org/ExpressionQuestionForAll">More information in LimeSurvey manual.</a>]]></description>
+        <description><![CDATA[Adds QCODE with its question attributes (QCODE.question, QCODE.qid, QCODE.gid, QCODE.type, QCODE.relevance, QCODE.mandatory…) for questions with subquestions to ExpressionScript. <a href="https://manual.limesurvey.org/ExpressionQuestionForAll">More information in LimeSurvey manual.</a>]]></description>
     </metadata>
 
     <!-- Set priority before question.help -->

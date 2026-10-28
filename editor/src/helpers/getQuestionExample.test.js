@@ -13,4 +13,16 @@ describe('getQuestionExample', () => {
 
     expect(question.showAssessmentValue).toBe(true)
   })
+
+  test('omits the assessment flag when it is not provided', () => {
+    const question = getQuestionExample({})
+
+    expect(question).not.toHaveProperty('showAssessmentValue')
+  })
+
+  test('preserves an explicitly disabled assessment flag', () => {
+    const question = getQuestionExample({ showAssessmentValue: false })
+
+    expect(question.showAssessmentValue).toBe(false)
+  })
 })

@@ -47,6 +47,15 @@ class FloatingActionsWidget extends CWidget
      */
     public $selectAllUrl;
 
+    /**
+     * Show a "Select all" button for a grid with "Select all" enabled
+     * (CLSGridView::$lsSelectAllEnabled). It selects the whole result set; the actions
+     * then post a selectAll flag plus the grid filters instead of the selected ids.
+     *
+     * @var bool
+     */
+    public $lsSelectAllEnabled = false;
+
     /** Modal view names available in MassiveActionsWidget/views/modals/ */
     private const MODAL_VIEW_NAMES = [
         'yes-no',

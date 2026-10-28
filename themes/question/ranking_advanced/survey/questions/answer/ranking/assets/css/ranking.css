@@ -39,6 +39,12 @@
     right:0;
     bottom: 0;
 }
+/* Shrink an image below the rank number so it doesn't overflow the square block */
+.ranking-advanced-style .display_block_group .sortable-block .selector__index_row:not(:empty) ~ img {
+    display: block;
+    width: auto;
+    max-height: calc(100% - 1.5em);
+}
 
 /* Style for the bubbles */
 .ranking-advanced-style .display_bubble_group{

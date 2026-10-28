@@ -82,22 +82,22 @@ class CopyQuestion
             );
 
             //copy subquestions
-            if (isset($this->copyOptions['copySubquestions']) && $this->copyOptions['copySubquestions']) {
+            if (!empty($this->copyOptions['copySubquestions'])) {
                 $this->copyQuestionsSubQuestions($this->copyQuestionValues->getQuestiontoCopy()->qid, $surveyId);
             }
 
             //copy answer options
-            if (isset($this->copyOptions['copyAnswerOptions']) && $this->copyOptions['copyAnswerOptions']) {
+            if (!empty($this->copyOptions['copyAnswerOptions'])) {
                 $this->copyQuestionsAnswerOptions($this->copyQuestionValues->getQuestiontoCopy()->qid);
             }
 
             //copy default answers
-            if (isset($this->copyOptions['copyDefaultAnswers']) && $this->copyOptions['copyDefaultAnswers']) {
+            if (!empty($this->copyOptions['copyDefaultAnswers'])) {
                 $this->copyQuestionsDefaultAnswers($this->copyQuestionValues->getQuestiontoCopy()->qid);
             }
 
             //copy question settings (generalsettings and advanced settings)
-            if (isset($this->copyOptions['copySettings']) && $this->copyOptions['copySettings']) {
+            if (!empty($this->copyOptions['copySettings'])) {
                 $this->copyQuestionsSettings($this->copyQuestionValues->getQuestiontoCopy()->qid, $surveyId);
             }
         }
@@ -161,7 +161,7 @@ class CopyQuestion
                 if (isset($newQuestionL10nData[$questionL10n->language])) {
                     $copyLanguage->question = $newQuestionL10nData[$questionL10n->language]->getQuestionText();
                     $copyLanguage->help = $newQuestionL10nData[$questionL10n->language]->getHelp();
-                    if ($surveyId !== null && isset($this->copyOptions['adjustLinks']) && $this->copyOptions['adjustLinks']) {
+                    if ($surveyId !== null && !empty($this->copyOptions['adjustLinks'])) {
                         $copyLanguage->question = translateLinks(
                             'survey',
                             $this->copyQuestionValues->getSourceSurveyId(),
@@ -231,7 +231,7 @@ class CopyQuestion
             $this->mappedSubquestionIds[$subquestion->qid] = $copiedSubquestion->qid; // map old subquestion id to new subquestion id
             foreach ($subquestion->questionl10ns as $subquestLanguage) {
                 $substituteSurveyInQuestionText = $subquestLanguage->question;
-                if ($surveyId !== null && isset($this->copyOptions['adjustLinks']) && $this->copyOptions['adjustLinks']) {
+                if ($surveyId !== null && !empty($this->copyOptions['adjustLinks'])) {
                     $substituteSurveyInQuestionText = translateLinks(
                         'survey',
                         $this->copyQuestionValues->getSourceSurveyId(), //oldID

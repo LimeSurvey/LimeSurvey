@@ -193,6 +193,7 @@ if ($encrypted) {
 
 
             case Question::QT_S_SHORT_FREE_TEXT: // Short free text
+            case Question::QT_J_MAP:
                 echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                 $myfield2 = "T$myfield";
                 echo "<input type='checkbox'  name='summary[]' value='$myfield2'";

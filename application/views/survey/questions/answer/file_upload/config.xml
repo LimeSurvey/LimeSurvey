@@ -154,7 +154,7 @@
             <category>Other</category>
             <sortorder>134</sortorder>
             <inputtype>text</inputtype>
-            <default>png, gif, doc, odt, jpg, jpeg, pdf, png, heic</default>
+            <default>png, gif, doc, odt, jpg, jpeg, pdf, heic</default>
             <help>Allowed file types in comma separated format. e.g. pdf,doc,odt</help>
             <caption>Allowed file types</caption>
             <i18n></i18n>
@@ -270,7 +270,7 @@
             </options>
             <help>Select the type of chart to be displayed</help>
             <caption>Chart type</caption>
-            <default>0</default>
+            <default></default>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

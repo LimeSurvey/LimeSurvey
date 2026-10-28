@@ -374,7 +374,7 @@ class Tokens extends SurveyCommonAction
             $deletedTokenCount += TokenDynamic::model($iSid)->deleteRecords($chunk);
         }
         if ($deletedTokenCount > 0) {
-            ls\ajax\AjaxHelper::outputSuccess(ngT('Deleted {n} survey participant.|Deleted {n} survey participants.', $deletedTokenCount));
+            ls\ajax\AjaxHelper::outputSuccess(sprintf(gTPlural('Deleted %d survey participant.', 'Deleted %d survey participants.', $deletedTokenCount), $deletedTokenCount));
         } else {
             ls\ajax\AjaxHelper::outputError(gT('Could not delete survey participants.'));
         }
@@ -402,7 +402,7 @@ class Tokens extends SurveyCommonAction
         }
         $deletedTokenCount = TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
         if ($deletedTokenCount > 0) {
-            Yii::app()->setFlashMessage(ngT('Deleted {n} survey participant.|Deleted {n} survey participants.', $deletedTokenCount));
+            Yii::app()->setFlashMessage(sprintf(gTPlural('Deleted %d survey participant.', 'Deleted %d survey participants.', $deletedTokenCount), $deletedTokenCount));
         } else {
             Yii::app()->setFlashMessage(gT('Could not delete survey participant.'), 'error');
         }
@@ -2077,6 +2077,7 @@ class Tokens extends SurveyCommonAction
                 . gT("Uploading LDAP Query") . "</strong></td></tr>\n"
                 . "\t<tr><td align='center'>\n";
             $ldapq = Yii::app()->request->getPost('ldapQueries'); // the ldap query id
+            $ldap_queries[$ldapq] = prepareLDAPQuery($ldapq);
 
             $ldap_server_id = $ldap_queries[$ldapq]['ldapServerId'];
             if (
@@ -2187,9 +2188,8 @@ class Tokens extends SurveyCommonAction
                                 if ($ldapencoding != '') {
                                     $myfirstname = @mb_convert_encoding((string) $myfirstname, "UTF-8", $ldapencoding);
                                     $mylastname = @mb_convert_encoding((string) $mylastname, "UTF-8", $ldapencoding);
-                                    foreach ($aTokenAttr as $thisattrfieldname) {
-                                        $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
-                                        @mb_convert_encoding((string) $myattrArray[$attridx], "UTF-8", $ldapencoding);
+                                    foreach ($myattrArray as $attridx => $attrvalue) {
+                                        $myattrArray[$attridx] = @mb_convert_encoding((string) $attrvalue, "UTF-8", $ldapencoding);
                                     }
                                 }
 
@@ -2735,12 +2735,12 @@ class Tokens extends SurveyCommonAction
             $neededtokencount = $newtoken['1'];
             if ($neededtokencount > $newtokencount) {
                 $aData['success'] = false;
-                $message = ngT('Only {n} access code has been created.|Only {n} access codes have been created.', $newtokencount)
-                    . ngT('Need {n} access code.|Need {n} access codes.', $neededtokencount);
+                $message = sprintf(gTPlural('Only %d access code has been created.', 'Only %d access codes have been created.', $newtokencount), $newtokencount)
+                    . sprintf(gTPlural('Need %d access code.', 'Need %d access codes.', $neededtokencount), $neededtokencount);
                 $message .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary ">' . gT("OK") . '</a></p>';
             } else {
                 $aData['success'] = true;
-                $message = ngT('{n} access code has been created.|{n} access codes have been created.', $newtokencount);
+                $message = sprintf(gTPlural('%d access code has been created.', '%d access codes have been created.', $newtokencount), $newtokencount);
                 $message .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary ">' . gT("OK") . '</a></p>';
             }
             $this->renderWrappedTemplate('token', array('message' => array(

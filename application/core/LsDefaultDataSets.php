@@ -13,7 +13,7 @@ class LsDefaultDataSets
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
 
-        $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by', 'showincollapse'];
+        $headerArray = ['menu_id', 'user_id', 'ordering', 'name', 'title', 'menu_title', 'menu_description', 'menu_icon', 'menu_icon_type', 'menu_class', 'menu_link', 'action', 'template', 'partial', 'classes', 'permission', 'permission_grade', 'data', 'getdatamethod', 'language', 'active', 'changed_at', 'changed_by', 'created_at', 'created_by', 'showincollapse'];
         $basicMenues = [
             [
                 1,
@@ -440,8 +440,8 @@ class LsDefaultDataSets
                 null,
                 8,
                 'assessments',
-                gT('Edit assessments', 'unescaped')
-                ,gT('Assessments', 'unescaped'),
+                gT('Edit assessments', 'unescaped'),
+                gT('Assessments', 'unescaped'),
                 gT('Edit and look at the assessements for this survey.', 'unescaped'),
                 'ri-award-line',
                 'remix',
@@ -751,8 +751,8 @@ class LsDefaultDataSets
             'reminder' => gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}", $mode) . "\n\n" . gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}", $mode),
             'registration_subject' => gT("Survey registration confirmation", $mode),
             'registration' => gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.", $mode)
-            );
-            App()->setLanguage($sOldLanguage);
+        );
+        App()->setLanguage($sOldLanguage);
         return $returnArray;
     }
 
@@ -779,9 +779,9 @@ class LsDefaultDataSets
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
         $returnArray = [];
-        $returnArray[] = array_combine($headerArray, [1,null,null,null,1,0,'settings',gT('Survey settings'),'side',gT('Survey settings'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1]);
-        $returnArray[] = array_combine($headerArray, [2,null,null,null,2,0,'mainmenu',gT('Survey menu'),'side',gT('Main survey menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1]);
-        $returnArray[] = array_combine($headerArray, [3,null,null,null,3,0,'quickmenu',gT('Quick menu'),'collapsed',gT('Quick menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0]);
+        $returnArray[] = array_combine($headerArray, [1, null, null, null, 1, 0, 'settings', gT('Survey settings'), 'side', gT('Survey settings'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0, 1]);
+        $returnArray[] = array_combine($headerArray, [2, null, null, null, 2, 0, 'mainmenu', gT('Survey menu'), 'side', gT('Main survey menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0, 1]);
+        $returnArray[] = array_combine($headerArray, [3, null, null, null, 3, 0, 'quickmenu', gT('Quick menu'), 'collapsed', gT('Quick menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0, 0]);
         App()->setLanguage($sOldLanguage);
 
         return $returnArray;
@@ -932,16 +932,16 @@ class LsDefaultDataSets
 
         $returnArray = [
             [
-            'name' => 'default',
-            'title' => 'Default',
-            'template' =>  null,
-            'description' => 'Default survey group',
-            'sortorder' => 0,
-            'owner_id' => 1,
-            'parent_id' => null,
-            'created' => date('Y-m-d H:i:s'),
-            'modified' => date('Y-m-d H:i:s'),
-            'created_by' => 1
+                'name' => 'default',
+                'title' => 'Default',
+                'template' =>  null,
+                'description' => 'Default survey group',
+                'sortorder' => 0,
+                'owner_id' => 1,
+                'parent_id' => null,
+                'created' => date('Y-m-d H:i:s'),
+                'modified' => date('Y-m-d H:i:s'),
+                'created_by' => 1
             ]
         ];
 
@@ -1143,6 +1143,11 @@ class LsDefaultDataSets
         return $returnArray;
     }
 
+    /**
+     * Returns the default question theme entries of the core question types.
+     *
+     * @return array[]
+     */
     public static function getBaseQuestionThemeEntries()
     {
         $aBaseQuestionThemes = [
@@ -1817,6 +1822,30 @@ class LsDefaultDataSets
                 "extends" => "",
                 "group" => "Text questions",
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"text-short\"}",
+            ),
+            array(
+                "name" => "map",
+                "visible" => "Y",
+                "xml_path" => "application/views/survey/questions/answer/map",
+                "image_path" => "/assets/images/screenshots/J.png",
+                "title" => "Map",
+                "creation_date" => "2026-09-25 00:00:00",
+                "author" => "LimeSurvey GmbH",
+                "author_email" => "info@limesurvey.org",
+                "author_url" => "http://www.limesurvey.org",
+                "copyright" => "Copyright (C) 2005 - 2026 LimeSurvey Gmbh, Inc. All rights reserved.",
+                "license" => "GNU General Public License version 2 or later",
+                "version" => "1.0",
+                "api_version" => "1",
+                "description" => "Map question type configuration",
+                "last_update" => "2026-09-25 00:00:00",
+                "owner_id" => 1,
+                "theme_type" => "question_theme",
+                "question_type" => "J",
+                "core_theme" => 1,
+                "extends" => "",
+                "group" => "Mask questions",
+                "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"map\"}",
             ),
             array(
                 "name" => "yesno",

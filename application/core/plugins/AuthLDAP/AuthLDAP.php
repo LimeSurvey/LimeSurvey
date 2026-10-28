@@ -451,9 +451,14 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         // TLS also requires LDAPv3
         if (!empty($ldaptls) && $ldaptls == '1' && $ldapver == 3 && preg_match("/^ldaps:\/\//", $ldapserver) === 0) {
             // starting TLS secure layer
-            if (!ldap_start_tls($ldapconn)) {
+            if (!@ldap_start_tls($ldapconn)) {
+                // Read the error before unbinding: The connection can not be used afterwards
+                $tlsError = ldap_error($ldapconn);
                 ldap_unbind($ldapconn); // Could not properly connect, unbind everything.
-                return array("errorCode" => 100, 'errorMessage' => ldap_error($ldapconn));
+                return array(
+                    "errorCode" => 100,
+                    'errorMessage' => sprintf(gT('Could not start TLS on the LDAP connection: %s'), $tlsError)
+                );
             }
         }
         return $ldapconn;

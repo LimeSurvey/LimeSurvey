@@ -254,7 +254,8 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                         } // else do default action
                     default:
                         if (isset($row[$fieldno])) {
-                            $strTmp = mb_substr(stripTagsFull($row[$fieldno], false), 0, $iLength);
+                            // Response data is plain text: Only new lines are replaced, a '<' is not the start of a HTML tag
+                            $strTmp = mb_substr(trim(preg_replace('~\R~u', ' ', (string) $row[$fieldno])), 0, $iLength);
                             if (trim($strTmp) != '') {
                                 echo quoteSPSS($strTmp, $q, $field);
                             } elseif ($row[$fieldno] === '') {
@@ -423,7 +424,7 @@ function SPSSGetValues($field, $qidattributes, $language)
             'size' => numericSize($field['sql_name'], true),
         );
     }
-    if (in_array($field['LStype'], array('Q', 'S', 'T', 'U', ';', '*'))) {
+    if (in_array($field['LStype'], array('Q', 'S', 'J', 'T', 'U', ';', '*'))) {
         return array(
             'SPSStype' => "A",
             'size' => stringSize($field['sql_name']),
@@ -495,6 +496,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
         Question::QT_N_NUMERICAL => array('name' => 'Numerical input', 'size' => 3, 'SPSStype' => 'F', 'Scale' => 3),
         Question::QT_R_RANKING => array('name' => 'Ranking', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_S_SHORT_FREE_TEXT => array('name' => 'Short free text', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_J_MAP => array('name' => 'Map', 'size' => 1, 'SPSStype' => 'A'),
         Question::QT_Y_YES_NO_RADIO => array('name' => 'Yes/No', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_COLON_ARRAY_NUMBERS => array('name' => 'Multi flexi numbers', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
         Question::QT_SEMICOLON_ARRAY_TEXT => array('name' => 'Multi flexi text', 'size' => 1, 'SPSStype' => 'A'),
@@ -2001,6 +2003,11 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         $question->appendChild($response);
                         break;
+                    case "J": //Map
+                        $response->appendChild(QueXMLCreateFree("longtext", quexml_get_lengthth($qid, "maximum_chars", "65535"), ""));
+                        quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
+                        $question->appendChild($response);
+                        break;
                     case "T": //LONG FREE TEXT
                         $response->appendChild(QueXMLCreateFree("longtext", quexml_get_lengthth($qid, "display_rows", "40"), ""));
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
@@ -2359,8 +2366,10 @@ function tokensExport($iSurveyID)
     $iInvitationStatus = App()->request->getPost('invitationstatus');
     $iReminderStatus = App()->request->getPost('reminderstatus');
     $sTokenLanguage = App()->request->getPost('tokenlanguage');
+    $bIncludeSurveyLink = (bool) App()->request->getPost('includesurveylink', 0);
 
     $oSurvey = Survey::model()->findByPk($iSurveyID);
+    $aSurveyLanguages = $oSurvey->getAllLanguages();
     $bIsNotAnonymous = ($oSurvey->anonymized == 'N' && $oSurvey->active == 'Y'); // db table exist (responses_$iSurveyID) ?
     $bIsDateStamped = ($oSurvey->datestamp == 'Y' && $oSurvey->active == 'Y'); // db table exist (responses_$iSurveyID) ?
     $attrfieldnames = getAttributeFieldNames($iSurveyID);
@@ -2452,6 +2461,9 @@ function tokensExport($iSurveyID)
             $tokenoutput .= " <" . str_replace(",", " ", (string) $attrfielddescr[$attr_name]['description']) . ">";
         }
     }
+    if ($bIncludeSurveyLink) {
+        $tokenoutput .= ',surveylink';
+    }
     $tokenoutput .= "\n";
     echo $tokenoutput;
     $tokenoutput = "";
@@ -2489,6 +2501,12 @@ function tokensExport($iSurveyID)
             if ($bFilterEmailAfterDecrypt && mb_stripos((string) $brow['email'], $sEmailFiter) === false) {
                 continue;
             }
+            // The link is built before the masking to use the unchanged access code
+            $surveyLink = '';
+            if ($bIncludeSurveyLink && (string) $brow['token'] !== '') {
+                $language = in_array($brow['language'], $aSurveyLanguages) ? $brow['language'] : $oSurvey->language;
+                $surveyLink = $oSurvey->getSurveyUrl($language, ['token' => $brow['token']]);
+            }
             if (Yii::app()->request->getPost('maskequations')) {
                 $brow = array_map('MaskFormula', $brow);
             }
@@ -2520,6 +2538,9 @@ function tokensExport($iSurveyID)
             }
             foreach ($attrfieldnames as $attr_name) {
                 $tokenoutput .= '"' . str_replace('"', '""', trim((string) $brow[$attr_name])) . '",';
+            }
+            if ($bIncludeSurveyLink) {
+                $tokenoutput .= '"' . str_replace('"', '""', $surveyLink) . '",';
             }
             $tokenoutput = substr($tokenoutput, 0, -1); // remove last comma
             $tokenoutput .= "\n";

@@ -29,6 +29,7 @@ class AssessmentController extends LSBaseController
 
     /**
      * This part comes from renderWrappedTemplate
+     * Also sets the survey ID for the ExpressionScript engine, which the layout needs
      *
      * @param string $view View
      *
@@ -39,6 +40,7 @@ class AssessmentController extends LSBaseController
         if (isset($this->aData['surveyid'])) {
             $this->aData['oSurvey'] = $this->aData['oSurvey'] ?? Survey::model()->findByPk($this->aData['surveyid']);
             $this->layout = 'layout_questioneditor';
+            LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
         }
 
         return parent::beforeRender($view);

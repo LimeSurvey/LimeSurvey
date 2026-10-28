@@ -6,11 +6,11 @@ import { StatisticsService } from 'services'
 
 import useAuth from './useAuth'
 
-export function useStatisticsAtGlance(surveyId) {
+export function useStatisticsAtGlance(surveyId, { enabled = true } = {}) {
   const auth = useAuth()
   const statisticsService = useMemo(
     () => new StatisticsService(auth, surveyId, getApiUrl()),
-    [auth]
+    [auth, surveyId]
   )
 
   const {
@@ -21,6 +21,7 @@ export function useStatisticsAtGlance(surveyId) {
     queryKey: [STATES.SURVEY_STATISTICS, surveyId],
     queryFn: () => statisticsService.getSurveyStatisticsAtGlance(surveyId),
     select: (data) => data.statistics,
+    enabled: enabled && !!surveyId,
   })
 
   return {

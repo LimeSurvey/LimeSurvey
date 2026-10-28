@@ -70,11 +70,14 @@ class TestBaseClass extends TestCase
     }
 
     /**
+     * Imports a survey file as the test survey.
+     *
      * @param string $fileName
      * @param integer $asuser
+     * @param integer|null $surveyId Survey ID to import as; null keeps the ID from the file (if free)
      * @return void
      */
-    protected static function importSurvey($fileName, $asuser = 1)
+    protected static function importSurvey($fileName, $asuser = 1, $surveyId = null)
     {
         \Yii::app()->session['loginID'] = $asuser;
         $surveyFile = $fileName;
@@ -92,7 +95,7 @@ class TestBaseClass extends TestCase
             $surveyFile,
             $translateLinksFields,
             $newSurveyName,
-            null
+            $surveyId
         );
         if ($result) {
             if (!empty($result['error'])) {

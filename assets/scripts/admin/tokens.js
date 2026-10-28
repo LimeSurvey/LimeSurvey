@@ -215,6 +215,33 @@ function validateAdditionalAttributes() {
 }
 
 /**
+ * Shows the tab of the participant form that contains the first invalid field, then reports its validation message again.
+ * The browser can't focus a field in a hidden tab, so its own validation message isn't shown there.
+ * The 'invalid' event doesn't bubble, so this is registered as a capturing listener on the document.
+ * @param {Event} event the 'invalid' event
+ */
+function showTabOfInvalidField(event) {
+    const field = event.target;
+    const tabPane = field.closest ? field.closest('#edittoken .tab-pane') : null;
+    if (!tabPane || tabPane.classList.contains('active')) {
+        return;
+    }
+    // Only handle the first invalid field, which is the one the browser reports
+    const firstInvalidField = Array.from(field.form.elements).find((element) => element.willValidate && !element.validity.valid);
+    if (field !== firstInvalidField) {
+        return;
+    }
+    const tabLink = document.querySelector('#edittoken .nav-tabs a[href="#' + tabPane.id + '"]');
+    if (tabLink) {
+        // The tab pane only gets visible after the fade transition, so the browser can't report the field yet
+        event.preventDefault();
+        tabLink.addEventListener('shown.bs.tab', () => field.reportValidity(), {once: true});
+        bootstrap.Tab.getOrCreateInstance(tabLink).show();
+    }
+}
+document.addEventListener('invalid', showTabOfInvalidField, true);
+
+/**
  * Validates some form fields checking that at least one is not empty when creating a participant.
  * @returns {boolean} false if all of the checked fields are empty and the subaction is inserttoken.
  */
@@ -371,8 +398,9 @@ $(document).on('ready pjax:scriptcomplete', function(){
      * Handle form inputs 'invalid' event.
      */
     $('#edittoken').find('button, input, select, textarea').on('invalid', function () {
-        // Enable the Save and Close button
+        // Enable the Save and Close button and hide the loading spinner
         $("#save-and-close-button").removeClass("disabled");
+        $('#ls-loading').hide();
     });
 
     /**

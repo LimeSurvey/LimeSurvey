@@ -1,4 +1,5 @@
 import React from 'react'
+import { mapValues, pick } from 'lodash'
 
 import { QuestionTypeSelector } from 'components/QuestionTypeSelector'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
@@ -117,10 +118,12 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       .question()
       .create({
         question: { ...question, tempId: question.qid },
-        questionL10n: { ...question.l10ns },
+        questionL10n: mapValues(question.l10ns, (l10n) =>
+          pick(l10n, ['question', 'help'])
+        ),
         attributes: { ...question.attributes },
-        answers: { ...question.answers },
-        subquestions: { ...question.subquestions },
+        answers: [...(question.answers || [])],
+        subquestions: [...(question.subquestions || [])],
       })
     addToBuffer(operation)
   }
@@ -300,7 +303,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
    * @returns {Object} Built-in attribute defaults.
    */
   const getDefaultAttributes = (questionThemeName) => {
-    if (questionThemeName === getQuestionTypeInfo().BROWSER_DETECTION.theme) {
+    if (questionThemeName === getQuestionTypeInfo().MAP.theme) {
       return { location_mapservice: { '': '100' } }
     }
 

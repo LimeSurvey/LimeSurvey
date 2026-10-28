@@ -17185,7 +17185,7 @@ body {
   font-weight: 500;
   font-size: 0.9975rem;
   line-height: 20px;
-  padding: 0.375rem calc(1.05em + 6px);
+  padding: 0.375rem 16px;
   min-width: 80px;
   min-height: auto;
 }
@@ -17221,25 +17221,28 @@ body {
   justify-content: center;
 }
 
-.btn-group > .btn-check:checked + .btn:not(:has(i, svg, [class^=ri-], [class*=" ri-"]))::before {
-  content: "";
-  flex: none;
-  width: 0.35em;
-  height: 0.7em;
-  margin-top: -0.15em;
-  margin-right: -0.85em;
-  margin-left: 0.5em;
-  border: solid currentColor;
-  border-width: 0 0 0.15em 0.15em;
-  transform: rotate(45deg);
-}
-
 @media (forced-colors: active) {
+  .btn-group > .btn-check + .btn:not(:has(i, svg, [class^=ri-], [class*=" ri-"])) {
+    padding-right: calc(1.05em + 6px) !important;
+    padding-left: calc(1.05em + 6px) !important;
+  }
   .btn-group > .btn-check:checked + .btn {
     forced-color-adjust: none;
     background-color: Highlight !important;
     border-color: Highlight !important;
     color: HighlightText !important;
+  }
+  .btn-group > .btn-check:checked + .btn:not(:has(i, svg, [class^=ri-], [class*=" ri-"]))::before {
+    content: "";
+    flex: none;
+    width: 0.35em;
+    height: 0.7em;
+    margin-top: -0.15em;
+    margin-right: -0.85em;
+    margin-left: 0.5em;
+    border: solid currentColor;
+    border-width: 0 0 0.15em 0.15em;
+    transform: rotate(45deg);
   }
 }
 .dropdown-menu {
@@ -17451,7 +17454,7 @@ body {
   font-weight: 500;
   font-size: 0.9975rem;
   line-height: 20px;
-  padding: 2px calc(1.05em + 6px);
+  padding: 2px 16px;
   min-height: 20px;
 }
 .lime-toggle-btn-group .btn-group .btn-check + .btn-outline-secondary {
@@ -19323,6 +19326,20 @@ input[type=datetime-local] {
   color: #fff;
 }
 
+.input-group:not(.input-group-sm, .input-group-lg) > .btn:not(.btn-xs, .btn-sm, .btn-lg, .btn-xl) {
+  border-width: 2px;
+  padding-top: calc((38px - 20px) / 2 - 2px);
+  padding-bottom: calc((38px - 20px) / 2 - 2px);
+}
+.input-group:not(.input-group-sm, .input-group-lg) > .btn:not(.btn-xs, .btn-sm, .btn-lg, .btn-xl) [class^=ri-], .input-group:not(.input-group-sm, .input-group-lg) > .btn:not(.btn-xs, .btn-sm, .btn-lg, .btn-xl) [class*=" ri-"] {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.input-group > .btn-outline-secondary:not(:hover, :focus, :active, .active, .show, .disabled, [disabled], :disabled) {
+  border-color: #6E748C;
+}
+
 .ls-input-button {
   top: 50%;
   left: 5px;
@@ -21165,6 +21182,14 @@ input[type=checkbox]:disabled:checked:after {
   background-color: #9094A7;
   border-color: transparent;
 }
+input[type=checkbox]:indeterminate:after {
+  background-color: #1E1E1E;
+  border-color: #1E1E1E;
+}
+input[type=checkbox]:disabled:indeterminate:after {
+  background-color: #9094A7;
+  border-color: transparent;
+}
 input[type=checkbox]:focus-visible {
   outline: none;
 }
@@ -21230,6 +21255,14 @@ input[type=checkbox]:checked:after {
   background-color: #9094A7;
   border-color: transparent;
 }
+.checkbox input[type=checkbox]:indeterminate:after {
+  background-color: #1E1E1E;
+  border-color: #1E1E1E;
+}
+.checkbox input[type=checkbox]:disabled:indeterminate:after {
+  background-color: #9094A7;
+  border-color: transparent;
+}
 .checkbox input[type=checkbox]:focus-visible {
   outline: none;
 }
@@ -21292,6 +21325,14 @@ input[type=checkbox]:checked:after {
   border-color: #9094A7;
 }
 .checkbox-inline input[type=checkbox]:disabled:checked:after {
+  background-color: #9094A7;
+  border-color: transparent;
+}
+.checkbox-inline input[type=checkbox]:indeterminate:after {
+  background-color: #1E1E1E;
+  border-color: #1E1E1E;
+}
+.checkbox-inline input[type=checkbox]:disabled:indeterminate:after {
   background-color: #9094A7;
   border-color: transparent;
 }

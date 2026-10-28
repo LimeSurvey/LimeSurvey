@@ -18,6 +18,7 @@ use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     BadRequestException
 };
+use LimeSurvey\Models\Services\SurveyDetailService;
 
 /**
  * Class QuestionGroup
@@ -176,7 +177,9 @@ class QuestionGroup extends LSActiveRecord
         Question::deleteAllById($questionIds);
         Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
         QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' => $groupId));
-        return QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
+        $affectedRows = QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
+        (new SurveyDetailService())->touchSurveyLastModified((int) $surveyId);
+        return $affectedRows;
     }
 
     /**
@@ -434,6 +437,19 @@ class QuestionGroup extends LSActiveRecord
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Update the survey's lastmodified timestamp after the question group was saved.
+     *
+     * @return void
+     */
+    protected function afterSave()
+    {
+        parent::afterSave();
+        if (!empty($this->sid)) {
+            (new SurveyDetailService())->touchSurveyLastModified((int) $this->sid);
         }
     }
 

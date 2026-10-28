@@ -1399,12 +1399,17 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
 
 /**
  * Resets all session variables for this survey
+ * The session ID is regenerated for guests to prevent session fixation. A logged-in
+ * user already got a new session ID on login, and regenerating it on every survey
+ * preview would log the user out when a request is aborted (e.g. rapid page reload).
  * @param int $surveyid
  * @return void
  */
 function resetAllSessionVariables($surveyid)
 {
-    Yii:app()->session->regenerateID(true);
+    if (Yii::app()->user->isGuest) {
+        Yii::app()->session->regenerateID(true);
+    }
     unset($_SESSION['responses_' . $surveyid]['grouplist']);
     unset($_SESSION['responses_' . $surveyid]['fieldarray']);
     unset($_SESSION['responses_' . $surveyid]['insertarray']);

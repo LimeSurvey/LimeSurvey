@@ -194,7 +194,9 @@ export const SurveyLogicProvider = ({ children }) => {
 
       if (!result.operationsApplied) {
         errorToast(
-          'Sorry, we encountered an issue while saving the changes. Please try refreshing the page!'
+          t(
+            'Sorry, we encountered an issue while saving the changes. Please try refreshing the page!'
+          )
         )
       }
     }

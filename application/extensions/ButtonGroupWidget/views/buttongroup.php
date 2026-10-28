@@ -2,6 +2,7 @@
 
 /**
  * @var string $ariaLabel
+ * @var string $ariaLabelledBy
  * @var string $name
  * @var string $id
  *
@@ -12,7 +13,11 @@
 
 <div class="btn-group <?= $htmlOptions['class'] ?? '' ?>" data-bs-toggle="tooltip"
     id="<?= $id ?>" role="group"
-    <?= $ariaLabel ? "aria-label='" . Chtml::encode($ariaLabel) . "'" : ''  ?>
+    <?php if ($ariaLabelledBy) : ?>
+        aria-labelledby="<?= CHtml::encode($ariaLabelledBy) ?>"
+    <?php elseif ($ariaLabel) : ?>
+        aria-label="<?= CHtml::encode($ariaLabel) ?>"
+    <?php endif; ?>
     <?php
     $skipAttributes = ['class', 'icon', 'disabled', 'id'];
     foreach ($htmlOptions as $attribute => $value) :
