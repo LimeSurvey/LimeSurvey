@@ -772,13 +772,14 @@ class ResponsesController extends LSBaseController
             if (isset($aQuestionFiles[$index])) {
                 $aFile = $aQuestionFiles[$index];
                 // Real path check from here: https://stackoverflow.com/questions/4205141/preventing-directory-traversal-in-php-but-allowing-paths
-                $sDir = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR;
+                // Normalize the directory the same way as the file path, so a trailing separator, "..", or forward slashes on Windows in uploaddir don't break the check
+                $sDir = get_absolute_path(Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files") . DIRECTORY_SEPARATOR;
                 $sFileRealName = $sDir . $aFile['filename'];
                 $sRealUserPath = get_absolute_path($sFileRealName);
-                if ($sRealUserPath === false) {
-                    throw new CHttpException(404, "File not found.");
-                } elseif (strpos((string) $sRealUserPath, $sDir) !== 0) {
+                if (strpos($sRealUserPath, $sDir) !== 0) {
                     throw new CHttpException(403, "File cannot be accessed.");
+                } elseif (!is_file($sRealUserPath)) {
+                    throw new CHttpException(404, "File not found.");
                 } else {
                     $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
                     if (is_null($mimeType)) {

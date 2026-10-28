@@ -337,9 +337,8 @@ CKEDITOR.editorConfig = function (a) {
         ];
         a.extraPlugins = "limereplacementfields,lsswitchtoolbars";
         a.removePlugins = 'sourcearea';
-        a.iframe_attributes = {
-            sandbox: 'allow-scripts allow-same-origin'
-        },
+        // Keep the iframe attributes as entered by the author (CKEditor would otherwise force a sandbox attribute)
+        a.iframe_attributes = {},
 
         a.versionCheck = false
 }

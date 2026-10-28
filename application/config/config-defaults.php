@@ -127,6 +127,7 @@ $config['showpopups']         = 2; // Show popup messages if mandatory or condit
 
 $config['maxemails']          = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 $config['sendingrate']        = 60; // Number of seconds to wait until the next email batch is sent
+$config['send_error_saving_results_email'] = true; // Send the answers to the survey administrator email if a response could not be saved
 
 // Experimental parameters, only change if you know what you're doing
 //
@@ -617,6 +618,15 @@ $config['restrictToLanguages'] = '';
 * @var string
 */
 $config['RPCInterface'] = 'off';
+
+/**
+* This parameter enables a log of all RPC interface calls, to find out what an API client sent and received
+* Set to true in config.php to write each request and the start of its response to tmp/runtime/remotecontrol.log
+* Passwords are removed, session keys are replaced by a short hash and long values are shortened.
+* Warning: The log still contains the survey, participant and response data sent and received, only enable it while debugging.
+* @var boolean
+*/
+$config['rpc_log'] = false;
 
 /**
 * This parameter enables/disables the 'Access-Control-Allow-Origin: *' header on the RPC interface

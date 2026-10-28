@@ -475,6 +475,32 @@
       };
     })();
 
+    const PLACEHOLDER_HTML = '<div class="upload-placeholder"><span class="ri-file-line" aria-hidden="true"></span></div>';
+    // Not "placeholder": that collides with Bootstrap's .placeholder loading style
+    const PLACEHOLDER_CELL_CLASS = 'no-preview';
+
+    /**
+     * Replaces uploaded image previews the browser cannot decode (e.g. HEIC outside Safari)
+     * with the generic file placeholder.
+     * @param {jQuery} $images
+     */
+    function applyImagePreviewFallback($images) {
+      $images.each(function () {
+        const img = this;
+        const replaceWithPlaceholder = function () {
+          const $img = $(img);
+          $img.closest('.upload.image').removeClass('image').addClass(PLACEHOLDER_CELL_CLASS);
+          $img.replaceWith(PLACEHOLDER_HTML);
+        };
+        // The image may already have failed before the handler was attached
+        if (img.complete && img.naturalWidth === 0) {
+          replaceWithPlaceholder();
+          return;
+        }
+        $(img).one('error', replaceWithPlaceholder);
+      });
+    }
+
     window.uploadModalObjects = window.uploadModalObjects || {};
     class UploadQuestionController {
       constructor(fieldname) {
@@ -586,7 +612,7 @@
           } catch (e) {}
           $('#' + this.fieldname + '_uploadedfiles').removeClass('d-none');
           $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
-          const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
+          const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico', 'heic');
           const templateHtml = $('#filerowtemplate_' + this.fieldname).html();
           jsonobj.forEach((item, iterator) => {
             let imageOrPlaceholder, imageOrPlaceholderHtml, title, comment, name, filepointer;
@@ -594,8 +620,8 @@
               imageOrPlaceholder = "image";
               imageOrPlaceholderHtml = '<img src="' + uploadurl + '/filegetcontents/' + decodeURIComponent(item.filename) + '" class="uploaded" />';
             } else {
-              imageOrPlaceholder = "placeholder";
-              imageOrPlaceholderHtml = '<div class="upload-placeholder"></div>';
+              imageOrPlaceholder = PLACEHOLDER_CELL_CLASS;
+              imageOrPlaceholderHtml = PLACEHOLDER_HTML;
             }
             title = show_title != 0 ? htmlentities(item.title) : '';
             comment = show_comment != 0 ? htmlentities(item.comment) : '';
@@ -611,6 +637,7 @@
             });
             $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').append(rowHtml);
           });
+          applyImagePreviewFallback($('#' + this.fieldname + '_uploadedfiles').find('img.uploaded'));
           $('.trigger_edit_upload_' + this.fieldname).off('click.lsuploadquestion');
           $('.trigger_edit_upload_' + this.fieldname).on('click.lsuploadquestion', () => {
             this.$modalEl.modal('show');
@@ -643,9 +670,11 @@
         var previewblock = $('<li id="' + fieldname + '_li_' + i + '" class="previewblock file-element"></li>');
         var previewContainer = $('<div class="file-preview"></div>');
         if (isValueInArray(image_extensions, item.ext.toLowerCase())) {
-          previewContainer.append('<img src="' + options.uploadurl + '/filegetcontents/' + item.filename + '" class="uploaded" />');
+          var $previewImage = $('<img src="' + options.uploadurl + '/filegetcontents/' + item.filename + '" class="uploaded" />');
+          applyImagePreviewFallback($previewImage);
+          previewContainer.append($previewImage);
         } else {
-          previewContainer.append('<div class="upload-placeholder"></div>');
+          previewContainer.append(PLACEHOLDER_HTML);
         }
         previewContainer.append('<span class="file-name">' + escapeHtml(item.name) + '</span>');
         if ($('#' + fieldname + '_show_title').val() == 1 || $('#' + fieldname + '_show_comment').val() == 1) {

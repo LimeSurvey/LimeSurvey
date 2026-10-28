@@ -361,6 +361,15 @@ return array(
             'leaflet.css'
         ),
     ),
+    /* Used by the browserdetect question theme */
+    'bowser' => array(
+        'devBaseUrl' => 'node_modules/bowser',
+        'basePath' => 'node_modules.bowser',
+        'position' => CClientScript::POS_BEGIN,
+        'js' => array(
+            'es5.js'
+        ),
+    ),
     'devbridge-autocomplete' => array(
         'basePath' => 'node_modules.devbridge-autocomplete.dist', /* For geoname search autocomplete without jquery */
         'position' => CClientScript::POS_BEGIN,

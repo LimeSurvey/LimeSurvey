@@ -27,6 +27,12 @@ class CLSGridView extends TbGridView
      */
     public array $lsAdditionalColumnsSelected = [];
 
+    /** @var bool Render the column selector as the "Organize columns" modal */
+    public bool $lsOrganizeColumns = false;
+
+    /** @var array Additional columns shown when the user has no saved selection */
+    public array $lsAdditionalColumnsDefault = [];
+
     /**
      * When true, the selection bar offers a "Select all" button that selects the
      * whole result set; massive actions then post a selectAll flag plus the grid filters.
@@ -421,6 +427,9 @@ class CLSGridView extends TbGridView
         $columns_filter_button = '<button role="button" type="button" aria-label="' . gT('Select columns') . '" class="btn b-0" data-bs-toggle="modal" data-bs-target="#column-filter-modal">
                 <i class="ri-layout-column-fill"></i>
             </button>';
+        if ($this->lsOrganizeColumns) {
+            $columns_filter_button = str_replace(gT('Select columns'), gT('Organize columns'), $columns_filter_button);
+        }
         $this->columns[]  = [
             'header'            => $columns_filter_button,
             'name'              => 'dropdown_actions',
@@ -433,18 +442,25 @@ class CLSGridView extends TbGridView
         /* Updating the columns to be added */
         if (App()->request->getParam('selectColumns') && $this->ajaxUpdate === $ajaxUpdate) {
             $columnsSelected = (array) App()->request->getQuery('columnsSelected');
-            // If there are no columns selected, we delete the user setting.
-            if (empty($columnsSelected)) {
+            if ($this->lsOrganizeColumns) {
+                App()->session['gridview_columns_' . $this->ajaxUpdate] = array_values(array_filter($columnsSelected, 'is_string'));
+            } elseif (empty($columnsSelected)) {
+                // If there are no columns selected, we delete the user setting.
                 SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
             } else {
                 SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
             }
         }
+        if ($this->lsOrganizeColumns) {
+            $sessionColumns = App()->session['gridview_columns_' . $this->ajaxUpdate];
+            $this->addColumns(is_array($sessionColumns) ? $sessionColumns : $this->lsAdditionalColumnsDefault);
+            return;
+        }
         /* get the columns to be added */
         $userColumns = SettingsUser::getUserSettingValue('gridview_columns_' . $this->ajaxUpdate);
         if (!empty($userColumns)) {
             $columnsSelected = json_decode($userColumns, false);
-            if ($columnsSelected !== null) {
+            if (is_array($columnsSelected)) {
                 $this->addColumns($columnsSelected);
             }
         }
@@ -460,6 +476,7 @@ class CLSGridView extends TbGridView
             }
             if (is_array($column_data)) {
                 $this->lsAdditionalColumnsSelected[] = $selectedColumn;
+                unset($column_data['modalLabel']);
                 array_splice($this->columns, count($this->columns) - 2, 0, [$column_data]);
             }
         }

@@ -104,6 +104,22 @@ input[type="datetime-local"] {
     color            : $white;
 }
 
+// Buttons next to the fixed-height inputs get the same height and border as the inputs
+.input-group:not(.input-group-sm, .input-group-lg) > .btn:not(.btn-xs, .btn-sm, .btn-lg, .btn-xl) {
+    border-width   : $input-border-width;
+    padding-top    : calc((#{$input-fixed-height} - #{$line-height-20}) / 2 - #{$input-border-width});
+    padding-bottom : calc((#{$input-fixed-height} - #{$line-height-20}) / 2 - #{$input-border-width});
+    // Inline 20px icons make the line box higher than the 20px line height
+    & [class^="ri-"], & [class*=" ri-"] {
+        display        : inline-block;
+        vertical-align : top;
+    }
+}
+
+.input-group > .btn-outline-secondary:not(:hover, :focus, :active, .active, .show, .disabled, [disabled], :disabled) {
+    border-color : $input-border-color;
+}
+
 .ls-input-button {
     top       : 50%;
     right     : 5px;

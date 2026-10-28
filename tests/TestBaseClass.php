@@ -112,7 +112,7 @@ class TestBaseClass extends TestCase
 
     /**
      * Get all question inside current survey, key is question code
-     * @return array[]
+     * @return \Question[]
      */
     public function getAllSurveyQuestions()
     {
