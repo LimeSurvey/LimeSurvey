@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom'
 
 import { STATES } from 'helpers'
 import { getSurveyPanels } from 'helpers/options'
-import { QuestionSettings } from 'components/QuestionSettings/QuestionSettings'
 import { WelcomeSettings } from 'components/WelcomeSettings/WelcomeSettings'
 import { GroupSettings } from 'components/GroupSettings/GroupSettings'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
