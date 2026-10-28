@@ -179,10 +179,11 @@ class LSUserIdentity extends CUserIdentity
      * Dispatch the beforeSuccessfulLogin event, letting plugins refuse the login (by setting
      * 'result' to an invalid LSAuthResult) or require a second authentication step (by setting
      * 'secondFactorPlugin' to their plugin name).
+     * A login with an API token never needs a second step: the token replaces it.
      *
      * @param User $user The authenticated user
      * @param LSAuthResult $result The current, valid, authentication result
-     * @return LSAuthResult
+     * @return LSAuthResult The result to use: invalid if a plugin refused the login or the second step is not supported
      */
     protected function beforeSuccessfulLogin($user, $result)
     {
@@ -196,7 +197,7 @@ class LSUserIdentity extends CUserIdentity
             return $pluginResult;
         }
         $secondFactorPlugin = $event->get('secondFactorPlugin');
-        if (empty($secondFactorPlugin)) {
+        if (empty($secondFactorPlugin) || $this->apiTokenId !== null) {
             return $result;
         }
         if (!$this->secondFactorSupported) {

@@ -155,6 +155,25 @@ class ApiTokenTest extends BaseTest
         $this->assertNull($identity->apiTokenId);
     }
 
+    public function testApiTokenSkipsTheSecondFactor()
+    {
+        [, $plainToken] = $this->createAdminToken([]);
+        self::loadTestPlugin('SecondFactorTestPlugin');
+        \SecondFactorTestPlugin::$requireSecondFactor = true;
+        try {
+            $passwordResult = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+            $tokenResult = $this->handler->get_session_key($this->getUsername(), $plainToken);
+        } finally {
+            \SecondFactorTestPlugin::$requireSecondFactor = false;
+            self::deActivatePlugin('SecondFactorTestPlugin');
+        }
+
+        $this->assertIsArray($passwordResult);
+        $this->assertSame('This account uses two-factor authentication, which is not supported by this login method.', $passwordResult['status']);
+        $this->assertIsString($tokenResult);
+        $this->assertSame(32, strlen($tokenResult));
+    }
+
     public function testSurveyPermissionsLimitTheSession()
     {
         [$surveyId, $otherSurveyId] = self::$surveyIds;
