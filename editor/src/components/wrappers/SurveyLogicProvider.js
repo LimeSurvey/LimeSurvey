@@ -5,6 +5,7 @@ import { queryClient } from 'queryClient'
 
 import { useAppState, useBuffer, useErrors, useFocused, useSurvey } from 'hooks'
 import {
+  Entities,
   EntitiesType,
   Operations,
   OperationsBuffer,
@@ -195,6 +196,18 @@ export const SurveyLogicProvider = ({ children }) => {
         setSurveyRefreshRequired(true)
       }
 
+      // A refused survey status change (e.g. activation blocked by a plugin) is
+      // not retried automatically: Drop it, so the user can trigger it again.
+      exceptionErrors
+        .filter((error) => error.entity === Entities.surveyStatus)
+        .forEach((error) => {
+          mapResult.operationsBuffer.removeOperation(
+            error.id,
+            error.op,
+            error.entity
+          )
+        })
+
       update({ ...mapResult.survey })
       refetchQuestionsFieldNamesMap()
       setBuffer(mapResult.operationsBuffer.getOperations(), RandomNumber())
@@ -212,12 +225,10 @@ export const SurveyLogicProvider = ({ children }) => {
         queryKey: [STATES.SURVEY_RESPONSES, surveyId],
       })
 
-      // The message of a refused delete is shown by itself, a reload is not needed
-      const onlyDeletesRefused =
-        refusedDeletes.length &&
-        !validationErrors.length &&
-        exceptionErrors.length === refusedDeletes.length
-      if (!result.operationsApplied && !onlyDeletesRefused) {
+      // Specific errors are already shown as toasts, see SurveyWorkspace
+      const hasErrorMessages =
+        result.validationErrors?.length || result.exceptionErrors?.length
+      if (!result.operationsApplied && !hasErrorMessages) {
         errorToast(
           t(
             'Sorry, we encountered an issue while saving the changes. Please try refreshing the page!'
