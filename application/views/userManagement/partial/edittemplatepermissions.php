@@ -2,7 +2,7 @@
 
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('Theme permissions')]
+    ['modalTitle' => gT('Theme permissions'), 'modalTitleId' => 'UserManagement-action-modal-title']
 );
 ?>
 
@@ -16,7 +16,7 @@ Yii::app()->getController()->renderPartial(
         <div class="row ls-space margin top-5 bottom-5 d-none" id="UserManagement--errors" role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1">
         </div>
         <input type="hidden" name="userid" value="<?php echo $oUser->uid; ?>"/>
-        <div class="mb-3">
+        <div class="mb-3 d-flex gap-1">
             <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-outline-secondary">
                 <?php eT('Select all'); ?>
             </button>
