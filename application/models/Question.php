@@ -291,7 +291,7 @@ class Question extends LSActiveRecord
                 'except' => 'archiveimport'
             );
             $aRules[] = array(
-                'title', 'match', 'pattern' => '/^[a-zA-z0-9]*$/',
+                'title', 'match', 'pattern' => '/^[a-zA-Z0-9]*$/',
                 'message' => gT('Subquestion codes may only contain alphanumeric characters.'),
                 'except' => 'archiveimport'
             );
@@ -885,6 +885,7 @@ class Question extends LSActiveRecord
         if (is_numeric(substr($sNewTitle, 0, 1))) {
             $sNewTitle = 'q' . $sNewTitle;
         }
+        $this->title = $sNewTitle;
         /* Maybe there are another question with same title try to fix it 10 times */
         $attempts = 0;
         while (!$this->validate(array('title'))) {
@@ -1104,13 +1105,15 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Update the survey's lastmodified timestamp after the question was saved.
+     * Update the survey's lastmodified timestamp after the question was saved,
+     * and forget its attribute values kept for this request (type and theme decide which attributes it has).
      *
      * @return void
      */
     protected function afterSave()
     {
         parent::afterSave();
+        QuestionAttribute::clearRequestCache($this->qid);
         if (!empty($this->sid)) {
             (new SurveyDetailService())->touchSurveyLastModified((int) $this->sid);
         }
@@ -1535,6 +1538,8 @@ class Question extends LSActiveRecord
 
     /**
      * Used by question create form.
+     * The code is the user's subquestion prefix followed by a zero-padded number (e.g. SQ001),
+     * or just "1" if the prefix is empty, so purely numeric codes have no leading zeros.
      *
      * @return Question
      */
@@ -1542,13 +1547,16 @@ class Question extends LSActiveRecord
     {
         $question = new Question();
         $question->qid = 0;
-        $question->title = (SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ') . '001';
+        $prefix = SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ';
+        $question->title = $prefix === '' ? '1' : $prefix . '001';
         $question->relevance = 1;
         return $question;
     }
 
     /**
      * Used by question create form.
+     * The code is the user's answer option prefix followed by a zero-padded number (e.g. AO01),
+     * or just "1" if the prefix is empty, so purely numeric codes have no leading zeros.
      *
      * @return Answer
      */
@@ -1558,7 +1566,8 @@ class Question extends LSActiveRecord
         // TODO: Assuming no collision.
         $answer->aid = 'new' . rand(1, 100000);
         $answer->sortorder = 0;
-        $answer->code = (SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? 'AO') . '01';
+        $prefix = SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? 'AO';
+        $answer->code = $prefix === '' ? '1' : $prefix . '01';
 
         $l10n = [];
         foreach ($this->survey->allLanguages as $language) {

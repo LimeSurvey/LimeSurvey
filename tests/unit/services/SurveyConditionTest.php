@@ -47,15 +47,12 @@ class SurveyConditionTest extends TestBaseClass
         $surveyCondition = \LimeSurvey\DI::getContainer()->get(SurveyCondition::class);
         $surveyCondition->setISurveyID(self::$surveyId);
         $language = new \ReflectionProperty($surveyCondition, 'language');
-        $language->setAccessible(true);
         $language->setValue($surveyCondition, self::$testSurvey->language);
 
         $getTheseRows = new \ReflectionMethod($surveyCondition, 'getTheseRows');
-        $getTheseRows->setAccessible(true);
         $theseRows = $getTheseRows->invoke($surveyCondition, [$question->qid]);
 
         $getCAnswersAndCQuestions = new \ReflectionMethod($surveyCondition, 'getCAnswersAndCQuestions');
-        $getCAnswersAndCQuestions->setAccessible(true);
         list($cquestions) = $getCAnswersAndCQuestions->invoke($surveyCondition, $theseRows);
 
         $this->assertNotEmpty($cquestions);

@@ -75,12 +75,55 @@ var UserManagement = function () {
         $('#submitForm').prop('disabled', false);
     };
 
+    /**
+     * Ask for confirmation before submitting when the submit button has a data-confirm-message,
+     * e.g. saving user permissions removes the roles of the user.
+     * With data-confirm-if-filled, the confirmation is only asked when the field with this name has a value.
+     *
+     * @param {HTMLFormElement} form
+     * @param {HTMLElement} submitter
+     * @return {boolean} true if the submit has to wait for the confirmation
+     */
+    var confirmSubmit = function (form, submitter) {
+        var confirmationModal = document.getElementById('confirmation-modal');
+        if (!submitter || !submitter.dataset.confirmMessage || submitter.dataset.confirmed || !confirmationModal) {
+            return false;
+        }
+        if (submitter.dataset.confirmIfFilled) {
+            var value = $(form).find('[name="' + submitter.dataset.confirmIfFilled + '"]').val();
+            if (!value || value.length === 0) {
+                return false;
+            }
+        }
+        var relatedTarget = $('<span>').data({
+            title: submitter.dataset.confirmTitle,
+            message: submitter.dataset.confirmMessage,
+            btntext: submitter.dataset.confirmBtntext,
+            btnclass: 'btn-danger',
+        })[0];
+        // Stack the confirmation and its backdrop above the open user management modal
+        $(confirmationModal).css('z-index', 1065).one('hidden.bs.modal', function () {
+            $(this).css('z-index', '');
+        });
+        bootstrap.Modal.getOrCreateInstance(confirmationModal).show(relatedTarget);
+        $('.modal-backdrop').last().css('z-index', 1060);
+        $(confirmationModal).find('.btn-ok').off('click').on('click', function () {
+            bootstrap.Modal.getOrCreateInstance(confirmationModal).hide();
+            submitter.dataset.confirmed = '1';
+            form.requestSubmit(submitter);
+        });
+        return true;
+    };
+
     var wireForm = function () {
         $('#UserManagement--modalform').on('submit.USERMANAGERMODAL', function (e) {
             e.preventDefault();
             const buttonClassName = e.originalEvent.submitter.className;
             // Do nothing for outline-secondary (close) button.
             if (buttonClassName.includes('outline-secondary')) {
+                return false;
+            }
+            if (confirmSubmit(this, e.originalEvent.submitter)) {
                 return false;
             }
             $('#UserManagement--errors').addClass('d-none').removeClass('alert alert-danger');
@@ -180,57 +223,89 @@ var UserManagement = function () {
         });
     };
 
-    var wirePermissions = function () {
-        var tableObject = $('#UserManagement--userpermissions-table');
+    var wirePermissions = function (root) {
+        // Multiple modals on the User Management page (single-user edit and the
+        // massive-action batch edit) reuse the same ids, so everything must be
+        // scoped to the modal actually being wired instead of matching whichever
+        // one of the duplicate-id elements happens to be first/visible in the DOM.
+        var rootObject = root ? $(root) : $('#UserManagement-action-modal');
+        var tableObject = rootObject.find('#UserManagement--userpermissions-table');
 
         updateIndeterminatePermissions(tableObject.find('input:checkbox'));
-        tableObject.find('input:checkbox[data-indeterminate=1]').on('change', function () {
+        tableObject.on('change', 'input:checkbox[data-indeterminate=1]', function () {
             updateIndeterminatePermissions($(this));
         });
 
-        $(".general-row-selector").on('click', function () {
-            $(this).removeClass('incomplete-selection');
-            bChecked = this.checked;
-            updateIndeterminatePermissions($(this).closest('tr').find('input').prop('checked', bChecked));
-        });
-
-        $('.specific-permission-selector').on('click', function () {
-            var thisRow = $(this).closest('tr');
-            if (thisRow.find('.specific-settings-block input:checked').size() == thisRow.find('.specific-settings-block input').size()) {
-                thisRow.find('.general-row-selector').prop('checked', true);
-                thisRow.find('.general-row-selector').removeClass('incomplete-selection');
-            } else if (thisRow.find('.specific-settings-block input:checked').size() == 0) {
-                thisRow.find('.general-row-selector').prop('checked', false);
+        var updateRowGeneralState = function (row) {
+            var specificInputs = row.find('.specific-settings-block input:checkbox');
+            var checkedCount = specificInputs.filter(':checked').length;
+            var generalSelector = row.find('.general-row-selector');
+            if (checkedCount === 0) {
+                generalSelector.prop('checked', false).prop('indeterminate', false).removeClass('incomplete-selection');
+            } else if (checkedCount === specificInputs.length) {
+                generalSelector.prop('checked', true).prop('indeterminate', false).removeClass('incomplete-selection');
             } else {
-                thisRow.find('.general-row-selector').prop('checked', true);
-                thisRow.find('.general-row-selector').addClass('incomplete-selection');
+                generalSelector.prop('checked', true).prop('indeterminate', true).addClass('incomplete-selection');
             }
+        };
+
+        var updateSelectAllState = function () {
+            var selectAllCheckbox = rootObject.find('.selector--select-all-permissions');
+            if (!selectAllCheckbox.length) {
+                return;
+            }
+            var enabledInputs = tableObject.find('.specific-settings-block input:checkbox:not(:disabled)');
+            var checkedCount = enabledInputs.filter(':checked').length;
+            if (checkedCount === 0) {
+                selectAllCheckbox.prop('checked', false).prop('indeterminate', false);
+            } else if (checkedCount === enabledInputs.length) {
+                selectAllCheckbox.prop('checked', true).prop('indeterminate', false);
+            } else {
+                selectAllCheckbox.prop('checked', false).prop('indeterminate', true);
+            }
+        };
+
+        tableObject.on('click', '.general-row-selector', function () {
+            var bChecked = this.checked;
+            $(this).prop('indeterminate', false).removeClass('incomplete-selection');
+            updateIndeterminatePermissions($(this).closest('tr').find('input').prop('checked', bChecked));
+            updateSelectAllState();
         });
 
-        $('#perm_superadmin_read').on(' click', function () {
-            tableObject.find('input').prop('checked', this.checked).fadeTo(1, 1);
+        tableObject.on('change', '.specific-settings-block input:checkbox', function () {
+            updateRowGeneralState($(this).closest('tr'));
+            updateSelectAllState();
+        });
+
+        rootObject.find('#perm_superadmin_read').on(' click', function () {
+            updateIndeterminatePermissions(tableObject.find('input').prop('checked', this.checked).fadeTo(1, 1));
+            tableObject.find('tbody tr').each(function () {
+                updateRowGeneralState($(this));
+            });
+            updateSelectAllState();
         })
 
-        $('#UserManagement--userpermissions-table tr').each(function () {
-            if ($(this).find('.specific-settings-block input:checked').size() == $(this).closest('tr').find('.specific-settings-block input').size()) {
-                $(this).find('.general-row-selector').prop('checked', true);
-                $(this).find('.general-row-selector').removeClass('incomplete-selection');
-            } else if ($(this).find('.specific-settings-block input:checked').size() == 0) {
-                $(this).find('.general-row-selector').prop('checked', false);
-            } else {
-                $(this).find('.general-row-selector').prop('checked', true);
-                $(this).find('.general-row-selector').addClass('incomplete-selection');
-            }
+        rootObject.find('.selector--select-all-permissions').on('click', function () {
+            var bChecked = this.checked;
+            tableObject.find('input:checkbox:not(:disabled)').prop('checked', bChecked).prop('indeterminate', false);
+            tableObject.find('.general-row-selector').removeClass('incomplete-selection');
+            updateIndeterminatePermissions(tableObject.find('.specific-settings-block input:checkbox'));
+            updateSelectAllState();
         });
 
-        $('#permission-modal-exitForm').on('click', function(e){
+        tableObject.find('tbody tr').each(function () {
+            updateRowGeneralState($(this));
+        });
+        updateSelectAllState();
+
+        rootObject.find('#permission-modal-exitForm').on('click', function(e){
             e.preventDefault();
             triggerModalClose();
         });
     };
 
     var wireMassPermissions = function () {
-        wirePermissions();
+        wirePermissions('#floating-actions-modal-usermanagement--identity-gridPanel-batchPermissions-1');
 
         var oCheckedItems = $('#usermanagement--identity-gridPanel').yiiGridView('getChecked', $('.listActions').data('pk'));
         $('#hereBeUserIds').html('');
@@ -274,6 +349,33 @@ var UserManagement = function () {
                 $('#password_repeat').prop('disabled', true);
             }
         });
+    };
+
+    var wireLoginMethods = function () {
+        var $loginMethods = $('#UserManagement--login-methods');
+        if ($loginMethods.length === 0) {
+            return;
+        }
+        var updateLoginMethods = function () {
+            var ldapLogin = $('#User_Form_login_method_auth_ldap').prop('checked') === true;
+            var dbLogin = $('#User_Form_login_method_auth_db').prop('checked') === true;
+            // LDAP users get full name and email address from the LDAP directory
+            $('#UserManagement--ldap-hint').toggleClass('d-none', !ldapLogin);
+            $('#User_Form_email').prop('required', !ldapLogin);
+            $('label[for=User_Form_email] span.required').toggleClass('d-none', ldapLogin);
+            if (ldapLogin) {
+                $('#User_Form_full_name, #User_Form_email').attr('aria-describedby', 'UserManagement--ldap-hint');
+            } else {
+                $('#User_Form_full_name, #User_Form_email').removeAttr('aria-describedby');
+            }
+            // A password is only needed for the internal database login
+            if (!dbLogin) {
+                $('#utility_set_password_no').prop('checked', true).trigger('change');
+            }
+            $('#utility_set_password').toggleClass('d-none', !dbLogin);
+        };
+        $loginMethods.find('input[type=checkbox]').on('change', updateLoginMethods);
+        updateLoginMethods();
     };
 
     var wireRoleSet = function () {
@@ -324,11 +426,15 @@ var UserManagement = function () {
     var applyModalHtml = function (html) {
         $('#UserManagement-action-modal').find('.modal-content').html(html);
         wirePasswordOptions();
+        wireLoginMethods();
         wirePermissions();
         wireTemplatePermissions();
         wireRoleSet();
         wireForm();
         wireDatePicker();
+        if (window.LS && typeof window.LS.doToolTip === 'function') {
+            window.LS.doToolTip();
+        }
     }
 
 
@@ -367,7 +473,7 @@ var UserManagement = function () {
             $.fn.yiiGridView.update('usermanagement--identity-gridPanel', {});
         });
 
-        $(document).on('shown.bs.modal', '#massive-actions-modal-usermanagement--identity-gridPanel-batchPermissions-2', function () {
+        $(document).on('shown.bs.modal', '#floating-actions-modal-usermanagement--identity-gridPanel-batchPermissions-1', function () {
             wireMassPermissions();
         });
     };

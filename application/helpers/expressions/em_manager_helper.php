@@ -34,6 +34,7 @@ Yii::import('application.helpers.expressions.warnings.EMWarningInvalidComparison
 Yii::import('application.helpers.expressions.warnings.EMWarningPlusOperator', true);
 Yii::import('application.helpers.expressions.warnings.EMWarningAssignment', true);
 Yii::import('application.helpers.expressions.warnings.EMWarningLaterQuestion', true);
+Yii::import('application.helpers.expressions.warnings.EMWarningAnonymizedParticipantAttribute', true);
 Yii::import('application.helpers.expressions.warnings.EMWarningHTMLBaker', true);
 Yii::app()->loadHelper('database');
 Yii::app()->loadHelper('frontend');
@@ -1398,7 +1399,8 @@ class LimeExpressionManager
                             break;
                     }
 
-                    if (isset($this->knownVars[$rowdivid]['SQrelevance']) && $this->knownVars[$rowdivid]['SQrelevance'] != '') {
+                    // Single-field types like Yes/No have no row ID
+                    if ($rowdivid !== null && isset($this->knownVars[$rowdivid]['SQrelevance']) && $this->knownVars[$rowdivid]['SQrelevance'] != '') {
                         $subQrels[] = [
                             'qtype'    => $type,
                             'type'     => 'SQ_relevance',
@@ -4020,10 +4022,11 @@ class LimeExpressionManager
                 $token->decrypt();
                 foreach ($token as $key => $val) {
                     $this->knownVars["TOKEN:" . strtoupper((string) $key)] = [
-                        'code'      => $anonymized ? '' : $val,
-                        'jsName_on' => '',
-                        'jsName'    => '',
-                        'readWrite' => 'N',
+                        'code'       => $anonymized ? '' : $val,
+                        'jsName_on'  => '',
+                        'jsName'     => '',
+                        'readWrite'  => 'N',
+                        'anonymized' => $survey->isAnonymized,
                     ];
                 }
             }
@@ -4031,11 +4034,12 @@ class LimeExpressionManager
             // Read list of available tokens from the tokens table so that preview and error checking works correctly
             $attrs = array_keys(getTokenFieldsAndNames($surveyid));
             $blankVal = [
-                'code'      => '',
-                'type'      => '',
-                'jsName_on' => '',
-                'jsName'    => '',
-                'readWrite' => 'N',
+                'code'       => '',
+                'type'       => '',
+                'jsName_on'  => '',
+                'jsName'     => '',
+                'readWrite'  => 'N',
+                'anonymized' => $survey->isAnonymized,
             ];
             // DON'T set $this->knownVars['TOKEN'] = $blankVal; because optout/optin can need it, then don't replace this from templatereplace
             foreach ($attrs as $key) {
@@ -4170,9 +4174,11 @@ class LimeExpressionManager
     public static function QuestionIsRelevant($qid)
     {
         $LEM =& LimeExpressionManager::singleton();
-        $qrel = (isset($_SESSION[$LEM->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] : 1);
+        // No survey session when called from outside a survey (e.g. the response table)
+        $sessid = (string) $LEM->sessid;
+        $qrel = (isset($_SESSION[$sessid]['relevanceStatus'][$qid]) ? $_SESSION[$sessid]['relevanceStatus'][$qid] : 1);
         $gseq = (isset($LEM->questionId2groupSeq[$qid]) ? $LEM->questionId2groupSeq[$qid] : -1);
-        $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
+        $grel = (isset($_SESSION[$sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
         return ($grel && $qrel);
     }
 
@@ -4197,13 +4203,15 @@ class LimeExpressionManager
     public static function GroupIsIrrelevantOrHidden($gseq)
     {
         $LEM =& LimeExpressionManager::singleton();
+        // No survey session when called from outside a survey (e.g. the response table)
+        $sessid = (string) $LEM->sessid;
 
         // We check again if it should really be false...
-        if (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) && $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] == false) {
+        if (isset($_SESSION[$sessid]['relevanceStatus']['G' . $gseq]) && $_SESSION[$sessid]['relevanceStatus']['G' . $gseq] == false) {
             $LEM->_ProcessGroupRelevance($gseq);
         }
 
-        $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq])) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1;   // group-level relevance based upon grelevance equation
+        $grel = (isset($_SESSION[$sessid]['relevanceStatus']['G' . $gseq])) ? $_SESSION[$sessid]['relevanceStatus']['G' . $gseq] : 1;   // group-level relevance based upon grelevance equation
         $gshow = (isset($LEM->indexGseq[$gseq]['show'])) ? $LEM->indexGseq[$gseq]['show'] : true;   // default to true?
 
         return !($grel && $gshow);
@@ -5500,8 +5508,16 @@ class LimeExpressionManager
                         $this->throwFatalError();
                     }
                     // Save only needed value, no validation
-                    if (!$oResponse->encryptSave(false, array_keys($aResponseAttributes))) {
-                        $message = submitfailed('', print_r($oResponse->getErrors(), true)); // $response->getErrors() is array[string[]], then can not join
+                    $saveError = '';
+                    try {
+                        $saved = $oResponse->encryptSave(false, array_keys($aResponseAttributes));
+                    } catch (Exception $ex) {
+                        // Database errors are thrown, not returned: Report them like any other failed save
+                        $saved = false;
+                        $saveError = $ex->getMessage();
+                    }
+                    if (!$saved) {
+                        $message = submitfailed($saveError, $oResponse->hasErrors() ? print_r($oResponse->getErrors(), true) : null); // $response->getErrors() is array[string[]], then can not join
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                             $message .= CHTml::errorSummary($oResponse, $this->gT('Error on response update'));  // Add SQL error according to debugLevel
                         }
@@ -6966,7 +6982,16 @@ class LimeExpressionManager
             }
         }
         $prettyPrintValidTip = $stringToParse;
-        $validTip = $LEM->ProcessString($stringToParse, $qid, null, 1, 1, false, false);
+        $validTip = $LEM->ProcessString(
+            $stringToParse,
+            $qid,
+            ['QID' => $qid, 'GID' => $gid, 'SGQ' => 'Q' . $qid],
+            1,
+            1,
+            false,
+            false
+        );
+        self::updateReplacementFields(['QID' => null, 'GID' => null, 'SGQ' => null]);
         // TODO check for errors?
         if ((($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)) {
             $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();
@@ -10021,7 +10046,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 ++$i;
                 $subQeqn = '&nbsp;';
-                if (isset($LEM->subQrelInfo[$qid][$rowdivid])) {
+                // Ranking: The rank fields are named after the first ranking items, but the filters with these row ids belong to the items (shown below)
+                if ($q['info']['type'] != Question::QT_R_RANKING && isset($LEM->subQrelInfo[$qid][$rowdivid])) {
                     $sq = $LEM->subQrelInfo[$qid][$rowdivid];
                     $subQeqn = viewHelper::stripTagsEM($sq['prettyPrintEqn']);   // {' . $sq['eqn'] . '}';  // $sq['prettyPrintEqn'];
                     if ($sq['hasErrors']) {
@@ -10060,17 +10086,24 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
 
             //////
-            // SHOW ANSWER OPTIONS FOR ENUMERATED LISTS, AND FOR MULTIFLEXI
+            // SHOW ANSWER OPTIONS FOR ENUMERATED LISTS, AND FOR MULTIFLEXI, AND RANKING ITEMS
             //////
             $answerRows = '';
-            if (isset($LEM->qans[$qid]) || isset($LEM->multiflexiAnswers[$qid])) {
-                $_scale = -1;
-                if (isset($LEM->multiflexiAnswers[$qid])) {
-                    $ansList = $LEM->multiflexiAnswers[$qid];
-                } else {
-                    $ansList = $LEM->qans[$qid];
+            $ansList = [];
+            $rankingItemQids = [];
+            if (isset($LEM->multiflexiAnswers[$qid])) {
+                $ansList = $LEM->multiflexiAnswers[$qid];
+            } elseif (isset($LEM->qans[$qid])) {
+                $ansList = $LEM->qans[$qid];
+            } elseif ($q['info']['type'] == Question::QT_R_RANKING) {
+                // The ranking items are subquestions without value: List them like answer options, with their filter
+                foreach (getSubQuestions($sid, $qid, $_SESSION['LEMlang']) as $rankingItem) {
+                    $ansList['0~' . $rankingItem['title']] = '|' . $rankingItem['question'];
+                    $rankingItemQids[$rankingItem['title']] = $rankingItem['qid'];
                 }
-
+            }
+            if (!empty($ansList)) {
+                $_scale = -1;
                 foreach ($ansList as $ans => $value) {
                     $ansInfo = explode('~', (string) $ans);
                     $valParts = explode('|', (string) $value);
@@ -10084,8 +10117,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
                     $subQeqn = '';
                     $rowdivid = $sgqas[0] . $ansInfo[1];
-                    if ($q['info']['type'] == Question::QT_R_RANKING) {
-                        $rowdivid = 'Q' . $qid . $ansInfo[1];
+                    $valueText = '[VALUE: ' . $valInfo[0] . ']';
+                    if (isset($rankingItemQids[$ansInfo[1]])) {
+                        $rowdivid = 'Q' . $qid . '_S' . $rankingItemQids[$ansInfo[1]];
+                        $valueText = '';
                     }
                     if (isset($LEM->subQrelInfo[$qid][$rowdivid])) {
                         $sq = $LEM->subQrelInfo[$qid][$rowdivid];
@@ -10107,7 +10142,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $answerRows .= "<tr class='LEManswer'>"
                         . "<td>A[" . $ansInfo[0] . "]-" . $i++ . "</td>"
                         . "<td><b>" . $ansInfo[1] . "</b></td>"
-                        . "<td>[VALUE: " . $valInfo[0] . "]" . $subQeqn . "</td>"
+                        . "<td>" . $valueText . $subQeqn . "</td>"
                         . "<td>" . $sAnswerText . "</td>"
                         . "</tr>\n";
                 }

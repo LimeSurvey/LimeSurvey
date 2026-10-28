@@ -154,6 +154,13 @@ class RemoteControlTest extends TestBaseClass
         $question = $survey->groups[0]->questions[0];
         $sgqa = 'Q' . $question->qid;
 
+        // Question codes are not column names: No empty response may be added
+        $result = $handler->add_response($sessionKey, self::$surveyId, [$question->title => 'One answer']);
+        $this->assertIsArray($result, '$result = ' . json_encode($result));
+        $this->assertEquals('ERR_INVALID_COLUMNS', $result['error_code']);
+        $query = sprintf('SELECT COUNT(*) FROM {{responses_%d}}', self::$surveyId);
+        $this->assertEquals(0, (int) $dbo->createCommand($query)->queryScalar(), 'No response added');
+
         // Add response
         $response = [
             $sgqa => 'One answer'

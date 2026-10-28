@@ -700,7 +700,7 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Change the template name inside DB and the manifest (called from template editor)
+     * Change the template name inside DB (including theme permissions) and the manifest (called from template editor)
      * NOTE: all tests (like template exist, etc) are done from template controller.
      *
      * @param string $sNewName The newname of the template
@@ -715,6 +715,7 @@ class Template extends LSActiveRecord
         Template::model()->updateAll(array('extends' => $sNewName), "extends = :oldname", array(':oldname' => $this->name));
         TemplateConfiguration::rename($this->name, $sNewName);
         TemplateManifest::rename($this->name, $sNewName);
+        Permission::renameThemePermissions($this->name, $sNewName);
     }
 
     /**

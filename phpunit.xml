@@ -60,6 +60,7 @@
       <file>tests/functional/backend/QuestionAttributeFunctionalTest.php</file>
       <file>tests/functional/frontend/MultipleChoiceNextPreviousTest.php</file>
       <file>tests/functional/frontend/RankingFilterHideShowTest.php</file>
+      <file>tests/functional/frontend/RankingAdvancedHeightsTest.php</file>
       <file>tests/functional/frontend/AnswersAlphabeticalOrderTest.php</file>
     </testsuite>
     <testsuite name="expression">
@@ -70,6 +71,7 @@
       <file>tests/functional/frontend/IntvalFloatvalTest.php</file>
       <file>tests/functional/frontend/JsPhpCompareTest.php</file>
       <file>tests/functional/frontend/MinMaxCompareTest.php</file>
+      <file>tests/functional/frontend/ReplacementFieldsTipPrefixGroupTest.php</file>
       <file>tests/functional/frontend/ScreenOutTest.php</file>
       <file>tests/functional/frontend/SelfExpressionTest.php</file>
       <file>tests/functional/acceptance/15246-fixed-em-function/FixedFunctionExpressionPluginTest.php</file>

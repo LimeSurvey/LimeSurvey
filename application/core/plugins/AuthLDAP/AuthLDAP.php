@@ -199,17 +199,29 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
      */
     public function createNewUser()
     {
+        $oEvent = $this->getEvent();
+        $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
+        if (!empty($preCollectedUserArray)) {
+            // Do nothing if the user to be added is not LDAP type
+            if (($preCollectedUserArray['user_type'] ?? '') != 'LDAP') {
+                return;
+            }
+            $this->ldapCreateNewUser($oEvent, (string) $preCollectedUserArray['users_name']);
+            return;
+        }
         // Do nothing if the user to be added is not LDAP type
         if (App()->request->getPost('user_type') != 'LDAP') {
             return;
         }
 
-        $oEvent = $this->getEvent();
         $this->ldapCreateNewUser($oEvent, App()->request->getPost('new_user'));
     }
 
     /**
      * Create a LDAP user
+     *
+     * Full name and email address are taken from the LDAP directory, unless the
+     * preCollectedUserArray of the event contains them.
      *
      * @param Event $oEvent Either CreateNewUser event or newUserSession event.
      * @param string $username
@@ -280,8 +292,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             $rescount = ldap_count_entries($ldapconn, $dnsearchres);
             if ($rescount == 1) {
                 $userentry = ldap_get_entries($ldapconn, $dnsearchres);
-                $new_email = flattenText($userentry[0][strtolower($mailattribute)][0]);
-                $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0]);
+                $new_email = flattenText($userentry[0][strtolower($mailattribute)][0] ?? '');
+                $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0] ?? '');
                 break;
             }
         }
@@ -293,27 +305,43 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             return null;
         }
 
+        $new_pass = createPassword();
+        $status = true;
+        $expires = null;
+        $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
+        if (!empty($preCollectedUserArray)) {
+            if (!empty($preCollectedUserArray['status'])) {
+                $status = $preCollectedUserArray['status'];
+            }
+            if (!empty($preCollectedUserArray['expires'])) {
+                $expires = $preCollectedUserArray['expires'];
+            }
+            // Values entered when adding the user take precedence over the LDAP directory
+            if (!empty($preCollectedUserArray['full_name'])) {
+                $new_full_name = flattenText($preCollectedUserArray['full_name']);
+            }
+            if (!empty($preCollectedUserArray['email'])) {
+                $new_email = flattenText($preCollectedUserArray['email']);
+            }
+            // Used if the user may also log in with the internal database
+            if (!empty($preCollectedUserArray['password'])) {
+                $new_pass = (string) $preCollectedUserArray['password'];
+            }
+        }
+
         if (!LimeMailer::validateAddress($new_email)) {
             $oEvent->set('errorCode', self::ERROR_INVALID_EMAIL);
             $oEvent->set('errorMessageTitle', gT("Failed to add user"));
             $oEvent->set('errorMessageBody', gT("The email address is not valid."));
             return null;
         }
-        $new_pass = createPassword();
         // If user is being auto created we set parent ID to 1 (admin user)
         if (isset(Yii::app()->session['loginID'])) {
             $parentID = Yii::app()->session['loginID'];
         } else {
             $parentID = 1;
         }
-        $status = true;
-        $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
-        if (!empty($preCollectedUserArray)) {
-            if (!empty($preCollectedUserArray['status'])) {
-                $status = $preCollectedUserArray['status'];
-            }
-        }
-        $iNewUID = User::insertUser($username, $new_pass, $new_full_name, $parentID, $new_email, null, $status);
+        $iNewUID = User::insertUser($username, $new_pass, $new_full_name, $parentID, $new_email, $expires, $status);
         if ($iNewUID instanceof User) {
             $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
             $oEvent->set('errorMessageTitle', gT("Failed to add user"));
