@@ -176,6 +176,14 @@ $internalConfig = array(
                 'profile' => array(
                     'class' => 'CProfileLogRoute'
                 ),
+                // RemoteControl calls saved in /tmp/runtime/remotecontrol.log, only logged when 'rpc_log' is enabled (see config-defaults.php)
+                'remotecontrol' => array(
+                    'class' => 'CFileLogRoute',
+                    'levels' => 'info, warning',
+                    'categories' => 'remotecontrol',
+                    'logFile' => 'remotecontrol.log',
+                    'maxFileSize' => 10240,
+                ),
 
                 // Log file saved in /tmp/runtime/plugin.log
                 // Only uncomment this section if you want to log plugin activities

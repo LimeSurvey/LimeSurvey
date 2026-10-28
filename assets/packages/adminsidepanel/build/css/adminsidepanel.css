@@ -259,18 +259,40 @@ div[class*=" col-"].nofloat {
 }
 
 #questionexplorer {
-  overflow: auto;
   background-color: #fff;
-  min-height: 100vh;
+  min-height: 100%;
 }
 
+@media (min-width: 769px) {
+  #vue-apps-main-container > #vue-sidebar-container {
+    position: sticky;
+    top: var(--ls-sidebar-top, 0px);
+    align-self: flex-start;
+    height: calc(100vh - var(--ls-sidebar-top, 0px));
+  }
+  #vue-apps-main-container > #vue-sidebar-container #sidebar,
+  #vue-apps-main-container > #vue-sidebar-container .mainContentContainer {
+    height: 100%;
+  }
+  #vue-apps-main-container > #vue-sidebar-container .mainMenu {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  #vue-apps-main-container > #vue-sidebar-container #sidemenu-container,
+  #vue-apps-main-container > #vue-sidebar-container #questionexplorer-container,
+  #vue-apps-main-container > #vue-sidebar-container #quickmenu-container {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+}
 .question-question-list-item .dropdown-menu li a.disabled {
   opacity: 0.5;
 }
 
 .list-group-item.dragged,
 .question-question-list-item.dragged {
-  opacity: 0.5;
   background-color: #f0f0f0;
 }
 

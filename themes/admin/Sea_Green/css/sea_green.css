@@ -19627,7 +19627,7 @@ input[type=datetime-local] {
   font-weight: 500;
 }
 #sidebar li.dragged {
-  color: #fff;
+  color: #1E1E1E;
   background: var(--bs-primary) none !important;
   padding-top: 18px;
   padding-bottom: 18px;
@@ -19639,7 +19639,7 @@ input[type=datetime-local] {
   background: var(--bs-primary) !important;
 }
 #sidebar li.dragged a, #sidebar li.dragged svg, #sidebar li.dragged a:not(.btn, .nav-tabs .nav-link) {
-  color: #fff;
+  color: #1E1E1E;
 }
 #sidebar .menu-selected {
   padding-left: 10px;

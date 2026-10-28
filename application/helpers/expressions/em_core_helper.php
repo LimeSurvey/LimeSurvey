@@ -1341,7 +1341,12 @@ class ExpressionManager
                                 $code = $this->GetVarAttribute($token[0], 'code', '');
                                 if ($jsName != '') {
                                     $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
-                                    $stringParts[] = "LEMval('" . $varName . "') ";
+                                    if ($this->isDirectArgumentOfFunction($tokens, $i, 'regexMatch')) {
+                                        // Match the answer as entered, not converted to a number ('+123' would become 123)
+                                        $stringParts[] = "LEMval('" . $varName . "', true) ";
+                                    } else {
+                                        $stringParts[] = "LEMval('" . $varName . "') ";
+                                    }
                                 } else {
                                     $stringParts[] = "'" . addcslashes($code, "'") . "'";
                                 }
@@ -1424,6 +1429,39 @@ class ExpressionManager
             $this->jsExpression = '(' . $mainClause . ')';
         }
         return $this->jsExpression;
+    }
+
+    /**
+     * Check if the token at $index is a whole argument of a call to $functionName, e.g. Q1 in regexMatch("/x/", Q1)
+     * but not in regexMatch("/x/", Q1 + 1) or regexMatch("/x/", sum(Q1))
+     * @param array $tokens The expression tokens
+     * @param integer $index Index of the token to check
+     * @param string $functionName
+     * @return boolean
+     */
+    private function isDirectArgumentOfFunction(array $tokens, $index, $functionName)
+    {
+        if (
+            $index < 2
+            || !isset($tokens[$index + 1])
+            || !in_array($tokens[$index - 1][2], ['LP', 'COMMA'])
+            || !in_array($tokens[$index + 1][2], ['RP', 'COMMA'])
+        ) {
+            return false;
+        }
+        // Find the opening bracket of the call this token is an argument of
+        $depth = 0;
+        for ($i = $index - 1; $i > 0; --$i) {
+            if ($tokens[$i][2] == 'RP') {
+                ++$depth;
+            } elseif ($tokens[$i][2] == 'LP') {
+                if ($depth == 0) {
+                    return $tokens[$i - 1][2] == 'WORD' && $tokens[$i - 1][0] === $functionName;
+                }
+                --$depth;
+            }
+        }
+        return false;
     }
 
     /**

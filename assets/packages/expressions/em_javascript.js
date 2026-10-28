@@ -959,8 +959,10 @@ function LEMeq(a,b)
 /**
  * Return the value for data element jsName, treating it as blank if its question is irrelevant on the current page.
  * Also convert the string 'false' to '' to cope with a JavaScript type casting issue
+ * @param {string} alias
+ * @param {boolean} keepText Return a text answer as entered instead of converting it to a number (e.g. for regexMatch, to keep '+123' or '1.10')
  */
-function LEMval(alias)
+function LEMval(alias, keepText)
 {
     // first find out whether it is using a suffix
     var str = new String(alias);
@@ -1307,7 +1309,7 @@ function LEMval(alias)
                 }
                 return value;
             }
-            else if (isNaN(value)) {
+            else if (isNaN(value) || keepText) {
                 return value;
             }
             else if(!isNaN(parseFloat(value)) && isFinite(value))

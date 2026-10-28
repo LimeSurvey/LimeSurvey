@@ -14,9 +14,9 @@ export const useOperationCallback = () => {
   })
 
   const subscribe = useCallback(
-    ({ entity, operation, callback, once = true }) => {
+    ({ entity, operation, callback, onError, once = true }) => {
       const key = `${entity}_${operation}`
-      const subscription = { callback, once }
+      const subscription = { callback, onError, once }
 
       const currentSubscriptions = queryClient.getQueryData([
         STATES.OPERATION_FINISH_SUBSCRIPTIONS,
@@ -43,14 +43,36 @@ export const useOperationCallback = () => {
       STATES.OPERATION_FINISH_SUBSCRIPTIONS,
     ])
 
+    // Operations rejected by the server get onError instead of callback
+    const failedOperations = [
+      ...(results?.validationErrors || []),
+      ...(results?.exceptionErrors || []),
+    ]
+
+    const requestFailed = typeof results?.operationsApplied !== 'number'
+
     operations.forEach((operation) => {
       const key = `${operation.entity}_${operation.op}`
 
       if (currentSubscriptions.has(key)) {
         const matchingSubscriptions = currentSubscriptions.get(key)
+        // A failed request (e.g. a PHP error in a plugin) resolves with the
+        // normalized axios error instead of a patch result: All operations failed
+        const failedOperation = requestFailed
+          ? { ...operation, error: results?.message }
+          : failedOperations.find(
+              (failed) =>
+                String(failed.id) === String(operation.id) &&
+                failed.entity === operation.entity &&
+                failed.op === operation.op
+            )
 
         matchingSubscriptions.forEach((subscription) => {
-          subscription.callback(results.extras)
+          if (!failedOperation) {
+            subscription.callback(results.extras)
+          } else if (subscription.onError) {
+            subscription.onError(failedOperation)
+          }
         })
 
         const remainingSubscriptions = matchingSubscriptions.filter(

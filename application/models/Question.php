@@ -315,7 +315,7 @@ class Question extends LSActiveRecord
             $aRules[] = array(
                 'title',
                 'match',
-                'pattern' => '/^[a-zA-z0-9]*$/',
+                'pattern' => '/^[a-zA-Z0-9]*$/',
                 'message' => gT('Subquestion codes may only contain alphanumeric characters.'),
                 'except' => 'archiveimport'
             );
@@ -911,6 +911,7 @@ class Question extends LSActiveRecord
         if (is_numeric(substr($sNewTitle, 0, 1))) {
             $sNewTitle = 'q' . $sNewTitle;
         }
+        $this->title = $sNewTitle;
         /* Maybe there are another question with same title try to fix it 10 times */
         $attempts = 0;
         while (!$this->validate(array('title'))) {
@@ -1130,13 +1131,15 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Update the survey's lastmodified timestamp after the question was saved.
+     * Update the survey's lastmodified timestamp after the question was saved,
+     * and forget its attribute values kept for this request (type and theme decide which attributes it has).
      *
      * @return void
      */
     protected function afterSave()
     {
         parent::afterSave();
+        QuestionAttribute::clearRequestCache($this->qid);
         if (!empty($this->sid)) {
             (new SurveyDetailService())->touchSurveyLastModified((int) $this->sid);
         }

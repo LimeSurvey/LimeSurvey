@@ -32,6 +32,9 @@
     # kept here so protection survives clearing the tmp directory content
     RewriteRule ^tmp/runtime/ - [F]
 
+    # deny access to log files anywhere, e.g. when the runtime directory was moved
+    RewriteRule \.log$ - [F,NC]
+
     # deny access to Composer dependencies: never requested directly, only used server-side
     RewriteRule ^vendor/ - [F]
 
@@ -48,6 +51,9 @@ RedirectMatch 403 ^/(?!\.well-known/)(.*/)?\.+
 # deny access to the runtime directory without mod_rewrite
 RedirectMatch 403 ^/(.*/)?tmp/runtime/
 
+# deny access to log files without mod_rewrite
+RedirectMatch 403 (?i)\.log$
+
 # deny access to Composer dependencies without mod_rewrite
 RedirectMatch 403 ^/vendor/
 
@@ -55,7 +61,8 @@ RedirectMatch 403 ^/vendor/
 RedirectMatch 403 ^/docs/
 
 # issue #19297: deny access to development/build/fingerprinting files without mod_rewrite
-RedirectMatch 403 ^/(composer\.(json|lock)|package\.json|yarn\.lock|gulpfile\.js|open-api-gen\.php|phpunit\.xml|psalm(-\w+)?\.xml|phpci\.yml|phpcs\.ruleset\.xml|publiccode\.yml|manifest\.yml|CONTRIBUTING\.md|README\.md|SECURITY\.md)$
+# also matches nested copies because the LimeSurvey base path is unknown here (vendor/ and docs/ have their own .htaccess)
+RedirectMatch 403 ^/(.*/)?(composer\.(json|lock)|package\.json|yarn\.lock|gulpfile\.js|open-api-gen\.php|phpunit\.xml|psalm(-\w+)?\.xml|phpci\.yml|phpcs\.ruleset\.xml|publiccode\.yml|manifest\.yml|CONTRIBUTING\.md|README\.md|SECURITY\.md)$
 
 # General setting to properly handle LimeSurvey paths
 # AcceptPathInfo on
