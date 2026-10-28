@@ -265,7 +265,8 @@ class SurveyDeactivate
             $new_autonumber_start = $sLastID + 1;
             $survey = $this->survey->findByAttributes(array('sid' => $iSurveyID));
             $survey->autonumber_start = $new_autonumber_start;
-            $survey->save();
+            // Skip validation: An invalid survey setting must not stop the deactivation half-way
+            $survey->save(false);
         
             if ($this->app->db->getDriverName() == 'pgsql') {
                 $idDefault = $this->app->db->createCommand("SELECT pg_get_expr(pg_attrdef.adbin, pg_attrdef.adrelid) FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$sOldSurveyTableName' and pg_attribute.attname='id'")->queryScalar();
@@ -282,9 +283,9 @@ class SurveyDeactivate
         }
         // Load the active record again, as there have been sporadic errors with the dataset not being updated
         $survey = $this->survey->findByAttributes(array('sid' => $iSurveyID));
-        $survey->scenario = 'activationStateChange';
         $survey->active = 'N';
-        $survey->save();
+        // Skip validation: The tables are already archived, so an invalid setting must not keep the survey active
+        $survey->save(false);
     }
 
     /**

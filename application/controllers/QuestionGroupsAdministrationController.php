@@ -2,7 +2,9 @@
 
 use LimeSurvey\Models\Services\{
     QuestionGroupService,
-    Exception\NotFoundException
+    Exception\NotFoundException,
+    Exception\PermissionDeniedException,
+    Exception\QuestionGroupHasConditionsException
 };
 
 class QuestionGroupsAdministrationController extends LSBaseController
@@ -406,6 +408,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $iGroupId = App()->getRequest()->getPost('gid');
         $iSurveyId = sanitize_int(App()->getRequest()->getPost('surveyid', 0));
         $iGroupsDeleted = 0;
+        $sErrorMessage = gT('Group could not be deleted');
 
         if ($iGroupId === null) {
             throw new CHttpException(401, gT("Invalid question group id"));
@@ -415,10 +418,18 @@ class QuestionGroupsAdministrationController extends LSBaseController
         if ($oQuestionGroup) {
             $iSurveyId = $oQuestionGroup->sid;
             $questionGroupService = $this->getQuestionGroupServiceClass();
-            $iGroupsDeleted = $questionGroupService->deleteGroup(
-                $iGroupId,
-                $iSurveyId
-            );
+            try {
+                $iGroupsDeleted = $questionGroupService->deleteGroup(
+                    $iGroupId,
+                    $iSurveyId
+                );
+            } catch (QuestionGroupHasConditionsException $e) {
+                $sErrorMessage = $e->getMessage();
+            } catch (PermissionDeniedException $e) {
+                $sErrorMessage = Survey::model()->findByPk($iSurveyId)->isActive
+                    ? gT("It is not possible to add/delete groups if the survey is active.")
+                    : gT("Access denied!");
+            }
         }
         if ($asJson !== false) {
             $success = $iGroupsDeleted > 0;
@@ -426,7 +437,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 [
                     'success' => $success,
                     'deletedGroups' => $iGroupsDeleted,
-                    'message' => ($success ? gT('The question group was deleted.') : gT('Group could not be deleted')),
+                    'message' => ($success ? gT('The question group was deleted.') : $sErrorMessage),
                     'redirect' => $this->createUrl(
                         'questionAdministration/listQuestions/',
                         ['surveyid' => $iSurveyId, 'activeTab' => 'groups']
@@ -440,7 +451,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         if ($iGroupsDeleted > 0) {
             App()->setFlashMessage(gT('The question group was deleted.'));
         } else {
-            App()->setFlashMessage(gT('Group could not be deleted'), 'error');
+            App()->setFlashMessage($sErrorMessage, 'error');
         }
 
         $survey = Survey::model()->findByPk($iSurveyId);

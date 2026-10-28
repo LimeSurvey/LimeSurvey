@@ -13,6 +13,8 @@
  *
  */
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * the Verification class, this is grouped with
  * other classes in the "limesurvey_yii" package and * is part of "controllers" subpackage
@@ -21,6 +23,13 @@
  */
 class VerificationController extends LSYii_Controller
 {
+    /**
+     * Outputs a captcha image with an arithmetic question and stores the
+     * answer in the survey session.
+     *
+     * @param int|string $sid Survey ID
+     * @return void
+     */
     public function actionImage($sid)
     {
         $iSurveyID = (int) $sid;
@@ -102,6 +111,6 @@ class VerificationController extends LSYii_Controller
         ImageDestroy($im);
 
         // Add the answer to the session
-        $_SESSION['responses_' . $iSurveyID]['secanswer'] = $num1 + $num2;
+        SurveySessionState::forSurvey($iSurveyID)->setSecurityAnswer($num1 + $num2);
     }
 }

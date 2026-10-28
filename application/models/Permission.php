@@ -700,10 +700,10 @@ class Permission extends LSActiveRecord
      * Note: This function automatically also takes global permissions into account
      * The results are cached, except in API sessions opened with an API token.
      *
-     * @param $iSurveyID integer The survey ID
-     * @param $sPermission string Name of the permission
-     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-     * @param $iUserID integer User ID - if not given the one of the current user is used
+     * @param integer $iSurveyID The survey ID
+     * @param string $sPermission Name of the permission
+     * @param string $sCRUD The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
+     * @param integer|null $iUserID User ID - if not given the one of the current user is used
      * @return bool True if user has the permission
      */
     public function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD = 'read', $iUserID = null)
@@ -714,8 +714,10 @@ class Permission extends LSActiveRecord
             $oSurvey = Survey::Model()->findByPk($iSurveyID);
             return $oSurvey ? $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID) : false;
         }
-        if (isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID])) {
-            return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID];
+        // Guests have no user ID
+        $sUserKey = (string) $iUserID;
+        if (isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$sUserKey])) {
+            return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$sUserKey];
         }
         if (!isset(self::$aCachedSurveyPermissions[$iSurveyID])) {
             self::$aCachedSurveyPermissions[$iSurveyID] = [];
@@ -724,10 +726,10 @@ class Permission extends LSActiveRecord
             self::$aCachedSurveyPermissions[$iSurveyID][$sPermission] = [];
         }
         if (!isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD])) {
-            self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$iUserID] = [];
+            self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD] = [];
         }
         $oSurvey = Survey::Model()->findByPk($iSurveyID);
-        return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID] = ($oSurvey ? $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID) : false);
+        return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$sUserKey] = ($oSurvey ? $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID) : false);
     }
 
     /**
@@ -978,6 +980,28 @@ class Permission extends LSActiveRecord
         }
 
         return $results;
+    }
+
+    /**
+     * Move the theme permissions of all users from a theme name to its new name (called when a theme is renamed).
+     *
+     * @param string $sOldName The previous name of the theme
+     * @param string $sNewName The new name of the theme
+     * @return void
+     */
+    public static function renameThemePermissions($sOldName, $sNewName)
+    {
+        /* Drop orphaned permissions with the new name so they don't collide with the moved ones */
+        /* On case-insensitive databases a case-only rename matches the old rows here too, so these are kept */
+        self::model()->deleteAll(
+            "entity = 'template' AND permission = :newname AND permission <> :oldname",
+            [':newname' => $sNewName, ':oldname' => $sOldName]
+        );
+        self::model()->updateAll(
+            ['permission' => $sNewName],
+            "entity = 'template' AND permission = :oldname",
+            [':oldname' => $sOldName]
+        );
     }
 
     /**

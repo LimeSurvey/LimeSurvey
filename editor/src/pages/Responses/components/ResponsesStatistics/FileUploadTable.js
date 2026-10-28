@@ -119,6 +119,7 @@ export const FileUploadTable = ({
   questionCode,
   fields,
   filters,
+  filterSet,
 }) => {
   const [containerRef, isInView] = useIsInViewport(null, {
     initialInView: false,
@@ -154,6 +155,7 @@ export const FileUploadTable = ({
     enabled: shouldLoad,
     field: fileField,
     filters,
+    filterSet,
     search,
     pageSize: FILES_PER_PAGE,
   })

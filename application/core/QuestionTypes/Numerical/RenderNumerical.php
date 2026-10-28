@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Numerical Input Question
  *  * The ia Array contains the following
@@ -167,7 +169,7 @@ class RenderNumerical extends QuestionBaseRenderer
      */
     private function getSessionLanguage()
     {
-        return $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'] ?? '';
+        return SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getLanguage() ?? '';
     }
 
     /**
@@ -179,6 +181,6 @@ class RenderNumerical extends QuestionBaseRenderer
      */
     private function getLegacySessionValue($sIndex)
     {
-        return $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$sIndex] ?? null;
+        return SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getFieldValue($sIndex);
     }
 }

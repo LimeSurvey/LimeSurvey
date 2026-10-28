@@ -413,7 +413,7 @@ class questionHelper
         );
 
         self::$attributes["statistics_showgraph"] = array(
-            'types' => '15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+            'types' => '15ABCDEFGHILMOPQRSTUWXYZ!:;|*',
             'category' => gT('Statistics'),
             'inputtype' => 'switch',
             'sortorder' => 101,
@@ -424,7 +424,7 @@ class questionHelper
         );
 
         self::$attributes["statistics_graphtype"] = array(
-            "types" => '15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+            "types" => '15ABCDEFGHILMOPQRSTUWXYZ!:;|*',
             'category' => gT('Statistics'),
             'inputtype' => 'singleselect',
             'sortorder' => 102,

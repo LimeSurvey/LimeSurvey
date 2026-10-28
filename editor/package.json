@@ -135,7 +135,7 @@
     "prettier": "^3.5.3",
     "react-test-renderer": "^19.0.0",
     "sass": "^1.57.1",
-    "storybook": "^10.5.10",
+    "storybook": "^10.6.3",
     "storybook-react-rsbuild": "^3.6.0",
     "web-vitals": "^5.1.0"
   },

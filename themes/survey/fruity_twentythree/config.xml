@@ -455,6 +455,8 @@
                 <pdf>
                     <screen_title type="data" role="title" twig="on"><![CDATA[ {{gT('PDF')}} ]]></screen_title>
                     <file type="view" role="layout">layout_print.twig</file>
+                    <file type="view" role="subview">./subviews/print/print_group.twig</file>
+                    <file type="view" role="subview">./subviews/print/print_question.twig</file>
                 </pdf>
 
                 <quotas>

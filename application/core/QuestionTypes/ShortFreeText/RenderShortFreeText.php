@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Short Free Text Question (including the map/location variants)
  *  * The ia Array contains the following
@@ -153,7 +155,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
     private function renderTextarea(array $aCommonData)
     {
         //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
-        $drows = $this->getQuestionAttribute('display_rows');
+        $drows = intval($this->getQuestionAttribute('display_rows'));
 
         $dispVal = "";
         $mSessionValue = $this->getLegacySessionValue($this->sSGQA);
@@ -400,7 +402,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
      */
     private function getSessionLanguage()
     {
-        return $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'] ?? '';
+        return SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getLanguage() ?? '';
     }
 
     /**
@@ -412,7 +414,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
      */
     private function getLegacySessionValue($sIndex)
     {
-        return $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$sIndex] ?? null;
+        return SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getFieldValue($sIndex);
     }
 
     /**

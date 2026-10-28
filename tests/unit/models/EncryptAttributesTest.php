@@ -318,7 +318,6 @@ class EncryptAttributesTest extends TestBaseClass
         // Simulate the survey session: the last submitted page updated this answer
         $LEM = \LimeExpressionManager::singleton();
         $updatedValuesProperty = new \ReflectionProperty(\LimeExpressionManager::class, 'updatedValues');
-        $updatedValuesProperty->setAccessible(true);
         $originalUpdatedValues = $updatedValuesProperty->getValue($LEM);
         $updatedValuesProperty->setValue($LEM, [$sgqa => ['type' => 'T', 'value' => 'Answer from last page']]);
 

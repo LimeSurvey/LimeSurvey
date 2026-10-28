@@ -129,7 +129,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             // now translate any links
             if ($bTranslateLinksFields) {
                 $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
-                $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+                if (isset($insertdata['description'])) {
+                    $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+                }
             }
             if (isset($aGIDReplacements[$insertdata['gid']])) {
                 $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
@@ -415,7 +417,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             // now translate any links
             if ($bTranslateLinksFields) {
                 $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-                $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                if (isset($insertdata['help'])) {
+                    $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                }
             }
 
             if (isset($aQIDReplacements[$insertdata['qid']])) {
@@ -511,6 +515,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
         /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
         $answerOrderAttributes = [];
+        importQuestionThemeAttributes($xml, $aQIDReplacements);
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -523,16 +528,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             }
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
-            // Question theme was previously stored as a question attribute ('question_template'), but now it
-            // is a normal attribute of the Question model. So we must check if the imported question has the
-            // 'question_template' attribute and use it for overriding 'question_theme_name' instead of saving
-            // as QuestionAttribute.
+            // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {
-                $oQuestion = Question::model()->findByPk($insertdata['qid']);
-                if (!empty($oQuestion)) {
-                    $oQuestion->question_theme_name = $insertdata['value'];
-                    $oQuestion->save();
-                }
                 continue;
             }
 
@@ -547,6 +544,12 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 $answerOrderAttributes[$insertdata['qid']][$insertdata['attribute']] = $insertdata['value'];
                 continue;
             }
+
+            // Sanitize and XSS filter the value like a model save does, but keep the faster direct insert
+            $questionAttribute = new QuestionAttribute();
+            $questionAttribute->setAttributes($insertdata, false);
+            $questionAttribute->validate(['value']);
+            $insertdata['value'] = $questionAttribute->value;
 
             if (
                 $iDBVersion < 156 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) &&
@@ -985,7 +988,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             // now translate any links
             if ($options['translinkfields']) {
                 $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
-                $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                if (isset($insertdata['help'])) {
+                    $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
+                }
             }
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
@@ -1123,6 +1128,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         $aAllAttributes = questionHelper::getAttributesDefinitions();
         /** @var array<string,mixed> List of "answer order" related attributes */
         $answerOrderAttributes = [];
+        importQuestionThemeAttributes($xml, $aQIDReplacements, $aLanguagesSupported);
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -1138,16 +1144,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 continue;
             }
 
-            // Question theme was previously stored as a question attribute ('question_template'), but now it
-            // is a normal attribute of the Question model. So we must check if the imported question has the
-            // 'question_template' attribute and use it for overriding 'question_theme_name' instead of saving
-            // as QuestionAttribute.
+            // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {
-                $oQuestion = Question::model()->findByPk($insertdata['qid']);
-                if (!empty($oQuestion)) {
-                    $oQuestion->question_theme_name = $insertdata['value'];
-                    $oQuestion->save();
-                }
                 continue;
             }
 
@@ -2575,6 +2573,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 if (!in_array($insertdata['language'] ?? null, $aLanguagesSupported)) {
                     continue;
                 }
+                if (!isset($insertdata['description'])) {
+                    $insertdata['description'] = '';
+                }
                 // now translate any links
                 if ($bTranslateInsertansTags) {
                     $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
@@ -3138,6 +3139,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $aAllAttributes = questionHelper::getAttributesDefinitions();
         /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
         $answerOrderAttributes = [];
+        importQuestionThemeAttributes($xml, $aQIDReplacements);
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -3164,16 +3166,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
 
-            // Question theme was previously stored as a question attribute ('question_template'), but now it
-            // is a normal attribute of the Question model. So we must check if the imported question has the
-            // 'question_template' attribute and use it for overriding 'question_theme_name' instead of saving
-            // as QuestionAttribute.
+            // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {
-                $oQuestion = Question::model()->findByPk($insertdata['qid']);
-                if (!empty($oQuestion)) {
-                    $oQuestion->question_theme_name = $insertdata['value'];
-                    $oQuestion->save();
-                }
                 continue;
             }
 
@@ -3431,6 +3425,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     // Import quota_members ------------------------------------------------------
     if (isset($xml->quota_members)) {
+        $skippedQuotaMembers = 0;
         foreach ($xml->quota_members->rows->row as $row) {
             $quotaMember = new QuotaMember();
             $insertdata = array();
@@ -3440,11 +3435,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!isset($insertdata['quota_id']) || (int)$insertdata['quota_id'] < 1) {
                 continue;
             }
+            // Skip quota rules left over from deleted quotas or questions in the source survey
+            if (!isset($aQuotaReplacements[(int) $insertdata['quota_id']]) || !isset($aQIDReplacements[(int) ($insertdata['qid'] ?? 0)])) {
+                $skippedQuotaMembers++;
+                continue;
+            }
             $insertdata['sid'] = $iNewSID; // remap the survey ID
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
-            if (isset($insertdata['quota_id'])) {
-                $insertdata['quota_id'] = $aQuotaReplacements[(int) $insertdata['quota_id']]; // remap the qid
-            }
+            $insertdata['quota_id'] = $aQuotaReplacements[(int) $insertdata['quota_id']]; // remap the quota id
             unset($insertdata['id']);
             // now translate any links
             $quotaMember->setAttributes($insertdata, false);
@@ -3464,6 +3462,12 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             $results['quotamembers']++;
         }
+        if ($skippedQuotaMembers > 0) {
+            $results['importwarnings'][] = sprintf(
+                gT("Quota rules not imported because their quota or question is missing in the survey file: %s"),
+                $skippedQuotaMembers
+            );
+        }
     }
 
     // Batch process INSERTANS conversions to minimize database writes
@@ -3477,10 +3481,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             foreach ($row as $key => $value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-            if (!isset($insertdata['quotals_quota_id']) || (int)$insertdata['quotals_quota_id'] < 1) {
+            // Skip language settings of quotas that are missing in the survey file
+            if (!isset($insertdata['quotals_quota_id']) || !isset($aQuotaReplacements[(int) $insertdata['quotals_quota_id']])) {
                 continue;
             }
-            $insertdata['quotals_quota_id'] = $aQuotaReplacements[(int) $insertdata['quotals_quota_id']]; // remap the qid
+            $insertdata['quotals_quota_id'] = $aQuotaReplacements[(int) $insertdata['quotals_quota_id']]; // remap the quota id
             unset($insertdata['quotals_id']);
             $quotaLanguagesSetting = new QuotaLanguageSetting('import');
             $quotaLanguagesSetting->setAttributes($insertdata, false);
@@ -3655,6 +3660,34 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         array_unshift($results['importwarnings'], "<span class='warningtitle'>" . gT('Attention: Some expressions in the imported texts were disabled because they could produce unsafe output.') . '</span>');
     }
     return $results;
+}
+
+/**
+ * Question theme was previously stored as a question attribute ('question_template'), but now it is a normal
+ * attribute of the Question model. Sets the theme of the imported questions from these rows before the other
+ * attribute rows are imported, as they are sanitized according to the attribute definitions of the theme.
+ *
+ * @param SimpleXMLElement $xml the imported survey, group or question
+ * @param array<integer,integer> $aQIDReplacements new question ids, by old question id
+ * @param string[]|null $aLanguagesSupported if set, rows in other languages are skipped like the other attribute rows
+ * @return void
+ */
+function importQuestionThemeAttributes(SimpleXMLElement $xml, array $aQIDReplacements, ?array $aLanguagesSupported = null)
+{
+    foreach ($xml->question_attributes->rows->row as $row) {
+        if ((string) $row->attribute !== 'question_template' || !isset($aQIDReplacements[(int) $row->qid])) {
+            continue;
+        }
+        $sLanguage = (string) $row->language;
+        if ($aLanguagesSupported !== null && $sLanguage !== '' && !in_array($sLanguage, $aLanguagesSupported)) {
+            continue;
+        }
+        $oQuestion = Question::model()->findByPk($aQIDReplacements[(int) $row->qid]);
+        if (!empty($oQuestion)) {
+            $oQuestion->question_theme_name = (string) $row->value;
+            $oQuestion->save();
+        }
+    }
 }
 
 /**

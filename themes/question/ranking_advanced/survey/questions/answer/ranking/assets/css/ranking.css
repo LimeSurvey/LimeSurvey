@@ -4,6 +4,11 @@
     border-right: 1px solid grey;
 }
 
+/* Keep an empty list usable as drop target when lists don't get the same height */
+.ranking-advanced-style .sortable-list {
+    min-height: 3em;
+}
+
 /* Styles for button ranking */
 .ranking-advanced-style .sortable-button {
     margin: 0.1em 0.3em;

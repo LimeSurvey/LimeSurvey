@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Array (10 point choice) Question
  *  * The ia Array contains the following
@@ -69,7 +71,8 @@ class RenderArray10ChoiceQuestion extends QuestionBaseRenderer
 
         // Get subquestions using ordering service so keep_codes_order is respected
         $iSurveyId = $this->oQuestion->sid;
-        $sSurveyLanguage = isset($_SESSION['responses_' . $iSurveyId]) ? $_SESSION['responses_' . $iSurveyId]['s_lang'] : $this->oQuestion->survey->language;
+        $sessionState = SurveySessionState::forSurvey((int) $iSurveyId);
+        $sSurveyLanguage = $sessionState->exists() ? $sessionState->getLanguage() : $this->oQuestion->survey->language;
         $aSubquestions = $this->questionOrderingService->getOrderedSubQuestions($this->oQuestion, 0, $sSurveyLanguage);
 
         $sColumns = $this->renderColumns($cellwidth, $bShowNoAnswerColumn);
@@ -250,6 +253,7 @@ class RenderArray10ChoiceQuestion extends QuestionBaseRenderer
                 'sDisplayStyle' => '', // return_display_style() is disabled and always returned an empty string
                 'odd'           => ($j % 2),
                 'answer_tds'    => $answer_tds,
+                'relevanceClass' => $this->getCurrentRelevecanceClass($myfname),
             )
         );
     }
