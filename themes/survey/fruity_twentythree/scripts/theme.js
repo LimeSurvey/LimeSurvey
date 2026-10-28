@@ -1110,6 +1110,13 @@ var NavbarScripts = exports.NavbarScripts = function NavbarScripts() {
       replaceContent(getContentByElementId(openedSubmenuId), 'main-dropdown');
       focusMenuItem('.back-link');
     });
+    // The submenu openers are links with role="button", which browsers only activate with Enter, so Space has to open them like a button
+    $(document).on('keydown', '[data-navtargetid]', function (event) {
+      if (event.key === ' ') {
+        event.preventDefault();
+        $(this).trigger('click');
+      }
+    });
     $(document).on('click', '.back-link', function (event) {
       event.preventDefault();
       // switch menu content back to original content (this currently works only with one level nested elements)
