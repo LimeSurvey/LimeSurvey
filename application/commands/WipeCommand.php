@@ -111,6 +111,11 @@ class WipeCommand extends CConsoleCommand
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "truncate table {{user_in_permissionrole}}";
             Yii::app()->db->createCommand($actquery)->execute();
+            // The users are deleted with SQL, so their API tokens are not deleted along with them
+            $actquery = "truncate table {{user_api_tokens}}";
+            Yii::app()->db->createCommand($actquery)->execute();
+            $actquery = "truncate table {{user_api_token_permissions}}";
+            Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "update {{users}} set lang='en'";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "update {{users}} set lang='auto'";

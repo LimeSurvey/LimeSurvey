@@ -79,6 +79,8 @@ class DemomodeCommand extends CConsoleCommand
             '{{user_in_groups}}',
             '{{user_groups}}',
             '{{user_in_permissionrole}}',
+            '{{user_api_tokens}}',
+            '{{user_api_token_permissions}}',
         ];
         foreach ($truncatableTables as $table) {
             $quotedTable = Yii::app()->db->quoteTableName($table);
