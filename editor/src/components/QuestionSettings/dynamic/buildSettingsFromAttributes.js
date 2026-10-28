@@ -142,8 +142,12 @@ const toDefinition = (attribute, attributesByName) => {
 
   if (conditions.length) {
     definition.dependsOn = conditions.length === 1 ? conditions[0] : conditions
+    const keepValue = ['1', 'true', 1, true].includes(
+      attribute.onDependsToggle?.keepValue
+    )
     definition.onDependsToggle = {
       onFalse: attribute.onDependsToggle?.onFalse ?? '',
+      ...(keepValue ? { keepValue: true } : {}),
     }
   }
 

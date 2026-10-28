@@ -187,6 +187,10 @@ export const Setting = ({
       }
       handledPaths.add(dependsOnAttribute.attributePath)
 
+      if (dependsOnAttribute.onDependsToggle?.keepValue) {
+        return
+      }
+
       if (
         !areConditionsSatisfied(dependsOnAttribute.dependsOn, {
           [attribute.attributePath]: value,

@@ -163,6 +163,26 @@ describe('buildSettingsFromAttributes', () => {
     expect(hideTip.returnValues).toBeUndefined()
   })
 
+  test('keeps the default reset behaviour unless keepValue is enabled', () => {
+    const build = (keepValue) =>
+      findSection(
+        buildSettingsFromAttributes({
+          other: backendAttributes.other,
+          other_position_code: {
+            ...backendAttributes.other_position_code,
+            dependsOn: [{ attribute: 'other' }],
+            onDependsToggle: { onFalse: '', keepValue },
+          },
+        }),
+        'Display'
+      ).attributes[0].onDependsToggle
+
+    expect(build('1')).toEqual({ onFalse: '', keepValue: true })
+    expect(build('true')).toEqual({ onFalse: '', keepValue: true })
+    expect(build('0')).toEqual({ onFalse: '' })
+    expect(build(undefined)).toEqual({ onFalse: '' })
+  })
+
   test('matches the hardcoded timer definitions', () => {
     const timer = findSection(settings, 'Timer').attributes
     const legacy = getTimerAttributes()
