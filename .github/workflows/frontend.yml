@@ -40,6 +40,13 @@ jobs:
         with:
             node-version: 24 # use 'latest' to always track the newest stable release
 
+      - name: Install PHP and Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          # Must match the "composer" requirement in composer.json
+          tools: composer:2.10.3
+
       - name: Run composer
         run: |
           composer install -vvv
