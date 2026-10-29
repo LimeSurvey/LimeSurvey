@@ -1,0 +1,5 @@
+[codespell]
+skip = vendor,node_modules,./.git,*.min.js,*.min.css,build,dist,./upload,.gitignore,.DS_Store,*.lock,*.lss,./assets/packages,./application/extensions/yiiwheels,./application/extensions/yii-jsoneditor,./application/extensions/captchaExtended,./docs/swagger/swagger-ui*,./docs/release_notes.txt,./locale,./editor/public/tinymce,./editor/public/remixicon,./assets/fonts,./assets/scripts/admin/bootstrap-switch.js,./application/extensions/bootstrap5/helpers/TbHtml.php,./themes/*/*/css,package-lock.json,./docs/credits.txt,./assets/scripts/admin/json-js,./application/helpers/adodb,./application/core/plugins/TwoFactorAdminLogin/helper/phpqrcode.php
+check-filenames = true
+builtin = clear,rare
+ignore-words-list = clas,nd,ser,sav,nax,bu,fo,datas,rollin,optin,ded,slanguage,slanguages,currenty,smove,afile,acount,ascript,ascripts,ontext,sord,idel,ans,vas,te,ot,eacf,pre-select,groupe,doble,titel,ist,cna,curren,afterall,cript,unsecure,invokable,lightening,allways,serie,notin,acounts,alpha-numeric

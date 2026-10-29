@@ -167,7 +167,7 @@ class LSBaseController extends LSYii_Controller
         }
         //todo end
 
-        //todo this should be done only once per session and not everytime calling an action ...
+        //todo this should be done only once per session and not every time calling an action ...
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
         }

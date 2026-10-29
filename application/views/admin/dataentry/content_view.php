@@ -470,7 +470,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     $suffix = '';
                 }
 
-                if (intval(trim((string) $qidattributes['maximum_chars'])) > 0 && intval(trim((string) $qidattributes['maximum_chars'])) < 20) { // Limt to 20 chars for numeric
+                if (intval(trim((string) $qidattributes['maximum_chars'])) > 0 && intval(trim((string) $qidattributes['maximum_chars'])) < 20) { // Limit to 20 chars for numeric
                     $maximum_chars = intval(trim((string) $qidattributes['maximum_chars']));
                     $maxlength = "maxlength='{$maximum_chars}' ";
                 } else {

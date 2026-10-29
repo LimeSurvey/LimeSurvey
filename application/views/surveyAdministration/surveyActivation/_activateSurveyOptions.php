@@ -155,6 +155,26 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
         </div>
     </div>
 </div>
+<div class="row">
+    <div class='col-md-6'>
+        <div class="ex-form-group mb-3">
+            <label class="form-label" for='savequotaexit'><?php eT("Save quota exit"); ?></label>
+            <i class="ri-information-line"
+               data-bs-toggle="tooltip"
+               title="<?= gT("If enabled, the ID of the matched quota will be stored together with the response."); ?>"
+            ></i>
+            <div class="">
+                <?php
+                $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name' => 'savequotaexit',
+                    'checkedOption' => $aSurveysettings['savequotaexit'],
+                    'selectOptions' => $optionsOnOff
+                ]);
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
 
     <div class="row sub_footer">
         <div class="col-12 mt-5 mb-3">

@@ -78,6 +78,10 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
                 'key' => 'refUrl',
                 'formatter' => ['ynToBool' => true]
             ],
+            "savequotaexit" => [
+                'key' => 'saveQuotaExit',
+                'formatter' => ['ynToBool' => true]
+            ],
             "datecreated" => [
                 'key' => 'dateCreated',
                 'formatter' => ['dateTimeToJson' => true]

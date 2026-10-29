@@ -15,6 +15,11 @@
 
 class HtmlEditorPop extends SurveyCommonAction
 {
+    /**
+     * Renders the pop-up HTML editor for a single field.
+     *
+     * @return void
+     */
     public function index()
     {
         Yii::app()->loadHelper('admin.htmleditor');
@@ -40,7 +45,7 @@ class HtmlEditorPop extends SurveyCommonAction
                 $contentsLangDirection = getLanguageRTL(Yii::app()->session['adminlang']) ? 'rtl' : 'ltr';
             }
             $aData['contentsLangDirection'] = $contentsLangDirection;
-            if (in_array($aData['sFieldType'], array('email-invitation', 'email-registration', 'email-confirmation', 'email-reminder'))) {
+            if (isEmailEditorFieldtype($aData['sFieldType'])) {
                 $aData['htmlformatoption'] = ',fullPage:true';
             }
 

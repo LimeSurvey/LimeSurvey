@@ -81,6 +81,12 @@ class LimesurveyApi
         return false;
     }
 
+    /**
+     * Creates an absolute URL for the given route.
+     * @param string $route The controller route, e.g. 'admin/update'.
+     * @param array $params Additional GET parameters (name=>value).
+     * @return string The absolute URL.
+     */
     public function createUrl($route, array $params)
     {
         return App()->createAbsoluteUrl($route, $params);
@@ -140,12 +146,26 @@ class LimesurveyApi
         }
     }
 
+    /**
+     * Deletes a single response from the survey response table.
+     * @param integer $surveyId The survey ID.
+     * @param integer $responseId The response ID.
+     * @return integer The number of deleted rows.
+     */
     public function removeResponse($surveyId, $responseId)
     {
         return \Response::model($surveyId)->deleteByPk($responseId);
     }
+
     /**
      * Check if a table does exist in the database
+     *
+     * Uses schema->getTableNames() rather than schema->getTable($sTableName) on purpose:
+     * getTableNames() issues a single lightweight "SHOW TABLES" query (cached per schema),
+     * while getTable() additionally runs "SHOW FULL COLUMNS" and "SHOW CREATE TABLE" per call
+     * to build the full column/constraint metadata, which is unnecessary overhead when all
+     * that is needed is an existence check.
+     *
      * @param iPlugin $plugin
      * @param string $sTableName Table name to check for (without dbprefix!))
      * @return boolean True or false if table exists or not

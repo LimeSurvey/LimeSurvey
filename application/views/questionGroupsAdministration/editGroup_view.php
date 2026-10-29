@@ -65,7 +65,7 @@ $count = 0;
                 <label class="form-label " id="relevance-group"><?php eT("Condition:"); ?></label>
                 <div class="input-group">
                     <div class="input-group-text">{</div>
-                    <?php echo CHtml::textArea("questionGroup[grelevance]", $oQuestionGroup['grelevance'], array('class' => 'form-control', 'cols' => '20', 'rows' => '1', 'id' => "grelevance")); ?>
+                    <?php echo CHtml::textArea("questionGroup[grelevance]", $oQuestionGroup['grelevance'], array('class' => 'form-control', 'cols' => '20', 'rows' => '1', 'id' => "grelevance", 'placeholder' => '1')); ?>
                     <div class="input-group-text">}</div>
                 </div>
             </div>

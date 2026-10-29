@@ -11,6 +11,7 @@ class Update_617 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up(): void
     {
         $this->deleteDuplicateTemplateConfigurationEntries();

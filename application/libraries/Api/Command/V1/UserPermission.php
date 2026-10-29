@@ -49,7 +49,33 @@ class UserPermission implements CommandInterface
         $permissions = $this->permission->getPermissions($userId);
         $responseData = $this->transformOutputUserPermissions->transform($permissions);
 
+        $surveyId = (int) $request->getData('surveyId');
+        if ($surveyId > 0) {
+            $responseData['effective'] = $this->getEffectiveSurveyPermissions($surveyId);
+        }
+
         return $this->responseFactory
             ->makeSuccess(['permissions' => $responseData]);
+    }
+
+    /**
+     * Resolved flags incl. owner, global and survey group inheritance.
+     *
+     * @param int $surveyId
+     * @return array<string, bool>
+     */
+    private function getEffectiveSurveyPermissions(int $surveyId): array
+    {
+        $can = fn(string $permission, string $crud): bool =>
+            $this->permission->hasSurveyPermission($surveyId, $permission, $crud);
+
+        return [
+            'surveyRead' => $can('survey', 'read'),
+            'surveyUpdate' => $can('survey', 'update'),
+            'responsesRead' => $can('responses', 'read')
+                || $can('responses', 'update')
+                || $can('statistics', 'read'),
+            'responsesUpdate' => $can('responses', 'update'),
+        ];
     }
 }

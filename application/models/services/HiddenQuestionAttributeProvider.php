@@ -8,6 +8,7 @@ namespace LimeSurvey\Models\Services;
 class HiddenQuestionAttributeProvider extends QuestionAttributeProvider
 {
     /** @inheritdoc */
+    #[\Override]
     public function getDefinitions($options = [])
     {
         /** @var string question type */

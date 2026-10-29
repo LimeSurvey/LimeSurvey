@@ -94,7 +94,7 @@ class LimeMailer extends PHPMailer
     private $_bAttachementTypeDone = false;
 
     /**
-     * @var boolean $ignoremissingattachement allow to send if attachement have issue.
+     * @var boolean $ignoremissingattachement allow to send if attachment have issue.
      **/
     public $ignoremissingattachement = false;
 
@@ -149,7 +149,6 @@ class LimeMailer extends PHPMailer
         $emailmethod = Yii::app()->getConfig('emailmethod');
         $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
         $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
-        $emailsmtppassword = LSActiveRecord::decryptSingle(Yii::app()->getConfig("emailsmtppassword"));
         $emailsmtpdebug = Yii::app()->getConfig("emailsmtpdebug");
         $emailsmtpssl = Yii::app()->getConfig("emailsmtpssl");
         $defaultlang = Yii::app()->getConfig("defaultlang");
@@ -172,6 +171,11 @@ class LimeMailer extends PHPMailer
         /* Don't check tls by default : allow own sign certificate */
         $this->SMTPAutoTLS = false;
 
+        /* Collect debug output (SMTP and mail()) instead of echoing it */
+        $this->Debugoutput = function ($str, $level) {
+            $this->addDebug($str);
+        };
+
         switch ($emailmethod) {
             case self::MethodQmail:
                 $this->IsQmail();
@@ -179,9 +183,6 @@ class LimeMailer extends PHPMailer
             case self::MethodSmtp:
                 $this->IsSMTP();
                 $this->SMTPKeepAlive = true;
-                $this->Debugoutput = function ($str, $level) {
-                    $this->addDebug($str);
-                };
                 if ($emailsmtpdebug > 0) {
                     if ($emailsmtpdebug == 1) {
                         // Map "On errors" to PHPMailer debug level 2
@@ -201,7 +202,7 @@ class LimeMailer extends PHPMailer
                     $this->SMTPSecure = $emailsmtpssl;
                 }
                 $this->Username = $emailsmtpuser;
-                $this->Password = $emailsmtppassword;
+                $this->Password = $this->getSmtpPassword();
                 if (trim((string) $emailsmtpuser) != "") {
                     $this->SMTPAuth = true;
                 }
@@ -225,6 +226,22 @@ class LimeMailer extends PHPMailer
             $this->Sender = Yii::app()->getConfig('siteadminbounce');
         }
         $this->eventName = 'beforeEmail';
+    }
+
+    /**
+     * Get the decrypted SMTP password from the global settings
+     * A password that can't be decrypted (e.g. because the encryption keys changed since it was saved) is logged
+     * and replaced by an empty password, so sending fails with a mailer error instead of an exception
+     * @return string
+     */
+    private function getSmtpPassword()
+    {
+        try {
+            return LSActiveRecord::decryptSingle(Yii::app()->getConfig("emailsmtppassword"));
+        } catch (SodiumException $e) {
+            Yii::log('Unable to decrypt the SMTP password: ' . $e->getMessage(), CLogger::LEVEL_ERROR, 'application.LimeMailer');
+            return '';
+        }
     }
 
     /**
@@ -657,6 +674,9 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent because demo-mode is activated.'));
             return false;
         }
+        // Remove any previously set value first: this mailer instance can be reused across several
+        // recipients in a loop, and addCustomHeader() alone would keep stacking duplicate headers.
+        $this->clearCustomHeader("X-messagetype");
         $this->addCustomHeader("X-messagetype", $this->emailType);
         // If the email method is set to "Plugin", we need to dispatch an event to that specific plugin
         // so it can perform it's logic without depending on the more generic "beforeEmail" event.
@@ -972,7 +992,7 @@ class LimeMailer extends PHPMailer
         if (empty($this->surveyId)) {
             return true;
         }
-        // No attachement template : no attachments
+        // No attachment template : no attachments
         if (!array_key_exists($this->emailType, $this->_aAttachmentByType)) {
             return true;
         }

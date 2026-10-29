@@ -137,6 +137,15 @@ blockquote {
   margin-bottom: 0px;
 }
 
+/* Keep the table header visible while scrolling inside the wrapper */
+.subquestions-table > thead > tr > th,
+.answeroptions-table > thead > tr > th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: $white;
+}
+
 .subquestions-table input.code,
 .answeroptions-table input.code {
   min-width: 70px;
@@ -149,7 +158,8 @@ blockquote {
 
 .subquestions-table > tbody > tr > td:last-of-type,
 .answeroptions-table > tbody > tr > td:last-of-type {
-  padding-right: 0;
+  /* Leave room for an overlay scrollbar so it does not cover the delete button */
+  padding-right: 1rem;
 }
 // Question editor END
 

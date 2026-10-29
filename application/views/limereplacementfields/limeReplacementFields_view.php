@@ -38,6 +38,11 @@
         ?>
             <optgroup label='<?php eT("Previous answer fields");?>'>
             <?php
+            if (empty($cquestions)) {
+                ?>
+                    <option value='' disabled='disabled'><?php eT('(none)');?></option>
+                    <?php
+            }
             foreach ($cquestions as $cqn) {
                 $isDisabled = "";
                 if (in_array($cqn[2], $InsertansUnsupportedtypes)) {

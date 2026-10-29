@@ -21,12 +21,12 @@ class countFunctions
     /**
      * Return the count of response on current ExpressionScript Engine survey equal to a specific value
      * @param string $qCode : code of question, currently must be existing sgqa. Sample Q01.sgqa.
-     * @param string $comparaison : comparre with value. Can use < or > … see https://www.yiiframework.com/doc/api/1.1/CDbCriteria#compare-detail
+     * @param string $comparison : compare with value. Can use < or > … see https://www.yiiframework.com/doc/api/1.1/CDbCriteria#compare-detail
      * @param boolean $submitted (or not) response
      * @param boolean $self include (or not) current response
      * @return integer|string
      */
-    public static function statCountIf($qCode, $comparaison, $submitted = true, $self = true)
+    public static function statCountIf($qCode, $comparison, $submitted = true, $self = true)
     {
         $api = new LimesurveyApi();
         $surveyId = $api->getCurrentSurveyid(true);
@@ -51,7 +51,7 @@ class countFunctions
             $srid = $_SESSION['responses_' . $surveyId]['srid'];
             $oCriteria->compare("id", "<>" . $srid);
         }
-        $oCriteria->compare($sQuotedColumn, $comparaison);
+        $oCriteria->compare($sQuotedColumn, $comparison);
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
     }
 

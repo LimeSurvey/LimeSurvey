@@ -42,10 +42,10 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
                     <?php $this->renderPartial('/admin/export/exportresult_panels/_format', ['exports' => $exports, 'defaultexport' => $defaultexport, 'aCsvFieldSeparator' => $aCsvFieldSeparator]); ?>
                     <?php $this->renderPartial('/admin/export/exportresult_panels/_general', ['selecthide'  => $selecthide, 'selectshow'  => $selectshow, 'selectinc'  => $selectinc, 'aLanguages'  => $aLanguages]); ?>
 
-                    <?php if (empty(App()->getRequest()->getParam('responseIds'))) : ?>
+                    <?php if ($responseIds === '') : ?>
                         <?php $this->renderPartial('/admin/export/exportresult_panels/_range', ['SingleResponse' => $SingleResponse, 'min_datasets' => $min_datasets, 'max_datasets' => $max_datasets]); ?>
                     <?php else : ?>
-                        <?php $this->renderPartial('/admin/export/exportresult_panels/_single-value', ['SingleResponse' => $SingleResponse, 'surveyid' => $surveyid]); ?>
+                        <?php $this->renderPartial('/admin/export/exportresult_panels/_single-value', ['SingleResponse' => $SingleResponse, 'surveyid' => $surveyid, 'responseIds' => $responseIds]); ?>
                     <?php endif; ?>
 
                     <?php $this->renderPartial('/admin/export/exportresult_panels/_responses', ['surveyid' => $surveyid]); ?>

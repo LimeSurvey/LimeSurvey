@@ -99,9 +99,10 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.ResponseListMassiveActions') . '.php';
         $floatingActions = \actions\ResponseListMassiveActions::getActions($surveyid);
         $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
-            'pk'       => 'id',
-            'gridId'   => 'responses-grid',
-            'aActions' => $floatingActions,
+            'pk'                 => 'id',
+            'gridId'             => 'responses-grid',
+            'aActions'           => $floatingActions,
+            'lsSelectAllEnabled' => true,
         ]);
 
         // The first few columns are fixed.
@@ -222,7 +223,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         // An array to control unicity of $code (EM code)
         foreach ($model->metaData->columns as $column) {
             if (!in_array($column->name, $model->defaultColumns)) {
-                /* Add encryption symbole to question title for table header (if question is encrypted) */
+                /* Add encryption symbol to question title for table header (if question is encrypted) */
                 $encryptionSymbol = '';
                 if (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] === 'Y') {
                     $encryptionSymbol = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
@@ -305,17 +306,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     "onUpdateTokenGrid();",
                     '$("#responses-grid [data-bs-toggle=\'popover\']").popover();',
                 ],
-                'massiveActionTemplate' => $filterColumns,
-                'showSelectionBar'     => false,
-                'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSize',
-                        $pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                    )
-                ),
+                'massiveActionTemplate'  => $filterColumns,
+                'lsShowSelectionBar'     => false,
+                'lsPageSizeCurrentValue' => $pageSize,
             ]
         );
 

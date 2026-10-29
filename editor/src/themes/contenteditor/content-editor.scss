@@ -162,7 +162,8 @@
   }
 }
 
-.survey-privacy {
+.survey-privacy,
+.edit-mode {
   .mce-content-body,
   .content-editable {
     width: 100% !important;
@@ -171,7 +172,7 @@
 
 .content-editable {
   border-radius: 4px !important;
-  line-height: 16px !important;
+  line-height: $line-height-16;
   padding: 8px 12px;
   width: 100%;
   min-width: 70px;

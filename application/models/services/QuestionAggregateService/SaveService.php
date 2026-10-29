@@ -163,6 +163,7 @@ class SaveService
         }
 
         $this->proxyExpressionManager->setDirtyFlag();
+        $this->proxyExpressionManager->flushEmCache();
 
         return $question;
     }

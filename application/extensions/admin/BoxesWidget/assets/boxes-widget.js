@@ -4,6 +4,17 @@ let cardHeaderRedirection = function () {
             window.location.href = $(this).closest('.box-widget-card').attr("data-url");
         }
     })
+
+    $('.box-widget-card[data-url]')
+        .off('keydown.boxesWidget')
+        .on('keydown.boxesWidget', function (event) {
+            if (event.key !== 'Enter' || event.target !== this) {
+                return
+            }
+
+            event.preventDefault()
+            window.location.href = $(this).attr('data-url')
+        })
 };
 
 let checkLoadMoreButton = function () {

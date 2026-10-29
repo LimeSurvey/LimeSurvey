@@ -58,8 +58,8 @@ class LSjsonRPCServer extends jsonRPCServer
         }
 
         // output the response
-        if (is_null($request) || !empty($request['id'])) {
-// notifications don't want response
+        // Notifications (no id or a null id) don't want a response: An id of 0 or "0" is a valid request id
+        if (is_null($request) || isset($request['id'])) {
             header('content-type: application/json');
             BigData::json_echo($response);
         }

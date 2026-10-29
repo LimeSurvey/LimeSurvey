@@ -1,3 +1,4 @@
+import { format } from 'util'
 import React from 'react'
 
 import { Button, ToggleButtons } from 'components'
@@ -7,10 +8,12 @@ import { FilterSelect } from './FilterSelect'
 import { JOIN, SOURCE } from './utils'
 import { ParticipantSource, QuestionSource, SurveyDataSource } from './sources'
 
-const sourceTabs = () => [
+const sourceTabs = (survey) => [
   { name: t('Question'), value: SOURCE.QUESTION },
-  { name: t('Survey data'), value: SOURCE.SURVEY_DATA },
-  { name: t('Participant data'), value: SOURCE.PARTICIPANT },
+  { name: t('Response data'), value: SOURCE.SURVEY_DATA },
+  ...(survey?.anonymized
+    ? []
+    : [{ name: t('Participant data'), value: SOURCE.PARTICIPANT }]),
 ]
 
 const joinOptions = () => [
@@ -46,12 +49,12 @@ export const FilterSelectionRow = ({
 
       <div className="responses-statistics-filters-row">
         <div className="responses-statistics-filters-row-label">
-          {`${t('Filter selection')} #${index + 1}`}
+          {format(t('Filter selection #%s'), index + 1)}
         </div>
         <div className="responses-statistics-filters-row-tabs">
           <ToggleButtons
             id={`filter-source-${filter.id}`}
-            toggleOptions={sourceTabs()}
+            toggleOptions={sourceTabs(survey)}
             value={filter.source}
             onChange={(value) => update('source', value)}
           />

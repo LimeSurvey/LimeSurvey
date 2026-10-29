@@ -1,6 +1,6 @@
 <?php
 /**
- * This view display any error encoutered while getting the welcome message. Most of those errors are returned by the update server, and concern the update key.
+ * This view display any error encountered while getting the welcome message. Most of those errors are returned by the update server, and concern the update key.
  * @var obj $errorObject the object error
  */
 // TODO : move to the controller
@@ -49,6 +49,15 @@ switch ($errorObject->error) {
         $title = gT("Your update key has expired!");
         $message = gT("Please buy/enter a new one!");
         $buttons = 1;
+        break;
+
+    case 'hard_lock':
+        $title = gT("Your update key has been locked!");
+        $message = sprintf(
+            gT("This usually happens if the payment for your update key is still outstanding. Please check your invoices in your LimeSurvey account or contact LimeSurvey support at %s."),
+            'support@limesurvey.org'
+        );
+        $buttons = 3;
         break;
 
     case 'not_found':

@@ -20,6 +20,7 @@ export const CommentsModal = ({
   questionTitle = '',
   fields,
   answerOptions = [],
+  filterSet = [],
   initialAnswer = '',
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(initialAnswer)
@@ -47,6 +48,7 @@ export const CommentsModal = ({
     selectedField,
     fields,
     questionType,
+    filterSet,
   })
 
   const options = useMemo(
@@ -74,7 +76,7 @@ export const CommentsModal = ({
             options={options}
             value={selectedAnswer}
             onChange={setSelectedAnswer}
-            allOption={{ label: t('All answers') }}
+            allOption={{ label: t('All answer options') }}
           />
         )}
         {visibleComments.length ? (
@@ -103,7 +105,7 @@ export const CommentsModal = ({
         ) : (
           <div className="responses-statistics-comments-status">
             {selectedAnswer
-              ? t('No comments for this answer.')
+              ? t('No comments for this answer option.')
               : t('No comments for this question.')}
           </div>
         )}

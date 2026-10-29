@@ -29,6 +29,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function run(int $surveyId, string $language = 'en'): StatisticsChartDTO
     {
         $this->surveyId = $surveyId;
@@ -92,7 +93,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
             'ROUND(SUM(CASE WHEN submitdate IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(id), 0), 2) AS completionrate',
         ];
 
-        // datestamps is not enabled, therefor we cannot calculate avg completion time
+        // datestamps is not enabled, therefore we cannot calculate avg completion time
         $selectParams[] = isset($tableSchema->columns['startdate'])
             ? $this->getDateDiffClause()
             : new CDbExpression('NULL AS avgcompletiontime');
@@ -109,6 +110,7 @@ class SurveyOverviewStatistics implements StatisticsChartInterface
      * @param StatisticsResponseFilters $filters
      * @return void
      */
+    #[\Override]
     public function setFilters(StatisticsResponseFilters $filters): void
     {
     }

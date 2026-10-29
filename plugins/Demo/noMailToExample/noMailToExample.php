@@ -2,7 +2,7 @@
 /**
  * noMailToExample : just don't send email to example.org or example.com
  * http://example.org/ is a great tool for demonstration and test, but sending an email to user@example.org: you receive 4 hour after a notification
- * This plugin just disable sending email to this website, then you can use it when testing syste.
+ * This plugin just disable sending email to this website, then you can use it when testing system.
  *
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2016 Denis Chenu <http://www.sondages.pro>

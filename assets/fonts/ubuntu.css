@@ -25,3 +25,7 @@
        url('./font-src/ubuntu-v9-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
        url('./font-src/ubuntu-v9-latin-700.svg#Ubuntu') format('svg'); /* Legacy iOS */
 }
+
+.font-ubuntu{
+    font-family: 'Ubuntu';
+}

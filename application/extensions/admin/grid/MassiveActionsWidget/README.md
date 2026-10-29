@@ -87,13 +87,13 @@ There is currently 3 action types (they are the result of the refactorisation of
 
 - **redirect** : when clicking on the action link, user will be redirected to the wanted url in a blank windows. The list of the checked items will be posted in a string separated by `|` (by default). This is used only for tokens right now (send email...), extra parameters in data of the link : 
     - `input-name` : name of the input created
-    - `input-separator` : separator used to separate checked item (defult to `|`)
+    - `input-separator` : separator used to separate checked item (default to `|`)
     - `target` : target set of the action : default `_blanck`, use `_self` to use current windows
 - **fill-session-and-redirect** : basically the same than redirect, but calling first an action on a controller to fill the session with the checked items before redirecting. This is used only for tokens "add participant to CPDB" for now.
 - **modal** : This is the most used case. It raises a modal to first confirm the action, then submit an ajax request to the defined url, and closes it OR shows an array of results.
 
 ```php
-// Exemple of action
+// Example of action
 array(
     // li element
     'type'        => 'action',                                                        
@@ -173,7 +173,7 @@ This will generate a dropup button of this kind :
 #### Action type "modal":
 The modal action is complex, and accept various parameters.
 
-First, the modal title and its html body should be specified. Then  a modal type should be defined. It correponds to a view in the widget modals/ directory. For now, only one type is available : yes-no. The yes-no modal accepts parameters to change the text for "yes" and "no" (e.g: to show "apply" and "cancel".)
+First, the modal title and its html body should be specified. Then  a modal type should be defined. It corresponds to a view in the widget modals/ directory. For now, only one type is available : yes-no. The yes-no modal accepts parameters to change the text for "yes" and "no" (e.g: to show "apply" and "cancel".)
 
 ```php
 // modal
@@ -210,7 +210,7 @@ The form will not be posted to the url directly by the ajax request. Indeed, the
     <div class="mb-3">
         <label class="col-md-4 control-label"><?php eT("Muh Value:"); ?></label>
         <div class="col-md-8">
-            <!-- Thoses input have the class "custom-data", they will be posted by the ajax request -->
+            <!-- Those input have the class "custom-data", they will be posted by the ajax request -->
             <input type="text" class="form-control custom-data" id="muhvalue" name="muhvalue" value="">         
             <input type="hidden" name="sid" value="<?php echo $_GET['surveyid']; ?>" class="custom-data"/>
         </div>

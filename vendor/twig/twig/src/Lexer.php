@@ -37,6 +37,8 @@ class Lexer
     private $position;
     private $positions;
     private $currentVarBlockLine;
+    /** @var list<string> */
+    private array $documentation = [];
     private array $openingBrackets = ['{', '(', '['];
     private array $closingBrackets = ['}', ')', ']'];
 
@@ -92,6 +94,10 @@ class Lexer
         if ($this->isInitialized) {
             return;
         }
+
+        // when the comment closing tag starts with "#" (as "#}" does), the empty comment ("{##}")
+        // starts like a documentation comment ("{##"); make sure it keeps lexing as a comment
+        $emptyCommentLookahead = str_starts_with($this->options['tag_comment'][1], '#') ? '(?!'.preg_quote(substr($this->options['tag_comment'][1], 1), '#').')' : '';
 
         // when PHP 7.3 is the min version, we will be able to remove the '#' part in preg_quote as it's part of the default
         $this->regexes = [
@@ -149,6 +155,21 @@ class Lexer
                 ')
             }sx',
 
+            // #} or ##}
+            'lex_documentation_comment' => '{
+                (?:'.
+                    preg_quote($this->options['whitespace_trim'].'#'.$this->options['tag_comment'][1], '#').'\s*\n?'. // -##}\s*\n?
+                    '|'.
+                    preg_quote($this->options['whitespace_line_trim'].'#'.$this->options['tag_comment'][1], '#').'['.$this->options['whitespace_line_chars'].']*'. // ~##}[ \t\0\x0B]*
+                    '|'.
+                    preg_quote($this->options['whitespace_trim'].$this->options['tag_comment'][1], '#').'\s*\n?'. // -#}\s*\n?
+                    '|'.
+                    preg_quote($this->options['whitespace_line_trim'].$this->options['tag_comment'][1], '#').'['.$this->options['whitespace_line_chars'].']*'. // ~#}[ \t\0\x0B]*
+                    '|'.
+                    preg_quote($this->options['tag_comment'][1], '#').'(?:\r\n?|\n)?'. // #}(?:\r\n?|\n)?
+                ')
+            }sx',
+
             // verbatim %}
             'lex_block_raw' => '{
                 \s*verbatim\s*
@@ -169,6 +190,8 @@ class Lexer
                     preg_quote($this->options['tag_variable'][0], '#'). // {{
                     '|'.
                     preg_quote($this->options['tag_block'][0], '#'). // {%
+                    '|'.
+                    preg_quote($this->options['tag_comment'][0].'#', '#').$emptyCommentLookahead. // {## (but not the empty comment {##})
                     '|'.
                     preg_quote($this->options['tag_comment'][0], '#'). // {#
                 ')('.
@@ -198,6 +221,7 @@ class Lexer
         $this->states = [];
         $this->brackets = [];
         $this->position = -1;
+        $this->documentation = [];
 
         // find all token starts in one go
         preg_match_all($this->regexes['lex_tokens_start'], $this->code, $matches, \PREG_OFFSET_CAPTURE);
@@ -277,6 +301,11 @@ class Lexer
         $this->moveCursor($textContent);
 
         switch ($this->positions[1][$this->position][0]) {
+            case $this->options['tag_comment'][0].'#':
+                $this->moveCursor($position[0]);
+                $this->lexComment(true);
+                break;
+
             case $this->options['tag_comment'][0]:
                 $this->moveCursor($position[0]);
                 $this->lexComment();
@@ -289,10 +318,12 @@ class Lexer
 
                 // raw data?
                 if (preg_match($this->regexes['lex_block_raw'], $this->code, $match, 0, $this->cursor)) {
+                    $this->documentation = [];
                     $this->moveCursor($match[0]);
                     $this->lexRawData();
                 // {% line \d+ %}
                 } elseif (preg_match($this->regexes['lex_block_line'], $this->code, $match, 0, $this->cursor)) {
+                    $this->documentation = [];
                     $this->moveCursor($match[0]);
                     $this->lineno = (int) $match[1];
                 } else {
@@ -382,6 +413,9 @@ class Lexer
         }
         // inline comment
         elseif (preg_match(self::REGEX_RAW_INLINE_COMMENT, $this->code, $match, 0, $this->cursor)) {
+            if (str_starts_with($match[0], '##')) {
+                $this->addDocumentation(substr($match[0], 2));
+            }
             $this->moveCursor($match[0]);
         }
         // unlexable
@@ -472,13 +506,24 @@ class Lexer
         $this->pushToken(Token::TEXT_TYPE, $this->normalizeNewlines($text), $offset);
     }
 
-    private function lexComment(): void
+    private function lexComment(bool $isDocumentation = false): void
     {
-        if (!preg_match($this->regexes['lex_comment'], $this->code, $match, \PREG_OFFSET_CAPTURE, $this->cursor)) {
+        $regex = $isDocumentation ? 'lex_documentation_comment' : 'lex_comment';
+        if (!preg_match($this->regexes[$regex], $this->code, $match, \PREG_OFFSET_CAPTURE, $this->cursor)) {
             throw new SyntaxError('Unclosed comment.', $this->lineno, $this->source);
         }
 
-        $this->moveCursor(substr($this->code, $this->cursor, $match[0][1] - $this->cursor).$match[0][0]);
+        $comment = substr($this->code, $this->cursor, $match[0][1] - $this->cursor);
+        if ($isDocumentation) {
+            $documentation = $comment;
+            // support a symmetric "##}" closing marker
+            if (str_ends_with($documentation, '#')) {
+                $documentation = substr($documentation, 0, -1);
+            }
+            $this->addDocumentation($documentation);
+        }
+
+        $this->moveCursor($comment.$match[0][0]);
     }
 
     private function lexString(): void
@@ -526,7 +571,20 @@ class Lexer
 
         // by default the token starts at the current cursor; callers that
         // emit a token after consuming it must pass an explicit offset
-        $this->tokens[] = new Token($type, $value, $lineno ?? $this->lineno, $offset ?? $this->cursor);
+        $documentation = null;
+        if ($this->documentation && (Token::TEXT_TYPE !== $type || '' !== trim($value))) {
+            $documentation = implode("\n", $this->documentation);
+            $this->documentation = [];
+        }
+
+        $this->tokens[] = new Token($type, $value, $lineno ?? $this->lineno, $offset ?? $this->cursor, $documentation);
+    }
+
+    private function addDocumentation(string $documentation): void
+    {
+        if ('' !== $documentation = trim($this->normalizeNewlines($documentation))) {
+            $this->documentation[] = $documentation;
+        }
     }
 
     private function moveCursor($text): void

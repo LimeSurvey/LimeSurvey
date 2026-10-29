@@ -38,17 +38,26 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
         <!-- Default Template -->
         <div class="mb-3">
             <label class="col-12 form-label" for="defaulttheme">
-                <?php eT("Default theme:");
+                <?php eT("Theme for public survey list and error pages:");
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
-                <select class="form-select" name="defaulttheme" id="defaulttheme">
+                <select class="form-select" name="defaulttheme" id="defaulttheme" aria-describedby="defaulttheme-hint">
                     <?php foreach ($templatenames as $templatename) : ?>
                         <option value='<?php echo CHtml::encode($templatename); ?>' <?php echo ($thisdefaulttheme == $templatename) ? "selected='selected'" : "" ?> >
                             <?php echo CHtml::encode($templatename); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+            <div class="col-12 form-label ">
+                <span class="hint" id="defaulttheme-hint">
+                <?php printf(
+                    gT("Also used as a fallback if a survey theme is missing. To set the theme for new surveys, use %sGlobal survey settings > General > Theme%s."),
+                    '<a href="' . CHtml::encode(App()->createUrl('admin/globalsettings/sa/surveysettings', ['partial' => '_generaloptions_panel'])) . '">',
+                    '</a>'
+                ); ?>
+                </span>
             </div>
         </div>
 
@@ -219,17 +228,19 @@ Full lock - none of participants are allowed to take survey, even if they alread
         </div>
 
         <!-- Refresh assets -->
-        <div class="mb-3">
-            <label class="col-12 form-label" for='clearcache'>
-                <?php eT("Clear frontend cache"); ?> <small>(<?php echo Yii::app()->getConfig('customassetversionnumber'); ?>)</small>
-            </label>
-            <div class="col-12">
-                <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "clearAssetsAndCache")); ?>"
-                   class="btn btn-outline-dark btn-large">
-                    <?php eT("Clear now"); ?>
-                </a>
+        <?php if (Permission::model()->hasGlobalPermission('templates', 'create')) : ?>
+            <div class="mb-3">
+                <label class="col-12 form-label" for='clearcache'>
+                    <?php eT("Clear frontend cache"); ?> <small>(<?php echo Yii::app()->getConfig('customassetversionnumber'); ?>)</small>
+                </label>
+                <div class="col-12">
+                    <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "clearAssetsAndCache")); ?>"
+                       class="btn btn-outline-dark btn-large">
+                        <?php eT("Clear now"); ?>
+                    </a>
+                </div>
             </div>
-        </div>
+        <?php endif; ?>
 
         <!-- Default Editor mode -->
         <div class="mb-3">
@@ -255,7 +266,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         </div>
 
         <!-- Side menu behaviour -->
-        <?php /* This setting is just remaining here for campatibility reasons. It is not yet implemented into the new admmin panel */ ?>
+        <?php /* This setting is just remaining here for compatibility reasons. It is not yet implemented into the new admmin panel */ ?>
         <div class="mb-3" style="display: none;">
             <label class='col-12 form-label' for='sideMenuBehaviour'>
                 <?php eT("Side-menu behaviour"); ?>
@@ -403,6 +414,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <div class="col-12">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => $globalGeneralSetting['name'],
+                        'ariaLabel'     => strip_tags((string) $globalGeneralSetting['label']),
                         'checkedOption' => $globalGeneralSetting['checkedOption'],
                         'selectOptions' => $globalGeneralSetting['selectOptions'],
                         'htmlOptions'   => $globalGeneralSetting['htmlOptions'] ?? [],

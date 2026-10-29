@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_167 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             addColumn('{{surveys_languagesettings}}', 'attachments', 'text');

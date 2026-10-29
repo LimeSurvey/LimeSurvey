@@ -7,6 +7,7 @@ use Token;
 
 class Update_406 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         // surveys

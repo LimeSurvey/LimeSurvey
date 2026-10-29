@@ -3,6 +3,8 @@
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
 use CDbConnection;
+use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSqlBuilder;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use SurveyDynamic;
 
@@ -15,6 +17,8 @@ use SurveyDynamic;
  *     each return an alias for the requested aggregate (deduplicated).
  *  2. execute() runs the merged SELECT (chunked only when the expression
  *     list is very large), after which value($alias) returns the count.
+ * 
+ *  @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 final class ResponseAggregateBatch
 {
@@ -46,14 +50,19 @@ final class ResponseAggregateBatch
     /** @var StatisticsResponseFilters|null */
     private $filters;
 
-    /** @var array<string, array{kind: string, field: string, value: string}> alias => request */
+    /** @var ResolvedFilter[] The filter the user built in the modal, resolved. */
+    private array $resolvedFilters;
+
+    private ResponseFilterSqlBuilder $filterSqlBuilder;
+
+    /** @var array<string, array{kind: string, field: string, value: string, numeric?: bool}> alias => request */
     private array $requests = [];
 
     /**
      * Median cannot be expressed as a one-scan conditional aggregate, so these
      * run as one ordered LIMIT/OFFSET query per field after the main pass.
      *
-     * @var array<string, array{field: string, countAlias: string}> alias => request
+     * @var array<string, array{field: string, countAlias: string, numeric?: bool}> alias => request
      */
     private array $medianRequests = [];
 
@@ -65,10 +74,18 @@ final class ResponseAggregateBatch
 
     private bool $executed = false;
 
-    public function __construct(int $surveyId, ?StatisticsResponseFilters $filters = null)
-    {
+    /**
+     * @param ResolvedFilter[] $resolvedFilters
+     */
+    public function __construct(
+        int $surveyId,
+        ?StatisticsResponseFilters $filters = null,
+        array $resolvedFilters = []
+    ) {
         $this->surveyId = $surveyId;
         $this->filters = $filters;
+        $this->resolvedFilters = $resolvedFilters;
+        $this->filterSqlBuilder = new ResponseFilterSqlBuilder($surveyId);
     }
 
     /**
@@ -204,7 +221,7 @@ final class ResponseAggregateBatch
 
         $db = $this->getDb();
         $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
-        $where = $this->buildWhere();
+        [$where, $whereParams] = $this->buildWhere();
 
         foreach (array_chunk($this->requests, self::MAX_EXPRESSIONS_PER_QUERY, true) as $chunk) {
             $selects = [];
@@ -214,7 +231,7 @@ final class ResponseAggregateBatch
             }
 
             $sql = 'SELECT ' . implode(', ', $selects) . ' FROM ' . $table . $where;
-            $row = $db->createCommand($sql)->queryRow() ?: [];
+            $row = $db->createCommand($sql)->queryRow(true, $whereParams) ?: [];
 
             foreach (array_keys($chunk) as $alias) {
                 $value = $row[$alias] ?? 0;
@@ -239,17 +256,25 @@ final class ResponseAggregateBatch
     private function executeMedians(CDbConnection $db, string $table): void
     {
         $selects = [];
+        $params = [];
         foreach ($this->medianRequests as $alias => $request) {
             $count = (int)($this->results[$request['countAlias']] ?? 0);
             if ($count > 0) {
-                $selects[] = $this->buildMedianSelect($db, $table, $request, $count, $alias);
+                [$select, $selectParams] = $this->buildMedianSelect($db, $table, $request, $count, $alias);
+                $selects[] = $select;
+                $params[] = $selectParams;
             } else {
                 $this->results[$alias] = 0;
             }
         }
 
-        foreach (array_chunk($selects, self::MAX_MEDIANS_PER_QUERY) as $chunk) {
-            $rows = $db->createCommand(implode(' UNION ALL ', $chunk))->queryAll();
+        foreach (array_chunk($selects, self::MAX_MEDIANS_PER_QUERY, true) as $chunk) {
+            $chunkParams = [];
+            foreach (array_keys($chunk) as $index) {
+                $chunkParams += $params[$index];
+            }
+
+            $rows = $db->createCommand(implode(' UNION ALL ', $chunk))->queryAll(true, $chunkParams);
             foreach ($rows as $row) {
                 $value = $row['median'] ?? 0;
                 $this->results[$row['alias']] = is_numeric($value) ? $value + 0 : 0;
@@ -257,11 +282,14 @@ final class ResponseAggregateBatch
         }
     }
 
-    private function buildMedianSelect(CDbConnection $db, string $table, array $request, int $count, string $alias): string
+    /**
+     * @return array{0: string, 1: array<string,mixed>}
+     */
+    private function buildMedianSelect(CDbConnection $db, string $table, array $request, int $count, string $alias): array
     {
         $col = $db->quoteColumnName($request['field']);
         $isNumericCell = $this->numericCellCheck($db, $request['field'], !empty($request['numeric']));
-        $where = $this->buildWhere();
+        [$where, $whereParams] = $this->buildWhere();
         $where = $where === '' ? " WHERE $isNumericCell" : "$where AND $isNumericCell";
 
         $skip = intdiv($count - 1, 2);
@@ -275,9 +303,12 @@ final class ResponseAggregateBatch
             $skip
         );
 
-        return 'SELECT ' . $db->quoteValue($alias) . ' AS ' . $db->quoteColumnName('alias')
-            . ', AVG(v) AS ' . $db->quoteColumnName('median')
-            . ' FROM (' . $inner . ') median_values';
+        return [
+            'SELECT ' . $db->quoteValue($alias) . ' AS ' . $db->quoteColumnName('alias')
+                . ', AVG(v) AS ' . $db->quoteColumnName('median')
+                . ' FROM (' . $inner . ') median_values',
+            $whereParams,
+        ];
     }
 
     public function isExecuted(): bool
@@ -447,10 +478,36 @@ final class ResponseAggregateBatch
         return "($col IS NOT NULL AND $col <> '' AND $test)";
     }
 
-    private function buildWhere(): string
+    /**
+     * The two filter params combine with AND: each is already a self-contained
+     * condition, and the legacy one keeps its meaning.
+     *
+     * @return array{0: string, 1: array<string,mixed>} Clause, and the values
+     *     the caller has to bind.
+     */
+    private function buildWhere(): array
+    {
+        $conditions = $this->legacyConditions();
+        $params = [];
+
+        $resolved = $this->filterSqlBuilder->build($this->resolvedFilters);
+        if ($resolved['condition'] !== '') {
+            $conditions[] = '(' . $resolved['condition'] . ')';
+            $params = $resolved['params'];
+        }
+
+        return [$conditions ? (' WHERE ' . implode(' AND ', $conditions)) : '', $params];
+    }
+
+    /**
+     * The statistics sidebar's own filters, which inline their values.
+     *
+     * @return string[]
+     */
+    private function legacyConditions(): array
     {
         if ($this->filters === null) {
-            return '';
+            return [];
         }
 
         $filters = $this->filters->getFilters();
@@ -472,7 +529,7 @@ final class ResponseAggregateBatch
             $conditions = array_merge($conditions, $this->buildSearchConditions($filters['search']));
         }
 
-        return $conditions ? (' WHERE ' . implode(' AND ', $conditions)) : '';
+        return $conditions;
     }
 
     /**

@@ -10,6 +10,7 @@ use LsDefaultDataSets;
  */
 class Update_431 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->update(

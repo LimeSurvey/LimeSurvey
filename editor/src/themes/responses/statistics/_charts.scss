@@ -253,6 +253,18 @@
     }
   }
 
+  .responses-statistics-chart-info {
+    display: flex;
+    align-items: flex-start;
+    align-items: center;
+    gap: 8px;
+
+    i {
+      font-size: 1.25em;
+      line-height: 1;
+    }
+  }
+
   .responses-statistics-stat-term i {
     color: $g-700;
     cursor: help;
@@ -481,7 +493,6 @@
       display: none;
     }
 
-    .responses-statistics-pie-label-id,
     .responses-statistics-pie-label-metric {
       fill: $g-700;
       font-size: $font-size-xs;
@@ -522,6 +533,27 @@
         flex-direction: column;
         gap: 24px;
       }
+    }
+  }
+}
+
+.responses-statistics-bar-chart-viewport {
+  max-width: 100%;
+
+  &--scrollable {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scrollbar-gutter: stable;
+  }
+}
+
+@media print {
+  .responses-statistics-bar-chart-viewport--scrollable {
+    overflow: visible;
+
+    .responses-statistics-bar-chart {
+      min-width: 100% !important;
     }
   }
 }
