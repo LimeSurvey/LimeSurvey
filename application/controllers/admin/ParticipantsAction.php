@@ -1072,14 +1072,8 @@ class ParticipantsAction extends SurveyCommonAction
                         $writearray[$sFilterDuplicateField] = "";
                     }
                 }
-                // Participant IDs must be UUIDs, rows with another ID are not imported
                 if (isset($writearray['participant_id'])) {
                     $writearray['participant_id'] = trim((string) $writearray['participant_id']);
-                    if ($writearray['participant_id'] !== '' && !Participant::isValidParticipantId($writearray['participant_id'])) {
-                        $invalidparticipantid[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
-                        $recordcount++;
-                        continue;
-                    }
                 }
                 $dupfound = false;
                 $thisduplicate = 0;
@@ -1098,6 +1092,21 @@ class ParticipantsAction extends SurveyCommonAction
                     ];
                 }
                 $existingParticipant = Participant::model()->findByAttributes($duplicateCriteriaAttributes);
+                // New participants need a UUID as participant ID, existing ones are still found by an older ID
+                if (
+                    empty($existingParticipant)
+                    && isset($writearray['participant_id'])
+                    && $writearray['participant_id'] !== ''
+                    && !Participant::isValidParticipantId($writearray['participant_id'])
+                ) {
+                    $participantDetails = trim($writearray['firstname'] . " " . $writearray['lastname'] . ($writearray['email'] !== '' ? " (" . $writearray['email'] . ")" : ""));
+                    // The header is line 1 of the CSV file
+                    $invalidparticipantid[] = $participantDetails !== ''
+                        ? sprintf(gT("Line %s: %s"), $recordcount + 1, CHtml::encode($participantDetails))
+                        : sprintf(gT("Line %s"), $recordcount + 1);
+                    $recordcount++;
+                    continue;
+                }
                 if (!empty($existingParticipant)) {
                     $thisduplicate = 1;
                     $dupcount++;
@@ -1211,8 +1220,9 @@ class ParticipantsAction extends SurveyCommonAction
                                 $participant->$key = $value;
                             }
                         }
-                        $participant->encrypt()->insertParticipantCSV($participant->attributes);
-                        $imported++;
+                        if ($participant->encrypt()->insertParticipantCSV($participant->attributes)) {
+                            $imported++;
+                        }
                     }
                 }
                 $mincriteria++;

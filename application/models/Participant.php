@@ -2388,11 +2388,17 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * @param array $data
-     * @return void
+     * Inserts a participant from a CSV import without model validation
+     * Note: Only participants with a UUID as participant ID are inserted
+     *
+     * @param array $data Participant data, keys participant_id, firstname, lastname, email, language, blacklisted and owner_uid
+     * @return bool True if the participant was inserted
      */
     public function insertParticipantCSV($data)
     {
+        if (!self::isValidParticipantId($data['participant_id'] ?? null)) {
+            return false;
+        }
         $insertData = array(
             'participant_id' => $data['participant_id'],
             'firstname' => $data['firstname'],
@@ -2404,7 +2410,7 @@ class Participant extends LSActiveRecord
             'owner_uid' => $data['owner_uid'],
             'created' => date('Y-m-d H:i:s', time())
         );
-        Yii::app()->db->createCommand()->insert('{{participants}}', $insertData);
+        return Yii::app()->db->createCommand()->insert('{{participants}}', $insertData) > 0;
     }
 
     /**

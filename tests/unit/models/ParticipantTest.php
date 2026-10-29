@@ -82,6 +82,34 @@ class ParticipantTest extends BaseModelTestCase
     }
 
     /**
+     * The CSV import only inserts participants with a UUID as participant ID.
+     *
+     * @return void
+     */
+    public function testInsertParticipantCsvOnlyInsertsValidParticipantId()
+    {
+        $data = [
+            'participant_id' => 'a"b<c',
+            'firstname' => 'Max',
+            'lastname' => 'Mustermann',
+            'email' => 'max.mustermann@example.com',
+            'language' => 'en',
+            'blacklisted' => 'N',
+            'owner_uid' => 1,
+        ];
+        $this->assertFalse(\Participant::model()->insertParticipantCSV($data));
+        $this->assertNull(\Participant::model()->findByPk($data['participant_id']));
+
+        $data['participant_id'] = \Participant::genUuid();
+        try {
+            $this->assertTrue(\Participant::model()->insertParticipantCSV($data));
+            $this->assertInstanceOf(\Participant::class, \Participant::model()->findByPk($data['participant_id']));
+        } finally {
+            \Participant::model()->deleteByPk($data['participant_id']);
+        }
+    }
+
+    /**
      * Text attribute values in the participant list must be shown as entered, not interpreted as HTML.
      *
      * @return void
