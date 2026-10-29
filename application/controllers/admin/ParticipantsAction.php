@@ -1072,9 +1072,6 @@ class ParticipantsAction extends SurveyCommonAction
                         $writearray[$sFilterDuplicateField] = "";
                     }
                 }
-                if (isset($writearray['participant_id'])) {
-                    $writearray['participant_id'] = trim((string) $writearray['participant_id']);
-                }
                 $dupfound = false;
                 $thisduplicate = 0;
 
@@ -1092,6 +1089,14 @@ class ParticipantsAction extends SurveyCommonAction
                     ];
                 }
                 $existingParticipant = Participant::model()->findByAttributes($duplicateCriteriaAttributes);
+                // Note: Older participant IDs can have surrounding spaces, so the ID is only trimmed if no participant has it as is
+                if (empty($existingParticipant) && isset($writearray['participant_id'])) {
+                    $trimmedParticipantId = trim((string) $writearray['participant_id']);
+                    if ($trimmedParticipantId !== $writearray['participant_id']) {
+                        $writearray['participant_id'] = $trimmedParticipantId;
+                        $existingParticipant = Participant::model()->findByAttributes(['participant_id' => $trimmedParticipantId]);
+                    }
+                }
                 // New participants need a UUID as participant ID, existing ones are still found by an older ID
                 if (
                     empty($existingParticipant)
