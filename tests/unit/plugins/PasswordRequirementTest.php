@@ -345,6 +345,34 @@ class PasswordRequirementTest extends TestBaseClass
     }
 
     /**
+     * DB update 721 drops a maximum password length that no password could match.
+     */
+    public function testUpdateDropsImpossibleMaximumSize()
+    {
+        $formerRules = App()->getConfig('passwordValidationRules');
+        try {
+            // Active plugin with the default minimum of 12, the former maximum of 10 is below it
+            $this->saveAdminSettings(true, true, false, '');
+            App()->setConfig('passwordValidationRules', ['min' => 8, 'max' => 10]);
+            (new \LimeSurvey\Helpers\Update\Update_721(App()->db, []))->up();
+            $settings = self::$plugin->getPluginSettings();
+            $this->assertEmpty($settings['maximumSize']['current']);
+
+            // Inactive plugin, the former rules themselves conflict
+            \Plugin::model()->updateAll(['active' => 0], 'name = :name', [':name' => self::$pluginName]);
+            App()->setConfig('passwordValidationRules', ['min' => 16, 'max' => 10]);
+            (new \LimeSurvey\Helpers\Update\Update_721(App()->db, []))->up();
+            $settings = self::$plugin->getPluginSettings();
+            $this->assertEquals(16, $settings['minimumSize']['current']);
+            $this->assertEmpty($settings['maximumSize']['current']);
+        } finally {
+            App()->setConfig('passwordValidationRules', $formerRules);
+            self::installAndActivatePlugin(self::$pluginName);
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
      * The plugin can't be deactivated.
      */
     public function testCanNotBeDeactivated()

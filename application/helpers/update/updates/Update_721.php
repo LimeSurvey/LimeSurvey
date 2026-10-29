@@ -43,7 +43,12 @@ class Update_721 extends DatabaseUpdateBase
                     'priority' => 1,
                 ]
             );
-            $pluginId = (int) $this->db->getLastInsertID();
+            // getLastInsertID() without a sequence name fails on Postgres
+            $pluginId = (int) $this->db->createCommand()
+                ->select('id')
+                ->from('{{plugins}}')
+                ->where('name = :name', [':name' => 'PasswordRequirement'])
+                ->queryScalar();
         } else {
             $pluginId = (int) $plugin['id'];
             // A plugin with a load error is not loaded at all, give it a new chance
@@ -64,6 +69,38 @@ class Update_721 extends DatabaseUpdateBase
             $this->addStricterRules($pluginId, $rules);
         } else {
             $this->replaceRules($pluginId, $rules);
+        }
+        $this->dropImpossibleMaximumSize($pluginId);
+    }
+
+    /**
+     * Clear a maximum password length below the minimum length or the number of required characters:
+     * No password could match these rules, and random passwords would be cut to the maximum.
+     * The maximum gives way because dropping it doesn't weaken the rules.
+     * Same check as PasswordRequirement::saveSettings().
+     * @param int $pluginId
+     * @return void
+     */
+    private function dropImpossibleMaximumSize(int $pluginId)
+    {
+        $maximumSize = (int) $this->getPluginSetting($pluginId, 'maximumSize');
+        if ($maximumSize <= 0) {
+            return;
+        }
+        $minimumSize = $this->getPluginSetting($pluginId, 'minimumSize');
+        if ($minimumSize === null || $minimumSize === '') {
+            // PasswordRequirement::DEFAULT_MINIMUM_SIZE
+            $minimumSize = 12;
+        }
+        // Random passwords always have a lowercase character, and one character of each other required kind.
+        // Unsaved settings use the plugin defaults.
+        $requiredCharacters = 1;
+        foreach (['needsUppercase' => true, 'needsNumber' => true, 'needsNonAlphanumeric' => false] as $setting => $default) {
+            $value = $this->getPluginSetting($pluginId, $setting);
+            $requiredCharacters += (int) ($value === null ? $default : !empty($value));
+        }
+        if ($maximumSize < max((int) $minimumSize, $requiredCharacters)) {
+            $this->setPluginSetting($pluginId, 'maximumSize', '');
         }
     }
 
