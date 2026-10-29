@@ -14,6 +14,8 @@ class PasswordManagement
 {
     // NB: PHP 7.0 does not support class constant visibility
     const MIN_PASSWORD_LENGTH = 8;
+    /** Minimum password length when the PasswordRequirement core plugin is not loaded */
+    const FALLBACK_MIN_PASSWORD_LENGTH = 14;
     const EMAIL_TYPE_REGISTRATION = 'registration';
     const EMAIL_TYPE_RESET_PW = 'resetPassword';
     const MIN_TIME_NEXT_FORGOT_PW_EMAIL = 5; //forgot pw email is send again, only after 5 min delay
@@ -198,12 +200,13 @@ class PasswordManagement
     }
 
     /**
-     * Creates a random password through the core plugin
+     * Creates a random password through the core plugin.
+     * Without the PasswordRequirement plugin, the password has at least FALLBACK_MIN_PASSWORD_LENGTH characters.
      *
      * @todo it's fine to use static functions, until it is used only in controllers ...
      *
      * @param int $length Length of the password
-     * @return string|null
+     * @return string
      */
     public static function getRandomPassword($length = self::MIN_PASSWORD_LENGTH)
     {
@@ -211,7 +214,28 @@ class PasswordManagement
         $oGetPasswordEvent->set('targetSize', $length);
         \Yii::app()->getPluginManager()->dispatchEvent($oGetPasswordEvent);
 
-        return $oGetPasswordEvent->get('password');
+        $password = $oGetPasswordEvent->get('password');
+        if (empty($password) && !self::isPasswordRequirementLoaded()) {
+            $password = getRandomString(max($length, self::FALLBACK_MIN_PASSWORD_LENGTH));
+        }
+        return $password;
+    }
+
+    /**
+     * Whether the PasswordRequirement core plugin is loaded and checks admin passwords.
+     * It can't be deactivated, but it is missing when it is in corePluginBlacklist or failed to load.
+     *
+     * @return bool
+     */
+    public static function isPasswordRequirementLoaded()
+    {
+        $subscriptions = \Yii::app()->getPluginManager()->getSubscriptions('checkPasswordRequirement');
+        foreach ($subscriptions as $subscription) {
+            if ($subscription[0] instanceof \PasswordRequirement) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

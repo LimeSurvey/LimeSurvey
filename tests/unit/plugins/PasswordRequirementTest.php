@@ -191,4 +191,106 @@ class PasswordRequirementTest extends TestBaseClass
             $this->assertNotEmpty($errors, $msg);
         }
     }
+
+    /**
+     * The plugin settings are the only admin password rules, lowering them must be possible.
+     */
+    public function testLoweredRequirementsApplyToUsers()
+    {
+        $this->saveAdminSettings(false, false, false, 4);
+        try {
+            $user = new \User();
+            $this->assertSame('', $user->checkPasswordStrength('passwird'), 'Password matching the lowered plugin settings was refused.');
+            $this->assertNotSame('', $user->checkPasswordStrength('abc'), 'Password shorter than the plugin minimum was accepted.');
+
+            $helpText = $user->getPasswordHelpText();
+            $this->assertStringContainsString('At least 4 characters long.', $helpText);
+            $this->assertStringNotContainsString('upper case', $helpText);
+            $this->assertStringNotContainsString('number', $helpText);
+        } finally {
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
+     * A minimum password length saved blank uses the default length.
+     */
+    public function testBlankMinimumSizeUsesDefault()
+    {
+        $this->saveAdminSettings(false, false, false, '');
+        try {
+            $user = new \User();
+            $shortPassword = str_repeat('a', \PasswordRequirement::DEFAULT_MINIMUM_SIZE - 1);
+            $this->assertNotSame('', $user->checkPasswordStrength($shortPassword), 'Password shorter than the default minimum was accepted.');
+            $this->assertSame('', $user->checkPasswordStrength($shortPassword . 'a'));
+        } finally {
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
+     * The plugin can't be deactivated.
+     */
+    public function testCanNotBeDeactivated()
+    {
+        $oEvent = $this->dispatchPluginEvent(self::$pluginName, 'beforeDeactivate', []);
+        $this->assertFalse($oEvent->get('success', true));
+    }
+
+    /**
+     * Without the plugin, core checks a minimum length and creates long enough random passwords.
+     */
+    public function testFallbackWithoutPlugin()
+    {
+        $pluginManager = App()->getPluginManager();
+        $events = ['checkPasswordRequirement', 'getPasswordRequirements', 'createRandomPassword'];
+        foreach ($events as $event) {
+            $pluginManager->unsubscribe(self::$plugin, $event);
+        }
+        try {
+            $minLength = \LimeSurvey\Models\Services\PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH;
+            $user = new \User();
+            $this->assertNotSame('', $user->checkPasswordStrength(str_repeat('a', $minLength - 1)));
+            $this->assertSame('', $user->checkPasswordStrength(str_repeat('a', $minLength)));
+            $this->assertStringContainsString("At least {$minLength} characters long.", $user->getPasswordHelpText());
+            $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
+            $this->assertGreaterThanOrEqual($minLength, strlen((string) $randomPassword));
+        } finally {
+            foreach ($events as $event) {
+                $pluginManager->subscribe(self::$plugin, $event);
+            }
+        }
+    }
+
+    /**
+     * Save the plugin settings for administration passwords
+     * @param bool $needsNumber
+     * @param bool $needsUppercase
+     * @param bool $needsNonAlphanumeric
+     * @param int|string $minimumSize
+     * @return void
+     */
+    private function saveAdminSettings($needsNumber, $needsUppercase, $needsNonAlphanumeric, $minimumSize)
+    {
+        self::$plugin->saveSettings([
+            'needsNumber' => $needsNumber,
+            'needsUppercase' => $needsUppercase,
+            'needsNonAlphanumeric' => $needsNonAlphanumeric,
+            'minimumSize' => $minimumSize,
+        ]);
+    }
+
+    /**
+     * Restore the default plugin settings for administration passwords
+     * @return void
+     */
+    private function restoreDefaultAdminSettings()
+    {
+        $this->saveAdminSettings(
+            \PasswordRequirement::DEFAULT_NEEDS_NUMBER,
+            \PasswordRequirement::DEFAULT_NEEDS_UPPERCASE,
+            \PasswordRequirement::DEFAULT_NEEDS_NON_ALPHANUMERIC,
+            \PasswordRequirement::DEFAULT_MINIMUM_SIZE
+        );
+    }
 }

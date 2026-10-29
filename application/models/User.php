@@ -13,6 +13,7 @@
 *
 */
 
+use LimeSurvey\Models\Services\PasswordManagement;
 use LimeSurvey\Models\Services\UserManager;
 
 /**
@@ -416,11 +417,11 @@ class User extends LSActiveRecord
 
 
     /**
-     * Checks the strength of a given password against configured validation rules.
+     * Checks the strength of a given password.
      *
-     * This function evaluates the password strength based on length, presence of lowercase
-     * and uppercase letters, numbers, and special characters. It also allows for plugin-based
-     * additional password requirement checks.
+     * The rules come from the PasswordRequirement core plugin, other plugins can add their own
+     * through the checkPasswordRequirement event. Without the core plugin, only a minimum length
+     * of PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH characters is checked.
      *
      * @param string $password The password to check for strength
      *
@@ -428,49 +429,17 @@ class User extends LSActiveRecord
      */
     public function checkPasswordStrength(string $password)
     {
-        $settings = Yii::app()->getConfig("passwordValidationRules");
-        $length = strlen($password);
-        $lowercase = preg_match_all('@[a-z]@', $password);
-        $uppercase = preg_match_all('@[A-Z]@', $password);
-        $number    = preg_match_all('@[0-9]@', $password);
-        $specialChars = preg_match_all('@[^\w]@', $password);
-
-        $resultDefaultRules = "";
-        if ((int) $settings['min'] > 0) {
-            if ($length < $settings['min']) {
-                $resultDefaultRules = sprintf(gTPlural('Password must be at least %d character long', 'Password must be at least %d characters long', $settings['min']), $settings['min']);
-            }
+        $passwordError = '';
+        if (!PasswordManagement::isPasswordRequirementLoaded() && strlen($password) < PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH) {
+            $passwordError = sprintf(
+                gTPlural('Password must be at least %d character long', 'Password must be at least %d characters long', PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH),
+                PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH
+            );
         }
-        if ((int) $settings['max'] > 0) {
-            if ($length > $settings['max']) {
-                $resultDefaultRules = sprintf(gTPlural('Password must be at most %d character long', 'Password must be at most %d characters long', $settings['max']), $settings['max']);
-            }
-        }
-        if ((int) $settings['lower'] > 0) {
-            if ($lowercase < $settings['lower']) {
-                $resultDefaultRules = sprintf(gTPlural('Password must include at least %d lowercase letter', 'Password must include at least %d lowercase letters', $settings['lower']), $settings['lower']);
-            }
-        }
-        if ((int) $settings['upper'] > 0) {
-            if ($uppercase < $settings['upper']) {
-                $resultDefaultRules = sprintf(gTPlural('Password must include at least %d uppercase letter', 'Password must include at least %d uppercase letters', $settings['upper']), $settings['upper']);
-            }
-        }
-        if ((int) $settings['numeric'] > 0) {
-            if ($number < $settings['numeric']) {
-                $resultDefaultRules = sprintf(gTPlural('Password must include at least %d number', 'Password must include at least %d numbers', $settings['numeric']), $settings['numeric']);
-            }
-        }
-        if ((int) $settings['symbol'] > 0) {
-            if ($specialChars < $settings['symbol']) {
-                $resultDefaultRules = sprintf(gTPlural('Password must include at least %d special character', 'Password must include at least %d special characters', $settings['symbol']), $settings['symbol']);
-            }
-        }
-        $passwordOk = ($resultDefaultRules === '');
         $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
         $oPasswordTestEvent->set('password', $password);
-        $oPasswordTestEvent->set('passwordOk', $passwordOk);
-        $oPasswordTestEvent->set('passwordError', $resultDefaultRules);
+        $oPasswordTestEvent->set('passwordOk', $passwordError === '');
+        $oPasswordTestEvent->set('passwordError', $passwordError);
         Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
         return ($oPasswordTestEvent->get('passwordOk') ? '' : $oPasswordTestEvent->get('passwordError'));
     }
@@ -517,38 +486,28 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @todo document me
+     * Returns the text describing the password requirements, shown below password fields.
+     * The requirements come from the plugins answering the getPasswordRequirements event.
+     *
+     * @return string
      */
     public function getPasswordHelpText()
     {
-        $settings =  Yii::app()->getConfig("passwordValidationRules");
-        $txt = gT('A password must meet the following requirements: ');
-        if ((int) $settings['min'] > 0) {
-            $txt .= sprintf(gTPlural('At least %d character long.', 'At least %d characters long.', $settings['min']), $settings['min']) . ' ';
+        $requirements = [];
+        if (!PasswordManagement::isPasswordRequirementLoaded()) {
+            $requirements[] = sprintf(
+                gTPlural('At least %d character long.', 'At least %d characters long.', PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH),
+                PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH
+            );
         }
-        if ((int) $settings['max'] > 0) {
-            $txt .= sprintf(gTPlural('At most %d character long.', 'At most %d characters long.', $settings['max']), $settings['max']) . ' ';
+        $oRequirementsEvent = new PluginEvent('getPasswordRequirements');
+        $oRequirementsEvent->set('requirements', $requirements);
+        Yii::app()->getPluginManager()->dispatchEvent($oRequirementsEvent);
+        $requirements = $oRequirementsEvent->get('requirements');
+        if (empty($requirements)) {
+            return '';
         }
-        if ((int) $settings['min'] > 0 && (int) $settings['max'] > 0) {
-            if ($settings['min'] == $settings['max']) {
-                $txt .= sprintf(gTPlural('Exactly %d character long.', 'Exactly %d characters long.', $settings['min']), $settings['min']) . ' ';
-            } elseif ($settings['min'] < $settings['max']) {
-                $txt .= sprintf(gT('Between %d and %d characters long.'), $settings['min'], $settings['max']) . ' ';
-            }
-        }
-        if ((int) $settings['lower'] > 0) {
-            $txt .= sprintf(gTPlural('At least %d lower case letter.', 'At least %d lower case letters.', $settings['lower']), $settings['lower']) . ' ';
-        }
-        if ((int) $settings['upper'] > 0) {
-            $txt .= sprintf(gTPlural('At least %d upper case letter.', 'At least %d upper case letters.', $settings['upper']), $settings['upper']) . ' ';
-        }
-        if ((int) $settings['numeric'] > 0) {
-            $txt .= sprintf(gTPlural('At least %d number.', 'At least %d numbers.', $settings['numeric']), $settings['numeric']) . ' ';
-        }
-        if ((int) $settings['symbol'] > 0) {
-            $txt .= sprintf(gTPlural('At least %d special character.', 'At least %d special characters.', $settings['symbol']), $settings['symbol']) . ' ';
-        }
-        return($txt);
+        return gT('A password must meet the following requirements: ') . implode(' ', $requirements);
     }
 
     /**

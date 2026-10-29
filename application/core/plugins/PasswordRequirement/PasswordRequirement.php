@@ -2,7 +2,7 @@
 
 /**
  * Core plugin for LimeSurvey : password requirement settings
- * @version 1.1.0
+ * @version 1.2.0
  */
 
 class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
@@ -85,11 +85,28 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     public function init()
     {
         $this->subscribe('checkPasswordRequirement');
+        $this->subscribe('getPasswordRequirements');
         $this->subscribe('createRandomPassword');
+        $this->subscribe('beforeDeactivate');
 
         $this->subscribe('saveSurveyForm', 'validateSaveSurveyForm');
     }
 
+    /**
+     * The password rules for administration users are only set here, so the plugin can't be deactivated.
+     * @return void
+     */
+    public function beforeDeactivate()
+    {
+        $this->getEvent()->set('success', false);
+        $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
+    }
+
+    /**
+     * @see event checkPasswordRequirement
+     * Check an administration user password against the plugin settings
+     * @return void
+     */
     public function checkPasswordRequirement()
     {
         $oEvent = $this->getEvent();
@@ -99,7 +116,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             $this->get('needsNumber', null, null, self::DEFAULT_NEEDS_NUMBER),
             $this->get('needsUppercase', null, null, self::DEFAULT_NEEDS_UPPERCASE),
             $this->get('needsNonAlphanumeric', null, null, self::DEFAULT_NEEDS_NON_ALPHANUMERIC),
-            $this->get('minimumSize', null, null, self::DEFAULT_MINIMUM_SIZE)
+            $this->getMinimumSize('minimumSize', self::DEFAULT_MINIMUM_SIZE)
         );
         if ($errors) {
             $oEvent->set('passwordOk', false);
@@ -135,12 +152,52 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             $this->get('surveySaveNeedsNumber', null, null, self::DEFAULT_SURVEY_SAVE_NEEDS_NUMBER),
             $this->get('surveySaveNeedsUppercase', null, null, self::DEFAULT_SURVEY_SAVE_NEEDS_UPPERCASE),
             $this->get('surveySaveNeedsNonAlphanumeric', null, null, self::DEFAULT_SURVEY_SAVE_NEEDS_NON_ALPHANUMERIC),
-            $this->get('surveySaveMinimumSize', null, null, self::DEFAULT_SURVEY_SAVE_MINIMUM_SIZE)
+            $this->getMinimumSize('surveySaveMinimumSize', self::DEFAULT_SURVEY_SAVE_MINIMUM_SIZE)
         );
         if (empty($errors)) {
             return;
         }
         $event->append('aSaveErrors', $errors);
+    }
+
+    /**
+     * @see event getPasswordRequirements
+     * Add the administration password rules to the text shown below password fields
+     * @return void
+     */
+    public function getPasswordRequirements()
+    {
+        $requirements = [];
+        $minimumSize = $this->getMinimumSize('minimumSize', self::DEFAULT_MINIMUM_SIZE);
+        if ($minimumSize > 0) {
+            $requirements[] = sprintf(gTPlural('At least %d character long.', 'At least %d characters long.', $minimumSize), $minimumSize);
+        }
+        if ($this->get('needsUppercase', null, null, self::DEFAULT_NEEDS_UPPERCASE)) {
+            $requirements[] = sprintf(gTPlural('At least %d upper case letter.', 'At least %d upper case letters.', 1), 1);
+        }
+        if ($this->get('needsNumber', null, null, self::DEFAULT_NEEDS_NUMBER)) {
+            $requirements[] = sprintf(gTPlural('At least %d number.', 'At least %d numbers.', 1), 1);
+        }
+        if ($this->get('needsNonAlphanumeric', null, null, self::DEFAULT_NEEDS_NON_ALPHANUMERIC)) {
+            $requirements[] = sprintf(gTPlural('At least %d special character.', 'At least %d special characters.', 1), 1);
+        }
+        $oEvent = $this->getEvent();
+        $oEvent->set('requirements', array_merge((array) $oEvent->get('requirements'), $requirements));
+    }
+
+    /**
+     * Get a minimum password length setting, a setting saved blank uses the default
+     * @param string $setting the setting name
+     * @param int $default
+     * @return int
+     */
+    private function getMinimumSize($setting, $default)
+    {
+        $minimumSize = $this->get($setting, null, null, $default);
+        if ($minimumSize === null || $minimumSize === '') {
+            return $default;
+        }
+        return (int) $minimumSize;
     }
 
     /**
@@ -177,7 +234,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         $oEvent = $this->getEvent();
         $targetSize = $oEvent->get('targetSize', 8);
 
-        $minimumSize = $this->get('minimumSize', null, null, self::DEFAULT_MINIMUM_SIZE);
+        $minimumSize = $this->getMinimumSize('minimumSize', self::DEFAULT_MINIMUM_SIZE);
         $targetSize = $targetSize < $minimumSize ? $minimumSize : $targetSize;
         $uppercase = $this->get('needsUppercase', null, null, self::DEFAULT_NEEDS_UPPERCASE);
         $numeric = $this->get('needsNumber', null, null, self::DEFAULT_NEEDS_NUMBER);
