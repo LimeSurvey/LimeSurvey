@@ -344,8 +344,10 @@ class PluginManagerController extends SurveyCommonAction
             foreach (array_keys($aSettings) as $name) {
                 $aSave[$name] = App()->request->getPost($name, null);
             }
-            $oPluginObject->saveSettings($aSave);
-            Yii::app()->user->setFlash('success', gT('The plugin settings were saved.'));
+            // A plugin returns false when it refused the settings and set its own error message
+            if ($oPluginObject->saveSettings($aSave) !== false) {
+                Yii::app()->user->setFlash('success', gT('The plugin settings were saved.'));
+            }
             if (App()->request->getPost('redirect')) {
                 $this->getController()->redirect(App()->request->getPost('redirect'), true);
             }

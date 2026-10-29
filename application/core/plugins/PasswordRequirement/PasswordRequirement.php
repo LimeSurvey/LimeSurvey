@@ -213,10 +213,33 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
 
     /**
      * @inheritdoc
+     * Nothing is saved when the maximum password length is below the shortest possible password.
      * The administration password rules are read again after saving.
+     * @return false|void false if the settings were not saved
      */
     public function saveSettings($settings)
     {
+        $rules = $this->getAdminRules();
+        $maximumSize = array_key_exists('maximumSize', $settings) ? (int) $settings['maximumSize'] : $rules['maximumSize'];
+        if ($maximumSize > 0) {
+            $minimumSize = $rules['minimumSize'];
+            if (array_key_exists('minimumSize', $settings)) {
+                $minimumSize = ($settings['minimumSize'] === null || $settings['minimumSize'] === '') ? self::DEFAULT_MINIMUM_SIZE : (int) $settings['minimumSize'];
+            }
+            // Random passwords always have a lowercase character, and one character of each other required kind
+            $requiredCharacters = 1;
+            foreach (['needsUppercase', 'needsNumber', 'needsNonAlphanumeric'] as $setting) {
+                $requiredCharacters += (int) (array_key_exists($setting, $settings) ? !empty($settings[$setting]) : $rules[$setting]);
+            }
+            $shortestSize = max($minimumSize, $requiredCharacters);
+            if ($maximumSize < $shortestSize) {
+                App()->setFlashMessage(
+                    sprintf($this->gT('The settings were not saved: The maximum password length must be at least %d.'), $shortestSize),
+                    'error'
+                );
+                return false;
+            }
+        }
         $this->adminRules = null;
         parent::saveSettings($settings);
     }
