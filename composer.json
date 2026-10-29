@@ -66,6 +66,14 @@
         "bin-dir": "vendor/bin",
 		"platform": {
 			"php": "8.1.31"
+		},
+		"audit": {
+			"ignore": {
+				"GHSA-2phh-27fw-q4gc": "phpoffice/phpspreadsheet: Only the writer is used for Excel exports, the affected reader, XmlScanner and Drawing::setPath are not used; the fixed 5.10.0 needs PHP 8.2",
+				"GHSA-j2w7-387v-m2rq": "phpoffice/phpspreadsheet: Only the writer is used for Excel exports, the affected reader, XmlScanner and Drawing::setPath are not used; the fixed 5.10.0 needs PHP 8.2",
+				"GHSA-3x94-m842-937c": "phpoffice/phpspreadsheet: Only the writer is used for Excel exports, the affected reader, XmlScanner and Drawing::setPath are not used; the fixed 5.10.0 needs PHP 8.2",
+				"GHSA-rxj4-h86g-25gc": "phpoffice/phpspreadsheet: Only the writer is used for Excel exports, the affected reader, XmlScanner and Drawing::setPath are not used; the fixed 5.10.0 needs PHP 8.2"
+			}
 		}
     },
     "require-dev": {

@@ -28,6 +28,7 @@ const StatisticsChartCard = memo(function StatisticsChartCard({
   surveyId,
   valueType,
   filters,
+  filterSet,
 }) {
   const data = useMemo(() => getDataWithPercentages(item), [item])
   const question = useMemo(
@@ -59,6 +60,7 @@ const StatisticsChartCard = memo(function StatisticsChartCard({
       data={data}
       valueType={valueType}
       filters={filters}
+      filterSet={filterSet}
       question={question}
     />
   )
@@ -67,7 +69,7 @@ const StatisticsChartCard = memo(function StatisticsChartCard({
 // Charts render in API order, which follows the survey structure (groups in
 // survey order, questions in group order), so paginated pages append
 // sequentially.
-const renderCharts = (items, surveyId, valueType, filters) => (
+const renderCharts = (items, surveyId, valueType, filters, filterSet) => (
   <div className="responses-statistics-charts row">
     {items.map(({ item, index }) => (
       <div className="col-12" key={`responses-statistics-charts-${index}`}>
@@ -77,6 +79,7 @@ const renderCharts = (items, surveyId, valueType, filters) => (
           surveyId={surveyId}
           valueType={valueType}
           filters={filters}
+          filterSet={filterSet}
         />
       </div>
     ))}
@@ -88,6 +91,7 @@ export const StatisticsContainer = ({
   surveyId,
   valueType,
   filters,
+  filterSet = [],
 }) => {
   const { survey } = useSurvey(surveyId)
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
@@ -134,7 +138,7 @@ export const StatisticsContainer = ({
               {group.title}
             </span>
           )}
-          {renderCharts(group.items, surveyId, valueType, filters)}
+          {renderCharts(group.items, surveyId, valueType, filters, filterSet)}
         </div>
       ))}
     </div>

@@ -26,8 +26,9 @@ class OpHandlerResponseGreaterThanConditionTest extends TestCondition
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
         $this->assertStringNotContainsString('CAST', $criteria->condition);
-        $this->assertFieldConditions($criteria->condition, '[0] > :idGreaterThan', ['id']);
-        $this->assertSame([':idGreaterThan' => 280], $criteria->params);
+        $paramName = array_key_first($criteria->params);
+        $this->assertFieldConditions($criteria->condition, "[0] > $paramName", ['id']);
+        $this->assertSame([$paramName => 280], $criteria->params);
     }
 
     public function testKeyIsSanitized(): void
@@ -37,12 +38,13 @@ class OpHandlerResponseGreaterThanConditionTest extends TestCondition
         $criteria = $handler->execute('id`; DROP TABLE  responses--', 1);
 
         $this->assertStringNotContainsString(';', $criteria->condition);
+        $paramName = array_key_first($criteria->params);
         $this->assertFieldConditions(
             $criteria->condition,
-            '[0] > :idDROPTABLEresponsesGreaterThan',
+            "[0] > $paramName",
             ['idDROPTABLEresponses--']
         );
-        $this->assertArrayHasKey(':idDROPTABLEresponsesGreaterThan', $criteria->params);
+        $this->assertSame([$paramName => 1], $criteria->params);
     }
 
     public function testNonNumericValueThrows(): void

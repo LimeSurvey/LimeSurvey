@@ -80,6 +80,7 @@ $rest['v1/statistics/$id'] = [
             'maxId' => ['type' => 'integer'],
             'completed' => ['type' => 'bool'],
             'search' => ['type' => 'array'],
+            'filterSet' => ['type' => 'array'],
             'language' => ['type' => 'string'],
             'page' => ['type' => 'integer'],
             'pageSize' => ['type' => 'integer'],
@@ -112,6 +113,7 @@ $rest['v1/statistics-date-values/$id'] = [
             'maxId' => ['type' => 'integer'],
             'completed' => ['type' => 'bool'],
             'search' => ['type' => 'array'],
+            'filterSet' => ['type' => 'array'],
         ],
         'responses' => [
             'success' => [

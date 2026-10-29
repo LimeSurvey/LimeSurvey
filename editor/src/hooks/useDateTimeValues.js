@@ -14,7 +14,7 @@ export function useDateTimeValues(
   surveyId,
   qid,
   filters,
-  { enabled = true } = {}
+  { enabled = true, filterSet = [] } = {}
 ) {
   const auth = useAuth()
   const statisticsService = useMemo(
@@ -23,8 +23,15 @@ export function useDateTimeValues(
   )
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: [STATES.SURVEY_STATISTICS_DATE_VALUES, surveyId, qid, filters],
-    queryFn: () => statisticsService.getDateTimeValues(surveyId, qid, filters),
+    queryKey: [
+      STATES.SURVEY_STATISTICS_DATE_VALUES,
+      surveyId,
+      qid,
+      filters,
+      filterSet,
+    ],
+    queryFn: () =>
+      statisticsService.getDateTimeValues(surveyId, qid, filters, filterSet),
     enabled: enabled && !!surveyId && !!qid,
   })
 

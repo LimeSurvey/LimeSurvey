@@ -79,6 +79,7 @@ const VIEWS = [
       surveyId,
       question,
       filters,
+      filterSet,
       calendarState,
       onCalendarStateChange,
     }) => (
@@ -86,6 +87,7 @@ const VIEWS = [
         surveyId={surveyId}
         question={question}
         filters={filters}
+        filterSet={filterSet}
         stats={data?.[0]?.stats}
         calendarState={calendarState}
         onCalendarStateChange={onCalendarStateChange}
@@ -241,13 +243,21 @@ const VIEWS = [
     icon: () => <i className="ri-list-check"></i>,
     isAvailable: ({ isGridable, isMultiNumerical }) =>
       isGridable || isMultiNumerical,
-    render: ({ surveyId, question, filters, isNumerical, isMultiNumerical }) =>
+    render: ({
+      surveyId,
+      question,
+      filters,
+      filterSet,
+      isNumerical,
+      isMultiNumerical,
+    }) =>
       isMultiNumerical ? (
         <MultiNumericalGrid
           surveyId={surveyId}
           questionCode={question?.code}
           fields={question?.fields}
           filters={filters}
+          filterSet={filterSet}
         />
       ) : (
         <ResponsesGrid
@@ -256,6 +266,7 @@ const VIEWS = [
           title={question?.title}
           fields={question?.fields}
           filters={filters}
+          filterSet={filterSet}
           twoColumns={isNumerical}
         />
       ),
@@ -278,6 +289,7 @@ const VIEWS = [
       surveyId,
       question,
       filters,
+      filterSet,
       isDate,
     }) =>
       isDate ? (
@@ -285,6 +297,7 @@ const VIEWS = [
           surveyId={surveyId}
           question={question}
           filters={filters}
+          filterSet={filterSet}
         />
       ) : isFileUpload ? (
         <FileUploadTable
@@ -293,6 +306,7 @@ const VIEWS = [
           questionCode={question?.code}
           fields={question?.fields}
           filters={filters}
+          filterSet={filterSet}
         />
       ) : isArrayText || isText || isDualScale || isMultiNumerical ? (
         <ArrayTextTable
@@ -300,6 +314,7 @@ const VIEWS = [
           questionCode={question?.code}
           fields={question?.fields}
           filters={filters}
+          filterSet={filterSet}
           searchable={isText || isMultiNumerical}
           scaleHeaders={question?.scaleHeaders}
         />
@@ -312,12 +327,13 @@ const VIEWS = [
     label: () => t('Comments'),
     icon: () => <i className="ri-message-2-line"></i>,
     isAvailable: ({ hasComments }) => hasComments,
-    render: ({ surveyId, question, data, onViewComments }) => (
+    render: ({ surveyId, question, data, filterSet, onViewComments }) => (
       <QuestionComments
         surveyId={surveyId}
         questionCode={question?.code}
         fields={question?.fields}
         answerOptions={data}
+        filterSet={filterSet}
         onViewComments={onViewComments}
       />
     ),
@@ -391,6 +407,7 @@ export const ChartRendererV2 = ({
   question = {},
   valueType,
   filters = {},
+  filterSet = [],
 }) => {
   const isNumerical = question?.type === QT_N_NUMERICAL
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
@@ -472,6 +489,7 @@ export const ChartRendererV2 = ({
     question,
     hasComments,
     filters,
+    filterSet,
     isDate,
     calendarState,
     onCalendarStateChange: setCalendarState,
@@ -593,6 +611,7 @@ export const ChartRendererV2 = ({
           questionTitle={question?.title}
           fields={question?.fields}
           answerOptions={data}
+          filterSet={filterSet}
           initialAnswer={commentsAnswer ?? ''}
         />
       )}

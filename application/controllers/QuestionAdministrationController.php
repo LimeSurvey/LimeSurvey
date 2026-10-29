@@ -1619,6 +1619,7 @@ class QuestionAdministrationController extends LSBaseController
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
             self::setMultipleQuestionMandatoryState($aQids, $sMandatory, $iSid);
+            EmCacheHelper::flushAtEndOfRequest();
         }
     }
 
@@ -1633,6 +1634,7 @@ class QuestionAdministrationController extends LSBaseController
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
             self::setMultipleQuestionOtherState($aQids, $sOther, $iSid);
+            EmCacheHelper::flushAtEndOfRequest();
         }
     }
 
@@ -1663,6 +1665,7 @@ class QuestionAdministrationController extends LSBaseController
             $attributesWithValue,
             $validQuestionTypes
         );
+        EmCacheHelper::flushAtEndOfRequest();
     }
 
     /**

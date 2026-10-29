@@ -1351,6 +1351,21 @@ class statistics_helper
     }
 
     /**
+     * Returns the plain text question title of a chart, which "Export images" draws above the chart.
+     *
+     * @param array $outputs Question/output metadata from buildOutputList()
+     * @return string
+     */
+    protected function getChartTitle($outputs)
+    {
+        $sTitle = flattenText($outputs['qquestion'], false, true);
+        if (!empty($outputs['subquestionText'])) {
+            $sTitle .= " [" . flattenText($outputs['subquestionText'], false, true) . "]";
+        }
+        return $sTitle;
+    }
+
+    /**
      * Tally ranking counts for a question stored as a JSON array.
      *
      * @param int|string $surveyid
@@ -1456,7 +1471,8 @@ class statistics_helper
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
-                        $columnName = $al[2];
+                        // '-oth-' is stored in the answer column, the _Cother column holds the other text
+                        $columnName = $cn;
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
                     } else {
@@ -2077,6 +2093,7 @@ class statistics_helper
                 $aData['grawdata'] = $grawdata;
                 $aData['color'] = 0; // random truc much
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
+                $aData['chartTitle'] = $this->getChartTitle($outputs);
                 // Output graph
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_graphs', $aData, true);
             } else {
@@ -2205,7 +2222,8 @@ class statistics_helper
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
-                        $columnName = $cn . "_Cother";
+                        // '-oth-' is stored in the answer column, the _Cother column holds the other text
+                        $columnName = $cn;
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='{$othEncrypted}'";
                     } else {
@@ -3405,6 +3423,7 @@ class statistics_helper
                 $aData['color'] = 0;
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
                 $aData['lbl'] = $lbl;
+                $aData['chartTitle'] = $this->getChartTitle($outputs);
                 ///
 
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
@@ -3651,6 +3670,9 @@ class statistics_helper
         if (!isset($sql) || !$sql) {
             $sql = null;
         }
+
+        //Save the filter for the "Browse" button (applied by SurveyDynamic::search() in the responses grid)
+        Yii::app()->user->setState('sql_' . $surveyid, $sql);
 
         //only continue if we have something to output
         $bBrowse = false;

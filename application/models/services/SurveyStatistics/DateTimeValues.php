@@ -17,17 +17,23 @@ class DateTimeValues
     private const VALUE_PATTERN = '/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?/';
 
     /**
+     * @param \LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter[] $resolvedFilters
+     *     The filterSet the user built in the filter modal, resolved.
      * @throws InvalidArgumentException When the question is no date question
      *                                  of the survey, or is encrypted.
      */
-    public function get(int $surveyId, int $qid, ?StatisticsResponseFilters $filters = null): array
-    {
+    public function get(
+        int $surveyId,
+        int $qid,
+        ?StatisticsResponseFilters $filters = null,
+        array $resolvedFilters = []
+    ): array {
         $question = $this->findDateQuestion($surveyId, $qid);
         if (DateProcessor::isEncrypted($question)) {
             throw new InvalidArgumentException('Encrypted date answers have to be decrypted first.');
         }
 
-        $batch = new ResponseAggregateBatch($surveyId, $filters);
+        $batch = new ResponseAggregateBatch($surveyId, $filters, $resolvedFilters);
 
         return self::groupByDay(
             DateProcessor::hasTime($question),

@@ -33,6 +33,11 @@
     display: none;
   }
 
+  table.ls-answers .dropdown-item > .leftheader,
+  table.ls-answers .dropdown-item > .rightheader {
+    display: block !important;
+  }
+
   /* We don't need it for accessibility : we already have the label */
 
   table.ls-answers tbody td {

@@ -5,6 +5,7 @@ namespace LimeSurvey\Libraries\Api\Command\V1;
 use CDbException;
 use InvalidArgumentException;
 use LimeSurvey\Models\Services\Exception\NotFoundException;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsService;
 use Permission;
@@ -80,6 +81,14 @@ class Statistics implements CommandInterface
                 $this->statisticsService->setFilters($this->filters);
             }
 
+            $this->statisticsService->setResolvedFilters(
+                $this->resolveFilterSet(
+                    $request,
+                    $this->statisticsService->getSurvey(),
+                    $this->statisticsService->getLanguage()
+                )
+            );
+
             $this->statisticsService->setPagination(
                 $this->getPage(),
                 $this->getPageSize()
@@ -88,6 +97,8 @@ class Statistics implements CommandInterface
             $statistics = $this->statisticsService->run();
         } catch (InvalidArgumentException $exception) {
             return $this->responseFactory->makeErrorBadRequest($exception->getMessage());
+        } catch (PermissionDeniedException $exception) {
+            return $this->responseFactory->makeErrorUnauthorised();
         } catch (NotFoundException $exception) {
             return $this->responseFactory->makeErrorNotFound($exception->getMessage());
         } catch (CDbException $exception) {

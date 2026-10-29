@@ -251,7 +251,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * @inheritdoc With allow to delete all related models and data and test Permission.
-     * @param bool $recursive
+     * @param bool $recursive Also delete all related models and data
+     * @return bool False if the current user may not delete the survey or the delete failed
      **/
     public function delete($recursive = true)
     {
@@ -340,6 +341,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             Quota::model()->deleteQuota(array('sid' => $this->sid), true);
             // Remove all related plugin settings
             PluginSetting::model()->deleteAllByAttributes(array("model" => 'Survey', "model_id" => $this->sid));
+            // Remove the survey-specific theme options
+            TemplateConfiguration::model()->deleteAllByAttributes(array('sid' => $this->sid));
             // Delete all uploaded files.
             rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $this->sid);
             // Delete all failed email notifications
@@ -2296,6 +2299,22 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Get the IDs of the groups that contain at least one question without "Always hide this question"
+     * @return int[]
+     */
+    public function getGroupIdsWithVisibleQuestions()
+    {
+        $gids = Yii::app()->db->createCommand()
+            ->selectDistinct('t.gid')
+            ->from('{{questions}} t')
+            ->leftJoin('{{question_attributes}} qa', 'qa.qid = t.qid AND qa.attribute = :hidden', [':hidden' => 'hidden'])
+            ->where('t.sid = :sid AND t.parent_qid = 0', [':sid' => $this->sid])
+            ->andWhere('qa.value IS NULL OR qa.value != :hidden_value', [':hidden_value' => '1'])
+            ->queryColumn();
+        return array_map('intval', $gids);
+    }
+
+    /**
      * Get the count of questions that do not need input (skipping text-display etc.)
      * @return int
      */
@@ -2660,7 +2679,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     $url = $baseUrl;
                     $params = [$urlManager->routeVar => $alias] + $params;
                 } else {
-                    $url = $baseUrl . '/' . $alias;
+                    // Keep index.php in the URL like createPublicUrl() does, so the alias also works without URL rewriting
+                    $scriptName = $urlManager->showScriptName ? 'index.php/' : '';
+                    $url = $baseUrl . '/' . $scriptName . $alias;
                 }
                 $query = $urlManager->createPathInfo($params, '=', '&');
                 if (!empty($query)) {

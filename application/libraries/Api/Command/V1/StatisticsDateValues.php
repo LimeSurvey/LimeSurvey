@@ -12,9 +12,11 @@ use LimeSurvey\Api\Command\{
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use LimeSurvey\Libraries\Api\Command\V1\Statistics\StatisticsFilterParamsTrait;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\SurveyStatistics\DateTimeValues;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use Permission;
+use Survey;
 use Yii;
 
 /**
@@ -59,15 +61,23 @@ class StatisticsDateValues implements CommandInterface
             return $this->responseFactory->makeErrorBadRequest('Missing question ID (qid).');
         }
 
+        $survey = Survey::model()->findByPk($surveyId);
+        if ($survey === null) {
+            return $this->responseFactory->makeErrorNotFound("Survey {$surveyId} not found.");
+        }
+
         try {
             $filters = $this->getFilters();
             $values = $this->dateTimeValues->get(
                 $surveyId,
                 $qid,
-                $filters->count() > 0 ? $filters : null
+                $filters->count() > 0 ? $filters : null,
+                $this->resolveFilterSet($request, $survey, $survey->language)
             );
         } catch (InvalidArgumentException $exception) {
             return $this->responseFactory->makeErrorBadRequest($exception->getMessage());
+        } catch (PermissionDeniedException $exception) {
+            return $this->responseFactory->makeErrorUnauthorised();
         } catch (CDbException $exception) {
             if ($exception->getCode() === 42) {
                 return $this->responseFactory->makeErrorBadRequest("Survey table with ID {$surveyId} does not exist.");

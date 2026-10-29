@@ -80,6 +80,40 @@ const buildSearchFilters = (search, fields) => {
   }))
 }
 
+/**
+ * The filter as query params, in the nested shape PHP reads back into an array:
+ * `filterSet[0][source]=question&filterSet[0][answerCodes][]=A1`.
+ *
+ * @param {Array} filterSet Filter rows in the shape the API accepts.
+ * @returns {string} Query string fragment, empty when there is nothing to send.
+ */
+export const encodeFilterSet = (filterSet, name = 'filterSet') => {
+  if (!Array.isArray(filterSet) || !filterSet.length) {
+    return ''
+  }
+
+  const params = []
+  const add = (key, value) => {
+    if (value === null || value === undefined) {
+      return
+    }
+    params.push(`${key}=${encodeURIComponent(value)}`)
+  }
+
+  filterSet.forEach((filter, index) => {
+    Object.entries(filter || {}).forEach(([field, value]) => {
+      const key = `${name}[${index}][${field}]`
+      if (Array.isArray(value)) {
+        value.forEach((item) => add(`${key}[]`, item))
+        return
+      }
+      add(key, value)
+    })
+  })
+
+  return params.join('&')
+}
+
 // Flatten the per-response answers into a single list, tagging each answer with
 // the response it belongs to and a single date (mirrors the server's flattening
 // of the old survey-response-answers endpoint).
@@ -117,6 +151,12 @@ const buildStatisticsFilterQuery = (filters = {}) => {
   return `${typeof completed === 'boolean' ? `completed=${completed}` : ''}${minIdIsNumber ? `&minId=${minId}` : ''}${maxIdIsNumber ? `&maxId=${maxId}` : ''}${searchParams}`
 }
 
+// The condition filter as `&filterSet[...]` params, empty when there is none.
+const filterSetQuery = (filterSet) => {
+  const params = encodeFilterSet(filterSet)
+  return params ? `&${params}` : ''
+}
+
 export class StatisticsService {
   constructor(auth, surveyId, baseUrl) {
     this.auth = auth
@@ -131,13 +171,14 @@ export class StatisticsService {
     filters,
     page = 0,
     pageSize = 15,
-    language
+    language,
+    filterSet = []
   ) => {
     const languageParam = language
       ? `&language=${encodeURIComponent(language)}`
       : ''
 
-    const queryFilters = `${buildStatisticsFilterQuery(filters)}${languageParam}&page=${page}&pageSize=${pageSize}`
+    const queryFilters = `${buildStatisticsFilterQuery(filters)}${languageParam}${filterSetQuery(filterSet)}&page=${page}&pageSize=${pageSize}`
     return await this.restClient.get(`statistics/${sid}?${queryFilters}`)
   }
 
@@ -145,9 +186,9 @@ export class StatisticsService {
    * Answers of a Date/time question grouped by day and time:
    * { hasTime, total, days: { 'YYYY-MM-DD': { 'HH:mm:ss': count } } }.
    */
-  getDateTimeValues = async (sid, qid, filters) => {
+  getDateTimeValues = async (sid, qid, filters, filterSet = []) => {
     return await this.restClient.get(
-      `statistics-date-values/${sid}?qid=${qid}&${buildStatisticsFilterQuery(filters)}`
+      `statistics-date-values/${sid}?qid=${qid}&${buildStatisticsFilterQuery(filters)}${filterSetQuery(filterSet)}`
     )
   }
 
@@ -163,7 +204,8 @@ export class StatisticsService {
     language,
     fields,
     sort,
-    filters
+    filters,
+    filterSet
   ) => {
     const body = { page: { currentPage, pageSize } }
     if (language) {
@@ -177,6 +219,9 @@ export class StatisticsService {
     }
     if (Array.isArray(filters) && filters.length) {
       body.filters = filters
+    }
+    if (Array.isArray(filterSet) && filterSet.length) {
+      body.filterSet = filterSet
     }
 
     const data = await this.restClient.post(`survey-responses/${sid}`, body)
@@ -204,7 +249,8 @@ export class StatisticsService {
     selectedAnswer = '',
     fields,
     questionType,
-    selectedField = ''
+    selectedField = '',
+    filterSet = []
   ) => {
     const { answers, pagination } = await this.fetchQuestionAnswers(
       sid,
@@ -214,7 +260,8 @@ export class StatisticsService {
       language,
       fields,
       { submitDate: 'desc' },
-      buildAnswerFilters(selectedAnswer, fields, questionType, selectedField)
+      buildAnswerFilters(selectedAnswer, fields, questionType, selectedField),
+      filterSet
     )
 
     const hasValue = (answer) =>
@@ -293,7 +340,8 @@ export class StatisticsService {
     language,
     fields,
     statisticsFilters,
-    search
+    search,
+    filterSet = []
   ) => {
     const { answers, pagination } = await this.fetchQuestionAnswers(
       sid,
@@ -314,7 +362,8 @@ export class StatisticsService {
           ],
           fields
         ),
-      ]
+      ],
+      filterSet
     )
 
     // Columns in first-seen (field map) order; rows grouped by response.
@@ -371,7 +420,8 @@ export class StatisticsService {
     language,
     field,
     statisticsFilters,
-    search
+    search,
+    filterSet = []
   ) => {
     const terms = [
       ...new Set([...(statisticsFilters?.search ?? []), ...(search ?? [])]),
@@ -388,6 +438,9 @@ export class StatisticsService {
     }
     if (language) {
       body.language = language
+    }
+    if (Array.isArray(filterSet) && filterSet.length) {
+      body.filterSet = filterSet
     }
 
     const data = await this.restClient.post(`survey-responses/${sid}`, body)

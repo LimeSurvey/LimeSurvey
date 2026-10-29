@@ -27,7 +27,12 @@ const byRawValue = (rowA, rowB, columnId) =>
  * Data table view of a Date/time question: one row per answer with its
  * response ID, entered date and, when the question records one, time.
  */
-export const DateTimeTable = ({ surveyId, question = {}, filters }) => {
+export const DateTimeTable = ({
+  surveyId,
+  question = {},
+  filters,
+  filterSet,
+}) => {
   const { code: questionCode, fields, hasTime = false } = question
   const { i18n } = useTranslation()
   const localeCode = getLocaleCode(i18n?.language)
@@ -53,6 +58,7 @@ export const DateTimeTable = ({ surveyId, question = {}, filters }) => {
     enabled: shouldLoad,
     fields,
     filters,
+    filterSet,
   })
 
   const answerKey = columns[0]?.key

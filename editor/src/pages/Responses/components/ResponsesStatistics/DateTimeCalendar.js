@@ -31,6 +31,7 @@ export const DateTimeCalendar = ({
   surveyId,
   question = {},
   filters,
+  filterSet,
   stats,
   calendarState = {},
   onCalendarStateChange,
@@ -250,6 +251,7 @@ export const DateTimeCalendar = ({
           surveyId={surveyId}
           question={question}
           filters={filters}
+          filterSet={filterSet}
           range={breakdownRange}
           onRangeChange={changeBreakdownRange}
           onOpenPicker={openPickerFromBreakdown}

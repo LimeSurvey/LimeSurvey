@@ -15,6 +15,7 @@ export const DateTimeRangeModal = ({
   surveyId,
   question = {},
   filters,
+  filterSet,
   range,
   onRangeChange,
   onOpenPicker,
@@ -24,7 +25,7 @@ export const DateTimeRangeModal = ({
     surveyId,
     question.qid,
     filters,
-    { enabled: !!range }
+    { enabled: !!range, filterSet }
   )
   const isSingleDay = range?.from === range?.to
   const rows = range ? sliceByRange(values?.days, range.from, range.to) : []

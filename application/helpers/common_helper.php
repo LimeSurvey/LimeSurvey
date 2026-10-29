@@ -659,9 +659,10 @@ function getGroupListLang($gid, $language, $surveyid)
 
 /**
  * Returns a user list. If 'usercontrolSameGroupPolicy' is set and set to true, only users which are in the same
- * group as me (--> logged in user) will be returned. Superadmin always gets the full list of users.
+ * group as me (--> logged in user) will be returned. Superadmins and users with the global permission to view
+ * users always get the full list of users.
  *
- * @param $outputformat string could be 'onlyuidarray' which only returns array with userids, default is 'fullinfoarray'
+ * @param string $outputformat could be 'onlyuidarray' which only returns array with userids, default is 'fullinfoarray'
  * @return array returns a list of user ids (param='onlyuidarray') or a list with full user details (e.g. uid, name, full_name etc.)
  */
 function getUserList($outputformat = 'fullinfoarray')
@@ -671,7 +672,9 @@ function getUserList($outputformat = 'fullinfoarray')
     }
     $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
     if (
-        !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
+        !Permission::model()->hasGlobalPermission('superadmin', 'read') &&
+        !Permission::model()->hasGlobalPermission('users', 'read') &&
+        isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
     ) {
         if (isset($myuid)) {
@@ -1422,8 +1425,12 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     $currentQuestion = null;
                     $excludeSubquestion = false;
                     foreach ($questions as $question) {
-                        if ($question->title === $code) {
+                        if ($question->parent_qid && $question->title === $code) {
+                            // A subquestion with exactly this code (e.g. a subquestion coded "other") wins over the "other"/"comment" suffixes
                             $currentQuestion = $question;
+                            $commentText = false;
+                            $excludeSubquestion = false;
+                            break;
                         } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
                             $currentQuestion = $question;
                             $commentText = $code;
@@ -4488,10 +4495,17 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
     foreach ($result as $row) {
         Yii::app()->db->createCommand('delete from {{group_l10ns}} where id =' . $row['id'])->execute();
     }
+
+    // Remove translated question attributes, the other attributes have an empty or NULL language
+    Yii::app()->db->createCommand(
+        "DELETE FROM {{question_attributes}}
+        WHERE qid IN (SELECT qid FROM {{questions}} WHERE sid={$iSurveyID})
+        AND language <> '' AND {$sqllang}"
+    )->execute();
 }
 
 /**
-* fixLanguageConsistency() fixes missing groups, questions, answers, quotas & assessments for languages on a survey
+* fixLanguageConsistency() fixes missing groups, questions, answers, translated question attributes, quotas & assessments for languages on a survey
 * @param int $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
 * @param string $baselang - language to use as base (useful when changing the base language) - if empty, it will be picked from the survey
@@ -4583,6 +4597,21 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
                 Yii::app()->db->createCommand()->insert('{{answer_l10ns}}', $data);
             }
         }
+    }
+
+    // Translated question attributes: Copy the base language value where the language has none yet
+    foreach ($languagesToCheck as $lang) {
+        Yii::app()->db->createCommand(
+            "INSERT INTO {{question_attributes}} (qid, attribute, value, language)
+            SELECT qa.qid, qa.attribute, qa.value, :language
+            FROM {{question_attributes}} qa
+            JOIN {{questions}} q ON q.qid = qa.qid
+            WHERE q.sid = :sid AND qa.language = :baselang
+            AND NOT EXISTS (
+                SELECT 1 FROM {{question_attributes}} existing
+                WHERE existing.qid = qa.qid AND existing.attribute = qa.attribute AND existing.language = :existinglanguage
+            )"
+        )->execute([':language' => $lang, ':sid' => $sid, ':baselang' => $baselang, ':existinglanguage' => $lang]);
     }
 
     switchMSSQLIdentityInsert('assessments', true);

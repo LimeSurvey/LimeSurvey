@@ -34,6 +34,97 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.7.0 (build 261020) to 7.8.0 (build 261026) October 26, 2026
++New feature: The "Error saving results" email to the survey administrator can be disabled in config.php (Carsten Schmitz)
+-Fixed issue: When responses could not be saved, participants were told that their responses would be entered into the database later and could continue the survey (Carsten Schmitz)
+-Fixed issue: The survey database warning in the survey editor told users without administrator rights to perform a data integrity check (Carsten Schmitz)
+-Fixed issue: The participant attribute settings showed "Show during registration" and "Mandatory" as off for first name, last name and email, and the selected option of disabled toggle buttons was not recognizable (Carsten Schmitz)
+-Fixed issue: Step value of Array (Numbers) questions could not be set to a decimal value in the question editor (Carsten Schmitz)
+-Fixed issue: Statistics PDF export of a single question showed the "Browse" buttons (Carsten Schmitz)
+-Fixed issue: Statistics PDF export of a single question showed an empty chart if the chart had not been scrolled into view yet (Carsten Schmitz)
+-Fixed issue: Public statistics did not show text questions (Carsten Schmitz)
+-Fixed issue: Participant's "Uses left" was not decreased when a quota ended the survey (Carsten Schmitz)
+-Fixed issue: Array questions with an empty "Repeat headers" setting never repeated the headers instead of using the global default (Carsten Schmitz)
+-Fixed issue: An unlimited memory_limit (-1) was reported as too low in Check data integrity and shown as a tiny negative number in the installer precheck (Carsten Schmitz)
+-Fixed issue #AT-2328: Side menu icons sizes mismatch between new editor and PHP portion of the application (#5451) (Tim Willig)
+-Fixed issue #AT-2322: Success notification on survey activation in classic editor is missing margin (#5448) (Tim Willig)
+-Fixed issue #AT-2319: No refresh of data when editing dropdown related questions in response (new editor) (#5452) (Tim Willig)
+-Fixed issue #20799: Exporting responses with an empty "From" or "To" response ID showed a white page (Carsten Schmitz)
+-Fixed issue #20781: Advanced ranking question caused horizontal scrolling after the screen got narrower (e.g. rotating a phone) (Carsten Schmitz)
+-Fixed issue #20736: Survey list showed 0 responses / No responses for surveys that are not activated (Carsten Schmitz)
+-Fixed issue #20709: Downloading files for all selected responses shows "No files to download!" when using the header select-all checkbox (Carsten Schmitz)
+-Fixed issue #20709: Downloading files for all selected responses shows "No files to download!" when using the header select-all checkbox (#5321) (Carsten Schmitz)
+-Fixed issue #20688: Invalid default values from imported surveys showed an error in the survey, and the data consistency check did not remove them (Carsten Schmitz)
+-Fixed issue #20677: Incorrect image path generated for question background images on Windows server (#5283) (Carsten Schmitz)
+-Fixed issue #20358: The new editor showed only an error message instead of loading when its translations were not cached in the browser yet (Carsten Schmitz)
+-Fixed issue #20252: Respondents got a "Wrong decryption key" error at the end of the survey if the stored SMTP password could not be decrypted (Carsten Schmitz)
+-Fixed issue #20228: The condition editor showed "and" between conditions on the same question that were not added one after the other, although the survey combines them with "or" (Carsten Schmitz)
+-Fixed issue #19993: Quotas without texts in the survey's base language showed an error on the quota page, and the data consistency check did not repair them (Carsten Schmitz)
+-Fixed issue #19963: Plugins that showed content through the newDirectRequest or newUnsecureRequest event caused an error (Carsten Schmitz)
+-Fixed issue #19736: [security] Stored cross-site scripting (XSS) vulnerability in question advanced settings. Severity: Medium (CVSS 5.4, AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N). An attacker with permission to edit survey content, whose input is XSS filtered, could inject script into the public survey and survey previews through number, switch or select question settings, or through a question group import. Affects versions 3.0.0 to 7.7.0. (#5461) (Carsten Schmitz)
+-Fixed issue #19674: Questions with a minimum number of answers were shown in red as erroneous as soon as the page opened, before anything was answered (Carsten Schmitz)
+-Fixed issue #19572: A survey theme set by a plugin in the beforeSurveyPage event was ignored (Carsten Schmitz)
+-Fixed issue #19555: The afterFindSurvey plugin event was triggered several times on every public survey page (Carsten Schmitz)
+-Fixed issue #19486: Showing many survey participants per page was very slow or failed with an error, and "View this participant in the central participants database" was enabled for participants not linked to it (Carsten Schmitz)
+-Fixed issue #19463: Statistics showed 0 for the "Other" option of list questions, and public statistics counted not displayed answers as "No answer" (Carsten Schmitz)
+-Fixed issue #19454: File upload in a survey failed when SQL debugging (debugsql) was enabled (Carsten Schmitz)
+-Fixed issue #19448: Question tools menu was missing when the question editor opened directly in edit mode (Carsten Schmitz)
+-Fixed issue #19284: Survey title, description and other survey data were missing on the quota page (Carsten Schmitz)
+-Fixed issue #19186: With the suffix-prefix-force question class, the suffix was shown far to the right of a sized input on small screens (Carsten Schmitz)
+-Fixed issue #19185: The queXML PDF export only printed 10 character boxes for Array (Texts) and Multiple short text answers (Carsten Schmitz)
+-Fixed issue #19129: The "Browse" button in statistics showed all responses instead of only the filtered ones (Carsten Schmitz)
+-Fixed issue #19127: Administrators with permission to create users but not to edit them could not add new users (Carsten Schmitz)
+-Fixed issue #18863: Save and resume showed a success message although the email with the details could not be sent (Carsten Schmitz)
+-Fixed issue #18800: Changing a switch on the central participant attribute page saved it without telling the user (Carsten Schmitz)
+-Fixed issue #18775: Browser detection question saved Microsoft Edge and Brave as Chrome (Carsten Schmitz)
+-Fixed issue #18487: Map questions offered "Cyclemap" and "Traffic Map" layers that only showed an "API Key Required" overlay (Carsten Schmitz)
+-Fixed issue #18468: Users with the permission to view users saw no other users in the survey permissions user list when "Users can see users from own group only" was on (Carsten Schmitz)
+-Fixed issue #17858: A custom theme option holding a non-image file (e.g. a CSS variation) was saved with an "image::theme::" prefix and stopped working (Carsten Schmitz)
+-Fixed issue #17786: Survey stayed active after deactivating it and its responses could not be browsed if a survey setting like the admin email was invalid (Carsten Schmitz)
+-Fixed issue #17764: Language switcher showed the name of the current language twice (e.g. "English - English") (Carsten Schmitz)
+-Fixed issue #17763: Users lost their permission for a theme after it was renamed (Carsten Schmitz)
+-Fixed issue #17692: The "Error saving results" email did not include the response ID, and a database error while saving answers showed an error page without sending the email (Carsten Schmitz)
+-Fixed issue #17462: Update notification showed an error for every plugin without updater in its config.xml (Carsten Schmitz)
+-Fixed issue #17244: Deleting a question group that other questions had conditions on left those conditions behind, so they kept coming back as an unexplained condition on these questions (Carsten Schmitz)
+-Fixed issue #16998: The plugin manager did not link to the manual pages of the core plugins, and the manual links in some plugin descriptions were broken (Carsten Schmitz)
+-Fixed issue #16893: Images exported from the statistics did not show the question title (Carsten Schmitz)
+-Fixed issue #16888: Answer option and subquestion codes started with a leading zero (01, 001) when the code prefix in the personal settings was empty (Carsten Schmitz)
+-Fixed issue #16559: HTML and dropdown plugin settings did not work when the survey plugin settings were opened from the side menu (Carsten Schmitz)
+-Fixed issue #15913: Warnings on the survey overview were shown in light yellow text that was hard to read (Carsten Schmitz)
+-Fixed issue #15588: The theme editor did not offer the group and question files of the printable survey on the PDF screen (Carsten Schmitz)
+-Fixed issue #15506: Two multiple choice with comments questions in a row were merged into one when editing a response in data entry (Carsten Schmitz)
+-Fixed issue #15240: [security] Self cross-site scripting (XSS) vulnerability in the print answers page of the file upload question. Severity: Low (CVSS 3.1, CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:N/I:L/A:N). A survey participant who is tricked into entering crafted text as a file title or comment could have script run in their own browser when printing their answers. Affects versions 3.0.0 to 7.7.0. (Carsten Schmitz)
+-Fixed issue #15202: Date question showed an error for every date when the minimum or maximum date was set to a relative value like "today" (Carsten Schmitz)
+-Fixed issue #15102: Array rows filtered out by an array filter were briefly visible while the page loaded (Carsten Schmitz)
+-Fixed issue #14994: When previewing a group or question, prefilled answers from earlier groups (URL parameters) were empty in question texts (Carsten Schmitz)
+-Fixed issue #14719: Survey logic check did not warn that participant data is always empty in anonymized surveys (Carsten Schmitz)
+-Fixed issue #14440: Clicking the top edge of a checkbox in the admin did not toggle it in Firefox (Carsten Schmitz)
+-Fixed issue #14382: [security] Stored cross-site scripting (XSS) vulnerability in survey theme import and theme options. Severity: Medium (CVSS 4.8, AV:N/AC:L/PR:H/UI:R/S:C/C:L/I:L/A:N). An attacker with an administrator account allowed to import themes could import a theme containing image files with crafted names that run script in the browser of any administrator who opens that theme's options page. Affects versions 4.0.0 and later. (Carsten Schmitz)
+-Fixed issue #14382: [security] Stored XSS via image file names in imported survey themes (#5460) (Carsten Schmitz)
+-Fixed issue #14265: Statistics PDF/XLS bar charts kept the old labels after changing the "Graph labels" option (Carsten Schmitz)
+-Fixed issue #14088: In all-in-one surveys, responses could be submitted without accepting the survey data policy (Carsten Schmitz)
+-Fixed issue #14003: In group-by-group surveys, groups with only hidden questions were counted in the progress bar (Carsten Schmitz)
+-Fixed issue #13925: Placeholders {QID}, {GID} and {SGQ} showed an error or stayed empty in validation tips, answer prefixes/suffixes and group titles/descriptions (Carsten Schmitz)
+-Fixed issue #13777: Text display questions were moved to the top of their group or missing entirely in the queXML PDF export (Carsten Schmitz)
+-* Fixed issue #20709: Downloading files for all selected responses shows "No files to download!" when using the header select-all checkbox (Carsten Schmitz)
+#Updated translation: Ukrainian by translations_bot
+#Updated translation: Tagalog by translations_bot
+#Updated translation: Slovenian by c_schmitz, ixtlan-team-zvem, junoslukan, pur3bolt, translations_bot
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa, translations_bot
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Mongolian by almas, amidral, baatar, c_schmitz, erka, samsharav, translations_bot
+#Updated translation: Japanese by d_inoue, translations_bot
+#Updated translation: German by c_schmitz, translations_bot
+#Updated translation: German (Informal) by c_schmitz, translations_bot
+#Updated translation: Galician by Gronnd
+#Updated translation: Dutch by c_schmitz, Han, translations_bot
+#Updated translation: Dutch (Informal) by c_schmitz, Han, translations_bot
+#Updated translation: Czech by jelen1, c_schmitz, translations_bot
+#Updated translation: Czech (Informal) by jelen1, VBraun
+#Updated translation: Bulgarian by translations_bot
+
+
 Changes from 7.6.0 (build 261013) to 7.7.0 (build 261020) October 20, 2026
 +New feature: Ability to export the ready-made survey URL when exporting participants (#5110) (Carsten Schmitz)
 +New feature #JD-172 : Organize columns on the survey list (#5401) (Adil Moumni Abdou)
