@@ -2698,6 +2698,11 @@ class ParticipantsAction extends SurveyCommonAction
             printf(gT("%s entries were not copied because they already existed"), "<span class='badge rounded-pill bg-warning'>" . $response['duplicate'] . "</span>&nbsp;");
             echo "</p>";
         }
+        if ($response['replacedparticipantid'] > 0) {
+            echo "<p>";
+            printf(gT("%s survey participants got a new participant ID because their previous participant ID was not a valid UUID"), "<span class='badge rounded-pill bg-warning'>" . $response['replacedparticipantid'] . "</span>&nbsp;");
+            echo "</p>";
+        }
         if ($response['overwriteman'] || $response['overwriteauto']) {
             echo "<p>";
             eT("Attribute values for central participants have been updated from the survey participants");

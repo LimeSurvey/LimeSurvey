@@ -2160,7 +2160,8 @@ class Participant extends LSActiveRecord
      * @param bool $overwriteauto If true, overwrites existing automatically mapped attribute values
      * @param bool $overwriteman If true, overwrites manually mapped attribute values (where token fieldname=attribute_n)
      * @param bool $createautomap If true, updates tokendescription field with new mapping
-     * @return array An array containing list of successful and list of failed ids
+     * @return array Counts of copied ('success'), already existing ('duplicate') and copied survey participants
+     *               whose participant ID was replaced by a new UUID ('replacedparticipantid'), plus the overwrite flags
      */
     public function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto = false, $overwriteman = false, $createautomap = true)
     {
@@ -2179,6 +2180,7 @@ class Participant extends LSActiveRecord
         }
         $duplicate = 0;
         $successful = 0;
+        $replacedParticipantId = 0;
         $attid = []; //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
 
         $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions ?? '');
@@ -2282,7 +2284,14 @@ class Participant extends LSActiveRecord
                 } /* If there isn't an existing entry, create one! */ else {
                     /* Create entry in participant list */
                     $black = !empty($oTokenDynamic->blacklisted) ? $oTokenDynamic->blacklisted : 'N';
-                    $pid = self::isValidParticipantId($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->genUuid();
+                    $pid = $oTokenDynamic->participant_id;
+                    // Participant IDs must be UUIDs, another ID of the survey participant is replaced
+                    if (!self::isValidParticipantId($pid)) {
+                        if (!empty($pid)) {
+                            $replacedParticipantId++;
+                        }
+                        $pid = $this->genUuid();
+                    }
 
                     $writearray = [
                         'participant_id' => $pid,
@@ -2359,7 +2368,7 @@ class Participant extends LSActiveRecord
                     ->update('{{surveys}}', ["attributedescriptions" => json_encode($aAttributes)], 'sid = ' . $surveyid);
             }
         }
-        $returndata = ['success' => $successful, 'duplicate' => $duplicate, 'overwriteauto' => $overwriteauto, 'overwriteman' => $overwriteman];
+        $returndata = ['success' => $successful, 'duplicate' => $duplicate, 'replacedparticipantid' => $replacedParticipantId, 'overwriteauto' => $overwriteauto, 'overwriteman' => $overwriteman];
         return $returndata;
     }
 
