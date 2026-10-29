@@ -659,8 +659,8 @@ class TemplateManifest extends TemplateConfiguration
             ],
             'post',
             [
-                'id' => 'frmínstalltheme',
-                'name' => 'frmínstalltheme'
+                'id' => 'form_install_theme',
+                'name' => 'form_install_theme'
             ]
         ) .
                 "<input type='hidden' name='templatename' value='" . $this->sTemplateName . "'>
