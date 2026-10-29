@@ -3912,8 +3912,10 @@ class remotecontrol_handle
      * @param int $sSessionKey
      * @param array $aParticipants
      * [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
+     * A new participant can get its own participant_id, which must be a UUID.
      * @param bool $update
-     * @return array with status
+     * @return array On success: array with 'ImportCount', 'UpdateCount' and 'InvalidParticipantIds' (participant IDs
+     *              that were not imported because they are not UUIDs). On failure: array with status.
      */
     public function cpd_importParticipants($sSessionKey, $participants, $update = false)
     {
@@ -3924,7 +3926,8 @@ class remotecontrol_handle
         $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
         $aResponse = array(
             'ImportCount' => 0,
-            'UpdateCount' => 0
+            'UpdateCount' => 0,
+            'InvalidParticipantIds' => array()
         );
 
         $aAttributeRecords = ParticipantAttributeName::model()
@@ -3957,6 +3960,11 @@ class remotecontrol_handle
                 }
                 $model = new Participant();
                 if (isset($participant['participant_id'])) {
+                    // New participants need a UUID as participant ID
+                    if (!Participant::isValidParticipantId($participant['participant_id'])) {
+                        $aResponse['InvalidParticipantIds'][] = $participant['participant_id'];
+                        continue;
+                    }
                     $model->participant_id = $participant['participant_id'];
                 } else {
                     $model->participant_id = Participant::genUuid();

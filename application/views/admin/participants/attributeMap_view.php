@@ -9,7 +9,7 @@
     var copyUrl = "<?php echo $this->createUrl("/admin/participants/sa/addToTokenattmap"); ?>";
 
     // Comma separated string of participant ids
-    var participant_id = "<?php echo $participant_id; ?>";
+    var participant_id = <?php echo json_encode((string) $participant_id, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 
     /* SCRIPT TEXT */
     var attributesMappedText = "<?php eT("All the attributes are automatically mapped") ?>";

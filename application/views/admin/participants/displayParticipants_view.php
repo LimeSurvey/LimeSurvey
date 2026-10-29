@@ -45,12 +45,18 @@ echo viewHelper::getViewTestTag('displayParticipants');
                     case 'lessthan':
                         $operator = gT("is lesser than");
                         break;
+                    default:
+                        $operator = CHtml::encode($sOperator);
                 }
                 $sValue = $searchcondition[($i * 4) + 2];
+                // Note: Attribute labels can contain HTML (encryption icon), so only labels of known attributes are used
+                $sFieldLabel = array_key_exists($sFieldname, $model->attributeLabels())
+                    ? $model->getAttributeLabel($sFieldname)
+                    : CHtml::encode($sFieldname);
 
                 echo "<div class='row'>"
                     . "<div class='col-12'>"
-                    . " " . $model->getAttributeLabel($sFieldname) . " " . $operator . " " . $sValue
+                    . " " . $sFieldLabel . " " . $operator . " " . CHtml::encode($sValue)
                     . "</div>"
                     . "</div>";
                 $i++;
@@ -61,7 +67,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
         ?>
         <div class="row">
             <?php
-            echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='" . join("||", $searchcondition) . "' />";
+            echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='" . CHtml::encode(join("||", $searchcondition)) . "' />";
 
             $this->widget('application.extensions.admin.grid.CLSGridView', [
                 'id'                       => 'list_central_participants',

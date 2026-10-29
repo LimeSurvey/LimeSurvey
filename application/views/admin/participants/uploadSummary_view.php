@@ -35,7 +35,7 @@ if (empty($errorinupload)) {
     if ($overwritten > 0) {
         $infoSummary .= "<li>" . sprintf(gT("%s records were duplicate but had attributes updated"), $overwritten) . "</li>";
     }
-    if (count($duplicatelist) || count($invalidemaillist) || count($invalidattribute) || count($aInvalidFormatlist)) {
+    if (count($duplicatelist) || count($invalidemaillist) || count($invalidparticipantid) || count($invalidattribute) || count($aInvalidFormatlist)) {
         $warningSummary .= "<div class='warningheader'>" . gT('Warnings') . "</div><ul>";
         if (count($duplicatelist) > 0) {
             $warningSummary .= "<li>" . sprintf(gT("%s were found to be duplicate entries and did not need a new participant to be created."), count($duplicatelist));
@@ -54,6 +54,14 @@ if (empty($errorinupload)) {
             $warningSummary .= "<li style='width: 400px'>" . sprintf(gT("%s records with invalid email address removed"), count($invalidemaillist));
             $warningSummary .= "<div class='badtokenlist' id='invalidemaillist'><ul>";
             foreach ($invalidemaillist as $data) {
+                $warningSummary .= "<li>" . $data . "</li>";
+            }
+            $warningSummary .= "</ul></div></li>";
+        }
+        if (count($invalidparticipantid) > 0) {
+            $warningSummary .= "<li style='width: 400px'>" . sprintf(gT("%s records with invalid participant ID removed"), count($invalidparticipantid));
+            $warningSummary .= "<div class='badtokenlist' id='invalidparticipantidlist'><ul>";
+            foreach ($invalidparticipantid as $data) {
                 $warningSummary .= "<li>" . $data . "</li>";
             }
             $warningSummary .= "</ul></div></li>";

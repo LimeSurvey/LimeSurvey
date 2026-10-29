@@ -1078,6 +1078,29 @@ class ParticipantsAction extends SurveyCommonAction
                     ];
                 }
                 $existingParticipant = Participant::model()->findByAttributes($duplicateCriteriaAttributes);
+                // Note: Older participant IDs can have surrounding spaces, so the ID is only trimmed if no participant has it as is
+                if (empty($existingParticipant) && isset($writearray['participant_id'])) {
+                    $trimmedParticipantId = trim((string) $writearray['participant_id']);
+                    if ($trimmedParticipantId !== $writearray['participant_id']) {
+                        $writearray['participant_id'] = $trimmedParticipantId;
+                        $existingParticipant = Participant::model()->findByAttributes(['participant_id' => $trimmedParticipantId]);
+                    }
+                }
+                // New participants need a UUID as participant ID, existing ones are still found by an older ID
+                if (
+                    empty($existingParticipant)
+                    && isset($writearray['participant_id'])
+                    && $writearray['participant_id'] !== ''
+                    && !Participant::isValidParticipantId($writearray['participant_id'])
+                ) {
+                    $participantDetails = trim($writearray['firstname'] . " " . $writearray['lastname'] . ($writearray['email'] !== '' ? " (" . $writearray['email'] . ")" : ""));
+                    // The header is line 1 of the CSV file
+                    $invalidparticipantid[] = $participantDetails !== ''
+                        ? sprintf(gT("Line %s: %s"), $recordcount + 1, CHtml::encode($participantDetails))
+                        : sprintf(gT("Line %s"), $recordcount + 1);
+                    $recordcount++;
+                    continue;
+                }
                 if (!empty($existingParticipant)) {
                     $thisduplicate = 1;
                     $dupcount++;
@@ -1191,8 +1214,9 @@ class ParticipantsAction extends SurveyCommonAction
                                 $participant->$key = $value;
                             }
                         }
-                        $participant->encrypt()->insertParticipantCSV($participant->attributes);
-                        $imported++;
+                        if ($participant->encrypt()->insertParticipantCSV($participant->attributes)) {
+                            $imported++;
+                        }
                     }
                 }
                 $mincriteria++;
@@ -2517,13 +2541,15 @@ class ParticipantsAction extends SurveyCommonAction
     /**
      * Deletes a single participant share
      * Called by Ajax; echoes success/error
-     * @param string $participantId
-     * @param int $shareUid
+     * @param string|null $participantId Participant ID, the posted participantId is used if not set
+     * @param int|null $shareUid User ID of the share, the posted shareUid is used if not set
      * @return void
      */
     public function deleteSingleParticipantShare($participantId = null, $shareUid = null)
     {
         $this->requirePostRequest();
+        $participantId = $participantId ?? Yii::app()->request->getPost('participantId');
+        $shareUid = $shareUid ?? Yii::app()->request->getPost('shareUid');
 
         $participantShare = ParticipantShare::model()->findByPk(array(
             'participant_id' => $participantId,
@@ -2653,6 +2679,11 @@ class ParticipantsAction extends SurveyCommonAction
         if ($response['duplicate'] > 0) {
             echo "<p>";
             printf(gT("%s entries were not copied because they already existed"), "<span class='badge rounded-pill bg-warning'>" . $response['duplicate'] . "</span>&nbsp;");
+            echo "</p>";
+        }
+        if ($response['replacedparticipantid'] > 0) {
+            echo "<p>";
+            printf(gT("%s survey participants got a new participant ID because their previous participant ID was not a valid UUID"), "<span class='badge rounded-pill bg-warning'>" . $response['replacedparticipantid'] . "</span>&nbsp;");
             echo "</p>";
         }
         if ($response['overwriteman'] || $response['overwriteauto']) {
