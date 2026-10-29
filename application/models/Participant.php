@@ -129,7 +129,7 @@ class Participant extends LSActiveRecord
             'iconClass'        => 'ri-pencil-fill',
             'enabledCondition' => $this->userHasPermissionToEdit(),
             'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
+                'data-participant-id' => CHtml::encode($this->participant_id)
             ],
         ];
         $dropdownItems[] = [
@@ -138,7 +138,7 @@ class Participant extends LSActiveRecord
             'iconClass'        => 'ri-user-add-fill',
             'enabledCondition' => $this->userHasPermissionToAddToSurvey(),
             'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
+                'data-participant-id' => CHtml::encode($this->participant_id)
             ],
         ];
         $dropdownItems[] = [
@@ -147,7 +147,7 @@ class Participant extends LSActiveRecord
             'iconClass'        => 'ri-search-line',
             'enabledCondition' => $this->userHasPermissionToRead(),
             'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
+                'data-participant-id' => CHtml::encode($this->participant_id)
             ],
         ];
         $dropdownItems[] = [
@@ -156,7 +156,7 @@ class Participant extends LSActiveRecord
             'iconClass'        => 'ri-share-forward-fill',
             'enabledCondition' => $this->userHasPermissionToEdit(),
             'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
+                'data-participant-id' => CHtml::encode($this->participant_id)
             ],
         ];
         $dropdownItems[] = [
@@ -172,7 +172,7 @@ class Participant extends LSActiveRecord
                 )
                 || $permission_participantpanel_delete,
             'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
+                'data-participant-id' => CHtml::encode($this->participant_id)
             ],
         ];
 
@@ -184,7 +184,7 @@ class Participant extends LSActiveRecord
      */
     public function getCheckbox()
     {
-        return "<input type='checkbox' class='selector_participantCheckbox massiveActionsCheckbox' name='selectedParticipant[]' value='" . $this->id . "' >";
+        return "<input type='checkbox' class='selector_participantCheckbox massiveActionsCheckbox' name='selectedParticipant[]' value='" . CHtml::encode($this->id) . "' >";
     }
 
     /**

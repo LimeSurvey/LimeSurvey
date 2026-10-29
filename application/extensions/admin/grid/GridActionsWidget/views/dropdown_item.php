@@ -17,7 +17,8 @@
        <?= !$enabledCondition ? 'aria-disabled="true" tabindex="-1"' : '' ?>
         <?php if (isset($linkAttributes) && is_array($linkAttributes)) : ?>
             <?php foreach ($linkAttributes as $attribute => $value) : ?>
-                <?= "$attribute='$value'" ?>
+                <?php // Values are usually escaped already (e.g. by gT()), so existing entities are not encoded again ?>
+                <?= $attribute ?>="<?= htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8', false) ?>"
             <?php endforeach; ?>
         <?php endif; ?>>
         <?php if (isset($iconClass)) : ?>
