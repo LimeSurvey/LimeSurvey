@@ -229,6 +229,77 @@ class PasswordRequirementTest extends TestBaseClass
     }
 
     /**
+     * The lowercase and maximum length rules are checked, shown in the help text and used for random passwords.
+     */
+    public function testLowercaseAndMaximumSize()
+    {
+        $this->saveAdminSettings(false, false, false, 4);
+        self::$plugin->saveSettings(['needsLowercase' => '1', 'maximumSize' => 6]);
+        try {
+            $user = new \User();
+            $this->assertSame('', $user->checkPasswordStrength('abcdef'));
+            $this->assertNotSame('', $user->checkPasswordStrength('ABCDEF'), 'Password without lowercase character was accepted.');
+            $this->assertNotSame('', $user->checkPasswordStrength('abcdefg'), 'Password longer than the maximum was accepted.');
+
+            $helpText = $user->getPasswordHelpText();
+            $this->assertStringContainsString('At most 6 characters long.', $helpText);
+            $this->assertStringContainsString('At least 1 lower case letter.', $helpText);
+
+            $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword(10);
+            $this->assertSame('', $user->checkPasswordStrength($randomPassword), 'Random password does not match the rules.');
+        } finally {
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
+     * An empty password is refused, even when the plugin settings allow any password.
+     */
+    public function testEmptyPasswordIsRefused()
+    {
+        $this->saveAdminSettings(false, false, false, 0);
+        try {
+            $user = new \User();
+            $this->assertNotSame('', $user->checkPasswordStrength(''));
+            $this->assertSame('', $user->checkPasswordStrength('a'));
+        } finally {
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
+     * DB update 721 keeps the former core rules where they are stricter than the plugin settings.
+     */
+    public function testUpdateCopiesFormerCoreRules()
+    {
+        $formerRules = App()->getConfig('passwordValidationRules');
+        try {
+            // Without passwordValidationRules in config.php, the former config-defaults.php rules applied
+            $this->saveAdminSettings(false, false, false, 0);
+            App()->setConfig('passwordValidationRules', null);
+            (new \LimeSurvey\Helpers\Update\Update_721(App()->db, []))->up();
+            $settings = self::$plugin->getPluginSettings();
+            $this->assertEquals(8, $settings['minimumSize']['current']);
+            $this->assertEquals(1, $settings['needsUppercase']['current']);
+            $this->assertEquals(1, $settings['needsNumber']['current']);
+            $this->assertEmpty($settings['needsNonAlphanumeric']['current']);
+
+            $this->saveAdminSettings(false, false, false, '');
+            App()->setConfig('passwordValidationRules', ['min' => 16, 'max' => 64, 'lower' => 1, 'symbol' => 1]);
+            (new \LimeSurvey\Helpers\Update\Update_721(App()->db, []))->up();
+            $settings = self::$plugin->getPluginSettings();
+            $this->assertEquals(16, $settings['minimumSize']['current']);
+            $this->assertEquals(64, $settings['maximumSize']['current']);
+            $this->assertEquals(1, $settings['needsLowercase']['current']);
+            $this->assertEquals(1, $settings['needsNonAlphanumeric']['current']);
+            $this->assertEmpty($settings['needsUppercase']['current']);
+        } finally {
+            App()->setConfig('passwordValidationRules', $formerRules);
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
      * The plugin can't be deactivated.
      */
     public function testCanNotBeDeactivated()
@@ -292,5 +363,9 @@ class PasswordRequirementTest extends TestBaseClass
             \PasswordRequirement::DEFAULT_NEEDS_NON_ALPHANUMERIC,
             \PasswordRequirement::DEFAULT_MINIMUM_SIZE
         );
+        self::$plugin->saveSettings([
+            'needsLowercase' => \PasswordRequirement::DEFAULT_NEEDS_LOWERCASE,
+            'maximumSize' => '',
+        ]);
     }
 }

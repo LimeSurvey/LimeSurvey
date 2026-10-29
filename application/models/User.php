@@ -419,9 +419,9 @@ class User extends LSActiveRecord
     /**
      * Checks the strength of a given password.
      *
-     * The rules come from the PasswordRequirement core plugin, other plugins can add their own
-     * through the checkPasswordRequirement event. Without the core plugin, only a minimum length
-     * of PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH characters is checked.
+     * An empty password is always refused. The rules come from the plugins answering the
+     * checkPasswordRequirement event, the PasswordRequirement core plugin by default. Without any
+     * of them, only a minimum length of PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH characters is checked.
      *
      * @param string $password The password to check for strength
      *
@@ -429,8 +429,11 @@ class User extends LSActiveRecord
      */
     public function checkPasswordStrength(string $password)
     {
+        if ($password === '') {
+            return gT("The new password can not be empty.");
+        }
         $passwordError = '';
-        if (!PasswordManagement::isPasswordRequirementLoaded() && strlen($password) < PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH) {
+        if (!PasswordManagement::hasPasswordRequirementCheck() && strlen($password) < PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH) {
             $passwordError = sprintf(
                 gTPlural('Password must be at least %d character long', 'Password must be at least %d characters long', PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH),
                 PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH
@@ -494,7 +497,7 @@ class User extends LSActiveRecord
     public function getPasswordHelpText()
     {
         $requirements = [];
-        if (!PasswordManagement::isPasswordRequirementLoaded()) {
+        if (!PasswordManagement::hasPasswordRequirementCheck()) {
             $requirements[] = sprintf(
                 gTPlural('At least %d character long.', 'At least %d characters long.', PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH),
                 PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH
@@ -503,7 +506,7 @@ class User extends LSActiveRecord
         $oRequirementsEvent = new PluginEvent('getPasswordRequirements');
         $oRequirementsEvent->set('requirements', $requirements);
         Yii::app()->getPluginManager()->dispatchEvent($oRequirementsEvent);
-        $requirements = $oRequirementsEvent->get('requirements');
+        $requirements = array_filter((array) $oRequirementsEvent->get('requirements'), 'is_string');
         if (empty($requirements)) {
             return '';
         }

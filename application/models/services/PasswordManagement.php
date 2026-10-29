@@ -201,7 +201,7 @@ class PasswordManagement
 
     /**
      * Creates a random password through the core plugin.
-     * Without the PasswordRequirement plugin, the password has at least FALLBACK_MIN_PASSWORD_LENGTH characters.
+     * Without any plugin checking admin passwords, the password has at least FALLBACK_MIN_PASSWORD_LENGTH characters.
      *
      * @todo it's fine to use static functions, until it is used only in controllers ...
      *
@@ -214,28 +214,25 @@ class PasswordManagement
         $oGetPasswordEvent->set('targetSize', $length);
         \Yii::app()->getPluginManager()->dispatchEvent($oGetPasswordEvent);
 
-        $password = $oGetPasswordEvent->get('password');
-        if (empty($password) && !self::isPasswordRequirementLoaded()) {
+        $password = (string) $oGetPasswordEvent->get('password');
+        if (!self::hasPasswordRequirementCheck() && strlen($password) < self::FALLBACK_MIN_PASSWORD_LENGTH) {
+            // User::checkPasswordStrength() then requires FALLBACK_MIN_PASSWORD_LENGTH characters
             $password = getRandomString(max($length, self::FALLBACK_MIN_PASSWORD_LENGTH));
+        } elseif ($password === '') {
+            $password = getRandomString($length);
         }
         return $password;
     }
 
     /**
-     * Whether the PasswordRequirement core plugin is loaded and checks admin passwords.
-     * It can't be deactivated, but it is missing when it is in corePluginBlacklist or failed to load.
+     * Whether a plugin checks admin passwords through the checkPasswordRequirement event.
+     * This is the PasswordRequirement core plugin, unless it is in corePluginBlacklist or failed to load.
      *
      * @return bool
      */
-    public static function isPasswordRequirementLoaded()
+    public static function hasPasswordRequirementCheck()
     {
-        $subscriptions = \Yii::app()->getPluginManager()->getSubscriptions('checkPasswordRequirement');
-        foreach ($subscriptions as $subscription) {
-            if ($subscription[0] instanceof \PasswordRequirement) {
-                return true;
-            }
-        }
-        return false;
+        return !empty(\Yii::app()->getPluginManager()->getSubscriptions('checkPasswordRequirement'));
     }
 
     /**
