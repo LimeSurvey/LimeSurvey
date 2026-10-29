@@ -26,7 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         # Specify what versions of php you want to test
-        php-versions: [ '8.1', '8.5' ]
+        php-versions: [ '8.2', '8.5' ]
         testsuite:
           - survey
           - question-a
@@ -81,6 +81,9 @@ jobs:
             php${{ matrix.php-versions }}-sqlite3 \
             libapache2-mod-php${{ matrix.php-versions }}
           sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
+          # Pin Composer to the exact version required in composer.json
+          sudo composer self-update 2.10.3
+          composer --version
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
       - name: Start the MySQL service
@@ -174,14 +177,14 @@ jobs:
       # for debugging
       # - name: Setup upterm session
       #   uses: lhotari/action-upterm@v1
-      #   if: ${{ contains(matrix.php-versions, '8.1') }}
+      #   if: ${{ contains(matrix.php-versions, '8.2') }}
       - name: Test the server
         run: |
           # Test server.
           wget -O - localhost
           #sudo tail -n 500 /var/log/apache2/error.log || true
           #sudo tail -n 500 /var/log/nginx/error.log || true
-          #sudo tail -n 500 /var/log/php8.1-fpm.log || true
+          #sudo tail -n 500 /var/log/php8.2-fpm.log || true
           #sudo tail -n 500 /var/log/php8.5-fpm.log || true
           # NOTE: php --version might not be the same as setup in apache. Use fwrite(STDERR, phpversion()); in index.php to be sure.
           #which php

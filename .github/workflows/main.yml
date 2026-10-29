@@ -28,8 +28,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # MySQL tests with PHP 8.1 and 8.5
-          - php-version: '8.1'
+          # MySQL tests with PHP 8.2 and 8.5
+          - php-version: '8.2'
             db-type: 'mysql'
             db-version: '8.0'
           - php-version: '8.5'
@@ -53,6 +53,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          # Must match the "composer" requirement in composer.json
+          tools: composer:2.10.3
           extensions: >-
             dom, xml, libxml,
             ${{ matrix.db-type == 'pgsql' && 'pdo_pgsql, pgsql' ||
@@ -220,6 +222,14 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      # PHP + Composer must be set up before "composer install"; the runner's
+      # default PHP/Composer do not satisfy composer.json requirements.
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          # Must match the "composer" requirement in composer.json
+          tools: composer:2.10.3
       - name: Setup
         run: |
           touch enabletests
@@ -232,10 +242,6 @@ jobs:
           chmod +x ./tests/bin/lint-*
       - name: Audit Composer packages for known vulnerabilities
         run: composer audit
-      - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.PHP_VERSION }}
       - name: Check MySQL service
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
