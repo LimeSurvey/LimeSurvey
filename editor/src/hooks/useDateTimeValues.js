@@ -9,12 +9,13 @@ import useAuth from './useAuth'
 /**
  * Answers of a Date/time question grouped by day and time, loaded once per
  * filter set and then sliced on the client for the day and range views.
+ * `decrypt` is needed for an encrypted question.
  */
 export function useDateTimeValues(
   surveyId,
   qid,
   filters,
-  { enabled = true, filterSet = [] } = {}
+  { enabled = true, filterSet = [], decrypt = false } = {}
 ) {
   const auth = useAuth()
   const statisticsService = useMemo(
@@ -29,9 +30,16 @@ export function useDateTimeValues(
       qid,
       filters,
       filterSet,
+      decrypt,
     ],
     queryFn: () =>
-      statisticsService.getDateTimeValues(surveyId, qid, filters, filterSet),
+      statisticsService.getDateTimeValues(
+        surveyId,
+        qid,
+        filters,
+        filterSet,
+        decrypt
+      ),
     enabled: enabled && !!surveyId && !!qid,
   })
 

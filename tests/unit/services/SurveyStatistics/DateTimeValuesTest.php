@@ -86,4 +86,39 @@ class DateTimeValuesTest extends TestCase
             'days' => ['2024-02-29' => ['00:00:00' => 2]],
         ], $result);
     }
+
+    /**
+     * @testdox countValues() counts decoded values and skips the ones that decode to nothing
+     */
+    public function testCountValuesCountsDecodedValues()
+    {
+        $decode = static fn(string $value): string => $value === 'broken' ? '' : strrev($value);
+
+        $this->assertSame(
+            ['2026-10-03 00:00' => 2, '2026-10-22 14:20' => 1],
+            DateTimeValues::countValues(
+                [strrev('2026-10-03 00:00'), 'broken', strrev('2026-10-22 14:20'), strrev('2026-10-03 00:00')],
+                $decode
+            )
+        );
+    }
+
+    /**
+     * @testdox Decrypted answers give the same output as the same answers stored in plain
+     */
+    public function testDecryptedAnswersMatchPlainAnswers()
+    {
+        $plain = [
+            '2026-10-03 00:00:00' => 2,
+            '2026-10-16 23:59:00' => 1,
+            '2026-10-22 14:20:00' => 1,
+        ];
+        $decrypted = ['2026-10-22 14:20', '2026-10-03 00:00', '2026-10-16 23:59', '2026-10-03 00:00'];
+        $fakeCiphertexts = array_map('base64_encode', $decrypted);
+
+        $this->assertSame(
+            DateTimeValues::groupByDay(true, $plain),
+            DateTimeValues::groupByDay(true, DateTimeValues::countValues($fakeCiphertexts, 'base64_decode'))
+        );
+    }
 }

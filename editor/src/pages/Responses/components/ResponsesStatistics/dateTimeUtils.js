@@ -90,3 +90,17 @@ export const sliceByRange = (days, from, to) =>
 
 export const sumCounts = (rows) =>
   rows.reduce((total, row) => total + row.count, 0)
+
+export const toDayMap = (days) => {
+  const dayKeys = Object.keys(days ?? {}).sort()
+  return {
+    earliest: dayKeys[0] ?? null,
+    latest: dayKeys[dayKeys.length - 1] ?? null,
+    days: Object.fromEntries(
+      dayKeys.map((day) => [
+        day,
+        Object.values(days[day]).reduce((total, count) => total + count, 0),
+      ])
+    ),
+  }
+}

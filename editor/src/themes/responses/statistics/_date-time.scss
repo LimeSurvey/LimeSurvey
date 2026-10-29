@@ -154,6 +154,33 @@
   }
 }
 
+.responses-statistics-calendar-locked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 300px;
+  padding: 24px;
+  text-align: center;
+  color: $g-700;
+  font-size: 14px;
+
+  p {
+    margin: 0;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: $font-weight-500;
+  }
+}
+
 .responses-statistics-date-table {
   .ls-table {
     table-layout: fixed;

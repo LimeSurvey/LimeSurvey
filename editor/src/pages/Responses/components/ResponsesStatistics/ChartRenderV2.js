@@ -26,6 +26,7 @@ import { ResponsesGrid } from './ResponsesGrid.js'
 import { MultiNumericalGrid } from './MultiNumericalGrid.js'
 import { FileUploadTable } from './FileUploadTable.js'
 import { DateTimeCalendar } from './DateTimeCalendar.js'
+import { EncryptedDateTimeCalendar } from './EncryptedDateTimeCalendar.js'
 import { DateTimeTable } from './DateTimeTable.js'
 import {
   BarChart,
@@ -82,17 +83,27 @@ const VIEWS = [
       filterSet,
       calendarState,
       onCalendarStateChange,
-    }) => (
-      <DateTimeCalendar
-        surveyId={surveyId}
-        question={question}
-        filters={filters}
-        filterSet={filterSet}
-        stats={data?.[0]?.stats}
-        calendarState={calendarState}
-        onCalendarStateChange={onCalendarStateChange}
-      />
-    ),
+    }) =>
+      question?.encrypted ? (
+        <EncryptedDateTimeCalendar
+          surveyId={surveyId}
+          question={question}
+          filters={filters}
+          filterSet={filterSet}
+          calendarState={calendarState}
+          onCalendarStateChange={onCalendarStateChange}
+        />
+      ) : (
+        <DateTimeCalendar
+          surveyId={surveyId}
+          question={question}
+          filters={filters}
+          filterSet={filterSet}
+          stats={data?.[0]?.stats}
+          calendarState={calendarState}
+          onCalendarStateChange={onCalendarStateChange}
+        />
+      ),
   },
   {
     value: VIEW.BAR_CHART,

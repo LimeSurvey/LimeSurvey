@@ -56,9 +56,15 @@ class StatisticsDateValues implements CommandInterface
             return $this->responseFactory->makeErrorUnauthorised();
         }
 
-        $qid = (int)(Yii::app()->getRequest()->getQueryParams()['qid'] ?? 0);
+        $params = Yii::app()->getRequest()->getQueryParams();
+        $qid = (int)($params['qid'] ?? 0);
         if ($qid <= 0) {
             return $this->responseFactory->makeErrorBadRequest('Missing question ID (qid).');
+        }
+
+        $decrypt = in_array($params['decrypt'] ?? null, ['1', 'true'], true);
+        if ($decrypt && !$this->permission->hasSurveyPermission($surveyId, 'responses')) {
+            return $this->responseFactory->makeErrorUnauthorised();
         }
 
         $survey = Survey::model()->findByPk($surveyId);
@@ -72,7 +78,8 @@ class StatisticsDateValues implements CommandInterface
                 $surveyId,
                 $qid,
                 $filters->count() > 0 ? $filters : null,
-                $this->resolveFilterSet($request, $survey, $survey->language)
+                $this->resolveFilterSet($request, $survey, $survey->language),
+                $decrypt
             );
         } catch (InvalidArgumentException $exception) {
             return $this->responseFactory->makeErrorBadRequest($exception->getMessage());

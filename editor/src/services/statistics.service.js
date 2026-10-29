@@ -185,10 +185,17 @@ export class StatisticsService {
   /**
    * Answers of a Date/time question grouped by day and time:
    * { hasTime, total, days: { 'YYYY-MM-DD': { 'HH:mm:ss': count } } }.
+   * An encrypted question's answers are only sent with `decrypt`.
    */
-  getDateTimeValues = async (sid, qid, filters, filterSet = []) => {
+  getDateTimeValues = async (
+    sid,
+    qid,
+    filters,
+    filterSet = [],
+    decrypt = false
+  ) => {
     return await this.restClient.get(
-      `statistics-date-values/${sid}?qid=${qid}&${buildStatisticsFilterQuery(filters)}${filterSetQuery(filterSet)}`
+      `statistics-date-values/${sid}?qid=${qid}&${buildStatisticsFilterQuery(filters)}${filterSetQuery(filterSet)}${decrypt ? '&decrypt=1' : ''}`
     )
   }
 

@@ -5,6 +5,7 @@ namespace LimeSurvey\Models\Services\SurveyStatistics;
 use InvalidArgumentException;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\DateProcessor;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\ResponseAggregateBatch;
+use LSActiveRecord;
 use Question;
 use QuestionAttribute;
 
@@ -19,26 +20,57 @@ class DateTimeValues
     /**
      * @param \LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter[] $resolvedFilters
      *     The filterSet the user built in the filter modal, resolved.
+     * @param bool $decrypt Asked for explicitly, and only for an encrypted
+     *     question, so its answers are never decrypted by accident.
      * @throws InvalidArgumentException When the question is no date question
-     *                                  of the survey, or is encrypted.
+     *                                  of the survey, or $decrypt doesn't match
+     *                                  whether it is encrypted.
      */
     public function get(
         int $surveyId,
         int $qid,
         ?StatisticsResponseFilters $filters = null,
-        array $resolvedFilters = []
+        array $resolvedFilters = [],
+        bool $decrypt = false
     ): array {
         $question = $this->findDateQuestion($surveyId, $qid);
-        if (DateProcessor::isEncrypted($question)) {
+        $encrypted = DateProcessor::isEncrypted($question);
+        if ($encrypted && !$decrypt) {
             throw new InvalidArgumentException('Encrypted date answers have to be decrypted first.');
+        }
+        if (!$encrypted && $decrypt) {
+            throw new InvalidArgumentException("Question {$qid} is not encrypted.");
         }
 
         $batch = new ResponseAggregateBatch($surveyId, $filters, $resolvedFilters);
+        $field = 'Q' . $qid;
 
         return self::groupByDay(
             DateProcessor::hasTime($question),
-            $batch->groupedValues('Q' . $qid)
+            $encrypted
+                ? self::countValues($batch->eachValue($field), [LSActiveRecord::class, 'decryptSingle'])
+                : $batch->groupedValues($field)
         );
+    }
+
+    /**
+     * Count values after decoding each one; empty results are skipped.
+     *
+     * @param iterable<string> $values
+     * @param callable(string): string $decode
+     * @return array<string, int> decoded value => count
+     */
+    public static function countValues(iterable $values, callable $decode): array
+    {
+        $counts = [];
+        foreach ($values as $value) {
+            $decoded = trim((string)$decode($value));
+            if ($decoded !== '') {
+                $counts[$decoded] = ($counts[$decoded] ?? 0) + 1;
+            }
+        }
+
+        return $counts;
     }
 
     /**

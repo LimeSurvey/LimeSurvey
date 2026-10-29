@@ -430,6 +430,39 @@ final class ResponseAggregateBatch
         return $counts;
     }
 
+    /**
+     * Every non-empty stored value of a column, one at a time, with the same
+     * response filters as the aggregates.
+     *
+     * @return \Generator<int, string>
+     */
+    public function eachValue(string $field, int $chunkSize = 1000): \Generator
+    {
+        $db = $this->getDb();
+        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
+        $col = $db->quoteColumnName($field);
+        $id = $db->quoteColumnName('id');
+        [$where, $params] = $this->buildWhere();
+        $condition = "$col IS NOT NULL AND $col <> '' AND $id > :lastResponseId";
+        $where = $where === '' ? " WHERE $condition" : "$where AND $condition";
+
+        $sql = $db->getCommandBuilder()->applyLimit(
+            "SELECT $id AS " . $db->quoteColumnName('id') . ", $col AS " . $db->quoteColumnName('value')
+            . " FROM $table$where ORDER BY $id",
+            $chunkSize,
+            0
+        );
+
+        $lastId = 0;
+        do {
+            $rows = $db->createCommand($sql)->queryAll(true, $params + [':lastResponseId' => $lastId]);
+            foreach ($rows as $row) {
+                yield (string)$row['value'];
+            }
+            $lastId = $rows ? (int)end($rows)['id'] : $lastId;
+        } while (count($rows) === $chunkSize);
+    }
+
     private function register(string $kind, string $field, string $value, bool $numeric = false): string
     {
         $key = $kind . "\x1F" . $field . "\x1F" . $value . "\x1F" . ($numeric ? 'n' : '');

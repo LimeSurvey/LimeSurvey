@@ -7,6 +7,7 @@ import {
   sumCounts,
   toDate,
   toDayKey,
+  toDayMap,
 } from './dateTimeUtils'
 
 describe('parseAnswerDateTime', () => {
@@ -124,5 +125,25 @@ describe('sliceByRange / sumCounts', () => {
   test('returns nothing for a range without answers', () => {
     expect(sliceByRange(days, '2026-02-01', '2026-02-28')).toEqual([])
     expect(sliceByRange(undefined, '2026-02-01', '2026-02-28')).toEqual([])
+  })
+})
+
+describe('toDayMap', () => {
+  test('sums each day and finds the first and last day, like the stats', () => {
+    expect(
+      toDayMap({
+        '2026-01-13': { '00:01:00': 3 },
+        '2025-12-31': { '23:59:00': 1 },
+        '2026-01-12': { '': 5, '10:00:00': 2, '09:00:00': 12 },
+      })
+    ).toEqual({
+      earliest: '2025-12-31',
+      latest: '2026-01-13',
+      days: { '2025-12-31': 1, '2026-01-12': 19, '2026-01-13': 3 },
+    })
+  })
+
+  test('has no days, earliest or latest without answers', () => {
+    expect(toDayMap({})).toEqual({ earliest: null, latest: null, days: {} })
   })
 })
