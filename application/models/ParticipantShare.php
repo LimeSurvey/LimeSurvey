@@ -205,7 +205,8 @@ class ParticipantShare extends LSActiveRecord
         $participantIdAndShareUid = $this->participant_id . ',' . $this->share_uid;
 
         if ($isOwner || $isSuperAdmin) {
-            $html = "<input type='checkbox' class='selector_participantShareCheckbox massiveActionsCheckbox' name='selectedParticipantShare[]' value='" . CHtml::encode($participantIdAndShareUid) . "' >";
+            $label = sprintf(gT('Select share of participant %s with %s'), $this->participant->getDisplayName(), $this->getSharedBy());
+            $html = "<input type='checkbox' class='selector_participantShareCheckbox massiveActionsCheckbox' name='selectedParticipantShare[]' value='" . CHtml::encode($participantIdAndShareUid) . "' aria-label='" . CHtml::encode($label) . "' >";
         } else {
             $html = '';
         }
@@ -223,7 +224,7 @@ class ParticipantShare extends LSActiveRecord
             [
                 "name"              => 'checkbox',
                 "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllParticipantShare' />",
+                "header"            => "<input type='checkbox' id='action_toggleAllParticipantShare' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
                 "filter"            => false,
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
