@@ -2019,7 +2019,7 @@ class SurveyAdministrationController extends LSBaseController
         } else {
             $warning = (isset($result['warning'])) ? true : false;
             /* Add potential table warnings */
-            foreach($result['tableWarnings'] as $tableWarning) {
+            foreach ($result['tableWarnings'] as $tableWarning) {
                  App()->setFlashMessage($tableWarning, 'error');
             }
             $allowregister = $result['isAllowRegister']; //todo: where to ask for this one here
