@@ -4034,7 +4034,12 @@ class LimeExpressionManager
             }
         } else {
             // Read list of available tokens from the tokens table so that preview and error checking works correctly
-            $attrs = array_keys(getTokenFieldsAndNames($surveyid));
+            if ($survey->hasTokensTable) {
+                // Same columns as a participant row has in the survey (e.g. participant_id)
+                $attrs = Token::model($surveyid)->tableSchema->columnNames;
+            } else {
+                $attrs = array_keys(getTokenFieldsAndNames($surveyid));
+            }
             $blankVal = [
                 'code'       => '',
                 'type'       => '',
