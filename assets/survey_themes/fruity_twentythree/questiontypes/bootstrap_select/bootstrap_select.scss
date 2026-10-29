@@ -86,3 +86,8 @@ body > .bootstrap-select {
         }
     }
 }
+
+// The probe has no width, so wrapping would inflate the measured item height.
+body > .bootstrap-select .dropdown-item {
+    white-space : nowrap;
+}
