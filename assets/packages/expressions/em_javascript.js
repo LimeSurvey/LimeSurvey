@@ -1663,6 +1663,8 @@ function html_entity_decode (string, quote_style) {
         tmp_str = '',
         entity = '';
     tmp_str = string.toString();
+    // { and } as encoded by htmlSpecialCharsUserValue() (before &amp;)
+    tmp_str = tmp_str.split('&#123;').join('{').split('&#125;').join('}');
 
     if (false === (hash_map = this.get_html_translation_table('HTML_ENTITIES', quote_style))) {
         return false;
