@@ -3812,6 +3812,8 @@ class quexmlpdf extends pdf
      *
      * Draw the barcode and page corners
      *
+     * @param bool $init Whether to always start a new page (first page of the questionnaire)
+     * @return void
      */
     protected function newPage($init = false)
     {
@@ -3828,7 +3830,7 @@ class quexmlpdf extends pdf
             $this->SetHeaderMargin(0);
             $this->SetFooterMargin(0);
 
-            $oTemplate = Template::model()->getInstance();
+            $oTemplate = Template::getInstance(null, $this->questionnaireId);
             $sLogoFileName = $oTemplate->filesPath . Yii::app()->getConfig('pdflogofile');
             if (file_exists($sLogoFileName)) {
                 $result = LSYii_ImageValidator::validateImage($sLogoFileName);
