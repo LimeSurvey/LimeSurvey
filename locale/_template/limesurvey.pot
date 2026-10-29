@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-10-29 10:03:56+00:00\n"
+"POT-Creation-Date: 2026-10-29 13:34:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -67,7 +67,7 @@ msgstr ""
 #: application/views/admin/labels/import_view.php:4
 #: application/views/admin/labels/importlabelresources_view.php:23
 #: application/views/admin/participants/participantsPanel_view.php:20
-#: application/views/admin/participants/uploadSummary_view.php:93
+#: application/views/admin/participants/uploadSummary_view.php:101
 #: application/views/admin/super/footer.php:182
 #: application/views/admin/survey/copySurvey_view.php:14
 #: application/views/admin/themes/importuploaded_view.php:17
@@ -206,7 +206,7 @@ msgstr ""
 #: application/controllers/admin/Expressions.php:93
 #: application/controllers/admin/Expressions.php:140
 #: application/controllers/admin/Labels.php:437
-#: application/controllers/admin/ParticipantsAction.php:2872
+#: application/controllers/admin/ParticipantsAction.php:2903
 #: application/controllers/admin/PrintableSurvey.php:38
 #: application/controllers/admin/Saved.php:37
 #: application/controllers/admin/Saved.php:88
@@ -291,7 +291,7 @@ msgstr ""
 #: application/controllers/admin/EmailTemplates.php:93
 #: application/controllers/admin/Export.php:1302
 #: application/controllers/admin/Expressions.php:181
-#: application/controllers/admin/ParticipantsAction.php:2935
+#: application/controllers/admin/ParticipantsAction.php:2966
 #: application/controllers/admin/PluginHelper.php:31
 #: application/controllers/admin/Tokens.php:55
 #: application/controllers/admin/Tokens.php:126
@@ -557,7 +557,7 @@ msgstr ""
 #: application/controllers/admin/Labels.php:127
 #: application/controllers/admin/ParticipantsAction.php:659
 #: application/controllers/admin/ParticipantsAction.php:711
-#: application/controllers/admin/ParticipantsAction.php:1382
+#: application/controllers/admin/ParticipantsAction.php:1406
 #: application/controllers/admin/PrintableSurvey.php:37
 #: application/controllers/admin/SurveymenuController.php:68
 #: application/controllers/admin/SurveymenuController.php:138
@@ -1275,11 +1275,11 @@ msgstr ""
 #: application/controllers/UserManagementController.php:201
 #: application/controllers/admin/DataEntry.php:269
 #: application/controllers/admin/ParticipantsAction.php:65
-#: application/controllers/admin/ParticipantsAction.php:2668
-#: application/controllers/admin/ParticipantsAction.php:2715
-#: application/controllers/admin/ParticipantsAction.php:2726
-#: application/controllers/admin/ParticipantsAction.php:2795
-#: application/controllers/admin/ParticipantsAction.php:2990
+#: application/controllers/admin/ParticipantsAction.php:2694
+#: application/controllers/admin/ParticipantsAction.php:2746
+#: application/controllers/admin/ParticipantsAction.php:2757
+#: application/controllers/admin/ParticipantsAction.php:2826
+#: application/controllers/admin/ParticipantsAction.php:3021
 #: application/controllers/admin/PluginManagerController.php:68
 #: application/controllers/admin/PluginManagerController.php:113
 #: application/controllers/admin/PluginManagerController.php:216
@@ -1824,8 +1824,8 @@ msgstr ""
 #. Shown to survey participants
 #: application/controllers/ResponsesController.php:208
 #: application/helpers/common_helper.php:3411
-#: application/models/Participant.php:197
-#: application/models/ParticipantShare.php:238 application/models/Token.php:95
+#: application/models/Participant.php:202
+#: application/models/ParticipantShare.php:239 application/models/Token.php:95
 #: application/models/TokenDynamic.php:716
 #: application/views/admin/export/exportresult_panels/_token-control.php:24
 #: application/views/admin/themes/templateeditor_register_view.php:3
@@ -1844,8 +1844,8 @@ msgstr ""
 #. Shown to survey participants
 #: application/controllers/ResponsesController.php:209
 #: application/helpers/common_helper.php:3416
-#: application/models/Participant.php:198
-#: application/models/ParticipantShare.php:233 application/models/Token.php:96
+#: application/models/Participant.php:203
+#: application/models/ParticipantShare.php:234 application/models/Token.php:96
 #: application/models/TokenDynamic.php:723
 #: application/views/admin/export/exportresult_panels/_token-control.php:27
 #: application/views/admin/themes/templateeditor_register_view.php:7
@@ -2021,9 +2021,9 @@ msgstr ""
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:140
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:96
 #: application/models/Assessment.php:173 application/models/FailedEmail.php:191
-#: application/models/Participant.php:431
+#: application/models/Participant.php:436
 #: application/models/ParticipantAttributeName.php:286
-#: application/models/ParticipantShare.php:272
+#: application/models/ParticipantShare.php:273
 #: application/models/Permissiontemplates.php:287
 #: application/models/Question.php:975 application/models/SavedControl.php:166
 #: application/models/Survey.php:1774 application/models/Surveymenu.php:425
@@ -2801,7 +2801,7 @@ msgstr ""
 #: application/views/admin/authentication/error.php:6
 #: application/views/admin/error_view.php:5
 #: application/views/admin/participants/participantsPanel_view.php:19
-#: application/views/admin/participants/uploadSummary_view.php:112
+#: application/views/admin/participants/uploadSummary_view.php:120
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:13
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:93
 #: application/views/homepageSettings/partial/topbarBtns/rightSideButtons.php:15
@@ -3009,9 +3009,9 @@ msgstr ""
 #: application/helpers/questionHelper.php:1597
 #: application/helpers/userstatistics_helper.php:1001
 #: application/helpers/userstatistics_helper.php:1117
-#: application/models/Participant.php:324
-#: application/models/Participant.php:337
-#: application/models/Participant.php:385
+#: application/models/Participant.php:329
+#: application/models/Participant.php:342
+#: application/models/Participant.php:390
 #: application/models/ParticipantAttributeName.php:195
 #: application/models/ParticipantAttributeName.php:217
 #: application/models/ParticipantAttributeName.php:232
@@ -3020,7 +3020,7 @@ msgstr ""
 #: application/models/ParticipantAttributeName.php:281
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:153
-#: application/models/ParticipantShare.php:266
+#: application/models/ParticipantShare.php:267
 #: application/models/Survey.php:1226 application/models/Survey.php:1234
 #: application/models/User.php:290
 #: application/models/services/Export/ExportAnswerFormatter.php:127
@@ -3189,9 +3189,9 @@ msgstr ""
 #: application/helpers/questionHelper.php:1597
 #: application/helpers/userstatistics_helper.php:1000
 #: application/helpers/userstatistics_helper.php:1116
-#: application/models/Participant.php:323
-#: application/models/Participant.php:334
-#: application/models/Participant.php:385
+#: application/models/Participant.php:328
+#: application/models/Participant.php:339
+#: application/models/Participant.php:390
 #: application/models/ParticipantAttributeName.php:194
 #: application/models/ParticipantAttributeName.php:216
 #: application/models/ParticipantAttributeName.php:232
@@ -3200,7 +3200,7 @@ msgstr ""
 #: application/models/ParticipantAttributeName.php:281
 #: application/models/ParticipantShare.php:143
 #: application/models/ParticipantShare.php:153
-#: application/models/ParticipantShare.php:266
+#: application/models/ParticipantShare.php:267
 #: application/models/Survey.php:1226 application/models/Survey.php:1234
 #: application/models/User.php:288
 #: application/models/services/Export/ExportAnswerFormatter.php:124
@@ -5921,7 +5921,7 @@ msgid "Could not update participant:"
 msgstr ""
 
 #: application/controllers/admin/ParticipantsAction.php:772
-#: application/controllers/admin/ParticipantsAction.php:1435
+#: application/controllers/admin/ParticipantsAction.php:1459
 msgid "Participant successfully updated"
 msgstr ""
 
@@ -5962,140 +5962,153 @@ msgstr ""
 msgid "This list cannot accept survey participant attributes."
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1358
+#: application/controllers/admin/ParticipantsAction.php:1110
+msgid "Line %s: %s"
+msgstr ""
+
+#: application/controllers/admin/ParticipantsAction.php:1111
+#: application/controllers/admin/Tokens.php:2452
+msgid "Line %s"
+msgstr ""
+
+#: application/controllers/admin/ParticipantsAction.php:1382
 #: application/views/admin/participants/partial/topbarBtns/leftSideButtons.php:71
 msgid "Blocklist settings"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1402
+#: application/controllers/admin/ParticipantsAction.php:1426
 msgid "Blocklist settings were saved."
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1435
-#: application/controllers/admin/ParticipantsAction.php:1504
-#: application/controllers/admin/ParticipantsAction.php:1531
-#: application/controllers/admin/ParticipantsAction.php:2639
+#: application/controllers/admin/ParticipantsAction.php:1459
+#: application/controllers/admin/ParticipantsAction.php:1528
+#: application/controllers/admin/ParticipantsAction.php:1555
+#: application/controllers/admin/ParticipantsAction.php:2665
 #: application/views/admin/participants/participantsPanel_view.php:29
 msgid "Your changes could not be saved."
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1450
+#: application/controllers/admin/ParticipantsAction.php:1474
 msgid "Attribute management"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1504
-#: application/controllers/admin/ParticipantsAction.php:1600
-#: application/controllers/admin/ParticipantsAction.php:2021
+#: application/controllers/admin/ParticipantsAction.php:1528
+#: application/controllers/admin/ParticipantsAction.php:1624
+#: application/controllers/admin/ParticipantsAction.php:2045
 msgid "Attribute was saved."
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1593
+#: application/controllers/admin/ParticipantsAction.php:1617
 msgid "The encryption setting could not be changed. The participant data was left as it was."
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1633
+#: application/controllers/admin/ParticipantsAction.php:1657
 msgid "Select language to add"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1772
+#: application/controllers/admin/ParticipantsAction.php:1796
 msgid "Attribute successfully updated"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1798
+#: application/controllers/admin/ParticipantsAction.php:1822
 msgid "Language successfully deleted"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1800
+#: application/controllers/admin/ParticipantsAction.php:1824
 #: application/views/admin/participants/modal_subviews/_editAttribute.php:227
 msgid "There has to be at least one language."
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1819
+#: application/controllers/admin/ParticipantsAction.php:1843
 msgid "Attribute successfully deleted"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1848
+#: application/controllers/admin/ParticipantsAction.php:1872
 msgid "%s attribute deleted|%s attributes deleted"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1854
+#: application/controllers/admin/ParticipantsAction.php:1878
 msgid "Error. Deleted %s attribute(s). Error message: %s"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:1909
+#: application/controllers/admin/ParticipantsAction.php:1933
 msgid "Attribute display setting updated"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2112
+#: application/controllers/admin/ParticipantsAction.php:2136
 #: application/views/admin/participants/partial/topbarBtns/leftSideButtons.php:100
 msgid "Share panel"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2480
+#: application/controllers/admin/ParticipantsAction.php:2504
 msgid "%s participants have been shared"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2512
+#: application/controllers/admin/ParticipantsAction.php:2536
 msgid "Participant shared."
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2531
+#: application/controllers/admin/ParticipantsAction.php:2555
 msgid "Participant removed from sharing"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2551
+#: application/controllers/admin/ParticipantsAction.php:2577
 msgid "Found no participant share"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2559
+#: application/controllers/admin/ParticipantsAction.php:2585
 msgid "Participant share deleted"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2599
+#: application/controllers/admin/ParticipantsAction.php:2625
 msgid "No participant shares were deleted"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2603
+#: application/controllers/admin/ParticipantsAction.php:2629
 msgid "%s participant share was deleted|%s participant shares were deleted"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2639
+#: application/controllers/admin/ParticipantsAction.php:2665
 #: application/controllers/admin/Themes.php:961
 msgid "Changes saved successfully."
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2675
+#: application/controllers/admin/ParticipantsAction.php:2701
 msgid "%s participants have been copied to the central participant list"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2679
-#: application/controllers/admin/ParticipantsAction.php:2770
+#: application/controllers/admin/ParticipantsAction.php:2705
+#: application/controllers/admin/ParticipantsAction.php:2801
 msgid "%s entries were not copied because they already existed"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2684
+#: application/controllers/admin/ParticipantsAction.php:2710
+msgid "%s survey participants got a new participant ID because their previous participant ID was not a valid UUID"
+msgstr ""
+
+#: application/controllers/admin/ParticipantsAction.php:2715
 msgid "Attribute values for central participants have been updated from the survey participants"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2766
+#: application/controllers/admin/ParticipantsAction.php:2797
 msgid "%s participants have been copied to the survey participant list"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2775
+#: application/controllers/admin/ParticipantsAction.php:2806
 msgid "%s entries were skipped because they are blocklisted"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2780
+#: application/controllers/admin/ParticipantsAction.php:2811
 msgid "Attribute values for existing participants have been updated from the participants records"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2853
-#: application/controllers/admin/ParticipantsAction.php:2923
+#: application/controllers/admin/ParticipantsAction.php:2884
+#: application/controllers/admin/ParticipantsAction.php:2954
 #: application/views/admin/participants/attributeMapToken_view.php:8
 msgid "There are no unmapped attributes"
 msgstr ""
 
-#: application/controllers/admin/ParticipantsAction.php:2934
+#: application/controllers/admin/ParticipantsAction.php:2965
 #: application/views/admin/token/massive_actions/_selector.php:141
 msgid "Add participants to central database"
 msgstr ""
@@ -7334,10 +7347,6 @@ msgstr ""
 
 #: application/controllers/admin/Tokens.php:2358
 msgid "Upload file not found. Check your permissions and path (%s) for the upload directory"
-msgstr ""
-
-#: application/controllers/admin/Tokens.php:2452
-msgid "Line %s"
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:2473
@@ -12986,8 +12995,8 @@ msgstr ""
 
 #. Shown to survey participants
 #: application/helpers/common_helper.php:3421
-#: application/models/Participant.php:199
-#: application/models/ParticipantShare.php:243
+#: application/models/Participant.php:204
+#: application/models/ParticipantShare.php:244
 #: application/models/SavedControl.php:160 application/models/Token.php:97
 #: application/models/TokenDynamic.php:730
 #: application/views/admin/authentication/forgotpassword.php:40
@@ -16995,7 +17004,7 @@ msgid "Message"
 msgstr ""
 
 #: application/models/Assessment.php:87 application/models/FailedEmail.php:183
-#: application/models/Participant.php:200
+#: application/models/Participant.php:205
 #: application/models/QuestionGroupL10n.php:81
 #: application/models/SurveymenuEntries.php:221
 #: application/models/TokenDynamic.php:753 application/models/User.php:193
@@ -17562,29 +17571,29 @@ msgstr ""
 msgid "Read"
 msgstr ""
 
-#: application/models/Participant.php:127
+#: application/models/Participant.php:132
 msgid "Edit this participant"
 msgstr ""
 
-#: application/models/Participant.php:136
+#: application/models/Participant.php:141
 msgid "Add participant to survey"
 msgstr ""
 
-#: application/models/Participant.php:145
+#: application/models/Participant.php:150
 #: application/views/admin/participants/modal_subviews/_showParticipantSurveys.php:2
 #: application/views/layouts/adminmenu.php:82
 msgid "List active surveys"
 msgstr ""
 
-#: application/models/Participant.php:154
+#: application/models/Participant.php:159
 msgid "Share this participant"
 msgstr ""
 
-#: application/models/Participant.php:163
+#: application/models/Participant.php:168
 msgid "Delete this participant"
 msgstr ""
 
-#: application/models/Participant.php:196 application/models/SurveyLink.php:235
+#: application/models/Participant.php:201 application/models/SurveyLink.php:235
 #: application/views/admin/participants/attributeMap_view.php:157
 #: themes/survey/bootswatch/config.xml:324
 #: themes/survey/fruity_twentythree/config.xml:485
@@ -17592,34 +17601,34 @@ msgstr ""
 msgid "Participant"
 msgstr ""
 
-#: application/models/Participant.php:201
-#: application/models/Participant.php:320 application/models/Token.php:101
+#: application/models/Participant.php:206
+#: application/models/Participant.php:325 application/models/Token.php:101
 msgid "Blocklisted"
 msgstr ""
 
-#: application/models/Participant.php:202
+#: application/models/Participant.php:207
 msgid "Owner ID"
 msgstr ""
 
-#: application/models/Participant.php:203
+#: application/models/Participant.php:208
 msgid "Active survey ID"
 msgstr ""
 
-#: application/models/Participant.php:204 application/models/Surveymenu.php:340
+#: application/models/Participant.php:209 application/models/Surveymenu.php:340
 #: application/models/SurveymenuEntries.php:229
 #: application/models/SurveysGroups.php:104 application/models/User.php:878
 #: application/models/User.php:1041
 msgid "Created on"
 msgstr ""
 
-#: application/models/Participant.php:372
+#: application/models/Participant.php:377
 #: application/views/admin/globalsettings/_overview.php:28
 #: application/views/admin/super/_configuration_menu.php:55
 #: application/views/layouts/adminmenu.php:34
 msgid "Active surveys"
 msgstr ""
 
-#: application/models/Participant.php:377 application/models/Survey.php:1800
+#: application/models/Participant.php:382 application/models/Survey.php:1800
 #: application/models/SurveysGroups.php:101
 #: application/models/SurveysGroups.php:168
 #: application/models/UserGroup.php:250 application/models/UserGroup.php:358
@@ -17627,7 +17636,7 @@ msgstr ""
 msgid "Owner"
 msgstr ""
 
-#: application/models/Participant.php:598
+#: application/models/Participant.php:603
 msgid "(Deleted user)"
 msgstr ""
 
@@ -17676,32 +17685,32 @@ msgstr ""
 msgid "Encryption is disabled because Sodium library isn't installed"
 msgstr ""
 
-#: application/models/ParticipantShare.php:175
+#: application/models/ParticipantShare.php:176
 msgid "Delete sharing"
 msgstr ""
 
-#: application/models/ParticipantShare.php:181
+#: application/models/ParticipantShare.php:182
 msgid "Unshare this participant"
 msgstr ""
 
-#: application/models/ParticipantShare.php:182
+#: application/models/ParticipantShare.php:183
 msgid "Unshare"
 msgstr ""
 
-#: application/models/ParticipantShare.php:183
+#: application/models/ParticipantShare.php:184
 msgid "Do you really want to unshare this participant?"
 msgstr ""
 
-#: application/models/ParticipantShare.php:250
+#: application/models/ParticipantShare.php:251
 msgid "Shared with"
 msgstr ""
 
-#: application/models/ParticipantShare.php:260
+#: application/models/ParticipantShare.php:261
 #: application/models/SurveyLink.php:236
 msgid "Date added"
 msgstr ""
 
-#: application/models/ParticipantShare.php:265
+#: application/models/ParticipantShare.php:266
 msgid "Can edit?"
 msgstr ""
 
@@ -22942,18 +22951,22 @@ msgid "%s records with invalid email address removed"
 msgstr ""
 
 #: application/views/admin/participants/uploadSummary_view.php:62
-msgid "%s records have incomplete or wrong attribute values"
+msgid "%s records with invalid participant ID removed"
 msgstr ""
 
 #: application/views/admin/participants/uploadSummary_view.php:70
+msgid "%s records have incomplete or wrong attribute values"
+msgstr ""
+
+#: application/views/admin/participants/uploadSummary_view.php:78
 msgid "%s records where the number of fields does not match"
 msgstr ""
 
-#: application/views/admin/participants/uploadSummary_view.php:73
+#: application/views/admin/participants/uploadSummary_view.php:81
 msgid "Line %s: Fields found: %s Expected: %s"
 msgstr ""
 
-#: application/views/admin/participants/uploadSummary_view.php:105
+#: application/views/admin/participants/uploadSummary_view.php:113
 msgid "CPDB CSV summary"
 msgstr ""
 
