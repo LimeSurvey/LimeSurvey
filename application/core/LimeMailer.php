@@ -171,6 +171,11 @@ class LimeMailer extends PHPMailer
         /* Don't check tls by default : allow own sign certificate */
         $this->SMTPAutoTLS = false;
 
+        /* Collect debug output (SMTP and mail()) instead of echoing it */
+        $this->Debugoutput = function ($str, $level) {
+            $this->addDebug($str);
+        };
+
         switch ($emailmethod) {
             case self::MethodQmail:
                 $this->IsQmail();
@@ -178,9 +183,6 @@ class LimeMailer extends PHPMailer
             case self::MethodSmtp:
                 $this->IsSMTP();
                 $this->SMTPKeepAlive = true;
-                $this->Debugoutput = function ($str, $level) {
-                    $this->addDebug($str);
-                };
                 if ($emailsmtpdebug > 0) {
                     if ($emailsmtpdebug == 1) {
                         // Map "On errors" to PHPMailer debug level 2

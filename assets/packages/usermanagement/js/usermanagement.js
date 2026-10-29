@@ -75,12 +75,55 @@ var UserManagement = function () {
         $('#submitForm').prop('disabled', false);
     };
 
+    /**
+     * Ask for confirmation before submitting when the submit button has a data-confirm-message,
+     * e.g. saving user permissions removes the roles of the user.
+     * With data-confirm-if-filled, the confirmation is only asked when the field with this name has a value.
+     *
+     * @param {HTMLFormElement} form
+     * @param {HTMLElement} submitter
+     * @return {boolean} true if the submit has to wait for the confirmation
+     */
+    var confirmSubmit = function (form, submitter) {
+        var confirmationModal = document.getElementById('confirmation-modal');
+        if (!submitter || !submitter.dataset.confirmMessage || submitter.dataset.confirmed || !confirmationModal) {
+            return false;
+        }
+        if (submitter.dataset.confirmIfFilled) {
+            var value = $(form).find('[name="' + submitter.dataset.confirmIfFilled + '"]').val();
+            if (!value || value.length === 0) {
+                return false;
+            }
+        }
+        var relatedTarget = $('<span>').data({
+            title: submitter.dataset.confirmTitle,
+            message: submitter.dataset.confirmMessage,
+            btntext: submitter.dataset.confirmBtntext,
+            btnclass: 'btn-danger',
+        })[0];
+        // Stack the confirmation and its backdrop above the open user management modal
+        $(confirmationModal).css('z-index', 1065).one('hidden.bs.modal', function () {
+            $(this).css('z-index', '');
+        });
+        bootstrap.Modal.getOrCreateInstance(confirmationModal).show(relatedTarget);
+        $('.modal-backdrop').last().css('z-index', 1060);
+        $(confirmationModal).find('.btn-ok').off('click').on('click', function () {
+            bootstrap.Modal.getOrCreateInstance(confirmationModal).hide();
+            submitter.dataset.confirmed = '1';
+            form.requestSubmit(submitter);
+        });
+        return true;
+    };
+
     var wireForm = function () {
         $('#UserManagement--modalform').on('submit.USERMANAGERMODAL', function (e) {
             e.preventDefault();
             const buttonClassName = e.originalEvent.submitter.className;
             // Do nothing for outline-secondary (close) button.
             if (buttonClassName.includes('outline-secondary')) {
+                return false;
+            }
+            if (confirmSubmit(this, e.originalEvent.submitter)) {
                 return false;
             }
             $('#UserManagement--errors').addClass('d-none').removeClass('alert alert-danger');
@@ -235,7 +278,11 @@ var UserManagement = function () {
         });
 
         rootObject.find('#perm_superadmin_read').on(' click', function () {
-            tableObject.find('input').prop('checked', this.checked).fadeTo(1, 1);
+            updateIndeterminatePermissions(tableObject.find('input').prop('checked', this.checked).fadeTo(1, 1));
+            tableObject.find('tbody tr').each(function () {
+                updateRowGeneralState($(this));
+            });
+            updateSelectAllState();
         })
 
         rootObject.find('.selector--select-all-permissions').on('click', function () {

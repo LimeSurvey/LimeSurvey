@@ -301,6 +301,59 @@ class QuestionOrderingServiceTest extends TestBaseClass
     }
 
     /**
+     * @testdox getOrderedAnswers() keeps keep_codes_order codes in place when sorting alphabetically
+     */
+    public function testGetOrderedAnswersAlphabeticallyKeepsCodesInPlace()
+    {
+        $question = $this->mockQuestionWithOrderingAttributes('answer_order', 'alphabetical', 'A1;DK');
+        $question->answers = $this->makeItems(
+            ['A1' => 'Zebra', 'A2' => 'Mango', 'A3' => 'Apple', 'DK' => "Don't know"],
+            'answers'
+        );
+
+        $result = (new QuestionOrderingService())->getOrderedAnswers($question, 0);
+
+        $this->assertSame(['A1', 'A3', 'A2', 'DK'], array_column($result, 'code'));
+    }
+
+    /**
+     * @testdox getOrderedSubQuestions() keeps keep_codes_order codes in place when sorting alphabetically
+     */
+    public function testGetOrderedSubQuestionsAlphabeticallyKeepsCodesInPlace()
+    {
+        $question = $this->mockQuestionWithOrderingAttributes('subquestion_order', 'alphabetical', 'SQ2');
+        $question->subquestions = $this->makeItems(
+            ['SQ1' => 'Mango', 'SQ2' => 'Zucchini', 'SQ3' => 'Banana', 'SQ4' => 'Apple'],
+            'subquestions'
+        );
+
+        $result = (new QuestionOrderingService())->getOrderedSubQuestions($question, 0);
+
+        $this->assertSame(['SQ4', 'SQ2', 'SQ3', 'SQ1'], array_column($result, 'title'));
+    }
+
+    /**
+     * @testdox getOrderedAnswers() keeps keep_codes_order codes in place in both random A-Z/Z-A directions
+     */
+    public function testGetOrderedAnswersRandomAlphabeticallyKeepsCodesInPlace()
+    {
+        $question = $this->mockQuestionWithOrderingAttributes('answer_order', 'random_alphabetical', 'DK');
+        $question->answers = $this->makeItems(
+            ['A1' => 'Mango', 'A2' => 'Apple', 'A3' => 'Zebra', 'DK' => "Don't know"],
+            'answers'
+        );
+
+        $service = new QuestionOrderingService();
+        $seen = [];
+        for ($i = 0; $i < 50; $i++) {
+            $codes = array_column($service->getOrderedAnswers($question, 0), 'code');
+            $this->assertContains($codes, [['A2', 'A1', 'A3', 'DK'], ['A3', 'A1', 'A2', 'DK']]);
+            $seen[implode(';', $codes)] = true;
+        }
+        $this->assertCount(2, $seen, 'Both sort directions should occur');
+    }
+
+    /**
      * @testdox getOrderedAnswers() with random sorting preserves all items
      */
     public function testGetOrderedAnswersRandomly()
@@ -355,5 +408,58 @@ class QuestionOrderingServiceTest extends TestBaseClass
 
         $this->assertEquals([101, 102, 103], $resultIds);
         $this->assertCount(3, $result[0]);
+    }
+
+    /**
+     * Create a partial Question mock with the given order attribute and keep_codes_order
+     *
+     * @param string $orderAttribute 'answer_order' or 'subquestion_order'
+     * @param string $orderValue Value of the order attribute
+     * @param string|null $keepCodesOrder Value of keep_codes_order
+     * @return \Question
+     */
+    private function mockQuestionWithOrderingAttributes(string $orderAttribute, string $orderValue, $keepCodesOrder)
+    {
+        $question = \Mockery::mock(\Question::class)->makePartial();
+        $question->shouldReceive('getQuestionAttribute')->with($orderAttribute)->andReturn($orderValue);
+        $question->shouldReceive('getQuestionAttribute')->with('keep_codes_order')->andReturn($keepCodesOrder);
+        $question->shouldReceive('getQuestionAttribute')->andReturn(null);
+        $question->survey = (object)[
+            'language' => 'en',
+            'allLanguages' => ['en']
+        ];
+        $question->sid = 12345;
+        return $question;
+    }
+
+    /**
+     * Create answer or subquestion stubs in the given (database) order
+     *
+     * @param array<string, string> $texts Item texts indexed by code
+     * @param string $context 'answers' or 'subquestions'
+     * @return object[]
+     */
+    private function makeItems(array $texts, string $context): array
+    {
+        $items = [];
+        $order = 1;
+        foreach ($texts as $code => $text) {
+            if ($context === 'answers') {
+                $items[] = (object)[
+                    'scale_id' => 0,
+                    'sortorder' => $order++,
+                    'code' => $code,
+                    'answerl10ns' => ['en' => (object)['answer' => $text]]
+                ];
+            } else {
+                $items[] = (object)[
+                    'scale_id' => 0,
+                    'question_order' => $order++,
+                    'title' => $code,
+                    'questionl10ns' => ['en' => (object)['question' => $text]]
+                ];
+            }
+        }
+        return $items;
     }
 }

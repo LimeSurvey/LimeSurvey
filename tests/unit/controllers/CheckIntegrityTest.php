@@ -196,9 +196,7 @@ class CheckIntegrityTest extends TestBaseClass
             // unit test does not provide; only fixintegrity()'s DB side effects are under
             // test here, so the trailing render call is stubbed out.
             $noRenderController = new class('dummy', 'fixintegrity') extends \CheckIntegrity {
-                protected function renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
-                {
-                }
+                protected function renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array(), $sRenderFile = false) {}
             };
             $noRenderController->fixintegrity();
         } finally {
@@ -210,6 +208,42 @@ class CheckIntegrityTest extends TestBaseClass
             \QuotaLanguageSetting::model()->findAllByAttributes(array('quotals_quota_id' => $quotaId)),
             'Quota language setting was left behind after its orphan parent quota was deleted in the same pass.'
         );
+    }
+
+    /** Verifies that quota members without a related quota are detected and deleted, and valid ones are kept. */
+    public function testQuotaMembersWithoutQuotaAreDetectedAndDeleted()
+    {
+        $question = \Question::model()->find('sid = :sid AND parent_qid = 0', array(':sid' => self::$surveyId));
+
+        $quota = new \Quota();
+        $quota->sid = self::$surveyId;
+        $quota->name = 'Valid quota';
+        $quota->qlimit = 1;
+        $quota->action = 1;
+        $this->assertTrue($quota->save(), 'Could not save quota fixture: ' . json_encode($quota->errors));
+
+        $command = \Yii::app()->db->createCommand();
+        $command->insert('{{quota_members}}', array('sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => $quota->id, 'code' => 'A1'));
+        $validMemberId = getLastInsertID('{{quota_members}}');
+        // Left over from a deleted quota
+        $command->insert('{{quota_members}}', array('sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => 999999904, 'code' => 'A2'));
+        $missingQuotaMemberId = getLastInsertID('{{quota_members}}');
+        // Imported from a file referencing a quota that was not in it
+        $command->insert('{{quota_members}}', array('sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => null, 'code' => 'A3'));
+        $nullQuotaMemberId = getLastInsertID('{{quota_members}}');
+
+        try {
+            $aDelete = $this->integrityChecker->checkintegrity();
+            $this->assertGreaterThanOrEqual(2, $aDelete['quotamembers'], 'Quota members without a quota were not detected.');
+
+            $this->callMethod('deleteQuotaMembers', array(array()));
+
+            $this->assertNull(\QuotaMember::model()->findByPk($missingQuotaMemberId), 'Quota member of a missing quota was not deleted.');
+            $this->assertNull(\QuotaMember::model()->findByPk($nullQuotaMemberId), 'Quota member without quota ID was not deleted.');
+            $this->assertNotNull(\QuotaMember::model()->findByPk($validMemberId), 'Valid quota member was deleted.');
+        } finally {
+            \Quota::model()->deleteQuota(array('id' => $quota->id));
+        }
     }
 
     public function testIndexDoesNotRunTheConsistencyCheck()
@@ -774,7 +808,12 @@ class CheckIntegrityTest extends TestBaseClass
     public function testDuplicateThemeConfigurationsAreOnlyDeletedAndReportedByTheConsistencyCheckKeepingTheOldest()
     {
         $templateName = 'fruity_twentythree';
-        $insertedIds = array();
+        $getIds = function () use ($templateName) {
+            return array_map('intval', \Yii::app()->db->createCommand()->select('id')->from('{{template_configuration}}')
+                ->where('sid = :sid AND template_name = :template_name', array(':sid' => self::$surveyId, ':template_name' => $templateName))
+                ->order('id')->queryColumn());
+        };
+        $preexistingIds = $getIds();
         foreach (array('{"container":"off"}', '{"container":"on"}') as $options) {
             \Yii::app()->db->createCommand()->insert('{{template_configuration}}', array(
                 'template_name' => $templateName,
@@ -783,11 +822,8 @@ class CheckIntegrityTest extends TestBaseClass
             ));
             $insertedIds[] = (int) getLastInsertID('{{template_configuration}}');
         }
-        $getIds = function () use ($templateName) {
-            return array_map('intval', \Yii::app()->db->createCommand()->select('id')->from('{{template_configuration}}')
-                ->where('sid = :sid AND template_name = :template_name', array(':sid' => self::$surveyId, ':template_name' => $templateName))
-                ->order('id')->queryColumn());
-        };
+        // getLastInsertID() without a sequence name fails on PostgreSQL
+        $insertedIds = array_values(array_diff($getIds(), $preexistingIds));
         $idsBefore = $getIds();
 
         try {

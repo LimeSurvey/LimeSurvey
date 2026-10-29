@@ -1,6 +1,7 @@
 <?php
 
 Yii::import('zii.widgets.grid.CGridView');
+Yii::import('ext.admin.grid.LSCheckBoxColumn');
 
 class CLSGridView extends TbGridView
 {
@@ -190,6 +191,10 @@ class CLSGridView extends TbGridView
         foreach ($this->columns as $i => $column) {
             if (is_array($column) && !isset($column['class'])) {
                 $this->columns[$i]['class'] = '\TbDataColumn';
+            }
+            // Row checkboxes get an accessible name
+            if (is_array($column) && isset($column['class']) && ltrim($column['class'], '\\') === 'CCheckBoxColumn') {
+                $this->columns[$i]['class'] = 'LSCheckBoxColumn';
             }
         }
         parent::initColumns();

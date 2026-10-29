@@ -103,7 +103,7 @@ class SettingsWidget extends CWidget
      */
     protected function renderButton($label, $metaData)
     {
-        //Button can come from 2 system, by pluginSettings>settings>button ot by by pluginSettings>buttons
+        //Button can come from 2 system, by pluginSettings>settings>button or by pluginSettings>buttons
         if (is_string($metaData)) {
             $label = $metaData;
             $metaData = array(

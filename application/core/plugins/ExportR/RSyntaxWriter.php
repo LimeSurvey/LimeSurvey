@@ -14,6 +14,11 @@ class RSyntaxWriter extends Writer
     protected $customFieldmap = array();
     protected $headers = array();
 
+    /**
+     * The chosen response format: 'short' (answer codes) or 'long' (full answers)
+     */
+    protected $answerFormat = 'long';
+
     function __construct()
     {
         $this->output = '';
@@ -38,6 +43,7 @@ class RSyntaxWriter extends Writer
         $this->out("");
 
         $oOptions->headingFormat = 'code'; // Always use fieldcodes
+        $this->answerFormat = $oOptions->answerFormat;
 
         // R specific stuff
         Yii::app()->loadHelper("export");
@@ -152,13 +158,20 @@ class RSyntaxWriter extends Writer
                 }
 
                 $str = mb_substr($str, 0, -1);
-                $str .= '),labels=c(';
 
-                foreach ($answers as $answer) {
-                    $str .= '"' . addslashes((string) $answer['value'] !== '' ? $answer['value'] : $answer['code']) . '", ';
+                // Without labels R uses the levels (answer codes) as labels
+                if ($this->answerFormat == 'short') {
+                    $str .= ')';
+                } else {
+                    $str .= '),labels=c(';
+
+                    foreach ($answers as $answer) {
+                        $str .= '"' . addslashes((string) $answer['value'] !== '' ? $answer['value'] : $answer['code']) . '", ';
+                    }
+
+                    $str = mb_substr($str, 0, -2);
+                    $str .= ')';
                 }
-
-                $str = mb_substr($str, 0, -2);
 
                 if ($field['scale'] !== '' && $field['scale'] == 2) {
                     $scale = ", ordered=TRUE";
@@ -166,7 +179,7 @@ class RSyntaxWriter extends Writer
                     $scale = "";
                 }
 
-                $this->out("{$str}){$scale})");
+                $this->out("{$str}{$scale})");
             }
 
             //Rename the Variables (in case somethings goes wrong, we still have the OLD values

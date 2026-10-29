@@ -887,7 +887,7 @@ class questionHelper
             'category' => gT('Display'),
             'sortorder' => 101,
             'inputtype' => 'text',
-            "help" => gT('Semicolon-separated list of codes that keep their original database position when items are randomized.'),
+            "help" => gT('Semicolon-separated list of codes that keep their original database position when items are randomized or sorted alphabetically.'),
             "caption" => gT('Keep codes at original positions')
         );
 

@@ -1105,13 +1105,15 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Update the survey's lastmodified timestamp after the question was saved.
+     * Update the survey's lastmodified timestamp after the question was saved,
+     * and forget its attribute values kept for this request (type and theme decide which attributes it has).
      *
      * @return void
      */
     protected function afterSave()
     {
         parent::afterSave();
+        QuestionAttribute::clearRequestCache($this->qid);
         if (!empty($this->sid)) {
             (new SurveyDetailService())->touchSurveyLastModified((int) $this->sid);
         }

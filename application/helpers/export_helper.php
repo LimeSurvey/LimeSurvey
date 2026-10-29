@@ -987,8 +987,9 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
 
         //1Quota members
         $query = "SELECT {{quota_members}}.*
-        FROM {{quota_members}}
-        WHERE {{quota_members}}.sid=$iSurveyID";
+        FROM {{quota_members}}, {{quota}}
+        WHERE {{quota}}.id = {{quota_members}}.quota_id
+        AND {{quota_members}}.sid=$iSurveyID";
         buildXMLFromQuery($xmlwriter, $query);
 
         //Quota languagesettings

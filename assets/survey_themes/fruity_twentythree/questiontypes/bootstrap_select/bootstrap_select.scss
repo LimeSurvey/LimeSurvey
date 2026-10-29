@@ -1,7 +1,9 @@
 $bs-select-item-padding-y : 8px;
 $bs-select-item-padding-x : 12px;
 
-.answer-container .bootstrap-select {
+// `body > .bootstrap-select` is the off-screen probe bootstrap-select uses to measure item heights.
+.answer-container .bootstrap-select,
+body > .bootstrap-select {
     .bs-searchbox .form-control {
         padding       : 0.375rem 0.75rem;
         margin-bottom : 4px;
@@ -25,6 +27,14 @@ $bs-select-item-padding-x : 12px;
         font-weight    : $font-weight-500;
         line-height    : $line-height-20;
         letter-spacing : -0.21px;
+
+        &:focus,
+        &:active,
+        &:active:focus,
+        &.show,
+        &.show:focus {
+            box-shadow : none;
+        }
 
         .filter-option {
             text-align : left;
@@ -75,4 +85,9 @@ $bs-select-item-padding-x : 12px;
             margin-bottom : 0;
         }
     }
+}
+
+// The probe has no width, so wrapping would inflate the measured item height.
+body > .bootstrap-select .dropdown-item {
+    white-space : nowrap;
 }
