@@ -287,6 +287,50 @@ class ParticipantActionTest extends TestBaseClass
     }
 
     /**
+     * The owner can delete a single share of a participant whose older participant ID has special characters.
+     *
+     * @return void
+     */
+    public function testDeleteSingleParticipantShareWithLegacyParticipantId()
+    {
+        $participantId = 'abc"\'<>';
+        \Yii::app()->db->createCommand()->insert('{{participants}}', [
+            'participant_id' => $participantId,
+            'blacklisted' => 'N',
+            'owner_uid' => self::$createOnlyUser->uid,
+            'created_by' => self::$createOnlyUser->uid,
+            'created' => date('Y-m-d H:i:s'),
+        ]);
+        $share = new \ParticipantShare();
+        $share->participant_id = $participantId;
+        $share->share_uid = self::$readOnlyUser->uid;
+        $share->date_added = date('Y-m-d H:i:s');
+        $share->can_edit = 0;
+        $this->assertTrue($share->save());
+
+        \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
+        \Yii::app()->user->setId(self::$createOnlyUser->uid);
+        $requestMethod = $_SERVER['REQUEST_METHOD'] ?? null;
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        try {
+            $called = $this->runParticipantsAction('deleteSingleParticipantShare', [
+                'participantId' => $participantId,
+                'shareUid' => (string) self::$readOnlyUser->uid,
+            ]);
+
+            $this->assertEquals('outputSuccess', $called);
+            $this->assertNull(\ParticipantShare::model()->findByPk([
+                'participant_id' => $participantId,
+                'share_uid' => self::$readOnlyUser->uid,
+            ]));
+        } finally {
+            $_SERVER['REQUEST_METHOD'] = $requestMethod;
+            \ParticipantShare::model()->deleteAllByAttributes(['participant_id' => $participantId]);
+            \Participant::model()->deleteByPk($participantId);
+        }
+    }
+
+    /**
      * Creates a custom central participant attribute.
      *
      * @param string $visible 'TRUE' or 'FALSE'
