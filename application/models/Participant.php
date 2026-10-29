@@ -45,6 +45,9 @@ use LimeSurvey\Exceptions\CPDBException;
  */
 class Participant extends LSActiveRecord
 {
+    /** @var string Format of participant IDs (UUID, as created by genUuid()) */
+    public const PARTICIPANT_ID_PATTERN = '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iD';
+
     public $extraCondition;
     public $countActiveSurveys;
     public $id;
@@ -78,6 +81,8 @@ class Participant extends LSActiveRecord
             array('participant_id, blacklisted, owner_uid', 'required'),
             array('owner_uid', 'numerical', 'integerOnly' => true),
             array('participant_id', 'length', 'max' => 50),
+            // Existing participants may still have IDs in another format, so only new ones are checked
+            array('participant_id', 'match', 'pattern' => self::PARTICIPANT_ID_PATTERN, 'on' => 'insert'),
             array('firstname, lastname', 'length', 'max' => 150),
             array('language', 'length', 'max' => 40),
             array('firstname, lastname, language', 'LSYii_Validators'),
@@ -626,6 +631,16 @@ class Participant extends LSActiveRecord
             mt_rand(0, 0xffff),
             mt_rand(0, 0xffff)
         );
+    }
+
+    /**
+     * Checks if a participant ID has the expected UUID format
+     * @param mixed $participantId
+     * @return bool
+     */
+    public static function isValidParticipantId($participantId)
+    {
+        return is_string($participantId) && preg_match(self::PARTICIPANT_ID_PATTERN, $participantId) === 1;
     }
 
     /**
@@ -2267,7 +2282,7 @@ class Participant extends LSActiveRecord
                 } /* If there isn't an existing entry, create one! */ else {
                     /* Create entry in participant list */
                     $black = !empty($oTokenDynamic->blacklisted) ? $oTokenDynamic->blacklisted : 'N';
-                    $pid = !empty($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->genUuid();
+                    $pid = self::isValidParticipantId($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->genUuid();
 
                     $writearray = [
                         'participant_id' => $pid,

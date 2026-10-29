@@ -1072,6 +1072,15 @@ class ParticipantsAction extends SurveyCommonAction
                         $writearray[$sFilterDuplicateField] = "";
                     }
                 }
+                // Participant IDs must be UUIDs, rows with another ID are not imported
+                if (isset($writearray['participant_id'])) {
+                    $writearray['participant_id'] = trim((string) $writearray['participant_id']);
+                    if ($writearray['participant_id'] !== '' && !Participant::isValidParticipantId($writearray['participant_id'])) {
+                        $invalidparticipantid[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                        $recordcount++;
+                        continue;
+                    }
+                }
                 $dupfound = false;
                 $thisduplicate = 0;
 
