@@ -1598,7 +1598,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Count the total answers, submitted ot not.
+     * Count the total answers, submitted or not.
      * @return int
      */
     public function getCountTotalAnswers()

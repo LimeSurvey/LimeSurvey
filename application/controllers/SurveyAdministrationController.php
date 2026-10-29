@@ -3466,7 +3466,7 @@ class SurveyAdministrationController extends LSBaseController
 
         foreach ($survey->allLanguages as $i => $sLang) {
             $aLanguageData = $this->getGeneralTemplateData($survey);
-            // this one is created to get the right default texts fo each language
+            // this one is created to get the right default texts for each language
             Yii::app()->loadHelper('database');
             Yii::app()->loadHelper('surveytranslator');
 
