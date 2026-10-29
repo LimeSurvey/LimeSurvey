@@ -88,12 +88,14 @@ echo viewHelper::getViewTestTag('exportSpss');
             <input class="btn btn-outline-secondary" type='submit' name='dlstructure' id='dlstructure' value='<?php eT("Export syntax");?>'/>
         </div>
     </div>
+    <?php if ($canExportResponses) : ?>
     <div class="mb-3 row">
         <label for='dldata' class='col-md-1  form-form-label'><?php eT("Step 2:");?></label>
         <div class="col-md-10">
             <input class="btn btn-outline-secondary" type='submit' name='dldata' id='dldata' value='<?php eT("Export data");?>'/>
         </div>
     </div>
+    <?php endif; ?>
     </form>
     <?php
     $message = '<div>' .

@@ -165,7 +165,7 @@ window.addEventListener('message', function(event) {
             $line .= file_get_contents($oLayoutTemplate->viewPath . $sLayout);
             $line .= '</div>';
             if ($root === true) {
-                $line = '<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>'
+                $line = '<html lang="{{ aSurveyInfo.htmllanguagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>'
                     . file_get_contents($oLayoutTemplate->viewPath . '/subviews/header/head.twig')
                     . '<body style="padding-top: 0px !important;" class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >'
                     . $line;
@@ -593,12 +593,16 @@ window.addEventListener('message', function(event) {
             }
         }
         $oRTemplate   = $oTemplate;
-        /* This template */
-        $loader->addPath($oRTemplate->viewPath);
+        /* This template (an extended theme may have no views directory, e.g. when it only changes CSS) */
+        if (is_dir($oRTemplate->viewPath)) {
+            $loader->addPath($oRTemplate->viewPath);
+        }
         /* Parent template */
         while ($oRTemplate->oMotherTemplate instanceof TemplateConfiguration) {
             $oRTemplate = $oRTemplate->oMotherTemplate;
-            $loader->addPath($oRTemplate->viewPath);
+            if (is_dir($oRTemplate->viewPath)) {
+                $loader->addPath($oRTemplate->viewPath);
+            }
         }
         /* Added twig by plugins, replaced by any template file or question template file*/
         if (isset($configTwigExtendsAdd)) {
@@ -675,7 +679,7 @@ window.addEventListener('message', function(event) {
             }
         }
         // We retrieve the definition of the core class and attributes
-        // (in the future, should be template dependant done via XML file)
+        // (in the future, should be template dependent done via XML file)
         $aData["aSurveyInfo"] = array_merge($aData["aSurveyInfo"], $oTemplate->getClassAndAttributes());
 
         $languagecode = App()->getLanguage();
@@ -686,13 +690,13 @@ window.addEventListener('message', function(event) {
         }
 
         $aData["aSurveyInfo"]['languagecode']     = $languagecode;
+        /* Separate from 'languagecode' since some codes (e.g. 'nl-informal') are not valid values for the HTML lang attribute */
+        $aData["aSurveyInfo"]['htmllanguagecode'] = getHtmlLangAttributeValue($languagecode);
         $aData["aSurveyInfo"]['dir']              = (getLanguageRTL($languagecode)) ? "rtl" : "ltr";
 
         if (!empty($aData['aSurveyInfo']['sid'])) {
-            $showxquestions                            = App()->getConfig('showxquestions');
-            $aData["aSurveyInfo"]['bShowxquestions']  = ($showxquestions == 'show' ||
-                ($showxquestions == 'choose' && !isset($aData['aSurveyInfo']['showxquestions'])) ||
-                ($showxquestions == 'choose' && $aData['aSurveyInfo']['showxquestions'] == 'Y'));
+            $aData["aSurveyInfo"]['bShowxquestions']  = (!isset($aData['aSurveyInfo']['showxquestions']) ||
+                $aData['aSurveyInfo']['showxquestions'] == 'Y');
 
 
             // NB: Session is flushed at submit, so sid is not defined here.

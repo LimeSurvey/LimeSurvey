@@ -55,6 +55,15 @@ class SurveyDao
             }
             $survey->answers[$aAnswer->question->qid][$aAnswer->scale_id][$aAnswer->code] = $answer;
         }
+        // Ranking items are subquestions: add their texts so ranked codes resolve like answer options
+        foreach (Question::getRankingItemTexts($intId, $lang) as $rankingQid => $itemTexts) {
+            foreach ($itemTexts as $code => $text) {
+                if (!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1) {
+                    $text = stripTagsFull($text);
+                }
+                $survey->answers[$rankingQid][0][$code] = $text;
+            }
+        }
         //Load language settings for requested language
         $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = ' . $intId . ' AND surveyls_language = \'' . $lang . '\';';
         $recordSet = Yii::app()->db->createCommand($sQuery)->query();
@@ -92,7 +101,17 @@ class SurveyDao
         $aSelectFields = Yii::app()->db->schema->getTable($oSurvey->responsesTableName)->getColumnNames();
         // Get info about the survey
         if (!empty($aFields)) {
-            $aSelectFields = array_intersect($aFields, $aSelectFields);
+            // Per-rank-position ranking fields ("Q{qid}_S{sqid}") have no column of
+            // their own: their values are decoded from the base "Q{qid}" JSON column
+            // (see Writer::write()), so that column must stay selected whenever one
+            // of its rank fields is requested.
+            $aRankingBaseFields = [];
+            foreach ($aFields as $sField) {
+                if (isset($survey->fieldMap[$sField]) && $survey->fieldMap[$sField]['type'] === Question::QT_R_RANKING && $survey->fieldMap[$sField]['suffix'] !== '') {
+                    $aRankingBaseFields[] = 'Q' . $survey->fieldMap[$sField]['qid'];
+                }
+            }
+            $aSelectFields = array_intersect(array_merge($aFields, $aRankingBaseFields), $aSelectFields);
         }
         // Always add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
         foreach ($aSelectFields as &$sField) {

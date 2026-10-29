@@ -76,7 +76,14 @@ class Labels extends SurveyCommonAction
             $zip->close();
 
             // now read tempdir and copy authorized files only
-            $folders = array('flash', 'files', 'images');
+            $folders = array('files', 'images');
+            $hasResourceFolders = false;
+            foreach ($folders as $folder) {
+                if (is_dir($extractdir . "/" . $folder)) {
+                    $hasResourceFolders = true;
+                    break;
+                }
+            }
             foreach ($folders as $folder) {
                 $filterImportedService = new \LimeSurvey\Models\Services\FilterImportedResources();
                 list($_aImportedFilesInfo, $_aErrorFilesInfo) = $filterImportedService->filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
@@ -90,8 +97,11 @@ class Labels extends SurveyCommonAction
             // Delete the temporary file
             unlink($zipfilename);
 
-            if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo)) {
-                $this->getController()->error(gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+            if (empty($aErrorFilesInfo) && empty($aImportedFilesInfo)) {
+                $sError = $hasResourceFolders
+                    ? gT("This ZIP archive contains no valid Resources files. Import failed.")
+                    : gT("The ZIP archive must contain a 'files' and/or an 'images' folder at its top level, with the resource files placed inside. Import failed.");
+                $this->getController()->error($sError, $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
         } else {
             $this->getController()->error(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
@@ -206,7 +216,7 @@ class Labels extends SurveyCommonAction
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
             [
-                'hasPermissionExport' => $lid && LabelSet::model()->findByPk($lid)->haspermission('export')
+                'hasPermissionExport' => $lid && LabelSet::model()->findByPk($lid)->hasPermission('labelset', 'export')
             ],
             true
         );
@@ -216,7 +226,7 @@ class Labels extends SurveyCommonAction
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
             [
-                'hasPermissionExport' => $lid && LabelSet::model()->findByPk($lid)->haspermission('export')
+                'hasPermissionExport' => $lid && LabelSet::model()->findByPk($lid)->hasPermission('labelset', 'export')
             ],
             true
         );
@@ -310,8 +320,8 @@ class Labels extends SurveyCommonAction
             $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns_singlelabelset/leftSideButtons',
                 [
-                    'hasUpdatePermission' => $model->hasPermission('update'),
-                    'hasDeletePermission' => $model->hasPermission('delete'),
+                    'hasUpdatePermission' => $model->hasPermission('labelset', 'update'),
+                    'hasDeletePermission' => $model->hasPermission('labelset', 'delete'),
                     'lid' => $lid
                 ],
                 true
@@ -416,10 +426,16 @@ class Labels extends SurveyCommonAction
     /**
      * Multi label export
      *
+     * Note: Requires the global labelsets export permission, matching admin/export/sa/dumplabel.
+     *
      * @return void
+     * @throws CHttpException
      */
     public function exportmulti()
     {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'export')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $aData = [];
 
         $aData['topbar']['title'] = gT('Export multiple label sets');
@@ -653,7 +669,7 @@ class Labels extends SurveyCommonAction
      * @param string       $sAction     Current action, the folder to fetch views from
      * @param string|array $aViewUrls   View url(s)
      * @param array        $aData       Data to be passed on. Optional.
-     * @parm  bool         $sRenderFile
+     * @param bool         $sRenderFile
      * @return void
      */
     protected function renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
@@ -732,9 +748,13 @@ class Labels extends SurveyCommonAction
 
     /**
      * Sanitize existence and permission of LabelSet->pk, throw exception if there are an issue.
-     * @param $lid mixed, sanitized to intreger
-     * @param $permission to check
-     * @return integer : the label id
+     *
+     * Note: The permission is checked as the CRUD part of the 'labelset' entity permission,
+     * global labelsets permission or ownership grant it (see LabelSet::hasPermission()).
+     *
+     * @param mixed $lid The label set id, sanitized to integer
+     * @param string $permission The CRUD permission to check (read, update, delete, export)
+     * @return integer The label set id
      * @throws CHttpException
      */
     private function validateLabelSetId($lid, $permission = 'read')
@@ -746,7 +766,7 @@ class Labels extends SurveyCommonAction
         if (empty(LabelSet::model()->findByPk($lid))) {
             throw new CHttpException(404, gT("Label set not found"));
         }
-        if (!LabelSet::model()->findByPk($lid)->hasPermission($permission)) {
+        if (!LabelSet::model()->findByPk($lid)->hasPermission('labelset', $permission)) {
             throw new CHttpException(403);
         }
         return $lid;

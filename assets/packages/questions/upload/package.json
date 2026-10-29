@@ -27,8 +27,8 @@
     },
     "resolutions": {
         "minimatch": "3.1.5",
-        "brace-expansion": "1.1.18",
-        "js-yaml": "4.3.1",
+        "brace-expansion": "1.1.21",
+        "js-yaml": "4.3.2",
         "ajv": "6.15.0",
         "flatted": "3.4.4",
         "word-wrap": "1.2.5",

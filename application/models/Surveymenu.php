@@ -133,7 +133,7 @@ class Surveymenu extends LSActiveRecord
     public function createSurveymenuArray($oSurveyMenuObjects, $collapsed = false, $oSurvey = null)
     {
         //Possibility to add more languages to the database is given, so it is possible to add a call by language
-        //Also for peripheral menues we may add submenus someday.
+        //Also for peripheral menus we may add submenus someday.
         $aResultCollected = [];
         foreach ($oSurveyMenuObjects as $oSurveyMenuObject) {
             $entries = [];
@@ -147,19 +147,8 @@ class Surveymenu extends LSActiveRecord
                 }
 
                 //Skip menuentry if no permission
-                if (!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])) {
-                    $inArray = array_search($aEntry['permission'], array_keys(Permission::getGlobalBasePermissions()));
-                    if ($inArray) {
-                        $hasPermission = Permission::model()->hasGlobalPermission($aEntry['permission'], $aEntry['permission_grade']);
-                    } elseif ($oSurvey !== null) {
-                        $hasPermission = Permission::model()->hasSurveyPermission($oSurvey->sid, $aEntry['permission'], $aEntry['permission_grade']);
-                    } else {
-                        $hasPermission = true;
-                    }
-
-                    if (!$hasPermission) {
-                        continue;
-                    }
+                if (!$menuEntry->userHasPermission($oSurvey ? $oSurvey->sid : null)) {
+                    continue;
                 }
 
                 // Check if a specific user owns this menuentry.
@@ -485,8 +474,8 @@ class Surveymenu extends LSActiveRecord
     }
 
     /**
-     * Method to restore the default surveymenu entries
-     * This method will fail if the surveymenus have been tempered, or wrongly set
+     * Method to restore the default surveymenus
+     * Menu entries of custom menus are deleted, as their menus no longer exist afterwards.
      *
      * @return boolean
      */
@@ -503,8 +492,22 @@ class Surveymenu extends LSActiveRecord
             foreach ($basicMenues as $basicMenu) {
                 $oDB->createCommand()->insert("{{surveymenu}}", $basicMenu);
             }
+            // The default menus have fixed ids, so the PostgreSQL sequence must be moved past them
+            if ($oDB->getDriverName() === 'pgsql') {
+                $oDB->createCommand("SELECT setval(pg_get_serial_sequence('{{surveymenu}}', 'id'), (SELECT MAX(id) FROM {{surveymenu}}))")->execute();
+            }
+            // Remove the entries of custom menus that no longer exist
+            $oDB->createCommand()->delete(
+                '{{surveymenu_entries}}',
+                'menu_id NOT IN (SELECT id FROM {{surveymenu}})'
+            );
             $oTransaction->commit();
         } catch (Exception $e) {
+            // TRUNCATE causes an implicit commit on MySQL, so the transaction may already be closed
+            if ($oDB->getPdoInstance()->inTransaction()) {
+                $oTransaction->rollback();
+            }
+            switchMSSQLIdentityInsert('surveymenu', false);
             App()->setLanguage($sOldLanguage);
             return false;
         }

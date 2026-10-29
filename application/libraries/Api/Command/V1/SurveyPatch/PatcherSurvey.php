@@ -103,6 +103,7 @@ class PatcherSurvey extends Patcher
             if ($survey) {
                 $this->surveyDetailService->updateSurveyLastModified($survey);
             }
+            \EmCacheHelper::flushAtEndOfRequest();
         }
         return $this->surveyResponse->buildResponseObject();
     }

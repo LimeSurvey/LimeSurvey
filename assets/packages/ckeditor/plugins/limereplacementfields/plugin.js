@@ -15,6 +15,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     {
         requires : [ 'dialog' ],
         lang : [ 'en' ],
+        onLoad : function()
+        {
+            // The skin's .cke_reset_all rule strips the native listbox styling, so group labels look like options
+            CKEDITOR.document.appendStyleText(
+                '.cke_dialog #cquestions{border:1px solid #ddd;border-radius:4px;padding:4px 0}' +
+                '.cke_dialog #cquestions optgroup{font-weight:bold;padding:4px 8px 2px}' +
+                '.cke_dialog #cquestions option{font-weight:normal;padding:1px 8px 1px 20px}' +
+                '.cke_dialog #cquestions option:disabled{color:#999}'
+            );
+        },
         init : function( editor )
         {
             var lang = editor.lang.limereplacementfields;

@@ -5,7 +5,9 @@ $count = 0;
 <div id='edit-group' class='side-body'>
     <div class="row">
         <div class="col-12 content-right">
-            <div class="pagetitle h1"><?php eT("Edit group"); ?></div>
+            <div class="pagetitle">
+                <h1><?php eT("Edit group"); ?></h1>
+            </div>
             <ul class="nav nav-tabs" id="edit-group-language-selection">
                 <?php foreach ($tabtitles as $i => $eachtitle) : ?>
                     <li role="presentation" class="nav-item">
@@ -65,7 +67,7 @@ $count = 0;
                 <label class="form-label " id="relevance-group"><?php eT("Condition:"); ?></label>
                 <div class="input-group">
                     <div class="input-group-text">{</div>
-                    <?php echo CHtml::textArea("questionGroup[grelevance]", $oQuestionGroup['grelevance'], array('class' => 'form-control', 'cols' => '20', 'rows' => '1', 'id' => "grelevance")); ?>
+                    <?php echo CHtml::textArea("questionGroup[grelevance]", $oQuestionGroup['grelevance'], array('class' => 'form-control', 'cols' => '20', 'rows' => '1', 'id' => "grelevance", 'placeholder' => '1')); ?>
                     <div class="input-group-text">}</div>
                 </div>
             </div>

@@ -35,7 +35,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
     }
 
     /**
-     * Check with CheckInvalid : compare in intval VS forced string : then forced string comparaison
+     * Check with CheckInvalid : compare in intval VS forced string : then forced string comparison
      * @return void
      **/
     public function testCheckInvalid()
@@ -73,7 +73,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
     }
 
     /**
-     * Check with CheckValidString : compare in forced string (with + "") VS forced string : then forced string comparaison
+     * Check with CheckValidString : compare in forced string (with + "") VS forced string : then forced string comparison
      * 2 warnings : one for + and one for compare
      * @return void
      **/
@@ -188,7 +188,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
     }
 
     /**
-     * Check with assigment : just a warning
+     * Check with assignment : just a warning
      * @return void
      **/
     public function testCheckAssigment()

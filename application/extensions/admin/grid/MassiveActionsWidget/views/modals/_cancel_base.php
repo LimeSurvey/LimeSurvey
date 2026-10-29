@@ -28,7 +28,7 @@
      data-show-selected="<?php echo $showSelected; ?>"
      data-selected-url="<?php echo $selectedUrl; ?>"
 >
-    <div class="modal-dialog <?php echo $largeModalView; ?>" role="document">
+    <div class="modal-dialog modal-dialog-scrollable <?php echo $largeModalView; ?>" role="document">
         <!-- Modal content-->
         <div class="modal-content" style="text-align:left; color:#000">
             <?php
@@ -64,6 +64,14 @@
                 <?php endif; ?>
             </div>
             <?php Yii::app()->getController()->renderPartial($footerPartial); ?>
+            <?php if ($aAction['keepopen'] == "yes") : ?>
+                <!-- Shown by listActions.js/floatingActions.js once the action results replace the modal body -->
+                <div class="modal-footer modal-footer-close" style="display: none;">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+                        <?php eT("Close"); ?>
+                    </button>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

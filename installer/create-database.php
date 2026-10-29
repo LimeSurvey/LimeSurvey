@@ -571,6 +571,10 @@ function populateDatabase($oDB)
             }
             $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
         }
+        // The default menus have fixed ids, so the PostgreSQL sequence must be moved past them
+        if ($oDB->getDriverName() === 'pgsql') {
+            $oDB->createCommand("SELECT setval(pg_get_serial_sequence('{{surveymenu}}', 'id'), (SELECT MAX(id) FROM {{surveymenu}}))")->execute();
+        }
 
         // Surveymenu entries
 
@@ -643,6 +647,7 @@ function populateDatabase($oDB)
             'ipanonymize' => "string(1) NOT NULL DEFAULT 'N'",
             'refurl' => "string(1) NOT NULL DEFAULT 'N'",
             'datecreated' => "datetime",
+            'savequotaexit' => "string(1) NOT NULL DEFAULT 'N'",
             'showsurveypolicynotice' => 'integer DEFAULT 0',
             'showregisterpolicy' => "string(1) NOT NULL DEFAULT 'I'",
             'showtokenpolicy' => "string(1) NOT NULL DEFAULT 'I'",
@@ -735,6 +740,7 @@ function populateDatabase($oDB)
             'ipaddr' => "string(1) NOT NULL DEFAULT 'N'",
             'ipanonymize' => "string(1) NOT NULL DEFAULT 'N'",
             'refurl' => "string(1) NOT NULL DEFAULT 'N'",
+            'savequotaexit' => "string(1) NOT NULL DEFAULT 'N'",
             'showsurveypolicynotice' => "integer NULL DEFAULT '0'",
             'showregisterpolicy' => "string(1) NOT NULL DEFAULT 'I'",
             'showtokenpolicy' => "string(1) NOT NULL DEFAULT 'I'",
@@ -786,6 +792,7 @@ function populateDatabase($oDB)
             'ipaddr' => 'N',
             'ipanonymize' => 'N',
             'refurl' => 'N',
+            'savequotaexit' => 'N',
             'showsurveypolicynotice' => '0',
             'showtokenpolicy' => 'N',
             'showregisterpolicy' => 'N',
@@ -832,6 +839,7 @@ function populateDatabase($oDB)
                 "ipaddr" => "I",
                 'ipanonymize' => "I",
                 "refurl" => "I",
+                "savequotaexit" => "I",
                 "showsurveypolicynotice" => 0,
                 "publicstatistics" => "I",
                 "publicgraphs" => "I",
@@ -1108,7 +1116,8 @@ function populateDatabase($oDB)
             'validation_key_expiration' => 'datetime',
             'last_forgot_email_password' => 'datetime',
             'expires' => 'datetime',
-            'user_status' => 'integer NOT NULL DEFAULT 1'
+            'user_status' => 'integer NOT NULL DEFAULT 1',
+            'session_token' => 'string(64) NULL'
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);

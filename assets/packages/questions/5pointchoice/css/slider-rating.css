@@ -137,3 +137,9 @@
     }
 }
 
+.ls-emojislider .slider-label-focused .emoji {
+    opacity: 1;
+    outline: 2px solid #333;
+    outline-offset: 3px;
+    border-radius: 50%;
+}

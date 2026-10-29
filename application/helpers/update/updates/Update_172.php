@@ -6,6 +6,7 @@ use Exception;
 
 class Update_172 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         switch ($this->db->driverName) {

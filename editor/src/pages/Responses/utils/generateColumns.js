@@ -1,4 +1,5 @@
-import { getQuestionById, htmlToPlainText } from 'helpers'
+import { getQuestionById, getSiteUrl, htmlToPlainText } from 'helpers'
+import { TooltipContainer } from 'components'
 import {
   containfilter,
   dateRangeFilter,
@@ -90,6 +91,31 @@ export const generateColumns = (surveyQuestions, survey, timingFields = []) => {
     },
     filterFn: multiSelectFilter,
   })
+
+  if (survey.saveQuotaExit) {
+    columns.push({
+      id: 'quotaExit',
+      accessorKey: 'quotaExit',
+      header: t('Quota exit'),
+      cell: ({ getValue, row }) => {
+        const quotaId = getValue()
+
+        return quotaId ? (
+          <TooltipContainer tip={row.original.quotaExitName}>
+            <a
+              href={getSiteUrl(
+                `/quotas/editQuota/surveyid/${survey.sid}?quota_id=${quotaId}`
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {quotaId}
+            </a>
+          </TooltipContainer>
+        ) : null
+      },
+    })
+  }
 
   if (survey?.hasTokens) {
     columns.push({

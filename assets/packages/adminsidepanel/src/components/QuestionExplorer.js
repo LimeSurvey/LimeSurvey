@@ -20,8 +20,12 @@ class QuestionExplorer {
         this.draggedQuestionsGroup = null;
         this.orderChanged = false; // Track if order actually changed during drag
         this.lastDragenterGid = null; // Prevent duplicate dragenter processing
-        this.lastDragenterQid = null; // Prevent duplicate dragenter processing
         this.dragStartGroupOrder = null; // Group gids in display order at dragstart
+        this.dragStartQuestionOrder = null; // Question qids per group in display order at dragstart
+        this.dragQuestionOrder = null; // Question qids per group with the dragged question at its current place
+        this.$draggedQuestionItem = null; // List item of the dragged question, moved along during the drag
+        this.pendingFocusSelector = null; // Element to refocus after a keyboard move re-renders the list
+        this.scrolledToActive = null; // Opened question/group the list was last scrolled to
     }
 
     /**
@@ -35,6 +39,7 @@ class QuestionExplorer {
 
         this.active = StateManager.get('questionGroupOpenArray') || [];
 
+        this.ensureLiveRegion();
         this.renderExplorer();
     }
 
@@ -89,10 +94,19 @@ class QuestionExplorer {
         var surveyIsActive = window.SideMenuData.isActive;
         var createQuestionGroupLink = window.SideMenuData.createQuestionGroupLink;
         var createQuestionLink = window.SideMenuData.createQuestionLink;
+        var createPermission = window.SideMenuData.createPermission;
 
         var createQuestionAllowed = questiongroups.length > 0 && createQuestionLink && createQuestionLink.length > 1;
         var createQuestionAllowedClass = createQuestionAllowed ? '' : 'disabled';
         var createQuestionGroupAllowedClass = (createQuestionGroupLink && createQuestionGroupLink.length > 1) ? '' : 'disabled';
+        // Explain why a button is disabled: Questions need a group, nothing can be added to an active survey
+        var createQuestionTooltip = '';
+        if (surveyIsActive) {
+            createQuestionTooltip = UIHelpers.translate('deactivateSurvey');
+        } else if (questiongroups.length === 0) {
+            createQuestionTooltip = UIHelpers.translate('addGroupFirst');
+        }
+        var createQuestionGroupTooltip = surveyIsActive ? UIHelpers.translate('deactivateSurvey') : '';
 
         var orderedQuestionGroups = LS.ld.orderBy(
             questiongroups,
@@ -100,7 +114,7 @@ class QuestionExplorer {
             ['asc']
         );
 
-        var html = '<div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">';
+        var html = '<div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane pt-2">';
 
         // Toolbar buttons
         html += '<div class="ls-flex-row button-sub-bar mb-2">';
@@ -117,32 +131,33 @@ class QuestionExplorer {
         html += '</div>';
         html += '</div>';
 
-        // Create buttons
-        html += '<div class="ls-flex-row wrap align-content-center align-items-center button-sub-bar">';
-        html += '<div class="scoped-toolbuttons-left mb-2 d-flex align-items-center">';
+        // Create buttons, hidden without permission
+        if (createPermission) {
+            html += '<div class="ls-flex-row wrap align-content-center align-items-center button-sub-bar">';
+            html += '<div class="scoped-toolbuttons-left mb-2 d-flex align-items-center">';
 
-        var createQuestionTooltip = UIHelpers.translate(createQuestionAllowed ? '' : 'deactivateSurvey');
-        html += '<div class="create-question px-3" data-bs-toggle="tooltip" data-bs-placement="top" title="' + createQuestionTooltip + '">';
-        html += '<a id="adminsidepanel__sidebar--selectorCreateQuestion" href="' + this.createFullQuestionLink(createQuestionLink) + '" class="btn btn-primary pjax ' + createQuestionAllowedClass + '">';
-        html += '<i class="ri-add-circle-fill"></i>&nbsp;' + UIHelpers.translate('createQuestion');
-        html += '</a>';
-        html += '</div>';
+            html += '<div class="create-question px-3" data-bs-toggle="tooltip" data-bs-placement="top" title="' + createQuestionTooltip + '">';
+            html += '<a id="adminsidepanel__sidebar--selectorCreateQuestion" href="' + this.createFullQuestionLink(createQuestionLink) + '" class="btn btn-primary pjax ' + createQuestionAllowedClass + '">';
+            html += '<i class="ri-add-circle-fill"></i>&nbsp;' + UIHelpers.translate('createQuestion');
+            html += '</a>';
+            html += '</div>';
 
-        html += '<div data-bs-toggle="tooltip" data-bs-placement="top" title="' + createQuestionTooltip + '">';
-        html += '<a id="adminsidepanel__sidebar--selectorCreateQuestionGroup" href="' + createQuestionGroupLink + '" class="btn btn-secondary pjax ' + createQuestionGroupAllowedClass + '">';
-        html += UIHelpers.translate('createPage');
-        html += '</a>';
-        html += '</div>';
+            html += '<div data-bs-toggle="tooltip" data-bs-placement="top" title="' + createQuestionGroupTooltip + '">';
+            html += '<a id="adminsidepanel__sidebar--selectorCreateQuestionGroup" href="' + createQuestionGroupLink + '" class="btn btn-secondary pjax ' + createQuestionGroupAllowedClass + '">';
+            html += UIHelpers.translate('createPage');
+            html += '</a>';
+            html += '</div>';
 
-        html += '</div>';
-        html += '</div>';
+            html += '</div>';
+            html += '</div>';
+        }
 
         // Question groups list
         html += '<div class="ls-flex-row ls-space padding all-0">';
         html += '<ul class="list-group col-12 questiongroup-list-group">';
 
-        orderedQuestionGroups.forEach((questiongroup) => {
-            html += this.renderQuestionGroup(questiongroup, allowOrganizer, surveyIsActive);
+        orderedQuestionGroups.forEach((questiongroup, groupIndex) => {
+            html += this.renderQuestionGroup(questiongroup, allowOrganizer, surveyIsActive, groupIndex, orderedQuestionGroups.length);
         });
 
         html += '</ul>';
@@ -153,6 +168,32 @@ class QuestionExplorer {
         this.bindEvents();
         UIHelpers.redoTooltips();
         this.initQuestionTooltips();
+        this.restoreFocus();
+        this.scrollActiveIntoView();
+    }
+
+    /**
+     * Scroll the opened question (or group) into view once each time it changes,
+     * so it is visible next to the editor even far down a long survey
+     */
+    scrollActiveIntoView() {
+        var qid = StateManager.get('lastQuestionOpen');
+        var key = qid ? 'q' + qid : 'g' + StateManager.get('lastQuestionGroupOpen');
+        // A hidden tab can't be measured; try again when it's shown
+        if (key === this.scrolledToActive || this.container.offsetParent === null) return;
+        var item = qid
+            ? this.container.querySelector('.question-question-list-item.activated')
+            : this.container.querySelector('.questiongroup-list-group > li.activated > .q-group');
+        // The questions may not be loaded yet
+        if (!item) return;
+        this.scrolledToActive = key;
+
+        var box = this.container.getBoundingClientRect();
+        var boxBottom = Math.min(box.bottom, window.innerHeight);
+        var rect = item.getBoundingClientRect();
+        if (rect.top < box.top || rect.bottom > boxBottom) {
+            this.container.scrollTop += rect.top - box.top - (boxBottom - box.top - rect.height) / 2;
+        }
     }
 
     /**
@@ -190,11 +231,19 @@ class QuestionExplorer {
 
     /**
      * Render question group - matching Vue template
+     *
+     * @param {Object} questiongroup the question group to render
+     * @param {boolean} allowOrganizer whether reordering is unlocked
+     * @param {boolean} surveyIsActive whether the survey is active
+     * @param {number} groupIndex position of the group in display order (0-based)
+     * @param {number} groupCount total number of groups
+     * @returns {string} the group list item HTML
      */
-    renderQuestionGroup(questiongroup, allowOrganizer, surveyIsActive) {
+    renderQuestionGroup(questiongroup, allowOrganizer, surveyIsActive, groupIndex, groupCount) {
         var classes = 'list-group-item ls-flex-column' + this.questionGroupItemClasses(questiongroup);
         var isGroupOpen = this.isOpen(questiongroup.gid);
         var groupActivated = this.isActive(questiongroup.gid);
+        var groupNameText = this.groupName(questiongroup);
 
         var html = '<li class="' + classes + '" data-gid="' + questiongroup.gid + '">';
 
@@ -211,14 +260,12 @@ class QuestionExplorer {
 
         // Expand/collapse toggle
         var rotateStyle = isGroupOpen ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)';
-        html += '<div class="cursor-pointer me-1 toggle-questiongroup" data-gid="' + questiongroup.gid + '" style="' + rotateStyle + '">';
-        html += '<i class="ri-arrow-right-s-fill"></i>';
-        html += '</div>';
+        html += '<button type="button" class="btn btn-link p-0 border-0 align-self-start text-body cursor-pointer me-1 toggle-questiongroup" data-gid="' + questiongroup.gid + '"';
+        html += ' aria-expanded="' + (isGroupOpen ? 'true' : 'false') + '" aria-label="' + UIHelpers.escapeHtml(UIHelpers.translate(isGroupOpen ? 'collapseGroup' : 'expandGroup') + ': ' + groupNameText) + '">';
+        html += '<i class="ri-arrow-right-s-fill d-inline-block" aria-hidden="true" style="' + rotateStyle + '"></i>';
+        html += '</button>';
 
         // Question group name
-        var groupNameText = (typeof questiongroup.group_name === 'string' && questiongroup.group_name.trim().length > 0)
-            ? questiongroup.group_name
-            : UIHelpers.translate('groupNumber').replace('%d', questiongroup.group_order);
         html += '<div class="w-100 position-relative">';
         html += '<div class="cursor-pointer">';
         html += '<a class="d-flex pjax questiongroup-link" href="' + questiongroup.link + '" data-gid="' + questiongroup.gid + '">';
@@ -233,16 +280,22 @@ class QuestionExplorer {
         html += '</div>';
 
         // Dropdown menu - always render, 3-dot icon always visible
-        if (questiongroup.groupDropdown) {
+        if (questiongroup.groupDropdown || allowOrganizer) {
+            var groupDropdown = questiongroup.groupDropdown || {};
             html += '<div class="dropdown questiongroup-dropdown' + (groupActivated ? ' active' : '') + '">';
-            html += '<div class="ls-questiongroup-tools cursor-pointer" data-bs-toggle="dropdown" aria-expanded="false">';
-            html += '<i class="ri-more-fill"></i>';
-            html += '</div>';
-            html += '<ul class="dropdown-menu">';
+            html += '<button type="button" id="qg-dropdown-' + questiongroup.gid + '" class="ls-questiongroup-tools questiongroup-dropdown-toggle cursor-pointer btn btn-link p-0 align-middle text-body" data-gid="' + questiongroup.gid + '" data-bs-toggle="dropdown" aria-expanded="false"';
+            html += ' aria-label="' + UIHelpers.escapeHtml(UIHelpers.translate('pageActionsMenu') + ': ' + groupNameText) + '">';
+            html += '<i class="ri-more-fill" aria-hidden="true"></i>';
+            html += '</button>';
+            html += '<ul class="dropdown-menu" aria-labelledby="qg-dropdown-' + questiongroup.gid + '">';
 
-            for (var key in questiongroup.groupDropdown) {
-                if (!questiongroup.groupDropdown.hasOwnProperty(key)) continue;
-                var value = questiongroup.groupDropdown[key];
+            if (allowOrganizer) {
+                html += this.renderMoveItems('data-gid="' + questiongroup.gid + '"', groupIndex > 0, groupIndex < groupCount - 1);
+            }
+
+            for (var key in groupDropdown) {
+                if (!groupDropdown.hasOwnProperty(key)) continue;
+                var value = groupDropdown[key];
 
                 if (key !== 'delete') {
                     html += '<li>';
@@ -272,7 +325,7 @@ class QuestionExplorer {
 
         // Questions list (if open) - matching Vue transition
         if (isGroupOpen && questiongroup.questions) {
-            html += this.renderQuestionsList(questiongroup, allowOrganizer, surveyIsActive);
+            html += this.renderQuestionsList(questiongroup, allowOrganizer, surveyIsActive, groupIndex, groupCount);
         }
 
         html += '</li>';
@@ -281,8 +334,15 @@ class QuestionExplorer {
 
     /**
      * Render questions list
+     *
+     * @param {Object} questiongroup the question group whose questions are rendered
+     * @param {boolean} allowOrganizer whether reordering is unlocked
+     * @param {boolean} surveyIsActive whether the survey is active
+     * @param {number} groupIndex position of the group in display order (0-based)
+     * @param {number} groupCount total number of groups
+     * @returns {string} the question list HTML
      */
-    renderQuestionsList(questiongroup, allowOrganizer, surveyIsActive) {
+    renderQuestionsList(questiongroup, allowOrganizer, surveyIsActive, groupIndex, groupCount) {
         var orderedQuestions = LS.ld.orderBy(
             questiongroup.questions,
             function(a) { return UIHelpers.parseIntOr(a.question_order, 999999); },
@@ -291,8 +351,11 @@ class QuestionExplorer {
 
         var html = '<ul class="list-group background-muted padding-left question-question-list" style="padding-right:15px">';
 
-        orderedQuestions.forEach((question) => {
-            html += this.renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive);
+        orderedQuestions.forEach((question, questionIndex) => {
+            // A question at either end of its group can still move into the neighbouring group
+            var canMoveUp = questionIndex > 0 || groupIndex > 0;
+            var canMoveDown = questionIndex < orderedQuestions.length - 1 || groupIndex < groupCount - 1;
+            html += this.renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive, canMoveUp, canMoveDown);
         });
 
         html += '</ul>';
@@ -301,8 +364,16 @@ class QuestionExplorer {
 
     /**
      * Render single question - matching Vue template exactly
+     *
+     * @param {Object} question the question to render
+     * @param {Object} questiongroup the group the question belongs to
+     * @param {boolean} allowOrganizer whether reordering is unlocked
+     * @param {boolean} surveyIsActive whether the survey is active
+     * @param {boolean} canMoveUp whether the question can be moved up
+     * @param {boolean} canMoveDown whether the question can be moved down
+     * @returns {string} the question list item HTML
      */
-    renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive) {
+    renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive, canMoveUp, canMoveDown) {
         var classes = 'list-group-item question-question-list-item ls-flex-row align-items-flex-start ' + this.questionItemClasses(question);
         var itemActivated = Number(StateManager.get('lastQuestionOpen')) === Number(question.qid);
         // Always show dropdown HTML, use CSS/JS hover to control visibility
@@ -329,17 +400,25 @@ class QuestionExplorer {
         html += '</a>';
 
         // Question dropdown - always render, 3-dot icon always visible
-        if (question.questionDropdown) {
+        // Questions can only be reordered while the survey is inactive, same as dragging
+        var canReorder = allowOrganizer && !surveyIsActive;
+        if (question.questionDropdown || canReorder) {
+            var questionDropdown = question.questionDropdown || {};
             var dropdownStyle = 'right:10px';
             html += '<div class="dropdown question-dropdown position-absolute' + (itemActivated ? ' active' : '') + '" style="' + dropdownStyle + '">';
-            html += '<div class="ls-question-tools ms-auto position-relative cursor-pointer" data-bs-toggle="dropdown" aria-expanded="false">';
-            html += '<i class="ri-more-fill"></i>';
-            html += '</div>';
-            html += '<ul class="dropdown-menu">';
+            html += '<button type="button" id="q-dropdown-' + question.qid + '" class="ls-question-tools question-dropdown-toggle ms-auto position-relative cursor-pointer btn btn-link p-0 align-middle text-body" data-qid="' + question.qid + '" data-bs-toggle="dropdown" aria-expanded="false"';
+            html += ' aria-label="' + UIHelpers.escapeHtml(UIHelpers.translate('questionActionsMenu') + ': [' + question.title + '] ' + question.question_flat) + '">';
+            html += '<i class="ri-more-fill" aria-hidden="true"></i>';
+            html += '</button>';
+            html += '<ul class="dropdown-menu" aria-labelledby="q-dropdown-' + question.qid + '">';
 
-            for (var key in question.questionDropdown) {
-                if (!question.questionDropdown.hasOwnProperty(key)) continue;
-                var value = question.questionDropdown[key];
+            if (canReorder) {
+                html += this.renderMoveItems('data-qid="' + question.qid + '" data-gid="' + questiongroup.gid + '"', canMoveUp, canMoveDown);
+            }
+
+            for (var key in questionDropdown) {
+                if (!questionDropdown.hasOwnProperty(key)) continue;
+                var value = questionDropdown[key];
 
                 if (key !== 'delete' && !(key === 'language' && Array.isArray(value))) {
                     var isDisabled = key === 'editDefault' && value.active === 0;
@@ -376,6 +455,216 @@ class QuestionExplorer {
 
         html += '</li>';
         return html;
+    }
+
+    /**
+     * Get the display name of a question group, falling back to its number
+     *
+     * @param {Object} questiongroup the question group
+     * @returns {string} the group name (unescaped)
+     */
+    groupName(questiongroup) {
+        return (typeof questiongroup.group_name === 'string' && questiongroup.group_name.trim().length > 0)
+            ? questiongroup.group_name
+            : UIHelpers.translate('groupNumber').replace('%d', questiongroup.group_order);
+    }
+
+    /**
+     * Render the "Move up" / "Move down" dropdown items, the keyboard and
+     * single-pointer alternative to dragging (WCAG 2.1.1, 2.5.7)
+     *
+     * @param {string} dataAttributes data attributes identifying the item to move
+     * @param {boolean} canMoveUp whether the item can be moved up
+     * @param {boolean} canMoveDown whether the item can be moved down
+     * @returns {string} the dropdown items HTML
+     */
+    renderMoveItems(dataAttributes, canMoveUp, canMoveDown) {
+        var html = '';
+        html += '<li><button type="button" class="dropdown-item questionexplorer-move" data-direction="up" ' + dataAttributes + (canMoveUp ? '' : ' disabled') + '>';
+        html += '<span class="ri-arrow-up-line" aria-hidden="true"></span> ' + UIHelpers.escapeHtml(UIHelpers.translate('moveUp'));
+        html += '</button></li>';
+        html += '<li><button type="button" class="dropdown-item questionexplorer-move" data-direction="down" ' + dataAttributes + (canMoveDown ? '' : ' disabled') + '>';
+        html += '<span class="ri-arrow-down-line" aria-hidden="true"></span> ' + UIHelpers.escapeHtml(UIHelpers.translate('moveDown'));
+        html += '</button></li>';
+        html += '<li role="separator" class="dropdown-divider"></li>';
+        return html;
+    }
+
+    /**
+     * Create the live region used to announce keyboard moves. It lives outside
+     * the explorer container so re-rendering doesn't recreate it.
+     *
+     * @returns {void}
+     */
+    ensureLiveRegion() {
+        if (document.getElementById('questionexplorer-live-region')) return;
+        var region = document.createElement('div');
+        region.id = 'questionexplorer-live-region';
+        region.className = 'visually-hidden';
+        region.setAttribute('role', 'status');
+        region.setAttribute('aria-live', 'polite');
+        document.body.appendChild(region);
+    }
+
+    /**
+     * Announce a message to screen reader users
+     *
+     * @param {string} message the message to announce
+     * @returns {void}
+     */
+    announce(message) {
+        this.ensureLiveRegion();
+        var region = document.getElementById('questionexplorer-live-region');
+        region.textContent = '';
+        // Change the content in a later tick so repeated identical messages are announced again
+        setTimeout(function () { region.textContent = message; }, 100);
+    }
+
+    /**
+     * Translate a message and fill its numbered %1$s, %2$s, ... placeholders
+     *
+     * @param {string} key translation key
+     * @param {Array} values placeholder values, in placeholder order
+     * @returns {string} the formatted message
+     */
+    formatMessage(key, values) {
+        return UIHelpers.translate(key).replace(/%(\d+)\$s/g, function(match, position) {
+            var value = values[position - 1];
+            return value === undefined ? match : String(value);
+        });
+    }
+
+    /**
+     * Move focus back to the moved item after a re-render replaced its elements
+     *
+     * @returns {void}
+     */
+    restoreFocus() {
+        if (!this.pendingFocusSelector || !this.container) return;
+        var target = this.container.querySelector(this.pendingFocusSelector);
+        if (target) {
+            target.focus();
+        }
+    }
+
+    /**
+     * Get question groups sorted by their group order
+     *
+     * @param {Array} questiongroups the question groups
+     * @returns {Array} a new array with the same group objects in display order
+     */
+    orderedGroups(questiongroups) {
+        return LS.ld.orderBy(
+            questiongroups,
+            function(g) { return UIHelpers.parseIntOr(g.group_order, 999999); },
+            ['asc']
+        );
+    }
+
+    /**
+     * Get the questions of a group sorted by their question order
+     *
+     * @param {Object} questiongroup the question group
+     * @returns {Array} a new array with the same question objects in display order
+     */
+    orderedQuestions(questiongroup) {
+        return LS.ld.orderBy(
+            questiongroup.questions || [],
+            function(q) { return UIHelpers.parseIntOr(q.question_order, 999999); },
+            ['asc']
+        );
+    }
+
+    /**
+     * Move a question group one position up or down and save the new order
+     *
+     * @param {number} gid id of the group to move
+     * @param {string} direction 'up' or 'down'
+     * @returns {void}
+     */
+    moveQuestionGroup(gid, direction) {
+        var questiongroups = StateManager.get('questiongroups') || [];
+        var ordered = this.orderedGroups(questiongroups);
+        var index = ordered.findIndex(function(g) { return g.gid === gid; });
+        var targetIndex = index + (direction === 'up' ? -1 : 1);
+        if (index === -1 || targetIndex < 0 || targetIndex >= ordered.length) return;
+
+        var moved = ordered.splice(index, 1)[0];
+        ordered.splice(targetIndex, 0, moved);
+        ordered.forEach(function(g, idx) { g.group_order = idx + 1; });
+        StateManager.commit('updateQuestiongroups', questiongroups);
+
+        this.announce(this.formatMessage('movedToPosition', [targetIndex + 1, ordered.length]));
+        this.saveKeyboardMove('.questiongroup-dropdown-toggle[data-gid="' + gid + '"]');
+    }
+
+    /**
+     * Move a question one position up or down, into the neighbouring group when
+     * it is already at the edge of its own group, and save the new order
+     *
+     * @param {number} qid id of the question to move
+     * @param {number} gid id of the group the question currently belongs to
+     * @param {string} direction 'up' or 'down'
+     * @returns {void}
+     */
+    moveQuestion(qid, gid, direction) {
+        var up = direction === 'up';
+        var questiongroups = StateManager.get('questiongroups') || [];
+        var groups = this.orderedGroups(questiongroups);
+        var groupIndex = groups.findIndex(function(g) { return g.gid === gid; });
+        if (groupIndex === -1) return;
+
+        var sourceGroup = groups[groupIndex];
+        var sourceQuestions = this.orderedQuestions(sourceGroup);
+        var questionIndex = sourceQuestions.findIndex(function(q) { return q.qid === qid; });
+        if (questionIndex === -1) return;
+
+        var question = sourceQuestions[questionIndex];
+        var targetGroup = sourceGroup;
+        var targetQuestions = sourceQuestions;
+        var targetIndex = questionIndex + (up ? -1 : 1);
+        var changesGroup = up ? targetIndex < 0 : targetIndex >= sourceQuestions.length;
+
+        if (changesGroup) {
+            targetGroup = groups[groupIndex + (up ? -1 : 1)];
+            if (!targetGroup) return;
+            targetQuestions = this.orderedQuestions(targetGroup);
+            targetIndex = up ? targetQuestions.length : 0;
+            LS.ld.remove(sourceGroup.questions, function(q) { return q.qid === qid; });
+            targetGroup.questions = targetGroup.questions || [];
+            targetGroup.questions.push(question);
+            question.gid = targetGroup.gid;
+            this.addActive(targetGroup.gid);
+        }
+
+        sourceQuestions.splice(questionIndex, 1);
+        targetQuestions.splice(targetIndex, 0, question);
+        sourceQuestions.forEach(function(q, idx) { q.question_order = idx + 1; });
+        targetQuestions.forEach(function(q, idx) { q.question_order = idx + 1; });
+        StateManager.commit('updateQuestiongroups', questiongroups);
+
+        this.announce(changesGroup
+            ? this.formatMessage('movedToGroup', [this.groupName(targetGroup), targetIndex + 1, targetQuestions.length])
+            : this.formatMessage('movedToPosition', [targetIndex + 1, targetQuestions.length])
+        );
+        this.saveKeyboardMove('.question-dropdown-toggle[data-qid="' + qid + '"]');
+    }
+
+    /**
+     * Re-render and save after a keyboard move, keeping focus on the moved item
+     * through all re-renders the save triggers
+     *
+     * @param {string} focusSelector selector of the element to keep focused
+     * @returns {void}
+     */
+    saveKeyboardMove(focusSelector) {
+        this.pendingFocusSelector = focusSelector;
+        this.renderExplorer();
+        var saving = this.onOrderChange ? this.onOrderChange() : null;
+        Promise.resolve(saving).finally(() => {
+            this.restoreFocus();
+            this.pendingFocusSelector = null;
+        });
     }
 
     /**
@@ -505,6 +794,18 @@ class QuestionExplorer {
             }
         });
 
+        // Keyboard / single-pointer reordering from the 3-dot menus
+        $container.on('click.qe', '.questionexplorer-move', (e) => {
+            e.preventDefault();
+            var $button = $(e.currentTarget);
+            var direction = $button.data('direction');
+            if ($button.is('[data-qid]')) {
+                this.moveQuestion($button.data('qid'), $button.data('gid'), direction);
+            } else {
+                this.moveQuestionGroup($button.data('gid'), direction);
+            }
+        });
+
         // The question / group 3-dot menu is always visible; on hover only shift it
         // clear of the resize button for the row the resize button actually overlaps
         // vertically. Measured against the row (not the dropdown) so shifting it can't
@@ -520,6 +821,123 @@ class QuestionExplorer {
 
         // Drag events
         this.bindDragEvents($container);
+    }
+
+    /**
+     * Move the dragged question right before or after the hovered question or
+     * group header
+     *
+     * The structure is treated as one list of group headers, each followed by
+     * its questions, so before a group header is the end of the previous group
+     * and after it the start of that group. Only the dragged question changes
+     * place, the other questions keep their order.
+     *
+     * @param {string} targetType 'q' for a question, 'g' for a group header
+     * @param {number} targetId qid or gid of the hovered item
+     * @param {string} position 'before' or 'after' the hovered item
+     * @returns {boolean} whether the dragged question changed place
+     */
+    placeDraggedQuestion(targetType, targetId, position) {
+        var currentOrder = this.dragQuestionOrder;
+        if (!currentOrder || !this.draggedQuestion) return false;
+        var draggedQid = this.draggedQuestion.qid;
+
+        var items = [];
+        currentOrder.forEach(function(group) {
+            items.push({type: 'g', id: group.gid});
+            group.qids.forEach(function(qid) { items.push({type: 'q', id: qid}); });
+        });
+        var draggedIndex = items.findIndex(function(item) { return item.type === 'q' && item.id === draggedQid; });
+        if (draggedIndex === -1) return false;
+        var dragged = items.splice(draggedIndex, 1)[0];
+        var targetIndex = items.findIndex(function(item) { return item.type === targetType && item.id === targetId; });
+        if (targetIndex === -1) return false;
+        // Nothing can go before the first group header
+        items.splice(Math.max(position === 'after' ? targetIndex + 1 : targetIndex, 1), 0, dragged);
+
+        var newOrder = [];
+        items.forEach(function(item) {
+            if (item.type === 'g') {
+                newOrder.push({gid: item.id, qids: []});
+            } else {
+                newOrder[newOrder.length - 1].qids.push(item.id);
+            }
+        });
+        if (LS.ld.isEqual(newOrder, currentOrder)) return false;
+
+        var questiongroups = StateManager.get('questiongroups') || [];
+        var targetGid = newOrder.find(function(group) { return group.qids.indexOf(draggedQid) !== -1; }).gid;
+        var targetGroup = questiongroups.find(function(g) { return g.gid === targetGid; });
+        if (!targetGroup) return false;
+
+        if (this.draggedQuestionsGroup !== targetGroup) {
+            LS.ld.remove(this.draggedQuestionsGroup.questions, function(q) { return q.qid === draggedQid; });
+            targetGroup.questions = targetGroup.questions || [];
+            targetGroup.questions.push(this.draggedQuestion);
+            this.draggedQuestion.gid = targetGid;
+            this.draggedQuestionsGroup = targetGroup;
+            // Keep the group open after the drop, so the question stays visible
+            this.addActive(targetGid);
+        }
+        newOrder.forEach(function(orderedGroup) {
+            var group = questiongroups.find(function(g) { return g.gid === orderedGroup.gid; });
+            LS.ld.each(group ? group.questions : [], function(q) {
+                q.question_order = orderedGroup.qids.indexOf(q.qid) + 1;
+            });
+        });
+        StateManager.commit('updateQuestiongroups', questiongroups);
+        this.dragQuestionOrder = newOrder;
+        this.orderChanged = !LS.ld.isEqual(newOrder, this.dragStartQuestionOrder);
+        return true;
+    }
+
+    /**
+     * Move the dragged question's list item to its current place in the drag
+     * order, so the question itself shows where it will be dropped
+     *
+     * The element is moved instead of re-rendering the list, which would
+     * remove the drag source and end the drag. A collapsed group gets a
+     * question list for it.
+     *
+     * @param {jQuery} $container the question explorer container
+     * @returns {void}
+     */
+    moveDraggedQuestionElement($container) {
+        var draggedQid = this.draggedQuestion.qid;
+        var group = this.dragQuestionOrder.find(function(g) { return g.qids.indexOf(draggedQid) !== -1; });
+        var $group = $container.find('.questiongroup-list-group > .list-group-item[data-gid="' + group.gid + '"]');
+        var $list = $group.children('.question-question-list');
+        if (!$list.length) {
+            $list = $('<ul class="list-group background-muted padding-left question-question-list" style="padding-right:15px"></ul>').appendTo($group);
+        }
+        var nextQid = group.qids[group.qids.indexOf(draggedQid) + 1];
+        var $next = nextQid === undefined ? $() : $list.children('.question-question-list-item[data-qid="' + nextQid + '"]');
+        if ($next.length) {
+            this.$draggedQuestionItem.insertBefore($next);
+        } else {
+            this.$draggedQuestionItem.appendTo($list);
+        }
+    }
+
+    /**
+     * Move the dragged question next to the question or group header under
+     * the pointer: Before it in the upper half, after it in the lower half
+     *
+     * Using the half keeps the list from flipping back and forth when the
+     * hovered item shifts under the pointer by the move.
+     *
+     * @param {jQuery} $container the question explorer container
+     * @param {Event} e the dragover event of the hovered item
+     * @param {string} targetType 'q' for a question, 'g' for a group header
+     * @param {number} targetId qid or gid of the hovered item
+     * @returns {void}
+     */
+    dragQuestionOver($container, e, targetType, targetId) {
+        var rect = e.currentTarget.getBoundingClientRect();
+        var position = e.originalEvent.clientY < rect.top + rect.height / 2 ? 'before' : 'after';
+        if (this.placeDraggedQuestion(targetType, targetId, position)) {
+            this.moveDraggedQuestionElement($container);
+        }
     }
 
     /**
@@ -596,32 +1014,6 @@ class QuestionExplorer {
                 if (window.SideMenuData.isActive) return;
 
                 this.addActive(questiongroupObject.gid);
-
-                if (this.draggedQuestion.gid !== questiongroupObject.gid) {
-                    var removedFromInitial = LS.ld.remove(this.draggedQuestionsGroup.questions, (q) => {
-                        return q.qid === this.draggedQuestion.qid;
-                    });
-
-                    if (removedFromInitial.length > 0) {
-                        this.draggedQuestion.question_order = null;
-                        questiongroupObject.questions.push(this.draggedQuestion);
-                        this.draggedQuestion.gid = questiongroupObject.gid;
-
-                        if (questiongroupObject.group_order > this.draggedQuestionsGroup.group_order) {
-                            this.draggedQuestion.question_order = 0;
-                            LS.ld.each(questiongroupObject.questions, function(q) {
-                                q.question_order = parseInt(q.question_order) + 1;
-                            });
-                        } else {
-                            this.draggedQuestion.question_order = this.draggedQuestionsGroup.questions.length + 1;
-                        }
-
-                        this.draggedQuestionsGroup = questiongroupObject;
-                        StateManager.commit('updateQuestiongroups', questiongroups);
-                        this.orderChanged = true; // Mark that order has changed
-                        // Don't re-render during drag - wait for dragend
-                    }
-                }
             }
         });
 
@@ -637,10 +1029,13 @@ class QuestionExplorer {
                 this.draggedQuestionsGroup = group;
                 this.questionDragging = true;
                 this.orderChanged = false; // Reset flag at start of drag
-                this.lastDragenterQid = null; // Reset dragenter tracking
+                this.dragStartQuestionOrder = this.orderedGroups(questiongroups).map((g) => {
+                    return {gid: g.gid, qids: this.orderedQuestions(g).map(function(q) { return q.qid; })};
+                });
+                this.dragQuestionOrder = this.dragStartQuestionOrder;
                 e.originalEvent.dataTransfer.setData('application/node', 'node');
                 // Add dragged class directly without re-rendering
-                $(e.currentTarget).closest('.question-question-list-item').addClass('dragged');
+                this.$draggedQuestionItem = $(e.currentTarget).closest('.question-question-list-item').addClass('dragged');
             }
         });
 
@@ -650,6 +1045,9 @@ class QuestionExplorer {
                 this.questionDragging = false;
                 this.draggedQuestion = null;
                 this.draggedQuestionsGroup = null;
+                this.dragStartQuestionOrder = null;
+                this.dragQuestionOrder = null;
+                this.$draggedQuestionItem = null;
                 // Only trigger order update if order actually changed
                 if (this.orderChanged && this.onOrderChange) {
                     this.onOrderChange();
@@ -659,38 +1057,24 @@ class QuestionExplorer {
             }
         });
 
-        // Question dragenter - matching dragoverQuestion
+        // Question dragenter: Keep the group dragenter from treating questions as its drop slots
         $container.on('dragenter.qe', '.question-question-list-item', (e) => {
             e.preventDefault();
             e.stopPropagation();
+        });
+
+        // Question dragover: Move the dragged question next to the hovered question
+        $container.on('dragover.qe', '.question-question-list-item', (e) => {
             var qid = $(e.currentTarget).data('qid');
-            var gid = $(e.currentTarget).data('gid');
+            if (this.questionDragging && this.draggedQuestion && qid !== this.draggedQuestion.qid) {
+                this.dragQuestionOver($container, e, 'q', qid);
+            }
+        });
 
-            // Skip duplicate dragenter events for same target (fires multiple times for child elements)
-            if (this.questionDragging && qid === this.lastDragenterQid) return;
-            this.lastDragenterQid = qid;
-
+        // Group header dragover: Move the dragged question to the end of the previous group or the start of this one
+        $container.on('dragover.qe', '.q-group', (e) => {
             if (this.questionDragging && this.draggedQuestion) {
-                // Highlight the drop destination
-                $container.find('.question-question-list-item').removeClass('dragged');
-                $(e.currentTarget).addClass('dragged');
-
-                if (window.SideMenuData.isActive && this.draggedQuestion.gid !== gid) return;
-
-                var questiongroups = StateManager.get('questiongroups') || [];
-                var group = questiongroups.find(function(g) { return g.gid === gid; });
-
-                if (group && group.questions) {
-                    var questionObject = group.questions.find(function(q) { return q.qid === qid; });
-                    if (questionObject && questionObject.qid !== this.draggedQuestion.qid) {
-                        var orderSwap = questionObject.question_order;
-                        questionObject.question_order = this.draggedQuestion.question_order;
-                        this.draggedQuestion.question_order = orderSwap;
-                        StateManager.commit('updateQuestiongroups', questiongroups);
-                        this.orderChanged = true; // Mark that order has changed
-                        // Don't re-render during drag - wait for dragend
-                    }
-                }
+                this.dragQuestionOver($container, e, 'g', $(e.currentTarget).data('gid'));
             }
         });
 

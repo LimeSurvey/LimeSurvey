@@ -144,10 +144,10 @@ export const QuestionGroupHeader = ({
           />
         </div>
         <Dropdown
-          className="question-group-actions-dropdown"
+          className="meatball-dropdown"
           testId="question-group-meatball-menu"
           menuItems={menuItems}
-          align={'start'}
+          align="start"
           toggleSettings={{
             iconClassName: 'ri-more-fill',
             variant: 'light',

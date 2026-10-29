@@ -11,6 +11,7 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
 use LimeSurvey\Models\Services\{
     QuestionAggregateService,
     QuestionAggregateService\L10nService,
+    QuestionAggregateService\QuestionService,
     Exception\PermissionDeniedException,
     Exception\NotFoundException,
     Exception\PersistErrorException
@@ -30,15 +31,24 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
     protected L10nService $l10nService;
     protected TransformerInputQuestionL10ns $transformer;
     protected QuestionAggregateService $questionAggregateService;
+    protected QuestionService $questionService;
 
+    /**
+     * @param L10nService $l10nService
+     * @param TransformerInputQuestionL10ns $transformer
+     * @param QuestionAggregateService $questionAggregateService
+     * @param QuestionService $questionService
+     */
     public function __construct(
         L10nService $l10nService,
         TransformerInputQuestionL10ns $transformer,
-        QuestionAggregateService $questionAggregateService
+        QuestionAggregateService $questionAggregateService,
+        QuestionService $questionService
     ) {
         $this->l10nService = $l10nService;
         $this->transformer = $transformer;
         $this->questionAggregateService = $questionAggregateService;
+        $this->questionService = $questionService;
     }
 
     /**
@@ -74,6 +84,7 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      * }
      *
      * @param OpInterface $op
+     * @return void
      * @throws PersistErrorException
      * @throws NotFoundException
      * @throws OpHandlerException
@@ -81,8 +92,13 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
      */
     public function handle(OpInterface $op): void
     {
-        $this->questionAggregateService->checkUpdatePermission(
-            $this->getSurveyIdFromContext($op)
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $this->questionAggregateService->checkUpdatePermission($surveyId);
+        // Permission was checked against the context survey, so the
+        // question must belong to it.
+        $question = $this->questionService->getQuestionBySidAndQid(
+            $surveyId,
+            (int)$op->getEntityId()
         );
         $transformedProps = $this->transformer->transformAll(
             $op->getProps(),
@@ -93,7 +109,7 @@ class OpHandlerQuestionL10nUpdate implements OpHandlerInterface
         }
 
         $this->l10nService->save(
-            (int)$op->getEntityId(),
+            $question->qid,
             $transformedProps
         );
     }

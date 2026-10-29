@@ -53,8 +53,8 @@ class PrintanswersController extends LSYii_Controller
         } else {
             //die('Invalid survey/session');
         }
-        // Get the survey inforamtion
-        // Set the language for dispay
+        // Get the survey information
+        // Set the language for display
         if (isset($_SESSION['responses_' . $iSurveyID]['s_lang'])) {
             $sLanguage = $_SESSION['responses_' . $iSurveyID]['s_lang'];
         } elseif ($survey) {
@@ -122,11 +122,12 @@ class PrintanswersController extends LSYii_Controller
         $groupArray = $oResponseRow->getPrintAnswersArray($sSRID, $sLanguage, $printanswershonorsconditions);
 
         // Remove all <script>...</script> content from result.
+        // Data URIs are kept: Expressions can fill in an image from an answer (e.g. a signature)
         Yii::import('application.helpers.viewHelper');
         foreach ($groupArray as &$group) {
-            $group['description'] = viewHelper::purified($group['description']);
+            $group['description'] = viewHelper::purified($group['description'], true);
             foreach ($group['answerArray'] as &$answer) {
-                $answer['question'] = viewHelper::purified($answer['question']);
+                $answer['question'] = viewHelper::purified($answer['question'], true);
             }
         }
 

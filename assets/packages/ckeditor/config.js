@@ -268,11 +268,9 @@ CKEDITOR.editorConfig = function (a) {
     
         a.filebrowserBrowseUrl = CKEDITOR.basePath + "../kcfinder/browse.php?type\x3dfiles";
         a.filebrowserImageBrowseUrl = CKEDITOR.basePath + "../kcfinder/browse.php?type\x3dimages";
-        a.filebrowserFlashBrowseUrl = CKEDITOR.basePath + "../kcfinder/browse.php?type\x3dflash";
         a.filebrowserUploadUrl = CKEDITOR.basePath + "../kcfinder/upload.php?type\x3dfiles";
         a.filebrowserImageUploadUrl = CKEDITOR.basePath + "../kcfinder/upload.php?type\x3dimages";
-        a.filebrowserFlashUploadUrl = CKEDITOR.basePath + "../kcfinder/upload.php?type\x3dflash";
-        a.removeDialogTabs = "link:upload;image:Upload";
+        a.removeDialogTabs = "link:upload;image:Upload;html5video:Upload";
         a.image_prefillDimensions = !1;
         a.image2_prefillDimensions = !1;
         a.allowedContent = !0;
@@ -280,23 +278,25 @@ CKEDITOR.editorConfig = function (a) {
         a.autoParagraph = !1;
         a.basicEntities = !1;
         a.entities = !1;
+        // Pasted or dropped image files would otherwise be embedded as huge base64 data URIs into the text
+        a.clipboard_handleImages = !1;
         a.uiColor = "#f1f1f1";
 
         "rtl" == $("html").attr("dir") && (a.contentsLangDirection = "rtl");
         a.toolbar_popup = [
             ["Save", "Sourcedialog", "Createlimereplacementfields"],
             ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "),
-            "Image Html5video VideoDetector Flash Table HorizontalRule EmojiPanel SpecialChar".split(" "), "/", "Bold Italic Underline Strike - Subscript Superscript".split(" "), 
+            "Image Html5video VideoDetector Table HorizontalRule EmojiPanel SpecialChar".split(" "), "/", "Bold Italic Underline Strike - Subscript Superscript".split(" "), 
             "NumberedList BulletedList - Outdent Indent Blockquote CreateDiv".split(" "), ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
             ["BidiLtr", "BidiRtl"],
             ["Link", "Unlink", "Anchor", "Iframe"], "/", ["Styles", "Format", "Font", "FontSize"],
             ["TextColor", "BGColor"],
-            ["ShowBlocks", "Templates"]
+            ["ShowBlocks"]
         ];
         a.toolbar_inline = [
             ["Maximize", "Sourcedialog", "Createlimereplacementfields", "SwitchToolbar"],
             ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "),
-            ["Image", "Html5video", "VideoDetector", "Flash"],
+            ["Image", "Html5video", "VideoDetector"],
             ["Table", "HorizontalRule", "EmojiPanel", "SpecialChar"],
             ["Bold", "Italic", "Underline", "Strike"],
             ["Subscript", "Superscript"],
@@ -304,7 +304,7 @@ CKEDITOR.editorConfig = function (a) {
             ["Outdent", "Indent", "Blockquote", "CreateDiv"],
             ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
             ["BidiLtr", "BidiRtl"],
-            ["ShowBlocks", "Templates"],
+            ["ShowBlocks"],
             ["Link", "Unlink"],
             ["Styles", "Format", "Font", "FontSize"],
             ["Anchor", "Iframe"],
@@ -321,7 +321,7 @@ CKEDITOR.editorConfig = function (a) {
         a.toolbar = [
             ["Sourcedialog", "Createlimereplacementfields"],
             ["Cut","Copy", "Paste", "PasteText", "PasteFromWord"], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "),
-            ["Image", "Html5video","VideoDetector", "Flash"],
+            ["Image", "Html5video","VideoDetector"],
             ["Table", "HorizontalRule", "EmojiPanel", "SpecialChar"],
             ["Bold", "Italic", "Underline", "Strike"],
             ["Subscript", "Superscript"],
@@ -329,7 +329,7 @@ CKEDITOR.editorConfig = function (a) {
             ["Outdent", "Indent", "Blockquote", "CreateDiv"],
             ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
             ["BidiLtr", "BidiRtl"],
-            ["ShowBlocks", "Templates"],
+            ["ShowBlocks"],
             ["Link", "Unlink"],
             ["Styles", "Format", "Font", "FontSize"],
             ["Anchor", "Iframe"],
@@ -337,9 +337,8 @@ CKEDITOR.editorConfig = function (a) {
         ];
         a.extraPlugins = "limereplacementfields,lsswitchtoolbars";
         a.removePlugins = 'sourcearea';
-        a.iframe_attributes = {
-            sandbox: 'allow-scripts allow-same-origin'
-        },
+        // Keep the iframe attributes as entered by the author (CKEditor would otherwise force a sandbox attribute)
+        a.iframe_attributes = {},
 
         a.versionCheck = false
 }

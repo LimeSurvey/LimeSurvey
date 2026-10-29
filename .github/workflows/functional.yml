@@ -8,15 +8,11 @@ on:
       - master
       - develop-major
       - develop-minor
-    paths-ignore:
-      - 'editor/**'
   push:
     branches:
       - master
       - develop-major
       - develop-minor
-    paths-ignore:
-      - 'editor/**'
 
 permissions:
   contents: read
@@ -30,7 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         # Specify what versions of php you want to test
-        php-versions: [ '8.1', '8.3' ]
+        php-versions: [ '8.1', '8.5' ]
         testsuite:
           - survey
           - question-a
@@ -53,6 +49,12 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v5
+      - name: Build editor for admin functional tests
+        if: matrix.testsuite == 'admin'
+        working-directory: editor
+        run: |
+          npm ci
+          npm run build
       - name: Install specified PHP and libapache2-mod-php
         run: |
           sudo apt update
@@ -121,6 +123,8 @@ jobs:
           # Set up the Apache and PHP
           sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
+          # Enable mod_rewrite so the .htaccess rules forward pretty URLs
+          sudo a2enmod rewrite
           sudo service apache2 restart
 
           # Give permision to access files for Apache
@@ -178,7 +182,7 @@ jobs:
           #sudo tail -n 500 /var/log/apache2/error.log || true
           #sudo tail -n 500 /var/log/nginx/error.log || true
           #sudo tail -n 500 /var/log/php8.1-fpm.log || true
-          #sudo tail -n 500 /var/log/php8.3-fpm.log || true
+          #sudo tail -n 500 /var/log/php8.5-fpm.log || true
           # NOTE: php --version might not be the same as setup in apache. Use fwrite(STDERR, phpversion()); in index.php to be sure.
           #which php
           #php --version
@@ -210,7 +214,7 @@ jobs:
         run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped --testsuite ${{ matrix.testsuite }}
 
       - name: Upload Screenshots
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: screenshots-${{ matrix.php-versions }}-${{ matrix.testsuite }}

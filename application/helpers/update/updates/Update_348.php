@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_348 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             $this->db->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_policy_notice', 'text');

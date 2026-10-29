@@ -66,6 +66,10 @@ use LimeSurvey\Models\Services\CopySurveyResult;
                         <td><?php eT("Quotas"); ?>:</td>
                         <td><?php echo $copyResults->getCntQuotas(); ?></td>
                     </tr>
+                    <tr>
+                        <td><?php eT("URL parameters"); ?>:</td>
+                        <td><?php echo $copyResults->getCntUrlParameters(); ?></td>
+                    </tr>
                 </table>
             </div>
         </div>

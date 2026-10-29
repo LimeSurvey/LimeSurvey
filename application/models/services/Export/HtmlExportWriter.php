@@ -35,6 +35,7 @@ class HtmlExportWriter implements ExportWriterInterface
      * @return array Export result with content/filePath and metadata
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
+    #[\Override]
     public function export(array $responses, array $surveyQuestions, array $metadata): array
     {
         $this->init($surveyQuestions, $metadata);
@@ -50,6 +51,7 @@ class HtmlExportWriter implements ExportWriterInterface
      * @return void
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
+    #[\Override]
     public function init(array $surveyQuestions, array $metadata): void
     {
         $this->metadata = $metadata;
@@ -121,6 +123,7 @@ class HtmlExportWriter implements ExportWriterInterface
      * @param array $surveyQuestions The survey questions field map
      * @return void
      */
+    #[\Override]
     public function writeChunk(array $responses, array $surveyQuestions): void
     {
         if ($this->handle === null) {
@@ -159,6 +162,7 @@ class HtmlExportWriter implements ExportWriterInterface
      *
      * @return array Export result with content/filePath and metadata
      */
+    #[\Override]
     public function finalize(): array
     {
         if ($this->handle === null) {
@@ -213,6 +217,7 @@ class HtmlExportWriter implements ExportWriterInterface
      *
      * @return string
      */
+    #[\Override]
     public function getFileExtension(): string
     {
         return 'html';
@@ -223,6 +228,7 @@ class HtmlExportWriter implements ExportWriterInterface
      *
      * @return string
      */
+    #[\Override]
     public function getMimeType(): string
     {
         return 'text/html';

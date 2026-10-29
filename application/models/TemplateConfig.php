@@ -171,8 +171,9 @@ class TemplateConfig extends CActiveRecord
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 if (!$force && App()->twigRenderer->getPathOfFile($sFile)) {
-                    // return dummy template , new self broke (No DB : TODO : must fix init of self)
-                    $templateConfig = new TemplateConfig();
+                    // File is provided by a plugin: return a dummy template.
+                    // A null scenario skips CActiveRecord init, which would look for a non-existent DB table.
+                    $templateConfig = new TemplateConfig(null);
                     $templateConfig->sTemplateName = null;
                     return $templateConfig;
                 }
@@ -351,7 +352,8 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['outerframe'] = ' outerframe ';
         $aClassAndAttributes['class']['maincol'] = ' ';
-        $aClassAndAttributes['attr']['html'] = $thissurvey['attr']['body'] = $aClassAndAttributes['attr']['outerframe'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol'] = '';
+        $aClassAndAttributes['attr']['html'] = $thissurvey['attr']['body'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol'] = '';
+        $aClassAndAttributes['attr']['outerframe'] = ' tabindex="-1" ';
 
         // User forms
         $aClassAndAttributes['class']['maincoldivdiva']               = '  ';
@@ -661,12 +663,19 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['modalbody']         = ' modal-body ';
         $aClassAndAttributes['class']['modalfooter']       = ' modal-footer ';
         $aClassAndAttributes['class']['modalfooterlink']   = ' btn btn-outline-secondary ';
+        $aClassAndAttributes['class']['modalfooterbutton'] = ' btn btn-outline-secondary ';
 
         $aClassAndAttributes['attr']['modalheader']       = ' style="min-height:40px;" '; // Todo: move to CSS
-        $aClassAndAttributes['attr']['modalclosebutton']  = ' type="button" data-bs-dismiss="modal" aria-hidden="true" ';
-        $aClassAndAttributes['attr']['modalfooterlink']   = ' href="#" data-bs-dismiss="modal" ';
+        $aClassAndAttributes['attr']['modalclosebutton']  = ' type="button" data-bs-dismiss="modal" ';
+        $aClassAndAttributes['attr']['modalfooterlink']   = ' data-bs-dismiss="modal" ';
+        $aClassAndAttributes['attr']['modalfooterbutton'] = ' type="button" data-bs-dismiss="modal" ';
 
-        $aClassAndAttributes['attr']['alertmodal'] = $aClassAndAttributes['attr']['modaldialog'] = $aClassAndAttributes['attr']['modalcontent'] = $aClassAndAttributes['attr']['modaltitle'] = $aClassAndAttributes['attr']['modalbody'] = $aClassAndAttributes['attr']['modalfooter'] = '';
+        // tabindex lets Bootstrap move the focus into the modal when it opens, the title and message give it a name and description for screen readers
+        $aClassAndAttributes['attr']['alertmodal']        = ' tabindex="-1" aria-labelledby="bootstrap-alert-box-modal-title" aria-describedby="bootstrap-alert-box-modal-body" ';
+        $aClassAndAttributes['attr']['modaltitle']        = ' id="bootstrap-alert-box-modal-title" ';
+        $aClassAndAttributes['attr']['modalbody']         = ' id="bootstrap-alert-box-modal-body" ';
+
+        $aClassAndAttributes['attr']['modaldialog'] = $aClassAndAttributes['attr']['modalcontent'] = $aClassAndAttributes['attr']['modalfooter'] = '';
 
         // Soft Mandatory Checkbox
         $aClassAndAttributes['class']['mandsoftcheckbox'] = '';

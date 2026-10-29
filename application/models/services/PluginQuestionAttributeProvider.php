@@ -9,6 +9,7 @@ namespace LimeSurvey\Models\Services;
 class PluginQuestionAttributeProvider extends QuestionAttributeProvider
 {
     /** @inheritdoc */
+    #[\Override]
     public function getDefinitions($options = [])
     {
         /** @var string question type */
@@ -30,10 +31,7 @@ class PluginQuestionAttributeProvider extends QuestionAttributeProvider
      */
     protected function getAttributesFromPlugin($questionType)
     {
-        $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
-        $result = App()->getPluginManager()->dispatchEvent($event);
-
-        $allPluginAttributes = (array) $result->get('questionAttributes');
+        $allPluginAttributes = \QuestionAttribute::getOwnQuestionAttributesViaPlugin();
         if (empty($allPluginAttributes)) {
             return [];
         }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * RenderClass for Boilerplate Question
+ * RenderClass for Yes/No Question
  *  * The ia Array contains the following
  *  0 => string qid
  *  1 => string sgqa
@@ -18,37 +18,82 @@
  */
 class RenderYesNoRadio extends QuestionBaseRenderer
 {
+    /**
+     * Returns the twig view used to render the answer part of the question,
+     * depending on the display_type attribute (0 = button group, otherwise radio list).
+     *
+     * @return string
+     */
     public function getMainView()
     {
-        return '/survey/questions/answer/dummy/answer';
+        if ($this->getDisplayType() === 0) {
+            return '/survey/questions/answer/yesno/buttons/item';
+        }
+        return '/survey/questions/answer/yesno/radio/item';
     }
 
+    /**
+     * Yes/No questions have no rows.
+     *
+     * @return void
+     */
     public function getRows()
     {
         return;
     }
 
+    /**
+     * Renders the Yes/No question.
+     *
+     * @param string $sCoreClasses Unused, kept for signature compatibility
+     * @return array{0: string, 1: string[]} Rendered answer HTML and the list of input names
+     */
     public function render($sCoreClasses = '')
     {
         $this->registerAssets();
-        return do_yesno($this->aFieldArray);
 
-        $answer = '';
-        $inputnames = [];
+        // Null when not set: the hidden "java" field then gets no value attribute at all
+        $sValue = $this->getFromSurveySession($this->sSGQA, null);
 
-        if (!empty($this->getQuestionAttribute('time_limit'))) {
-            $answer .= $this->getTimeSettingRender();
+        $yChecked = $nChecked = $naChecked = '';
+        if ($sValue == 'Y') {
+            $yChecked = CHECKED;
         }
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
-            'ia' => $this->aFieldArray,
+        if ($sValue == 'N') {
+            $nChecked = CHECKED;
+        }
+
+        $noAnswer = false;
+        if (($this->aFieldArray[6] != 'Y' && $this->aFieldArray[6] != 'S') && SHOW_NO_ANSWER == 1) {
+            $noAnswer = true;
+            if (PRESELECT_NO_ANSWER && empty($sValue)) {
+                $naChecked = CHECKED;
+            }
+        }
+
+        $answer = Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
             'name' => $this->sSGQA,
             'basename' => $this->sSGQA,
-            'content' => $this->oQuestion,
-            'coreClass' => 'ls-answers ' . $sCoreClasses,
-            ), true);
+            'yChecked' => $yChecked,
+            'nChecked' => $nChecked,
+            'naChecked' => $naChecked,
+            'noAnswer' => $noAnswer,
+            'value' => $sValue,
+            'displayType' => $this->getDisplayType(),
+        ));
 
-        $inputnames[] = [];
+        $inputnames = [$this->sSGQA];
         return array($answer, $inputnames);
+    }
+
+    /**
+     * Returns the display_type attribute as integer (0 = button group, 1 = radio list).
+     *
+     * @return int
+     */
+    private function getDisplayType(): int
+    {
+        return (int) $this->getQuestionAttribute('display_type');
     }
 }

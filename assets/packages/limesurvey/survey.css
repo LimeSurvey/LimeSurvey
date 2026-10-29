@@ -119,6 +119,8 @@
     padding: 0.6rem 1.2rem;
     line-height: 1;
 }
+.suffix-prefix-force .ls-input-sized .ls-input-group-extra{width:initial}
+.suffix-prefix-force .ls-input-sized .ls-input-group{width:auto;max-width:100%;table-layout:fixed}
 /* specific for multiple number with dynamic : @todo move this to question class */
 .ls-group-dynamic .control-label,.ls-group-dynamic .form-control-static{display:inline-block}
 

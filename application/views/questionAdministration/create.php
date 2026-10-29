@@ -72,6 +72,14 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
     />
     <div id="advanced-question-editor" class="row"<?= empty($visibilityEditor) ? ' style="display:none;"' : '' ?>>
         <x-test id="action::addQuestion"></x-test>
+        <div class="col-12 pagetitle">
+            <?php if ($oQuestion->qid !== 0) : ?>
+                <h1 aria-describedby="question-editor-meta"><?php eT('Edit question'); ?></h1>
+                <small id="question-editor-meta" class="pagetitle__description"><em><?= CHtml::encode($oQuestion->title); ?> (ID: <?= (int)$oQuestion->qid; ?>)</em></small>
+            <?php else : ?>
+                <h1><?php eT('Add question'); ?></h1>
+            <?php endif; ?>
+        </div>
         <div class="col-xl-8 pe-1">
             <div class="row">
                 <div class="col-12">
