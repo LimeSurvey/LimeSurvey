@@ -717,6 +717,8 @@ class LimeExpressionManager
             $c = __CLASS__;
             self::$instance = new $c();
             unset($_SESSION['LEMdirtyFlag']);
+            // The cached instance is outdated too: Without this, the next request would restore it if this one does not save the new instance
+            unset($_SESSION['LEMsingleton']);
         } elseif (!isset(self::$instance)) {
             if (isset($_SESSION['LEMsingleton'])) {
                 $restored = @unserialize($_SESSION['LEMsingleton'], ['allowed_classes' => [LimeExpressionManager::class, ExpressionManager::class]]);
