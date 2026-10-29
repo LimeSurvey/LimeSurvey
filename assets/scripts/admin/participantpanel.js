@@ -513,14 +513,15 @@ LS.CPDB = (function() {
 
     /**
      * Call server to delete ONE single participant share
+     * @param {string} url
      * @param {string} participantId
-     * @param {number} shareUid
+     * @param {string} shareUid
      * @return
      */
-    deleteSingleParticipantShare = function(url) {
+    deleteSingleParticipantShare = function(url, participantId, shareUid) {
         $.ajax({
             url: url,
-            data: {},
+            data: {participantId: participantId, shareUid: shareUid},
             method: "POST",
             dataType: 'json',
             success: function(result){

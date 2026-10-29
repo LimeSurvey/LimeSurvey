@@ -2558,13 +2558,15 @@ class ParticipantsAction extends SurveyCommonAction
     /**
      * Deletes a single participant share
      * Called by Ajax; echoes success/error
-     * @param string $participantId
-     * @param int $shareUid
+     * @param string|null $participantId Participant ID, the posted participantId is used if not set
+     * @param int|null $shareUid User ID of the share, the posted shareUid is used if not set
      * @return void
      */
     public function deleteSingleParticipantShare($participantId = null, $shareUid = null)
     {
         $this->requirePostRequest();
+        $participantId = $participantId ?? Yii::app()->request->getPost('participantId');
+        $shareUid = $shareUid ?? Yii::app()->request->getPost('shareUid');
 
         $participantShare = ParticipantShare::model()->findByPk(array(
             'participant_id' => $participantId,
