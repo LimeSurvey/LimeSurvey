@@ -62,6 +62,7 @@
   outline-offset: -2px;
 }
 .checkbox-item input[type="checkbox"]:checked + label::after,
+.checkbox-item .checkbox-checked + label::after,
 .checkbox-item input[type="radio"]:checked + label::after {
   font-family: "FontAwesome";
   content: "\f00c";
@@ -78,10 +79,12 @@
   margin-top: 7px;
 }
 .checkbox-item input[type="checkbox"]:disabled + label,
+.ls-disabled .visual-checkbox + label,
 .checkbox-item input[type="radio"]:disabled + label {
   opacity: 0.65;
 }
 .checkbox-item input[type="checkbox"]:disabled + label::before,
+.ls-disabled .visual-checkbox + label::before,
 .checkbox-item input[type="radio"]:disabled + label::before {
   background-color: #eeeeee;
   cursor: not-allowed;

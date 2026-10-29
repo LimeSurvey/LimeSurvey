@@ -1,19 +1,21 @@
 $input-border-color : $g-700;
 
-.checkbox-item input[type="checkbox"]:checked + label {
+.checkbox-item input[type="checkbox"]:checked + label,
+.checkbox-item .checkbox-checked + label {
     color: $base-color;
 }
-
 .checkbox-item label::before {
     border           : 3px solid $input-border-color;
     background-color : #fff;
 }
 
-.checkbox-item input[type="checkbox"]:checked + label::before {
+.checkbox-item input[type="checkbox"]:checked + label::before,
+.checkbox-item .checkbox-checked + label::before {
     border-color : $base-color;
 }
 
-.checkbox-item input[type="checkbox"]:checked + label::after {
+.checkbox-item input[type="checkbox"]:checked + label::after,
+.checkbox-item .checkbox-checked + label::after {
     background-color : transparent;
     color            : $base-color;
 }
