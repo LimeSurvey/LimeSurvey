@@ -39,7 +39,7 @@ class SurveyAdministrationController extends LSBaseController
                     'insert',
                     'listsurveys',
                     'newSurvey',
-                    'regenerateQuestionCode',
+                    'regenerateQuestionCodes',
                     'renderItemsSelected',
                     'applythemeoptions',
                     'changeMultipleSurveyGroup',
@@ -378,17 +378,18 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * Regeerates the question code
+     * Regenerates the question codes
      * Automatically renumbers the "question codes" so that they follow
      * a methodical numbering method.
+     * Only accepted as POST request (sent by the confirmation dialog of the survey tools menu),
+     * with the POST parameter 'subaction' set to 'straight' or 'bygroup'.
      *
      * @return void
-     *
      */
     public function actionRegenerateQuestionCodes()
     {
         $iSurveyID = $this->getSurveyIdFromGetRequest();
-        $sSubAction = Yii::app()->request->getParam('subaction');
+        $sSubAction = Yii::app()->request->getPost('subaction');
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
@@ -400,8 +401,8 @@ class SurveyAdministrationController extends LSBaseController
             $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
         }
 
-        //check subaction
-        if (!($sSubAction === 'straight' || $sSubAction === 'bygroup')) {
+        //check request method and subaction
+        if (!Yii::app()->request->isPostRequest || !($sSubAction === 'straight' || $sSubAction === 'bygroup')) {
             Yii::app()->setFlashMessage(gT("Invalid parameters."), 'error');
             $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
         }
