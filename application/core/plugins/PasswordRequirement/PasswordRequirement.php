@@ -318,12 +318,16 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
 
     /**
      * @see event createRandomPassword
-     * Create a random password matching the administration password rules
+     * Create a random password matching the administration password rules,
+     * unless a plugin dispatched before already created one
      * @return void
      */
     public function createRandomPassword()
     {
         $oEvent = $this->getEvent();
+        if (!empty($oEvent->get('password'))) {
+            return;
+        }
         $targetSize = $oEvent->get('targetSize', 8);
 
         $rules = $this->getAdminRules();

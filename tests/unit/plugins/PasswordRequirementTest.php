@@ -373,6 +373,18 @@ class PasswordRequirementTest extends TestBaseClass
     }
 
     /**
+     * A random password already created by another plugin is kept.
+     */
+    public function testRandomPasswordOfOtherPluginIsKept()
+    {
+        $oEvent = $this->dispatchPluginEvent(self::$pluginName, 'createRandomPassword', [
+            'targetSize' => 8,
+            'password' => 'fromOtherPlugin',
+        ]);
+        $this->assertSame('fromOtherPlugin', $oEvent->get('password'));
+    }
+
+    /**
      * The plugin can't be deactivated.
      */
     public function testCanNotBeDeactivated()
