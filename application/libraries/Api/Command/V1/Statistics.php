@@ -10,6 +10,7 @@ use LimeSurvey\Models\Services\ResponseFilters\ParticipantResolver;
 use LimeSurvey\Models\Services\ResponseFilters\QuestionColumnMap;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterResolver;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSet;
+use LimeSurvey\Models\Services\SurveyStatistics\ResponseConditionValues;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsService;
 use Permission;
@@ -188,17 +189,15 @@ class Statistics implements CommandInterface
             if (!is_array($conditions)) {
                 throw new InvalidArgumentException('conditions must be an array');
             }
+            $allowToken = false;
             foreach ($conditions as $condition) {
                 $key = is_array($condition) ? ($condition['key'] ?? null) : null;
-                if (
-                    is_string($key)
-                    && strtolower(trim($key)) === 'token'
-                    && !$this->permission->hasSurveyPermission((int)$request->getData('_id'), 'tokens')
-                ) {
-                    throw new PermissionDeniedException();
+                if (is_string($key) && ResponseConditionValues::isTokenKey($key)) {
+                    $allowToken = $this->permission->hasSurveyPermission((int)$request->getData('_id'), 'tokens');
+                    break;
                 }
             }
-            $this->filters->setConditions($conditions);
+            $this->filters->setConditions($conditions, $allowToken);
         }
         $completion = $request->getData('completion');
         if ($completion !== null) {

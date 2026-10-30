@@ -183,16 +183,7 @@ class SurveyThemeConfiguration
         if ($preparedThemeConfigurationModel === null) {
             throw new NotFoundException(gT("Survey theme {$themeConfiguration->template_name} not found."));
         }
-        // Themes without a config.xml do not have configurable options.  The
-        // manifest helper returns false for them, so normalize that to an empty
-        // configuration before accessing option metadata below.
-        $themeCategoriesAndOptions = TemplateManifest::getOptionAttributes($preparedThemeConfigurationModel->path) ?: [
-            'categories' => [],
-            'optionAttributes' => [],
-            // Rendering the core page with no attributes is safe; attempting a
-            // custom page would require the missing manifest again.
-            'optionsPage' => 'core',
-        ];
+        $themeCategoriesAndOptions = TemplateManifest::getOptionAttributes($preparedThemeConfigurationModel->path);
         $themeConfigurationAttributesAndFiles = $preparedThemeConfigurationModel->getOptionPageAttributes();
 
         // Resolve option image file paths by walking up the inheritance chain

@@ -13,7 +13,7 @@ class CompletionFilterTest extends TestCase
         foreach ([
             'all' => '',
             'completed' => 'submitdate IS NOT NULL',
-            'incomplete' => 'submitdate IS NULL',
+            'incomplete' => 'submitdate IS NULL AND (quota_exit IS NULL OR quota_exit = 0)',
             'screened_out' => 'quota_exit IS NOT NULL AND quota_exit <> 0',
         ] as $state => $expected) {
             $criteria = new CDbCriteria();
@@ -26,5 +26,30 @@ class CompletionFilterTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         CompletionFilter::apply(new CDbCriteria(), 'screened_out', ['submitdate']);
+    }
+
+    public function testIncompleteWithoutQuotaColumnOnlyChecksSubmitdate(): void
+    {
+        $this->assertSame('submitdate IS NULL', CompletionFilter::predicate('incomplete', false));
+        $this->assertNull(CompletionFilter::predicate('all', true));
+    }
+
+    public function testUnknownStatesAreRejected(): void
+    {
+        foreach (['COMPLETED', 'complete', '', 'typo'] as $state) {
+            try {
+                CompletionFilter::assertValid($state);
+                $this->fail("$state should be rejected");
+            } catch (\InvalidArgumentException $e) {
+                $this->assertStringContainsString('completed', $e->getMessage());
+            }
+        }
+    }
+
+    public function testApplyDoesNotTouchTheCriteriaForAll(): void
+    {
+        $criteria = new CDbCriteria();
+        CompletionFilter::apply($criteria, 'all', []);
+        $this->assertSame('', $criteria->condition);
     }
 }

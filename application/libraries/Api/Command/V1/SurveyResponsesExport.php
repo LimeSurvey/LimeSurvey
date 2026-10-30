@@ -9,6 +9,7 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\ResponseFactory;
 use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\CompletionFilter;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ExportFilterSql;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\ExportSurveyResultsService;
@@ -214,6 +215,7 @@ class SurveyResponsesExport implements CommandInterface
         if (!is_string($completion)) {
             throw new InvalidArgumentException('Invalid completion filter.');
         }
+        CompletionFilter::assertValid($completion);
 
         $resolvedFilters = $this->resolveFilterSet($request, $surveyId, $language);
 
@@ -334,8 +336,9 @@ class SurveyResponsesExport implements CommandInterface
         $options->selectedColumns = array_keys($fieldMap);
         $options->responseMinRecord = \SurveyDynamic::model($surveyId)->getMinId();
         $options->responseMaxRecord = \SurveyDynamic::model($surveyId)->getMaxId();
-        // The legacy exporter calls the completed state 'complete'
-        $options->responseCompletionState = $completion === 'completed' ? 'complete' : $completion;
+        // The completion state goes in as SQL so the legacy exporter uses the
+        // same predicates as every other path.
+        $options->responseCompletionState = 'all';
         $options->headingFormat = 'full';
         $options->answerFormat = $answerFormat ?: 'long';
         $options->csvFieldSeparator = $csvSeparator ?: ',';
@@ -347,6 +350,13 @@ class SurveyResponsesExport implements CommandInterface
             $filters,
             $resolvedFilters
         );
+        $completionSql = CompletionFilter::predicate(
+            $completion,
+            isset(\SurveyDynamic::model($surveyId)->getTableSchema()->columns['quota_exit'])
+        );
+        if ($completionSql !== null) {
+            $sqlFilter = $this->filterSql->combineSqlFilters($sqlFilter, '(' . $completionSql . ')');
+        }
 
         $legacyService = new \ExportSurveyResultsService();
         $filePath = $legacyService->exportResponses($surveyId, $language, $legacyType, $options, $sqlFilter);

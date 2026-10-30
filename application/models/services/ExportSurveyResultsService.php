@@ -89,9 +89,7 @@ class ExportSurveyResultsService
 
     public function setCompletionFilter(string $completion): self
     {
-        if (!in_array($completion, ['all', 'completed', 'incomplete', 'screened_out'], true)) {
-            throw new InvalidArgumentException('Invalid completion filter.');
-        }
+        CompletionFilter::assertValid($completion);
         $this->completionFilter = $completion;
         return $this;
     }
@@ -341,10 +339,9 @@ class ExportSurveyResultsService
         $writer = $this->getExportWriter($exportType);
         $writer->init($surveyQuestions, $metadata);
 
+        // buildFilterCriteria() may hand back $this->filterCriteria itself
         $filterCriteria = $this->buildFilterCriteria();
-        if ($filterCriteria === null) {
-            $filterCriteria = new \CDbCriteria();
-        }
+        $filterCriteria = $filterCriteria === null ? new \CDbCriteria() : clone $filterCriteria;
         CompletionFilter::apply(
             $filterCriteria,
             $this->completionFilter,
@@ -498,20 +495,6 @@ class ExportSurveyResultsService
         } catch (CDbException $e) {
             Yii::log($e->getMessage(), 'error', 'application.api.export');
             throw new RuntimeException('Unable to fetch survey responses');
-        }
-    }
-
-    protected function fetchFilteredResponseChunk($model, int $offset, int $limit, \CDbCriteria $filter): array
-    {
-        $criteria = clone $filter;
-        $criteria->order = $model->primaryKey() . ' ASC';
-        $criteria->limit = $limit;
-        $criteria->offset = $offset;
-
-        try {
-            return $model->findAll($criteria);
-        } catch (CDbException $e) {
-            throw new RuntimeException("Unable to fetch survey responses: " . $e->getMessage());
         }
     }
 

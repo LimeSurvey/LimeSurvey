@@ -2,11 +2,13 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
-use CDbColumnSchema;
 use CDbConnection;
 use InvalidArgumentException;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\CompletionFilter;
+use LimeSurvey\Models\Services\ResponseFilters\NumericRangeSql;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSqlBuilder;
+use LimeSurvey\Models\Services\SurveyStatistics\ResponseConditionValues;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use SurveyDynamic;
 
@@ -43,7 +45,7 @@ final class ResponseAggregateBatch
     private const KIND_MAX = 'max';
 
     /** Plain decimal test for numeric answers stored in text columns */
-    private const NUMERIC_PATTERN = '^-?[0-9]*\.?[0-9]+$';
+    private const NUMERIC_PATTERN = NumericRangeSql::PATTERN;
 
     /** Separator joining the columns of a multi-field aggregate into one field key */
     private const FIELD_SEPARATOR = "\x1E";
@@ -562,17 +564,16 @@ final class ResponseAggregateBatch
         if (!isset($filters['completion'])) {
             return null;
         }
-        if ($filters['completion'] === 'screened_out') {
-            if (!isset(SurveyDynamic::model($this->surveyId)->getTableSchema()->columns['quota_exit'])) {
-                throw new InvalidArgumentException('This survey has no quota exit column');
-            }
-            return 'quota_exit IS NOT NULL AND quota_exit <> 0';
-        }
-        return 'submitdate IS ' . ($filters['completion'] === 'completed' ? 'NOT ' : '') . 'NULL';
+        return CompletionFilter::predicate(
+            $filters['completion'],
+            isset(SurveyDynamic::model($this->surveyId)->getTableSchema()->columns['quota_exit'])
+        );
     }
 
     /**
      * @return array{0: string[], 1: array<string,mixed>}
+     * @throws InvalidArgumentException on a column that may not be filtered on or a value
+     *     the column cannot hold
      */
     private function buildResponseConditions(array $filters, string $suffix = ''): array
     {
@@ -580,37 +581,53 @@ final class ResponseAggregateBatch
         $conditions = [];
         $params = [];
         foreach ($filters as $index => $filter) {
-            $field = $filter['key'] === 'quotaExit' ? 'quota_exit' : $filter['key'];
+            $key = (string)$filter['key'];
+            // Permission for token was checked when the filters were built
+            if (!ResponseConditionValues::isTokenKey($key) && !ResponseConditionValues::isAllowedKey($key)) {
+                throw new InvalidArgumentException('Responses cannot be filtered on column: ' . $key);
+            }
+            $field = in_array($key, ['quotaExit', 'quota_exit'], true) ? 'quota_exit' : $key;
             if (!isset($schema->columns[$field])) {
                 throw new InvalidArgumentException('Unknown response column: ' . $field);
             }
+            $column = $schema->columns[$field];
+            $kind = ResponseConditionValues::kindOf((string)$column->type, (string)$column->dbType);
+            $bigint = ResponseConditionValues::isBigint((string)$column->dbType);
             $col = $this->getDb()->quoteColumnName($field);
+            $prefix = ':condition' . $suffix . '_' . $index . '_';
+
             if ($filter['filterMethod'] === 'range') {
                 [$rangeCondition, $rangeParams] = $this->buildRangeCondition(
                     $col,
-                    $schema->columns[$field],
-                    array_values($filter['value']),
-                    ':condition' . $suffix . '_' . $index . '_'
+                    $kind,
+                    ResponseConditionValues::rangeBounds($filter['value'], $kind, $bigint),
+                    $prefix
                 );
                 $conditions[] = $rangeCondition;
                 $params += $rangeParams;
                 continue;
             }
-            $values = $filter['filterMethod'] === 'equal' ? [$filter['value']] : array_values($filter['value']);
-            $holders = [];
-            foreach ($values as $position => $value) {
-                $holder = ':condition' . $suffix . '_' . $index . '_' . $position;
-                $holders[] = $holder;
-                $params[$holder] = $value;
+
+            $values = $filter['filterMethod'] === 'equal' ? [$filter['value']] : $filter['value'];
+            if (!is_array($values) || !$values) {
+                throw new InvalidArgumentException('Invalid response condition values');
             }
-            switch ($filter['filterMethod']) {
-                case 'equal':
-                    $conditions[] = "$col = $holders[0]";
-                    break;
-                case 'multi-select':
-                    $conditions[] = "$col IN (" . implode(', ', $holders) . ')';
-                    break;
+            $alternatives = [];
+            foreach (array_values($values) as $position => $value) {
+                $normalized = ResponseConditionValues::equalValue($value, $kind, $bigint);
+                $holder = $prefix . $position;
+                if ($kind === ResponseConditionValues::KIND_DATETIME && ResponseConditionValues::dateValue($normalized)[1]) {
+                    // A date matches the whole day of a datetime column
+                    $nextHolder = $holder . 'n';
+                    $alternatives[] = "($col >= $holder AND $col < $nextHolder)";
+                    $params[$holder] = $normalized;
+                    $params[$nextHolder] = date('Y-m-d', strtotime($normalized . ' +1 day'));
+                    continue;
+                }
+                $alternatives[] = "$col = $holder";
+                $params[$holder] = $normalized;
             }
+            $conditions[] = count($alternatives) === 1 ? $alternatives[0] : '(' . implode(' OR ', $alternatives) . ')';
         }
         return [$conditions, $params];
     }
@@ -619,72 +636,31 @@ final class ResponseAggregateBatch
      * Range predicate matching RangeConditionHandler: an empty bound leaves
      * that side open, so it is never bound into BETWEEN.
      *
-     * Date/datetime columns compare directly against the bound strings,
-     * integer columns compare directly as numbers, and anything else (numeric
-     * answers stored as text) goes through rangeNumericExpression().
+     * Date/datetime and integer columns compare directly, anything else
+     * (numeric answers stored as text) goes through NumericRangeSql. The
+     * bounds are already validated by ResponseConditionValues::rangeBounds().
      *
-     * @param array $bounds [min, max]
-     * @return array{0: string, 1: array<string,float|string>}
+     * @param array{0: ?string, 1: ?string, 2: bool} $bounds min, max, max exclusive
+     * @return array{0: string, 1: array<string,string>}
      */
-    private function buildRangeCondition(string $col, CDbColumnSchema $column, array $bounds, string $holderPrefix): array
+    private function buildRangeCondition(string $col, string $kind, array $bounds, string $holderPrefix): array
     {
-        $dateColumn = preg_match('/^(date|datetime|timestamp)/i', (string)$column->dbType) === 1;
-
-        [$min, $max] = array_map(static function ($bound) use ($dateColumn) {
-            if ($bound === null || $bound === '') {
-                return null;
-            }
-            if ($dateColumn) {
-                if (strtotime((string)$bound) === false) {
-                    throw new InvalidArgumentException('Range bounds must be valid dates');
-                }
-                return (string)$bound;
-            }
-            if (!is_numeric($bound)) {
-                throw new InvalidArgumentException('Range bounds must be numeric');
-            }
-            return (float)$bound;
-        }, [$bounds[0] ?? null, $bounds[1] ?? null]);
-
-        if ($min === null && $max === null) {
-            throw new InvalidArgumentException('Missing min and max range values');
-        }
-
-        $number = $dateColumn || $column->type === 'integer' ? $col : $this->rangeNumericExpression($col);
+        [$min, $max, $maxExclusive] = $bounds;
+        $number = $kind !== ResponseConditionValues::KIND_TEXT ? $col : NumericRangeSql::expression($this->getDb(), $col);
         $minHolder = $holderPrefix . '0';
         $maxHolder = $holderPrefix . '1';
+        $maxOperator = $maxExclusive ? '<' : '<=';
 
         if ($min === null) {
-            return ["$number <= $maxHolder", [$maxHolder => $max]];
+            return ["$number $maxOperator $maxHolder", [$maxHolder => $max]];
         }
         if ($max === null) {
             return ["$number >= $minHolder", [$minHolder => $min]];
         }
-        return ["$number BETWEEN $minHolder AND $maxHolder", [$minHolder => $min, $maxHolder => $max]];
-    }
-
-    /**
-     * Column read as a number, NULL when the cell is not numeric. Mirrors
-     * RangeConditionHandler so statistics and response filters match the
-     * same rows.
-     */
-    private function rangeNumericExpression(string $col): string
-    {
-        $db = $this->getDb();
-        $pattern = $db->quoteValue(self::NUMERIC_PATTERN);
-        $type = 'DECIMAL(30,10)';
-
-        switch ($db->getDriverName()) {
-            case 'pgsql':
-                // Unconstrained NUMERIC: DECIMAL(30,10) raises "numeric field overflow" on long digit strings
-                return "(CASE WHEN CAST($col AS TEXT) ~ $pattern THEN CAST($col AS NUMERIC) END)";
-            case 'sqlsrv':
-            case 'mssql':
-            case 'dblib':
-                return "TRY_CAST($col AS $type)";
-            default:
-                return "(CASE WHEN CAST($col AS CHAR) REGEXP $pattern THEN CAST($col AS $type) END)";
+        if ($maxExclusive) {
+            return ["($number >= $minHolder AND $number < $maxHolder)", [$minHolder => $min, $maxHolder => $max]];
         }
+        return ["$number BETWEEN $minHolder AND $maxHolder", [$minHolder => $min, $maxHolder => $max]];
     }
 
     /**
