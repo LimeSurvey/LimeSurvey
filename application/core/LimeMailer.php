@@ -390,64 +390,97 @@ class LimeMailer extends PHPMailer
         $this->rawSubject = $oSurveyLanguageSetting->{$attributeSubject};
         $this->rawBody = $oSurveyLanguageSetting->{$emailColumns[$emailType]};
     }
+
+    /**
+     * Split a «Name <email>» string into its name and email address parts.
+     * The address is the last <…> part containing an '@' (or the last <…> part if none contains one),
+     * so a name containing '<' or '>' (e.g. «John <Admin> Doe <john@example.org>») is kept intact.
+     * A missing closing '>' at the end is tolerated. Double quotes around the name are removed.
+     * @param string $string email, «Name <email>» or «<email>»
+     * @return array{name: string|null, address: string} name is null if the string has no name part at all,
+     *               and an empty string if the string starts with '<' (explicitly empty name)
+     */
+    public static function parseNameAndAddress($string)
+    {
+        $string = trim((string) $string);
+        $addressStart = null;
+        $addressEnd = null;
+        if (preg_match_all('/<([^<>]*)>/', $string, $matches, PREG_OFFSET_CAPTURE)) {
+            $match = end($matches[0]);
+            foreach (array_reverse($matches[0]) as $candidate) {
+                if (strpos($candidate[0], '@') !== false) {
+                    $match = $candidate;
+                    break;
+                }
+            }
+            $addressStart = $match[1];
+            $addressEnd = $match[1] + strlen($match[0]);
+        } elseif (preg_match('/<[^<>]*@[^<>]*$/', $string, $match, PREG_OFFSET_CAPTURE)) {
+            /* Unclosed «Name <email» */
+            $addressStart = $match[0][1];
+            $addressEnd = strlen($string);
+        }
+        if (is_null($addressStart)) {
+            return array('name' => null, 'address' => $string);
+        }
+        $address = trim(substr($string, $addressStart, $addressEnd - $addressStart), " \t\n\r\0\x0B<>");
+        $name = trim(substr($string, 0, $addressStart));
+        if (strlen($name) > 1 && $name[0] === '"' && substr($name, -1) === '"') {
+            $name = preg_replace('/\\\\(.)/s', '$1', substr($name, 1, -1));
+        }
+        return array('name' => $name, 'address' => $address);
+    }
+
     /**
      * @inheritdoc
      * Fix first parameters if he had email + name ( Name <email> format)
+     * @param string $from email, «Name <email>» or «<email>» (forces an empty name)
+     * @param string|null $fromname name, if null: taken from $from or the current FromName
+     * @param bool $auto see parent
      * @return bool
      */
     public function setFrom($from, $fromname = null, $auto = true)
     {
-        $fromemail = $from;
-        /* Email is always the last «<email>» part: use the last angle brackets so a name containing '<' is kept intact */
-        $ltPosition = strrpos($from, '<');
-        if ($ltPosition !== false) {
-            if (is_null($fromname)) {
-                if ($ltPosition > 0) {
-                    $fromname = trim(substr($from, 0, $ltPosition));
-                } else {
-                    /* Allow to force empty name in token email */
-                    $fromname = '';
-                }
-            }
-            $gtPosition = strrpos($from, '>');
-            $fromemail = substr($from, $ltPosition + 1, $gtPosition - 1 - $ltPosition);
+        $parsed = self::parseNameAndAddress($from);
+        if (is_null($fromname)) {
+            /* An empty name part (e.g. «<email>») allows to force empty name in token email */
+            $fromname = $parsed['name'];
         }
         if (is_null($fromname)) {
             $fromname = $this->FromName;
         }
-        return parent::setFrom($fromemail, $fromname, $auto);
+        return parent::setFrom($parsed['address'], $fromname, $auto);
     }
 
     /**
      * Set the to
      * @see self::addAddress
-     * @param string|string[] $to email (or «Name» <email>)
-     * @param string $toName thye name
+     * @param string|string[] $addressTo email (or «Name» <email>), or an array of them
+     * @param string $name the name, used for each address
      * @return void
      */
     public function setTo($addressTo, $name = '')
     {
         $this->clearAddresses();
-        $this->addAddress($addressTo, $name);
+        foreach ((array) $addressTo as $address) {
+            $this->addAddress($address, $name);
+        }
     }
 
     /**
      * @inheritdoc
      * Fix first parameters if he had email + name ( Name <email> format)
+     * @param string $addressTo email or «Name <email>»
+     * @param string $name the name, if empty: taken from $addressTo
+     * @return bool
      */
     public function addAddress($addressTo, $name = '')
     {
-        $address = $addressTo;
-        /* Email is always the last «<email>» part: use the last angle brackets so a name containing '<' is kept intact */
-        $ltPosition = strrpos($addressTo, '<');
-        if ($ltPosition !== false) {
-            $gtPosition = strrpos($addressTo, '>');
-            $address = substr($addressTo, $ltPosition + 1, $gtPosition - 1 - $ltPosition);
-            if (empty($name)) {
-                $name = trim(substr($addressTo, 0, $ltPosition));
-            }
+        $parsed = self::parseNameAndAddress($addressTo);
+        if (empty($name)) {
+            $name = (string) $parsed['name'];
         }
-        return parent::addAddress($address, $name);
+        return parent::addAddress($parsed['address'], $name);
     }
 
     /**
