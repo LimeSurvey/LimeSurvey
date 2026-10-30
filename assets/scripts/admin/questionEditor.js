@@ -1855,6 +1855,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const currentGroup = $('#gid').children("option:selected").val();
         $('#general-settings').replaceWith(generalSettingsHtml);
         $('#questionCode').val(code);
+        /* The code input was replaced: Bind the blur/enter validation again on the new element */
+        activateQuestionCodeChecker();
         var wrapperEl = $('#question-type-selector-wrapper');
         var viewType = wrapperEl.data('viewtype');
         var debug = wrapperEl.data('debug');
@@ -2010,6 +2012,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
       if (!(form instanceof HTMLFormElement)) {
         $('#ls-loading').hide();
         throw 'form is not HTMLFormElement';
+      }
+      /* Reset a stale custom validity message from a previous check: The code is checked again below with Ajax */
+      const questionCodeInput = document.getElementById('questionCode');
+      if (questionCodeInput instanceof HTMLInputElement) {
+        questionCodeInput.setCustomValidity('');
       }
       /* Check if input are HTML5 valid */
       if (!form.checkValidity() ) {
