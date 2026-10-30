@@ -393,42 +393,18 @@ class LimeMailer extends PHPMailer
 
     /**
      * Split a «Name <email>» string into its name and email address parts.
-     * The address is the last <…> part containing an '@' (or the last <…> part if none contains one),
-     * so a name containing '<' or '>' (e.g. «John <Admin> Doe <john@example.org>») is kept intact.
-     * A missing closing '>' at the end is tolerated. Double quotes around the name are removed.
+     * The address is the last <…> part at the end, so a name containing '<' or '>' is kept intact.
      * @param string $string email, «Name <email>» or «<email>»
-     * @return array{name: string|null, address: string} name is null if the string has no name part at all,
-     *               and an empty string if the string starts with '<' (explicitly empty name)
+     * @return array{name: string|null, address: string} name is null if there is no <…> part at the end,
+     *               and an empty string for «<email>» (explicitly empty name)
      */
     public static function parseNameAndAddress($string)
     {
         $string = trim((string) $string);
-        $addressStart = null;
-        $addressEnd = null;
-        if (preg_match_all('/<([^<>]*)>/', $string, $matches, PREG_OFFSET_CAPTURE)) {
-            $match = end($matches[0]);
-            foreach (array_reverse($matches[0]) as $candidate) {
-                if (strpos($candidate[0], '@') !== false) {
-                    $match = $candidate;
-                    break;
-                }
-            }
-            $addressStart = $match[1];
-            $addressEnd = $match[1] + strlen($match[0]);
-        } elseif (preg_match('/<[^<>]*@[^<>]*$/', $string, $match, PREG_OFFSET_CAPTURE)) {
-            /* Unclosed «Name <email» */
-            $addressStart = $match[0][1];
-            $addressEnd = strlen($string);
+        if (preg_match('/^(.*)<([^<>]*)>$/s', $string, $matches)) {
+            return array('name' => trim($matches[1]), 'address' => trim($matches[2]));
         }
-        if (is_null($addressStart)) {
-            return array('name' => null, 'address' => $string);
-        }
-        $address = trim(substr($string, $addressStart, $addressEnd - $addressStart), " \t\n\r\0\x0B<>");
-        $name = trim(substr($string, 0, $addressStart));
-        if (strlen($name) > 1 && $name[0] === '"' && substr($name, -1) === '"') {
-            $name = preg_replace('/\\\\(.)/s', '$1', substr($name, 1, -1));
-        }
-        return array('name' => $name, 'address' => $address);
+        return array('name' => null, 'address' => $string);
     }
 
     /**
@@ -455,16 +431,14 @@ class LimeMailer extends PHPMailer
     /**
      * Set the to
      * @see self::addAddress
-     * @param string|string[] $addressTo email (or «Name» <email>), or an array of them
-     * @param string $name the name, used for each address
+     * @param string|string[] $to email (or «Name» <email>)
+     * @param string $toName thye name
      * @return void
      */
     public function setTo($addressTo, $name = '')
     {
         $this->clearAddresses();
-        foreach ((array) $addressTo as $address) {
-            $this->addAddress($address, $name);
-        }
+        $this->addAddress($addressTo, $name);
     }
 
     /**
