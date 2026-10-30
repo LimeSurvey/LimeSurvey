@@ -114,7 +114,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     public function beforeDeactivate()
     {
         $this->getEvent()->set('success', false);
-        $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
+        $this->getEvent()->set('message', gT('This core plugin can not be disabled.'));
     }
 
     /**
