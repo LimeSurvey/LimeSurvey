@@ -63,6 +63,7 @@ var UserManagement = function () {
             modalDialog.addClass(modalSize);
         }
         $('#UserManagement-action-modal').modal('show');
+        announceLoading();
     };
 
     var startSubmit = function () {
@@ -382,8 +383,26 @@ var UserManagement = function () {
         $('#UserManagement--modalform').find('select').each(
             function(i,item) {
                 jQuery(item).select2({'theme':'bootstrap\x2D5'});
+                labelSelect2(item);
+                jQuery(item).on('change', function () {
+                    labelSelect2(item);
+                });
             }
         );
+    }
+
+    /**
+     * The inline search field of a multiple Select2 gets focus but is only labelled "Search",
+     * so link it to the label of the select (select2-aria.js only handles the combobox and dropdown search)
+     */
+    var labelSelect2 = function (item) {
+        var labelledBy = $(item).attr('aria-labelledby');
+        if (!labelledBy) {
+            return;
+        }
+        $(item).next('.select2').find('.select2-search--inline .select2-search__field')
+            .removeAttr('aria-label')
+            .attr('aria-labelledby', labelledBy);
     }
 
     var wireDatePicker = function () {
@@ -423,8 +442,28 @@ var UserManagement = function () {
         });
     }
 
+    /**
+     * Announces the loader through the status live region once the modal is visible
+     */
+    var announceLoading = function () {
+        var modal = $('#UserManagement-action-modal');
+        var status = $('#UserManagement-action-modal-status');
+        var setText = function () {
+            if (modal.find('#loader-usermanagement').length) {
+                status.text(status.data('loading-text'));
+            }
+        };
+        status.text('');
+        if (modal.hasClass('show')) {
+            setTimeout(setText, 100);
+        } else {
+            modal.one('shown.bs.modal', setText);
+        }
+    };
+
     var applyModalHtml = function (html) {
         $('#UserManagement-action-modal').find('.modal-content').html(html);
+        $('#UserManagement-action-modal-status').text('');
         wirePasswordOptions();
         wireLoginMethods();
         wirePermissions();
