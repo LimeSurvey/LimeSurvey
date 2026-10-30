@@ -78,6 +78,11 @@ class LimeMailerTest extends TestBaseClass
         $mailer->clearAddresses();
         $mailer->addAddress('Other <john@example.org>', 'John Doe');
         $this->assertSame([['john@example.org', 'John Doe']], $mailer->getToAddresses());
+
+        /* "0" is a name, not an empty value */
+        $mailer->clearAddresses();
+        $mailer->addAddress('Other <john@example.org>', '0');
+        $this->assertSame([['john@example.org', '0']], $mailer->getToAddresses());
     }
 
     /**

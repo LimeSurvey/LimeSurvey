@@ -471,13 +471,14 @@ class LimeMailer extends PHPMailer
      * @inheritdoc
      * Fix first parameters if he had email + name ( Name <email> format)
      * @param string $addressTo email or «Name <email>»
-     * @param string $name the name, if empty: taken from $addressTo
+     * @param string $name the name, if empty string or null: taken from $addressTo
      * @return bool
      */
     public function addAddress($addressTo, $name = '')
     {
         $parsed = self::parseNameAndAddress($addressTo);
-        if (empty($name)) {
+        /* Not empty(): a name like "0" must be kept */
+        if ($name === '' || $name === null) {
             $name = (string) $parsed['name'];
         }
         return parent::addAddress($parsed['address'], $name);
