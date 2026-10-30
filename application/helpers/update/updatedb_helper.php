@@ -3247,7 +3247,7 @@ function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn = null)
 
 /**
 * @param string $sTablename
-* @param string[string[] $aColumns the primary keys as string or columns
+* @param string|string[] $aColumns the primary keys as string or columns
 */
 function addPrimaryKey($sTablename, $aColumns)
 {
