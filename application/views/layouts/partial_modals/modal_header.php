@@ -21,7 +21,8 @@ $modalDialogSrId = !empty($modalTitleId) ? $modalTitleId . '-dialogsr' : null;
         <?php echo $modalTitle; ?>
     </h2>
     <?php if (!empty($modalTitleId) && !empty($modalDialogSrId)) : ?>
-        <span class="visually-hidden" id="<?= CHtml::encode($modalDialogSrId) ?>"><?= gT('Dialog') ?></span>
+        <?php // aria-hidden: only read as part of the dialog name, not again when reading the dialog content ?>
+        <span class="visually-hidden" id="<?= CHtml::encode($modalDialogSrId) ?>" aria-hidden="true"><?= gT('Dialog') ?></span>
     <?php endif; ?>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close') ?>"></button>
 </div>
