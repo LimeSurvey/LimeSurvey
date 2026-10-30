@@ -394,7 +394,7 @@ class LimeMailer extends PHPMailer
     /**
      * Split a «Name <email>» string into its name and email address parts.
      * The address is the last <…> part at the end, so a name containing '<' or '>' is kept intact.
-     * @param string $string email, «Name <email>» or «<email>»
+     * @param string $string «email», «Name <email>» or «<email>» (forces an empty name)
      * @return array{name: string|null, address: string} name is null if there is no <…> part at the end,
      *               and an empty string for «<email>» (explicitly empty name)
      */
