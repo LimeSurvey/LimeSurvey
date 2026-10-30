@@ -217,7 +217,7 @@ abstract class Token extends Dynamic
                 date('YmdHis') . "_" .
                 randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
             $db->createCommand()->createIndex($tokenindexname, $sTableName, 'token');
-            $tokenindexname = "idx_email_" .
+            $mailindexname = "idx_email_" .
                 substr($sTableName, strlen(App()->getDb()->tablePrefix)) . "_" .
                 date('YmdHis') . "_" .
                 randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
