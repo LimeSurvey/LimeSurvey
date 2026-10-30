@@ -51,6 +51,13 @@ class remotecontrol_handle
     protected $controller;
 
     /**
+     * Username as set by the auth plugin during the last successful login, can differ from the given one (e.g. login by email)
+     *
+     * @var string|null
+     */
+    protected $authenticatedUsername;
+
+    /**
      * Constructor, stores the action instance into this handle class
      *
      * @access public
@@ -83,8 +90,12 @@ class remotecontrol_handle
     {
         $username = (string) $username;
         $password = (string) $password;
+        $this->authenticatedUsername = null;
         $loginResult = $this->_doLogin($username, $password, $plugin);
         if ($loginResult === true) {
+            if (!empty($this->authenticatedUsername)) {
+                $username = $this->authenticatedUsername;
+            }
             $this->_jumpStartSession($username);
             $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
             $session = new Session();
@@ -3980,6 +3991,8 @@ class remotecontrol_handle
     /**
      * Login with username and password
      *
+     * On success the username set by the auth plugin is stored in $authenticatedUsername.
+     *
      * @access protected
      * @param string $sUsername username
      * @param string $sPassword password
@@ -4004,6 +4017,7 @@ class remotecontrol_handle
             }
             return false;
         } else {
+            $this->authenticatedUsername = $identity->username;
             return true;
         }
     }
