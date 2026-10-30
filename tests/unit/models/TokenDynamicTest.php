@@ -233,35 +233,59 @@ class TokenDynamicTest extends TestBaseClass
     /**
      * The survey encrypts lastname and email, the duplicate check on import must still find the participant.
      */
-    public function testCountByAttributesWithEncryptedAttributes()
+    public function testCountByPlainAttributesWithEncryptedAttributes()
     {
-        $token = \Token::create(self::$surveyId);
-        $token->firstname = 'Jane';
-        $token->lastname = 'Doe';
-        $token->email = 'jane.doe@example.com';
-        $this->assertTrue($token->encryptSave(true));
-
-        $otherToken = \Token::create(self::$surveyId);
-        $otherToken->firstname = 'John';
-        $otherToken->lastname = 'Doe';
-        $otherToken->email = 'jane.doe@example.com';
-        $this->assertTrue($otherToken->encryptSave(true));
-
         $model = TokenDynamic::model(self::$surveyId);
-        $duplicateCount = (int) $model->countByAttributes([
-            'firstname' => 'Jane',
-            'lastname' => 'Doe',
-            'email' => 'jane.doe@example.com',
-        ]);
-        $otherCount = (int) $model->countByAttributes([
-            'firstname' => 'Jane',
-            'lastname' => 'Doe',
-            'email' => 'john.doe@example.com',
-        ]);
-        $token->delete();
-        $otherToken->delete();
+        $encryptedAttributes = $model->getAllEncryptedAttributes(self::$surveyId, 'TokenDynamic');
+        $this->assertSame(['lastname', 'email'], array_values(array_intersect(['firstname', 'lastname', 'email'], $encryptedAttributes)));
 
-        $this->assertSame(1, $duplicateCount, 'The participant with the same encrypted attributes should be found.');
-        $this->assertSame(0, $otherCount, 'A participant with another email should not be found.');
+        $tokens = [];
+        try {
+            $token = \Token::create(self::$surveyId);
+            $token->firstname = 'Jane';
+            $token->lastname = 'Doe';
+            $token->email = 'jane.doe@example.com';
+            $this->assertTrue($token->encryptSave(true));
+            $tokens[] = $token;
+
+            $otherToken = \Token::create(self::$surveyId);
+            $otherToken->firstname = 'John';
+            $otherToken->lastname = 'Doe';
+            $otherToken->email = 'jane.doe@example.com';
+            $this->assertTrue($otherToken->encryptSave(true));
+            $tokens[] = $otherToken;
+
+            $noLastnameToken = \Token::create(self::$surveyId);
+            $noLastnameToken->firstname = 'Jane';
+            $noLastnameToken->lastname = '';
+            $noLastnameToken->email = 'jane.nolastname@example.com';
+            $this->assertTrue($noLastnameToken->encryptSave(true));
+            $tokens[] = $noLastnameToken;
+
+            $this->assertSame(1, $model->countByPlainAttributes([
+                'firstname' => 'Jane',
+                'lastname' => 'Doe',
+                'email' => 'jane.doe@example.com',
+            ], $encryptedAttributes), 'The participant with the same encrypted attributes should be found.');
+            $this->assertSame(0, $model->countByPlainAttributes([
+                'firstname' => 'Jane',
+                'lastname' => 'Doe',
+                'email' => 'john.doe@example.com',
+            ], $encryptedAttributes), 'A participant with another email should not be found.');
+            $this->assertSame(1, $model->countByPlainAttributes([
+                'firstname' => 'Jane',
+                'lastname' => '',
+                'email' => 'jane.nolastname@example.com',
+            ], $encryptedAttributes), 'An empty encrypted value should be compared as it is saved.');
+            $this->assertSame(0, $model->countByAttributes([
+                'firstname' => 'Jane',
+                'lastname' => 'Doe',
+                'email' => 'jane.doe@example.com',
+            ]), 'countByAttributes() should still compare the given values as they are.');
+        } finally {
+            foreach ($tokens as $token) {
+                $token->delete();
+            }
+        }
     }
 }

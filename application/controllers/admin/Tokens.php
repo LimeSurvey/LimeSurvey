@@ -2371,6 +2371,10 @@ class Tokens extends SurveyCommonAction
                 } else {
                     $aFilterDuplicateFields = Yii::app()->request->getPost('filterduplicatefields');
                 }
+                $aEncryptedAttributes = array();
+                if ($bFilterDuplicateToken) {
+                    $aEncryptedAttributes = TokenDynamic::model($iSurveyId)->getAllEncryptedAttributes($iSurveyId, 'TokenDynamic');
+                }
                 $sSeparator = Yii::app()->request->getPost('separator');
                 $aMissingAttrFieldName = $aInvalideAttrFieldName = array();
                 foreach ($aTokenListArray as $buffer) {
@@ -2480,10 +2484,14 @@ class Tokens extends SurveyCommonAction
                             foreach ($aFilterDuplicateFields as $field) {
                                 if (isset($aWriteArray[$field])) {
                                     $aDuplicateAttributes[$field] = $aWriteArray[$field];
+                                    // Compare the value that is saved, the Token model strips the tags of these fields
+                                    if ($field == 'firstname' || $field == 'lastname') {
+                                        $aDuplicateAttributes[$field] = Token::sanitizeAttribute($aWriteArray[$field]);
+                                    }
                                 }
                             }
-                            $dupresult = TokenDynamic::model($iSurveyId)->countByAttributes($aDuplicateAttributes);
-                            if ($dupresult > 0) {
+                            // Encrypted values only match exactly, plain values are compared with the database collation
+                            if (!empty($aDuplicateAttributes) && TokenDynamic::model($iSurveyId)->countByPlainAttributes($aDuplicateAttributes, $aEncryptedAttributes) > 0) {
                                 $bDuplicateFound = true;
                                 $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s)"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']));
                             }
