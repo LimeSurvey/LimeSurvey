@@ -218,7 +218,7 @@ abstract class Token extends Dynamic
                 randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
             $db->createCommand()->createIndex($tokenindexname, $sTableName, 'token');
             $mailindexname = "idx_email_" .
-                trim($sTableName, '{}') . "_" . . "_" .
+                trim($sTableName, '{}') . "_" .
                 date('YmdHis') . "_" .
                 randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
             // MSSQL does not support indexes on text fields so not needed here
