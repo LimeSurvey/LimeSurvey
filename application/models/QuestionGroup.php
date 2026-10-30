@@ -493,7 +493,8 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * Used in frontend helper, buildsurveysession.
+     * Count the groups that contain at least one question without "Always hide this question"
+     * (used for the {NUMBEROFGROUPS} placeholder)
      * @param int $surveyid
      * @return int
      */
@@ -505,11 +506,9 @@ class QuestionGroup extends LSActiveRecord
             return $value;
         }
 
-        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-        $sQuery = "select count(DISTINCT $quotedGroups.gid) from $quotedGroups
-            left join {{questions}} on  $quotedGroups.gid={{questions}}.gid
-            where $quotedGroups.sid ={$surveyid} and qid is not null";
-        $result = Yii::app()->db->createCommand($sQuery)->queryScalar();
+        // Groups with only always hidden questions are never shown to the participant
+        $survey = Survey::model()->findByPk($surveyid);
+        $result = $survey ? count($survey->getGroupIdsWithVisibleQuestions()) : 0;
 
         EmCacheHelper::set($cacheKey, $result);
 

@@ -11,22 +11,22 @@
  */
 #}
 {% if sumRemainingEqn %}
-    <li class="mb-3 ls-group-remaining ls-group-dynamic row">
-        <div class="control-label col-12 col-md-{{sLabelWidth}}{% if sLabelWidth == 0 %} d-none{% endif %}">
+    <li class="mb-3 ls-group-remaining ls-group-dynamic align-items-center row">
+        <div class="control-label mb-md-0 col-12 col-md-{{sLabelWidth}}{% if sLabelWidth == 0 %} d-none{% endif %}">
             {{ gT('Remaining') }}:
         </div>
-        <div class="ls-input-group col-12 col-md-{{sInputContainerWidth}}">
+        <div class="ls-input-group d-table col-12 col-md-{{sInputContainerWidth}}">
             {% if prefix %}
-                <div class="ls-input-group-extra prefix-text prefix">
+                <div class="ls-input-group-extra prefix-text prefix d-table-cell align-middle text-nowrap">
                     {{ processString(prefix) }}
                 </div>
             {% endif %}
-            <div id="remainingvalue_{{id}}" class="form-control-static numeric dynamic-remaining" data-number="1">
+            <div id="remainingvalue_{{id}}" class="form-control-static numeric dynamic-remaining d-table-cell align-middle w-100" data-number="1">
             <!-- alternative class : form-control : display like an input:text -->
                 {{ sumRemainingEqn }}
             </div>
             {% if suffix  %}
-                <div class="ls-input-group-extra suffix-text suffix">
+                <div class="ls-input-group-extra suffix-text suffix d-table-cell align-middle text-nowrap">
                     {{ processString(suffix) }}
                 </div>
             {% endif %}
@@ -41,21 +41,21 @@
             <hr>
         </div>
     </li>
-    <li class="mb-3 ls-group-total ls-group-dynamic row">
-        <div class="control-label col-12 col-md-{{sLabelWidth}}{% if sLabelWidth == 0 %} d-none{% endif %}">
+    <li class="mb-3 ls-group-total ls-group-dynamic align-items-center row">
+        <div class="control-label mb-md-0 col-12 col-md-{{sLabelWidth}}{% if sLabelWidth == 0 %} d-none{% endif %}">
             {{ gT('Total:') }}
         </div>
-       <div class="ls-input-group col-12 col-md-{{sInputContainerWidth}}">
+       <div class="ls-input-group d-table col-12 col-md-{{sInputContainerWidth}}">
             {% if prefix %}
-                <div class="ls-input-group-extra prefix-text prefix d-none">
+                <div class="ls-input-group-extra prefix-text prefix d-table-cell align-middle text-nowrap">
                     {{ processString(prefix) }}
                 </div>
             {% endif %}
-            <div id="totalvalue_{{id}}" class="form-control-static numeric dynamic-total" data-number="1">
+            <div id="totalvalue_{{id}}" class="form-control-static numeric dynamic-total d-table-cell align-middle w-100" data-number="1">
                 {{ sumEqn }}
             </div>
             {% if suffix  %}
-                <div class="ls-input-group-extra suffix-text suffix d-none">
+                <div class="ls-input-group-extra suffix-text suffix d-table-cell align-middle text-nowrap">
                     {{ processString(suffix) }}
                 </div>
             {% endif %}

@@ -1853,8 +1853,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
         var code = $('#questionCode').val();
         const [generalSettingsHtml, advancedSettingsHtml, extraOptionsHtml] = await Promise.all([generalSettingsPromise, advancedSettingsPromise, extraOptionsPromise]);
         const currentGroup = $('#gid').children("option:selected").val();
+        const currentPosition = $('#questionposition').val();
         $('#general-settings').replaceWith(generalSettingsHtml);
         $('#questionCode').val(code);
+        /* The code input was replaced: Bind the blur/enter validation again on the new element */
+        activateQuestionCodeChecker();
         var wrapperEl = $('#question-type-selector-wrapper');
         var viewType = wrapperEl.data('viewtype');
         var debug = wrapperEl.data('debug');
@@ -1870,6 +1873,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
         runner_questionTypeSelector.bind();
 
         $('#gid').val(currentGroup);
+        /* The group selector and the position selector were replaced: Bind the group change again and load the positions of the selected group */
+        activateQuestionPositionReload();
+        reloadQuestionPosition(currentGroup, currentPosition);
         // TODO: Double check HTML injected here. Extra div?
         $('#advanced-options-container').replaceWith(advancedSettingsHtml);
         $('#extra-options-container').replaceWith(extraOptionsHtml);
@@ -2010,6 +2016,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
       if (!(form instanceof HTMLFormElement)) {
         $('#ls-loading').hide();
         throw 'form is not HTMLFormElement';
+      }
+      /* Reset a stale custom validity message from a previous check: The code is checked again below with Ajax */
+      const questionCodeInput = document.getElementById('questionCode');
+      if (questionCodeInput instanceof HTMLInputElement) {
+        questionCodeInput.setCustomValidity('');
       }
       /* Check if input are HTML5 valid */
       if (!form.checkValidity() ) {
@@ -2250,6 +2261,46 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
   /* Attach event when ready */
   activateQuestionCodeChecker();
+
+  /**
+   * Load the position selector of a new question for another question group
+   *
+   * @param {string} gid
+   * @param {string|undefined} position Position to select again, if it exists in this group
+   * @return {void}
+   */
+  function reloadQuestionPosition(gid, position) {
+    const container = $('#question-position-container');
+    if (container.length === 0) {
+      return;
+    }
+    $.ajax({
+      url: container.data('url'),
+      method: 'GET',
+      data: { gid, display: 'general_option' },
+      dataType: 'html',
+      success: (html) => {
+        container.html(html);
+        if (position !== undefined && position !== null) {
+          $('#questionposition').val(position);
+          /* Position does not exist in this group: Back to "At end" */
+          if ($('#questionposition').val() === null) {
+            $('#questionposition').val('');
+          }
+        }
+      },
+      error: (data) => {
+        console.ls.error(data);
+      },
+    });
+  }
+  /** Reload the position selector of a new question when its question group changes */
+  function activateQuestionPositionReload() {
+    $('#gid').off('change.questionposition').on('change.questionposition', function () {
+      reloadQuestionPosition($(this).val());
+    });
+  }
+  activateQuestionPositionReload();
   /** */
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {

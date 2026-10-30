@@ -16,6 +16,12 @@ Yii::app()->getController()->renderPartial(
         <div class="row ls-space margin top-5 bottom-5 d-none" id="UserManagement--errors" role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1">
         </div>
         <input type="hidden" name="userid" value="<?php echo $oUser->uid; ?>"/>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => gT('Regardless of these settings, the user can always use the theme a survey inherits from its survey group or from the global default theme.'),
+            'type' => 'info',
+        ]);
+        ?>
         <div class="mb-3">
             <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-outline-secondary">
                 <?php eT('Select all'); ?>

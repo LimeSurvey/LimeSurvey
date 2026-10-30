@@ -74,7 +74,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     <label class="card-title"><?php eT("Screen part files:"); ?></label>
                     <?php foreach ($files as $file) { ?>
                         <div class="row">
-                            <div class="col-8">
+                            <div class="col text-break">
                                 <a href="<?php echo $this->createUrl('admin/themes',
                                     ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
                                    class="<?= $file == $relativePathEditfile ? 'text-danger' : 'text-success' ?>">
@@ -83,7 +83,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         : substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1) ?>
                                 </a>
                             </div>
-                            <div class="col-4">
+                            <div class="col-auto">
                                 <?php if ($oEditedTemplate->getTemplateForFile($file, $oEditedTemplate, false)
                                     && $oEditedTemplate->getTemplateForFile($file,
                                         $oEditedTemplate)->sTemplateName === $oEditedTemplate->sTemplateName) { ?>
@@ -99,7 +99,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         <?= CHtml::endForm() ?>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <span class="badge bg-danger"> <?php eT("Inherited"); ?> </span>
+                                    <span class="badge bg-info"><?php eT("Inherited"); ?></span>
                                 <?php } ?>
                             </div>
                         </div>
@@ -111,7 +111,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     <label class="card-title"><?php eT("JavaScript files:"); ?></label>
                     <?php foreach ($jsfiles as $file) { ?>
                         <div class="row">
-                            <div class="col-8">
+                            <div class="col text-break">
                                 <a href="<?php echo $this->createUrl('admin/themes',
                                     ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
                                    class="<?= $file == $relativePathEditfile ? 'text-danger' : 'text-success' ?>">
@@ -120,7 +120,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         : substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1); ?>
                                 </a>
                             </div>
-                            <div class="col-4">
+                            <div class="col-auto">
                                 <?php if ($oEditedTemplate->getTemplateForFile($file,
                                         $oEditedTemplate)->sTemplateName === $oEditedTemplate->sTemplateName) { ?>
                                     <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) { ?>
@@ -136,7 +136,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         <?= CHtml::endForm() ?>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <span class="badge bg-danger "><?php eT("Inherited"); ?></span>
+                                    <span class="badge bg-info"><?php eT("Inherited"); ?></span>
                                 <?php } ?>
                             </div>
                         </div>
@@ -149,7 +149,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     <label class="card-title"><?php eT("CSS files:"); ?></label>
                     <?php foreach ($cssfiles as $file) { ?>
                         <div class="row">
-                            <div class="col-8">
+                            <div class="col text-break">
                                 <a href="<?php echo $this->createUrl('admin/themes',
                                     ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
                                    class="<?= $file === $relativePathEditfile ? 'text-danger' : 'text-success'?>">
@@ -158,7 +158,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         : substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1); ?>
                                 </a>
                             </div>
-                            <div class="col-4">
+                            <div class="col-auto">
                                 <?php if ($oEditedTemplate->getTemplateForFile($file,
                                         $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
                                     <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) { ?>
@@ -174,7 +174,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         <?= CHtml::endForm() ?>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <span class="badge bg-danger "><?php eT("Inherited"); ?></span>
+                                    <span class="badge bg-info"><?php eT("Inherited"); ?></span>
                                 <?php } ?>
                             </div>
                         </div>
@@ -187,10 +187,10 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     <div class="col-12 mb-3 other-files-list">
                         <?php foreach ($otherfiles as $fileName => $file) { ?>
                             <div class="row other-files-row">
-                                <div class="col-8 other-files-filename">
+                                <div class="col text-break other-files-filename">
                                     <?php echo CHtml::encode($fileName); ?>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-auto">
                                     <?php //TODO: make it ajax and less messy ?>
                                     <?php if ($oEditedTemplate->getTemplateForFile($fileName,
                                             $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) {
@@ -210,7 +210,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                             <?= CHtml::endForm() ?>
                                         <?php } ?>
                                     <?php } else { ?>
-                                        <span class="badge bg-danger "><?php eT("Inherited"); ?></span>
+                                        <span class="badge bg-info"><?php eT("Inherited"); ?></span>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -228,7 +228,11 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                     ]); ?>
                                 <div class="row">
                                     <label class="form-label col-12">
-                                        <?php printf(gT("Upload a file (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                                        <?php if (isFileUploadSizeLimited()) {
+                                            printf(gT("Upload a file (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024);
+                                        } else {
+                                            eT("Upload a file:");
+                                        } ?>
                                     </label>
                                 </div>
                                 <div class="row">

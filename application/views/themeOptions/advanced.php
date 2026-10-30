@@ -14,7 +14,11 @@
         <div class="row mb-3">
             <div class="col-4">
                 <label>
-                    <?php printf(gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                    <?php if (isFileUploadSizeLimited()) {
+                        printf(gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024);
+                    } else {
+                        eT("Upload an image:");
+                    } ?>
                 </label>
             </div>
             <div class="col-8">

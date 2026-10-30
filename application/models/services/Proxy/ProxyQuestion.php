@@ -25,6 +25,18 @@ class ProxyQuestion
     }
 
     /**
+     * Increases the question_order numbers of the questions belonging to the group by +1
+     *
+     * @param int $questionGroupId the question group id
+     * @param int|null $after Only questions with a question_order greater than or equal to this value are moved, all of them if empty
+     * @return void
+     */
+    public static function increaseAllOrderNumbersForGroup($questionGroupId, $after = null)
+    {
+        Question::increaseAllOrderNumbersForGroup($questionGroupId, $after);
+    }
+
+    /**
      * Queries the database for the maximum sort order of questions inside question group.
      *
      * @param integer $gid

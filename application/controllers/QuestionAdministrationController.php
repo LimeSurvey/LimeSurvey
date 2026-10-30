@@ -1673,10 +1673,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $gid
      * @param string $classes
+     * @param string $display form_group, or general_option for the question editor general settings
      * @return CWidget|mixed|void
      * @throws Exception
      */
-    public function actionAjaxLoadPositionWidget($gid, $classes = '')
+    public function actionAjaxLoadPositionWidget($gid, $classes = '', $display = 'form_group')
     {
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', [':gid' => $gid]);
         if (
@@ -1684,7 +1685,7 @@ class QuestionAdministrationController extends LSBaseController
             Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read')
         ) {
             $aOptions = [
-                'display'           => 'form_group',
+                'display'           => $display === 'general_option' ? 'general_option' : 'form_group',
                 'oQuestionGroup'    => $oQuestionGroup,
 
             ];

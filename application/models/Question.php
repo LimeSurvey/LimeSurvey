@@ -1448,23 +1448,23 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Increases all question_order numbers for questions belonging to the group by +1
+     * Increases the question_order numbers of the (parent) questions belonging to the group by +1
+     *
+     * Subquestions are not touched, their order is relative to their parent question.
      *
      * @param int $questionGroupId
-     * @param integer|null $after questionorder
+     * @param integer|null $after Only questions with a question_order greater than or equal to this value are moved, all of them if empty
+     * @return void
      */
     public static function increaseAllOrderNumbersForGroup($questionGroupId, $after = null)
     {
-        $criteria = new CDbCriteria();
-        $criteria->compare("gid", $questionGroupId);
+        $condition = 'gid = :gid AND parent_qid = 0';
+        $params = [':gid' => $questionGroupId];
         if ($after) {
-            $criteria->compare("question_order", ">=" . $after);
+            $condition .= ' AND question_order >= :after';
+            $params[':after'] = (int) $after;
         }
-        $questionsInGroup = Question::model()->findAll($criteria);
-        foreach ($questionsInGroup as $question) {
-            $question->question_order = $question->question_order + 1;
-            $question->save();
-        }
+        Question::model()->updateCounters(['question_order' => 1], $condition, $params);
     }
 
     /**

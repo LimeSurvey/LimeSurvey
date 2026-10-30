@@ -58,6 +58,22 @@
                     'ext.GeneralOptionWidget.GeneralOptionWidget',
                     ['generalOption' => $generalOption]
                 ); ?>
+                <?php if ($generalOption->name === 'gid' && empty($question->qid)) : ?>
+                    <!-- Position of the new question inside the group, reloaded by questionEditor.js when the group changes -->
+                    <div
+                        id="question-position-container"
+                        data-url="<?= CHtml::encode($this->createUrl('questionAdministration/ajaxLoadPositionWidget')) ?>"
+                    >
+                        <?php $this->widget(
+                            'ext.admin.survey.question.PositionWidget.PositionWidget',
+                            [
+                                'display' => 'general_option',
+                                'oQuestionGroup' => $question->group,
+                                'oSurvey' => $oSurvey,
+                            ]
+                        ); ?>
+                    </div>
+                <?php endif; ?>
             <?php endforeach; ?>
         </div>
     </div>
