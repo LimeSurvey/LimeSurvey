@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
+use CDbColumnSchema;
 use CDbConnection;
 use InvalidArgumentException;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
@@ -587,7 +588,7 @@ final class ResponseAggregateBatch
             if ($filter['filterMethod'] === 'range') {
                 [$rangeCondition, $rangeParams] = $this->buildRangeCondition(
                     $col,
-                    $schema->columns[$field]->type === 'integer',
+                    $schema->columns[$field],
                     array_values($filter['value']),
                     ':condition' . $suffix . '_' . $index . '_'
                 );
@@ -618,14 +619,26 @@ final class ResponseAggregateBatch
      * Range predicate matching RangeConditionHandler: an empty bound leaves
      * that side open, so it is never bound into BETWEEN.
      *
+     * Date/datetime columns compare directly against the bound strings,
+     * integer columns compare directly as numbers, and anything else (numeric
+     * answers stored as text) goes through rangeNumericExpression().
+     *
      * @param array $bounds [min, max]
-     * @return array{0: string, 1: array<string,float>}
+     * @return array{0: string, 1: array<string,float|string>}
      */
-    private function buildRangeCondition(string $col, bool $integerColumn, array $bounds, string $holderPrefix): array
+    private function buildRangeCondition(string $col, CDbColumnSchema $column, array $bounds, string $holderPrefix): array
     {
-        [$min, $max] = array_map(static function ($bound) {
+        $dateColumn = preg_match('/^(date|datetime|timestamp)/i', (string)$column->dbType) === 1;
+
+        [$min, $max] = array_map(static function ($bound) use ($dateColumn) {
             if ($bound === null || $bound === '') {
                 return null;
+            }
+            if ($dateColumn) {
+                if (strtotime((string)$bound) === false) {
+                    throw new InvalidArgumentException('Range bounds must be valid dates');
+                }
+                return (string)$bound;
             }
             if (!is_numeric($bound)) {
                 throw new InvalidArgumentException('Range bounds must be numeric');
@@ -637,7 +650,7 @@ final class ResponseAggregateBatch
             throw new InvalidArgumentException('Missing min and max range values');
         }
 
-        $number = $integerColumn ? $col : $this->rangeNumericExpression($col);
+        $number = $dateColumn || $column->type === 'integer' ? $col : $this->rangeNumericExpression($col);
         $minHolder = $holderPrefix . '0';
         $maxHolder = $holderPrefix . '1';
 
