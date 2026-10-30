@@ -661,33 +661,42 @@ class GlobalSettings extends SurveyCommonAction
 
         //Use the current user details for the default administrator name and email
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
-        $sTo = $user->full_name . " <" . $user->email . ">";
-        $sFrom = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
         $sSubject = sprintf(gT('Test email from %s'), $sSiteName);
 
         $body   = array();
         $body[] = sprintf(gT('This is a test email from %s'), $sSiteName);
         $body   = implode("\n", $body);
 
-        $this->sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom);
+        $this->sendEmailAndShowResult(
+            $body,
+            $sSubject,
+            $user->email,
+            $user->full_name,
+            Yii::app()->getConfig("siteadminemail"),
+            Yii::app()->getConfig("siteadminname")
+        );
     }
 
     /**
      * Send Email and show result
+     * Name and email are passed separately, so names containing '<' or '>' don't need to be parsed
      * @param string $body
      * @param string $sSubject
-     * @param string $sTo
-     * @param string $sFrom
+     * @param string $sToEmail recipient email address
+     * @param string $sToName recipient name
+     * @param string $sFromEmail sender email address
+     * @param string $sFromName sender name
+     * @return void
      */
-    private function sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom)
+    private function sendEmailAndShowResult($body, $sSubject, $sToEmail, $sToName, $sFromEmail, $sFromName)
     {
         $mailer = new \LimeMailer();
         $mailer->emailType = 'settings_test';
         $mailer->rawBody = $body;
         $mailer->rawSubject = $sSubject;
         $mailer->SMTPDebug = 2;
-        $mailer->setTo($sTo);
-        $mailer->setFrom($sFrom);
+        $mailer->setTo($sToEmail, (string) $sToName);
+        $mailer->setFrom($sFromEmail, (string) $sFromName);
 
         $success = $mailer->sendMessage();
 

@@ -407,29 +407,42 @@ class LimeMailer extends PHPMailer
         $this->rawSubject = $oSurveyLanguageSetting->{$attributeSubject};
         $this->rawBody = $oSurveyLanguageSetting->{$emailColumns[$emailType]};
     }
+
+    /**
+     * Split a «Name <email>» string into its name and email address parts.
+     * The address is the last <…> part at the end, so a name containing '<' or '>' is kept intact.
+     * @param string $string «email», «Name <email>» or «<email>» (forces an empty name)
+     * @return array{name: string|null, address: string} name is null if there is no <…> part at the end,
+     *               and an empty string for «<email>» (explicitly empty name)
+     */
+    public static function parseNameAndAddress($string)
+    {
+        $string = trim((string) $string);
+        if (preg_match('/^(.*)<([^<>]*)>$/s', $string, $matches)) {
+            return array('name' => trim($matches[1]), 'address' => trim($matches[2]));
+        }
+        return array('name' => null, 'address' => $string);
+    }
+
     /**
      * @inheritdoc
      * Fix first parameters if he had email + name ( Name <email> format)
+     * @param string $from email, «Name <email>» or «<email>» (forces an empty name)
+     * @param string|null $fromname name, if null: taken from $from or the current FromName
+     * @param bool $auto see parent
      * @return bool
      */
     public function setFrom($from, $fromname = null, $auto = true)
     {
-        $fromemail = $from;
-        if (strpos($from, '<') !== false) {
-            if (is_null($fromname)) {
-                if (strpos($from, '<')) {
-                    $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
-                } else {
-                    /* Allow to force empty name in token email */
-                    $fromname = '';
-                }
-            }
-            $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
+        $parsed = self::parseNameAndAddress($from);
+        if (is_null($fromname)) {
+            /* An empty name part (e.g. «<email>») allows to force empty name in token email */
+            $fromname = $parsed['name'];
         }
         if (is_null($fromname)) {
             $fromname = $this->FromName;
         }
-        return parent::setFrom($fromemail, $fromname, $auto);
+        return parent::setFrom($parsed['address'], $fromname, $auto);
     }
 
     /**
@@ -448,17 +461,18 @@ class LimeMailer extends PHPMailer
     /**
      * @inheritdoc
      * Fix first parameters if he had email + name ( Name <email> format)
+     * @param string $addressTo email or «Name <email>»
+     * @param string $name the name, if empty string or null: taken from $addressTo
+     * @return bool
      */
     public function addAddress($addressTo, $name = '')
     {
-        $address = $addressTo;
-        if (strpos($address, '<')) {
-            $address = substr($addressTo, strpos($addressTo, '<') + 1, strpos($addressTo, '>') - 1 - strpos($addressTo, '<'));
-            if (empty($name)) {
-                $name = trim(substr($addressTo, 0, strpos($addressTo, '<') - 1));
-            }
+        $parsed = self::parseNameAndAddress($addressTo);
+        /* Not empty(): a name like "0" must be kept */
+        if ($name === '' || $name === null) {
+            $name = (string) $parsed['name'];
         }
-        return parent::addAddress($address, $name);
+        return parent::addAddress($parsed['address'], $name);
     }
 
     /**
