@@ -185,6 +185,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $aData['aSubQuestions'][$i]['sActualAnswer0'] = $sActualAnswer0;
             $aData['aSubQuestions'][$i]['sActualAnswer1'] = $sActualAnswer1;
             $aData['aSubQuestions'][$i]['odd'] = ($i % 2);
+            $aData['aSubQuestions'][$i]['relevanceClass'] = $this->getCurrentRelevecanceClass($myfname);
             // Set mandatory alert
             $aData['aSubQuestions'][$i]['alert'] = (($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S') && (in_array($myfname0, $this->aMandatoryViolationSubQ) || in_array($myfname1, $this->aMandatoryViolationSubQ)));
             $aData['aSubQuestions'][$i]['mandatoryviolation'] = (($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S') && (in_array($myfname0, $this->aMandatoryViolationSubQ) || in_array($myfname1, $this->aMandatoryViolationSubQ)));
@@ -261,6 +262,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $aData['aSubQuestions'][$i]['answertextright'] = $answertextright;
 
             $aData['aSubQuestions'][$i]['odd'] = ($i % 2);
+            $aData['aSubQuestions'][$i]['relevanceClass'] = $this->getCurrentRelevecanceClass($myfname);
 
             // Check the Sub Q mandatory violation
             if (($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S') && (in_array($myfname0, $this->aMandatoryViolationSubQ) || in_array($myfname1, $this->aMandatoryViolationSubQ))) {

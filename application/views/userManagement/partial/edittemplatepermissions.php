@@ -13,6 +13,8 @@ Yii::app()->getController()->renderPartial(
 ); ?>
 <div class="modal-body">
     <div class="container">
+        <div class="row ls-space margin top-5 bottom-5 d-none" id="UserManagement--errors" role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1">
+        </div>
         <input type="hidden" name="userid" value="<?php echo $oUser->uid; ?>"/>
         <div class="mb-3">
             <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-outline-secondary">

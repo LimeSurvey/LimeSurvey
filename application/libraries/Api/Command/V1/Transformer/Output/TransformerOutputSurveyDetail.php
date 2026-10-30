@@ -107,6 +107,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['isEditorCompatible'] = $data->getIsEditorCompatible();
         $survey['languages'] = $data->allLanguages;
         $survey['hasTokens'] = $data->hasTokensTable;
+        $survey['hasResponsesTable'] = (bool) $data->hasResponsesTable;
         $survey['previewLink'] = App()->createUrl(
             "survey/index",
             array(
@@ -206,6 +207,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['groupsList'] = SurveysGroups::getSurveyGroupsList();
 
         $survey['attributeDescriptions'] = $data->getDecodedAttributedescriptions();
+
+        $survey['participantEncryptedAttributes'] = $data->getAllEncryptedAttributes($data->sid, 'TokenDynamic');
 
         $survey['themesettings'] = [];
         $survey['templatePreview'] = '';

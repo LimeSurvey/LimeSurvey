@@ -1,3 +1,5 @@
+import { applyImagePreviewFallback, PLACEHOLDER_HTML, PLACEHOLDER_CELL_CLASS } from './previewfallback.js';
+
 window.uploadModalObjects = window.uploadModalObjects || {};
 
 class UploadQuestionController {
@@ -124,7 +126,7 @@ class UploadQuestionController {
             $('#' + this.fieldname + '_uploadedfiles').removeClass('d-none');
             $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
 
-            const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
+            const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico', 'heic');
             const templateHtml = $('#filerowtemplate_'+this.fieldname).html();
             
             jsonobj.forEach((item, iterator) => {
@@ -133,8 +135,8 @@ class UploadQuestionController {
                     imageOrPlaceholder = "image";
                     imageOrPlaceholderHtml  = '<img src="'+uploadurl+'/filegetcontents/'+decodeURIComponent(item.filename)+'" class="uploaded" />';
                 } else {
-                    imageOrPlaceholder = "placeholder";
-                    imageOrPlaceholderHtml = '<div class="upload-placeholder"></div>';
+                    imageOrPlaceholder = PLACEHOLDER_CELL_CLASS;
+                    imageOrPlaceholderHtml = PLACEHOLDER_HTML;
                 }
 
                 title = (show_title != 0) ? htmlentities(item.title) : '';
@@ -144,6 +146,7 @@ class UploadQuestionController {
                 const rowHtml = this.replaceWithObject(templateHtml, {imageOrPlaceholder, imageOrPlaceholderHtml, title, comment, name, filepointer});
                 $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').append(rowHtml)
             });
+            applyImagePreviewFallback($('#' + this.fieldname + '_uploadedfiles').find('img.uploaded'));
             
             $('.trigger_edit_upload_'+this.fieldname).off('click.lsuploadquestion');
             $('.trigger_edit_upload_'+this.fieldname).on('click.lsuploadquestion', 

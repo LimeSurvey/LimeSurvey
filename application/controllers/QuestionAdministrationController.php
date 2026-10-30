@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\QuestionAggregateService;
+use LimeSurvey\Models\Services\SurveyDetailService;
 use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     PermissionDeniedException,
@@ -1638,6 +1639,7 @@ class QuestionAdministrationController extends LSBaseController
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
             self::setMultipleQuestionMandatoryState($aQids, $sMandatory, $iSid);
+            EmCacheHelper::flushAtEndOfRequest();
         }
     }
 
@@ -1652,6 +1654,7 @@ class QuestionAdministrationController extends LSBaseController
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
             self::setMultipleQuestionOtherState($aQids, $sOther, $iSid);
+            EmCacheHelper::flushAtEndOfRequest();
         }
     }
 
@@ -1682,6 +1685,7 @@ class QuestionAdministrationController extends LSBaseController
             $attributesWithValue,
             $validQuestionTypes
         );
+        EmCacheHelper::flushAtEndOfRequest();
     }
 
     /**
@@ -2249,6 +2253,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param array $aQids all question id's affected
      * @param int $iQuestionOrder the desired position
      * @param QuestionGroup $oQuestionGroup the desired QuestionGroup
+     * @return void
      * @throws CException
      */
     public static function changeMultipleQuestionPositionAndGroup($aQids, $iQuestionOrder, $oQuestionGroup)
@@ -2306,7 +2311,10 @@ class QuestionAdministrationController extends LSBaseController
             $oTransaction->commit();
         } catch (Exception $e) {
             $oTransaction->rollback();
+            return;
         }
+        // updateAll() bypasses Question::afterSave(), so update the survey's lastmodified timestamp here
+        (new SurveyDetailService())->touchSurveyLastModified((int) $oQuestionGroup->sid);
     }
 
     /**

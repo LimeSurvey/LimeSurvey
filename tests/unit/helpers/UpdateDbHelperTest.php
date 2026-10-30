@@ -20,6 +20,7 @@ class UpdateDbHelperTest extends TestBaseClass
         self::$testHelper->teardownDatabase('__test_update_helper_153');
         self::$testHelper->teardownDatabase('__test_update_helper_258');
         self::$testHelper->teardownDatabase('__test_update_helper_337');
+        self::$testHelper->teardownDatabase('__test_update_helper_incomplete');
         self::$testHelper->teardownDatabase('__test_install_script');
         self::$testHelper->teardownDatabase('__test_install_script_compare');
     }
@@ -129,6 +130,51 @@ class UpdateDbHelperTest extends TestBaseClass
         // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
+    }
+
+    /**
+     * db_upgrade_all() must refuse to run on a database where a previous
+     * update failed or was interrupted, instead of destroying data (bug #20771).
+     * @throws \CException
+     */
+    public function testIncompleteUpdateIsRefused()
+    {
+        $connection = self::$testHelper->connectToNewDatabase('__test_update_helper_incomplete');
+        $this->assertNotEmpty($connection, 'Could connect to new database');
+        // The refusal must happen before any update step runs, so settings_global is all it needs
+        $connection->createCommand()->createTable('{{settings_global}}', [
+            'stg_name' => 'string(50) NOT NULL',
+            'stg_value' => 'text NOT NULL',
+            'PRIMARY KEY (stg_name)',
+        ]);
+        // gT() reads the translation overrides from the database
+        $connection->createCommand()->createTable('{{source_message}}', ['id' => 'pk', 'category' => 'string(35)', 'message' => 'text']);
+        $connection->createCommand()->createTable('{{message}}', ['id' => 'integer NOT NULL', 'language' => 'string(50) NOT NULL', 'translation' => 'text']);
+        // State left behind by an update from the previous version that failed or was killed
+        $oldDbVersion = (string) (\Yii::app()->getConfig('dbversionnumber') - 1);
+        $connection->createCommand()->insert('{{settings_global}}', ['stg_name' => 'DBVersion', 'stg_value' => $oldDbVersion]);
+        $connection->createCommand()->insert('{{settings_global}}', ['stg_name' => 'DBUpdateIncomplete', 'stg_value' => $oldDbVersion]);
+
+        $result = \db_upgrade_all((int) $oldDbVersion);
+
+        $flashes = \Yii::app()->user->getFlashes();
+        $currentDbVersion = $connection
+            ->createCommand()
+            ->select('stg_value')
+            ->from('{{settings_global}}')
+            ->where("stg_name=:stg_name", ['stg_name' => 'DBVersion'])
+            ->queryScalar();
+        $marker = \getIncompleteDatabaseUpdateMarker();
+
+        $db = \Yii::app()->getDb();
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
+        $db->setActive(true);
+
+        $this->assertFalse($result, 'Update must be refused');
+        $this->assertEquals($oldDbVersion, $currentDbVersion, 'No update step must have run');
+        $this->assertEquals($oldDbVersion, $marker, 'The marker must stay until a backup is restored');
+        $this->assertStringContainsString('failed or was interrupted', $flashes['error'] ?? '', 'The error must explain that a previous update did not complete');
     }
 
     /**

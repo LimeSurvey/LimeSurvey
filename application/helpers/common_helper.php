@@ -659,9 +659,10 @@ function getGroupListLang($gid, $language, $surveyid)
 
 /**
  * Returns a user list. If 'usercontrolSameGroupPolicy' is set and set to true, only users which are in the same
- * group as me (--> logged in user) will be returned. Superadmin always gets the full list of users.
+ * group as me (--> logged in user) will be returned. Superadmins and users with the global permission to view
+ * users always get the full list of users.
  *
- * @param $outputformat string could be 'onlyuidarray' which only returns array with userids, default is 'fullinfoarray'
+ * @param string $outputformat could be 'onlyuidarray' which only returns array with userids, default is 'fullinfoarray'
  * @return array returns a list of user ids (param='onlyuidarray') or a list with full user details (e.g. uid, name, full_name etc.)
  */
 function getUserList($outputformat = 'fullinfoarray')
@@ -671,7 +672,9 @@ function getUserList($outputformat = 'fullinfoarray')
     }
     $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
     if (
-        !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
+        !Permission::model()->hasGlobalPermission('superadmin', 'read') &&
+        !Permission::model()->hasGlobalPermission('users', 'read') &&
+        isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
     ) {
         if (isset($myuid)) {
@@ -765,8 +768,8 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
     if (isset($staticSurveyInfo[$surveyid][$languagecode])) {
         $thissurvey = $staticSurveyInfo[$surveyid][$languagecode];
     } else {
-        $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
-        $resultBaseLanguage = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $oSurvey->language));
+        $result = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+        $resultBaseLanguage = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $oSurvey->language));
         if (is_null($result)) {
             // When additional language was added, but not saved it does not exists
             // We should revert to the base language then
@@ -774,7 +777,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $result = $resultBaseLanguage;
         }
         if ($result) {
-            $aSurveyAttributes = array_replace($result->survey->attributes, $aSurveyOptions);
+            $aSurveyAttributes = array_replace($oSurvey->attributes, $aSurveyOptions);
             $thissurvey = array_merge($aSurveyAttributes, $result->attributes);
             $thissurvey['name'] = $thissurvey['surveyls_title'];
             if (($languagecode != $oSurvey->language) && empty($thissurvey['name']) || $thissurvey['name'] == '') {
@@ -810,7 +813,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $thissurvey['email_confirm'] = $thissurvey['surveyls_email_confirm'];
             $thissurvey['email_register_subj'] = $thissurvey['surveyls_email_register_subj'];
             $thissurvey['email_register'] = $thissurvey['surveyls_email_register'];
-            $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
+            $thissurvey['attributedescriptions'] = $oSurvey->tokenAttributes;
             $thissurvey['attributecaptions'] = $result->attributeCaptions;
             $thissurvey['googleanalyticsapikey'] = $oSurvey->getGoogleanalyticsapikey();
             $thissurvey['hastokenstable'] = $oSurvey->hasTokensTable;
@@ -825,10 +828,10 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
                 $thissurvey['urldescrip'] = $thissurvey['surveyls_url'];
             }
 
-            if ($result->survey->owner_id == -1 && !empty($oSurvey->oOptions->owner_id)) {
+            if ($oSurvey->owner_id == -1 && !empty($oSurvey->oOptions->owner_id)) {
                 $thissurvey['owner_username'] = User::model()->find("uid=:uid", array(':uid' => $oSurvey->oOptions->owner_id))['users_name'];
-            } elseif (!empty($result->survey->owner->users_name)) {
-                $thissurvey['owner_username'] = $result->survey->owner->users_name;
+            } elseif (!empty($oSurvey->owner->users_name)) {
+                $thissurvey['owner_username'] = $oSurvey->owner->users_name;
             } else {
                 $thissurvey['owner_username'] = '';
             }
@@ -1418,27 +1421,21 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     if ($code === '') {
                         return "Q{$qid}";
                     }
-                    $commentText = false;
-                    $currentQuestion = null;
-                    $excludeSubquestion = false;
+                    $subquestionQids = [];
                     foreach ($questions as $question) {
-                        if ($question->title === $code) {
-                            $currentQuestion = $question;
-                        } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
-                            $currentQuestion = $question;
-                            $commentText = $code;
-                            if (strpos($code, $question->title) === 0) {
-                                $commentText = substr($code, strlen($question->title));
-                            } else {
-                                $excludeSubquestion = true;
-                            }
+                        if ($question->parent_qid) {
+                            $subquestionQids[$question->title] = $question->qid;
                         }
                     }
-                    if ($currentQuestion) {
-                        $newFieldName = "Q{$qid}" . ($excludeSubquestion ? "" : "_S{$currentQuestion->qid}");
-                        if ($commentText) {
-                            $newFieldName = $newFieldName . "_C" . $commentText;
-                        }
+                    if (isset($subquestionQids[$code])) {
+                        // A subquestion with exactly this code, even if it is coded "other", "comment" or "othercomment"
+                        $newFieldName = "Q{$qid}_S{$subquestionQids[$code]}";
+                    } elseif (strlen($code) > 7 && substr($code, -7) === 'comment' && isset($subquestionQids[substr($code, 0, -7)])) {
+                        // The comment field of a subquestion (multiple choice with comments)
+                        $newFieldName = "Q{$qid}_S{$subquestionQids[substr($code, 0, -7)]}_Ccomment";
+                    } elseif ($code === 'other' || $code === 'othercomment') {
+                        // The "Other" field of the question itself and its comment
+                        $newFieldName = "Q{$qid}_C{$code}";
                     }
                     break;
                 case \Question::QT_SEMICOLON_ARRAY_TEXT:
@@ -4488,10 +4485,17 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
     foreach ($result as $row) {
         Yii::app()->db->createCommand('delete from {{group_l10ns}} where id =' . $row['id'])->execute();
     }
+
+    // Remove translated question attributes, the other attributes have an empty or NULL language
+    Yii::app()->db->createCommand(
+        "DELETE FROM {{question_attributes}}
+        WHERE qid IN (SELECT qid FROM {{questions}} WHERE sid={$iSurveyID})
+        AND language <> '' AND {$sqllang}"
+    )->execute();
 }
 
 /**
-* fixLanguageConsistency() fixes missing groups, questions, answers, quotas & assessments for languages on a survey
+* fixLanguageConsistency() fixes missing groups, questions, answers, translated question attributes, quotas & assessments for languages on a survey
 * @param int $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
 * @param string $baselang - language to use as base (useful when changing the base language) - if empty, it will be picked from the survey
@@ -4583,6 +4587,21 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
                 Yii::app()->db->createCommand()->insert('{{answer_l10ns}}', $data);
             }
         }
+    }
+
+    // Translated question attributes: Copy the base language value where the language has none yet
+    foreach ($languagesToCheck as $lang) {
+        Yii::app()->db->createCommand(
+            "INSERT INTO {{question_attributes}} (qid, attribute, value, language)
+            SELECT qa.qid, qa.attribute, qa.value, :language
+            FROM {{question_attributes}} qa
+            JOIN {{questions}} q ON q.qid = qa.qid
+            WHERE q.sid = :sid AND qa.language = :baselang
+            AND NOT EXISTS (
+                SELECT 1 FROM {{question_attributes}} existing
+                WHERE existing.qid = qa.qid AND existing.attribute = qa.attribute AND existing.language = :existinglanguage
+            )"
+        )->execute([':language' => $lang, ':sid' => $sid, ':baselang' => $baselang, ':existinglanguage' => $lang]);
     }
 
     switchMSSQLIdentityInsert('assessments', true);

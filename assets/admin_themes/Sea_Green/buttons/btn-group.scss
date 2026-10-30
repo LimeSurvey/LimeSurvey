@@ -129,8 +129,12 @@
             opacity: 1;
         }
 
+        // The selected option keeps its purple bar and dark text, toned down like the disabled toggles in the new editor
         > .btn-check:checked + .btn-outline-secondary {
             background-color: $white;
+            border-left-color: $grape;
+            color: $g-750;
+            opacity: .65;
         }
     }
 }

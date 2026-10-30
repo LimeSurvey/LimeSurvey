@@ -88,6 +88,17 @@ img.uploaded {
     padding: 5px;
 }
 
+.upload-placeholder {
+    display: inline-block;
+    padding: 5px;
+    font-size: 3em;
+    line-height: 1;
+    opacity: 0.6;
+}
+.file-preview .upload-placeholder span {
+    margin-left: 0;
+}
+
 .uploadedfiles tbody tr td {
     text-align: left;
 }

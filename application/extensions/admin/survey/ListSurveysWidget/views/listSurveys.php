@@ -50,6 +50,8 @@
             'lsShowSelectionBar'      => false,
             'columns'               => $this->model->getColumns(),
             'lsAdditionalColumns' => $this->model->getAdditionalColumns(),
+            'lsOrganizeColumns'   => true,
+            'lsAdditionalColumnsDefault' => ['lastModified', 'group', 'owner'],
 
         ]);
         ?>

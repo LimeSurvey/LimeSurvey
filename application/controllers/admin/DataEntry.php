@@ -1120,7 +1120,8 @@ class DataEntry extends SurveyCommonAction
 
                     case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                         $questionInput = '';
-                        while (isset($fname) && $fname['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+                        $thisqid = $fname['qid'];
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $thefieldname = $fname['fieldname'];
                             $subquestionValue = $idrow[$fname['fieldname']];
                             if (substr((string) $fname['fieldname'], -5) == "other") {

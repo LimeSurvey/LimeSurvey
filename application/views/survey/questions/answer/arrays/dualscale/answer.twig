@@ -108,7 +108,7 @@
 
                 <!-- tr -->
                 <tr id="javatbd{{ ansrow.myfname }}" role="group" aria-labelledby="answertext{{ ansrow.myfname }}"
-                    class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.showmandatoryviolation %} ls-error-mandatory has-error{% endif %}"
+                    class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.showmandatoryviolation %} ls-error-mandatory has-error{% endif %} {{ ansrow.relevanceClass }}"
                 >
                 <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} visually-hidden{% endif %}">
                     {{ processString(ansrow.answertext) }}

@@ -75,6 +75,48 @@ LS.CPDB = (function() {
     },
 
     /**
+     * Saves the new value of a Yes/No switch immediately and tells the user whether it worked.
+     * On failure the switch is set back to its previous value.
+     * @param {HTMLInputElement} changedInput - The radio input that was just checked
+     * @param {string} params - Url encoded POST parameters, without CSRF token
+     * @return void
+     */
+    saveSwitchValue = function(changedInput, params) {
+        // Yes/No group: The other radio input of the group holds the previous value
+        let previousInput = changedInput.closest('.btn-group').querySelector('input:not(:checked)');
+        let onFailure = function(message) {
+            if (previousInput) {
+                previousInput.checked = true;
+            }
+            window.LS.ajaxAlerts(message || translate_saveFailed, 'danger', {showCloseButton: true});
+        };
+        let xhttp = new XMLHttpRequest();
+        xhttp.open("POST", editValueParticipantPanel, true);
+        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhttp.onload = function() {
+            let response = null;
+            try {
+                response = JSON.parse(xhttp.responseText);
+            } catch (e) {
+                response = null;
+            }
+            if (xhttp.status !== 200 || !response) {
+                onFailure();
+            } else if (response.hasPermission === false) {
+                onFailure(response.noPermissionText);
+            } else if (response.success !== true) {
+                onFailure(response.message);
+            } else {
+                window.LS.ajaxAlerts(response.message, 'success', {showCloseButton: true});
+            }
+        };
+        xhttp.onerror = function() {
+            onFailure();
+        };
+        xhttp.send(params + "&YII_CSRF_TOKEN=" + LS.data.csrfToken);
+    },
+
+    /**
      * Run when user clicks 'Export'
      * Used for all participants, checked participants, or a specific list of IDs.
      * @param {boolean|Array} itemIds - If true, export all participants. If an array, export those IDs. If falsy, read from checked DOM checkboxes.
@@ -316,13 +358,9 @@ LS.CPDB = (function() {
         for (let changeBlacklistButton of changeBlacklistButtons) {
             changeBlacklistButton.addEventListener("change", (event) => {
                 let params = "actionTarget=changeBlacklistStatus"
-                    + "&participant_id=" + event.target.closest("tr").dataset.participant_id
-                    + "&blacklist=" + event.target.value
-                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
-                let xhttp = new XMLHttpRequest();
-                xhttp.open("POST", editValueParticipantPanel, true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.send(params);
+                    + "&participant_id=" + encodeURIComponent(event.target.closest("tr").dataset.participant_id)
+                    + "&blacklist=" + event.target.value;
+                saveSwitchValue(event.target, params);
             });
         }
 
@@ -377,12 +415,8 @@ LS.CPDB = (function() {
             changeAttributeVisibilityButton.addEventListener("change", (event) => {
                 let params = "actionTarget=changeAttributeVisibility"
                     + "&attribute_id=" + event.target.closest("tr").dataset.attribute_id
-                    + "&visible=" + event.target.value
-                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
-                let xhttp = new XMLHttpRequest();
-                xhttp.open("POST", editValueParticipantPanel, true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.send(params);
+                    + "&visible=" + event.target.value;
+                saveSwitchValue(event.target, params);
             });
         }
 
@@ -391,12 +425,8 @@ LS.CPDB = (function() {
             changeAttributeEncryptedButton.addEventListener("change", (event) => {
                 let params = "actionTarget=changeAttributeEncrypted"
                     + "&attribute_id=" + event.target.closest("tr").dataset.attribute_id
-                    + "&encrypted=" + event.target.value
-                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
-                let xhttp = new XMLHttpRequest();
-                xhttp.open("POST", editValueParticipantPanel, true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.send(params);
+                    + "&encrypted=" + event.target.value;
+                saveSwitchValue(event.target, params);
             });
         }
 
@@ -418,14 +448,10 @@ LS.CPDB = (function() {
         for (let changeSharedEditableStatusButton of changeSharedEditableStatusButtons) {
             changeSharedEditableStatusButton.addEventListener("change", (event) => {
                 let params = "actionTarget=changeSharedEditableStatus"
-                    + "&participant_id=" + event.target.closest("tr").dataset.participant_id
+                    + "&participant_id=" + encodeURIComponent(event.target.closest("tr").dataset.participant_id)
                     + "&can_edit=" + event.target.value
-                    + "&share_uid=" + event.target.closest('tr').dataset.share_uid
-                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
-                let xhttp = new XMLHttpRequest();
-                xhttp.open("POST", editValueParticipantPanel, true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.send(params);
+                    + "&share_uid=" + event.target.closest('tr').dataset.share_uid;
+                saveSwitchValue(event.target, params);
             });
         }
 
@@ -487,14 +513,15 @@ LS.CPDB = (function() {
 
     /**
      * Call server to delete ONE single participant share
+     * @param {string} url
      * @param {string} participantId
-     * @param {number} shareUid
+     * @param {string} shareUid
      * @return
      */
-    deleteSingleParticipantShare = function(url) {
+    deleteSingleParticipantShare = function(url, participantId, shareUid) {
         $.ajax({
             url: url,
-            data: {},
+            data: {participantId: participantId, shareUid: shareUid},
             method: "POST",
             dataType: 'json',
             success: function(result){

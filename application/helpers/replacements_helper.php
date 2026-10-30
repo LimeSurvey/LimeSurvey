@@ -117,7 +117,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
      * If templatereplace is called from the template editor, a $oTemplate is provided.
      */
     if ($oTemplate === '') {
-        $oTemplate = Template::model()->getInstance($templatename);
+        // In a survey, keep the current survey theme instance (it may have been set by a plugin in beforeSurveyPage)
+        $oTemplate = empty($surveyid)
+            ? Template::model()->getInstance($templatename)
+            : Template::model()->getInstance('', $surveyid);
     }
 
     // surveyformat
@@ -384,7 +387,8 @@ function getStandardsReplacementFields($thissurvey)
     }
 
     $oSurvey = Survey::model()->findByPk($surveyid);
-    $totalquestions = $oSurvey->countTotalQuestions;
+    // Same count as the "There are X questions in this survey" text: Without always hidden questions
+    $totalquestions = $oSurvey->getCountTotalQuestions(false);
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();

@@ -419,7 +419,7 @@ class SurveymenuEntries extends LSActiveRecord
             ],
             [
                 'name'   => 'menu_id',
-                'value'  => '$data->menu->title." (".$data->menu_id.")"',
+                'value'  => '($data->menu ? $data->menu->title : "")." (".$data->menu_id.")"',
                 'filter' => $this->getMenuIdOptions()
             ],
             [
@@ -482,7 +482,7 @@ class SurveymenuEntries extends LSActiveRecord
             ),
             array(
                 'name' => 'menu_id',
-                'value' => '$data->menu->title',
+                'value' => '$data->menu ? $data->menu->title : ""',
             )
         );
 

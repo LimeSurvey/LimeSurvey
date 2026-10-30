@@ -1089,6 +1089,29 @@ class ParticipantsAction extends SurveyCommonAction
                     ];
                 }
                 $existingParticipant = Participant::model()->findByAttributes($duplicateCriteriaAttributes);
+                // Note: Older participant IDs can have surrounding spaces, so the ID is only trimmed if no participant has it as is
+                if (empty($existingParticipant) && isset($writearray['participant_id'])) {
+                    $trimmedParticipantId = trim((string) $writearray['participant_id']);
+                    if ($trimmedParticipantId !== $writearray['participant_id']) {
+                        $writearray['participant_id'] = $trimmedParticipantId;
+                        $existingParticipant = Participant::model()->findByAttributes(['participant_id' => $trimmedParticipantId]);
+                    }
+                }
+                // New participants need a UUID as participant ID, existing ones are still found by an older ID
+                if (
+                    empty($existingParticipant)
+                    && isset($writearray['participant_id'])
+                    && $writearray['participant_id'] !== ''
+                    && !Participant::isValidParticipantId($writearray['participant_id'])
+                ) {
+                    $participantDetails = trim($writearray['firstname'] . " " . $writearray['lastname'] . ($writearray['email'] !== '' ? " (" . $writearray['email'] . ")" : ""));
+                    // The header is line 1 of the CSV file
+                    $invalidparticipantid[] = $participantDetails !== ''
+                        ? sprintf(gT("Line %s: %s"), $recordcount + 1, CHtml::encode($participantDetails))
+                        : sprintf(gT("Line %s"), $recordcount + 1);
+                    $recordcount++;
+                    continue;
+                }
                 if (!empty($existingParticipant)) {
                     $thisduplicate = 1;
                     $dupcount++;
@@ -1202,8 +1225,9 @@ class ParticipantsAction extends SurveyCommonAction
                                 $participant->$key = $value;
                             }
                         }
-                        $participant->encrypt()->insertParticipantCSV($participant->attributes);
-                        $imported++;
+                        if ($participant->encrypt()->insertParticipantCSV($participant->attributes)) {
+                            $imported++;
+                        }
                     }
                 }
                 $mincriteria++;
@@ -1407,7 +1431,7 @@ class ParticipantsAction extends SurveyCommonAction
      * AJAX Method to change the blocklist status of a participant
      * Requires POST with 'participant_id' (varchar) and 'blacklist' (boolean)
      * Requires 'participantpanel' 'update' permission, ownership, or an editable share on the participant
-     * Echos JSON-encoded array with 'success' (boolean) and 'newValue' ('Y' || 'N')
+     * Echos JSON-encoded array with 'success' (boolean), 'message' (string, shown to the user) and 'newValue' ('Y' || 'N')
      * @return void
      */
     public function changeblackliststatus()
@@ -1429,9 +1453,10 @@ class ParticipantsAction extends SurveyCommonAction
         $blacklistStatus = Yii::app()->request->getPost('blacklist');
         $blacklistValue = $blacklistStatus == true ? "Y" : "N";
         $participant->blacklisted = $blacklistValue;
-        $participant->update(['blacklisted']);
+        $success = $participant->update(['blacklisted']);
         echo json_encode(array(
-            "success" => true,
+            "success" => $success,
+            "message" => $success ? gT("Participant successfully updated") : gT('Your changes could not be saved.'),
             "newValue" => $blacklistValue
         ));
     }
@@ -1476,8 +1501,10 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Echoes json
+     * AJAX method to change whether a participant attribute is shown during registration
+     * Requires POST with 'attribute_id' (int) and 'visible' (boolean)
      * Requires global 'participantpanel' 'update' permission
+     * Echoes JSON-encoded array with 'success' (boolean), 'message' (string, shown to the user) and 'newValue' ('TRUE' || 'FALSE')
      * @return void
      */
     public function changeAttributeVisibility()
@@ -1491,22 +1518,24 @@ class ParticipantsAction extends SurveyCommonAction
         $visible = Yii::app()->request->getPost('visible');
         $visible_value = ($visible ? "TRUE" : "FALSE");
         $attributeName = ParticipantAttributeName::model()->findByPk($attributeId);
+        $success = false;
         if (isset($attributeName)) {
             $attributeName->visible = $visible_value;
-            $attributeName->update(['visible']);
+            $success = $attributeName->update(['visible']);
         }
         echo json_encode(array(
-            "debug" => Yii::app()->request,
-            "debug_p1" => Yii::app()->request->getPost('attribute_id'),
-            "debug_p2" => Yii::app()->request->getPost('visible'),
-            "success" => true,
+            "success" => $success,
+            "message" => $success ? gT('Attribute was saved.') : gT('Your changes could not be saved.'),
             "newValue" => $visible_value
         ));
     }
 
     /**
-     * Echoes json
+     * AJAX method to change the encryption of a participant attribute
+     * Encrypts or decrypts the stored values of all participants in one transaction, nothing is changed if this fails
+     * Requires POST with 'attribute_id' (int) and 'encrypted' (boolean)
      * Requires global 'participantpanel' 'update' permission
+     * Echoes JSON-encoded array with 'success' (boolean), 'message' (string, shown to the user) and on success 'newValue' ('Y' || 'N')
      * @return void
      */
     public function changeAttributeEncrypted()
@@ -1520,6 +1549,13 @@ class ParticipantsAction extends SurveyCommonAction
         $encrypted = Yii::app()->request->getPost('encrypted');
         $encrypted_value = $encrypted ? 'Y' : 'N';
         $attributeName = ParticipantAttributeName::model()->findByPk($attributeId);
+        if (!isset($attributeName)) {
+            echo json_encode(array(
+                "success" => false,
+                "message" => gT('Your changes could not be saved.')
+            ));
+            return;
+        }
         $encryptedBeforeChange = $attributeName->isEncrypted();
         $attributeName->encrypted = $encrypted_value;
         $encryptedAfterChange = $attributeName->isEncrypted();
@@ -1575,14 +1611,17 @@ class ParticipantsAction extends SurveyCommonAction
             $oTransaction->commit();
         } catch (\Exception $e) {
             $oTransaction->rollback();
-            return false;
+            Yii::log('Changing the encryption of participant attribute ' . $attributeId . ' failed: ' . $e->getMessage(), CLogger::LEVEL_ERROR, 'application.controllers.admin.participants');
+            echo json_encode(array(
+                "success" => false,
+                "message" => gT('The encryption setting could not be changed. The participant data was left as it was.')
+            ));
+            return;
         }
 
         echo json_encode(array(
-            "debug" => Yii::app()->request,
-            "debug_p1" => Yii::app()->request->getPost('attribute_id'),
-            "debug_p2" => Yii::app()->request->getPost('encrypted'),
             "success" => true,
+            "message" => gT('Attribute was saved.'),
             "newValue" => $encrypted_value
         ));
     }
@@ -2519,13 +2558,15 @@ class ParticipantsAction extends SurveyCommonAction
     /**
      * Deletes a single participant share
      * Called by Ajax; echoes success/error
-     * @param string $participantId
-     * @param int $shareUid
+     * @param string|null $participantId Participant ID, the posted participantId is used if not set
+     * @param int|null $shareUid User ID of the share, the posted shareUid is used if not set
      * @return void
      */
     public function deleteSingleParticipantShare($participantId = null, $shareUid = null)
     {
         $this->requirePostRequest();
+        $participantId = $participantId ?? Yii::app()->request->getPost('participantId');
+        $shareUid = $shareUid ?? Yii::app()->request->getPost('shareUid');
 
         $participantShare = ParticipantShare::model()->findByPk(array(
             'participant_id' => $participantId,
@@ -2593,7 +2634,10 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
+     * AJAX method to change whether the user a participant is shared with may edit it
+     * Requires POST with 'participant_id' (varchar), 'share_uid' (int) and 'can_edit' (boolean)
      * Requires ParticipantShare::isAllowedToManageShare() for the participant behind the share
+     * Echoes JSON-encoded array with 'success' (boolean), 'message' (string, shown to the user) and 'newValue'
      * @return void
      */
     public function changeSharedEditableStatus()
@@ -2603,7 +2647,7 @@ class ParticipantsAction extends SurveyCommonAction
         $share_uid = Yii::app()->request->getPost('share_uid');
 
         if (!ParticipantShare::model()->isAllowedToManageShare($participant_id)) {
-            echo json_encode(array("newValue" => $can_edit, "success" => false));
+            $this->ajaxHelper::outputNoPermission();
             return;
         }
 
@@ -2615,7 +2659,11 @@ class ParticipantsAction extends SurveyCommonAction
         } else {
             $success = false;
         }
-        echo json_encode(array("newValue" => $can_edit, "success" => $success));
+        echo json_encode(array(
+            "newValue" => $can_edit,
+            "success" => $success,
+            "message" => $success ? gT("Changes saved successfully.") : gT('Your changes could not be saved.')
+        ));
     }
 
     /**
@@ -2657,6 +2705,11 @@ class ParticipantsAction extends SurveyCommonAction
             printf(gT("%s entries were not copied because they already existed"), "<span class='badge rounded-pill bg-warning'>" . $response['duplicate'] . "</span>&nbsp;");
             echo "</p>";
         }
+        if ($response['replacedparticipantid'] > 0) {
+            echo "<p>";
+            printf(gT("%s survey participants got a new participant ID because their previous participant ID was not a valid UUID"), "<span class='badge rounded-pill bg-warning'>" . $response['replacedparticipantid'] . "</span>&nbsp;");
+            echo "</p>";
+        }
         if ($response['overwriteman'] || $response['overwriteauto']) {
             echo "<p>";
             eT("Attribute values for central participants have been updated from the survey participants");
@@ -2674,7 +2727,7 @@ class ParticipantsAction extends SurveyCommonAction
      * Requires global 'surveys' 'update' or 'tokens' 'update' permission on the survey (same as attributeMap()),
      * creating a missing participant table additionally requires global 'surveys' 'update',
      * 'surveysettings' 'update' or 'tokens' 'create' on the survey.
-     * Only participants the user may edit (Participant::filterEditableParticipantIds()) are copied,
+     * Only participants the user may add to a survey (Participant::filterParticipantIdsAddableToSurvey()) are copied,
      * same as the "Add participant to survey" action.
      *
      * @return void
@@ -2682,7 +2735,7 @@ class ParticipantsAction extends SurveyCommonAction
     public function addToTokenattmap()
     {
         $participantIdsString = Yii::app()->request->getPost('participant_id'); // TODO: This is a comma separated string of ids
-        $participantIds = Participant::model()->filterEditableParticipantIds(explode(",", (string) $participantIdsString));
+        $participantIds = Participant::model()->filterParticipantIdsAddableToSurvey(explode(",", (string) $participantIdsString));
 
         $surveyId = (int)Yii::app()->request->getPost('surveyid');
 
