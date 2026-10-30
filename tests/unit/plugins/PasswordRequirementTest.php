@@ -382,6 +382,12 @@ class PasswordRequirementTest extends TestBaseClass
             'password' => 'fromOtherPlugin',
         ]);
         $this->assertSame('fromOtherPlugin', $oEvent->get('password'));
+
+        $oEvent = $this->dispatchPluginEvent(self::$pluginName, 'createRandomPassword', [
+            'targetSize' => 8,
+            'password' => '0',
+        ]);
+        $this->assertSame('0', $oEvent->get('password'));
     }
 
     /**
