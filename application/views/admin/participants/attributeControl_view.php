@@ -21,6 +21,7 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
 
         $this->widget('application.extensions.admin.grid.CLSGridView', [
             'id' => 'list_attributes',
+            'lsCaption' => gT('Attribute management'),
             'dataProvider' => $model->search(),
             'columns' => $model->columns,
             'filter' => $model,

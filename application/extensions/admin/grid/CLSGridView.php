@@ -327,6 +327,11 @@ class CLSGridView extends TbGridView
             App()->getAssetManager()->publish($assetsPath . 'sortAccessibility.js'),
             CClientScript::POS_END
         );
+        // Accessibility: keep the focus on the filter field after the grid update
+        App()->clientScript->registerScriptFile(
+            App()->getAssetManager()->publish($assetsPath . 'restoreFilterFocus.js'),
+            CClientScript::POS_END
+        );
         // Standard afterAjaxUpdate handler (actionDropdown, rowlink, columnFilter, restoreFocus)
         App()->clientScript->registerScriptFile(
             App()->getAssetManager()->publish($assetsPath . 'afterAjaxUpdate.js'),
