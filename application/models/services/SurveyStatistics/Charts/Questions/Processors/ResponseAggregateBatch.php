@@ -584,6 +584,17 @@ final class ResponseAggregateBatch
                 throw new InvalidArgumentException('Unknown response column: ' . $field);
             }
             $col = $this->getDb()->quoteColumnName($field);
+            if ($filter['filterMethod'] === 'range') {
+                [$rangeCondition, $rangeParams] = $this->buildRangeCondition(
+                    $col,
+                    $schema->columns[$field]->type === 'integer',
+                    array_values($filter['value']),
+                    ':condition' . $suffix . '_' . $index . '_'
+                );
+                $conditions[] = $rangeCondition;
+                $params += $rangeParams;
+                continue;
+            }
             $values = $filter['filterMethod'] === 'equal' ? [$filter['value']] : array_values($filter['value']);
             $holders = [];
             foreach ($values as $position => $value) {
@@ -598,15 +609,45 @@ final class ResponseAggregateBatch
                 case 'multi-select':
                     $conditions[] = "$col IN (" . implode(', ', $holders) . ')';
                     break;
-                case 'range':
-                    $number = $schema->columns[$field]->type === 'integer'
-                        ? $col
-                        : $this->rangeNumericExpression($col);
-                    $conditions[] = "$number BETWEEN $holders[0] AND $holders[1]";
-                    break;
             }
         }
         return [$conditions, $params];
+    }
+
+    /**
+     * Range predicate matching RangeConditionHandler: an empty bound leaves
+     * that side open, so it is never bound into BETWEEN.
+     *
+     * @param array $bounds [min, max]
+     * @return array{0: string, 1: array<string,float>}
+     */
+    private function buildRangeCondition(string $col, bool $integerColumn, array $bounds, string $holderPrefix): array
+    {
+        [$min, $max] = array_map(static function ($bound) {
+            if ($bound === null || $bound === '') {
+                return null;
+            }
+            if (!is_numeric($bound)) {
+                throw new InvalidArgumentException('Range bounds must be numeric');
+            }
+            return (float)$bound;
+        }, [$bounds[0] ?? null, $bounds[1] ?? null]);
+
+        if ($min === null && $max === null) {
+            throw new InvalidArgumentException('Missing min and max range values');
+        }
+
+        $number = $integerColumn ? $col : $this->rangeNumericExpression($col);
+        $minHolder = $holderPrefix . '0';
+        $maxHolder = $holderPrefix . '1';
+
+        if ($min === null) {
+            return ["$number <= $maxHolder", [$maxHolder => $max]];
+        }
+        if ($max === null) {
+            return ["$number >= $minHolder", [$minHolder => $min]];
+        }
+        return ["$number BETWEEN $minHolder AND $maxHolder", [$minHolder => $min, $maxHolder => $max]];
     }
 
     /**
