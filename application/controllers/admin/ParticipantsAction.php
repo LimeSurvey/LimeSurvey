@@ -924,6 +924,7 @@ class ParticipantsAction extends SurveyCommonAction
                 . "var notPairedErrorTxt = '" . gT("You have to pair this field with an existing attribute.") . "';\n"
                 . "var onlyOnePairedErrorTxt = '" . gT("Only one CSV attribute is mapped with central attribute.") . "';\n"
                 . "var cannotAcceptErrorTxt='" . gT("This list cannot accept survey participant attributes.") . "';\n"
+                . "var moveBackTxt = '" . gT("Move %s back to the CSV field names", 'js') . "';\n"
                 . "var separator = '" . sanitize_paranoid_string($_POST['separatorused']) . "';\n"
                 . "var thefilepath = '" . $sRandomFileName . "';\n"
                 . "var filterblankemails = '" . sanitize_paranoid_string($filterblankemails) . "';\n";
