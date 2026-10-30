@@ -1073,6 +1073,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
     $aLSIDReplacements = $results = [];
     $results['labelsets'] = 0;
     $results['labels'] = 0;
+    $results['duplicates'] = 0;
     $results['warnings'] = array();
     $aImportedLabelSetIDs = array();
 
@@ -1159,8 +1160,28 @@ function XMLImportLabelsets($sFullFilePath, $options)
         $aCounts = array_count_values($aLabelSetCheckSums);
         foreach ($aImportedLabelSetIDs as $iLabelSetID) {
             if ($aCounts[$aLabelSetCheckSums[$iLabelSetID]] > 1) {
-                LabelSet::model()->deleteLabelSet($iLabelSetID);
+                $labelSet = LabelSet::model()->findByPk($iLabelSetID);
+                if ($labelSet !== null) {
+                    $labelCount = count($labelSet->labels);
+                    if ($labelSet->deleteLabelSet($iLabelSetID)) {
+                        $results['labelsets']--;
+                        $results['labels'] -= $labelCount;
+                        $results['duplicates']++;
+                    } else {
+                        $results['warnings'][] = sprintf(
+                            gT('Duplicate label set with ID %d could not be removed.'),
+                            $iLabelSetID
+                        );
+                    }
+                }
             }
+        }
+
+        if ($results['duplicates'] > 0) {
+            $results['warnings'][] = ngT(
+                '{n} duplicate label set was not imported.|{n} duplicate label sets were not imported.',
+                $results['duplicates']
+            );
         }
 
         //END CHECK FOR DUPLICATES
