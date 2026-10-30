@@ -45,6 +45,9 @@ use LimeSurvey\Exceptions\CPDBException;
  */
 class Participant extends LSActiveRecord
 {
+    /** @var string Format of participant IDs (UUID, as created by genUuid()) */
+    public const PARTICIPANT_ID_PATTERN = '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iD';
+
     public $extraCondition;
     public $countActiveSurveys;
     public $id;
@@ -78,6 +81,8 @@ class Participant extends LSActiveRecord
             array('participant_id, blacklisted, owner_uid', 'required'),
             array('owner_uid', 'numerical', 'integerOnly' => true),
             array('participant_id', 'length', 'max' => 50),
+            // Existing participants may still have IDs in another format, so only new ones are checked
+            array('participant_id', 'match', 'pattern' => self::PARTICIPANT_ID_PATTERN, 'on' => 'insert'),
             array('firstname, lastname', 'length', 'max' => 150),
             array('language', 'length', 'max' => 40),
             array('firstname, lastname, language', 'LSYii_Validators'),
@@ -129,7 +134,7 @@ class Participant extends LSActiveRecord
             'iconClass'        => 'ri-pencil-fill',
             'enabledCondition' => $this->userHasPermissionToEdit(),
             'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
+                'data-participant-id' => CHtml::encode($this->participant_id)
             ],
         ];
         $dropdownItems[] = [
@@ -138,7 +143,7 @@ class Participant extends LSActiveRecord
             'iconClass'        => 'ri-user-add-fill',
             'enabledCondition' => $this->userHasPermissionToAddToSurvey(),
             'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
+                'data-participant-id' => CHtml::encode($this->participant_id)
             ],
         ];
         $dropdownItems[] = [
@@ -147,7 +152,7 @@ class Participant extends LSActiveRecord
             'iconClass'        => 'ri-search-line',
             'enabledCondition' => $this->userHasPermissionToRead(),
             'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
+                'data-participant-id' => CHtml::encode($this->participant_id)
             ],
         ];
         $dropdownItems[] = [
@@ -156,7 +161,7 @@ class Participant extends LSActiveRecord
             'iconClass'        => 'ri-share-forward-fill',
             'enabledCondition' => $this->userHasPermissionToEdit(),
             'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
+                'data-participant-id' => CHtml::encode($this->participant_id)
             ],
         ];
         $dropdownItems[] = [
@@ -172,7 +177,7 @@ class Participant extends LSActiveRecord
                 )
                 || $permission_participantpanel_delete,
             'linkAttributes'   => [
-                'data-participant-id' => $this->participant_id
+                'data-participant-id' => CHtml::encode($this->participant_id)
             ],
         ];
 
@@ -184,7 +189,21 @@ class Participant extends LSActiveRecord
      */
     public function getCheckbox()
     {
-        return "<input type='checkbox' class='selector_participantCheckbox massiveActionsCheckbox' name='selectedParticipant[]' value='" . $this->id . "' >";
+        return "<input type='checkbox' class='selector_participantCheckbox massiveActionsCheckbox' name='selectedParticipant[]' value='" . CHtml::encode($this->id) . "' aria-label='" . CHtml::encode(sprintf(gT('Select participant %s'), $this->getDisplayName())) . "' >";
+    }
+
+    /**
+     * Returns a name to identify the participant: The first and last name, else the email address, else the participant ID
+     *
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        $name = trim($this->firstname . ' ' . $this->lastname);
+        if ($name !== '') {
+            return $name;
+        }
+        return !empty($this->email) ? $this->email : $this->participant_id;
     }
 
     /**
@@ -346,7 +365,7 @@ class Participant extends LSActiveRecord
             [
                 "name"              => 'checkbox',
                 "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllParticipant' />",
+                "header"            => "<input type='checkbox' id='action_toggleAllParticipant' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
                 "filter"            => false,
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
@@ -626,6 +645,16 @@ class Participant extends LSActiveRecord
             mt_rand(0, 0xffff),
             mt_rand(0, 0xffff)
         );
+    }
+
+    /**
+     * Checks if a participant ID has the expected UUID format
+     * @param mixed $participantId
+     * @return bool
+     */
+    public static function isValidParticipantId($participantId)
+    {
+        return is_string($participantId) && preg_match(self::PARTICIPANT_ID_PATTERN, $participantId) === 1;
     }
 
     /**
@@ -2145,7 +2174,8 @@ class Participant extends LSActiveRecord
      * @param bool $overwriteauto If true, overwrites existing automatically mapped attribute values
      * @param bool $overwriteman If true, overwrites manually mapped attribute values (where token fieldname=attribute_n)
      * @param bool $createautomap If true, updates tokendescription field with new mapping
-     * @return array An array containing list of successful and list of failed ids
+     * @return array Counts of copied ('success'), already existing ('duplicate') and copied survey participants
+     *               whose participant ID was replaced by a new UUID ('replacedparticipantid'), plus the overwrite flags
      */
     public function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto = false, $overwriteman = false, $createautomap = true)
     {
@@ -2164,6 +2194,7 @@ class Participant extends LSActiveRecord
         }
         $duplicate = 0;
         $successful = 0;
+        $replacedParticipantId = 0;
         $attid = []; //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
 
         $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions ?? '');
@@ -2267,7 +2298,14 @@ class Participant extends LSActiveRecord
                 } /* If there isn't an existing entry, create one! */ else {
                     /* Create entry in participant list */
                     $black = !empty($oTokenDynamic->blacklisted) ? $oTokenDynamic->blacklisted : 'N';
-                    $pid = !empty($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->genUuid();
+                    $pid = $oTokenDynamic->participant_id;
+                    // Participant IDs must be UUIDs, another ID of the survey participant is replaced
+                    if (!self::isValidParticipantId($pid)) {
+                        if (!empty($pid)) {
+                            $replacedParticipantId++;
+                        }
+                        $pid = $this->genUuid();
+                    }
 
                     $writearray = [
                         'participant_id' => $pid,
@@ -2344,7 +2382,7 @@ class Participant extends LSActiveRecord
                     ->update('{{surveys}}', ["attributedescriptions" => json_encode($aAttributes)], 'sid = ' . $surveyid);
             }
         }
-        $returndata = ['success' => $successful, 'duplicate' => $duplicate, 'overwriteauto' => $overwriteauto, 'overwriteman' => $overwriteman];
+        $returndata = ['success' => $successful, 'duplicate' => $duplicate, 'replacedparticipantid' => $replacedParticipantId, 'overwriteauto' => $overwriteauto, 'overwriteman' => $overwriteman];
         return $returndata;
     }
 
@@ -2373,11 +2411,17 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * @param array $data
-     * @return void
+     * Inserts a participant from a CSV import without model validation
+     * Note: Only participants with a UUID as participant ID are inserted
+     *
+     * @param array $data Participant data, keys participant_id, firstname, lastname, email, language, blacklisted and owner_uid
+     * @return bool True if the participant was inserted
      */
     public function insertParticipantCSV($data)
     {
+        if (!self::isValidParticipantId($data['participant_id'] ?? null)) {
+            return false;
+        }
         $insertData = array(
             'participant_id' => $data['participant_id'],
             'firstname' => $data['firstname'],
@@ -2389,7 +2433,7 @@ class Participant extends LSActiveRecord
             'owner_uid' => $data['owner_uid'],
             'created' => date('Y-m-d H:i:s', time())
         );
-        Yii::app()->db->createCommand()->insert('{{participants}}', $insertData);
+        return Yii::app()->db->createCommand()->insert('{{participants}}', $insertData) > 0;
     }
 
     /**

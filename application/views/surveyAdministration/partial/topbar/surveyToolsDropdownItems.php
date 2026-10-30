@@ -141,24 +141,27 @@
         <li class="dropdown-header" role="presentation">
             <?php eT("Regenerate question codes"); ?>
         </li>
-
-        <!-- Straight -->
-        <li>
-            <a class="dropdown-item"
-                href="<?php echo App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/straight"); ?>">
-                <span class="icon-resetsurveylogic"></span>
-                <?php eT("Straight"); ?>
-            </a>
-        </li>
-
-        <!-- By question group -->
-        <li>
-            <a class="dropdown-item"
-                href="<?php echo App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/bygroup"); ?>">
-                <span class="icon-resetsurveylogic"></span>
-                <?php eT("By question group"); ?>
-            </a>
-        </li>
+        <?php
+        $regenerateQuestionCodesUrl = App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}");
+        $regenerateQuestionCodesItems = [
+            'straight' => gT("Straight"),
+            'bygroup' => gT("By question group"),
+        ];
+        ?>
+        <?php foreach ($regenerateQuestionCodesItems as $subaction => $label) : ?>
+            <li>
+                <button type="button" class="dropdown-item"
+                    aria-haspopup="dialog"
+                    data-bs-toggle="modal"
+                    data-bs-target="#confirmation-modal"
+                    data-message="<?= CHtml::encode(gT("All question codes of this survey will be renumbered. Expressions that refer to the current question codes (for example in relevance equations, validation or text tailoring) are not updated and will stop working. Do you want to continue?")) ?>"
+                    data-btnclass="btn-danger"
+                    data-onclick="<?= CHtml::encode('(function() { LS.sendPost(' . json_encode($regenerateQuestionCodesUrl) . ', "", {subaction: ' . json_encode($subaction) . '}); })') ?>">
+                    <span class="icon-resetsurveylogic"></span>
+                    <?= CHtml::encode($label) ?>
+                </button>
+            </li>
+        <?php endforeach; ?>
     <?php endif; ?>
 
     <?php if (!empty($extraToolsMenuItems)) : ?>

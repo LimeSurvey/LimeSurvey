@@ -63,3 +63,17 @@ tbody, td, tfoot, th, thead, tr {
         text-align: left;
     }
 }
+
+/* Skip link: Only visible when focused, shown above the fixed navbar */
+.skip-link.visually-hidden-focusable:focus,
+.skip-link.visually-hidden-focusable:focus-within {
+    position: fixed;
+    top: 0.5rem;
+    inset-inline-start: 0.5rem;
+    z-index: 2002;
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+    color: #212529;
+    outline: 2px solid #212529;
+    outline-offset: 2px;
+}

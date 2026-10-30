@@ -27,7 +27,8 @@ use LimeSurvey\Models\Services\SurveyAccessModeService;
  */
 function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $supportArchivedFields = true)
 {
-    $sBaseLanguage         = Survey::model()->findByPk($iNewSID)->language;
+    $oSurvey               = Survey::model()->findByPk($iNewSID);
+    $sBaseLanguage         = $oSurvey->language;
 
     $sXMLdata              = file_get_contents($sFullFilePath);
     $xml                   = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
@@ -62,6 +63,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
         $results['fatalerror'] = gT("The languages of the imported group file must at least include the base language of this survey.");
         return $results;
     }
+
+    // Translated question attributes are only imported in the languages that the file and the survey have in common
+    $aLanguagesSupported = array_values(array_intersect($importlanguages, $oSurvey->allLanguages));
 
     // Import group table ===================================================================================
     $iGroupOrder = Yii::app()->db->createCommand()->select('MAX(group_order)')->from('{{groups}}')->where('sid=:sid', array(':sid' => $iNewSID))->queryScalar();
@@ -515,7 +519,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
         /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
         $answerOrderAttributes = [];
-        importQuestionThemeAttributes($xml, $aQIDReplacements);
+        importQuestionThemeAttributes($xml, $aQIDReplacements, $aLanguagesSupported);
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -527,6 +531,11 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 continue;
             }
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
+
+            // Skip translated attributes in languages not used by the survey
+            if (!empty($insertdata['language']) && !in_array($insertdata['language'], $aLanguagesSupported)) {
+                continue;
+            }
 
             // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {
@@ -555,7 +564,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 $iDBVersion < 156 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) &&
                 $aAllAttributes[$insertdata['attribute']]['i18n']
             ) {
-                foreach ($importlanguages as $sLanguage) {
+                foreach ($aLanguagesSupported as $sLanguage) {
                     $insertdata['language'] = $sLanguage;
                     App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
                 }
@@ -3165,6 +3174,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
+
+            // Skip translated attributes in languages not used by the survey
+            if (!empty($insertdata['language']) && !in_array($insertdata['language'], $aLanguagesSupported)) {
+                continue;
+            }
 
             // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {

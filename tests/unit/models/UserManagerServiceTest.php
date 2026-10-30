@@ -831,7 +831,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         // Creating participant.
         $participantName = \Yii::app()->securityManager->generateRandomString(8);
         $participantData = array(
-            'participant_id' => 'participant_' . $participantName,
+            'participant_id' => \Participant::genUuid(),
             'firstname' => $participantName,
             'email' => $participantName . '@example.com',
             'blacklisted' => 'N',
@@ -905,7 +905,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         // Creating participant owned by the site admin and shared with the user.
         $participantName = \Yii::app()->securityManager->generateRandomString(8);
         $participant = \Participant::model()->insertParticipant(array(
-            'participant_id' => 'participant_' . $participantName,
+            'participant_id' => \Participant::genUuid(),
             'firstname' => $participantName,
             'email' => $participantName . '@example.com',
             'blacklisted' => 'N',

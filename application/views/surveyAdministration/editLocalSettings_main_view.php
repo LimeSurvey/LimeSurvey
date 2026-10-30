@@ -31,8 +31,9 @@ if (isset($scripts)) {
 <!-- START editLocalSettings -->
 <div class="row">
     <div class="col-12">
-        <!-- <h3 class="pagetitle"><?php eT($entryData['title']); ?></h3> -->
-        <!-- <h1 class="mt-3 mb-2"><?php eT($entryData['title']); ?></h1> -->
+        <div class="pagetitle">
+            <h1><?php eT($entryData['title']); ?></h1>
+        </div>
         <!-- Edition container -->
         <!-- Form -->
         <?php

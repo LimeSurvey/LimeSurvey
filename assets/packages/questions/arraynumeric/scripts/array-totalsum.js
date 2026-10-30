@@ -6,7 +6,17 @@
 
 $(document).on('ready pjax:scriptcomplete',function () {
     $('div.array-multi-flexi-text table.show-totals input:enabled').keyup(updatetotals);
-    $('div.array-multi-flexi-text table.show-totals input:enabled').each(updatetotals);
+    // Initial totals: Sum each table once, not once per input
+    $('div.array-multi-flexi-text table.show-totals').each(function () {
+        var inputs = $(this).find('input:enabled');
+        if (!inputs.length) {
+            return;
+        }
+        inputs.each(function () {
+            stripInvalidInput(this);
+        });
+        sumTable(this);
+    });
     $('div.array-multi-flexi-text table.show-totals tr.subquestion-list').on('relevance:on relevance:off', function(){
         sumTable(this);
     });
@@ -20,14 +30,25 @@ $(document).on('ready pjax:scriptcomplete',function () {
 
 function updatetotals(e) {
     console.ls.log(e);
-    var inputValue = $(this).val();
+    if (stripInvalidInput(this)) {
+        sumTable(this);
+    }
+}
+
+/**
+ * Removes the last character of the input value if the value is not a valid number
+ * @param {HTMLInputElement} element
+ * @return {boolean} true if the value was valid
+ */
+function stripInvalidInput(element) {
+    var inputValue = $(element).val();
 
     if (!normalizeValue(inputValue)) {
-        $(this).val(inputValue.substring(0, (inputValue.length - 1)));
-        return;
+        $(element).val(inputValue.substring(0, (inputValue.length - 1)));
+        return false;
     }
 
-    sumTable(this);
+    return true;
 }
 
 function sumTable(element) {

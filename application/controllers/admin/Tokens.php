@@ -2856,6 +2856,11 @@ class Tokens extends SurveyCommonAction
 
     /**
      * Bounce Settings Action.
+     *
+     * Shows the bounce settings of the survey and saves them on POST. If the
+     * survey fails validation, the validation errors are shown instead of the
+     * success message.
+     *
      * @param int $iSurveyId
      * @return void
      */
@@ -2894,8 +2899,11 @@ class Tokens extends SurveyCommonAction
             foreach ($fieldvalue as $k => $v) {
                 $survey->$k = $v;
             }
-            $survey->save();
-            App()->user->setFlash('bouncesettings', gT("Bounce settings have been saved."));
+            if ($survey->save()) {
+                App()->user->setFlash('bouncesettings', gT("Bounce settings have been saved."));
+            } else {
+                App()->setFlashMessage(CHtml::errorSummary($survey, '<div><strong>' . gT('The bounce settings could not be saved.') . '</strong></div>'), 'danger');
+            }
 
             $this->getController()->redirect(array("admin/tokens/sa/bouncesettings/surveyid/{$iSurveyId}"));
         }
