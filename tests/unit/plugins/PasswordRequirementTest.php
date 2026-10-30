@@ -191,4 +191,270 @@ class PasswordRequirementTest extends TestBaseClass
             $this->assertNotEmpty($errors, $msg);
         }
     }
+
+    /**
+     * The plugin settings are the only admin password rules, lowering them must be possible.
+     */
+    public function testLoweredRequirementsApplyToUsers()
+    {
+        $this->saveAdminSettings(false, false, false, 4);
+        try {
+            $user = new \User();
+            $this->assertSame('', $user->checkPasswordStrength('passwird'), 'Password matching the lowered plugin settings was refused.');
+            $this->assertNotSame('', $user->checkPasswordStrength('abc'), 'Password shorter than the plugin minimum was accepted.');
+
+            $helpText = $user->getPasswordHelpText();
+            $this->assertStringContainsString('At least 4 characters long.', $helpText);
+            $this->assertStringNotContainsString('upper case', $helpText);
+            $this->assertStringNotContainsString('number', $helpText);
+        } finally {
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
+     * A minimum password length saved blank uses the default length.
+     */
+    public function testBlankMinimumSizeUsesDefault()
+    {
+        $this->saveAdminSettings(false, false, false, '');
+        try {
+            $user = new \User();
+            $shortPassword = str_repeat('a', \PasswordRequirement::DEFAULT_MINIMUM_SIZE - 1);
+            $this->assertNotSame('', $user->checkPasswordStrength($shortPassword), 'Password shorter than the default minimum was accepted.');
+            $this->assertSame('', $user->checkPasswordStrength($shortPassword . 'a'));
+        } finally {
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
+     * The lowercase and maximum length rules are checked, shown in the help text and used for random passwords.
+     */
+    public function testLowercaseAndMaximumSize()
+    {
+        $this->saveAdminSettings(false, false, false, 4);
+        self::$plugin->saveSettings(['needsLowercase' => '1', 'maximumSize' => 6]);
+        try {
+            $user = new \User();
+            $this->assertSame('', $user->checkPasswordStrength('abcdef'));
+            $this->assertNotSame('', $user->checkPasswordStrength('ABCDEF'), 'Password without lowercase character was accepted.');
+            $this->assertNotSame('', $user->checkPasswordStrength('abcdefg'), 'Password longer than the maximum was accepted.');
+
+            $helpText = $user->getPasswordHelpText();
+            $this->assertStringContainsString('At most 6 characters long.', $helpText);
+            $this->assertStringContainsString('At least 1 lower case letter.', $helpText);
+
+            $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword(10);
+            $this->assertSame('', $user->checkPasswordStrength($randomPassword), 'Random password does not match the rules.');
+        } finally {
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
+     * A maximum password length below the shortest possible password is not saved.
+     */
+    public function testMaximumSizeBelowMinimumIsRefused()
+    {
+        $this->saveAdminSettings(true, true, false, 8);
+        try {
+            $this->assertFalse(self::$plugin->saveSettings(['maximumSize' => 7]));
+            $this->assertFalse(self::$plugin->saveSettings(['minimumSize' => 0, 'maximumSize' => 2]), 'Maximum below the required characters was saved.');
+            $this->assertNull(self::$plugin->saveSettings(['minimumSize' => 0, 'maximumSize' => 3]));
+            $this->assertFalse(self::$plugin->saveSettings(['minimumSize' => 4]), 'Minimum above the saved maximum was saved.');
+            $settings = self::$plugin->getPluginSettings();
+            $this->assertEquals(3, $settings['maximumSize']['current']);
+            $this->assertEquals(0, $settings['minimumSize']['current']);
+        } finally {
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
+     * An empty password is refused, even when the plugin settings allow any password.
+     */
+    public function testEmptyPasswordIsRefused()
+    {
+        $this->saveAdminSettings(false, false, false, 0);
+        try {
+            $user = new \User();
+            $this->assertNotSame('', $user->checkPasswordStrength(''));
+            $this->assertSame('', $user->checkPasswordStrength('a'));
+        } finally {
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
+     * DB update 721 keeps the former core rules where they are stricter than the plugin settings.
+     */
+    public function testUpdateCopiesFormerCoreRules()
+    {
+        $formerRules = App()->getConfig('passwordValidationRules');
+        try {
+            // Without passwordValidationRules in config.php, the former config-defaults.php rules applied
+            $this->saveAdminSettings(false, false, false, 0);
+            App()->setConfig('passwordValidationRules', null);
+            (new \LimeSurvey\Helpers\Update\Update_721(App()->db, []))->up();
+            $settings = self::$plugin->getPluginSettings();
+            $this->assertEquals(8, $settings['minimumSize']['current']);
+            $this->assertEquals(1, $settings['needsUppercase']['current']);
+            $this->assertEquals(1, $settings['needsNumber']['current']);
+            $this->assertEmpty($settings['needsNonAlphanumeric']['current']);
+
+            $this->saveAdminSettings(false, false, false, '');
+            App()->setConfig('passwordValidationRules', ['min' => 16, 'max' => 64, 'lower' => 1, 'symbol' => 1]);
+            (new \LimeSurvey\Helpers\Update\Update_721(App()->db, []))->up();
+            $settings = self::$plugin->getPluginSettings();
+            $this->assertEquals(16, $settings['minimumSize']['current']);
+            $this->assertEquals(64, $settings['maximumSize']['current']);
+            $this->assertEquals(1, $settings['needsLowercase']['current']);
+            $this->assertEquals(1, $settings['needsNonAlphanumeric']['current']);
+            $this->assertEmpty($settings['needsUppercase']['current']);
+        } finally {
+            App()->setConfig('passwordValidationRules', $formerRules);
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
+     * DB update 721 replaces the settings of an inactive plugin by the former core rules, the only ones that applied.
+     */
+    public function testUpdateReplacesSettingsOfInactivePlugin()
+    {
+        $formerRules = App()->getConfig('passwordValidationRules');
+        try {
+            $this->saveAdminSettings(false, false, true, '');
+            \Plugin::model()->updateAll(['active' => 0], 'name = :name', [':name' => self::$pluginName]);
+            App()->setConfig('passwordValidationRules', null);
+            (new \LimeSurvey\Helpers\Update\Update_721(App()->db, []))->up();
+            $settings = self::$plugin->getPluginSettings();
+            $this->assertEquals(8, $settings['minimumSize']['current']);
+            $this->assertEquals(1, $settings['needsUppercase']['current']);
+            $this->assertEquals(1, $settings['needsNumber']['current']);
+            $this->assertEmpty($settings['needsNonAlphanumeric']['current']);
+            $this->assertEmpty($settings['needsLowercase']['current']);
+            $this->assertEmpty($settings['maximumSize']['current']);
+            $this->assertEquals(1, \Plugin::model()->findByAttributes(['name' => self::$pluginName])->active);
+        } finally {
+            App()->setConfig('passwordValidationRules', $formerRules);
+            self::installAndActivatePlugin(self::$pluginName);
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
+     * DB update 721 drops a maximum password length that no password could match.
+     */
+    public function testUpdateDropsImpossibleMaximumSize()
+    {
+        $formerRules = App()->getConfig('passwordValidationRules');
+        try {
+            // Active plugin with the default minimum of 12, the former maximum of 10 is below it
+            $this->saveAdminSettings(true, true, false, '');
+            App()->setConfig('passwordValidationRules', ['min' => 8, 'max' => 10]);
+            (new \LimeSurvey\Helpers\Update\Update_721(App()->db, []))->up();
+            $settings = self::$plugin->getPluginSettings();
+            $this->assertEmpty($settings['maximumSize']['current']);
+
+            // Inactive plugin, the former rules themselves conflict
+            \Plugin::model()->updateAll(['active' => 0], 'name = :name', [':name' => self::$pluginName]);
+            App()->setConfig('passwordValidationRules', ['min' => 16, 'max' => 10]);
+            (new \LimeSurvey\Helpers\Update\Update_721(App()->db, []))->up();
+            $settings = self::$plugin->getPluginSettings();
+            $this->assertEquals(16, $settings['minimumSize']['current']);
+            $this->assertEmpty($settings['maximumSize']['current']);
+        } finally {
+            App()->setConfig('passwordValidationRules', $formerRules);
+            self::installAndActivatePlugin(self::$pluginName);
+            $this->restoreDefaultAdminSettings();
+        }
+    }
+
+    /**
+     * A random password already created by another plugin is kept.
+     */
+    public function testRandomPasswordOfOtherPluginIsKept()
+    {
+        $oEvent = $this->dispatchPluginEvent(self::$pluginName, 'createRandomPassword', [
+            'targetSize' => 8,
+            'password' => 'fromOtherPlugin',
+        ]);
+        $this->assertSame('fromOtherPlugin', $oEvent->get('password'));
+
+        $oEvent = $this->dispatchPluginEvent(self::$pluginName, 'createRandomPassword', [
+            'targetSize' => 8,
+            'password' => '0',
+        ]);
+        $this->assertSame('0', $oEvent->get('password'));
+    }
+
+    /**
+     * The plugin can't be deactivated.
+     */
+    public function testCanNotBeDeactivated()
+    {
+        $oEvent = $this->dispatchPluginEvent(self::$pluginName, 'beforeDeactivate', []);
+        $this->assertFalse($oEvent->get('success', true));
+    }
+
+    /**
+     * Without the plugin, core checks a minimum length and creates long enough random passwords.
+     */
+    public function testFallbackWithoutPlugin()
+    {
+        $pluginManager = App()->getPluginManager();
+        $events = ['checkPasswordRequirement', 'getPasswordRequirements', 'createRandomPassword'];
+        foreach ($events as $event) {
+            $pluginManager->unsubscribe(self::$plugin, $event);
+        }
+        try {
+            $minLength = \LimeSurvey\Models\Services\PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH;
+            $user = new \User();
+            $this->assertNotSame('', $user->checkPasswordStrength(str_repeat('a', $minLength - 1)));
+            $this->assertSame('', $user->checkPasswordStrength(str_repeat('a', $minLength)));
+            $this->assertStringContainsString("At least {$minLength} characters long.", $user->getPasswordHelpText());
+            $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
+            $this->assertGreaterThanOrEqual($minLength, strlen((string) $randomPassword));
+        } finally {
+            foreach ($events as $event) {
+                $pluginManager->subscribe(self::$plugin, $event);
+            }
+        }
+    }
+
+    /**
+     * Save the plugin settings for administration passwords
+     * @param bool $needsNumber
+     * @param bool $needsUppercase
+     * @param bool $needsNonAlphanumeric
+     * @param int|string $minimumSize
+     * @return void
+     */
+    private function saveAdminSettings($needsNumber, $needsUppercase, $needsNonAlphanumeric, $minimumSize)
+    {
+        self::$plugin->saveSettings([
+            'needsNumber' => $needsNumber,
+            'needsUppercase' => $needsUppercase,
+            'needsNonAlphanumeric' => $needsNonAlphanumeric,
+            'minimumSize' => $minimumSize,
+        ]);
+    }
+
+    /**
+     * Restore the default plugin settings for administration passwords
+     * @return void
+     */
+    private function restoreDefaultAdminSettings()
+    {
+        self::$plugin->saveSettings([
+            'needsNumber' => \PasswordRequirement::DEFAULT_NEEDS_NUMBER,
+            'needsUppercase' => \PasswordRequirement::DEFAULT_NEEDS_UPPERCASE,
+            'needsLowercase' => \PasswordRequirement::DEFAULT_NEEDS_LOWERCASE,
+            'needsNonAlphanumeric' => \PasswordRequirement::DEFAULT_NEEDS_NON_ALPHANUMERIC,
+            'minimumSize' => \PasswordRequirement::DEFAULT_MINIMUM_SIZE,
+            'maximumSize' => '',
+        ]);
+    }
 }

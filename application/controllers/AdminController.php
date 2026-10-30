@@ -470,12 +470,7 @@ class AdminController extends LSYii_Controller
         $aData['sAdmintheme'] = $oAdminTheme->name;
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
 
-        $aData['pageTitle'] = null;
-        if (!empty($pageData['topbar'] ?? null) && !empty($pageData['topbar']['title'] ?? null)) {
-            $aData['pageTitle'] = strip_tags((string) $pageData['topbar']['title']);
-        } elseif (!empty($pageData['title_bar'] ?? null) && !empty($pageData['title_bar']['title'] ?? null)) {
-            $aData['pageTitle'] = strip_tags((string) $pageData['title_bar']['title']);
-        }
+        $aData['pageTitle'] = LayoutHelper::getDocumentTitle($pageData);
 
             //foreach ($aData['aPackageStyles'] as &$filename)
             //{

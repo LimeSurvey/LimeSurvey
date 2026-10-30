@@ -258,8 +258,8 @@ class LimeExpressionManager
      * JavaScript array of mappings of canonical JavaScript variable name to key attributes.
      * These fragments are used to create the JavaScript varNameAttr array.
      *
-     * @example ['java38612X11X147'] = "'java38612X11X147':{ 'jsName':'java38612X11X147','jsName_on':'java38612X11X147','sgqa':'38612X11X147','qid':147,'gid':11,'type':'G','default':'','rowdivid':'','onlynum':'','gseq':1,'answers':{ 'M':'Male','F':'Female'}}"
-     * @example ['java26626X37X705sq1#1'] = "'java26626X37X705sq1#1':{ 'jsName':'java26626X37X705sq1#1','jsName_on':'java26626X37X705sq1#1','sgqa':'26626X37X705sq1#1','qid':705,'gid':37,'type':'1','default':'','rowdivid':'26626X37X705sq1','onlynum':'','gseq':1,'answers':{ '0~1':'1|Low','0~2':'2|Medium','0~3':'3|High','1~1':'1|Never','1~2':'2|Sometimes','1~3':'3|Always'}}"
+     * @example ['java38612X11X147'] = "'java38612X11X147':{ 'jsName':'java38612X11X147','jsName_on':'java38612X11X147','sgqa':'38612X11X147','qid':147,'gid':11,'type':'G','default':"",'rowdivid':'','onlynum':'','gseq':1,'answers':{ 'M':'Male','F':'Female'}}"
+     * @example ['java26626X37X705sq1#1'] = "'java26626X37X705sq1#1':{ 'jsName':'java26626X37X705sq1#1','jsName_on':'java26626X37X705sq1#1','sgqa':'26626X37X705sq1#1','qid':705,'gid':37,'type':'1','default':"",'rowdivid':'26626X37X705sq1','onlynum':'','gseq':1,'answers':{ '0~1':'1|Low','0~2':'2|Medium','0~3':'3|High','1~1':'1|Never','1~2':'2|Sometimes','1~3':'3|Always'}}"
      *
      * @var array
      */
@@ -723,6 +723,8 @@ class LimeExpressionManager
             $c = __CLASS__;
             self::$instance = new $c();
             $emSessionState->clearDirty();
+            // The cached instance is outdated too: Without this, the next request would restore it if this one does not save the new instance
+            $emSessionState->clearSerializedInstance();
         } elseif (!isset(self::$instance)) {
             $serializedInstance = $emSessionState->getSerializedInstance();
             if ($serializedInstance !== null) {
@@ -4041,8 +4043,8 @@ class LimeExpressionManager
                 //                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
                 //                . "','readWrite':'" . $readWrite
                 //                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
-                . "','default':'" . (is_null($defaultValue) ? '' : json_encode($defaultValue)) // Don't found usage in em_javascript, used in expression ?
-                . "','rowdivid':'" . (is_null($rowdivid) ? '' : $rowdivid)
+                . "','default':" . json_encode($defaultValue ?? '', JSON_HEX_TAG | JSON_HEX_APOS) // Don't found usage in em_javascript, used in expression ?
+                . ",'rowdivid':'" . (is_null($rowdivid) ? '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $groupSeq
                 //                . ",'qseq':" . $questionSeq
@@ -4087,7 +4089,12 @@ class LimeExpressionManager
             }
         } else {
             // Read list of available tokens from the tokens table so that preview and error checking works correctly
-            $attrs = array_keys(getTokenFieldsAndNames($surveyid));
+            if ($survey->hasTokensTable) {
+                // Same columns as a participant row has in the survey (e.g. participant_id)
+                $attrs = Token::model($surveyid)->tableSchema->columnNames;
+            } else {
+                $attrs = array_keys(getTokenFieldsAndNames($surveyid));
+            }
             $blankVal = [
                 'code'       => '',
                 'type'       => '',
@@ -5374,11 +5381,6 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] == true) {
                 $sdata['datestamp'] = $sessionState->getDatestamp();
                 $sdata['startdate'] = $sessionState->getStartDate() ?? $sessionState->getDatestamp();
-                if($this->surveyOptions['anonymized']){
-                    //all dates should be anonymized
-                    $sdata['datestamp'] = $this->anonymizeDate();
-                    $sdata['startdate'] = $this->anonymizeDate();
-                }
             }
             if ($this->surveyOptions['ipaddr'] == true) {
                 $sdata['ipaddr'] = getIPAddress();
@@ -5458,10 +5460,6 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] && $sessionState->getDatestamp() !== null) {
                 $sessionState->setDatestamp(gmdate("Y-m-d H:i:s"));
                 $aResponseAttributes['datestamp'] = $sessionState->getDatestamp();
-                if($this->surveyOptions['anonymized']){
-                    //all dates should be anonymized
-                    $aResponseAttributes['datestamp'] = $this->anonymizeDate();
-                }
             }
             if ($this->surveyOptions['ipaddr']) {
                 $aResponseAttributes['ipaddr'] = getIPAddress();

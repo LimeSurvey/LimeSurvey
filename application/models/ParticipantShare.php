@@ -162,13 +162,14 @@ class ParticipantShare extends LSActiveRecord
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
         $userId = App()->user->id;
         $isOwner = $this->participant->owner_uid == $userId;
-            $url = App()->createUrl(
-                'admin/participants/sa/deleteSingleParticipantShare',
-                [
-                    'participantId' => urlencode($this->participant_id),
-                    'shareUid'      => $this->share_uid
-                ]
-            );
+        // Note: The IDs are posted, not added to the URL, so participant IDs with special characters work too
+        $jsArguments = implode(', ', array_map(function ($value) {
+            return json_encode((string) $value, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+        }, [
+            App()->createUrl('admin/participants/sa/deleteSingleParticipantShare'),
+            $this->participant_id,
+            $this->share_uid
+        ]));
 
         $dropdownItems = [];
         $dropdownItems[] = [
@@ -181,7 +182,7 @@ class ParticipantShare extends LSActiveRecord
                 'data-title'     => gT('Unshare this participant'),
                 'data-btntext'   => gT('Unshare'),
                 'data-message'   => gT('Do you really want to unshare this participant?'),
-                'data-onclick'   => "(function() { LS.CPDB.deleteSingleParticipantShare(\"$url\")})",
+                'data-onclick'   => "(function() { LS.CPDB.deleteSingleParticipantShare($jsArguments)})",
             ],
             'enabledCondition' => $isOwner || $permission_superadmin_read
         ];
@@ -204,7 +205,8 @@ class ParticipantShare extends LSActiveRecord
         $participantIdAndShareUid = $this->participant_id . ',' . $this->share_uid;
 
         if ($isOwner || $isSuperAdmin) {
-            $html = "<input type='checkbox' class='selector_participantShareCheckbox massiveActionsCheckbox' name='selectedParticipantShare[]' value='" . $participantIdAndShareUid . "' >";
+            $label = sprintf(gT('Select share of participant %s with %s'), $this->participant->getDisplayName(), $this->getSharedBy());
+            $html = "<input type='checkbox' class='selector_participantShareCheckbox massiveActionsCheckbox' name='selectedParticipantShare[]' value='" . CHtml::encode($participantIdAndShareUid) . "' aria-label='" . CHtml::encode($label) . "' >";
         } else {
             $html = '';
         }
@@ -222,7 +224,7 @@ class ParticipantShare extends LSActiveRecord
             [
                 "name"              => 'checkbox',
                 "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllParticipantShare' />",
+                "header"            => "<input type='checkbox' id='action_toggleAllParticipantShare' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
                 "filter"            => false,
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],

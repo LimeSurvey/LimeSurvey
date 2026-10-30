@@ -1464,27 +1464,21 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     if ($code === '') {
                         return "Q{$qid}";
                     }
-                    $commentText = false;
-                    $currentQuestion = null;
-                    $excludeSubquestion = false;
+                    $subquestionQids = [];
                     foreach ($questions as $question) {
-                        if ($question->title === $code) {
-                            $currentQuestion = $question;
-                        } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
-                            $currentQuestion = $question;
-                            $commentText = $code;
-                            if (strpos($code, $question->title) === 0) {
-                                $commentText = substr($code, strlen($question->title));
-                            } else {
-                                $excludeSubquestion = true;
-                            }
+                        if ($question->parent_qid) {
+                            $subquestionQids[$question->title] = $question->qid;
                         }
                     }
-                    if ($currentQuestion) {
-                        $newFieldName = "Q{$qid}" . ($excludeSubquestion ? "" : "_S{$currentQuestion->qid}");
-                        if ($commentText) {
-                            $newFieldName = $newFieldName . "_C" . $commentText;
-                        }
+                    if (isset($subquestionQids[$code])) {
+                        // A subquestion with exactly this code, even if it is coded "other", "comment" or "othercomment"
+                        $newFieldName = "Q{$qid}_S{$subquestionQids[$code]}";
+                    } elseif (strlen($code) > 7 && substr($code, -7) === 'comment' && isset($subquestionQids[substr($code, 0, -7)])) {
+                        // The comment field of a subquestion (multiple choice with comments)
+                        $newFieldName = "Q{$qid}_S{$subquestionQids[substr($code, 0, -7)]}_Ccomment";
+                    } elseif ($code === 'other' || $code === 'othercomment') {
+                        // The "Other" field of the question itself and its comment
+                        $newFieldName = "Q{$qid}_C{$code}";
                     }
                     break;
                 case \Question::QT_SEMICOLON_ARRAY_TEXT:
@@ -4533,10 +4527,17 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
     foreach ($result as $row) {
         Yii::app()->db->createCommand('delete from {{group_l10ns}} where id =' . $row['id'])->execute();
     }
+
+    // Remove translated question attributes, the other attributes have an empty or NULL language
+    Yii::app()->db->createCommand(
+        "DELETE FROM {{question_attributes}}
+        WHERE qid IN (SELECT qid FROM {{questions}} WHERE sid={$iSurveyID})
+        AND language <> '' AND {$sqllang}"
+    )->execute();
 }
 
 /**
-* fixLanguageConsistency() fixes missing groups, questions, answers, quotas & assessments for languages on a survey
+* fixLanguageConsistency() fixes missing groups, questions, answers, translated question attributes, quotas & assessments for languages on a survey
 * @param int $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
 * @param string $baselang - language to use as base (useful when changing the base language) - if empty, it will be picked from the survey
@@ -4628,6 +4629,21 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
                 Yii::app()->db->createCommand()->insert('{{answer_l10ns}}', $data);
             }
         }
+    }
+
+    // Translated question attributes: Copy the base language value where the language has none yet
+    foreach ($languagesToCheck as $lang) {
+        Yii::app()->db->createCommand(
+            "INSERT INTO {{question_attributes}} (qid, attribute, value, language)
+            SELECT qa.qid, qa.attribute, qa.value, :language
+            FROM {{question_attributes}} qa
+            JOIN {{questions}} q ON q.qid = qa.qid
+            WHERE q.sid = :sid AND qa.language = :baselang
+            AND NOT EXISTS (
+                SELECT 1 FROM {{question_attributes}} existing
+                WHERE existing.qid = qa.qid AND existing.attribute = qa.attribute AND existing.language = :existinglanguage
+            )"
+        )->execute([':language' => $lang, ':sid' => $sid, ':baselang' => $baselang, ':existinglanguage' => $lang]);
     }
 
     switchMSSQLIdentityInsert('assessments', true);

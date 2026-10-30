@@ -12,5 +12,5 @@ if (!defined('BASEPATH')) {
  * This file has no functionality except for being searchable by the translation script.
  * When adding or changing such a text in config.xml, update the matching entry here.
  */
-gT('Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized');
+gT('Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized or sorted alphabetically');
 gT('Label wrapper width');

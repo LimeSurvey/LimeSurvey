@@ -1602,7 +1602,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Count the total answers, submitted ot not.
+     * Count the total answers, submitted or not.
      * @return int
      */
     public function getCountTotalAnswers()
@@ -1733,6 +1733,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'id'                => 'sid',
                 'class'             => 'CCheckBoxColumn',
                 'selectableRows'    => '100',
+                'ariaLabel'         => function ($data) {
+                    return isset($data->defaultlanguage) ? sprintf(gT('Select survey %s'), flattenText($data->defaultlanguage->surveyls_title, false, true)) : null;
+                },
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'htmlOptions'       => ['class' => 'ls-sticky-column']
             ],

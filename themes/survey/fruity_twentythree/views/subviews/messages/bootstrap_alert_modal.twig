@@ -60,11 +60,11 @@
 </div>
 {% endif %}
 <!-- Clear all modal -->
-<div id="clear-all-modal" class="modal" tabindex="-1">
+<div id="clear-all-modal" class="modal" tabindex="-1" aria-labelledby="clear-all-modal-title">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{ gT("Exit and clear survey" ) }}</h5>
+                <h5 class="modal-title" id="clear-all-modal-title">{{ gT("Exit and clear survey" ) }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"><span class="visually-hidden">{{ gT('Close') }}</span></button>
             </div>
             <div class="modal-body">
