@@ -18,9 +18,9 @@ $this->widget(
         'columns' => [
             [
                 'id' => 'id',
-                'class' => 'application.extensions.admin.grid.CLSCheckBoxColumn',
+                'class' => 'CCheckBoxColumn',
                 'selectableRows' => '100',
-                'ariaLabelExpression' => 'sprintf(gT("Select %s"), $data->template->title ?? $data->template_name)',
+                'ariaLabel' => 'sprintf(gT("Select %s"), $data->template->title ?? $data->template_name)',
             ],
             [
                 'header' => gT('Preview'),
