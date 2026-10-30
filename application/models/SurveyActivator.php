@@ -363,7 +363,7 @@ class SurveyActivator
         if (isset($this->tableDefinition['token'])) {
             // unique name ensure by surveyid + datetime + random number
             $indexname = "idx_token_" .
-                substr($sTableName, strlen(App()->getDb()->tablePrefix)) . "_" .
+                trim($sTableName, '{}') . "_" .
                 date('YmdHis') . "_" .
                 randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
             try {

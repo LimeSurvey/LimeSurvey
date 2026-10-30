@@ -213,12 +213,12 @@ abstract class Token extends Dynamic
              * on a new token table (for example on reactivation)
              */
             $tokenindexname = "idx_token_" .
-                substr($sTableName, strlen(App()->getDb()->tablePrefix)) . "_" .
+                trim($sTableName, '{}') . "_" .
                 date('YmdHis') . "_" .
                 randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
             $db->createCommand()->createIndex($tokenindexname, $sTableName, 'token');
             $mailindexname = "idx_email_" .
-                substr($sTableName, strlen(App()->getDb()->tablePrefix)) . "_" .
+                trim($sTableName, '{}') . "_" . . "_" .
                 date('YmdHis') . "_" .
                 randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
             // MSSQL does not support indexes on text fields so not needed here
