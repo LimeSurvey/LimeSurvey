@@ -129,7 +129,7 @@ class GetFieldNameTest extends TestBaseClass
         $this->assertFieldName('Q100_S103', '1X10X100Acomment', $questions);
         $this->assertFieldName('Q100_S104', '1X10X100Aothercomment', $questions);
 
-        // "Aothercomment" is the comment of "Aother", not an "othercomment" field of "A"
+        // The comment column of subquestion "A" + "other" must not be taken as an "othercomment" field of "A"
         foreach ([[101 => 'Aother', 102 => 'A'], [102 => 'A', 101 => 'Aother']] as $codes) {
             $questions = $this->buildQuestions(\Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS, $codes);
             $this->assertFieldName('Q100_S101', '1X10X100Aother', $questions);
