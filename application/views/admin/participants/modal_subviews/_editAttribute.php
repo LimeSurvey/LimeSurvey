@@ -25,7 +25,7 @@ $form = $this->beginWidget(
             'labelOptions' => ['class' => ''],
             'required'     => 'required'
         ]; ?>
-        <?= $form->textFieldControlGroup($model, 'defaultname', $baseControlGroupHtmlOptions) ?>
+        <?= $form->textFieldControlGroup($model, 'defaultname', array_diff_key($baseControlGroupHtmlOptions, ['required' => true])) ?>
         <?= $form->dropDownListControlGroup($model, 'attribute_type', $model->attributeTypeDropdownArray, array_merge($baseControlGroupHtmlOptions, ['class' => 'form-select'])) ?>
         <div class="ex-form-group mb-3" id="">
             <label class='form-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
@@ -72,10 +72,10 @@ $form = $this->beginWidget(
                 <?php foreach ($model->getAttributesValues($model->attribute_id) as $attribute_value): ?>
                     <div class="control-group">
                         <div class="dropDownContainer col-8 col-offset-2">
-                            <?= TbHtml::textField('ParticipantAttributeNamesDropdown[]', $attribute_value['value'], ['class' => 'form-control', 'id' => '']) ?>
+                            <?= TbHtml::textField('ParticipantAttributeNamesDropdown[]', $attribute_value['value'], ['class' => 'form-control', 'id' => '', 'aria-label' => gT('Dropdown field')]) ?>
                         </div>
                         <div class="col-1">
-                            <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
+                            <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField" aria-label="<?= gT('Remove dropdown field') ?>">
                                 <i class="ri-delete-bin-fill text-danger"></i>
                             </button>
                         </div>
@@ -83,10 +83,10 @@ $form = $this->beginWidget(
                 <?php endforeach; ?>
                 <div class='control-group'>
                     <div class='dropDownContainer col-8 col-offset-2'>
-                        <input class='form-control' name='ParticipantAttributeNamesDropdown[]' value=''/>
+                        <input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='' aria-label="<?= gT('Dropdown field') ?>"/>
                     </div>
                     <div class="col-1">
-                        <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
+                        <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField" aria-label="<?= gT('Remove dropdown field') ?>">
                             <i class="ri-delete-bin-fill text-danger"></i>
                         </button>
                     </div>
@@ -168,10 +168,10 @@ $form = $this->beginWidget(
                 </div>
                 <div class='control-group' id="dummyDropdownInputGroup">
                     <div class='dropDownContainer col-8 col-offset-2'>
-                        <input class='form-control' name='dummyParticipantAttributeNamesDropdown' value=''/>
+                        <input class='form-control' name='dummyParticipantAttributeNamesDropdown' value='' aria-label="<?= gT('Dropdown field') ?>"/>
                     </div>
                     <div class="col-1">
-                        <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
+                        <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField" aria-label="<?= gT('Remove dropdown field') ?>">
                             <i class="ri-delete-bin-fill text-danger"></i>
                         </button>
                     </div>
