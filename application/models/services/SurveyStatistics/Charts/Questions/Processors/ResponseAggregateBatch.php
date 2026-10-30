@@ -599,11 +599,37 @@ final class ResponseAggregateBatch
                     $conditions[] = "$col IN (" . implode(', ', $holders) . ')';
                     break;
                 case 'range':
-                    $conditions[] = "$col BETWEEN $holders[0] AND $holders[1]";
+                    $number = $schema->columns[$field]->type === 'integer'
+                        ? $col
+                        : $this->rangeNumericExpression($col);
+                    $conditions[] = "$number BETWEEN $holders[0] AND $holders[1]";
                     break;
             }
         }
         return [$conditions, $params];
+    }
+
+    /**
+     * Column read as a number, NULL when the cell is not numeric. Mirrors
+     * RangeConditionHandler so statistics and response filters match the
+     * same rows.
+     */
+    private function rangeNumericExpression(string $col): string
+    {
+        $db = $this->getDb();
+        $pattern = $db->quoteValue(self::NUMERIC_PATTERN);
+        $type = 'DECIMAL(30,10)';
+
+        switch ($db->getDriverName()) {
+            case 'pgsql':
+                return "(CASE WHEN CAST($col AS TEXT) ~ $pattern THEN CAST($col AS $type) END)";
+            case 'sqlsrv':
+            case 'mssql':
+            case 'dblib':
+                return "TRY_CAST($col AS $type)";
+            default:
+                return "(CASE WHEN CAST($col AS CHAR) REGEXP $pattern THEN CAST($col AS $type) END)";
+        }
     }
 
     /**
