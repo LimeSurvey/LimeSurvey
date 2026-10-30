@@ -3247,12 +3247,26 @@ function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn = null)
 
 /**
 * @param string $sTablename
+* @param string[string[] $aColumns the primary keys as string or columns
 */
 function addPrimaryKey($sTablename, $aColumns)
 {
-    // unique name ensure by tablename + datetime + random string : datetime needed for old table (token, survey etc ..)
-    $indexname = "PK_{$sTablename}_" . date('YmdHis') . "_" . randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
-    return Yii::app()->db->createCommand()->addPrimaryKey($indexname, '{{' . $sTablename . '}}', $aColumns);
+    $tablePrefix = App()->getDb()->tablePrefix;
+    $indexTableName = $sTablename;
+    if ($tablePrefix !== '' && strpos($indexTableName, $tablePrefix) === 0) {
+        $indexTableName = substr($indexTableName, strlen($tablePrefix));
+    }
+    $randomLength = min(12, max(1, 63 - strlen('PK__' . date('YmdHis') . '_') - strlen($indexTableName)));
+    // Ensure unique name using table name + datetime + random string.
+    $indexname = 'PK_' . $indexTableName
+        . '_' . date('YmdHis')
+        . '_' . randomChars($randomLength, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+    $indexname = substr($indexname, 0, 63);
+    return Yii::app()->db->createCommand()->addPrimaryKey(
+        $indexname,
+        '{{' . $sTablename . '}}',
+        $aColumns
+    );
 }
 
 /**
