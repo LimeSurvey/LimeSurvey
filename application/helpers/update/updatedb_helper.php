@@ -3256,12 +3256,23 @@ function addPrimaryKey($sTablename, $aColumns)
     if ($tablePrefix !== '' && strpos($indexTableName, $tablePrefix) === 0) {
         $indexTableName = substr($indexTableName, strlen($tablePrefix));
     }
-    $randomLength = min(12, max(1, 63 - strlen('PK__' . date('YmdHis') . '_') - strlen($indexTableName)));
-    // Ensure unique name using table name + datetime + random string.
+    $date = date('YmdHis');
+    $maxRandomLength = 12;
+    $minRandomLength = 4;
+    // Reserve space for the prefix, separators, timestamp and minimum random string.
+    $maxTableNameLength = 63 - strlen('PK__' . $date . '_') - $minRandomLength;
+    if (strlen($indexTableName) > $maxTableNameLength) {
+        $indexTableName = substr($indexTableName, 0, $maxTableNameLength);
+    }
+    // Use as many random characters as possible, up to 12.
+    $randomLength = min(
+        $maxRandomLength,
+        63 - strlen('PK_' . $indexTableName . '_' . $date . '_')
+    );
     $indexname = 'PK_' . $indexTableName
-        . '_' . date('YmdHis')
+        . '_' . $date
         . '_' . randomChars($randomLength, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
-    $indexname = substr($indexname, 0, 63);
+
     return Yii::app()->db->createCommand()->addPrimaryKey(
         $indexname,
         '{{' . $sTablename . '}}',
