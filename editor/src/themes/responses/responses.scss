@@ -161,6 +161,42 @@
   }
 
   .responses-table {
+    .array-response-badge {
+      max-width: calc(100% - 8px);
+    }
+
+    .array-response-text {
+      display: flex;
+      min-width: 0;
+      column-gap: 4px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .array-subquestion,
+    .array-response-answer {
+      flex: 0 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .array-response-answer {
+      position: relative;
+      text-align: left;
+    }
+
+    .array-response-answer-measure {
+      position: absolute;
+      width: max-content;
+      visibility: hidden;
+    }
+
+    .array-separator {
+      flex-shrink: 0;
+    }
+
     .badge {
       @include med12;
       margin: 4px;

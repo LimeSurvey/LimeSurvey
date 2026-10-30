@@ -88,7 +88,6 @@ $config['blockaddingtosurveys']      = 'Y'; // Don't allow blocklisted participa
 $config['hideblacklisted']           = 'N'; // Don't show blocklisted participants
 $config['deleteblacklisted']         = 'N'; // Delete globally blocklisted participant from the database
 $config['allowunblacklist']          = 'N'; // Allow participant to unblocklist himself/herself
-$config['userideditable']            = 'N'; // Allow editing of user IDs
 
 $config['defaulttheme']              = 'fruity_twentythree'; // This setting specifys the default theme used for the 'public list' of surveys
 $config['createsample']              = true;
@@ -112,7 +111,7 @@ $config['imagemimetypes'] = [
 $config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,dotx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
-$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
+$config['allowedpluginuploads'] = 'gif,ico,jpg,jpeg,png,svg,webp,pdf,dat,icc,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
@@ -128,6 +127,7 @@ $config['showpopups']         = 2; // Show popup messages if mandatory or condit
 
 $config['maxemails']          = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 $config['sendingrate']        = 60; // Number of seconds to wait until the next email batch is sent
+$config['send_error_saving_results_email'] = true; // Send the answers to the survey administrator email if a response could not be saved
 
 // Experimental parameters, only change if you know what you're doing
 //
@@ -495,13 +495,13 @@ $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of re
 */
 
 /**
-*  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/fonts
+*  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/assets/fonts
 *  Set this to specific font-file (for example 'DejaVuSans.ttf') or set it to 'auto' and LimeSurvey tried to pick the best font depending on your survey base language
 */
 $config['chartfontfile'] = 'auto';
 /**
-*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/fonts
-*  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/fonts, an alert is sent to admin
+*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/assets/fonts
+*  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/assets/fonts, an alert is sent to admin
 */
 $config['alternatechartfontfile'] = array(
     'hi' => 'FreeSans.ttf',
@@ -646,6 +646,15 @@ $config['restrictToLanguages'] = '';
 * @var string
 */
 $config['RPCInterface'] = 'off';
+
+/**
+* This parameter enables a log of all RPC interface calls, to find out what an API client sent and received
+* Set to true in config.php to write each request and the start of its response to tmp/runtime/remotecontrol.log
+* Passwords are removed, session keys are replaced by a short hash and long values are shortened.
+* Warning: The log still contains the survey, participant and response data sent and received, only enable it while debugging.
+* @var boolean
+*/
+$config['rpc_log'] = false;
 
 /**
 * This parameter enables/disables the 'Access-Control-Allow-Origin: *' header on the RPC interface
@@ -855,15 +864,6 @@ $config['encryptionsecretboxkey'] = '';
 // Changing this key invalidates all existing duplicate detection indexes, which must then be rebuilt.
 $config['encryptionduplicateindexkey'] = null;
 
-$config['passwordValidationRules'] = array(
-    'min' => 8,
-    'max' => 0,
-    'lower' => 0,
-    'upper' => 1,
-    'numeric' => 1,
-    'symbol' => 0,
-);
-
 // Allowed host of the LimeSurvey instance, avoid Host Header Injection in some case
 // For security purpose : Host Header Injection in password reset function
 // You can set an array of string, for example : ['example.limesurvey.org','limesurvey.example.org']
@@ -914,4 +914,3 @@ $config['twig_getConfig_extraallowlist'] = null;
 $config['editorEnabled'] = true;
 
 return $config;
-//settings deleted

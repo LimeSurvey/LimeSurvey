@@ -87,7 +87,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $result = $this->handler->get_question_properties($sessionKey, $qid);
 
         //Checking options
-        $this->assertEquals($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($answerOptionsByScaleId, array_map('get_object_vars', $result['answeroptions']), 'The options were not returned correctly.');
         //Checking other properties
         $this->assertEquals('1', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
@@ -162,7 +162,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $result = $this->handler->get_question_properties($sessionKey, $qid, null, 'es');
 
         //Checking options
-        $this->assertEquals($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($answerOptionsByScaleId, array_map('get_object_vars', $result['answeroptions']), 'The options were not returned correctly.');
         //Checking other properties
         $this->assertEquals('1', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
@@ -205,7 +205,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
 
         //Checking options
-        $this->assertEquals($answerOptions, $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($answerOptions, (array) $result['answeroptions'], 'The options were not returned correctly.');
         //Checking other properties
         $this->assertSame('H', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
@@ -244,7 +244,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
 
         //Checking options
-        $this->assertEquals($answerOptions, $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($answerOptions, (array) $result['answeroptions'], 'The options were not returned correctly.');
 
         //Checking subquestions
         $subquestions = array(
@@ -335,8 +335,8 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $spanishResult = $this->handler->get_question_properties($sessionKey, $qid, null, 'es');
 
         //Checking options
-        $this->assertEquals($englishAnswerOptions, $result['answeroptions'], 'The options were not returned correctly.');
-        $this->assertEquals($spanishAnswerOptions, $spanishResult['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($englishAnswerOptions, (array) $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($spanishAnswerOptions, (array) $spanishResult['answeroptions'], 'The options were not returned correctly.');
         //Checking other properties
         $this->assertSame('L', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
@@ -424,5 +424,81 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
         $this->assertEquals('7', $result['question_order'], 'The question order is not correct.');
+    }
+
+    /**
+     * Answer options and subquestions with the codes 0, 1, 2 must still be
+     * returned keyed by code (as JSON object / XML-RPC struct), not as a list.
+     */
+    public function testGetQuestionPropertiesWithNumericCodes()
+    {
+        $listQuestion = \Question::model()->findByAttributes(array('sid' => self::$surveyId, 'title' => 'G01Q06'));
+        $language = \Survey::model()->findByPk(self::$surveyId)->language;
+
+        $question = new \Question();
+        $question->sid = self::$surveyId;
+        $question->gid = $listQuestion->gid;
+        $question->type = 'F';
+        $question->title = 'NumericCodes';
+        $question->parent_qid = 0;
+        $question->question_order = 99;
+        $this->assertTrue($question->save(false), 'The question could not be created.');
+        $questionL10n = new \QuestionL10n();
+        $questionL10n->qid = $question->qid;
+        $questionL10n->language = $language;
+        $questionL10n->question = 'Numeric codes';
+        $this->assertTrue($questionL10n->save(false), 'The question text could not be created.');
+
+        foreach (array('0', '1') as $order => $code) {
+            $subquestion = new \Question();
+            $subquestion->sid = self::$surveyId;
+            $subquestion->gid = $listQuestion->gid;
+            $subquestion->type = 'F';
+            $subquestion->title = $code;
+            $subquestion->parent_qid = $question->qid;
+            $subquestion->question_order = $order;
+            $this->assertTrue($subquestion->save(false), 'The subquestion could not be created.');
+            $subquestionL10n = new \QuestionL10n();
+            $subquestionL10n->qid = $subquestion->qid;
+            $subquestionL10n->language = $language;
+            $subquestionL10n->question = 'Subquestion ' . $code;
+            $this->assertTrue($subquestionL10n->save(false), 'The subquestion text could not be created.');
+        }
+
+        foreach (array('0', '1', '2') as $order => $code) {
+            $answer = new \Answer();
+            $answer->qid = $question->qid;
+            $answer->code = $code;
+            $answer->sortorder = $order;
+            $answer->scale_id = 0;
+            $answer->assessment_value = 0;
+            $this->assertTrue($answer->save(false), 'The answer option could not be created.');
+            $answerL10n = new \AnswerL10n();
+            $answerL10n->aid = $answer->aid;
+            $answerL10n->language = $language;
+            $answerL10n->answer = 'Option ' . $code;
+            $this->assertTrue($answerL10n->save(false), 'The answer option text could not be created.');
+        }
+
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $result = $this->handler->get_question_properties($sessionKey, $question->qid, array('answeroptions', 'available_answers'));
+
+        // JSON-RPC
+        $answerOptions = json_decode(json_encode($result['answeroptions']));
+        $this->assertIsObject($answerOptions, 'The answer options are not returned keyed by code.');
+        $this->assertSame(array('0', '1', '2'), array_map('strval', array_keys(get_object_vars($answerOptions))));
+        $this->assertSame('Option 1', $answerOptions->{'1'}->answer);
+        $availableAnswers = json_decode(json_encode($result['available_answers']));
+        $this->assertIsObject($availableAnswers, 'The available answers are not returned keyed by code.');
+        $this->assertSame('Subquestion 1', $availableAnswers->{'1'});
+
+        // XML-RPC: Unchanged, encoded like the array
+        \Yii::import('application.libraries.BigData', true);
+        ob_start();
+        \BigData::xmlrpc_echo($result['answeroptions']);
+        $xml = ob_get_clean();
+        ob_start();
+        \BigData::xmlrpc_echo((array) $result['answeroptions']);
+        $this->assertSame(ob_get_clean(), $xml, 'The XML-RPC answer options changed.');
     }
 }

@@ -15,6 +15,7 @@ use Survey;
 use SurveyDynamic;
 use CDbCriteria;
 use Permission;
+use LimeSurvey\Models\Services\SurveySessionState;
 use LimeSurvey\PluginManager\LimesurveyApi as LimesurveyApi;
 
 class countFunctions
@@ -45,13 +46,14 @@ class countFunctions
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
-        if (!$self && isset($_SESSION['responses_' . $surveyId]['srid'])) {
-            $srid = $_SESSION['responses_' . $surveyId]['srid'];
+        $sessionState = SurveySessionState::forSurvey((int) $surveyId);
+        $srid = $sessionState->getResponseId();
+        if (!$self && $srid !== null) {
             $oCriteria->compare("id", "<>" . $srid);
         }
         /* Check if question is encrypted */
-        if (isset($_SESSION['responses_' . $surveyId]['fieldmap'])) {
-            $fieldmap = $_SESSION['responses_' . $surveyId]['fieldmap'];
+        if ($sessionState->hasFieldMap()) {
+            $fieldmap = $sessionState->getFieldMap();
         } else {
             /* No survey session (e.g. survey logic file): Use the fieldmap of the survey */
             $survey = Survey::model()->findByPk($surveyId);
@@ -127,8 +129,8 @@ class countFunctions
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
-        if (!$self && isset($_SESSION['responses_' . $surveyId]['srid'])) {
-            $srid = $_SESSION['responses_' . $surveyId]['srid'];
+        $srid = SurveySessionState::forSurvey((int) $surveyId)->getResponseId();
+        if (!$self && $srid !== null) {
             $oCriteria->compare("id", "<>" . $srid);
         }
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));

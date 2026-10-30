@@ -383,7 +383,7 @@ if ($encrypted) {
                 for ($i = 1; $i <= 5; $i++) {
                     echo "\t<option value='$i'";
 
-                    //pre-select values which were marked before
+                    //preselect values which were marked before
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($i, $_POST[$myfield])) {
                         echo " selected='selected' ";
                     }
@@ -400,7 +400,7 @@ if ($encrypted) {
             case Question::QT_G_GENDER: // Gender
                 echo "\t<option value='F'";
 
-                //pre-select values which were marked before
+                //preselect values which were marked before
                 if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("F", $_POST[$myfield])) {
                     echo " selected='selected' ";
                 }
@@ -408,7 +408,7 @@ if ($encrypted) {
                 echo ">" . gT("Female") . "</option>\n";
                 echo "\t<option value='M'";
 
-                //pre-select values which were marked before
+                //preselect values which were marked before
                 if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {
                     echo " selected='selected' ";
                 }
@@ -421,7 +421,7 @@ if ($encrypted) {
             case Question::QT_Y_YES_NO_RADIO: // Yes\No
                 echo "\t<option value='Y'";
 
-                //pre-select values which were marked before
+                //preselect values which were marked before
                 if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("Y", $_POST[$myfield])) {
                     echo " selected='selected' ";
                 }
@@ -429,7 +429,7 @@ if ($encrypted) {
                 echo ">" . gT("Yes") . "</option>\n"
                 . "\t<option value='N'";
 
-                //pre-select values which were marked before
+                //preselect values which were marked before
                 if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {
                     echo " selected='selected' ";
                 }
@@ -445,7 +445,7 @@ if ($encrypted) {
                 foreach ($survlangs as $availlang) {
                     echo "\t<option value='" . $availlang . "'";
 
-                    //pre-select values which were marked before
+                    //preselect values which were marked before
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($availlang, $_POST[$myfield])) {
                         echo " selected='selected' ";
                     }
@@ -494,7 +494,7 @@ if ($encrypted) {
                     for ($i = 1; $i <= 5; $i++) {
                         echo "\t<option value='$i'";
 
-                        //pre-select
+                        //preselect
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($i, $_POST[$myfield2])) {
                             echo " selected='selected' ";
                         }
@@ -583,7 +583,7 @@ if ($encrypted) {
                     . "\t<select name='Q{$flt[0]}_S{$row[0]}[]' multiple='multiple' class='form-select'>\n"
                     . "\t<option value='Y'";
 
-                    //pre-select "yes"
+                    //preselect "yes"
                     if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("Y", $_POST[$myfield2])) {
                         echo " selected='selected' ";
                     }
@@ -591,7 +591,7 @@ if ($encrypted) {
                     echo ">" . gT("Yes") . "</option>\n"
                     . "\t<option value='U'";
 
-                    //pre-select "uncertain"
+                    //preselect "uncertain"
                     if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("U", $_POST[$myfield2])) {
                         echo " selected='selected' ";
                     }
@@ -599,7 +599,7 @@ if ($encrypted) {
                     echo ">" . gT("Uncertain") . "</option>\n"
                     . "\t<option value='N'";
 
-                    //pre-select "no"
+                    //preselect "no"
                     if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("N", $_POST[$myfield2])) {
                         echo " selected='selected' ";
                     }
@@ -868,7 +868,7 @@ if ($encrypted) {
                     foreach ($fresult as $frow) {
                         echo "\t<option value='{$frow['code']}'";
 
-                        //pre-select
+                        //preselect
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {
                             echo " selected='selected' ";
                         }
@@ -929,7 +929,7 @@ if ($encrypted) {
                     foreach ($subquestions as $subquestion) {
                         echo "\t<option value='$subquestion[0]'";
 
-                        //pre-select
+                        //preselect
                         if (isset($_POST[$myfield3]) && is_array($_POST[$myfield3]) && in_array("$subquestion[0]", $_POST[$myfield3])) {
                             echo " selected='selected' ";
                         }

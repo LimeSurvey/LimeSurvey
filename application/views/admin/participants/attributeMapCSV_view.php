@@ -1,5 +1,5 @@
 <div class='header pt-2'>
-    <h3 class='pagetitle'><?php neT("Select which fields to import as attributes with your {n} participant.|Select which fields to import as attributes with your {n} participants.", $linecount); ?></h3>
+    <h3 class='pagetitle'><?php printf(gTPlural("Select which fields to import as attributes with your %d participant.", "Select which fields to import as attributes with your %d participants.", $linecount), $linecount); ?></h3>
 </div>
 
 <div class="row justify-content-start">

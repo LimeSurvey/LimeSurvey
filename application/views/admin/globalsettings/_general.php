@@ -228,17 +228,19 @@ Full lock - none of participants are allowed to take survey, even if they alread
         </div>
 
         <!-- Refresh assets -->
-        <div class="mb-3">
-            <label class="col-12 form-label" for='clearcache'>
-                <?php eT("Clear frontend cache"); ?> <small>(<?php echo Yii::app()->getConfig('customassetversionnumber'); ?>)</small>
-            </label>
-            <div class="col-12">
-                <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "clearAssetsAndCache")); ?>"
-                   class="btn btn-outline-dark btn-large">
-                    <?php eT("Clear now"); ?>
-                </a>
+        <?php if (Permission::model()->hasGlobalPermission('templates', 'create')) : ?>
+            <div class="mb-3">
+                <label class="col-12 form-label" for='clearcache'>
+                    <?php eT("Clear frontend cache"); ?> <small>(<?php echo Yii::app()->getConfig('customassetversionnumber'); ?>)</small>
+                </label>
+                <div class="col-12">
+                    <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "clearAssetsAndCache")); ?>"
+                       class="btn btn-outline-dark btn-large">
+                        <?php eT("Clear now"); ?>
+                    </a>
+                </div>
             </div>
-        </div>
+        <?php endif; ?>
 
         <!-- Default Editor mode -->
         <div class="mb-3">

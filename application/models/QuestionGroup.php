@@ -18,6 +18,7 @@ use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     BadRequestException
 };
+use LimeSurvey\Models\Services\SurveyDetailService;
 
 /**
  * Class QuestionGroup
@@ -176,7 +177,9 @@ class QuestionGroup extends LSActiveRecord
         Question::deleteAllById($questionIds);
         Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
         QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' => $groupId));
-        return QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
+        $affectedRows = QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
+        (new SurveyDetailService())->touchSurveyLastModified((int) $surveyId);
+        return $affectedRows;
     }
 
     /**
@@ -438,6 +441,19 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
+     * Update the survey's lastmodified timestamp after the question group was saved.
+     *
+     * @return void
+     */
+    protected function afterSave()
+    {
+        parent::afterSave();
+        if (!empty($this->sid)) {
+            (new SurveyDetailService())->touchSurveyLastModified((int) $this->sid);
+        }
+    }
+
+    /**
      * Returns the first question group in the survey
      * @param int $surveyId
      * @return QuestionGroup
@@ -477,7 +493,8 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * Used in frontend helper, buildsurveysession.
+     * Count the groups that contain at least one question without "Always hide this question"
+     * (used for the {NUMBEROFGROUPS} placeholder)
      * @param int $surveyid
      * @return int
      */
@@ -489,11 +506,9 @@ class QuestionGroup extends LSActiveRecord
             return $value;
         }
 
-        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-        $sQuery = "select count(DISTINCT $quotedGroups.gid) from $quotedGroups
-            left join {{questions}} on  $quotedGroups.gid={{questions}}.gid
-            where $quotedGroups.sid ={$surveyid} and qid is not null";
-        $result = Yii::app()->db->createCommand($sQuery)->queryScalar();
+        // Groups with only always hidden questions are never shown to the participant
+        $survey = Survey::model()->findByPk($surveyid);
+        $result = $survey ? count($survey->getGroupIdsWithVisibleQuestions()) : 0;
 
         EmCacheHelper::set($cacheKey, $result);
 

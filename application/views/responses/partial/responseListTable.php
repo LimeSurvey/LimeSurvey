@@ -101,9 +101,10 @@ $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->encrypti
         require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.ResponseListMassiveActions') . '.php';
         $floatingActions = \actions\ResponseListMassiveActions::getActions($surveyid);
         $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
-            'pk'       => 'id',
-            'gridId'   => 'responses-grid',
-            'aActions' => $floatingActions,
+            'pk'                 => 'id',
+            'gridId'             => 'responses-grid',
+            'aActions'           => $floatingActions,
+            'lsSelectAllEnabled' => true,
         ]);
 
         /* @var string notice text for encryption */

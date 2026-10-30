@@ -19,7 +19,7 @@ export const getQuestionExample = ({
   relevance = '1',
   languages = [],
   scenarios = [],
-  showAssessmentValue = false,
+  showAssessmentValue,
 }) => {
   qid = qid ?? `${NEW_OBJECT_ID_PREFIX}${RandomNumber()}`
 
@@ -55,6 +55,7 @@ export const getQuestionExample = ({
     answers,
     subquestions,
     scenarios,
-    showAssessmentValue,
+    // UI-only flag; omitted unless set so child questions stay valid for the API
+    ...(showAssessmentValue !== undefined && { showAssessmentValue }),
   }
 }

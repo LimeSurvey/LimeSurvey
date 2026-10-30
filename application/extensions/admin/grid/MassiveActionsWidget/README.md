@@ -182,7 +182,7 @@ First, the modal title and its html body should be specified. Then  a modal type
 'htmlModalBody' => 'Are you sure?', // The modal text
 'modalType'     => 'yes-no',        // The type of the modal (the view to use)
 'yes'           => gT('apply'),     // Text replacement for yes
-'no'            => gT('cancel'),    // Text replacement fo no
+'no'            => gT('cancel'),    // Text replacement for no
 'keepopen'      => 'no',            // Should the modal stayed open after the ajax request?
 'grid-reload'   => 'yes',           // Should the grid be reloaded after the ajax request?
 ```
