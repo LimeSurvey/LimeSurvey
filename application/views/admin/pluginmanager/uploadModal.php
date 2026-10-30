@@ -30,8 +30,10 @@
                 <div  class="mb-3">
                     <label for='the_file'><?php eT("Select plugin ZIP file:") ?></label>
                     <input id='the_file' class="form-control" name='the_file' type="file" accept='.zip' />
-                    <br/>
-                    <?php printf(gT('(Maximum file size: %01.2f MB)'), getMaximumFileUploadSize()/1024/1024); ?>
+                    <?php if (isFileUploadSizeLimited()) : ?>
+                        <br/>
+                        <?php printf(gT('(Maximum file size: %01.2f MB)'), getMaximumFileUploadSize()/1024/1024); ?>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="modal-footer">

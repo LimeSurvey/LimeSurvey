@@ -29,12 +29,16 @@
                 <div class="row">
                     <div class="mb-3">
                         <label class='form-label ' >
-                            <?php printf(
-                                gT(
-                                    "Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"
-                                ),
-                                getMaximumFileUploadSize() / 1024 / 1024
-                            ); ?>
+                            <?php if (isFileUploadSizeLimited()) {
+                                printf(
+                                    gT(
+                                        "Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"
+                                    ),
+                                    getMaximumFileUploadSize() / 1024 / 1024
+                                );
+                            } else {
+                                eT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa)");
+                            } ?>
                         </label>
                         <div class="upload-container">
                             <label><b><?php eT("Select or drop a file here"); ?></b></label>

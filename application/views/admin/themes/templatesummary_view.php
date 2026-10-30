@@ -228,7 +228,11 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                     ]); ?>
                                 <div class="row">
                                     <label class="form-label col-12">
-                                        <?php printf(gT("Upload a file (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                                        <?php if (isFileUploadSizeLimited()) {
+                                            printf(gT("Upload a file (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024);
+                                        } else {
+                                            eT("Upload a file:");
+                                        } ?>
                                     </label>
                                 </div>
                                 <div class="row">

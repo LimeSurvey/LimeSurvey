@@ -5547,11 +5547,29 @@ function convertPHPSizeToBytes($sSize)
 /**
  * Get the maximum allowed file upload size in bytes
  *
- * @return int The maximum allowed file upload size in bytes
+ * PHP does not enforce a post_max_size or upload_max_filesize of 0 (or less), so such a setting is ignored.
+ *
+ * @return int The maximum allowed file upload size in bytes, PHP_INT_MAX if PHP does not limit it
  **/
 function getMaximumFileUploadSize()
 {
-    return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
+    $limits = array_filter(
+        [convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize'))],
+        function ($limit) {
+            return $limit > 0;
+        }
+    );
+    return empty($limits) ? PHP_INT_MAX : min($limits);
+}
+
+/**
+ * Check if PHP limits the file upload size at all
+ *
+ * @return bool False if both post_max_size and upload_max_filesize are disabled (0)
+ **/
+function isFileUploadSizeLimited()
+{
+    return getMaximumFileUploadSize() < PHP_INT_MAX;
 }
 
 /**

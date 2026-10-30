@@ -1540,7 +1540,9 @@ class questionHelper
             'sortorder' => 128,
             "inputtype" => "integer",
             'default' => 10240,
-            "help" => sprintf(gT("The participant cannot upload a single file larger than this size. Server configuration allow a maximum file size of %s KB."), getMaximumFileUploadSize() / 1024),
+            "help" => isFileUploadSizeLimited()
+                ? sprintf(gT("The participant cannot upload a single file larger than this size. Server configuration allow a maximum file size of %s KB."), getMaximumFileUploadSize() / 1024)
+                : gT("The participant cannot upload a single file larger than this size."),
             "caption" => gT("Maximum file size allowed (in KB)")
         );
 
