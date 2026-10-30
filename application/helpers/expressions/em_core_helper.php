@@ -85,6 +85,8 @@ class ExpressionManager
     private $RDP_result; // final result of evaluating the expression;
     private $RDP_evalStatus; // true if $RDP_result is a valid result, and  there are no serious errors
     private $varsUsed; // list of variables referenced in the equation
+    /** @var array[] comparisons found while parsing, each one array(index of first token, index of operator token, index of last token), inner ones first */
+    private $RDP_comparisons = array();
     public $resetErrorsAndWarningsOnEachPart = true;
 
     // These  variables are only used by sProcessStringContainingExpressions
@@ -609,6 +611,7 @@ class ExpressionManager
         $this->RDP_evalStatus = false;
         $this->RDP_result = null;
         $this->varsUsed = array();
+        $this->RDP_comparisons = array();
         $this->jsExpression = null;
 
         if ($this->HasSyntaxErrors()) {
@@ -734,6 +737,7 @@ class ExpressionManager
      */
     private function RDP_EvaluateEqualityExpression()
     {
+        $start = $this->RDP_pos + 1;
         if (!$this->RDP_EvaluateRelationExpression()) {
             return false;
         }
@@ -744,7 +748,9 @@ class ExpressionManager
                 case 'eq':
                 case '!=':
                 case 'ne':
+                    $operatorPos = $this->RDP_pos;
                     if ($this->RDP_EvaluateRelationExpression()) {
+                        $this->RDP_comparisons[] = array($start, $operatorPos, $this->RDP_pos);
                         if (!$this->RDP_EvaluateBinary($token)) {
                             return false;
                         }
@@ -1041,6 +1047,7 @@ class ExpressionManager
      */
     private function RDP_EvaluateRelationExpression()
     {
+        $start = $this->RDP_pos + 1;
         if (!$this->RDP_EvaluateAdditiveExpression()) {
             return false;
         }
@@ -1055,7 +1062,9 @@ class ExpressionManager
                 case 'gt':
                 case '>=':
                 case 'ge':
+                    $operatorPos = $this->RDP_pos;
                     if ($this->RDP_EvaluateAdditiveExpression()) {
+                        $this->RDP_comparisons[] = array($start, $operatorPos, $this->RDP_pos);
                         if (!$this->RDP_EvaluateBinary($token)) {
                             return false;
                         }
@@ -1269,9 +1278,32 @@ class ExpressionManager
         $bracket = 0;
         /* @var string static string to be parsed bedfore send to JS */
         $staticStringToParse = "";
+        /* Comparisons are done by LEMcompare(), because JavaScript compares values of different types otherwise than PHP (3 > '' is true) */
+        $comparisons = $this->RDP_comparisons; // a static function evaluates its expression with this object again
+        $comparisonStarts = array();
+        $comparisonOperators = array();
+        $comparisonEnds = array();
+        foreach ($comparisons as $id => $comparison) {
+            $comparisonStarts[$comparison[0]][] = $id;
+            $comparisonOperators[$comparison[1]] = $id;
+            $comparisonEnds[$comparison[2]][] = $id;
+        }
+        /* @var boolean[] comparisons converted to LEMcompare(), not those inside a static function */
+        $comparisonsInJs = array();
         for ($i = 0; $i < $numTokens; ++$i) {
             $token = $tokens[$i]; // When do these need to be quoted?
-            if (!empty($staticStringToParse)) { /* Currently inside a static function */
+            if (empty($staticStringToParse) && isset($comparisonStarts[$i])) {
+                // An outer comparison is found after the inner ones: open it first and close it last
+                foreach (array_reverse($comparisonStarts[$i]) as $id) {
+                    $stringParts[] = 'LEMcompare(';
+                    $comparisonsInJs[$id] = true;
+                }
+            }
+            if (isset($comparisonOperators[$i]) && isset($comparisonsInJs[$comparisonOperators[$i]])) {
+                $operators = array('lt' => '<', 'le' => '<=', 'gt' => '>', 'ge' => '>=', 'eq' => '==', 'ne' => '!=');
+                $operator = strtolower((string) $token[0]);
+                $stringParts[] = ", '" . ($operators[$operator] ?? $operator) . "', ";
+            } elseif (!empty($staticStringToParse)) { /* Currently inside a static function */
                 switch ($token[2]) {
                     case 'LP':
                         $staticStringToParse .= $token[0];
@@ -1402,6 +1434,23 @@ class ExpressionManager
                         break;
                 }
             }
+            if (isset($comparisonEnds[$i])) {
+                foreach ($comparisonEnds[$i] as $id) {
+                    if (isset($comparisonsInJs[$id])) {
+                        $comparison = $comparisons[$id];
+                        // As in RDP_EvaluateBinary(), a string constant or a string joined with + makes numbers compared as text
+                        $leftMayBeString = $this->isStringConstant($tokens, $comparison[0], $comparison[1] - 1)
+                            || $this->isPlusExpression($tokens, $comparison[0], $comparison[1] - 1);
+                        $rightMayBeString = $this->isStringConstant($tokens, $comparison[1] + 1, $comparison[2])
+                            || $this->isPlusExpression($tokens, $comparison[1] + 1, $comparison[2]);
+                        if ($leftMayBeString || $rightMayBeString) {
+                            $stringParts[] = ', ' . ($leftMayBeString ? 'true' : 'false') . ', ' . ($rightMayBeString ? 'true' : 'false') . ')';
+                        } else {
+                            $stringParts[] = ')';
+                        }
+                    }
+                }
+            }
         }
         // for each variable that does not have a default value, add clause to throw error if any of them are NA
         $nonNAvarsUsed = array();
@@ -1429,6 +1478,76 @@ class ExpressionManager
             $this->jsExpression = '(' . $mainClause . ')';
         }
         return $this->jsExpression;
+    }
+
+    /**
+     * Check if the tokens from $from to $to are a string constant, e.g. "abc" or ('abc')
+     * @param array $tokens The expression tokens
+     * @param integer $from Index of the first token
+     * @param integer $to Index of the last token
+     * @return boolean
+     */
+    private function isStringConstant(array $tokens, $from, $to)
+    {
+        $strings = 0;
+        for ($i = $from; $i <= $to; ++$i) {
+            if ($tokens[$i][2] == 'DQ_STRING' || $tokens[$i][2] == 'SQ_STRING') {
+                ++$strings;
+            } elseif ($tokens[$i][2] != 'LP' && $tokens[$i][2] != 'RP') {
+                return false;
+            }
+        }
+        return $strings == 1;
+    }
+
+    /**
+     * Check if the tokens from $from to $to are an expression with + as last operation, e.g. Q1 + "" or (Q1 * 2 + Q2)
+     * @param array $tokens The expression tokens
+     * @param integer $from Index of the first token
+     * @param integer $to Index of the last token
+     * @return boolean
+     */
+    private function isPlusExpression(array $tokens, $from, $to)
+    {
+        // Remove parentheses around the whole expression
+        while ($from < $to && $tokens[$from][2] == 'LP' && $tokens[$to][2] == 'RP') {
+            $depth = 0;
+            for ($i = $from; $i < $to; ++$i) {
+                if ($tokens[$i][2] == 'LP') {
+                    ++$depth;
+                } elseif ($tokens[$i][2] == 'RP') {
+                    --$depth;
+                }
+                if ($depth == 0) {
+                    break;
+                }
+            }
+            if ($i < $to) {
+                break; // the first parenthesis is closed before the end, e.g. (a) + (b)
+            }
+            ++$from;
+            --$to;
+        }
+        // + and - have the lowest precedence within an operand of a comparison, so the last one outside of parentheses is done last
+        $lastOperator = null;
+        $depth = 0;
+        for ($i = $from; $i <= $to; ++$i) {
+            if ($tokens[$i][2] == 'LP') {
+                ++$depth;
+            } elseif ($tokens[$i][2] == 'RP') {
+                --$depth;
+            } elseif (
+                $depth == 0
+                && $i > $from
+                && $tokens[$i][2] == 'BINARYOP'
+                && ($tokens[$i][0] == '+' || $tokens[$i][0] == '-')
+                && !in_array($tokens[$i - 1][2], array('BINARYOP', 'NOT'))
+            ) {
+                // Not a sign like in 2 * -3
+                $lastOperator = $tokens[$i][0];
+            }
+        }
+        return $lastOperator === '+';
     }
 
     /**

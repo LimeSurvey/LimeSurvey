@@ -1069,13 +1069,28 @@ class LimeExpressionManager
                 $relOrList[] = "regexMatch(" . $value . "," . $fieldname . ")";
             } else {
                 // Condition uses ' ' to mean not answered, but internally it is really stored as ''.  Fix this
+                // Comparing with '' is evaluated differently in JavaScript and PHP for numeric answers, so use is_empty() instead
                 if ($value === '" "' || $value == '""') {
-                    if ($row['method'] == '==') {
-                        $relOrList[] = "is_empty(" . $fieldname . ")";
-                    } elseif ($row['method'] == '!=') {
-                        $relOrList[] = "!is_empty(" . $fieldname . ")";
-                    } else {
-                        $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                    switch ($row['method']) {
+                        case '==':
+                        case '<=':
+                            $relOrList[] = "is_empty(" . $fieldname . ")";
+                            break;
+                        case '!=':
+                        case '>':
+                            $relOrList[] = "!is_empty(" . $fieldname . ")";
+                            break;
+                        case '>=':
+                            // Every answer, given or not, is greater than or equal to no answer
+                            $relOrList[] = "1";
+                            break;
+                        case '<':
+                            // No answer is less than no answer
+                            $relOrList[] = "0";
+                            break;
+                        default:
+                            $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                            break;
                     }
                 } else {
                     if ($value == '"0"' || !preg_match('/^".+"$/', $value)) {
