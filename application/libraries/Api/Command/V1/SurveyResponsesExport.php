@@ -218,6 +218,11 @@ class SurveyResponsesExport implements CommandInterface
         $resolvedFilters = $this->resolveFilterSet($request, $surveyId, $language);
 
         if (!in_array($type, $this->nativeFormats)) {
+            if ($completion === 'screened_out') {
+                throw new InvalidArgumentException(
+                    'The screened_out completion filter is not supported for this export format.'
+                );
+            }
             return $this->exportViaLegacyExporter(
                 $surveyId,
                 $type,
@@ -225,7 +230,8 @@ class SurveyResponsesExport implements CommandInterface
                 $answerFormat,
                 $csvSeparator,
                 $filters,
-                $resolvedFilters
+                $resolvedFilters,
+                $completion
             );
         }
 
@@ -312,7 +318,8 @@ class SurveyResponsesExport implements CommandInterface
         ?string $answerFormat,
         ?string $csvSeparator,
         array $filters = [],
-        array $resolvedFilters = []
+        array $resolvedFilters = [],
+        string $completion = 'all'
     ): array {
         Yii::app()->loadHelper('admin.exportresults');
 
@@ -327,7 +334,8 @@ class SurveyResponsesExport implements CommandInterface
         $options->selectedColumns = array_keys($fieldMap);
         $options->responseMinRecord = \SurveyDynamic::model($surveyId)->getMinId();
         $options->responseMaxRecord = \SurveyDynamic::model($surveyId)->getMaxId();
-        $options->responseCompletionState = 'all';
+        // The legacy exporter calls the completed state 'complete'
+        $options->responseCompletionState = $completion === 'completed' ? 'complete' : $completion;
         $options->headingFormat = 'full';
         $options->answerFormat = $answerFormat ?: 'long';
         $options->csvFieldSeparator = $csvSeparator ?: ',';
