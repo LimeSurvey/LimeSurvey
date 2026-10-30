@@ -361,9 +361,12 @@ class SurveyActivator
             return false;
         }
         if (isset($this->tableDefinition['token'])) {
+            // unique name ensure by surveyid + datetime + random number
+            $indexname = "idx_token_" .
+                substr($sTableName, strlen(App()->getDb()->tablePrefix)) . "_" .
+                date('YmdHis') . "_" .
+                randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
             try {
-                // unique name ensure by surveyid + datetime + random number
-                $indexname = "idx_token_{$sTableName}_" . date('YmdHis') . "_" . randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
                 Yii::app()->db->createCommand()->createIndex(
                     $indexname,
                     $sTableName,
