@@ -188,6 +188,16 @@ class Statistics implements CommandInterface
             if (!is_array($conditions)) {
                 throw new InvalidArgumentException('conditions must be an array');
             }
+            foreach ($conditions as $condition) {
+                $key = is_array($condition) ? ($condition['key'] ?? null) : null;
+                if (
+                    is_string($key)
+                    && strtolower(trim($key)) === 'token'
+                    && !$this->permission->hasSurveyPermission((int)$request->getData('_id'), 'tokens')
+                ) {
+                    throw new PermissionDeniedException();
+                }
+            }
             $this->filters->setConditions($conditions);
         }
         $completion = $request->getData('completion');
