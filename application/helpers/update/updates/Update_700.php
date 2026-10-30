@@ -246,43 +246,21 @@ class Update_700 extends DatabaseUpdateBase
                         if ($code === '') {
                             return "Q{$qid}";
                         }
-                        $commentText = false;
-                        $currentQuestion = null;
-                        $excludeSubquestion = false;
+                        $subquestionQids = [];
                         foreach ($questions as $question) {
-                            if ($question['parent_qid'] && $question['title'] === $code) {
-                                // A subquestion with exactly this code (e.g. a subquestion coded "other") wins over the "other"/"comment" suffixes
-                                $currentQuestion = $question;
-                                $commentText = false;
-                                $excludeSubquestion = false;
-                                break;
-                            } elseif (
-                                in_array(
-                                    $code,
-                                    [
-                                    'other',
-                                    'comment',
-                                    'othercomment',
-                                    $question['title'] . 'other',
-                                    $question['title'] . 'comment',
-                                    $question['title'] . 'othercomment'
-                                    ]
-                                )
-                            ) {
-                                $currentQuestion = $question;
-                                $commentText = $code;
-                                if (strpos($code, $question['title']) === 0) {
-                                    $commentText = substr($code, strlen($question['title']));
-                                } else {
-                                    $excludeSubquestion = true;
-                                }
+                            if ($question['parent_qid']) {
+                                $subquestionQids[$question['title']] = $question['qid'];
                             }
                         }
-                        if ($currentQuestion) {
-                            $newFieldName = 'Q' . $qid . ($excludeSubquestion ? '' : '_S' . $currentQuestion['qid']);
-                            if ($commentText) {
-                                $newFieldName .= '_C' . $commentText;
-                            }
+                        if (isset($subquestionQids[$code])) {
+                            // A subquestion with exactly this code, even if it is coded "other", "comment" or "othercomment"
+                            $newFieldName = "Q{$qid}_S{$subquestionQids[$code]}";
+                        } elseif (strlen($code) > 7 && substr($code, -7) === 'comment' && isset($subquestionQids[substr($code, 0, -7)])) {
+                            // The comment field of a subquestion (multiple choice with comments)
+                            $newFieldName = "Q{$qid}_S{$subquestionQids[substr($code, 0, -7)]}_Ccomment";
+                        } elseif ($code === 'other' || $code === 'othercomment') {
+                            // The "Other" field of the question itself and its comment
+                            $newFieldName = "Q{$qid}_C{$code}";
                         }
                         break;
                     case ';': // QT_SEMICOLON_ARRAY_TEXT
