@@ -622,7 +622,8 @@ final class ResponseAggregateBatch
 
         switch ($db->getDriverName()) {
             case 'pgsql':
-                return "(CASE WHEN CAST($col AS TEXT) ~ $pattern THEN CAST($col AS $type) END)";
+                // Unconstrained NUMERIC: DECIMAL(30,10) raises "numeric field overflow" on long digit strings
+                return "(CASE WHEN CAST($col AS TEXT) ~ $pattern THEN CAST($col AS NUMERIC) END)";
             case 'sqlsrv':
             case 'mssql':
             case 'dblib':

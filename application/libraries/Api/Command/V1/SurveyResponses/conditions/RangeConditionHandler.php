@@ -96,7 +96,7 @@ class RangeConditionHandler implements HandlerInterface, SurveyContextAwareInter
         switch ($this->driverName()) {
             case 'pgsql':
                 return "(CASE WHEN CAST($quotedKey AS TEXT) ~ $pattern"
-                    . " THEN CAST($quotedKey AS " . self::NUMERIC_TYPE . ") END)";
+                    . " THEN CAST($quotedKey AS NUMERIC) END)"; // unconstrained: no overflow on long digit strings
             case 'sqlsrv':
             case 'mssql':
             case 'dblib':

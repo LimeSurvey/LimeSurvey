@@ -181,7 +181,8 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
 
         $this->assertStringContainsString('CASE WHEN CAST', $criteria->condition);
         $this->assertStringContainsString('AS TEXT) ~ ', $criteria->condition);
-        $this->assertStringContainsString('DECIMAL(30,10)', $criteria->condition);
+        $this->assertStringContainsString('AS NUMERIC)', $criteria->condition);
+        $this->assertStringNotContainsString('DECIMAL', $criteria->condition);
         $this->assertStringNotContainsString('REGEXP', $criteria->condition);
     }
 
