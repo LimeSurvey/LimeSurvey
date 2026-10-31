@@ -41,7 +41,9 @@ class ExportJoinedColumnsTest extends TestBaseClass
         $plugin = Plugin::model()->findByAttributes(['name' => 'Authdb']);
         App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
 
-        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_917744.lss');
+        // Own survey ID: other tests import this fixture too, and models like SurveyDynamic are
+        // cached per survey ID for the whole PHP process, so they would see this survey's token column
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_917744.lss', 1, 191040);
         Token::createTable(self::$surveyId);
         (new SurveyActivator(self::$testSurvey))->activate();
         Yii::app()->db->schema->refresh();
@@ -62,10 +64,12 @@ class ExportJoinedColumnsTest extends TestBaseClass
             'token' => 'tok19104',
             self::$textFieldName => 'Some text',
         ]);
+        switchMSSQLIdentityInsert('timings_' . self::$surveyId, true);
         Yii::app()->db->createCommand()->insert(self::$testSurvey->timingsTableName, [
             'id' => self::$responseId,
             'interviewtime' => 42,
         ]);
+        switchMSSQLIdentityInsert('timings_' . self::$surveyId, false);
     }
 
     /**
@@ -137,7 +141,9 @@ class ExportJoinedColumnsTest extends TestBaseClass
             return str_getcsv($line, ';', '"', '\\');
         }, array_values(array_filter(explode("\r\n", $csv))));
         $this->assertSame(['dummy', 'firstname', 'interviewtime'], $rows[0]);
-        $this->assertSame(['Some text', 'Ana', '42'], $rows[1]);
+        $this->assertSame(['Some text', 'Ana'], array_slice($rows[1], 0, 2));
+        // The timing is a float column, MSSQL returns it as "42.0"
+        $this->assertEquals(42, (float) $rows[1][2]);
     }
 
     /**
