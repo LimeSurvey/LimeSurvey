@@ -54,13 +54,13 @@ class QuestionGroupDeleteTextsTest extends TestBaseClass
             'title' => 'SQ001',
             'question_order' => 1,
         ]);
-        $subquestionId = (int) $db->getLastInsertID();
+        $subquestionId = (int) getLastInsertID('{{questions}}');
         $db->createCommand()->insert('{{question_l10ns}}', ['qid' => $subquestionId, 'question' => 'Subquestion', 'language' => 'en']);
         $db->createCommand()->insert('{{answers}}', ['qid' => $question->qid, 'code' => 'A1', 'sortorder' => 1]);
-        $answerId = (int) $db->getLastInsertID();
+        $answerId = (int) getLastInsertID('{{answers}}');
         $db->createCommand()->insert('{{answer_l10ns}}', ['aid' => $answerId, 'answer' => 'Answer', 'language' => 'en']);
         $db->createCommand()->insert('{{defaultvalues}}', ['qid' => $question->qid]);
-        $defaultValueId = (int) $db->getLastInsertID();
+        $defaultValueId = (int) getLastInsertID('{{defaultvalues}}');
         $db->createCommand()->insert('{{defaultvalue_l10ns}}', ['dvid' => $defaultValueId, 'defaultvalue' => 'Default', 'language' => 'en']);
 
         $this->assertSame(1, QuestionGroup::deleteWithDependency($question->gid));
