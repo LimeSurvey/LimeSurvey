@@ -10,6 +10,8 @@ import { PermissionsProvider } from 'providers/PermissionsProvider'
 import { TopBar } from 'components/TopBar'
 import { useAppState } from 'hooks'
 import { STATES } from 'helpers'
+import { PluginSlot } from 'plugins/PluginSlot'
+import { PLUGIN_SLOTS } from 'plugins/slots'
 
 const RootLayout = () => {
   const [topbarConfig] = useAppState(STATES.TOPBAR_CONFIG)
@@ -21,6 +23,14 @@ const RootLayout = () => {
     </>
   )
 }
+
+const GuardedSurveyRoute = ({ children }) => (
+  <AuthGate>
+    <PluginSlot slotName={PLUGIN_SLOTS.APP_ROUTE_GUARD} fallback={children}>
+      {children}
+    </PluginSlot>
+  </AuthGate>
+)
 
 const routes = [
   {
@@ -42,17 +52,17 @@ const routes = [
       {
         path: '/responses/:surveyId/:panel?/:menu?',
         element: (
-          <AuthGate>
+          <GuardedSurveyRoute>
             <PermissionsProvider>
               <Responses />
             </PermissionsProvider>
-          </AuthGate>
+          </GuardedSurveyRoute>
         ),
       },
       {
         path: '/survey/:surveyId/:panel?/:menu?',
         element: (
-          <AuthGate>
+          <GuardedSurveyRoute>
             <PermissionsProvider>
               <SurveyWorkspace>
                 <EditorContextController>
@@ -61,19 +71,19 @@ const routes = [
                 </EditorContextController>
               </SurveyWorkspace>
             </PermissionsProvider>
-          </AuthGate>
+          </GuardedSurveyRoute>
         ),
       },
       {
         path: '/sharing/:surveyId/:panel?/:menu?',
         element: (
-          <AuthGate>
+          <GuardedSurveyRoute>
             <PermissionsProvider>
               <SurveyWorkspace>
                 <SharingPanel />
               </SurveyWorkspace>
             </PermissionsProvider>
-          </AuthGate>
+          </GuardedSurveyRoute>
         ),
       },
       {
