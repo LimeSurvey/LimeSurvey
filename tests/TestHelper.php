@@ -158,9 +158,8 @@ class TestHelper extends TestCase
 
         $surveyActivator = new SurveyActivator($survey);
         $result = $surveyActivator->activate();
-        // For Travis debugging.
         if (isset($result['error'])) {
-            var_dump($result);
+            $this->fail('Survey activation error: ' . print_r($result['error'], true));
         }
         \SurveyDynamic::sid($surveyId);
         \SurveyDynamic::model()->refreshMetaData();
@@ -169,8 +168,11 @@ class TestHelper extends TestCase
         $db->schema->getTables();
         $db->schema->refresh();
         $db->active = true;
-
-        $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null, 'isAllowRegister' => false], $result, 'Activate survey is OK');
+        $this->assertEmpty(
+            $result['tableWarnings'],
+            'Survey activation produced table warnings: ' . print_r($result['tableWarnings'], true)
+        );
+        $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null, 'isAllowRegister' => false, 'tableWarnings' => []], $result, 'Activate survey is OK');
     }
 
     /**
