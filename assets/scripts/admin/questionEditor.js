@@ -1791,6 +1791,25 @@ $(document).on('ready pjax:scriptcomplete', function () {
   // Public functions for LS.questionEditor module.
   LS.questionEditor = {
     /**
+     * Show the selected question type on the button of the question type selector modal.
+     * The selector is not rendered again when the question type changes.
+     *
+     * @param {string} questionType - One-letter string of question type
+     * @param {object|false} option - Data of the selected question theme, false if no other theme was clicked in the modal
+     * @return {void}
+     */
+    updateQuestionTypeButton: function (questionType, option) {
+      if (!option) {
+        return;
+      }
+      const buttonText = $('#selector__questionTypeSelector--buttonText');
+      buttonText.text(option.title);
+      if ($('#question-type-selector-wrapper').data('debug') == 1) {
+        buttonText.append(' ', $('<em class="small"></em>').text(`Type: ${questionType}`));
+      }
+    },
+
+    /**
      * Update question attributes (general and advanced settings) when selecting question type.
      * Used by question selector modal.
      *
@@ -1811,7 +1830,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.ajax({
           url: generalSettingsUrl,
           method: 'GET',
-          data: { questionType, questionTheme, code },
+          data: { questionType, questionTheme },
           dataType: 'html',
           success: (data) => {
             resolve(data);
@@ -1850,28 +1869,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
         });
       });
       try {
-        var code = $('#questionCode').val();
         const [generalSettingsHtml, advancedSettingsHtml, extraOptionsHtml] = await Promise.all([generalSettingsPromise, advancedSettingsPromise, extraOptionsPromise]);
         const currentGroup = $('#gid').children("option:selected").val();
         const currentPosition = $('#questionposition').val();
         $('#general-settings').replaceWith(generalSettingsHtml);
-        $('#questionCode').val(code);
-        /* The code input was replaced: Bind the blur/enter validation again on the new element */
-        activateQuestionCodeChecker();
-        var wrapperEl = $('#question-type-selector-wrapper');
-        var viewType = wrapperEl.data('viewtype');
-        var debug = wrapperEl.data('debug');
-        var runner_questionTypeSelector = new PreviewModalScript("questionTypeSelector", {
-          "selectedClass": "text-short",
-          "onUpdate": ["value", "theme", "$('#question_type').val(value); $('#question_theme_name').val(theme); LS.questionEditor.updateQuestionAttributes(value, theme, '" + generalSettingsUrl + "', '" + advancedSettingsUrl + "', '" + extraOptionsUrl + "');"],
-          "value": questionType,
-          "theme": questionTheme,
-          "debugString": "Type: ",
-          "debug": debug == 1,
-          "viewType": viewType
-        });
-        runner_questionTypeSelector.bind();
-
         $('#gid').val(currentGroup);
         /* The group selector and the position selector were replaced: Bind the group change again and load the positions of the selected group */
         activateQuestionPositionReload();
