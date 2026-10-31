@@ -20,20 +20,23 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
 }
 ?>
 
-<div class="selector--edit-permissions-container">
+<div class="selector--edit-permissions-container" data-states-url="<?= App()->createUrl('userManagement/batchPermissionStates') ?>">
+    <div class="alert alert-danger d-none selector--permission-states-error" role="alert">
+        <?= gT("The permissions of the selected users could not be loaded.") ?>
+    </div>
     <table id='UserManagement--userpermissions-table' class='activecell table table-striped'>
         <caption class="visually-hidden"><?php eT('Edit permissions'); ?></caption>
         <thead>
             <tr>
                 <th></th>
                 <th><?php eT("Permission"); ?></th>
-                <th><?php eT("General"); ?></th>
-                <th><?php eT("Create"); ?></th>
-                <th><?php eT("View/read"); ?></th>
-                <th><?php eT("Update"); ?></th>
-                <th><?php eT("Delete"); ?></th>
-                <th><?php eT("Import"); ?></th>
-                <th><?php eT("Export"); ?></th>
+                <th id="batch-permission-col-general"><?php eT("General"); ?></th>
+                <th id="batch-permission-col-create"><?php eT("Create"); ?></th>
+                <th id="batch-permission-col-read"><?php eT("View/read"); ?></th>
+                <th id="batch-permission-col-update"><?php eT("Update"); ?></th>
+                <th id="batch-permission-col-delete"><?php eT("Delete"); ?></th>
+                <th id="batch-permission-col-import"><?php eT("Import"); ?></th>
+                <th id="batch-permission-col-export"><?php eT("Export"); ?></th>
             </tr>
         </thead>
 
@@ -47,7 +50,7 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 </td>
 
                 <!-- Warning super admin -->
-                <td>
+                <td id="batch-permission-row-<?= $sPermissionKey ?>">
                     <?php if ($sPermissionKey == 'superadmin') {
                         ?> <span class='warning'> <?php
                     };
@@ -59,7 +62,7 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
 
                 <!-- checkbox  -->
                 <td>
-                    <input type="checkbox" class="general-row-selector custom-data" id='all_<?php echo $sPermissionKey; ?>' name='PermissionAll[<?php echo $sPermissionKey; ?>]' />
+                    <input type="checkbox" class="general-row-selector" id='all_<?php echo $sPermissionKey; ?>' name='PermissionAll[<?php echo $sPermissionKey; ?>]' aria-labelledby="batch-permission-row-<?= $sPermissionKey ?> batch-permission-col-general" />
                 </td>
 
                 <!-- CRUD -->
@@ -72,10 +75,17 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                     <td class='specific-settings-block'>
                         <?php if ($CRUDValue) : ?>
                             <?php if (!($sPermissionKey == 'survey' && $sCRUDKey == 'read')) : ?>
-                                <!-- checkbox -->
-                                <input type="checkbox" class="specific-permission-selector custom-data" name='Permission[<?php echo $sPermissionKey . '][' . $sCRUDKey; ?>]' id='perm_<?php echo $sPermissionKey . '_' . $sCRUDKey; ?>' <?php if (substr((string) $sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read') :
-                                    ?> style="visibility:hidden" <?php
-                                                                                                                         endif; ?> />
+                                <!-- checkbox: Only the changed ones are posted, see LS.UserManagement.wireMassPermissions -->
+                                <input
+                                    type="checkbox"
+                                    class="specific-permission-selector"
+                                    name='Permission[<?php echo $sPermissionKey . '][' . $sCRUDKey; ?>]'
+                                    id='perm_<?php echo $sPermissionKey . '_' . $sCRUDKey; ?>'
+                                    data-permission="<?= $sPermissionKey ?>"
+                                    data-crud="<?= $sCRUDKey ?>"
+                                    aria-labelledby="batch-permission-row-<?= $sPermissionKey ?> batch-permission-col-<?= $sCRUDKey ?>"
+                                    <?= (substr((string) $sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read') ? 'style="visibility:hidden"' : '' ?>
+                                />
                             <?php endif; ?>
                         <?php endif; ?>
                     </td>
@@ -83,6 +93,8 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             </tr>
         <?php endforeach; ?>
     </table>
-    <div id="hereBeUserIds">
-    </div>
+    <p id="batch-permission-mixed-help" class="form-text d-none">
+        <?= gT("A checkbox with a dash means that only some of the selected users have this permission. As long as it shows the dash, this permission is not changed for any of them.") ?>
+    </p>
+    <div class="selector--changed-permissions"></div>
 </div>
