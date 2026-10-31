@@ -8,7 +8,7 @@ import { SideBarHeader } from 'components/SideBar'
 import { createBufferOperation, STATES } from 'helpers'
 import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
 
-import { groupAttributes } from './groupAttributes'
+import { getQuestionGroupAttributes } from './groupAttributes'
 import { GroupAttribute } from './GroupAttribute'
 
 export const GroupSettings = ({ gid }) => {
@@ -48,7 +48,7 @@ export const GroupSettings = ({ gid }) => {
         </Button>
       </SideBarHeader>
 
-      {groupAttributes.map((attribute) => {
+      {getQuestionGroupAttributes().map((attribute) => {
         const keys = attribute.attributePath
           .replace('[language]', language)
           .split('.')
