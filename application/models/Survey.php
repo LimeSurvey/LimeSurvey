@@ -1346,6 +1346,20 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Returns true if the Other option of a multiple choice question stores its tick in Q{qid}_Cotherchecked.
+     * @param integer $qid
+     * @return bool
+     */
+    public function hasOtherCheckedColumn($qid)
+    {
+        if (!$this->getIsActive()) {
+            return true;
+        }
+        $table = Yii::app()->db->schema->getTable($this->responsesTableName);
+        return $table !== null && isset($table->columns["Q{$qid}_Cotherchecked"]);
+    }
+
+    /**
      * @return bool
      */
     public function getIsAnonymized()
