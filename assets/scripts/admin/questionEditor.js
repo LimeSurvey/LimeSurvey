@@ -357,6 +357,24 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
 
   /**
+   * Scroll a newly added row into view inside its scrollable table wrapper.
+   * Rows of hidden languages are ignored.
+   *
+   * @param {HTMLElement} row
+   * @param {boolean} focus Also focus the code (or answer text) input of the row
+   * @return {void}
+   */
+  function revealNewRow(row /*: HTMLElement */, focus /*: boolean */) {
+    if (!$(row).is(':visible')) {
+      return;
+    }
+    row.scrollIntoView({ block: 'nearest' });
+    if (focus) {
+      $(row).find('input.code, input.answer').filter(':visible').first().trigger('focus');
+    }
+  }
+
+  /**
    * Bind relevance equation to expand on click (only once)
    *
    * @return {void}
@@ -725,11 +743,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
         // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
 
         // We insert each row for each language
+        const newRows = [];
         $.each(arrayofhtml, (lang, htmlRow) => {
           const $elRowToUpdate = $(`#row_${lang}_${commonId}`); // The row for the current language
           $elRowToUpdate.after(htmlRow); // We insert the HTML of the new row after this one
+          newRows.push(...$elRowToUpdate.next().get());
         });
         rebindClickHandler();
+        // The new row may be below the visible area of the scrollable table
+        newRows.forEach((newRow) => revealNewRow(newRow, true));
       },
       error() {
         alert(errormessage);
@@ -1301,6 +1323,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
     $.when.apply($, promises).done(
       function (...args) {
         /* $('#quickadd').dialog('close'); */
+        // Last added row per language, to scroll it into view afterwards
+        const lastRows = {};
         // TODO: What is item here?
         args.forEach((item /*: {lang: string, langtable: {}, html: string} */) => {
           answers[item.lang].forEach((row /*: {quid: string, text: string, code: string} */) => {
@@ -1341,6 +1365,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 // Do nothing.
               }
               $(item.langtable).find('tbody').append(tableRow);
+              lastRows[item.lang] = tableRow;
             } catch (e) {
               alert('Internal error in quickAddLabels:' + e);
               throw 'abort';
@@ -1350,6 +1375,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#quickaddarea').val('');
         $('.answertable tbody').sortable('refresh');
         updateRowProperties();
+        // Focus is not moved here, the closing modal gives it back to the "Quick add" button
+        Object.values(lastRows).forEach((lastRow) => revealNewRow(lastRow, false));
         $('#quickaddModal').modal('hide');
         bindExpandRelevanceEquation();
       },
