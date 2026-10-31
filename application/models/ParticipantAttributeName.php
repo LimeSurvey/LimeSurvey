@@ -143,7 +143,12 @@ class ParticipantAttributeName extends LSActiveRecord
             // as we have only that special case in cpdb at the moment, it's not necessary to change it in the frontend part (listAction.js line 27)
             return "<input type='hidden' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
         }
-        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' aria-label='" . CHtml::encode(sprintf(gT('Select attribute %s'), $this->defaultname)) . "' >";
+        // The default name is optional: fall back to the first translated name
+        $name = $this->defaultname;
+        if ((string) $name === '' && !empty($this->participant_attribute_names_lang)) {
+            $name = $this->participant_attribute_names_lang[0]['attribute_name'];
+        }
+        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' aria-label='" . CHtml::encode(sprintf(gT('Select attribute %s'), $name)) . "' >";
     }
 
     /**
@@ -247,7 +252,8 @@ class ParticipantAttributeName extends LSActiveRecord
                 "type"              => 'raw',
                 "header"            => "<input type='checkbox' id='action_toggleAllAttributeNames' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
                 "filter"            => false,
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                // The header only holds a checkbox: name the column for the screen reader table navigation
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column', 'aria-label' => gT('Select all')],
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'htmlOptions'       => ['class' => 'ls-sticky-column']
             ],
