@@ -60,6 +60,16 @@ const isImageSelect = (question) => {
 // Base URL for upload paths
 const SITE_URL = process.env.REACT_APP_SITE_URL || ''
 
+// File name of an image path, URL-decoded where possible
+const getImageFileName = (path) => {
+  const fileName = path.split('/').pop()
+  try {
+    return decodeURIComponent(fileName)
+  } catch {
+    return fileName
+  }
+}
+
 // Unstripped option texts of an image-select question, by option value
 const getImageOptionTexts = (question, language) =>
   new Map(
@@ -83,9 +93,9 @@ const toImageOptions = (options, texts) =>
     if (!path || !path.includes('/')) return option
     return {
       value: option.value,
-      label:
-        getImageChoiceAlt(text) || decodeURIComponent(path.split('/').pop()),
-      image: SITE_URL + path,
+      label: getImageChoiceAlt(text) || getImageFileName(path),
+      // Only root-relative upload paths get the base URL, not external images
+      image: path.startsWith('/') ? SITE_URL + path : path,
     }
   })
 

@@ -431,6 +431,15 @@ class QuestionStatistics implements StatisticsChartInterface
         return $command;
     }
 
+    /**
+     * Loads the questions of the survey with their subquestions, attributes and
+     * answer options in the statistics language. Question, subquestion and
+     * answer option texts are flattened to plain text; subquestions and answer
+     * options of the image select themes get their image URL instead.
+     *
+     * @return array{questions: array<int, array>, answers: array<int, array>}
+     *     Questions by qid, answer options by qid and answer code
+     */
     private function fetchSurveyMetadata()
     {
         $command = $this->buildBaseQuery();
@@ -498,7 +507,7 @@ class QuestionStatistics implements StatisticsChartInterface
         $text = (string) $text;
         if (
             strpos((string) $themeName, 'image_select') !== false
-            && preg_match('/<img\b[^>]*?\bsrc\s*=\s*(["\'])(.*?)\1/is', $text, $matches)
+            && preg_match('/<img\b[^>]*?\ssrc\s*=\s*(["\'])(.*?)\1/is', $text, $matches)
         ) {
             return html_entity_decode($matches[2], ENT_QUOTES | ENT_HTML5, 'UTF-8');
         }

@@ -42,6 +42,13 @@ class QuestionStatisticsChoiceLabelTest extends TestCase
             'https://example.com/image.png',
             $this->getChoiceLabel("<img src='https://example.com/image.png'>", 'image_select-listradio')
         );
+        $this->assertSame(
+            '/upload/car.jpeg',
+            $this->getChoiceLabel(
+                '<img data-src="/upload/placeholder.png" src="/upload/car.jpeg" />',
+                'image_select-multiplechoice'
+            )
+        );
     }
 
     /**

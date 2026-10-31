@@ -146,4 +146,33 @@ describe('buildQuestionOptions', () => {
       { value: 'A1', label: 'green.png', image: '/upload/green.png' },
     ])
   })
+
+  it('keeps image file names that cannot be URL-decoded', () => {
+    const { answerOptions } = optionFor('L', {
+      questionThemeName: 'image_select-listradio',
+      answers: [
+        {
+          code: 'A1',
+          scaleId: 0,
+          l10ns: { en: { answer: '<img src="/upload/50%off.png" alt="" />' } },
+        },
+        {
+          code: 'A2',
+          scaleId: 0,
+          l10ns: {
+            en: { answer: '<img src="https://example.com/car.png" alt="" />' },
+          },
+        },
+      ],
+    })
+
+    expect(answerOptions).toEqual([
+      { value: 'A1', label: '50%off.png', image: '/upload/50%off.png' },
+      {
+        value: 'A2',
+        label: 'car.png',
+        image: 'https://example.com/car.png',
+      },
+    ])
+  })
 })
