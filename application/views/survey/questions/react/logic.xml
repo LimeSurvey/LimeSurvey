@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Editor UI overlay: merged by attribute name into the config.xml attributes of every question theme. -->
+<react>
+    <tab>Logic</tab>
+    <attributes>
+        <attribute>
+            <name>min_answers</name>
+            <component>Input</component>
+            <caption>Minimum answers</caption>
+            <props>
+                <dataTestId>minimum-answers</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>max_answers</name>
+            <component>Input</component>
+            <caption>Maximum answers</caption>
+            <props>
+                <dataTestId>maximum-answers</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>commented_checkbox</name>
+            <component>Select</component>
+            <caption>Comment only when</caption>
+            <optionsPreset>commentedCheckbox</optionsPreset>
+            <props>
+                <dataTestId>comment-only-when</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>equation</name>
+            <component>Input</component>
+            <caption>Equation</caption>
+            <props>
+                <className>textarea</className>
+                <type>textarea</type>
+                <role>textarea</role>
+                <rows>3</rows>
+            </props>
+        </attribute>
+        <attribute>
+            <name>array_filter_exclude</name>
+            <component>Input</component>
+            <caption>Array filter exclusion</caption>
+            <props>
+                <dataTestId>array-filter-exclusion</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>array_filter</name>
+            <component>Input</component>
+            <caption>Array filter</caption>
+            <props>
+                <dataTestId>array-filter</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>array_filter_style</name>
+            <component>ToggleButtons</component>
+            <caption>Array filter style</caption>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Hidden</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Disabled</text>
+                </option>
+            </options>
+            <props>
+                <dataTestId>array-filter-style</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>commented_checkbox_auto</name>
+            <component>ToggleButtons</component>
+            <caption>Remove text or uncheck checkbox automatically</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>remove-text-or-uncheck-checkbox-automatically</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>assessment_value</name>
+            <component>Input</component>
+            <caption>Assessment value</caption>
+            <props>
+                <dataTestId>assessment-value</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>exclude_all_others</name>
+            <component>Input</component>
+            <caption>Exclusive option</caption>
+            <props>
+                <dataTestId>exclusive-option</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>random_group</name>
+            <component>Input</component>
+            <caption>Randomization group name</caption>
+            <props>
+                <dataTestId>randomization-group-name</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>em_validation_q</name>
+            <component>Input</component>
+            <caption>Question validation equation</caption>
+        </attribute>
+        <attribute>
+            <name>em_validation_q_tip</name>
+            <component>Input</component>
+            <caption>Question validation tip</caption>
+        </attribute>
+        <attribute>
+            <name>other_comment_mandatory</name>
+            <component>ToggleButtons</component>
+            <caption>'Other:' comment mandatory</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>comment-mandatory</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>em_validation_sq</name>
+            <component>Input</component>
+            <caption>Subquestion validation equation</caption>
+        </attribute>
+        <attribute>
+            <name>em_validation_sq_tip</name>
+            <component>Input</component>
+            <caption>Subquestion validation tip</caption>
+        </attribute>
+        <attribute>
+            <name>max_subquestions</name>
+            <component>Input</component>
+            <caption>Maximum columns for answers</caption>
+            <disableWhenActive>1</disableWhenActive>
+            <props>
+                <dataTestId>maximum-columns-for-answers</dataTestId>
+                <type>number</type>
+            </props>
+        </attribute>
+    </attributes>
+</react>

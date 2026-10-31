@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Editor UI overlay: merged by attribute name into the config.xml attributes of every question theme. -->
+<react>
+    <tab>Other</tab>
+    <attributes>
+        <attribute>
+            <name>min_num_of_files</name>
+            <component>Input</component>
+            <caption>Minimum number of files</caption>
+            <props>
+                <dataTestId>min-number-of-files</dataTestId>
+                <type>number</type>
+                <defaultValue>1</defaultValue>
+            </props>
+        </attribute>
+        <attribute>
+            <name>allowed_filetypes</name>
+            <component>Input</component>
+            <caption>Allowed file types</caption>
+            <props>
+                <dataTestId>allowed-file-types</dataTestId>
+                <defaultValue>png, gif, doc, odt, jpg, jpeg</defaultValue>
+            </props>
+        </attribute>
+        <attribute>
+            <name>max_filesize</name>
+            <component>Input</component>
+            <caption>Maximum file size (kB)</caption>
+            <props>
+                <dataTestId>maximum-file-size-allowed</dataTestId>
+                <type>number</type>
+                <min>1</min>
+                <max>1073741824</max>
+                <defaultValue>1024</defaultValue>
+            </props>
+        </attribute>
+        <attribute>
+            <name>max_num_of_files</name>
+            <component>Input</component>
+            <caption>Maximum number of files</caption>
+            <props>
+                <dataTestId>max-number-of-files</dataTestId>
+                <type>number</type>
+                <min>1</min>
+                <defaultValue>1</defaultValue>
+            </props>
+        </attribute>
+        <attribute>
+            <name>choice_title</name>
+            <component>Input</component>
+            <caption>Choice header</caption>
+            <props>
+                <dataTestId>choice-header</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>rank_title</name>
+            <component>Input</component>
+            <caption>Rank header</caption>
+            <props>
+                <dataTestId>rank-header</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>show_grand_total</name>
+            <component>ToggleButtons</component>
+            <caption>Show grand total</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <props>
+                <dataTestId>show-grand-total</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>show_totals</name>
+            <component>Select</component>
+            <caption>Show totals for</caption>
+            <options>
+                <option>
+                    <value>X</value>
+                    <text>Off</text>
+                </option>
+                <option>
+                    <value>R</value>
+                    <text>Rows</text>
+                </option>
+                <option>
+                    <value>C</value>
+                    <text>Columns</text>
+                </option>
+                <option>
+                    <value>B</value>
+                    <text>Rows &amp; columns</text>
+                </option>
+            </options>
+            <props>
+                <id>use-slider-layout</id>
+                <dataTestId>show-totals-for</dataTestId>
+            </props>
+        </attribute>
+        <attribute>
+            <name>page_break</name>
+            <component>ToggleButtons</component>
+            <caption>Insert page break in printable view</caption>
+            <optionsPreset>yesNo</optionsPreset>
+            <default>0</default>
+            <props>
+                <id>insert-page-break-in-printable-view</id>
+            </props>
+        </attribute>
+        <attribute>
+            <name>scale_export</name>
+            <component>Select</component>
+            <caption>SPSS export scale type</caption>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Default</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Nominal</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Ordinal</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>Scale</text>
+                </option>
+            </options>
+        </attribute>
+        <attribute>
+            <name>other_numbers_only</name>
+            <component>ToggleButtons</component>
+            <caption>Numbers only for 'Other' text</caption>
+            <optionsPreset>onOff</optionsPreset>
+            <default>0</default>
+            <props>
+                <dataTestId>other-numbers-only</dataTestId>
+            </props>
+        </attribute>
+    </attributes>
+</react>

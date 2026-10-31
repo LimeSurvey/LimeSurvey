@@ -12,6 +12,7 @@ import {
 const simpleSettings = () => {
   const generalAttributes = getGeneralAttributes()
   const displayAttributes = getDisplayAttributes()
+
   return [
     generalAttributes.QUESTION_CODE,
     generalAttributes.QUESTION_TYPE,

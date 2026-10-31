@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 
 import 'tests/mocks'
 import { renderWithProviders } from 'tests/testUtils'
+import { Input } from 'components/UIComponents'
 
 import { Setting } from './Setting'
 import { getOtherAttributes } from './attributes/getOtherAttributes'
@@ -36,6 +37,76 @@ const SettingWithState = ({ attributes }) => {
     />
   )
 }
+
+const DependentSettingWithState = ({ onDependsToggle }) => {
+  const [question, setQuestion] = useState({
+    qid: 1,
+    type: '|',
+    attributes: {
+      controller: { '': 'x' },
+      dependent: { '': 'kept' },
+    },
+  })
+
+  return (
+    <Setting
+      question={question}
+      handleUpdate={(value) =>
+        setQuestion((current) => ({
+          ...current,
+          attributes: { ...current.attributes, ...value },
+        }))
+      }
+      title="Simple"
+      simpleSettings
+      attributes={[
+        {
+          component: Input,
+          attributePath: 'attributes.controller',
+          props: { dataTestId: 'controller' },
+        },
+        {
+          component: Input,
+          attributePath: 'attributes.dependent',
+          props: { dataTestId: 'dependent' },
+          dependsOn: { attributePath: 'attributes.controller', value: 'x' },
+          onDependsToggle,
+        },
+      ]}
+    />
+  )
+}
+
+describe('Setting dependent attributes', () => {
+  const toggleController = async () => {
+    const controller = screen.getByTestId('controller')
+    await userEvent.clear(controller)
+    expect(screen.queryByTestId('dependent')).toBeNull()
+    await userEvent.type(controller, 'x')
+  }
+
+  test('resets the dependent value when its condition becomes false', async () => {
+    await renderWithProviders(
+      <DependentSettingWithState onDependsToggle={{ onFalse: '' }} />
+    )
+
+    await toggleController()
+
+    expect(screen.getByTestId('dependent').value).toBe('')
+  })
+
+  test('keeps the dependent value when keepValue is enabled', async () => {
+    await renderWithProviders(
+      <DependentSettingWithState
+        onDependsToggle={{ onFalse: '', keepValue: true }}
+      />
+    )
+
+    await toggleController()
+
+    expect(screen.getByTestId('dependent').value).toBe('kept')
+  })
+})
 
 describe('Setting input default values', () => {
   test('shows the default values when the attributes are not set', async () => {
