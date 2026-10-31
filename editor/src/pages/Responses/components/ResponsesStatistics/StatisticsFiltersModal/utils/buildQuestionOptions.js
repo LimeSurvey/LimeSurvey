@@ -1,7 +1,12 @@
 // Turn the survey object into a clean list the dropdowns can display.
 import { format } from 'util'
 import { getQuestionTypeInfo } from 'components'
-import { RemoveHTMLTagsInString, getAttributeValue } from 'helpers'
+import {
+  RemoveHTMLTagsInString,
+  getAttributeValue,
+  getImageChoiceAlt,
+  getImageChoiceSrc,
+} from 'helpers'
 
 // Pick the localized text for the active language, falling back to the first
 // available language so a question/answer never renders blank.
@@ -42,8 +47,8 @@ const canMatchEncrypted = (type) =>
   !ENCRYPTED_UNFILTERABLE_KINDS.includes(getQuestionKind(type))
 
 // Image-select themes: List image select (radio, L) and Multiple choice image
-// select (M). Each option's text is an image path, so we render thumbnails
-// instead of the raw URL (see toImageOptions).
+// select (M). Each option's text is an image (HTML or a bare image path), so we
+// render thumbnails instead of the text (see toImageOptions).
 const isImageSelect = (question) => {
   const info = getQuestionTypeInfo()
   return [
@@ -55,14 +60,31 @@ const isImageSelect = (question) => {
 // Base URL for upload paths
 const SITE_URL = process.env.REACT_APP_SITE_URL || ''
 
-// Turn image-select options into thumbnail options
-const toImageOptions = (options) =>
+// Unstripped option texts of an image-select question, by option value
+const getImageOptionTexts = (question, language) =>
+  new Map(
+    MULTIPLE_CHOICE_TYPES.includes(question.type)
+      ? (question.subquestions || []).map((sq) => [
+          sq.qid,
+          localized(sq.l10ns, language, 'question'),
+        ])
+      : (question.answers || []).map((answer) => [
+          answer.code,
+          localized(answer.l10ns, language, 'answer'),
+        ])
+  )
+
+// Turn image-select options into thumbnail options, labelled with the image's
+// alternative text, or else its file name
+const toImageOptions = (options, texts) =>
   options.map((option) => {
-    const path = option.label
+    const text = texts.get(option.value)
+    const path = getImageChoiceSrc(text)
     if (!path || !path.includes('/')) return option
     return {
       value: option.value,
-      label: decodeURIComponent(path.split('/').pop()),
+      label:
+        getImageChoiceAlt(text) || decodeURIComponent(path.split('/').pop()),
       image: SITE_URL + path,
     }
   })
@@ -299,7 +321,7 @@ export const buildQuestionOptions = (survey, language) => {
       // Image-select questions render each option's image path as a thumbnail.
       const imageSelect = isImageSelect(question)
       const finalAnswerOptions = imageSelect
-        ? toImageOptions(answerOptions)
+        ? toImageOptions(answerOptions, getImageOptionTexts(question, language))
         : answerOptions
 
       const kind = getQuestionKind(question.type)

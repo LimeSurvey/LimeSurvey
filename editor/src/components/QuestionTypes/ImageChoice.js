@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react'
-import { Image } from 'react-bootstrap'
+import { Form, Image } from 'react-bootstrap'
 import classNames from 'classnames'
 
 import {
@@ -7,6 +7,9 @@ import {
   IMAGE_PREVIEW_HEIGHT,
   getNoAnswerLabel,
   docUrls,
+  getImageChoiceSrc,
+  getImageChoiceAlt,
+  setImageChoiceImage,
 } from 'helpers'
 import NoImageFound from 'assets/images/no-image-found.jpg'
 import { ContentEditor, DropZone, FormCheck } from 'components/UIComponents'
@@ -29,14 +32,25 @@ export const ImageChoice = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false)
   const { fileService } = useFileService()
+  // The choice text holds the image as HTML (or as a bare image URL in older surveys)
+  const imageSrc = useMemo(() => getImageChoiceSrc(value), [value])
+  const imageAlt = useMemo(() => getImageChoiceAlt(value), [value])
   // REACT_APP_SITE_URL is needed in development environments
   // - because the react-app runs on a different port to the core app
-  const [previewUrl, setPreviewUrl] = useState(
-    value ? process.env.REACT_APP_SITE_URL + value : null
-  )
+  const getPreviewUrl = (src) =>
+    src && src.startsWith('/')
+      ? (process.env.REACT_APP_SITE_URL || '') + src
+      : src
+  const [previewUrl, setPreviewUrl] = useState(getPreviewUrl(imageSrc))
 
   const onChange = (filePath) => {
-    update(encodeURI(filePath))
+    update(
+      filePath ? setImageChoiceImage(value, { src: encodeURI(filePath) }) : ''
+    )
+  }
+
+  const onChangeAlt = (event) => {
+    update(setImageChoiceImage(value, { alt: event.target.value }))
   }
 
   const onChangePreview = (previewUrl) => {
@@ -45,16 +59,15 @@ export const ImageChoice = ({
 
   const initLoading = useMemo(() => isTempId(id), [id])
 
-  const regexContainsHtml = /(<([^>]+)>)/i
-  const isValidImg = useMemo(() => !regexContainsHtml.test(value), [value])
+  const isValidImg = !value || imageSrc !== null
 
   const idSuffix = idPrefix + id + '-i' + index
 
   const showLoader = (isFocused || isLoading) && !initLoading
 
   useEffect(() => {
-    setPreviewUrl(value ? process.env.REACT_APP_SITE_URL + value : null)
-  }, [value])
+    setPreviewUrl(getPreviewUrl(imageSrc))
+  }, [imageSrc])
 
   useEffect(() => {
     let errorMessage = null
@@ -101,7 +114,7 @@ export const ImageChoice = ({
             <div className={classNames({ 'd-none': showLoader })}>
               <Image
                 src={previewUrl && isValidImg ? previewUrl : NoImageFound}
-                alt="Image Select List"
+                alt={imageAlt || 'Image Select List'}
                 height={'100%'}
                 style={{
                   maxHeight: IMAGE_PREVIEW_HEIGHT,
@@ -127,6 +140,21 @@ export const ImageChoice = ({
           <div style={{ width: 44, height: 44 }} className="loader ms-4"></div>
         )}
       </div>
+      {isFocused && !isNoAnswer && !initLoading && imageSrc && (
+        <Form.Group className="mt-2" controlId={'image-choice-alt-' + idSuffix}>
+          <Form.Label className="mb-1">{t('Alternative text')}</Form.Label>
+          <Form.Control
+            type="text"
+            value={imageAlt}
+            onChange={onChangeAlt}
+            aria-describedby={'image-choice-alt-help-' + idSuffix}
+            data-testid={'image-choice-alt-' + idSuffix}
+          />
+          <Form.Text id={'image-choice-alt-help-' + idSuffix}>
+            {t('Describes the image for participants who cannot see it.')}
+          </Form.Text>
+        </Form.Group>
+      )}
     </div>
   )
 }

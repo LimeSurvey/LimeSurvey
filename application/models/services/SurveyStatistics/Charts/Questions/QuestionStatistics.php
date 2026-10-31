@@ -456,14 +456,22 @@ class QuestionStatistics implements StatisticsChartInterface
                 if (empty($questions[$row['parent_qid']]['subQuestions'][$qid])) {
                     $questions[$row['parent_qid']]['subQuestions'][$qid] = [
                         'qid' => $qid, 'gid' => $row['gid'],
-                        'title' => $row['title'], 'question' => flattenText($row['question_text'], false, true),
+                        'title' => $row['title'],
+                        'question' => $this->getChoiceLabel(
+                            $row['question_text'],
+                            $questions[$row['parent_qid']]['question_theme_name'] ?? null
+                        ),
                         'scale_id' => $row['scale_id'] ?? 0, 'question_order' => $row['question_order']
                     ];
                 }
             }
             if (!empty($row['aid'])) {
                 $answers[$row['answer_qid']][$row['code']] = [
-                    'aid' => $row['aid'], 'code' => $row['code'], 'answer' => flattenText($row['answer'], false, true),
+                    'aid' => $row['aid'], 'code' => $row['code'],
+                    'answer' => $this->getChoiceLabel(
+                        $row['answer'],
+                        $questions[$row['answer_qid']]['question_theme_name'] ?? null
+                    ),
                     'sortorder' => $row['sortorder'], 'scale_id' => $row['answer_scale_id']
                 ];
             }
@@ -473,6 +481,28 @@ class QuestionStatistics implements StatisticsChartInterface
         }
 
         return compact('questions', 'answers');
+    }
+
+    /**
+     * Returns the label of a subquestion or answer option for the charts.
+     * With the image select question themes the client shows the label as image,
+     * so the image URL is returned there, whether the text is HTML (e.g. an image
+     * inserted with the HTML editor) or a bare image URL.
+     *
+     * @param string|null $text Subquestion or answer option text
+     * @param string|null $themeName Question theme name of the (parent) question
+     * @return string
+     */
+    private function getChoiceLabel(?string $text, ?string $themeName): string
+    {
+        $text = (string) $text;
+        if (
+            strpos((string) $themeName, 'image_select') !== false
+            && preg_match('/<img\b[^>]*?\bsrc\s*=\s*(["\'])(.*?)\1/is', $text, $matches)
+        ) {
+            return html_entity_decode($matches[2], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        }
+        return flattenText($text, false, true);
     }
 
     /**
