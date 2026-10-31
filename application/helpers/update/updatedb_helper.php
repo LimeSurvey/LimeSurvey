@@ -3246,11 +3246,38 @@ function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn = null)
 }
 
 /**
-* @param string $sTablename
+* @param string $sTablename : without { }
+* @param string|string[] $aColumns the primary keys as string or columns
 */
 function addPrimaryKey($sTablename, $aColumns)
 {
-    return Yii::app()->db->createCommand()->addPrimaryKey('PK_' . $sTablename . '_' . randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'), '{{' . $sTablename . '}}', $aColumns);
+    $tablePrefix = App()->getDb()->tablePrefix;
+    $indexTableName = $sTablename;
+    if ($tablePrefix !== '' && strpos($indexTableName, $tablePrefix) === 0) {
+        $indexTableName = substr($indexTableName, strlen($tablePrefix));
+    }
+    $date = date('YmdHis');
+    $maxRandomLength = 12;
+    $minRandomLength = 4;
+    // Reserve space for the prefix, separators, timestamp and minimum random string.
+    $maxTableNameLength = 63 - strlen('PK__' . $date . '_') - $minRandomLength;
+    if (strlen($indexTableName) > $maxTableNameLength) {
+        $indexTableName = substr($indexTableName, 0, $maxTableNameLength);
+    }
+    // Use as many random characters as possible, up to 12.
+    $randomLength = min(
+        $maxRandomLength,
+        63 - strlen('PK_' . $indexTableName . '_' . $date . '_')
+    );
+    $indexname = 'PK_' . $indexTableName
+        . '_' . $date
+        . '_' . randomChars($randomLength, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+
+    return Yii::app()->db->createCommand()->addPrimaryKey(
+        $indexname,
+        '{{' . $sTablename . '}}',
+        $aColumns
+    );
 }
 
 /**
