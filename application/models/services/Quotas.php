@@ -322,6 +322,10 @@ class Quotas
     }
 
     /**
+     * Applies a massive action to the given quotas.
+     *
+     * Note: Quotas that don't belong to the survey of this service are skipped,
+     * the permission was only checked on this survey.
      *
      * @param integer[] $aQuotaIds
      * @param string $action
@@ -337,6 +341,7 @@ class Quotas
             $oQuota = Quota::model()->findByPk($iQuotaId);
             if (empty($oQuota) || $oQuota->sid != $this->survey->sid) {
                 $errors [] = gT("Invalid quota ID");
+                continue;
             }
             switch ($action) {
                 case self::MASSIVE_ACTION_ACTIVATE:
