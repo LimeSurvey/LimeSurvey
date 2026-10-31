@@ -14,13 +14,32 @@
 
 class EMWarningPlusOperator extends EMWarningBase
 {
+    /** Both operands are numeric: + is an addition */
+    const NUMERIC = 'numeric';
+
+    /** One operand is a string literal or a string function result: + is a concatenation */
+    const STRING = 'string';
+
+    /** Operands with a value not known yet (e.g. an unanswered question in the logic file) */
+    const UNKNOWN = 'unknown';
+
     /**
-     *
+     * @param array $token
+     * @param string $operandType One of self::NUMERIC, self::STRING or self::UNKNOWN
      */
-    public function __construct(array $token)
+    public function __construct(array $token, $operandType = self::NUMERIC)
     {
         $this->token = $token;
-        $this->msg = gT("Usage of + with numeric value, see manual about usage of sum.", 'unescaped');
+        switch ($operandType) {
+            case self::STRING:
+                $this->msg = gT("Usage of + with string value, see manual about usage of join.", 'unescaped');
+                break;
+            case self::UNKNOWN:
+                $this->msg = gT("Usage of + with string or numeric value, see manual about usage of sum and join.", 'unescaped');
+                break;
+            default:
+                $this->msg = gT("Usage of + with numeric value, see manual about usage of sum.", 'unescaped');
+        }
         $this->helpLink = "https://www.limesurvey.org/manual/Expression_Manager#Warning_with_plus_operator_.28.2B.29";
     }
 }
