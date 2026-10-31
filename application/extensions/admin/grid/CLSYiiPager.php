@@ -112,7 +112,8 @@ class CLSYiiPager extends CLinkPager
 
         if ($hidden || $selected) {
             $class .= ' ' . ($hidden ? $this->hiddenPageCssClass : 'active');
-            $attrs = ['class' => 'page-link'];
+            // The link role exposes the aria-label and the disabled/current state, a plain span would hide them
+            $attrs = ['class' => 'page-link', 'role' => 'link'];
             if ($selected) {
                 $attrs['aria-current'] = 'page';
             }
