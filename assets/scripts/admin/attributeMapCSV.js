@@ -19,8 +19,38 @@ $(document).on('ready pjax:scriptcomplete', function() {
         $('.droppable-csv').css('min-height', max);
     }
     
-    adjustHeights();    
-    
+    adjustHeights();
+
+    /**
+     * Turn a CSV field into an attribute to be created: an input for the attribute name,
+     * labelled with the CSV field name, and a button to move it back to the CSV field names
+     */
+    function makeNewAttribute($elem) {
+        var id = $elem.attr('id').replace(/ /g, '');
+        var name = $elem.attr('data-name');
+        var $input = $('<input class="form-control" type="text">')
+            .attr({id: 'td_' + id, 'aria-label': name})
+            .val(name);
+        var $moveBack = $('<button type="button" class="btn btn-outline-secondary btn-sm ms-2 action-move-back"><i class="ri-arrow-go-back-fill" aria-hidden="true"></i></button>')
+            .attr({'aria-label': moveBackTxt.replace('%s', name), title: moveBackTxt.replace('%s', name)});
+        var $body = $('<div class="card-body d-flex align-items-center"></div>')
+            .append($input)
+            .append($('<span class="ms-2"></span>').text(id.replace('cs_', '')))
+            .append($moveBack);
+        $elem.empty().append($body);
+    }
+
+    // Move an attribute to be created back to the CSV field names
+    $(document).off('click.attributeMapCSV').on('click.attributeMapCSV', '.newcreate .action-move-back', function () {
+        var $elem = $(this).closest('.csv-attribute-item');
+        $elem.empty().append($('<div class="card-body"></div>').text($elem.attr('data-name')));
+        $elem.detach().appendTo('.droppable-csv');
+        adjustHeights();
+        // Keep the keyboard focus on the page: on the next "move back" button, else on "Move all"
+        var $next = $('.newcreate .action-move-back').first();
+        ($next.length ? $next : $('#move-all')).trigger('focus');
+    });
+
     if($("#overwrite").is(':checked')) {
         var attoverwrite=true;
     } 
@@ -73,11 +103,8 @@ $(document).on('ready pjax:scriptcomplete', function() {
             }        
 
             // Dropped in new attributes
-            if($(this).hasClass('newcreate')) { 
-                newDraggable.html('<div class="card-body">' + newDraggable.attr('id').replace('cs_','') + '</div>');
-                var id = newDraggable.attr('id').replace(/ /g, '');
-                var name = newDraggable.attr('data-name');
-                newDraggable.find($('.card-body')).prepend('<input class="form-control" type="text" id="td_' + id + '" value="' + name + '">&nbsp;');
+            if($(this).hasClass('newcreate')) {
+                makeNewAttribute(newDraggable);
             }
 
             // Reset the mappable attribute classes 
@@ -171,11 +198,7 @@ $(document).on('ready pjax:scriptcomplete', function() {
     $('#move-all').click(function () {
         $('.droppable-csv .csv-attribute-item').each(function(i, elem) {
             var $elem = $(elem);
-            $elem.html('<div class="card-body">' + $elem.attr('id').replace('cs_','') + '</div>');
-            var id = $elem.attr('id').replace(/ /g, '');
-            var name = $elem.attr('data-name');
-            $elem.find($('.card-body'))
-                .prepend('<input class="form-control" type="text" id="td_' + id + '" value="' + name + '">');
+            makeNewAttribute($elem);
             $elem.detach().appendTo('.newcreate');
             adjustHeights();
         });
