@@ -1077,7 +1077,7 @@ class DataEntry extends SurveyCommonAction
 
                     case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             if (substr((string) $fname['fieldname'], -5) == "other") {
                                 $questionInput = "\t<input type='text' name='{$fname['fieldname']}' value='"
                                 . htmlspecialchars((string) $idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
@@ -1231,7 +1231,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             for ($j = 1; $j <= 5; $j++) {
@@ -1260,7 +1260,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             for ($j = 1; $j <= 10; $j++) {
@@ -1319,7 +1319,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             $options = [
