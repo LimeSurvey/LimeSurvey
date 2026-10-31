@@ -237,7 +237,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                 </div>
                                 <div class="row">
                                     <div class="col-12 mb-3">
-                                        <input name='upload_file' id="upload_file" type="file" class="form-control" required="required"/>
+                                        <input name='upload_file' id="upload_file" type="file" class="form-control" required="required" accept="<?= CHtml::encode(getFileInputAcceptValue(App()->getConfig('allowedthemeuploads') . ',' . App()->getConfig('allowedthemeimageformats'))) ?>"/>
                                         <input type='hidden' name='editfile' value='<?php echo htmlspecialchars((string) $relativePathEditfile); ?>'/>
                                         <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>'/>
                                         <input type='hidden' name='templatename' value='<?php echo $templatename; ?>'/>

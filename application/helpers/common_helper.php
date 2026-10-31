@@ -5573,6 +5573,20 @@ function isFileUploadSizeLimited()
 }
 
 /**
+ * Get the value for the accept attribute of a file input from a list of file extensions
+ *
+ * @param string $extensions Comma-separated file extensions, e.g. the 'allowedthemeimageformats' setting
+ * @return string Comma-separated lowercase extensions with a leading dot, e.g. ".gif,.png"
+ **/
+function getFileInputAcceptValue($extensions)
+{
+    $extensions = array_unique(array_filter(array_map('trim', explode(',', strtolower((string) $extensions))), 'strlen'));
+    return implode(',', array_map(function ($extension) {
+        return '.' . $extension;
+    }, $extensions));
+}
+
+/**
  * Decodes token attribute data because due to bugs in the past it can be written in JSON or be serialized - future format should be JSON as serialized data can be exploited
  *
  * @param string $tokenAttributeData The original token attributes as stored in the database
