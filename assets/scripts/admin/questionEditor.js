@@ -2014,6 +2014,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
           }
         },
         error: (data) => {
+          // Logged out: The "logged out" modal is shown by the adminbasics ajaxError handler
+          if (data.status === 401) {
+            return;
+          }
           alert('Internal error in checkQuestionValidateTitle: ' + JSON.stringify(data));
           throw 'abort';
         }
@@ -2235,6 +2239,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
           }
         },
         error: (response) => {
+          $('#ls-loading').hide();
+          // Logged out: The "logged out" modal is shown by the adminbasics ajaxError handler
+          if (response.status === 401) {
+            return;
+          }
           alert('Internal error in checkQuestionValidateTitle: ' + response);
           throw 'abort';
         }

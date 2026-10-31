@@ -128,6 +128,10 @@ class CLSGridView extends TbGridView
         ], true);
         $this->rowLink();
         $this->lsAfterAjaxUpdate();
+        // Logged out (HTTP 401): The adminbasics ajaxError handler shows the "logged out" modal, skip the default error alert
+        if ($this->ajaxUpdateError === null) {
+            $this->ajaxUpdateError = 'function(xhr, textStatus, errorThrown, err){if(xhr.status !== 401 && err){alert(err);}}';
+        }
         if (!empty($classes)) {
             $classes = implode(' ', $classes);
             if (isset($this->itemsCssClass)) {
