@@ -1,0 +1,28 @@
+# Fails PRs that commit editor build output
+name: QuestionEditor - Build guard
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  Guard:
+    name: Check for build files
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+
+    steps:
+      - name: Fail if PR contains editor build output
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          files=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR}/files" --paginate \
+            --jq '.[].filename | select(startswith("editor/build/") or . == "editor/index.html")')
+
+          if [ -n "$files" ]; then
+            echo "::error::Don't commit editor build output; CI rebuilds it after merge. Drop these changes:"
+            echo "$files"
+            exit 1
+          fi
