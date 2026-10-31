@@ -1296,6 +1296,7 @@ class QuestionAdministrationController extends LSBaseController
         fixLanguageConsistency($iSurveyID);
 
         if (isset($aImportResults['fatalerror'])) {
+            unlink($sFullFilepath);
             App()->setFlashMessage($aImportResults['fatalerror'], 'error');
             $this->redirect(['questionAdministration/importView', 'surveyid' => $iSurveyID]);
             return;
