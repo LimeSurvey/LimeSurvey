@@ -336,6 +336,11 @@ class CLSGridView extends TbGridView
             App()->getAssetManager()->publish($assetsPath . 'sortAccessibility.js'),
             CClientScript::POS_END
         );
+        // Accessibility: keep the focus on the filter field after the grid update
+        App()->clientScript->registerScriptFile(
+            App()->getAssetManager()->publish($assetsPath . 'restoreFilterFocus.js'),
+            CClientScript::POS_END
+        );
         // Row action dropdowns: Registered here too, because GridActionsWidget only registers it when a row is
         // rendered, and rows added later to an initially empty grid by AJAX need it
         App()->clientScript->registerScriptFile(
