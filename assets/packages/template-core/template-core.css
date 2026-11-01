@@ -393,3 +393,13 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     cursor: pointer;
     text-decoration: none;
 }
+
+/* iOS Safari zooms into the page when a field with a font size below 16px gets the focus */
+@media (pointer: coarse) {
+    input.form-control,
+    textarea.form-control,
+    select.form-control,
+    select.form-select {
+        font-size: 16px;
+    }
+}
