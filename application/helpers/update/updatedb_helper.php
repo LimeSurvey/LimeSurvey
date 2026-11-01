@@ -70,9 +70,10 @@ function flushWebFileCache()
  *
  * @param int $iOldDBVersion The previous database version to upgrade from.
  * @param bool $bSilent If true, attempt a silent update; the function will return `false` and perform no updates when one or more critical versions are included in the required update range.
+ * @param string|null &$sAbortReason Set to the reason when the update is refused before any update step ran, so the database was not changed.
  * @return bool `true` if all updates were applied successfully, `false` otherwise.
  */
-function db_upgrade_all($iOldDBVersion, $bSilent = false)
+function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
 {
     /**
      * If you add a new database version add any critical database version numbers to this array. See link
@@ -88,6 +89,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     }
     // If DBVersion is older than 132 don't allow database update
     if ($iOldDBVersion < 132) {
+        $sAbortReason = sprintf(gT('Updating from database version %s is not supported, the oldest database version that can be updated is 132.'), $iOldDBVersion);
         return false;
     }
 
@@ -103,6 +105,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         );
     } catch (CDbException $e) {
         Yii::log('Could not verify database version before update: ' . $e->getMessage(), 'error', 'application.db.update');
+        $sAbortReason = 'Could not verify database version before update: ' . $e->getMessage();
         return false;
     }
     if (!$requirement['supported']) {
@@ -116,12 +119,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             Yii::app()->user->setFlash('error', $message);
         }
         Yii::log($message, 'error', 'application.db.update');
+        $sAbortReason = $message;
         return false;
     }
 
     // Try to acquire database update lock
     if (!getDatabaseUpdateLock(false, $sLockError)) {
-        Yii::app()->user->setFlash('error', $sLockError ?: 'Could not acquire the database update lock.');
+        $sAbortReason = $sLockError ?: 'Could not acquire the database update lock.';
+        Yii::app()->user->setFlash('error', $sAbortReason);
         return false;
     }
 
@@ -134,6 +139,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             Yii::app()->user->setFlash('error', $message);
         }
         Yii::log($message, 'error', 'application.db.update');
+        $sAbortReason = $message;
         releaseDatabaseUpdateLock();
         return false;
     }

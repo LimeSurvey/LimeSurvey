@@ -71,10 +71,13 @@ class UpdateDBCommand extends CConsoleCommand
             if ($incompleteUpdate !== null) {
                 throw new CException("A previous database update (starting from database version {$incompleteUpdate}) failed or was interrupted, so the database is probably in an inconsistent state. Please restore the database backup you made before the update, then run the update again.");
             }
-            $result = db_upgrade_all($currentDbVersion);
+            $result = db_upgrade_all($currentDbVersion, false, $abortReason);
             if ($result) {
                 echo "Database has been successfully upgraded to version $newDbVersion \n";
                 return 0;
+            } elseif ($abortReason !== null) {
+                // Refused before any update step ran, the database was not changed
+                throw new CException($abortReason);
             } else {
                 throw new CException("The database update failed, so the database is probably in an inconsistent state. Please restore the database backup you made before the update, then run the update again.");
             }
