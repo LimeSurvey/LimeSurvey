@@ -149,7 +149,12 @@ class expressionFixedDbVar extends PluginBase
         foreach ($knownVarsToCreate as $var) {
             $column = $this->settings[$var]['column'];
             if (isset($oResponse->$column)) {
-                LimeExpressionManager::setValueToKnowVar($var, $oResponse->$column);
+                $value = $oResponse->$column;
+                if (in_array($column, ['submitdate', 'startdate', 'datestamp'])) {
+                    // MSSQL returns the dates with fractional seconds (2019-08-05 00:10:35.000), remove them as on the other databases
+                    $value = preg_replace('/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\.\d+$/', '$1', (string) $value);
+                }
+                LimeExpressionManager::setValueToKnowVar($var, $value);
             }
         }
     }
