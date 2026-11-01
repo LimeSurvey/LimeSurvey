@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * Service class to activate survey.
  * @todo Move to models/services/survey/ folder.
@@ -63,8 +65,13 @@ class SurveyActivator
         $this->setMySQLDefaultEngine(Yii::app()->getConfig('mysqlEngine'));
 
         if (!$this->showEventMessages($event)) {
-            return ['error' => 'plugin'];
+            return ['error' => 'plugin', 'message' => $event->get('message')];
         }
+
+        // Clear session cache (e.g. from a survey preview run in
+        // the same browser session) before building the response table.
+        $iSurveyId = $this->survey->sid;
+        SurveySessionState::forSurvey((int) $iSurveyId)->clear();
 
         $this->prepareResponsesTable();
 
@@ -89,9 +96,9 @@ class SurveyActivator
         }
 
         $survey = Survey::model()->findByAttributes(array('sid' => $this->survey->primaryKey));
-        $survey->scenario = 'activationStateChange';
         $survey->active = 'Y';
-        $survey->save();
+        // Skip validation: The tables already exist, so an invalid setting must not keep the survey inactive
+        $survey->save(false);
 
         $aResult = array(
             'status' => 'OK',
@@ -176,11 +183,15 @@ class SurveyActivator
                 case "lastpage":
                     $aTableDefinition[$aRow['fieldname']] = "integer";
                     break;
+                case "quota_exit":
+                    $aTableDefinition[$aRow['fieldname']] = "integer";
+                    break;
                 case Question::QT_N_NUMERICAL:
                 case Question::QT_K_MULTIPLE_NUMERICAL:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "decimal (30,10)");
                     break;
                 case Question::QT_S_SHORT_FREE_TEXT:
+                case Question::QT_J_MAP:
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_L_LIST:
@@ -238,8 +249,11 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_R_RANKING:
-                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
-                    break;                                                                                                                                                                                                                                                                 default:
+                    if (!str_contains($aRow['fieldname'], "_S")) {
+                        $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "json");
+                    }
+                    break;
+                default:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
             }
             if (!$this->survey->isAnonymized && !array_key_exists('token', $aTableDefinition)) {

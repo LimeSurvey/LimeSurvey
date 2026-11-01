@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -175,15 +177,21 @@ class RenderListDropdown extends QuestionBaseRenderer
                 ), true);
     }
 
+    /**
+     * Renders the text input of the "Other" option.
+     *
+     * @return string
+     */
     public function getOtherInput()
     {
+        $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
         return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/othertext', [
                 'name' => $this->sSGQA,
                 'checkconditionFunction' => $this->checkconditionFunction,
                 'display' => $this->mSessionValue != '-oth-' ? 'display: none;' : '',
                 'label' => $this->othertext,
-                'value' => (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$this->sSGQA . "_Cother"]))
-                    ? htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$this->sSGQA . "_Cother"], ENT_QUOTES)
+                'value' => $sessionState->hasFieldValue($this->sSGQA . "_Cother")
+                    ? htmlspecialchars((string) $sessionState->getFieldValue($this->sSGQA . "_Cother"), ENT_QUOTES)
                     : ''
             ], true);
     }

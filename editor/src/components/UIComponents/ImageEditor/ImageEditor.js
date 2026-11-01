@@ -4,7 +4,7 @@ import { Direction } from 'react-range'
 import Modal from 'react-bootstrap/Modal'
 import { Button } from 'react-bootstrap'
 import { InputRange } from '../InputRange/InputRange'
-import { getAndGenerateImageStyles } from 'helpers/questionImage'
+import { getAndGenerateImageStyles } from 'helpers/surveyImage'
 
 /**
  * Image editor component for editing images

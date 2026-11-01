@@ -70,6 +70,7 @@ function checkForHardcodedText(filePath) {
   const unallowedAttributesInFile = {
     'RowQuestion.js': 'title',
     'RowQuestionGroup.js': 'title',
+    'SearchInput.js': 'text',
   }
 
   // Extract the filename from the filePath
@@ -219,6 +220,8 @@ function isExcludedText(text) {
     'dd-mm-yyyy HH:MM',
     'dd/mm/yyyy HH:MM',
     'DD/MM/YYYY',
+    // Internal sanity-check error, intentionally not translated
+    'Export options not initialized',
   ]
   // Exclude single characters
   if (text.length === 1) return true

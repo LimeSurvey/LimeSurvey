@@ -45,7 +45,7 @@ const displaySettings = () => {
     displayAttributes.POSITION_FOR_OTHER_OPTION,
     displayAttributes.ANSWER_OPTIONS_ORDER,
     displayAttributes.KEEP_CODE_ORDER,
-    displayAttributes.ANSWER_CODE,
+    displayAttributes.OTHER_POSITION_CODE,
     displayAttributes.HIDE_TIP,
     displayAttributes.ALWAYS_HIDE_THIS_QUESTION,
     displayAttributes.CSS_CLASSES,

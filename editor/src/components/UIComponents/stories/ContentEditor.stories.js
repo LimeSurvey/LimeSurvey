@@ -1,7 +1,7 @@
 import { ContentEditor as ContentEditorComponent } from '../ContentEditor/ContentEditor'
 
 export default {
-  title: 'UIComponents/ContentEditor',
+  title: 'imageWrapper/ContentEditor',
   component: ContentEditorComponent,
 }
 

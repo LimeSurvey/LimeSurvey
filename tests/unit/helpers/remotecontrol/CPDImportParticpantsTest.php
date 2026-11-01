@@ -4,6 +4,9 @@ namespace ls\tests\unit\helpers\remotecontrol;
 
 class CPDImportParticpantsTest extends BaseTest
 {
+    /** @var string Participant ID used by the tests that set their own ID */
+    private const PARTICIPANT_ID = '0a1b2c3d-4e5f-4071-8293-a4b5c6d7e8f9';
+
     public function setUp(): void
     {
         \Yii::app()->db->createCommand()->truncateTable('{{participants}}');
@@ -12,6 +15,7 @@ class CPDImportParticpantsTest extends BaseTest
         \Yii::app()->db->createCommand()->truncateTable('{{participant_attribute_names_lang}}');
         \Yii::app()->db->createCommand()->truncateTable('{{participant_attribute_values}}');
         \Yii::app()->db->createCommand()->truncateTable('{{participant_shares}}');
+        \Yii::app()->db->createCommand()->truncateTable('{{survey_links}}');
         parent::setUp();
     }
 
@@ -62,7 +66,7 @@ class CPDImportParticpantsTest extends BaseTest
     {
         $participants = array(
             array(
-                'participant_id' => 'max',
+                'participant_id' => self::PARTICIPANT_ID,
                 'firstname' => 'Max',
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
@@ -76,7 +80,7 @@ class CPDImportParticpantsTest extends BaseTest
         $this->assertArrayHasKey('ImportCount', $result);
         $this->assertEquals(1, $result['ImportCount']);
 
-        $max = \Participant::model()->findByPk('max');
+        $max = \Participant::model()->findByPk(self::PARTICIPANT_ID);
         $this->assertInstanceOf('Participant', $max);
     }
 
@@ -123,7 +127,7 @@ class CPDImportParticpantsTest extends BaseTest
 
         $participants = array(
             array(
-                'participant_id' => 'max',
+                'participant_id' => self::PARTICIPANT_ID,
                 'firstname' => 'Max',
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
@@ -138,7 +142,7 @@ class CPDImportParticpantsTest extends BaseTest
         $this->assertArrayHasKey('ImportCount', $result);
         $this->assertEquals(1, $result['ImportCount']);
 
-        $max = \Participant::model()->findByPk('max');
+        $max = \Participant::model()->findByPk(self::PARTICIPANT_ID);
         $this->assertInstanceOf(\Participant::class, $max);
 
         $attribute = $max->getParticipantAttribute('ea_' . $attributeId);
@@ -161,7 +165,7 @@ class CPDImportParticpantsTest extends BaseTest
 
         $participants = array(
             array(
-                'participant_id' => 'max',
+                'participant_id' => self::PARTICIPANT_ID,
                 'firstname' => 'Max',
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
@@ -170,7 +174,7 @@ class CPDImportParticpantsTest extends BaseTest
                 'website' => 'http://www.example.com'
             ),
             array(
-                'id' => 'max',
+                'id' => self::PARTICIPANT_ID,
                 'firstname' => 'Max',
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
@@ -187,7 +191,7 @@ class CPDImportParticpantsTest extends BaseTest
         $this->assertArrayHasKey('UpdateCount', $result);
         $this->assertEquals(1, $result['UpdateCount']);
 
-        $max = \Participant::model()->findByPk('max');
+        $max = \Participant::model()->findByPk(self::PARTICIPANT_ID);
         $this->assertInstanceOf(\Participant::class, $max);
 
         $attribute = $max->getParticipantAttribute('ea_' . $attributeId);
@@ -223,7 +227,7 @@ class CPDImportParticpantsTest extends BaseTest
 
         $participants = array(
             array(
-                'participant_id' => 'max',
+                'participant_id' => self::PARTICIPANT_ID,
                 'firstname' => 'Max',
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
@@ -237,7 +241,7 @@ class CPDImportParticpantsTest extends BaseTest
         $this->assertArrayHasKey('ImportCount', $result);
         $this->assertEquals(1, $result['ImportCount']);
 
-        $max = \Participant::model()->findByPk('max');
+        $max = \Participant::model()->findByPk(self::PARTICIPANT_ID);
         $this->assertInstanceOf(\Participant::class, $max);
 
         //Not equal since it's encrypted.
@@ -261,7 +265,7 @@ class CPDImportParticpantsTest extends BaseTest
 
         $participants = array(
             array(
-                'participant_id' => 'max',
+                'participant_id' => self::PARTICIPANT_ID,
                 'firstname' => 'Max',
                 'lastname' => 'Mustermann',
                 'email' => 'max.mustermann@example.com',
@@ -276,10 +280,189 @@ class CPDImportParticpantsTest extends BaseTest
         $this->assertArrayHasKey('ImportCount', $result);
         $this->assertEquals(1, $result['ImportCount']);
 
-        $max = \Participant::model()->findByPk('max');
+        $max = \Participant::model()->findByPk(self::PARTICIPANT_ID);
         $this->assertInstanceOf(\Participant::class, $max);
 
         $attribute = $max->getParticipantAttribute('ea_' . $attributeId);
         $this->assertEquals('123456789', $attribute);
+    }
+
+    /**
+     * A new participant with a participant ID that is not a UUID is not imported, and the ID is reported.
+     *
+     * @return void
+     */
+    public function testParticipantWithInvalidIdIsNotImported()
+    {
+        $participants = array(
+            array(
+                'participant_id' => 'a"b<c',
+                'firstname' => 'Max',
+                'lastname' => 'Mustermann',
+                'email' => 'max.mustermann@example.com',
+            ),
+            array(
+                'participant_id' => self::PARTICIPANT_ID,
+                'firstname' => 'Erika',
+                'lastname' => 'Mustermann',
+                'email' => 'erika.mustermann@example.com',
+            )
+        );
+
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $result = $this->handler->cpd_importParticipants($sessionKey, $participants);
+        $this->assertEquals(1, $result['ImportCount']);
+        $this->assertSame(['a"b<c'], $result['InvalidParticipantIds']);
+        $this->assertNull(\Participant::model()->findByPk('a"b<c'));
+        $this->assertInstanceOf(\Participant::class, \Participant::model()->findByPk(self::PARTICIPANT_ID));
+    }
+
+    /**
+     * An existing participant with an older participant ID that is not a UUID can still be updated.
+     *
+     * @return void
+     */
+    public function testExistingParticipantWithLegacyIdIsUpdated()
+    {
+        \Yii::app()->db->createCommand()->insert('{{participants}}', [
+            'participant_id' => 'legacy-id-12345',
+            'firstname' => 'Max',
+            'lastname' => 'Mustermann',
+            'email' => 'max.mustermann@example.com',
+            'language' => 'en',
+            'blacklisted' => 'N',
+            'owner_uid' => 1,
+            'created_by' => 1,
+            'created' => date('Y-m-d H:i:s'),
+        ]);
+        $participants = array(
+            array(
+                'participant_id' => 'legacy-id-12345',
+                'firstname' => 'Max',
+                'lastname' => 'Musterfrau',
+                'email' => 'max.mustermann@example.com',
+            )
+        );
+
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        try {
+            $result = $this->handler->cpd_importParticipants($sessionKey, $participants, true);
+            $this->assertEquals(0, $result['ImportCount']);
+            $this->assertEquals(1, $result['UpdateCount']);
+            $this->assertSame([], $result['InvalidParticipantIds']);
+            $participant = \Participant::model()->findByPk('legacy-id-12345');
+            $participant->decrypt();
+            $this->assertEquals('Musterfrau', $participant->lastname);
+        } finally {
+            \Participant::model()->deleteByPk('legacy-id-12345');
+        }
+    }
+
+    /**
+     * Participants not in the import list are removed, participants in the list
+     * (identified by participant_id, id or firstname/lastname/email) are kept.
+     */
+    public function testParticipantsNotInListRemovedWhenRemoveTrue()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $existing = array(
+            $this->makeParticipant(self::participantId('keep1'), 'One'),
+            $this->makeParticipant(self::participantId('keep2'), 'Two'),
+            $this->makeParticipant(self::participantId('keep3'), 'Three'),
+            $this->makeParticipant(self::participantId('gone'), 'Away'),
+        );
+        $result = $this->handler->cpd_importParticipants($sessionKey, $existing);
+        $this->assertEquals(4, $result['ImportCount']);
+        \Yii::app()->db->createCommand()->insert('{{survey_links}}', array(
+            'participant_id' => self::participantId('gone'),
+            'token_id' => 1,
+            'survey_id' => 1,
+            'date_created' => date('Y-m-d H:i:s')
+        ));
+
+        $keepById = $this->makeParticipant(null, 'Two');
+        $keepById['id'] = self::participantId('keep2');
+        $import = array(
+            $this->makeParticipant(self::participantId('keep1'), 'One'),
+            $keepById,
+            $this->makeParticipant(null, 'Three'),
+            $this->makeParticipant(self::participantId('new'), 'New'),
+        );
+        $result = $this->handler->cpd_importParticipants($sessionKey, $import, false, true);
+        $this->assertEquals(1, $result['ImportCount']);
+        $this->assertEquals(0, $result['UpdateCount']);
+        $this->assertEquals(1, $result['RemoveCount']);
+
+        foreach (array('keep1', 'keep2', 'keep3', 'new') as $participantId) {
+            $this->assertNotNull(\Participant::model()->findByPk(self::participantId($participantId)), $participantId);
+        }
+        $this->assertNull(\Participant::model()->findByPk(self::participantId('gone')));
+        $this->assertEquals(0, \SurveyLink::model()->countByAttributes(array('participant_id' => self::participantId('gone'))));
+    }
+
+    /**
+     * Without the remove flag nothing is deleted.
+     */
+    public function testParticipantsNotRemovedWhenRemoveFalse()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $this->handler->cpd_importParticipants($sessionKey, array($this->makeParticipant(self::participantId('max'), 'Max')));
+
+        $result = $this->handler->cpd_importParticipants($sessionKey, array($this->makeParticipant(self::participantId('erika'), 'Erika')));
+        $this->assertEquals(0, $result['RemoveCount']);
+        $this->assertNotNull(\Participant::model()->findByPk(self::participantId('max')));
+    }
+
+    /**
+     * An empty import list with the remove flag is rejected and does not delete anything.
+     */
+    public function testEmptyImportListWithRemoveIsRejected()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $this->handler->cpd_importParticipants($sessionKey, array($this->makeParticipant(self::participantId('max'), 'Max')));
+
+        $result = $this->handler->cpd_importParticipants($sessionKey, array(), false, true);
+        $this->assertEquals(\remotecontrol_handle::ERR_INVALID_PARAMETERS, $result['error_code']);
+        $this->assertNotNull(\Participant::model()->findByPk(self::participantId('max')));
+    }
+
+    /**
+     * Build a participant row for cpd_importParticipants
+     *
+     * @param string|null $participantId Participant ID, or null to identify the participant by name and email
+     * @param string $lastname Last name, also used to build a unique email address
+     * @return array
+     */
+    private function makeParticipant($participantId, $lastname)
+    {
+        $participant = array(
+            'firstname' => 'Test',
+            'lastname' => $lastname,
+            'email' => strtolower($lastname) . '@example.com'
+        );
+        if ($participantId !== null) {
+            $participant['participant_id'] = $participantId;
+        }
+        return $participant;
+    }
+
+    /**
+     * Fixed participant ID (a UUID) for a short name used in the remove tests
+     *
+     * @param string $name Short name of the participant
+     * @return string
+     */
+    private static function participantId($name)
+    {
+        $ids = array(
+            'keep1' => '7d1c0d2e-0001-4a3b-8c4d-5e6f7a8b9c0d',
+            'keep2' => '7d1c0d2e-0002-4a3b-8c4d-5e6f7a8b9c0d',
+            'keep3' => '7d1c0d2e-0003-4a3b-8c4d-5e6f7a8b9c0d',
+            'gone' => '7d1c0d2e-0004-4a3b-8c4d-5e6f7a8b9c0d',
+            'new' => '7d1c0d2e-0005-4a3b-8c4d-5e6f7a8b9c0d',
+            'max' => '7d1c0d2e-0006-4a3b-8c4d-5e6f7a8b9c0d',
+            'erika' => '7d1c0d2e-0007-4a3b-8c4d-5e6f7a8b9c0d',
+        );
+        return $ids[$name];
     }
 }

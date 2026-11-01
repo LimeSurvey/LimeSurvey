@@ -2,7 +2,7 @@ import { InputRange } from '../InputRange/InputRange'
 import { Direction } from 'react-range'
 
 export default {
-  title: 'UIComponents/InputRange',
+  title: 'imageWrapper/InputRange',
   component: InputRange,
 }
 

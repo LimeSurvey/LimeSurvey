@@ -60,6 +60,7 @@ $route['rest/<_api_version:\w+>/<_entity>/<_id>/<_basetable>'] = array(
 //optout - optin
 $route['optout/<_sid:\d+>/(:any)/(:any)'] = "optout/index/<_sid>/$2/$3";
 $route['optout/tokens/<surveyid:\d+>'] = array('optout/tokens', 'matchValue' => true);
+$route['optout/oneclick/<surveyid:\d+>'] = array('optout/oneclick', 'matchValue' => true);
 $route['optout/participants/<surveyid:\d+>'] = array('optout/participants', 'matchValue' => true);
 $route['optin/tokens/<surveyid:\d+>'] = array('optin/tokens', 'matchValue' => true);
 $route['optin/participants/<surveyid:\d+>'] = array('optin/participants', 'matchValue' => true);

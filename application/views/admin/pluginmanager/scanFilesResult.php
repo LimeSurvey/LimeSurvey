@@ -34,6 +34,9 @@
                 <?php else : ?>
                     <i class='fri-error-warning-fill'></i>&nbsp;
                     <span class='text-danger'><?php eT('Load error. Please contact the plugin author.'); ?></span>
+                    <?php if (!empty($scannedPlugin['load_error_message'])) : ?>
+                        <div class='text-danger small'><?= CHtml::encode($scannedPlugin['load_error_message']) ?></div>
+                    <?php endif; ?>
                 <?php endif; ?>
 
                 <?php if (isset($scannedPlugin['deleteUrl'])) : ?>

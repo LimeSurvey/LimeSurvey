@@ -30,14 +30,45 @@ trait LSApplicationTrait
         }
         /* use App()->session and not App()->user for easiest unit test */
         $this->currentUserId = App()->session['loginID'];
-        if ($this->currentUserId && !User::model()->notexpired()->active()->findByPk($this->currentUserId)) {
-            $this->currentUserId = 0;
+        if ($this->currentUserId) {
+            $oUser = User::model()->notexpired()->active()->findByPk($this->currentUserId);
+            if (!$oUser || $this->isSessionTokenStale($oUser)) {
+                $this->currentUserId = 0;
+            }
         }
         return $this->currentUserId;
     }
 
     /**
+     * Whether the given user's stored session token (rotated on every
+     * password change, see User::setPassword()) no longer matches the
+     * token cached in the current session at login time. A mismatch means
+     * the password was changed from another session in the meantime, and
+     * this session must be treated as invalid.
+     *
+     * The check is skipped on installations not yet upgraded to DB version
+     * 716 (column does not exist yet), for users who have not logged in
+     * since that upgrade (no token generated yet), and whenever the current
+     * session has no cached token to compare against (e.g. a session set up
+     * by internal/trusted code that assigns loginID directly instead of
+     * going through LSUserIdentity::postLogin(), such as console commands
+     * or the test suite) — only a session that actually went through a
+     * normal login and cached a token can go stale.
+     *
+     * @param User $oUser
+     * @return bool
+     */
+    private function isSessionTokenStale($oUser)
+    {
+        if (App()->getConfig('DBVersion') < 716 || empty($oUser->session_token) || empty(App()->session['session_token'])) {
+            return false;
+        }
+        return $oUser->session_token !== App()->session['session_token'];
+    }
+
+    /**
      * Creates an absolute URL based on the given controller and action information.
+     * Check publicurl from config to get the final url
      * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
      * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
      * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
@@ -46,12 +77,31 @@ trait LSApplicationTrait
      */
     public function createPublicUrl($route, $params = array(), $schema = '', $ampersand = '&')
     {
+        /* @var string the base public url set by config or not */
         $sPublicUrl = $this->getPublicBaseUrl(true);
-        $sActualBaseUrl = $this->getBaseUrl(true);
-        if ($sPublicUrl !== $sActualBaseUrl) {
+        /* @var string the base public url without config */
+        $sActualAbsoluteBaseUrl = $this->getBaseUrl(true);
+        /* If it's different : update */
+        if ($sPublicUrl !== $sActualAbsoluteBaseUrl) {
+            /* @var string keep current urlmanager baseUrl */
+            $sActualBaseUrl = $this->getUrlManager()->getBaseUrl(false);
+            /* @var string keep current hostInfo */
+            $sActualhostInfo = $this->getRequest()->getHostInfo();
+            /* Set hostInfo to empty and baseUrl according to showScriptName (@see CUrlManager::getBaseUrl) */
+            if ($this->getUrlManager()->showScriptName) {
+                $this->getUrlManager()->setBaseUrl("/index.php");
+            } else {
+                $this->getUrlManager()->setBaseUrl("");
+            }
+            $this->getRequest()->setHostInfo("");
+            /* @var string the url */
             $url = $this->createAbsoluteUrl($route, $params, $schema, $ampersand);
-            if (substr((string)$url, 0, strlen((string)$sActualBaseUrl)) == $sActualBaseUrl) {
-                $url = substr((string)$url, strlen((string)$sActualBaseUrl));
+            /* Reset baseUrl and hostInfo to previous one */
+            $this->getUrlManager()->setBaseUrl($sActualBaseUrl);
+            $this->getRequest()->setHostInfo($sActualhostInfo);
+            /* Replace Yii public url by publicuirl set in config */
+            if (substr((string)$url, 0, strlen((string)$sActualAbsoluteBaseUrl)) == $sActualAbsoluteBaseUrl) {
+                $url = substr((string)$url, strlen((string)$sActualAbsoluteBaseUrl));
             }
             return trim((string)$sPublicUrl, "/") . $url;
         } else {

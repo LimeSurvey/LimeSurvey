@@ -1,45 +1,125 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 import { Container } from 'react-bootstrap'
-import { useAppState, useResponses, useSurvey } from 'hooks'
-import { createBufferOperation, htmlPopup, PAGES, STATES } from 'helpers'
+import { useAppState, useResponses, useSetAllLanguages, useSurvey } from 'hooks'
+import {
+  createBufferOperation,
+  downloadBlob,
+  getFilenameFromContentDisposition,
+  PAGES,
+  STATES,
+  Toast,
+  toastComponent,
+} from 'helpers'
+import { ComponentModal } from 'components'
 
 import { LeftSideBar } from './Sidebars/LeftSideBar'
 import {
   ResponsesTable,
-  ExportPopupHTML,
+  ExportResponsesModal,
   ResponsesStatistics,
 } from './components'
 import { ResponsesHeader } from './ResponsesHeader'
 import { TAB_KEYS } from './utils'
 import { ResponsesOverview } from './components/Overview/ResponsesOverview'
-import { getResponsesPanels, panelItemsKeys } from './Sidebars'
+import { panelItemsKeys } from './Sidebars'
 import { RightSideBar } from './Sidebars/RightSideBar'
+import {
+  buildQuestionOptions,
+  toFilterSet,
+} from './components/ResponsesStatistics/StatisticsFiltersModal/utils'
 
 export const Responses = () => {
-  const { surveyId, menu, panel } = useParams()
-  const navigate = useNavigate()
-  const [filters, setFilters] = useState({})
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 })
+  const { t } = useTranslation()
+  const { surveyId, menu } = useParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const deepLinkResponseId = searchParams.get('id')
+  const [pagination, setPagination] = useState(() => ({
+    pageIndex: Math.max(Number(searchParams.get('page')) - 1, 0),
+    pageSize: Number(searchParams.get('size')) || 10,
+  }))
   const [globalFilter, setGlobalFilter] = useState('')
   const [sorting, setSorting] = useState([])
-  const [showTableFilters, setShowTableFilters] = useState(false)
   const [showStatisticsFilters, setShowStatisticsFilters] = useState(false)
-  const [columnsFilters, setColumnsFilters] = useState([])
   const [tabKey, setTabKey] = useState(TAB_KEYS.RESPONSES)
   const [statisticsFilters, setStatisticsFilters] = useState({})
+  const [showExportModal, setShowExportModal] = useState(false)
+  const exportOptionsRef = useRef(null)
+
+  const [appliedFilters, setAppliedFilters] = useState([])
+  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
   const [hasResponsesUpdatePermission] = useAppState(
     STATES.HAS_RESPONSES_UPDATE_PERMISSION
   )
   const [, setTopbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
-  const { survey = {}, fetchSurvey } = useSurvey(surveyId)
-  const { responses, isFetching, mutateOperations } = useResponses(
-    surveyId,
-    pagination,
-    filters,
-    sorting
+  const {
+    survey = {},
+    fetchSurvey,
+    refetchQuestionsFieldNamesMap,
+  } = useSurvey(surveyId)
+  const { fetchAllLanguages } = useSetAllLanguages()
+
+  // The applied filter in the shape the backend accepts. Memoised so the
+  // query key only changes when the filter itself does.
+  const filterSet = useMemo(() => toFilterSet(appliedFilters), [appliedFilters])
+
+  const {
+    responses,
+    isFetching,
+    mutateOperations,
+    error: responsesError,
+    exportResponses,
+    isExporting,
+    findResponsePageIndex,
+  } = useResponses(surveyId, pagination, sorting, filterSet)
+  const locatedDeepLinkRef = useRef(null)
+
+  // Responses page isn't wrapped by EditorContextController, so fetch languages here
+  // to show full language names (not just codes) in the export modal.
+  useEffect(() => {
+    if (survey.sid) {
+      fetchAllLanguages(survey.languages)
+    }
+  }, [survey.sid])
+
+  // A filter the server cannot honour — an attribute this survey does not
+  // have, a question from another survey — comes back as a bad request with
+  // the reason. Show it, and leave the tab on what it already had.
+  const showFilterError = useCallback((error) => {
+    Toast({
+      message: error.message,
+      className: 'generic-toast error-left-mark',
+      id: 'responses-filter-error',
+    })
+  }, [])
+
+  useEffect(() => {
+    if (responsesError) {
+      showFilterError(responsesError)
+    }
+  }, [responsesError, showFilterError])
+
+  // A narrower filter can leave the current page past the end of the results,
+  // which would show an empty table on a page that no longer exists. Only a
+  // filter the user changed counts: the page a shared link asks for is read
+  // once on mount, and resetting it here would always land on page 1.
+  const filterSetOnMount = useRef(filterSet)
+  useEffect(() => {
+    if (filterSetOnMount.current === filterSet) {
+      return
+    }
+
+    setPagination((current) =>
+      current.pageIndex === 0 ? current : { ...current, pageIndex: 0 }
+    )
+  }, [filterSet])
+
+  const questionOptions = useMemo(
+    () => buildQuestionOptions(survey, activeLanguage),
+    [survey?.questionGroups, activeLanguage]
   )
 
   useEffect(() => {
@@ -60,48 +140,46 @@ export const Responses = () => {
 
   const sortedColumnId = sorting[0]?.id ?? null
 
-  const navigateToMenu = (menuKey) => {
-    const currentPanel = panel || getResponsesPanels().results.panel
-
-    if (menuKey === menu) {
+  const handleExport = async () => {
+    const exportData = exportOptionsRef.current
+    if (!exportData || !exportData.options) {
+      toastComponent({
+        Component: <span>Export options not initialized</span>,
+      })
       return
     }
 
-    navigate(`/responses/${surveyId}/${currentPanel}/${menuKey}`)
+    const exportPayload = {
+      ...exportData.options,
+      filterSet:
+        exportData.options.responseType === 'filtered' ? filterSet : [],
+    }
+
+    try {
+      const response = await exportResponses(exportPayload)
+      const filename = getFilenameFromContentDisposition(
+        response.headers['content-disposition'],
+        `responses.${exportData.options.type}`
+      )
+      downloadBlob(response.data, filename)
+      setShowExportModal(false)
+    } catch (error) {
+      toastComponent({
+        Component: (
+          <span>
+            {t('Export failed')}: {error.message}
+          </span>
+        ),
+      })
+    }
   }
 
-  const handleExport = () => {}
-
   const onExportResponsesClick = () => {
-    htmlPopup({
-      html: <ExportPopupHTML exportOptions={{}} />,
-      showCloseButton: true,
-      showCancelButton: true,
-      showConfirmButton: true,
-      confirmButtonText: t('Export'),
-      cancelButtonText: t('Cancel'),
-      closeButtonClass: 'modal-close-button',
-      popupClass: 'export-popup-container',
-      confirmButtonClass: 'export-button',
-      preConfirm: handleExport,
-    })
+    setShowExportModal(true)
   }
 
   const onSortChange = (sorting) => {
     setSorting(sorting)
-  }
-
-  const handleTabChange = (value) => {
-    setTabKey(value)
-
-    if (value === TAB_KEYS.STATISTICS) {
-      navigateToMenu(panelItemsKeys.statistics)
-      return
-    }
-
-    if (value === TAB_KEYS.RESPONSES) {
-      navigateToMenu(panelItemsKeys.list)
-    }
   }
 
   const handleResponsesUpdate = async (updateInfo) => {
@@ -131,9 +209,72 @@ export const Responses = () => {
     setPagination(pagination)
   }
 
-  const onFiltersChange = (filters) => {
-    setFilters(filters)
+  // Keep page/size in the URL at all times so links are always shareable.
+  useEffect(() => {
+    const next = new URLSearchParams(searchParams)
+    next.set('page', String(pagination.pageIndex + 1))
+    next.set('size', String(pagination.pageSize))
+    setSearchParams(next, { replace: true })
+  }, [pagination.pageIndex, pagination.pageSize])
+
+  const handleResponseModalOpen = (responseId) => {
+    const next = new URLSearchParams(searchParams)
+    next.set('id', String(responseId))
+    setSearchParams(next)
   }
+
+  const handleResponseModalClose = () => {
+    const next = new URLSearchParams(searchParams)
+    next.delete('id')
+    setSearchParams(next)
+  }
+
+  const showDeepLinkNotFound = () => {
+    Toast({ message: t('Sorry, this response was not found.') })
+    handleResponseModalClose()
+  }
+
+  // A shared link only carries the response id, so the response may be on
+  // another page than the one loaded: jump to the page listing it.
+  useEffect(() => {
+    if (
+      !deepLinkResponseId ||
+      isFetching ||
+      !responses?.responses ||
+      tabKey !== TAB_KEYS.RESPONSES
+    ) {
+      return
+    }
+
+    const isOnPage = responses.responses.some(
+      (response) => String(response?.id) === String(deepLinkResponseId)
+    )
+    if (isOnPage) {
+      return
+    }
+
+    // Already on the page that should list it: the response does not exist.
+    if (locatedDeepLinkRef.current === deepLinkResponseId) {
+      showDeepLinkNotFound()
+      return
+    }
+
+    // The page can only be computed for the default "id DESC" sort.
+    if (sorting.length) {
+      return
+    }
+
+    locatedDeepLinkRef.current = deepLinkResponseId
+    findResponsePageIndex(deepLinkResponseId)
+      .then((pageIndex) => {
+        if (pageIndex === pagination.pageIndex) {
+          showDeepLinkNotFound()
+          return
+        }
+        setPagination((previous) => ({ ...previous, pageIndex }))
+      })
+      .catch(() => showDeepLinkNotFound())
+  }, [responses, isFetching, deepLinkResponseId, tabKey])
 
   const handleResponsesDelete = (ids) => {
     const operations = []
@@ -159,6 +300,7 @@ export const Responses = () => {
 
   useEffect(() => {
     fetchSurvey(surveyId)
+    refetchQuestionsFieldNamesMap()
     setTopbarConfig({
       surveyId,
       showAddQuestionButton: false,
@@ -183,16 +325,19 @@ export const Responses = () => {
           />
         )
       case panelItemsKeys.statistics:
-        if (tabKey === TAB_KEYS.STATISTICS) {
-          return (
-            <ResponsesStatistics
-              filters={statisticsFilters}
-              surveyId={surveyId}
-              isRightBar={showStatisticsFilters}
-            />
-          )
-        }
-        break
+        return (
+          <ResponsesStatistics
+            filters={statisticsFilters}
+            surveyId={surveyId}
+            isRightBar={showStatisticsFilters}
+            survey={survey}
+            questionOptions={questionOptions}
+            appliedFilters={appliedFilters}
+            setAppliedFilters={setAppliedFilters}
+            filterSet={filterSet}
+            onFilterError={showFilterError}
+          />
+        )
       case panelItemsKeys.list:
         if (tabKey === TAB_KEYS.RESPONSES) {
           return (
@@ -200,14 +345,12 @@ export const Responses = () => {
               responsesData={responses}
               globalFilter={globalFilter}
               setGlobalFilter={setGlobalFilter}
-              setShowFilters={setShowTableFilters}
-              showFilters={showTableFilters}
               setSorting={setSorting}
               sorting={sorting}
               sortedColumnId={sortedColumnId}
+              filterSet={filterSet}
               survey={survey}
               onPaginationChange={onPaginationChange}
-              onFiltersChange={onFiltersChange}
               onSortChange={onSortChange}
               handleResponsesDelete={handleResponsesDelete}
               handleAttachmentsDelete={handleAttachmentsDelete}
@@ -215,9 +358,10 @@ export const Responses = () => {
               pagination={pagination}
               setPagination={setPagination}
               isFetching={isFetching}
-              columnsFilters={columnsFilters}
-              setColumnsFilters={setColumnsFilters}
               disableUpdatingResponses={!hasResponsesUpdatePermission}
+              deepLinkResponseId={deepLinkResponseId}
+              onResponseModalOpen={handleResponseModalOpen}
+              onResponseModalClose={handleResponseModalClose}
             />
           )
         }
@@ -233,20 +377,32 @@ export const Responses = () => {
     }
   }
 
+  // Nothing to show yet. When the very first request is the one that failed
+  // there are no earlier rows to fall back on, and a loader that never resolves
+  // would read as "still working" — so the reason takes its place. The Toaster
+  // lives here too, or the message the effect above raises has nowhere to go.
   if (!survey?.sid || !responses) {
     return (
-      <>
-        <div
-          style={{ height: '100vh' }}
-          className="d-flex flex-column justify-content-center align-items-center"
-        >
-          <span
-            style={{ width: 48, height: 48 }}
-            className="loader mb-4"
-          ></span>
-          <h1 className="">{t('Loading responses...')}</h1>
-        </div>
-      </>
+      <div
+        style={{ height: '100vh' }}
+        className="d-flex flex-column justify-content-center align-items-center"
+      >
+        <Toaster />
+        {responsesError ? (
+          <>
+            <h1 className="">{t('Responses could not be loaded')}</h1>
+            <p className="mt-2">{responsesError.message}</p>
+          </>
+        ) : (
+          <>
+            <span
+              style={{ width: 48, height: 48 }}
+              className="loader mb-4"
+            ></span>
+            <h1 className="">{t('Loading responses...')}</h1>
+          </>
+        )}
+      </div>
     )
   }
 
@@ -258,6 +414,27 @@ export const Responses = () => {
         </div>
       )}
       <Toaster />
+      <ComponentModal
+        show={showExportModal}
+        onHide={() => setShowExportModal(false)}
+        title={t('Export results')}
+        headerClassname="export-results-modal-header"
+        Component={
+          <ExportResponsesModal
+            surveyLanguage={survey?.language}
+            additionalLanguages={survey?.additionalLanguages}
+            exportRef={exportOptionsRef}
+          />
+        }
+        componentClassname="export-responses-modal"
+        modalClassname="export-results-modal"
+        useFooter
+        confirmButtonText={
+          isExporting ? t('Exporting...') : t('Export results')
+        }
+        onConfirm={handleExport}
+        isLoading={isExporting}
+      />
       <div className="responses-body">
         <LeftSideBar
           showSidebarCloseButton={false}
@@ -266,27 +443,17 @@ export const Responses = () => {
           surveyId={surveyId}
         />
         <div className="body-content mt-3">
-          <div className="mb-3">
-            <ResponsesHeader
-              setShowFilters={
-                tabKey === TAB_KEYS.RESPONSES
-                  ? setShowTableFilters
-                  : setShowStatisticsFilters
-              }
-              showFilters={
-                tabKey === TAB_KEYS.RESPONSES
-                  ? showTableFilters
-                  : showStatisticsFilters
-              }
-              setFilters={
-                tabKey === TAB_KEYS.RESPONSES
-                  ? setColumnsFilters
-                  : setStatisticsFilters
-              }
-              setTabKey={handleTabChange}
-              tabKey={tabKey}
-            />
-          </div>
+          {tabKey !== TAB_KEYS.STATISTICS && (
+            <div className="mb-3">
+              <ResponsesHeader
+                tabKey={tabKey}
+                survey={survey}
+                questionOptions={questionOptions}
+                appliedFilters={appliedFilters}
+                setAppliedFilters={setAppliedFilters}
+              />
+            </div>
+          )}
           {renderCurrentMenu()}
         </div>
         <RightSideBar

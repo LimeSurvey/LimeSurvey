@@ -38,3 +38,9 @@ input[type="radio"] .styled:checked + label::after {
 .radio-item input[type="radio"]:checked + label {
     color : $base-color;
 }
+
+li.radio-text-item:has(input[type="radio"][value="-oth-"]:checked) {
+    .othertext-suffix-label {
+        color: $base-color;
+    }
+}

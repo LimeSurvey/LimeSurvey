@@ -1,4 +1,5 @@
-import { getQuestionById, RemoveHTMLTagsInString } from 'helpers'
+import { getQuestionById, getSiteUrl, htmlToPlainText } from 'helpers'
+import { TooltipContainer } from 'components'
 import {
   containfilter,
   dateRangeFilter,
@@ -9,7 +10,51 @@ import {
 export const idColumnKey = 'id'
 export const completedColumnKey = 'completed'
 
-export const generateColumns = (surveyQuestions, survey) => {
+export const getInitialColumnVisibility = (columns) =>
+  Object.fromEntries(
+    columns
+      .filter(({ meta }) => meta?.visibleByDefault === false)
+      .map(({ id }) => [id, false])
+  )
+
+const createQuestionLabel = (question, language) => {
+  const code = question?.title
+  const text = htmlToPlainText(question?.l10ns?.[language]?.question)
+
+  return code ? { code, text } : undefined
+}
+
+const createTimingColumn = (
+  { fieldname, question: header, qid, type },
+  survey
+) => {
+  const question =
+    type === 'answer_time' && Array.isArray(survey.questionGroups)
+      ? getQuestionById(qid, survey)?.question
+      : undefined
+  const questionLabel = createQuestionLabel(question, survey.language)
+
+  return {
+    id: fieldname,
+    accessorKey: fieldname,
+    header: questionLabel?.text ?? header,
+    enableSorting: false,
+    meta: {
+      survey,
+      keys: [fieldname],
+      columnCategory: 'timing',
+      questionLabel,
+      title: questionLabel
+        ? `${t('Question time')}: ${questionLabel.code}`
+        : undefined,
+      qid,
+      timingType: type,
+      visibleByDefault: false,
+    },
+  }
+}
+
+export const generateColumns = (surveyQuestions, survey, timingFields = []) => {
   const columns = []
 
   if (!survey.sid) {
@@ -46,6 +91,31 @@ export const generateColumns = (surveyQuestions, survey) => {
     },
     filterFn: multiSelectFilter,
   })
+
+  if (survey.saveQuotaExit) {
+    columns.push({
+      id: 'quotaExit',
+      accessorKey: 'quotaExit',
+      header: t('Quota exit'),
+      cell: ({ getValue, row }) => {
+        const quotaId = getValue()
+
+        return quotaId ? (
+          <TooltipContainer tip={row.original.quotaExitName}>
+            <a
+              href={getSiteUrl(
+                `/quotas/editQuota/surveyid/${survey.sid}?quota_id=${quotaId}`
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {quotaId}
+            </a>
+          </TooltipContainer>
+        ) : null
+      },
+    })
+  }
 
   if (survey?.hasTokens) {
     columns.push({
@@ -136,6 +206,12 @@ export const generateColumns = (surveyQuestions, survey) => {
     })
   }
 
+  columns.push(
+    ...timingFields
+      .filter(({ fieldname }) => fieldname)
+      .map((field) => createTimingColumn(field, survey))
+  )
+
   let questionsInfo = {}
 
   Object.entries(surveyQuestions).map(([key, value]) => {
@@ -161,11 +237,12 @@ export const generateColumns = (surveyQuestions, survey) => {
 
     const question = questionsInfo[qid].question
     const questionNumber = questionsInfo[qid].questionNumber
+    const questionLabel = createQuestionLabel(question, survey.language)
 
     columns.push({
       accessorKey: qid.toString(),
       id: qid.toString(),
-      header: `${RemoveHTMLTagsInString(question?.l10ns[survey.language]?.question)}`,
+      header: questionLabel?.text || questionLabel?.code || '',
       meta: {
         question,
         questionNumber,
@@ -175,6 +252,7 @@ export const generateColumns = (surveyQuestions, survey) => {
         sqid,
         aid,
         title: question?.title,
+        questionLabel,
         keys: questionsInfo[qid].keys,
       },
     })

@@ -12,7 +12,7 @@ class GroupHelper
      *
      * @param int $iSurveyID Given Survey ID
      * @param array $orgdata Data to change
-     *
+     * @return array Result with 'type' ('success' or 'error') and, on error, the 'question-titles' that could not be saved
      */
     public function reorderGroup($iSurveyID, $orgdata)
     {
@@ -60,6 +60,8 @@ class GroupHelper
                 }
             }
         }
+        // Group reorders use updateAll(), which bypasses QuestionGroup::afterSave()
+        (new SurveyDetailService())->touchSurveyLastModified((int) $iSurveyID);
         \LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
 
         if (!empty($result)) {

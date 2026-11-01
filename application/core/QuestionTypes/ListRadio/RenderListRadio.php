@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -120,7 +122,10 @@ class RenderListRadio extends QuestionBaseRenderer
 
     public function addNoAnswerRow()
     {
-        if (!isset($this->mSessionValue) || $this->mSessionValue == '' || $this->mSessionValue == ' ') {
+        if (
+            PRESELECT_NO_ANSWER
+            && (!isset($this->mSessionValue) || $this->mSessionValue == '' || $this->mSessionValue == ' ')
+        ) {
             $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.
         } else {
             $check_ans = '';
@@ -138,6 +143,39 @@ class RenderListRadio extends QuestionBaseRenderer
             ), true);
     }
 
+    /**
+     * Returns shared "Other" text parts and input constraints used by both
+     * addOtherRow() and render().
+     *
+     * @return array{otherTextLeft: string, otherTextRight: string, otherInputSize: string|null, otherMaxLength: int|null}
+     */
+    private function getOtherSizeConstraints(): array
+    {
+        $otherParts = $this->splitOtherText($this->sOthertext);
+
+        $otherInputSize = null;
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('other_input_size')))) {
+            $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
+        }
+
+        $otherMaxLength = null;
+        if (intval(trim((string) $this->getQuestionAttribute('other_maximum_chars'))) > 0) {
+            $otherMaxLength = intval(trim((string) $this->getQuestionAttribute('other_maximum_chars')));
+        }
+
+        return [
+            'otherTextLeft'  => $otherParts['left'],
+            'otherTextRight' => $otherParts['right'],
+            'otherInputSize' => $otherInputSize,
+            'otherMaxLength' => $otherMaxLength,
+        ];
+    }
+
+    /**
+     * Renders the "Other" option row with its text input.
+     *
+     * @return string
+     */
     public function addOtherRow()
     {
         $sSeparator = getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat);
@@ -148,8 +186,9 @@ class RenderListRadio extends QuestionBaseRenderer
 
         $myfname = $thisfieldname = $this->sSGQA . '_Cother';
 
-        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) {
-            $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname];
+        $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
+        if ($sessionState->hasFieldValue($thisfieldname)) {
+            $dispVal = $sessionState->getFieldValue($thisfieldname);
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
                 $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
@@ -160,11 +199,27 @@ class RenderListRadio extends QuestionBaseRenderer
 
         $this->inputnames[] = $thisfieldname;
 
+        $otherConstraints = $this->getOtherSizeConstraints();
+        $otherTextLeft    = $otherConstraints['otherTextLeft'];
+        $otherTextRight   = $otherConstraints['otherTextRight'];
+        $otherInputSize   = $otherConstraints['otherInputSize'];
+        $otherMaxLength   = $otherConstraints['otherMaxLength'];
+
+        $otherItemExtraClass = "";
+        if (empty($otherTextLeft)) {
+            $otherItemExtraClass = "no-prefix-othertext";
+        }
+        if ($otherInputSize !== null) {
+            $otherItemExtraClass .= " ls-input-sized";
+        }
+
         return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/answer_row_other', array(
             'name' => $this->sSGQA,
             'answer_other' => $answer_other,
             'myfname' => $myfname,
-            'othertext' => $this->sOthertext,
+            'othertext' => $otherTextLeft,
+            'otherTextRight' => $otherTextRight,
+            'otherItemExtraClass' => $otherItemExtraClass,
             'checkedState' => $checkedState,
             'oth_checkconditionFunction' => $oth_checkconditionFunction . '(this.value, this.name, this.type)',
             'checkconditionFunction' => $this->checkconditionFunction,
@@ -173,6 +228,8 @@ class RenderListRadio extends QuestionBaseRenderer
             'hasOther' => $this->hasOther,
             'otherPosition' => $this->otherPosition,
             'answerBeforeOther' => $this->answerBeforeOther,
+            'otherInputSize' => $otherInputSize,
+            'otherMaxLength' => $otherMaxLength,
             ), true);
     }
 
@@ -187,13 +244,22 @@ class RenderListRadio extends QuestionBaseRenderer
             $answer .= $this->getTimeSettingRender();
         }
 
+        $otherConstraints = $this->getOtherSizeConstraints();
+        $otherTextLeft    = $otherConstraints['otherTextLeft'];
+        $otherTextRight   = $otherConstraints['otherTextRight'];
+        $otherInputSize   = $otherConstraints['otherInputSize'];
+        $otherMaxLength   = $otherConstraints['otherMaxLength'];
+
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'sRows'     => $this->getRows(),
             'name'      => $this->sSGQA,
             'basename'  => $this->sSGQA,
             'value'     => $this->mSessionValue,
             'coreClass' => $this->sCoreClass,
-            'othertext' => $this->sOthertext,
+            'othertext' => $otherTextLeft,
+            'otherTextRight' => $otherTextRight,
+            'otherInputSize' => $otherInputSize,
+            'otherMaxLength' => $otherMaxLength,
             'iNbCols' => $this->iNbCols,
             /* @deprecated since 6.3.3 : Leave it for old question theme compatibility, be sure to don't add columns */
             'iMaxRowsByColumn' => $this->getAnswerCount() + 3,

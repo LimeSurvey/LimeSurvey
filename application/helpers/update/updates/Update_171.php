@@ -6,6 +6,7 @@ use Exception;
 
 class Update_171 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         try {

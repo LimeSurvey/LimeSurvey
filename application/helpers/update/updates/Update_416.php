@@ -7,6 +7,7 @@ use LSActiveRecord;
 
 class Update_416 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         // encrypt values in db

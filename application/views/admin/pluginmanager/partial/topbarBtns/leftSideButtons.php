@@ -2,6 +2,7 @@
 
 /** @var bool $showUpload */
 /** @var string $scanFilesUrl */
+/** @var \LimeSurvey\Menu\Menu[] $extraMenus */
 
 if ($showUpload) {
     $this->widget(
@@ -35,6 +36,27 @@ if ($scanFilesUrl !== null) {
                 'data-bs-toggle' => 'tooltip',
                 'title' => gT('Scan files for available plugins')
             ],
+        ]
+    );
+}
+
+foreach ($extraMenus as $menuIndex => $menu) {
+    $htmlOptions = ['class' => 'btn btn-outline-secondary'];
+    if ($menu->getOnClick()) {
+        $htmlOptions['onclick'] = $menu->getOnClick();
+    }
+    if ($menu->getTooltip()) {
+        $htmlOptions['data-bs-toggle'] = 'tooltip';
+        $htmlOptions['title'] = $menu->getTooltip();
+    }
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'plugin-extra-menu-button-' . $menuIndex,
+            'text' => $menu->getLabel(),
+            'icon' => $menu->getIconClass(),
+            'link' => $menu->getHref(),
+            'htmlOptions' => $htmlOptions,
         ]
     );
 }

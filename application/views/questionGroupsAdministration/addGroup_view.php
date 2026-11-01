@@ -16,7 +16,9 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
 <?php echo PrepareEditorScript(false, $this);
 $active = 1; ?>
 <div id='edit-survey-text-element' class='side-body'>
-    <div class="pagetitle h3"><?php eT("Add question group"); ?></div>
+    <div class="pagetitle">
+        <h1><?php eT("Add question group"); ?></h1>
+    </div>
     <div class="row">
         <div class="col-12">
             <!-- Tabs -->
@@ -88,7 +90,7 @@ $active = 1; ?>
                                     <label class="form-label " for='grelevance'><?php eT("Condition:"); ?></label>
                                     <div class="input-group">
                                         <div class="input-group-text">{</div>
-                                        <textarea cols='1' class="form-control" rows='1' id='grelevance' name='questionGroup[grelevance]'></textarea>
+                                        <textarea cols='1' class="form-control" rows='1' id='grelevance' name='questionGroup[grelevance]' placeholder='1'></textarea>
                                         <div class="input-group-text">}</div>
                                     </div>
                                 </div>

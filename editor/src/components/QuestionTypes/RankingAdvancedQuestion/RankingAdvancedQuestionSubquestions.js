@@ -78,13 +78,12 @@ export const RankingAdvancedQuestionSubquestions = ({
                   >
                     <div
                       className={classNames(
-                        'cursor-pointer position-absolute remove-option-button',
+                        'cursor-pointer remove-option-button me-3',
                         {
                           'd-none disabled': !isFocused,
                         }
                       )}
                       onClick={() => handleRemoveSubquestion(subquestion)}
-                      style={{ left: -24 }}
                     >
                       <CloseCircleFillIcon
                         className={classNames(
@@ -93,7 +92,7 @@ export const RankingAdvancedQuestionSubquestions = ({
                         style={{ height: 14 }}
                       />
                     </div>
-                    <div className="d-flex align-items-center gap-5">
+                    <div className="d-flex align-items-center w-100 ranking-advanced-subquestion-main gap-4">
                       {isFocused && survey.showQNumCode?.showNumber && (
                         <SubquestionCodeInput
                           isSurveyActive={isSurveyActive}
@@ -134,6 +133,7 @@ export const RankingAdvancedQuestionSubquestions = ({
                           !isTitleFocused
                         }
                         testId="ranking-advanced-subquestion-content-editor"
+                        showToolbar={true}
                       />
                     </div>
                     <div

@@ -57,9 +57,15 @@
             'selectOptions' => [
                 '1' => gT('On'),
                 '0' => gT('Off'),
+            ],
+            'htmlOptions' => [
+                'aria-describedby' => 'add_access_control_header-hint'
             ]
         ]) ?>
     </div>
+    <small id="add_access_control_header-hint" class="form-text text-muted">
+        <?php eT("If enabled, the RPC interface sends the header 'Access-Control-Allow-Origin: *', so that web applications running in a browser on other domains can use it. Turn this off if the RPC interface is only used by server-side scripts or from this domain."); ?>
+    </small>
 </div>
 
 <?php if (Yii::app()->getConfig("demoMode") == true) :?>

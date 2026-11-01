@@ -94,7 +94,7 @@ class LimeMailer extends PHPMailer
     private $_bAttachementTypeDone = false;
 
     /**
-     * @var boolean $ignoremissingattachement allow to send if attachement have issue.
+     * @var boolean $ignoremissingattachement allow to send if attachment have issue.
      **/
     public $ignoremissingattachement = false;
 
@@ -149,7 +149,6 @@ class LimeMailer extends PHPMailer
         $emailmethod = Yii::app()->getConfig('emailmethod');
         $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
         $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
-        $emailsmtppassword = LSActiveRecord::decryptSingle(Yii::app()->getConfig("emailsmtppassword"));
         $emailsmtpdebug = Yii::app()->getConfig("emailsmtpdebug");
         $emailsmtpssl = Yii::app()->getConfig("emailsmtpssl");
         $defaultlang = Yii::app()->getConfig("defaultlang");
@@ -172,6 +171,11 @@ class LimeMailer extends PHPMailer
         /* Don't check tls by default : allow own sign certificate */
         $this->SMTPAutoTLS = false;
 
+        /* Collect debug output (SMTP and mail()) instead of echoing it */
+        $this->Debugoutput = function ($str, $level) {
+            $this->addDebug($str);
+        };
+
         switch ($emailmethod) {
             case self::MethodQmail:
                 $this->IsQmail();
@@ -179,9 +183,6 @@ class LimeMailer extends PHPMailer
             case self::MethodSmtp:
                 $this->IsSMTP();
                 $this->SMTPKeepAlive = true;
-                $this->Debugoutput = function ($str, $level) {
-                    $this->addDebug($str);
-                };
                 if ($emailsmtpdebug > 0) {
                     if ($emailsmtpdebug == 1) {
                         // Map "On errors" to PHPMailer debug level 2
@@ -201,7 +202,7 @@ class LimeMailer extends PHPMailer
                     $this->SMTPSecure = $emailsmtpssl;
                 }
                 $this->Username = $emailsmtpuser;
-                $this->Password = $emailsmtppassword;
+                $this->Password = $this->getSmtpPassword();
                 if (trim((string) $emailsmtpuser) != "") {
                     $this->SMTPAuth = true;
                 }
@@ -225,6 +226,22 @@ class LimeMailer extends PHPMailer
             $this->Sender = Yii::app()->getConfig('siteadminbounce');
         }
         $this->eventName = 'beforeEmail';
+    }
+
+    /**
+     * Get the decrypted SMTP password from the global settings
+     * A password that can't be decrypted (e.g. because the encryption keys changed since it was saved) is logged
+     * and replaced by an empty password, so sending fails with a mailer error instead of an exception
+     * @return string
+     */
+    private function getSmtpPassword()
+    {
+        try {
+            return LSActiveRecord::decryptSingle(Yii::app()->getConfig("emailsmtppassword"));
+        } catch (SodiumException $e) {
+            Yii::log('Unable to decrypt the SMTP password: ' . $e->getMessage(), CLogger::LEVEL_ERROR, 'application.LimeMailer');
+            return '';
+        }
     }
 
     /**
@@ -343,6 +360,63 @@ class LimeMailer extends PHPMailer
             $this->addAddress($sEmailaddress, $oToken->firstname . " " . $oToken->lastname);
         }
         $this->addCustomHeader("X-tokenid", $oToken->token);
+    }
+
+    /**
+     * Add the List-Unsubscribe headers if the message offers an opt-out link
+     * Only token emails whose raw template uses OPTOUTURL or whose body contains the opt-out url get the headers,
+     * so that one click unsubscribe is not offered on emails without an opt-out link (e.g. registration or confirmation)
+     * List-Unsubscribe-Post (one click unsubscribe) is only added if the opt-out url uses HTTPS, as required by RFC 8058
+     * @see https://datatracker.ietf.org/doc/html/rfc2369
+     * @see https://datatracker.ietf.org/doc/html/rfc8058
+     * @return void
+     */
+    private function addListUnsubscribeHeaders()
+    {
+        if (empty($this->oToken)) {
+            return;
+        }
+        /* Do not add unsubscribe URL if not OPTOUTURL in body */
+        $optoutBaseUrl = $this->createListUnsubscribeUrl("/optout/tokens");
+        if (
+            strpos((string) $this->Body, $optoutBaseUrl) === false
+            && strpos((string) $this->rawBody, 'OPTOUTURL') === false
+        ) {
+            return;
+        }
+        // separate one click url, so that the OPTOUTURL replacement field always requires a confirmation
+        $unsubscribeUrl = $this->createListUnsubscribeUrl(
+            "/optout/oneclick",
+            [
+                "surveyid" => $this->surveyId,
+                "token" => $this->oToken->token,
+                "langcode" => $this->mailLanguage,
+            ]
+        );
+        // avoid duplicate headers if the same instance sends the message more than once
+        $this->clearCustomHeader("List-Unsubscribe");
+        $this->clearCustomHeader("List-Unsubscribe-Post");
+        $this->addCustomHeader("List-Unsubscribe", "<$unsubscribeUrl>");
+        // one click unsubscribe requires an HTTPS URI, over plain HTTP the receiver only gets the manual opt-out link
+        if (strtolower((string) parse_url($unsubscribeUrl, PHP_URL_SCHEME)) === 'https') {
+            $this->addCustomHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click");
+        }
+    }
+
+    /**
+     * Create an absolute url for the List-Unsubscribe headers the same way as the token replacement urls:
+     * validated against the allowed hosts to prevent host header injection, with a fallback to the request host
+     * @param string $route
+     * @param array<string, mixed> $params
+     * @return string
+     */
+    private function createListUnsubscribeUrl($route, $params = [])
+    {
+        $url = App()->createValidatedAbsoluteUrl($route, $params);
+        if ($url === false) {
+            $url = App()->getController()->createAbsoluteUrl($route, $params);
+        }
+        return $url;
     }
 
     /**
@@ -473,6 +547,16 @@ class LimeMailer extends PHPMailer
     public function addDebug($str, $level = 0)
     {
         $this->debug[] = '[' . date('Y-m-d H:i:s') . "] " . rtrim((string) $str) . "\n";
+    }
+
+    /**
+     * Add and replace current expression replacement to current one
+     * @param string[]
+     * @return void
+     */
+    public function addAndReplaceReplacement($replacements)
+    {
+        $this->aReplacements = array_merge($this->aReplacements, $replacements);
     }
 
     /**
@@ -620,6 +704,7 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent. One or more attachments did not exist.'));
             return false;
         }
+        $this->addListUnsubscribeHeaders();
         /* All core done, next are done for all survey */
         $eventResult = $this->manageEvent();
         if (!is_null($eventResult)) {
@@ -647,6 +732,9 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent because demo-mode is activated.'));
             return false;
         }
+        // Remove any previously set value first: this mailer instance can be reused across several
+        // recipients in a loop, and addCustomHeader() alone would keep stacking duplicate headers.
+        $this->clearCustomHeader("X-messagetype");
         $this->addCustomHeader("X-messagetype", $this->emailType);
         // If the email method is set to "Plugin", we need to dispatch an event to that specific plugin
         // so it can perform it's logic without depending on the more generic "beforeEmail" event.
@@ -702,7 +790,7 @@ class LimeMailer extends PHPMailer
     {
         if (
             'smtp' === $this->Mailer
-            || ('mail' === $this->Mailer && (\PHP_VERSION_ID >= 80000 || stripos(PHP_OS, 'WIN') === 0))
+            || ('mail' === $this->Mailer && stripos(PHP_OS, 'WIN') === 0)
         ) {
             //SMTP mandates RFC-compliant line endings
             //and it's also used with mail() on Windows
@@ -710,16 +798,6 @@ class LimeMailer extends PHPMailer
         } else {
             //Maintain backward compatibility with legacy Linux command line mailers
             static::setLE(PHP_EOL);
-        }
-        //Check for buggy PHP versions that add a header with an incorrect line break
-        if (
-            'mail' === $this->Mailer
-            && ((\PHP_VERSION_ID >= 70000 && \PHP_VERSION_ID < 70017)
-                || (\PHP_VERSION_ID >= 70100 && \PHP_VERSION_ID < 70103))
-            && ini_get('mail.add_x_header') === '1'
-            && stripos(PHP_OS, 'WIN') === 0
-        ) {
-            trigger_error($this->lang('buggy_php'), E_USER_WARNING);
         }
 
         try {
@@ -833,9 +911,11 @@ class LimeMailer extends PHPMailer
         $resendHeader['message_type'] = $this->message_type;
         $resendHeader['Subject'] = $this->Subject;
         $resendHeader['uniqueid'] = $this->uniqueid;
-        $resendHeader['boundary'][1] = $this->boundary[1];
-        $resendHeader['boundary'][2] = $this->boundary[2];
-        $resendHeader['boundary'][3] = $this->boundary[3];
+        // The boundary array is only populated once the MIME message is built (preSend).
+        // When sending fails before that (e.g. a missing attachment) it stays empty, so guard the keys.
+        $resendHeader['boundary'][1] = $this->boundary[1] ?? '';
+        $resendHeader['boundary'][2] = $this->boundary[2] ?? '';
+        $resendHeader['boundary'][3] = $this->boundary[3] ?? '';
         $resendHeader['MIMEBody'] = $this->MIMEBody;
 
         return $resendHeader;
@@ -912,9 +992,13 @@ class LimeMailer extends PHPMailer
     }
 
     /**
-     * Do the replacements : if current replacement jey is set and LimeSurvey core have it too : it reset to the needed one.
-     * @param string $string where need to replace
-     * @return string
+     * Do the replacements : by order
+     * 1. Core replacement (SID, ADMINNAME ...)
+     * 2. Token replacement (TOKEN:) and if needed FIRSTNAME, LASTNAME AND ATTRIBUTE_X
+     * 3. The aReplacements set by external function
+     * The aReplacements can replace core and token replacement (by key)
+     * @param string $string original string
+     * @return string updated by LimeExpressionManager
      */
     public function doReplacements($string)
     {
@@ -938,6 +1022,8 @@ class LimeMailer extends PHPMailer
             $string = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{" . "$1" . "}", $string);
         }
         $aReplacements = array_merge($aReplacements, $aTokenReplacements);
+        $aReplacements = array_merge($aReplacements, $this->aReplacements);
+        /* Replace URL placeholders for all replacements */
         foreach ($this->aUrlsPlaceholders as $urlPlaceholder) {
             if (!empty($aReplacements["{$urlPlaceholder}URL"])) {
                 $url = $aReplacements["{$urlPlaceholder}URL"];
@@ -947,7 +1033,6 @@ class LimeMailer extends PHPMailer
                 }
             }
         }
-        $aReplacements = array_merge($aReplacements, $this->aReplacements);
         return LimeExpressionManager::ProcessString($string, null, $aReplacements, 3, 1, false, false, true);
     }
 
@@ -965,7 +1050,7 @@ class LimeMailer extends PHPMailer
         if (empty($this->surveyId)) {
             return true;
         }
-        // No attachement template : no attachments
+        // No attachment template : no attachments
         if (!array_key_exists($this->emailType, $this->_aAttachmentByType)) {
             return true;
         }

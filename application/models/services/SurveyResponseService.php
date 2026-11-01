@@ -103,7 +103,8 @@ class SurveyResponseService
         }
 
         $response->setAllAttributes($responseData);
-        if (!$response->save()) {
+        // Use encryptSave() so values for questions with encryption enabled are encrypted before persisting.
+        if (!$response->encryptSave(true)) {
             throw new PersistErrorException();
         }
     }

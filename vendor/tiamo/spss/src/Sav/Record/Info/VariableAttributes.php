@@ -44,7 +44,7 @@ class VariableAttributes extends Info
 
         if ($lines !== []) {
             $data            = implode('/', $lines);
-            $this->dataCount = mb_strlen($data);
+            $this->dataCount = \strlen($data);
             parent::write($buffer);
             $buffer->writeString($data);
         }

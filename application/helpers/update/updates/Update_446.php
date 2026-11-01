@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_446 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             // archived_table_settings

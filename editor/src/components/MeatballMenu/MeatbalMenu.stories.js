@@ -1,5 +1,5 @@
 import { MeatballMenu } from './MeatballMenu'
-import { fn } from '@storybook/test'
+import { fn } from 'storybook/test'
 
 export default {
   title: 'MeatballMenu',

@@ -58,12 +58,12 @@ class Zend_Gdata_Analytics_DataEntry extends Zend_Gdata_Entry
     {
         $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
         switch ($absoluteNodeName) {
-            case $this->lookupNamespace('analytics') . ':' . 'dimension';
+            case $this->lookupNamespace('analytics') . ':' . 'dimension':
                 $dimension = new Zend_Gdata_Analytics_Extension_Dimension();
                 $dimension->transferFromDOM($child);
                 $this->_dimensions[] = $dimension;
                 break;
-            case $this->lookupNamespace('analytics') . ':' . 'metric';
+            case $this->lookupNamespace('analytics') . ':' . 'metric':
                 $metric = new Zend_Gdata_Analytics_Extension_Metric();
                 $metric->transferFromDOM($child);
                 $this->_metrics[] = $metric;

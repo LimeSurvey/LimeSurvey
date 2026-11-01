@@ -11,6 +11,7 @@ class Update_640 extends DatabaseUpdateBase
      *
      * @return void
      */
+    #[\Override]
     public function up()
     {
         // Handle questions with random_order = 1

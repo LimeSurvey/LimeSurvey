@@ -1,42 +1,45 @@
 .form-change-lang {
-    padding-bottom: 10px;
+  .control-label {
+    @include semi-14;
+    // match the select's border (1px) + padding (4px) so both texts sit on the same baseline
+    padding: 5px 0;
+    margin-bottom: 0;
+  }
 
-    .control-label {
-        @include h2;
+  .language-icon {
+    float: left; //preparation for rtl
+    margin-right: 4px;
+    font-size: $font-size-base;
+    font-weight: $font-weight-normal;
+  }
+
+  #lang-select {
+    position: relative;
+    display: inline-block;
+  }
+
+  #language-changer-select {
+    @include semi-14;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    z-index: 10;
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 4px 20px 4px 4px; // reserve space on the right for the caret icon
+
+    &:focus-visible {
+      outline: none;
     }
+  }
 
-    .language-icon {
-        float: left; //preparation for rtl
-        margin-right: 4px;
-        font-weight: $font-weight-normal;
-    }
-
-    #language-changer-select {
-        @include h2;
-        cursor: pointer;
-        border: none;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        position: relative;
-        z-index: 10;
-
-        &:focus-visible {
-            outline: none;
-        }
-
-        &:focus {
-            border: 1px solid;
-            border-radius: 4px;
-            padding: 4px;
-        }
-    }
-
-    .ls-language-changer-item {
-        display: none;
-    }
+  .ls-language-changer-item {
+    display: none;
+  }
 }
 
 .top-content .form-change-lang {
-    float: right
+  float: right;
 }

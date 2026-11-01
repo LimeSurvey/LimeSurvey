@@ -30,6 +30,7 @@ class UpdateFormTest extends TestBaseClass
         \Yii::app()->session['update_result'] = null;
         \Yii::app()->session['unstable_update'] = null;
         \Yii::app()->session['security_update'] = null;
+        \Yii::app()->session['update_check_build'] = null;
     }
 
     public function testStableSecurityUpdate()
@@ -282,5 +283,58 @@ class UpdateFormTest extends TestBaseClass
         $this->assertTrue(\Yii::app()->session['update_result'], 'No result returned.');
         $this->assertFalse(\Yii::app()->session['security_update'], 'The update should not be a security one.');
         $this->assertFalse(\Yii::app()->session['unstable_update'], 'The update should not be a stable one.');
+    }
+
+    /**
+     * A cached update result is reused while the installed build stays the same.
+     */
+    public function testCachedResultIsReusedForSameBuild()
+    {
+        $this->cacheUpdateResultForBuild(\Yii::app()->getConfig('buildnumber'));
+
+        $updateFormPartialMock = $this->createPartialMock(\UpdateForm::class, ['getUpdateInfo']);
+        $updateFormPartialMock->expects($this->never())
+                                ->method('getUpdateInfo');
+
+        $updateNotification = $updateFormPartialMock->getUpdateNotification();
+
+        $this->assertTrue($updateNotification->result, 'The cached result should be returned.');
+    }
+
+    /**
+     * A cached update result is discarded once the installed build changed, e.g. after a manual update.
+     */
+    public function testCachedResultIsDiscardedAfterBuildChange()
+    {
+        $this->cacheUpdateResultForBuild('previousbuild');
+
+        $updateInfo = new \stdClass();
+        $updateInfo->result = false;
+
+        $updateFormPartialMock = $this->createPartialMock(\UpdateForm::class, ['getUpdateInfo']);
+        $updateFormPartialMock->expects($this->once())
+                                ->method('getUpdateInfo')
+                                ->willReturn($updateInfo);
+
+        $updateNotification = $updateFormPartialMock->getUpdateNotification();
+
+        $this->assertFalse($updateNotification->result, 'The stale cached result should not be returned.');
+        $this->assertFalse(\Yii::app()->session['update_result'], 'The session cache should be refreshed.');
+        $this->assertSame(\Yii::app()->getConfig('buildnumber'), \Yii::app()->session['update_check_build']);
+    }
+
+    /**
+     * Store an "update available" result in the session as if it had been checked for the given build.
+     * @param string $build
+     * @return void
+     */
+    private function cacheUpdateResultForBuild($build)
+    {
+        $nextUpdateCheck = new \DateTime("now");
+        \Yii::app()->session['next_update_check'] = $nextUpdateCheck->add(new \DateInterval('P1D'));
+        \Yii::app()->session['update_result'] = true;
+        \Yii::app()->session['unstable_update'] = false;
+        \Yii::app()->session['security_update'] = false;
+        \Yii::app()->session['update_check_build'] = $build;
     }
 }

@@ -57,7 +57,7 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header file-upload-modal-header">
-                <h5 class="modal-title"> {{ ngT("Upload file|Upload files", maxFiles) }}</h5>
+                <h5 class="modal-title"> {{ gTPlural("Upload file", "Upload files", maxFiles) }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body file-upload-modal-body">
@@ -86,6 +86,8 @@
              headFileName: '{{ "File name" | gT }}',
              deleteFile : '{{ "Delete" | gT }}',
              editFile : '{{ "Edit" | gT }}',
+             errorSessionExpired : '{{ "We are sorry but your session has expired." | gT }}',
+             errorLoading : '{{ "An unknown error occurred." | gT }}',
         },
         imageurl =  '{{imageurl}}',
         uploadurl =  '{{scriptloc}}';

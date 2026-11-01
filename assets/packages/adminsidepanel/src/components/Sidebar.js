@@ -35,6 +35,8 @@ class Sidebar {
         this.handlePjaxSend = this.handlePjaxSend.bind(this);
         this.handlePjaxRefresh = this.handlePjaxRefresh.bind(this);
         this.handleStateChange = this.handleStateChange.bind(this);
+        this.observeTopbar = this.observeTopbar.bind(this);
+        this.topbarObserver = null;
     }
 
     /**
@@ -72,7 +74,7 @@ class Sidebar {
 
         this.render();
         this.bindEvents();
-        this.calculateHeight();
+        this.observeTopbar();
 
         // Initial data load - check if menus are already loaded from basemenus
         const sidemenus = StateManager.get('sidemenus');
@@ -136,12 +138,22 @@ class Sidebar {
     }
 
     /**
-     * Calculate sidebar height based on viewport
+     * Keep the sticky sidebar right below the sticky topbar, whose height differs per page
+     * and changes e.g. when the question editor is opened
      */
-    calculateHeight() {
-        const height = $('#in_survey_common').height();
-        if (height) {
-            StateManager.commit('changeSideBarHeight', height);
+    observeTopbar() {
+        if (this.topbarObserver) {
+            this.topbarObserver.disconnect();
+        }
+        const topbar = document.querySelector('.topbar.sticky-top');
+        const updateTop = () => {
+            const top = topbar && topbar.offsetParent !== null ? topbar.offsetHeight : 0;
+            this.container.style.setProperty('--ls-sidebar-top', top + 'px');
+        };
+        updateTop();
+        if (topbar && window.ResizeObserver) {
+            this.topbarObserver = new ResizeObserver(updateTop);
+            this.topbarObserver.observe(topbar);
         }
     }
 
@@ -152,14 +164,6 @@ class Sidebar {
         const width = StateManager.getComputed('isCollapsed') ? 98 : this.sideBarWidth;
         // Ensure we always return a number by parsing if needed
         return typeof width === 'string' ? parseInt(width) : width;
-    }
-
-    /**
-     * Calculate sidebar menu height
-     */
-    calculateSideBarMenuHeight() {
-        const currentSideBar = StateManager.get('sideBarHeight');
-        return LS.ld.min([currentSideBar, Math.floor(screen.height * 2)]) + 'px';
     }
 
     /**
@@ -189,8 +193,11 @@ class Sidebar {
 
     /**
      * Change current tab
+     * @param {string} tab
+     * @param {{focusTab?: boolean}} [options]
      */
-    changeCurrentTab(tab) {
+    changeCurrentTab(tab, options) {
+        options = options || {};
         // Normalize tab name - 'structure' is alias for 'questiontree'
         if (tab === 'structure') {
             tab = 'questiontree';
@@ -201,7 +208,25 @@ class Sidebar {
         }
 
         StateManager.commit('changeCurrentTab', tab);
-        this.render();
+
+        const tabs = this.container.querySelectorAll('.sidebar-tab-link');
+        if (tabs.length === 0) {
+            this.render();
+            return;
+        }
+
+        this.updateSidebarTabA11y();
+        this.renderContent();
+
+        if (options.focusTab !== false) {
+            const tabSelector = tab === 'settings'
+                ? '#adminsidepanel__sidebar--selectorSettingsButton'
+                : '#adminsidepanel__sidebar--selectorStructureButton';
+            const activeTab = this.container.querySelector(tabSelector);
+            if (activeTab) {
+                activeTab.focus();
+            }
+        }
     }
 
     /**
@@ -356,6 +381,8 @@ class Sidebar {
 
     /**
      * Handle question group order change
+     *
+     * @returns {Promise} settles once the order is saved and the questions are reloaded
      */
     handleQuestionGroupOrderChange() {
         this.showLoader = true;
@@ -364,7 +391,7 @@ class Sidebar {
         const questiongroups = StateManager.get('questiongroups');
         const surveyid = StateManager.get('surveyid');
 
-        Actions.updateQuestionGroupOrder(questiongroups, surveyid)
+        return Actions.updateQuestionGroupOrder(questiongroups, surveyid)
             .then(() => {
                 return Actions.getQuestions();
             })
@@ -374,7 +401,7 @@ class Sidebar {
             })
             .catch((error) => {
                 console.ls.error('questiongroups updating error!', error);
-                Actions.getQuestions()
+                return Actions.getQuestions()
                     .catch((retryError) => {
                         console.ls.error('questiongroups retry error!', retryError);
                     })
@@ -389,9 +416,6 @@ class Sidebar {
      * Bind event handlers
      */
     bindEvents() {
-        // Window resize
-        window.addEventListener('resize', LS.ld.debounce(() => this.calculateHeight(), 300));
-
         // Body mouse move for resize
         $('body').on('mousemove', this.handleMouseMove);
 
@@ -401,6 +425,7 @@ class Sidebar {
         $(document).on('vue-redraw', this.handleVueRedraw);
         $(document).on('pjax:send', this.handlePjaxSend);
         $(document).on('pjax:refresh', this.handlePjaxRefresh);
+        $(document).on('pjax:scriptcomplete', this.observeTopbar);
 
         // EventBus equivalent for updateSideBar
         $(document).on('updateSideBar', this.handleUpdateSideBar);
@@ -492,7 +517,6 @@ class Sidebar {
         const isCollapsed = StateManager.getComputed('isCollapsed');
         const currentTab = StateManager.get('currentTab');
         const isRTL = StateManager.getComputed('isRTL');
-        const inSurveyViewHeight = StateManager.get('inSurveyViewHeight');
         const currentSidebarWidth = this.getSideBarWidth();
 
         let classes = 'd-flex col-lg-4 ls-ba position-relative transition-animate-width';
@@ -504,7 +528,7 @@ class Sidebar {
         const showPlaceholder = UIHelpers.useMobileView() && this.smallScreenHidden;
         const showResizeOverlay = this.isMouseDown;
 
-        let html = '<div id="sidebar" class="' + classes + '" style="width: ' + currentSidebarWidth + 'px; max-height: ' + inSurveyViewHeight + 'px; display: flex;">';
+        let html = '<div id="sidebar" class="' + classes + '" style="width: ' + currentSidebarWidth + 'px; display: flex;">';
 
         if (showMainContent) {
             // Loader overlay
@@ -523,17 +547,17 @@ class Sidebar {
             html += this.renderStateToggle(isCollapsed, currentTab, isRTL);
 
             // Side menu content
-            html += '<div id="sidemenu-container" class="slide-fade" style="display: ' + (!isCollapsed && currentTab === 'settings' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
+            html += '<div id="sidemenu-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorSettingsButton" style="display: ' + (!isCollapsed && currentTab === 'settings' ? 'block' : 'none') + ';"></div>';
 
             // Question explorer content
-            html += '<div id="questionexplorer-container" class="slide-fade" style="display: ' + (!isCollapsed && currentTab === 'questiontree' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
+            html += '<div id="questionexplorer-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorStructureButton" style="display: ' + (!isCollapsed && currentTab === 'questiontree' ? 'block' : 'none') + ';"></div>';
 
             // Quick menu (collapsed state)
             html += '<div id="quickmenu-container" style="display: ' + (isCollapsed ? 'block' : 'none') + ';"></div>';
 
             // Resize handle
             if ((UIHelpers.useMobileView() && !this.smallScreenHidden) || !UIHelpers.useMobileView()) {
-                html += '<div class="resize-handle ls-flex-column" style="height: ' + this.calculateSideBarMenuHeight() + ';">';
+                html += '<div class="resize-handle ls-flex-column">';
                 if (!isCollapsed) {
                     html += '<button class="btn resize-btn" type="button">' +
                         '<svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">' +
@@ -567,6 +591,39 @@ class Sidebar {
 
         // Render sub-components
         this.renderContent();
+        this.updateSidebarTabA11y();
+    }
+
+    /**
+     * Keep exactly one sidebar tab marked selected for assistive technology.
+     */
+    updateSidebarTabA11y() {
+        const currentTab = StateManager.get('currentTab');
+        const isCollapsed = StateManager.getComputed('isCollapsed');
+        const tabs = this.container.querySelectorAll('.sidebar-tab-link');
+
+        tabs.forEach((tab) => {
+            const tabName = tab.getAttribute('data-tab');
+            const isSelected = tabName === currentTab;
+            tab.classList.toggle('active', isSelected);
+            tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+            tab.tabIndex = isSelected ? 0 : -1;
+        });
+
+        const sidemenu = document.getElementById('sidemenu-container');
+        const questionexplorer = document.getElementById('questionexplorer-container');
+        if (sidemenu) {
+            const show = !isCollapsed && currentTab === 'settings';
+            sidemenu.style.display = show ? 'block' : 'none';
+            sidemenu.hidden = !show;
+            sidemenu.setAttribute('aria-hidden', show ? 'false' : 'true');
+        }
+        if (questionexplorer) {
+            const show = !isCollapsed && currentTab === 'questiontree';
+            questionexplorer.style.display = show ? 'block' : 'none';
+            questionexplorer.hidden = !show;
+            questionexplorer.setAttribute('aria-hidden', show ? 'false' : 'true');
+        }
     }
 
     /**
@@ -577,15 +634,17 @@ class Sidebar {
         html += '<div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 bottom-0 top-0">';
 
         if (!isCollapsed) {
+            const settingsSelected = currentTab === 'settings';
+            const structureSelected = currentTab === 'questiontree';
             html += '<div class="ls-flex-item grow-10 col-12">' +
-                '<ul class="nav nav-tabs" id="surveysystem" role="tablist">' +
+                '<ul class="nav nav-tabs" id="adminsidepanel-sidebar-tablist" role="tablist">' +
                     '<li class="nav-item">' +
-                        '<a id="adminsidepanel__sidebar--selectorSettingsButton" class="nav-link sidebar-tab-link' + (currentTab === 'settings' ? ' active' : '') + '" href="#settings" data-tab="settings" role="tab">' +
+                        '<a id="adminsidepanel__sidebar--selectorSettingsButton" class="nav-link sidebar-tab-link' + (settingsSelected ? ' active' : '') + '" href="#settings" data-tab="settings" role="tab" aria-controls="sidemenu-container" aria-selected="' + (settingsSelected ? 'true' : 'false') + '" tabindex="' + (settingsSelected ? '0' : '-1') + '">' +
                             UIHelpers.translate('settings') +
                         '</a>' +
                     '</li>' +
                     '<li class="nav-item">' +
-                        '<a id="adminsidepanel__sidebar--selectorStructureButton" class="nav-link sidebar-tab-link' + (currentTab === 'questiontree' ? ' active' : '') + '" href="#structure" data-tab="questiontree" role="tab">' +
+                        '<a id="adminsidepanel__sidebar--selectorStructureButton" class="nav-link sidebar-tab-link' + (structureSelected ? ' active' : '') + '" href="#structure" data-tab="questiontree" role="tab" aria-controls="questionexplorer-container" aria-selected="' + (structureSelected ? 'true' : 'false') + '" tabindex="' + (structureSelected ? '0' : '-1') + '">' +
                             UIHelpers.translate('structure') +
                         '</a>' +
                     '</li>' +
@@ -636,7 +695,39 @@ class Sidebar {
         $(this.container).off('click', '.sidebar-tab-link').on('click', '.sidebar-tab-link', (e) => {
             e.preventDefault();
             const tab = $(e.currentTarget).data('tab');
-            this.changeCurrentTab(tab);
+            this.changeCurrentTab(tab, { focusTab: true });
+        });
+
+        $(this.container).off('keydown', '.sidebar-tab-link').on('keydown', '.sidebar-tab-link', (e) => {
+            const key = e.key;
+            if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].indexOf(key) === -1) {
+                return;
+            }
+
+            const $tabs = $(this.container).find('.sidebar-tab-link');
+            if ($tabs.length < 2) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            const currentIndex = $tabs.index(e.currentTarget);
+            let nextIndex = currentIndex;
+
+            if (key === 'ArrowLeft' || key === 'ArrowUp') {
+                nextIndex = (currentIndex - 1 + $tabs.length) % $tabs.length;
+            } else if (key === 'ArrowRight' || key === 'ArrowDown') {
+                nextIndex = (currentIndex + 1) % $tabs.length;
+            } else if (key === 'Home') {
+                nextIndex = 0;
+            } else if (key === 'End') {
+                nextIndex = $tabs.length - 1;
+            }
+
+            if (nextIndex !== currentIndex) {
+                this.changeCurrentTab($tabs.eq(nextIndex).data('tab'), { focusTab: true });
+            }
         });
 
         // Expand button (collapsed state)

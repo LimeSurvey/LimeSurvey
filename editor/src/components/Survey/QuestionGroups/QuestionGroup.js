@@ -136,5 +136,3 @@ export const QuestionGroup = ({
     </Section>
   )
 }
-
-export default QuestionGroup

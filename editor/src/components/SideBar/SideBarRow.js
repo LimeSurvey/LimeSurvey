@@ -5,7 +5,8 @@ import Button from 'react-bootstrap/Button'
 
 import { useSurvey } from 'hooks'
 import { ArrowDownIcon } from 'components/icons'
-import { TooltipContainer } from 'components'
+import { ContentEditor, Dropdown, TooltipContainer } from 'components'
+import { RemoveHTMLTagsInString } from 'helpers'
 
 import { QuestionContextMenu } from './QuestionContextMenu'
 
@@ -14,18 +15,21 @@ export const SideBarRow = ({
   title,
   titlePlaceholder,
   code,
-  meatballButton,
   children,
   style,
   testId = '',
+  /* Also used as a test id for the menu toggle */
+  menuToggleId = '',
+  /* Also used as a test id for the menu toggle */
+  menuId = '',
   provided = {},
   onTitleClick = () => {},
   onRowClick = () => {},
-  showMeatballButton,
   isQuestionGroup,
   isOpen: _isOpen = false,
   className = '',
   isFocused = false,
+  menuItems = [],
 }) => {
   const [isOpen, setOpen] = useState(_isOpen)
   const { surveyId } = useParams()
@@ -109,7 +113,7 @@ export const SideBarRow = ({
       >
         <div
           className={classNames(`sidebar-row ps-1 ${className}`, {
-            'focus-bg-purple text-white': isFocused,
+            'focus-bg-purple text-white sidebar-row-focused': isFocused,
           })}
           style={{
             ...style,
@@ -117,7 +121,8 @@ export const SideBarRow = ({
         >
           <div
             style={{
-              cursor: provided.dragHandleProps ? 'grab' : 'pointer',
+              cursor:
+                provided.dragHandleProps !== undefined ? 'grab' : 'pointer',
             }}
             className={classNames(
               'sidebar-row-title-container d-flex align-items-center'
@@ -132,9 +137,8 @@ export const SideBarRow = ({
                 'rotate-270': !isOpen,
                 'd-none': !isQuestionGroup,
               })}
-              data-isOpen={isOpen}
             >
-              <ArrowDownIcon />
+              <ArrowDownIcon fill={'#1E1E1E'} />
             </Button>
             {typeof icon === 'string' ? (
               <img
@@ -147,16 +151,16 @@ export const SideBarRow = ({
             ) : (
               icon
             )}
-            <span
+            <ContentEditor
               className={classNames('sidebar-row-title', {
                 'question-group': !code,
                 'question-code': showQNumCode?.showCode,
               })}
               onClick={onTitleClick}
               data-placeholder={titlePlaceholder}
-            >
-              {title}
-            </span>
+              value={RemoveHTMLTagsInString(title)}
+              disabled={true}
+            />
           </div>
           <div
             className={classNames(
@@ -176,13 +180,22 @@ export const SideBarRow = ({
                 </TooltipContainer>
               )}
             </div>
-            <span
-              className={classNames('sidebar-meatball-menu my-1', {
-                'opacity-100': showMeatballButton,
-              })}
-            >
-              {meatballButton}
-            </span>
+            {menuItems.length > 0 ? (
+              <Dropdown
+                className="meatball-dropdown"
+                testId={menuId}
+                align="start"
+                portalMenu
+                menuItems={menuItems}
+                toggleSettings={{
+                  iconClassName: 'ri-more-fill',
+                  variant: 'light',
+                  id: menuToggleId,
+                  testId: menuToggleId,
+                  title: '',
+                }}
+              />
+            ) : null}
           </div>
         </div>
         {isOpen && <div style={{ paddingLeft: '18px' }}>{children}</div>}

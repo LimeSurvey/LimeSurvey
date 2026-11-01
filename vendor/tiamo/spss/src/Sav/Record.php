@@ -7,15 +7,21 @@ use SPSS\Buffer;
 abstract class Record implements RecordInterface
 {
     /**
+     * @var int Position where the record start
+     */
+    protected $startPos = -1;
+
+    /**
      * Record constructor.
      *
      * @param array $data
      */
-    public function __construct($data = [])
+    public function __construct($data = [], $startPos = -1)
     {
         foreach ($data as $key => $value) {
             $this->{$key} = $value;
         }
+        $this->startPos = $startPos;
     }
 
     /**
@@ -37,9 +43,9 @@ abstract class Record implements RecordInterface
      *
      * @return static
      */
-    public static function create($data = [])
+    public static function create($data = [], $startPos = -1)
     {
-        return new static($data);
+        return new static($data, $startPos);
     }
 
     /**

@@ -354,7 +354,7 @@ class questionHelper
         // Map Options
 
         self::$attributes["location_city"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'readonly_when_active' => true,
             'category' => gT('Location'),
             'sortorder' => 100,
@@ -366,7 +366,7 @@ class questionHelper
         );
 
         self::$attributes["location_state"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'readonly_when_active' => true,
             'category' => gT('Location'),
             'sortorder' => 100,
@@ -378,7 +378,7 @@ class questionHelper
         );
 
         self::$attributes["location_postal"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'readonly_when_active' => true,
             'category' => gT('Location'),
             'sortorder' => 100,
@@ -390,7 +390,7 @@ class questionHelper
         );
 
         self::$attributes["location_country"] = array(
-            "types" => "S",
+            "types" => Question::QT_J_MAP,
             'readonly_when_active' => true,
             'category' => gT('Location'),
             'sortorder' => 100,
@@ -402,7 +402,7 @@ class questionHelper
         );
 
         self::$attributes["statistics_showmap"] = array(
-            "types" => "S",
+            "types" => Question::QT_J_MAP,
             'category' => gT('Statistics'),
             'inputtype' => 'switch',
             'sortorder' => 100,
@@ -413,7 +413,7 @@ class questionHelper
         );
 
         self::$attributes["statistics_showgraph"] = array(
-            'types' => '15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+            'types' => '15ABCDEFGHILMOPQRSTUWXYZ!:;|*',
             'category' => gT('Statistics'),
             'inputtype' => 'switch',
             'sortorder' => 101,
@@ -424,7 +424,7 @@ class questionHelper
         );
 
         self::$attributes["statistics_graphtype"] = array(
-            "types" => '15ABCDEFGHIKLMNOQRSTUWXYZ!:;|*',
+            "types" => '15ABCDEFGHILMOPQRSTUWXYZ!:;|*',
             'category' => gT('Statistics'),
             'inputtype' => 'singleselect',
             'sortorder' => 102,
@@ -438,26 +438,25 @@ class questionHelper
             ),
             'help' => gT("Select the type of chart to be displayed"),
             'caption' => gT("Chart type"),
-            'default' => 0
+            'default' => ''
         );
 
         self::$attributes["location_mapservice"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'category' => gT('Location'),
             'sortorder' => 90,
             'inputtype' => 'buttongroup',
             'options' => array(
-                0 => gT('Off'),
                 100 => gT('OpenStreetMap via MapQuest', 'unescaped'),
                 1 => gT('Google Maps', 'unescaped')
             ),
-            'default' => 0,
-            "help" => gT("Activate this to show a map above the input field where the user can select a location"),
+            'default' => 100,
+            "help" => gT("Which map provider to show for this question"),
             "caption" => gT("Use mapping service")
         );
 
         self::$attributes["location_mapwidth"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'category' => gT('Location'),
             'sortorder' => 102,
             'inputtype' => 'text',
@@ -467,7 +466,7 @@ class questionHelper
         );
 
         self::$attributes["location_mapheight"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'category' => gT('Location'),
             'sortorder' => 103,
             'inputtype' => 'text',
@@ -477,7 +476,7 @@ class questionHelper
         );
 
         self::$attributes["location_nodefaultfromip"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'category' => gT('Location'),
             'sortorder' => 91,
             'inputtype' => 'singleselect',
@@ -488,7 +487,7 @@ class questionHelper
         );
 
         self::$attributes["location_defaultcoordinates"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'category' => gT('Location'),
             'sortorder' => 101,
             'inputtype' => 'text',
@@ -498,7 +497,7 @@ class questionHelper
         );
 
         self::$attributes["location_mapzoom"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT,
+        "types" => Question::QT_J_MAP,
             'category' => gT('Location'),
             'sortorder' => 101,
             'inputtype' => 'text',
@@ -736,7 +735,7 @@ class questionHelper
         self::$attributes["input_boxes"] = array(
         "types" => ":",
             'category' => gT('Display'),
-            'sortorder' => 110,
+            'sortorder' => 113,
             'inputtype' => 'switch',
             'options' => array(0 => gT('No'), 1 => gT('Yes')),
             'default' => 0,
@@ -776,6 +775,9 @@ class questionHelper
             "help" => gT("Replaces the label of the 'Other:' answer option with a custom text"),
             "caption" => gT("Label for 'Other:' option")
         );
+        // Translation strings for L, M, P question types (other_replace_text with pipe separator)
+        // phpcs:ignore
+        gT("Replaces the label of the 'Other:' answer option with a custom text. To also show a suffix label after the text input, separate prefix and suffix with a pipe (|), e.g. 'From|to 100'. To show only a suffix with no prefix label, use a leading pipe: '|°C'. To show no label at all, use a single pipe: '|'.");
 
         self::$attributes["page_break"] = array(
         "types" => Question::QT_1_ARRAY_DUAL . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_POINT . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_INC_SAME_DEC . Question::QT_F_ARRAY . Question::QT_G_GENDER . Question::QT_H_ARRAY_COLUMN . Question::QT_K_MULTIPLE_NUMERICAL . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_X_TEXT_DISPLAY . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_VERTICAL_FILE_UPLOAD . Question::QT_ASTERISK_EQUATION,
@@ -884,7 +886,7 @@ class questionHelper
             'category' => gT('Display'),
             'sortorder' => 101,
             'inputtype' => 'text',
-            "help" => gT('Semicolon-separated list of codes that keep their original database position when items are randomized.'),
+            "help" => gT('Semicolon-separated list of codes that keep their original database position when items are randomized or sorted alphabetically.'),
             "caption" => gT('Keep codes at original positions')
         );
 
@@ -1568,7 +1570,7 @@ class questionHelper
             'category' => gT('Other'),
             'sortorder' => 134,
             "inputtype" => "text",
-            'default' => "png, gif, doc, odt, jpg, pdf, png",
+            'default' => "png, gif, doc, odt, jpg, jpeg, pdf, heic",
             "help" => gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
             "caption" => gT("Allowed file types")
         );

@@ -3,9 +3,11 @@
 namespace GuzzleHttp;
 
 use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\CookieJarInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\Handler\CurlShareHandleState;
+use GuzzleHttp\Handler\CurlVersion;
 use GuzzleHttp\Promise as P;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\RequestInterface;
@@ -52,6 +54,20 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
      *   into relative URIs. Can be a string or instance of UriInterface.
      * - transport_sharing: (string|null) Transport sharing mode for the
      *   default handler. Accepts TransportSharing::* or null. Defaults to null.
+     * - max_host_connections: (int|null) Maximum concurrent connections per
+     *   host, applied by the default CurlMultiHandler. The default stream
+     *   fallback receives the cap as a marker only: it rejects enabled
+     *   response streaming ("stream" => true) and does not limit overlapping
+     *   buffered calls.
+     * - max_total_connections: (int|null) Maximum concurrent connections
+     *   overall, applied by the default CurlMultiHandler. The default stream
+     *   fallback receives the cap as a marker only: it rejects enabled
+     *   response streaming ("stream" => true) and does not limit overlapping
+     *   buffered calls.
+     * - multiplex: (string|null) Multiplexing::NONE to disable multiplexing on
+     *   the default CurlMultiHandler; the value also becomes the default
+     *   "multiplex" request option. Other Multiplexing::* values act as the
+     *   default request option only.
      * - **: any request option
      *
      * @param array $config Client configuration settings.
@@ -60,16 +76,41 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
      */
     public function __construct(array $config = [])
     {
+        $handlerOptions = [];
+        foreach (['max_host_connections', 'max_total_connections'] as $capOption) {
+            if (\array_key_exists($capOption, $config)) {
+                if ($config[$capOption] !== null) {
+                    $handlerOptions[$capOption] = $config[$capOption];
+                }
+
+                unset($config[$capOption]);
+            }
+        }
+
+        // Deliberately not unset: the value also becomes the default
+        // "multiplex" request option, which the configured handler accepts.
+        $handlerMultiplex = ($config['multiplex'] ?? null) === Multiplexing::NONE;
+
         $transportSharing = \array_key_exists('transport_sharing', $config) ? $config['transport_sharing'] : null;
         $transportSharingMode = CurlShareHandleState::normalizeMode($transportSharing, 'transport_sharing');
         unset($config['transport_sharing']);
 
         if (!isset($config['handler'])) {
-            $config['handler'] = $transportSharingMode === TransportSharing::NONE
+            if ($transportSharingMode !== TransportSharing::NONE) {
+                $handlerOptions['transport_sharing'] = $transportSharingMode;
+            }
+
+            if ($handlerMultiplex) {
+                $handlerOptions['multiplex'] = Multiplexing::NONE;
+            }
+
+            $config['handler'] = $handlerOptions === []
                 ? HandlerStack::create()
-                : HandlerStack::create(Utils::chooseHandler(['transport_sharing' => $transportSharingMode]));
+                : HandlerStack::create(Utils::chooseHandler($handlerOptions));
         } elseif (!\is_callable($config['handler'])) {
             throw new InvalidArgumentException('handler must be a callable');
+        } elseif ($handlerOptions !== []) {
+            throw new InvalidArgumentException('The "max_host_connections" and "max_total_connections" client options require Guzzle to create the default handler. Configure the options on the CurlMultiHandler constructor to apply numeric connection caps, or on the StreamHandler constructor to reject enabled response streaming, when providing a custom handler.');
         } elseif ($transportSharingMode === TransportSharing::HANDLER_REQUIRE) {
             throw new InvalidArgumentException('The "transport_sharing" client option can only require sharing when Guzzle creates the default handler. Configure the "transport_sharing" option on CurlHandler or CurlMultiHandler when providing a custom cURL handler.');
         }
@@ -92,6 +133,8 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
      */
     public function __call($method, $args)
     {
+        \trigger_deprecation('guzzlehttp/guzzle', '7.1', '%s::%s() is deprecated and will be removed in 8.0.', __CLASS__, __FUNCTION__);
+
         if (\count($args) < 1) {
             throw new InvalidArgumentException('Magic request methods require a URI and optional options array');
         }
@@ -101,7 +144,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
         $isAsync = \substr($method, -5) === 'Async';
         $method = $isAsync ? \substr($method, 0, -5) : $method;
-        $method = \strtoupper($method);
+        $method = Psr7\Utils::asciiToUpper($method);
 
         return $isAsync
             ? $this->requestAsync($method, $uri, $opts)
@@ -120,7 +163,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
         $options = $this->prepareDefaults($options);
 
         return $this->transfer(
-            $request->withUri($this->buildUri($request->getUri(), $options), $request->hasHeader('Host')),
+            $request->withUri($this->buildUri($request->getUri(), $options), self::shouldPreserveHost($request)),
             $options
         );
     }
@@ -168,7 +211,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
      */
     public function requestAsync(string $method, $uri = '', array $options = []): PromiseInterface
     {
-        $normalizedMethod = \strtoupper($method);
+        $normalizedMethod = Psr7\Utils::asciiToUpper($method);
         if ($method !== $normalizedMethod) {
             \trigger_deprecation(
                 'guzzlehttp/guzzle',
@@ -192,6 +235,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
         if (\is_array($body)) {
             throw $this->invalidBody();
         }
+        $body = self::createBodyStream($body);
         $request = new Psr7\Request($method, $uri, $headers, $body, $version);
         // Remove the option so that they are not doubly-applied.
         unset($options['headers'], $options['body'], $options['version']);
@@ -214,7 +258,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
      */
     public function request(string $method, $uri = '', array $options = []): ResponseInterface
     {
-        $normalizedMethod = \strtoupper($method);
+        $normalizedMethod = Psr7\Utils::asciiToUpper($method);
         if ($method !== $normalizedMethod) {
             \trigger_deprecation(
                 'guzzlehttp/guzzle',
@@ -258,7 +302,35 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
             $uri = Utils::idnUriConvert($uri, $idnOptions);
         }
 
-        return $uri->getScheme() === '' && $uri->getHost() !== '' ? $uri->withScheme('http') : $uri;
+        if ($uri->getScheme() === '' && $uri->getHost() !== '') {
+            $uri = $uri->withScheme('http');
+        }
+
+        return $uri;
+    }
+
+    /**
+     * Whether to preserve an existing Host header when the URI changes.
+     *
+     * A header matching the current URI carries no explicit override and is
+     * regenerated after base URI resolution or IDN conversion. Other values
+     * are preserved as deliberate overrides, as PSR-7 requires.
+     */
+    private static function shouldPreserveHost(RequestInterface $request): bool
+    {
+        if (!$request->hasHeader('Host')) {
+            return false;
+        }
+
+        $uri = $request->getUri();
+        $host = $uri->getHost();
+        $port = $uri->getPort();
+
+        if ($port !== null) {
+            $host .= ':'.$port;
+        }
+
+        return $host !== $request->getHeaderLine('Host');
     }
 
     /**
@@ -307,7 +379,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
             // Add the User-Agent header if one was not already set.
             $hasUserAgent = false;
             foreach (\array_keys($this->config['headers']) as $name) {
-                if (\strtolower((string) $name) === 'user-agent') {
+                if (Psr7\Utils::asciiToLower((string) $name) === 'user-agent') {
                     $hasUserAgent = true;
                     break;
                 }
@@ -331,6 +403,8 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
      */
     private function prepareDefaults(array $options): array
     {
+        self::warnAboutRequestLevelHandler($options);
+
         $defaults = $this->config;
 
         if (!empty($defaults['headers'])) {
@@ -363,7 +437,178 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
         self::warnAboutInvalidRequestOptionTypes($result);
 
-        return $result;
+        return self::normalizeDeprecatedRequestOptionValues($result);
+    }
+
+    /**
+     * Normalize values that guzzlehttp/guzzle 8.0 rejects only after the
+     * corresponding 7.x deprecation has already been emitted.
+     *
+     * @param array<string, mixed> $options
+     *
+     * @return array<string, mixed>
+     */
+    private static function normalizeDeprecatedRequestOptionValues(array $options): array
+    {
+        self::normalizeDeprecatedAuthOptionValues($options);
+        self::normalizeDeprecatedTlsFileOptionValues($options, 'cert');
+        self::normalizeDeprecatedTlsFileOptionValues($options, 'ssl_key');
+        self::normalizeDeprecatedStringOptionValues($options);
+        self::normalizeDeprecatedNumericOptionValues($options);
+        self::normalizeDeprecatedIntegerOptionValues($options);
+
+        return $options;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private static function canStringifyDeprecatedValue($value): bool
+    {
+        return $value === null
+            || \is_scalar($value)
+            || (\is_object($value) && \method_exists($value, '__toString'));
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private static function stringifyDeprecatedValue($value): string
+    {
+        if (\is_float($value) && !\is_finite($value)) {
+            return \is_nan($value) ? 'NAN' : ($value > 0 ? 'INF' : '-INF');
+        }
+
+        if ($value === null) {
+            return '';
+        }
+
+        if (\is_scalar($value)) {
+            return (string) $value;
+        }
+
+        if (\is_object($value) && \method_exists($value, '__toString')) {
+            return $value->__toString();
+        }
+
+        throw new \LogicException('Value is not stringable.');
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    private static function normalizeDeprecatedAuthOptionValues(array &$options): void
+    {
+        if (!isset($options['auth']) || !\is_array($options['auth']) || $options['auth'] === []) {
+            return;
+        }
+
+        foreach ([0, 1] as $index) {
+            if (
+                \array_key_exists($index, $options['auth'])
+                && !\is_string($options['auth'][$index])
+                && self::canStringifyDeprecatedValue($options['auth'][$index])
+            ) {
+                $options['auth'][$index] = self::stringifyDeprecatedValue($options['auth'][$index]);
+            }
+        }
+
+        if (
+            \array_key_exists(2, $options['auth'])
+            && $options['auth'][2] !== null
+            && !\is_string($options['auth'][2])
+            && self::canStringifyDeprecatedValue($options['auth'][2])
+        ) {
+            $options['auth'][2] = self::stringifyDeprecatedValue($options['auth'][2]);
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    private static function normalizeDeprecatedTlsFileOptionValues(array &$options, string $option): void
+    {
+        if (!isset($options[$option]) || !\is_array($options[$option])) {
+            return;
+        }
+
+        foreach ([0, 1] as $index) {
+            if (
+                \array_key_exists($index, $options[$option])
+                && $options[$option][$index] !== null
+                && !\is_string($options[$option][$index])
+                && self::canStringifyDeprecatedValue($options[$option][$index])
+            ) {
+                $options[$option][$index] = self::stringifyDeprecatedValue($options[$option][$index]);
+            }
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    private static function normalizeDeprecatedStringOptionValues(array &$options): void
+    {
+        foreach (['cert_type', 'force_ip_resolve', 'ssl_key_type'] as $option) {
+            if (
+                \array_key_exists($option, $options)
+                && !\is_string($options[$option])
+                && self::canStringifyDeprecatedValue($options[$option])
+            ) {
+                $options[$option] = self::stringifyDeprecatedValue($options[$option]);
+            }
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    private static function normalizeDeprecatedNumericOptionValues(array &$options): void
+    {
+        foreach (['connect_timeout', 'delay', 'read_timeout', 'timeout'] as $option) {
+            if (
+                \array_key_exists($option, $options)
+                && \is_string($options[$option])
+                && \is_numeric($options[$option])
+            ) {
+                $options[$option] = $options[$option] + 0;
+            }
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    private static function normalizeDeprecatedIntegerOptionValues(array &$options): void
+    {
+        foreach (['crypto_method', 'crypto_method_max', 'retries'] as $option) {
+            if (!\array_key_exists($option, $options)) {
+                continue;
+            }
+
+            if (\is_string($options[$option]) && \preg_match('/^-?\d+$/D', $options[$option]) === 1) {
+                $options[$option] = (int) $options[$option];
+            } elseif (
+                \is_float($options[$option])
+                && \is_finite($options[$option])
+                && $options[$option] === (float) (int) $options[$option]
+            ) {
+                $options[$option] = (int) $options[$option];
+            }
+        }
+    }
+
+    private static function warnAboutRequestLevelHandler(array $options): void
+    {
+        if (!\array_key_exists('handler', $options)) {
+            return;
+        }
+
+        \trigger_deprecation(
+            'guzzlehttp/guzzle',
+            '7.12',
+            'Passing the "handler" request option is deprecated; guzzlehttp/guzzle 8.0 will ignore request-level handlers. Configure the handler when creating the Client, or use a separate Client instance for requests that need a different handler.'
+        );
     }
 
     private static function warnAboutInvalidRequestOptionTypes(array $options): void
@@ -374,6 +619,8 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
         if (isset($options['allow_redirects']) && \is_array($options['allow_redirects'])) {
             self::warnAboutInvalidAllowRedirectsOptionTypes($options['allow_redirects']);
+        } elseif (isset($options['allow_redirects']) && !\is_bool($options['allow_redirects'])) {
+            self::warnInvalidRequestOptionType('allow_redirects', 'bool|array', $options['allow_redirects'], '7.13');
         }
 
         if (isset($options['auth'])) {
@@ -388,9 +635,16 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
         self::warnIfPresentAndNotString($options, 'cert_type');
         self::warnIfPresentAndNotNumber($options, 'connect_timeout');
         self::warnIfPresentAndNotInt($options, 'crypto_method');
+        self::warnIfPresentAndNotInt($options, 'crypto_method_max', null, '7.13');
         self::warnIfPresentAndNotBoolOrResource($options, 'debug');
         self::warnIfPresentAndNotBoolOrString($options, 'decode_content');
         self::warnIfPresentAndNotNumber($options, 'delay');
+        if (isset($options['delay']) && \is_numeric($options['delay'])) {
+            $delay = (float) $options['delay'];
+            if (!\is_finite($delay) || $delay < 0.0) {
+                self::warnInvalidRequestOptionType('delay', 'finite int|float greater than or equal to 0', $options['delay'], '7.13');
+            }
+        }
         self::warnIfPresentAndNotBoolOrInt($options, 'expect');
 
         if (isset($options['form_params'])) {
@@ -399,6 +653,15 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
         if (isset($options['force_ip_resolve']) && !\is_string($options['force_ip_resolve'])) {
             self::warnInvalidRequestOptionType('force_ip_resolve', 'string', $options['force_ip_resolve']);
+        }
+
+        if (
+            isset($options['force_ip_resolve'])
+            && \is_string($options['force_ip_resolve'])
+            && $options['force_ip_resolve'] !== 'v4'
+            && $options['force_ip_resolve'] !== 'v6'
+        ) {
+            self::warnInvalidRequestOptionType('force_ip_resolve', '"v4"|"v6"', $options['force_ip_resolve'], '7.13');
         }
 
         if (isset($options['headers'])) {
@@ -413,8 +676,10 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
         self::warnIfPresentAndNotCallable($options, 'on_headers');
         self::warnIfPresentAndNotCallable($options, 'on_stats');
+        self::warnIfPresentAndNotCallable($options, 'on_trailers', null, '7.14');
         self::warnIfPresentAndNotCallable($options, 'progress');
         self::warnIfPresentAndNotStringArray($options, 'protocols', true);
+        self::warnAboutInvalidProtocolValues($options, 'protocols');
         self::warnAboutInvalidProxyOptionTypes($options);
 
         self::warnIfPresentAndNotNumber($options, 'read_timeout');
@@ -437,6 +702,15 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
         if (isset($options['cookies']) && $options['cookies'] === true) {
             self::warnInvalidRequestOptionType('cookies', 'false|CookieJarInterface', $options['cookies']);
         }
+
+        if (
+            isset($options['cookies'])
+            && $options['cookies'] !== false
+            && $options['cookies'] !== true
+            && !($options['cookies'] instanceof CookieJarInterface)
+        ) {
+            self::warnInvalidRequestOptionType('cookies', 'false|CookieJarInterface', $options['cookies'], '7.13');
+        }
     }
 
     private static function warnAboutInvalidAllowRedirectsOptionTypes(array $allowRedirects): void
@@ -445,6 +719,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
         self::warnIfPresentAndNotBool($allowRedirects, 'strict', 'allow_redirects.strict');
         self::warnIfPresentAndNotBool($allowRedirects, 'referer', 'allow_redirects.referer');
         self::warnIfPresentAndNotStringArray($allowRedirects, 'protocols', true, 'allow_redirects.protocols');
+        self::warnAboutInvalidProtocolValues($allowRedirects, 'protocols', 'allow_redirects.protocols');
         self::warnIfPresentAndNotCallable($allowRedirects, 'on_redirect', 'allow_redirects.on_redirect');
         self::warnIfPresentAndNotBool($allowRedirects, 'track_redirects', 'allow_redirects.track_redirects');
     }
@@ -700,17 +975,25 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
         }
     }
 
-    private static function warnIfPresentAndNotCallable(array $options, string $option, ?string $path = null): void
-    {
+    private static function warnIfPresentAndNotCallable(
+        array $options,
+        string $option,
+        ?string $path = null,
+        string $since = '7.11'
+    ): void {
         if (\array_key_exists($option, $options) && !\is_callable($options[$option])) {
-            self::warnInvalidRequestOptionType($path ?? $option, 'callable', $options[$option]);
+            self::warnInvalidRequestOptionType($path ?? $option, 'callable', $options[$option], $since);
         }
     }
 
-    private static function warnIfPresentAndNotInt(array $options, string $option, ?string $path = null): void
-    {
+    private static function warnIfPresentAndNotInt(
+        array $options,
+        string $option,
+        ?string $path = null,
+        string $since = '7.11'
+    ): void {
         if (\array_key_exists($option, $options) && !\is_int($options[$option])) {
-            self::warnInvalidRequestOptionType($path ?? $option, 'int', $options[$option]);
+            self::warnInvalidRequestOptionType($path ?? $option, 'int', $options[$option], $since);
         }
     }
 
@@ -752,6 +1035,24 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
         }
     }
 
+    /**
+     * @param array<array-key, mixed> $options
+     */
+    private static function warnAboutInvalidProtocolValues(array $options, string $option, ?string $path = null): void
+    {
+        if (!isset($options[$option]) || !\is_array($options[$option])) {
+            return;
+        }
+
+        $path = $path ?? $option;
+
+        foreach ($options[$option] as $index => $protocol) {
+            if (\is_string($protocol) && $protocol !== 'http' && $protocol !== 'https') {
+                self::warnInvalidRequestOptionType($path.'.'.(string) $index, '"http"|"https"', $protocol, '7.13');
+            }
+        }
+    }
+
     private static function warnIfPresentAndNotStringOrNumber(array $options, string $option): void
     {
         if (
@@ -767,11 +1068,11 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
     /**
      * @param mixed $value
      */
-    private static function warnInvalidRequestOptionType(string $option, string $expected, $value): void
+    private static function warnInvalidRequestOptionType(string $option, string $expected, $value, string $since = '7.11'): void
     {
         \trigger_deprecation(
             'guzzlehttp/guzzle',
-            '7.11',
+            $since,
             'Passing %s to request option "%s" is deprecated; guzzlehttp/guzzle 8.0 requires %s.',
             \get_debug_type($value),
             $option,
@@ -841,7 +1142,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
                     .'x-www-form-urlencoded requests, and the multipart '
                     .'option to send multipart/form-data requests.');
             }
-            $options['body'] = \http_build_query($options['form_params'], '', '&');
+            $options['body'] = \http_build_query(self::normalizeNonFiniteFloats($options['form_params'], 'form_params'), '', '&');
             unset($options['form_params']);
             // Ensure that we don't have the header in different case and set the new value.
             $options['_conditional'] = Psr7\Utils::caselessRemove(['Content-Type'], $options['_conditional']);
@@ -854,16 +1155,20 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
         }
 
         if (isset($options['json'])) {
-            $options['body'] = Utils::jsonEncode($options['json']);
+            $json = \json_encode($options['json']);
+            if (\JSON_ERROR_NONE !== \json_last_error()) {
+                throw new InvalidArgumentException('json_encode error: '.\json_last_error_msg());
+            }
+
+            /** @var non-empty-string $json */
+            $options['body'] = $json;
             unset($options['json']);
             // Ensure that we don't have the header in different case and set the new value.
             $options['_conditional'] = Psr7\Utils::caselessRemove(['Content-Type'], $options['_conditional']);
             $options['_conditional']['Content-Type'] = 'application/json';
         }
 
-        if (!empty($options['decode_content'])
-            && $options['decode_content'] !== true
-        ) {
+        if (isset($options['decode_content']) && \is_string($options['decode_content'])) {
             // Ensure that we don't have the header in different case and set the new value.
             $options['_conditional'] = Psr7\Utils::caselessRemove(['Accept-Encoding'], $options['_conditional']);
             $modify['set_headers']['Accept-Encoding'] = (string) $options['decode_content'];
@@ -873,13 +1178,13 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
             if (\is_array($options['body'])) {
                 throw $this->invalidBody();
             }
-            $modify['body'] = Psr7\Utils::streamFor($options['body']);
+            $modify['body'] = self::createBodyStream($options['body']);
             unset($options['body']);
         }
 
         if (!empty($options['auth']) && \is_array($options['auth'])) {
             $value = $options['auth'];
-            $type = isset($value[2]) ? \strtolower($value[2]) : 'basic';
+            $type = isset($value[2]) ? Psr7\Utils::asciiToLower($value[2]) : 'basic';
             switch ($type) {
                 case 'basic':
                     // Ensure that we don't have the header in different case and set the new value.
@@ -893,6 +1198,14 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
                     $options['curl'][\CURLOPT_USERPWD] = "$value[0]:$value[1]";
                     break;
                 case 'ntlm':
+                    \trigger_deprecation(
+                        'guzzlehttp/guzzle',
+                        '7.12',
+                        'Passing "ntlm" as the built-in auth type is deprecated; guzzlehttp/guzzle 8.0 will no longer apply NTLM through the "auth" request option. NTLM is also deprecated by curl/libcurl and may be unavailable in current or future libcurl builds. Avoid NTLM; if you must use it temporarily, configure cURL HTTP authentication options directly with a libcurl build that still supports NTLM.'
+                    );
+                    if (!CurlVersion::supportsNtlm()) {
+                        throw new InvalidArgumentException('NTLM authentication is not available because the installed curl/libcurl build does not provide NTLM support.');
+                    }
                     $options['curl'][\CURLOPT_HTTPAUTH] = \CURLAUTH_NTLM;
                     $options['curl'][\CURLOPT_USERPWD] = "$value[0]:$value[1]";
                     break;
@@ -902,7 +1215,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
         if (isset($options['query'])) {
             $value = $options['query'];
             if (\is_array($value)) {
-                $value = \http_build_query($value, '', '&', \PHP_QUERY_RFC3986);
+                $value = \http_build_query(self::normalizeNonFiniteFloats($value, 'query'), '', '&', \PHP_QUERY_RFC3986);
             }
             if (!\is_string($value)) {
                 throw new InvalidArgumentException('query must be a string or array');
@@ -970,6 +1283,9 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
                 foreach ($value as $index => $item) {
                     if ($item === null || (!\is_string($item) && \is_scalar($item))) {
+                        if (\is_float($item) && !\is_finite($item)) {
+                            $item = \is_nan($item) ? 'NAN' : ($item > 0 ? 'INF' : '-INF');
+                        }
                         $value[$index] = (string) $item;
                     }
                 }
@@ -980,11 +1296,80 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
             }
 
             if ($value === null || (!\is_string($value) && \is_scalar($value))) {
+                if (\is_float($value) && !\is_finite($value)) {
+                    $value = \is_nan($value) ? 'NAN' : ($value > 0 ? 'INF' : '-INF');
+                }
                 $headers[$name] = (string) $value;
             }
         }
 
         return $droppedHeaderNames;
+    }
+
+    /**
+     * @param mixed $body
+     */
+    private static function createBodyStream($body): StreamInterface
+    {
+        if ($body instanceof StreamInterface) {
+            return $body;
+        }
+
+        if (\is_resource($body) || $body === null || \is_string($body) || $body instanceof \Iterator) {
+            return Psr7\Utils::streamFor($body);
+        }
+
+        if (\is_scalar($body)) {
+            \trigger_deprecation('guzzlehttp/guzzle', '7.12', 'Passing a non-string scalar to the "body" request option is deprecated; guzzlehttp/guzzle 8.0 will reject non-string scalar bodies.');
+
+            return Psr7\Utils::streamFor(self::stringifyScalar($body));
+        }
+
+        if (\is_object($body) && \method_exists($body, '__toString')) {
+            return Psr7\Utils::streamFor((string) $body);
+        }
+
+        if (\is_callable($body)) {
+            return Psr7\Utils::streamFor($body);
+        }
+
+        throw new InvalidArgumentException(\sprintf(
+            'Passing %s to request option "body" is invalid; expected resource|string|null|int|float|bool|StreamInterface|callable&object|Iterator|Stringable.',
+            \get_debug_type($body)
+        ));
+    }
+
+    /**
+     * @param bool|float|int|string $value
+     */
+    private static function stringifyScalar($value): string
+    {
+        // Normalize non-finite floats to dodge PHP 8.5's (string) NAN
+        // coercion warning while the value is still accepted.
+        if (\is_float($value) && !\is_finite($value)) {
+            $value = \is_nan($value) ? 'NAN' : ($value > 0 ? 'INF' : '-INF');
+        }
+
+        return (string) $value;
+    }
+
+    /**
+     * Converts non-finite floats in the array to the strings PHP coerces
+     * them to, as implicit coercion of NAN emits a warning on PHP 8.5.
+     */
+    private static function normalizeNonFiniteFloats(array $values, string $option): array
+    {
+        foreach ($values as $key => $value) {
+            if (\is_array($value)) {
+                $values[$key] = self::normalizeNonFiniteFloats($value, $option);
+            } elseif (\is_float($value) && !\is_finite($value)) {
+                \trigger_deprecation('guzzlehttp/guzzle', '7.12', 'Passing a non-finite float in the "%s" request option is deprecated; guzzlehttp/guzzle 8.0 will reject non-finite floats.', $option);
+
+                $values[$key] = \is_nan($value) ? 'NAN' : ($value > 0 ? 'INF' : '-INF');
+            }
+        }
+
+        return $values;
     }
 
     /**

@@ -13,36 +13,21 @@ echo viewHelper::getViewTestTag('pluginManager');
 
 $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']));
 
-?>
-<div class="row mb-3 mt-1">
-    <div class="float-end">
-        <?php /* Disabled for prototype 1.
-            <a
-                href=''
-                class='btn btn-outline-secondary '
-                data-bs-toggle='tooltip'
-                title='<?php eT('Install plugins from the extension shop'); ?>'
-            >
-                <i class='ri-shopping-cart-fill'></i>&nbsp;
-                <?php eT('Browse the shop'); ?>
-            </a>
-             */ ?>
-        <?php foreach ($extraMenus as $menu) : ?>
-            <a href='<?php echo $menu->getHref(); ?>' <?php if ($menu->getOnClick()) :
-                ?> onclick='<?php echo $menu->getOnClick(); ?>' <?php
-                     endif; ?> <?php if ($menu->getTooltip()) :
-    ?> data-bs-toggle='tooltip' data-title='<?php echo $menu->getTooltip(); ?>' <?php
-                     endif; ?> class='btn btn-outline-secondary'>
-                <?php if ($menu->getIconClass()) : ?>
-                    <i class='<?php echo $menu->getIconClass(); ?>'></i>&nbsp;
-                <?php endif; ?>
-                <?php echo $menu->getLabel(); ?>
-            </a>
-        <?php endforeach; ?>
-    </div>
-</div>
-
-<?php
+// Remember which grid page the admin was on, the same way pageSize is
+// remembered, so returning from a plugin's detail page (e.g. via "Close")
+// lands back on that page instead of always resetting to page 1.
+// Yii omits the "page" param entirely for page 1 (it's the implicit
+// default), so an explicit pager click to page 1 looks identical to a
+// plain page reload unless we also check for the grid's own ajax marker,
+// which is present on every real pager interaction (including to page 1)
+// but absent on a fresh page load.
+$requestedPage = Yii::app()->request->getParam('page');
+$isPluginsGridAjaxRequest = Yii::app()->request->getParam('ajax') === 'plugins-grid';
+if ($requestedPage !== null) {
+    Yii::app()->user->setState('pluginListPage', intval($requestedPage));
+} elseif ($isPluginsGridAjaxRequest) {
+    Yii::app()->user->setState('pluginListPage', 1);
+}
 
 $sort               = new CSort();
 $sort->attributes   = [
@@ -71,6 +56,13 @@ $providerOptions = [
     'sort' => $sort,
     'caseSensitiveSort' => false,
 ];
+// Only set an explicit currentPage when this is neither an explicit page
+// request nor a pager click to page 1 (recognized via the ajax marker);
+// otherwise let CPagination's normal GET-based page navigation behave
+// exactly as before.
+if ($requestedPage === null && !$isPluginsGridAjaxRequest) {
+    $providerOptions['pagination']['currentPage'] = max(0, intval(Yii::app()->user->getState('pluginListPage', 1)) - 1);
+}
 
 $dataProvider = new CArrayDataProvider($plugins, $providerOptions);
 
@@ -90,9 +82,11 @@ $gridColumns = [
     ],
     [
         'header' => gT('Status'),
-        'type' => 'html',
+        'type' => 'raw',
         'name' => 'status',
-        'value' => '$data->getStatus()'
+        'value' => '$data->getStatus(false, "fs-3")',
+        'headerHtmlOptions' => ['class' => 'text-center'],
+        'htmlOptions' => ['class' => 'text-center'],
     ],
     [
         'header'            => gT('Action'),
@@ -108,22 +102,9 @@ $this->widget(
     'application.extensions.admin.grid.CLSGridView',
     [
         'id'                       => 'plugins-grid',
-        'caption'                  => gT('Plugins'),
+        'lsCaption'                  => gT('Plugins'),
         'dataProvider'             => $dataProvider,
-        'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-            . sprintf(
-                gT('%s rows per page'),
-                CHtml::dropDownList(
-                    'pageSize',
-                    $pageSize,
-                    Yii::app()->params['pageSizeOptions'],
-                    [
-                        'class' => 'changePageSize form-select',
-                        'style' => 'display: inline; width: auto',
-                        'aria-label' => gT('Rows per page')
-                    ]
-                )
-            ),
+        'lsPageSizeCurrentValue'     => $pageSize,
         'columns' => $gridColumns,
         'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
         'ajaxUpdate' => 'plugins-grid',
@@ -133,16 +114,3 @@ $this->widget(
 
 $this->renderPartial('./pluginmanager/uploadModal', []);
 ?>
-
-<script type="text/javascript">
-    jQuery(function($) {
-        // To update rows per page via ajax
-        $(document).on("change", '#pageSize', function() {
-            $.fn.yiiGridView.update('plugins-grid', {
-                data: {
-                    pageSize: $(this).val()
-                }
-            });
-        });
-    });
-</script>

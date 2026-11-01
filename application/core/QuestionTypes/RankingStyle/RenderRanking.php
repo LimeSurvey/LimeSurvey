@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -53,6 +55,11 @@ class RenderRanking extends QuestionBaseRenderer
         return '/survey/questions/answer/ranking';
     }
 
+    /**
+     * Renders the select boxes of the ranking items.
+     *
+     * @return string
+     */
     public function getRows()
     {
         // Get the max number of line needed
@@ -82,7 +89,6 @@ class RenderRanking extends QuestionBaseRenderer
         });
 
         $sSelects = '';
-        $inputnames = [];
 
         // Iterate through subquestions instead of answer options
         for ($i = 1; $i <= $iMaxLine; $i++) {
@@ -91,7 +97,7 @@ class RenderRanking extends QuestionBaseRenderer
             $this->sLabeltext = $oSubQuestion->questionl10ns[$this->sLanguage]->question;
             $aItemData = [];
 
-            $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], false);
+            $mSessionValue = $this->setDefaultIfEmpty(SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getFieldValue($myfname), false);
 
             if (!$mSessionValue) {
                 $aItemData[] = array(
@@ -130,7 +136,7 @@ class RenderRanking extends QuestionBaseRenderer
                 true
             );
 
-            $inputnames[] = $myfname;
+            $this->inputnames[] = $myfname;
         }
 
         return $sSelects;
@@ -145,8 +151,8 @@ class RenderRanking extends QuestionBaseRenderer
             $answer .= $this->getTimeSettingRender();
         }
 
-        $rankingTranslation = 'LSvar.lang.rankhelp="' . gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.", 'js') . '";';
-        $rankingTranslation .= 'LSvar.lang.rankadvancedhelp="' . gT("Drag or double-click images into order.", 'js') . '";';
+        $rankingTranslation = 'LSvar.lang.rankhelp="' . gT("Double-click or drag-and-drop items from the available items to your ranking - your highest ranking item should be at the top.", 'js') . '";';
+        $rankingTranslation .= 'LSvar.lang.rankadvancedhelp="' . gT("Drag or double-click items to put them in order.", 'js') . '";';
         $this->addScript("rankingTranslation", $rankingTranslation, CClientScript::POS_BEGIN);
         //$this->applyScripts();
 

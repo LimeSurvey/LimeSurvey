@@ -80,6 +80,7 @@ if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             'htmlOptions' => [
                 'class' => 'btn btn-danger selector--ConfirmModal',
                 'data-post' => $dataPost,
+                'title' => gT('Delete theme'),
                 'data-text' => gT('Are you sure you want to delete this theme?'),
                 'data-button-no' => gT('Cancel'),
                 'data-button-yes' => gT('Delete'),

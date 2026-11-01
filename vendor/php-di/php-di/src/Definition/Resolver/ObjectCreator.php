@@ -9,9 +9,8 @@ use DI\Definition\Exception\InvalidDefinition;
 use DI\Definition\ObjectDefinition;
 use DI\Definition\ObjectDefinition\PropertyInjection;
 use DI\DependencyException;
-use DI\Proxy\ProxyFactory;
+use DI\Proxy\ProxyFactoryInterface;
 use Exception;
-use ProxyManager\Proxy\LazyLoadingInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
 use ReflectionProperty;
@@ -19,36 +18,23 @@ use ReflectionProperty;
 /**
  * Create objects based on an object definition.
  *
+ * @template-implements DefinitionResolver<ObjectDefinition>
+ *
  * @since 4.0
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
 class ObjectCreator implements DefinitionResolver
 {
-    /**
-     * @var ProxyFactory
-     */
-    private $proxyFactory;
+    private ParameterResolver $parameterResolver;
 
     /**
-     * @var ParameterResolver
-     */
-    private $parameterResolver;
-
-    /**
-     * @var DefinitionResolver
-     */
-    private $definitionResolver;
-
-    /**
-     * @param DefinitionResolver $definitionResolver Used to resolve nested definitions.
-     * @param ProxyFactory       $proxyFactory       Used to create proxies for lazy injections.
+     * @param DefinitionResolver    $definitionResolver Used to resolve nested definitions.
+     * @param ProxyFactoryInterface $proxyFactory       Used to create proxies for lazy injections.
      */
     public function __construct(
-        DefinitionResolver $definitionResolver,
-        ProxyFactory $proxyFactory
+        private DefinitionResolver $definitionResolver,
+        private ProxyFactoryInterface $proxyFactory,
     ) {
-        $this->definitionResolver = $definitionResolver;
-        $this->proxyFactory = $proxyFactory;
         $this->parameterResolver = new ParameterResolver($definitionResolver);
     }
 
@@ -58,10 +44,8 @@ class ObjectCreator implements DefinitionResolver
      * This will create a new instance of the class using the injections points defined.
      *
      * @param ObjectDefinition $definition
-     *
-     * @return object|null
      */
-    public function resolve(Definition $definition, array $parameters = [])
+    public function resolve(Definition $definition, array $parameters = []) : ?object
     {
         // Lazy?
         if ($definition->isLazy()) {
@@ -85,32 +69,28 @@ class ObjectCreator implements DefinitionResolver
     /**
      * Returns a proxy instance.
      */
-    private function createProxy(ObjectDefinition $definition, array $parameters) : LazyLoadingInterface
+    private function createProxy(ObjectDefinition $definition, array $parameters) : object
     {
-        /** @noinspection PhpUnusedParameterInspection */
-        $proxy = $this->proxyFactory->createProxy(
-            $definition->getClassName(),
-            function (& $wrappedObject, $proxy, $method, $params, & $initializer) use ($definition, $parameters) {
-                $wrappedObject = $this->createInstance($definition, $parameters);
-                $initializer = null; // turning off further lazy initialization
+        /** @var class-string $className */
+        $className = $definition->getClassName();
 
-                return true;
+        return $this->proxyFactory->createProxy(
+            $className,
+            function () use ($definition, $parameters) {
+                return $this->createInstance($definition, $parameters);
             }
         );
-
-        return $proxy;
     }
 
     /**
      * Creates an instance of the class and injects dependencies..
      *
-     * @param array            $parameters      Optional parameters to use to create the instance.
+     * @param array $parameters Optional parameters to use to create the instance.
      *
-     * @throws InvalidDefinition
      * @throws DependencyException
-     * @return object
+     * @throws InvalidDefinition
      */
-    private function createInstance(ObjectDefinition $definition, array $parameters)
+    private function createInstance(ObjectDefinition $definition, array $parameters) : object
     {
         // Check that the class is instantiable
         if (! $definition->isInstantiable()) {
@@ -128,11 +108,13 @@ class ObjectCreator implements DefinitionResolver
             ));
         }
 
+        /** @psalm-var class-string $classname */
         $classname = $definition->getClassName();
         $classReflection = new ReflectionClass($classname);
 
         $constructorInjection = $definition->getConstructorInjection();
 
+        /** @psalm-suppress InvalidCatch */
         try {
             $args = $this->parameterResolver->resolveParameters(
                 $constructorInjection,
@@ -160,7 +142,7 @@ class ObjectCreator implements DefinitionResolver
         return $object;
     }
 
-    protected function injectMethodsAndProperties($object, ObjectDefinition $objectDefinition)
+    protected function injectMethodsAndProperties(object $object, ObjectDefinition $objectDefinition) : void
     {
         // Property injections
         foreach ($objectDefinition->getPropertyInjections() as $propertyInjection) {
@@ -183,9 +165,8 @@ class ObjectCreator implements DefinitionResolver
      * @param PropertyInjection $propertyInjection Property injection definition
      *
      * @throws DependencyException
-     * @throws InvalidDefinition
      */
-    private function injectProperty($object, PropertyInjection $propertyInjection)
+    private function injectProperty(object $object, PropertyInjection $propertyInjection) : void
     {
         $propertyName = $propertyInjection->getPropertyName();
 
@@ -199,7 +180,7 @@ class ObjectCreator implements DefinitionResolver
             } catch (Exception $e) {
                 throw new DependencyException(sprintf(
                     'Error while injecting in %s::%s. %s',
-                    get_class($object),
+                    $object::class,
                     $propertyName,
                     $e->getMessage()
                 ), 0, $e);
@@ -209,12 +190,12 @@ class ObjectCreator implements DefinitionResolver
         self::setPrivatePropertyValue($propertyInjection->getClassName(), $object, $propertyName, $value);
     }
 
-    public static function setPrivatePropertyValue(string $className = null, $object, string $propertyName, $propertyValue)
+    public static function setPrivatePropertyValue(?string $className, $object, string $propertyName, mixed $propertyValue) : void
     {
-        $className = $className ?: get_class($object);
+        $className = $className ?: $object::class;
 
         $property = new ReflectionProperty($className, $propertyName);
-        if (! $property->isPublic()) {
+        if (! $property->isPublic() && \PHP_VERSION_ID < 80100) {
             $property->setAccessible(true);
         }
         $property->setValue($object, $propertyValue);

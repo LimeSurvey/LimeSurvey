@@ -7,6 +7,7 @@ use Throwable;
 
 class Update_425 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $aUserDirectory = QuestionTheme::getAllQuestionXMLPaths(false, false, true);
@@ -15,7 +16,7 @@ class Update_425 extends DatabaseUpdateBase
             $aUserXMLPaths = key($aUserDirectory);
             foreach ($aUserDirectory[$aUserXMLPaths] as $sXMLDirectoryPath) {
                 try {
-                    $aSuccess = QuestionTheme::convertLS3toLS5($sXMLDirectoryPath);
+                    $aSuccess = QuestionTheme::convertLegacyQuestionTheme($sXMLDirectoryPath);
                     if ($aSuccess['success']) {
                         $oQuestionTheme = new QuestionTheme();
                         $oQuestionTheme->importManifest($sXMLDirectoryPath, true);

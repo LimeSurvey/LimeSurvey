@@ -51,8 +51,8 @@ class Saved extends SurveyCommonAction
         $aData['sSurveyName'] = $aThisSurvey['name'];
         $aData['iSurveyId'] = $iSurveyId;
         // Set page size
-        if (App()->request->getPost('savedResponsesPageSize')) {
-            App()->user->setState('savedResponsesPageSize', App()->request->getPost('savedResponsesPageSize'));
+        if (App()->request->getPost('pageSize')) {
+            App()->user->setState('savedResponsesPageSize', App()->request->getPost('pageSize'));
         }
         $aData['savedResponsesPageSize'] = App()->user->getState('savedResponsesPageSize', App()->params['defaultPageSize']);
         $aViewUrls[] = 'savedlist_view';
@@ -74,9 +74,13 @@ class Saved extends SurveyCommonAction
 
     /**
      * Function responsible to delete saved responses.
+     *
+     * Note: The saved response is looked up by scid and sid together, so the permission
+     * checked on the survey also covers the deleted entry.
+     *
      * @param int $surveyid
      * @return void
-     * @throws Exception
+     * @throws CHttpException
      */
     public function actionDelete($surveyid)
     {
@@ -89,7 +93,7 @@ class Saved extends SurveyCommonAction
         Yii::import('application.helpers.admin.ajax_helper', true);
 
         $iScid = App()->getRequest()->getParam('scid');
-        $oSavedControl = SavedControl::model()->find('scid = :scid', array(':scid' => $iScid));
+        $oSavedControl = SavedControl::model()->find('scid = :scid AND sid = :sid', array(':scid' => $iScid, ':sid' => $surveyid));
         if (empty($oSavedControl)) {
             throw new CHttpException(401, gT("Saved response not found"));
         }

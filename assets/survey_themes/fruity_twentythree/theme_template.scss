@@ -142,6 +142,7 @@ $base-color: #ffffff;
 @import "language-changer/language-changer.scss";
 @import "language-changer/language-changer_colors.scss";
 @import "video/video.scss";
+@import "navigator/navigator.scss";
 
 // 6.2 question type customizations
 @import "questiontypes/imageselect/imageselect.scss";
@@ -167,5 +168,8 @@ $base-color: #ffffff;
 @import "tables/no-tables";
 @import "tables/no-tables-mobiles";
 
-// TODO: placeholder, will probbably be removed
+// 6.4 Accessibility
+@import "a11y-handles/a11y-handles.scss";
+
+// TODO: placeholder, will probably be removed
 @import "darkmode/darkmode_colors.scss";

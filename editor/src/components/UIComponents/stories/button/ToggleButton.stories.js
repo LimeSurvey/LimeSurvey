@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ToggleButtons } from '../../Buttons/ToggleButtons'
 
 export default {
-  title: 'UIComponents/Button/ToggleButton',
+  title: 'imageWrapper/Button/ToggleButton',
   component: ToggleButtons,
 }
 

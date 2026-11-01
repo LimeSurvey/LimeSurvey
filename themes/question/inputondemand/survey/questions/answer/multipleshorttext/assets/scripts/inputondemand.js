@@ -29,6 +29,7 @@ var InputOnDemanControlGenerator = function(containerId, options){
 
     var addLine = function() {
         var last = null;
+        var revealed = null;
         $list.find('.selector--inputondemand-list-input').each(function(itrt, listItem){
             if(!$(listItem).closest('.selector--inputondemand-list-item').hasClass('d-none')) {
                 last = listItem;
@@ -36,10 +37,15 @@ var InputOnDemanControlGenerator = function(containerId, options){
             }
             if(last !== null) {
                 $(listItem).closest('.selector--inputondemand-list-item').removeClass('d-none');
+                revealed = listItem;
                 last = null;
                 return false;
             }
         });
+        // Move the focus into the line we just revealed.
+        if(revealed !== null) {
+            $(revealed).trigger('focus');
+        }
         if(!$list.find('.selector--inputondemand-list-item').last().hasClass('d-none')) {
             $button.addClass('d-none');
         }

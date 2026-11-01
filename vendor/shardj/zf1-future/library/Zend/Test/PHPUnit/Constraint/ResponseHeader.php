@@ -20,12 +20,25 @@
  * @version    $Id$
  */
 
-if (version_compare(PHPUnit_Runner_Version::id(), '4.1', '>=')) {
+if (class_exists('PHPUnit\Runner\Version')) {
+	$id = PHPUnit\Runner\Version::id();
+} elseif (class_exists('PHPUnit_Runner_Version')) {
+	$id = PHPUnit_Runner_Version::id();
+} else {
+	$id = '0.0.0';
+}
+
+if (version_compare($id, '6.0', '>=')) {
+	include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ResponseHeader80.php');
+
+	class Zend_Test_PHPUnit_Constraint_ResponseHeader extends Zend_Test_PHPUnit_Constraint_ResponseHeader80
+	{}
+} elseif (version_compare($id, '4.1', '>=')) {
     include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ResponseHeader41.php');
 
     class Zend_Test_PHPUnit_Constraint_ResponseHeader extends Zend_Test_PHPUnit_Constraint_ResponseHeader41
     {}
-} elseif (version_compare(PHPUnit_Runner_Version::id(), '3.5', '>=')) {
+} elseif (version_compare($id, '3.5', '>=')) {
     include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ResponseHeader37.php');
 
     class Zend_Test_PHPUnit_Constraint_ResponseHeader extends Zend_Test_PHPUnit_Constraint_ResponseHeader37

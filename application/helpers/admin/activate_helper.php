@@ -27,7 +27,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
     //Fix a question id - requires renumbering a question
     $iQuestionID = (int) $iQuestionID;
-    $iMaxQID = Question::model()->getMaxId('qid', true); // Always refresh as we insert new qid's
+    $iMaxQID = Question::model()->getMaxId('qid');
     $iNewQID = $iMaxQID + 1;
 
     // Not sure we can do this in MSSQL ?
@@ -226,7 +226,7 @@ function checkQuestions($postsid, $iSurveyID)
     } // while
 
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('" . Question::QT_S_SHORT_FREE_TEXT . "', '" . Question::QT_D_DATE . "', '" . Question::QT_T_LONG_FREE_TEXT . "', '" . Question::QT_Q_MULTIPLE_SHORT_TEXT . "')";
+    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('" . Question::QT_S_SHORT_FREE_TEXT . "', '" . Question::QT_J_MAP . "', '" . Question::QT_D_DATE . "', '" . Question::QT_T_LONG_FREE_TEXT . "', '" . Question::QT_Q_MULTIPLE_SHORT_TEXT . "')";
     $qorderresult = Yii::app()->db->createCommand($qorderquery)->query()->readAll();
     $qrows = array(); //Create an empty array in case FetchRow does not return any rows
     foreach ($qorderresult as $qrow) {
@@ -277,8 +277,16 @@ function checkQuestions($postsid, $iSurveyID)
     $fieldmap = createFieldMap($survey, 'full', true, false, $survey->language, $aDuplicateQIDs);
     if (count($aDuplicateQIDs)) {
         foreach ($aDuplicateQIDs as $iQID => $aDuplicate) {
-            $sFixLink = "[<a class='selector__fixConsistencyProblem'
-            href='" . Yii::app()->getController()->createUrl("/surveyAdministration/fixNumbering/iSurveyID/{$iSurveyID}/questionId/{$iQID}") . "'>Click here to fix</a>]";
+            // Note: Fixing changes the question ID, so it is only done by POST
+            $sFixLink = CHtml::form(
+                Yii::app()->getController()->createUrl("/surveyAdministration/fixNumbering"),
+                'post',
+                ['class' => 'd-inline']
+            )
+                . CHtml::hiddenField('iSurveyID', $iSurveyID, ['id' => false])
+                . CHtml::hiddenField('questionId', $iQID, ['id' => false])
+                . "[<button type='submit' class='btn btn-link p-0 align-baseline selector__fixConsistencyProblem'>Click here to fix</button>]"
+                . CHtml::endForm();
             $failedcheck[] = array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
     }

@@ -105,7 +105,7 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
             //~ $modalBody = self::$webDriver->findElement(
                 //~ WebDriverBy::cssSelector("#bootstrap-alert-box-modal .modal-body")
             //~ );
-            //~ $modalBodyText = trim($modalBody->getText());// trim since thare are \t and \n and other [:space:]
+            //~ $modalBodyText = trim($modalBody->getText());// trim since there are \t and \n and other [:space:]
             //~ $this->assertEquals('One or more mandatory questions have not been answered. You cannot proceed until these have been completed.', $modalBodyText);
             $elementsRelevanceMandatory=self::$webDriver->findElements(WebDriverBy::cssSelector("#question".$relevanceJsQuestion->qid." .ls-question-mandatory"));
             $this->assertCount(1, $elementsRelevance, 'Move next not disable with mandatory question');

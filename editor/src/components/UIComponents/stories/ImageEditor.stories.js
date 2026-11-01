@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ImageEditor } from '../ImageEditor/ImageEditor'
 
 export default {
-  title: 'UIComponents/ImageEditor',
+  title: 'imageWrapper/ImageEditor',
   component: ImageEditor,
 }
 

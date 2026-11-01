@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -114,13 +116,46 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         return $aRows;
     }
 
+    /**
+     * Returns shared "Other" text parts and input constraints used by both
+     * getOtherRow() and render().
+     *
+     * @return array{otherTextLeft: string, otherTextRight: string, otherInputSize: string|null, otherMaxLength: int|null}
+     */
+    private function getOtherSizeConstraints(): array
+    {
+        $otherParts = $this->splitOtherText($this->otherText);
+
+        $otherInputSize = null;
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('other_input_size')))) {
+            $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
+        }
+
+        $otherMaxLength = null;
+        if (intval(trim((string) $this->getQuestionAttribute('other_maximum_chars'))) > 0) {
+            $otherMaxLength = intval(trim((string) $this->getQuestionAttribute('other_maximum_chars')));
+        }
+
+        return [
+            'otherTextLeft'  => $otherParts['left'],
+            'otherTextRight' => $otherParts['right'],
+            'otherInputSize' => $otherInputSize,
+            'otherMaxLength' => $otherMaxLength,
+        ];
+    }
+
+    /**
+     * Returns the template data of the "Other" option row.
+     *
+     * @return array
+     */
     public function getOtherRow()
     {
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? "fixnum_checkconditions" : "checkconditions";
 
         $myfname = $this->sSGQA . '_Cother';
-        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
+        $mSessionValue = $this->setDefaultIfEmpty(SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getFieldValue($myfname), '');
         $this->inputnames[] = $myfname;
 
         $sValue = '';
@@ -142,21 +177,41 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             $sValueHidden = htmlspecialchars((string) $dispVal, ENT_QUOTES);
         }
 
+        $otherConstraints = $this->getOtherSizeConstraints();
+        $otherTextLeft    = $otherConstraints['otherTextLeft'];
+        $otherTextRight   = $otherConstraints['otherTextRight'];
+        $otherInputSize   = $otherConstraints['otherInputSize'];
+        $otherMaxLength   = $otherConstraints['otherMaxLength'];
+
+        $otherItemExtraClass = "";
+        if (empty($otherTextLeft)) {
+            $otherItemExtraClass = "no-prefix-othertext";
+        }
+        if ($otherInputSize !== null) {
+            $otherItemExtraClass .= " ls-input-sized";
+        }
+
         ////
         // Insert row
         // Display the answer row
         return array(
             'myfname'                    => $myfname,
-            'othertext'                  => $this->otherText,
+            'othertext'                  => $otherTextLeft,
+            'othertextRight'             => $otherTextRight,
+            'otherItemExtraClass'        => $otherItemExtraClass,
             'sValue'                     => $sValue,
             'oth_checkconditionFunction' => $oth_checkconditionFunction,
             'checkconditionFunction'     => "checkconditions",
             'sValueHidden'               => $sValueHidden,
-            'checkedState'               => ($mSessionValue != '' ? CHECKED : ''),
+            'checkedState'               => (
+                $mSessionValue != '' || LimeExpressionManager::isOtherCheckedWithoutValue($myfname) ? CHECKED : ''
+            ),
             'relevanceClass'             => $this->getCurrentRelevecanceClass($myfname),
             'other'                      => true,
             'anscount'                   => $this->getQuestionCount(),
-            'iNbCols'                    => $this->iNbCols
+            'iNbCols'                    => $this->iNbCols,
+            'otherInputSize'             => $otherInputSize,
+            'otherMaxLength'             => $otherMaxLength,
         );
     }
 
@@ -167,6 +222,12 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $inputnames = [];
         $this->sCoreClasses .= " " . $sCoreClasses;
 
+        $otherConstraints = $this->getOtherSizeConstraints();
+        $otherTextLeft    = $otherConstraints['otherTextLeft'];
+        $otherTextRight   = $otherConstraints['otherTextRight'];
+        $otherInputSize   = $otherConstraints['otherInputSize'];
+        $otherMaxLength   = $otherConstraints['otherMaxLength'];
+
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'aRows'            => $this->getRows(),
             'name'             => $this->sSGQA,
@@ -176,7 +237,10 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             /* @deprecated since 6.3.3 : Leave it for old question theme compatibility, be sure to don't add columns */
             'iMaxRowsByColumn' => $this->getQuestionCount() + 3,
             'coreClass'        => $this->sCoreClasses,
-            'othertext'        => $this->otherText,
+            'othertext'        => $otherTextLeft,
+            'otherTextRight'   => $otherTextRight,
+            'otherInputSize'   => $otherInputSize,
+            'otherMaxLength'   => $otherMaxLength,
         ), true);
 
         $this->registerAssets();

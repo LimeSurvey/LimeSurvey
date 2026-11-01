@@ -122,6 +122,28 @@ class SurveymenuEntries extends LSActiveRecord
         return $oSurveymenuEntries->getPrimaryKey();
     }
 
+    /**
+     * Checks whether the current user has the permission required by this menu entry.
+     * A global permission is checked globally, any other one on the given survey.
+     * Entries without a permission are always allowed.
+     *
+     * @param int|null $iSurveyId Survey to check a survey permission on; without it, survey permissions are not checked
+     * @return bool
+     */
+    public function userHasPermission($iSurveyId = null)
+    {
+        if (empty($this->permission) || empty($this->permission_grade)) {
+            return true;
+        }
+        if (array_key_exists($this->permission, Permission::getGlobalBasePermissions())) {
+            return Permission::model()->hasGlobalPermission($this->permission, $this->permission_grade);
+        }
+        if ($iSurveyId !== null) {
+            return Permission::model()->hasSurveyPermission($iSurveyId, $this->permission, $this->permission_grade);
+        }
+        return true;
+    }
+
     public function reorder()
     {
 
@@ -347,12 +369,13 @@ class SurveymenuEntries extends LSActiveRecord
     {
         $cols = [
             [
-                'value'             => '\'<input type="checkbox" name="id[]" class="action_selectthisentry" value="\'.$data->id.\'" />\'',
-                'type'              => 'raw',
-                'filter'            => false,
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column']
+                'class'               => 'CCheckBoxColumn',
+                'selectableRows'      => 2,
+                'name'                => 'id',
+                'checkBoxHtmlOptions' => ['name' => 'id[]', 'class' => 'massiveActionsCheckbox action_selectthisentry'],
+                'headerHtmlOptions'   => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions'   => ['class' => 'ls-sticky-column'],
+                'htmlOptions'         => ['class' => 'ls-sticky-column'],
             ],
             [
                 'name' => 'title',
@@ -377,9 +400,6 @@ class SurveymenuEntries extends LSActiveRecord
                 'filter' => false,
             ],
             [
-                'name' => 'menu_class',
-            ],
-            [
                 'name'  => 'menu_link',
                 'value' => 'SurveymenuEntries::returnCombinedMenuLink($data)',
                 'type'  => 'text'
@@ -398,15 +418,8 @@ class SurveymenuEntries extends LSActiveRecord
                 'headerHtmlOptions' => ['style' => 'white-space: prewrap;'],
             ],
             [
-                'name'   => 'data',
-                'value'  => '$data->data ? "<i class=\'ri-information-fill bigIcons\' title=\'".$data->data."\'></i>"
-                : ( $data->getdatamethod ? gT("GET data method:")."<br/>".CHtml::encode($data->getdatamethod) : "")',
-                'type'   => 'raw',
-                'filter' => false,
-            ],
-            [
                 'name'   => 'menu_id',
-                'value'  => '$data->menu->title." (".$data->menu_id.")"',
+                'value'  => '($data->menu ? $data->menu->title : "")." (".$data->menu_id.")"',
                 'filter' => $this->getMenuIdOptions()
             ],
             [
@@ -469,7 +482,7 @@ class SurveymenuEntries extends LSActiveRecord
             ),
             array(
                 'name' => 'menu_id',
-                'value' => '$data->menu->title',
+                'value' => '$data->menu ? $data->menu->title : ""',
             )
         );
 
@@ -582,7 +595,7 @@ class SurveymenuEntries extends LSActiveRecord
             $this->menu_title = empty($this->menu_title) ? $this->title : $this->menu_title;
             $this->menu_description = empty($this->menu_description) ? $this->title : $this->menu_title;
         }
-        parent::save($runValidation, $attributes);
+        return parent::save($runValidation, $attributes);
     }
 
     /**

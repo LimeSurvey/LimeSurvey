@@ -25,6 +25,10 @@ class MssqlSchema extends CMssqlSchema
         $this->columnTypes['autoincrement'] = 'integer NOT NULL IDENTITY (1,1)';
 
         $this->columnTypes['longbinary'] = 'varbinary(max)';
+        /**
+         * MSSQL has no native JSON type, use nvarchar to store unicode JSON.
+         */
+        $this->columnTypes['json'] = 'nvarchar(max)';
     }
 
 
@@ -83,6 +87,32 @@ class MssqlSchema extends CMssqlSchema
             'PRIMARY KEY (%s)',
             implode(', ', $columns)
         );
+    }
+
+    /**
+     * Quotes a table name for use in a query.
+     * Unlike the Yii parent, any embedded closing bracket is escaped by doubling it, so a
+     * name cannot break out of the quoted identifier (mantis #20741).
+     *
+     * @param string $name table name
+     * @return string the properly quoted table name
+     */
+    public function quoteSimpleTableName($name)
+    {
+        return '[' . str_replace(']', ']]', (string) $name) . ']';
+    }
+
+    /**
+     * Quotes a column name for use in a query.
+     * Unlike the Yii parent, any embedded closing bracket is escaped by doubling it, so a
+     * name cannot break out of the quoted identifier (mantis #20741).
+     *
+     * @param string $name column name
+     * @return string the properly quoted column name
+     */
+    public function quoteSimpleColumnName($name)
+    {
+        return '[' . str_replace(']', ']]', (string) $name) . ']';
     }
 
     /**

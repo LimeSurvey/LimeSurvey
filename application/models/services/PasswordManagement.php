@@ -14,6 +14,8 @@ class PasswordManagement
 {
     // NB: PHP 7.0 does not support class constant visibility
     const MIN_PASSWORD_LENGTH = 8;
+    /** Minimum password length when the PasswordRequirement core plugin is not loaded */
+    const FALLBACK_MIN_PASSWORD_LENGTH = 14;
     const EMAIL_TYPE_REGISTRATION = 'registration';
     const EMAIL_TYPE_RESET_PW = 'resetPassword';
     const MIN_TIME_NEXT_FORGOT_PW_EMAIL = 5; //forgot pw email is send again, only after 5 min delay
@@ -31,15 +33,15 @@ class PasswordManagement
     }
 
     /**
-     * This function prepare the email template to send to the new created user
+     * Get the placeholder replacements available in the admin creation email template
      *
+     * {LOGINURL} is replaced by the plain URL (not a HTML link like LimeMailer URL placeholders) to keep
+     * existing templates using href="{LOGINURL}" working.
      *
-     * @return mixed $aAdminEmail array with subject and email body
+     * @return array<string, string>|false Placeholder name (without braces) => value, false if the login URL can not be created
      */
-    public function generateAdminCreationEmail()
+    public function getAdminCreationEmailReplacements()
     {
-        $adminEmail = [];
-        $siteName = \Yii::app()->getConfig("sitename");
         $loginUrl = \Yii::app()->createValidatedAbsoluteUrl(
             'admin/authentication/sa/newPassword',
             ['param' => $this->user->validation_key]
@@ -47,27 +49,30 @@ class PasswordManagement
         if ($loginUrl === false) {
             return false;
         }
-        $siteAdminEmail = \Yii::app()->getConfig("siteadminemail");
-        $emailSubject = \Yii::app()->getConfig("admincreationemailsubject");
-        $emailTemplate = \Yii::app()->getConfig("admincreationemailtemplate");
-
-        //Replace placeholder in Email subject
-        $emailSubject = str_replace("{SITENAME}", $siteName, (string) $emailSubject);
-        $emailSubject = str_replace("{SITEADMINEMAIL}", $siteAdminEmail, $emailSubject);
-
-        //Replace placeholder in Email body
-        $emailTemplate = str_replace("{SITENAME}", $siteName, (string) $emailTemplate);
-        $emailTemplate = str_replace("{SITEADMINEMAIL}", $siteAdminEmail, $emailTemplate);
-        $emailTemplate = str_replace("{FULLNAME}", $this->user->full_name, $emailTemplate);
-        $emailTemplate = str_replace("{USERNAME}", $this->user->users_name, $emailTemplate);
-        $emailTemplate = str_replace("{LOGINURL}", $loginUrl, $emailTemplate);
-
-        $adminEmail['subject'] = $emailSubject;
-        $adminEmail['body'] = $emailTemplate;
-
-        return $adminEmail;
+        return [
+            'SITENAME' => (string) \Yii::app()->getConfig("sitename"),
+            'SITEADMINEMAIL' => (string) \Yii::app()->getConfig("siteadminemail"),
+            'FULLNAME' => (string) $this->user->full_name,
+            'USERNAME' => (string) $this->user->users_name,
+            'LOGINURL' => $loginUrl,
+        ];
     }
 
+    /**
+     * Get the raw admin creation email subject and body from global settings
+     *
+     * The barebone URL @@LOGINURL@@ is converted to {LOGINURL}, which is replaced by the plain URL.
+     * All other replacements are done by LimeMailer (Expression Manager and plugins).
+     *
+     * @return array{subject: string, body: string} Raw subject and body, placeholders not replaced
+     */
+    public function getRawAdminCreationEmail(): array
+    {
+        return [
+            'subject' => str_replace('@@LOGINURL@@', '{LOGINURL}', (string) \Yii::app()->getConfig("admincreationemailsubject")),
+            'body' => str_replace('@@LOGINURL@@', '{LOGINURL}', (string) \Yii::app()->getConfig("admincreationemailtemplate")),
+        ];
+    }
 
     /**
      * Sets the validationKey and the validationKey expiration and
@@ -195,12 +200,13 @@ class PasswordManagement
     }
 
     /**
-     * Creates a random password through the core plugin
+     * Creates a random password through the core plugin.
+     * Without any plugin checking admin passwords, the password has at least FALLBACK_MIN_PASSWORD_LENGTH characters.
      *
      * @todo it's fine to use static functions, until it is used only in controllers ...
      *
      * @param int $length Length of the password
-     * @return string|null
+     * @return string
      */
     public static function getRandomPassword($length = self::MIN_PASSWORD_LENGTH)
     {
@@ -208,7 +214,25 @@ class PasswordManagement
         $oGetPasswordEvent->set('targetSize', $length);
         \Yii::app()->getPluginManager()->dispatchEvent($oGetPasswordEvent);
 
-        return $oGetPasswordEvent->get('password');
+        $password = (string) $oGetPasswordEvent->get('password');
+        if (!self::hasPasswordRequirementCheck() && strlen($password) < self::FALLBACK_MIN_PASSWORD_LENGTH) {
+            // User::checkPasswordStrength() then requires FALLBACK_MIN_PASSWORD_LENGTH characters
+            $password = getRandomString(max($length, self::FALLBACK_MIN_PASSWORD_LENGTH));
+        } elseif ($password === '') {
+            $password = getRandomString($length);
+        }
+        return $password;
+    }
+
+    /**
+     * Whether a plugin checks admin passwords through the checkPasswordRequirement event.
+     * This is the PasswordRequirement core plugin, unless it is in corePluginBlocklist or failed to load.
+     *
+     * @return bool
+     */
+    public static function hasPasswordRequirementCheck()
+    {
+        return !empty(\Yii::app()->getPluginManager()->getSubscriptions('checkPasswordRequirement'));
     }
 
     /**
@@ -222,13 +246,14 @@ class PasswordManagement
      */
     private function sendAdminMail($type = self::EMAIL_TYPE_REGISTRATION): \LimeMailer
     {
+        $rawSubject = '';
+        $rawBody = '';
+        $replacements = [];
         switch ($type) {
             case self::EMAIL_TYPE_RESET_PW:
                 $renderArray = $this->getRenderArray();
                 if (empty($renderArray)) {
-                    $mailer = new \LimeMailer();
-                    $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
-                    return $mailer;
+                    return $this->getMailerConfigurationError();
                 }
                 $subject = "[" . \Yii::app()->getConfig("sitename") . "] " . gT(
                     "Your login credentials have been reset"
@@ -241,16 +266,21 @@ class PasswordManagement
                 break;
             case self::EMAIL_TYPE_REGISTRATION:
             default:
-                //Get email template from globalSettings
-                $aAdminEmail = $this->generateAdminCreationEmail();
-                if ($aAdminEmail === false) {
-                    $mailer = new \LimeMailer();
-                    $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
-                    return $mailer;
+                //Get email template from globalSettings, replacements are done by LimeMailer
+                $replacements = $this->getAdminCreationEmailReplacements();
+                if ($replacements === false) {
+                    return $this->getMailerConfigurationError();
                 }
-                $subject = $aAdminEmail["subject"];
-                $body = $aAdminEmail["body"];
+                $rawEmail = $this->getRawAdminCreationEmail();
+                $rawSubject = $rawEmail['subject'];
+                $rawBody = $rawEmail['body'];
+                $subject = '';
+                $body = '';
                 break;
+        }
+
+        if (empty(\Yii::app()->getConfig("siteadminemail"))) {
+            return $this->getMailerConfigurationError();
         }
 
         $emailType = "addadminuser";
@@ -260,9 +290,24 @@ class PasswordManagement
         $mailer->Subject = $subject;
         $mailer->setFrom(\Yii::app()->getConfig("siteadminemail"), \Yii::app()->getConfig("siteadminname"));
         $mailer->Body = $body;
+        $mailer->rawSubject = $rawSubject;
+        $mailer->rawBody = $rawBody;
+        $mailer->addAndReplaceReplacement($replacements);
         $mailer->isHtml(true);
         $mailer->emailType = $emailType;
         $mailer->sendMessage();
+        return $mailer;
+    }
+
+    /**
+     * Returns an unsent mailer carrying the error that the system is not configured to send emails
+     *
+     * @return \LimeMailer
+     */
+    private function getMailerConfigurationError(): \LimeMailer
+    {
+        $mailer = new \LimeMailer();
+        $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
         return $mailer;
     }
 

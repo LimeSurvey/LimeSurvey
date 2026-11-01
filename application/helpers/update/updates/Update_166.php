@@ -6,6 +6,7 @@ use Exception;
 
 class Update_166 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');

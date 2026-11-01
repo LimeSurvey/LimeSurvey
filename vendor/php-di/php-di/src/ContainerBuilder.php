@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DI;
 
 use DI\Compiler\Compiler;
-use DI\Definition\Source\AnnotationBasedAutowiring;
+use DI\Definition\Source\AttributeBasedAutowiring;
 use DI\Definition\Source\DefinitionArray;
 use DI\Definition\Source\DefinitionFile;
 use DI\Definition\Source\DefinitionSource;
@@ -13,6 +13,7 @@ use DI\Definition\Source\NoAutowiring;
 use DI\Definition\Source\ReflectionBasedAutowiring;
 use DI\Definition\Source\SourceCache;
 use DI\Definition\Source\SourceChain;
+use DI\Proxy\NativeProxyFactory;
 use DI\Proxy\ProxyFactory;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
@@ -31,90 +32,58 @@ use Psr\Container\ContainerInterface;
  *
  * @since  3.2
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
+ *
+ * @psalm-template ContainerClass of Container
  */
 class ContainerBuilder
 {
     /**
      * Name of the container class, used to create the container.
-     * @var string
+     * @var class-string<Container>
+     * @psalm-var class-string<ContainerClass>
      */
-    private $containerClass;
+    private string $containerClass;
 
     /**
      * Name of the container parent class, used on compiled container.
-     * @var string
+     * @var class-string<Container>
+     * @psalm-var class-string<ContainerClass>
      */
-    private $containerParentClass;
+    private string $containerParentClass;
+
+    private bool $useAutowiring = true;
+
+    private bool $useAttributes = false;
 
     /**
-     * @var bool
+     * If set, write the proxies to disk in this directory to improve performances.
      */
-    private $useAutowiring = true;
-
-    /**
-     * @var bool
-     */
-    private $useAnnotations = false;
-
-    /**
-     * @var bool
-     */
-    private $ignorePhpDocErrors = false;
-
-    /**
-     * If true, write the proxies to disk to improve performances.
-     * @var bool
-     */
-    private $writeProxiesToFile = false;
-
-    /**
-     * Directory where to write the proxies (if $writeProxiesToFile is enabled).
-     * @var string|null
-     */
-    private $proxyDirectory;
+    private ?string $proxyDirectory = null;
 
     /**
      * If PHP-DI is wrapped in another container, this references the wrapper.
-     * @var ContainerInterface
      */
-    private $wrapperContainer;
+    private ?ContainerInterface $wrapperContainer = null;
 
     /**
      * @var DefinitionSource[]|string[]|array[]
      */
-    private $definitionSources = [];
+    private array $definitionSources = [];
 
     /**
      * Whether the container has already been built.
-     * @var bool
      */
-    private $locked = false;
+    private bool $locked = false;
+
+    private ?string $compileToDirectory = null;
+
+    private bool $sourceCache = false;
+
+    protected string $sourceCacheNamespace = '';
 
     /**
-     * @var string|null
-     */
-    private $compileToDirectory;
-
-    /**
-     * @var bool
-     */
-    private $sourceCache = false;
-
-    /**
-     * @var string
-     */
-    protected $sourceCacheNamespace;
-
-    /**
-     * Build a container configured for the dev environment.
-     */
-    public static function buildDevContainer() : Container
-    {
-        return new Container;
-    }
-
-    /**
-     * @param string $containerClass Name of the container class, used to create the container.
+     * @param class-string<Container> $containerClass Name of the container class, used to create the container.
+     * @psalm-param class-string<ContainerClass> $containerClass
      */
     public function __construct(string $containerClass = Container::class)
     {
@@ -125,13 +94,14 @@ class ContainerBuilder
      * Build and return a container.
      *
      * @return Container
+     * @psalm-return ContainerClass
      */
     public function build()
     {
         $sources = array_reverse($this->definitionSources);
 
-        if ($this->useAnnotations) {
-            $autowiring = new AnnotationBasedAutowiring($this->ignorePhpDocErrors);
+        if ($this->useAttributes) {
+            $autowiring = new AttributeBasedAutowiring;
             $sources[] = $autowiring;
         } elseif ($this->useAutowiring) {
             $autowiring = new ReflectionBasedAutowiring;
@@ -144,7 +114,8 @@ class ContainerBuilder
             if (is_string($definitions)) {
                 // File
                 return new DefinitionFile($definitions, $autowiring);
-            } elseif (is_array($definitions)) {
+            }
+            if (is_array($definitions)) {
                 return new DefinitionArray($definitions, $autowiring);
             }
 
@@ -163,10 +134,9 @@ class ContainerBuilder
             $source = new SourceCache($source, $this->sourceCacheNamespace);
         }
 
-        $proxyFactory = new ProxyFactory(
-            $this->writeProxiesToFile,
-            $this->proxyDirectory
-        );
+        $proxyFactory = (\PHP_VERSION_ID >= 80400)
+            ? new NativeProxyFactory()
+            : new ProxyFactory($this->proxyDirectory);
 
         $this->locked = true;
 
@@ -179,7 +149,7 @@ class ContainerBuilder
                 $this->compileToDirectory,
                 $containerClass,
                 $this->containerParentClass,
-                $this->useAutowiring || $this->useAnnotations
+                $this->useAutowiring
             );
             // Only load the file if it hasn't been already loaded
             // (the container can be created multiple times in the same process)
@@ -203,14 +173,19 @@ class ContainerBuilder
      *
      * @see https://php-di.org/doc/performances.html
      *
+     * @psalm-template T of CompiledContainer
+     *
      * @param string $directory Directory in which to put the compiled container.
      * @param string $containerClass Name of the compiled class. Customize only if necessary.
-     * @param string $containerParentClass Name of the compiled container parent class. Customize only if necessary.
+     * @param class-string<Container> $containerParentClass Name of the compiled container parent class. Customize only if necessary.
+     * @psalm-param class-string<T> $containerParentClass
+     *
+     * @psalm-return self<T>
      */
     public function enableCompilation(
         string $directory,
         string $containerClass = 'CompiledContainer',
-        string $containerParentClass = CompiledContainer::class
+        string $containerParentClass = CompiledContainer::class,
     ) : self {
         $this->ensureNotLocked();
 
@@ -238,31 +213,17 @@ class ContainerBuilder
     }
 
     /**
-     * Enable or disable the use of annotations to guess injections.
+     * Enable or disable the use of PHP 8 attributes to configure injections.
      *
      * Disabled by default.
      *
      * @return $this
      */
-    public function useAnnotations(bool $bool) : self
+    public function useAttributes(bool $bool) : self
     {
         $this->ensureNotLocked();
 
-        $this->useAnnotations = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Enable or disable ignoring phpdoc errors (non-existent classes in `@param` or `@var`).
-     *
-     * @return $this
-     */
-    public function ignorePhpDocErrors(bool $bool) : self
-    {
-        $this->ensureNotLocked();
-
-        $this->ignorePhpDocErrors = $bool;
+        $this->useAttributes = $bool;
 
         return $this;
     }
@@ -277,21 +238,19 @@ class ContainerBuilder
      *
      * @param bool $writeToFile If true, write the proxies to disk to improve performances
      * @param string|null $proxyDirectory Directory where to write the proxies
-     * @throws InvalidArgumentException when writeToFile is set to true and the proxy directory is null
      * @return $this
+     * @throws InvalidArgumentException when writeToFile is set to true and the proxy directory is null
      */
-    public function writeProxiesToFile(bool $writeToFile, string $proxyDirectory = null) : self
+    public function writeProxiesToFile(bool $writeToFile, ?string $proxyDirectory = null) : self
     {
         $this->ensureNotLocked();
-
-        $this->writeProxiesToFile = $writeToFile;
 
         if ($writeToFile && $proxyDirectory === null) {
             throw new InvalidArgumentException(
                 'The proxy directory must be specified if you want to write proxies on disk'
             );
         }
-        $this->proxyDirectory = $proxyDirectory;
+        $this->proxyDirectory = $writeToFile ? $proxyDirectory : null;
 
         return $this;
     }
@@ -319,19 +278,11 @@ class ContainerBuilder
      *                                                      or a DefinitionSource object.
      * @return $this
      */
-    public function addDefinitions(...$definitions) : self
+    public function addDefinitions(string|array|DefinitionSource ...$definitions) : self
     {
         $this->ensureNotLocked();
 
         foreach ($definitions as $definition) {
-            if (!is_string($definition) && !is_array($definition) && !($definition instanceof DefinitionSource)) {
-                throw new InvalidArgumentException(sprintf(
-                    '%s parameter must be a string, an array or a DefinitionSource object, %s given',
-                    'ContainerBuilder::addDefinitions()',
-                    is_object($definition) ? get_class($definition) : gettype($definition)
-                ));
-            }
-
             $this->definitionSources[] = $definition;
         }
 
@@ -345,7 +296,7 @@ class ContainerBuilder
      *
      * Before using this feature, you should try these steps first:
      * - enable compilation if not already done (see `enableCompilation()`)
-     * - if you use autowiring or annotations, add all the classes you are using into your configuration so that
+     * - if you use autowiring or attributes, add all the classes you are using into your configuration so that
      *   PHP-DI knows about them and compiles them
      * Once this is done, you can try to optimize performances further with APCu. It can also be useful if you use
      * `Container::make()` instead of `get()` (`make()` calls cannot be compiled so they are not optimized).
@@ -376,7 +327,7 @@ class ContainerBuilder
         return (bool) $this->compileToDirectory;
     }
 
-    private function ensureNotLocked()
+    private function ensureNotLocked() : void
     {
         if ($this->locked) {
             throw new \LogicException('The ContainerBuilder cannot be modified after the container has been built');

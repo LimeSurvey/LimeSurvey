@@ -29,5 +29,13 @@
 
 .right-side-bar-settings .dropzone {
   min-width: 243px;
-  min-height: 100px;
+  min-height: 80px;
+  height: 80px;
+  padding: 8px 18px;
+}
+
+.dropzone-img {
+  overflow: hidden;
+  border: 1px solid $g-700;
+  border-radius: $border-radius;
 }

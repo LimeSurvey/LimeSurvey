@@ -7,6 +7,7 @@ use Template;
 
 class Update_143 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $sUserTemplateRootDir = \Yii::app()->getConfig('userthemerootdir');

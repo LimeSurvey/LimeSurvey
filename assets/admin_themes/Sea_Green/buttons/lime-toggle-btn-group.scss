@@ -25,7 +25,9 @@
         padding: 4px;
         border-radius: $border-radius;
         .btn {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: $g-400;
             font-weight: $font-weight-500;
             font-size: $font-size-sm;

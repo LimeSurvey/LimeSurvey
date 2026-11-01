@@ -27,7 +27,7 @@ export const QuestionHeaderPreview = ({
       className="question-header d-flex flex-row"
     >
       <div className="questoin-header-title-container d-flex flex-column">
-        <div className="question-title d-flex align-items-center">
+        <div className="question-title question-title-row d-flex align-items-center">
           <div className="question-number d-flex align-items-center">
             <div data-testid="question-number">{questionNumber}</div>
             <ArrowRightIcon className="text-primary fill-current" />

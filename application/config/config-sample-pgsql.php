@@ -1,8 +1,4 @@
-<?php
-
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS
@@ -16,7 +12,7 @@ if (!defined('BASEPATH')) {
 | EXPLANATION OF VARIABLES
 | -------------------------------------------------------------------
 |
-|    'connectionString' Hostname, database, port and database type for
+|    'connectionString' Hostname, database, port and database type for 
 |     the connection. Driver example: mysql. Currently supported:
 |                 mysql, pgsql, mssql, sqlite, oci
 |    'username' The username used to connect to the database
@@ -26,47 +22,58 @@ if (!defined('BASEPATH')) {
 |
 */
 return array(
-    'name' => 'LimeSurvey',
-    'components' => array(
-        'db' => array(
-            'connectionString' => 'pgsql:host=localhost;port=5432;user=postgres;password=somepassword;dbname=limesurvey;',
-            'emulatePrepare' => true,
-            'username' => 'postgres',
-            'password' => 'somepassword',
-            'charset' => 'utf8',
-            'tablePrefix' => 'lime_',
-        ),
+	'components' => array(
+		'db' => array(
+			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=limesurvey;',
+			'emulatePrepare' => true,
+			'username' => 'postgres',
+			'password' => 'somepassword',
+			'charset' => 'utf8',
+			'tablePrefix' => 'lime_',
+		),
+		
+		 'session' => array (
+			'sessionName'=>'LS-HIQBFUVHDRJIFHMG',
+			// Uncomment the following lines if you need table-based sessions.
+			// Note: Table-based sessions are currently not supported on MSSQL server.
+			// 'class' => 'application.core.web.DbHttpSession',
+			// 'connectionID' => 'db',
+			// 'sessionTableName' => '{{sessions}}',
+		 ),
+		
+		'urlManager' => array(
+				// This is required for proper REST API and React Editor functionality.
+				// If you change it back to 'get', the new editor won't work 
+			'urlFormat' => 'path',
+			'rules' => array(
+				// You can add your own rules here
+			),
+			'showScriptName' => true,
+		),
+	
+		// If URLs generated while running on CLI are wrong, you need to set the baseUrl in the request component. For example:
+		//'request' => array(
+		//	'baseUrl' => '/limesurvey',
+		//),
+	),
+	// For security issue : it's better to set runtimePath out of web access
+	// Directory must be readable and writable by the webuser
+	// 'runtimePath'=>'/var/limesurvey/runtime/'
+	// Use the following config variable to set modified optional settings copied from config-defaults.php
+	'config'=>array(
+	// debug: Set this to 1 if you are looking for errors. If you still get no errors after enabling this
+	// then please check your error-logs - either in your hosting provider admin panel or in some /logs directory
+	// on your webspace.
+	// LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates
+		'debug'=>0,
+		'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2
 
-        // Uncomment the following lines if you need table-based sessions.
-        // Note: Table-based sessions are currently not supported on MSSQL server.
-        // 'session' => array (
-            // 'class' => 'application.core.web.DbHttpSession',
-            // 'connectionID' => 'db',
-            // 'sessionTableName' => '{{sessions}}',
-        // ),
+		// If URLs generated while running on CLI are wrong, you need to uncomment the following line and set your
+		// public URL (the URL facing survey participants). You will also need to set the request->baseUrl in the section above.
+		//'publicurl' => 'https://www.example.org/limesurvey',
 
-        'urlManager' => array(
-            // This is required for proper REST API and React Editor functionality.
-            // If you change it back to 'get', the new editor won't work
-            'urlFormat' => 'path',
-            'rules' => array(
-            // You can put your own rules here
-            ),
-            'showScriptName' => true,
-        ),
-
-    ),
-    // Use the following config variable to set modified optional settings copied from config-defaults.php
-    'config' => array(
-    // debug: Set this to 1 if you are looking for errors. If you still get no errors after enabling this
-    // then please check your error-logs - either in your hosting provider admin panel or in some /logs directory
-    // on your webspace.
-    // LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard themes
-        'debug' => 0,
-        'debugsql' => 0, // Set this to 1 to enanble sql logging, only active when debug = 2
-        // 'force_xmlsettings_for_survey_rendering' => true, // Uncomment if you want to force the use of the XML file rather than DB (for easy theme development)
-        // 'use_asset_manager'=>true, // Uncomment if you want to use debug mode and asset manager at the same time
-    )
+		// Update default LimeSurvey config here
+	)
 );
 /* End of file config.php */
 /* Location: ./application/config/config.php */

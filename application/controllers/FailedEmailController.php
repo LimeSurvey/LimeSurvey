@@ -53,10 +53,6 @@ class FailedEmailController extends LSBaseController
         $failedEmailModel->setAttributes(App()->getRequest()->getParam('FailedEmail'), false);
         $failedEmailModel->setAttribute('surveyid', $surveyId);
         $pageSize = App()->request->getParam('pageSize') ?? App()->user->getState('pageSize', App()->params['defaultPageSize']);
-        $massiveAction = App()->getController()->renderPartial('/failedEmail/partials/massive_action_selector', [
-            'surveyId' => $surveyId,
-            'permissions' => $permissions
-        ], true);
 
         $aData = [];
         $topbarData = TopbarConfiguration::getSurveyTopbarData($surveyId);
@@ -71,9 +67,11 @@ class FailedEmailController extends LSBaseController
         $this->render('failedEmail_index', [
             'failedEmailModel' => $failedEmailModel,
             'pageSize'         => $pageSize,
-            'massiveAction'    => $massiveAction,
+            'surveyId'         => $surveyId,
+            'permissions'      => $permissions,
         ]);
     }
+
 
     /**
      * @throws CHttpException|CException

@@ -27,7 +27,12 @@
 
 .btn-outline-success {
   &:active,
+  &.active,
   &:hover {
     color: $white !important;
   }
+}
+
+.btn-sm-sidebar {
+  padding: 3px;
 }

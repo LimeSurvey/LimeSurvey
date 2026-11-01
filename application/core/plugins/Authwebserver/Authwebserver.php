@@ -12,8 +12,9 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
 
     protected $settings = array(
         'strip_domain' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Strip domain part (DOMAIN\\USER or USER@DOMAIN)',
+            'default' => '0',
         ),
         'serverkey' => array(
             'type' => 'string',
@@ -21,9 +22,9 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             'default' => 'REMOTE_USER',
         ),
         'is_default' => array(
-            'type' => 'checkbox',
-            'label' => 'Check to make default authentication method (This disable Default LimeSurvey authentification by database)',
-            'default' => true,
+            'type' => 'boolean',
+            'label' => 'Default authentication method (disables the default LimeSurvey DB authentication if activated).',
+            'default' => '1',
         )
     );
 

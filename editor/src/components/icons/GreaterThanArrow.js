@@ -12,7 +12,7 @@ export const GreaterThanArrow = () => {
       <g clipPath="url(#clip0_11235_19637)">
         <path
           d="M8.78145 8.00048L5.48145 4.70048L6.42411 3.75781L10.6668 8.00048L6.42411 12.2431L5.48145 11.3005L8.78145 8.00048Z"
-          fill="#6E748C"
+          fill="currentColor"
         />
       </g>
       <defs>

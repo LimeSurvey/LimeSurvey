@@ -1,7 +1,7 @@
 <?php
 
 /**
- * A collection of default data sets, like surveymenus, surveymenuentries, and tutorials
+ * A collection of default data sets, like surveymenus and surveymenuentries
  *
  * This class is important for installation (all datasets will be inserted to database tables and
  * to reset to a default setting (if user want to...)
@@ -13,7 +13,7 @@ class LsDefaultDataSets
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
 
-        $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by', 'showincollapse'];
+        $headerArray = ['menu_id', 'user_id', 'ordering', 'name', 'title', 'menu_title', 'menu_description', 'menu_icon', 'menu_icon_type', 'menu_class', 'menu_link', 'action', 'template', 'partial', 'classes', 'permission', 'permission_grade', 'data', 'getdatamethod', 'language', 'active', 'changed_at', 'changed_by', 'created_at', 'created_by', 'showincollapse'];
         $basicMenues = [
             [
                 1,
@@ -303,7 +303,7 @@ class LsDefaultDataSets
                 gT('Overview questions & groups', 'unescaped'),
                 gT('Overview questions & groups', 'unescaped'),
                 gT('Overview of questions and groups where you can add, edit and reorder them', 'unescaped'),
-                '',
+                'ri-swap-line',
                 'remix',
                 '',
                 'questionAdministration/listQuestions',
@@ -331,7 +331,7 @@ class LsDefaultDataSets
                 gT('Survey participants', 'unescaped'),
                 gT('Participants', 'unescaped'),
                 gT('Go to survey participant and token settings', 'unescaped'),
-                '',
+                'ri-contacts-line',
                 'remix',
                 '',
                 'admin/tokens/sa/index/',
@@ -359,7 +359,7 @@ class LsDefaultDataSets
                 gT('Email templates', 'unescaped'),
                 gT('Email templates', 'unescaped'),
                 gT('Edit the templates for invitation, reminder and registration emails', 'unescaped'),
-                '',
+                'ri-mail-line',
                 'remix',
                 '',
                 'admin/emailtemplates/sa/index/',
@@ -387,7 +387,7 @@ class LsDefaultDataSets
                 gT('Failed email notifications', 'unescaped'),
                 gT('Failed email notifications', 'unescaped'),
                 gT('View and resend failed email notifications', 'unescaped'),
-                '',
+                'ri-mail-close-line',
                 'remix',
                 '',
                 'failedEmail/index/',
@@ -415,7 +415,7 @@ class LsDefaultDataSets
                 gT('Edit quotas', 'unescaped'),
                 gT('Quotas', 'unescaped'),
                 gT('Edit quotas for this survey.', 'unescaped'),
-                '',
+                'ri-percent-line',
                 'remix',
                 '',
                 'quotas/index/',
@@ -440,10 +440,10 @@ class LsDefaultDataSets
                 null,
                 8,
                 'assessments',
-                gT('Edit assessments', 'unescaped')
-                ,gT('Assessments', 'unescaped'),
+                gT('Edit assessments', 'unescaped'),
+                gT('Assessments', 'unescaped'),
                 gT('Edit and look at the assessements for this survey.', 'unescaped'),
-                '',
+                'ri-award-line',
                 'remix',
                 '',
                 'assessment/index',
@@ -471,7 +471,7 @@ class LsDefaultDataSets
                 gT('Edit survey panel integration', 'unescaped'),
                 gT('Panel integration', 'unescaped'),
                 gT('Define panel integrations for your survey', 'unescaped'),
-                '',
+                'ri-plug-line',
                 'remix',
                 '',
                 '',
@@ -499,7 +499,7 @@ class LsDefaultDataSets
                 gT('Responses', 'unescaped'),
                 gT('Responses', 'unescaped'),
                 gT('Responses', 'unescaped'),
-                '',
+                'ri-file-list-3-line',
                 'remix',
                 '',
                 'responses/browse/',
@@ -527,7 +527,7 @@ class LsDefaultDataSets
                 gT('Statistics', 'unescaped'),
                 gT('Statistics', 'unescaped'),
                 gT('Statistics', 'unescaped'),
-                '',
+                'ri-bar-chart-fill',
                 'remix',
                 '',
                 'admin/statistics/sa/simpleStatistics/',
@@ -555,7 +555,7 @@ class LsDefaultDataSets
                 gT('Add/edit resources (files/images) for this survey', 'unescaped'),
                 gT('Resources', 'unescaped'),
                 gT('Add/edit resources (files/images) for this survey', 'unescaped'),
-                '',
+                'ri-folder-line',
                 'remix',
                 '',
                 '',
@@ -580,10 +580,10 @@ class LsDefaultDataSets
                 null,
                 13,
                 'plugins',
-                gT('Simple plugin settings', 'unescaped'),
-                gT('Simple plugins', 'unescaped'),
-                gT('Edit simple plugin settings', 'unescaped'),
-                "",
+                gT('Plugin settings', 'unescaped'),
+                gT('Plugins', 'unescaped'),
+                gT('Edit plugin settings', 'unescaped'),
+                'ri-plug-fill',
                 'remix',
                 '',
                 '',
@@ -606,68 +606,12 @@ class LsDefaultDataSets
             [
                 3,
                 null,
-                1,
-                'activateSurvey',
-                gT('Activate survey', 'unescaped'),
-                gT('Activate survey', 'unescaped'),
-                gT('Activate survey', 'unescaped'),
-                "ri-play-fill",
-                'remix',
-                '',
-                'surveyAdministration/activate',
-                '',
-                '',
-                '',
-                '',
-                'surveyactivation',
-                'update',
-                '{"render": {"isActive": false, "link": {"data": {"iSurveyID": ["survey","sid"]}}}}',
-                '',
-                'en-GB',
-                1,
-                date('Y-m-d H:i:s'),
-                0,
-                date('Y-m-d H:i:s'),
-                0,
-                1
-            ],
-            [
-                3,
-                null,
-                2,
-                'deactivateSurvey',
-                gT('Stop survey', 'unescaped'),
-                gT('Stop survey', 'unescaped'),
-                gT('Stop this survey', 'unescaped'),
-                "ri-stop-fill",
-                'remix',
-                '',
-                'surveyAdministration/deactivate',
-                '',
-                '',
-                '',
-                '',
-                'surveyactivation',
-                'update',
-                '{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey","sid"]}}}}',
-                '',
-                'en-GB',
-                1,
-                date('Y-m-d H:i:s'),
-                0,
-                date('Y-m-d H:i:s'),
-                0,
-                1
-            ],
-            [
-                3,
-                null,
                 3,
                 'testSurvey',
-                gT('Go to survey', 'unescaped'),
-                gT('Go to survey', 'unescaped'),
-                gT('Go to survey', 'unescaped'),
-                "ri-settings-5-fill",
+                gT('Run survey', 'unescaped'),
+                gT('Run survey', 'unescaped'),
+                gT('Run survey', 'unescaped'),
+                "ri-play-fill",
                 'remix',
                 '',
                 'survey/index/',
@@ -807,8 +751,8 @@ class LsDefaultDataSets
             'reminder' => gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}", $mode) . "\n\n" . gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}", $mode),
             'registration_subject' => gT("Survey registration confirmation", $mode),
             'registration' => gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.", $mode)
-            );
-            App()->setLanguage($sOldLanguage);
+        );
+        App()->setLanguage($sOldLanguage);
         return $returnArray;
     }
 
@@ -835,9 +779,9 @@ class LsDefaultDataSets
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
         $returnArray = [];
-        $returnArray[] = array_combine($headerArray, [1,null,null,null,1,0,'settings',gT('Survey settings'),'side',gT('Survey settings'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1]);
-        $returnArray[] = array_combine($headerArray, [2,null,null,null,2,0,'mainmenu',gT('Survey menu'),'side',gT('Main survey menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1]);
-        $returnArray[] = array_combine($headerArray, [3,null,null,null,3,0,'quickmenu',gT('Quick menu'),'collapsed',gT('Quick menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0]);
+        $returnArray[] = array_combine($headerArray, [1, null, null, null, 1, 0, 'settings', gT('Survey settings'), 'side', gT('Survey settings'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0, 1]);
+        $returnArray[] = array_combine($headerArray, [2, null, null, null, 2, 0, 'mainmenu', gT('Survey menu'), 'side', gT('Main survey menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0, 1]);
+        $returnArray[] = array_combine($headerArray, [3, null, null, null, 3, 0, 'quickmenu', gT('Quick menu'), 'collapsed', gT('Quick menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0, 0]);
         App()->setLanguage($sOldLanguage);
 
         return $returnArray;
@@ -970,7 +914,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/variations/theme_apple.css","css/base.css","css/custom.css"], "remove":["survey.css", "template-core.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/custom.js"], "remove":["survey.js", "template-core.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png","brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans", "bodybackgroundcolor":"#ffffff","fontcolor":"#444444", "questionbackgroundcolor":"#ffffff", "checkicon":"EB7A","cssframework":"Apple", "notables":"1"}',
+            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png","brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans", "bodybackgroundcolor":"#ffffff","fontcolor":"#444444", "questionbackgroundcolor":"#ffffff", "checkicon":"EB7A","cornerradius":"2", "deselectsinglechoice":"off", "cssframework":"apple", "notables":"1"}',
             'cssframework_name' => '',
             'cssframework_css'  => '',
             'cssframework_js'   => '',
@@ -988,16 +932,16 @@ class LsDefaultDataSets
 
         $returnArray = [
             [
-            'name' => 'default',
-            'title' => 'Default',
-            'template' =>  null,
-            'description' => 'Default survey group',
-            'sortorder' => 0,
-            'owner_id' => 1,
-            'parent_id' => null,
-            'created' => date('Y-m-d H:i:s'),
-            'modified' => date('Y-m-d H:i:s'),
-            'created_by' => 1
+                'name' => 'default',
+                'title' => 'Default',
+                'template' =>  null,
+                'description' => 'Default survey group',
+                'sortorder' => 0,
+                'owner_id' => 1,
+                'parent_id' => null,
+                'created' => date('Y-m-d H:i:s'),
+                'modified' => date('Y-m-d H:i:s'),
+                'created_by' => 1
             ]
         ];
 
@@ -1045,7 +989,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => gT("A clean and simple base that can be used by developers to create their own Bootstrap based theme."),
+            'description'   => "A clean and simple base that can be used by developers to create their own Bootstrap based theme.",
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => '',
@@ -1064,7 +1008,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."),
+            'description'   => "A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.",
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => 'vanilla',
@@ -1102,686 +1046,11 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => gT("Our default theme for a fruity and flexible use. This theme offers single color variations"),
+            'description'   => "Our default theme for a fruity and flexible use. This theme offers single color variations",
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => '',
         ];
-
-        return $returnArray;
-    }
-
-    public static function getTutorialData()
-    {
-        $returnArray = [];
-        $returnArray['firstStartTour'] = [
-            'name' => 'firstStartTour',
-            'title' => gT('Beginner tour'),
-            'icon' => 'fa-rocket',
-            'description' => 'The first start tour to get your first feeling into LimeSurvey',
-            'active' => 1,
-            'settings' => json_encode(array(
-                'keyboard' => false,
-                // 'orphan' => true,
-                'template' => ""
-                . "<div class='popover tour lstutorial__template--mainContainer'>"
-                . "<div class='arrow'></div>"
-                . "<button class='float-end ls-space margin top-5 right-5 btn btn-warning btn-sm' type='button' data-role='end' data-bs-toggle='tooltip' title='" . gT('End tour', 'js') . "'><i class='ri-close-fill'></i></button>"
-                . "<h3 class='popover-title lstutorial__template--title'></h3>"
-                    . "<div class='popover-content lstutorial__template--content'></div>"
-                    . "<div class='popover-navigation lstutorial__template--navigation'>"
-                        . "<div class='row'>"
-                            . "<div class='btn-group col-12' role='group' aria-label='...'>"
-                                . "<button role='button' type='button' class='btn btn-outline-secondary col-lg-6' data-role='prev'>" . gT('Previous', 'js') . "</button>"
-                                . "<button role='button' type='button' class='btn btn-primary col-lg-6' data-role='next'>" . gT('Next', 'js') . "</button>"
-                            . "</div>"
-                        . "</div>"
-                    . "</div>"
-                . "</div>",
-                'onShown' => "(function(tour){ $('#notif-container').children().remove(); })",
-                'onEnd' => "(function(tour){window.location.reload();})",
-                // 'endOnOrphan' => true,
-            )),
-            'permission' => 'survey',
-            'permission_grade' => 'create'
-        ];
-
-        return $returnArray;
-    }
-
-    public static function getTutorialEntryData()
-    {
-        $returnArray = [];
-        $returnArray['firstStartTour'] = array(
-            array(
-                'teid' => 1,
-                'ordering' => 1,
-                'title' => gT('Welcome to LimeSurvey!'),
-                'content' => gT("This tour will help you to easily get a basic understanding of LimeSurvey.") . "<br/>"
-                    . gT("We would like to help you with a quick tour of the most essential functions and features."),
-                'settings' => json_encode(
-                    array(
-                        'element' => '#lime-logo',
-                        'delayOnElement' => "{element: 'element'}",
-                        'path' => ['/dashboard/view'],
-                        'placement' => 'bottom',
-                        'redirect' => true,
-                        'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })"
-                        )
-                )
-            ),
-            array(
-                'teid' => 2,
-                'ordering' => 2,
-                'title' => gT('The basic functions'),
-                'content' => gT("The three top boxes are the most basic functions of LimeSurvey.") . "<br/>"
-                    . gT("From left to right it should be 'Create survey', 'List surveys' and 'Global settings'. Best we start by creating a survey.")
-                    . '<p class="alert bg-warning">' . gT("Click on the 'Create survey' box - or 'Next' in this tutorial") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '.selector__create_survey',
-                    'path' => ['/dashboard/view'],
-                    'reflex' => true,
-                    'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })",
-                    'onNext' => "(function(tour){ })",
-                ))
-            ),
-            array(
-                'teid' => 3,
-                'ordering' => 3,
-                'title' => gT('The survey title'),
-                'content' => gT("This is the title of your survey.") . "<br/>"
-                . gT("Your participants will see this title in the browser's title bar and on the welcome screen.")
-                . "<p class='bg-warning alert'>" . gT("You have to put in at least a title for the survey to be saved.") . '</p>',
-                'settings' => json_encode(array(
-                    'path' => ['/surveyAdministration/newSurvey'],
-                    'delayOnElement' => "{
-                        element: '#surveyls_title',
-                        maxDelay: 1000
-                    }",
-                    'element' => '#surveyls_title',
-                    'redirect' => true,
-                    'prev' => '-1',
-                    'onNext' => "(function(tour){
-                        if( $('#surveyls_title').val() == '' ) {
-                            return false;
-                        }
-                    })",
-                ))
-            ),
-            array(
-                'teid' => 4,
-                'ordering' => 4,
-                'title' => gT('The survey description'),
-                'content' => gT("In this field you may type a short description of your survey.") . "<br/>"
-                . gT("The text inserted here will be displayed on the welcome screen, which is the first thing that your respondents will see when they access your survey..") . ' '
-                . gT("Describe your survey, but do not ask any question yet."),
-                'settings' => json_encode(array(
-                    'element' => '#cke_description',
-                    'path' => ['/surveyAdministration/newSurvey'],
-                    'placement' => 'top',
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 5,
-                'ordering' => 5,
-                'title' => gT('Create a sample question and question group'),
-                'content' => gT("We will be creating a question group and a question in this tutorial. There is need to automatically create them."),
-                'settings' => json_encode(array(
-                    'element' => '.bootstrap-switch-id-createsample',
-                    'path' => ['/surveyAdministration/newSurvey'],
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 6,
-                'ordering' => 6,
-                'title' => gT('The welcome message'),
-                'content' => gT("This message is shown directly below the survey description on the welcome page. You may leave this blank for now but it is a good way to introduce your participants to the survey."),
-                'settings' => json_encode(array(
-                    'element' => '#cke_welcome',
-                    'placement' => 'top',
-                    'path' => ['/surveyAdministration/newSurvey'],
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 7,
-                'ordering' => 7,
-                'title' => gT('The end message'),
-                'content' => gT("This message is shown at the end of your survey to every participant. It's a great way to say thank you or give some links or hints where to go next."),
-                'settings' => json_encode(array(
-                    'element' => '#cke_endtext',
-                    'path' => ['/surveyAdministration/newSurvey'],
-                    'placement' => 'top',
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 8,
-                'ordering' => 8,
-                'title' => gT('Now save your survey'),
-                'content' => gT("You may play around with more settings, but let's save and start adding questions to your survey now. Just click on 'Save'."),
-                'settings' => json_encode(array(
-                    'element' => '#save-form-button',
-                    'path' => ['/surveyAdministration/newSurvey'],
-                    'placement' => 'bottom',
-                    'reflex' => true,
-                    'redirect' => false,
-                    'onNext' => "(function(tour){
-                                    tour.setCurrentStep(8);
-                                    if(!$('#save-form-button').hasClass('disabled'))
-                                        $('#save-form-button').trigger('click');
-                                    return new Promise(function(res,rej){});
-                                })",
-                ))
-            ),
-            array(
-                'teid' => 9,
-                'ordering' => 9,
-                'title' => gT('The sidebar'),
-                'content' => gT('This is the sidebar.') . '<br/>'
-                . gT('All important settings can be reached in this sidebar.') . '<br/>'
-                . gT('The most important settings of your survey can be reached from this sidebar: the survey settings menu and the survey structure menu. You may resize it to fit your screen to easily navigate through the available options. If the size of the sidebar is too small, the options get collapsed and the quick-menu is displayed. If you wish to work from the quick-menu, either click on the arrow button or drag it to the left.'),
-                'settings' => json_encode(array(
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}']],
-                    'delayOnElement' => "{element: 'element'}",
-                    'element' => '#sidebar',
-                    'placement' => 'right',
-                    'redirect' => false,
-                    'prev' => '-1',
-                    'onShow' => "(function(tour){
-                        $('#adminsidepanel__sidebar--selectorSettingsButton').trigger('click');
-                    })",
-                ))
-            ),
-            array(
-                'teid' => 10,
-                'ordering' => 10,
-                'title' => gT('The settings tab with the survey menu'),
-                'content' => gT('If you click on this tab, the survey settings menu will be displayed. The most important settings of your survey are accessible from this menu.') . '<br/>'
-                . gT('If you want to know more about them, check our manual.'),
-                'settings' => json_encode(array(
-                    'element' => '#adminsidepanel__sidebar--selectorSettingsButton',
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}']],
-                    'placement' => 'bottom',
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 11,
-                'ordering' => 11,
-                'title' => gT('The top bar'),
-                'content' => gT('This is the top bar.') . '<br/>'
-                . gT('This bar will change as you move through the functionalities. The current bar corresponds to the "overview" tab. It contains the most important LimeSurvey functionalities such as preview and activate survey.'),
-                'settings' => json_encode(array(
-                    'element' => '#surveybarid',
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}']],
-                    'placement' => 'bottom',
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 12,
-                'ordering' => 12,
-                'title' => gT('The survey structure'),
-                'content' => gT('This is the structure view of your survey. Here you can see all your groups and questions.'),
-                'settings' => json_encode(array(
-                    'element' => '#adminsidepanel__sidebar--selectorStructureButton',
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}']],
-                    'placement' => 'bottom',
-                    'redirect' => false,
-                    'onShow' => "(function(tour){
-                                    $('#adminsidepanel__sidebar--selectorStructureButton').trigger('click');
-                                })",
-                ))
-            ),
-            array(
-                'teid' => 13,
-                'ordering' => 13,
-                'title' => gT("Let's add a question group"),
-                'content' => gT("What good would your survey be without questions?") . '<br/>'
-                . gT('In LimeSurvey a survey is organized in groups and questions. To begin creating questions, we first need a question group.')
-                . '<p class="alert bg-warning">' . gT("Click on the 'Add group' button") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#adminsidepanel__sidebar--selectorCreateQuestionGroup',
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}']],
-                    'placement' => 'right',
-                    'reflex' => true,
-                    'redirect' => false,
-                    'onNext' => "(function(tour){
-                                    document.location.href = $('#adminsidepanel__sidebar--selectorCreateQuestionGroup').attr('href');
-                                    tour.setCurrentStep(13);
-                                    return new Promise(function(res,rej){});
-                                })",
-                ))
-            ),
-            array(
-                'teid' => 14,
-                'ordering' => 14,
-                'title' => gT('Enter a title for your first question group'),
-                'content' => gT('The title of the question group is visible to your survey participants (this setting can be changed later and it cannot be empty). Question groups are important because they allow the survey administrators to logically group the questions. By default, each question group (including its questions) is shown on its own page (this setting can be changed later).'),
-                'settings' => json_encode(array(
-                    'element' => '#group_name_en',
-                    'delayOnElement' => "{
-                        element: '#group_name_en',
-                        maxDelay: 1000
-                    }",
-                    'path' => ['/questionGroupsAdministration/add', ['surveyid' => '[0-9]{4,25}']],
-                    'placement' => 'bottom',
-                    'redirect' => false,
-                    'prev' => '-1',
-                ))
-            ),
-            array(
-                'teid' => 15,
-                'ordering' => 15,
-                'title' => gT('A description for your question group'),
-                'content' => gT('This description is also visible to your participants.') . '<br/>'
-                . gT('You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants.'),
-                'settings' => json_encode(array(
-                    'element' => 'label[for=description_en]',
-                    'path' => ['/questionGroupsAdministration/add', ['surveyid' => '[0-9]{4,25}']],
-                    'placement' => 'top',
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 16,
-                'ordering' => 16,
-                'title' => gT('Advanced settings'),
-                'content' => gT("For now it's best to leave these additional settings as they are. If you want to know more about randomization and relevance settings, have a look at our manual."),
-                'settings' => json_encode(array(
-                    'element' => '#randomization_group',
-                    'path' => ['/questionGroupsAdministration/add', ['surveyid' => '[0-9]{4,25}']],
-                    'placement' => 'right',
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 17,
-                'ordering' => 17,
-                'title' => gT('Save and add a new question'),
-                'content' => gT("Now when you are finished click on 'Save and add question'.") . '<br/>'
-                . gT('This will directly add a question to the current question group.')
-                . '<p class="alert bg-warning">' . gT("Now click on 'Save and add question'.") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#save-and-new-question-button',
-                    'path' => ['/questionGroupsAdministration/add', ['surveyid' => '[0-9]{4,25}']],
-                    'placement' => 'bottom',
-                    'reflex' => true,
-                    'redirect' => false,
-                    'onNext' => "(function(tour){
-                                    $('#save-and-new-question-button').trigger('click');
-                                    tour.setCurrentStep(17);
-                                    return new Promise(function(res,rej){});
-                                })",
-                ))
-            ),
-            array(
-                'teid' => 18,
-                'ordering' => 18,
-                'title' => gT('Set your question type.'),
-                'content' => gT("LimeSurvey offers you a lot of different question types.") . '<br/>'
-                . gT("As you can see, the preselected question type is the 'Long free text' one. We will use in this example the 'Array' question type.") . '<br/>'
-                . gT("This type of question allows you to add multiple subquestions and a set of answers.")
-                . '<p class="alert bg-warning">' . gT("Please select the 'Array'-type.") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#selector---select-questiontype-label',
-                    'delayOnElement' => "{
-                        element: '#selector---select-questiontype-label',
-                        maxDelay: 2500
-                    }",
-                    'delay' => 500,
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                    'placement' => 'left',
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 19,
-                'ordering' => 19,
-                'title' => gT('The title of your question'),
-                'content' =>
-                gT("This code is normally not shown to your participants, still it is necessary and has to be unique for the survey.") . '<br>'
-                . gT("This code is also the name of the variable that will be exported to SPSS or Excel.")
-                . '<p class="alert bg-warning">' . gT("Please type in a code that consists only of letters and numbers, and doesn't start with a number.") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#title',
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                    'placement' => 'top',
-                    'redirect' => false,
-                    'prev' => '-1',
-                ))
-            ),
-            array(
-                'teid' => 20,
-                'ordering' => 20,
-                'title' => gT('The actual question text'),
-                'content' => gT('The content of this box is the actual question text shown to your participants. It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine.'),
-                'settings' => json_encode(array(
-                    'element' => '#cke_question_en',
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                    'placement' => 'top',
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 21,
-                'ordering' => 21,
-                'title' => gT('An additional help text for your question'),
-                'content' => gT('You can add some additional help text to your question. If you decide not to offer any additional question hints, then no help text will be displayed to your respondents.'),
-                'settings' => json_encode(array(
-                    'element' => '#cke_help_en',
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                    'placement' => 'top',
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 22,
-                'ordering' => 22,
-                'title' => gT('Now save the created question'),
-                'content' => gT('Next, we will create subquestions and answer options.') . '<br/>'
-                    . gT('Please remember that a valid code must start with a letter and may contain only letters and numbers.'),
-                'settings' => json_encode(array(
-                    'element' => '#save-button',
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                    'placement' => 'left',
-                    'reflex' => true,
-                    'redirect' => false,
-                    'onNext' => "(function(tour){
-                                    $('#question_type').val('F');
-                                    $('#save-button').trigger('click');
-                                    tour.setCurrentStep(22);
-                                    return new Promise(function(res,rej){});
-                                })",
-                ))
-            ),
-            array(
-                'teid' => 23,
-                'ordering' => 23,
-                'title' => gT('The question bar'),
-                'content' => gT('This is the question bar.') . '<br/>'
-                    . gT('The most important question-related options are displayed here.') . '<br/>'
-                    . gT('The availability of options is related to the type of question you previously chose.'),
-                'settings' => json_encode(array(
-                    'element' => '#questionbarid',
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                    'placement' => 'bottom',
-                    'backdrop' => false,
-                    'redirect' => false,
-                    'prev' => '-1',
-                ))
-            ),
-            array(
-                'teid' => 24,
-                'ordering' => 24,
-                'title' => gT('Add some subquestions to your question'),
-                'content' => gT("The array question is a type that creates a matrix for the participant.") . '<br/>'
-                    . gT("To fully use it, you have to add subquestions as well as answer options.") . '<br/>'
-                    . gT("Let's start with subquestions.")
-                    . '<p class="alert bg-warning">' . gT("Click on the 'Edit subquestions' button.") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#adminpanel__topbar--selectorAddSubquestions',
-                    'delayOnElement' => "{
-                        element: '#adminpanel__topbar--selectorAddSubquestions',
-                        maxDelay: 1000
-                    }",
-                    'placement' => 'bottom',
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                    'reflex' => true,
-                    'redirect' => false,
-                    'onNext' => "(function(tour){
-                                    document.location.href = $('#adminsidepanel__topbar--selectorAddSubquestions').attr('href');
-                                    tour.setCurrentStep(24);
-                                    return new Promise(function(res,rej){});
-                                })",
-                ))
-            ),
-            // TODO: This tutorial is broken when subquestions and answer options are on the same page.
-            array(
-                'teid' => 25,
-                'ordering' => 25,
-                'title' => gT('Edit subquestions'),
-                'content' => gT("You should add some subquestions for your question here.") . '<br/>'
-                . gT("Every row is one subquestion. We recommend the usage of logical or numerical codes for subquestions. Your participants cannot see the subquestion code, only the subquestion text itself.")
-                . "<p class='bg-info alert'>" . gT("Pro tip: The subquestion may even contain HTML code.") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#rowcontainer',
-                    'delayOnElement' => "{element: 'element'}",
-                    'path' => ['questionAdministration/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                    'placement' => 'bottom',
-                    'redirect' => false,
-                    'prev' => '-1',
-                ))
-            ),
-            array(
-                'teid' => 26,
-                'ordering' => 26,
-                'title' => gT('Add subquestion row'),
-                'content' => sprintf(gT('Click on the plus sign %s to add another subquestion to your question.'), '<i class="ri-add-circle-fill text-success"></i>')
-                . "<p class='bg-warning alert'>" . gT('Please add at least two subquestions') . "</p>",
-                'settings' => json_encode(array(
-                    'element' => '#rowcontainer>tr:first-of-type .btnaddanswer',
-                    'path' => ['questionAdministration/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                    'placement' => 'left',
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 27,
-                'ordering' => 27,
-                'title' => gT('Now save the subquestions'),
-                'content' => gT("You may save empty subquestions, but that would be pointless.")
-                . "<p class='bg-warning alert'>" . gT("Save and close now and let's edit the answer options.") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#save-and-close-button',
-                    'path' => ['questionAdministration/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                    'placement' => 'left',
-                    'reflex' => true,
-                    'redirect' => false,
-                    'onNext' => "(function(tour){
-                                    $('#save-and-close-button').trigger('click');
-                                    tour.setCurrentStep(27);
-                                    return new Promise(function(res,rej){});
-                                })"
-                ))
-            ),
-            array(
-                'teid' => 28,
-                'ordering' => 28,
-                'title' => gT('Add some answer options to your question'),
-                'content' => gT("Now that we've got some subquestions, we have to add answer options as well.") . '<br/>'
-                . gT("The answer options will be shown for each subquestion.")
-                . '<p class="alert bg-warning">' . gT("Click on the 'Edit answer options' button.") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#adminpanel__topbar--selectorAddAnswerOptions',
-                    'delayOnElement' => "{
-                        element: '#adminpanel__topbar--selectorAddAnswerOptions',
-                        maxDelay: 1000
-                    }",
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                    'placement' => 'bottom',
-                    'reflex' => true,
-                    'redirect' => false,
-                    'prev' => '-1',
-                    'onNext' => "(function(tour){
-                                    document.location.href = $('#adminsidepanel__topbar--selectorAddAnswerOptions').attr('href');
-                                    tour.setCurrentStep(28);
-                                    return new Promise(function(res,rej){});
-                                })",
-                ))
-            ),
-            array(
-                'teid' => 29,
-                'ordering' => 29,
-                'title' => gT('Edit answer options'),
-                'content' => gT("As you can see, editing answer options is quite similar to editing subquestions.") . '<br/>'
-                . gT('Remember the plus button') . '<i class="ri-add-circle-fill text-success"></i>?' . '<br/>'
-                . '<p class="alert bg-warning">' . gT("Please add at least two answer options to proceed.") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#rowcontainer',
-                    'delayOnElement' => "{element: 'element'}",
-                    'path' => ['questionAdministration/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                    'placement' => 'bottom',
-                    'redirect' => false,
-                    'prev' => '-1',
-                ))
-            ),
-            array(
-                'teid' => 30,
-                'ordering' => 30,
-                'title' => gT('Now save the answer options'),
-                'content' => gT("Click on 'Save and close' or 'Next' to proceed."),
-                'settings' => json_encode(array(
-                    'element' => '#save-and-close-button',
-                    'path' => ['questionAdministration/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
-                    'placement' => 'left',
-                    'reflex' => true,
-                    'redirect' => false,
-                    'onNext' => "(function(tour){
-                                    $('#save-and-close-button').trigger('click');
-                                    tour.setCurrentStep(30);
-                                    return new Promise(function(res,rej){});
-                                })"
-                ))
-            ),
-            array(
-                'teid' => 31,
-                'ordering' => 31,
-                'title' => gT('Preview survey'),
-                'content' => gT("Let's have a look at your first survey.") . '<br/>'
-                . gT("Just click on this button and a new window will open, where you can test run your survey.") . '<br/>'
-                . gT("Please be aware that your answers will not be saved, because the survey isn't active yet.")
-                . '<p class="alert bg-warning">' . gT("Click on 'Preview survey' and return to this window when you are done testing.") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '.selector__topbar--previewSurvey',
-                    'delayOnElement' => "{
-                        element: '.selector__topbar--previewSurvey',
-                        maxDelay: 1000
-                    }",
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                    'placement' => 'bottom',
-                    'redirect' => false,
-                    'prev' => '-1',
-                ))
-            ),
-            array(
-                'teid' => 32,
-                'ordering' => 32,
-                'title' => gT('Easy navigation with the "breadcrumbs"'),
-                'content' => gT('You can see the "breadcrumbs" In the top bar of the admin interface.') . '<br/>'
-                . gT("They represent an easy way to get back to any previous setting, and provide a general overview of where you are.")
-                . '<p class="alert bg-warning">' . gT("Click on the name of your survey to get back to the survey settings overview.") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#breadcrumb__survey--overview',
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                    'placement' => 'bottom',
-                    'reflex' => true,
-                    'redirect' => false,
-                    'onNext' => "(function(tour){
-                                    tour.setCurrentStep(32);
-                                    document.location.href = $('#breadcrumb__survey--overview').attr('href');
-                                    return new Promise(function(res,rej){});
-                                })",
-                ))
-            ),
-            array(
-                'teid' => 33,
-                'ordering' => 33,
-                'title' => gT('Finally, activate your survey'),
-                'content' => gT("Now, activate your survey.") . '<br/>'
-                . gT("You can create as many surveys as you like.")
-                . '<p class="alert bg-warning">' . gT("Click on 'Activate this survey'") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#ls-activate-survey',
-                    'delayOnElement' => "{element: 'element'}",
-                    'path' => ['/surveyAdministration/view', ['iSurveyID' => '[0-9]{4,25}']],
-                    'placement' => 'bottom',
-                    'reflex' => true,
-                    'redirect' => false,
-                    'prev' => '-1',
-                    'onNext' => "(function(tour){
-                            document.location.href = $('#ls-activate-survey').attr('href');
-                            tour.setCurrentStep(33);
-                            return new Promise(function(res,rej){});
-                        })",
-                ))
-            ),
-            array(
-                'teid' => 34,
-                'ordering' => 34,
-                'title' => gT('Activation settings'),
-                'content' => gT('These settings cannot be changed once the survey is online.') . '<br/>'
-                . gT("For this simple survey the default settings are ok, but read the disclaimer carefully when you activate your own surveys.") . '<br/>'
-                . gT("For more information consult our manual, or our forums.")
-                . '<p class="alert bg-warning">' . gT('Now click on "Save & activate survey"') . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#activateSurvey__basicSettings--proceed',
-                    'delayOnElement' => "{
-                        element: '#activateSurvey__basicSettings--proceed',
-                        maxDelay: 1000
-                    }",
-                    'path' => ['/surveyAdministration/activate', ['iSurveyID' => '[0-9]{4,25}']],
-                    'placement' => '',
-                    'reflex' => true,
-                    'redirect' => false,
-                    'prev' => '-1',
-                    'onNext' => "(function(tour){
-                            $('#activateSurvey__basicSettings--proceed').trigger('click');
-                            tour.setCurrentStep(34);
-                            return new Promise(function(res,rej){});
-                        })",
-                ))
-            ),
-            array(
-                'teid' => 35,
-                'ordering' => 35,
-                'title' => gT('Activate survey participant list'),
-                'content' => gT("Here you can select to start your survey in closed access mode.") . "<br/>"
-                . gT("For our simple survey it is better to start in open access mode.") . "<br/>"
-                . gT("The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'.") . "<br/>"
-                . gT("For more information please consult our manual or our forum.")
-                . '<p class="alert bg-warning">' . gT("Click on 'No, thanks'") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#activateTokenTable__selector--no',
-                    'delayOnElement' => "{
-                        element: '#activateTokenTable__selector--no',
-                        maxDelay: 1000
-                    }",
-                    'path' => ['/surveyAdministration/activate', ['surveyid' => '[0-9]{4,25}']],
-                    'placement' => 'bottom',
-                    'reflex' => true,
-                    'redirect' => false,
-                    'prev' => '-1',
-                    'onNext' => "(function(tour){
-                            $('#activateTokenTable__selector--no').trigger('click');
-                            tour.setCurrentStep(35);
-                            return new Promise(function(res,rej){});
-                        })",
-                ))
-            ),
-            array(
-                'teid' => 36,
-                'ordering' => 36,
-                'title' => gT('Share this link'),
-                'content' => gT("Just share this link with some of your friends and of course, test it yourself.")
-                . '<p class="alert bg-success lstutorial__typography--white">' . gT("Thank you for taking the tour!") . '</p>',
-                'settings' => json_encode(array(
-                    'element' => '#adminpanel__surveysummary--mainLanguageLink',
-                    'delayOnElement' => "{
-                        element: '#adminpanel__surveysummary--mainLanguageLink',
-                        maxDelay: 1000
-                    }",
-                    'path' => ['/' . '(index.php)?'],
-                    'placement' => 'top',
-                    'redirect' => false,
-                    'prev' => '-1',
-                    'onHide' => '(function(){window.location.reload()})'
-                ))
-            ),
-        );
 
         return $returnArray;
     }
@@ -1814,7 +1083,7 @@ class LsDefaultDataSets
 
         return [
             $addRow('UpdateCheck', 1),
-            $addRow('PasswordRequirement', 1),
+            $addRow('PasswordRequirement', 1, '1.2.0'),
             $addRow('ComfortUpdateChecker', 1),
             $addRow('Authdb', 1),
             $addRow('ReactEditor', 1, '1.0.0', 0),
@@ -1874,6 +1143,11 @@ class LsDefaultDataSets
         return $returnArray;
     }
 
+    /**
+     * Returns the default question theme entries of the core question types.
+     *
+     * @return array[]
+     */
     public static function getBaseQuestionThemeEntries()
     {
         $aBaseQuestionThemes = [
@@ -2523,7 +1797,7 @@ class LsDefaultDataSets
                 "core_theme" => 1,
                 "extends" => "",
                 "group" => "Mask questions",
-                "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
+                "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
             ),
             array(
                 "name" => "shortfreetext",
@@ -2548,6 +1822,30 @@ class LsDefaultDataSets
                 "extends" => "",
                 "group" => "Text questions",
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"text-short\"}",
+            ),
+            array(
+                "name" => "map",
+                "visible" => "Y",
+                "xml_path" => "application/views/survey/questions/answer/map",
+                "image_path" => "/assets/images/screenshots/J.png",
+                "title" => "Map",
+                "creation_date" => "2026-09-25 00:00:00",
+                "author" => "LimeSurvey GmbH",
+                "author_email" => "info@limesurvey.org",
+                "author_url" => "http://www.limesurvey.org",
+                "copyright" => "Copyright (C) 2005 - 2026 LimeSurvey Gmbh, Inc. All rights reserved.",
+                "license" => "GNU General Public License version 2 or later",
+                "version" => "1.0",
+                "api_version" => "1",
+                "description" => "Map question type configuration",
+                "last_update" => "2026-09-25 00:00:00",
+                "owner_id" => 1,
+                "theme_type" => "question_theme",
+                "question_type" => "J",
+                "core_theme" => 1,
+                "extends" => "",
+                "group" => "Mask questions",
+                "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"map\"}",
             ),
             array(
                 "name" => "yesno",
@@ -2763,7 +2061,7 @@ class LsDefaultDataSets
                 "core_theme" => 1,
                 "extends" => "R",
                 "group" => "Mask questions",
-                "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
+                "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
             ),
         ];
 
@@ -2773,19 +2071,13 @@ class LsDefaultDataSets
     /**
      * All translations that are used in files that can or should not be searched by the translation script.
      * This function has no functionality except for being searchable by the translation script.
+     *
+     * @return void
      */
     public static function mockTranslateArrayContainer()
     {
         $translationArray = [
-            // Question themes
-            gT("Bootstrap dropdown"),
-            gT("Bootstrap buttons"),
-            gT("Image select list (Radio)"),
-            gT("Image select multiple choice"),
-            gT("Browser detection"),
-            gT("Input on demand"),
-            gT("Ranking advanced"),
-            // Other
+            // Survey theme option titles, categories and button labels from themes/survey/*/config.xml attributes
             gT("Survey container"),
             gT("Hide privacy info"),
             gT("Show popups"),
@@ -2793,17 +2085,11 @@ class LsDefaultDataSets
             gT("On page"),
             gT("Fix automatically numeric value"),
             gT("For expression"),
-            gT("Brandlogo"),
-            gT("Brandlogo file"),
-            gT('Preview image'),
-            gT("Bootstrap theme"),
-            gT("Bootswatch theme"),
             gT("Question borders"),
             gT("Question shadow"),
             gT("Zebra-striped questions"),
             gT("Sticky array headers"),
             gT("Dim answered array rows"),
-            gT("Hide privacy info"),
             gT("Cross-hover in matrix questions"),
             gT("Background color"),
             gT("Font color"),
@@ -2821,24 +2107,126 @@ class LsDefaultDataSets
             gT("Animate alert"),
             gT("Alert animation"),
             gT("Animate checkbox"),
-            gT("Alert animation"),
             gT("Animate radio buttons"),
             gT("Radio button animation"),
-            gT("Select font:"),
-            gT("Select variation:"),
-            gT("Fruity fonts"),
-            gT("Fruity variations"),
-            gT("I confirm"), // Used in optin/optout and not picked up due to bug #19411,
-            gT("Show link to legal notice in survey:"),
-            gT("Show link to data policy in survey:"),
-            gT("Survey legal notice:"),
-            gT("Legal notice"),
             gT("Show 'Clear all' button"),
             gT("Wrap tables"),
+            gT("Always on"),
+            gT("Small screens"),
+            gT("Question help text position"),
+            gT("Top"),
+            gT("Bottom"),
+            gT("Deselect single-choice option by click"),
+            gT("Corner radius"),
+            gT("Theme color"),
             gT("Variations"),
             gT("Colors"),
             gT("Animations"),
-            gT("Fonts")
+            gT("Fonts"),
+            // Survey theme dropdown option groups and options from themes/survey/*/config.xml
+            gT("Attention seekers"),
+            gT("Bouncing entrances"),
+            gT("Bouncing exits"),
+            gT("Fading entrances"),
+            gT("Fading exits"),
+            gT("Flippers"),
+            gT("Lightspeed"),
+            gT("Rotating entrances"),
+            gT("Rotating exits"),
+            gT("Sliding entrances"),
+            gT("Sliding exits"),
+            gT("Zoom entrances"),
+            gT("Zoom exits"),
+            gT("Specials"),
+            gT("User browser"),
+            gT("Arrow right"),
+            gT("Asterisk"),
+            gT("Checkmark"),
+            gT("Checkmark in circle"),
+            gT("Checkmark in square"),
+            gT("Chevron circle right"),
+            gT("Circle"),
+            gT("Cross"),
+            gT("Plus"),
+            gT("Resistance"),
+            gT("Square"),
+            gT("Star"),
+            gT("Bounce"),
+            gT("Bounce in"),
+            gT("Bounce in down"),
+            gT("Bounce in left"),
+            gT("Bounce in right"),
+            gT("Bounce in up"),
+            gT("Bounce out"),
+            gT("Bounce out down"),
+            gT("Bounce out left"),
+            gT("Bounce out right"),
+            gT("Bounce out up"),
+            gT("Fade in"),
+            gT("Fade in down"),
+            gT("Fade in down big"),
+            gT("Fade in left"),
+            gT("Fade in left big"),
+            gT("Fade in right"),
+            gT("Fade in right big"),
+            gT("Fade in up"),
+            gT("Fade in up big"),
+            gT("Fade out"),
+            gT("Fade out down"),
+            gT("Fade out down big"),
+            gT("Fade out left"),
+            gT("Fade out left big"),
+            gT("Fade out right"),
+            gT("Fade out right big"),
+            gT("Fade out up"),
+            gT("Fade out up big"),
+            gT("Flash"),
+            gT("Flip"),
+            gT("Flip in X"),
+            gT("Flip in Y"),
+            gT("Flip out X"),
+            gT("Flip out Y"),
+            gT("Hinge"),
+            gT("Jack in the box"),
+            gT("Jello"),
+            gT("Light speed in"),
+            gT("Light speed out"),
+            gT("Pulse"),
+            gT("Roll in"),
+            gT("Roll out"),
+            gT("Rotate in"),
+            gT("Rotate in down left"),
+            gT("Rotate in down right"),
+            gT("Rotate in up left"),
+            gT("Rotate in up right"),
+            gT("Rotate out"),
+            gT("Rotate out down left"),
+            gT("Rotate out down right"),
+            gT("Rotate out up left"),
+            gT("Rotate out up right"),
+            gT("Rubber band"),
+            gT("Shake"),
+            gT("Slide in down"),
+            gT("Slide in left"),
+            gT("Slide in right"),
+            gT("Slide in up"),
+            gT("Slide out down"),
+            gT("Slide out left"),
+            gT("Slide out right"),
+            gT("Slide out up"),
+            gT("Swing"),
+            gT("Tada"),
+            gT("Wobble"),
+            gT("Zoom in"),
+            gT("Zoom in down"),
+            gT("Zoom in left"),
+            gT("Zoom in right"),
+            gT("Zoom in up"),
+            gT("Zoom out"),
+            gT("Zoom out down"),
+            gT("Zoom out left"),
+            gT("Zoom out right"),
+            gT("Zoom out up")
         ];
     }
 

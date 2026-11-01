@@ -29,6 +29,8 @@ export const ArrayRows = ({
   setVerticalEntitiesInfo,
   showNoAnswer = false,
   handleChildCodeUpdate = () => {},
+  handleChildAssessmentValueUpdate = () => {},
+  showAssessmentValue = false,
   isTitleFocused,
 }) => {
   const subQuestionsContainerRef = useRef(null)
@@ -220,6 +222,23 @@ export const ArrayRows = ({
                     !hasTempId(qid) &&
                     !isTitleFocused
                   }
+                  showAssessmentValue={
+                    showAssessmentValue &&
+                    entitiesInfo.entity === Entities.answer
+                  }
+                  assessmentValue={entity.assessmentValue}
+                  handleAssessmentValueUpdate={(value) => {
+                    const childIndex = answers.findIndex(
+                      (answer) =>
+                        answer[entitiesInfo.idKey] ===
+                        entity[entitiesInfo.idKey]
+                    )
+                    handleChildAssessmentValueUpdate({
+                      newAssessmentValue: value,
+                      childIndex,
+                      childArray: answers,
+                    })
+                  }}
                 />
               </div>
             )}

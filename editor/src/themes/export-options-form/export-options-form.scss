@@ -1,0 +1,119 @@
+.export-options-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0;
+
+  .export-options-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    padding: 3px 12px 3px 16px;
+    gap: 8px;
+  }
+
+  .export-options-label {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.017em;
+    color: #1e1e1e;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .export-format-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+
+  .export-format-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .export-format-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+
+  .export-format-option {
+    display: flex;
+    align-items: center;
+    width: 140px;
+    height: 24px;
+
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-left: 0;
+      margin-bottom: 0;
+      min-height: 24px;
+    }
+
+    input[type='radio'] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      margin: 0;
+      float: none;
+      border: 1.33px solid #1e1e1e;
+      border-radius: 50% !important;
+      outline: none !important;
+      background-color: #ffffff;
+      position: relative;
+      cursor: pointer;
+
+      &:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
+      &:focus-visible {
+        outline: 2px solid #0d6efd !important;
+        outline-offset: 2px;
+      }
+
+      &:checked {
+        background-color: #ffffff !important;
+        background-size: initial !important;
+        border: 1.33px solid #1e1e1e !important;
+        outline: none !important;
+      }
+
+      &:checked::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #333641;
+        border: 1.33px solid #1e1e1e;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    label {
+      margin-bottom: 0;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.017em;
+      color: #1e1e1e;
+    }
+  }
+}

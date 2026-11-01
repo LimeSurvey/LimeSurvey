@@ -1,3 +1,41 @@
+// old_template_core START
+
+.form-inline .checkbox-item {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* no form-group on checkbox-item */
+li.checkbox-item,
+li.checkbox-text-item {
+  margin-bottom: 1em;
+}
+
+/* awesome-bootstrap-checkbox */
+li.checkbox-item,
+li.checkbox-text-item {
+  display: block;
+}
+
+/* map item : .input-group-addon.checkbox-item : put awesome padding */
+.input-group-addon.checkbox-item {
+  padding-left: 25px;
+}
+
+.checkbox-item {
+  position: relative;
+}
+
+.checkbox-item input[type="checkbox"] {
+  /*give near same position to real button (except in td : can fix but not needed )*/
+  display: inline-block;
+  height: 17px;
+  position: absolute;
+  width: 17px;
+}
+
+// old_template_core END
+
 .checkbox-item {
     padding-left: 20px;
     &.mb-1 {
@@ -9,7 +47,7 @@
     display: inline-block;
     vertical-align: middle;
     position: relative;
-    padding-left: 20px;
+  padding-left: 16px;
 }
 
 .checkbox-item.othertext-label-checkox-container {

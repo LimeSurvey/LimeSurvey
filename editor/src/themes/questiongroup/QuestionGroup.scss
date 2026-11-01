@@ -124,3 +124,9 @@
   inset: 0;
   z-index: 100;
 }
+
+#delete-question-group-modal {
+  .description {
+    color: $g-900;
+  }
+}

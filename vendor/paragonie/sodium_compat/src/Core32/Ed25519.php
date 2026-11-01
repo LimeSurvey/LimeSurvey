@@ -107,6 +107,22 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
     }
 
     /**
+     * Returns TRUE if $A represents a point on the order of the Edwards25519 prime order subgroup.
+     * Returns FALSE if $A is on a different subgroup.
+     *
+     * @param ParagonIE_Sodium_Core32_Curve25519_Ge_P3 $A
+     * @return bool
+     *
+     * @throws SodiumException
+     */
+    public static function is_on_main_subgroup(ParagonIE_Sodium_Core32_Curve25519_Ge_P3 $A)
+    {
+        $p1 = self::ge_mul_l($A);
+        $t = self::fe_sub($p1->Y, $p1->Z);
+        return !self::fe_isnonzero($p1->X) && !self::fe_isnonzero($t);
+    }
+
+    /**
      * @param string $pk
      * @return string
      * @throws SodiumException
@@ -118,9 +134,8 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
             throw new SodiumException('Public key is on a small order');
         }
         $A = self::ge_frombytes_negate_vartime($pk);
-        $p1 = self::ge_mul_l($A);
-        if (!self::fe_isnonzero($p1->X)) {
-            throw new SodiumException('Unexpected zero result');
+        if (!self::is_on_main_subgroup($A)) {
+            throw new SodiumException('Public key is not on a member of the main subgroup');
         }
 
         # fe_1(one_minus_y);
@@ -304,31 +319,38 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
 
         // Set ParagonIE_Sodium_Compat::$fastMult to true to speed up verification.
         ParagonIE_Sodium_Compat::$fastMult = true;
+        try {
+            /** @var ParagonIE_Sodium_Core32_Curve25519_Ge_P3 $A */
+            $A = self::ge_frombytes_negate_vartime($pk);
+            if (!self::is_on_main_subgroup($A)) {
+                throw new SodiumException('Public key is not on a member of the main subgroup');
+            }
 
-        /** @var ParagonIE_Sodium_Core32_Curve25519_Ge_P3 $A */
-        $A = self::ge_frombytes_negate_vartime($pk);
+            /** @var string $hDigest */
+            $hDigest = hash(
+                'sha512',
+                self::substr($sig, 0, 32) .
+                self::substr($pk, 0, 32) .
+                $message,
+                true
+            );
 
-        /** @var string $hDigest */
-        $hDigest = hash(
-            'sha512',
-            self::substr($sig, 0, 32) .
-            self::substr($pk, 0, 32) .
-            $message,
-            true
-        );
+            /** @var string $h */
+            $h = self::sc_reduce($hDigest) . self::substr($hDigest, 32);
 
-        /** @var string $h */
-        $h = self::sc_reduce($hDigest) . self::substr($hDigest, 32);
+            /** @var ParagonIE_Sodium_Core32_Curve25519_Ge_P2 $R */
+            $R = self::ge_double_scalarmult_vartime(
+                $h,
+                $A,
+                self::substr($sig, 32)
+            );
 
-        /** @var ParagonIE_Sodium_Core32_Curve25519_Ge_P2 $R */
-        $R = self::ge_double_scalarmult_vartime(
-            $h,
-            $A,
-            self::substr($sig, 32)
-        );
-
-        /** @var string $rcheck */
-        $rcheck = self::ge_tobytes($R);
+            /** @var string $rcheck */
+            $rcheck = self::ge_tobytes($R);
+        } catch (Exception $ex) {
+            ParagonIE_Sodium_Compat::$fastMult = $orig;
+            throw $ex;
+        }
 
         // Reset ParagonIE_Sodium_Compat::$fastMult to what it was before.
         ParagonIE_Sodium_Compat::$fastMult = $orig;

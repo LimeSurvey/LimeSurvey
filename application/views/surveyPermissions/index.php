@@ -3,6 +3,7 @@
 /* @var $userCreatePermission bool true if current user has permission to set survey permission for other users */
 /* @var $surveyid int */
 /* @var $userList array users that could be added to survey permissions */
+/* @var $userListFilteredByGroup bool true if $userList only contains users sharing a user group with the current user */
 /* @var $userGroupList array user groups that could be added to survey permissions */
 /* @var $tableContent CActiveDataProvider dataProvider for the gridview (table) */
 /* @var $oSurveyPermissions \LimeSurvey\Models\Services\SurveyPermissions */
@@ -21,12 +22,26 @@
                     ['class' => "form44"]
                 ); ?>
 
+                <?php
+                $showUserListHint = $userListFilteredByGroup && count($userList) === 0;
+                $userListHint = gT("Only users who share a user group with you, or who were created by you, can be added. An administrator can change this with the global setting 'Group member can only see own group'.", 'unescaped');
+                ?>
                 <div class="row justify-content-md-end mb-2">
-                    <label class='col-1 text-end control-label' for='uidselect'>
-                        <?= gT("User") ?>:
-                    </label>
+                    <div class='col-1 text-end text-nowrap'>
+                        <?php if ($showUserListHint) : ?>
+                            <button type='button' class='btn btn-link p-0 align-baseline'
+                                data-bs-toggle='tooltip'
+                                title='<?= CHtml::encode($userListHint) ?>'
+                                aria-label='<?= CHtml::encode($userListHint) ?>'>
+                                <i class='ri-information-line' aria-hidden='true'></i>
+                            </button>
+                        <?php endif; ?>
+                        <label class='control-label' for='uidselect'>
+                            <?= gT("User") ?>:
+                        </label>
+                    </div>
                     <div class='col-4'>
-                        <select style="width:100%;" id='uidselect' name='uid' class='form-select activate-search'>
+                        <select style="width:100%;" id='uidselect' name='uid' class='form-select activate-search'<?= $showUserListHint ? " aria-describedby='uidselect-hint'" : '' ?>>
                             <?php
                             if (count($userList) > 0) {
                                 echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
@@ -40,6 +55,9 @@
                             }
                             ?>
                         </select>
+                        <?php if ($showUserListHint) : ?>
+                            <span id='uidselect-hint' class='visually-hidden'><?= CHtml::encode($userListHint) ?></span>
+                        <?php endif; ?>
                     </div>
                     <div class="col-3">
                     <input class='btn btn-outline-secondary w-100' type='submit' value='<?= gT("Add user") ?>'/>
@@ -120,7 +138,7 @@
             'application.extensions.admin.grid.CLSGridView',
             [
                 'id'           => 'gridPanel',
-                'caption'      => gT("Survey permissions"),
+                'lsCaption'      => gT("Survey permissions"),
                 'dataProvider' => $dataProvider,
                 'columns'      => array_merge([
                     [

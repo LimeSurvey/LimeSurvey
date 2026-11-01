@@ -119,6 +119,12 @@ const SaveController = () => {
                         $form = $(formid),
                         $firstSubmit = $form.find('[type="submit"]').first();
 
+                    // prevents the form from being submitted if not valide
+                    if (!$form[0].reportValidity()) {
+                        $('#save-form-button').removeClass('disabled');
+                        return false;
+                    }
+
                     if($firstSubmit.length > 0) {
                         $firstSubmit.trigger('click');
                     } else {
@@ -187,6 +193,12 @@ const SaveController = () => {
                     ev.preventDefault();
                     const formid = '#' + $(this).attr('data-form-id'),
                         $form = $(formid);
+
+                    // check validity before being submitted.
+                    if (!$form[0].reportValidity()) {
+                        $('#save-and-close-form-button').removeClass('disabled');
+                        return false;
+                    }
 
                     // Add input to tell us to not redirect
                     // TODO : change that

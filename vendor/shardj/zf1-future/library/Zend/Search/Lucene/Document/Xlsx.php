@@ -194,7 +194,7 @@ class Zend_Search_Lucene_Document_Xlsx extends Zend_Search_Lucene_Document_OpenX
                             if (is_numeric($value) && $dataType != 's') {
                                 if ($value == (int)$value) $value = (int)$value;
                                 elseif ($value == (float)$value) $value = (float)$value;
-                                elseif ($value == (double)$value) $value = (double)$value;
+                                elseif ($value == (float)$value) $value = (float)$value;
                             }
                     }
 

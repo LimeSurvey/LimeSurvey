@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/bootstrap.php" stderr="true" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd">
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    bootstrap="tests/bootstrap.php"
+    stderr="true"
+    colors="true"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+    >
   <coverage processUncoveredFiles="true">
     <include>
       <directory suffix=".php">application/models/services</directory>
@@ -54,6 +60,7 @@
       <file>tests/functional/backend/QuestionAttributeFunctionalTest.php</file>
       <file>tests/functional/frontend/MultipleChoiceNextPreviousTest.php</file>
       <file>tests/functional/frontend/RankingFilterHideShowTest.php</file>
+      <file>tests/functional/frontend/RankingAdvancedHeightsTest.php</file>
       <file>tests/functional/frontend/AnswersAlphabeticalOrderTest.php</file>
     </testsuite>
     <testsuite name="expression">
@@ -64,6 +71,7 @@
       <file>tests/functional/frontend/IntvalFloatvalTest.php</file>
       <file>tests/functional/frontend/JsPhpCompareTest.php</file>
       <file>tests/functional/frontend/MinMaxCompareTest.php</file>
+      <file>tests/functional/frontend/ReplacementFieldsTipPrefixGroupTest.php</file>
       <file>tests/functional/frontend/ScreenOutTest.php</file>
       <file>tests/functional/frontend/SelfExpressionTest.php</file>
       <file>tests/functional/acceptance/15246-fixed-em-function/FixedFunctionExpressionPluginTest.php</file>
@@ -97,6 +105,7 @@
       <file>tests/functional/backend/AdminViewsTest.php</file>
       <file>tests/functional/backend/NoGreenBarTest.php</file>
       <file>tests/functional/acceptance/18282-FailedEmail/FailedEmailTest.php</file>
+      <file>tests/functional/frontend/ReactEditorWorksTest.php</file>
     </testsuite>
     <testsuite name="user">
       <file>tests/functional/backend/UserManagementTest.php</file>

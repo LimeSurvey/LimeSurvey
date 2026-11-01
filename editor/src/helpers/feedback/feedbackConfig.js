@@ -25,7 +25,7 @@ export const getFeedbackConfigs = () => {
       description: t(
         'We would love to hear your thoughts on our sharing options!'
       ),
-      triggerType: 'manual', // triggered when feedbackEventHandler event is emmited
+      triggerType: 'manual', // triggered when feedbackEventHandler event is emitted
       primaryCTA: t('Tell us'),
     },
   }

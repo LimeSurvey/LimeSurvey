@@ -102,6 +102,7 @@ class ExportSurveyResultsService
 
         $surveyDao = new SurveyDao();
         $survey = $surveyDao->loadSurveyById($iSurveyId, $sLanguageCode, $oOptions);
+        $oOptions->selectedColumns = $this->expandRankingColumns($survey, $oOptions->selectedColumns);
         $writer->init($survey, $sLanguageCode, $oOptions);
 
         $countResponsesCommand = $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
@@ -133,6 +134,38 @@ class ExportSurveyResultsService
     }
 
     /**
+     * Replaces a ranking question's base column ("Q{qid}", the JSON array of
+     * ranked subquestion codes and the only ranking field the export column
+     * picker offers) with the question's per-rank fieldmap entries
+     * ("Q{qid}_S{sqid}", one per rank in rank order), so the output has one
+     * column per rank like in LimeSurvey 6.
+     *
+     * A rank entry that is also selected on its own (e.g. the remote-control
+     * export_responses() defaults to every fieldmap key) is only output once.
+     *
+     * @param SurveyObj $survey
+     * @param string[] $selectedColumns
+     * @return string[]
+     */
+    private function expandRankingColumns(SurveyObj $survey, array $selectedColumns)
+    {
+        $expanded = [];
+        foreach ($selectedColumns as $column) {
+            $field = $survey->fieldMap[$column] ?? null;
+            if ($field === null || $field['type'] !== Question::QT_R_RANKING || $field['suffix'] !== '') {
+                $expanded[] = $column;
+                continue;
+            }
+            foreach ($survey->fieldMap as $rankFieldName => $rankField) {
+                if ($rankField['type'] === Question::QT_R_RANKING && $rankField['qid'] == $field['qid'] && $rankField['suffix'] !== '') {
+                    $expanded[] = $rankFieldName;
+                }
+            }
+        }
+        return array_values(array_unique($expanded));
+    }
+
+    /**
      * Get an array of available export types
      *
      * @return array
@@ -150,5 +183,30 @@ class ExportSurveyResultsService
         }
 
         return $this->_exports;
+    }
+
+    /**
+     * Get the display options of all export types provided by a plugin
+     *
+     * @return array Indexed by export type, each entry with the keys 'label', 'tooltip', 'onclick' and 'default'
+     */
+    public function getExportOptions()
+    {
+        $exportOptions = array();
+        $oPluginManager = App()->getPluginManager();
+        // Leave out all entries that are not plugin
+        foreach (array_filter($this->getExports()) as $type => $plugin) {
+            $event = new PluginEvent('listExportOptions');
+            $event->set('type', $type);
+            $oPluginManager->dispatchEvent($event, $plugin);
+            $exportOptions[$type] = array(
+                'label'   => $event->get('label'),
+                'tooltip' => $event->get('tooltip', null),
+                'onclick' => $event->get('onclick'),
+                'default' => (bool) $event->get('default', false),
+            );
+        }
+
+        return $exportOptions;
     }
 }

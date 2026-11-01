@@ -1,0 +1,83 @@
+// Preview styles for the "Show privacy policy text with mandatory checkbox"
+// welcome screen setting (Inline / PopUp). These rules mirror the
+// markup and styling used by the fruity_twentythree survey theme so the
+// editor preview matches how the notice/checkbox look on the real survey:
+// assets/survey_themes/fruity_twentythree/welcome/welcome.scss
+// assets/survey_themes/fruity_twentythree/welcome/welcome_colors.scss
+.privacy {
+  margin-top: 16px;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-xs;
+  line-height: $line-height-16;
+
+  .datasecurity-notice-label {
+    font-weight: $font-weight-500;
+    color: $g-700;
+  }
+
+  .datasecurity-notice {
+    color: $g-700;
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .ls-privacy-block:not(:first-child) {
+    margin-top: 1rem;
+  }
+
+  .datasecurity-checkbox-container {
+    margin-top: 14px;
+    padding-left: 0;
+
+    .form-check-input:disabled {
+      outline: none;
+      opacity: 1;
+    }
+
+    .checkbox-item {
+      .datasecurity-checkbox-row {
+        input[type='checkbox'] {
+          flex-shrink: 0;
+          width: 24px;
+          height: 24px;
+          margin: 0 8px 0 0;
+          border: 3px solid $active-green;
+          border-radius: 0;
+          background-color: $white;
+          appearance: none;
+          cursor: default;
+        }
+
+        .datasecurity-checkbox-label {
+          font-weight: $font-weight-600;
+          font-size: $font-size-sm;
+          line-height: $line-height-20;
+          color: $active-green;
+        }
+      }
+
+      .show-policy-row {
+        margin-left: 32px;
+        margin-top: 2px;
+
+        .show-policy {
+          font-weight: $font-weight-600;
+          font-size: $font-size-sm;
+          line-height: $line-height-20;
+          color: $active-green;
+          cursor: default;
+          &:hover {
+            color: #0c6938; //mimicking hover on actual survey
+          }
+        }
+      }
+    }
+  }
+
+  .form-check-input[disabled] ~ .form-check-label,
+  .form-check-input:disabled ~ .form-check-label {
+    opacity: 1;
+  }
+}

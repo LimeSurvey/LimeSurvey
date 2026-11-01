@@ -12,9 +12,8 @@
 echo viewHelper::getViewTestTag('surveyListQuestions');
 $baseLanguage = $oSurvey->language;
 ?>
-
 <div class='side-body'>
-    <h1><?php eT("In this survey"); ?></h1>
+    <h1><?php eT("Survey organizer"); ?></h1>
     <ul class="nav nav-tabs  mt-4" role="tablist">
         <li id='overviewTab' class="nav-item"><a class="nav-link active" href="#questions" aria-controls="questions" role="tab" data-bs-toggle="tab"><?php eT('Questions'); ?></a></li>
         <li id='overviewTab' class="nav-item"><a class="nav-link" href="#groups" aria-controls="groups" role="tab" data-bs-toggle="tab"><?php eT('Groups'); ?></a></li>

@@ -13,7 +13,6 @@ import ThemeOptionsImageUpload from '../../../ThemeOptions/ThemeOptionsImageUplo
 export const handleDropdownType = (
   attribute = {},
   keyPath,
-  imageFileList,
   hasFileUpload = false
 ) => {
   return {
@@ -39,17 +38,29 @@ export const handleDropdownType = (
     props: {
       id: keyPath,
       mainText: t(attribute.title),
-      // subtext: does not exist in the core app.
       childComponent: Select,
-      subText: hasFileUpload
-        ? format(
-            t('Change or upload your own background image (max. file size %s)'),
-            FILE_UPLOAD_MAX_SIZE_STRING
-          )
-        : null,
+      subText: hasFileUpload ? getImageDropdownSubtext(attribute) : null,
       secondaryChildComponent: hasFileUpload ? ThemeOptionsImageUpload : null,
       childOnNewLine: true,
       noPermissionDisabled: true,
     },
+  }
+}
+
+// subtext: does not exist in the core app.
+const getImageDropdownSubtext = (attribute) => {
+  switch (attribute.parent) {
+    case 'backgroundimage':
+      return format(
+        t('Change or upload your own background image (max. file size %s)'),
+        FILE_UPLOAD_MAX_SIZE_STRING
+      )
+    case 'brandlogo':
+      return format(
+        t('Change or upload your own logo image (max. file size %s)'),
+        FILE_UPLOAD_MAX_SIZE_STRING
+      )
+    default:
+      return null
   }
 }

@@ -69,18 +69,15 @@ class SurveyObj
 
 
     /**
-     * Returns the full answer for the question that matches $fieldName
-     * and the answer that matches the $answerCode.  If a match cannot
-     * be made then false is returned.
+     * Returns the display value used by full-answer exports for a survey field.
+     * Ranking codes are resolved to subquestion text in the requested language
+     * and remain unchanged when no matching text is available.
      *
-     * The name of the variable $answerCode is not strictly an answerCode
-     * but could also be a comment entered by a participant.
-     *
-     * @param string $fieldName
-     * @param string|null $answerCode
-     * @param Translator $translator
-     * @param string $sLanguageCode
-     * @return string|null
+     * @param string $fieldName Field map key
+     * @param string|null $answerCode Stored answer code or response text
+     * @param Translator $translator Translator for built-in answer labels
+     * @param string $sLanguageCode Language used for translated labels
+     * @return string|null Display value for export
      */
     public function getFullAnswer($fieldName, $answerCode, Translator $translator, $sLanguageCode)
     {

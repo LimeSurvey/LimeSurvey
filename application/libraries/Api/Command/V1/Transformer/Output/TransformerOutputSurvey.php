@@ -78,6 +78,10 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
                 'key' => 'refUrl',
                 'formatter' => ['ynToBool' => true]
             ],
+            "savequotaexit" => [
+                'key' => 'saveQuotaExit',
+                'formatter' => ['ynToBool' => true]
+            ],
             "datecreated" => [
                 'key' => 'dateCreated',
                 'formatter' => ['dateTimeToJson' => true]
@@ -126,6 +130,10 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
                 'key' => 'showNoAnswer',
                 'formatter' => ['ynToBool' => true]
             ],
+            "preselectnoanswer" => [
+                'key' => 'preselectNoAnswer',
+                'formatter' => ['ynToBool' => true]
+            ],
             "showqnumcode" => 'showQNumCode',
             "bouncetime" => ['key' => 'bounceTime', 'type' => 'int'],
             "bounceprocessing" => [
@@ -163,6 +171,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             'template' => true,
             'format' => true,
             'access_mode' => 'access_mode',
+            'welcome_image' => 'welcomeImage',
         ]);
     }
 

@@ -45,6 +45,7 @@ foreach ($extraMenus as $menu) : ?>
                         <?= $menuLabel ?>
                     </a>
                 <?php }?>
+                <span class="sr-only">new survey... </span>
                 <ul class="dropdown-menu" <?= $ariaLabelledBy ?>>
                     <?php
                     foreach ($menu->getMenuItems() as $menuItem) : ?>
@@ -56,7 +57,7 @@ foreach ($extraMenus as $menu) : ?>
                             <?php
                         elseif ($menuItem->isSmallText()) : ?>
                             <li class="dropdown-header" role="presentation">
-                                <span role="doc-subtitle" aria-label="<?= $menuItemLabel ?>"><?= $menuItemLabel ?></span>
+                                <span aria-hidden="true"><?= $menuItemLabel ?></span>
                             </li>
                             <?php
                         else : ?>

@@ -30,7 +30,7 @@
 
     <!-- Bounce processing -->
     <?php if ($hasTokensUpdatePermission) :?>
-        <?php if ($oSurvey->bounceprocessing != 'N' ||  ($oSurvey->bounceprocessing == 'G' && App()->getConfig('bounceaccounttype') != 'off')) :?>
+        <?php if ($oSurvey->bounceprocessing == 'L' || ($oSurvey->bounceprocessing == 'G' && App()->getConfig('bounceaccounttype') != 'off')) :?>
             <?php if (function_exists('imap_open')) :?>
                 <li role="none">
                     <a class="dropdown-item" role="menuitem" href="#" id="startbounceprocessing" data-url="<?php echo Yii::App()->createUrl("admin/tokens/sa/bounceprocessing/surveyid/$oSurvey->sid"); ?>" >

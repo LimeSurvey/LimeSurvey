@@ -25,6 +25,7 @@ class ThemeUpdater extends ExtensionUpdater
      * Create a PluginUpdater for every plugin installed.
      * @return array [ExtensionUpdater[] $updaters, string[] $errorMessages]
      */
+    #[\Override]
     public static function createUpdaters()
     {
         $themes = \Template::model()->findAll();
@@ -45,6 +46,7 @@ class ThemeUpdater extends ExtensionUpdater
     /**
      * @return string
      */
+    #[\Override]
     public function getExtensionName()
     {
         return $this->model->name;
@@ -53,6 +55,7 @@ class ThemeUpdater extends ExtensionUpdater
     /**
      * @return string
      */
+    #[\Override]
     public function getCurrentVersion()
     {
         return $this->model->version;
@@ -61,6 +64,7 @@ class ThemeUpdater extends ExtensionUpdater
     /**
      * @return string
      */
+    #[\Override]
     public function getExtensionType()
     {
         return 't';
@@ -69,6 +73,7 @@ class ThemeUpdater extends ExtensionUpdater
     /**
      * @return \ExtensionConfig
      */
+    #[\Override]
     public function getExtensionConfig()
     {
         $templateDirs  = \Template::getAllTemplatesDirectories();
@@ -89,15 +94,7 @@ class ThemeUpdater extends ExtensionUpdater
                 )
             );
         }
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $config = simplexml_load_file(realpath($file));
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
-
         return new \ExtensionConfig($config);
     }
 }

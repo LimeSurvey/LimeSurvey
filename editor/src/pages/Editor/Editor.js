@@ -11,23 +11,32 @@ import {
   SURVEY_MENU_TITLES,
   PAGES,
 } from 'helpers'
-import { getSurveyPauseToastOptions } from 'components'
+import {
+  getSurveyPauseToastOptions,
+  getSurveyDatabaseToastOptions,
+} from 'components'
 import ThemeOptionsPreview from 'components/ThemeOptions/ThemeOptionsPreview'
 
 import Layout from './Layout'
 import { EditorTutorial } from './EditorTutorial'
 import { LoadingIndicator } from './LoadingIndicator'
+import { PluginSlot } from 'plugins/PluginSlot'
+import { PLUGIN_SLOTS } from 'plugins/slots'
 
 export const Editor = () => {
-  const { surveyId, menu } = useParams()
+  const { surveyId, panel, menu } = useParams()
   const navigate = useNavigate()
   const { survey = {} } = useSurvey(surveyId)
   const { ready } = useTranslation()
   const [, setTopbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
+  const [userDetails] = useAppState(STATES.USER_DETAIL, {})
+  const [loadedSurveyId] = useAppState(STATES.LOADED_SURVEY_ID, null, {
+    meta: { persist: false },
+  })
 
   const surveyActivationHandlerRef = useRef(null)
-  const setShowOverviewModalRef = useRef(null)
-  const hasOverviewAutoRan = useRef(false)
+  const expiryToastRanForSurvey = useRef(null)
+  const databaseAlertRanForSurvey = useRef(null)
 
   const [activeLanguage = undefined] = useAppState(
     STATES.ACTIVE_LANGUAGE,
@@ -39,12 +48,6 @@ export const Editor = () => {
   const [allLanguages] = useAppState(STATES.ALL_AVAILABLE_LANGUAGES)
 
   // Automatic Toast Triggers
-  const tryToOpenOverview = () => {
-    if (survey.active && setShowOverviewModalRef.current) {
-      setShowOverviewModalRef.current(true)
-    }
-  }
-
   const tryToOpenExpiryToast = useCallback(() => {
     const surveyExpired = isSurveyExpired(survey.expires)
 
@@ -54,35 +57,62 @@ export const Editor = () => {
     }
   }, [survey.expires, survey.sid])
 
+  const isSuperAdmin = userDetails?.isSuperAdmin
+
+  const tryToOpenSurveyDatabaseAlert = useCallback(() => {
+    const shouldShowSurveyDatabaseAlert =
+      survey.active && !survey.hasResponsesTable
+
+    if (shouldShowSurveyDatabaseAlert) {
+      Toast(getSurveyDatabaseToastOptions({ isSuperAdmin }))
+    }
+  }, [survey.active, survey.hasResponsesTable, isSuperAdmin])
+
   useEffect(() => {
-    // make sure auto opening occurs only once
-    if (hasOverviewAutoRan.current) return
+    if (expiryToastRanForSurvey.current === survey.sid) return
 
     // make sure survey sid is matching new params value ( when switching between surveys )
     if (!survey.sid || surveyId != survey.sid) {
       return
     }
 
-    // make sure automatic opening occurs only when survey is clicked in dashboard view
-    const referrer = document.referrer
-    const isDashboardReferrer = referrer.includes('/dashboard/view')
-    if (!isDashboardReferrer) {
+    tryToOpenExpiryToast()
+    expiryToastRanForSurvey.current = survey.sid
+  }, [survey.sid, surveyId, tryToOpenExpiryToast])
+
+  useEffect(() => {
+    if (databaseAlertRanForSurvey.current === survey.sid) return
+
+    // only try to open when fresh survey data is loaded
+    const isCurrentSurveyLoaded = Number(loadedSurveyId) === Number(surveyId)
+
+    if (
+      !survey.sid ||
+      surveyId != survey.sid ||
+      !isCurrentSurveyLoaded ||
+      isSuperAdmin === undefined
+    ) {
       return
     }
 
-    tryToOpenOverview()
-    tryToOpenExpiryToast()
-    hasOverviewAutoRan.current = true
-  }, [surveyId, setShowOverviewModalRef.current])
+    tryToOpenSurveyDatabaseAlert()
+    databaseAlertRanForSurvey.current = survey.sid
+  }, [
+    survey.sid,
+    surveyId,
+    loadedSurveyId,
+    isSuperAdmin,
+    tryToOpenSurveyDatabaseAlert,
+  ])
 
   useEffect(() => {
     setTopbarConfig({
       surveyId,
       surveyActivationHandlerRef,
-      setShowOverviewModalRef,
       pageName: PAGES.EDITOR,
+      shouldAutoOpenOverview: !panel && !menu,
     })
-  }, [surveyId, surveyActivationHandlerRef, setShowOverviewModalRef])
+  }, [surveyId, panel, menu])
 
   const isLoadingSurvey =
     !survey?.sid ||
@@ -94,24 +124,27 @@ export const Editor = () => {
     !ready || (!allLanguages && !process.env.STORYBOOK_DEV)
 
   return (
-    <div id="editor" key={activeLanguage}>
-      <EditorTutorial survey={survey} isSurveyActive={survey.active} />
-      {isLoadingSurvey || isLoadingTranslations ? (
-        <LoadingIndicator isLoadingSurvey={isLoadingSurvey} />
-      ) : (
-        <Container className="p-0" fluid>
-          <div
-            id="content"
-            data-testid="editor"
-            className="d-flex position-relative"
-          >
-            <Layout />
-            <ThemeOptionsPreview
-              shouldBeVisible={menu === SURVEY_MENU_TITLES.themeOptions}
-            />
-          </div>
-        </Container>
-      )}
-    </div>
+    <>
+      <PluginSlot slotName={PLUGIN_SLOTS.EDITOR_TOP} />
+      <div id="editor" key={activeLanguage}>
+        <EditorTutorial survey={survey} isSurveyActive={survey.active} />
+        {isLoadingSurvey || isLoadingTranslations ? (
+          <LoadingIndicator isLoadingSurvey={isLoadingSurvey} />
+        ) : (
+          <Container className="p-0" fluid>
+            <div
+              id="content"
+              data-testid="editor"
+              className="d-flex position-relative"
+            >
+              <Layout />
+              <ThemeOptionsPreview
+                shouldBeVisible={menu === SURVEY_MENU_TITLES.themeOptions}
+              />
+            </div>
+          </Container>
+        )}
+      </div>
+    </>
   )
 }

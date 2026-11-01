@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DI\Definition\Helper;
 
-use DI\Definition\Definition;
 use DI\Definition\Exception\InvalidDefinition;
 use DI\Definition\ObjectDefinition;
 use DI\Definition\ObjectDefinition\MethodInjection;
@@ -17,35 +16,26 @@ use DI\Definition\ObjectDefinition\PropertyInjection;
  */
 class CreateDefinitionHelper implements DefinitionHelper
 {
-    const DEFINITION_CLASS = ObjectDefinition::class;
+    private const DEFINITION_CLASS = ObjectDefinition::class;
 
-    /**
-     * @var string|null
-     */
-    private $className;
+    private ?string $className;
 
-    /**
-     * @var bool|null
-     */
-    private $lazy;
+    private ?bool $lazy = null;
 
     /**
      * Array of constructor parameters.
-     * @var array
      */
-    protected $constructor = [];
+    protected array $constructor = [];
 
     /**
      * Array of properties and their value.
-     * @var array
      */
-    private $properties = [];
+    private array $properties = [];
 
     /**
      * Array of methods and their parameters.
-     * @var array
      */
-    protected $methods = [];
+    protected array $methods = [];
 
     /**
      * Helper for defining an object.
@@ -53,7 +43,7 @@ class CreateDefinitionHelper implements DefinitionHelper
      * @param string|null $className Class name of the object.
      *                               If null, the name of the entry (in the container) will be used as class name.
      */
-    public function __construct(string $className = null)
+    public function __construct(?string $className = null)
     {
         $this->className = $className;
     }
@@ -65,7 +55,7 @@ class CreateDefinitionHelper implements DefinitionHelper
      *
      * @return $this
      */
-    public function lazy()
+    public function lazy() : self
     {
         $this->lazy = true;
 
@@ -78,11 +68,11 @@ class CreateDefinitionHelper implements DefinitionHelper
      * This method takes a variable number of arguments, example:
      *     ->constructor($param1, $param2, $param3)
      *
-     * @param mixed... $parameters Parameters to use for calling the constructor of the class.
+     * @param mixed ...$parameters Parameters to use for calling the constructor of the class.
      *
      * @return $this
      */
-    public function constructor(...$parameters)
+    public function constructor(mixed ...$parameters) : self
     {
         $this->constructor = $parameters;
 
@@ -97,7 +87,7 @@ class CreateDefinitionHelper implements DefinitionHelper
      *
      * @return $this
      */
-    public function property(string $property, $value)
+    public function property(string $property, mixed $value) : self
     {
         $this->properties[$property] = $value;
 
@@ -114,11 +104,11 @@ class CreateDefinitionHelper implements DefinitionHelper
      * Can be used multiple times to declare multiple calls.
      *
      * @param string $method       Name of the method to call.
-     * @param mixed... $parameters Parameters to use for calling the method.
+     * @param mixed ...$parameters Parameters to use for calling the method.
      *
      * @return $this
      */
-    public function method(string $method, ...$parameters)
+    public function method(string $method, mixed ...$parameters) : self
     {
         if (! isset($this->methods[$method])) {
             $this->methods[$method] = [];
@@ -129,10 +119,7 @@ class CreateDefinitionHelper implements DefinitionHelper
         return $this;
     }
 
-    /**
-     * @return ObjectDefinition
-     */
-    public function getDefinition(string $entryName) : Definition
+    public function getDefinition(string $entryName) : ObjectDefinition
     {
         $class = $this::DEFINITION_CLASS;
         /** @var ObjectDefinition $definition */

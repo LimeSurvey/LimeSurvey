@@ -19,6 +19,11 @@ $modal-inner-padding : 1.5rem; // 24px
         &:focus {
             box-shadow : none;
         }
+
+        &:focus-visible {
+            outline    : none;
+            box-shadow : 0 0 0 3px $elevation-shadow;
+        }
     }
 }
 

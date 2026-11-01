@@ -35,6 +35,39 @@ class TwoFactorAdminLogin extends AuthPluginBase
         'index'
     ];
 
+    /**
+     * Methods invokable through the public web 'newDirectRequest' event
+     * (plugins/direct endpoint). Each performs its own permission check.
+     * Any method not listed here must never be dispatchable from an
+     * attacker-controlled 'function' parameter.
+     * @var string[]
+     */
+    private $allowedDirectMethods = [
+        'directCallCreateNewKey',
+        'directCallConfirmKey',
+        'directCallDeleteKey',
+    ];
+
+    /**
+     * Web direct methods that mutate data and therefore must only be reachable
+     * through an safe HTTP method (POST/PATCH), never GET.
+     * @var string[]
+     */
+    private $writeDirectMethods = [
+        'directCallConfirmKey',
+        'directCallDeleteKey',
+    ];
+
+    /**
+     * Methods invokable through the CLI-only 'direct' event
+     * (console command "plugin index --target=... --function=...").
+     * @var string[]
+     */
+    private $allowedCliMethods = [
+        'deleteKeyForUserId',
+        'deleteKeyForUserName',
+    ];
+
     protected $storage = 'DbStorage';
     protected $settings = array(
         'force2fa' => array(
@@ -126,9 +159,9 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $this->subscribe('afterSuccessfulLogin');
 
         //Login events
-        $this->subscribe('newLoginForm');
-        $this->subscribe('afterLoginFormSubmit');
-        $this->subscribe('newUserSession');
+        $this->subscribe('beforeSuccessfulLogin');
+        $this->subscribe('newSecondFactorForm');
+        $this->subscribe('verifySecondFactor');
     }
 
     //##############  Plugin event handlers ##############//
@@ -147,9 +180,14 @@ class TwoFactorAdminLogin extends AuthPluginBase
         }
 
         $action = $oEvent->get('function');
-        if (method_exists($this, $action)) {
-            call_user_func([$this, $action], $oEvent, $request);
+        if (!in_array($action, $this->allowedDirectMethods, true) || !method_exists($this, $action)) {
+            return;
         }
+        // Data-modifying actions must never run on a safe (GET) request.
+        if (in_array($action, $this->writeDirectMethods, true) && !$request->getIsPostRequest()) {
+            throw new CHttpException(405, 'This action requires a POST request.');
+        }
+        call_user_func([$this, $action], $oEvent, $request);
     }
 
     /**
@@ -165,7 +203,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         }
         $option = $this->event->get("option");
         $action = $oEvent->get('function');
-        if (method_exists($this, $action)) {
+        if (in_array($action, $this->allowedCliMethods, true) && method_exists($this, $action)) {
             call_user_func([$this, $action], $oEvent, $option);
         }
     }
@@ -191,56 +229,77 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
 
     /**
-     * Add Two-Factor field to login page.
+     * Require the 2FA key as second login step if the user has a 2FA key
+     * Runs after the auth plugin (Authdb, AuthLDAP, ...) accepted the credentials.
      *
      * @return void
      */
-    public function newLoginForm()
+    public function beforeSuccessfulLogin()
     {
         $oEvent = $this->getEvent();
-        $extraLine = ""
-            . "<span>"
-            . "<label for='twofactor'>"  . gT("2FA key (optional)") . "</label>
-            <input class='form-control' name='twofactor' id='twofactor' type='text' value='' />"
-            . "</span>";
-
-        $oEvent->getContent('Authdb')->addContent($extraLine, 'append');
-    }
-
-    /**
-     * Control if login is successful by checking the transmitted 2FA-token value
-     *
-     * @return void
-     */
-    public function newUserSession()
-    {
-        $oEvent = $this->getEvent();
-        $onepass = App()->request->getParam('onepass');
-
-        // skip 2fa when there's an active and verified one-time password used (verification is already done before getting here)
-        if (App()->getConfig('use_one_time_passwords') && isset($onepass)) {
+        // Skip 2FA when a verified one-time password was used
+        if ($oEvent->get('identity')->usedOneTimePassword) {
             return;
         }
-
-        $oIdentity = $oEvent->get('identity');
-        $oTFAModel =  TFAUserKey::model()->findByPk($oIdentity->id);
-
-        if ($oTFAModel != null) {
-            if (!in_array($oTFAModel->authType, ['totp', 'yubi'])) {
-                $this->setAuthFailure(null, gT('Authentication method not supported'));
-                return;
-            }
-            $oTFAModel->decrypt();
-            $authenticationKey = Yii::app()->getRequest()->getPost('twofactor', false);
-            if (!$authenticationKey || !$this->confirmKey($oTFAModel, $authenticationKey)) {
-                $this->setAuthFailure(null, gT('Incorrect 2FA key'));
-            }
+        $oUser = $oEvent->get('user');
+        if (TFAUserKey::model()->findByPk($oUser->uid) !== null) {
+            $oEvent->set('secondFactorPlugin', get_class($this));
         }
-        return;
     }
 
     /**
-     * Add menue to the top bar
+     * Add the 2FA key field to the second login step page
+     *
+     * @return void
+     */
+    public function newSecondFactorForm()
+    {
+        $oEvent = $this->getEvent();
+        $oTFAModel = TFAUserKey::model()->findByPk($oEvent->get('user')->uid);
+        $help = ($oTFAModel !== null && $oTFAModel->authType == 'yubi')
+            ? gT('Insert your YubiKey and touch it.')
+            : gT('Enter the code shown in your authenticator app.');
+        $field = "<label for='twofactor'>" . gT("2FA key") . "</label>"
+            . CHtml::textField('twofactor', '', [
+                'class' => 'form-control',
+                'autocomplete' => 'one-time-code',
+                'autofocus' => 'autofocus',
+                'required' => 'required',
+                'aria-describedby' => 'twofactor-help',
+            ])
+            . CHtml::tag('div', ['id' => 'twofactor-help', 'class' => 'form-text'], CHtml::encode($help));
+        $oEvent->getContent($this)->addContent(CHtml::tag('span', [], $field));
+    }
+
+    /**
+     * Check the 2FA key submitted on the second login step page
+     *
+     * @return void
+     */
+    public function verifySecondFactor()
+    {
+        $oEvent = $this->getEvent();
+        $oTFAModel = TFAUserKey::model()->findByPk($oEvent->get('user')->uid);
+        if ($oTFAModel === null) {
+            // Key was deleted meanwhile: nothing left to check
+            $oEvent->set('result', new LSAuthResult(self::ERROR_NONE));
+            return;
+        }
+        if (!in_array($oTFAModel->authType, ['totp', 'yubi'])) {
+            $oEvent->set('result', new LSAuthResult(self::ERROR_AUTH_METHOD_INVALID, gT('Authentication method not supported')));
+            return;
+        }
+        $oTFAModel->decrypt();
+        $authenticationKey = trim((string) App()->getRequest()->getPost('twofactor', ''));
+        if ($authenticationKey === '' || !$this->confirmKey($oTFAModel, $authenticationKey)) {
+            $oEvent->set('result', new LSAuthResult(self::ERROR_PASSWORD_INVALID, gT('Incorrect 2FA key')));
+            return;
+        }
+        $oEvent->set('result', new LSAuthResult(self::ERROR_NONE));
+    }
+
+    /**
+     * Add menu to the top bar
      * @return void
      */
     public function beforeAdminMenuRender()
@@ -429,7 +488,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
     }
 
     /**
-     * Checks a submitted authentication code and stores the underlaying secret key into the Database.
+     * Checks a submitted authentication code and stores the underlying secret key into the Database.
      * Returns a JSON document
      *
      * @param PluginEvent $oEvent
@@ -620,7 +679,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
                 $this->get('issuer', null, null, 'LimeSurvey - survey software'),
                 ((int) $this->get('digits', null, null, 6)),
                 ((int) $this->get('period', null, null, 30)),
-                $this->get('algorithm', null, null, 'sha1'),
+                RobThree\Auth\Algorithm::from((string) $this->get('algorithm', null, null, 'sha1')),
                 $mp
             );
         }

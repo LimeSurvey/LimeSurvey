@@ -15,15 +15,22 @@
  * And by soon I mean yesterday
  */
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
+use LimeSurvey\Models\Services\SurveySessionState;
+
 class UploaderController extends SurveyController
 {
     /**
-     * @param int $actionID
+     * Handles file upload question requests: file download, delete and upload (mode=upload),
+     * otherwise renders the upload modal content (a fragment for AJAX requests, a full page otherwise).
+     *
+     * @param string $actionID
      * @return void
+     * @throws CHttpException
      */
     public function run($actionID)
     {
-        $surveyid = Yii::app()->session['LEMsid'];
+        $surveyid = ExpressionManagerSessionState::current()->getSurveyId();
         if (empty($surveyid)) {
             throw new CHttpException(401, gT("We are sorry but your session has expired."));
         }
@@ -32,7 +39,8 @@ class UploaderController extends SurveyController
             throw new CHttpException(400);
         }
 
-        $sLanguage = Yii::app()->session['responses_' . $surveyid]['s_lang'] ?? "";
+        $sessionState = SurveySessionState::forSurvey($surveyid);
+        $sLanguage = $sessionState->getLanguage() ?? "";
         Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -55,6 +63,10 @@ class UploaderController extends SurveyController
         if ($sFileGetContent != $sFileGetContentFiltered || $sFileName != $sFileNameFiltered || $sFieldName != $sFieldNameFiltered) {
             // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
+        }
+        // File content, delete and upload responses are not HTML: Don't append the HTML debug log (debugsql)
+        if ($sFileGetContentFiltered || $bDelete || $sMode == "upload") {
+            viewHelper::disableHtmlLogging();
         }
         if ($sFileGetContentFiltered) {
             if (substr($sFileGetContentFiltered, 0, 6) == 'futmp_') {
@@ -142,7 +154,6 @@ class UploaderController extends SurveyController
             }
             $filename = sanitize_filename($_FILES['uploadfile']['name'], false, false, true);
             $size = $_FILES['uploadfile']['size'] / 1024;
-            $preview = Yii::app()->session['preview'];
             /* Find the question by sFieldName : must be a upload question type, and id is end of sFieldName in $surveyid*/
             $qid = substr(explode("_", $sFieldName)[0], 1);
             if (empty($qid) || !ctype_digit($qid)) {
@@ -190,9 +201,10 @@ class UploaderController extends SurveyController
             $event = new PluginEvent('beforeProcessFileUpload');
             /* Current state */
             $event->set('surveyId', $surveyid);
-            $event->set('responseId', Yii::app()->session['responses_' . $surveyid]['srid'] ?? null); // NULL if not exist
+            $event->set('responseId', $sessionState->get('srid')); // NULL if not exist
             $event->set('qid', $oQuestion->qid);
-            $event->set('preview', $preview);
+            // Kept for backward compatibility of plugins: Always null
+            $event->set('preview', null);
             $event->set('fieldname', $sFieldName);
             $event->set('maxfilesize', $maxfilesize);
             $event->set('valid_extensions_array', $valid_extensions_array);
@@ -323,50 +335,29 @@ class UploaderController extends SurveyController
                 Yii::app()->end();
             }
             // if everything went fine and the file was uploaded successfully,
-            // If this is just a preview, don't save the file
-            if ($preview) {
-                if (move_uploaded_file($uploadfile_tmp_name, $randfileloc)) {
-                    /** @psalm-suppress UndefinedVariable TODO: Dead code? */
-                    $return = array(
-                                "success"       => true,
-                                "file_index"    => $filecount,
-                                "size"          => $size,
-                                "name"          => rawurlencode(basename((string) $filename)),
-                                "ext"           => $cleanExt,
-                                "filename"      => $randfilename,
-                                "msg"           =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
-                            );
-                    // TODO : unlink this file since this is just a preview. But we can do it only if it's not needed, and still needed to have the file content
-                    // Maybe use a javascript 'onunload' on preview question/group
-                    // unlink($randfileloc)
-                    echo ls_json_encode($return);
-                    Yii::app()->end();
-                }
-            } else {
-                // send the file related info back to the client
-                $iFileUploadTotalSpaceMB = Yii::app()->getConfig("iFileUploadTotalSpaceMB");
-                if ($iFileUploadTotalSpaceMB > 0 && ((calculateTotalFileUploadUsage() + ($size / 1024 / 1024)) > $iFileUploadTotalSpaceMB)) {
-                    $return = array(
-                        "success" => false,
-                            "msg" => gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.", 'unescaped')
-                    );
-                    //header('Content-Type: application/json');
-                    echo ls_json_encode($return);
-                    Yii::app()->end();
-                }
-                if (move_uploaded_file($uploadfile_tmp_name, $randfileloc)) {
-                    $return = array(
-                        "success"  => true,
-                        "size"     => $size,
-                        "name"     => $filename,
-                        "ext"      => $cleanExt,
-                        "filename" => $randfilename,
-                        "msg"      =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
-                    );
-                    //header('Content-Type: application/json');
-                    echo ls_json_encode($return);
-                    Yii::app()->end();
-                }
+            // send the file related info back to the client
+            $iFileUploadTotalSpaceMB = Yii::app()->getConfig("iFileUploadTotalSpaceMB");
+            if ($iFileUploadTotalSpaceMB > 0 && ((calculateTotalFileUploadUsage() + ($size / 1024 / 1024)) > $iFileUploadTotalSpaceMB)) {
+                $return = array(
+                    "success" => false,
+                        "msg" => gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.", 'unescaped')
+                );
+                //header('Content-Type: application/json');
+                echo ls_json_encode($return);
+                Yii::app()->end();
+            }
+            if (move_uploaded_file($uploadfile_tmp_name, $randfileloc)) {
+                $return = array(
+                    "success"  => true,
+                    "size"     => $size,
+                    "name"     => $filename,
+                    "ext"      => $cleanExt,
+                    "filename" => $randfilename,
+                    "msg"      =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
+                );
+                //header('Content-Type: application/json');
+                echo ls_json_encode($return);
+                Yii::app()->end();
             }
             /* We get there : an unknown error happened … maybe a move_uploaded_file error (with debug=0) */
             $return = array(
@@ -389,12 +380,11 @@ class UploaderController extends SurveyController
         $oEvent = new PluginEvent('beforeSurveyPage');
         $oEvent->set('surveyId', $surveyid);
         App()->getPluginManager()->dispatchEvent($oEvent);
-        if (!is_null($oEvent->get('template'))) {
-            $aSurveyInfo['templatedir'] = $oEvent->get('template');
-        }
+        /* Theme set by a plugin in beforeSurveyPage */
+        $sPluginTemplateName = $oEvent->get('template');
         $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
         $sTemplateUrl = getTemplateURL($aSurveyInfo['template']) . "/";
-        $oTemplate = Template::model()->getInstance('', $surveyid);
+        $oTemplate = Template::model()->getInstance(empty($sPluginTemplateName) ? '' : $sPluginTemplateName, $surveyid);
         $sNeededScriptVar = '
             var uploadurl = uploadurl || "' . $this->createUrl('/uploader/index/mode/upload/') . '";
             var imageurl = imageurl || "' . Yii::app()->getConfig('imageurl') . '/";
@@ -426,10 +416,6 @@ class UploaderController extends SurveyController
         App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
 
-        $header = getHeader($meta);
-
-        echo $header;
-
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
         $oQuestion = self::getQuestion($surveyid, $qid);
@@ -451,7 +437,8 @@ class UploaderController extends SurveyController
             'qid' => $qid,
             'minfiles' => $minfiles,
             'maxfiles' => $maxfiles,
-            'qidattributes' => $qidattributes
+            'qidattributes' => $qidattributes,
+            'preview' => null
         ];
 
         $body = '<body class="uploader">';
@@ -473,7 +460,15 @@ class UploaderController extends SurveyController
                     . "});
             });
         </script>";
-        $container = $this->renderPartial('/survey/questions/answer/file_upload/modal-container', $aData, true);
+        /* Render with twig to allow survey themes and question themes to override the modal content */
+        QuestionTemplate::getNewInstance($oQuestion);
+        $container = App()->twigRenderer->renderQuestion('/survey/questions/answer/file_upload/modal-container', $aData);
+        if (App()->request->getIsAjaxRequest()) {
+            /* Loaded into the survey page modal, which already has all assets: no page header or external scripts */
+            echo "<script>\n" . $sNeededScriptVar . $sLangScriptVar . "\n</script>\n" . $container . $scripts;
+            return;
+        }
+        echo getHeader($meta);
         $body .= $container . $scripts;
         $body .= '</body>
         </html>';

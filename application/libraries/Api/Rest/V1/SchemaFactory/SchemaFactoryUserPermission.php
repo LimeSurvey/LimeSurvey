@@ -57,6 +57,12 @@ class SchemaFactoryUserPermission
                         Schema::object('entity_id')->properties(
                             ...$aSurveySchemaObj
                         )
+                    ),
+                    Schema::object('effective')->properties(
+                        Schema::boolean('surveyRead'),
+                        Schema::boolean('surveyUpdate'),
+                        Schema::boolean('responsesRead'),
+                        Schema::boolean('responsesUpdate')
                     )
                 )
             );

@@ -11,23 +11,19 @@ use DI\Definition\Exception\InvalidDefinition;
 /**
  * Resolves a environment variable definition to a value.
  *
+ * @template-implements DefinitionResolver<EnvironmentVariableDefinition>
+ *
  * @author James Harris <james.harris@icecave.com.au>
  */
 class EnvironmentVariableResolver implements DefinitionResolver
 {
-    /**
-     * @var DefinitionResolver
-     */
-    private $definitionResolver;
-
-    /**
-     * @var callable
-     */
+    /** @var callable */
     private $variableReader;
 
-    public function __construct(DefinitionResolver $definitionResolver, $variableReader = null)
-    {
-        $this->definitionResolver = $definitionResolver;
+    public function __construct(
+        private DefinitionResolver $definitionResolver,
+        $variableReader = null,
+    ) {
         $this->variableReader = $variableReader ?? [$this, 'getEnvVariable'];
     }
 
@@ -36,7 +32,7 @@ class EnvironmentVariableResolver implements DefinitionResolver
      *
      * @param EnvironmentVariableDefinition $definition
      */
-    public function resolve(Definition $definition, array $parameters = [])
+    public function resolve(Definition $definition, array $parameters = []) : mixed
     {
         $value = call_user_func($this->variableReader, $definition->getVariableName());
 
@@ -68,12 +64,6 @@ class EnvironmentVariableResolver implements DefinitionResolver
 
     protected function getEnvVariable(string $variableName)
     {
-        if (isset($_ENV[$variableName])) {
-            return $_ENV[$variableName];
-        } elseif (isset($_SERVER[$variableName])) {
-            return $_SERVER[$variableName];
-        }
-
-        return getenv($variableName);
+        return $_ENV[$variableName] ?? $_SERVER[$variableName] ?? getenv($variableName);
     }
 }

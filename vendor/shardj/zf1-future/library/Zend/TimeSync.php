@@ -300,6 +300,6 @@ class Zend_TimeSync implements IteratorAggregate
         }
         $timeServerObj = new $className($adress, $port);
 
-        $this->_timeservers[$alias] = $timeServerObj;
+        $this->_timeservers[$alias ?? ''] = $timeServerObj;
     }
 }

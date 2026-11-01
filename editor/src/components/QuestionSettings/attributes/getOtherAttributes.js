@@ -9,7 +9,8 @@ export const getOtherAttributes = () => ({
       labelText: t('Minimum number of files'),
       dataTestId: 'min-number-of-files',
       type: 'number',
-      defaultValue: '1',
+      defaultValue: '0',
+      min: 0,
     },
   },
   ALLOWED_FILE_TYPES: {
@@ -18,7 +19,7 @@ export const getOtherAttributes = () => ({
     props: {
       labelText: t('Allowed file types'),
       dataTestId: 'allowed-file-types',
-      defaultValue: 'png, gif, doc, odt, jpg, jpeg',
+      defaultValue: 'png, gif, doc, odt, jpg, jpeg, pdf, heic',
     },
   },
   MAXIMUM_FILE_SIZE_ALLOWED: {
@@ -30,7 +31,7 @@ export const getOtherAttributes = () => ({
       type: 'number',
       min: 1,
       max: 1024 * 1024 * 1024,
-      defaultValue: '1024',
+      defaultValue: '10240',
     },
   },
   MAX_NUMBER_FILES: {
@@ -47,6 +48,7 @@ export const getOtherAttributes = () => ({
   CHOICE_HEADER: {
     component: Input,
     attributePath: 'attributes.choice_title',
+    languageBased: true,
     props: {
       labelText: t('Choice header'),
       dataTestId: 'choice-header',
@@ -55,6 +57,7 @@ export const getOtherAttributes = () => ({
   RANK_HEADER: {
     component: Input,
     attributePath: 'attributes.rank_title',
+    languageBased: true,
     props: {
       labelText: t('Rank header'),
       dataTestId: 'rank-header',
@@ -118,6 +121,16 @@ export const getOtherAttributes = () => ({
           value: '3',
         },
       ],
+    },
+  },
+  OTHER_NUMBERS_ONLY: {
+    component: ToggleButtons,
+    attributePath: 'attributes.other_numbers_only',
+    props: {
+      labelText: t("Numbers only in 'Other' input field"),
+      dataTestId: 'other-numbers-only',
+      toggleOptions: getOnOffOptions(),
+      defaultValue: '0',
     },
   },
 })

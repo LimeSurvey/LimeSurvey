@@ -1,4 +1,4 @@
-import { expect } from '@storybook/test'
+import { expect } from 'storybook/test'
 import { getNoAnswerLabel } from 'helpers'
 
 export async function yesNoTests(step, canvas) {
