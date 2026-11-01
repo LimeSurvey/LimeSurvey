@@ -3,6 +3,8 @@
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions;
 
 use CDbCommand;
+use DOMDocument;
+use DOMElement;
 use Exception;
 use InvalidArgumentException;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
@@ -505,13 +507,32 @@ class QuestionStatistics implements StatisticsChartInterface
     private function getChoiceLabel(?string $text, ?string $themeName): string
     {
         $text = (string) $text;
-        if (
-            strpos((string) $themeName, 'image_select') !== false
-            && preg_match('/<img\b[^>]*?\ssrc\s*=\s*(["\'])(.*?)\1/is', $text, $matches)
-        ) {
-            return html_entity_decode($matches[2], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        if (strpos((string) $themeName, 'image_select') !== false && stripos($text, '<img') !== false) {
+            $imageSource = $this->getImageSource($text);
+            if ($imageSource !== '') {
+                return $imageSource;
+            }
         }
         return flattenText($text, false, true);
+    }
+
+    /**
+     * Returns the src attribute of the first image in an HTML text, parsed the
+     * way a browser does (quoted or unquoted, entities decoded).
+     *
+     * @param string $html HTML text
+     * @return string Image URL, empty if there is no image with a src
+     */
+    private function getImageSource(string $html): string
+    {
+        $document = new DOMDocument();
+        $useInternalErrors = libxml_use_internal_errors(true);
+        // The XML declaration makes libxml read the text as UTF-8
+        $document->loadHTML('<?xml encoding="UTF-8">' . $html, LIBXML_NONET);
+        libxml_clear_errors();
+        libxml_use_internal_errors($useInternalErrors);
+        $image = $document->getElementsByTagName('img')->item(0);
+        return $image instanceof DOMElement ? $image->getAttribute('src') : '';
     }
 
     /**

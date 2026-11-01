@@ -1,4 +1,10 @@
-import React, { useMemo, useState, useEffect, useRef } from 'react'
+import React, {
+  useMemo,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from 'react'
 import { Form, Image } from 'react-bootstrap'
 import classNames from 'classnames'
 
@@ -35,10 +41,12 @@ export const ImageChoice = ({
   // The choice text holds the image as HTML (or as a bare image URL in older surveys)
   const imageSrc = useMemo(() => getImageChoiceSrc(value), [value])
   const imageAlt = useMemo(() => getImageChoiceAlt(value), [value])
-  // An upload finishes after later renders: Build the new image from the
-  // latest text, so an alternative text edited meanwhile is kept
-  const valueRef = useRef(value)
-  valueRef.current = value
+  // An upload finishes after later renders: Use the latest text and update
+  // callback then, so changes made meanwhile (e.g. alternative texts) are kept
+  const latest = useRef({ value, update })
+  useLayoutEffect(() => {
+    latest.current = { value, update }
+  })
   // REACT_APP_SITE_URL is needed in development environments
   // - because the react-app runs on a different port to the core app
   const getPreviewUrl = (src) =>
@@ -48,9 +56,10 @@ export const ImageChoice = ({
   const [previewUrl, setPreviewUrl] = useState(getPreviewUrl(imageSrc))
 
   const onChange = (filePath) => {
-    update(
+    const { value: latestValue, update: latestUpdate } = latest.current
+    latestUpdate(
       filePath
-        ? setImageChoiceImage(valueRef.current, { src: encodeURI(filePath) })
+        ? setImageChoiceImage(latestValue, { src: encodeURI(filePath) })
         : ''
     )
   }

@@ -49,6 +49,21 @@ class QuestionStatisticsChoiceLabelTest extends TestCase
                 'image_select-multiplechoice'
             )
         );
+        $this->assertSame(
+            '/upload/car.jpeg',
+            $this->getChoiceLabel(
+                '<img title="Use src=\'/upload/other.png\'" src="/upload/car.jpeg" />',
+                'image_select-multiplechoice'
+            )
+        );
+        $this->assertSame(
+            '/upload/car.jpeg',
+            $this->getChoiceLabel('<img src=/upload/car.jpeg alt="">', 'image_select-listradio')
+        );
+        $this->assertSame(
+            '/upload/Käfer.jpeg',
+            $this->getChoiceLabel('<img src="/upload/Käfer.jpeg" alt="Käfer" />', 'image_select-listradio')
+        );
     }
 
     /**
