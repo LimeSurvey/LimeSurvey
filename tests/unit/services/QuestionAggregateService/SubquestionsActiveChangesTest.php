@@ -130,6 +130,7 @@ class SubquestionsActiveChangesTest extends TestBaseClass
         $newSubquestion = Question::model()->findByAttributes(['parent_qid' => $question->qid, 'title' => 'NEW1']);
         $this->assertNotNull($newSubquestion);
         $this->assertSame(Question::QT_R_RANKING, $newSubquestion->type);
+        $this->assertEquals($question->gid, $newSubquestion->gid);
         \SurveyDynamic::model(self::$surveyId)->refreshMetaData();
         $this->assertSame($columnsBefore, array_keys(\SurveyDynamic::model(self::$surveyId)->getTableSchema()->columns));
     }
@@ -177,6 +178,22 @@ class SubquestionsActiveChangesTest extends TestBaseClass
         $this->getSubQuestionsService()->save($question, $subquestions);
 
         $this->assertNotNull(Question::model()->findByPk($omittedQid));
+    }
+
+    /**
+     * @testdox save() keeps the codes of existing ranking items when active
+     */
+    public function testSaveKeepsExistingRankingCodesWhenActive()
+    {
+        $question = $this->getQuestionByType(Question::QT_R_RANKING);
+        $subquestions = $this->getSubquestionsData($question);
+        $changedQid = array_key_first($subquestions);
+        $originalCode = $subquestions[$changedQid][0]['code'];
+        $subquestions[$changedQid][0]['code'] = 'CHANGED';
+
+        $this->getSubQuestionsService()->save($question, $subquestions);
+
+        $this->assertSame($originalCode, Question::model()->findByPk($changedQid)->title);
     }
 
     /**

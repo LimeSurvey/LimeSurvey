@@ -195,7 +195,10 @@ class SubQuestionsService
             // This should only happen if it's a new subquestion and the DI container fails to create an instance.
             throw new NotFoundException('Subquestion with id "' . $subquestionId . '" failed to process');
         }
-        $subquestion->title = $data['code'];
+        // Responses of an active survey refer to the codes (ranking stores them), so existing codes can't change
+        if (!$subquestionExists || $question->survey->active == 'N') {
+            $subquestion->title = $data['code'];
+        }
         $subquestion->sid = $question->sid;
         $subquestion->gid = $question->gid;
         $subquestion->parent_qid = $question->qid;
