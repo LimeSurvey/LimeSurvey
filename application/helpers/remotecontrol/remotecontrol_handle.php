@@ -471,6 +471,7 @@ class remotecontrol_handle
      *     * active
      *     * language
      *     * additional_languages
+     *     * owner_id, unless the current user is the owner or a superadmin
      * * Restricte if survey is active
      *     * anonymized
      *     * datestamp
@@ -500,7 +501,16 @@ class remotecontrol_handle
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
                 // Remove fields that may not be modified
                 unset($aSurveyData['sid']);
-                // unset($aSurveyData['owner_id']);
+                // The owner can only be changed by the owner or a superadmin, and only to a user they can see, like in the survey settings
+                if (
+                    isset($aSurveyData['owner_id'])
+                    && (
+                        !($oSurvey->owner_id == Yii::app()->session['loginID'] || Permission::model()->hasGlobalPermission('superadmin', 'read'))
+                        || !in_array($aSurveyData['owner_id'], getUserList('onlyuidarray'))
+                    )
+                ) {
+                    unset($aSurveyData['owner_id']);
+                }
                 unset($aSurveyData['active']);
                 unset($aSurveyData['language']);
                 unset($aSurveyData['additional_languages']);
@@ -4095,7 +4105,7 @@ class remotecontrol_handle
      * @param array $aParticipants
      * [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
      * A new participant can get its own participant_id, which must be a UUID.
-     * @param bool $update
+     * @param bool $update Whether existing participants are updated; they keep their owner
      * @return array On success: array with 'ImportCount', 'UpdateCount' and 'InvalidParticipantIds' (participant IDs
      *              that were not imported because they are not UUIDs). On failure: array with 'status' and 'error_code' keys.
      *              Possible error codes: ERR_INVALID_SESSION.
@@ -4166,10 +4176,11 @@ class remotecontrol_handle
             $model->lastname = $participant['lastname'];
             $model->email = $participant['email'];
             $model->language = $participant['language'] ?? 'en';
-            $model->owner_uid = Yii::app()->session['loginID'];
             $model->blacklisted = (isset($participant['blacklisted']) && $participant['blacklisted'] === 'Y') ? 'Y' : 'N';
 
             if ($scenario == 'insert') {
+                // Updating a participant must not take over its ownership
+                $model->owner_uid = Yii::app()->session['loginID'];
                 $model->created = date('Y-m-d H:i:s');
                 $model->created_by = Yii::app()->session['loginID'];
             } else {  // update
