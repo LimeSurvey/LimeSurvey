@@ -243,7 +243,8 @@ class Question extends LSActiveRecord
                 $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
         }
-        if (!empty($this->survey) && $this->survey->isActive) {
+        // The gid rule would empty the gid of a new subquestion that may be added to an active survey
+        if (!empty($this->survey) && $this->survey->isActive && !($this->getIsNewRecord() && $this->isNewSubquestionAllowedWhenActive())) {
             $aRules = array_merge($aRules, $this->rulesForActiveSurvey());
         }
         /* When question exist and are already set with title, allow keep bad title */
