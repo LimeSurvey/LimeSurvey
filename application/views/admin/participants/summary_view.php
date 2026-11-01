@@ -16,7 +16,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
     <div class="col-12 list-surveys">
         <div class="row">
             <div class="col-12 content-right table-responsive">
-                <?php // Label/value list laid out as a table: not announced as a data table ?>
+                <?php // Label/value list laid out as a table: Not announced as a data table ?>
                 <table class='ls-statisticssummary table table-hover' role="presentation">
                     <tr>
                         <th>

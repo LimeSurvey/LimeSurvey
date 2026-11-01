@@ -22,7 +22,7 @@ $(document).on('ready pjax:scriptcomplete', function() {
     adjustHeights();
 
     /**
-     * Turn a CSV field into an attribute to be created: an input for the attribute name,
+     * Turn a CSV field into an attribute to be created: An input for the attribute name,
      * labelled with the CSV field name, and a button to move it back to the CSV field names
      */
     function makeNewAttribute($elem) {
@@ -31,24 +31,35 @@ $(document).on('ready pjax:scriptcomplete', function() {
         var $input = $('<input class="form-control" type="text">')
             .attr({id: 'td_' + id, 'aria-label': name})
             .val(name);
+        // A replacement function, so that "$&" etc. in the field name are not replacement patterns
+        var moveBackLabel = moveBackTxt.replace('%s', function () { return name; });
         var $moveBack = $('<button type="button" class="btn btn-outline-secondary btn-sm ms-2 action-move-back"><i class="ri-arrow-go-back-fill" aria-hidden="true"></i></button>')
-            .attr({'aria-label': moveBackTxt.replace('%s', name), title: moveBackTxt.replace('%s', name)});
+            .attr('title', moveBackLabel);
         var $body = $('<div class="card-body d-flex align-items-center"></div>')
             .append($input)
-            .append($('<span class="ms-2"></span>').text(id.replace('cs_', '')))
+            .append($('<span class="ms-2"></span>').text(name))
             .append($moveBack);
         $elem.empty().append($body);
     }
 
+    /**
+     * Turn an attribute to be created back into a plain CSV field
+     */
+    function makeCsvField($elem) {
+        $elem.empty().append($('<div class="card-body"></div>').text($elem.attr('data-name')));
+    }
+
     // Move an attribute to be created back to the CSV field names
     $(document).off('click.attributeMapCSV').on('click.attributeMapCSV', '.newcreate .action-move-back', function () {
+        var index = $('.newcreate .action-move-back').index(this);
         var $elem = $(this).closest('.csv-attribute-item');
-        $elem.empty().append($('<div class="card-body"></div>').text($elem.attr('data-name')));
+        makeCsvField($elem);
         $elem.detach().appendTo('.droppable-csv');
         adjustHeights();
-        // Keep the keyboard focus on the page: on the next "move back" button, else on "Move all"
-        var $next = $('.newcreate .action-move-back').first();
-        ($next.length ? $next : $('#move-all')).trigger('focus');
+        // Keep the keyboard focus on the page: On the next "move back" button (or the last one), else on "Move all"
+        var $buttons = $('.newcreate .action-move-back');
+        var $next = $buttons.eq(Math.min(index, $buttons.length - 1));
+        ($buttons.length ? $next : $('#move-all')).trigger('focus');
     });
 
     if($("#overwrite").is(':checked')) {
@@ -98,12 +109,11 @@ $(document).on('ready pjax:scriptcomplete', function() {
                         
             // Remove the text input if dropped out of the new attributes column
             if(!$(this).hasClass('newcreate') && $('input[type="text"]', newDraggable).length > 0) { 
-                $('input[type="text"]', newDraggable).remove();
-                $(newDraggable).html('<div class="card-body">' + $(newDraggable).attr('data-name') + '</div>');
+                makeCsvField(newDraggable);
             }        
 
-            // Dropped in new attributes
-            if($(this).hasClass('newcreate')) {
+            // Dropped in new attributes, unless it was already there (keeps the attribute name the user typed)
+            if($(this).hasClass('newcreate') && $('input[type="text"]', newDraggable).length === 0) {
                 makeNewAttribute(newDraggable);
             }
 

@@ -9,7 +9,7 @@
                 <h3 class="h6 d-inline mb-0"><?php eT("CSV field names "); ?></h3>
                 <div class='float-end'>
                     <button type="button" id='move-all' class='btn ri-arrow-right-fill no-padding' data-bs-toggle='tooltip'
-                            title='<?php eT('Move all fields to create column'); ?>' aria-label='<?php eT('Move all fields to create column'); ?>'></button>
+                            title='<?php eT('Move all fields to create column'); ?>'></button>
                 </div>
             </div>
             <div class='card-body'>

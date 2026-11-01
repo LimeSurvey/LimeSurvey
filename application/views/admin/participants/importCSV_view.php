@@ -16,7 +16,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                     <div class="col-12">
                         <div class="mb-3">
                             <label for="the_file" id="fileupload" class='form-label'>
-                                <?php eT("Choose the file to upload:"); ?> <span class="required">*</span>
+                                <?php eT("Choose the file to upload:"); ?> <span class="required" aria-hidden="true">*</span>
                             </label>
                             <div class="col-6">
                                 <input type="file" class="form-control" name="the_file" id="the_file" accept='.csv' required/>

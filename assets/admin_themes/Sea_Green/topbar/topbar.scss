@@ -20,9 +20,10 @@
     }
 }
 
-// On small viewports the wrapped topbar can be taller than the screen: keep it in the page flow,
-// otherwise it covers the content below (WCAG 1.4.10 Reflow)
-@media (max-width: 575.98px), (max-height: 500px) {
+// On small viewports the wrapped topbar can be taller than the screen: Keep it in the page flow,
+// otherwise it covers the content below (WCAG 1.4.10 Reflow). It only wraps on narrow viewports,
+// so short but wide windows (e.g. desktop with docked devtools) keep the sticky topbar.
+@media (max-width: 575.98px), (max-height: 500px) and (max-width: 991.98px) {
     .topbar.sticky-top {
         position : static;
     }
