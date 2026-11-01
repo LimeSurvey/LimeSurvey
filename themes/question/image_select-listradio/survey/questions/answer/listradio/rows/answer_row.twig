@@ -34,7 +34,6 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
 </p>#}
 
 <!-- answer_row -->
-{% if answer|isAbsoluteUrl %}
 <li id='javatbd{{ myfname }}' class='question-item answer-item radio-item imageselect-listitem {{ extra_class }}' {{ sDisplayStyle }} >
     <div class="imageselect-container">
         <input
@@ -48,12 +47,21 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
         />
         <label for="answer{{ name }}{{ code }}" class="imageselect-label" onclick='cancelBubbleThis(event); if (document.getElementById("answer{{ name }}othertext") != null) document.getElementById("answer{{ name }}othertext").value=""; {{ sCheckconditionFunction }}'>
 
+        {% if answer|isAbsoluteUrl %}
+         {# Answer text is a bare image URL (older format) #}
          <img class="unforce-height" src="{{ answer|escape('html_attr') }}"
          style="{%if question_template_attribute.fix_width > 1%} 
             width: {{question_template_attribute.fix_width}}px 
             {% endif %} {%if question_template_attribute.fix_height > 1%}
             height: {{question_template_attribute.fix_height}}px
             {% endif %}"/>
+        {% else %}
+         {# Answer text is HTML, e.g. an image inserted with the HTML editor #}
+         <span class="imageselect-html{% if question_template_attribute.fix_width > 1 %} imageselect-fixed-width{% endif %}{% if question_template_attribute.fix_height > 1 %} imageselect-fixed-height{% endif %}"
+         style="{% if question_template_attribute.fix_width > 1 %}--imageselect-width: {{ question_template_attribute.fix_width }}px;{% endif %}{% if question_template_attribute.fix_height > 1 %}--imageselect-height: {{ question_template_attribute.fix_height }}px;{% endif %}">
+            {{ processString(answer) }}
+         </span>
+        {% endif %}
         </label>
         <label for="answer{{ name }}{{ code }}" class="imageselect-radiobutton d-none"></label>
     </div>
@@ -71,20 +79,4 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
         crop_or_resize: {{question_template_attribute.crop_or_resize ? true : false}}
         }); 
 </script>
-{% else %}
-{# Standard List Radio row #}
-<li id='javatbd{{ myfname }}' class='answer-item radio-item imageselect-container' {{ sDisplayStyle }} >
-    <input
-        type="radio"
-        value="{{ code }}"
-        name="{{ name }}"
-        id="answer{{ name }}{{ code }}"
-        {{ checkedState }}
-        onclick="if (document.getElementById('answer{{ name }}othertext') != null) document.getElementById('answer{{ name }}othertext').value='';checkconditions(this.value, this.name, this.type)"
-     />
-    <label for="answer{{ name }}{{ code }}" class="control-label radio-label imageselect-radiobutton">
-        {{ processString(answer) }}
-    </label>
-</li>
-{% endif %}
 <!-- end of answer_row -->

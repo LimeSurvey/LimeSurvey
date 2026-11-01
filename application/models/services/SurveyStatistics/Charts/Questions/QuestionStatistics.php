@@ -3,6 +3,8 @@
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions;
 
 use CDbCommand;
+use DOMDocument;
+use DOMElement;
 use Exception;
 use InvalidArgumentException;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
@@ -431,6 +433,15 @@ class QuestionStatistics implements StatisticsChartInterface
         return $command;
     }
 
+    /**
+     * Loads the questions of the survey with their subquestions, attributes and
+     * answer options in the statistics language. Question, subquestion and
+     * answer option texts are flattened to plain text; subquestions and answer
+     * options of the image select themes get their image URL instead.
+     *
+     * @return array{questions: array<int, array>, answers: array<int, array>}
+     *     Questions by qid, answer options by qid and answer code
+     */
     private function fetchSurveyMetadata()
     {
         $command = $this->buildBaseQuery();
@@ -456,14 +467,22 @@ class QuestionStatistics implements StatisticsChartInterface
                 if (empty($questions[$row['parent_qid']]['subQuestions'][$qid])) {
                     $questions[$row['parent_qid']]['subQuestions'][$qid] = [
                         'qid' => $qid, 'gid' => $row['gid'],
-                        'title' => $row['title'], 'question' => flattenText($row['question_text'], false, true),
+                        'title' => $row['title'],
+                        'question' => $this->getChoiceLabel(
+                            $row['question_text'],
+                            $questions[$row['parent_qid']]['question_theme_name'] ?? null
+                        ),
                         'scale_id' => $row['scale_id'] ?? 0, 'question_order' => $row['question_order']
                     ];
                 }
             }
             if (!empty($row['aid'])) {
                 $answers[$row['answer_qid']][$row['code']] = [
-                    'aid' => $row['aid'], 'code' => $row['code'], 'answer' => flattenText($row['answer'], false, true),
+                    'aid' => $row['aid'], 'code' => $row['code'],
+                    'answer' => $this->getChoiceLabel(
+                        $row['answer'],
+                        $questions[$row['answer_qid']]['question_theme_name'] ?? null
+                    ),
                     'sortorder' => $row['sortorder'], 'scale_id' => $row['answer_scale_id']
                 ];
             }
@@ -473,6 +492,47 @@ class QuestionStatistics implements StatisticsChartInterface
         }
 
         return compact('questions', 'answers');
+    }
+
+    /**
+     * Returns the label of a subquestion or answer option for the charts.
+     * With the image select question themes the client shows the label as image,
+     * so the image URL is returned there, whether the text is HTML (e.g. an image
+     * inserted with the HTML editor) or a bare image URL.
+     *
+     * @param string|null $text Subquestion or answer option text
+     * @param string|null $themeName Question theme name of the (parent) question
+     * @return string
+     */
+    private function getChoiceLabel(?string $text, ?string $themeName): string
+    {
+        $text = (string) $text;
+        if (strpos((string) $themeName, 'image_select') !== false && stripos($text, '<img') !== false) {
+            $imageSource = $this->getImageSource($text);
+            if ($imageSource !== '') {
+                return $imageSource;
+            }
+        }
+        return flattenText($text, false, true);
+    }
+
+    /**
+     * Returns the src attribute of the first image in an HTML text, parsed the
+     * way a browser does (quoted or unquoted, entities decoded).
+     *
+     * @param string $html HTML text
+     * @return string Image URL, empty if there is no image with a src
+     */
+    private function getImageSource(string $html): string
+    {
+        $document = new DOMDocument();
+        $useInternalErrors = libxml_use_internal_errors(true);
+        // The XML declaration makes libxml read the text as UTF-8
+        $document->loadHTML('<?xml encoding="UTF-8">' . $html, LIBXML_NONET);
+        libxml_clear_errors();
+        libxml_use_internal_errors($useInternalErrors);
+        $image = $document->getElementsByTagName('img')->item(0);
+        return $image instanceof DOMElement ? $image->getAttribute('src') : '';
     }
 
     /**
