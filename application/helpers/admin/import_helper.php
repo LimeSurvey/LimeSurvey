@@ -1671,15 +1671,18 @@ function polyfillSUBSTRING_INDEX($driver)
 }
 
 /**
- * Generates a temporary table creation script
+ * Generates a temporary table creation script that lists the columns of a response table
+ * together with the question ID of each question column (NULL for other columns)
  *
- * @param string $source
- * @param string $destination
- * @param int $sid
+ * @param string $source Response table name, including the table prefix
+ * @param string $destination Temporary table name
+ * @param int $sid Survey ID
  * @return string
  */
 function generateTemporaryTableCreate(string $source, string $destination, int $sid)
 {
+    // Question columns start with Q and the question ID. The digit check keeps other columns like quota_exit out,
+    // as they also start with Q in case-insensitive collations.
     switch (Yii::app()->db->getDriverName()) {
         case 'mysqli':
         case 'mysql':
@@ -1688,7 +1691,7 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             SELECT *
             FROM (
                 SELECT CASE
-                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' AND SUBSTRING(temp.COLUMN_NAME, 2, 1) BETWEEN '0' AND '9' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
                        END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
@@ -1704,7 +1707,7 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             SELECT *
             FROM (
                 SELECT CASE
-                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' AND SUBSTRING(temp.COLUMN_NAME, 2, 1) BETWEEN '0' AND '9' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
                        END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
@@ -1721,7 +1724,7 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             INTO {$destination}
             FROM (
                 SELECT CASE
-                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2, 3000)
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' AND SUBSTRING(temp.COLUMN_NAME, 2, 1) BETWEEN '0' AND '9' THEN SUBSTRING(dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2, 3000)
                        END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
@@ -1830,7 +1833,111 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         $results['new_c'][] = $rawResult['new_c'];
     }
     Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableDrops($destinationTables, $sid)))->execute();
+    $recreatedSubquestionColumns = getRecreatedSubquestionColumns(
+        (int) $sid,
+        $sourceTables[1],
+        Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp
+    );
+    foreach ($recreatedSubquestionColumns as $oldColumn => $newColumn) {
+        $results['old_c'][] = $oldColumn;
+        $results['new_c'][] = $newColumn;
+    }
     return $results;
+}
+
+/**
+ * Maps the archived response columns of subquestions that were deleted and re-created with the same code
+ * to the response columns of the re-created subquestions. Response column names contain the subquestion ID,
+ * so a re-created subquestion gets a different column name although its code did not change.
+ * A subquestion is only mapped if its main question still exists with the same type and the same scale
+ * has a new subquestion with the same code. Question archives made before the subquestion codes were
+ * archived can't be mapped.
+ *
+ * @param int $sid Survey ID
+ * @param string $archivedResponseTable Archived response table name, including the table prefix
+ * @param string $archivedQuestionTable Archived questions table name, including the table prefix
+ * @return array<string,string> Response column names of the survey indexed by archived response column name
+ * @throws CException If a database query fails
+ */
+function getRecreatedSubquestionColumns(int $sid, string $archivedResponseTable, string $archivedQuestionTable): array
+{
+    $db = Yii::app()->db;
+    $archivedQuestionSchema = $db->schema->getTable($archivedQuestionTable, true);
+    $archivedResponseSchema = $db->schema->getTable($archivedResponseTable, true);
+    $responseSchema = $db->schema->getTable("{{responses_{$sid}}}", true);
+    if (
+        !$archivedQuestionSchema
+        || !$archivedResponseSchema
+        || !$responseSchema
+        || !$archivedQuestionSchema->getColumn('title')
+        || !$archivedQuestionSchema->getColumn('scale_id')
+    ) {
+        return [];
+    }
+    $oldQuestions = $db->createCommand()
+        ->select('qid, parent_qid, type, title, scale_id')
+        ->from($archivedQuestionTable)
+        ->queryAll();
+    $newQuestions = $db->createCommand()
+        ->select('qid, parent_qid, type, title, scale_id')
+        ->from('{{questions}}')
+        ->where('sid = :sid', [':sid' => $sid])
+        ->queryAll();
+    $oldQids = [];
+    $oldTypes = [];
+    $oldSubquestionKeys = [];
+    foreach ($oldQuestions as $question) {
+        $oldQids[(int) $question['qid']] = true;
+        if (empty($question['parent_qid'])) {
+            $oldTypes[(int) $question['qid']] = $question['type'];
+        } else {
+            $oldSubquestionKeys[(int) $question['qid']] = $question['parent_qid'] . '_' . $question['scale_id'] . '_' . $question['title'];
+        }
+    }
+    $newQids = [];
+    $newTypes = [];
+    $newSubquestionQids = [];
+    foreach ($newQuestions as $question) {
+        $newQids[(int) $question['qid']] = true;
+        if (empty($question['parent_qid'])) {
+            $newTypes[(int) $question['qid']] = $question['type'];
+        } else {
+            $newSubquestionQids[$question['parent_qid'] . '_' . $question['scale_id'] . '_' . $question['title']] = (int) $question['qid'];
+        }
+    }
+    // Pair deleted subquestions with subquestions created after the archive was made
+    $subquestionQids = [];
+    foreach ($oldSubquestionKeys as $oldQid => $key) {
+        if (!isset($newQids[$oldQid]) && isset($newSubquestionQids[$key]) && !isset($oldQids[$newSubquestionQids[$key]])) {
+            $subquestionQids[$oldQid] = $newSubquestionQids[$key];
+        }
+    }
+    if (empty($subquestionQids)) {
+        return [];
+    }
+    $archivedColumns = array_flip($archivedResponseSchema->getColumnNames());
+    $targetColumns = array_flip($responseSchema->getColumnNames());
+    $columns = [];
+    foreach (array_keys($archivedColumns) as $column) {
+        if (isset($targetColumns[$column]) || !preg_match('/^Q(\d+)_S\d/', (string) $column, $matches)) {
+            continue;
+        }
+        $parentQid = (int) $matches[1];
+        if (!isset($oldTypes[$parentQid], $newTypes[$parentQid]) || $oldTypes[$parentQid] !== $newTypes[$parentQid]) {
+            continue;
+        }
+        $newColumn = preg_replace_callback(
+            '/_S(\d+)/',
+            function ($subquestionMatches) use ($subquestionQids) {
+                return '_S' . ($subquestionQids[(int) $subquestionMatches[1]] ?? $subquestionMatches[1]);
+            },
+            (string) $column
+        );
+        if ($newColumn !== $column && isset($targetColumns[$newColumn]) && !isset($archivedColumns[$newColumn])) {
+            $columns[$column] = $newColumn;
+        }
+    }
+    return $columns;
 }
 
 /**
@@ -1868,88 +1975,30 @@ function generateTemporaryTableDrops(array $tables, int $sid)
 }
 
 /**
- * Finds the newest archive table from each kind
+ * Finds the archive tables of a survey for each kind of archived table
  *
  * @param int $sid
- * @return array all rows of the query result. Each array element is an array representing a row.
- * An empty array is returned if the query results in nothing.
+ * @return array<string,string> Comma separated archive table names (including the table prefix), sorted by name
+ * and indexed by kind (responses, tokens, timings, questions). Kinds without an archive table are left out.
  * @throws CException execution failed
  */
 function getDeactivatedArchives($sid)
 {
     $sid = intval($sid);
-    $command = "";
-    switch (Yii::app()->db->getDriverName()) {
-        case 'mysqli':
-        case 'mysql':
-            $command = "
-        SELECT n, GROUP_CONCAT(TABLE_NAME) AS table_name
-        FROM
-        (SELECT n, TABLE_NAME
-        FROM information_schema.tables
-        JOIN (
-            SELECT 'responses' AS n
-            UNION
-            SELECT 'tokens' AS n
-            UNION
-            SELECT 'timings' AS n
-            UNION
-            SELECT 'questions' AS n
-        ) t
-        ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
-        ((n <> 'responses') OR (TABLE_NAME NOT LIKE '%timings%'))
-        ORDER BY TABLE_NAME) t
-        GROUP BY n;
-        ";
-            break;
-        case 'pgsql':
-            $command = "
-        SELECT n, array_to_string(array_agg(TABLE_NAME), ',') AS table_name
-        FROM
-        (SELECT n, TABLE_NAME
-        FROM information_schema.tables
-        JOIN (
-            SELECT 'responses' AS n
-            UNION
-            SELECT 'tokens' AS n
-            UNION
-            SELECT 'timings' AS n
-            UNION
-            SELECT 'questions' AS n
-        ) t
-        ON TABLE_CATALOG = current_database() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
-        ((n <> 'responses') OR (TABLE_NAME NOT LIKE '%timings%'))
-        ORDER BY TABLE_NAME) t
-        GROUP BY n;
-            ";
-            break;
-        case 'mssql':
-        case 'sqlsrv':
-            $command = "
-		SELECT n, STRING_AGG(TABLE_NAME, ',') AS table_name
-        FROM
-        (SELECT n, TABLE_NAME
-        FROM information_schema.tables
-        JOIN (
-            SELECT 'responses' AS n
-            UNION
-            SELECT 'tokens' AS n
-            UNION
-            SELECT 'timings' AS n
-            UNION
-            SELECT 'questions' AS n
-        ) t
-        ON TABLE_CATALOG = db_name() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
-        ((n <> 'responses') OR (TABLE_NAME NOT LIKE '%timings%'))
-        ) t
-        GROUP BY n;
-        ";
-            break;
+    Yii::app()->loadHelper('database');
+    // The LIKE pattern only narrows the list down, the survey ID must match exactly
+    $tableNames = Yii::app()->db->createCommand(dbSelectTablesLike("{{old_%_{$sid}_%}}"))->queryColumn();
+    $pattern = '/^' . preg_quote((string) Yii::app()->db->tablePrefix, '/') . "old_(responses|tokens|timings|questions)_{$sid}_\\d+$/";
+    $archives = [];
+    foreach ($tableNames as $tableName) {
+        if (preg_match($pattern, (string) $tableName, $matches)) {
+            $archives[$matches[1]][] = $tableName;
+        }
     }
-    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
     $results = [];
-    foreach ($rawResults as $rawResult) {
-        $results[$rawResult['n']] = $rawResult["table_name"];
+    foreach ($archives as $kind => $kindTableNames) {
+        sort($kindTableNames);
+        $results[$kind] = implode(',', $kindTableNames);
     }
     return $results;
 }

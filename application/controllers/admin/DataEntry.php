@@ -358,6 +358,17 @@ class DataEntry extends SurveyCommonAction
                 $archivedEncryptedAttributes = json_decode((string) $archivedTableSettings->properties);
             }
 
+            // Subquestions deleted and re-created with the same code since the archive was made
+            $recreatedSubquestionColumns = [];
+            if (preg_match('/^old_responses_(\d+_\d+)$/', (string) $tbl_name, $tableMatches) && tableExists("{{old_questions_{$tableMatches[1]}}}")) {
+                require_once "application/helpers/admin/import_helper.php";
+                $recreatedSubquestionColumns = getRecreatedSubquestionColumns(
+                    $iSurveyId,
+                    $sourceSchema->name,
+                    App()->db->tablePrefix . "old_questions_{$tableMatches[1]}"
+                );
+            }
+
             $fieldMap = [];
             $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
             foreach ($sourceSchema->getColumnNames() as $name) {
@@ -370,6 +381,8 @@ class DataEntry extends SurveyCommonAction
                 // Exact match.
                 if ($targetSchema->getColumn($name)) {
                     $fieldMap[$name] = $name;
+                } elseif (isset($recreatedSubquestionColumns[$name])) {
+                    $fieldMap[$name] = $recreatedSubquestionColumns[$name];
                 } elseif (preg_match($pattern, (string) $name, $matches)) {
                     // Column name is SIDXGIDXQID
                     $qid = $matches[3];
@@ -423,10 +436,10 @@ class DataEntry extends SurveyCommonAction
 
                 foreach ($fieldMap as $sourceField => $targetField) {
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
-                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($sourceField, $encryptedAttributes, false)) {
+                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($targetField, $encryptedAttributes, false)) {
                         $targetResponse[$targetField] = $sourceResponse->decryptSingle($sourceResponse[$sourceField]);
                     }
-                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($sourceField, $encryptedAttributes, false)) {
+                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($targetField, $encryptedAttributes, false)) {
                         $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
                     }
                 }

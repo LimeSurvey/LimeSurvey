@@ -131,7 +131,7 @@ class SurveyDeactivate
             $aData['surveyid'] = $iSurveyID;
             $this->app->db->schema->refresh();
             //after deactivation redirect to survey overview and show message...
-            createTableFromPattern($this->app->db->tablePrefix . "old_questions_{$surveyDate}", $this->app->db->tablePrefix . "questions", ['sid', 'gid', 'qid', 'parent_qid', 'type'], ['sid' => $iSurveyID]);
+            createTableFromPattern($this->app->db->tablePrefix . "old_questions_{$surveyDate}", $this->app->db->tablePrefix . "questions", ['sid', 'gid', 'qid', 'parent_qid', 'type', 'title', 'scale_id'], ['sid' => $iSurveyID]);
         }
         $result['aData'] = $aData;
         return $result;
