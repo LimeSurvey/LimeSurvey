@@ -30,6 +30,7 @@ class Update_800 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up()
     {
         $tables = array_merge(
