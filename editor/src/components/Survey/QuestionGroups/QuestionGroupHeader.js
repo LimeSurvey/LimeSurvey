@@ -3,8 +3,15 @@ import { useParams } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import classNames from 'classnames'
 
-import { createBufferOperation, hasTempId, L10ns, getSiteUrl } from 'helpers'
-import { useBuffer } from 'hooks'
+import {
+  createBufferOperation,
+  getQuestionGroupMenuItems,
+  hasTempId,
+  L10ns,
+  getSiteUrl,
+  STATES,
+} from 'helpers'
+import { useAppState, useBuffer } from 'hooks'
 import { ContentEditor } from 'components/UIComponents'
 import { Dropdown } from 'components/UIComponents/Dropdown/Dropdown'
 import { ReactComponent as DownArrow } from 'assets/icons/down-arrow.svg'
@@ -29,35 +36,18 @@ export const QuestionGroupHeader = ({
   const { surveyId } = useParams()
   const { addToBuffer } = useBuffer()
 
-  const handleDuplicate = () => {
-    duplicateGroup()
-  }
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
 
-  const handleDelete = () => {
-    deleteGroup()
-  }
+  const menuItems = getQuestionGroupMenuItems({
+    onDuplicate: () => duplicateGroup(),
+    onDelete: () => deleteGroup(),
+    isSurveyActive,
+    hasSurveyUpdatePermission,
+  })
 
-  const menuItems = [
-    {
-      type: 'header',
-      label: t('Group actions'),
-    },
-    {
-      type: 'item',
-      label: t('Duplicate group'),
-      icon: 'ri-file-copy-line',
-      onClick: handleDuplicate,
-      testId: 'duplicate-button',
-    },
-    {
-      type: 'item',
-      label: t('Delete group'),
-      icon: 'ri-delete-bin-line',
-      onClick: handleDelete,
-      className: 'text-danger',
-      testId: 'delete-button',
-    },
-  ]
   const openQuestionGroupPreview = () => {
     const previewUrl = getSiteUrl(
       `/index.php/survey/index/action/previewgroup/sid/${surveyId}/gid/${questionGroup.gid}/lang/${language}`

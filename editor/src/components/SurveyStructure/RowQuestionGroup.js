@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom'
 import { SideBarRow } from 'components/SideBar/SideBarRow'
 import { RowQuestionsList } from './RowQuestionsList'
 import { ClipBoardIcon } from 'components/icons'
-import { LANGUAGE_CODES } from 'helpers'
-import { useFocused } from 'hooks'
+import { getQuestionGroupMenuItems, LANGUAGE_CODES, STATES } from 'helpers'
+import { useAppState, useFocused } from 'hooks'
 
 import { SurveyLogicModal } from './SurveyLogicModal'
 
@@ -24,16 +24,12 @@ export const RowQuestionGroup = ({
   const { setFocused, focused } = useFocused()
   const { surveyId } = useParams()
   const [showLogicModal, setShowLogicModal] = useState(false)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
+
   const handleQuestionsUpdate = (questions) => {
     update({ ...questionGroup, questions })
-  }
-
-  const handleDuplicate = () => {
-    duplicateGroup()
-  }
-
-  const handleDelete = () => {
-    deleteGroup()
   }
 
   const languageTitle = l10ns[language]?.groupName
@@ -65,27 +61,12 @@ export const RowQuestionGroup = ({
         menuId="group-meatball-menu"
         menuToggleId="meatball-menu-button"
         menuItems={[
-          {
-            type: 'header',
-            label: t('Group actions'),
-          },
-          {
-            type: 'item',
-            label: t('Duplicate group'),
-            icon: 'ri-file-copy-line',
-            onClick: handleDuplicate,
-            testId: 'duplicate-button',
-            disabled: { state: isSurveyActive },
-          },
-          {
-            type: 'item',
-            label: t('Delete group'),
-            icon: 'ri-delete-bin-line',
-            onClick: handleDelete,
-            className: 'text-danger',
-            testId: 'delete-button',
-            disabled: { state: isSurveyActive },
-          },
+          ...getQuestionGroupMenuItems({
+            onDuplicate: () => duplicateGroup(),
+            onDelete: () => deleteGroup(),
+            isSurveyActive,
+            hasSurveyUpdatePermission,
+          }),
           {
             type: 'item',
             label: t('Check logic'),
