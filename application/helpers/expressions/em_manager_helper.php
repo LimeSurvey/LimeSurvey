@@ -4038,7 +4038,11 @@ class LimeExpressionManager
                 // Same columns as a participant row has in the survey (e.g. participant_id)
                 $attrs = Token::model($surveyid)->tableSchema->columnNames;
             } else {
-                $attrs = array_keys(getTokenFieldsAndNames($surveyid));
+                // Without a table, the attributes come from the survey's saved attribute descriptions
+                $attrs = array_merge(
+                    array_keys(getTokenFieldsAndNames($surveyid)),
+                    array_keys($survey->tokenAttributes ?? [])
+                );
             }
             $blankVal = [
                 'code'       => '',

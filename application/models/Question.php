@@ -510,9 +510,10 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Delete a bunch of questions in one go
+     * Delete a bunch of questions in one go, including their subquestions, answers, default values
+     * and the texts (l10ns) of all of them
      *
-     * @param mixed $questionsIds
+     * @param int|int[] $questionsIds
      * @return void
      */
     public static function deleteAllById($questionsIds)
@@ -520,6 +521,30 @@ class Question extends LSActiveRecord
         if (!is_array($questionsIds)) {
             $questionsIds = array($questionsIds);
         }
+        $db = Yii::app()->db;
+
+        // The texts are deleted first, the subqueries need the questions, answers and default values they belong to
+        $subquestionIdsSql = $db->createCommand()
+            ->select('qid')
+            ->from(Question::model()->tableName())
+            ->where(array('in', 'parent_qid', $questionsIds))
+            ->getText();
+        $answerIdsSql = $db->createCommand()
+            ->select('aid')
+            ->from(Answer::model()->tableName())
+            ->where(array('in', 'qid', $questionsIds))
+            ->getText();
+        $defaultValueIdsSql = $db->createCommand()
+            ->select('dvid')
+            ->from(DefaultValue::model()->tableName())
+            ->where(array('in', 'qid', $questionsIds))
+            ->getText();
+        $db->createCommand()->delete(
+            QuestionL10n::model()->tableName(),
+            array('or', array('in', 'qid', $questionsIds), "qid IN ($subquestionIdsSql)")
+        );
+        $db->createCommand()->delete(AnswerL10n::model()->tableName(), "aid IN ($answerIdsSql)");
+        $db->createCommand()->delete(DefaultValueL10n::model()->tableName(), "dvid IN ($defaultValueIdsSql)");
 
         Yii::app()->db->createCommand()->delete(Condition::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(QuestionAttribute::model()->tableName(), array('in', 'qid', $questionsIds));

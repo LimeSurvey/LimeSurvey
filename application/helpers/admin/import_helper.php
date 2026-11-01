@@ -31,11 +31,11 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
     $sBaseLanguage         = $oSurvey->language;
 
     $sXMLdata              = file_get_contents($sFullFilePath);
-    $xml                   = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
+    $xml                   = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
 
 
     if ($xml === false || $xml->LimeSurveyDocType != 'Group') {
-        throw new Exception('This is not a valid LimeSurvey group structure XML file.');
+        throw new Exception(gT('This is not a valid LimeSurvey group structure XML file.'));
     }
 
     // This array will collect all records that need INSERTANS conversion
@@ -682,8 +682,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
  * @param bool[] $options Import options: 'autorename' to rename conflicting question codes,
  *                        'translinkfields' to translate links to the old survey (defaults to true if missing)
  * @param bool $supportArchivedFields whether we are looking for old fieldnames
- * @return array
- * @throws CException
+ * @return array The import results, or an array with only 'fatalerror' set if the file is not a valid question file
+ * @throws Exception
  */
 function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array('autorename' => false, 'translinkfields' => true), $supportArchivedFields = true)
 {
@@ -691,9 +691,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     $oSurvey = Survey::model()->findByPk($iNewSID);
     $sBaseLanguage = $oSurvey->language;
     $sXMLdata = file_get_contents($sFullFilePath);
-    $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
-    if ($xml->LimeSurveyDocType != 'Question') {
-        throw new \CHttpException(500, 'This is not a valid LimeSurvey question structure XML file.');
+    $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
+    if ($xml === false || $xml->LimeSurveyDocType != 'Question') {
+        return ['fatalerror' => gT('This is not a valid LimeSurvey question structure XML file.')];
     }
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();

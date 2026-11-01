@@ -117,7 +117,7 @@ class QuestionThemeTest extends TestBaseClassWeb
 
             $button = $web->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('trigger_questionTypeSelector_button')
+                    WebDriverBy::cssSelector('#trigger_questionTypeSelector_button button')
                 )
             );
             // Scroll it into view and click

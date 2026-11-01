@@ -357,6 +357,24 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
 
   /**
+   * Scroll a newly added row into view inside its scrollable table wrapper.
+   * Rows of hidden languages are ignored.
+   *
+   * @param {HTMLElement} row
+   * @param {boolean} focus Also focus the code (or answer text) input of the row
+   * @return {void}
+   */
+  function revealNewRow(row /*: HTMLElement */, focus /*: boolean */) {
+    if (!$(row).is(':visible')) {
+      return;
+    }
+    row.scrollIntoView({ block: 'nearest' });
+    if (focus) {
+      $(row).find('input.code, input.answer').filter(':visible').first().trigger('focus');
+    }
+  }
+
+  /**
    * Bind relevance equation to expand on click (only once)
    *
    * @return {void}
@@ -725,11 +743,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
         // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
 
         // We insert each row for each language
+        const newRows = [];
         $.each(arrayofhtml, (lang, htmlRow) => {
           const $elRowToUpdate = $(`#row_${lang}_${commonId}`); // The row for the current language
           $elRowToUpdate.after(htmlRow); // We insert the HTML of the new row after this one
+          newRows.push(...$elRowToUpdate.next().get());
         });
         rebindClickHandler();
+        // The new row may be below the visible area of the scrollable table
+        newRows.forEach((newRow) => revealNewRow(newRow, true));
       },
       error() {
         alert(errormessage);
@@ -1301,6 +1323,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
     $.when.apply($, promises).done(
       function (...args) {
         /* $('#quickadd').dialog('close'); */
+        // Last added row per language, to scroll it into view afterwards
+        const lastRows = {};
         // TODO: What is item here?
         args.forEach((item /*: {lang: string, langtable: {}, html: string} */) => {
           answers[item.lang].forEach((row /*: {quid: string, text: string, code: string} */) => {
@@ -1341,6 +1365,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 // Do nothing.
               }
               $(item.langtable).find('tbody').append(tableRow);
+              lastRows[item.lang] = tableRow;
             } catch (e) {
               alert('Internal error in quickAddLabels:' + e);
               throw 'abort';
@@ -1350,6 +1375,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#quickaddarea').val('');
         $('.answertable tbody').sortable('refresh');
         updateRowProperties();
+        // Focus is not moved here, the closing modal gives it back to the "Quick add" button
+        Object.values(lastRows).forEach((lastRow) => revealNewRow(lastRow, false));
         $('#quickaddModal').modal('hide');
         bindExpandRelevanceEquation();
       },
@@ -1791,6 +1818,25 @@ $(document).on('ready pjax:scriptcomplete', function () {
   // Public functions for LS.questionEditor module.
   LS.questionEditor = {
     /**
+     * Show the selected question type on the button of the question type selector modal.
+     * The selector is not rendered again when the question type changes.
+     *
+     * @param {string} questionType - One-letter string of question type
+     * @param {object|false} option - Data of the selected question theme, false if no other theme was clicked in the modal
+     * @return {void}
+     */
+    updateQuestionTypeButton: function (questionType, option) {
+      if (!option) {
+        return;
+      }
+      const buttonText = $('#selector__questionTypeSelector--buttonText');
+      buttonText.text(option.title);
+      if ($('#question-type-selector-wrapper').data('debug') == 1) {
+        buttonText.append(' ', $('<em class="small"></em>').text(`Type: ${questionType}`));
+      }
+    },
+
+    /**
      * Update question attributes (general and advanced settings) when selecting question type.
      * Used by question selector modal.
      *
@@ -1811,7 +1857,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.ajax({
           url: generalSettingsUrl,
           method: 'GET',
-          data: { questionType, questionTheme, code },
+          data: { questionType, questionTheme },
           dataType: 'html',
           success: (data) => {
             resolve(data);
@@ -1850,28 +1896,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
         });
       });
       try {
-        var code = $('#questionCode').val();
         const [generalSettingsHtml, advancedSettingsHtml, extraOptionsHtml] = await Promise.all([generalSettingsPromise, advancedSettingsPromise, extraOptionsPromise]);
         const currentGroup = $('#gid').children("option:selected").val();
         const currentPosition = $('#questionposition').val();
         $('#general-settings').replaceWith(generalSettingsHtml);
-        $('#questionCode').val(code);
-        /* The code input was replaced: Bind the blur/enter validation again on the new element */
-        activateQuestionCodeChecker();
-        var wrapperEl = $('#question-type-selector-wrapper');
-        var viewType = wrapperEl.data('viewtype');
-        var debug = wrapperEl.data('debug');
-        var runner_questionTypeSelector = new PreviewModalScript("questionTypeSelector", {
-          "selectedClass": "text-short",
-          "onUpdate": ["value", "theme", "$('#question_type').val(value); $('#question_theme_name').val(theme); LS.questionEditor.updateQuestionAttributes(value, theme, '" + generalSettingsUrl + "', '" + advancedSettingsUrl + "', '" + extraOptionsUrl + "');"],
-          "value": questionType,
-          "theme": questionTheme,
-          "debugString": "Type: ",
-          "debug": debug == 1,
-          "viewType": viewType
-        });
-        runner_questionTypeSelector.bind();
-
         $('#gid').val(currentGroup);
         /* The group selector and the position selector were replaced: Bind the group change again and load the positions of the selected group */
         activateQuestionPositionReload();
@@ -1986,6 +2014,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
           }
         },
         error: (data) => {
+          // Logged out: The "logged out" modal is shown by the adminbasics ajaxError handler
+          if (data.status === 401) {
+            return;
+          }
           alert('Internal error in checkQuestionValidateTitle: ' + JSON.stringify(data));
           throw 'abort';
         }
@@ -2207,6 +2239,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
           }
         },
         error: (response) => {
+          $('#ls-loading').hide();
+          // Logged out: The "logged out" modal is shown by the adminbasics ajaxError handler
+          if (response.status === 401) {
+            return;
+          }
           alert('Internal error in checkQuestionValidateTitle: ' + response);
           throw 'abort';
         }

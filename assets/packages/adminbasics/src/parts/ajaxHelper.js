@@ -97,4 +97,29 @@ const ajax = (options) => {
    return $.ajax(options);
 }
 
-export {ajax, onSuccess};
+/**
+* Show the "logged out" modal when an ajax call fails because the user is logged out.
+* The admin controllers answer such calls with HTTP 401 and the
+* JsonOutputNotLoggedIn JSON (containing the modal content).
+* Bound only once per page load.
+* @return {void}
+*/
+const bindNotLoggedInHandler = () => {
+    if (window.LS && LS._notLoggedInHandlerBound) {
+        return;
+    }
+    LS._notLoggedInHandlerBound = true;
+    $(document).ajaxError((event, jqXHR) => {
+        if (jqXHR.status !== 401 || !jqXHR.responseJSON || jqXHR.responseJSON.loggedIn !== false) {
+            return;
+        }
+        $('#ls-loading').hide();
+        // Several calls can fail at once: Show the modal only once
+        if ($('#ajax-helper-modal').hasClass('show')) {
+            return;
+        }
+        onSuccess(jqXHR.responseJSON);
+    });
+};
+
+export {ajax, onSuccess, bindNotLoggedInHandler};

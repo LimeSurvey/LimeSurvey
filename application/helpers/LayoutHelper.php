@@ -263,7 +263,7 @@ class LayoutHelper
 
         $options = [
             'id' => 'createMenuButton',
-            'label' => '+',
+            'label' => gT('Create survey'),
             'iconClass' => 'ri-add-line',
             'isDropDown' => true,
             'isDropDownButton' => true,

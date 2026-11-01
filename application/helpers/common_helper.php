@@ -2501,7 +2501,7 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
 }
 
 /**
-*  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
+*  This functions removes all HTML tags, Javascript, CSS style blocks, CRs, linefeeds and other strange chars from a given text
 *
 * @param string $sTextToFlatten  Text you want to clean
 * @param boolean $bKeepSpan set to true for keep span, used for expression manager. Default: false
@@ -2514,6 +2514,8 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
 function flattenText($sTextToFlatten, $bKeepSpan = false, $bDecodeHTMLEntities = false, $sCharset = 'UTF-8', $bStripNewLines = true)
 {
     $sNicetext = stripJavaScript($sTextToFlatten);
+    // strip_tags() keeps the content of <style> elements: Remove the whole block, like the <script> ones
+    $sNicetext = (string) preg_replace('@<style[^>]*?>.*?</style>@si', '', $sNicetext);
     // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
     $sNicetext = str_replace(array('</td', '</th'), array(' </td', ' </th'), $sNicetext);
     if ($bKeepSpan) {
@@ -5570,6 +5572,20 @@ function getMaximumFileUploadSize()
 function isFileUploadSizeLimited()
 {
     return getMaximumFileUploadSize() < PHP_INT_MAX;
+}
+
+/**
+ * Get the value for the accept attribute of a file input from a list of file extensions
+ *
+ * @param string $extensions Comma-separated file extensions, e.g. the 'allowedthemeimageformats' setting
+ * @return string Comma-separated lowercase extensions with a leading dot, e.g. ".gif,.png"
+ **/
+function getFileInputAcceptValue($extensions)
+{
+    $extensions = array_unique(array_filter(array_map('trim', explode(',', strtolower((string) $extensions))), 'strlen'));
+    return implode(',', array_map(function ($extension) {
+        return '.' . $extension;
+    }, $extensions));
 }
 
 /**

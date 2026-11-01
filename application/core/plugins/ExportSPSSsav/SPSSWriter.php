@@ -524,6 +524,7 @@ class SPSSWriter extends Writer
             'prodName' => '@(#) IBM SPSS STATISTICS 64-bit Macintosh 23.0.0.0',
             'creationDate' => date('d M y'),
             'creationTime' => date('H:i:s'),
+            'fileLabel' => '',
             'weightIndex' => 0,
         );
 

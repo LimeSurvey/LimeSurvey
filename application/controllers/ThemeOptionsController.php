@@ -431,8 +431,8 @@ class ThemeOptionsController extends LSBaseController
             if (array_key_exists('description', $filterForm)) {
                 $aData['oQuestionTheme']->description = $filterForm['description'];
             }
-            if (array_key_exists('core_theme', $filterForm)) {
-                $aData['oQuestionTheme']->core_theme = $filterForm['core_theme'] == '1' || $filterForm['core_theme'] == '0' ? intval($filterForm['core_theme']) : '';
+            if (array_key_exists('themeKind', $filterForm) && in_array($filterForm['themeKind'], array_keys(QuestionTheme::getThemeKindLabels()), true)) {
+                $aData['oQuestionTheme']->themeKind = $filterForm['themeKind'];
             }
             if (array_key_exists('extends', $filterForm)) {
                 $aData['oQuestionTheme']->extends = $filterForm['extends'];

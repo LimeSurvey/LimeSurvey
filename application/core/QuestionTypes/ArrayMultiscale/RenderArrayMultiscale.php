@@ -334,11 +334,17 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $aData['answertextright'] = $answertextright;
             if ($aData['shownoanswer'] && isset($aData['labelans1'])) {
                 if (count($aData['labelans1']) > 0) {
+                    $fname0value = $this->getFromSurveySession($myfname0);
                     $fname1value = $this->getFromSurveySession($myfname1);
-                    // If value is empty, notset should be checked.
+                    // The visible "No answer" column stands for both scales (see dualscale.js),
+                    // so it is only checked if neither scale has a value.
                     // string "0" should be considered as valid answer,
                     // so notset should not be checked in that case.
-                    if (PRESELECT_NO_ANSWER && $fname1value !== '0' && empty($fname1value)) {
+                    if (
+                        PRESELECT_NO_ANSWER
+                        && $fname0value !== '0' && empty($fname0value)
+                        && $fname1value !== '0' && empty($fname1value)
+                    ) {
                         #$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname1_notset'] = CHECKED;
                     } else {

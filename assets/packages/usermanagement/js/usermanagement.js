@@ -223,6 +223,19 @@ var UserManagement = function () {
         });
     };
 
+    /**
+     * Check or uncheck permission checkboxes, this also ends the mixed state of the mass edit
+     *
+     * @param {jQuery} checkboxes
+     * @param {boolean} bChecked
+     * @return {jQuery}
+     */
+    var setPermissionsChecked = function (checkboxes, bChecked) {
+        checkboxes.prop('checked', bChecked).prop('indeterminate', false).data('mixed', false);
+        updateIndeterminatePermissions(checkboxes);
+        return checkboxes;
+    };
+
     var wirePermissions = function (root) {
         // Multiple modals on the User Management page (single-user edit and the
         // massive-action batch edit) reuse the same ids, so everything must be
@@ -239,8 +252,9 @@ var UserManagement = function () {
         var updateRowGeneralState = function (row) {
             var specificInputs = row.find('.specific-settings-block input:checkbox');
             var checkedCount = specificInputs.filter(':checked').length;
+            var mixedCount = specificInputs.filter(function () { return $(this).data('mixed') === true; }).length;
             var generalSelector = row.find('.general-row-selector');
-            if (checkedCount === 0) {
+            if (checkedCount === 0 && mixedCount === 0) {
                 generalSelector.prop('checked', false).prop('indeterminate', false).removeClass('incomplete-selection');
             } else if (checkedCount === specificInputs.length) {
                 generalSelector.prop('checked', true).prop('indeterminate', false).removeClass('incomplete-selection');
@@ -267,8 +281,8 @@ var UserManagement = function () {
 
         tableObject.on('click', '.general-row-selector', function () {
             var bChecked = this.checked;
-            $(this).prop('indeterminate', false).removeClass('incomplete-selection');
-            updateIndeterminatePermissions($(this).closest('tr').find('input').prop('checked', bChecked));
+            $(this).removeClass('incomplete-selection');
+            setPermissionsChecked($(this).closest('tr').find('input'), bChecked);
             updateSelectAllState();
         });
 
@@ -278,7 +292,7 @@ var UserManagement = function () {
         });
 
         rootObject.find('#perm_superadmin_read').on(' click', function () {
-            updateIndeterminatePermissions(tableObject.find('input').prop('checked', this.checked).fadeTo(1, 1));
+            setPermissionsChecked(tableObject.find('input'), this.checked).fadeTo(1, 1);
             tableObject.find('tbody tr').each(function () {
                 updateRowGeneralState($(this));
             });
@@ -287,7 +301,7 @@ var UserManagement = function () {
 
         rootObject.find('.selector--select-all-permissions').on('click', function () {
             var bChecked = this.checked;
-            tableObject.find('input:checkbox:not(:disabled)').prop('checked', bChecked).prop('indeterminate', false);
+            setPermissionsChecked(tableObject.find('input:checkbox:not(:disabled)'), bChecked);
             tableObject.find('.general-row-selector').removeClass('incomplete-selection');
             updateIndeterminatePermissions(tableObject.find('.specific-settings-block input:checkbox'));
             updateSelectAllState();
@@ -304,24 +318,110 @@ var UserManagement = function () {
         });
     };
 
-    var wireMassPermissions = function () {
-        wirePermissions('#floating-actions-modal-usermanagement--identity-gridPanel-batchPermissions-1');
-
-        var oCheckedItems = $('#usermanagement--identity-gridPanel').yiiGridView('getChecked', $('.listActions').data('pk'));
-        $('#hereBeUserIds').html('');
-        console.ls.log(oCheckedItems);
-        
-        var userIds = [];
-        $('.usermanagement--selector-userCheckbox').each(function(){
-            if($(this).prop('checked')){
-                userIds.push($(this).attr('value'));
+    /**
+     * Put the permissions changed in the mass edit as hidden inputs into the modal, the massive action posts them.
+     * A permission that is still mixed or back at its loaded state is not posted, so it is not changed for any user.
+     *
+     * @param {jQuery} container
+     */
+    var setChangedMassPermissions = function (container) {
+        var changedPermissions = container.find('.selector--changed-permissions').empty();
+        container.find('.specific-permission-selector').each(function () {
+            var initialState = $(this).data('initial-state');
+            if (initialState === undefined || this.indeterminate) {
+                return;
             }
+            if (initialState !== 'mixed' && this.checked === (initialState === 'checked')) {
+                return;
+            }
+            $('<input type="hidden" class="custom-data" />')
+                .attr('name', this.name)
+                .val(this.checked ? 1 : 0)
+                .appendTo(changedPermissions);
         });
-        console.ls.log(userIds);
+    };
 
-        LS.ld.forEach(oCheckedItems, function(item,key) {
-            console.ls.log(item,key);
-            $('#hereBeUserIds').append('<input type="hidden" name="userids[]" value="'+item+'" />');
+    /**
+     * Show the permissions of the users selected for the mass edit: Checked if all of them have it, a dash if only
+     * some of them have it. Clicking a mixed checkbox cycles through checked, unchecked and mixed again.
+     */
+    var wireMassPermissions = function () {
+        var gridId = 'usermanagement--identity-gridPanel';
+        var rootObject = $('#floating-actions-modal-' + gridId + '-batchPermissions-1');
+        var container = rootObject.find('.selector--edit-permissions-container');
+        var tableObject = container.find('#UserManagement--userpermissions-table');
+        // The modal body is replaced by a fresh copy when the modal is closed, so a wired table is still open
+        if (!tableObject.length || tableObject.data('wired')) {
+            return;
+        }
+        tableObject.data('wired', true);
+
+        var okButton = rootObject.find('.btn-ok');
+        var allCheckboxes = tableObject.find('input:checkbox');
+        var checkboxes = tableObject.find('.specific-permission-selector');
+        okButton.prop('disabled', true);
+        allCheckboxes.prop('disabled', true);
+        container.attr('aria-busy', 'true');
+        rootObject.one('hidden.bs.modal', function () {
+            okButton.prop('disabled', false);
+        });
+        if (!rootObject.data('changed-permissions-wired')) {
+            rootObject.data('changed-permissions-wired', true);
+            // Capturing, so the hidden inputs are there before the massive action collects the data on click
+            rootObject[0].addEventListener('click', function (e) {
+                if ($(e.target).closest('.btn-ok').length) {
+                    setChangedMassPermissions(rootObject.find('.selector--edit-permissions-container'));
+                }
+            }, true);
+        }
+
+        var userIds = (window.LS && LS.gridSelection && typeof LS.gridSelection.getAll === 'function')
+            ? LS.gridSelection.getAll(gridId)
+            : $('#' + gridId).yiiGridView('getChecked', 'uid');
+        var postData = { sItems: JSON.stringify(userIds) };
+        postData[LS.data.csrfTokenName] = LS.data.csrfToken;
+        $.post(container.data('states-url'), postData).done(function (data) {
+            if (!data || !data.success) {
+                container.find('.selector--permission-states-error').removeClass('d-none');
+                container.attr('aria-busy', 'false');
+                return;
+            }
+            var hasMixed = false;
+            checkboxes.each(function () {
+                var permissionCounts = data.counts[$(this).data('permission')] || {};
+                var count = permissionCounts[$(this).data('crud')] || 0;
+                var state = count === 0 ? 'unchecked' : (count >= data.total ? 'checked' : 'mixed');
+                $(this).data('initial-state', state);
+                this.checked = state === 'checked';
+                if (state === 'mixed') {
+                    hasMixed = true;
+                    this.indeterminate = true;
+                    $(this).data('mixed', true).attr('aria-describedby', 'batch-permission-mixed-help');
+                }
+            });
+            container.find('#batch-permission-mixed-help').toggleClass('d-none', !hasMixed);
+
+            tableObject.on('click', '.specific-permission-selector', function () {
+                if ($(this).data('initial-state') !== 'mixed') {
+                    return;
+                }
+                // The browser already toggled the checkbox: Coming from unchecked goes back to mixed
+                if (this.checked && $(this).data('mixed') !== true) {
+                    this.checked = false;
+                    this.indeterminate = true;
+                    $(this).data('mixed', true);
+                } else {
+                    $(this).data('mixed', false);
+                }
+            });
+
+            allCheckboxes.prop('disabled', false);
+            okButton.prop('disabled', false);
+            container.attr('aria-busy', 'false');
+            wirePermissions(rootObject);
+        }).fail(function () {
+            container.find('.selector--permission-states-error').removeClass('d-none');
+            container.attr('aria-busy', 'false');
         });
     };
 
@@ -473,7 +573,7 @@ var UserManagement = function () {
             $.fn.yiiGridView.update('usermanagement--identity-gridPanel', {});
         });
 
-        $(document).on('shown.bs.modal', '#floating-actions-modal-usermanagement--identity-gridPanel-batchPermissions-1', function () {
+        $(document).off('shown.bs.modal.batchpermissions').on('shown.bs.modal.batchpermissions', '#floating-actions-modal-usermanagement--identity-gridPanel-batchPermissions-1', function () {
             wireMassPermissions();
         });
     };

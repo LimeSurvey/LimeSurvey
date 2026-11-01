@@ -155,11 +155,14 @@ class QuestionGroup extends LSActiveRecord
 
     /**
      * Deletes a question group and all its dependencies.
-     * Returns affected rows of question group table (should be 1 or null)
+     * The group itself is deleted first through delete(), so the beforeQuestionGroupDelete/beforeModelDelete
+     * and afterQuestionGroupDelete/afterModelDelete plugin events are raised while its questions still exist.
+     * Returns affected rows of question group table (should be 1 or 0)
      * @param integer $groupId
      * @param integer|null $surveyId deprecated
-     * @throw Exception
-     * @return int|null
+     * @throws NotFoundException if the group does not exist
+     * @throws BadRequestException if the survey is active
+     * @return int
      */
     public static function deleteWithDependency($groupId, $surveyId = null)
     {
@@ -174,12 +177,14 @@ class QuestionGroup extends LSActiveRecord
         }
         $surveyId = $QuestionGroup->sid;
         $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
+        if (!$QuestionGroup->delete()) {
+            return 0;
+        }
         Question::deleteAllById($questionIds);
         Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
         QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' => $groupId));
-        $affectedRows = QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
         (new SurveyDetailService())->touchSurveyLastModified((int) $surveyId);
-        return $affectedRows;
+        return 1;
     }
 
     /**

@@ -1296,6 +1296,7 @@ class QuestionAdministrationController extends LSBaseController
         fixLanguageConsistency($iSurveyID);
 
         if (isset($aImportResults['fatalerror'])) {
+            unlink($sFullFilepath);
             App()->setFlashMessage($aImportResults['fatalerror'], 'error');
             $this->redirect(['questionAdministration/importView', 'surveyid' => $iSurveyID]);
             return;
@@ -1781,14 +1782,10 @@ class QuestionAdministrationController extends LSBaseController
             $questionTheme
         );
 
-        $questionThemeObject = QuestionTheme::model()->find('name=:name', array(':name' => $questionTheme));
         $this->renderPartial("generalSettings", [
             'generalSettings' => $generalSettings,
             'oSurvey' => Survey::model()->findByPk($surveyId),
             'question' => $question,
-            'aQuestionTypeGroups' => $this->getQuestionTypeGroups(QuestionTheme::findAllQuestionMetaDataForSelector()),
-            'questionTheme' => $questionThemeObject,
-            'selectormodeclass' => $this->getSelectorModeClass(),
         ]);
     }
 

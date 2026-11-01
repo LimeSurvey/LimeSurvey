@@ -243,6 +243,49 @@ class ImportTest extends TestBaseClass
     }
 
     /**
+     * @return array<string, string[]>
+     */
+    public function invalidQuestionFileProvider(): array
+    {
+        return [
+            'empty file'      => [''],
+            'not XML'         => ['not xml'],
+            'wrong doc type'  => ['<?xml version="1.0" encoding="UTF-8"?><document><LimeSurveyDocType>Group</LimeSurveyDocType></document>'],
+        ];
+    }
+
+    /**
+     * Importing an invalid question file must return a fatal error instead of throwing (see #18712).
+     *
+     * @dataProvider invalidQuestionFileProvider
+     * @param string $content The content of the question file
+     * @return void
+     */
+    public function testImportInvalidQuestionFileReturnsFatalError(string $content): void
+    {
+        \Yii::app()->session['loginID'] = 1;
+        $file = tempnam(\Yii::app()->getConfig('tempdir'), 'lsq');
+        file_put_contents($file, $content);
+
+        try {
+            $result = importSurveyFile(self::$surveysFolder . '/limesurvey_survey_import_question_test.lss', false);
+            $survey = \Survey::model()->findByPk($result['newsid']);
+
+            $questionResult = XMLImportQuestion($file, $survey->sid, $survey->groups[0]->gid);
+            $this->assertSame(
+                ['fatalerror' => 'This is not a valid LimeSurvey question structure XML file.'],
+                $questionResult
+            );
+        } finally {
+            unlink($file);
+            if (isset($survey) && $survey) {
+                \Yii::app()->session['loginID'] = 1;
+                $survey->delete();
+            }
+        }
+    }
+
+    /**
      * Importing responses from an archive created before LimeSurvey 7 (old SGQA column names)
      * must keep empty answers as empty strings and missing (NULL) answers as NULL.
      */
