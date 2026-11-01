@@ -291,6 +291,11 @@ class CLSGridView extends TbGridView
         }
     }
 
+    /**
+     * Registers the script files used by every CLSGridView, whether or not it has rows
+     *
+     * @return void
+     */
     private function registerGridviewScripts()
     {
         $assetsPath = dirname(__FILE__) . '/assets/';
@@ -329,6 +334,12 @@ class CLSGridView extends TbGridView
         // Accessibility: keyboard navigation and focus management for sort links
         App()->clientScript->registerScriptFile(
             App()->getAssetManager()->publish($assetsPath . 'sortAccessibility.js'),
+            CClientScript::POS_END
+        );
+        // Row action dropdowns: Registered here too, because GridActionsWidget only registers it when a row is
+        // rendered, and rows added later to an initially empty grid by AJAX need it
+        App()->clientScript->registerScriptFile(
+            App()->getAssetManager()->publish(dirname(__FILE__) . '/GridActionsWidget/assets/action_dropdown.js'),
             CClientScript::POS_END
         );
         // Standard afterAjaxUpdate handler (actionDropdown, rowlink, columnFilter, restoreFocus)
