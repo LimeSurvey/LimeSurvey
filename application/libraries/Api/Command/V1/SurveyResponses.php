@@ -5,6 +5,7 @@ namespace LimeSurvey\Libraries\Api\Command\V1;
 use CDbException;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\CompletionFilter;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseFilterCriteriaBuilder;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyResponseFiles;
@@ -58,6 +59,7 @@ class SurveyResponses implements CommandInterface
         'token',
         'ipaddr',
         'refurl',
+        'quota_exit',
     ];
 
     protected Survey $survey;
@@ -363,7 +365,7 @@ class SurveyResponses implements CommandInterface
         $searchParams['filters'] = $filters ?? $request->getData('filters', null);
         $searchParams['sort'] = $request->getData('sort', null);
         $dataMap = $this->transformerOutputSurveyResponses->getDataMap();
-        $validColumns = array_keys($this->transformerOutputSurveyResponses->fieldMap);
+        $validColumns = array_keys($this->getSurveyDynamicModel($request)->getTableSchema()->columns);
         $sort = new \CSort();
         $criteria = new \LSDbCriteria();
         $filterSet = ResponseFilterSet::fromRequestValue($request->getData('filterSet', null));
@@ -374,6 +376,11 @@ class SurveyResponses implements CommandInterface
             $dataMap,
             $validColumns
         );
+        $completion = $request->getData('completion', 'all');
+        if (!is_string($completion)) {
+            throw new \InvalidArgumentException('Invalid completion filter.');
+        }
+        CompletionFilter::apply($criteria, $completion, $validColumns);
         $this->applyFilterSet($criteria, $filterSet, $request);
         $this->applyFieldSelection($criteria, $request);
 
@@ -442,7 +449,7 @@ class SurveyResponses implements CommandInterface
             return;
         }
 
-        $validColumns = array_keys($this->transformerOutputSurveyResponses->fieldMap);
+        $validColumns = array_keys($this->getSurveyDynamicModel($request)->getTableSchema()->columns);
         $selected = array_values(array_intersect($fields, $validColumns));
         if (empty($selected)) {
             throw new \InvalidArgumentException('No valid fields requested');

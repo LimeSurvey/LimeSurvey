@@ -54,6 +54,10 @@ class ExcelWriter extends Writer
 
     public function close()
     {
+        if (!$this->hasOutputHeader) {
+            // No response matched: still write the worksheet so the file is a valid workbook
+            $this->workbook->writeSheetRow($this->currentSheet, []);
+        }
         $this->workbook->writeToFile($this->filename);
         if ($this->forceDownload) {
             header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");

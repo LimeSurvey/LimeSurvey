@@ -4,6 +4,7 @@ namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions;
 
 use InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
+use LimeSurvey\Models\Services\ResponseFilters\NumericRangeSql;
 
 class RangeConditionHandler implements HandlerInterface, SurveyContextAwareInterface
 {
@@ -16,19 +17,6 @@ class RangeConditionHandler implements HandlerInterface, SurveyContextAwareInter
     {
         $this->surveyId = $surveyId;
     }
-
-    /**
-     * Plain decimal test, the same one the statistics aggregates use. Numeric
-     * answers live in text columns that may hold anything, and '' and NULL
-     * both have to fall out of the range rather than become a zero.
-     */
-    private const NUMERIC_PATTERN = '^-?[0-9]*\.?[0-9]+$';
-
-    /**
-     * Wide and exact. An unsigned integer would truncate 2.5 to 2 and wrap -3
-     * to 18446744073709551613, and is not a cast target on Postgres or MSSQL.
-     */
-    private const NUMERIC_TYPE = 'DECIMAL(30,10)';
 
     public function canHandle(string $operation): bool
     {
@@ -76,36 +64,9 @@ class RangeConditionHandler implements HandlerInterface, SurveyContextAwareInter
         return $criteria;
     }
 
-    /**
-     * The column read as a number, or as nothing when it does not hold one.
-     *
-     * A cell that cannot be read as a number yields NULL, which makes the
-     * comparison unknown and drops the row — rather than MySQL's silent 0,
-     * which would pull every junk row into any range spanning zero.
-     *
-     * The guard casts to text first so the expression is valid whether the
-     * column is numeric (id, seed) or the varchar that answers are stored in.
-     * Testing inside CASE also keeps Postgres from evaluating the cast on a
-     * cell that would make it fail.
-     */
     private function numericExpression(string $quotedKey): string
     {
-        $db = App()->db;
-        $pattern = $db->quoteValue(self::NUMERIC_PATTERN);
-
-        switch ($this->driverName()) {
-            case 'pgsql':
-                return "(CASE WHEN CAST($quotedKey AS TEXT) ~ $pattern"
-                    . " THEN CAST($quotedKey AS " . self::NUMERIC_TYPE . ") END)";
-            case 'sqlsrv':
-            case 'mssql':
-            case 'dblib':
-                // TRY_CAST already answers with NULL instead of failing.
-                return "TRY_CAST($quotedKey AS " . self::NUMERIC_TYPE . ")";
-            default:
-                return "(CASE WHEN CAST($quotedKey AS CHAR) REGEXP $pattern"
-                    . " THEN CAST($quotedKey AS " . self::NUMERIC_TYPE . ") END)";
-        }
+        return NumericRangeSql::expression(App()->db, $quotedKey, $this->driverName());
     }
 
     /** Seam: the other drivers' branches are otherwise only reachable on them. */
