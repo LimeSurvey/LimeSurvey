@@ -342,7 +342,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
         $model = new Participant();
         if (Yii::app()->getConfig('hideblacklisted') == "Y") {
-            $model->blacklisted = "Y";
+            $model->blacklisted = "N";
         }
         $request = Yii::app()->request;
         $participantParam = $request->getParam('Participant');
