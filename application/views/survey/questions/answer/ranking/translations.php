@@ -12,7 +12,7 @@ if (!defined('BASEPATH')) {
  * This file has no functionality except for being searchable by the translation script.
  * When adding or changing such a text in config.xml, update the matching entry here.
  */
-gT('Limit the number of possible answers fixed by number of columns in database');
+gT('Limit the number of rank positions');
 gT('Semicolon-separated list of answer codes that keep their original database position when answers are randomized or sorted alphabetically');
 gT('Force each answer option to have the same height');
 gT('Force the choice list and the rank list to have the same height');

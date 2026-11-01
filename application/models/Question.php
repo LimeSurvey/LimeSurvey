@@ -243,7 +243,8 @@ class Question extends LSActiveRecord
                 $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
         }
-        if (!empty($this->survey) && $this->survey->isActive) {
+        // The gid rule would empty the gid of a new subquestion that may be added to an active survey
+        if (!empty($this->survey) && $this->survey->isActive && !($this->getIsNewRecord() && $this->isNewSubquestionAllowedWhenActive())) {
             $aRules = array_merge($aRules, $this->rulesForActiveSurvey());
         }
         /* When question exist and are already set with title, allow keep bad title */
@@ -896,6 +897,43 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * Return true if subquestions can be added or removed after the survey was activated
+     * (set by the subquestionsactiveedit tag of the question theme)
+     * @return boolean
+     */
+    public function getAllowSubquestionChangesWhenActive()
+    {
+        if (!empty($this->parent_qid)) {
+            return false;
+        }
+        $questionType = $this->getQuestionType();
+        if (empty($questionType) || empty($questionType->subquestions)) {
+            return false;
+        }
+        $questionTheme = $this->getQuestionTheme();
+        if (empty($questionTheme)) {
+            return false;
+        }
+        $settings = is_string($questionTheme->settings) ? json_decode($questionTheme->settings) : $questionTheme->settings;
+        return !empty($settings->subquestionsactiveedit);
+    }
+
+    /**
+     * Return true if this is a subquestion whose parent question allows adding subquestions
+     * after the survey was activated
+     * @return boolean
+     */
+    private function isNewSubquestionAllowedWhenActive()
+    {
+        if (empty($this->parent_qid)) {
+            return false;
+        }
+        // The parent relation is not loaded for new records
+        $parentQuestion = Question::model()->findByPk($this->parent_qid);
+        return !empty($parentQuestion) && $parentQuestion->getAllowSubquestionChangesWhenActive();
+    }
+
+    /**
      * Get an new title/code for a question
      * @param integer $index base for question code (example : inde of question when survey import)
      * @return string|null : new title, null if impossible
@@ -1114,7 +1152,7 @@ class Question extends LSActiveRecord
             /* No update when surey activated */
             $survey = Survey::model()->findByPk($this->sid);
             $surveyIsActive = !empty($survey) && $survey->active !== 'N';
-            if ($surveyIsActive && $this->getIsNewRecord()) {
+            if ($surveyIsActive && $this->getIsNewRecord() && !$this->isNewSubquestionAllowedWhenActive()) {
                 return false;
             }
             if ($surveyIsActive) {

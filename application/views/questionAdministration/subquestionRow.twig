@@ -5,6 +5,7 @@
  * @var $position ??? Question order?
  * @var $scale_id
  * @var $activated
+ * @var $subquestionChangesAllowed Subquestions can be added or removed although the survey is active
  * @var $first
  * @var $subquestion
  * @var $subquestionl10n
@@ -141,7 +142,7 @@
 
     <!-- Icons add/edit/delete -->
     <td style="vertical-align: middle; white-space: nowrap;" class="subquestion-actions">
-        {% if activated != 'Y' and first %}
+        {% if (activated != 'Y' or subquestionChangesAllowed) and first %}
             <button class="btn btn-outline-secondary btn-sm btnaddsubquestion">
                 <i
                     class="ri-add-circle-fill text-primary"

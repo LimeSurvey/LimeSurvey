@@ -120,41 +120,6 @@ class SurveyActivator
     }
 
     /**
-     * See bug #09828: Ranking question : update allowed can broke Survey DB
-     * If max_subquestions is not set or is invalid : set it to actual subquestions numbers
-     * (Ranking items are now stored as subquestions)
-     *
-     * @return void
-     */
-    public function fixQuestionAttributeForRanking($sFieldMap)
-    {
-        foreach ($sFieldMap as $aRow) {
-            switch ($aRow['type']) {
-                case Question::QT_R_RANKING:
-                    // Ranking items are now stored as subquestions, not answers
-                    $nrOfRankingItems = Question::model()->countByAttributes(
-                        array('parent_qid' => $aRow['qid'])
-                    );
-                    $oQuestionAttribute = QuestionAttribute::model()->find(
-                        "qid = :qid AND attribute = 'max_subquestions'",
-                        array(':qid' => $aRow['qid'])
-                    );
-                    if (empty($oQuestionAttribute)) {
-                        $oQuestionAttribute = new QuestionAttribute();
-                        $oQuestionAttribute->qid = $aRow['qid'];
-                        $oQuestionAttribute->attribute = 'max_subquestions';
-                        $oQuestionAttribute->value = $nrOfRankingItems;
-                        $oQuestionAttribute->save();
-                    } elseif (intval($oQuestionAttribute->value) < 1) {
-                        // Fix it if invalid : disallow 0, but need a sub question minimum for EM
-                        $oQuestionAttribute->value = $nrOfRankingItems;
-                        $oQuestionAttribute->save();
-                    }
-            }
-        }
-    }
-
-    /**
      * For each question, create the appropriate field(s)
      *
      * @param string $collation
@@ -332,7 +297,6 @@ class SurveyActivator
         $this->survey->fixInvalidQuestions();
         //Get list of questions for the base language
         $sFieldMap = createFieldMap($this->survey, 'full', true, false, $this->survey->language);
-        $this->fixQuestionAttributeForRanking($sFieldMap);
         $this->prepareTableDefinition($collation, $sFieldMap);
         $this->prepareSimulateQuery();
     }

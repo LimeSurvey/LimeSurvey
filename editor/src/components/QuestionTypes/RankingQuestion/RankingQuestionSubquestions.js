@@ -4,11 +4,12 @@ import classNames from 'classnames'
 import { RankingQuestionSubquestion } from './RankingQuestionSubquestion'
 import { DragAndDrop } from 'components/UIComponents'
 import { Draggable } from 'react-beautiful-dnd'
-import { Entities, L10ns, STATES } from 'helpers'
+import { Entities, getTooltipMessages, L10ns, STATES } from 'helpers'
 import { useAppState } from 'hooks'
+import { TooltipContainer } from 'components'
 
 export const RankingQuestionSubquestions = ({
-  question: { subquestions = [] } = {},
+  question: { subquestions = [], subquestionChangesAllowedWhenActive } = {},
   isFocused,
   handleChildAdd,
   handleSubquestionUpdate,
@@ -17,6 +18,9 @@ export const RankingQuestionSubquestions = ({
   handleChildCodeUpdate,
 }) => {
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const subquestionsLocked =
+    isSurveyActive && !subquestionChangesAllowedWhenActive
 
   const getSubquestionStyle = (draggableStyle) => ({
     userSelect: 'none',
@@ -58,6 +62,7 @@ export const RankingQuestionSubquestions = ({
                   })}
                   qid={subquestion.qid}
                   isFocused={isFocused}
+                  subquestionsLocked={subquestionsLocked}
                   index={index}
                   onChange={(value) => handleSubquestionUpdate(value, index)}
                   provided={provided}
@@ -78,18 +83,24 @@ export const RankingQuestionSubquestions = ({
           </Draggable>
         ))}
       </DragAndDrop>
-      <div>
-        <Button
-          onClick={() => handleChildAdd(subquestions, Entities.subquestion)}
-          variant={'outline'}
-          className={classNames('text-primary add-choice-button px-0 mt-2', {
-            'd-none disabled': !isFocused,
-          })}
-          data-testid="single-choice-add-subquestion-button"
-        >
-          <PlusLg /> {t('Add subquestion')}
-        </Button>
-      </div>
+      <TooltipContainer
+        tip={getTooltipMessages().ACTIVE_DISABLED}
+        showTip={subquestionsLocked}
+      >
+        <div>
+          <Button
+            onClick={() => handleChildAdd(subquestions, Entities.subquestion)}
+            variant={'outline'}
+            className={classNames('text-primary add-choice-button px-0 mt-2', {
+              'd-none disabled': !isFocused,
+            })}
+            data-testid="single-choice-add-subquestion-button"
+            disabled={subquestionsLocked}
+          >
+            <PlusLg /> {t('Add subquestion')}
+          </Button>
+        </div>
+      </TooltipContainer>
     </>
   )
 }
