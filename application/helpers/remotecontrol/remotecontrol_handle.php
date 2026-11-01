@@ -2241,13 +2241,14 @@ class remotecontrol_handle
                 }
 
                 if (is_array($aTokenQueryProperties)) {
-                    $tokenCount = Token::model($iSurveyID)->countByAttributes($aTokenQueryProperties);
-                    if ($tokenCount == 0) {
+                    // findAllByAttributes() encrypts the values of encrypted attributes, two results are enough to detect multiple matches
+                    $tokens = Token::model($iSurveyID)->findAllByAttributes($aTokenQueryProperties, array('limit' => 2));
+                    if (count($tokens) == 0) {
                         return array('status' => 'Error: No results were found based on your attributes.', 'error_code' => self::ERR_NOT_FOUND);
-                    } elseif ($tokenCount > 1) {
+                    } elseif (count($tokens) > 1) {
                         return array('status' => 'Error: More than 1 result was found based on your attributes.', 'error_code' => self::ERR_MULTIPLE_MATCHES);
                     }
-                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
+                    $token = $tokens[0];
                 } else {
                     // If aTokenQueryProperties is not an array, but an integer
                     $iTokenID = $aTokenQueryProperties;

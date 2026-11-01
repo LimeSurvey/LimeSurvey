@@ -1155,6 +1155,24 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
+     * Count the participants matching the given plain attribute values.
+     * Values of the attributes listed in $encryptedAttributes are encrypted before the comparison.
+     * Null and empty values are compared as they are, the same way they are saved.
+     * @param array $attributes attribute name => plain value
+     * @param string[] $encryptedAttributes names of the encrypted attributes, see getAllEncryptedAttributes()
+     * @return int
+     */
+    public function countByPlainAttributes(array $attributes, array $encryptedAttributes)
+    {
+        foreach ($attributes as $attribute => $value) {
+            if (in_array($attribute, $encryptedAttributes) && $value !== null && $value !== '') {
+                $attributes[$attribute] = LSActiveRecord::encryptSingle($value);
+            }
+        }
+        return (int) $this->countByAttributes($attributes);
+    }
+
+    /**
      * Get current surveyId for other model/function
      * @return int
      */
