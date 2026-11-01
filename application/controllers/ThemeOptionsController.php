@@ -704,7 +704,11 @@ class ThemeOptionsController extends LSBaseController
             App()->clientScript->registerPackage('themeoptions-core');
         }
         if ($sid !== null) {
-            $data['title_bar']['title'] = gT("Survey theme options");
+            $survey = Survey::model()->findByPk($sid);
+            // Survey title is used for the browser page title, like on the other survey pages
+            $data['title_bar']['title'] = $survey
+                ? $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $sid . ")"
+                : gT("Survey theme options");
             $data['subaction'] = gT("Survey theme options");
             $data['sidemenu']['landOnSideMenuTab'] = 'settings';
             //buttons in topbar
