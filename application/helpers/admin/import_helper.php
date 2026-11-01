@@ -3995,6 +3995,10 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                             if (in_array('startdate', $DestinationFields) && (!isset($aInsertData['startdate']) || empty($aInsertData['startdate']))) {
                                 $aInsertData['startdate'] = date('1980-01-01 00:00:00');
                             }
+                            // Archives of a survey without date stamp have no datestamp field
+                            if (in_array('datestamp', $DestinationFields) && empty($aInsertData['datestamp'])) {
+                                $aInsertData['datestamp'] = $aInsertData['startdate'] ?? date('1980-01-01 00:00:00');
+                            }
                             SurveyDynamic::sid($iSurveyID);
                             $response = new SurveyDynamic();
                             $response->setAttributes($aInsertData, false);

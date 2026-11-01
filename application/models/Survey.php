@@ -158,6 +158,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
 {
     use PermissionTrait;
 
+    /** @var string[] Settings that can't be changed while the survey is active, most of them decide the structure of the response tables */
+    const ACTIVATION_SETTINGS = ['anonymized', 'datestamp', 'ipaddr', 'ipanonymize', 'refurl', 'savetimings', 'savequotaexit'];
+
     protected static array $findByPkCache = [];
 
     // survey options
@@ -653,6 +656,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
         /* this is fixed, setOptions for inherited after all */
         $this->setOptions($this->gsid);
+        $this->storeInheritedActivationSettings();
     }
 
     /**
@@ -2411,6 +2415,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $this->tokenencryptionoptions = $options;
     }
 
+    /**
+     * Sets the survey options, inherited values are resolved from the survey group and global settings
+     *
+     * @param int $gsid Survey group ID
+     * @return void
+     */
     public function setOptions($gsid = 1)
     {
         $instance = SurveysGroupsettings::getInstance($gsid, $this, null, 1, $this->bShowRealOptionValues);
@@ -2420,6 +2430,59 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $this->aOptions = (array) $instance->oOptions;
             $this->showInherited = $instance->showInherited;
         }
+    }
+
+    /**
+     * Stores the values of the settings that can't be changed while the survey is active,
+     * if an active survey still stores "inherit" for them
+     *
+     * Surveys activated with older versions, from a survey archive or in demo mode can still store "inherit" for
+     * these settings. They must not follow a later change of the survey group or global settings, otherwise e.g.
+     * timings are expected in a timings table that does not exist. The settings that decided the structure of the
+     * response tables are taken from the tables, the others from their current inherited value.
+     * This happens only once for each survey.
+     *
+     * @return void
+     */
+    protected function storeInheritedActivationSettings()
+    {
+        if ($this->getAttribute('active') !== 'Y') {
+            return;
+        }
+        // Not loaded attributes are null, so a survey loaded with only some attributes is left out
+        $inheritedSettings = array_filter(self::ACTIVATION_SETTINGS, function ($setting) {
+            return $this->getAttribute($setting) === 'I';
+        });
+        if (empty($inheritedSettings)) {
+            return;
+        }
+        $responsesTable = Yii::app()->db->schema->getTable($this->responsesTableName);
+        if ($responsesTable === null) {
+            return;
+        }
+        $settings = [];
+        foreach ($inheritedSettings as $setting) {
+            switch ($setting) {
+                case 'anonymized':
+                    $isOn = !isset($responsesTable->columns['token']);
+                    break;
+                case 'datestamp':
+                case 'ipaddr':
+                case 'refurl':
+                    $isOn = isset($responsesTable->columns[$setting]);
+                    break;
+                case 'savetimings':
+                    $isOn = $this->hasTimingsTable;
+                    break;
+                default:
+                    // ipanonymize and savequotaexit don't change the tables
+                    $isOn = ($this->oOptions->{$setting} ?? 'N') === 'Y';
+            }
+            $settings[$setting] = $isOn ? 'Y' : 'N';
+        }
+        $this->setAttributes($settings, false);
+        self::model()->updateByPk($this->sid, $settings);
+        $this->setOptions($this->gsid);
     }
 
     /**
