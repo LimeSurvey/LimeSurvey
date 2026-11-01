@@ -280,6 +280,12 @@ class Question extends LSActiveRecord
                     'SAVEDID','TOKEN', // current survey related var
                     'QID','GID','SGQ', // current question related var
                     'self','that','this', // EM reserved variables
+                    /* Standard replacement fields (getStandardsReplacementFields): They take precedence over question codes in ExpressionManager */
+                    'ACTIVE','ADMINEMAIL','ADMINNAME','DATESTAMP','EXPIRY',
+                    'MOVENEXTBUTTON','MOVEPREVBUTTON','NAVIGATOR','NUMBEROFGROUPS','NUMBEROFQUESTIONS',
+                    'PERCENTCOMPLETE','PRIVACYHEADING','PRIVACYMESSAGE','SURVEYCONTACT','SURVEYDESCRIPTION',
+                    'SURVEYFORMAT','SURVEYLANGUAGE','SURVEYNAME','SURVEYRESOURCESURL','TEMPLATEURL',
+                    'URL','WELCOME',
                 ),
                 'message' => sprintf(gT("Code: '%s' is a reserved word."), $this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
                 'except' => 'archiveimport'
