@@ -583,8 +583,16 @@ class SurveyAdministrationController extends LSBaseController
                 $overrideAdministrator
             );
             if (!$newSurvey) {
-                Yii::app()->setFlashMessage(gT("Survey could not be created."), 'error');
-                $this->redirect(Yii::app()->request->urlReferrer);
+                return Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson',
+                    array(
+                        'data' => array(
+                            'alertData' => $surveyCreator->getErrorMessage(),
+                        )
+                    ),
+                    false,
+                    false
+                );
             }
 
             $iNewSurveyid = $newSurvey->sid;
@@ -679,7 +687,7 @@ class SurveyAdministrationController extends LSBaseController
                 );
                 $this->redirect($redirectUrl);
             } else {
-                App()->setFlashMessage(gT("Survey could not be created."), 'error');
+                App()->setFlashMessage($surveyCreator->getErrorMessage(), 'error');
                 $this->redirect(Yii::app()->request->urlReferrer);
             }
         } else {
