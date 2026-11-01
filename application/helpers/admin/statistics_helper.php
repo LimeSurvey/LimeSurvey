@@ -1366,6 +1366,23 @@ class statistics_helper
     }
 
     /**
+     * Multiple choice Other is selected when it has text, or when its stored tick is set
+     *
+     * @param SurveyDynamic $responseModel
+     * @param string $otherColumn the Other text column, Q{qid}_Cother
+     * @return string condition to add after the "has text" condition, empty when the response table has no tick column
+     */
+    protected function getOtherCheckedCondition($responseModel, $otherColumn)
+    {
+        $column = $otherColumn . 'checked';
+        if ($responseModel->getTableSchema()->getColumn($column) === null) {
+            return '';
+        }
+        $checkedValue = getEncryptedCondition($responseModel, $column, 'Y');
+        return " OR " . Yii::app()->db->quoteColumnName($column) . " = '$checkedValue'";
+    }
+
+    /**
      * Tally ranking counts for a question stored as a JSON array.
      *
      * @param int|string $surveyid
@@ -1476,7 +1493,8 @@ class statistics_helper
                         $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
                     } else {
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " <> ''" ;
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE (" . Yii::app()->db->quoteColumnName($al[2]) . " <> ''"
+                            . $this->getOtherCheckedCondition($responseModel, $al[2]) . ")";
                     }
                 }
 
@@ -2228,8 +2246,9 @@ class statistics_helper
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='{$othEncrypted}'";
                     } else {
                         //get data - select a count of responses where no answer is provided
-                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE (";
                         $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($al[2]) . " LIKE '')";
+                        $query .= $this->getOtherCheckedCondition($responseModel, $al[2]) . ")";
                     }
                 }
 
@@ -2681,7 +2700,7 @@ class statistics_helper
             if ($noncompleted < 2) {
                 $criteria = new CDbCriteria();
                 if ($noncompleted) {
-                    foreach ($outputs['alist'] as $al) {
+                    foreach (self::addOtherCheckedColumns($surveyid, $outputs['alist']) as $al) {
                         $quotedColumnName = App()->db->quoteColumnName($al[2]);
                         switch ($sDatabaseType) {
                             case 'mssql':
@@ -2696,7 +2715,7 @@ class statistics_helper
                     }
                     $fname = gT("Not completed");
                 } else {
-                    foreach ($outputs['alist'] as $al) {
+                    foreach (self::addOtherCheckedColumns($surveyid, $outputs['alist']) as $al) {
                         $quotedColumnName = App()->db->quoteColumnName($al[2]);
                         switch ($sDatabaseType) {
                             case 'mssql':
@@ -4290,7 +4309,7 @@ class statistics_helper
     private static function getMultiAnswered($surveyid, $answersList, $noncompleted)
     {
         $criteria = new CDbCriteria();
-        foreach ($answersList as $al) {
+        foreach (self::addOtherCheckedColumns($surveyid, $answersList) as $al) {
             $quotedColumnName = App()->db->quoteColumnName($al[2]);
             // Answered
             if ($noncompleted > 1) {
@@ -4331,7 +4350,7 @@ class statistics_helper
     private static function getMultiNotDisplayed($surveyid, $answersList, $noncompleted)
     {
         $criteria = new CDbCriteria();
-        foreach ($answersList as $al) {
+        foreach (self::addOtherCheckedColumns($surveyid, $answersList) as $al) {
             $quotedColumnName = App()->db->quoteColumnName($al[2]);
             if ($noncompleted > 1) {
                 // database can use blob due to encryption
@@ -4358,5 +4377,24 @@ class statistics_helper
             $criteria->addCondition("submitdate IS NOT NULL");
         }
         return SurveyDynamic::model($surveyid)->count($criteria);
+    }
+
+    /**
+     * Add the stored tick of a multiple choice Other after its text column, when the response table has it
+     * @param integer $surveyid
+     * @param array $answersList @see getMultiAnswered()
+     * @return array
+     */
+    private static function addOtherCheckedColumns($surveyid, $answersList)
+    {
+        $tableSchema = SurveyDynamic::model($surveyid)->getTableSchema();
+        $result = [];
+        foreach ($answersList as $al) {
+            $result[] = $al;
+            if (substr((string) $al[2], -7) === '_Cother' && $tableSchema->getColumn($al[2] . 'checked') !== null) {
+                $result[] = [$al[0], $al[1], $al[2] . 'checked'];
+            }
+        }
+        return $result;
     }
 }

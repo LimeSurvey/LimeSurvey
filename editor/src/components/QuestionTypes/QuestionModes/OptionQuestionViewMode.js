@@ -426,6 +426,14 @@ export const OptionQuestionViewMode = ({
         const value = isSingleChoiceTheme
           ? childrenValuesInOrder[0]
           : childrenValuesInOrder[index]
+        const isOtherWithTick =
+          !isSingleChoiceTheme && child.isOther && value?.otherChecked
+        const toggleOther = (checked) => {
+          onValueChange(checked ? 'Y' : '', value.otherChecked.key)
+          if (!checked && value.otherText?.key) {
+            onValueChange('', value.otherText.key)
+          }
+        }
 
         return (
           <div
@@ -450,6 +458,10 @@ export const OptionQuestionViewMode = ({
                 if (isSingleChoiceTheme) {
                   pendingIndexRef.current = index
                 }
+                if (isOtherWithTick) {
+                  toggleOther(newValue)
+                  return
+                }
                 onValueChange(
                   isSingleChoiceTheme &&
                     ChildUiComponentToRender.name !== selectName
@@ -463,6 +475,10 @@ export const OptionQuestionViewMode = ({
                   pendingIndexRef.current = index
                 }
                 setSelectedIndex(index)
+                if (isOtherWithTick) {
+                  toggleOther(!value.checked)
+                  return
+                }
                 onValueChange(
                   isSingleChoiceTheme
                     ? child[childrenInfo.codeKey]
@@ -555,14 +571,17 @@ export const OptionQuestionViewMode = ({
                     ? valueInfo?.otherText?.value
                     : value?.otherText?.value
                 }
-                update={(newValue) =>
+                update={(newValue) => {
                   onValueChange(
                     newValue,
                     isSingleChoiceTheme
                       ? valueInfo?.otherText?.key
                       : value?.otherText?.key
                   )
-                }
+                  if (!isSingleChoiceTheme && value?.otherChecked && newValue) {
+                    onValueChange('Y', value.otherChecked.key)
+                  }
+                }}
               />
             )}
             {child.isOther && otherSuffix && (
