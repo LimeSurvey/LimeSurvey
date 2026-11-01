@@ -35,7 +35,7 @@ class SurveyDao
         App()->setLanguage($lang);
         $survey->fieldMap = createFieldMap($oSurvey, 'full', true, false, $lang);
         // Check to see if timings are present and add to fieldmap if needed
-        if ($survey->info['savetimings'] == "Y" && $oSurvey->hasTimingsTable) {
+        if ($survey->info['savetimings'] == "Y") {
             $survey->fieldMap = $survey->fieldMap + createTimingsFieldMap($intId, 'full', true, false, $lang);
         }
 
@@ -190,7 +190,7 @@ class SurveyDao
         ) {
             $aResponses = $this->addJoinedRows($aResponses, $oSurvey->tokensTableName, 'token', 'tid', $aFields);
         }
-        if ($survey->info['savetimings'] == "Y" && $oSurvey->hasTimingsTable) {
+        if ($survey->info['savetimings'] == "Y") {
             $aResponses = $this->addJoinedRows($aResponses, $oSurvey->timingsTableName, 'id', 'id', $aFields);
         }
         return $aResponses;

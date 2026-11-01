@@ -74,6 +74,7 @@ class SurveyActivator
         $iSurveyId = $this->survey->sid;
         unset($_SESSION['responses_' . $iSurveyId]);
 
+        $this->setInheritedActivationSettings();
         $this->prepareResponsesTable();
 
         if ($this->isSimulation) {
@@ -98,7 +99,6 @@ class SurveyActivator
 
         $survey = Survey::model()->findByAttributes(array('sid' => $this->survey->primaryKey));
         $survey->active = 'Y';
-        $survey->setAttributes($this->getInheritedActivationSettings($survey), false);
         // Skip validation: The tables already exist, so an invalid setting must not keep the survey inactive
         $survey->save(false);
 
@@ -435,40 +435,28 @@ class SurveyActivator
     }
 
     /**
-     * Returns the values the tables were created with for the settings that can't be changed while the survey
-     * is active and are still set to "inherit"
+     * Replaces "inherit" by the inherited value for the settings that can't be changed while the survey is active
      *
-     * They must be stored, otherwise the survey would follow a later change of the survey group or global settings,
-     * although its tables were created with the old values.
+     * The tables are created with these values. They are stored, otherwise the survey would follow a later change of
+     * the survey group or global settings, although its tables were created with the old values.
      *
-     * @param Survey $survey
-     * @return array Setting name => 'Y' or 'N'
+     * @return void
      */
-    protected function getInheritedActivationSettings(Survey $survey)
+    protected function setInheritedActivationSettings()
     {
         $settings = [];
-        foreach (['anonymized', 'datestamp', 'ipaddr', 'ipanonymize', 'refurl', 'savetimings', 'savequotaexit'] as $setting) {
-            if (in_array($survey->getAttribute($setting), ['Y', 'N'], true)) {
-                continue;
+        foreach (Survey::ACTIVATION_SETTINGS as $setting) {
+            if (!in_array($this->survey->getAttribute($setting), ['Y', 'N'], true)) {
+                $settings[$setting] = ($this->survey->oOptions->{$setting} ?? 'N') === 'Y' ? 'Y' : 'N';
             }
-            switch ($setting) {
-                case 'anonymized':
-                    $isOn = !isset($this->tableDefinition['token']);
-                    break;
-                case 'savetimings':
-                    $isOn = !empty($this->timingsTableDefinition);
-                    break;
-                case 'ipanonymize':
-                case 'savequotaexit':
-                    // These don't change the tables
-                    $isOn = ($survey->oOptions->{$setting} ?? 'N') === 'Y';
-                    break;
-                default:
-                    $isOn = isset($this->tableDefinition[$setting]);
-            }
-            $settings[$setting] = $isOn ? 'Y' : 'N';
         }
-        return $settings;
+        if (empty($settings)) {
+            return;
+        }
+        $this->survey->setAttributes($settings, false);
+        if (!$this->isSimulation) {
+            Survey::model()->updateByPk($this->survey->sid, $settings);
+        }
     }
 
     /**

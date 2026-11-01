@@ -3,7 +3,7 @@
 namespace ls\tests;
 
 /**
- * The settings that decide the structure of the response tables must not follow a change of the
+ * The settings that can't be changed while the survey is active must not follow a change of the
  * survey group settings after the activation.
  */
 class SurveyInheritedActivationSettingsTest extends TestBaseClass
@@ -16,9 +16,9 @@ class SurveyInheritedActivationSettingsTest extends TestBaseClass
         parent::setUpBeforeClass();
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_143933.lss');
         $groupSettings = \SurveysGroupsettings::model()->findByPk(1);
-        self::$groupSettings = $groupSettings->getAttributes(['savetimings', 'datestamp', 'ipaddr']);
-        \Survey::model()->updateByPk(self::$surveyId, ['gsid' => 1, 'savetimings' => 'Y', 'datestamp' => 'I', 'ipaddr' => 'I']);
-        self::setGroupSettings(['savetimings' => 'N', 'datestamp' => 'Y', 'ipaddr' => 'Y']);
+        self::$groupSettings = $groupSettings->getAttributes(['savetimings', 'datestamp', 'ipaddr', 'ipanonymize']);
+        \Survey::model()->updateByPk(self::$surveyId, ['gsid' => 1, 'savetimings' => 'I', 'datestamp' => 'I', 'ipaddr' => 'I', 'ipanonymize' => 'I']);
+        self::setGroupSettings(['savetimings' => 'Y', 'datestamp' => 'Y', 'ipaddr' => 'N', 'ipanonymize' => 'N']);
     }
 
     public static function tearDownAfterClass(): void
@@ -42,7 +42,7 @@ class SurveyInheritedActivationSettingsTest extends TestBaseClass
     }
 
     /**
-     * The activation stores the values the tables were created with instead of "inherit".
+     * The activation creates the tables with the inherited values and stores them instead of "inherit".
      *
      * @return void
      */
@@ -58,12 +58,15 @@ class SurveyInheritedActivationSettingsTest extends TestBaseClass
         $columns = \Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
         $this->assertSame('Y', $survey->savetimings);
         $this->assertTrue($survey->hasTimingsTable);
-        $this->assertSame(in_array('datestamp', $columns) ? 'Y' : 'N', $survey->datestamp);
-        $this->assertSame(in_array('ipaddr', $columns) ? 'Y' : 'N', $survey->ipaddr);
+        $this->assertSame('Y', $survey->datestamp);
+        $this->assertContains('datestamp', $columns);
+        $this->assertSame('N', $survey->ipaddr);
+        $this->assertNotContains('ipaddr', $columns);
+        $this->assertSame('N', $survey->ipanonymize);
     }
 
     /**
-     * An active survey that still stores "inherit" uses the values its tables were created with.
+     * An active survey that still stores "inherit" stores the values its tables were created with once it is loaded.
      *
      * @depends testActivationStoresInheritedSettings
      * @return void
@@ -71,18 +74,26 @@ class SurveyInheritedActivationSettingsTest extends TestBaseClass
     public function testActiveSurveyIgnoresChangedGroupSettings()
     {
         // Like a survey activated by an older version, the group settings differ from the tables
-        \Survey::model()->updateByPk(self::$surveyId, ['savetimings' => 'I', 'datestamp' => 'I', 'ipaddr' => 'I']);
-        \Survey::model()->resetCache();
-        $survey = \Survey::model()->findByPk(self::$surveyId);
-        $columns = \Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
-        $this->assertNotContains('datestamp', $columns);
-        $this->assertNotContains('ipaddr', $columns);
+        \Survey::model()->updateByPk(self::$surveyId, ['savetimings' => 'I', 'datestamp' => 'I', 'ipaddr' => 'I', 'ipanonymize' => 'I']);
+        self::setGroupSettings(['savetimings' => 'N', 'datestamp' => 'N', 'ipaddr' => 'Y', 'ipanonymize' => 'Y']);
 
+        $survey = \Survey::model()->findByPk(self::$surveyId);
         $this->assertTrue($survey->isSaveTimings);
-        $this->assertFalse($survey->isDateStamp);
+        $this->assertTrue($survey->isDateStamp);
         $this->assertFalse($survey->isIpAddr);
+        $this->assertTrue($survey->isIpAnonymize);
+        $fieldMap = createFieldMap($survey, 'short', true, false, $survey->language);
+        $this->assertArrayHasKey('datestamp', $fieldMap);
+        $this->assertArrayNotHasKey('ipaddr', $fieldMap);
         $surveyInfo = getSurveyInfo(self::$surveyId, '', true);
         $this->assertSame('Y', $surveyInfo['savetimings']);
-        $this->assertSame('N', $surveyInfo['datestamp']);
+        $this->assertSame('Y', $surveyInfo['datestamp']);
+
+        $storedSettings = \Yii::app()->db->createCommand()
+            ->select('savetimings, datestamp, ipaddr, ipanonymize')
+            ->from('{{surveys}}')
+            ->where('sid = :sid', [':sid' => self::$surveyId])
+            ->queryRow();
+        $this->assertSame(['savetimings' => 'Y', 'datestamp' => 'Y', 'ipaddr' => 'N', 'ipanonymize' => 'Y'], $storedSettings);
     }
 }

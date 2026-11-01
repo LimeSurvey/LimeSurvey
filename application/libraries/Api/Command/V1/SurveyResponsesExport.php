@@ -313,7 +313,7 @@ class SurveyResponsesExport implements CommandInterface
         $legacyType = $this->legacyFormatMap[$type] ?? $type;
 
         $fieldMap = createFieldMap($this->surveyModel, 'full', true, false, $language);
-        if ($this->surveyModel->isSaveTimings && $this->surveyModel->hasTimingsTable) {
+        if ($this->surveyModel->savetimings === 'Y') {
             $fieldMap += createTimingsFieldMap($surveyId, 'full', true, false, $language);
         }
 

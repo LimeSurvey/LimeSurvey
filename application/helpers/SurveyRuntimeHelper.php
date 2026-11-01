@@ -1587,8 +1587,7 @@ class SurveyRuntimeHelper
                     $oResponse->delete(true); /* delete response line + files uploaded , warninbg : beforeDelete don't happen with deleteAll */
                 }
 
-                $survey = Survey::model()->findByPk($this->iSurveyid);
-                if ($survey->isSaveTimings && $survey->hasTimingsTable) {
+                if (Survey::model()->findByPk($this->iSurveyid)->savetimings == "Y") {
                     SurveyTimingDynamic::model($this->iSurveyid)->deleteAll("id=:srid", array(":srid" => $sessionSurvey['srid'])); /* delete timings ( @todo must move it to Response )*/
                 }
 

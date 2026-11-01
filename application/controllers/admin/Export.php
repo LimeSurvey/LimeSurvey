@@ -136,7 +136,7 @@ class Export extends SurveyCommonAction
         if (!$sExportType) {
             $aFieldMap = createFieldMap($survey, 'full', true, false, $survey->language);
 
-            if ($thissurvey['savetimings'] === "Y" && $survey->hasTimingsTable) {
+            if ($thissurvey['savetimings'] === "Y") {
                 //Append survey timings to the fieldmap array
                 $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full', false, false, $survey->language);
             }
