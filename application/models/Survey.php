@@ -2411,14 +2411,62 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $this->tokenencryptionoptions = $options;
     }
 
+    /**
+     * Sets the survey options, inherited values are resolved from the survey group and global settings
+     *
+     * @param int $gsid Survey group ID
+     * @return void
+     */
     public function setOptions($gsid = 1)
     {
         $instance = SurveysGroupsettings::getInstance($gsid, $this, null, 1, $this->bShowRealOptionValues);
         if ($instance) {
             $this->oOptions = $instance->oOptions;
             $this->oOptionLabels = $instance->oOptionLabels;
-            $this->aOptions = (array) $instance->oOptions;
+            $this->setInheritedActivationOptionsFromTables();
+            $this->aOptions = (array) $this->oOptions;
             $this->showInherited = $instance->showInherited;
+        }
+    }
+
+    /**
+     * Sets the inherited options that decided the structure of the response tables of an active survey
+     * to the values the tables were created with
+     *
+     * Surveys activated with older versions, from a survey archive or in demo mode can still store "inherit" for
+     * these settings. Changing the survey group or global setting later must not change them, otherwise e.g.
+     * timings are expected in a timings table that does not exist.
+     *
+     * @return void
+     */
+    protected function setInheritedActivationOptionsFromTables()
+    {
+        if ($this->active !== 'Y') {
+            return;
+        }
+        $inheritedSettings = array_filter(['anonymized', 'datestamp', 'ipaddr', 'refurl', 'savetimings'], function ($setting) {
+            return !in_array($this->getAttribute($setting), ['Y', 'N'], true);
+        });
+        if (empty($inheritedSettings)) {
+            return;
+        }
+        $responsesTable = Yii::app()->db->schema->getTable($this->responsesTableName);
+        if ($responsesTable === null) {
+            return;
+        }
+        foreach ($inheritedSettings as $setting) {
+            switch ($setting) {
+                case 'anonymized':
+                    $isOn = !isset($responsesTable->columns['token']);
+                    break;
+                case 'savetimings':
+                    $isOn = tableExists($this->timingsTableName);
+                    break;
+                default:
+                    $isOn = isset($responsesTable->columns[$setting]);
+            }
+            $this->oOptions->{$setting} = $isOn ? 'Y' : 'N';
+            $this->oOptionLabels->{$setting} = $isOn ? gT("On") : gT("Off");
         }
     }
 

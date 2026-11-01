@@ -118,7 +118,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                 </label>
                 <div>
                     <?php if ($oSurvey->isActive) {
-                        if ($oSurvey->anonymized == "N") { ?>
+                        if (!$oSurvey->isAnonymized) { ?>
                             <?php eT("Responses to this survey are NOT anonymized."); ?>
                         <?php } else {
                             eT("Responses to this survey are anonymized.");
