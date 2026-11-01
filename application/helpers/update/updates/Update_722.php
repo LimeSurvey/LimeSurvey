@@ -58,12 +58,15 @@ class Update_722 extends DatabaseUpdateBase
         $this->db->createCommand()->update(
             '{{question_themes}}',
             ['version' => '1.2.0'],
-            "core_theme = 1 AND name = 'bootstrap_buttons_multi' AND version IN ('1.0', '1.1')"
+            "core_theme = :core_theme AND name = 'bootstrap_buttons_multi' AND version IN ('1.0', '1.1')",
+            // Bound parameter: core_theme is a boolean on Postgres
+            [':core_theme' => true]
         );
         $this->db->createCommand()->update(
             '{{question_themes}}',
             ['version' => '1.1.0'],
-            "core_theme = 1 AND version = '1.0'"
+            "core_theme = :core_theme AND version = '1.0'",
+            [':core_theme' => true]
         );
     }
 
