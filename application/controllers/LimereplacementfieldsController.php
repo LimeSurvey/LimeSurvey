@@ -14,6 +14,29 @@
  */
 class LimeReplacementFieldsController extends LSBaseController
 {
+    /** @var array<int, int>|null group_order indexed by gid, for the survey of the requested group */
+    private $groupOrders = null;
+
+    /**
+     * Returns the group_order of all groups of the survey the given group belongs to, indexed by gid
+     *
+     * @param integer $gid
+     * @return array<int, int>
+     */
+    private function getGroupOrders($gid)
+    {
+        if ($this->groupOrders === null) {
+            $this->groupOrders = [];
+            $group = QuestionGroup::model()->findByPk($gid);
+            if ($group) {
+                foreach (QuestionGroup::model()->findAllByAttributes(['sid' => $group->sid]) as $surveyGroup) {
+                    $this->groupOrders[$surveyGroup->gid] = (int) $surveyGroup->group_order;
+                }
+            }
+        }
+        return $this->groupOrders;
+    }
+
     /**
      *
      * action used to provide the html editor with data for the
@@ -39,6 +62,17 @@ class LimeReplacementFieldsController extends LSBaseController
 
         if ($surveyid && !Permission::model()->hasSurveyPermission($surveyid, 'survey', 'read')) {
             throw new CHttpException(403);
+        }
+
+        // Subquestions use the placeholders of their parent question, the question's own group wins over the requested one
+        if ($qid) {
+            $oQuestion = Question::model()->findByPk($qid);
+            if ($oQuestion && (int) $oQuestion->sid === $surveyid) {
+                if (!empty($oQuestion->parent_qid)) {
+                    $qid = (int) $oQuestion->parent_qid;
+                }
+                $gid = (int) $oQuestion->gid;
+            }
         }
 
         if ($newType) {
@@ -99,6 +133,9 @@ class LimeReplacementFieldsController extends LSBaseController
             if (is_null($qid) || $this->shouldAddQuestion($action, $gid, $qid, $question, $previousQuestion)) {
                 $isPreviousPageQuestion = $this->addQuestionToList($action, $gid, $question, $questionType, $surveyformat, $isPreviousPageQuestion, $questionList);
                 $previousQuestion = $question;
+            } elseif ($action == 'editanswer' && empty($qid)) {
+                // Unsaved question: eligibility depends on the group, not on the position in the fieldmap
+                continue;
             } else {
                 break;
             }
@@ -147,6 +184,23 @@ class LimeReplacementFieldsController extends LSBaseController
                 return true;
 
             case 'editanswer':
+                // Subquestion/answer option rows of an unsaved question have no parent qid (and maybe no gid)
+                if (empty($qid)) {
+                    if (empty($gid)) {
+                        return true;
+                    }
+                    // New questions are added at the end of their group by default
+                    if ($question['gid'] == $gid) {
+                        return true;
+                    }
+                    $groupOrders = $this->getGroupOrders($gid);
+                    if (!isset($groupOrders[$gid], $groupOrders[$question['gid']])) {
+                        return true;
+                    }
+                    // Groups sharing the group_order of the current group (e.g. after imports) are not before it
+                    return $groupOrders[$question['gid']] < $groupOrders[$gid];
+                }
+                // no break
             case 'copyquestion':
             case 'editquestion':
             case 'translatequestion':

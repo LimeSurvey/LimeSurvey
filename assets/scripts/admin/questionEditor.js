@@ -460,6 +460,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     const datas = {
       surveyid: $dataInput.data('surveyid'),
       gid: $dataInput.data('gid'),
+      qid: $dataInput.data('qid'),
       codes: JSON.stringify({lbl_1: 'eins'}),  // jshint ignore:line
       scale_id: scaleId,  // jshint ignore:line
       position: position,
@@ -539,6 +540,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       position: null,
       first,
       language,
+      qid: dataInput.dataset.qid,
     };
 
     // We get the HTML of the new row to insert
