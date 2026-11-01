@@ -430,6 +430,9 @@ class QuestionGroupService
     /**
      * Gets array with question related parameters (qid, question_order, gid)
      * and updates them in those questions and their subquestions
+     *
+     * Note: The question and its target group must belong to the survey.
+     *
      * @param array $aQuestion
      * @param int $surveyId
      * @param bool $success
@@ -440,6 +443,14 @@ class QuestionGroupService
         int $surveyId,
         bool $success
     ) {
+        if (
+            !$this->modelQuestionGroup->exists(
+                "gid=:gid AND sid=:sid",
+                [':gid' => (int) ($aQuestion['gid'] ?? 0), ':sid' => $surveyId]
+            )
+        ) {
+            return false;
+        }
         $aQuestions = $this->modelQuestion->findAll(
             "qid=:qid AND sid=:sid",
             [':qid' => $aQuestion['qid'], ':sid' => $surveyId]

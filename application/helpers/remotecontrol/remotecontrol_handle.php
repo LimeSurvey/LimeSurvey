@@ -1405,6 +1405,7 @@ class remotecontrol_handle
      * Some attribute can not be set
      * * sid
      * * gid
+     * * in the questiongroupl10ns data: everything but group_name and description
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -1440,7 +1441,8 @@ class remotecontrol_handle
 
                 // Process L10n data
                 if (!empty($aGroupData['questiongroupl10ns']) && is_array($aGroupData['questiongroupl10ns'])) {
-                    $aL10nDestinationFields = array_flip(QuestionGroupL10n::model()->tableSchema->columnNames);
+                    // Only the texts can be set: The gid and language must not move the row to another group
+                    $aL10nDestinationFields = array_flip(['group_name', 'description']);
                     foreach ($aGroupData['questiongroupl10ns'] as $language => $aLanguageData) {
                         // Get existing L10n data or create new
                         if (isset($oGroup->questiongroupl10ns[$language])) {
@@ -1935,7 +1937,7 @@ class remotecontrol_handle
      *   apply to (the 'language' key takes precedence over $sLanguage when both are given). Any of
      *   'question'/'help' left unset keeps its current value for that language.
      * * Multi-language form: pass 'questionl10ns' as an array keyed by language code, each value being
-     *   an associative array of question_l10ns fieldnames (e.g. 'question', 'help') to set for that language.
+     *   an associative array of question_l10ns fieldnames ('question', 'help' and 'script') to set for that language.
      *
      * @see \Question for other available properties.
      *
@@ -2010,7 +2012,8 @@ class remotecontrol_handle
 
                 // Process L10n data
                 if (!empty($aQuestionData['questionl10ns']) && is_array($aQuestionData['questionl10ns'])) {
-                    $aL10nDestinationFields = array_flip(QuestionL10n::model()->tableSchema->columnNames);
+                    // Only the texts can be set: The qid and language must not move the row to another question
+                    $aL10nDestinationFields = array_flip(['question', 'help', 'script']);
                     foreach ($aQuestionData['questionl10ns'] as $language => $aLanguageData) {
                         // Get existing L10n data or create new
                         if (isset($oQuestion->questionl10ns[$language])) {

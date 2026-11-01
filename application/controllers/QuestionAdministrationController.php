@@ -1223,6 +1223,10 @@ class QuestionAdministrationController extends LSBaseController
 
     /**
      * Import the Question
+     *
+     * Note: The question is only imported into a group of the survey the permission was checked on.
+     *
+     * @return void
      */
     public function actionImport()
     {
@@ -1263,7 +1267,8 @@ class QuestionAdministrationController extends LSBaseController
             $fatalerror .= gT("No (valid) survey ID has been provided. Cannot import question.");
         }
 
-        if (!$gid) {
+        // The group must belong to the survey the permission was checked on
+        if (!$gid || !QuestionGroup::model()->exists('gid = :gid AND sid = :sid', [':gid' => $gid, ':sid' => $iSurveyID])) {
             $fatalerror .= gT("No (valid) group ID has been provided. Cannot import question.");
         }
 
@@ -2453,9 +2458,12 @@ class QuestionAdministrationController extends LSBaseController
      *
      * todo: this should be moved to model ...
      *
+     * Note: The group is only set if it belongs to the survey of the question.
+     *
      * @param int $iQuestionId
      * @param string $sQuestionType
      * @param int $gid
+     * @param string $questionThemeName
      * @return Question
      * @throws CException
      */
@@ -2480,7 +2488,7 @@ class QuestionAdministrationController extends LSBaseController
             $oQuestion->question_theme_name = $questionThemeName;
         }
 
-        if ($gid != null) {
+        if ($gid != null && QuestionGroup::model()->exists('gid = :gid AND sid = :sid', [':gid' => (int) $gid, ':sid' => (int) $oQuestion->sid])) {
             $oQuestion->gid = $gid;
         }
 

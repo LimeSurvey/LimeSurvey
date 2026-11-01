@@ -49,6 +49,8 @@ class Quotas
      *   ]
      * ]
      *
+     * Note: Quota members based on a question of another survey are left out.
+     *
      * @return array
      */
     public function getQuotaStructure()
@@ -64,6 +66,10 @@ class Quotas
 
                 //loop through all quotaMembers
                 foreach ($oQuota->quotaMembers as $oQuotaMember) {
+                    // A member based on a question of another survey is never shown, it would disclose its texts
+                    if (!empty($oQuotaMember->question) && $oQuotaMember->question->sid != $this->survey->sid) {
+                        continue;
+                    }
                     $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $oQuota['id']);
                     if ($oQuotaMember->question->type == '*') {
                         $answerText = $oQuotaMember->code;

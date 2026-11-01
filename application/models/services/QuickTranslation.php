@@ -402,73 +402,102 @@ class QuickTranslation
     /**
      * Updates the translation for a given field name (e.g. surveyls_title)
      *
-     * @param $fieldName  string the field name from frontend
-     * @param $tolang string shortcut for language (e.g. 'de')
-     * @param $new   string the new value to save as translation
-     * @param $qidOrgid int  groupid or questionid
-     * @param $answerCode string the answer code
-     * @param $iScaleID
+     * Note: Groups, questions and answers must belong to the survey of this service,
+     * and the value is validated (XSS filtered) like in the regular editors.
      *
-     * @return int|null
+     * @param string $fieldName the field name from frontend
+     * @param string $tolang shortcut for language (e.g. 'de')
+     * @param string $new the new value to save as translation
+     * @param int $qidOrgid groupid or questionid
+     * @param string $answerCode the answer code
+     * @param int|string $iScaleID the answer scale
+     *
+     * @return int|null number of updated rows, null for an unknown field name
      */
     public function updateTranslations($fieldName, $tolang, $new, $qidOrgid = 0, $answerCode = '', $iScaleID = '')
     {
-        // Small helper function to reduce code size.
-        $updateLanguageSetting = function (array $data) use ($tolang) {
-            return SurveyLanguageSetting::model()->updateByPk(
-                ['surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang],
-                $data
+        $languageSettingFields = [
+            'title' => 'surveyls_title',
+            'description' => 'surveyls_description',
+            'welcome' => 'surveyls_welcometext',
+            'end' => 'surveyls_endtext',
+            'emailinvite' => 'surveyls_email_invite_subj',
+            'emailinvitebody' => 'surveyls_email_invite',
+            'emailreminder' => 'surveyls_email_remind_subj',
+            'emailreminderbody' => 'surveyls_email_remind',
+            'emailconfirmation' => 'surveyls_email_confirm_subj',
+            'emailconfirmationbody' => 'surveyls_email_confirm',
+            'emailregistration' => 'surveyls_email_register_subj',
+            'emailregistrationbody' => 'surveyls_email_register',
+            'emailbasicadminnotification' => 'email_admin_notification_subj',
+            'emailbasicadminnotificationbody' => 'email_admin_notification',
+            'emaildetailedadminnotification' => 'email_admin_responses_subj',
+            'emaildetailedadminnotificationbody' => 'email_admin_responses',
+        ];
+        if (isset($languageSettingFields[$fieldName])) {
+            if ($fieldName == 'title') {
+                $new = substr((string) $new, 0, 200);
+            }
+            $oLanguageSetting = SurveyLanguageSetting::model()->findByPk(
+                ['surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang]
             );
-        };
+            return $this->saveTranslatedAttribute($oLanguageSetting, $languageSettingFields[$fieldName], $new);
+        }
         switch ($fieldName) {
-            case 'title':
-                return $updateLanguageSetting(array('surveyls_title' => substr((string) $new, 0, 200)));
-            case 'description':
-                return $updateLanguageSetting(array('surveyls_description' => $new));
-            case 'welcome':
-                return $updateLanguageSetting(array('surveyls_welcometext' => $new));
-            case 'end':
-                return $updateLanguageSetting(array('surveyls_endtext' => $new));
-            case 'emailinvite':
-                return $updateLanguageSetting(array('surveyls_email_invite_subj' => $new));
-            case 'emailinvitebody':
-                return $updateLanguageSetting(array('surveyls_email_invite' => $new));
-            case 'emailreminder':
-                return $updateLanguageSetting(array('surveyls_email_remind_subj' => $new));
-            case 'emailreminderbody':
-                return $updateLanguageSetting(array('surveyls_email_remind' => $new));
-            case 'emailconfirmation':
-                return $updateLanguageSetting(array('surveyls_email_confirm_subj' => $new));
-            case 'emailconfirmationbody':
-                return $updateLanguageSetting(array('surveyls_email_confirm' => $new));
-            case 'emailregistration':
-                return $updateLanguageSetting(array('surveyls_email_register_subj' => $new));
-            case 'emailregistrationbody':
-                return $updateLanguageSetting(array('surveyls_email_register' => $new));
-            case 'emailbasicadminnotification':
-                return $updateLanguageSetting(array('email_admin_notification_subj' => $new));
-            case 'emailbasicadminnotificationbody':
-                return $updateLanguageSetting(array('email_admin_notification' => $new));
-            case 'emaildetailedadminnotification':
-                return $updateLanguageSetting(array('email_admin_responses_subj' => $new));
-            case 'emaildetailedadminnotificationbody':
-                return $updateLanguageSetting(array('email_admin_responses' => $new));
             case 'group':
-                return QuestionGroupL10n::model()->updateAll(array('group_name' => mb_substr((string) $new, 0, 100)), 'gid = :gid and language = :language', array(':gid' => $qidOrgid, ':language' => $tolang));
             case 'group_desc':
-                return QuestionGroupL10n::model()->updateAll(array('description' => $new), 'gid = :gid and language = :language', array(':gid' => $qidOrgid, ':language' => $tolang));
+                if (!QuestionGroup::model()->exists('gid = :gid AND sid = :sid', [':gid' => (int) $qidOrgid, ':sid' => $this->survey->sid])) {
+                    return 0;
+                }
+                $oGroupL10n = QuestionGroupL10n::model()->find('gid = :gid AND language = :language', [':gid' => (int) $qidOrgid, ':language' => $tolang]);
+                if ($fieldName == 'group') {
+                    return $this->saveTranslatedAttribute($oGroupL10n, 'group_name', mb_substr((string) $new, 0, 100));
+                }
+                return $this->saveTranslatedAttribute($oGroupL10n, 'description', $new);
             case 'question':
-                return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language', array(':qid' => $qidOrgid, ':language' => $tolang));
             case 'question_help':
-                return QuestionL10n::model()->updateAll(array('help' => $new), 'qid = :qid and language = :language', array(':qid' => $qidOrgid, ':language' => $tolang));
             case 'subquestion':
-                return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language', array(':qid' => $qidOrgid, ':language' => $tolang));
+                if (!Question::model()->exists('qid = :qid AND sid = :sid', [':qid' => (int) $qidOrgid, ':sid' => $this->survey->sid])) {
+                    return 0;
+                }
+                $oQuestionL10n = QuestionL10n::model()->find('qid = :qid AND language = :language', [':qid' => (int) $qidOrgid, ':language' => $tolang]);
+                return $this->saveTranslatedAttribute($oQuestionL10n, $fieldName == 'question_help' ? 'help' : 'question', $new);
             case 'answer':
+                if (!Question::model()->exists('qid = :qid AND sid = :sid', [':qid' => (int) $qidOrgid, ':sid' => $this->survey->sid])) {
+                    return 0;
+                }
                 $oAnswer = Answer::model()->find('qid = :qid and code = :code and scale_id = :scale_id', array(':qid' => $qidOrgid, ':code' => $answerCode, ':scale_id' => $iScaleID));
-                return AnswerL10n::model()->updateAll(array('answer' => $new), 'aid = :aid and language = :language', array(':aid' => $oAnswer->aid, ':language' => $tolang));
+                if (empty($oAnswer)) {
+                    return 0;
+                }
+                $oAnswerL10n = AnswerL10n::model()->find('aid = :aid AND language = :language', [':aid' => $oAnswer->aid, ':language' => $tolang]);
+                return $this->saveTranslatedAttribute($oAnswerL10n, 'answer', $new);
             default:
                 return null;
         }
+    }
+
+    /**
+     * Validates and saves a single translated attribute of a model.
+     *
+     * Only the rules of this attribute are validated (e.g. the XSS filter),
+     * and only this attribute is saved.
+     *
+     * @param \LSActiveRecord|null $model the language setting or L10n model, null if not found
+     * @param string $attribute the attribute to update
+     * @param string $value the new value
+     * @return int number of updated rows
+     */
+    private function saveTranslatedAttribute($model, $attribute, $value)
+    {
+        if (empty($model)) {
+            return 0;
+        }
+        $model->$attribute = $value;
+        if (!$model->validate([$attribute])) {
+            return 0;
+        }
+        return $model->save(false, [$attribute]) ? 1 : 0;
     }
 
     /**
