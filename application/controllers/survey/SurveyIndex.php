@@ -222,6 +222,10 @@ class SurveyIndex extends CAction
 
         if ($surveyid && $surveyExists) {
             SetSurveyLanguage($surveyid, $sDisplayLanguage);
+            // Posted answers (e.g. dates) were entered on a page in the previous language
+            if ($sOldLang !== "" && $sOldLang != $_SESSION['responses_' . $surveyid]['s_lang'] && in_array($sOldLang, $oSurvey->getAllLanguages())) {
+                LimeExpressionManager::setPostedLanguage($sOldLang);
+            }
         }
 
         /* Launch beforeSurveyPage before all renderExitMessage */

@@ -55,6 +55,12 @@ class LimeExpressionManager
      */
     private static $instance;
     /**
+     * Language of the page the posted answers come from, when the survey language changes in the current request.
+     * Static so that it is not saved with the singleton in the session and is only used for the current request.
+     * @var string|null
+     */
+    private static $postedLanguage = null;
+    /**
      * Implements the recursive descent parser that processes expressions
      * @var ExpressionManager
      */
@@ -825,6 +831,27 @@ class LimeExpressionManager
     public static function getEMlanguage()
     {
         return Yii::app()->session['LEMlang'];
+    }
+
+    /**
+     * Set the language of the page the posted answers come from.
+     * Must be called when the survey language changes in the current request, since dates in POST
+     * are still in the date format of the previous language.
+     * @param string|null $lang Language code, null when the posted answers are in the current language
+     * @return void
+     */
+    public static function setPostedLanguage($lang)
+    {
+        self::$postedLanguage = $lang;
+    }
+
+    /**
+     * Get the language of the page the posted answers come from
+     * @return string
+     */
+    public static function getPostedLanguage()
+    {
+        return self::$postedLanguage ?? $_SESSION['LEMlang'];
     }
 
     /**
@@ -9085,15 +9112,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         case Question::QT_D_DATE: //DATE
                             // Handle Arabic numerals
                             // TODO: Make a wrapper class around date converter, which constructor takes to-lang and from-lang
-                            $lang = $_SESSION['LEMlang'];
+                            // The date was entered in the format of the page language, which differs from the current one after a language change
+                            $lang = self::getPostedLanguage();
                             $value = self::convertNonLatinNumerics($value, $lang);
                             $value = trim($value);
                             if ($value != "" && $value != "INVALID") {
-                                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid, $_SESSION['LEMlang']);
+                                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid, $lang);
                                 if (!isset($aAttributes[$qid])) {
                                     $aAttributes[$qid] = [];
                                 }
-                                $aDateFormatData = getDateFormatDataForQID($aAttributes[$qid], $LEM->surveyOptions);
+                                $aDateFormatData = getDateFormatDataForQID(
+                                    $aAttributes[$qid],
+                                    $lang == $_SESSION['LEMlang'] ? $LEM->surveyOptions : $LEM->sid,
+                                    $lang
+                                );
                                 $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
                                 if ($dateTime === false) {
                                     $message = sprintf(
